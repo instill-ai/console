@@ -5,5 +5,9 @@
   "repository": "https://github.com/instill-ai/console.git",
   "author": "Instill AI",
   "license": "Apache License 2.0",
-  "private": true
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "app"
+  ]
 }
