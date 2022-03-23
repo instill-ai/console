@@ -9,5 +9,12 @@
   "workspaces": [
     "packages/*",
     "app"
-  ]
+  ],
+  "scripts": {
+    "docker:web-app:install": "docker buildx bake -f ./docker-compose.app.yml --progress=tty deps",
+    "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f ./docker-compose.app.yml up --build develop"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  }
 }
