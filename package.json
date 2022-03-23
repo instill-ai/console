@@ -1,0 +1,9 @@
+{
+  "name": "@instillai/console",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/instill-ai/console.git",
+  "author": "Instill AI",
+  "license": "Apache License 2.0",
+  "private": true
+}
