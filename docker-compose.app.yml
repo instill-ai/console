@@ -6,13 +6,13 @@ services:
     profiles:
       - donotstart
     ports:
-      - "3010:3010"
+      - "3000:3000"
     build:
       context: .
       dockerfile: Dockerfile
       target: develop
     environment:
-      - PORT=3010
+      - PORT=3000
     volumes:
       # Share the source code to allow development
       - .:/app

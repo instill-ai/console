@@ -65,7 +65,7 @@ RUN --mount=type=cache,target=/root/.yarn3-cache,id=yarn3-cache \
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS develop
 ENV NODE_ENV=development
 ARG PORT
-ENV portValue=$PORT
+ARG IP
 
 WORKDIR /app
 
@@ -75,4 +75,4 @@ WORKDIR /app/app
 
 EXPOSE $PORT
 
-CMD yarn dev $portValue
+CMD yarn dev -p $PORT
