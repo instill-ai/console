@@ -14,6 +14,7 @@ This repo leverage yarn workspace to enable monorepo. Local web UI is built with
 
 <details>
 <summary>Detailed folder structure</summary>
+```
 .
 ├── app (nextjs, i18n, ssr, e2e playwright)
 │   ├── src (main folders)
@@ -21,4 +22,5 @@ This repo leverage yarn workspace to enable monorepo. Local web UI is built with
 │   │   └── pages (web Ui pages)
 │   └── public (local app UI related assets)
 └── packages (placeholder - will add instill related function in the future)
+```
 </details>
