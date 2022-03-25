@@ -5,11 +5,7 @@
   "repository": "https://github.com/instill-ai/console.git",
   "author": "Instill AI",
   "license": "Apache License 2.0",
-  "private": true,
-  "workspaces": [
-    "packages/*",
-    "app"
-  ],
+  "private": false,
   "scripts": {
     "docker:app:install": "docker buildx bake -f ./docker-compose.app.yml --progress=tty deps",
     "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f ./docker-compose.app.yml up --build develop",
@@ -19,12 +15,43 @@
     "docker:nuke:containers": "docker container rm -f $(docker container ls -qa)",
     "docker:nuke:volumes": "docker volume rm $(docker volume ls -q)",
     "docker:nuke:prune-cachemount": "docker builder prune --filter type=exec.cachemount",
-    "docker:nuke:prune-buildx": "docker buildx prune"
+    "docker:nuke:prune-buildx": "docker buildx prune",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "build": "next build",
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "clsx": "^1.1.1",
+    "next": "^12.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "@babel/core": "^7.17.8",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-docs": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/node": "^17.0.22",
+    "@types/react": "^17.0.41",
+    "autoprefixer": "^10.4.4",
+    "babel-loader": "^8.2.4",
+    "jest": "^27.5.1",
+    "postcss": "^8.4.12",
+    "storybook-addon-next-router": "^3.1.1",
+    "tailwindcss": "^3.0.23",
+    "typescript": "^4.6.2",
+    "webpack": "^5.70.0"
   }
 }

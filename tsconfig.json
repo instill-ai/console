@@ -5,7 +5,18 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
