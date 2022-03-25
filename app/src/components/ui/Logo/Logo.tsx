@@ -14,7 +14,8 @@ export interface LogoProps {
     | "blackLogomarkBlackType"
     | "whiteLogomark"
     | "blueLogomark"
-    | "colourLogomark";
+    | "colourLogomark"
+    | "blackLogomark";
   width: number;
 }
 
@@ -765,6 +766,10 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
     }
     case "whiteLogomark": {
       logo = <>{getWhiteLogomark(width)}</>;
+      break;
+    }
+    case "blackLogomark": {
+      logo = <>{getBlackLogomark(width)}</>;
       break;
     }
     case "blueLogomark": {
