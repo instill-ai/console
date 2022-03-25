@@ -4,22 +4,24 @@ import cn from "clsx";
 export interface LogoProps {
   styleName?: string;
   type:
-    | "responsiveColour"
-    | "responsiveWhite"
-    | "logoOnlyWhite"
-    | "fullWhite"
-    | "logoOnlyblue"
-    | "fullBlack"
-    | "logoOnlyColour"
-    | "ColourLogoWhiteType"
-    | "ColourLogoBlackType";
+    | "responsiveColourLogomarkWhiteType"
+    | "ColourLogomarkWhiteType"
+    | "responsiveColourLogomarkBlackType"
+    | "ColourLogomarkBlackType"
+    | "responsiveWhiteLogomarkWhiteType"
+    | "whiteLogomarkWhiteType"
+    | "responsiveBlackLogomarkBlackType"
+    | "blackLogomarkBlackType"
+    | "whiteLogomark"
+    | "blueLogomark"
+    | "colourLogomark";
   width: number;
 }
 
 export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
   let logo: ReactNode;
 
-  const getWhiteCombinationLogo = (
+  const getWhiteLogomarkWhiteType = (
     width: number,
     styleName?: string
   ): ReactElement => {
@@ -30,6 +32,7 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
         xmlns="http://www.w3.org/2000/svg"
         className={styleName}
         style={{ width: `${width}px` }}
+        data-testid="white-logomark-white-type"
       >
         <path
           d="M77.4185 0H0V87.9804H83.8535V0H77.4185ZM6.44997 6.76741H12.9037V27.0736H6.44997V6.76741ZM6.44997 33.8449H12.9037V54.0765H6.44997V33.8449ZM25.8074 81.2287H6.44997V60.8478H12.9037V60.9225H19.3537V60.8478H25.8074V81.2287ZM25.8074 54.0765H19.3537V33.8449H25.8074V54.0765ZM25.8074 27.0736H19.3537V6.76741H25.7625V13.5898H25.8074V27.0736ZM32.2574 33.8449H38.7111V54.0765H32.2574V33.8449ZM32.2574 60.8478H38.7111V67.5249H32.2574V60.8478ZM51.5362 74.4691H38.786V67.6506H45.1499V60.8478H51.5138L51.5362 74.4691ZM51.5362 54.0883H45.1723V33.8449H51.5362V54.0883ZM51.5362 20.2708H45.1723V27.0854H32.2574V13.5898H38.6699V20.2669H45.1237V13.4681H38.7074V6.76741H51.5362V20.2708ZM64.4998 81.2287H57.9899V60.8478H64.4998V81.2287ZM77.4035 81.2287H70.9685V60.8478H77.4185L77.4035 81.2287ZM77.4035 54.0765H57.975V33.8449H77.4035V54.0765ZM77.4035 27.0736H57.975V20.3062H77.4035V27.0736ZM77.4035 13.5388H57.975V6.76741H77.4035V13.5388Z"
@@ -91,7 +94,7 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
     );
   };
 
-  const getBlackCombinationLogo = (
+  const getBlackLogomarkBlackType = (
     width: number,
     styleName?: string
   ): ReactElement => {
@@ -102,6 +105,7 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
         xmlns="http://www.w3.org/2000/svg"
         className={styleName}
         style={{ width: `${width}px` }}
+        data-testid="black-logomark-black-type"
       >
         <g clipPath="url(#clip0_2_8133)">
           <path
@@ -186,11 +190,35 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: `${width}px` }}
         className={styleName}
+        data-testid="white-logomark"
       >
         <path
           d="M30.4675 0H0V33H33V0H30.4675ZM2.53835 2.53835H5.07817V10.1549H2.53835V2.53835ZM2.53835 12.6947H5.07817V20.2832H2.53835V12.6947ZM10.1563 30.4675H2.53835V22.823H5.07817V22.851H7.61652V22.823H10.1563V30.4675ZM10.1563 20.2832H7.61652V12.6947H10.1563V20.2832ZM10.1563 10.1549H7.61652V2.53835H10.1387V5.09732H10.1563V10.1549ZM12.6947 12.6947H15.2345V20.2832H12.6947V12.6947ZM12.6947 22.823H15.2345V25.3275H12.6947V22.823ZM20.2817 27.9321H15.264V25.3746H17.7684V22.823H20.2729L20.2817 27.9321ZM20.2817 20.2876H17.7773V12.6947H20.2817V20.2876ZM20.2817 7.60326H17.7773V10.1593H12.6947V5.09732H15.2183V7.60178H17.7581V5.05165H15.233V2.53835H20.2817V7.60326ZM25.3835 30.4675H22.8216V22.823H25.3835V30.4675ZM30.4616 30.4675H27.9292V22.823H30.4675L30.4616 30.4675ZM30.4616 20.2832H22.8157V12.6947H30.4616V20.2832ZM30.4616 10.1549H22.8157V7.61651H30.4616V10.1549ZM30.4616 5.07817H22.8157V2.53835H30.4616V5.07817Z"
           fill="#F7F7F7"
         />
+      </svg>
+    );
+  };
+
+  const getBlackLogomark = (
+    width: number,
+    styleName?: string
+  ): ReactElement => {
+    return (
+      <svg
+        viewBox="0 0 225 225"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: `${width}px` }}
+        className={styleName}
+        data-testid="black-logomark"
+      >
+        <g>
+          <path
+            d="M206.81 0H0V224H224.08V0H206.81ZM17.24 17.24H34.47V68.94H17.24V17.24ZM17.24 86.17H34.47V137.68H17.24V86.17ZM68.94 206.81H17.24V154.92H34.47V155.11H51.7V154.92H68.94V206.81ZM68.94 137.68H51.7V86.17H68.94V137.68ZM68.94 68.94H51.7V17.24H68.82V34.59H68.94V68.94ZM86.17 86.17H103.41V137.68H86.17V86.17ZM86.17 154.92H103.41V171.92H86.17V154.92ZM137.68 189.58H103.61V172.3H120.61V154.92H137.61L137.68 189.58ZM137.68 137.68H120.68V86.17H137.68V137.68ZM137.68 51.59H120.68V68.94H86.17V34.59H103.31V51.59H120.54V34.3H103.41V17.3H137.68V51.59ZM172.35 206.81H154.91V154.92H172.35V206.81ZM206.81 206.81H189.58V154.92H206.81V206.81ZM206.81 137.68H154.91V86.17H206.81V137.68ZM206.81 68.94H154.91V51.7H206.81V68.94ZM206.81 34.47H154.91V17.24H206.81V34.47Z"
+            fill="#1A1A1A"
+          />
+        </g>
       </svg>
     );
   };
@@ -203,6 +231,7 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: `${width}px` }}
         className={styleName}
+        data-testid="blue-logomark"
       >
         <g clipPath="url(#clip0_2_3148)">
           <path
@@ -287,7 +316,248 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
     );
   };
 
-  const getColourLogoWithWhiteType = (
+  const getColourLogomark = (
+    width: number,
+    styleName?: string
+  ): ReactElement => {
+    return (
+      <svg
+        viewBox="0 0 202 202"
+        style={{ width: `${width}px` }}
+        className={styleName}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        data-testid="colour-logomark"
+      >
+        <g clipPath="url(#clip0_387_1129)">
+          <path
+            d="M202.007 186.532V202.078H1.52588e-05V0H202.007V186.532ZM186.467 186.532V139.73H170.92V186.532H186.467ZM186.467 124.184V77.7234H139.662V124.184H186.467ZM186.467 62.1773V46.6312H139.662V62.1773H186.467ZM186.467 31.0923V15.5461H139.662V31.0923H186.467ZM155.387 186.532V139.73H139.662V186.532H155.387ZM124.122 170.986V139.709H108.767V155.347H93.4111V170.986H124.122ZM124.122 124.184V77.7234H108.767V124.184H124.122ZM124.122 46.5317V15.5461H93.2335V30.9287L93.1411 31.1989H77.6934V62.1773H108.767V46.5388L124.122 46.5317ZM93.2335 155.099V139.73H77.6934V155.099H93.2335ZM93.2335 124.184V77.7234H77.6934V124.184H93.2335ZM62.1533 186.532V139.73H15.5401V186.532H62.1533ZM62.1533 124.184V77.7234H46.6132V124.184H62.1533ZM62.1533 62.1773V31.1989H62.0254V15.5603H46.6132V62.1916L62.1533 62.1773ZM31.0802 124.184V77.7234H15.5401V124.184H31.0802ZM31.0802 62.1773V15.5461H15.5401V62.1773H31.0802Z"
+            fill="#1A1A1A"
+          />
+          <path
+            d="M186.46 139.73H170.92V186.532H186.46V139.73Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M186.46 77.7236H139.662V124.184H186.46V77.7236Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M186.46 46.6309H139.662V62.177H186.46V46.6309Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M186.46 15.5459H139.662V31.092H186.46V15.5459Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M155.38 139.73H139.662V186.532H155.38V139.73Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M124.129 139.73V170.986H93.4111V155.355H108.767V139.73H124.129Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M124.122 77.7236H108.767V124.184H124.122V77.7236Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M124.129 15.5459V46.5315H108.767H108.674V30.9285H93.2264V15.5459H124.129Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M108.766 46.5321V62.1777H77.6934V31.1992H93.134V46.5321H108.674H108.766Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M108.674 30.9287V46.5317H93.134V31.1988L93.2264 30.9287H108.674Z"
+            fill="#1A1A1A"
+          />
+          <path
+            d="M93.2335 139.73H77.6934V155.099H93.2335V139.73Z"
+            fill="#28F77E"
+          />
+          <path
+            d="M93.2335 77.7236H77.6934V124.184H93.2335V77.7236Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M62.1533 139.73V186.532H15.5401V139.73H31.0731H46.6132H62.1533Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M62.1533 77.7236H46.6132V124.184H62.1533V77.7236Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M62.1533 31.1986V62.1771H46.6132V15.5459H62.0467V31.1986H62.1533Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M31.0802 77.7236H15.5401V124.184H31.0802V77.7236Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M31.0802 15.5459H15.5401V62.1771H31.0802V15.5459Z"
+            fill="#FF5353"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_387_1129">
+            <rect width="202" height="202" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    );
+  };
+
+  const getColourLogomarkBlackType = (
+    width: number,
+    styleName?: string
+  ): ReactElement => {
+    return (
+      <svg
+        viewBox="0 0 1069 224"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: `${width}px` }}
+        className={styleName}
+        data-testid="colour-logomark-black-type"
+      >
+        <path
+          d="M930.65 137.881H913.42V155.111H930.65V137.881Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M999.12 68.9894V68.9395H965.13V86.1695H982.36V120.639H947.89V103.409H965.13V86.1695H947.89V103.409H930.66V137.879H938.29H947.89H982.36V155.109H999.6V68.9894H999.12Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M1068.53 86.1695V68.9395H1016.83V86.1695H1034.06V137.879H1016.83V155.109H1068.53V137.879H1051.3V86.1695H1068.53Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M499.8 103.409V86.1695H551.5V68.9395H499.8H482.57V120.639H499.8H551.5V137.879H568.74V103.409H551.5H499.8Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M551.08 137.881H482.57V155.111H551.08V137.881Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M310.22 86.1695H327.46V137.879H310.22V155.109H361.93V137.879H344.69V86.1695H361.93V68.9395H310.22V86.1695Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M568.74 86.1695H603.21V155.109H620.44V86.1695H655.31V68.9395H568.74V86.1695Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M672.35 86.1695H689.48V137.879H672.35V155.109H723.85V137.879H706.71V86.1695H723.85V68.9395H672.35V86.1695Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M758.32 68.9395H741.08V137.879V154.689V155.109H792.78V137.879H758.32V68.9395Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M827.25 68.9395H810.02V137.879V154.689V155.109H861.72V137.879H827.25V68.9395Z"
+          fill="#1A1A1A"
+        />
+        <path
+          d="M396.4 86.1695V68.9395H379.16V86.1695V103.409V155.109H396.4V103.409H413.63V86.1695H396.4Z"
+          fill="#1A1A1A"
+        />
+        <path d="M430.86 103.41H413.63V120.64H430.86V103.41Z" fill="#1A1A1A" />
+        <path
+          d="M448.1 120.639H430.86V137.879H448.1V155.109H465.33V137.879V120.639V68.9395H448.1V120.639Z"
+          fill="#1A1A1A"
+        />
+        <g clipPath="url(#clip0_387_1359)">
+          <path
+            d="M224.008 206.847V224.087H0V0H224.008V206.847ZM206.775 206.847V154.948H189.535V206.847H206.775ZM206.775 137.709V86.1884H154.873V137.709H206.775ZM206.775 68.9491V51.7099H154.873V68.9491H206.775ZM206.775 34.4785V17.2393H154.873V34.4785H206.775ZM172.31 206.847V154.948H154.873V206.847H172.31ZM137.64 189.608V154.925H120.612V172.266H103.585V189.608H137.64ZM137.64 137.709V86.1884H120.612V137.709H137.64ZM137.64 51.5995V17.2393H103.388V34.2972L103.285 34.5967H86.155V68.9491H120.612V51.6074L137.64 51.5995ZM103.388 171.99V154.948H86.155V171.99H103.388ZM103.388 137.709V86.1884H86.155V137.709H103.388ZM68.9224 206.847V154.948H17.2326V206.847H68.9224ZM68.9224 137.709V86.1884H51.6899V137.709H68.9224ZM68.9224 68.9491V34.5967H68.7806V17.255H51.6899V68.9649L68.9224 68.9491ZM34.4652 137.709V86.1884H17.2326V137.709H34.4652ZM34.4652 68.9491V17.2393H17.2326V68.9491H34.4652Z"
+            fill="#1A1A1A"
+          />
+          <path
+            d="M206.767 154.949H189.535V206.848H206.767V154.949Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M206.767 86.1875H154.873V137.708H206.767V86.1875Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M206.767 51.709H154.873V68.9482H206.767V51.709Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M206.767 17.2383H154.873V34.4775H206.767V17.2383Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M172.302 154.949H154.873V206.848H172.302V154.949Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M137.648 154.949V189.609H103.585V172.275H120.612V154.949H137.648Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M137.64 86.1875H120.612V137.708H137.64V86.1875Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M137.648 17.2383V51.5985H120.612H120.51V34.2962H103.38V17.2383H137.648Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M120.612 51.6004V68.95H86.1551V34.5977H103.277V51.6004H120.51H120.612Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M120.51 34.2969V51.5992H103.277V34.5964L103.38 34.2969H120.51Z"
+            fill="#1A1A1A"
+          />
+          <path
+            d="M103.388 154.949H86.1551V171.991H103.388V154.949Z"
+            fill="#28F77E"
+          />
+          <path
+            d="M103.388 86.1875H86.1551V137.708H103.388V86.1875Z"
+            fill="#FF5353"
+          />
+          <path
+            d="M68.9225 154.949V206.848H17.2326V154.949H34.4573H51.6899H68.9225Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M68.9225 86.1875H51.6899V137.708H68.9225V86.1875Z"
+            fill="#40A8F5"
+          />
+          <path
+            d="M68.9225 34.5958V68.9481H51.6899V17.2383H68.8043V34.5958H68.9225Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M34.4652 86.1875H17.2326V137.708H34.4652V86.1875Z"
+            fill="#FFDF3A"
+          />
+          <path
+            d="M34.4652 17.2383H17.2326V68.9481H34.4652V17.2383Z"
+            fill="#FF5353"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_387_1359">
+            <rect width="224" height="224" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    );
+  };
+
+  const getColourLogomarkWhiteType = (
     width: number,
     styleName?: string
   ): ReactElement => {
@@ -298,6 +568,7 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
         style={{ width: `${width}px` }}
         className={styleName}
         xmlns="http://www.w3.org/2000/svg"
+        data-testid="colour-logomark-white-type"
       >
         <path
           d="M930.65 137.883H913.42V155.113H930.65V137.883Z"
@@ -439,290 +710,69 @@ export const Logo: FC<LogoProps> = ({ styleName, type, width }) => {
     );
   };
 
-  const getColourLogomark = (
-    width: number,
-    styleName?: string
-  ): ReactElement => {
-    return (
-      <svg
-        viewBox="0 0 202 202"
-        style={{ width: `${width}px` }}
-        className={styleName}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g clipPath="url(#clip0_387_1129)">
-          <path
-            d="M202.007 186.532V202.078H1.52588e-05V0H202.007V186.532ZM186.467 186.532V139.73H170.92V186.532H186.467ZM186.467 124.184V77.7234H139.662V124.184H186.467ZM186.467 62.1773V46.6312H139.662V62.1773H186.467ZM186.467 31.0923V15.5461H139.662V31.0923H186.467ZM155.387 186.532V139.73H139.662V186.532H155.387ZM124.122 170.986V139.709H108.767V155.347H93.4111V170.986H124.122ZM124.122 124.184V77.7234H108.767V124.184H124.122ZM124.122 46.5317V15.5461H93.2335V30.9287L93.1411 31.1989H77.6934V62.1773H108.767V46.5388L124.122 46.5317ZM93.2335 155.099V139.73H77.6934V155.099H93.2335ZM93.2335 124.184V77.7234H77.6934V124.184H93.2335ZM62.1533 186.532V139.73H15.5401V186.532H62.1533ZM62.1533 124.184V77.7234H46.6132V124.184H62.1533ZM62.1533 62.1773V31.1989H62.0254V15.5603H46.6132V62.1916L62.1533 62.1773ZM31.0802 124.184V77.7234H15.5401V124.184H31.0802ZM31.0802 62.1773V15.5461H15.5401V62.1773H31.0802Z"
-            fill="#1A1A1A"
-          />
-          <path
-            d="M186.46 139.73H170.92V186.532H186.46V139.73Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M186.46 77.7236H139.662V124.184H186.46V77.7236Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M186.46 46.6309H139.662V62.177H186.46V46.6309Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M186.46 15.5459H139.662V31.092H186.46V15.5459Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M155.38 139.73H139.662V186.532H155.38V139.73Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M124.129 139.73V170.986H93.4111V155.355H108.767V139.73H124.129Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M124.122 77.7236H108.767V124.184H124.122V77.7236Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M124.129 15.5459V46.5315H108.767H108.674V30.9285H93.2264V15.5459H124.129Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M108.766 46.5321V62.1777H77.6934V31.1992H93.134V46.5321H108.674H108.766Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M108.674 30.9287V46.5317H93.134V31.1988L93.2264 30.9287H108.674Z"
-            fill="#1A1A1A"
-          />
-          <path
-            d="M93.2335 139.73H77.6934V155.099H93.2335V139.73Z"
-            fill="#28F77E"
-          />
-          <path
-            d="M93.2335 77.7236H77.6934V124.184H93.2335V77.7236Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M62.1533 139.73V186.532H15.5401V139.73H31.0731H46.6132H62.1533Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M62.1533 77.7236H46.6132V124.184H62.1533V77.7236Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M62.1533 31.1986V62.1771H46.6132V15.5459H62.0467V31.1986H62.1533Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M31.0802 77.7236H15.5401V124.184H31.0802V77.7236Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M31.0802 15.5459H15.5401V62.1771H31.0802V15.5459Z"
-            fill="#FF5353"
-          />
-        </g>
-        <defs>
-          <clipPath id="clip0_387_1129">
-            <rect width="202" height="202" fill="white" />
-          </clipPath>
-        </defs>
-      </svg>
-    );
-  };
-
-  const getColourLogoWithBlackType = (
-    width: number,
-    styleName?: string
-  ): ReactElement => {
-    return (
-      <svg
-        viewBox="0 0 1069 224"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ width: `${width}px` }}
-        className={styleName}
-      >
-        <path
-          d="M930.65 137.881H913.42V155.111H930.65V137.881Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M999.12 68.9894V68.9395H965.13V86.1695H982.36V120.639H947.89V103.409H965.13V86.1695H947.89V103.409H930.66V137.879H938.29H947.89H982.36V155.109H999.6V68.9894H999.12Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M1068.53 86.1695V68.9395H1016.83V86.1695H1034.06V137.879H1016.83V155.109H1068.53V137.879H1051.3V86.1695H1068.53Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M499.8 103.409V86.1695H551.5V68.9395H499.8H482.57V120.639H499.8H551.5V137.879H568.74V103.409H551.5H499.8Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M551.08 137.881H482.57V155.111H551.08V137.881Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M310.22 86.1695H327.46V137.879H310.22V155.109H361.93V137.879H344.69V86.1695H361.93V68.9395H310.22V86.1695Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M568.74 86.1695H603.21V155.109H620.44V86.1695H655.31V68.9395H568.74V86.1695Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M672.35 86.1695H689.48V137.879H672.35V155.109H723.85V137.879H706.71V86.1695H723.85V68.9395H672.35V86.1695Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M758.32 68.9395H741.08V137.879V154.689V155.109H792.78V137.879H758.32V68.9395Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M827.25 68.9395H810.02V137.879V154.689V155.109H861.72V137.879H827.25V68.9395Z"
-          fill="#1A1A1A"
-        />
-        <path
-          d="M396.4 86.1695V68.9395H379.16V86.1695V103.409V155.109H396.4V103.409H413.63V86.1695H396.4Z"
-          fill="#1A1A1A"
-        />
-        <path d="M430.86 103.41H413.63V120.64H430.86V103.41Z" fill="#1A1A1A" />
-        <path
-          d="M448.1 120.639H430.86V137.879H448.1V155.109H465.33V137.879V120.639V68.9395H448.1V120.639Z"
-          fill="#1A1A1A"
-        />
-        <g clipPath="url(#clip0_387_1359)">
-          <path
-            d="M224.008 206.847V224.087H0V0H224.008V206.847ZM206.775 206.847V154.948H189.535V206.847H206.775ZM206.775 137.709V86.1884H154.873V137.709H206.775ZM206.775 68.9491V51.7099H154.873V68.9491H206.775ZM206.775 34.4785V17.2393H154.873V34.4785H206.775ZM172.31 206.847V154.948H154.873V206.847H172.31ZM137.64 189.608V154.925H120.612V172.266H103.585V189.608H137.64ZM137.64 137.709V86.1884H120.612V137.709H137.64ZM137.64 51.5995V17.2393H103.388V34.2972L103.285 34.5967H86.155V68.9491H120.612V51.6074L137.64 51.5995ZM103.388 171.99V154.948H86.155V171.99H103.388ZM103.388 137.709V86.1884H86.155V137.709H103.388ZM68.9224 206.847V154.948H17.2326V206.847H68.9224ZM68.9224 137.709V86.1884H51.6899V137.709H68.9224ZM68.9224 68.9491V34.5967H68.7806V17.255H51.6899V68.9649L68.9224 68.9491ZM34.4652 137.709V86.1884H17.2326V137.709H34.4652ZM34.4652 68.9491V17.2393H17.2326V68.9491H34.4652Z"
-            fill="#1A1A1A"
-          />
-          <path
-            d="M206.767 154.949H189.535V206.848H206.767V154.949Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M206.767 86.1875H154.873V137.708H206.767V86.1875Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M206.767 51.709H154.873V68.9482H206.767V51.709Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M206.767 17.2383H154.873V34.4775H206.767V17.2383Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M172.302 154.949H154.873V206.848H172.302V154.949Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M137.648 154.949V189.609H103.585V172.275H120.612V154.949H137.648Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M137.64 86.1875H120.612V137.708H137.64V86.1875Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M137.648 17.2383V51.5985H120.612H120.51V34.2962H103.38V17.2383H137.648Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M120.612 51.6004V68.95H86.1551V34.5977H103.277V51.6004H120.51H120.612Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M120.51 34.2969V51.5992H103.277V34.5964L103.38 34.2969H120.51Z"
-            fill="#1A1A1A"
-          />
-          <path
-            d="M103.388 154.949H86.1551V171.991H103.388V154.949Z"
-            fill="#28F77E"
-          />
-          <path
-            d="M103.388 86.1875H86.1551V137.708H103.388V86.1875Z"
-            fill="#FF5353"
-          />
-          <path
-            d="M68.9225 154.949V206.848H17.2326V154.949H34.4573H51.6899H68.9225Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M68.9225 86.1875H51.6899V137.708H68.9225V86.1875Z"
-            fill="#40A8F5"
-          />
-          <path
-            d="M68.9225 34.5958V68.9481H51.6899V17.2383H68.8043V34.5958H68.9225Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M34.4652 86.1875H17.2326V137.708H34.4652V86.1875Z"
-            fill="#FFDF3A"
-          />
-          <path
-            d="M34.4652 17.2383H17.2326V68.9481H34.4652V17.2383Z"
-            fill="#FF5353"
-          />
-        </g>
-        <defs>
-          <clipPath id="clip0_387_1359">
-            <rect width="224" height="224" fill="white" />
-          </clipPath>
-        </defs>
-      </svg>
-    );
-  };
-
   switch (type) {
-    case "responsiveWhite": {
+    case "responsiveWhiteLogomarkWhiteType": {
       logo = (
         <div className="flex flex-col">
           {getWhiteLogomark(width / 5, "block md:hidden")}
-          {getWhiteCombinationLogo(width, "hidden md:block")}
+          {getWhiteLogomarkWhiteType(width, "hidden md:block")}
         </div>
       );
       break;
     }
-    case "responsiveColour": {
+    case "whiteLogomarkWhiteType": {
+      logo = <>{getWhiteLogomarkWhiteType(width)}</>;
+      break;
+    }
+    case "responsiveColourLogomarkWhiteType": {
       logo = (
         <div className="flex flex-col">
           {getColourLogomark(width / 5, "block md:hidden")}
-          {getColourLogoWithWhiteType(width, "hidden md:block")}
+          {getColourLogomarkWhiteType(width, "hidden md:block")}
         </div>
       );
       break;
     }
-    case "logoOnlyWhite": {
+    case "ColourLogomarkWhiteType": {
+      logo = <>{getColourLogomarkWhiteType(width)}</>;
+      break;
+    }
+    case "responsiveColourLogomarkBlackType": {
+      logo = (
+        <div className="flex flex-col">
+          {getColourLogomark(width / 5, "block md:hidden")}
+          {getColourLogomarkBlackType(width, "hidden md:block")}
+        </div>
+      );
+      break;
+    }
+    case "responsiveBlackLogomarkBlackType": {
+      logo = (
+        <div className="flex flex-col">
+          {getBlackLogomark(width / 5, "block md:hidden")}
+          {getBlackLogomarkBlackType(width, "hidden md:block")}
+        </div>
+      );
+      break;
+    }
+    case "blackLogomarkBlackType": {
+      logo = <>{getBlackLogomarkBlackType(width)}</>;
+      break;
+    }
+    case "ColourLogomarkBlackType": {
+      logo = <>{getColourLogomarkBlackType(width)}</>;
+      break;
+    }
+    case "whiteLogomark": {
       logo = <>{getWhiteLogomark(width)}</>;
       break;
     }
-    case "fullWhite": {
-      logo = <>{getWhiteCombinationLogo(width)}</>;
-      break;
-    }
-    case "logoOnlyblue": {
+    case "blueLogomark": {
       logo = <>{getBlueLogomark(width)}</>;
       break;
     }
-    case "fullBlack": {
-      logo = <>{getBlackCombinationLogo(width)}</>;
-      break;
-    }
-    case "logoOnlyColour": {
+    case "colourLogomark": {
       logo = <>{getColourLogomark(width)}</>;
-      break;
-    }
-    case "ColourLogoWhiteType": {
-      logo = <>{getColourLogoWithWhiteType(width)}</>;
-      break;
-    }
-    case "ColourLogoBlackType": {
-      logo = <>{getColourLogoWithBlackType(width)}</>;
       break;
     }
   }
