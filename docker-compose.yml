@@ -1,1 +1,198 @@
 version: "3.9"
+
+networks:
+  default:
+    name: instill-network
+
+volumes:
+  conda_pack:
+    name: conda-pack
+  model_repository:
+    name: model-repository
+  pg_sql:
+    name: pg-sql
+
+services:
+  vdp:
+    container_name: vdp
+    build:
+      context: .
+    image: instill/vdp:dev
+    restart: unless-stopped
+    volumes:
+      - ./configs:/vdp/configs
+    depends_on:
+      - temporal
+
+  model_backend_migrate:
+    container_name: model-backend-migrate
+    image: instill/model-backend:v0.3.2-alpha
+    restart: on-failure
+    environment:
+      CFG_DATABASE_USERNAME: postgres
+      CFG_DATABASE_PASSWORD: password
+      CFG_DATABASE_HOST: pg_sql
+      CFG_DATABASE_PORT: 5432
+    entrypoint: ./model-backend-migrate
+    depends_on:
+      pg_sql:
+        condition: service_healthy
+
+  model_backend:
+    container_name: model-backend
+    image: instill/model-backend:v0.3.2-alpha
+    restart: unless-stopped
+    environment:
+      CFG_DATABASE_USERNAME: postgres
+      CFG_DATABASE_PASSWORD: password
+      CFG_DATABASE_HOST: pg_sql
+      CFG_DATABASE_PORT: 5432
+      CFG_SERVER_PORT: 8445
+      CFG_TRITONSERVER_GRPCURI: triton-server:8001
+      CFG_TRITONSERVER_MODELSTORE: /model-repository
+    ports:
+      - 8445:8445
+    volumes:
+      - model_repository:/model-repository
+    depends_on:
+      triton_server:
+        condition: service_healthy
+
+  pipeline_backend_migrate:
+    container_name: pipeline-backend-migrate
+    image: instill/pipeline-backend:v0.3.1-alpha
+    restart: on-failure
+    environment:
+      CFG_DATABASE_USERNAME: postgres
+      CFG_DATABASE_PASSWORD: password
+      CFG_DATABASE_HOST: pg_sql
+      CFG_DATABASE_PORT: 5432
+    volumes:
+      - ./backends/pipeline-backend/config:/pipeline-backend/configs
+    entrypoint: ./pipeline-backend-migrate
+    depends_on:
+      pg_sql:
+        condition: service_healthy
+
+  pipeline_backend:
+    container_name: pipeline-backend
+    image: instill/pipeline-backend:v0.3.1-alpha
+    restart: unless-stopped
+    environment:
+      CFG_SERVER_PORT: 8446
+      CFG_DATABASE_USERNAME: postgres
+      CFG_DATABASE_PASSWORD: password
+      CFG_DATABASE_HOST: pg_sql
+      CFG_DATABASE_PORT: 5432
+    ports:
+      - 8446:8446
+    volumes:
+      - ./backends/pipeline-backend/config:/pipeline-backend/configs
+    depends_on:
+      - pipeline_backend_migrate
+      - temporal
+      - redis
+
+  triton_conda_env:
+    container_name: triton-conda-env
+    image: instill/triton-conda-env:v0.2.1-alpha-cpu
+    volumes:
+      - conda_pack:/conda-pack
+
+  triton_server:
+    container_name: triton-server
+    image: nvcr.io/nvidia/tritonserver:${TRITONSERVER_VERSION}
+    restart: unless-stopped
+    command: tritonserver --model-store=/model-repository --model-control-mode=explicit --allow-http=true --strict-model-config=false
+    ports:
+      - 8001:8001
+    volumes:
+      - model_repository:/model-repository
+      - conda_pack:/conda-pack
+    healthcheck:
+      test: ["CMD-SHELL", "curl localhost:8000/v2/health/ready"]
+      timeout: 20s
+      retries: 10
+    shm_size: 2gb
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    depends_on:
+      - triton_conda_env
+
+  pg_sql:
+    container_name: pg-sql
+    image: bitnami/postgresql:14.1.0
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_sql:/bitnami/postgresql
+      - ./scripts/postgresql_healthcheck.sh:/scripts/postgresql_healthcheck.sh
+    healthcheck:
+      test: ["CMD", "/scripts/postgresql_healthcheck.sh"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+
+  temporal:
+    container_name: temporal
+    image: temporalio/auto-setup:1.15.0
+    restart: unless-stopped
+    environment:
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PWD=password
+      - POSTGRES_SEEDS=pg_sql
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
+    ports:
+      - 7233:7233
+    volumes:
+      - ./backends/temporal/dynamicconfig:/etc/temporal/config/dynamicconfig
+    depends_on:
+      pg_sql:
+        condition: service_healthy
+
+  temporal_admin_tools:
+    container_name: temporal-admin-tools
+    image: temporalio/admin-tools:1.15.0
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+    stdin_open: true
+    tty: true
+    depends_on:
+      - temporal
+
+  temporal_web:
+    container_name: temporal-web
+    image: temporalio/web:1.13.0
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+      - TEMPORAL_PERMIT_WRITE_API=true
+    ports:
+      - 8088:8088
+    depends_on:
+      - temporal
+
+  redis:
+    container_name: redis
+    image: bitnami/redis:6.2.6-debian-10-r34
+    restart: unless-stopped
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+
+  redoc_openapi:
+    container_name: redoc-openapi
+    image: volbrene/redoc:1.2.0
+    environment:
+      - "URLS=[{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/pipeline/v1alpha/pipeline.swagger.json', name: 'Pipeline'},{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/model/v1alpha/model.swagger.json', name: 'Model'}]"
+      - PAGE_TITLE=Instill AI - API Reference
+    ports:
+      - 3000:80
