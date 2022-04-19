@@ -1,4 +1,4 @@
-import "../../src/styles/global.css"
+import "../src/styles/global.css";
 import * as NextImage from "next/image";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
@@ -17,7 +17,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
-	// To solve router.isReady is not defined issue
+  // To solve router.isReady is not defined issue
   nextRouter: {
     isReady: true,
     Provider: RouterContext.Provider,
