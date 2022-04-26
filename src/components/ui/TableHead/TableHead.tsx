@@ -1,7 +1,7 @@
-import { FC, ReactNode } from "react";
-import { Item } from "./Table";
+import { FC } from "react";
+import { Item } from "../Tables";
 
-type TableHeadProps = {
+export type TableHeadProps = {
   items: Item[];
 };
 
