@@ -1540,10 +1540,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@instill-ai/design-system@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@instill-ai/design-system/-/design-system-0.0.12.tgz#5919c7a1b0aebf912940490f128981c26afe66eb"
-  integrity sha512-ZocmUsOvkBXOEzGtEUW84vWmQ+JHSASMdBtwrfOJLYyvVb0na1AA3asXl3x17JOV5jC2QkOJk3S48peK/dPWPQ==
+"@instill-ai/design-system@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@instill-ai/design-system/-/design-system-0.0.15.tgz#76fee31a860e0365f6481529643c5afe1ae3b2a1"
+  integrity sha512-OB1TlQbo02xflgU6iNy4jPP8EtzY4VyEd+n70KqbEDfyfXoU4Wc1K0UHKDI+ljlThQ31hzAGoQY86AqyfVBgcw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
