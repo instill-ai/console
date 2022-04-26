@@ -24,7 +24,7 @@
     @apply font-sans font-normal text-base leading-[28px];
   }
   .instill-text-body {
-    @apply font-sans font-normal text-sm leading-[24px] sm:text-base sm:leading-[28px];
+    @apply font-sans font-normal text-sm leading-[18px];
   }
   .instill-text-small {
     @apply font-mono font-normal text-xs;
