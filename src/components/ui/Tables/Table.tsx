@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import TableHead from "./TableHead";
+import { TableHead } from "../TableHead";
 import TableRow from "./TableRow";
 import cn from "clsx";
 
