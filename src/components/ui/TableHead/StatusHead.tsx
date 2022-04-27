@@ -1,9 +1,5 @@
-import {
-  StatusErrorIcon,
-  StatusOffIcon,
-  StatusOnIcon,
-} from "@instill-ai/design-system";
 import { FC, ReactNode } from "react";
+import StatusIndicator from "../StatusIndicator";
 
 export type StatusHeadProps = {
   errorCounts: number;
@@ -29,19 +25,34 @@ const StatusHead: FC<StatusHeadProps> = ({
     <div className="flex flex-row">
       {onCounts
         ? getStatusItem(
-            <StatusOnIcon width="w-3" height="h-3" position="my-auto" />,
+            <StatusIndicator
+              status="on"
+              width="w-3"
+              height="h-3"
+              position="my-auto"
+            />,
             onCounts
           )
         : null}
       {errorCounts
         ? getStatusItem(
-            <StatusErrorIcon width="w-3" height="h-3" position="my-auto" />,
+            <StatusIndicator
+              status="error"
+              width="w-3"
+              height="h-3"
+              position="my-auto"
+            />,
             errorCounts
           )
         : null}
       {offCounts
         ? getStatusItem(
-            <StatusOffIcon width="w-3" height="h-3" position="my-auto" />,
+            <StatusIndicator
+              status="off"
+              width="w-3"
+              height="h-3"
+              position="my-auto"
+            />,
             offCounts
           )
         : null}
