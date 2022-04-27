@@ -1,4 +1,4 @@
-import { Sidebar } from "components/ui/commons";
+import { Sidebar } from "components/ui";
 import { FC, ReactNode } from "react";
 
 export interface PageBaseProps {
