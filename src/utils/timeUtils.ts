@@ -3,10 +3,17 @@
  */
 export const getHumanReadableStringFromTime = (
   prevTime: string,
-  nextTime: string
+  nextTime: string | number
 ) => {
   const prev = Date.parse(prevTime) / 1000;
-  const next = Date.parse(nextTime) / 1000;
+
+  let next: number;
+
+  if (typeof nextTime === "number") {
+    next = nextTime;
+  } else {
+    next = Date.parse(nextTime) / 1000;
+  }
 
   if (prev > next) {
     throw new Error(
@@ -62,12 +69,6 @@ export const getHumanReadableStringFromTime = (
 
   if (months < 12) {
     return `${months} months ago`;
-  }
-
-  const years = Math.floor(seconds / 31536000);
-
-  if (months >= 1 && months < 2) {
-    return "last ago";
   }
 
   return new Date(prevTime).toDateString();
