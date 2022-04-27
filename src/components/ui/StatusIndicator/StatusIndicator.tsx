@@ -24,17 +24,32 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
   switch (status) {
     case "error":
       statusIcon = (
-        <StatusErrorIcon width={width} height={height} position={position} />
+        <StatusErrorIcon
+          color="fill-instillRed"
+          width={width}
+          height={height}
+          position={position}
+        />
       );
       break;
     case "on":
       statusIcon = (
-        <StatusOnIcon width={width} height={height} position={position} />
+        <StatusOnIcon
+          color="fill-instillGreen"
+          width={width}
+          height={height}
+          position={position}
+        />
       );
       break;
     case "off":
       statusIcon = (
-        <StatusOffIcon width={width} height={height} position={position} />
+        <StatusOffIcon
+          color="fill-instillGrey50"
+          width={width}
+          height={height}
+          position={position}
+        />
       );
       break;
   }
