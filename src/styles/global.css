@@ -24,7 +24,19 @@
     @apply font-mono text-xs font-normal leading-[15.6px];
   }
   .instill-input-highlight {
-    @apply border-instillGray70 border focus:border-instillBlue focus:outline-none focus:ring-0 focus:ring-white;
+    @apply focus:border-instillBlue50 focus:outline-none focus:ring-0 focus:ring-white;
+  }
+
+  .instill-input-highlight:focus {
+    box-shadow: 0px 0px 0px 3px rgba(64, 168, 245, 0.2);
+  }
+
+  .instill-input-focus-shadow {
+    box-shadow: 0px 0px 0px 3px rgba(64, 168, 245, 0.2);
+  }
+
+  .instill-input-no-highlight {
+    @apply focus:outline-none focus:ring-0 focus:ring-opacity-0;
   }
 }
 
