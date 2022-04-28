@@ -10,7 +10,7 @@ import { FormField } from "../FormData";
 
 export type FormBaseProps = {
   onInputChangeHandler: (id: string, inputValue: any) => void;
-  onSubmitHandler: () => void;
+  onSubmitHandler: (event: any) => void;
   fields: FormField[];
 };
 
@@ -20,7 +20,7 @@ const FormBase: FC<FormBaseProps> = ({
   onInputChangeHandler,
 }) => {
   return (
-    <form onSubmit={onSubmitHandler}>
+    <form className="flex flex-col gap-y-10" onSubmit={onSubmitHandler}>
       {fields.map((field) => {
         if (field.component === "text") {
           return (
