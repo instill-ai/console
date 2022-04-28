@@ -10,7 +10,9 @@ const PageBase: FC<PageBaseProps> = ({ children }) => {
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1 flex-row">
         <Sidebar />
-        <div className="flex flex-1 flex-col overflow-scroll">{children}</div>
+        <div className="flex flex-1 flex-col overflow-scroll bg-instillGrey05">
+          {children}
+        </div>
       </div>
     </div>
   );
