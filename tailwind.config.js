@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@instill-ai/design-system/build/*.js",
   ],
   theme: {
     extend: {
@@ -19,17 +20,17 @@ module.exports = {
         instill_light_blue: "#F4FBFF",
         instill_light_yellow: "#FFFCEB",
         instillGrey95: "#1A1A1A",
-        instillGrey90: "#2B2B2B",
         instillGrey80: "#5c5c5c",
         instillGrey70: "#8C8A8A",
         instillGrey50: "#A5A5A5",
         instillGrey30: "#C0C0C0",
+        instillGrey20: "#E4E4E4",
         instillGrey15: "#E8E8E8",
         instillGrey05: "#F6F6F6",
         instillBlue: "#0000FF",
         instillBlue85: "#002050",
         instillBlue70: "#003381",
-        instillBlue30: "#40A8F5",
+        instillBlue50: "#40A8F5",
         instillBlue10: "#F4FBFF",
         instillYellow: "#FFDF3A",
         instillYellow10: "#FFFCEB",
