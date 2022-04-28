@@ -26,7 +26,7 @@
     "prettier:check": "prettier --check"
   },
   "dependencies": {
-    "@instill-ai/design-system": "^0.0.16",
+    "@instill-ai/design-system": "^0.0.17",
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
     "next": "^12.1.0",
