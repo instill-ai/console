@@ -4,7 +4,7 @@ export type FormField = {
   id: string;
   component: "text" | "textarea" | "select" | "toggle";
   type?: "email" | "password" | "text";
-  label: string;
+  title: string;
   description?: string;
   required: boolean;
   disabled: boolean;
@@ -15,4 +15,5 @@ export type FormField = {
   enableCounter?: boolean;
   counterWordLimit?: number;
   default?: string | AutoCompleteWithIconOption;
+  order: number;
 };
