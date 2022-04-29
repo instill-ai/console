@@ -5,19 +5,23 @@ import {
   BasicTextField,
   BasicToggleField,
 } from "@instill-ai/design-system";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { FormField } from "../FormData";
 
 export type FormBaseProps = {
   onInputChangeHandler: (id: string, inputValue: any) => void;
   onSubmitHandler: (event: any) => void;
   fields: FormField[];
+  error: Record<string, string>;
+  submitButton: ReactNode;
 };
 
 const FormBase: FC<FormBaseProps> = ({
   onSubmitHandler,
   fields,
+  error,
   onInputChangeHandler,
+  submitButton,
 }) => {
   return (
     <form className="flex flex-col gap-y-10" onSubmit={onSubmitHandler}>
@@ -25,10 +29,11 @@ const FormBase: FC<FormBaseProps> = ({
         if (field.component === "text") {
           return (
             <BasicTextField
+              key={field.id}
               id={field.id}
-              error=""
+              error={error[field.id]}
               description={field.description}
-              label={field.label}
+              label={field.title}
               type={field.type as string}
               disabled={field.disabled}
               readOnly={field.readonly}
@@ -43,10 +48,11 @@ const FormBase: FC<FormBaseProps> = ({
         if (field.component === "textarea") {
           return (
             <BasicTextArea
+              key={field.id}
               id={field.id}
-              error=""
+              error={error[field.id]}
               description={field.description}
-              label={field.label}
+              label={field.title}
               disabled={field.disabled}
               readOnly={field.readonly}
               placeholder={field.placeholder}
@@ -65,10 +71,11 @@ const FormBase: FC<FormBaseProps> = ({
         if (field.component === "select") {
           return (
             <BasicAutoCompleteWithIcon
+              key={field.id}
               id={field.id}
-              error=""
+              error={error[field.id]}
               description={field.description}
-              label={field.label}
+              label={field.title}
               disabled={field.disabled}
               readOnly={field.readonly}
               required={field.required}
@@ -84,10 +91,11 @@ const FormBase: FC<FormBaseProps> = ({
         if (field.component === "toggle") {
           return (
             <BasicToggleField
+              key={field.id}
               id={field.id}
-              error=""
+              error={error[field.id]}
               description={field.description}
-              label={field.label}
+              label={field.title}
               disabled={field.disabled}
               readOnly={field.readonly}
               required={field.required}
@@ -97,6 +105,7 @@ const FormBase: FC<FormBaseProps> = ({
           );
         }
       })}
+      {submitButton}
     </form>
   );
 };
