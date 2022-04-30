@@ -1,14 +1,14 @@
 import { FC } from "react";
 
-export type BreadcrumProps = {
-  breadcurms: string[];
+export type BreadcrumbProps = {
+  breadcrumbs: string[];
 };
 
-const Breadcrum: FC<BreadcrumProps> = ({ breadcurms }) => {
+const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
   return (
     <div className="flex flex-row">
-      {breadcurms.map((e, index) => {
-        if (index === breadcurms.length - 1) {
+      {breadcrumbs.map((e, index) => {
+        if (index === breadcrumbs.length - 1) {
           return (
             <span
               key={e}
@@ -27,4 +27,4 @@ const Breadcrum: FC<BreadcrumProps> = ({ breadcurms }) => {
   );
 };
 
-export default Breadcrum;
+export default Breadcrumb;
