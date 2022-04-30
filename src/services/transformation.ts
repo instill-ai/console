@@ -11,7 +11,9 @@ type Schema = {
   properties: Record<string, any>;
 };
 
-export const transformSchemaToFormFields = (schema: Schema): FormField[] => {
+export const transformSchemaToFormFields = (
+  schema: Schema
+): { fields: FormField[]; requiredFields: string[] } => {
   const formFields: FormField[] = [];
 
   for (const [fieldName, fieldConfig] of Object.entries(schema.properties)) {
@@ -21,6 +23,7 @@ export const transformSchemaToFormFields = (schema: Schema): FormField[] => {
       continue;
     }
 
+    formField.id = fieldName;
     formField.description = fieldConfig.description ?? null;
     formField.title = fieldConfig.title ?? null;
     formField.type = fieldConfig.type ?? null;
@@ -46,5 +49,5 @@ export const transformSchemaToFormFields = (schema: Schema): FormField[] => {
     formFields.push(formField);
   }
 
-  return formFields;
+  return { fields: formFields, requiredFields: schema.required };
 };
