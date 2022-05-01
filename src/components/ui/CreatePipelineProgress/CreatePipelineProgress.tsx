@@ -4,7 +4,7 @@ import { FC, useMemo, useRef } from "react";
 import ProgressStep from "./ProgressStep";
 
 export type CreatePipelineProgressProps = {
-  currentProgress: 0 | 1 | 2 | 3;
+  currentProgress: number;
 };
 
 const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
