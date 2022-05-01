@@ -26,15 +26,16 @@
     "prettier:check": "prettier --check"
   },
   "dependencies": {
-    "@instill-ai/design-system": "^0.0.25",
+    "@instill-ai/design-system": "^0.0.28",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
+    "formik": "^2.2.9",
     "next": "^12.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.38.0",
-    "react-select": "^5.3.0",
+    "react-select": "^5.3.1",
     "yaml": "^2.0.1"
   },
   "devDependencies": {
