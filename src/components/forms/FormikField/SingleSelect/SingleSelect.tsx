@@ -1,14 +1,13 @@
 import { FC } from "react";
-import { FieldProps } from "formik";
+import { Field, FieldProps } from "formik";
 import {
   BasicSingleSelect,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
-export type SingleSelectProps = FieldProps & {
-  id: string;
+export type SingleSelectProps = {
+  name: string;
   options: SingleSelectOption[];
-  error: string;
   disabled: boolean;
   readOnly: boolean;
   required: boolean;
@@ -16,17 +15,12 @@ export type SingleSelectProps = FieldProps & {
   label: string;
 };
 
-const SingleSelect: FC<SingleSelectProps> = ({
-  id,
+const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   field,
   form,
   options,
-  error,
-  disabled,
-  readOnly,
-  required,
-  description,
-  label,
+  name,
+  ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
     form.setFieldValue(field.name, option.value);
@@ -34,17 +28,36 @@ const SingleSelect: FC<SingleSelectProps> = ({
 
   return (
     <BasicSingleSelect
-      id={id}
-      error={error}
-      label={label}
+      {...props}
+      id={name}
+      error={form.errors[field.name] as string}
       options={options}
-      disabled={disabled}
-      readOnly={readOnly}
-      required={required}
-      description={description}
       onChangeInput={onChange}
     />
   );
 };
 
-export default SingleSelect;
+const FormikWrapper: FC<SingleSelectProps> = ({
+  name,
+  options,
+  disabled,
+  readOnly,
+  required,
+  description,
+  label,
+}) => {
+  return (
+    <Field
+      name={name}
+      component={SingleSelect}
+      options={options}
+      disabled={disabled}
+      readOnly={readOnly}
+      required={required}
+      description={description}
+      label={label}
+    />
+  );
+};
+
+export default FormikWrapper;
