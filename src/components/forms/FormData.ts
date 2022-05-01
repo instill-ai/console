@@ -1,6 +1,7 @@
-import { AutoCompleteWithIconOption } from "@instill-ai/design-system";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
-export type FormField = {
+export type IndependentFormField = {
+  kind: "independent" | "dependent";
   id: string;
   component: "text" | "textarea" | "select" | "toggle";
   type?: "email" | "password" | "text";
@@ -11,9 +12,22 @@ export type FormField = {
   readonly: boolean;
   placeholder: string;
   pattern?: string;
-  options?: AutoCompleteWithIconOption[];
+  options?: SingleSelectOption[];
   enableCounter?: boolean;
   counterWordLimit?: number;
-  default?: string | AutoCompleteWithIconOption;
+  default?: string | SingleSelectOption;
   order: number;
+};
+
+export type DependentFormField = IndependentFormField & {
+  dependOnId: string;
+  renderCb: (dependOnFieldAnswer: any) => any;
+};
+
+export type FormField = DependentFormField | IndependentFormField;
+
+export const isDependentField = (
+  field: FormField
+): field is DependentFormField => {
+  return field && field.kind === "dependent";
 };
