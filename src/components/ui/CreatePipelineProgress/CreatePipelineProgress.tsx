@@ -4,7 +4,7 @@ import { FC, useMemo, useRef } from "react";
 import ProgressStep from "./ProgressStep";
 
 export type CreatePipelineProgressProps = {
-  currentProgress: "dataSoruce" | "model" | "dataDestination" | "pipeline";
+  currentProgress: 0 | 1 | 2 | 3;
 };
 
 const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
@@ -80,23 +80,23 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
           stepNum={1}
           stepName="Date source"
           ref={firstStepCubeRef}
-          isCurrent={currentProgress === "dataSoruce" ? true : false}
+          isCurrent={currentProgress === 0 ? true : false}
         />
         <ProgressStep
           stepNum={2}
           stepName="Model"
-          isCurrent={currentProgress === "model" ? true : false}
+          isCurrent={currentProgress === 1 ? true : false}
         />
         <ProgressStep
           stepNum={3}
           stepName="Data Destination"
-          isCurrent={currentProgress === "dataDestination" ? true : false}
+          isCurrent={currentProgress === 2 ? true : false}
         />
         <ProgressStep
           stepNum={4}
           stepName="Pipeline"
           ref={lastStepCubeRef}
-          isCurrent={currentProgress === "pipeline" ? true : false}
+          isCurrent={currentProgress === 3 ? true : false}
         />
       </div>
       <div
