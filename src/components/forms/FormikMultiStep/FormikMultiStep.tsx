@@ -11,11 +11,13 @@
 // submit is called when the final page is submitted.
 
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
-import React, { RefObject } from "react";
+import React, { Dispatch, RefObject, SetStateAction } from "react";
 
 type FormValue = Record<string, any>;
 
 export type FormikMultiStepProps = {
+  stepNumber: number;
+  setStepNumber: Dispatch<SetStateAction<number>>;
   initialValues: FormValue;
   getProgressionIndicator: (stepNumber: number) => React.ReactElement;
   onSubmit: (values: any, formikHelpers: FormikHelpers<FormValue>) => void;
@@ -24,6 +26,8 @@ export type FormikMultiStepProps = {
 };
 
 export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
+  stepNumber,
+  setStepNumber,
   children,
   initialValues,
   onSubmit,
@@ -31,7 +35,6 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
   getProgressionIndicator,
   formikInnerRef,
 }) => {
-  const [stepNumber, setStepNumber] = React.useState(0);
   const steps = React.Children.toArray(children) as React.ReactElement[];
 
   const [snapshot, setSnapshot] = React.useState(initialValues);
@@ -54,6 +57,15 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
     values: FormValue,
     formikHelpers: FormikHelpers<FormValue>
   ) => {
+    if (step.props.multiGroup) {
+      const dataFlag = (document.activeElement as HTMLButtonElement).dataset
+        .flag;
+      if (dataFlag) {
+        await step.props.onSubmit[dataFlag](values);
+      }
+      return;
+    }
+
     if (step.props.onSubmit) {
       await step.props.onSubmit(values, formikHelpers);
     }
@@ -72,24 +84,26 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
       onSubmit={handleSubmit}
       validationSchema={step.props.validationSchema}
     >
-      {(formik) => (
-        <Form>
-          <div>{getProgressionIndicator(stepNumber)}</div>
-          {step}
-          <div>
-            {stepNumber > 0 && enableBackToPrevious && (
-              <button onClick={() => previous(formik.values)} type="button">
-                Back
-              </button>
-            )}
+      {(formik) => {
+        return (
+          <Form className="flex h-full flex-col">
+            <div className="mb-15">{getProgressionIndicator(stepNumber)}</div>
+            {step}
             <div>
-              <button disabled={formik.isSubmitting} type="submit">
-                {isLastStep ? "Submit" : "Next"}
-              </button>
+              {stepNumber > 0 && enableBackToPrevious && (
+                <button onClick={() => previous(formik.values)} type="button">
+                  Back
+                </button>
+              )}
+              <div>
+                <button disabled={formik.isSubmitting} type="submit">
+                  {isLastStep ? "Submit" : "Next"}
+                </button>
+              </div>
             </div>
-          </div>
-        </Form>
-      )}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
