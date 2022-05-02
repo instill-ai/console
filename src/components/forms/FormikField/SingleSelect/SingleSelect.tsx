@@ -13,6 +13,7 @@ export type SingleSelectProps = {
   required: boolean;
   description: string;
   label: string;
+  onChangeCb?: (option: SingleSelectOption) => void;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -20,10 +21,14 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   form,
   options,
   name,
+  onChangeCb,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
     form.setFieldValue(field.name, option.value);
+    if (onChangeCb) {
+      onChangeCb(option);
+    }
   };
 
   return (
@@ -45,6 +50,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   required,
   description,
   label,
+  onChangeCb,
 }) => {
   return (
     <Field
@@ -55,6 +61,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
+      onChangeCb={onChangeCb}
       label={label}
     />
   );
