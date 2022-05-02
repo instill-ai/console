@@ -8,6 +8,7 @@ export type ButtonProps = {
   textColor: string;
   onClickHandler: () => void;
   position: string;
+  type?: "button" | "submit" | "reset";
 };
 
 const Button: FC<ButtonProps> = ({
@@ -17,11 +18,13 @@ const Button: FC<ButtonProps> = ({
   textColor,
   onClickHandler,
   position,
+  type,
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClickHandler}
+      type={type}
       className={cn("rounded-[1px] px-5 py-2.5", color, textColor, position)}
     >
       {buttonName}
