@@ -10,8 +10,8 @@
 // transition. Each page has an optional submit handler, and the top-level
 // submit is called when the final page is submitted.
 
-import { Form, Formik, FormikHelpers } from "formik";
-import React from "react";
+import { Form, Formik, FormikHelpers, FormikProps } from "formik";
+import React, { RefObject } from "react";
 
 type FormValue = Record<string, any>;
 
@@ -20,6 +20,7 @@ export type FormikMultiStepProps = {
   getProgressionIndicator: (stepNumber: number) => React.ReactElement;
   onSubmit: (values: any, formikHelpers: FormikHelpers<FormValue>) => void;
   enableBackToPrevious: boolean;
+  formikInnerRef?: RefObject<FormikProps<Record<string, any>>>;
 };
 
 export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
@@ -28,6 +29,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
   onSubmit,
   enableBackToPrevious,
   getProgressionIndicator,
+  formikInnerRef,
 }) => {
   const [stepNumber, setStepNumber] = React.useState(0);
   const steps = React.Children.toArray(children) as React.ReactElement[];
@@ -65,6 +67,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
 
   return (
     <Formik
+      innerRef={formikInnerRef}
       initialValues={snapshot}
       onSubmit={handleSubmit}
       validationSchema={step.props.validationSchema}
