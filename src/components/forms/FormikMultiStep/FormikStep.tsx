@@ -1,7 +1,10 @@
 import React from "react";
 
-export const FormikStep = ({
-  children,
-}: {
-  children: React.ReactNode;
-}): React.ReactNode => children;
+export type FormikProps = {
+  onSubmit?: (values: any) => void;
+  validationSchema?: () => void;
+};
+
+export const FormikStep: React.FC = ({ children }) => {
+  return <>{children}</>;
+};
