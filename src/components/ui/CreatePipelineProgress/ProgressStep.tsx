@@ -14,7 +14,7 @@ const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
         <div
           ref={cubeRef}
           className={cn(
-            "mx-auto mb-auto box-border flex h-[30px] w-[30px]",
+            "z-10 mx-auto mb-auto box-border flex h-[30px] w-[30px]",
             isCurrent
               ? "border border-instillBlue50 bg-instillBlue10"
               : "bg-instillGrey20"

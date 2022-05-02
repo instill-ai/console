@@ -100,7 +100,7 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
         />
       </div>
       <div
-        className="absolute -z-10 h-[1px] border-t border-instillGrey20"
+        className="absolute h-[1px] border-t border-instillGrey20"
         style={{
           top: startPosition?.y,
           left: startPosition?.x,
