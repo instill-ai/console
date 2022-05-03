@@ -1,7 +1,7 @@
 import { FC } from "react";
 import cn from "clsx";
 
-export type ButtonProps = {
+export type ButtonBaseProps = {
   buttonName: string;
   disabled: boolean;
   color: string;
@@ -11,7 +11,7 @@ export type ButtonProps = {
   type?: "button" | "submit" | "reset";
 };
 
-const Button: FC<ButtonProps> = ({
+const ButtonBase: FC<ButtonBaseProps> = ({
   color,
   buttonName,
   disabled,
@@ -32,4 +32,4 @@ const Button: FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default ButtonBase;
