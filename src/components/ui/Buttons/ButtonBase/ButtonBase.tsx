@@ -5,8 +5,8 @@ export type ButtonBaseProps = {
   disabled: boolean;
   color: string;
   textColor: string;
-  onClickHandler: () => void;
-  position: string;
+  onClickHandler?: () => void;
+  position?: string;
   type?: "button" | "submit" | "reset";
   dataFlag?: string | number;
 };
