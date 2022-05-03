@@ -54,7 +54,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
   return (
     <Field
       name={name}
-      component={BasicTextField}
+      component={TextField}
       disabled={disabled}
       readOnly={readOnly}
       required={required}
