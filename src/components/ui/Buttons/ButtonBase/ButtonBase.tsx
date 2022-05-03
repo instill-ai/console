@@ -9,6 +9,7 @@ export type ButtonBaseProps = {
   onClickHandler: () => void;
   position: string;
   type?: "button" | "submit" | "reset";
+  dataFlag?: string | number;
 };
 
 const ButtonBase: FC<ButtonBaseProps> = ({
@@ -19,12 +20,14 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   onClickHandler,
   position,
   type,
+  dataFlag,
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClickHandler}
       type={type}
+      data-flag={dataFlag}
       className={cn("rounded-[1px] px-5 py-2.5", color, textColor, position)}
     >
       {buttonName}
