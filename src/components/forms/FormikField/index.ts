@@ -4,12 +4,13 @@ import TextField from "./TextField";
 import type { TextFieldProps } from "./TextField";
 import UploadFileField from "./UploadFileField";
 import type { UploadFileFieldProps } from "./UploadFileField";
+import TextArea, { TextAreaProps } from "./TextArea";
 
-export {
-  SingleSelect,
+export { SingleSelect, TextField, UploadFileField, TextArea };
+
+export type {
   SingleValueProps,
-  TextField,
   TextFieldProps,
-  UploadFileField,
   UploadFileFieldProps,
+  TextAreaProps,
 };
