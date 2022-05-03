@@ -3,7 +3,9 @@ import cn from "clsx";
 
 export type ButtonBaseProps = {
   disabled: boolean;
-  color: string;
+  disabledBgColor: string;
+  disabledTextColor: string;
+  bgColor: string;
   textColor: string;
   onClickHandler?: () => void;
   position?: string;
@@ -12,8 +14,10 @@ export type ButtonBaseProps = {
 };
 
 const ButtonBase: FC<ButtonBaseProps> = ({
-  color,
+  bgColor,
   disabled,
+  disabledBgColor,
+  disabledTextColor,
   textColor,
   onClickHandler,
   position,
@@ -27,7 +31,13 @@ const ButtonBase: FC<ButtonBaseProps> = ({
       onClick={onClickHandler}
       type={type}
       data-flag={dataFlag}
-      className={cn("rounded-[1px] px-5 py-2.5", color, textColor, position)}
+      className={cn(
+        "rounded-[1px] px-5 py-2.5",
+        disabled
+          ? cn(disabledBgColor, disabledTextColor)
+          : cn(bgColor, textColor),
+        position
+      )}
     >
       {children}
     </button>
