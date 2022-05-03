@@ -15,6 +15,7 @@ export type SingleSelectProps = {
   label: string;
   onChangeCb?: (option: SingleSelectOption) => void;
   instanceId: string;
+  defaultValue?: SingleSelectOption;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -55,6 +56,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   label,
   onChangeCb,
   instanceId,
+  defaultValue,
 }) => {
   return (
     <Field
@@ -68,6 +70,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       description={description}
       onChangeCb={onChangeCb}
       label={label}
+      defaultValue={defaultValue}
     />
   );
 };
