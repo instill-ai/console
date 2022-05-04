@@ -10,9 +10,9 @@ import {
 } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { SingleSelect } from "../FormikField";
-import { FormikStep } from "../FormikMultiStep";
-import { Values } from "./CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
+import { SingleSelect } from "../../FormikField";
+import { FormikStep } from "../../FormikMultiStep";
+import { Values } from "../CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
 
 export type SetupSourceStepProps = {
   stepNumber: number;
