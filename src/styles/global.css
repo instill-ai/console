@@ -35,6 +35,10 @@
     box-shadow: 0px 0px 0px 3px rgba(64, 168, 245, 0.2);
   }
 
+  .instill-progress-message-box-shadow {
+    box-shadow: 2px 2px 5px 4px rgba(0, 0, 0, 0.04);
+  }
+
   .instill-input-no-highlight {
     @apply focus:outline-none focus:ring-0 focus:ring-opacity-0;
   }
