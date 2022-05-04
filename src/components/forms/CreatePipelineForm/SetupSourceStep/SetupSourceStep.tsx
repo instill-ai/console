@@ -9,15 +9,12 @@ import {
   SyncIcon,
 } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { SingleSelect } from "../../FormikField";
 import { FormikStep } from "../../FormikMultiStep";
-import { Values } from "../CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
+import { StepNumberState, Values } from "../CreatePipelineForm";
 
-export type SetupSourceStepProps = {
-  stepNumber: number;
-  setStepNumber: Dispatch<SetStateAction<number>>;
-};
+export type SetupSourceStepProps = StepNumberState;
 
 const SetupSourceStep: FC<SetupSourceStepProps> = ({
   stepNumber,
@@ -108,7 +105,7 @@ const SetupSourceStep: FC<SetupSourceStepProps> = ({
         setStepNumber(stepNumber + 1);
       }}
     >
-      <div className="mb-5">
+      <div className="mb-5 flex flex-col gap-y-5">
         <SingleSelect
           name="pipeline.mode"
           instanceId="datasource-mode"
@@ -120,10 +117,8 @@ const SetupSourceStep: FC<SetupSourceStepProps> = ({
           options={modeOptions}
           defaultValue={modeOptions[0]}
         />
-      </div>
-      <div>
         <SingleSelect
-          name="dataSource.source"
+          name="dataSource.name"
           instanceId="datasource-source"
           label="Source type"
           description={"Setup Guide"}
