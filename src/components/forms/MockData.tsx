@@ -1,4 +1,9 @@
-import { GrpcIcon, HttpIcon } from "@instill-ai/design-system";
+import {
+  GoogleSheetIcon,
+  GrpcIcon,
+  HttpIcon,
+  MySqlIcon,
+} from "@instill-ai/design-system";
 
 export const syncDataConnectionOptions = [
   {
@@ -23,6 +28,23 @@ export const syncDataConnectionOptions = [
         color="fill-instillGrey90"
         position="my-auto"
       />
+    ),
+  },
+];
+
+export const mockAsyncDataConnectionOptions = [
+  {
+    label: "Google Sheet",
+    value: "googleSheet",
+    startIcon: (
+      <GoogleSheetIcon width="w-[30px]" height="h-[30px]" position="my-auto" />
+    ),
+  },
+  {
+    label: "MySQL",
+    value: "mySql",
+    startIcon: (
+      <MySqlIcon width="w-[30px]" height="h-[30px]" position="my-auto" />
     ),
   },
 ];
