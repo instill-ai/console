@@ -1,5 +1,9 @@
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
+import {
+  AsyncIcon,
+  SingleSelectOption,
+  SyncIcon,
+} from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
 import { SingleSelect } from "../../FormikField";
@@ -40,7 +44,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     },
   ];
 
-  const { values } = useFormikContext<Values>();
+  const { values, setFieldValue } = useFormikContext<Values>();
 
   const canGoNext = useMemo(() => {
     if (!values.pipeline.mode) return false;
@@ -53,6 +57,10 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       return;
     }
     setStepNumber(stepNumber + 1);
+  };
+
+  const sourceTypeOnChangeCb = (option: SingleSelectOption) => {
+    setFieldValue("dataSource.existing.name", option.value);
   };
 
   return (
@@ -71,14 +79,15 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       </div>
       {values.pipeline.mode === "sync" ? (
         <SingleSelect
-          name="dataSource.existing.name"
-          instanceId="data-source-name"
+          name="dataSource.existing.type"
+          instanceId="data-source-type"
           label="Source type"
           description={"Setup Guide"}
           disabled={false}
           readOnly={false}
           required={true}
           options={syncDataConnectionOptions}
+          onChangeCb={sourceTypeOnChangeCb}
         />
       ) : null}
       <PrimaryButton
