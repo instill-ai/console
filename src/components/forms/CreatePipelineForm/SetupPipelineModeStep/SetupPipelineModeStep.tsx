@@ -4,6 +4,7 @@ import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
 import { SingleSelect } from "../../FormikField";
 import { FormikStep } from "../../FormikMultiStep";
+import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 
 export type SetupSourceStepProps = StepNumberState;
@@ -47,6 +48,10 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   }, [values.pipeline.mode]);
 
   const handleGoNext = () => {
+    if (values.pipeline.mode === "sync") {
+      setStepNumber(stepNumber + 2);
+      return;
+    }
     setStepNumber(stepNumber + 1);
   };
 
@@ -55,16 +60,27 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       <div className="mb-5 flex flex-col gap-y-5">
         <SingleSelect
           name="pipeline.mode"
-          instanceId="datasource-mode"
-          label="Pipeline type"
+          instanceId="pipeline-mode"
+          label="Pipeline mode"
           description={"Setup Guide"}
           disabled={false}
           readOnly={false}
           required={true}
           options={modeOptions}
-          defaultValue={modeOptions[0]}
         />
       </div>
+      {values.pipeline.mode === "sync" ? (
+        <SingleSelect
+          name="dataSource.existing.name"
+          instanceId="data-source-name"
+          label="Source type"
+          description={"Setup Guide"}
+          disabled={false}
+          readOnly={false}
+          required={true}
+          options={syncDataConnectionOptions}
+        />
+      ) : null}
       <PrimaryButton
         onClickHandler={handleGoNext}
         disabled={canGoNext ? false : true}
