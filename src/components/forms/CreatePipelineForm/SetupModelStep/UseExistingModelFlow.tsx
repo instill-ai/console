@@ -4,9 +4,14 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { SingleSelect } from "../../FormikField";
-import { Values } from "../CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
+import {
+  StepNumberState,
+  Values,
+} from "../CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
 
-const UseExistingModelFlow: FC = () => {
+export type UseExistingModelFlowProps = StepNumberState;
+
+const UseExistingModelFlow: FC<UseExistingModelFlowProps> = () => {
   const [modelOptions, setModelOptions] = useState<SingleSelectOption[] | null>(
     null
   );
