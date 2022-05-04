@@ -13,10 +13,7 @@ import {
   TextField,
   UploadFileField,
 } from "../../FormikField";
-import {
-  StepNumberState,
-  Values,
-} from "../CreatePipelineDataSourceForm/CreatePipelineDataSourceForm";
+import { StepNumberState, Values } from "../CreatePipelineForm";
 
 export type CreateNewModelFlowProps = StepNumberState;
 
