@@ -29,12 +29,12 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
   }, [flowIsOnScreen]);
 
   const canUseExistingSource = useMemo(() => {
-    if (!values.model.existing.name) {
+    if (!values.dataSource.existing.name) {
       return false;
     }
 
     return true;
-  }, [values.model.existing.name]);
+  }, [values.dataSource.existing.name]);
 
   const handleUseExistingSource = () => {
     setStepNumber(stepNumber + 1);
@@ -46,8 +46,8 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
         Select a existing online source
       </h3>
       <SingleSelect
-        name="model.existing.name"
-        instanceId="existing-model-name"
+        name="dataSource.existing.name"
+        instanceId="existing-data-source-name"
         disabled={false}
         readOnly={false}
         options={sourceOptions ? sourceOptions : []}
