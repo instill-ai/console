@@ -69,12 +69,8 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
 
     const endPositionX = lastStepPosition.x - containerPosition.x;
 
-    console.log(lastStepPosition, containerPosition);
-
     const endPositionY =
       lastStepPosition.y - containerPosition.y + lastStepPosition.height / 2;
-
-    console.log(endPositionX);
 
     return {
       x: endPositionX,
