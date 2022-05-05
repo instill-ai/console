@@ -1,13 +1,13 @@
 import { FC, ReactNode } from "react";
 import StatusIndicator from "../StatusIndicator";
 
-export type StatusHeadProps = {
+export type StatusOverviewProps = {
   errorCounts: number;
   onCounts: number;
   offCounts: number;
 };
 
-const StatusHead: FC<StatusHeadProps> = ({
+const StatusOverview: FC<StatusOverviewProps> = ({
   errorCounts,
   offCounts,
   onCounts,
@@ -60,4 +60,4 @@ const StatusHead: FC<StatusHeadProps> = ({
   );
 };
 
-export default StatusHead;
+export default StatusOverview;
