@@ -74,13 +74,11 @@ export type Values = {
   pipeline: Pipeline;
 };
 
-const CreatePipelineDataSourceForm: FC = () => {
-  const [stepNumber, setStepNumber] = useState(0);
-
+const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
   return (
     <FormikMultiStep
-      stepNumber={stepNumber}
-      setStepNumber={setStepNumber}
+      stepNumber={props.stepNumber}
+      setStepNumber={props.setStepNumber}
       initialValues={{
         dataSource: {
           new: {
@@ -126,26 +124,10 @@ const CreatePipelineDataSourceForm: FC = () => {
         <CreatePipelineProgress currentProgress={stepNumber} />
       )}
     >
-      <SetupPipelineModeStep
-        stepNumber={stepNumber}
-        setStepNumber={setStepNumber}
-        maximumStepNumber={3}
-      />
-      <SetupSourceStep
-        stepNumber={stepNumber}
-        setStepNumber={setStepNumber}
-        maximumStepNumber={3}
-      />
-      <SetupModelStep
-        stepNumber={stepNumber}
-        setStepNumber={setStepNumber}
-        maximumStepNumber={3}
-      />
-      <SetupDestinationStep
-        stepNumber={stepNumber}
-        setStepNumber={setStepNumber}
-        maximumStepNumber={3}
-      />
+      <SetupPipelineModeStep {...props} />
+      <SetupSourceStep {...props} />
+      <SetupModelStep {...props} />
+      <SetupDestinationStep {...props} />
       <SetupPipelineDetailsStep />
     </FormikMultiStep>
   );

@@ -82,7 +82,9 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
       innerRef={formikInnerRef}
       initialValues={snapshot}
       onSubmit={handleSubmit}
-      validationSchema={step.props.validationSchema}
+      validationSchema={
+        step.props.validationSchema ? step.props.validationSchema : undefined
+      }
     >
       {(formik) => {
         return (
