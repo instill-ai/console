@@ -1,7 +1,7 @@
 import { FC } from "react";
 import cn from "clsx";
-import { getHumanReadableStringFromTime } from "utils";
-import StatusIndicator from "components/ui/StatusIndicator";
+import StatusIndicator from "../../StatusIndicator";
+import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
 
 export type NameCellProps = {
   status: "on" | "off" | "error";
