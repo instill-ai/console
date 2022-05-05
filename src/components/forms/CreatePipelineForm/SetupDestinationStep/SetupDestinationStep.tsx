@@ -1,4 +1,5 @@
 import { FormVerticalDividers } from "@/components/ui";
+import { PrimaryButton } from "@/components/ui/Buttons";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useMemo, useEffect } from "react";
@@ -37,32 +38,37 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
 
   return (
     <FormikStep>
-      <div className="flex flex-col gap-y-5">
-        {values.pipeline.mode === "sync" ? (
-          <>
-            <SingleSelect
-              name="dataDestination.name"
-              instanceId="data-destination-source"
-              label="Destination type"
-              description={
-                "With the selection of Sync type for the Pipeline, the destination will be same as the source."
-              }
-              disabled={false}
-              readOnly={false}
-              options={syncDataConnectionOptions}
-              defaultValue={sourceOption ? sourceOption : undefined}
-              required={true}
-              onChangeCb={dataDestinationOnChangeCb}
-            />
-          </>
-        ) : (
-          <div className="flex flex-1 flex-row">
-            <UseExistingDestinationFlow {...props} />
-            <FormVerticalDividers />
-            <CreateNewDestinationFlow {...props} />
-          </div>
-        )}
-      </div>
+      {values.pipeline.mode === "sync" ? (
+        <div className="flex flex-col gap-y-5">
+          <SingleSelect
+            name="dataDestination.name"
+            instanceId="data-destination-source"
+            label="Destination type"
+            description={
+              "With the selection of Sync type for the Pipeline, the destination will be same as the source."
+            }
+            disabled={false}
+            readOnly={false}
+            options={syncDataConnectionOptions}
+            defaultValue={sourceOption ? sourceOption : undefined}
+            required={true}
+            onChangeCb={dataDestinationOnChangeCb}
+          />
+          <PrimaryButton
+            position="ml-auto"
+            disabled={false}
+            onClickHandler={() => props.setStepNumber(props.stepNumber + 1)}
+          >
+            Next
+          </PrimaryButton>
+        </div>
+      ) : (
+        <div className="flex flex-1 flex-row">
+          <UseExistingDestinationFlow {...props} />
+          <FormVerticalDividers />
+          <CreateNewDestinationFlow {...props} />
+        </div>
+      )}
     </FormikStep>
   );
 };
