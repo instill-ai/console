@@ -3,6 +3,15 @@ import useOnScreen from "@/hooks/useOnScreen";
 import { FC, useMemo, useRef } from "react";
 import ProgressStep from "./ProgressStep";
 
+/**
+ * We make current number 0 & 1 stay at the first step
+ * - 0: Choose pipeline mode
+ * - 1: if user choose async -> choose source
+ * - 2: choose model
+ * - 3: choose destination
+ * - 4: setup pipeline details
+ */
+
 export type CreatePipelineProgressProps = {
   currentProgress: number;
 };
@@ -80,23 +89,25 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
           stepNum={1}
           stepName="Date source"
           ref={firstStepCubeRef}
-          isCurrent={currentProgress === 0 ? true : false}
+          isCurrent={
+            currentProgress === 0 ? true : currentProgress === 1 ? true : false
+          }
         />
         <ProgressStep
           stepNum={2}
           stepName="Model"
-          isCurrent={currentProgress === 1 ? true : false}
+          isCurrent={currentProgress === 2 ? true : false}
         />
         <ProgressStep
           stepNum={3}
           stepName="Data Destination"
-          isCurrent={currentProgress === 2 ? true : false}
+          isCurrent={currentProgress === 3 ? true : false}
         />
         <ProgressStep
           stepNum={4}
           stepName="Pipeline"
           ref={lastStepCubeRef}
-          isCurrent={currentProgress === 3 ? true : false}
+          isCurrent={currentProgress === 4 ? true : false}
         />
       </div>
       <div
