@@ -1,9 +1,11 @@
 import CreatePipelineProgress from "@/components/ui/CreatePipelineProgress/CreatePipelineProgress";
-import { SingleSelectOption } from "@instill-ai/design-system";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { FormikMultiStep } from "../FormikMultiStep";
+import SetupDestinationStep from "./SetupDestinationStep/SetupDestinationStep";
 import SetupModelStep from "./SetupModelStep";
-import SetupSourceStep from "./SetupSourceStep";
+import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
+import SetupPipelineModeStep from "./SetupPipelineModeStep";
+import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
 
 export type StepNumberState = {
   maximumStepNumber: number;
@@ -11,12 +13,34 @@ export type StepNumberState = {
   setStepNumber: Dispatch<SetStateAction<number>>;
 };
 
-type DataSource = {
+type ExistingDataSource = {
   name: string;
+  type: string;
+};
+
+type NewDataSource = {
+  name: string;
+  type: string;
+};
+
+type DataSource = {
+  existing: ExistingDataSource;
+  new: NewDataSource;
+};
+
+type ExistingDataDestination = {
+  name: string;
+  type: string;
+};
+
+type NewDataDestination = {
+  name: string;
+  type: string;
 };
 
 type DataDestination = {
-  name: string;
+  existing: ExistingDataDestination;
+  new: NewDataDestination;
 };
 
 type ExistingModel = {
@@ -38,6 +62,9 @@ type Model = {
 
 type Pipeline = {
   mode: "sync" | "async";
+  name: string;
+  description: string;
+  status: string;
 };
 
 export type Values = {
@@ -56,7 +83,12 @@ const CreatePipelineDataSourceForm: FC = () => {
       setStepNumber={setStepNumber}
       initialValues={{
         dataSource: {
-          name: null,
+          new: {
+            name: null,
+          },
+          existing: {
+            name: null,
+          },
         },
         model: {
           new: {
@@ -71,10 +103,18 @@ const CreatePipelineDataSourceForm: FC = () => {
           },
         },
         pipeline: {
-          mode: "sync",
+          mode: null,
+          name: null,
+          description: null,
+          status: true,
         },
         dataDestination: {
-          name: null,
+          new: {
+            name: null,
+          },
+          existing: {
+            name: null,
+          },
         },
       }}
       onSubmit={(values, actions) => {
@@ -86,12 +126,27 @@ const CreatePipelineDataSourceForm: FC = () => {
         <CreatePipelineProgress currentProgress={stepNumber} />
       )}
     >
-      <SetupSourceStep stepNumber={stepNumber} setStepNumber={setStepNumber} />
+      <SetupPipelineModeStep
+        stepNumber={stepNumber}
+        setStepNumber={setStepNumber}
+        maximumStepNumber={3}
+      />
+      <SetupSourceStep
+        stepNumber={stepNumber}
+        setStepNumber={setStepNumber}
+        maximumStepNumber={3}
+      />
       <SetupModelStep
         stepNumber={stepNumber}
         setStepNumber={setStepNumber}
         maximumStepNumber={3}
       />
+      <SetupDestinationStep
+        stepNumber={stepNumber}
+        setStepNumber={setStepNumber}
+        maximumStepNumber={3}
+      />
+      <SetupPipelineDetailsStep />
     </FormikMultiStep>
   );
 };

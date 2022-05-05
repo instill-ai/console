@@ -9,6 +9,7 @@ const SetupPipelineDetailsStep: FC = () => {
   const { values } = useFormikContext<Values>();
 
   const canSetupNewPipeline = useMemo(() => {
+    console.log(values);
     const validator = {
       pipelineIsValid: false,
       sourceIsValid: false,
@@ -40,20 +41,28 @@ const SetupPipelineDetailsStep: FC = () => {
       values.dataDestination.existing.name &&
       values.dataDestination.existing.type
     ) {
-      validator.sourceIsValid = true;
+      validator.destinationIsValid = true;
     }
 
     if (values.dataDestination.new.name && values.dataDestination.new.type) {
-      validator.sourceIsValid = true;
+      validator.destinationIsValid = true;
     }
 
-    // Model - name, type, description, instance|file are required
+    // Model - new - github
     if (
+      values.model.new.modelSource === "github" &&
       values.model.new.name &&
-      values.model.new.file &&
+      values.model.new.modelInstance
+    ) {
+      validator.modelIsValid = true;
+    }
+
+    // Model - new - local
+    if (
+      values.model.new.modelSource === "local" &&
+      values.model.new.name &&
       values.model.new.description &&
-      values.model.new.modelInstance &&
-      values.model.new.modelSource
+      values.model.new.file
     ) {
       validator.modelIsValid = true;
     }
@@ -61,6 +70,8 @@ const SetupPipelineDetailsStep: FC = () => {
     if (values.model.existing.name) {
       validator.modelIsValid = true;
     }
+
+    console.log(validator);
 
     if (
       validator.pipelineIsValid &&

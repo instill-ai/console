@@ -28,8 +28,13 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
     return syncDataConnectionOptions[index];
   }, [values.dataSource.new.name, values.dataSource.existing.name]);
 
+  // The source and destination type of sync mode will be the same, so we need to setup
+  // source type and name here too.
+
   const dataDestinationOnChangeCb = (option: SingleSelectOption) => {
-    setFieldValue("dataSource.name", option.value);
+    setFieldValue("dataDestination.existing.name", option.value);
+    setFieldValue("dataSource.existing.name", option.value);
+    setFieldValue("dataSource.existing.type", option.value);
   };
 
   useEffect(() => {
@@ -41,12 +46,10 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       {values.pipeline.mode === "sync" ? (
         <div className="flex flex-col gap-y-5">
           <SingleSelect
-            name="dataDestination.name"
+            name="dataDestination.existing.type"
             instanceId="data-destination-source"
             label="Destination type"
-            description={
-              "With the selection of Sync type for the Pipeline, the destination will be same as the source."
-            }
+            description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
             disabled={false}
             readOnly={false}
             options={syncDataConnectionOptions}

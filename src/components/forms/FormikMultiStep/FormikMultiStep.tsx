@@ -89,7 +89,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
           <Form className="flex h-full flex-col">
             <div className="mb-15">{getProgressionIndicator(stepNumber)}</div>
             {step}
-            <div>
+            {/* <div>
               {stepNumber > 0 && enableBackToPrevious && (
                 <button onClick={() => previous(formik.values)} type="button">
                   Back
@@ -100,7 +100,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
                   {isLastStep ? "Submit" : "Next"}
                 </button>
               </div>
-            </div>
+            </div> */}
           </Form>
         );
       }}

@@ -59,8 +59,12 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     setStepNumber(stepNumber + 1);
   };
 
+  // The source and destination type of sync mode will be the same, so we need to setup
+  // destination type and name here too.
   const sourceTypeOnChangeCb = (option: SingleSelectOption) => {
     setFieldValue("dataSource.existing.name", option.value);
+    setFieldValue("dataDestination.existing.name", option.value);
+    setFieldValue("dataDestination.existing.type", option.value);
   };
 
   return (

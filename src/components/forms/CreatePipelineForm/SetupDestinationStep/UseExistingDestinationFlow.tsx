@@ -45,7 +45,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         Select a existing destination
       </h3>
       <SingleSelect
-        name="dataSource.existing.name"
+        name="dataDestination.existing.name"
         instanceId="existing-data-source-name"
         disabled={false}
         readOnly={false}
