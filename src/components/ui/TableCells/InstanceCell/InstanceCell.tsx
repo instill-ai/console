@@ -53,18 +53,20 @@ const InstanceCell: FC<InstanceCellProps> = ({ width, instances, type }) => {
   const widthInNumber = getTailwindClassNumber(width);
 
   return (
-    <div className={cn("flex flex-col gap-y-3", width)}>
-      <div className="flex flex-row gap-x-3">
-        {icon}
-        <p className="instill-text-body text-instillGrey90">
-          {instances ? instances.length : 0}
-        </p>
+    <td>
+      <div className={cn("flex flex-col gap-y-3", width)}>
+        <div className="flex flex-row gap-x-3">
+          {icon}
+          <p className="instill-text-body text-instillGrey90">
+            {instances ? instances.length : 0}
+          </p>
+        </div>
+        <InstanceInnerList
+          items={instances}
+          listItemsContainerWidth={widthInNumber}
+        />
       </div>
-      <InstanceInnerList
-        items={instances}
-        listItemsContainerWidth={widthInNumber}
-      />
-    </div>
+    </td>
   );
 };
 

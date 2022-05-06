@@ -85,12 +85,14 @@ const TypeCell: FC<TypeCellProps> = ({ type, name }) => {
   }
 
   return (
-    <div className="w-[233.5px] py-2.5">
-      <div className="flex flex-row gap-x-2.5">
-        {icon}
-        <p className="instill-text-body text-instillGrey90">{name}</p>
+    <td>
+      <div className="w-[233.5px] py-2.5">
+        <div className="flex flex-row gap-x-2.5">
+          {icon}
+          <p className="instill-text-body text-instillGrey90">{name}</p>
+        </div>
       </div>
-    </div>
+    </td>
   );
 };
 
