@@ -1,15 +1,14 @@
 import { FC } from "react";
-import { Item } from "../Tables";
-import cn from "clsx";
+import { Item } from "../../Tables";
 
-export type TableHeadProps = {
+export type TableHeadBaseProps = {
   items: Item[];
   bgColor: string;
 };
 
-const TableHead: FC<TableHeadProps> = ({ items, bgColor }) => {
+const TableHeadBase: FC<TableHeadBaseProps> = ({ items, bgColor }) => {
   return (
-    <thead className={cn("px-[24px] py-[5px]", bgColor)}>
+    <thead className={bgColor}>
       <tr>
         {items.map((e, index) => {
           if (index === 0) {
@@ -39,4 +38,4 @@ const TableHead: FC<TableHeadProps> = ({ items, bgColor }) => {
   );
 };
 
-export default TableHead;
+export default TableHeadBase;
