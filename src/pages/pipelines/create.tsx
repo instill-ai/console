@@ -1,5 +1,5 @@
 import CreatePipelineForm from "@/components/forms/CreatePipelineForm";
-import { PageBase } from "@/components/layouts";
+import { PageBase, PageContentContainer } from "@/components/layouts";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import PageTitle from "@/components/ui/PageTitle";
 import { FC, ReactElement, useMemo, useState } from "react";
@@ -44,19 +44,19 @@ const CreatePipelinePage: FC & {
   }, [stepNumber]);
 
   return (
-    <div className="flex h-full flex-col px-[138px] py-10">
-      <div className="mb-[50px] flex flex-col gap-y-5">
-        <Breadcrumb
-          breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
-        />
-        <PageTitle title={currentPage ? currentPage.title : ""} />
-      </div>
+    <PageContentContainer>
+      <PageTitle
+        title={currentPage ? currentPage.title : ""}
+        breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
+        enableButton={false}
+        marginBottom="mb-10"
+      />
       <CreatePipelineForm
         stepNumber={stepNumber}
         setStepNumber={setStepNumber}
         maximumStepNumber={4}
       />
-    </div>
+    </PageContentContainer>
   );
 };
 
