@@ -13,80 +13,130 @@ import {
   SnowflakeIcon,
 } from "@instill-ai/design-system";
 import { FC, ReactNode } from "react";
+import cn from "clsx";
 
 export type TypeCellProps = {
   type: string;
   name: string;
+  width: string;
 };
 
-const TypeCell: FC<TypeCellProps> = ({ type, name }) => {
+const TypeCell: FC<TypeCellProps> = ({ type, name, width }) => {
   let icon: ReactNode;
-  const width = "w-[30px]";
-  const height = "h-[30px]";
+  const iconWidth = "w-[30px]";
+  const iconHeight = "h-[30px]";
   const position = "my-auto";
 
   switch (type) {
     case "snowflake": {
       icon = (
-        <SnowflakeIcon width="w-[30px]" height="h-[30px]" position="my-auto" />
+        <SnowflakeIcon
+          width={iconWidth}
+          height={iconHeight}
+          position="my-auto"
+        />
       );
       break;
     }
     case "google_sheet": {
       icon = (
-        <GoogleSheetIcon width={width} height={height} position={position} />
+        <GoogleSheetIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
       );
       break;
     }
     case "big_query": {
-      icon = <BigQueryIcon width={width} height={height} position={position} />;
+      icon = (
+        <BigQueryIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
+      );
       break;
     }
     case "grpc": {
-      icon = <GrpcIcon width={width} height={height} position={position} />;
+      icon = (
+        <GrpcIcon width={iconWidth} height={iconHeight} position={position} />
+      );
       break;
     }
     case "http": {
-      icon = <HttpIcon width={width} height={height} position={position} />;
+      icon = (
+        <HttpIcon width={iconWidth} height={iconHeight} position={position} />
+      );
       break;
     }
     case "mongo_db": {
-      icon = <MongoDbIcon width={width} height={height} position={position} />;
+      icon = (
+        <MongoDbIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
+      );
       break;
     }
     case "mysql": {
-      icon = <MySqlIcon width={width} height={height} position={position} />;
+      icon = (
+        <MySqlIcon width={iconWidth} height={iconHeight} position={position} />
+      );
       break;
     }
     case "postgresql": {
       icon = (
-        <PostgreSqlIcon width={width} height={height} position={position} />
+        <PostgreSqlIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
       );
       break;
     }
     case "redshift": {
-      icon = <RedshiftIcon width={width} height={height} position={position} />;
+      icon = (
+        <RedshiftIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
+      );
       break;
     }
     case "salesforce": {
       icon = (
-        <SalesforceIcon width={width} height={height} position={position} />
+        <SalesforceIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
       );
       break;
     }
     case "shopify": {
-      icon = <ShopifyIcon width={width} height={height} position={position} />;
+      icon = (
+        <ShopifyIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={position}
+        />
+      );
       break;
     }
     case "slack": {
-      icon = <SlackIcon width={width} height={height} position={position} />;
+      icon = (
+        <SlackIcon width={iconWidth} height={iconHeight} position={position} />
+      );
       break;
     }
   }
 
   return (
     <td>
-      <div className="w-[233.5px] py-2.5">
+      <div className={cn("py-2.5", width)}>
         <div className="flex flex-row gap-x-2.5">
           {icon}
           <p className="instill-text-body text-instillGrey90">{name}</p>
