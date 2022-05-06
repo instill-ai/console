@@ -33,6 +33,9 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
       );
       break;
     case "on":
+    case "online":
+    case "active":
+    case "connected":
       statusIcon = (
         <StatusOnIcon
           color="fill-instillGreen"
@@ -43,6 +46,9 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
       );
       break;
     case "off":
+    case "offline":
+    case "inactive":
+    case "disconnected":
       statusIcon = (
         <StatusOffIcon
           color="fill-instillGrey50"
