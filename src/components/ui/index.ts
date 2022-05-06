@@ -11,7 +11,8 @@ import type {
   NameCellProps,
   TypeCellProps,
 } from "./TableCells";
-import { PipelineTableHead , PipelineTableHeadProps } from "./TableHeads";
+import { PipelineTableHead, PipelineTableHeadProps } from "./TableHeads";
+import TableBody from "./TableBody";
 
 export {
   Sidebar,
@@ -24,6 +25,7 @@ export {
   NameCell,
   TypeCell,
   PipelineTableHead,
+  TableBody,
 };
 export type {
   StatusIndicatorProps,
