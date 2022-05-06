@@ -24,7 +24,7 @@ const PageTitle: FC<PageTitleProps> = ({
     <div className="flex flex-col">
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <div className="flex flex-row">
-        <h2 className="instill-text-h2 mr-auto text-black">{title}</h2>;
+        <h2 className="instill-text-h2 mt-auto mr-auto text-black">{title}</h2>
         <PrimaryButton
           type="button"
           disabled={false}

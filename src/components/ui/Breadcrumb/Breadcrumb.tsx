@@ -8,6 +8,14 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
   return (
     <div className="flex flex-row">
       {breadcrumbs.map((e, index) => {
+        if (breadcrumbs.length === 1) {
+          return (
+            <span key={e} className="instill-text-body text-instillGrey70">
+              {`${e}`}
+            </span>
+          );
+        }
+
         if (index === breadcrumbs.length - 1) {
           return (
             <span key={e} className="instill-text-body text-instillBlue50">
