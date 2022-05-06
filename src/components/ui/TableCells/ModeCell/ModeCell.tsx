@@ -1,10 +1,11 @@
 import { FC } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
+import { Mode } from "@/types/general";
 
 export type ModeCellProps = {
   width: string;
-  mode: "sync" | "async";
+  mode: Mode;
 };
 
 const ModeCell: FC<ModeCellProps> = ({ width, mode }) => {
