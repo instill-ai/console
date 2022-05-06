@@ -1,6 +1,6 @@
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { mockMgmtRoles } from "@/services/mgmt/MgmtServices";
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import { FC } from "react";
 import { SingleSelect, TextField, ToggleField } from "../FormikField";
 
@@ -19,7 +19,7 @@ const OnboardingForm: FC = () => {
     >
       {(formik) => {
         return (
-          <div className="flex flex-col gap-y-5">
+          <Form className="flex flex-col gap-y-5">
             <TextField
               name="email"
               label="Your email"
@@ -54,7 +54,7 @@ const OnboardingForm: FC = () => {
               autoComplete="off"
             />
             <SingleSelect
-              name="dataDestination.new.type"
+              name="role"
               instanceId="new-data-destination-type"
               disabled={false}
               readOnly={false}
@@ -69,7 +69,7 @@ const OnboardingForm: FC = () => {
               disabled={false}
               readOnly={false}
               required={true}
-              defaultChecked={true}
+              defaultChecked={false}
               description="We collect data only for product improvements"
             />
             <ToggleField
@@ -78,13 +78,13 @@ const OnboardingForm: FC = () => {
               disabled={false}
               readOnly={false}
               required={true}
-              defaultChecked={true}
+              defaultChecked={false}
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
             />
-            <PrimaryButton disabled={formik.isValid} type="submit">
+            <PrimaryButton disabled={false} type="submit" position="ml-auto">
               Start
             </PrimaryButton>
-          </div>
+          </Form>
         );
       }}
     </Formik>
