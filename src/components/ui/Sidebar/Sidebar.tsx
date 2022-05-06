@@ -23,7 +23,7 @@ const Sidebar: FC = () => {
       ),
       id: "sidebar-pipleine",
       tabName: "Pipeline",
-      link: "/pipeline",
+      link: "/pipelines",
     },
     {
       icon: (
