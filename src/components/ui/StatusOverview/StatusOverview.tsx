@@ -3,14 +3,14 @@ import StatusIndicator from "../StatusIndicator";
 
 export type StatusOverviewProps = {
   errorCounts: number;
-  onCounts: number;
-  offCounts: number;
+  onlineCounts: number;
+  offlineCounts: number;
 };
 
 const StatusOverview: FC<StatusOverviewProps> = ({
   errorCounts,
-  offCounts,
-  onCounts,
+  onlineCounts,
+  offlineCounts,
 }) => {
   const getStatusItem = (icon: ReactNode, counts: number) => {
     return (
@@ -23,7 +23,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
 
   return (
     <div className="flex flex-row">
-      {onCounts
+      {onlineCounts
         ? getStatusItem(
             <StatusIndicator
               status="on"
@@ -31,7 +31,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
               height="h-3"
               position="my-auto"
             />,
-            onCounts
+            onlineCounts
           )
         : null}
       {errorCounts
@@ -45,7 +45,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
             errorCounts
           )
         : null}
-      {offCounts
+      {offlineCounts
         ? getStatusItem(
             <StatusIndicator
               status="off"
@@ -53,7 +53,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
               height="h-3"
               position="my-auto"
             />,
-            offCounts
+            offlineCounts
           )
         : null}
     </div>
