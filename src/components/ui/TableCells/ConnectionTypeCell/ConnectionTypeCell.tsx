@@ -15,13 +15,17 @@ import {
 import { FC, ReactNode } from "react";
 import cn from "clsx";
 
-export type TypeCellProps = {
+export type ConnectionTypeCellProps = {
   type: string;
   name: string;
   width: string;
 };
 
-const TypeCell: FC<TypeCellProps> = ({ type, name, width }) => {
+const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
+  type,
+  name,
+  width,
+}) => {
   let icon: ReactNode;
   const iconWidth = "w-[30px]";
   const iconHeight = "h-[30px]";
@@ -146,4 +150,4 @@ const TypeCell: FC<TypeCellProps> = ({ type, name, width }) => {
   );
 };
 
-export default TypeCell;
+export default ConnectionTypeCell;
