@@ -5,11 +5,12 @@ import FormVerticalDividers from "./FormVerticalDividers";
 import PipelinePagePlaceholder from "./PipelinePagePlaceholder";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
-import { InstanceCell, NameCell, TypeCell } from "./TableCells";
+import { InstanceCell, NameCell, TypeCell, ModeCell } from "./TableCells";
 import type {
   InstanceCellProps,
   NameCellProps,
   TypeCellProps,
+  ModeCellProps,
 } from "./TableCells";
 import { PipelineTableHead, PipelineTableHeadProps } from "./TableHeads";
 import TableBody from "./TableBody";
@@ -26,6 +27,7 @@ export {
   TypeCell,
   PipelineTableHead,
   TableBody,
+  ModeCell,
 };
 export type {
   StatusIndicatorProps,
@@ -33,4 +35,5 @@ export type {
   NameCellProps,
   TypeCellProps,
   PipelineTableHeadProps,
+  ModeCellProps,
 };
