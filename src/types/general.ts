@@ -7,4 +7,5 @@ export type Status =
   | "offline"
   | "inactive"
   | "disconnected"
-  | "error";
+  | "error"
+  | "unspecific";
