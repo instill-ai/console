@@ -9,3 +9,5 @@ export type Status =
   | "disconnected"
   | "error"
   | "unspecific";
+
+export type Mode = "sync" | "async" | "unspecific";
