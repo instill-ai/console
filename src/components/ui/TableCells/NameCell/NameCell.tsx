@@ -2,9 +2,10 @@ import { FC } from "react";
 import cn from "clsx";
 import StatusIndicator from "../../StatusIndicator";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
+import { Status } from "@/types/general";
 
 export type NameCellProps = {
-  status: "on" | "off" | "error";
+  status: Status;
   width: string;
   updatedAt: string;
   name: string;
