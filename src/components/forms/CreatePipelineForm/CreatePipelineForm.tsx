@@ -1,6 +1,6 @@
 import CreatePipelineProgress from "@/components/ui/CreatePipelineProgress/CreatePipelineProgress";
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { FormikMultiStep } from "../FormikMultiStep";
+import { FormikMultiStep } from "../../formik/FormikMultiStep";
 import SetupDestinationStep from "./SetupDestinationStep/SetupDestinationStep";
 import SetupModelStep from "./SetupModelStep";
 import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";

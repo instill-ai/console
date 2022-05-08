@@ -1,6 +1,6 @@
 import { FormVerticalDividers } from "@/components/ui";
 import { FC } from "react";
-import { FormikStep } from "../../FormikMultiStep";
+import { FormikStep } from "../../../formik/FormikMultiStep";
 import { StepNumberState } from "../CreatePipelineForm";
 import CreateNewSourceFlow from "./CreateNewSourceFlow";
 import UseExistingSourceFlow from "./UseExistingSourceFlow";

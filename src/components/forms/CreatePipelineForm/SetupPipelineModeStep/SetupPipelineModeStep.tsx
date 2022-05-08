@@ -7,7 +7,7 @@ import {
 import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
 import { SingleSelect } from "../../../formik/FormikField";
-import { FormikStep } from "../../FormikMultiStep";
+import { FormikStep } from "../../../formik/FormikMultiStep";
 import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 
