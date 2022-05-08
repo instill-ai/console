@@ -1,9 +1,9 @@
-import { PrimaryButton } from "@/components/ui/Buttons";
-import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
-import { TextArea, TextField, ToggleField } from "../../../formik/FormikField";
-import { FormikStep } from "../../../formik/FormikMultiStep";
+import { useFormikContext } from "formik";
+
+import { PrimaryButton } from "@/components/ui/Buttons";
 import { Values } from "../CreatePipelineForm";
+import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
 
 const SetupPipelineDetailsStep: FC = () => {
   const { values } = useFormikContext<Values>();

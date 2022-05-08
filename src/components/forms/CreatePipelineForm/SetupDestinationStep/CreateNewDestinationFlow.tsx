@@ -1,9 +1,10 @@
-import { PrimaryButton } from "@/components/ui/Buttons";
-import useOnScreen from "@/hooks/useOnScreen";
+import { FC, useRef, useState, useEffect, useMemo } from "react";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
-import { FC, useRef, useState, useEffect, useMemo } from "react";
-import { SingleSelect, TextField } from "../../../formik/FormikField";
+
+import { PrimaryButton } from "@/components/ui/Buttons";
+import useOnScreen from "@/hooks/useOnScreen";
+import { SingleSelect, TextField } from "../../../formik";
 import { mockAsyncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 

@@ -1,15 +1,15 @@
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { FC, useMemo } from "react";
+import { useFormikContext } from "formik";
 import {
   AsyncIcon,
   SingleSelectOption,
   SyncIcon,
 } from "@instill-ai/design-system";
-import { useFormikContext } from "formik";
-import { FC, useMemo } from "react";
-import { SingleSelect } from "../../../formik/FormikField";
-import { FormikStep } from "../../../formik/FormikMultiStep";
+
+import { SingleSelect, FormikStep } from "../../../formik";
 import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
+import { PrimaryButton } from "@/components/ui/Buttons";
 
 export type SetupSourceStepProps = StepNumberState;
 

@@ -1,18 +1,19 @@
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useFormikContext } from "formik";
 import {
   GitHubIcon,
   LocalUploadIcon,
   ModelInstanceIcon,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import { useFormikContext } from "formik";
-import { FC, useEffect, useMemo, useState } from "react";
+
 import {
   SingleSelect,
   TextArea,
   TextField,
   UploadFileField,
-} from "../../../formik/FormikField";
+} from "../../../formik";
+import { PrimaryButton } from "@/components/ui/Buttons";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 
 export type CreateNewModelFlowProps = StepNumberState;

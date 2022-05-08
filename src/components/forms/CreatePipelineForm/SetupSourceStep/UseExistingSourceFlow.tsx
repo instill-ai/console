@@ -1,9 +1,10 @@
+import { FC, useState, useRef, useEffect, useMemo } from "react";
+import { useFormikContext } from "formik";
+import { SingleSelectOption } from "@instill-ai/design-system";
+
 import { PrimaryButton } from "@/components/ui/Buttons";
 import useOnScreen from "@/hooks/useOnScreen";
-import { SingleSelectOption } from "@instill-ai/design-system";
-import { useFormikContext } from "formik";
-import { FC, useState, useRef, useEffect, useMemo } from "react";
-import { SingleSelect } from "../../../formik/FormikField";
+import { SingleSelect } from "../../../formik";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 
 export type UseExistingSourceFlowProps = StepNumberState;

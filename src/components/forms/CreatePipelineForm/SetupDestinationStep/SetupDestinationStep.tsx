@@ -1,10 +1,10 @@
+import { FC, useMemo, useEffect } from "react";
+import { useFormikContext } from "formik";
+import { SingleSelectOption } from "@instill-ai/design-system";
+
 import { FormVerticalDividers } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { SingleSelectOption } from "@instill-ai/design-system";
-import { useFormikContext } from "formik";
-import { FC, useMemo, useEffect } from "react";
-import { SingleSelect } from "../../../formik/FormikField";
-import { FormikStep } from "../../../formik/FormikMultiStep";
+import { SingleSelect, FormikStep } from "../../../formik";
 import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
