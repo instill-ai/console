@@ -81,7 +81,11 @@ const OnboardingForm: FC = () => {
               defaultChecked={false}
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
             />
-            <PrimaryButton disabled={false} type="submit" position="ml-auto">
+            <PrimaryButton
+              disabled={formik.isValid ? false : true}
+              type="submit"
+              position="ml-auto"
+            >
               Start
             </PrimaryButton>
           </Form>
