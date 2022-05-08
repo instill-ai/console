@@ -1,8 +1,8 @@
-import CreatePipelineForm from "@/components/forms/CreatePipelineForm";
-import { PageBase, PageContentContainer } from "@/components/layouts";
-import Breadcrumb from "@/components/ui/Breadcrumb";
-import PageTitle from "@/components/ui/PageTitle";
 import { FC, ReactElement, useMemo, useState } from "react";
+
+import { CreatePipelineForm } from "@/components/forms";
+import { PageBase, PageContentContainer } from "@/components/layouts";
+import PageTitle from "@/components/ui/PageTitle";
 
 interface GetLayOutProps {
   page: ReactElement;
