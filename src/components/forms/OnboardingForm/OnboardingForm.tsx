@@ -55,13 +55,13 @@ const OnboardingForm: FC = () => {
             />
             <SingleSelect
               name="role"
+              label="Your role"
               instanceId="new-data-destination-type"
               disabled={false}
               readOnly={false}
               options={mockMgmtRoles}
               required={true}
               description={"Setup Guide"}
-              label="Source type"
             />
             <ToggleField
               name="usage_data_collection"
