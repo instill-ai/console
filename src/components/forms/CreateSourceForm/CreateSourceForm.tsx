@@ -26,7 +26,7 @@ const CreateSourceForm: FC = () => {
               autoComplete="off"
             />
             <SingleSelect
-              name="role"
+              name="type"
               label="Source type"
               instanceId="source-type"
               disabled={false}
@@ -39,7 +39,7 @@ const CreateSourceForm: FC = () => {
               type="submit"
               disabled={formik.isValid ? false : true}
             >
-              Setup Source
+              Set up Source
             </PrimaryButton>
           </Form>
         );
