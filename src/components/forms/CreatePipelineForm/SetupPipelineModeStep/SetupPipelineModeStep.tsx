@@ -6,7 +6,7 @@ import {
 } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
-import { SingleSelect } from "../../FormikField";
+import { SingleSelect } from "../../../formik/FormikField";
 import { FormikStep } from "../../FormikMultiStep";
 import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";

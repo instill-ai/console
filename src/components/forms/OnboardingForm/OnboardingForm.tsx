@@ -2,7 +2,7 @@ import { PrimaryButton } from "@/components/ui/Buttons";
 import { mockMgmtRoles } from "@/services/mgmt/MgmtServices";
 import { Form, Formik } from "formik";
 import { FC } from "react";
-import { SingleSelect, TextField, ToggleField } from "../FormikField";
+import { SingleSelect, TextField, ToggleField } from "../../formik/FormikField";
 
 const OnboardingForm: FC = () => {
   return (

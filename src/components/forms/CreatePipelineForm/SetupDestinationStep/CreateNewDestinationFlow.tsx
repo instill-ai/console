@@ -3,7 +3,7 @@ import useOnScreen from "@/hooks/useOnScreen";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useRef, useState, useEffect, useMemo } from "react";
-import { SingleSelect, TextField } from "../../FormikField";
+import { SingleSelect, TextField } from "../../../formik/FormikField";
 import { mockAsyncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 

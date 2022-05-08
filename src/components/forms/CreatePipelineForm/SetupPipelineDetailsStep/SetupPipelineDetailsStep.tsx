@@ -1,7 +1,7 @@
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { useFormikContext } from "formik";
 import { FC, useMemo } from "react";
-import { TextArea, TextField, ToggleField } from "../../FormikField";
+import { TextArea, TextField, ToggleField } from "../../../formik/FormikField";
 import { FormikStep } from "../../FormikMultiStep";
 import { Values } from "../CreatePipelineForm";
 

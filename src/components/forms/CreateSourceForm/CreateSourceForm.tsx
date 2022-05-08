@@ -1,7 +1,7 @@
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { Form, Formik } from "formik";
 import { FC } from "react";
-import { SingleSelect, TextField } from "../FormikField";
+import { SingleSelect, TextField } from "../../formik/FormikField";
 import { mockAsyncDataConnectionOptions } from "../MockData";
 
 const CreateSourceForm: FC = () => {

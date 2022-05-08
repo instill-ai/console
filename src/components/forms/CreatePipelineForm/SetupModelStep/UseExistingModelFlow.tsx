@@ -3,7 +3,7 @@ import useOnScreen from "@/hooks/useOnScreen";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { SingleSelect } from "../../FormikField";
+import { SingleSelect } from "../../../formik/FormikField";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 
 export type UseExistingModelFlowProps = StepNumberState;
