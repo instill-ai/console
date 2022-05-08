@@ -14,8 +14,8 @@ const CreateSourcePage: FC & {
   return (
     <PageContentContainer>
       <PageTitle
-        title="Set up new source"
-        breadcrumbs={["Data source", "Source Settings"]}
+        title="Set Up New Source"
+        breadcrumbs={["Data Source", "Source Settings"]}
         enableButton={false}
         marginBottom="mb-10"
       />
