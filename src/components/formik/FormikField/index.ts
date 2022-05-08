@@ -1,5 +1,5 @@
 import SingleSelect from "./SingleSelect";
-import type { SingleValueProps } from "react-select";
+import type { SingleSelectProps } from "./SingleSelect";
 import TextField from "./TextField";
 import type { TextFieldProps } from "./TextField";
 import UploadFileField from "./UploadFileField";
@@ -11,7 +11,7 @@ import type { ToggleFieldProps } from "./ToggleField";
 export { SingleSelect, TextField, UploadFileField, TextArea, ToggleField };
 
 export type {
-  SingleValueProps,
+  SingleSelectProps,
   TextFieldProps,
   UploadFileFieldProps,
   TextAreaProps,
