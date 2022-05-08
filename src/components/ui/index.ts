@@ -2,38 +2,49 @@ import Sidebar from "./Sidebar";
 import StatusIndicator from "./StatusIndicator";
 import type { StatusIndicatorProps } from "./StatusIndicator";
 import FormVerticalDividers from "./FormVerticalDividers";
-import PipelinePagePlaceholder from "./PipelinePagePlaceholder";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
-import { InstanceCell, NameCell, TypeCell, ModeCell } from "./TableCells";
+import {
+  InstanceCell,
+  NameCell,
+  ConnectionTypeCell,
+  ModeCell,
+} from "./TableCells";
 import type {
   InstanceCellProps,
   NameCellProps,
-  TypeCellProps,
+  ConnectionTypeCellProps,
   ModeCellProps,
 } from "./TableCells";
 import { PipelineTableHead, PipelineTableHeadProps } from "./TableHeads";
 import TableBody from "./TableBody";
+import {
+  SourceTablePlaceholder,
+  PipelineTablePlaceholder,
+  DestinationTablePlaceholder,
+} from "./TablePlaceholders";
 
 export {
   Sidebar,
   StatusIndicator,
   FormVerticalDividers,
-  PipelinePagePlaceholder,
   TableContainer,
   TableRow,
   InstanceCell,
   NameCell,
-  TypeCell,
+  ConnectionTypeCell,
   PipelineTableHead,
   TableBody,
   ModeCell,
+  SourceTablePlaceholder,
+  DestinationTablePlaceholder,
+  PipelineTablePlaceholder,
 };
 export type {
   StatusIndicatorProps,
   InstanceCellProps,
   NameCellProps,
-  TypeCellProps,
+  ConnectionTypeCellProps,
   PipelineTableHeadProps,
   ModeCellProps,
 };
