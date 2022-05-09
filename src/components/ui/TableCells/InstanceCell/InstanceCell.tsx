@@ -5,19 +5,29 @@ import {
   PipelineIcon,
 } from "@instill-ai/design-system";
 import InstanceInnerList from "./InstanceInnerList";
+import { Status } from "@/types/general";
+import CellBase, { CellBaseProps } from "../CellBase";
 
 export type Instance = {
   name: string;
-  status: "on" | "off" | "error";
+  status: Status;
 };
 
-export type InstanceCellProps = {
+export type InstanceCellProps = CellBaseProps & {
   width: string;
   type: "pipeline" | "model";
   instances: Instance[];
 };
 
-const InstanceCell: FC<InstanceCellProps> = ({ width, instances, type }) => {
+const InstanceCell: FC<InstanceCellProps> = ({
+  width,
+  instances,
+  type,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+}) => {
   let icon: ReactNode;
   const iconHeight = "h-5";
   const iconWidth = "w-5";
@@ -53,7 +63,12 @@ const InstanceCell: FC<InstanceCellProps> = ({ width, instances, type }) => {
   const widthInNumber = getTailwindClassNumber(width);
 
   return (
-    <td>
+    <CellBase
+      paddingTop={paddingTop}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+    >
       <div className={cn("flex flex-col gap-y-3", width)}>
         <div className="flex flex-row gap-x-3">
           {icon}
@@ -66,7 +81,7 @@ const InstanceCell: FC<InstanceCellProps> = ({ width, instances, type }) => {
           listItemsContainerWidth={widthInNumber}
         />
       </div>
-    </td>
+    </CellBase>
   );
 };
 
