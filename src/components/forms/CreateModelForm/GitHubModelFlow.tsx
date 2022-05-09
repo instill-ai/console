@@ -90,7 +90,7 @@ const GitHubModelFlow: FC = () => {
           position="ml-auto"
           type="submit"
         >
-          Setup new model
+          Set up model
         </PrimaryButton>
       )}
     </>
