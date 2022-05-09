@@ -15,6 +15,7 @@ import {
 } from "../../../formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { StepNumberState, Values } from "../CreatePipelineForm";
+import { mockModelSourceOptions } from "../../MockData";
 
 export type CreateNewModelFlowProps = StepNumberState;
 
@@ -23,32 +24,6 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   setStepNumber,
   stepNumber,
 }) => {
-  const modelSourceOptions = [
-    {
-      label: "GitHub",
-      value: "github",
-      startIcon: (
-        <GitHubIcon
-          width="w-[30px]"
-          height="h-[30px]"
-          color="fill-instillGrey90"
-          position="my-auto"
-        />
-      ),
-    },
-    {
-      label: "Local",
-      value: "local",
-      startIcon: (
-        <LocalUploadIcon
-          width="w-[30px]"
-          height="h-[30px]"
-          color="fill-instillGrey90"
-          position="my-auto"
-        />
-      ),
-    },
-  ];
   const { values, setFieldValue } = useFormikContext<Values>();
 
   const [fetched, setFetched] = useState(false);
@@ -198,7 +173,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         required={true}
         description={"Setup Guide"}
         label="Source type"
-        options={modelSourceOptions}
+        options={mockModelSourceOptions}
         onChangeCb={modelSourceOnChangeCb}
       />
       {canDisplayModelInstanceField ? (
