@@ -8,10 +8,25 @@ export type TableProps = {
    * - https://tailwindcss.com/docs/border-collapse
    */
   borderCollapse: string;
+
+  /** TailwindCSS class
+   * - Utilities for controlling the table layout algorithm.
+   * - e.g. table-auto | table-fixed
+   * - https://tailwindcss.com/docs/table-layout
+   */
+  tableLayout: string;
 };
 
-const TableContainer: FC<TableProps> = ({ children, borderCollapse }) => {
-  return <table className={cn("w-full", borderCollapse)}>{children}</table>;
+const TableContainer: FC<TableProps> = ({
+  children,
+  tableLayout,
+  borderCollapse,
+}) => {
+  return (
+    <table className={cn("w-full", borderCollapse, tableLayout)}>
+      {children}
+    </table>
+  );
 };
 
 export default TableContainer;
