@@ -3,19 +3,34 @@ import cn from "clsx";
 import StatusIndicator from "../../StatusIndicator";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
 import { Status } from "@/types/general";
+import CellBase, { CellBaseProps } from "../CellBase";
 
 export type NameCellProps = {
   status: Status;
   width: string;
   updatedAt: string;
   name: string;
-};
+} & CellBaseProps;
 
-const NameCell: FC<NameCellProps> = ({ status, width, updatedAt, name }) => {
+const NameCell: FC<NameCellProps> = ({
+  status,
+  width,
+  updatedAt,
+  name,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+}) => {
   const time = getHumanReadableStringFromTime(updatedAt, Date.now());
 
   return (
-    <td>
+    <CellBase
+      paddingTop={paddingTop}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+    >
       <div className={cn("flex flex-row gap-x-[5px]", width)}>
         <div className="flex h-8 w-8">
           <StatusIndicator
@@ -30,7 +45,7 @@ const NameCell: FC<NameCellProps> = ({ status, width, updatedAt, name }) => {
           <p className="instill-text-small text-instillGrey50">{`last sync ${time}`}</p>
         </div>
       </div>
-    </td>
+    </CellBase>
   );
 };
 
