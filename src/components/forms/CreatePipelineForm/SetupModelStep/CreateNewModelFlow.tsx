@@ -1,11 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
-import {
-  GitHubIcon,
-  LocalUploadIcon,
-  ModelInstanceIcon,
-  SingleSelectOption,
-} from "@instill-ai/design-system";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
 import {
   SingleSelect,
@@ -15,7 +10,7 @@ import {
 } from "../../../formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { StepNumberState, Values } from "../CreatePipelineForm";
-import { mockModelSourceOptions } from "../../MockData";
+import { mockModelInstances, mockModelSourceOptions } from "../../MockData";
 
 export type CreateNewModelFlowProps = StepNumberState;
 
@@ -122,24 +117,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   const handleFetchingModel = async () => {
     console.log("fetch", values.model.new.name);
     setFetched(true);
-    setTimeout(
-      () =>
-        setModelInstances([
-          {
-            label: "v1.0.0",
-            value: "v1.0,0",
-            startIcon: (
-              <ModelInstanceIcon
-                color="fill-instillGrey90"
-                width="w-[30px]"
-                height="h-[30px]"
-                position="my-auto"
-              />
-            ),
-          },
-        ]),
-      3000
-    );
+    setTimeout(() => setModelInstances(mockModelInstances), 3000);
   };
 
   const handelSetupModel = async () => {
