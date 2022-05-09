@@ -9,7 +9,7 @@ const LocalModelFlow: FC = () => {
   const { values } = useFormikContext<CreateModelFormValue>();
 
   const canSetupModel = useMemo(() => {
-    if (!values.name || !values.type || !values.description || values.file) {
+    if (!values.name || !values.type || !values.description || !values.file) {
       return false;
     }
     return true;
