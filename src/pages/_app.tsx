@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import "../styles/global.css";
+import "@instill-ai/design-system/build/index.cjs.css";
 
 export const queryCache = new QueryCache();
 
