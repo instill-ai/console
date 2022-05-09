@@ -1,9 +1,9 @@
 import { FC, useState, useMemo } from "react";
 import { useFormikContext } from "formik";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { SingleSelect, TextField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { SingleSelectOption } from "@instill-ai/design-system";
 import { mockModelInstances } from "../MockData";
 import { CreateModelFormValue } from "./CreateModelForm";
 
