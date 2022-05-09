@@ -18,7 +18,7 @@ const TableHeadBase: FC<TableHeadBaseProps> = ({
   borderColor,
 }) => {
   return (
-    <thead className={cn(borderColor, bgColor)}>
+    <thead className={cn("border", borderColor, bgColor)}>
       <tr>
         {items.map((e, index) => {
           if (index === 0) {

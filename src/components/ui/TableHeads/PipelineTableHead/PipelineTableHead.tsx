@@ -43,7 +43,11 @@ const PipelineTableHead: FC<PipelineTableHeadProps> = ({
   ];
 
   return (
-    <TableHeadBase bgColor="border-instillGrey05" items={pipelineHeadItems} />
+    <TableHeadBase
+      borderColor="border-instillGrey20"
+      bgColor="bg-instillGrey05"
+      items={pipelineHeadItems}
+    />
   );
 };
 
