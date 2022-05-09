@@ -4,6 +4,7 @@ import {
   GrpcIcon,
   HttpIcon,
   LocalUploadIcon,
+  ModelInstanceIcon,
   MySqlIcon,
 } from "@instill-ai/design-system";
 
@@ -72,6 +73,21 @@ export const mockModelSourceOptions = [
         width="w-[30px]"
         height="h-[30px]"
         color="fill-instillGrey90"
+        position="my-auto"
+      />
+    ),
+  },
+];
+
+export const mockModelInstances = [
+  {
+    label: "v1.0.0",
+    value: "v1.0,0",
+    startIcon: (
+      <ModelInstanceIcon
+        color="fill-instillGrey90"
+        width="w-[30px]"
+        height="h-[30px]"
         position="my-auto"
       />
     ),
