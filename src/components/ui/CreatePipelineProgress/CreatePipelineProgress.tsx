@@ -1,6 +1,7 @@
+import { FC, useEffect, useMemo, useRef } from "react";
 import { getElementPosition } from "@instill-ai/design-system";
+
 import useOnScreen from "@/hooks/useOnScreen";
-import { FC, useMemo, useRef } from "react";
 import ProgressStep from "./ProgressStep";
 
 /**
@@ -21,62 +22,119 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const firstStepCubeRef = useRef<HTMLDivElement>(null);
+  const secondStepCubeRef = useRef<HTMLDivElement>(null);
+  const thirdStepCubeRef = useRef<HTMLDivElement>(null);
   const lastStepCubeRef = useRef<HTMLDivElement>(null);
+  const firstConnectionLineRef = useRef<HTMLDivElement>(null);
+  const secondConnectionLineRef = useRef<HTMLDivElement>(null);
+  const thirdConnectionLineRef = useRef<HTMLDivElement>(null);
 
   const contanierIsOnScreen = useOnScreen(containerRef);
 
-  const startPosition = useMemo(() => {
+  // Calculate the position and wdith of three connection line
+
+  const connectionLine = useMemo(() => {
     if (!contanierIsOnScreen) {
-      return {
-        x: 0,
-        y: 0,
-      };
+      return null;
     }
 
     const containerPosition = getElementPosition(
       containerRef.current as HTMLDivElement
     );
-    const firstStepPosition = getElementPosition(
+    const firstStepCubePosition = getElementPosition(
       firstStepCubeRef.current as HTMLDivElement
     );
-
-    const startPositionX =
-      firstStepPosition.x - containerPosition.x + firstStepPosition.width;
-
-    const startPositionY =
-      firstStepPosition.y - containerPosition.y + firstStepPosition.height / 2;
-
-    return {
-      x: startPositionX,
-      y: startPositionY,
-    };
-  }, [contanierIsOnScreen]);
-
-  const endPosition = useMemo(() => {
-    if (!contanierIsOnScreen) {
-      return {
-        x: 0,
-        y: 0,
-      };
-    }
-
-    const containerPosition = getElementPosition(
-      containerRef.current as HTMLDivElement
+    const secondStepCubePosition = getElementPosition(
+      secondStepCubeRef.current as HTMLDivElement
     );
-    const lastStepPosition = getElementPosition(
+    const thirdStepCubePosition = getElementPosition(
+      thirdStepCubeRef.current as HTMLDivElement
+    );
+    const lastStepCubePosition = getElementPosition(
       lastStepCubeRef.current as HTMLDivElement
     );
 
-    const endPositionX = lastStepPosition.x - containerPosition.x;
-
-    const endPositionY =
-      lastStepPosition.y - containerPosition.y + lastStepPosition.height / 2;
-
-    return {
-      x: endPositionX,
-      y: endPositionY,
-    };
+    return (
+      <>
+        <div
+          ref={firstConnectionLineRef}
+          className="absolute h-[1px] border-t border-instillGrey20"
+          style={{
+            top:
+              firstStepCubePosition.y -
+              containerPosition.y +
+              firstStepCubePosition.height / 2,
+            left:
+              firstStepCubePosition.x -
+              containerPosition.x +
+              firstStepCubePosition.width,
+            width: `${
+              secondStepCubePosition.x -
+              firstStepCubePosition.x -
+              firstStepCubePosition.width
+            }px`,
+          }}
+        />
+        <div
+          ref={secondConnectionLineRef}
+          className="absolute h-[1px] border-t border-instillGrey20"
+          style={{
+            top:
+              secondStepCubePosition.y -
+              containerPosition.y +
+              secondStepCubePosition.height / 2,
+            left:
+              secondStepCubePosition.x -
+              containerPosition.x +
+              secondStepCubePosition.width,
+            width: `${
+              thirdStepCubePosition.x -
+              secondStepCubePosition.x -
+              secondStepCubePosition.width
+            }px`,
+          }}
+        />
+        <div
+          ref={thirdConnectionLineRef}
+          className="absolute h-[1px] border-t border-instillGrey20"
+          style={{
+            top:
+              thirdStepCubePosition.y -
+              containerPosition.y +
+              thirdStepCubePosition.height / 2,
+            left:
+              thirdStepCubePosition.x -
+              containerPosition.x +
+              thirdStepCubePosition.width,
+            width: `${
+              lastStepCubePosition.x -
+              thirdStepCubePosition.x -
+              thirdStepCubePosition.width
+            }px`,
+          }}
+        />
+      </>
+    );
   }, [contanierIsOnScreen]);
+
+  // Update connection line's color according to current progression
+
+  useEffect(() => {
+    if (currentProgress >= 2) {
+      firstConnectionLineRef.current?.classList.remove("border-instillGrey20");
+      firstConnectionLineRef.current?.classList.add("border-instillBlue50");
+    }
+
+    if (currentProgress >= 3) {
+      secondConnectionLineRef.current?.classList.remove("border-instillGrey20");
+      secondConnectionLineRef.current?.classList.add("border-instillBlue50");
+    }
+
+    if (currentProgress === 4) {
+      thirdConnectionLineRef.current?.classList.remove("border-instillGrey20");
+      thirdConnectionLineRef.current?.classList.add("border-instillBlue50");
+    }
+  }, [currentProgress]);
 
   return (
     <div ref={containerRef} className="relative">
@@ -88,32 +146,31 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
           isCurrent={
             currentProgress === 0 ? true : currentProgress === 1 ? true : false
           }
+          isPassed={currentProgress > 1 ? true : false}
         />
         <ProgressStep
           stepNum={2}
+          ref={secondStepCubeRef}
           stepName="Model"
           isCurrent={currentProgress === 2 ? true : false}
+          isPassed={currentProgress > 2 ? true : false}
         />
         <ProgressStep
           stepNum={3}
+          ref={thirdStepCubeRef}
           stepName="Data Destination"
           isCurrent={currentProgress === 3 ? true : false}
+          isPassed={currentProgress > 3 ? true : false}
         />
         <ProgressStep
           stepNum={4}
           stepName="Pipeline"
           ref={lastStepCubeRef}
           isCurrent={currentProgress === 4 ? true : false}
+          isPassed={currentProgress > 4 ? true : false}
         />
       </div>
-      <div
-        className="absolute h-[1px] border-t border-instillGrey20"
-        style={{
-          top: startPosition?.y,
-          left: startPosition?.x,
-          width: `${endPosition.x - startPosition.x}px`,
-        }}
-      ></div>
+      {connectionLine}
     </div>
   );
 };
