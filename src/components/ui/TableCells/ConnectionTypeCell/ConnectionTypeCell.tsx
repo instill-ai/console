@@ -1,3 +1,5 @@
+import { FC, ReactNode } from "react";
+import cn from "clsx";
 import {
   BigQueryIcon,
   GoogleSheetIcon,
@@ -12,10 +14,10 @@ import {
   SlackIcon,
   SnowflakeIcon,
 } from "@instill-ai/design-system";
-import { FC, ReactNode } from "react";
-import cn from "clsx";
 
-export type ConnectionTypeCellProps = {
+import CellBase, { CellBaseProps } from "../CellBase";
+
+export type ConnectionTypeCellProps = CellBaseProps & {
   type: string;
   name: string;
   width: string;
@@ -25,6 +27,10 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   type,
   name,
   width,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
 }) => {
   let icon: ReactNode;
   const iconWidth = "w-[30px]";
@@ -139,14 +145,19 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   }
 
   return (
-    <td>
+    <CellBase
+      paddingTop={paddingTop}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+    >
       <div className={cn("py-2.5", width)}>
         <div className="flex flex-row gap-x-2.5">
           {icon}
           <p className="instill-text-body text-instillGrey90">{name}</p>
         </div>
       </div>
-    </td>
+    </CellBase>
   );
 };
 
