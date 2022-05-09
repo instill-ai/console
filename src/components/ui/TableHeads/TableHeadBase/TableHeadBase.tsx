@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+import cn from "clsx";
 
 export type Item = {
   key: string;
@@ -8,11 +9,16 @@ export type Item = {
 export type TableHeadBaseProps = {
   items: Item[];
   bgColor: string;
+  borderColor: string;
 };
 
-const TableHeadBase: FC<TableHeadBaseProps> = ({ items, bgColor }) => {
+const TableHeadBase: FC<TableHeadBaseProps> = ({
+  items,
+  bgColor,
+  borderColor,
+}) => {
   return (
-    <thead className={bgColor}>
+    <thead className={cn(borderColor, bgColor)}>
       <tr>
         {items.map((e, index) => {
           if (index === 0) {
