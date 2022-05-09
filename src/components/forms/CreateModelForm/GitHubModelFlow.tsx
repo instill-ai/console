@@ -1,25 +1,35 @@
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, useEffect } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  BasicProgressMessageBoxProps,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 
 import { SingleSelect, TextField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { mockModelInstances } from "../MockData";
 import { CreateModelFormValue } from "./CreateModelForm";
 
+type progressMessageBoxState = {
+  status: BasicProgressMessageBoxProps["status"];
+  message: string;
+};
+
 const GitHubModelFlow: FC = () => {
   const [modelInstances, setModelInstances] = useState<
     SingleSelectOption[] | null
   >(null);
-
   const [fetched, setFetched] = useState(false);
+  const [progressMessageBoxState, setProgressMessageBoxState] =
+    useState<progressMessageBoxState | null>(null);
 
   const { values, setFieldValue } = useFormikContext<CreateModelFormValue>();
 
   const displayFetchModelButton = useMemo(() => {
     if (fetched) return false;
     return true;
-  }, [values.type, values.githubRepo]);
+  }, [fetched]);
 
   const canFetchModel = useMemo(() => {
     if (!values.githubRepo) return false;
@@ -42,12 +52,49 @@ const GitHubModelFlow: FC = () => {
   const githubRepoOnChangeCb = () => {
     if (fetched) setFetched(false);
     setFieldValue("instance", null);
+    setModelInstances(null);
+    setProgressMessageBoxState(null);
   };
 
   const handleFetchingModel = () => {
     setFetched(true);
-    setTimeout(() => setModelInstances(mockModelInstances), 3000);
+    setProgressMessageBoxState({
+      status: "progressing",
+      message: "Fetching model",
+    });
+    setTimeout(() => {
+      setProgressMessageBoxState({
+        status: "success",
+        message: "Successfully fetched model",
+      });
+      setModelInstances(mockModelInstances);
+      setTimeout(() => setProgressMessageBoxState(null), 3000);
+    }, 3000);
   };
+
+  // const handleSettingUpModel = () => {};
+
+  // Testing model
+  useEffect(() => {
+    if (
+      !values.name ||
+      !values.type ||
+      !values.githubRepo ||
+      !values.instance
+    ) {
+      return;
+    }
+    setProgressMessageBoxState({
+      status: "progressing",
+      message: "Testing connection",
+    });
+    setTimeout(() => {
+      setProgressMessageBoxState({
+        status: "success",
+        message: "All connection tests succeeded.",
+      });
+    }, 3000);
+  }, [values.name, values.type, values.githubRepo, values.instance]);
 
   return (
     <>
@@ -75,24 +122,36 @@ const GitHubModelFlow: FC = () => {
           description={"Setup Guide"}
         />
       ) : null}
-      {displayFetchModelButton ? (
-        <PrimaryButton
-          disabled={canFetchModel ? false : true}
-          onClickHandler={handleFetchingModel}
-          position="ml-auto"
-          type="button"
-        >
-          Fetch model
-        </PrimaryButton>
-      ) : (
-        <PrimaryButton
-          disabled={canSetupModel ? false : true}
-          position="ml-auto"
-          type="submit"
-        >
-          Set up model
-        </PrimaryButton>
-      )}
+      <div className="flex flex-row">
+        {progressMessageBoxState ? (
+          <BasicProgressMessageBox
+            width="w-[335px]"
+            status={progressMessageBoxState.status}
+          >
+            {progressMessageBoxState.message}
+          </BasicProgressMessageBox>
+        ) : null}
+
+        {displayFetchModelButton ? (
+          <PrimaryButton
+            disabled={canFetchModel ? false : true}
+            onClickHandler={handleFetchingModel}
+            position="ml-auto my-auto"
+            type="button"
+          >
+            Fetch model
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton
+            disabled={canSetupModel ? false : true}
+            position="ml-auto my-auto"
+            type="button"
+            onClickHandler={handleSettingUpModel}
+          >
+            Set up model
+          </PrimaryButton>
+        )}
+      </div>
     </>
   );
 };
