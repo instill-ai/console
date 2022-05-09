@@ -1,15 +1,24 @@
 import { FC } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
-import { Mode } from "@/types/general";
 
-export type ModeCellProps = {
+import { Mode } from "@/types/general";
+import CellBase, { CellBaseProps } from "../CellBase";
+
+export type ModeCellProps = CellBaseProps & {
   width: string;
   mode: Mode;
 };
 
-const ModeCell: FC<ModeCellProps> = ({ width, mode }) => {
-  const modeIcon = () => {
+const ModeCell: FC<ModeCellProps> = ({
+  width,
+  mode,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+}) => {
+  const getModeIcon = () => {
     if (mode === "async") {
       return (
         <AsyncIcon
@@ -31,14 +40,19 @@ const ModeCell: FC<ModeCellProps> = ({ width, mode }) => {
   };
 
   return (
-    <td>
+    <CellBase
+      paddingTop={paddingTop}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+    >
       <div className={cn("flex gap-x-2 px-2 py-3", width)}>
-        {modeIcon}
+        {getModeIcon()}
         <p className="instill-text-body text-instillGrey90">
           {mode === "async" ? "Async" : "Sync"}
         </p>
       </div>
-    </td>
+    </CellBase>
   );
 };
 
