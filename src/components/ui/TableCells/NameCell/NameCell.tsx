@@ -31,7 +31,7 @@ const NameCell: FC<NameCellProps> = ({
       paddingRight={paddingRight}
       paddingBottom={paddingBottom}
     >
-      <div className={cn("flex flex-row gap-x-[5px]", width)}>
+      <div className={cn("flex flex-row gap-x-2.5", width)}>
         <div className="flex h-8 w-8">
           <StatusIndicator
             status={status}
