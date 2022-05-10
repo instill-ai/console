@@ -2,7 +2,6 @@ import InstanceCell from "./InstanceCell";
 import type { InstanceCellProps } from "./InstanceCell";
 import NameCell from "./NameCell";
 import type { NameCellProps } from "./NameCell";
-Ｆ;
 import ConnectionTypeCell from "./ConnectionTypeCell";
 import type { ConnectionTypeCellProps } from "./ConnectionTypeCell";
 import ModeCell from "./ModeCell";
