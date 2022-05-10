@@ -154,7 +154,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       <div className={cn("py-2.5", width)}>
         <div className="flex flex-row gap-x-2.5">
           {icon}
-          <p className="instill-text-body text-instillGrey90">{name}</p>
+          <p className="instill-text-body text-instillGrey90 my-auto">{name}</p>
         </div>
       </div>
     </CellBase>
