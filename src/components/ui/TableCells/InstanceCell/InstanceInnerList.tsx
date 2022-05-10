@@ -56,7 +56,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
 
   const handleExpand = () => {
     setIsExpand(true);
-    setDisplayLimit(items.length - 1);
+    setDisplayLimit(items.length);
   };
 
   return (
@@ -70,7 +70,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
             return <InstanceInnerListItem key={e.name} item={e} />;
           }
 
-          if (index > displayLimit || index === displayLimit) {
+          if (index >= displayLimit) {
             return null;
           }
 
