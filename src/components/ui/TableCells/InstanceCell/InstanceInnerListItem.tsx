@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Instance } from "./InstanceCell";
 import cn from "clsx";
 import StatusIndicator from "../../StatusIndicator";
@@ -8,16 +8,36 @@ export type InstanceInnerListItemProps = {
 };
 
 const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({ item }) => {
+  const itemStyle = useMemo(() => {
+    const { status } = item;
+
+    if (status === "error") {
+      return "bg-instillRed10 text-instillRed";
+    }
+
+    if (
+      status === "on" ||
+      status === "active" ||
+      status === "connected" ||
+      status === "online"
+    ) {
+      return "bg-instillGreen10 text-instillGreen50";
+    }
+
+    if (
+      status === "off" ||
+      status === "inactive" ||
+      status === "disconnected" ||
+      status === "offline" ||
+      status === "unspecific"
+    ) {
+      return "bg-instillGrey05 text-instillGrey70";
+    }
+  }, [item]);
+
   return (
     <div
-      className={cn(
-        "flex flex-row gap-x-[5px] px-[5px] py-0.5",
-        item.status === "error"
-          ? "bg-instillRed10 text-instillRed"
-          : item.status === "on"
-          ? "bg-instillGreen10 text-instillGreen50"
-          : "bg-instillGrey05 text-instillGrey70"
-      )}
+      className={cn("flex flex-row gap-x-[5px] px-[5px] py-0.5", itemStyle)}
       key={`instance-item-list-${item.name}`}
     >
       <StatusIndicator
