@@ -30,7 +30,7 @@ const CreateModelForm: FC = () => {
     >
       {(formik) => {
         return (
-          <Form>
+          <Form className="flex flex-col gap-y-5">
             <TextField
               name="name"
               label="Name"
