@@ -16,7 +16,11 @@ import type {
   ConnectionTypeCellProps,
   ModeCellProps,
 } from "./TableCells";
-import { PipelineTableHead, PipelineTableHeadProps } from "./TableHeads";
+import { PipelineTableHead, SourceTableHead } from "./TableHeads";
+import type {
+  PipelineTableHeadProps,
+  SourceTableHeadProps,
+} from "./TableHeads";
 import TableBody from "./TableBody";
 import {
   SourceTablePlaceholder,
@@ -39,6 +43,7 @@ export {
   SourceTablePlaceholder,
   DestinationTablePlaceholder,
   PipelineTablePlaceholder,
+  SourceTableHead,
 };
 export type {
   StatusIndicatorProps,
@@ -47,4 +52,5 @@ export type {
   ConnectionTypeCellProps,
   PipelineTableHeadProps,
   ModeCellProps,
+  SourceTableHeadProps,
 };
