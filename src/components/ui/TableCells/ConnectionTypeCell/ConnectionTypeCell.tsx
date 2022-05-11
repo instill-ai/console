@@ -158,7 +158,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-row gap-x-2.5">
             {icon}
-            <p className="instill-text-body text-instillGrey90 my-auto">
+            <p className="instill-text-body my-auto text-instillGrey90">
               {name}
             </p>
           </div>
@@ -177,9 +177,11 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
           <div className="flex flex-col gap-y-[6px]">
             <div className="flex flex-row gap-x-[5px]">
               {icon}
-              <p className="instill-text-small text-instillGrey70">{type}</p>
+              <p className="instill-text-small my-auto text-instillGrey70">
+                {type}
+              </p>
             </div>
-            <p className="instill-text-body text-instillGrey90 my-auto">
+            <p className="instill-text-body my-auto text-instillGrey90">
               {name}
             </p>
           </div>
