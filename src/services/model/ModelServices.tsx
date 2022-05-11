@@ -6,6 +6,12 @@ export type ModelState =
   | "STATE_ERROR"
   | "STATE_UNSPECIFIC";
 
+export type Model = {
+  id: string;
+  instance: string;
+  status: Status;
+};
+
 export const transformModelStateToStatus = (state: ModelState): Status => {
   switch (state) {
     case "STATE_ONLINE":
