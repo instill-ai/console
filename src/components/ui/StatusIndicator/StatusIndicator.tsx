@@ -58,6 +58,15 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
         />
       );
       break;
+    default:
+      statusIcon = (
+        <StatusOffIcon
+          color="fill-instillGrey50"
+          width={width}
+          height={height}
+          position={position}
+        />
+      );
   }
 
   return statusIcon;
