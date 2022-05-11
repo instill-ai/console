@@ -1,5 +1,6 @@
+import { listRepoFileContent } from "@/lib/github";
 import { Mode, Status } from "@/types/general";
-import { FC } from "react";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { Model, ModelState } from "../model/ModelServices";
 
@@ -190,4 +191,29 @@ export const usePipeline = (id?: string) => {
     },
     { enabled: id ? true : false }
   );
+};
+
+export const usePipelineSchema = () => {
+  const fetchPipelineSchema = async (): Promise<string> => {
+    const data = await listRepoFileContent(
+      "instill-ai",
+      "pipeline-backend",
+      "configs/models/pipeline.json"
+    );
+    return data.content;
+  };
+
+  const queryInfo = useQuery(
+    ["pipeline", "encoded-definition"],
+    fetchPipelineSchema
+  );
+
+  return {
+    ...queryInfo,
+    data: useMemo(() => {
+      if (queryInfo.data) {
+        return JSON.parse(window.atob(queryInfo.data));
+      }
+    }, [queryInfo.data]),
+  };
 };
