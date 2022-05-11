@@ -5,7 +5,7 @@ import {
   InstanceCell,
   ModeCell,
   NameCell,
-  PipelineTableHead,
+  PipelinesTableHead,
   PipelineTablePlaceholder,
   TableBody,
   TableContainer,
@@ -33,7 +33,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
 
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
-      <PipelineTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
+      <PipelinesTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
       <TableBody>
         {pipelines.map((pipeline) => (
           <TableRow

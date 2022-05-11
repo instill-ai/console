@@ -2,13 +2,13 @@ import { FC } from "react";
 import StatusOverview from "../../StatusOverview";
 import TableHeadBase, { Item } from "../TableHeadBase";
 
-export type PipelineTableHeadProps = {
+export type PipelinesTableHeadProps = {
   errorCounts: number;
   offlineCounts: number;
   onlineCounts: number;
 };
 
-const PipelineTableHead: FC<PipelineTableHeadProps> = ({
+const PipelinesTableHead: FC<PipelinesTableHeadProps> = ({
   errorCounts,
   offlineCounts,
   onlineCounts,
@@ -51,4 +51,4 @@ const PipelineTableHead: FC<PipelineTableHeadProps> = ({
   );
 };
 
-export default PipelineTableHead;
+export default PipelinesTableHead;
