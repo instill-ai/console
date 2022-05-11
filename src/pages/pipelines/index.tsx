@@ -1,7 +1,7 @@
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { mockPipelines } from "@/services/pipeline/PipelineServices";
-import PipelineTable from "@/services/pipeline/PipelineTable";
+import { PipelinesTable } from "@/services/pipeline";
 import { FC, ReactElement } from "react";
 
 interface GetLayOutProps {
@@ -23,7 +23,7 @@ const PipelinePage: FC & {
         buttonLink="/pipelines/create"
         marginBottom="mb-10"
       />
-      <PipelineTable pipelines={mockPipelines} isLoadingPipeline={false} />
+      <PipelinesTable pipelines={mockPipelines} isLoadingPipeline={false} />
     </PageContentContainer>
   );
 };
