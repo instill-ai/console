@@ -27,7 +27,7 @@ export type ListPipelinesResponse = {
 export type Pipeline = {
   id: string;
   description: string;
-  mode: PipelineMode;
+  mode: Mode;
   status: Status;
   owner_id: string;
   full_name: string;
@@ -65,7 +65,7 @@ export const mockPipelines: Pipeline[] = [
   {
     id: "yet-another-mock-pipeline-1",
     description: "helllo",
-    mode: "MODE_ASYNC",
+    mode: "async",
     status: "active",
     owner_id: "summerbud",
     full_name: "Summberbud",
@@ -97,7 +97,7 @@ export const mockPipelines: Pipeline[] = [
   {
     id: "yet-another-mock-pipeline-2",
     description: "nononononono hehee hee",
-    mode: "MODE_ASYNC",
+    mode: "async",
     status: "active",
     owner_id: "summerbud",
     full_name: "Summberbud",
@@ -129,7 +129,7 @@ export const mockPipelines: Pipeline[] = [
   {
     id: "yet-another-mock-pipeline-3",
     description: "nononononono hehee hee ddddddddd",
-    mode: "MODE_ASYNC",
+    mode: "async",
     status: "active",
     owner_id: "summerbud",
     full_name: "Summberbud",
@@ -186,10 +186,8 @@ export const usePipeline = (id?: string) => {
     ["pipelines", id],
     async () => {
       // Mock
-      return mockPipelines.find((e) => e.id === id);
+      return mockPipelines.find((e) => e.id === id) as Pipeline;
     },
-    {
-      enabled: id ? true : false,
-    }
+    { enabled: id ? true : false }
   );
 };
