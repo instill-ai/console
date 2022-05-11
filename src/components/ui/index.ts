@@ -13,6 +13,8 @@ import {
 
 import StatusLabel from "./StatusLabel";
 import type { StatusLabelProps } from "./StatusLabel";
+import ModelLabel from "./ModeLabel/ModeLabel";
+import type { ModelLabelProps } from "./ModeLabel";
 
 export {
   Sidebar,
@@ -25,8 +27,9 @@ export {
   DestinationTablePlaceholder,
   PipelineTablePlaceholder,
   StatusLabel,
+  ModelLabel,
 };
-export type { StatusIndicatorProps, StatusLabelProps };
+export type { StatusIndicatorProps, StatusLabelProps, ModelLabelProps };
 
 export * from "./TableHeads";
 
