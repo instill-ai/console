@@ -1,3 +1,5 @@
+import { FC, memo } from "react";
+
 import {
   ConnectionTypeCell,
   InstanceCell,
@@ -9,20 +11,15 @@ import {
   TableContainer,
   TableRow,
 } from "@/components/ui";
-import { FC, memo } from "react";
 import { transformModelStateToStatus } from "../model/ModelServices";
-import {
-  Pipeline,
-  transformMode,
-  transformPipelineStateToStatus,
-} from "./PipelineServices";
+import { Pipeline, transformMode } from "./PipelineServices";
 
-export type PipelineTableProps = {
+export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
   pipelines: Pipeline[];
 };
 
-const PipelineTable: FC<PipelineTableProps> = ({
+const PipelinesTable: FC<PipelinesTableProps> = ({
   isLoadingPipeline,
   pipelines,
 }) => {
@@ -39,12 +36,16 @@ const PipelineTable: FC<PipelineTableProps> = ({
       <PipelineTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
       <TableBody>
         {pipelines.map((pipeline) => (
-          <TableRow key={pipeline.id}>
+          <TableRow
+            borderColor="border-instillGrey20"
+            bgColor="bg-white"
+            key={pipeline.id}
+          >
             <NameCell
               name={pipeline.name}
               width="w-[191px]"
               updatedAt={pipeline.update_time}
-              status={transformPipelineStateToStatus(pipeline.state)}
+              status={pipeline.status}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft="pl-[15px]"
@@ -60,8 +61,8 @@ const PipelineTable: FC<PipelineTableProps> = ({
             />
             <ConnectionTypeCell
               width="w-[125px]"
-              type={pipeline.recipe.source.name}
-              name={pipeline.recipe.source.type}
+              type={pipeline.recipe.source.type}
+              name={pipeline.recipe.source.name}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
@@ -83,8 +84,8 @@ const PipelineTable: FC<PipelineTableProps> = ({
             />
             <ConnectionTypeCell
               width="w-[160px]"
-              type={pipeline.recipe.destination.name}
-              name={pipeline.recipe.destination.type}
+              type={pipeline.recipe.destination.type}
+              name={pipeline.recipe.destination.name}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
@@ -97,4 +98,4 @@ const PipelineTable: FC<PipelineTableProps> = ({
   );
 };
 
-export default memo(PipelineTable);
+export default memo(PipelinesTable);
