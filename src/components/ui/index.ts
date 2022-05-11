@@ -16,17 +16,15 @@ import type {
   ConnectionTypeCellProps,
   ModeCellProps,
 } from "./TableCells";
-import { PipelineTableHead, SourceTableHead } from "./TableHeads";
-import type {
-  PipelineTableHeadProps,
-  SourceTableHeadProps,
-} from "./TableHeads";
 import TableBody from "./TableBody";
 import {
   SourceTablePlaceholder,
   PipelineTablePlaceholder,
   DestinationTablePlaceholder,
 } from "./TablePlaceholders";
+
+import StatusLabel from "./StatusLabel";
+import type { StatusLabelProps } from "./StatusLabel";
 
 export {
   Sidebar,
@@ -37,20 +35,20 @@ export {
   InstanceCell,
   NameCell,
   ConnectionTypeCell,
-  PipelineTableHead,
   TableBody,
   ModeCell,
   SourceTablePlaceholder,
   DestinationTablePlaceholder,
   PipelineTablePlaceholder,
-  SourceTableHead,
+  StatusLabel,
 };
 export type {
   StatusIndicatorProps,
   InstanceCellProps,
   NameCellProps,
   ConnectionTypeCellProps,
-  PipelineTableHeadProps,
   ModeCellProps,
-  SourceTableHeadProps,
+  StatusLabelProps,
 };
+
+export * from "./TableHeads";
