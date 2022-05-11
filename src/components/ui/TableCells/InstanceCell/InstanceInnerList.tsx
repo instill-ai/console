@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
+import cn from "clsx";
+
 import { getTextWidth } from "../../../../utils";
 import { Instance } from "./InstanceCell";
 import InstanceInnerListItem from "./InstanceInnerListItem";
-import cn from "clsx";
 
 export type InstanceInnerListProps = {
   listItemsContainerWidth: number;
@@ -81,7 +82,11 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
         onClick={() => handleExpand()}
         className={cn(
           "flex cursor-pointer bg-instillGrey05 px-[5px] py-0.5",
-          isExpand ? "hidden" : ""
+          isExpand
+            ? "hidden"
+            : items.length - displayLimit === 0
+            ? "hidden"
+            : ""
         )}
       >
         <p className="instill-text-small my-auto text-instillGrey70">{`+ ${
