@@ -1,19 +1,7 @@
-import { useMemo } from "react";
-import {
-  ModeCell,
-  NameCell,
-  PipelineTableHead,
-  PipelineTablePlaceholder,
-  TableBody,
-  TableRow,
-  InstanceCell,
- TableContainer } from "@/components/ui";
 import { Mode, Status } from "@/types/general";
-import { ConnectionTypeCell } from "@/components/ui/TableCells";
-import {
-  ModelState,
-  transformModelStateToStatus,
-} from "../model/ModelServices";
+import { FC } from "react";
+import { useQuery } from "react-query";
+import { Model, ModelState } from "../model/ModelServices";
 
 type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -38,10 +26,9 @@ export type ListPipelinesResponse = {
 
 export type Pipeline = {
   id: string;
-  name: string;
   description: string;
   mode: PipelineMode;
-  state: PipelineState;
+  status: Status;
   owner_id: string;
   full_name: string;
   create_time: string;
@@ -71,20 +58,15 @@ export type PipelineRecipe = {
     name: string;
     type: string;
   };
-  models: {
-    name: string;
-    instance_name: string;
-    state: ModelState;
-  }[];
+  models: Model[];
 };
 
 export const mockPipelines: Pipeline[] = [
   {
-    id: "pipeline-1",
-    name: "Yet another mock pipeline - 1",
+    id: "yet-another-mock-pipeline-1",
     description: "helllo",
     mode: "MODE_ASYNC",
-    state: "STATE_ACTIVE",
+    status: "active",
     owner_id: "summerbud",
     full_name: "Summberbud",
     create_time: "2022-05-06T09:00:00",
@@ -100,77 +82,87 @@ export const mockPipelines: Pipeline[] = [
       },
       models: [
         {
-          name: "YOLOv4",
-          instance_name: "v1.0.0",
-          state: "STATE_ONLINE",
+          id: "YOLOv4",
+          instance: "v1.0.0",
+          status: "online",
         },
         {
-          name: "YOLOv3",
-          instance_name: "v2.0.0",
-          state: "STATE_OFFLINE",
+          id: "YOLOv3",
+          instance: "v2.0.0",
+          status: "offline",
+        },
+      ],
+    },
+  },
+  {
+    id: "yet-another-mock-pipeline-2",
+    description: "nononononono hehee hee",
+    mode: "MODE_ASYNC",
+    status: "active",
+    owner_id: "summerbud",
+    full_name: "Summberbud",
+    create_time: "2022-05-06T09:00:00",
+    update_time: "2022-05-06T09:00:00",
+    recipe: {
+      source: {
+        name: "redshift-hi",
+        type: "redshift",
+      },
+      destination: {
+        name: "mysql-destination",
+        type: "mysql",
+      },
+      models: [
+        {
+          id: "YOLOv4",
+          instance: "v1.0.0",
+          status: "online",
+        },
+        {
+          id: "YOLOv3",
+          instance: "v2.0.0",
+          status: "offline",
+        },
+      ],
+    },
+  },
+  {
+    id: "yet-another-mock-pipeline-3",
+    description: "nononononono hehee hee ddddddddd",
+    mode: "MODE_ASYNC",
+    status: "active",
+    owner_id: "summerbud",
+    full_name: "Summberbud",
+    create_time: "2022-05-06T09:00:00",
+    update_time: "2022-05-06T09:00:00",
+    recipe: {
+      source: {
+        name: "http-hi",
+        type: "http",
+      },
+      destination: {
+        name: "http-destination",
+        type: "http",
+      },
+      models: [
+        {
+          id: "YOLOv4",
+          instance: "v1.0.0",
+          status: "online",
+        },
+        {
+          id: "YOLOv3",
+          instance: "v2.0.0",
+          status: "offline",
         },
       ],
     },
   },
 ];
 
-export const usePipelineTable = (
-  pipelines: Pipeline[],
-  isLoadingPipeline: boolean
-) => {
-  const pipelineTable = useMemo(() => {
-    if (isLoadingPipeline) {
-      return <div>isLoading</div>;
-    }
-
-    if (pipelines.length === 0) {
-      return <PipelineTablePlaceholder />;
-    }
-
-    return (
-      <TableContainer borderCollapse="border-collapse">
-        <PipelineTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
-        <TableBody>
-          {pipelines.map((pipeline) => (
-            <TableRow key={pipeline.id}>
-              <NameCell
-                name={pipeline.name}
-                width="w-[191px]"
-                updatedAt={pipeline.update_time}
-                status={transformStateToStatus(pipeline.state)}
-              />
-              <ModeCell width="w-[100px]" mode={transformMode(pipeline.mode)} />
-              <ConnectionTypeCell
-                width="w-[125px]"
-                type={pipeline.recipe.source.name}
-                name={pipeline.recipe.source.type}
-              />
-              <InstanceCell
-                type="model"
-                width="w-[190px]"
-                instances={pipeline.recipe.models.map((model) => {
-                  return {
-                    name: `${model.name}/${model.instance_name}`,
-                    status: transformModelStateToStatus(model.state),
-                  };
-                })}
-              />
-              <ConnectionTypeCell
-                width="w-[125px]"
-                type={pipeline.recipe.destination.name}
-                name={pipeline.recipe.destination.type}
-              />
-            </TableRow>
-          ))}
-        </TableBody>
-      </TableContainer>
-    );
-  }, [pipelines, isLoadingPipeline]);
-
-  return pipelineTable;
-};
-
-const transformStateToStatus = (state: PipelineState): Status => {
+export const transformPipelineStateToStatus = (
+  state: PipelineState
+): Status => {
   switch (state) {
     case "STATE_ACTIVE":
       return "active";
@@ -183,8 +175,21 @@ const transformStateToStatus = (state: PipelineState): Status => {
   }
 };
 
-const transformMode = (mode: PipelineMode): Mode => {
+export const transformMode = (mode: PipelineMode): Mode => {
   if (mode === "MODE_ASYNC") return "async";
   else if (mode === "MODE_SYNC") return "sync";
   else return "unspecific";
+};
+
+export const usePipeline = (id?: string) => {
+  return useQuery(
+    ["pipelines", id],
+    async () => {
+      // Mock
+      return mockPipelines.find((e) => e.id === id);
+    },
+    {
+      enabled: id ? true : false,
+    }
+  );
 };
