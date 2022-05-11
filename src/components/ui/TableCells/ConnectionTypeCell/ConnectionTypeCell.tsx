@@ -19,6 +19,7 @@ import CellBase, { CellBaseProps } from "../CellBase";
 
 export type ConnectionTypeCellProps = CellBaseProps & {
   type: string;
+  cellType: "shrink" | "expand";
   name: string;
   width: string;
 };
@@ -31,10 +32,11 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   paddingLeft,
   paddingRight,
   paddingTop,
+  cellType,
 }) => {
   let icon: ReactNode;
-  const iconWidth = "w-[30px]";
-  const iconHeight = "h-[30px]";
+  const iconWidth = "w-8";
+  const iconHeight = "h-8";
   const position = "my-auto";
 
   switch (type) {
@@ -144,21 +146,47 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
     }
   }
 
-  return (
-    <CellBase
-      paddingTop={paddingTop}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-    >
-      <div className={cn("py-2.5", width)}>
-        <div className="flex flex-row gap-x-2.5">
-          {icon}
-          <p className="instill-text-body text-instillGrey90 my-auto">{name}</p>
+  if (cellType === "shrink") {
+    return (
+      <CellBase
+        paddingTop={paddingTop}
+        paddingLeft={paddingLeft}
+        paddingRight={paddingRight}
+        paddingBottom={paddingBottom}
+      >
+        {}
+        <div className={cn("py-2.5", width)}>
+          <div className="flex flex-row gap-x-2.5">
+            {icon}
+            <p className="instill-text-body text-instillGrey90 my-auto">
+              {name}
+            </p>
+          </div>
         </div>
-      </div>
-    </CellBase>
-  );
+      </CellBase>
+    );
+  } else {
+    return (
+      <CellBase
+        paddingTop={paddingTop}
+        paddingLeft={paddingLeft}
+        paddingRight={paddingRight}
+        paddingBottom={paddingBottom}
+      >
+        <div className={cn("py-2.5", width)}>
+          <div className="flex flex-col gap-y-[6px]">
+            <div className="flex flex-row gap-x-[5px]">
+              {icon}
+              <p className="instill-text-small text-instillGrey70">{type}</p>
+            </div>
+            <p className="instill-text-body text-instillGrey90 my-auto">
+              {name}
+            </p>
+          </div>
+        </div>
+      </CellBase>
+    );
+  }
 };
 
 export default ConnectionTypeCell;
