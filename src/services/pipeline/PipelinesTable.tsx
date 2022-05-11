@@ -11,8 +11,7 @@ import {
   TableContainer,
   TableRow,
 } from "@/components/ui";
-import { transformModelStateToStatus } from "../model/ModelServices";
-import { Pipeline, transformMode } from "./PipelineServices";
+import { Pipeline } from "./PipelineServices";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
@@ -42,7 +41,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             key={pipeline.id}
           >
             <NameCell
-              name={pipeline.name}
+              name={pipeline.id}
               width="w-[191px]"
               updatedAt={pipeline.update_time}
               status={pipeline.status}
@@ -53,7 +52,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             />
             <ModeCell
               width="w-[100px]"
-              mode={transformMode(pipeline.mode)}
+              mode={pipeline.mode}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
@@ -63,6 +62,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               width="w-[125px]"
               type={pipeline.recipe.source.type}
               name={pipeline.recipe.source.name}
+              cellType="expand"
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
@@ -73,8 +73,8 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               width="w-[190px]"
               instances={pipeline.recipe.models.map((model) => {
                 return {
-                  name: `${model.name}/${model.instance_name}`,
-                  status: transformModelStateToStatus(model.state),
+                  name: `${model.id}/${model.instance}`,
+                  status: model.status,
                 };
               })}
               paddingBottom="pb-5"
@@ -84,6 +84,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             />
             <ConnectionTypeCell
               width="w-[160px]"
+              cellType="expand"
               type={pipeline.recipe.destination.type}
               name={pipeline.recipe.destination.name}
               paddingBottom="pb-5"
