@@ -35,7 +35,11 @@ const SourceTableHead: FC<SourceTableHeadProps> = ({
   ];
 
   return (
-    <TableHeadBase bgColor="border-instillGrey05" items={SourceHeadItem} />
+    <TableHeadBase
+      borderColor="border-instillGrey20"
+      bgColor="bg-instillGrey05"
+      items={SourceHeadItem}
+    />
   );
 };
 
