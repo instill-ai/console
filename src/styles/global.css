@@ -21,7 +21,7 @@
     @apply font-sans text-sm font-semibold leading-[18px];
   }
   .instill-text-small {
-    @apply font-mono text-xs font-normal leading-[15.6px];
+    @apply font-mono text-xs font-normal;
   }
   .instill-input-highlight {
     @apply focus:border-instillBlue50 focus:outline-none focus:ring-0 focus:ring-white;
