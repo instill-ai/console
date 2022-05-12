@@ -49,6 +49,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
             <ConnectionTypeCell
               name={source.type}
               type={source.type}
+              cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"
               paddingTop="pt-5"
@@ -60,7 +61,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
               type="pipeline"
               instances={source.pipelines.map((e) => {
                 return {
-                  name: e.name,
+                  name: e.id,
                   status: e.status,
                 };
               })}
