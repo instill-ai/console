@@ -6,7 +6,7 @@ import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
 import { listRepoFileContent } from "@/lib/github";
 import { usePipelinesHaveTargetSource } from "@/services/pipeline/PipelineServices";
-import SourcePipelinesTable from "@/services/connector/SourcePipelinesTable";
+import ConnectorPipelinesTable from "@/services/connector/ConnectorPipelinesTable";
 import { StatusLabel } from "@/components/ui";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -68,7 +68,7 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
       </div>
       <h3 className="instill-text-h3 mb-2.5 text-black">Overview</h3>
       {pipelines.isSuccess ? (
-        <SourcePipelinesTable pipelines={pipelines.data} isLoading={false} />
+        <ConnectorPipelinesTable pipelines={pipelines.data} isLoading={false} />
       ) : null}
     </PageContentContainer>
   );

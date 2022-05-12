@@ -10,12 +10,12 @@ import {
 import { FC, memo } from "react";
 import { Pipeline } from "../pipeline/PipelineServices";
 
-export type SourcePipelinesTableProps = {
+export type ConnectorPipelinesTableProps = {
   pipelines: Pipeline[];
   isLoading: boolean;
 };
 
-const SourcePipelinesTable: FC<SourcePipelinesTableProps> = ({
+const ConnectorPipelinesTable: FC<ConnectorPipelinesTableProps> = ({
   pipelines,
   isLoading,
 }) => {
@@ -88,4 +88,4 @@ const SourcePipelinesTable: FC<SourcePipelinesTableProps> = ({
   );
 };
 
-export default memo(SourcePipelinesTable);
+export default memo(ConnectorPipelinesTable);
