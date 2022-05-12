@@ -1,7 +1,7 @@
 import { listRepoFileContent } from "@/lib/github";
 import { Mode, Status } from "@/types/general";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { Model, ModelState } from "../model/ModelServices";
 
 type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
@@ -106,8 +106,8 @@ export const mockPipelines: Pipeline[] = [
     update_time: "2022-05-06T09:00:00",
     recipe: {
       source: {
-        name: "redshift-hi",
-        type: "redshift",
+        name: "test-salesforce",
+        type: "salesforce",
       },
       destination: {
         name: "mysql-destination",
@@ -193,6 +193,16 @@ export const usePipeline = (id?: string) => {
   );
 };
 
+export const usePipelines = (enable: boolean) => {
+  const fetchPipelines = async () => {
+    return Promise.resolve(mockPipelines);
+  };
+
+  return useQuery(["pipelines"], fetchPipelines, {
+    enabled: enable ? true : false,
+  });
+};
+
 export const usePipelineSchema = () => {
   const fetchPipelineSchema = async (): Promise<string> => {
     const data = await listRepoFileContent(
@@ -216,4 +226,46 @@ export const usePipelineSchema = () => {
       }
     }, [queryInfo.data]),
   };
+};
+
+export const usePipelinesHaveTargetSource = (sourceId: string | undefined) => {
+  const pipelines = usePipelines(true);
+  const queryClient = useQueryClient();
+
+  return useQuery(
+    ["pipelines", "pipelines-with-source", sourceId],
+    async () => {
+      const targetPipelines = [];
+
+      if (!pipelines.data) {
+        return Promise.reject("pipelines not exist");
+      }
+
+      for (const pipeline of pipelines.data) {
+        if (pipeline.recipe.source.name === sourceId) {
+          targetPipelines.push(pipeline);
+        }
+      }
+
+      return Promise.resolve(targetPipelines);
+    },
+    {
+      initialData: () => {
+        const pipelines = queryClient.getQueryData<Pipeline[]>(["pipelines"]);
+
+        if (pipelines) {
+          const targetPipelines = [];
+
+          for (const pipeline of pipelines) {
+            if (pipeline.recipe.source.name === sourceId) {
+              targetPipelines.push(pipeline);
+            }
+          }
+
+          return targetPipelines;
+        }
+      },
+      enabled: sourceId ? (pipelines.data ? true : false) : false,
+    }
+  );
 };
