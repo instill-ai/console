@@ -45,6 +45,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
               paddingTop="pt-5"
               paddingLeft="pl-5"
               paddingRight=""
+              link={`/sources/${source.name}`}
             />
             <ConnectionTypeCell
               name={source.type}
