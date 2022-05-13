@@ -17,6 +17,8 @@ export type IndependentFormField = {
   counterWordLimit?: number;
   default?: string | SingleSelectOption;
   order: number;
+  minLength: number;
+  maxLength: number;
 };
 
 export type DependentFormField = IndependentFormField & {
