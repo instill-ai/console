@@ -269,3 +269,47 @@ export const usePipelinesHaveTargetSource = (sourceId: string | undefined) => {
     }
   );
 };
+
+export const usePipelinesHaveTargetDestination = (
+  destinationId: string | undefined
+) => {
+  const pipelines = usePipelines(true);
+  const queryClient = useQueryClient();
+
+  return useQuery(
+    ["pipelines", "pipelines-with-destination", destinationId],
+    async () => {
+      const targetPipelines = [];
+
+      if (!pipelines.data) {
+        return Promise.reject("pipelines not exist");
+      }
+
+      for (const pipeline of pipelines.data) {
+        if (pipeline.recipe.destination.name === destinationId) {
+          targetPipelines.push(pipeline);
+        }
+      }
+
+      return Promise.resolve(targetPipelines);
+    },
+    {
+      initialData: () => {
+        const pipelines = queryClient.getQueryData<Pipeline[]>(["pipelines"]);
+
+        if (pipelines) {
+          const targetPipelines = [];
+
+          for (const pipeline of pipelines) {
+            if (pipeline.recipe.destination.name === destinationId) {
+              targetPipelines.push(pipeline);
+            }
+          }
+
+          return targetPipelines;
+        }
+      },
+      enabled: destinationId ? (pipelines.data ? true : false) : false,
+    }
+  );
+};
