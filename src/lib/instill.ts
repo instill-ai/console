@@ -174,3 +174,47 @@ export const getSourceQuery = async (sourceId: string): Promise<Source> => {
     return Promise.reject(err);
   }
 };
+
+export type GetDestinationResponse = {
+  name: string;
+  uid: string;
+  id: string;
+  destination_connector_definition: string;
+  connector: RawConnector;
+};
+
+export type Destination = {
+  id: string;
+  type: ConnectorType;
+  description: string;
+  create_time: string;
+  update_time: string;
+  definition: string;
+  user: string;
+  org: string;
+};
+
+export const getDestinationQuery = async (
+  destinationId: string
+): Promise<Destination> => {
+  try {
+    const res = await axios.get<GetDestinationResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationId}`
+    );
+
+    const destination: Destination = {
+      id: res.data.id,
+      type: "destination",
+      description: res.data.connector.description,
+      create_time: res.data.connector.create_time,
+      update_time: res.data.connector.update_time,
+      org: res.data.connector.org,
+      user: res.data.connector.user,
+      definition: res.data.destination_connector_definition,
+    };
+
+    return Promise.resolve(destination);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
