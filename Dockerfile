@@ -64,8 +64,6 @@ RUN --mount=type=cache,target=/root/.yarn3-cache,id=yarn3-cache \
 
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS develop
 ENV NODE_ENV=development
-ARG PORT
-ARG IP
 
 WORKDIR /app
 
@@ -73,6 +71,6 @@ COPY --from=deps /workspace-install ./
 
 WORKDIR /app/app
 
-EXPOSE $PORT
+EXPOSE 3001
 
-CMD yarn dev -p $PORT
+CMD yarn dev -p 3001
