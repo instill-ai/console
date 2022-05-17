@@ -1,6 +1,7 @@
 import { Mode, Status } from "@/types/general";
 import axios from "axios";
-import { Model } from "./model";
+import { Destination, Source } from "./connector";
+import { Model, ModelInstance } from "./model";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -13,13 +14,13 @@ export type PipelineState =
 export type Pipeline = {
   id: string;
   description: string;
-  mode: Mode;
-  status: Status;
-  owner_id: string;
-  full_name: string;
-  create_time: string;
-  update_time: string;
+  mode: PipelineMode;
+  state: PipelineState;
+  createTime: string;
+  updateTime: string;
   recipe: PipelineRecipe;
+  user: string;
+  org: string;
 };
 
 export type RawPipeline = {
@@ -43,15 +44,9 @@ export type PipelineRawRecipe = {
 };
 
 export type PipelineRecipe = {
-  source: {
-    name: string;
-    type: string;
-  };
-  destination: {
-    name: string;
-    type: string;
-  };
-  models: Model[];
+  source: Source;
+  destination: Destination;
+  models: ModelInstance[];
 };
 
 export type ListPipelinesResponse = {
@@ -60,13 +55,31 @@ export type ListPipelinesResponse = {
   total_size: string;
 };
 
-export const listPipelinesQuery = async () => {
+export const listPipelinesQuery = async (): Promise<RawPipeline[]> => {
   try {
     const res = await axios.get<ListPipelinesResponse>(
       `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
     );
 
     return Promise.resolve(res.data.pipelines);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type GetPipelineResponse = {
+  pipeline: RawPipeline;
+};
+
+export const getPipelineQuery = async (
+  pipelineId: string
+): Promise<RawPipeline> => {
+  try {
+    const res = await axios.get<GetPipelineResponse>(
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineId}`
+    );
+
+    return Promise.resolve(res.data.pipeline);
   } catch (err) {
     return Promise.reject(err);
   }
