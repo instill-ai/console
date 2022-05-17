@@ -218,3 +218,49 @@ export const getDestinationQuery = async (
     return Promise.reject(err);
   }
 };
+
+export type GetModelInstanceResponse = {
+  instance: {
+    name: string;
+    uid: string;
+    id: string;
+    state: string;
+    task: string;
+    model_definition: string;
+    configuration: string;
+    create_time: string;
+    update_time: string;
+  };
+};
+
+export type ModelInstance = {
+  id: string;
+  state: string;
+  task: string;
+  modelDefinition: string;
+  configuration: string;
+  createTime: string;
+  updateTime: string;
+};
+
+export const getModelInstanceQuery = async (
+  modelInstanceId: string
+): Promise<ModelInstance> => {
+  try {
+    const res = await axios.get<GetModelInstanceResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceId}`
+    );
+
+    return Promise.resolve({
+      id: res.data.instance.id,
+      state: res.data.instance.state,
+      task: res.data.instance.task,
+      modelDefinition: res.data.instance.model_definition,
+      configuration: res.data.instance.configuration,
+      createTime: res.data.instance.create_time,
+      updateTime: res.data.instance.update_time,
+    });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
