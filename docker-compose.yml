@@ -1,5 +1,3 @@
-
-   
 version: "3.9"
 
 networks:
@@ -11,6 +9,8 @@ volumes:
     name: conda-pack
   model_repository:
     name: model-repository
+  build_app:
+  nm_app:
 
 services:
   mgmt_backend_migrate:
@@ -208,8 +208,8 @@ services:
       retries: 10
     shm_size: 2gb
     ulimits:
-        memlock: -1
-        stack: 67108864
+      memlock: -1
+      stack: 67108864
     depends_on:
       - triton_conda_env
 
@@ -281,7 +281,25 @@ services:
     container_name: redoc-openapi
     image: volbrene/redoc:1.2.0
     environment:
-      - 'URLS=[{url: ''https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/pipeline/v1alpha/pipeline.swagger.json'', name: ''Pipeline''},{url: ''https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/model/v1alpha/model.swagger.json'', name: ''Model''}]'
+      - "URLS=[{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/pipeline/v1alpha/pipeline.swagger.json', name: 'Pipeline'},{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/model/v1alpha/model.swagger.json', name: 'Model'}]"
       - PAGE_TITLE=Instill AI - API Reference
     ports:
       - 3000:80
+
+  app_develop:
+    container_name: app-develop
+    stdin_open: true
+    ports:
+      - "3001:3001"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+    volumes:
+      # Share the source code to allow development
+      - .:/app
+      # Prevent sharing of node_modules between host and container
+      # to avoid ownership and/or platform issues
+      - build_app:/app/.next
+      - nm_app:/app/node_modules
