@@ -8,8 +8,6 @@ export type GetSourceResponse = {
   connector: RawConnector;
 };
 
-export type ConnectorType = "source" | "destination";
-
 export type RawConnector = {
   description: string;
   configuration: string;
@@ -22,10 +20,9 @@ export type RawConnector = {
 
 export type Source = {
   id: string;
-  type: ConnectorType;
   description: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   definition: string;
   user: string;
   org: string;
@@ -88,10 +85,9 @@ export const getSourceQuery = async (sourceId: string): Promise<Source> => {
 
     const source: Source = {
       id: res.data.id,
-      type: "source",
       description: res.data.connector.description,
-      create_time: res.data.connector.create_time,
-      update_time: res.data.connector.update_time,
+      createTime: res.data.connector.create_time,
+      updateTime: res.data.connector.update_time,
       org: res.data.connector.org,
       user: res.data.connector.user,
       definition: res.data.source_connector_definition,
@@ -113,10 +109,9 @@ export type GetDestinationResponse = {
 
 export type Destination = {
   id: string;
-  type: ConnectorType;
   description: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   definition: string;
   user: string;
   org: string;
@@ -132,10 +127,9 @@ export const getDestinationQuery = async (
 
     const destination: Destination = {
       id: res.data.id,
-      type: "destination",
       description: res.data.connector.description,
-      create_time: res.data.connector.create_time,
-      update_time: res.data.connector.update_time,
+      createTime: res.data.connector.create_time,
+      updateTime: res.data.connector.update_time,
       org: res.data.connector.org,
       user: res.data.connector.user,
       definition: res.data.destination_connector_definition,
