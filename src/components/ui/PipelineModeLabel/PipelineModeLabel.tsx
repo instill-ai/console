@@ -1,11 +1,11 @@
 import { FC, ReactElement } from "react";
 import cn from "clsx";
-
-import { Mode } from "@/types/general";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
-export type ModeLabelProps = {
-  mode: Mode;
+import { PipelineMode } from "@/lib/instill";
+
+export type PipelineModeLabelProps = {
+  mode: PipelineMode;
   enableIcon: boolean;
   enableBgColor: boolean;
   iconWidth: string;
@@ -16,7 +16,7 @@ export type ModeLabelProps = {
   label: string;
 };
 
-const ModeLabel: FC<ModeLabelProps> = ({
+const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
   mode,
   enableBgColor,
   enableIcon,
@@ -32,28 +32,28 @@ const ModeLabel: FC<ModeLabelProps> = ({
   let modeIcon: ReactElement | null;
 
   switch (mode) {
-    case "async": {
+    case "MODE_ASYNC": {
       bgColor = "bg-instillYellow30";
       textColor = "text-instillYellow50";
       modeIcon = (
         <AsyncIcon
           color="fill-instillWarmOrange"
-          width="w-[18px]"
-          height="h-[18px]"
-          position="my-auto"
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       );
       break;
     }
-    case "sync": {
+    case "MODE_SYNC": {
       bgColor = "bg-[#EDEDFF]";
       textColor = "text-instillNeonBlue";
       modeIcon = (
         <SyncIcon
           color="fill-instillNeonBlue"
-          width="w-[18px]"
-          height="h-[18px]"
-          position="my-auto"
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       );
       break;
@@ -82,4 +82,4 @@ const ModeLabel: FC<ModeLabelProps> = ({
   );
 };
 
-export default ModeLabel;
+export default PipelineModeLabel;
