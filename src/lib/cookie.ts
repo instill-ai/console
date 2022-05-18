@@ -11,7 +11,7 @@ export const setCookie = (
     maxAge: maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" ? true : false,
     path: "/",
     sameSite: "lax",
   });
