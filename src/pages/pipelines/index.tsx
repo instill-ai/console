@@ -1,6 +1,5 @@
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import { mockPipelines } from "@/services/pipeline/PipelineServices";
 import { PipelinesTable } from "@/services/pipeline";
 import { FC, ReactElement } from "react";
 
@@ -13,17 +12,18 @@ interface GetLayOutProps {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const pipelines = [];
   return (
     <PageContentContainer>
       <PageTitle
         title="Pipeline"
         breadcrumbs={["Pipeline"]}
-        enableButton={true}
+        enableButton={pipelines.length === 0 ? false : true}
         buttonName="Add new pipeline"
         buttonLink="/pipelines/create"
         marginBottom="mb-10"
       />
-      <PipelinesTable pipelines={mockPipelines} isLoadingPipeline={false} />
+      <PipelinesTable pipelines={[]} isLoadingPipeline={false} />
     </PageContentContainer>
   );
 };
