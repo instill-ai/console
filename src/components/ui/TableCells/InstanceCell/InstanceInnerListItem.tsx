@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { Instance } from "./InstanceCell";
 import cn from "clsx";
-import StatusIndicator from "../../StatusIndicator";
+import StateIndicator from "../../StateIndicator";
 
 export type InstanceInnerListItemProps = {
   item: Instance;
@@ -40,7 +40,7 @@ const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({ item }) => {
       className={cn("flex flex-row gap-x-[5px] px-[5px] py-0.5", itemStyle)}
       key={`instance-item-list-${item.name}`}
     >
-      <StatusIndicator
+      <StateIndicator
         status={item.status}
         width="w-3"
         height="h-3"

@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import StatusIndicator from "../StatusIndicator";
+import StateIndicator from "../StateIndicator";
 
 export type StatusOverviewProps = {
   errorCounts: number;
@@ -25,8 +25,8 @@ const StatusOverview: FC<StatusOverviewProps> = ({
     <div className="flex flex-row">
       {onlineCounts
         ? getStatusItem(
-            <StatusIndicator
-              status="on"
+            <StateIndicator
+              state="STATE_ONLINE"
               width="w-3"
               height="h-3"
               position="my-auto"
@@ -36,8 +36,8 @@ const StatusOverview: FC<StatusOverviewProps> = ({
         : null}
       {errorCounts
         ? getStatusItem(
-            <StatusIndicator
-              status="error"
+            <StateIndicator
+              state="STATE_ERROR"
               width="w-3"
               height="h-3"
               position="my-auto"
@@ -47,8 +47,8 @@ const StatusOverview: FC<StatusOverviewProps> = ({
         : null}
       {offlineCounts
         ? getStatusItem(
-            <StatusIndicator
-              status="off"
+            <StateIndicator
+              state="STATE_OFFLINE"
               width="w-3"
               height="h-3"
               position="my-auto"

@@ -1,19 +1,19 @@
 import { State } from "@/types/general";
 import { FC } from "react";
-import StatusIndicator from "../../StatusIndicator";
+import StateIndicator from "../../StateIndicator";
 import StateLabel from "../../StateLabel";
 import TableHeadBase, { Item } from "../TableHeadBase";
 
 export type PipelineOverviewTableHeadProps = {
-  sourceStatus: State;
-  modelStatus: State;
-  destinationStatus: State;
+  sourceState: State;
+  modelState: State;
+  destinationState: State;
 };
 
 const PipelineOverviewTableHead: FC<PipelineOverviewTableHeadProps> = ({
-  sourceStatus,
-  modelStatus,
-  destinationStatus,
+  sourceState,
+  modelState,
+  destinationState,
 }) => {
   const getHeadItem = (name: string, state: State) => {
     return (
@@ -39,15 +39,15 @@ const PipelineOverviewTableHead: FC<PipelineOverviewTableHeadProps> = ({
   const items: Item[] = [
     {
       key: "pipeline-source",
-      item: getHeadItem("Source", sourceStatus),
+      item: getHeadItem("Source", sourceState),
     },
     {
       key: "pipeline-models",
-      item: getHeadItem("Models", modelStatus),
+      item: getHeadItem("Models", modelState),
     },
     {
       key: "pipeline-destination",
-      item: getHeadItem("Destination", destinationStatus),
+      item: getHeadItem("Destination", destinationState),
     },
   ];
 

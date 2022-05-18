@@ -1,13 +1,13 @@
 import { FC } from "react";
 import cn from "clsx";
-import StatusIndicator from "../../StatusIndicator";
+import StateIndicator from "../../StateIndicator";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
-import { Status } from "@/types/general";
+import { State } from "@/types/general";
 import CellBase, { CellBaseProps } from "../CellBase";
 import Link from "next/link";
 
 export type NameCellProps = {
-  status: Status;
+  state: State;
   width: string;
   updatedAt: string;
   name: string;
@@ -15,7 +15,7 @@ export type NameCellProps = {
 } & CellBaseProps;
 
 const NameCell: FC<NameCellProps> = ({
-  status,
+  state,
   width,
   updatedAt,
   name,
@@ -30,8 +30,8 @@ const NameCell: FC<NameCellProps> = ({
   const CellItem = () => (
     <div className={cn("flex flex-row gap-x-2.5", width)}>
       <div className="flex h-8 w-8">
-        <StatusIndicator
-          status={status}
+        <StateIndicator
+          state={state}
           width="w-[18px]"
           height="h-[18px]"
           position="m-auto"

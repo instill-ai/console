@@ -3,26 +3,26 @@ import {
   StatusOffIcon,
   StatusOnIcon,
 } from "@instill-ai/design-system";
-import { FC, ReactElement } from "react";
-import { Status } from "types/general";
+import { FC, memo, ReactElement } from "react";
+import { State } from "types/general";
 
-export type StatusIndicatorProps = {
-  status: Status;
+export type StateIndicatorProps = {
+  state: State;
   width: string;
   height: string;
   position: string;
 };
 
-const StatusIndicator: FC<StatusIndicatorProps> = ({
-  status,
+const StateIndicator: FC<StateIndicatorProps> = ({
+  state,
   width,
   height,
   position,
 }) => {
   let statusIcon: ReactElement;
 
-  switch (status) {
-    case "error":
+  switch (state) {
+    case "STATE_ERROR":
       statusIcon = (
         <StatusErrorIcon
           color="fill-instillRed"
@@ -32,10 +32,9 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
         />
       );
       break;
-    case "on":
-    case "online":
-    case "active":
-    case "connected":
+    case "STATE_ACTIVE":
+    case "STATE_ONLINE":
+    case "STATE_CONNECTED":
       statusIcon = (
         <StatusOnIcon
           color="fill-instillGreen"
@@ -45,10 +44,9 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
         />
       );
       break;
-    case "off":
-    case "offline":
-    case "inactive":
-    case "disconnected":
+    case "STATE_OFFLINE":
+    case "STATE_INACTIVE":
+    case "STATE_DISCONNECTED":
       statusIcon = (
         <StatusOffIcon
           color="fill-instillGrey50"
@@ -72,4 +70,4 @@ const StatusIndicator: FC<StatusIndicatorProps> = ({
   return statusIcon;
 };
 
-export default StatusIndicator;
+export default memo(StateIndicator);

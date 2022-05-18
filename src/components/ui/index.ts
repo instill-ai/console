@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar";
-import StatusIndicator from "./StatusIndicator";
-import type { StatusIndicatorProps } from "./StatusIndicator";
+import StateIndicator from "./StateIndicator";
+import type { StateIndicatorProps } from "./StateIndicator";
 import FormVerticalDividers from "./FormVerticalDividers";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
@@ -18,7 +18,7 @@ import type { ModelLabelProps } from "./ModeLabel";
 
 export {
   Sidebar,
-  StatusIndicator,
+  StateIndicator,
   FormVerticalDividers,
   TableContainer,
   TableRow,
@@ -29,7 +29,7 @@ export {
   StateLabel,
   ModelLabel,
 };
-export type { StatusIndicatorProps, StateLabelProps, ModelLabelProps };
+export type { StateIndicatorProps, StateLabelProps, ModelLabelProps };
 
 export * from "./TableHeads";
 

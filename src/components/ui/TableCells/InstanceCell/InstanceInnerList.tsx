@@ -30,14 +30,14 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
       }
 
       const paddingX = 5;
-      const statusIndicatorWidth = 12;
+      const stateIndicatorWidth = 12;
       const gapBetweenTextAndIndicator = 5;
       const gapBetweenItem = 5;
 
       const listItemComponentWidth =
         textWidth +
         paddingX * 2 +
-        statusIndicatorWidth +
+        stateIndicatorWidth +
         gapBetweenTextAndIndicator +
         gapBetweenItem;
 
