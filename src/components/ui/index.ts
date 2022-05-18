@@ -13,8 +13,8 @@ import {
 
 import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
-import ModelLabel from "./ModeLabel/ModeLabel";
-import type { ModelLabelProps } from "./ModeLabel";
+import ModeLabel from "./ModeLabel/ModeLabel";
+import type { ModeLabelProps } from "./ModeLabel";
 
 export {
   Sidebar,
@@ -27,9 +27,9 @@ export {
   DestinationTablePlaceholder,
   PipelineTablePlaceholder,
   StateLabel,
-  ModelLabel,
+  ModeLabel,
 };
-export type { StateIndicatorProps, StateLabelProps, ModelLabelProps };
+export type { StateIndicatorProps, StateLabelProps, ModeLabelProps };
 
 export * from "./TableHeads";
 

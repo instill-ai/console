@@ -4,7 +4,7 @@ import cn from "clsx";
 import { Mode } from "@/types/general";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
-export type ModelLabelProps = {
+export type ModeLabelProps = {
   mode: Mode;
   enableIcon: boolean;
   enableBgColor: boolean;
@@ -16,7 +16,7 @@ export type ModelLabelProps = {
   label: string;
 };
 
-const ModelLabel: FC<ModelLabelProps> = ({
+const ModeLabel: FC<ModeLabelProps> = ({
   mode,
   enableBgColor,
   enableIcon,
@@ -82,4 +82,4 @@ const ModelLabel: FC<ModelLabelProps> = ({
   );
 };
 
-export default ModelLabel;
+export default ModeLabel;
