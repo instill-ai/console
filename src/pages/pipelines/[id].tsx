@@ -1,25 +1,50 @@
-import { FC, ReactElement, useMemo } from "react";
+import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { usePipeline } from "@/services/pipeline";
 import { useRouter } from "next/router";
 import PipelineOverViewTable from "@/services/pipeline/PipelineOverviewTable";
-import { mockPipelines, Pipeline } from "@/services/pipeline/PipelineServices";
-import ModelLabel from "@/components/ui/ModeLabel/ModeLabel";
-import { StatusLabel } from "@/components/ui";
+import { StateLabel, PipelineModeLabel } from "@/components/ui";
+import { GetServerSideProps } from "next";
+import { listRepoFileContent } from "@/lib/github";
+import { transformSchemaToFormFields } from "@/services/transformation";
 
-// export type PipelineDetailsPageProps = {}
+export const getServerSideProps: GetServerSideProps = async () => {
+  const data = await listRepoFileContent(
+    "instill-ai",
+    "pipeline-backend",
+    "configs/models/pipeline.json"
+  );
+
+  const decodeSchema = Buffer.from(data.content, "base64").toString();
+  const jsonSchema = JSON.parse(decodeSchema);
+
+  const fields = transformSchemaToFormFields(jsonSchema);
+
+  console.log(fields);
+
+  return {
+    props: {
+      fields,
+    },
+  };
+};
 
 interface GetLayOutProps {
   page: ReactElement;
 }
 
-const PipelineDetailsPage: FC & {
+export type PipelineDetailsPageProps = {
+  fields: string[];
+};
+
+const PipelineDetailsPage: FC<PipelineDetailsPageProps> & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
   const { id } = router.query;
+
   const pipeline = usePipeline(id && id.toString());
 
   return (
@@ -34,7 +59,7 @@ const PipelineDetailsPage: FC & {
       {pipeline.isSuccess ? (
         <>
           <div className="mb-10 flex flex-row gap-x-2.5">
-            <ModelLabel
+            <PipelineModeLabel
               enableBgColor={true}
               enableIcon={true}
               iconWidth="w-[18px]"
@@ -45,7 +70,7 @@ const PipelineDetailsPage: FC & {
               mode={pipeline.data.mode}
               label={pipeline.data.mode}
             />
-            <StatusLabel
+            <StateLabel
               enableBgColor={true}
               enableIcon={true}
               iconWidth="w-[18px]"
@@ -53,7 +78,7 @@ const PipelineDetailsPage: FC & {
               iconPosition="my-auto"
               paddingX="px-[5px]"
               paddingY="py-1.5"
-              status={pipeline.data.status}
+              state={pipeline.data?.state}
               label={pipeline.data.mode}
             />
           </div>
