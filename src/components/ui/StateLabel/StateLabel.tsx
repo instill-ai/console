@@ -1,4 +1,4 @@
-import { Status } from "@/types/general";
+import { State } from "@/types/general";
 import {
   StatusErrorIcon,
   StatusOffIcon,
@@ -7,8 +7,8 @@ import {
 import { FC, memo, ReactElement } from "react";
 import cn from "clsx";
 
-export type StatusLabelProps = {
-  status: Status;
+export type StateLabelProps = {
+  state: State;
   enableIcon: boolean;
   enableBgColor: boolean;
   iconWidth: string;
@@ -19,26 +19,26 @@ export type StatusLabelProps = {
   label: string;
 };
 
-const StatusLabel: FC<StatusLabelProps> = ({
+const StateLabel: FC<StateLabelProps> = ({
   enableIcon,
   enableBgColor,
   iconHeight,
   iconWidth,
   iconPosition,
-  status,
+  state,
   paddingX,
   paddingY,
   label,
 }) => {
-  let statusIcon: ReactElement;
+  let stateIcon: ReactElement;
   let textColor: string;
   let bgColor: string;
 
-  switch (status) {
-    case "error":
+  switch (state) {
+    case "STATE_ERROR":
       textColor = "text-instillRed";
       bgColor = "bg-instillRed10";
-      statusIcon = (
+      stateIcon = (
         <StatusErrorIcon
           color="fill-instillRed"
           width={iconWidth}
@@ -47,13 +47,12 @@ const StatusLabel: FC<StatusLabelProps> = ({
         />
       );
       break;
-    case "on":
-    case "online":
-    case "active":
-    case "connected":
+    case "STATE_ACTIVE":
+    case "STATE_ONLINE":
+    case "STATE_CONNECTED":
       textColor = "text-instillGreen50";
       bgColor = "bg-instillGreen10";
-      statusIcon = (
+      stateIcon = (
         <StatusOnIcon
           color="fill-instillGreen"
           width={iconWidth}
@@ -62,13 +61,12 @@ const StatusLabel: FC<StatusLabelProps> = ({
         />
       );
       break;
-    case "off":
-    case "offline":
-    case "inactive":
-    case "disconnected":
+    case "STATE_OFFLINE":
+    case "STATE_INACTIVE":
+    case "STATE_DISCONNECTED":
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
-      statusIcon = (
+      stateIcon = (
         <StatusOffIcon
           color="fill-instillGrey50"
           width={iconWidth}
@@ -80,7 +78,7 @@ const StatusLabel: FC<StatusLabelProps> = ({
     default:
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
-      statusIcon = (
+      stateIcon = (
         <StatusOffIcon
           color="fill-instillGrey50"
           width={iconWidth}
@@ -99,7 +97,7 @@ const StatusLabel: FC<StatusLabelProps> = ({
         enableBgColor ? bgColor : ""
       )}
     >
-      {enableIcon ? statusIcon : null}
+      {enableIcon ? stateIcon : null}
       <span className={cn("instill-text-small my-auto", textColor)}>
         {label}
       </span>
@@ -107,4 +105,4 @@ const StatusLabel: FC<StatusLabelProps> = ({
   );
 };
 
-export default memo(StatusLabel);
+export default memo(StateLabel);

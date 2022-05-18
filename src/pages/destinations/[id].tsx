@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { listRepoFileContent } from "@/lib/github";
 import { usePipelinesHaveTargetDestination } from "@/services/pipeline/PipelineServices";
 import ConnectorPipelinesTable from "@/services/connector/ConnectorPipelinesTable";
-import { StatusLabel } from "@/components/ui";
+import { StateLabel } from "@/components/ui";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await listRepoFileContent(
@@ -56,10 +56,10 @@ const DestinationDetailsPage: FC<DestinationDetailsPageProps> & {
       />
       <div className="mb-5 flex flex-row gap-x-5">
         <h3 className="instill-text-h3 my-auto text-black">State</h3>
-        <StatusLabel
+        <StateLabel
           enableIcon={true}
           enableBgColor={true}
-          status="connected"
+          state="STATE_CONNECTED"
           iconHeight="h-[18px]"
           iconWidth="w-[18px]"
           iconPosition="my-auto"

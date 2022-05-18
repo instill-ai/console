@@ -1,13 +1,13 @@
-import { Status } from "@/types/general";
+import { State } from "@/types/general";
 import { FC } from "react";
 import StatusIndicator from "../../StatusIndicator";
-import StatusLabel from "../../StatusLabel";
+import StateLabel from "../../StateLabel";
 import TableHeadBase, { Item } from "../TableHeadBase";
 
 export type PipelineOverviewTableHeadProps = {
-  sourceStatus: Status;
-  modelStatus: Status;
-  destinationStatus: Status;
+  sourceStatus: State;
+  modelStatus: State;
+  destinationStatus: State;
 };
 
 const PipelineOverviewTableHead: FC<PipelineOverviewTableHeadProps> = ({
@@ -15,16 +15,16 @@ const PipelineOverviewTableHead: FC<PipelineOverviewTableHeadProps> = ({
   modelStatus,
   destinationStatus,
 }) => {
-  const getHeadItem = (name: string, status: Status) => {
+  const getHeadItem = (name: string, state: State) => {
     return (
       <div className="flex flex-row gap-x-[15px]">
-        <div className="instill-text-body text-instillGrey90 my-auto">
+        <div className="instill-text-body my-auto text-instillGrey90">
           {name}
         </div>
-        <StatusLabel
+        <StateLabel
           enableBgColor={true}
           enableIcon={true}
-          status={status}
+          state={state}
           paddingX="px-[5px]"
           paddingY="py-[5px]"
           iconHeight="h-3"
