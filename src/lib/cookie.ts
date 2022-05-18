@@ -3,11 +3,11 @@ import { serialize } from "cookie";
 
 export const setCookie = (
   res: NextApiResponse,
-  token: string,
-  tokenName: string,
+  value: string,
+  key: string,
   maxAge: number
 ) => {
-  const cookie = serialize(tokenName, token, {
+  const cookie = serialize(key, value, {
     maxAge: maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
     httpOnly: true,
@@ -19,8 +19,8 @@ export const setCookie = (
   res.setHeader("Set-Cookie", cookie);
 };
 
-export const removeCookie = (res: NextApiResponse, tokenName: string) => {
-  const cookie = serialize(tokenName, "", {
+export const removeCookie = (res: NextApiResponse, key: string) => {
+  const cookie = serialize(key, "", {
     maxAge: -1,
     path: "/",
   });
