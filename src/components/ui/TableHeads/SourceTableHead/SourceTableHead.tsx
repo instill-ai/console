@@ -1,5 +1,5 @@
 import { FC } from "react";
-import StatusOverview from "../../StatusOverview";
+import StateOverview from "../../StateOverview";
 import TableHeadBase from "../TableHeadBase";
 
 export type SourceTableHeadProps = {
@@ -17,7 +17,7 @@ const SourceTableHead: FC<SourceTableHeadProps> = ({
     {
       key: "source-status-overview-head",
       item: (
-        <StatusOverview
+        <StateOverview
           errorCounts={errorCounts}
           offlineCounts={offlineCounts}
           onlineCounts={onlineCounts}

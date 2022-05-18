@@ -1,18 +1,18 @@
-import { FC, ReactNode } from "react";
+import { FC, memo, ReactNode } from "react";
 import StateIndicator from "../StateIndicator";
 
-export type StatusOverviewProps = {
+export type StateOverviewProps = {
   errorCounts: number;
   onlineCounts: number;
   offlineCounts: number;
 };
 
-const StatusOverview: FC<StatusOverviewProps> = ({
+const StateOverview: FC<StateOverviewProps> = ({
   errorCounts,
   onlineCounts,
   offlineCounts,
 }) => {
-  const getStatusItem = (icon: ReactNode, counts: number) => {
+  const getStateItem = (icon: ReactNode, counts: number) => {
     return (
       <div className="flex flex-row gap-x-[5px] py-[3px] pl-[3px] pr-[10px]">
         {icon}
@@ -24,7 +24,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
   return (
     <div className="flex flex-row">
       {onlineCounts
-        ? getStatusItem(
+        ? getStateItem(
             <StateIndicator
               state="STATE_ONLINE"
               width="w-3"
@@ -35,7 +35,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
           )
         : null}
       {errorCounts
-        ? getStatusItem(
+        ? getStateItem(
             <StateIndicator
               state="STATE_ERROR"
               width="w-3"
@@ -46,7 +46,7 @@ const StatusOverview: FC<StatusOverviewProps> = ({
           )
         : null}
       {offlineCounts
-        ? getStatusItem(
+        ? getStateItem(
             <StateIndicator
               state="STATE_OFFLINE"
               width="w-3"
@@ -60,4 +60,4 @@ const StatusOverview: FC<StatusOverviewProps> = ({
   );
 };
 
-export default StatusOverview;
+export default memo(StateOverview);

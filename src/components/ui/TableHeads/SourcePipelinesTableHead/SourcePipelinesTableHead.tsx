@@ -1,18 +1,7 @@
 import { FC } from "react";
-import StatusOverview from "../../StatusOverview";
 import TableHeadBase, { Item } from "../TableHeadBase";
 
-export type SourcePipelinesTableHeadProps = {
-  errorCounts: number;
-  offlineCounts: number;
-  onlineCounts: number;
-};
-
-const SourcePipelinesTableHead: FC<SourcePipelinesTableHeadProps> = ({
-  errorCounts,
-  offlineCounts,
-  onlineCounts,
-}) => {
+const SourcePipelinesTableHead: FC = () => {
   const pipelineHeadItems: Item[] = [
     {
       key: "pipeline-name-head",

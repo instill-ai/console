@@ -1,5 +1,5 @@
 import { FC } from "react";
-import StatusOverview from "../../StatusOverview";
+import StateOverview from "../../StateOverview";
 import TableHeadBase, { Item } from "../TableHeadBase";
 
 export type PipelinesTableHeadProps = {
@@ -17,7 +17,7 @@ const PipelinesTableHead: FC<PipelinesTableHeadProps> = ({
     {
       key: "pipeline-status-overview-head",
       item: (
-        <StatusOverview
+        <StateOverview
           errorCounts={errorCounts}
           offlineCounts={offlineCounts}
           onlineCounts={onlineCounts}
