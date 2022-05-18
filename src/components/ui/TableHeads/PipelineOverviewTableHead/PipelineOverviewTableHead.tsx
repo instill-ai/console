@@ -30,7 +30,7 @@ const PipelineOverviewTableHead: FC<PipelineOverviewTableHeadProps> = ({
           iconHeight="h-3"
           iconWidth="w-3"
           iconPosition="my-auto"
-          label={status}
+          label={state}
         />
       </div>
     );
