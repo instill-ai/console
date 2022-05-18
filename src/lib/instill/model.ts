@@ -64,9 +64,11 @@ export type GetModelInstanceResponse = {
   };
 };
 
+export type ModelState = "STATE_ONLINE" | "STATE_OFFLINE" | "STATE_ERROR";
+
 export type ModelInstance = {
   id: string;
-  state: string;
+  state: ModelState;
   task: string;
   modelDefinition: string;
   configuration: string;
@@ -84,7 +86,7 @@ export const getModelInstanceQuery = async (
 
     return Promise.resolve({
       id: res.data.instance.id,
-      state: res.data.instance.state,
+      state: res.data.instance.state as ModelState,
       task: res.data.instance.task,
       modelDefinition: res.data.instance.model_definition,
       configuration: res.data.instance.configuration,
