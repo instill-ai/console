@@ -3,8 +3,6 @@ services:
   develop:
     container_name: app-develop
     stdin_open: true
-    profiles:
-      - donotstart
     ports:
       - "3000:3000"
     build:
