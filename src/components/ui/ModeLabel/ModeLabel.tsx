@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 import cn from "clsx";
 
 import { Mode } from "@/types/general";
-import { AsyncIcon } from "@instill-ai/design-system";
+import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
 export type ModelLabelProps = {
   mode: Mode;
@@ -29,13 +29,13 @@ const ModelLabel: FC<ModelLabelProps> = ({
 }) => {
   let bgColor: string;
   let textColor: string;
-  let statusIcon: ReactElement | null;
+  let modeIcon: ReactElement | null;
 
   switch (mode) {
     case "async": {
       bgColor = "bg-instillYellow30";
       textColor = "text-instillYellow50";
-      statusIcon = (
+      modeIcon = (
         <AsyncIcon
           color="fill-instillWarmOrange"
           width="w-[18px]"
@@ -48,9 +48,9 @@ const ModelLabel: FC<ModelLabelProps> = ({
     case "sync": {
       bgColor = "bg-[#EDEDFF]";
       textColor = "text-instillNeonBlue";
-      statusIcon = (
-        <AsyncIcon
-          color="fill-instillWarmOrange"
+      modeIcon = (
+        <SyncIcon
+          color="fill-instillNeonBlue"
           width="w-[18px]"
           height="h-[18px]"
           position="my-auto"
@@ -61,7 +61,7 @@ const ModelLabel: FC<ModelLabelProps> = ({
     default: {
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
-      statusIcon = null;
+      modeIcon = null;
     }
   }
 
@@ -74,7 +74,7 @@ const ModelLabel: FC<ModelLabelProps> = ({
         enableBgColor ? bgColor : ""
       )}
     >
-      {enableIcon ? statusIcon : null}
+      {enableIcon ? modeIcon : null}
       <span className={cn("instill-text-small my-auto", textColor)}>
         {label}
       </span>
