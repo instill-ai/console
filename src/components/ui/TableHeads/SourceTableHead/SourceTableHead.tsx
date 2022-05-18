@@ -15,7 +15,7 @@ const SourceTableHead: FC<SourceTableHeadProps> = ({
 }) => {
   const SourceHeadItem = [
     {
-      key: "source-status-overview-head",
+      key: "source-state-overview-head",
       item: (
         <StateOverview
           errorCounts={errorCounts}

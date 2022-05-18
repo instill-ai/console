@@ -12,7 +12,7 @@ import { mockModelInstances } from "../MockData";
 import { CreateModelFormValue } from "./CreateModelForm";
 
 type progressMessageBoxState = {
-  status: BasicProgressMessageBoxProps["status"];
+  progressState: BasicProgressMessageBoxProps["status"];
   message: string;
 };
 
@@ -59,12 +59,12 @@ const GitHubModelFlow: FC = () => {
   const handleFetchingModel = () => {
     setFetched(true);
     setProgressMessageBoxState({
-      status: "progressing",
+      progressState: "progressing",
       message: "Fetching model",
     });
     setTimeout(() => {
       setProgressMessageBoxState({
-        status: "success",
+        progressState: "success",
         message: "Successfully fetched model",
       });
       setModelInstances(mockModelInstances);
@@ -87,12 +87,12 @@ const GitHubModelFlow: FC = () => {
       return;
     }
     setProgressMessageBoxState({
-      status: "progressing",
+      progressState: "progressing",
       message: "Testing connection",
     });
     setTimeout(() => {
       setProgressMessageBoxState({
-        status: "success",
+        progressState: "success",
         message: "All connection tests succeeded.",
       });
     }, 3000);
@@ -128,7 +128,7 @@ const GitHubModelFlow: FC = () => {
         {progressMessageBoxState ? (
           <BasicProgressMessageBox
             width="w-[335px]"
-            status={progressMessageBoxState.status}
+            status={progressMessageBoxState.progressState}
           >
             {progressMessageBoxState.message}
           </BasicProgressMessageBox>

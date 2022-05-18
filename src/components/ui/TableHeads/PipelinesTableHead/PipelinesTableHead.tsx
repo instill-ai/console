@@ -15,7 +15,7 @@ const PipelinesTableHead: FC<PipelinesTableHeadProps> = ({
 }) => {
   const pipelineHeadItems: Item[] = [
     {
-      key: "pipeline-status-overview-head",
+      key: "pipeline-state-overview-head",
       item: (
         <StateOverview
           errorCounts={errorCounts}
