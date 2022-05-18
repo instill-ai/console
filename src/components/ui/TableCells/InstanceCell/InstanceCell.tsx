@@ -5,12 +5,12 @@ import {
   PipelineIcon,
 } from "@instill-ai/design-system";
 import InstanceInnerList from "./InstanceInnerList";
-import { Status } from "@/types/general";
+import { State } from "@/types/general";
 import CellBase, { CellBaseProps } from "../CellBase";
 
 export type Instance = {
   name: string;
-  status: Status;
+  state: State;
 };
 
 export type InstanceCellProps = CellBaseProps & {

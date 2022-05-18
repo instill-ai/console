@@ -10,23 +10,23 @@ export default {
 const Template: ComponentStory<typeof InstanceInnerList> = (args) => {
   const mockItems: Instance[] = [
     {
-      status: "on",
+      state: "STATE_ONLINE",
       name: "modal_1",
     },
     {
-      status: "off",
+      state: "STATE_OFFLINE",
       name: "modal_2",
     },
     {
-      status: "off",
+      state: "STATE_ONLINE",
       name: "model_model_2",
     },
     {
-      status: "off",
+      state: "STATE_ONLINE",
       name: "model_334rrf",
     },
     {
-      status: "off",
+      state: "STATE_ONLINE",
       name: "model_2dddd",
     },
   ];
