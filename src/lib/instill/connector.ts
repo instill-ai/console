@@ -1,5 +1,10 @@
 import axios from "axios";
 
+export type ConnectorState =
+  | "STATE_CONNECTED"
+  | "STATE_DISCONNECTED"
+  | "STATE_ERROR";
+
 export type GetSourceResponse = {
   name: string;
   uid: string;
