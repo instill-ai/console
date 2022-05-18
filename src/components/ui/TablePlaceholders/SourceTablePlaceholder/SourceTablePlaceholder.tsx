@@ -46,7 +46,9 @@ const SourceTablePlaceholder: FC = () => {
   return (
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
-      createButtonLink="/data-cource/create"
+      placeholderTitle="No data source"
+      createButtonTitle="Configurate your first source"
+      createButtonLink="/sources/create"
     />
   );
 };

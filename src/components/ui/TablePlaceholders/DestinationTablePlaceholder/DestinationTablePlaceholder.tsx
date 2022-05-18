@@ -43,7 +43,9 @@ const DestinationTablePlaceholder: FC = () => {
   return (
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
-      createButtonLink="/data-destination/create"
+      placeholderTitle="No data destination"
+      createButtonTitle="Configurate your first destination"
+      createButtonLink="/destinations/create"
     />
   );
 };

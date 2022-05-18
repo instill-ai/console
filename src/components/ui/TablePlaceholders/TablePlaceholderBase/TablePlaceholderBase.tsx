@@ -8,11 +8,15 @@ export type TablePlaceholderBaseProps = {
     id: string;
     item: ReactElement;
   }[];
+  placeholderTitle: string;
+  createButtonTitle: string;
   createButtonLink: string;
 };
 
 const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
   placeholderItems,
+  placeholderTitle,
+  createButtonTitle,
   createButtonLink,
 }) => {
   const router = useRouter();
@@ -27,13 +31,15 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
         ))}
       </div>
       <div className="m-auto flex flex-col gap-y-5">
-        <h3 className="instill-text-h3 text-instillGrey80">No Pipeline</h3>
+        <h3 className="instill-text-h3 text-instillGrey80">
+          {placeholderTitle}
+        </h3>
         <PrimaryButton
           type="button"
           disabled={false}
           onClickHandler={handleOnClick}
         >
-          Create first pipeline
+          {createButtonTitle}
         </PrimaryButton>
       </div>
     </div>
