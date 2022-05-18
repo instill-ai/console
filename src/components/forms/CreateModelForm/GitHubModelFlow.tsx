@@ -72,7 +72,9 @@ const GitHubModelFlow: FC = () => {
     }, 3000);
   };
 
-  // const handleSettingUpModel = () => {};
+  const handleSettingUpModel = () => {
+    console.log("Setting model");
+  };
 
   // Testing model
   useEffect(() => {
