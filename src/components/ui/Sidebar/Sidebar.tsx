@@ -36,7 +36,7 @@ const Sidebar: FC = () => {
       ),
       id: "sidebar-data-source",
       tabName: "Data source",
-      link: "/data-source",
+      link: "/sources",
     },
     {
       icon: (
@@ -49,7 +49,7 @@ const Sidebar: FC = () => {
       ),
       id: "sidebar-model",
       tabName: "Model",
-      link: "/model",
+      link: "/models",
     },
     {
       icon: (
@@ -62,7 +62,7 @@ const Sidebar: FC = () => {
       ),
       id: "sidebar-data-destination",
       tabName: "Data destination",
-      link: "/data-destination",
+      link: "/destinations",
     },
   ];
 
