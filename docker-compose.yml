@@ -290,12 +290,10 @@ services:
     container_name: app-develop
     stdin_open: true
     ports:
-      - "3001:3001"
+      - "3000:3000"
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - PORT=3000
     volumes:
       # Share the source code to allow development
       - .:/app

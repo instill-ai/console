@@ -71,6 +71,6 @@ COPY --from=deps /workspace-install ./
 
 WORKDIR /app/app
 
-EXPOSE 3001
+EXPOSE 3000
 
-CMD yarn dev -p 3001
+CMD yarn dev -p 3000

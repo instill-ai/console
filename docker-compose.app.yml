@@ -8,9 +8,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: develop
-    environment:
-      - PORT=3000
     volumes:
       # Share the source code to allow development
       - .:/app
