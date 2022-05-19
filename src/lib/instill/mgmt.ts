@@ -32,15 +32,15 @@ export type User = {
 
 export const getUserQuery = async (userId: string): Promise<User> => {
   try {
-    const res = await axios.get<GetUserResponse>(
-      `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${userId}`
-    );
+    const res = await axios.post<GetUserResponse>("/api/mgmt/get-user-query", {
+      id: userId,
+    });
 
     const user: User = {
       id: res.data.user.id,
       email: res.data.user.email,
       companyName: res.data.user.company_name,
-      role: res.data.user.email,
+      role: res.data.user.role,
       usageDataCollection: res.data.user.usage_data_collection,
       newsletterSubscription: res.data.user.newsletter_subscription,
       type: res.data.user.type,
@@ -77,7 +77,7 @@ export const updateUserMutation = async (
       id: res.data.user.id,
       email: res.data.user.email,
       companyName: res.data.user.company_name,
-      role: res.data.user.email,
+      role: res.data.user.role,
       usageDataCollection: res.data.user.usage_data_collection,
       newsletterSubscription: res.data.user.newsletter_subscription,
       type: res.data.user.type,
