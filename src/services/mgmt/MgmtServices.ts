@@ -44,31 +44,31 @@ export const useMgmtDefinition = () => {
 export const mockMgmtRoles: SingleSelectOption[] = [
   {
     label: "Manager (who make decisions)",
-    value: "manager",
+    value: "Manager",
   },
   {
     label:
       "AI Researcher (who devises ML algorithms, train and evaluate models)",
-    value: "ai-researcher",
+    value: "AI Researcher",
   },
   {
     label:
       "AI Engineer (who prepare dataset and make models delivered by AI Researchers production-ready)",
-    value: "ai-engineer",
+    value: "AI Engineer",
   },
   {
     label:
       "Data Engineer (who builds data pipeline for data analytics or applications)",
-    value: "data-engineer",
+    value: "Data Engineer",
   },
   {
     label: "Data Scientist (who analyses data for distilling business value)",
-    value: "data-scientist",
+    value: "Data Scientist",
   },
   {
     label:
       "Analytics Engineer (who possesses skills of both Data Scientist and Data Engineer)",
-    value: "analytics-engineer",
+    value: "Analytics Engineer",
   },
   {
     label: "Hobbyist (I love Vision AI!)",
