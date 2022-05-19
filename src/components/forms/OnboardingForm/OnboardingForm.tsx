@@ -1,43 +1,51 @@
 import { FC } from "react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { mockMgmtRoles } from "@/services/mgmt/MgmtServices";
+import { mockMgmtRoles, useUpdateUser } from "@/services/mgmt/MgmtServices";
 import { SingleSelect, TextField, ToggleField } from "../../formik";
-import axios from "axios";
+import { User } from "@/lib/instill/mgmt";
 
 const OnboardingForm: FC = () => {
   const router = useRouter();
+  const updateUser = useUpdateUser();
   return (
     <Formik
       initialValues={{
         email: null,
-        company_name: null,
+        companyName: null,
         role: null,
-        usage_data_collection: null,
-        newsletter_subscription: null,
+        usageDataCollection: null,
+        newsletterSubscription: null,
       }}
       onSubmit={async (values) => {
-        try {
-          const res = await axios.post("/api/submit-onboarded-form", {
-            email: values.email,
-            company_name: values.company_name,
-            role: values.role,
-            usage_data_collection: values.usage_data_collection,
-            newsletter_subscription: values.newsletter_subscription,
-          });
+        if (
+          !values.companyName ||
+          !values.email ||
+          !values.newsletterSubscription ||
+          !values.usageDataCollection ||
+          !values.role
+        ) {
+          return;
+        }
 
-          if (res.status === 200) {
+        const body: Partial<User> = {
+          id: "local-user",
+          email: values.email,
+          companyName: values.companyName,
+          role: values.role,
+          newsletterSubscription: values.newsletterSubscription,
+          usageDataCollection: values.usageDataCollection,
+        };
+
+        updateUser.mutate(body, {
+          onSuccess: async () => {
             await axios.post("/api/set-user-onboarded-cookie");
             router.push("/pipelines");
-          }
-        } catch (err) {
-          console.error(
-            "Something whet wrong when submit onboarding form",
-            err
-          );
-        }
+          },
+        });
       }}
     >
       {(formik) => {
@@ -55,7 +63,7 @@ const OnboardingForm: FC = () => {
               autoComplete="on"
             />
             <TextField
-              name="company_name"
+              name="companyName"
               label="Your company"
               description="Fill your company name"
               disabled={false}
@@ -76,7 +84,7 @@ const OnboardingForm: FC = () => {
               description={"Setup Guide"}
             />
             <ToggleField
-              name="usage_data_collection"
+              name="usageDataCollection"
               label="Anonymised usage data collection "
               disabled={false}
               readOnly={false}
@@ -85,7 +93,7 @@ const OnboardingForm: FC = () => {
               description="We collect data only for product improvements"
             />
             <ToggleField
-              name="newsletter_subscription"
+              name="newsletterSubscription"
               label="Newsletter subscription"
               disabled={false}
               readOnly={false}
