@@ -27,22 +27,15 @@ export type User = {
   updateTime: string;
 };
 
-export const getUserQuery = async (userId: string): Promise<User> => {
+export const getUserQuery = async (
+  userId: string
+): Promise<GetUserResponse> => {
   try {
     const res = await axios.get<GetUserResponse>(
       `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${userId}`
     );
 
-    return Promise.resolve({
-      id: res.data.user.id,
-      companyName: res.data.user.company_name,
-      role: res.data.user.role,
-      usageDataCollection: res.data.user.usage_data_collection,
-      newsletterSubscription: res.data.user.newsletter_subscription,
-      type: res.data.user.type,
-      createTime: res.data.user.create_time,
-      updateTime: res.data.user.update_time,
-    });
+    return Promise.resolve(res.data);
   } catch (err) {
     return Promise.reject(err);
   }
