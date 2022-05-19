@@ -1,4 +1,5 @@
-import { mockPipelines, Pipeline } from "../pipeline/PipelineServices";
+import { Pipeline } from "@/lib/instill";
+import { mockPipelines } from "../pipeline/PipelineServices";
 import { Connector } from "./ConnectorType";
 
 export type SourceConnector = {
