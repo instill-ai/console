@@ -64,7 +64,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
           <Form className="flex flex-col gap-y-5">
             <TextField
               name="email"
-              value={formik.values.email ? formik.values.email : undefined}
+              value={formik.values.email ? formik.values.email : ""}
               onChangeCb={formik.handleChange}
               label="Your email"
               description="Fill your email address"
@@ -78,11 +78,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             <TextField
               name="companyName"
               label="Your company"
-              value={
-                formik.values.companyName
-                  ? formik.values.companyName
-                  : undefined
-              }
+              value={formik.values.companyName ? formik.values.companyName : ""}
               onChangeCb={formik.handleChange}
               description="Fill your company name"
               disabled={false}
