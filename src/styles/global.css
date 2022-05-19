@@ -1,0 +1,54 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer utilities {
+  .instill-text-h1 {
+    @apply font-sans text-[32px] font-medium leading-[42px];
+  }
+  .instill-text-h2 {
+    @apply font-mono text-[20px] font-medium leading-[26px];
+  }
+  .instill-text-h3 {
+    @apply font-sans text-base font-normal leading-[28px];
+  }
+  .instill-text-body {
+    @apply font-sans text-sm font-normal leading-[18px];
+  }
+  .instill-text-bold-body {
+    @apply font-sans text-sm font-semibold leading-[18px];
+  }
+  .instill-text-small {
+    @apply font-mono text-xs font-normal;
+  }
+  .instill-input-highlight {
+    @apply focus:border-instillBlue50 focus:outline-none focus:ring-0 focus:ring-white;
+  }
+
+  .instill-input-highlight:focus {
+    box-shadow: 0px 0px 0px 3px rgba(64, 168, 245, 0.2);
+  }
+
+  .instill-input-focus-shadow {
+    box-shadow: 0px 0px 0px 3px rgba(64, 168, 245, 0.2);
+  }
+
+  .instill-progress-message-box-shadow {
+    box-shadow: 2px 2px 5px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .instill-input-no-highlight {
+    @apply focus:outline-none focus:ring-0 focus:ring-opacity-0;
+  }
+}
+
+@font-face {
+  font-family: "instill";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/instillFont-Regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("/fonts/instillFont-Regular.woff")
+      format("woff");
+}

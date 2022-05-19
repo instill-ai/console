@@ -1,0 +1,81 @@
+import { FC, ReactElement } from "react";
+import { GetServerSideProps } from "next";
+
+import { PageBase, PageContentContainer } from "@/components/layouts";
+import PageTitle from "@/components/ui/PageTitle";
+import { useRouter } from "next/router";
+import { listRepoFileContent } from "@/lib/github";
+import { usePipelinesHaveTargetSource } from "@/services/pipeline/PipelineServices";
+import ConnectorPipelinesTable from "@/services/connector/ConnectorPipelinesTable";
+import { StateLabel } from "@/components/ui";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const data = await listRepoFileContent(
+    "instill-ai",
+    "connector-backend",
+    "configs/models/source-definition.json"
+  );
+
+  const decodeSchema = Buffer.from(data.content, "base64").toString();
+  const jsonSchema = JSON.parse(decodeSchema);
+
+  //const fields = transformSchemaToFormFields(jsonSchema);
+
+  return {
+    props: {
+      schema: jsonSchema,
+    },
+  };
+};
+
+interface GetLayOutProps {
+  page: ReactElement;
+}
+
+export type SourceDetailsPageProps = {
+  fields: any;
+};
+
+const SourceDetailsPage: FC<SourceDetailsPageProps> & {
+  getLayout?: FC<GetLayOutProps>;
+} = ({ fields }) => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const pipelines = usePipelinesHaveTargetSource(id && id.toString());
+
+  return (
+    <PageContentContainer>
+      <PageTitle
+        title={id ? id.toString() : ""}
+        breadcrumbs={id ? ["Data Source", id.toString()] : ["Data Source"]}
+        enableButton={false}
+        marginBottom="mb-[50px]"
+      />
+      <div className="mb-5 flex flex-row gap-x-5">
+        <h3 className="instill-text-h3 my-auto text-black">State</h3>
+        <StateLabel
+          enableIcon={true}
+          enableBgColor={true}
+          state="STATE_CONNECTED"
+          iconHeight="h-[18px]"
+          iconWidth="w-[18px]"
+          iconPosition="my-auto"
+          paddingY="py-2"
+          paddingX="px-2"
+          label="Connected"
+        />
+      </div>
+      <h3 className="instill-text-h3 mb-2.5 text-black">Overview</h3>
+      {pipelines.isSuccess ? (
+        <ConnectorPipelinesTable pipelines={pipelines.data} isLoading={false} />
+      ) : null}
+    </PageContentContainer>
+  );
+};
+
+SourceDetailsPage.getLayout = (page) => {
+  return <PageBase>{page}</PageBase>;
+};
+
+export default SourceDetailsPage;
