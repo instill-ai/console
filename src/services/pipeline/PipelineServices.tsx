@@ -1,180 +1,106 @@
 import { listRepoFileContent } from "@/lib/github";
-import { Mode, Status } from "@/types/general";
+import {
+  getDestinationQuery,
+  getModelInstanceQuery,
+  getPipelineQuery,
+  getSourceQuery,
+  listPipelinesQuery,
+  RawPipelineRecipe,
+} from "@/lib/instill";
+import type {
+  Pipeline,
+  PipelineMode,
+  PipelineRecipe,
+  ModelInstance,
+} from "@/lib/instill";
+import type { Mode } from "@/types/general";
 import { useMemo } from "react";
 import { useQuery, useQueryClient } from "react-query";
-import { Model, ModelState } from "../model/ModelServices";
-
-type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
-
-type PipelineState =
-  | "STATE_UNSPECIFIED"
-  | "STATE_ACTIVE"
-  | "STATE_INACTIVE"
-  | "STATE_ERROR";
-
-export type ListPipelinesResponse = {
-  id: string;
-  name: string;
-  description: string;
-  recipe: PipelineRecipeFragment;
-  mode: PipelineMode;
-  state: PipelineState;
-  owner_id: string;
-  full_name: string;
-  created_at: string;
-  updated_at: string;
-};
-
-export type Pipeline = {
-  id: string;
-  description: string;
-  mode: Mode;
-  status: Status;
-  owner_id: string;
-  full_name: string;
-  create_time: string;
-  update_time: string;
-  recipe: PipelineRecipe;
-};
-
-export type PipelineRecipeFragment = {
-  source: {
-    name: string;
-  };
-  destination: {
-    name: string;
-  };
-  models: {
-    name: string;
-    instance_name: string;
-  }[];
-};
-
-export type PipelineRecipe = {
-  source: {
-    name: string;
-    type: string;
-  };
-  destination: {
-    name: string;
-    type: string;
-  };
-  models: Model[];
-};
 
 export const mockPipelines: Pipeline[] = [
   {
     id: "yet-another-mock-pipeline-1",
     description: "helllo",
-    mode: "async",
-    status: "active",
-    owner_id: "summerbud",
-    full_name: "Summberbud",
-    create_time: "2022-05-06T09:00:00",
-    update_time: "2022-05-06T09:00:00",
+    mode: "MODE_SYNC",
+    state: "STATE_ACTIVE",
+    createTime: "2022-05-06T09:00:00",
+    updateTime: "2022-05-06T09:00:00",
+    user: "test_user",
+    org: "test_org",
     recipe: {
       source: {
-        name: "mysql-hi",
-        type: "mysql",
+        id: "pipeline-1-source",
+        description: "hi",
+        createTime: "2022-05-17T09:17:14.223Z",
+        updateTime: "2022-05-17T09:17:14.223Z",
+        definition: "definition",
+        user: "test_user",
+        org: "test_org",
       },
       destination: {
-        name: "mysql-destination",
-        type: "mysql",
+        id: "pipeline-1-destination",
+        description: "hi",
+        createTime: "2022-05-17T09:17:14.223Z",
+        updateTime: "2022-05-17T09:17:14.223Z",
+        definition: "definition",
+        user: "test_user",
+        org: "test_org",
       },
       models: [
         {
-          id: "YOLOv4",
-          instance: "v1.0.0",
-          status: "online",
-        },
-        {
-          id: "YOLOv3",
-          instance: "v2.0.0",
-          status: "offline",
+          id: "pipeline-1-model",
+          state: "STATE_ONLINE",
+          task: "task1",
+          modelDefinition: "definition",
+          configuration: "hi",
+          createTime: "2022-05-17T09:17:14.223Z",
+          updateTime: "2022-05-17T09:17:14.223Z",
         },
       ],
     },
   },
   {
-    id: "yet-another-mock-pipeline-2",
-    description: "nononononono hehee hee",
-    mode: "async",
-    status: "active",
-    owner_id: "summerbud",
-    full_name: "Summberbud",
-    create_time: "2022-05-06T09:00:00",
-    update_time: "2022-05-06T09:00:00",
+    id: "yet-another-mock-pipeline-1",
+    description: "helllo",
+    mode: "MODE_SYNC",
+    state: "STATE_ACTIVE",
+    createTime: "2022-05-06T09:00:00",
+    updateTime: "2022-05-06T09:00:00",
+    user: "test_user",
+    org: "test_org",
     recipe: {
       source: {
-        name: "test-salesforce",
-        type: "salesforce",
+        id: "pipeline-1-source",
+        description: "hi",
+        createTime: "2022-05-17T09:17:14.223Z",
+        updateTime: "2022-05-17T09:17:14.223Z",
+        definition: "definition",
+        user: "test_user",
+        org: "test_org",
       },
       destination: {
-        name: "mysql-destination",
-        type: "mysql",
+        id: "pipeline-1-destination",
+        description: "hi",
+        createTime: "2022-05-17T09:17:14.223Z",
+        updateTime: "2022-05-17T09:17:14.223Z",
+        definition: "definition",
+        user: "test_user",
+        org: "test_org",
       },
       models: [
         {
-          id: "YOLOv4",
-          instance: "v1.0.0",
-          status: "online",
-        },
-        {
-          id: "YOLOv3",
-          instance: "v2.0.0",
-          status: "offline",
-        },
-      ],
-    },
-  },
-  {
-    id: "yet-another-mock-pipeline-3",
-    description: "nononononono hehee hee ddddddddd",
-    mode: "async",
-    status: "active",
-    owner_id: "summerbud",
-    full_name: "Summberbud",
-    create_time: "2022-05-06T09:00:00",
-    update_time: "2022-05-06T09:00:00",
-    recipe: {
-      source: {
-        name: "http-hi",
-        type: "http",
-      },
-      destination: {
-        name: "http-destination",
-        type: "http",
-      },
-      models: [
-        {
-          id: "YOLOv4",
-          instance: "v1.0.0",
-          status: "online",
-        },
-        {
-          id: "YOLOv3",
-          instance: "v2.0.0",
-          status: "offline",
+          id: "pipeline-1-model",
+          state: "STATE_ONLINE",
+          task: "task1",
+          modelDefinition: "definition",
+          configuration: "hi",
+          createTime: "2022-05-17T09:17:14.223Z",
+          updateTime: "2022-05-17T09:17:14.223Z",
         },
       ],
     },
   },
 ];
-
-export const transformPipelineStateToStatus = (
-  state: PipelineState
-): Status => {
-  switch (state) {
-    case "STATE_ACTIVE":
-      return "active";
-    case "STATE_INACTIVE":
-      return "inactive";
-    case "STATE_ERROR":
-      return "error";
-    default:
-      return "unspecific";
-  }
-};
 
 export const transformMode = (mode: PipelineMode): Mode => {
   if (mode === "MODE_ASYNC") return "async";
@@ -182,20 +108,88 @@ export const transformMode = (mode: PipelineMode): Mode => {
   else return "unspecific";
 };
 
-export const usePipeline = (id?: string) => {
+export const constructPipelineRecipe = async (
+  rawRecipe: RawPipelineRecipe
+): Promise<PipelineRecipe> => {
+  try {
+    const source = await getSourceQuery(rawRecipe.source);
+    const destination = await getDestinationQuery(rawRecipe.destination);
+    const instances: ModelInstance[] = [];
+
+    for (const modelInstanceId of rawRecipe.model_instances) {
+      const modelInstance = await getModelInstanceQuery(modelInstanceId);
+      instances.push(modelInstance);
+    }
+
+    const recipe: PipelineRecipe = {
+      source: source,
+      destination: destination,
+      models: instances,
+    };
+
+    return Promise.resolve(recipe);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const usePipeline = (id: string | undefined) => {
+  const queryClient = useQueryClient();
   return useQuery(
     ["pipelines", id],
     async () => {
-      // Mock
-      return mockPipelines.find((e) => e.id === id) as Pipeline;
+      if (!id) {
+        return Promise.reject(new Error("invalid id"));
+      }
+
+      const rawPipeline = await getPipelineQuery(id);
+      const recipe = await constructPipelineRecipe(rawPipeline.recipe);
+
+      const pipeline: Pipeline = {
+        id: rawPipeline.id,
+        description: rawPipeline.description,
+        mode: rawPipeline.mode,
+        state: rawPipeline.state,
+        createTime: rawPipeline.createTime,
+        updateTime: rawPipeline.updateTime,
+        recipe: recipe,
+        user: rawPipeline.user,
+        org: rawPipeline.org,
+      };
+
+      return Promise.resolve(pipeline);
     },
-    { enabled: id ? true : false }
+    {
+      enabled: id ? true : false,
+      initialData: queryClient
+        .getQueryData<Pipeline[]>(["pipelines"])
+        ?.find((e) => e.id === id),
+    }
   );
 };
 
 export const usePipelines = (enable: boolean) => {
   const fetchPipelines = async () => {
-    return Promise.resolve(mockPipelines);
+    const pipelinesWithRawRecipe = await listPipelinesQuery();
+
+    const pipelines: Pipeline[] = [];
+
+    for (const pipeline of pipelinesWithRawRecipe) {
+      const recipe = await constructPipelineRecipe(pipeline.recipe);
+      pipelines.push({
+        id: pipeline.id,
+        description: pipeline.description,
+        mode: pipeline.mode,
+        state: pipeline.state,
+        user: pipeline.user,
+        org: pipeline.org,
+        createTime: pipeline.createTime,
+        updateTime: pipeline.updateTime,
+        recipe: recipe,
+      });
+    }
+
+    return pipelines;
   };
 
   return useQuery(["pipelines"], fetchPipelines, {
@@ -242,7 +236,7 @@ export const usePipelinesHaveTargetSource = (sourceId: string | undefined) => {
       }
 
       for (const pipeline of pipelines.data) {
-        if (pipeline.recipe.source.name === sourceId) {
+        if (pipeline.recipe.source.id === sourceId) {
           targetPipelines.push(pipeline);
         }
       }
@@ -257,7 +251,7 @@ export const usePipelinesHaveTargetSource = (sourceId: string | undefined) => {
           const targetPipelines = [];
 
           for (const pipeline of pipelines) {
-            if (pipeline.recipe.source.name === sourceId) {
+            if (pipeline.recipe.source.id === sourceId) {
               targetPipelines.push(pipeline);
             }
           }
@@ -286,7 +280,7 @@ export const usePipelinesHaveTargetDestination = (
       }
 
       for (const pipeline of pipelines.data) {
-        if (pipeline.recipe.destination.name === destinationId) {
+        if (pipeline.recipe.destination.id === destinationId) {
           targetPipelines.push(pipeline);
         }
       }
@@ -301,7 +295,7 @@ export const usePipelinesHaveTargetDestination = (
           const targetPipelines = [];
 
           for (const pipeline of pipelines) {
-            if (pipeline.recipe.destination.name === destinationId) {
+            if (pipeline.recipe.destination.id === destinationId) {
               targetPipelines.push(pipeline);
             }
           }
