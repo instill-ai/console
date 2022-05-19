@@ -2,9 +2,9 @@ import { listRepoFileContent } from "lib/github";
 import { useMemo } from "react";
 import { parse } from "yaml";
 
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SingleSelectOption } from "@instill-ai/design-system";
-import { getUserQuery, User } from "@/lib/instill/mgmt";
+import { getUserQuery, updateUserMutation, User } from "@/lib/instill/mgmt";
 
 type MgmtDefinitionJson = {
   title: string;
@@ -86,22 +86,51 @@ export const useUser = (id: string) => {
         return Promise.reject(new Error("invalid user id"));
       }
 
-      const user = await getUserQuery(id);
+      const rawUser = await getUserQuery(id);
 
-      return Promise.resolve({
-        id: user.id,
-        companyName: user.company_name,
-        role: user.role,
-        usageDataCollection: user.usage_data_collection,
-        newsletterSubscription: user.newsletter_subscription,
-        type: user.type,
-        createTime: user.create_time,
-        updateTime: user.update_time,
-      });
+      const user: User = {
+        id: rawUser.id,
+        email: rawUser.email,
+        companyName: rawUser.company_name,
+        role: rawUser.role,
+        usageDataCollection: rawUser.usage_data_collection,
+        newsletterSubscription: rawUser.newsletter_subscription,
+        type: rawUser.type,
+        createTime: rawUser.create_time,
+        updateTime: rawUser.update_time,
+      };
+
+      return Promise.resolve(user);
     },
     {
       enabled: id ? true : false,
       initialData: queryClient.getQueryData(["user", id]),
+    }
+  );
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (data: Partial<User>) => {
+      const rawUser = await updateUserMutation(data);
+      const user: User = {
+        id: rawUser.id,
+        email: rawUser.email,
+        companyName: rawUser.company_name,
+        role: rawUser.role,
+        usageDataCollection: rawUser.usage_data_collection,
+        newsletterSubscription: rawUser.newsletter_subscription,
+        type: rawUser.type,
+        createTime: rawUser.create_time,
+        updateTime: rawUser.update_time,
+      };
+      return Promise.resolve(user);
+    },
+    {
+      onSuccess: (newUser) => {
+        queryClient.setQueryData<User>(["user", newUser.id], newUser);
+      },
     }
   );
 };
