@@ -86,19 +86,7 @@ export const useUser = (id: string) => {
         return Promise.reject(new Error("invalid user id"));
       }
 
-      const rawUser = await getUserQuery(id);
-
-      const user: User = {
-        id: rawUser.id,
-        email: rawUser.email,
-        companyName: rawUser.company_name,
-        role: rawUser.role,
-        usageDataCollection: rawUser.usage_data_collection,
-        newsletterSubscription: rawUser.newsletter_subscription,
-        type: rawUser.type,
-        createTime: rawUser.create_time,
-        updateTime: rawUser.update_time,
-      };
+      const user = await getUserQuery(id);
 
       return Promise.resolve(user);
     },
@@ -113,18 +101,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (data: Partial<User>) => {
-      const rawUser = await updateUserMutation(data);
-      const user: User = {
-        id: rawUser.id,
-        email: rawUser.email,
-        companyName: rawUser.company_name,
-        role: rawUser.role,
-        usageDataCollection: rawUser.usage_data_collection,
-        newsletterSubscription: rawUser.newsletter_subscription,
-        type: rawUser.type,
-        createTime: rawUser.create_time,
-        updateTime: rawUser.update_time,
-      };
+      const user = await updateUserMutation(data);
       return Promise.resolve(user);
     },
     {

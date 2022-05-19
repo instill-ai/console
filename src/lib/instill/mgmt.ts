@@ -30,13 +30,25 @@ export type User = {
   updateTime: string;
 };
 
-export const getUserQuery = async (userId: string): Promise<RawUser> => {
+export const getUserQuery = async (userId: string): Promise<User> => {
   try {
     const res = await axios.get<GetUserResponse>(
       `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${userId}`
     );
 
-    return Promise.resolve(res.data.user);
+    const user: User = {
+      id: res.data.user.id,
+      email: res.data.user.email,
+      companyName: res.data.user.company_name,
+      role: res.data.user.email,
+      usageDataCollection: res.data.user.usage_data_collection,
+      newsletterSubscription: res.data.user.newsletter_subscription,
+      type: res.data.user.type,
+      createTime: res.data.user.create_time,
+      updateTime: res.data.user.update_time,
+    };
+
+    return Promise.resolve(user);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -48,7 +60,7 @@ export type UpdateUserResponse = {
 
 export const updateUserMutation = async (
   data: Partial<User>
-): Promise<RawUser> => {
+): Promise<User> => {
   try {
     const res = await axios.post<UpdateUserResponse>(
       "/api/submit-onboarded-form",
@@ -60,7 +72,20 @@ export const updateUserMutation = async (
         newsletter_subscription: data.newsletterSubscription,
       }
     );
-    return Promise.resolve(res.data.user);
+
+    const user: User = {
+      id: res.data.user.id,
+      email: res.data.user.email,
+      companyName: res.data.user.company_name,
+      role: res.data.user.email,
+      usageDataCollection: res.data.user.usage_data_collection,
+      newsletterSubscription: res.data.user.newsletter_subscription,
+      type: res.data.user.type,
+      createTime: res.data.user.create_time,
+      updateTime: res.data.user.update_time,
+    };
+
+    return Promise.resolve(user);
   } catch (err) {
     return Promise.reject(err);
   }
