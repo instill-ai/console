@@ -11,7 +11,7 @@ import {
   TableContainer,
   TableRow,
 } from "@/components/ui";
-import { Pipeline } from "./PipelineServices";
+import { Pipeline } from "@/lib/instill";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
@@ -43,8 +43,8 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             <NameCell
               name={pipeline.id}
               width="w-[191px]"
-              updatedAt={pipeline.update_time}
-              status={pipeline.status}
+              updatedAt={pipeline.updateTime}
+              state={pipeline.state}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft="pl-[15px]"
@@ -60,15 +60,15 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             />
             <ConnectionTypeCell
               width="w-[125px]"
-              type={pipeline.recipe.source.type}
-              name={pipeline.recipe.source.name}
+              type={pipeline.recipe.source.definition}
+              name={pipeline.recipe.source.id}
               cellType="expand"
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight=""
             />
-            <InstanceCell
+            {/* <InstanceCell
               type="model"
               width="w-[190px]"
               instances={pipeline.recipe.models.map((model) => {
@@ -81,12 +81,12 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight=""
-            />
+            /> */}
             <ConnectionTypeCell
               width="w-[160px]"
               cellType="expand"
-              type={pipeline.recipe.destination.type}
-              name={pipeline.recipe.destination.name}
+              type={pipeline.recipe.destination.definition}
+              name={pipeline.recipe.destination.id}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""

@@ -5,7 +5,6 @@ import type { SourceTableHeadProps } from "./SourceTableHead";
 import PipelineOverviewTableHead from "./PipelineOverviewTableHead";
 import type { PipelineOverviewTableHeadProps } from "./PipelineOverviewTableHead";
 import SourcePipelinesTableHead from "./SourcePipelinesTableHead";
-import type { SourcePipelinesTableHeadProps } from "./SourcePipelinesTableHead";
 
 export {
   PipelinesTableHead,
@@ -17,5 +16,4 @@ export type {
   PipelinesTableHeadProps,
   SourceTableHeadProps,
   PipelineOverviewTableHeadProps,
-  SourcePipelinesTableHeadProps,
 };

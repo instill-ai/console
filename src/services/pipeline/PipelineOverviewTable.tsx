@@ -6,8 +6,8 @@ import {
   TableRow,
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
+import { Pipeline } from "@/lib/instill";
 import { FC } from "react";
-import { Pipeline } from "./PipelineServices";
 
 export type PipelineOverViewTableProps = {
   pipeline: Pipeline;
@@ -25,17 +25,17 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
       <PipelineOverviewTableHead
-        sourceStatus="active"
-        modelStatus="active"
-        destinationStatus="disconnected"
+        sourceState="STATE_CONNECTED"
+        modelState="STATE_ONLINE"
+        destinationState="STATE_CONNECTED"
       />
       <TableBody>
         <TableRow borderColor="border-instillGrey20" bgColor="bg-white">
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            type={pipeline.recipe.source.type}
-            name={pipeline.recipe.source.name}
+            type={pipeline.recipe.source.definition}
+            name={pipeline.recipe.source.id}
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""
@@ -52,8 +52,8 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            type={pipeline.recipe.destination.type}
-            name={pipeline.recipe.destination.name}
+            type={pipeline.recipe.destination.definition}
+            name={pipeline.recipe.destination.id}
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""

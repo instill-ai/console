@@ -1,13 +1,12 @@
 import { FC, memo } from "react";
 import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
-
-import { Model } from "@/services/model/ModelServices";
 import { groupBy } from "@/utils/arrayUtils";
 import CellBase, { CellBaseProps } from "../CellBase";
+import { ModelInstance } from "@/lib/instill";
 
 export type ModelsCellProps = CellBaseProps & {
-  models: Model[];
+  models: ModelInstance[];
   width: string;
 };
 
@@ -42,14 +41,14 @@ const ModelsCell: FC<ModelsCellProps> = ({
                 {key}
               </p>
             </div>
-            <div className="flex flex-col gap-y-1">
+            {/* <div className="flex flex-col gap-y-1">
               {value.map((e) => (
                 <div
                   key={e.id}
                   className="instill-text-body text-instillGrey90"
-                >{`${e.id}/${e.instance}`}</div>
+                >{`${e.id}/${e.}`}</div>
               ))}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

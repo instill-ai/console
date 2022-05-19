@@ -2,12 +2,12 @@ import { FC } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
-import { Mode } from "@/types/general";
 import CellBase, { CellBaseProps } from "../CellBase";
+import { PipelineMode } from "@/lib/instill";
 
 export type ModeCellProps = CellBaseProps & {
   width: string;
-  mode: Mode;
+  mode: PipelineMode;
 };
 
 const ModeCell: FC<ModeCellProps> = ({
@@ -19,7 +19,7 @@ const ModeCell: FC<ModeCellProps> = ({
   paddingTop,
 }) => {
   const getModeIcon = () => {
-    if (mode === "async") {
+    if (mode === "MODE_ASYNC") {
       return (
         <AsyncIcon
           width="w-5"
@@ -49,7 +49,7 @@ const ModeCell: FC<ModeCellProps> = ({
       <div className={cn("flex gap-x-2 px-2 py-3", width)}>
         {getModeIcon()}
         <p className="instill-text-body text-instillGrey90">
-          {mode === "async" ? "Async" : "Sync"}
+          {mode === "MODE_ASYNC" ? "Async" : "Sync"}
         </p>
       </div>
     </CellBase>
