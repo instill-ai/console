@@ -27,7 +27,12 @@ const MainPage: FC<MainPageProps> & {
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.isReady || !cookies) return;
+    if (!router.isReady) return;
+
+    if (!cookies) {
+      router.push("/onboarding");
+      return;
+    }
 
     const cookieList = cookie.parse(cookies);
 
