@@ -12,10 +12,9 @@ export type TextAreaProps = {
   onChangeCb?: (value: string) => void;
   placeholder: string;
   autoComplete: string;
-  value: string;
+  value?: string;
   enableCounter: boolean;
   counterWordLimit: number;
-  defaultValue?: string;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
@@ -55,7 +54,6 @@ const FormikWrapper: FC<TextAreaProps> = ({
   value,
   enableCounter,
   counterWordLimit,
-  defaultValue,
 }) => {
   return (
     <Field
@@ -72,7 +70,6 @@ const FormikWrapper: FC<TextAreaProps> = ({
       value={value}
       enableCounter={enableCounter}
       counterWordLimit={counterWordLimit}
-      defaultValue={defaultValue}
     />
   );
 };

@@ -4,6 +4,7 @@ import { FC } from "react";
 
 export type TextFieldProps = {
   name: string;
+  value?: string;
   disabled: boolean;
   readOnly: boolean;
   required: boolean;
@@ -13,7 +14,6 @@ export type TextFieldProps = {
   placeholder: string;
   type: string;
   autoComplete: string;
-  defaultValue?: string;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
@@ -51,7 +51,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
   placeholder,
   type,
   autoComplete,
-  defaultValue,
+  value,
 }) => {
   return (
     <Field
@@ -66,7 +66,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
       placeholder={placeholder}
       type={type}
       autoComplete={autoComplete}
-      defaultValue={defaultValue}
+      value={value}
     />
   );
 };
