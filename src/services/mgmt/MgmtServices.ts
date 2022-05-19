@@ -2,8 +2,9 @@ import { listRepoFileContent } from "lib/github";
 import { useMemo } from "react";
 import { parse } from "yaml";
 
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { SingleSelectOption } from "@instill-ai/design-system";
+import { getUserQuery, User } from "@/lib/instill/mgmt";
 
 type MgmtDefinitionJson = {
   title: string;
@@ -75,3 +76,32 @@ export const mockMgmtRoles: SingleSelectOption[] = [
     value: "hobbyist",
   },
 ];
+
+export const useUser = (id: string) => {
+  const queryClient = useQueryClient();
+  return useQuery<User>(
+    ["user", id],
+    async () => {
+      if (!id) {
+        return Promise.reject(new Error("invalid user id"));
+      }
+
+      const user = await getUserQuery(id);
+
+      return Promise.resolve({
+        id: user.id,
+        companyName: user.company_name,
+        role: user.role,
+        usageDataCollection: user.usage_data_collection,
+        newsletterSubscription: user.newsletter_subscription,
+        type: user.type,
+        createTime: user.create_time,
+        updateTime: user.update_time,
+      });
+    },
+    {
+      enabled: id ? true : false,
+      initialData: queryClient.getQueryData(["user", id]),
+    }
+  );
+};
