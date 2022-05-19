@@ -39,7 +39,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
             <NameCell
               name={source.name}
               width="w-[234px]"
-              status="online"
+              state="STATE_ONLINE"
               updatedAt={source.update_time}
               paddingBottom="pb-5"
               paddingTop="pt-5"
@@ -63,7 +63,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
               instances={source.pipelines.map((e) => {
                 return {
                   name: e.id,
-                  status: e.status,
+                  state: e.state,
                 };
               })}
               paddingBottom="pb-5"
