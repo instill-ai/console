@@ -1,5 +1,4 @@
 import { FormField } from "@/components/forms/FormData";
-
 type Schema = {
   title: string;
   type: string;
@@ -9,6 +8,7 @@ type Schema = {
   description: string;
   required: string[];
   properties: Record<string, any>;
+  definitions: Record<string, Schema>;
 };
 
 export const transformSchemaToFormFields = (
@@ -16,10 +16,14 @@ export const transformSchemaToFormFields = (
 ): { fields: FormField[]; requiredFields: string[] } => {
   const formFields: FormField[] = [];
 
-  for (const [fieldName, fieldConfig] of Object.entries(schema.properties)) {
+  const fullReferenceSchema = deReferenceJsonSchema(schema);
+
+  for (const [fieldName, fieldConfig] of Object.entries(
+    fullReferenceSchema.properties
+  )) {
     const formField = {} as FormField;
 
-    if (fieldConfig.readOnly && fieldConfig.readOnly === true) {
+    if (fieldConfig.ui_hidden) {
       continue;
     }
 
@@ -27,27 +31,63 @@ export const transformSchemaToFormFields = (
     formField.description = fieldConfig.description ?? null;
     formField.title = fieldConfig.title ?? null;
     formField.type = fieldConfig.type ?? null;
-    formField.order = fieldConfig.order ?? null;
-    formField.options = fieldConfig.enum ?? null;
+    formField.order = fieldConfig.ui_order ?? null;
+
+    if (fieldConfig.enum) {
+      formField.options = (fieldConfig.enum as string[]).map((e, i) => {
+        return {
+          label: fieldConfig.ui_enum[i] ?? null,
+          value: e ?? null,
+        };
+      });
+    }
+
     formField.required = schema.required.includes(fieldName) ? true : false;
-    formField.readonly = fieldConfig.readOnly ?? false;
     formField.pattern = fieldConfig.pattern ?? null;
-    formField.component =
-      fieldConfig.type === "boolean"
-        ? "toggle"
-        : fieldConfig.type === "string"
-        ? "text"
-        : fieldConfig.enum
-        ? "select"
-        : "text";
-    formField.placeholder = fieldConfig.examples
-      ? fieldConfig.examples[0]
-      : null;
-    formField.disabled = fieldConfig.disabled ?? false;
+    formField.component = fieldConfig.ui_component ?? null;
+    formField.placeholder = fieldConfig.ui_placeholder ?? null;
+    formField.disabled = fieldConfig.ui_disabled ?? false;
     formField.default = fieldConfig.default ?? null;
+
+    console.log(formField);
 
     formFields.push(formField);
   }
 
   return { fields: formFields, requiredFields: schema.required };
+};
+
+/**
+ * Handle $ref in Json schema
+ * - caveat: this function can't handle external sources
+ * - it assumes the format of $ref is "#/definitions/<target>"
+ */
+
+export const deReferenceJsonSchema = (schema: Schema) => {
+  // Dereference definitions first
+
+  for (const [name, config] of Object.entries(schema.definitions)) {
+    for (const [propertyName, propertyConfig] of Object.entries(
+      config.properties
+    )) {
+      if (!propertyConfig.$ref) {
+        continue;
+      }
+
+      const pathList = (propertyConfig.$ref as string).split("/");
+      schema.definitions[name].properties[propertyName] =
+        schema.definitions[pathList[2]];
+    }
+  }
+
+  for (const [name, config] of Object.entries(schema.properties)) {
+    if (!config.$ref) {
+      continue;
+    }
+
+    const pathList = (config.$ref as string).split("/");
+    schema.properties = schema.definitions[pathList[2]];
+  }
+
+  return schema;
 };
