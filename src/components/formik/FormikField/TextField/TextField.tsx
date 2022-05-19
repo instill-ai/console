@@ -13,6 +13,7 @@ export type TextFieldProps = {
   placeholder: string;
   type: string;
   autoComplete: string;
+  defaultValue?: string;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
@@ -50,6 +51,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
   placeholder,
   type,
   autoComplete,
+  defaultValue,
 }) => {
   return (
     <Field
@@ -64,6 +66,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
       placeholder={placeholder}
       type={type}
       autoComplete={autoComplete}
+      defaultValue={defaultValue}
     />
   );
 };
