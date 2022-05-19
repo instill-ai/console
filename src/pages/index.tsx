@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
   return {
     props: {
-      cookies,
+      cookies: cookies ? cookies : null,
     },
   };
 };
@@ -25,10 +25,11 @@ const MainPage: FC<MainPageProps> & {
   getLayout?: FC<GetLayOutProps>;
 } = ({ cookies }) => {
   const router = useRouter();
-  const cookieList = cookie.parse(cookies);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !cookies) return;
+
+    const cookieList = cookie.parse(cookies);
 
     if (!cookieList["instill-ai-user-onboarded"]) {
       router.push("/onboarding");
