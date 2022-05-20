@@ -59,8 +59,6 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   useEffect(() => {
     if (!sourceDefinitions.isSuccess) return;
 
-    console.log(sourceDefinitions);
-
     if (values.pipeline.mode === "MODE_SYNC") {
       const syncDefinitions = sourceDefinitions.data.filter(
         (e) =>
@@ -128,7 +126,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     if (values.pipeline.mode === "MODE_SYNC") {
       const payload: CreateSourcePayload = {
         id: values.source.existing.id,
-        source_connector_definition: "source-connector-definitions/source-http",
+        source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
         connector: {
           configuration: "{}",
         },
@@ -137,10 +135,10 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       createSource.mutate(payload, {
         onSuccess: (newSource) => {
           setFieldValue("source.existing.name", newSource.name);
+          setStepNumber(stepNumber + 2);
         },
       });
 
-      setStepNumber(stepNumber + 2);
       return;
     }
     setStepNumber(stepNumber + 1);
@@ -149,9 +147,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   // The source and destination type of sync mode will be the same, so we need to setup
   // destination type and name here too.
   const sourceTypeOnChangeCb = (option: SingleSelectOption) => {
-    setFieldValue("dataSource.existing.name", option.value);
-    setFieldValue("dataDestination.existing.name", option.value);
-    setFieldValue("dataDestination.existing.type", option.value);
+    setFieldValue("destination.existing.id", option.label);
   };
 
   return (
