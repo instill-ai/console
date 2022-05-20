@@ -20,23 +20,23 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     <Formik
       initialValues={{
         email: user?.email ? user.email : null,
-        companyName: user?.companyName ? user.companyName : null,
+        company_name: user?.company_name ? user.company_name : null,
         role: user?.role
           ? mockMgmtRoles.find((e) => e.value === user.role)?.value
           : null,
-        usageDataCollection: user?.usageDataCollection
-          ? user.usageDataCollection
+        usage_data_collection: user?.usage_data_collection
+          ? user.usage_data_collection
           : null,
-        newsletterSubscription: user?.newsletterSubscription
-          ? user.newsletterSubscription
+        newsletter_subscription: user?.newsletter_subscription
+          ? user.newsletter_subscription
           : null,
       }}
       onSubmit={async (values) => {
         if (
-          !values.companyName ||
+          !values.company_name ||
           !values.email ||
-          !values.newsletterSubscription ||
-          !values.usageDataCollection ||
+          !values.newsletter_subscription ||
+          !values.usage_data_collection ||
           !values.role
         ) {
           return;
@@ -45,10 +45,10 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
         const body: Partial<User> = {
           id: "local-user",
           email: values.email,
-          companyName: values.companyName,
+          company_name: values.company_name,
           role: values.role as string,
-          newsletterSubscription: values.newsletterSubscription,
-          usageDataCollection: values.usageDataCollection,
+          newsletter_subscription: values.newsletter_subscription,
+          usage_data_collection: values.usage_data_collection,
         };
 
         updateUser.mutate(body, {
@@ -78,7 +78,9 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             <TextField
               name="companyName"
               label="Your company"
-              value={formik.values.companyName ? formik.values.companyName : ""}
+              value={
+                formik.values.company_name ? formik.values.company_name : ""
+              }
               onChangeCb={formik.handleChange}
               description="Fill your company name"
               disabled={false}
@@ -110,7 +112,9 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               readOnly={false}
               required={true}
               defaultChecked={
-                user?.usageDataCollection ? user?.usageDataCollection : false
+                user?.usage_data_collection
+                  ? user?.usage_data_collection
+                  : false
               }
               description="We collect data only for product improvements"
             />
@@ -121,8 +125,8 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               readOnly={false}
               required={true}
               defaultChecked={
-                user?.newsletterSubscription
-                  ? user?.newsletterSubscription
+                user?.newsletter_subscription
+                  ? user?.newsletter_subscription
                   : false
               }
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
