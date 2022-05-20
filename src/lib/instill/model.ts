@@ -38,16 +38,16 @@ export const getModelQuery = async (modelId: string): Promise<Model> => {
   }
 };
 
-export type ListModelResponse = {
+export type ListModelsResponse = {
   models: Model[];
   next_page_token: string;
   total_size: string;
 };
 
-export const listModelQuery = async (): Promise<Model[]> => {
+export const listModelsQuery = async (): Promise<Model[]> => {
   try {
-    const { data } = await axios.get<ListModelResponse>(
-      "/api/model/list-model"
+    const { data } = await axios.get<ListModelsResponse>(
+      "/api/model/list-models"
     );
     return Promise.resolve(data.models);
   } catch (err) {

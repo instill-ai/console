@@ -73,18 +73,18 @@ export type ConnectorDefinition = {
   };
 };
 
-export type ListSourceDefinitionResponse = {
+export type ListSourceDefinitionsResponse = {
   source_connector_definitions: ConnectorDefinition[];
   next_page_token: string;
   total_size: string;
 };
 
-export const listSourceDefinitionQuery = async (): Promise<
+export const listSourceDefinitionsQuery = async (): Promise<
   ConnectorDefinition[]
 > => {
   try {
-    const { data } = await axios.get<ListSourceDefinitionResponse>(
-      "/api/connector/list-source-definition"
+    const { data } = await axios.get<ListSourceDefinitionsResponse>(
+      "/api/connector/list-source-definitions"
     );
     return Promise.resolve(data.source_connector_definitions);
   } catch (err) {

@@ -61,7 +61,7 @@ export const listPipelinesQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListPipelinesResponse>(
-      "/api/pipeline/list-pipeline"
+      "/api/pipeline/list-pipelines"
     );
 
     return Promise.resolve(data.pipelines);
