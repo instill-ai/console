@@ -142,7 +142,7 @@ export type CreateSourcePayload = {
   id: string;
   source_connector_definition: string;
   connector: {
-    description: string;
+    description?: string;
     configuration: string;
   };
 };
