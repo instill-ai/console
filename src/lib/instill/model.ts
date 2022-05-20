@@ -1,5 +1,11 @@
 import axios from "axios";
 
+// ###################################################################
+// #                                                                 #
+// # Model                                                           #
+// #                                                                 #
+// ###################################################################
+
 export type GetModelResponse = {
   model: Model;
 };
@@ -31,6 +37,29 @@ export const getModelQuery = async (modelId: string): Promise<Model> => {
     return Promise.reject(err);
   }
 };
+
+export type ListModelResponse = {
+  models: Model[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listModelQuery = async (): Promise<Model[]> => {
+  try {
+    const { data } = await axios.get<ListModelResponse>(
+      "/api/model/list-model"
+    );
+    return Promise.resolve(data.models);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
+// # Model Instance                                                  #
+// #                                                                 #
+// ###################################################################
 
 export type GetModelInstanceResponse = {
   instance: ModelInstance;
