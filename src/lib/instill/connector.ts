@@ -16,16 +16,6 @@ export type Connector = {
 };
 
 export type Source = {
-  id: string;
-  description: string;
-  create_time: string;
-  update_time: string;
-  definition: string;
-  user: string;
-  org: string;
-};
-
-export type GetSourceResponse = {
   name: string;
   uid: string;
   id: string;
@@ -33,23 +23,15 @@ export type GetSourceResponse = {
   connector: Connector;
 };
 
+export type GetSourceResponse = Source;
+
 export const getSourceQuery = async (sourceId: string): Promise<Source> => {
   try {
-    const res = await axios.get<GetSourceResponse>(
+    const { data } = await axios.get<GetSourceResponse>(
       `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
     );
 
-    const source: Source = {
-      id: res.data.id,
-      description: res.data.connector.description,
-      create_time: res.data.connector.create_time,
-      update_time: res.data.connector.update_time,
-      org: res.data.connector.org,
-      user: res.data.connector.user,
-      definition: res.data.source_connector_definition,
-    };
-
-    return Promise.resolve(source);
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -147,6 +129,33 @@ export const getDestinationQuery = async (
     };
 
     return Promise.resolve(destination);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type CreateConnectorResponse = {
+  source_connector: Source;
+};
+
+export type CreateSourcePayload = {
+  id: string;
+  source_connector_definition: string;
+  connector: {
+    description: string;
+    configuration: string;
+  };
+};
+
+export const createSourceMutation = async (
+  payload: CreateSourcePayload
+): Promise<Source> => {
+  try {
+    const { data } = await axios.post<CreateConnectorResponse>(
+      "/api/connector/create-source",
+      payload
+    );
+    return Promise.resolve(data.source_connector);
   } catch (err) {
     return Promise.reject(err);
   }
