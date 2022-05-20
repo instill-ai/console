@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ListSourceDefinitionResponse } from "@/lib/instill";
+import { ListModelsResponse } from "@/lib/instill";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
@@ -11,8 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const { data } = await axios.get<ListSourceDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connector-definitions?view=VIEW_FULL`
+    const { data } = await axios.get<ListModelsResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`
     );
 
     return res.status(200).json(data);

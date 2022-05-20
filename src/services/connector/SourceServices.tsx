@@ -2,7 +2,7 @@ import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import {
   createSourceMutation,
   CreateSourcePayload,
-  listSourceDefinitionQuery,
+  listSourceDefinitionsQuery,
   Pipeline,
 } from "@/lib/instill";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -72,7 +72,7 @@ export const useSourceDefinitions = () => {
   return useQuery(
     ["source", "definitions"],
     async () => {
-      const sourceDefinitions = await listSourceDefinitionQuery();
+      const sourceDefinitions = await listSourceDefinitionsQuery();
       return Promise.resolve(sourceDefinitions);
     },
     {
