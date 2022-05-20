@@ -5,15 +5,7 @@ export type ConnectorState =
   | "STATE_DISCONNECTED"
   | "STATE_ERROR";
 
-export type GetSourceResponse = {
-  name: string;
-  uid: string;
-  id: string;
-  source_connector_definition: string;
-  connector: RawConnector;
-};
-
-export type RawConnector = {
+export type Connector = {
   description: string;
   configuration: string;
   tombstone: boolean;
@@ -26,14 +18,44 @@ export type RawConnector = {
 export type Source = {
   id: string;
   description: string;
-  createTime: string;
-  updateTime: string;
+  create_time: string;
+  update_time: string;
   definition: string;
   user: string;
   org: string;
 };
 
-export type GetSourceDefinitionResponse = {
+export type GetSourceResponse = {
+  name: string;
+  uid: string;
+  id: string;
+  source_connector_definition: string;
+  connector: Connector;
+};
+
+export const getSourceQuery = async (sourceId: string): Promise<Source> => {
+  try {
+    const res = await axios.get<GetSourceResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
+    );
+
+    const source: Source = {
+      id: res.data.id,
+      description: res.data.connector.description,
+      create_time: res.data.connector.create_time,
+      update_time: res.data.connector.update_time,
+      org: res.data.connector.org,
+      user: res.data.connector.user,
+      definition: res.data.source_connector_definition,
+    };
+
+    return Promise.resolve(source);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type ConnectorDefinition = {
   name: string;
   uid: string;
   id: string;
@@ -52,20 +74,7 @@ export type GetSourceDefinitionResponse = {
       supports_normalization: string;
       supports_dbt: boolean;
       supported_destination_sync_modes: string[];
-      advanced_auth: {
-        auth_flow_type: string;
-        predicate_key: string[];
-        predicate_value: string;
-        oauth_config_specification: {
-          oauth_user_input_from_connector_config_specification: Record<
-            string,
-            any
-          >;
-          complete_oauth_output_specification: Record<string, any>;
-          complete_oauth_server_input_specification: Record<string, any>;
-          complete_oauth_server_output_specification: Record<string, any>;
-        };
-      };
+      advanced_auth: Record<string, any>;
     };
     tombstone: boolean;
     public: boolean;
@@ -82,23 +91,20 @@ export type GetSourceDefinitionResponse = {
   };
 };
 
-export const getSourceQuery = async (sourceId: string): Promise<Source> => {
+export type ListSourceDefinitionResponse = {
+  source_connector_definitions: ConnectorDefinition[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listSourceDefinitionQuery = async (): Promise<
+  ConnectorDefinition[]
+> => {
   try {
-    const res = await axios.get<GetSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
+    const { data } = await axios.get<ListSourceDefinitionResponse>(
+      "/api/connector/list-source-definition"
     );
-
-    const source: Source = {
-      id: res.data.id,
-      description: res.data.connector.description,
-      createTime: res.data.connector.create_time,
-      updateTime: res.data.connector.update_time,
-      org: res.data.connector.org,
-      user: res.data.connector.user,
-      definition: res.data.source_connector_definition,
-    };
-
-    return Promise.resolve(source);
+    return Promise.resolve(data.source_connector_definitions);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -109,14 +115,14 @@ export type GetDestinationResponse = {
   uid: string;
   id: string;
   destination_connector_definition: string;
-  connector: RawConnector;
+  connector: Connector;
 };
 
 export type Destination = {
   id: string;
   description: string;
-  createTime: string;
-  updateTime: string;
+  create_time: string;
+  update_time: string;
   definition: string;
   user: string;
   org: string;
@@ -133,8 +139,8 @@ export const getDestinationQuery = async (
     const destination: Destination = {
       id: res.data.id,
       description: res.data.connector.description,
-      createTime: res.data.connector.create_time,
-      updateTime: res.data.connector.update_time,
+      create_time: res.data.connector.create_time,
+      update_time: res.data.connector.update_time,
       org: res.data.connector.org,
       user: res.data.connector.user,
       definition: res.data.destination_connector_definition,
