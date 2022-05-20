@@ -1,4 +1,7 @@
-import { Pipeline } from "@/lib/instill";
+import ConnectorIcon from "@/components/ui/ConnectorIcon";
+import { listSourceDefinitionQuery, Pipeline } from "@/lib/instill";
+import { SingleSelectOption } from "@instill-ai/design-system";
+import { useQuery, useQueryClient } from "react-query";
 import { mockPipelines } from "../pipeline/PipelineServices";
 import { Connector } from "./ConnectorType";
 
@@ -58,3 +61,33 @@ export const mockSources: Source[] = [
     pipelines: [mockPipelines[1], mockPipelines[2]],
   },
 ];
+
+export const useSourceDefinitionOptions = () => {
+  const queryClient = useQueryClient();
+
+  return useQuery(
+    ["source", "definition-options"],
+    async () => {
+      const sourceDefinitions = await listSourceDefinitionQuery();
+      const options: SingleSelectOption[] = sourceDefinitions.map((e) => {
+        return {
+          label: e.connector_definition.title,
+          value: e.id,
+          startIcon: (
+            <ConnectorIcon
+              type={e.id}
+              iconColor="fill-instillGrey90"
+              iconHeight="h-[30px]"
+              iconWidth="w-[30px]"
+              iconPosition="my-auto"
+            />
+          ),
+        };
+      });
+      return Promise.resolve(options);
+    },
+    {
+      initialData: queryClient.getQueryData(["source", "definition-options"]),
+    }
+  );
+};
