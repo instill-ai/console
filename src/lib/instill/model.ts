@@ -18,6 +18,7 @@ export type GetModelResponse = {
 
 export type Model = {
   id: string;
+  name: string;
   description: string;
   modelDefinition: string;
   configuration: string;
@@ -30,12 +31,13 @@ export type Model = {
 
 export const getModelQuery = async (modelId: string): Promise<Model> => {
   try {
-    const res = await axios.get<GetModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelId}`
-    );
+    const res = await axios.post<GetModelResponse>("/api/model/get-model", {
+      id: modelId,
+    });
 
     return Promise.resolve({
-      id: res.data.model.name,
+      id: res.data.model.id,
+      name: res.data.model.name,
       description: res.data.model.description,
       modelDefinition: res.data.model.model_definition,
       configuration: res.data.model.configuration,
@@ -68,6 +70,7 @@ export type ModelState = "STATE_ONLINE" | "STATE_OFFLINE" | "STATE_ERROR";
 
 export type ModelInstance = {
   id: string;
+  name: string;
   state: ModelState;
   task: string;
   modelDefinition: string;
@@ -80,12 +83,14 @@ export const getModelInstanceQuery = async (
   modelInstanceId: string
 ): Promise<ModelInstance> => {
   try {
-    const res = await axios.get<GetModelInstanceResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceId}`
+    const res = await axios.post<GetModelInstanceResponse>(
+      "/api/model/get-model-instance",
+      { id: modelInstanceId }
     );
 
     return Promise.resolve({
       id: res.data.instance.id,
+      name: res.data.instance.name,
       state: res.data.instance.state as ModelState,
       task: res.data.instance.task,
       modelDefinition: res.data.instance.model_definition,

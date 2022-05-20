@@ -20,6 +20,7 @@ export type GetUserResponse = {
 
 export type User = {
   id: string;
+  name: string;
   email: string;
   companyName: string;
   role: string;
@@ -32,12 +33,13 @@ export type User = {
 
 export const getUserQuery = async (userId: string): Promise<User> => {
   try {
-    const res = await axios.post<GetUserResponse>("/api/mgmt/get-user-query", {
+    const res = await axios.post<GetUserResponse>("/api/mgmt/get-user", {
       id: userId,
     });
 
     const user: User = {
       id: res.data.user.id,
+      name: res.data.user.name,
       email: res.data.user.email,
       companyName: res.data.user.company_name,
       role: res.data.user.role,
@@ -75,6 +77,7 @@ export const updateUserMutation = async (
 
     const user: User = {
       id: res.data.user.id,
+      name: res.data.user.name,
       email: res.data.user.email,
       companyName: res.data.user.company_name,
       role: res.data.user.role,

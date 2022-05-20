@@ -12,6 +12,7 @@ export type PipelineState =
 
 export type Pipeline = {
   id: string;
+  name: string;
   description: string;
   mode: PipelineMode;
   state: PipelineState;
@@ -24,6 +25,7 @@ export type Pipeline = {
 
 export type PipelineWithRawRecipe = {
   id: string;
+  name: string;
   description: string;
   mode: PipelineMode;
   state: PipelineState;
@@ -71,13 +73,14 @@ export const listPipelinesQuery = async (): Promise<
 > => {
   try {
     const res = await axios.get<ListPipelinesResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
+      "/api/pipeline/list-pipeline"
     );
 
     return Promise.resolve(
       res.data.pipelines.map((e) => {
         return {
           id: e.id,
+          name: e.name,
           description: e.description,
           mode: e.mode,
           state: e.state,
@@ -102,12 +105,14 @@ export const getPipelineQuery = async (
   pipelineId: string
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const res = await axios.get<GetPipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineId}`
+    const res = await axios.post<GetPipelineResponse>(
+      "/api/pipeline/get-pipeline",
+      { id: pipelineId }
     );
 
     return Promise.resolve({
       id: res.data.pipeline.id,
+      name: res.data.pipeline.name,
       description: res.data.pipeline.description,
       mode: res.data.pipeline.mode,
       state: res.data.pipeline.state,
