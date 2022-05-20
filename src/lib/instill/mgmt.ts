@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export type RawUser = {
+export type User = {
   name: string;
   uid: string;
   email: string;
@@ -15,80 +15,41 @@ export type RawUser = {
 };
 
 export type GetUserResponse = {
-  user: RawUser;
-};
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  companyName: string;
-  role: string;
-  usageDataCollection: boolean;
-  newsletterSubscription: boolean;
-  type: string;
-  createTime: string;
-  updateTime: string;
+  user: User;
 };
 
 export const getUserQuery = async (userId: string): Promise<User> => {
   try {
-    const res = await axios.post<GetUserResponse>("/api/mgmt/get-user", {
+    const { data } = await axios.post<GetUserResponse>("/api/mgmt/get-user", {
       id: userId,
     });
 
-    const user: User = {
-      id: res.data.user.id,
-      name: res.data.user.name,
-      email: res.data.user.email,
-      companyName: res.data.user.company_name,
-      role: res.data.user.role,
-      usageDataCollection: res.data.user.usage_data_collection,
-      newsletterSubscription: res.data.user.newsletter_subscription,
-      type: res.data.user.type,
-      createTime: res.data.user.create_time,
-      updateTime: res.data.user.update_time,
-    };
-
-    return Promise.resolve(user);
+    return Promise.resolve(data.user);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
 export type UpdateUserResponse = {
-  user: RawUser;
+  user: User;
 };
 
 export const updateUserMutation = async (
-  data: Partial<User>
+  user: Partial<User>
 ): Promise<User> => {
   try {
-    const res = await axios.post<UpdateUserResponse>(
+    const { data } = await axios.post<UpdateUserResponse>(
       "/api/submit-onboarded-form",
       {
-        email: data.email,
-        company_name: data.companyName,
-        role: data.role,
-        usage_data_collection: data.usageDataCollection,
-        newsletter_subscription: data.newsletterSubscription,
+        email: user.email,
+        company_name: user.company_name,
+        role: user.role,
+        usage_data_collection: user.usage_data_collection,
+        newsletter_subscription: user.newsletter_subscription,
       }
     );
 
-    const user: User = {
-      id: res.data.user.id,
-      name: res.data.user.name,
-      email: res.data.user.email,
-      companyName: res.data.user.company_name,
-      role: res.data.user.role,
-      usageDataCollection: res.data.user.usage_data_collection,
-      newsletterSubscription: res.data.user.newsletter_subscription,
-      type: res.data.user.type,
-      createTime: res.data.user.create_time,
-      updateTime: res.data.user.update_time,
-    };
-
-    return Promise.resolve(user);
+    return Promise.resolve(data.user);
   } catch (err) {
     return Promise.reject(err);
   }
