@@ -43,7 +43,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             <NameCell
               name={pipeline.id}
               width="w-[191px]"
-              updatedAt={pipeline.updateTime}
+              updatedAt={pipeline.update_time}
               state={pipeline.state}
               paddingBottom="pb-5"
               paddingTop="pt-5"
@@ -68,20 +68,24 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               paddingLeft=""
               paddingRight=""
             />
-            {/* <InstanceCell
+            <InstanceCell
               type="model"
               width="w-[190px]"
               instances={pipeline.recipe.models.map((model) => {
+                const nameList = model.name.split("/");
+                const modelId = nameList[1];
+                const instanceId = nameList[3];
+
                 return {
-                  name: `${model.id}/${model.instance}`,
-                  status: model.status,
+                  name: `${modelId}/${instanceId}`,
+                  state: model.state,
                 };
               })}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight=""
-            /> */}
+            />
             <ConnectionTypeCell
               width="w-[160px]"
               cellType="expand"

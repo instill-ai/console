@@ -20,19 +20,21 @@ import { useQuery, useQueryClient } from "react-query";
 export const mockPipelines: Pipeline[] = [
   {
     id: "yet-another-mock-pipeline-1",
+    uid: "uuid",
+    name: "pipeline/yet-another-mock-pipeline-1",
     description: "helllo",
     mode: "MODE_SYNC",
     state: "STATE_ACTIVE",
-    createTime: "2022-05-06T09:00:00",
-    updateTime: "2022-05-06T09:00:00",
+    create_time: "2022-05-06T09:00:00",
+    update_time: "2022-05-06T09:00:00",
     user: "test_user",
     org: "test_org",
     recipe: {
       source: {
         id: "pipeline-1-source",
         description: "hi",
-        createTime: "2022-05-17T09:17:14.223Z",
-        updateTime: "2022-05-17T09:17:14.223Z",
+        create_time: "2022-05-17T09:17:14.223Z",
+        update_time: "2022-05-17T09:17:14.223Z",
         definition: "definition",
         user: "test_user",
         org: "test_org",
@@ -40,8 +42,8 @@ export const mockPipelines: Pipeline[] = [
       destination: {
         id: "pipeline-1-destination",
         description: "hi",
-        createTime: "2022-05-17T09:17:14.223Z",
-        updateTime: "2022-05-17T09:17:14.223Z",
+        create_time: "2022-05-17T09:17:14.223Z",
+        update_time: "2022-05-17T09:17:14.223Z",
         definition: "definition",
         user: "test_user",
         org: "test_org",
@@ -49,6 +51,7 @@ export const mockPipelines: Pipeline[] = [
       models: [
         {
           id: "pipeline-1-model",
+          name: "model/model-1/model_instance/pipeline-1-model",
           state: "STATE_ONLINE",
           task: "task1",
           modelDefinition: "definition",
@@ -60,20 +63,22 @@ export const mockPipelines: Pipeline[] = [
     },
   },
   {
-    id: "yet-another-mock-pipeline-1",
+    id: "yet-another-mock-pipeline-2",
+    uid: "uuid",
+    name: "pipeline/yet-another-mock-pipeline-2",
     description: "helllo",
     mode: "MODE_SYNC",
     state: "STATE_ACTIVE",
-    createTime: "2022-05-06T09:00:00",
-    updateTime: "2022-05-06T09:00:00",
+    create_time: "2022-05-06T09:00:00",
+    update_time: "2022-05-06T09:00:00",
     user: "test_user",
     org: "test_org",
     recipe: {
       source: {
         id: "pipeline-1-source",
         description: "hi",
-        createTime: "2022-05-17T09:17:14.223Z",
-        updateTime: "2022-05-17T09:17:14.223Z",
+        create_time: "2022-05-17T09:17:14.223Z",
+        update_time: "2022-05-17T09:17:14.223Z",
         definition: "definition",
         user: "test_user",
         org: "test_org",
@@ -81,8 +86,8 @@ export const mockPipelines: Pipeline[] = [
       destination: {
         id: "pipeline-1-destination",
         description: "hi",
-        createTime: "2022-05-17T09:17:14.223Z",
-        updateTime: "2022-05-17T09:17:14.223Z",
+        create_time: "2022-05-17T09:17:14.223Z",
+        update_time: "2022-05-17T09:17:14.223Z",
         definition: "definition",
         user: "test_user",
         org: "test_org",
@@ -90,6 +95,7 @@ export const mockPipelines: Pipeline[] = [
       models: [
         {
           id: "pipeline-1-model",
+          name: "model/model-1/model_instance/pipeline-1-model",
           state: "STATE_ONLINE",
           task: "task1",
           modelDefinition: "definition",
@@ -146,15 +152,8 @@ export const usePipeline = (id: string | undefined) => {
       const recipe = await constructPipelineRecipe(rawPipeline.recipe);
 
       const pipeline: Pipeline = {
-        id: rawPipeline.id,
-        description: rawPipeline.description,
-        mode: rawPipeline.mode,
-        state: rawPipeline.state,
-        createTime: rawPipeline.createTime,
-        updateTime: rawPipeline.updateTime,
+        ...rawPipeline,
         recipe: recipe,
-        user: rawPipeline.user,
-        org: rawPipeline.org,
       };
 
       return Promise.resolve(pipeline);
@@ -176,17 +175,7 @@ export const usePipelines = (enable: boolean) => {
 
     for (const pipeline of pipelinesWithRawRecipe) {
       const recipe = await constructPipelineRecipe(pipeline.recipe);
-      pipelines.push({
-        id: pipeline.id,
-        description: pipeline.description,
-        mode: pipeline.mode,
-        state: pipeline.state,
-        user: pipeline.user,
-        org: pipeline.org,
-        createTime: pipeline.createTime,
-        updateTime: pipeline.updateTime,
-        recipe: recipe,
-      });
+      pipelines.push({ ...pipeline, recipe: recipe });
     }
 
     return pipelines;

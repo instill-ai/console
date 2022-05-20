@@ -10,38 +10,26 @@ export type PipelineState =
   | "STATE_INACTIVE"
   | "STATE_ERROR";
 
-export type Pipeline = {
-  id: string;
-  name: string;
-  description: string;
-  mode: PipelineMode;
-  state: PipelineState;
-  createTime: string;
-  updateTime: string;
-  recipe: PipelineRecipe;
-  user: string;
-  org: string;
-};
-
 export type PipelineWithRawRecipe = {
-  id: string;
-  name: string;
-  description: string;
-  mode: PipelineMode;
-  state: PipelineState;
-  createTime: string;
-  updateTime: string;
-  recipe: RawPipelineRecipe;
-  user: string;
-  org: string;
-};
-
-export type RawPipeline = {
   name: string;
   uid: string;
   id: string;
   description: string;
   recipe: RawPipelineRecipe;
+  mode: PipelineMode;
+  state: PipelineState;
+  user: string;
+  org: string;
+  create_time: string;
+  update_time: string;
+};
+
+export type Pipeline = {
+  name: string;
+  uid: string;
+  id: string;
+  description: string;
+  recipe: PipelineRecipe;
   mode: PipelineMode;
   state: PipelineState;
   user: string;
@@ -63,7 +51,7 @@ export type PipelineRecipe = {
 };
 
 export type ListPipelinesResponse = {
-  pipelines: RawPipeline[];
+  pipelines: PipelineWithRawRecipe[];
   next_page_token: string;
   total_size: string;
 };
@@ -72,56 +60,30 @@ export const listPipelinesQuery = async (): Promise<
   PipelineWithRawRecipe[]
 > => {
   try {
-    const res = await axios.get<ListPipelinesResponse>(
+    const { data } = await axios.get<ListPipelinesResponse>(
       "/api/pipeline/list-pipeline"
     );
 
-    return Promise.resolve(
-      res.data.pipelines.map((e) => {
-        return {
-          id: e.id,
-          name: e.name,
-          description: e.description,
-          mode: e.mode,
-          state: e.state,
-          user: e.user,
-          org: e.org,
-          createTime: e.create_time,
-          updateTime: e.update_time,
-          recipe: e.recipe,
-        };
-      })
-    );
+    return Promise.resolve(data.pipelines);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
 export type GetPipelineResponse = {
-  pipeline: RawPipeline;
+  pipeline: PipelineWithRawRecipe;
 };
 
 export const getPipelineQuery = async (
   pipelineId: string
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const res = await axios.post<GetPipelineResponse>(
+    const { data } = await axios.post<GetPipelineResponse>(
       "/api/pipeline/get-pipeline",
       { id: pipelineId }
     );
 
-    return Promise.resolve({
-      id: res.data.pipeline.id,
-      name: res.data.pipeline.name,
-      description: res.data.pipeline.description,
-      mode: res.data.pipeline.mode,
-      state: res.data.pipeline.state,
-      user: res.data.pipeline.user,
-      org: res.data.pipeline.org,
-      createTime: res.data.pipeline.create_time,
-      updateTime: res.data.pipeline.update_time,
-      recipe: res.data.pipeline.recipe,
-    });
+    return Promise.resolve(data.pipeline);
   } catch (err) {
     return Promise.reject(err);
   }
