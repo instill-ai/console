@@ -10,6 +10,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 
+  if (!body.id) {
+    return res.status(500).json("Pipeline id not provided");
+  }
+
   try {
     const { data } = await axios.get<GetPipelineResponse>(
       `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${body.id}`
