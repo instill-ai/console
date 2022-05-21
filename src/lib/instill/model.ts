@@ -93,3 +93,25 @@ export const getModelInstanceQuery = async (
     return Promise.reject(err);
   }
 };
+
+export type ListModelInstancesResponse = {
+  instances: ModelInstance[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listModelInstancesQuery = async (
+  modelId: string
+): Promise<ModelInstance[]> => {
+  try {
+    const { data } = await axios.post<ListModelInstancesResponse>(
+      "/api/model/list-model-instances",
+      {
+        id: modelId,
+      }
+    );
+    return Promise.resolve(data.instances);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
