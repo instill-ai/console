@@ -7,6 +7,7 @@
 import {
   createModelMutation,
   CreateModelPayload,
+  getModelDefinitionQuery,
   listModelDefinitionsQuery,
   listModelInstancesQuery,
   listModelsQuery,
@@ -18,13 +19,6 @@ export const useModels = () => {
   return useQuery(["models"], async () => {
     const models = await listModelsQuery();
     return Promise.resolve(models);
-  });
-};
-
-export const useModelDefinitions = () => {
-  return useQuery(["models", "definition"], async () => {
-    const definitions = await listModelDefinitionsQuery();
-    return Promise.resolve(definitions);
   });
 };
 
@@ -41,6 +35,26 @@ export const useCreateModel = () => {
       },
     }
   );
+};
+
+// ###################################################################
+// #                                                                 #
+// # Model definition                                                #
+// #                                                                 #
+// ###################################################################
+
+export const useModelDefinitions = () => {
+  return useQuery(["models", "definition"], async () => {
+    const definitions = await listModelDefinitionsQuery();
+    return Promise.resolve(definitions);
+  });
+};
+
+export const useModelDefinition = (modelDefinitionId: string) => {
+  return useQuery(["models", "definition", modelDefinitionId], async () => {
+    const definition = await getModelDefinitionQuery(modelDefinitionId);
+    return Promise.resolve(definition);
+  });
 };
 
 // ###################################################################
