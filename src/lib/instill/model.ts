@@ -74,7 +74,9 @@ export type ListModelDefinitionsResponse = {
   total_size: string;
 };
 
-export const listModelDefinitions = async (): Promise<ModelDefinition[]> => {
+export const listModelDefinitionsQuery = async (): Promise<
+  ModelDefinition[]
+> => {
   try {
     const { data } = await axios.get<ListModelDefinitionsResponse>(
       "/api/model/list-model-definitions"
