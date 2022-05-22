@@ -4,13 +4,24 @@
 // #                                                                 #
 // ###################################################################
 
-import { listModelInstancesQuery, listModelsQuery } from "@/lib/instill";
+import {
+  listModelDefinitionsQuery,
+  listModelInstancesQuery,
+  listModelsQuery,
+} from "@/lib/instill";
 import { useQuery } from "react-query";
 
 export const useModels = () => {
   return useQuery(["models"], async () => {
     const models = await listModelsQuery();
     return Promise.resolve(models);
+  });
+};
+
+export const useModelDefinitions = () => {
+  return useQuery(["models", "definition"], async () => {
+    const definitions = await listModelDefinitionsQuery();
+    return Promise.resolve(definitions);
   });
 };
 
