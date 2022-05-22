@@ -5,11 +5,14 @@
 // ###################################################################
 
 import {
+  createModelMutation,
+  CreateModelPayload,
   listModelDefinitionsQuery,
   listModelInstancesQuery,
   listModelsQuery,
+  Model,
 } from "@/lib/instill";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useModels = () => {
   return useQuery(["models"], async () => {
@@ -23,6 +26,21 @@ export const useModelDefinitions = () => {
     const definitions = await listModelDefinitionsQuery();
     return Promise.resolve(definitions);
   });
+};
+
+export const useCreateModel = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: CreateModelPayload) => {
+      const model = await createModelMutation(payload);
+      return model;
+    },
+    {
+      onSuccess: (newModel) => {
+        queryClient.setQueryData<Model>(["user", newModel.id], newModel);
+      },
+    }
+  );
 };
 
 // ###################################################################
