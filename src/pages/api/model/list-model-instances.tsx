@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const { data } = await axios.get<ListModelInstancesResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${body.id}/instances?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${body.id}/instances?view=VIEW_FULL`
     );
 
     return res.status(200).json(data);
