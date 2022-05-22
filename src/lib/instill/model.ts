@@ -2,7 +2,7 @@ import axios from "axios";
 
 // ###################################################################
 // #                                                                 #
-// # Model                                                           #
+// # Model - Query                                                   #
 // #                                                                 #
 // ###################################################################
 
@@ -82,6 +82,36 @@ export const listModelDefinitionsQuery = async (): Promise<
       "/api/model/list-model-definitions"
     );
     return Promise.resolve(data.model_definitions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
+// # Model - Mutation                                                #
+// #                                                                 #
+// ###################################################################
+
+export type CreateModelPayload = {
+  id: string;
+  model_definition: string;
+  configuration: string;
+};
+
+export type CreateModelResponse = {
+  model: Model;
+};
+
+export const createModelMutation = async (
+  payload: CreateModelPayload
+): Promise<Model> => {
+  try {
+    const { data } = await axios.post<CreateModelResponse>(
+      "/api/model/create-model",
+      payload
+    );
+    return Promise.resolve(data.model);
   } catch (err) {
     return Promise.reject(err);
   }
