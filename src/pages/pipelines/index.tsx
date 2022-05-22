@@ -1,6 +1,7 @@
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { PipelinesTable } from "@/services/pipeline";
+import axios from "axios";
 import { FC, ReactElement } from "react";
 
 interface GetLayOutProps {
@@ -13,6 +14,7 @@ const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const pipelines = [];
+
   return (
     <PageContentContainer>
       <PageTitle
