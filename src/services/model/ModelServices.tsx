@@ -20,21 +20,25 @@ export const useModels = () => {
 // #                                                                 #
 // ###################################################################
 
-export const useModeInstances = (modelId: string[]) => {
+export const useModeInstances = () => {
+  const models = useModels();
   return useQuery(
     ["modelInstances"],
     async () => {
       const modelInstances = [];
+      if (!models.data) {
+        return Promise.reject(new Error("Model data not found"));
+      }
 
-      for (const id of modelId) {
-        const instances = await listModelInstancesQuery(id);
+      for (const model of models.data) {
+        const instances = await listModelInstancesQuery(model.id);
         modelInstances.push(...instances);
       }
 
       return Promise.resolve(modelInstances);
     },
     {
-      enabled: !!modelId,
+      enabled: !!models.isSuccess,
     }
   );
 };
