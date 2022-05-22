@@ -2,7 +2,7 @@ import axios from "axios";
 
 // ###################################################################
 // #                                                                 #
-// # Model - Query                                                   #
+// # [Query] Model                                                   #
 // #                                                                 #
 // ###################################################################
 
@@ -55,6 +55,12 @@ export const listModelsQuery = async (): Promise<Model[]> => {
   }
 };
 
+// ###################################################################
+// #                                                                 #
+// # [Query] Model Definition                                        #
+// #                                                                 #
+// ###################################################################
+
 export type ModelDefinition = {
   name: string;
   uid: string;
@@ -66,6 +72,22 @@ export type ModelDefinition = {
   model_instance_spec: Record<string, any>;
   create_time: string;
   update_time: string;
+};
+
+export type GetModelDefinitionResponse = {
+  model_definitions: ModelDefinition;
+};
+
+export const getModelDefinitionQuery = async (modelDefinitionId: string) => {
+  try {
+    const { data } = await axios.post<GetModelDefinitionResponse>(
+      "/api/model/get-model.definition",
+      { id: modelDefinitionId }
+    );
+    return Promise.resolve(data.model_definitions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };
 
 export type ListModelDefinitionsResponse = {
@@ -89,7 +111,7 @@ export const listModelDefinitionsQuery = async (): Promise<
 
 // ###################################################################
 // #                                                                 #
-// # Model - Mutation                                                #
+// # [Mutation] Model                                                #
 // #                                                                 #
 // ###################################################################
 
@@ -119,7 +141,7 @@ export const createModelMutation = async (
 
 // ###################################################################
 // #                                                                 #
-// # Model Instance                                                  #
+// # [Query] Model Instance                                          #
 // #                                                                 #
 // ###################################################################
 
