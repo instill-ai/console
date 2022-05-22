@@ -17,6 +17,8 @@ import PipelineModeLabel from "./PipelineModeLabel";
 import type { PipelineModeLabelProps } from "./PipelineModeLabel";
 import ConnectorIcon from "./ConnectorIcon";
 import type { ConnectorIconProps } from "./ConnectorIcon";
+import ModelDefinitionIcon from "./ModelDefinitionIcon";
+import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
 
 export {
   Sidebar,
@@ -31,12 +33,14 @@ export {
   StateLabel,
   PipelineModeLabel,
   ConnectorIcon,
+  ModelDefinitionIcon,
 };
 export type {
   StateIndicatorProps,
   StateLabelProps,
   PipelineModeLabelProps,
   ConnectorIconProps,
+  ModelDefinitionIconProps,
 };
 
 export * from "./TableHeads";
