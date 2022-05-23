@@ -1,12 +1,11 @@
-import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import {
   createSourceMutation,
   CreateSourcePayload,
   listSourceDefinitionsQuery,
+  listSourcesQuery,
   Pipeline,
 } from "@/lib/instill";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { mockPipelines } from "../pipeline/PipelineServices";
 import { Connector } from "./ConnectorType";
 
 export type SourceConnector = {
@@ -39,33 +38,6 @@ export type Source = {
   pipelines: Pipeline[];
 };
 
-export const mockSources: Source[] = [
-  {
-    type: "salesforce",
-    name: "test-salesforce",
-    state: "connected",
-    create_time: "2022-05-10T11:54:35.845Z",
-    update_time: "2022-05-10T11:54:35.846Z",
-    pipelines: mockPipelines,
-  },
-  {
-    type: "mysql",
-    name: "test-mySQL",
-    state: "connected",
-    create_time: "2022-05-10T11:54:35.845Z",
-    update_time: "2022-05-10T11:54:35.846Z",
-    pipelines: [mockPipelines[0]],
-  },
-  {
-    type: "redshift",
-    name: "test-redshift",
-    state: "disconnected",
-    create_time: "2022-05-10T11:54:35.845Z",
-    update_time: "2022-05-10T11:54:35.846Z",
-    pipelines: [mockPipelines[1], mockPipelines[2]],
-  },
-];
-
 export const useSourceDefinitions = () => {
   const queryClient = useQueryClient();
 
@@ -79,6 +51,13 @@ export const useSourceDefinitions = () => {
       initialData: queryClient.getQueryData(["source", "definition-options"]),
     }
   );
+};
+
+export const useSources = () => {
+  return useQuery(["sources"], async () => {
+    const res = await listSourcesQuery();
+    return Promise.resolve(res);
+  });
 };
 
 export const useCreateSource = () => {
