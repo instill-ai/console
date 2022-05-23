@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Field, FieldProps } from "formik";
 import {
   BasicSingleSelect,
+  BasicSingleSelectProps,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
@@ -15,7 +16,8 @@ export type SingleSelectProps = {
   label: string;
   onChangeCb?: (option: SingleSelectOption) => void;
   instanceId: string;
-  defaultValue?: SingleSelectOption;
+  menuPlacement: BasicSingleSelectProps["menuPlacement"];
+  defaultValue: BasicSingleSelectProps["defaultValue"];
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -25,6 +27,8 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   name,
   instanceId,
   onChangeCb,
+  menuPlacement,
+  defaultValue,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
@@ -42,6 +46,8 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       error={form.errors[field.name] as string}
       options={options}
       onChangeInput={onChange}
+      menuPlacement={menuPlacement}
+      defaultValue={defaultValue}
     />
   );
 };
@@ -57,6 +63,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   onChangeCb,
   instanceId,
   defaultValue,
+  menuPlacement,
 }) => {
   return (
     <Field
@@ -71,6 +78,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       onChangeCb={onChangeCb}
       label={label}
       defaultValue={defaultValue}
+      menuPlacement={menuPlacement}
     />
   );
 };
