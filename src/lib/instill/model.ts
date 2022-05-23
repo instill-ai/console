@@ -141,6 +141,30 @@ export const createModelMutation = async (
 
 // ###################################################################
 // #                                                                 #
+// # [Action] Model                                                  #
+// #                                                                 #
+// ###################################################################
+
+export type DeployModelResponse = {
+  instance: ModelInstance;
+};
+
+export const deployModelAction = async (modelInstanceName: string) => {
+  try {
+    const { data } = await axios.post<DeployModelResponse>(
+      "/api/model/deploy-model",
+      {
+        name: modelInstanceName,
+      }
+    );
+    return Promise.resolve(data.instance);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
 // # [Query] Model Instance                                          #
 // #                                                                 #
 // ###################################################################
