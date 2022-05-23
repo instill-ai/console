@@ -15,28 +15,6 @@ export type Connector = {
   update_time: string;
 };
 
-export type Source = {
-  name: string;
-  uid: string;
-  id: string;
-  source_connector_definition: string;
-  connector: Connector;
-};
-
-export type GetSourceResponse = Source;
-
-export const getSourceQuery = async (sourceId: string): Promise<Source> => {
-  try {
-    const { data } = await axios.get<GetSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
-    );
-
-    return Promise.resolve(data);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
 export type ConnectorDefinition = {
   name: string;
   uid: string;
@@ -73,6 +51,12 @@ export type ConnectorDefinition = {
   };
 };
 
+// ###################################################################
+// #                                                                 #
+// # [Query] Source definition                                       #
+// #                                                                 #
+// ###################################################################
+
 export type ListSourceDefinitionsResponse = {
   source_connector_definitions: ConnectorDefinition[];
   next_page_token: string;
@@ -92,47 +76,39 @@ export const listSourceDefinitionsQuery = async (): Promise<
   }
 };
 
-export type GetDestinationResponse = {
+// ###################################################################
+// #                                                                 #
+// # [Query] Source                                                  #
+// #                                                                 #
+// ###################################################################
+
+export type Source = {
   name: string;
   uid: string;
   id: string;
-  destination_connector_definition: string;
+  source_connector_definition: string;
   connector: Connector;
 };
 
-export type Destination = {
-  id: string;
-  description: string;
-  create_time: string;
-  update_time: string;
-  definition: string;
-  user: string;
-  org: string;
-};
+export type GetSourceResponse = Source;
 
-export const getDestinationQuery = async (
-  destinationId: string
-): Promise<Destination> => {
+export const getSourceQuery = async (sourceId: string): Promise<Source> => {
   try {
-    const res = await axios.get<GetDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationId}`
+    const { data } = await axios.get<GetSourceResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
     );
 
-    const destination: Destination = {
-      id: res.data.id,
-      description: res.data.connector.description,
-      create_time: res.data.connector.create_time,
-      update_time: res.data.connector.update_time,
-      org: res.data.connector.org,
-      user: res.data.connector.user,
-      definition: res.data.destination_connector_definition,
-    };
-
-    return Promise.resolve(destination);
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }
 };
+
+// ###################################################################
+// #                                                                 #
+// # [Mutation] Source                                               #
+// #                                                                 #
+// ###################################################################
 
 export type CreateConnectorResponse = {
   source_connector: Source;
@@ -156,6 +132,61 @@ export const createSourceMutation = async (
       payload
     );
     return Promise.resolve(data.source_connector);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
+// # [Query] Destination definition                                  #
+// #                                                                 #
+// ###################################################################
+
+export type ListDestinationDefinitionsResponse = {
+  destination_connector_definitions: ConnectorDefinition[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listDestinationDefinitionsQuery = async (): Promise<
+  ConnectorDefinition[]
+> => {
+  try {
+    const { data } = await axios.get<ListDestinationDefinitionsResponse>(
+      "/api/connector/list-destination-definitions"
+    );
+    return Promise.resolve(data.destination_connector_definitions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
+// # [Query] Destination                                             #
+// #                                                                 #
+// ###################################################################
+
+export type Destination = {
+  name: string;
+  uid: string;
+  id: string;
+  destination_connector_definition: string;
+  connector: Connector;
+};
+
+export type GetDestinationResponse = Destination;
+
+export const getDestinationQuery = async (
+  destinationId: string
+): Promise<Destination> => {
+  try {
+    const { data } = await axios.get<GetDestinationResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationId}`
+    );
+
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }
