@@ -75,7 +75,7 @@ export type ModelDefinition = {
 };
 
 export type GetModelDefinitionResponse = {
-  model_definitions: ModelDefinition;
+  model_definition: ModelDefinition;
 };
 
 export const getModelDefinitionQuery = async (modelDefinitionId: string) => {
@@ -84,7 +84,7 @@ export const getModelDefinitionQuery = async (modelDefinitionId: string) => {
       "/api/model/get-model-definition",
       { id: modelDefinitionId }
     );
-    return Promise.resolve(data.model_definitions);
+    return Promise.resolve(data.model_definition);
   } catch (err) {
     return Promise.reject(err);
   }
