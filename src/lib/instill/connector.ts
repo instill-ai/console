@@ -188,6 +188,24 @@ export const listDestinationDefinitionsQuery = async (): Promise<
   }
 };
 
+export type GetDestinationDefinitionResponse = {
+  destination_connector_definition: ConnectorDefinition;
+};
+
+export const getDestinationDefinitionQuery = async (
+  destinationDefinitionName: string
+) => {
+  try {
+    const { data } = await axios.post<GetDestinationDefinitionResponse>(
+      "/api/connector/get-destination-definition",
+      { id: destinationDefinitionName }
+    );
+    return Promise.resolve(data.destination_connector_definition);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Query] Destination                                             #
