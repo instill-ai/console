@@ -81,7 +81,7 @@ export type GetModelDefinitionResponse = {
 export const getModelDefinitionQuery = async (modelDefinitionId: string) => {
   try {
     const { data } = await axios.post<GetModelDefinitionResponse>(
-      "/api/model/get-model.definition",
+      "/api/model/get-model-definition",
       { id: modelDefinitionId }
     );
     return Promise.resolve(data.model_definitions);
