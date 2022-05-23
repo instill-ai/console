@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Destination, Source } from "./connector";
+import { DestinationWithDefinition, SourceWithDefinition } from "./connector";
 import { ModelInstance } from "./model";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
@@ -45,8 +45,8 @@ export type RawPipelineRecipe = {
 };
 
 export type PipelineRecipe = {
-  source: Source;
-  destination: Destination;
+  source: SourceWithDefinition;
+  destination: DestinationWithDefinition;
   models: ModelInstance[];
 };
 
