@@ -120,11 +120,30 @@ export type GetSourceResponse = Source;
 
 export const getSourceQuery = async (sourceId: string): Promise<Source> => {
   try {
-    const { data } = await axios.get<GetSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceId}`
+    const { data } = await axios.post<GetSourceResponse>(
+      "/api/connector/get-source",
+      { id: sourceId }
     );
 
     return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type ListSourcesResponse = {
+  source_connectors: Source[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listSourcesQuery = async (): Promise<Source[]> => {
+  try {
+    const { data } = await axios.get<ListSourcesResponse>(
+      "/api/connector/list-sources"
+    );
+
+    return Promise.resolve(data.source_connectors);
   } catch (err) {
     return Promise.reject(err);
   }
