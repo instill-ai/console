@@ -199,7 +199,7 @@ export const getDestinationQuery = async (
 // ###################################################################
 
 export type CreateDestinationResponse = {
-  destination_connector: Source;
+  destination_connector: Destination;
 };
 
 export type CreateDestinationPayload = {
@@ -213,7 +213,7 @@ export type CreateDestinationPayload = {
 
 export const createDestinationMutation = async (
   payload: CreateDestinationPayload
-): Promise<Source> => {
+): Promise<Destination> => {
   try {
     const { data } = await axios.post<CreateDestinationResponse>(
       "/api/connector/create-destination",
