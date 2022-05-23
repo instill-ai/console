@@ -7,6 +7,7 @@
 import {
   createModelMutation,
   CreateModelPayload,
+  deployModelAction,
   getModelDefinitionQuery,
   getModelInstanceQuery,
   listModelDefinitionsQuery,
@@ -126,4 +127,11 @@ export const useModelInstance = (modelInstanceId: string | undefined) => {
       enabled: !!modelInstanceId,
     }
   );
+};
+
+export const useDeployModel = () => {
+  return useMutation(async (modelInstanceName: string) => {
+    const modelInstance = await deployModelAction(modelInstanceName);
+    return Promise.resolve(modelInstance);
+  });
 };
