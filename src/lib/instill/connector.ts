@@ -110,7 +110,7 @@ export const getSourceQuery = async (sourceId: string): Promise<Source> => {
 // #                                                                 #
 // ###################################################################
 
-export type CreateConnectorResponse = {
+export type CreateSourceResponse = {
   source_connector: Source;
 };
 
@@ -127,7 +127,7 @@ export const createSourceMutation = async (
   payload: CreateSourcePayload
 ): Promise<Source> => {
   try {
-    const { data } = await axios.post<CreateConnectorResponse>(
+    const { data } = await axios.post<CreateSourceResponse>(
       "/api/connector/create-source",
       payload
     );
@@ -187,6 +187,39 @@ export const getDestinationQuery = async (
     );
 
     return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ###################################################################
+// #                                                                 #
+// # [Mutation] Destination                                          #
+// #                                                                 #
+// ###################################################################
+
+export type CreateDestinationResponse = {
+  destination_connector: Source;
+};
+
+export type CreateDestinationPayload = {
+  id: string;
+  destination_connector_definition: string;
+  connector: {
+    description?: string;
+    configuration: string;
+  };
+};
+
+export const createDestinationMutation = async (
+  payload: CreateDestinationPayload
+): Promise<Source> => {
+  try {
+    const { data } = await axios.post<CreateDestinationResponse>(
+      "/api/connector/create-destination",
+      payload
+    );
+    return Promise.resolve(data.destination_connector);
   } catch (err) {
     return Promise.reject(err);
   }
