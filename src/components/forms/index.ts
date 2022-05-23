@@ -5,8 +5,6 @@ import CreateDestinationForm from "./CreateDestinationForm";
 import CreateSourceForm from "./CreateSourceForm";
 import OnboardingForm from "./OnboardingForm";
 import CreateModelForm from "./CreateModelForm";
-import FormBase from "./FormBase";
-import type { FormBaseProps } from "./FormBase";
 
 export {
   CreatePipelineForm,
@@ -14,6 +12,5 @@ export {
   OnboardingForm,
   CreateDestinationForm,
   CreateModelForm,
-  FormBase,
 };
-export type { StepNumberState, FormBaseProps };
+export type { StepNumberState };
