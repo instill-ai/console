@@ -50,11 +50,19 @@ export const useModelDefinitions = () => {
   });
 };
 
-export const useModelDefinition = (modelDefinitionId: string) => {
-  return useQuery(["models", "definition", modelDefinitionId], async () => {
-    const definition = await getModelDefinitionQuery(modelDefinitionId);
-    return Promise.resolve(definition);
-  });
+export const useModelDefinition = (modelDefinitionId: string | undefined) => {
+  return useQuery(
+    ["models", "definition", modelDefinitionId],
+    async () => {
+      if (!modelDefinitionId) {
+        return Promise.reject(new Error("Model definition id not found"));
+      }
+
+      const definition = await getModelDefinitionQuery(modelDefinitionId);
+      return Promise.resolve(definition);
+    },
+    { enabled: !!modelDefinitionId }
+  );
 };
 
 // ###################################################################
