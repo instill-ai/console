@@ -1,5 +1,4 @@
-import { CreateConnectorResponse, GetSourceResponse } from "@/lib/instill";
-import { GetUserResponse } from "@/lib/instill/mgmt";
+import { CreateSourceResponse } from "@/lib/instill";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -16,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const { data } = await axios.post<CreateConnectorResponse>(
+    const { data } = await axios.post<CreateSourceResponse>(
       `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors`,
       body
     );
