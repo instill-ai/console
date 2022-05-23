@@ -2,31 +2,51 @@ import { FC, useMemo, useEffect } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { FormVerticalDividers } from "@/components/ui";
+import { ConnectorIcon, FormVerticalDividers } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { SingleSelect, FormikStep } from "../../../formik";
 import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
+import { useDestinationDefinitions } from "@/services/connector/DestinationServices";
 
 export type SetupDestinationStepProps = StepNumberState;
 
 const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
   const { values, setFieldValue } = useFormikContext<Values>();
+  const destinationDefinition = useDestinationDefinitions();
 
-  const sourceOption = useMemo(() => {
-    if (!values.dataSource.new.name && !values.dataSource.existing.name) return;
+  const destinationOptions: SingleSelectOption[] = useMemo(() => {
+    if (!destinationDefinition.isSuccess) {
+      return;
+    }
 
-    const sourceName =
-      values.dataSource.new.name ?? values.dataSource.existing.name;
-
-    const index = syncDataConnectionOptions.findIndex(
-      (e) => e.value === sourceName
+    const syncDestinationDefinitions = destinationDefinition.data.filter(
+      (e) =>
+        e.connector_definition.connection_type === "CONNECTION_TYPE_DIRECTNESS"
     );
 
-    return syncDataConnectionOptions[index];
-  }, [values.dataSource.new.name, values.dataSource.existing.name]);
+    return syncDestinationDefinitions.map((e) => {
+      return {
+        label: e.connector_definition.title,
+        value: e.id,
+        startIcon: (
+          <ConnectorIcon
+            type={e.connector_definition.title}
+            iconColor="fill-instillGrey90"
+            iconHeight="h-[30px]"
+            iconWidth="w-[30px]"
+            iconPosition="my-auto"
+          />
+        ),
+      };
+    });
+  }, [
+    values.destination.new.id,
+    values.destination.existing.id,
+    destinationDefinition.isSuccess,
+  ]);
 
   // The source and destination type of sync mode will be the same, so we need to setup
   // source type and name here too.
@@ -43,7 +63,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
 
   return (
     <FormikStep>
-      {values.pipeline.mode === "sync" ? (
+      {values.pipeline.mode === "MODE_SYNC" ? (
         <div className="flex flex-col gap-y-5">
           <SingleSelect
             name="dataDestination.existing.type"
@@ -52,10 +72,11 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
             description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
             disabled={false}
             readOnly={false}
-            options={syncDataConnectionOptions}
-            defaultValue={sourceOption ? sourceOption : undefined}
+            options={destinationOptions}
+            defaultValue={sourceOption ? sourceOption : null}
             required={true}
             onChangeCb={dataDestinationOnChangeCb}
+            menuPlacement="auto"
           />
           <PrimaryButton
             position="ml-auto"
