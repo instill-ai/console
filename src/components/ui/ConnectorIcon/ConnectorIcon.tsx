@@ -1,8 +1,8 @@
 import { GrpcIcon, HttpIcon } from "@instill-ai/design-system";
-import { FC, ReactElement } from "react";
+import { FC } from "react";
 
 export type ConnectorIconProps = {
-  type: string;
+  iconName: string;
   iconWidth: string;
   iconHeight: string;
   iconPosition: string;
@@ -10,14 +10,14 @@ export type ConnectorIconProps = {
 };
 
 const ConnectorIcon: FC<ConnectorIconProps> = ({
-  type,
+  iconName,
   iconHeight,
   iconWidth,
   iconPosition,
   iconColor,
 }) => {
-  switch (type) {
-    case "HTTP": {
+  switch (iconName) {
+    case "http.svg": {
       return (
         <HttpIcon
           width={iconWidth}
@@ -27,7 +27,7 @@ const ConnectorIcon: FC<ConnectorIconProps> = ({
         />
       );
     }
-    case "gRPC": {
+    case "grpc.svg": {
       return (
         <GrpcIcon
           width={iconWidth}
