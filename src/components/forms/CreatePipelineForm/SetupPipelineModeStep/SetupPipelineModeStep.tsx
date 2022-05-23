@@ -124,20 +124,23 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
   const handleGoNext = () => {
     if (values.pipeline.mode === "MODE_SYNC") {
-      const payload: CreateSourcePayload = {
-        id: values.source.existing.id,
-        source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
-        connector: {
-          configuration: "{}",
-        },
-      };
+      setStepNumber(stepNumber + 2);
+      // const payload: CreateSourcePayload = {
+      //   id: values.source.existing.id,
+      //   source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
+      //   connector: {
+      //     configuration: "{}",
+      //   },
+      // };
 
-      createSource.mutate(payload, {
-        onSuccess: (newSource) => {
-          setFieldValue("source.existing.name", newSource.name);
-          setStepNumber(stepNumber + 2);
-        },
-      });
+      // console.log(payload);
+
+      // createSource.mutate(payload, {
+      //   onSuccess: (newSource) => {
+      //     setFieldValue("source.existing.name", newSource.name);
+      //     setStepNumber(stepNumber + 2);
+      //   },
+      // });
 
       return;
     }

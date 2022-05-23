@@ -4,6 +4,7 @@ import { SingleSelect, TextField } from "../../formik/FormikField";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { mockAsyncDataConnectionOptions } from "../MockData";
+import { FormBase } from "@/components/formik";
 
 const CreateDestinationForm: FC = () => {
   return (
@@ -13,7 +14,7 @@ const CreateDestinationForm: FC = () => {
     >
       {(formik) => {
         return (
-          <Form className="flex flex-col gap-y-5">
+          <FormBase gapY="gap-y-5" padding={null}>
             <TextField
               name="name"
               label="Name"
@@ -34,6 +35,8 @@ const CreateDestinationForm: FC = () => {
               options={mockAsyncDataConnectionOptions}
               required={true}
               description={"Setup Guide"}
+              menuPlacement="auto"
+              defaultValue={null}
             />
             <PrimaryButton
               type="submit"
@@ -41,7 +44,7 @@ const CreateDestinationForm: FC = () => {
             >
               Set up Destination
             </PrimaryButton>
-          </Form>
+          </FormBase>
         );
       }}
     </Formik>

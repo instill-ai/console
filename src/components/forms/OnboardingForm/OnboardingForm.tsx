@@ -5,8 +5,9 @@ import axios from "axios";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { mockMgmtRoles, useUpdateUser } from "@/services/mgmt/MgmtServices";
-import { SingleSelect, TextField, ToggleField } from "../../formik";
+import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
 import { User } from "@/lib/instill/mgmt";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
 export type OnBoardingFormProps = {
   user?: Partial<User> | null;
@@ -61,7 +62,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     >
       {(formik) => {
         return (
-          <Form className="flex flex-col gap-y-5">
+          <FormBase gapY="gap-y-5" padding={null}>
             <TextField
               name="email"
               value={formik.values.email ? formik.values.email : ""}
@@ -99,10 +100,15 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               options={mockMgmtRoles}
               required={true}
               description={"Setup Guide"}
+              menuPlacement="auto"
               defaultValue={
                 user?.role
                   ? mockMgmtRoles.find((e) => e.value === user.role)
-                  : undefined
+                    ? (mockMgmtRoles.find(
+                        (e) => e.value === user.role
+                      ) as SingleSelectOption)
+                    : null
+                  : null
               }
             />
             <ToggleField
@@ -138,7 +144,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             >
               Start
             </PrimaryButton>
-          </Form>
+          </FormBase>
         );
       }}
     </Formik>

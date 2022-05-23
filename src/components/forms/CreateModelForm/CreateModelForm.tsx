@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Form, Formik } from "formik";
 
-import { SingleSelect, TextField } from "@/components/formik";
+import { FormBase, SingleSelect, TextField } from "@/components/formik";
 import { mockModelSourceOptions } from "../MockData";
 import GitHubModelFlow from "./GitHubModelFlow";
 import LocalModelFlow from "./LocalModelFlow";
@@ -30,7 +30,7 @@ const CreateModelForm: FC = () => {
     >
       {(formik) => {
         return (
-          <Form className="flex flex-col gap-y-5">
+          <FormBase padding={null} gapY="gap-y-5">
             <TextField
               name="name"
               label="Name"
@@ -51,10 +51,12 @@ const CreateModelForm: FC = () => {
               options={mockModelSourceOptions}
               required={true}
               description={"Setup Guide"}
+              menuPlacement="auto"
+              defaultValue={null}
             />
             {formik.values.type === "github" ? <GitHubModelFlow /> : null}
             {formik.values.type === "local" ? <LocalModelFlow /> : null}
-          </Form>
+          </FormBase>
         );
       }}
     </Formik>

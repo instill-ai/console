@@ -7,6 +7,7 @@ import SetupModelStep from "./SetupModelStep";
 import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
 import SetupPipelineModeStep from "./SetupPipelineModeStep";
 import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
+import { PipelineMode } from "@/lib/instill";
 
 export type StepNumberState = {
   maximumStepNumber: number;
@@ -14,45 +15,42 @@ export type StepNumberState = {
   setStepNumber: Dispatch<SetStateAction<number>>;
 };
 
-type ExistingDataSource = {
-  name: string;
-  type: string;
+type ExistingSource = {
+  id: string;
 };
 
-type NewDataSource = {
-  name: string;
-  type: string;
+type NewSource = {
+  id: string;
 };
 
-type DataSource = {
-  existing: ExistingDataSource;
-  new: NewDataSource;
+type Source = {
+  existing: ExistingSource;
+  new: NewSource;
 };
 
-type ExistingDataDestination = {
-  name: string;
-  type: string;
+type ExistingDestination = {
+  id: string;
 };
 
-type NewDataDestination = {
-  name: string;
-  type: string;
+type NewDestination = {
+  id: string;
 };
 
-type DataDestination = {
-  existing: ExistingDataDestination;
-  new: NewDataDestination;
+type Destination = {
+  existing: ExistingDestination;
+  new: NewDestination;
 };
 
 type ExistingModel = {
-  name: string;
+  id: string;
 };
 
 type NewModel = {
-  name: string;
-  modelSource: "local" | "github";
+  id: string;
+  modelDefinition: string;
   modelInstance: string;
-  file: string;
+  file?: string;
+  repo?: string;
   description: string;
 };
 
@@ -62,15 +60,15 @@ type Model = {
 };
 
 type Pipeline = {
-  mode: "sync" | "async";
-  name: string;
+  mode: PipelineMode;
+  id: string;
   description: string;
   status: string;
 };
 
 export type Values = {
-  dataSource: DataSource;
-  dataDestination: DataDestination;
+  source: Source;
+  destination: Destination;
   model: Model;
   pipeline: Pipeline;
 };
@@ -81,38 +79,39 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
       stepNumber={props.stepNumber}
       setStepNumber={props.setStepNumber}
       initialValues={{
-        dataSource: {
+        source: {
           new: {
-            name: null,
+            id: null,
           },
           existing: {
-            name: null,
+            id: null,
           },
         },
         model: {
           new: {
-            name: null,
-            modelSource: null,
+            id: null,
+            modelDefinition: null,
             modelInstance: null,
             file: null,
             description: null,
+            repo: null,
           },
           existing: {
-            name: null,
+            id: null,
           },
         },
         pipeline: {
-          mode: null,
-          name: null,
+          mode: "MODE_SYNC",
+          id: null,
           description: null,
           status: true,
         },
-        dataDestination: {
+        destination: {
           new: {
-            name: null,
+            id: null,
           },
           existing: {
-            name: null,
+            id: null,
           },
         },
       }}
