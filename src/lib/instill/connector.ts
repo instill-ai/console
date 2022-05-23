@@ -263,6 +263,24 @@ export const getDestinationQuery = async (
   }
 };
 
+export type ListDestinationsResponse = {
+  destination_connectors: Destination[];
+  next_page_token: string;
+  total_size: string;
+};
+
+export const listDestinationsQuery = async (): Promise<Destination[]> => {
+  try {
+    const { data } = await axios.get<ListDestinationsResponse>(
+      "/api/connector/list-destinations"
+    );
+
+    return Promise.resolve(data.destination_connectors);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Mutation] Destination                                          #
