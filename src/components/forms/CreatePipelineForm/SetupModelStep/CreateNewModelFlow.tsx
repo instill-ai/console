@@ -1,6 +1,18 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  ModelInstanceIcon,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 
 import {
   SingleSelect,
@@ -11,59 +23,95 @@ import {
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import { mockModelInstances, mockModelSourceOptions } from "../../MockData";
+import {
+  useCreateModel,
+  useDeployModel,
+  useModelDefinition,
+  useModelDefinitions,
+  useModelInstance,
+  useModelInstances,
+} from "@/services/model/ModelServices";
+import useOnScreen from "@/hooks/useOnScreen";
+import { ModelDefinitionIcon } from "@/components/ui";
+import { CreateModelPayload, Model, ModelDefinition } from "@/lib/instill";
 
-export type CreateNewModelFlowProps = StepNumberState;
+// We need to pass modelCreated state to UseExistingModelFlow
+
+export type CreateNewModelFlowProps = StepNumberState & {
+  setModelCreated: Dispatch<SetStateAction<boolean>>;
+  modelCreated: boolean;
+};
 
 const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   maximumStepNumber,
   setStepNumber,
   stepNumber,
+  setModelCreated,
+  modelCreated,
 }) => {
   const { values, setFieldValue } = useFormikContext<Values>();
 
-  const [fetched, setFetched] = useState(false);
-  const [displayFetchModelButton, setDisplayFetchModelButton] = useState(false);
-  const [displaySetupModelButton, setDisplaySetupModelButton] = useState(false);
-  const [modelInstances, setModelInstances] = useState<
-    SingleSelectOption[] | null
-  >(null);
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Initialize the model definition                             #
+  // #                                                                 #
+  // ###################################################################
+
+  const flowRef = useRef<HTMLDivElement>(null);
+  const flowIsOnScreen = useOnScreen(flowRef);
+  const modelDefinitions = useModelDefinitions();
+
+  const [modelDefinitionOptions, setModelDefinitionOptions] = useState<
+    SingleSelectOption[] | undefined
+  >();
+  const [targetModelDefinitionName, setTargetModelDefinitionName] = useState<
+    string | undefined
+  >();
 
   useEffect(() => {
-    if (fetched) {
-      setDisplayFetchModelButton(false);
-      setDisplaySetupModelButton(true);
-      return;
-    }
+    if (!flowIsOnScreen || !modelDefinitions.isSuccess) return;
 
-    if (values.model.new.modelSource === "github") {
-      setDisplayFetchModelButton(true);
-      setDisplaySetupModelButton(false);
-      return;
-    }
+    console.log(modelDefinitions.data);
 
-    setDisplayFetchModelButton(false);
-    setDisplaySetupModelButton(true);
-  }, [values.model.new.modelSource, fetched]);
+    setModelDefinitionOptions(
+      modelDefinitions.data.map((e) => {
+        return {
+          label: e.title,
+          value: e.id,
+          startIcon: (
+            <ModelDefinitionIcon
+              iconName={e.icon}
+              iconWidth="w-[30px]"
+              iconHeight="h-[30px]"
+              iconColor="fill-instillGrey90"
+              iconPosition="my-auto"
+            />
+          ),
+        };
+      })
+    );
+  }, [flowIsOnScreen, modelDefinitions.isSuccess]);
 
-  /**
-   *  Indicators about whether we can submit or not
-   */
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Set up github model                                         #
+  // #                                                                 #
+  // ###################################################################
 
-  const canFetchModel = useMemo(() => {
-    if (!values.model.new.modelSource || !values.model.new.name) {
-      return false;
-    }
-
-    return true;
-  }, [values.model.new.modelSource, values.model.new.name]);
+  const createModel = useCreateModel();
+  const targetModelDefinition = useModelDefinition(targetModelDefinitionName);
+  const [newModel, setNewModel] = useState<Model | undefined>();
+  const [isSettingModel, setIsSettingModel] = useState(false);
+  const [setupModelError, setSetupModelError] = useState<string | undefined>(
+    undefined
+  );
 
   const canSetupModel = useMemo(() => {
-    console.log("can setup model", values.model);
+    console.log(values);
+    if (!values.model.new.modelDefinition || modelCreated) return false;
 
-    if (!values.model.new.modelSource) return false;
-
-    if (values.model.new.modelSource === "github") {
-      if (!values.model.new.modelInstance || !values.model.new.name) {
+    if (values.model.new.modelDefinition === "github") {
+      if (!values.model.new.repo || !values.model.new.id) {
         return false;
       }
       return true;
@@ -71,7 +119,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
     if (
       !values.model.new.file ||
-      !values.model.new.name ||
+      !values.model.new.id ||
       !values.model.new.description
     ) {
       return false;
@@ -79,64 +127,144 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     return true;
   }, [
     values.model.new.modelInstance,
-    values.model.new.modelSource,
-    values.model.new.name,
+    values.model.new.modelDefinition,
+    values.model.new.id,
     values.model.new.file,
     values.model.new.description,
+    values.model.new.repo,
+    modelCreated,
   ]);
 
-  const canDisplayModelInstanceField = useMemo(() => {
-    if (!modelInstances || values.model.new.modelSource !== "github") {
-      return false;
-    }
-    return true;
-  }, [values.model.new.modelSource, modelInstances]);
+  const handelSetupGithubModel = async () => {
+    if (!targetModelDefinition.isSuccess) return;
+
+    console.log(targetModelDefinition.isFetched);
+
+    const configuration =
+      values.model.new.modelDefinition === "github"
+        ? {
+            repository: values.model.new.repo,
+          }
+        : {
+            description: values.model.new.description,
+          };
+
+    const payload: CreateModelPayload = {
+      id: values.model.new.id,
+      model_definition: targetModelDefinition.data.name,
+      configuration: JSON.stringify(configuration),
+    };
+
+    setIsSettingModel(true);
+
+    createModel.mutate(payload, {
+      onSuccess: (newModel) => {
+        setModelCreated(true);
+        setNewModel(newModel);
+        setIsSettingModel(false);
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setSetupModelError(error.message);
+        } else {
+          setSetupModelError("Something went wrong when setting up model");
+        }
+      },
+    });
+  };
+
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Set up local model                                          #
+  // #                                                                 #
+  // ###################################################################
 
   const canDisplayLocalModelFlow = useMemo(() => {
-    if (values.model.new.modelSource !== "local") {
+    if (values.model.new.modelDefinition !== "local") {
       return false;
     }
     return true;
-  }, [values.model.new.modelSource]);
+  }, [values.model.new.modelDefinition]);
 
-  // We can't observe values.model.modelSource within a useEffect or canDisplayModelInstanceField
-  // useMemo, it will cause render issue, when we are rendering Formik, setFieldValue will trigger
-  // re-render again, which will cause infinite loop
-  //
-  // Once the modelInstance has been changed, we re-init all the modelInstances
-  // TODO: store the modelInstances data at react-query
+  // ###################################################################
+  // #                                                                 #
+  // # 3 - Deploy model instance                                       #
+  // #                                                                 #
+  // ###################################################################
 
-  const modelSourceOnChangeCb = (option: SingleSelectOption) => {
-    setFetched(false);
-    setModelInstances(null);
+  const modelInstances = useModelInstances(newModel?.id);
+  const deployModel = useDeployModel();
+  const [isDeployingModel, setIsDeployingModel] = useState(false);
+  const [deployModelError, setDeployModelError] = useState<
+    string | undefined
+  >();
+
+  const canDisplayDeployModelSection = useMemo(() => {
+    if (!modelCreated || !newModel || !modelInstances.isSuccess) {
+      return false;
+    }
+    return true;
+  }, [modelCreated, newModel, modelInstances.isSuccess]);
+
+  const canDeployModel = useMemo(() => {
+    if (!values.model.new.modelInstance) return false;
+    return true;
+  }, [values.model.new.modelInstance]);
+
+  const modelInstanceOptions = useMemo(() => {
+    if (!modelInstances.isSuccess) return;
+
+    const options: SingleSelectOption[] = modelInstances.data.map((e) => {
+      return {
+        label: e.id,
+        value: e.name,
+        startIcon: (
+          <ModelInstanceIcon
+            width="w-[30px]"
+            height="h-[30px]"
+            position="my-auto"
+            color="fill-instillGrey95"
+          />
+        ),
+      };
+    });
+    return options;
+  }, [modelInstances.isSuccess, values.model.new.modelDefinition]);
+
+  const handleDeployModel = async () => {
+    setIsDeployingModel(true);
+    deployModel.mutate(values.model.new.modelInstance, {
+      onSuccess: () => {
+        setIsDeployingModel(false);
+        setStepNumber(stepNumber + 1);
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setDeployModelError(error.message);
+        } else {
+          setDeployModelError("Something went wrong when deploying model");
+        }
+      },
+    });
+  };
+
+  const modelDefinitionOnChangeCb = (option: SingleSelectOption) => {
+    setTargetModelDefinitionName(
+      modelDefinitions.data?.find((e) => e.id === option.value)?.name
+    );
     if (option.value !== "github") {
       setFieldValue("model.new.modelInstance", null);
     }
   };
 
-  const handleFetchingModel = async () => {
-    console.log("fetch", values.model.new.name);
-    setFetched(true);
-    setTimeout(() => setModelInstances(mockModelInstances), 3000);
-  };
-
-  const handelSetupModel = async () => {
-    if (stepNumber === maximumStepNumber) {
-      // submit the form
-      return;
-    }
-
-    setStepNumber(stepNumber + 1);
-  };
-
   return (
-    <div className="flex flex-1 flex-col gap-y-5 p-5">
+    <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="instill-text-h3 text-black">Set up a new model</h3>
       <TextField
-        name="model.new.name"
+        name="model.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"
-        disabled={false}
+        disabled={modelCreated ? true : false}
         readOnly={false}
         required={true}
         placeholder=""
@@ -144,28 +272,32 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
-        instanceId="new-model-source"
-        name="model.new.modelSource"
-        disabled={false}
+        instanceId="new-model-definition"
+        name="model.new.modelDefinition"
+        disabled={modelCreated ? true : false}
         readOnly={false}
         required={true}
         description={"Setup Guide"}
         label="Source type"
-        options={mockModelSourceOptions}
-        onChangeCb={modelSourceOnChangeCb}
+        options={modelDefinitionOptions ? modelDefinitionOptions : []}
+        onChangeCb={modelDefinitionOnChangeCb}
+        menuPlacement="auto"
+        defaultValue={null}
       />
-      {canDisplayModelInstanceField ? (
-        <SingleSelect
-          instanceId="new-model-instances"
-          name="model.new.modelInstance"
-          disabled={false}
+      {values.model.new.modelDefinition === "github" ? (
+        <TextField
+          name="model.new.repo"
+          label="GitHub repository"
+          description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+          disabled={modelCreated ? true : false}
           readOnly={false}
           required={true}
-          description={"Setup Guide"}
-          label="Source type"
-          options={modelInstances ? modelInstances : []}
+          placeholder=""
+          type="text"
+          autoComplete="off"
         />
       ) : null}
+
       {canDisplayLocalModelFlow ? (
         <>
           <TextArea
@@ -193,25 +325,63 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           />
         </>
       ) : null}
-      {displayFetchModelButton ? (
-        <PrimaryButton
-          disabled={canFetchModel ? false : true}
-          onClickHandler={handleFetchingModel}
-          position="ml-auto"
-          type="button"
-        >
-          Fetch model
-        </PrimaryButton>
-      ) : null}
-      {displaySetupModelButton ? (
+      <div className="flex flex-row">
+        {setupModelError ? (
+          <BasicProgressMessageBox width="w-[216px]" status="error">
+            {setupModelError}
+          </BasicProgressMessageBox>
+        ) : isSettingModel ? (
+          <BasicProgressMessageBox width="w-[216px]" status="progressing">
+            Setting model...
+          </BasicProgressMessageBox>
+        ) : null}
         <PrimaryButton
           disabled={canSetupModel ? false : true}
-          onClickHandler={handelSetupModel}
-          position="ml-auto"
+          onClickHandler={handelSetupGithubModel}
+          position="ml-auto my-auto"
           type="button"
         >
           Setup new model
         </PrimaryButton>
+      </div>
+
+      {canDisplayDeployModelSection ? (
+        <>
+          <h3 className="instill-text-h3 mt-[60px] mb-5 text-black">
+            Deploy a model instance
+          </h3>
+          <SingleSelect
+            instanceId="new-model-instances"
+            name="model.new.modelInstance"
+            disabled={false}
+            readOnly={false}
+            required={true}
+            description={"Setup Guide"}
+            label="Source type"
+            options={modelInstanceOptions ? modelInstanceOptions : []}
+            menuPlacement="auto"
+            defaultValue={null}
+          />
+          <div className="flex flex-row">
+            {deployModelError ? (
+              <BasicProgressMessageBox width="w-[216px]" status="error">
+                {deployModelError}
+              </BasicProgressMessageBox>
+            ) : isDeployingModel ? (
+              <BasicProgressMessageBox width="w-[216px]" status="progressing">
+                Deploying model...
+              </BasicProgressMessageBox>
+            ) : null}
+            <PrimaryButton
+              disabled={canDeployModel ? false : true}
+              onClickHandler={handleDeployModel}
+              position="ml-auto my-auto"
+              type="button"
+            >
+              Deploy
+            </PrimaryButton>
+          </div>
+        </>
       ) : null}
     </div>
   );
