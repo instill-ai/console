@@ -8,6 +8,7 @@ import {
   createModelMutation,
   CreateModelPayload,
   getModelDefinitionQuery,
+  getModelInstanceQuery,
   listModelDefinitionsQuery,
   listModelInstancesQuery,
   listModelsQuery,
@@ -71,14 +72,14 @@ export const useModelDefinition = (modelDefinitionId: string | undefined) => {
 // #                                                                 #
 // ###################################################################
 
-export const useModeInstances = () => {
+export const useAllModeInstances = () => {
   const models = useModels();
   return useQuery(
-    ["modelInstances"],
+    ["models", "all", "modelInstances"],
     async () => {
       const modelInstances = [];
       if (!models.data) {
-        return Promise.reject(new Error("Model data not found"));
+        return Promise.reject(new Error("Model data not provided"));
       }
 
       for (const model of models.data) {
@@ -90,6 +91,39 @@ export const useModeInstances = () => {
     },
     {
       enabled: !!models.isSuccess,
+    }
+  );
+};
+
+export const useModelInstances = (modelId: string | undefined) => {
+  return useQuery(
+    ["models", modelId, "modelInstances"],
+    async () => {
+      if (!modelId) {
+        return Promise.reject(new Error("Model id not provided"));
+      }
+
+      const modelInstances = await listModelInstancesQuery(modelId);
+      return Promise.resolve(modelInstances);
+    },
+    {
+      enabled: !!modelId,
+    }
+  );
+};
+
+export const useModelInstance = (modelInstanceId: string | undefined) => {
+  return useQuery(
+    ["models", "all", "modelInstances", modelInstanceId],
+    async () => {
+      if (!modelInstanceId) {
+        return Promise.reject(new Error("Model instance id not provided"));
+      }
+      const modelInstances = await getModelInstanceQuery(modelInstanceId);
+      return Promise.resolve(modelInstances);
+    },
+    {
+      enabled: !!modelInstanceId,
     }
   );
 };
