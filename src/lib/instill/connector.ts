@@ -76,6 +76,24 @@ export const listSourceDefinitionsQuery = async (): Promise<
   }
 };
 
+export type GetSourceDefinitionResponse = {
+  source_connector_definition: ConnectorDefinition;
+};
+
+export const getSourceDefinitionQuery = async (
+  sourceDefinitionName: string
+): Promise<ConnectorDefinition> => {
+  try {
+    const { data } = await axios.post<GetSourceDefinitionResponse>(
+      "/api/connector/get-source-definition",
+      { id: sourceDefinitionName }
+    );
+    return Promise.resolve(data.source_connector_definition);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Query] Source                                                  #
@@ -87,6 +105,14 @@ export type Source = {
   uid: string;
   id: string;
   source_connector_definition: string;
+  connector: Connector;
+};
+
+export type SourceWithDefinition = {
+  name: string;
+  uid: string;
+  id: string;
+  source_connector_definition: ConnectorDefinition;
   connector: Connector;
 };
 
@@ -173,6 +199,14 @@ export type Destination = {
   uid: string;
   id: string;
   destination_connector_definition: string;
+  connector: Connector;
+};
+
+export type DestinationWithDefinition = {
+  name: string;
+  uid: string;
+  id: string;
+  destination_connector_definition: ConnectorDefinition;
   connector: Connector;
 };
 
