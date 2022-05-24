@@ -1,8 +1,12 @@
 import { listRepoFileContent } from "@/lib/github";
 import {
+  createPipelineMutation,
+  CreatePipelinePayload,
+  getDestinationDefinitionQuery,
   getDestinationQuery,
   getModelInstanceQuery,
   getPipelineQuery,
+  getSourceDefinitionQuery,
   getSourceQuery,
   listPipelinesQuery,
   RawPipelineRecipe,
@@ -14,99 +18,8 @@ import type {
   ModelInstance,
 } from "@/lib/instill";
 import type { Mode } from "@/types/general";
-import { useMemo } from "react";
-import { useQuery, useQueryClient } from "react-query";
-
-export const mockPipelines: Pipeline[] = [
-  {
-    id: "yet-another-mock-pipeline-1",
-    uid: "uuid",
-    name: "pipeline/yet-another-mock-pipeline-1",
-    description: "helllo",
-    mode: "MODE_SYNC",
-    state: "STATE_ACTIVE",
-    create_time: "2022-05-06T09:00:00",
-    update_time: "2022-05-06T09:00:00",
-    user: "test_user",
-    org: "test_org",
-    recipe: {
-      source: {
-        id: "pipeline-1-source",
-        description: "hi",
-        create_time: "2022-05-17T09:17:14.223Z",
-        update_time: "2022-05-17T09:17:14.223Z",
-        definition: "definition",
-        user: "test_user",
-        org: "test_org",
-      },
-      destination: {
-        id: "pipeline-1-destination",
-        description: "hi",
-        create_time: "2022-05-17T09:17:14.223Z",
-        update_time: "2022-05-17T09:17:14.223Z",
-        definition: "definition",
-        user: "test_user",
-        org: "test_org",
-      },
-      models: [
-        {
-          id: "pipeline-1-model",
-          name: "model/model-1/model_instance/pipeline-1-model",
-          state: "STATE_ONLINE",
-          task: "task1",
-          modelDefinition: "definition",
-          configuration: "hi",
-          createTime: "2022-05-17T09:17:14.223Z",
-          updateTime: "2022-05-17T09:17:14.223Z",
-        },
-      ],
-    },
-  },
-  {
-    id: "yet-another-mock-pipeline-2",
-    uid: "uuid",
-    name: "pipeline/yet-another-mock-pipeline-2",
-    description: "helllo",
-    mode: "MODE_SYNC",
-    state: "STATE_ACTIVE",
-    create_time: "2022-05-06T09:00:00",
-    update_time: "2022-05-06T09:00:00",
-    user: "test_user",
-    org: "test_org",
-    recipe: {
-      source: {
-        id: "pipeline-1-source",
-        description: "hi",
-        create_time: "2022-05-17T09:17:14.223Z",
-        update_time: "2022-05-17T09:17:14.223Z",
-        definition: "definition",
-        user: "test_user",
-        org: "test_org",
-      },
-      destination: {
-        id: "pipeline-1-destination",
-        description: "hi",
-        create_time: "2022-05-17T09:17:14.223Z",
-        update_time: "2022-05-17T09:17:14.223Z",
-        definition: "definition",
-        user: "test_user",
-        org: "test_org",
-      },
-      models: [
-        {
-          id: "pipeline-1-model",
-          name: "model/model-1/model_instance/pipeline-1-model",
-          state: "STATE_ONLINE",
-          task: "task1",
-          modelDefinition: "definition",
-          configuration: "hi",
-          createTime: "2022-05-17T09:17:14.223Z",
-          updateTime: "2022-05-17T09:17:14.223Z",
-        },
-      ],
-    },
-  },
-];
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const transformMode = (mode: PipelineMode): Mode => {
   if (mode === "MODE_ASYNC") return "async";
@@ -114,12 +27,18 @@ export const transformMode = (mode: PipelineMode): Mode => {
   else return "unspecific";
 };
 
-export const constructPipelineRecipe = async (
+export const constructPipelineRecipeWithDefinition = async (
   rawRecipe: RawPipelineRecipe
 ): Promise<PipelineRecipe> => {
   try {
     const source = await getSourceQuery(rawRecipe.source);
+    const sourceDefinition = await getSourceDefinitionQuery(
+      source.source_connector_definition
+    );
     const destination = await getDestinationQuery(rawRecipe.destination);
+    const destinationDefinition = await getDestinationDefinitionQuery(
+      destination.destination_connector_definition
+    );
     const instances: ModelInstance[] = [];
 
     for (const modelInstanceId of rawRecipe.model_instances) {
@@ -128,8 +47,11 @@ export const constructPipelineRecipe = async (
     }
 
     const recipe: PipelineRecipe = {
-      source: source,
-      destination: destination,
+      source: { ...source, source_connector_definition: sourceDefinition },
+      destination: {
+        ...destination,
+        destination_connector_definition: destinationDefinition,
+      },
       models: instances,
     };
 
@@ -138,6 +60,12 @@ export const constructPipelineRecipe = async (
     return Promise.reject(err);
   }
 };
+
+// ###################################################################
+// #                                                                 #
+// # [Query] Pipeline.                                               #
+// #                                                                 #
+// ###################################################################
 
 export const usePipeline = (id: string | undefined) => {
   const queryClient = useQueryClient();
@@ -149,7 +77,9 @@ export const usePipeline = (id: string | undefined) => {
       }
 
       const rawPipeline = await getPipelineQuery(id);
-      const recipe = await constructPipelineRecipe(rawPipeline.recipe);
+      const recipe = await constructPipelineRecipeWithDefinition(
+        rawPipeline.recipe
+      );
 
       const pipeline: Pipeline = {
         ...rawPipeline,
@@ -174,7 +104,9 @@ export const usePipelines = (enable: boolean) => {
     const pipelines: Pipeline[] = [];
 
     for (const pipeline of pipelinesWithRawRecipe) {
-      const recipe = await constructPipelineRecipe(pipeline.recipe);
+      const recipe = await constructPipelineRecipeWithDefinition(
+        pipeline.recipe
+      );
       pipelines.push({ ...pipeline, recipe: recipe });
     }
 
@@ -295,4 +227,17 @@ export const usePipelinesHaveTargetDestination = (
       enabled: destinationId ? (pipelines.data ? true : false) : false,
     }
   );
+};
+
+// ###################################################################
+// #                                                                 #
+// # [Mutation] Pipeline.                                            #
+// #                                                                 #
+// ###################################################################
+
+export const useCreatePipeline = (payload: CreatePipelinePayload) => {
+  return useMutation(async () => {
+    const res = await createPipelineMutation(payload);
+    return Promise.resolve(res);
+  });
 };
