@@ -1,87 +1,162 @@
-import { FC, useMemo, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { ConnectorIcon, FormVerticalDividers } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { SingleSelect, FormikStep } from "../../../formik";
-import { syncDataConnectionOptions } from "../../MockData";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
-import { useDestinationDefinitions } from "@/services/connector/DestinationServices";
+import {
+  useCreateDestination,
+  useDestinations,
+} from "@/services/connector/DestinationServices";
+import { CreateDestinationPayload } from "@/lib/instill";
 
 export type SetupDestinationStepProps = StepNumberState;
 
 const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
   const { values, setFieldValue } = useFormikContext<Values>();
-  const destinationDefinition = useDestinationDefinitions();
 
-  const destinationOptions: SingleSelectOption[] = useMemo(() => {
-    if (!destinationDefinition.isSuccess) {
-      return;
-    }
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Initialize the destination definition                       #
+  // #                                                                 #
+  // ###################################################################
 
-    const syncDestinationDefinitions = destinationDefinition.data.filter(
-      (e) =>
-        e.connector_definition.connection_type === "CONNECTION_TYPE_DIRECTNESS"
-    );
+  const [syncDestinationOptions, setSyncDestinationOptions] = useState<
+    SingleSelectOption[]
+  >([]);
 
-    return syncDestinationDefinitions.map((e) => {
-      return {
-        label: e.connector_definition.title,
-        value: e.id,
+  useEffect(() => {
+    setSyncDestinationOptions([
+      {
+        label: "gRPC",
+        value: "destination-grpc",
         startIcon: (
           <ConnectorIcon
-            type={e.connector_definition.title}
+            iconName="grpc.svg"
             iconColor="fill-instillGrey90"
             iconHeight="h-[30px]"
             iconWidth="w-[30px]"
             iconPosition="my-auto"
           />
         ),
-      };
-    });
-  }, [
-    values.destination.new.id,
-    values.destination.existing.id,
-    destinationDefinition.isSuccess,
-  ]);
+      },
+      {
+        label: "HTTP",
+        value: "destination-http",
+        startIcon: (
+          <ConnectorIcon
+            iconName="http.svg"
+            iconColor="fill-instillGrey90"
+            iconHeight="h-[30px]"
+            iconWidth="w-[30px]"
+            iconPosition="my-auto"
+          />
+        ),
+      },
+    ]);
+  }, []);
 
-  // The source and destination type of sync mode will be the same, so we need to setup
-  // source type and name here too.
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Choose the default destination as same as source when the   #
+  // #     pipeline is in sync mode                                    #
+  // #                                                                 #
+  // ###################################################################
 
-  const dataDestinationOnChangeCb = (option: SingleSelectOption) => {
-    setFieldValue("dataDestination.existing.name", option.value);
-    setFieldValue("dataSource.existing.name", option.value);
-    setFieldValue("dataSource.existing.type", option.value);
-  };
+  const [selectedSyncDestinationIndex, setSelectedSyncDestinationIndex] =
+    useState<number>(-1);
 
   useEffect(() => {
-    console.log(values);
-  }, [values]);
+    if (values.pipeline.mode !== "MODE_SYNC") return;
+    const destinationId = values.source.existing.id.replace(
+      "source",
+      "destination"
+    );
+
+    const index = syncDestinationOptions.findIndex(
+      (e) => e.value === destinationId
+    );
+
+    setSelectedSyncDestinationIndex(index);
+
+    setFieldValue("destination.existing.id", destinationId);
+  }, [values.pipeline.mode, values.source.existing.id, syncDestinationOptions]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 3 - Create target destination.                                  #
+  // #                                                                 #
+  // ###################################################################
+  //
+  // We have to make sure there has no duplicated destination
+
+  const createDestination = useCreateDestination();
+  const destinations = useDestinations();
+
+  const handleGoNext = () => {
+    if (!destinations.isSuccess) {
+      return;
+    }
+
+    const { setStepNumber, stepNumber } = props;
+
+    if (values.pipeline.mode === "MODE_SYNC") {
+      const destinationIndex = destinations.data.findIndex(
+        (e) => e.id === values.destination.existing.id
+      );
+
+      if (destinationIndex !== -1) {
+        setFieldValue(
+          "destination.existing.name",
+          destinations.data[destinationIndex].name
+        );
+        setFieldValue("destination.type", "existing");
+        setStepNumber(stepNumber + 1);
+        return;
+      }
+      const payload: CreateDestinationPayload = {
+        id: values.destination.existing.id,
+        destination_connector_definition: `destination-connector-definitions/${values.destination.existing.id}`,
+        connector: {
+          configuration: "{}",
+        },
+      };
+
+      createDestination.mutate(payload, {
+        onSuccess: (newDestination) => {
+          setFieldValue("destination.existing.name", newDestination.name);
+          setFieldValue("destination.type", "existing");
+          setStepNumber(stepNumber + 1);
+        },
+      });
+    }
+  };
 
   return (
     <FormikStep>
       {values.pipeline.mode === "MODE_SYNC" ? (
         <div className="flex flex-col gap-y-5">
           <SingleSelect
-            name="dataDestination.existing.type"
-            instanceId="data-destination-source"
+            name="destination.existing.id"
+            instanceId="destination-id"
             label="Destination type"
             description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
             disabled={false}
             readOnly={false}
-            options={destinationOptions}
-            defaultValue={sourceOption ? sourceOption : null}
+            options={syncDestinationOptions}
+            value={syncDestinationOptions[selectedSyncDestinationIndex]}
             required={true}
-            onChangeCb={dataDestinationOnChangeCb}
             menuPlacement="auto"
           />
           <PrimaryButton
             position="ml-auto"
             disabled={false}
-            onClickHandler={() => props.setStepNumber(props.stepNumber + 1)}
+            type="button"
+            onClickHandler={handleGoNext}
           >
             Next
           </PrimaryButton>
