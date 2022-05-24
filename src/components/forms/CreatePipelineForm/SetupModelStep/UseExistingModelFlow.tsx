@@ -2,6 +2,7 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -15,6 +16,7 @@ import useOnScreen from "@/hooks/useOnScreen";
 import { SingleSelect } from "../../../formik";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import { useAllModeInstances } from "@/services/model/ModelServices";
+import { Nullable } from "@instill-ai/design-system/build/types/general";
 
 export type UseExistingModelFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
@@ -22,23 +24,27 @@ export type UseExistingModelFlowProps = StepNumberState & {
 };
 
 const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
-  setModelCreated,
   modelCreated,
+  setStepNumber,
+  stepNumber,
 }) => {
-  const [modelInstanceOptions, setModelInstanceOptions] = useState<
-    SingleSelectOption[] | null
-  >(null);
-
-  const { values } = useFormikContext<Values>();
-
+  const { values, setFieldValue } = useFormikContext<Values>();
   const flowRef = useRef<HTMLDivElement>(null);
   const flowIsOnScreen = useOnScreen(flowRef);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Get existing model instances.                               #
+  // #                                                                 #
+  // ###################################################################
+
+  const [modelInstanceOptions, setModelInstanceOptions] =
+    useState<Nullable<SingleSelectOption[]>>(null);
+
   const modelInstances = useAllModeInstances();
 
   useEffect(() => {
     if (!flowIsOnScreen || !modelInstances.isSuccess) return;
-
-    console.log(modelInstances);
 
     const onlineModelInstances = modelInstances.data.filter(
       (e) => e.state === "STATE_ONLINE"
@@ -57,6 +63,21 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     );
   }, [flowIsOnScreen, modelInstances.isSuccess]);
 
+  const existingModelIdOption = useMemo(() => {
+    if (!values.model.existing.id || !modelInstanceOptions) return null;
+
+    return (
+      modelInstanceOptions.find((e) => e.value === values.model.existing.id) ||
+      null
+    );
+  }, [values.model.existing.id, modelInstanceOptions]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Handle action                                               #
+  // #                                                                 #
+  // ###################################################################
+
   const canUseExistingModel = useMemo(() => {
     if (!values.model.existing.id) {
       return false;
@@ -65,14 +86,24 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     return true;
   }, [values.model.existing.id]);
 
+  const handleUseModel = useCallback(() => {
+    if (!values.model.existing.id || !modelInstances.isSuccess) return;
+
+    setFieldValue(
+      "model.existing.name",
+      modelInstances.data.find((e) => e.id === values.model.existing.id)?.name
+    );
+    setStepNumber(stepNumber + 1);
+  }, [values.model.existing.id, modelInstances.isSuccess]);
+
   return (
     <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="instill-text-h3 text-black">
         Select a existing online model
       </h3>
       <SingleSelect
-        name="model.existing.name"
-        instanceId="existing-model-name"
+        name="model.existing.id"
+        instanceId="existing-model-id"
         disabled={modelCreated ? true : false}
         readOnly={false}
         options={modelInstanceOptions ? modelInstanceOptions : []}
@@ -80,12 +111,13 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         description={"Setup Guide"}
         label="Source type"
         menuPlacement="auto"
-        defaultValue={null}
+        value={existingModelIdOption}
       />
       <PrimaryButton
         position="ml-auto"
         type="button"
         disabled={modelCreated ? true : canUseExistingModel ? false : true}
+        onClickHandler={handleUseModel}
       >
         Use model
       </PrimaryButton>
