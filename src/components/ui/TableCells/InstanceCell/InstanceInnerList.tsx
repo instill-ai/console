@@ -3,16 +3,24 @@ import cn from "clsx";
 
 import { getTextWidth } from "../../../../utils";
 import { Instance } from "./InstanceCell";
-import InstanceInnerListItem from "./InstanceInnerListItem";
+import InstanceInnerListItem, {
+  InstanceInnerListItemProps,
+} from "./InstanceInnerListItem";
 
 export type InstanceInnerListProps = {
   listItemsContainerWidth: number;
+  enableItemBgColor: InstanceInnerListItemProps["enableItemBgColor"];
+  indicator: InstanceInnerListItemProps["indicator"];
+  textStyle: InstanceInnerListItemProps["textStyle"];
   items: Instance[];
 };
 
 const InstanceInnerList: FC<InstanceInnerListProps> = ({
   listItemsContainerWidth,
   items,
+  enableItemBgColor,
+  indicator,
+  textStyle,
 }) => {
   const remainItemsIndicatorWidth = 26;
 
@@ -24,7 +32,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     let limit = 0;
 
     for (const item of items) {
-      const textWidth = getTextWidth(item.name, "normal 12px mono");
+      const textWidth = getTextWidth(item.name, "normal 14px sans");
       if (!textWidth) {
         continue;
       }
@@ -52,6 +60,8 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
       }
     }
 
+    console.log(limit);
+
     setDisplayLimit(limit);
   }, []);
 
@@ -68,31 +78,49 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
       >
         {items.map((e, index) => {
           if (displayLimit === 0 && index === 0) {
-            return <InstanceInnerListItem key={e.name} item={e} />;
+            return (
+              <InstanceInnerListItem
+                enableItemBgColor={enableItemBgColor}
+                indicator={indicator}
+                textStyle={textStyle}
+                key={e.name}
+                item={e}
+              />
+            );
           }
 
           if (index >= displayLimit) {
             return null;
           }
 
-          return <InstanceInnerListItem key={e.name} item={e} />;
+          return (
+            <InstanceInnerListItem
+              enableItemBgColor={enableItemBgColor}
+              indicator={indicator}
+              textStyle={textStyle}
+              key={e.name}
+              item={e}
+            />
+          );
         })}
       </div>
-      <div
-        onClick={() => handleExpand()}
-        className={cn(
-          "flex cursor-pointer bg-instillGrey05 px-[5px] py-0.5",
-          isExpand
-            ? "hidden"
-            : items.length - displayLimit === 0
-            ? "hidden"
-            : ""
-        )}
-      >
-        <p className="instill-text-small my-auto text-instillGrey70">{`+ ${
-          items.length - displayLimit
-        }`}</p>
-      </div>
+      {displayLimit === 0 ? null : (
+        <div
+          onClick={() => handleExpand()}
+          className={cn(
+            "flex cursor-pointer bg-instillGrey05 px-[5px] py-0.5",
+            isExpand
+              ? "hidden"
+              : items.length - displayLimit === 0
+              ? "hidden"
+              : ""
+          )}
+        >
+          <p className="instill-text-small my-auto text-instillGrey70">{`+ ${
+            items.length - displayLimit
+          }`}</p>
+        </div>
+      )}
     </div>
   );
 };

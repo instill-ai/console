@@ -2,12 +2,21 @@ import { FC, memo } from "react";
 import { Instance } from "./InstanceCell";
 import cn from "clsx";
 import StateIndicator from "../../StateIndicator";
+import { ModelInstanceIcon } from "@instill-ai/design-system";
 
 export type InstanceInnerListItemProps = {
   item: Instance;
+  enableItemBgColor: boolean;
+  indicator: "modelInstance" | "state";
+  textStyle: string;
 };
 
-const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({ item }) => {
+const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({
+  item,
+  enableItemBgColor,
+  indicator,
+  textStyle,
+}) => {
   const { state } = item;
   let textColor: string;
   let bgColor: string;
@@ -36,16 +45,30 @@ const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({ item }) => {
 
   return (
     <div
-      className={cn("flex flex-row gap-x-[5px] px-[5px] py-0.5", bgColor)}
+      className={cn(
+        "flex flex-row gap-x-[5px] px-[5px] py-0.5",
+        enableItemBgColor ? bgColor : ""
+      )}
       key={`instance-item-list-${item.name}`}
     >
-      <StateIndicator
-        state={state}
-        width="w-3"
-        height="h-3"
-        position="my-auto"
-      />
-      <p className={cn("instill-text-small my-auto", textColor)}>{item.name}</p>
+      {indicator === "state" ? (
+        <StateIndicator
+          state={state}
+          width="w-3"
+          height="h-3"
+          position="my-auto"
+        />
+      ) : (
+        <ModelInstanceIcon
+          width="w-[21px]"
+          height="h-[21px]"
+          position="my-auto"
+          color="fill-instillGrey90"
+        />
+      )}
+      <p className={cn("my-auto line-clamp-2", textColor, textStyle)}>
+        {item.name}
+      </p>
     </div>
   );
 };

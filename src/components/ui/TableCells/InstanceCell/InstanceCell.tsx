@@ -17,10 +17,12 @@ export type InstanceCellProps = CellBaseProps & {
   width: string;
   type: "pipeline" | "model";
   instances: Instance[];
+  cellType: "shrink" | "expand";
 };
 
 const InstanceCell: FC<InstanceCellProps> = ({
   width,
+  cellType,
   instances,
   type,
   paddingBottom,
@@ -63,25 +65,49 @@ const InstanceCell: FC<InstanceCellProps> = ({
   const widthInNumber = getTailwindClassNumber(width);
 
   return (
-    <CellBase
-      paddingTop={paddingTop}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-    >
-      <div className={cn("flex flex-col gap-y-3", width)}>
-        <div className="flex flex-row gap-x-3">
-          {icon}
-          <p className="instill-text-body text-instillGrey90">
-            {instances ? instances.length : 0}
-          </p>
-        </div>
-        <InstanceInnerList
-          items={instances}
-          listItemsContainerWidth={widthInNumber}
-        />
-      </div>
-    </CellBase>
+    <>
+      {cellType === "shrink" ? (
+        <CellBase
+          paddingTop={paddingTop}
+          paddingLeft={paddingLeft}
+          paddingRight={paddingRight}
+          paddingBottom={paddingBottom}
+        >
+          <div className={cn("flex", width)}>
+            <InstanceInnerList
+              items={instances}
+              enableItemBgColor={false}
+              indicator="modelInstance"
+              listItemsContainerWidth={widthInNumber}
+              textStyle="instill-text-body"
+            />
+          </div>
+        </CellBase>
+      ) : (
+        <CellBase
+          paddingTop={paddingTop}
+          paddingLeft={paddingLeft}
+          paddingRight={paddingRight}
+          paddingBottom={paddingBottom}
+        >
+          <div className={cn("flex flex-col gap-y-3", width)}>
+            <div className="flex flex-row gap-x-3">
+              {icon}
+              <p className="instill-text-body text-instillGrey90">
+                {instances ? instances.length : 0}
+              </p>
+            </div>
+            <InstanceInnerList
+              items={instances}
+              enableItemBgColor={true}
+              indicator="state"
+              listItemsContainerWidth={widthInNumber}
+              textStyle="instill-text-small"
+            />
+          </div>
+        </CellBase>
+      )}
+    </>
   );
 };
 
