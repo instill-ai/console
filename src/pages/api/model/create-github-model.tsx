@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import { CreateModelResponse, GetModelInstanceResponse } from "@/lib/instill";
+import { CreateGithubModelResponse } from "@/lib/instill";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, body } = req;
@@ -11,11 +11,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (!body) {
-    return res.status(500).json("Create model payload not provided");
+    return res.status(500).json("Create github model payload not provided");
   }
 
   try {
-    const { data } = await axios.post<CreateModelResponse>(
+    const { data } = await axios.post<CreateGithubModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
       body
     );
