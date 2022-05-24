@@ -2,6 +2,7 @@ import {
   createDestinationMutation,
   CreateDestinationPayload,
   listDestinationDefinitionsQuery,
+  listDestinationsQuery,
 } from "@/lib/instill";
 import { useMutation, useQuery } from "react-query";
 
@@ -12,9 +13,16 @@ import { useMutation, useQuery } from "react-query";
 // ###################################################################
 
 export const useDestinationDefinitions = () => {
-  return useQuery(["destination", "definitions"], async () => {
+  return useQuery(["destinations", "definition"], async () => {
     const destinationDefinition = await listDestinationDefinitionsQuery();
     return Promise.resolve(destinationDefinition);
+  });
+};
+
+export const useDestinations = () => {
+  return useQuery(["destinations"], async () => {
+    const destinations = await listDestinationsQuery();
+    return Promise.resolve(destinations);
   });
 };
 
