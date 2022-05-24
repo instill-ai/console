@@ -34,11 +34,10 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
   }, [flowIsOnScreen]);
 
   const canSetupNewDestination = useMemo(() => {
-    if (!values.dataDestination.new.name || !values.dataDestination.new.type)
-      return false;
+    if (!values.destination.new.id) return false;
 
     return true;
-  }, [values.dataDestination.new.name, values.dataDestination.new.type]);
+  }, [values.destination.new.id]);
 
   const handleSetupNewDestination = () => {
     setStepNumber(stepNumber + 1);
@@ -63,10 +62,14 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         instanceId="new-data-destination-type"
         disabled={false}
         readOnly={false}
-        options={destinationOptions ? destinationOptions : []}
+        options={
+          mockAsyncDataConnectionOptions ? mockAsyncDataConnectionOptions : []
+        }
         required={true}
         description={"Setup Guide"}
         label="Source type"
+        menuPlacement="auto"
+        value={mockAsyncDataConnectionOptions[0]}
       />
       <PrimaryButton
         position="ml-auto"
