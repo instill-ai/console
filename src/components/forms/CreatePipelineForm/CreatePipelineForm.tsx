@@ -8,6 +8,7 @@ import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
 import SetupPipelineModeStep from "./SetupPipelineModeStep";
 import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
 import { PipelineMode } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 export type StepNumberState = {
   maximumStepNumber: number;
@@ -15,38 +16,46 @@ export type StepNumberState = {
   setStepNumber: Dispatch<SetStateAction<number>>;
 };
 
-type ExistingSource = {
-  id: string;
-};
-
 type NewSource = {
   id: string;
+  name: string;
+};
+
+type ExistingSource = {
+  id: string;
+  name: string;
 };
 
 type Source = {
-  existing: ExistingSource;
   new: NewSource;
-};
-
-type ExistingDestination = {
-  id: string;
+  existing: ExistingSource;
+  type: Nullable<"existing" | "new">;
 };
 
 type NewDestination = {
   id: string;
+  name: string;
+};
+
+type ExistingDestination = {
+  id: string;
+  name: string;
 };
 
 type Destination = {
-  existing: ExistingDestination;
   new: NewDestination;
+  existing: ExistingDestination;
+  type: Nullable<"existing" | "new">;
 };
 
 type ExistingModel = {
   id: string;
+  name: string;
 };
 
 type NewModel = {
   id: string;
+  name: string;
   modelDefinition: string;
   modelInstance: string;
   file?: string;
@@ -57,11 +66,13 @@ type NewModel = {
 type Model = {
   existing: ExistingModel;
   new: NewModel;
+  type: Nullable<"existing" | "new">;
 };
 
 type Pipeline = {
-  mode: PipelineMode;
   id: string;
+  name: string;
+  mode: PipelineMode;
   description: string;
   status: string;
 };
@@ -80,12 +91,9 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
       setStepNumber={props.setStepNumber}
       initialValues={{
         source: {
-          new: {
-            id: null,
-          },
-          existing: {
-            id: null,
-          },
+          new: { id: null },
+          existing: { id: null },
+          type: null,
         },
         model: {
           new: {
@@ -99,6 +107,7 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
           existing: {
             id: null,
           },
+          type: null,
         },
         pipeline: {
           mode: "MODE_SYNC",
@@ -107,16 +116,12 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
           status: true,
         },
         destination: {
-          new: {
-            id: null,
-          },
-          existing: {
-            id: null,
-          },
+          new: { id: null },
+          existing: { id: null },
+          type: null,
         },
       }}
-      onSubmit={(values, actions) => {
-        console.log(values);
+      onSubmit={(_, actions) => {
         actions.setSubmitting(false);
       }}
       enableBackToPrevious={false}
