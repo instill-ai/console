@@ -7,6 +7,8 @@
 import {
   createGithubModelMutation,
   CreateGithubModelPayload,
+  createLocalModelMutation,
+  CreateLocalModelPayload,
   deployModelAction,
   getModelDefinitionQuery,
   getModelInstanceQuery,
@@ -29,6 +31,21 @@ export const useCreateGithubModel = () => {
   return useMutation(
     async (payload: CreateGithubModelPayload) => {
       const model = await createGithubModelMutation(payload);
+      return model;
+    },
+    {
+      onSuccess: (newModel) => {
+        queryClient.setQueryData<Model>(["user", newModel.id], newModel);
+      },
+    }
+  );
+};
+
+export const useCreateLocalModel = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: CreateLocalModelPayload) => {
+      const model = await createLocalModelMutation(payload);
       return model;
     },
     {
