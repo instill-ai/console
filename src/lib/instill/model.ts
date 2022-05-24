@@ -139,6 +139,42 @@ export const createGithubModelMutation = async (
   }
 };
 
+export type CreateLocalModelPayload = {
+  id: string;
+  desctiption: string;
+  model_definition: string;
+  content: string;
+};
+
+export type CreateLocalModelResponse = {
+  model: Model;
+};
+
+export const createLocalModelMutation = async (
+  payload: CreateLocalModelPayload
+) => {
+  try {
+    const formData = new FormData();
+    formData.append("id", payload.id);
+    formData.append("desctiption", payload.desctiption);
+    formData.append("model_definition", payload.model_definition);
+    formData.append("content", payload.content);
+
+    const { data } = await axios.post<CreateGithubModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Action] Model                                                  #
