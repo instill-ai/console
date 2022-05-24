@@ -18,15 +18,17 @@ import {
 import CellBase, { CellBaseProps } from "../CellBase";
 
 export type ConnectionTypeCellProps = CellBaseProps & {
-  type: string;
+  iconDefinition: string;
+  definitionName: string;
   cellType: "shrink" | "expand";
-  name: string;
+  connectionName: string;
   width: string;
 };
 
 const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
-  type,
-  name,
+  iconDefinition,
+  definitionName,
+  connectionName,
   width,
   paddingBottom,
   paddingLeft,
@@ -39,8 +41,8 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   const iconHeight = "h-8";
   const position = "my-auto";
 
-  switch (type) {
-    case "snowflake": {
+  switch (iconDefinition) {
+    case "snowflake.svg": {
       icon = (
         <SnowflakeIcon
           width={iconWidth}
@@ -50,7 +52,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "google_sheet": {
+    case "googlesheet.svg": {
       icon = (
         <GoogleSheetIcon
           width={iconWidth}
@@ -60,7 +62,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "big_query": {
+    case "bigquery.svg": {
       icon = (
         <BigQueryIcon
           width={iconWidth}
@@ -70,19 +72,19 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "grpc": {
+    case "grpc.svg": {
       icon = (
         <GrpcIcon width={iconWidth} height={iconHeight} position={position} />
       );
       break;
     }
-    case "http": {
+    case "http.svg": {
       icon = (
         <HttpIcon width={iconWidth} height={iconHeight} position={position} />
       );
       break;
     }
-    case "mongo_db": {
+    case "mongodb.svg": {
       icon = (
         <MongoDbIcon
           width={iconWidth}
@@ -92,13 +94,13 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "mysql": {
+    case "mysql.svg": {
       icon = (
         <MySqlIcon width={iconWidth} height={iconHeight} position={position} />
       );
       break;
     }
-    case "postgresql": {
+    case "postgresql.svg": {
       icon = (
         <PostgreSqlIcon
           width={iconWidth}
@@ -108,7 +110,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "redshift": {
+    case "redshift.svg": {
       icon = (
         <RedshiftIcon
           width={iconWidth}
@@ -118,7 +120,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "salesforce": {
+    case "salesforce.svg": {
       icon = (
         <SalesforceIcon
           width={iconWidth}
@@ -128,7 +130,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "shopify": {
+    case "shopify.svg": {
       icon = (
         <ShopifyIcon
           width={iconWidth}
@@ -138,7 +140,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
       );
       break;
     }
-    case "slack": {
+    case "slack.svg": {
       icon = (
         <SlackIcon width={iconWidth} height={iconHeight} position={position} />
       );
@@ -159,7 +161,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
           <div className="flex flex-row gap-x-2.5">
             {icon}
             <p className="instill-text-body my-auto text-instillGrey90">
-              {name}
+              {connectionName}
             </p>
           </div>
         </div>
@@ -177,12 +179,12 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
           <div className="flex flex-col gap-y-[6px]">
             <div className="flex flex-row gap-x-[5px]">
               {icon}
-              <p className="instill-text-small my-auto text-instillGrey70">
-                {type}
+              <p className="instill-text-small my-auto text-instillGrey90">
+                {definitionName}
               </p>
             </div>
             <p className="instill-text-body my-auto text-instillGrey90">
-              {name}
+              {connectionName}
             </p>
           </div>
         </div>
