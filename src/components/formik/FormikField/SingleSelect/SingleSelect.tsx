@@ -17,7 +17,7 @@ export type SingleSelectProps = {
   onChangeCb?: (option: SingleSelectOption) => void;
   instanceId: string;
   menuPlacement: BasicSingleSelectProps["menuPlacement"];
-  defaultValue: BasicSingleSelectProps["defaultValue"];
+  value: BasicSingleSelectProps["value"];
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -28,7 +28,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   instanceId,
   onChangeCb,
   menuPlacement,
-  defaultValue,
+  value,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
@@ -47,7 +47,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       options={options}
       onChangeInput={onChange}
       menuPlacement={menuPlacement}
-      defaultValue={defaultValue}
+      value={value}
     />
   );
 };
@@ -62,8 +62,8 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   label,
   onChangeCb,
   instanceId,
-  defaultValue,
   menuPlacement,
+  value,
 }) => {
   return (
     <Field
@@ -77,7 +77,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       description={description}
       onChangeCb={onChangeCb}
       label={label}
-      defaultValue={defaultValue}
+      value={value}
       menuPlacement={menuPlacement}
     />
   );
