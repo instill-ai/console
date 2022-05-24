@@ -5,8 +5,8 @@
 // ###################################################################
 
 import {
-  createModelMutation,
-  CreateModelPayload,
+  createGithubModelMutation,
+  CreateGithubModelPayload,
   deployModelAction,
   getModelDefinitionQuery,
   getModelInstanceQuery,
@@ -24,11 +24,11 @@ export const useModels = () => {
   });
 };
 
-export const useCreateModel = () => {
+export const useCreateGithubModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async (payload: CreateModelPayload) => {
-      const model = await createModelMutation(payload);
+    async (payload: CreateGithubModelPayload) => {
+      const model = await createGithubModelMutation(payload);
       return model;
     },
     {
@@ -52,7 +52,7 @@ export const useModelDefinitions = () => {
   });
 };
 
-export const useModelDefinition = (modelDefinitionId: string | undefined) => {
+export const useModelDefinition = (modelDefinitionId: string | null) => {
   return useQuery(
     ["models", "definition", modelDefinitionId],
     async () => {

@@ -115,22 +115,22 @@ export const listModelDefinitionsQuery = async (): Promise<
 // #                                                                 #
 // ###################################################################
 
-export type CreateModelPayload = {
+export type CreateGithubModelPayload = {
   id: string;
   model_definition: string;
   configuration: string;
 };
 
-export type CreateModelResponse = {
+export type CreateGithubModelResponse = {
   model: Model;
 };
 
-export const createModelMutation = async (
-  payload: CreateModelPayload
+export const createGithubModelMutation = async (
+  payload: CreateGithubModelPayload
 ): Promise<Model> => {
   try {
-    const { data } = await axios.post<CreateModelResponse>(
-      "/api/model/create-model",
+    const { data } = await axios.post<CreateGithubModelResponse>(
+      "/api/model/create-github-model",
       payload
     );
     return Promise.resolve(data.model);
