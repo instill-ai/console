@@ -134,6 +134,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
       if (sourceIndex !== -1) {
         setStepNumber(stepNumber + 2);
+        setFieldValue("source.existing.name", sources.data[sourceIndex].name);
         return;
       }
 
@@ -146,7 +147,8 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       };
 
       createSource.mutate(payload, {
-        onSuccess: () => {
+        onSuccess: (newSource) => {
+          setFieldValue("source.existing.name", newSource.name);
           setStepNumber(stepNumber + 2);
         },
       });
