@@ -2900,6 +2900,11 @@
     resolve-from "^5.0.0"
     store2 "^2.12.0"
 
+"@tailwindcss/line-clamp@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.4.0.tgz#03353e31e77636b785f2336e8c978502cec1de81"
+  integrity sha512-HQZo6gfx1D0+DU3nWlNLD5iA6Ef4JAXh0LeD8lOGrJwEDBwwJNKQza6WoXhhY1uQrxOuU8ROxV7CqiQV4CoiLw==
+
 "@testing-library/dom@^8.0.0", "@testing-library/dom@^8.3.0":
   version "8.11.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.11.4.tgz#dc94d830b862e7a20686b0379eefd931baf0445b"
