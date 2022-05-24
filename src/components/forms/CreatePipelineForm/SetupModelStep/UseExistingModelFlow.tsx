@@ -74,7 +74,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
 
   // ###################################################################
   // #                                                                 #
-  // # 2 - Handle action                                               #
+  // # 2 - Setup existing model                                        #
   // #                                                                 #
   // ###################################################################
 
@@ -93,6 +93,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
       "model.existing.name",
       modelInstances.data.find((e) => e.id === values.model.existing.id)?.name
     );
+    setFieldValue("model.type", "existing");
     setStepNumber(stepNumber + 1);
   }, [values.model.existing.id, modelInstances.isSuccess]);
 
