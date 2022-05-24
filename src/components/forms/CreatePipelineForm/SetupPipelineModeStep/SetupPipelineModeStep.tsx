@@ -15,7 +15,6 @@ import {
 } from "@/services/connector/SourceServices";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
-import { Nullable } from "@/types/general";
 
 export type SetupSourceStepProps = StepNumberState;
 
@@ -30,6 +29,10 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   // # 1 - Initialize the source definition and pipelines              #
   // #                                                                 #
   // ###################################################################
+  //
+  // Because we need to separate two flow: existing and new, we have two
+  // separate state in formik, although source may not be created at this
+  // moment, we still fill sync option into source.existing state.
 
   const [modeOptions, setModeOptions] = useState<SingleSelectOption[]>([]);
   const [syncSourceOptions, setSyncSourceOptions] = useState<
@@ -95,10 +98,13 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   }, []);
 
   const sourceIdOption = useMemo(() => {
-    if (!values.source.id) return null;
+    if (!values.source.existing.id) return null;
 
-    return syncSourceOptions.find((e) => e.value === values.source.id) || null;
-  }, [values.source.id]);
+    return (
+      syncSourceOptions.find((e) => e.value === values.source.existing.id) ||
+      null
+    );
+  }, [values.source.existing.id]);
 
   // ###################################################################
   // #                                                                 #
@@ -111,19 +117,19 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
   const canGoNext = useMemo(() => {
     if (!values.pipeline.mode) return false;
-    if (values.pipeline.mode === "MODE_SYNC" && !values.source.id) {
+    if (values.pipeline.mode === "MODE_SYNC" && !values.source.existing.id) {
       return false;
     }
 
     return true;
-  }, [values.pipeline.mode, values.source.id]);
+  }, [values.pipeline.mode, values.source.existing.id]);
 
   const handleGoNext = () => {
     if (!sources.isSuccess) return;
 
     if (values.pipeline.mode === "MODE_SYNC") {
       const sourceIndex = sources.data.findIndex(
-        (e) => e.id === values.source.id
+        (e) => e.id === values.source.existing.id
       );
 
       if (sourceIndex !== -1) {
@@ -132,16 +138,15 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       }
 
       const payload: CreateSourcePayload = {
-        id: values.source.id,
-        source_connector_definition: `source-connector-definitions/${values.source.id}`,
+        id: values.source.existing.id,
+        source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
         connector: {
           configuration: "{}",
         },
       };
 
       createSource.mutate(payload, {
-        onSuccess: (newSource) => {
-          setFieldValue("source.existing.name", newSource.name);
+        onSuccess: () => {
           setStepNumber(stepNumber + 2);
         },
       });
@@ -168,7 +173,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
         />
         {values.pipeline.mode === "MODE_SYNC" ? (
           <SingleSelect
-            name="source.id"
+            name="source.existing.id"
             instanceId="data-source-id"
             label="Source type"
             description={"Setup Guide"}
