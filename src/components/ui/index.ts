@@ -5,11 +5,6 @@ import FormVerticalDividers from "./FormVerticalDividers";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
 import TableBody from "./TableBody";
-import {
-  SourceTablePlaceholder,
-  PipelineTablePlaceholder,
-  DestinationTablePlaceholder,
-} from "./TablePlaceholders";
 
 import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
@@ -27,9 +22,6 @@ export {
   TableContainer,
   TableRow,
   TableBody,
-  SourceTablePlaceholder,
-  DestinationTablePlaceholder,
-  PipelineTablePlaceholder,
   StateLabel,
   PipelineModeLabel,
   ConnectorIcon,
@@ -46,3 +38,5 @@ export type {
 export * from "./TableHeads";
 
 export * from "./TableCells";
+
+export * from "./TablePlaceholders";
