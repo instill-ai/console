@@ -23,6 +23,7 @@ export type ConnectionTypeCellProps = CellBaseProps & {
   cellType: "shrink" | "expand";
   connectionName: string;
   width: string;
+  lineClamp?: string;
 };
 
 const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
@@ -35,6 +36,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   paddingRight,
   paddingTop,
   cellType,
+  lineClamp,
 }) => {
   let icon: ReactNode;
   const iconWidth = "w-8";
@@ -160,7 +162,12 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-row gap-x-2.5">
             {icon}
-            <p className="instill-text-body my-auto text-instillGrey90">
+            <p
+              className={cn(
+                "instill-text-body my-auto text-instillGrey90",
+                lineClamp
+              )}
+            >
               {connectionName}
             </p>
           </div>
@@ -183,7 +190,12 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
                 {definitionName}
               </p>
             </div>
-            <p className="instill-text-body my-auto text-instillGrey90">
+            <p
+              className={cn(
+                "instill-text-body my-auto text-instillGrey90",
+                lineClamp
+              )}
+            >
               {connectionName}
             </p>
           </div>
