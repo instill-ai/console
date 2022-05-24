@@ -6,37 +6,74 @@ import { PrimaryButton } from "@/components/ui/Buttons";
 import useOnScreen from "@/hooks/useOnScreen";
 import { SingleSelect } from "../../../formik";
 import { StepNumberState, Values } from "../CreatePipelineForm";
+import { useDestinations } from "@/services/connector/DestinationServices";
 
 export type UseExistingDestinationFlowProps = StepNumberState;
 
 const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
-  maximumStepNumber,
   setStepNumber,
   stepNumber,
 }) => {
+  const { values, setFieldValue } = useFormikContext<Values>();
   const flowRef = useRef<HTMLDivElement>(null);
   const flowIsOnScreen = useOnScreen(flowRef);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Get existing destinations.                                  #
+  // #                                                                 #
+  // ###################################################################
+
   const [destinationOptions, setDestinationOptions] = useState<
     SingleSelectOption[] | null
   >(null);
-
-  const { values } = useFormikContext<Values>();
+  const destinations = useDestinations();
 
   useEffect(() => {
-    if (!flowIsOnScreen) return;
+    if (!flowIsOnScreen || !destinations.isSuccess) return;
 
-    setTimeout(() => setDestinationOptions([]), 3000);
-  }, [flowIsOnScreen]);
+    setDestinationOptions(
+      destinations.data.map((e) => {
+        return {
+          label: e.id,
+          value: e.id,
+        };
+      })
+    );
+  }, [flowIsOnScreen, destinations.isSuccess]);
+
+  const selectedDestinationOption = useMemo(() => {
+    if (!values.destination.existing.id || !destinationOptions) return null;
+
+    return (
+      destinationOptions.find(
+        (e) => e.value === values.destination.existing.id
+      ) || null
+    );
+  }, [values.destination.existing.id, destinationOptions]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Setup existing destinations                                 #
+  // #                                                                 #
+  // ###################################################################
 
   const canUseExistingDestination = useMemo(() => {
-    if (!values.dataDestination.existing.name) {
+    if (!values.destination.existing.id) {
       return false;
     }
 
     return true;
-  }, [values.dataDestination.existing.name]);
+  }, [values.destination.existing.id]);
 
   const handleUseExistingDestination = () => {
+    if (!values.destination.existing.id || !destinations.isSuccess) return;
+
+    const target = destinations.data.find(
+      (e) => e.id === values.destination.existing.id
+    );
+
+    setFieldValue("destination.name", target?.name);
     setStepNumber(stepNumber + 1);
   };
 
@@ -46,14 +83,16 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         Select a existing destination
       </h3>
       <SingleSelect
-        name="dataDestination.existing.name"
-        instanceId="existing-data-source-name"
+        name="destination.existing.id"
+        instanceId="existing-data-destination-id"
+        value={selectedDestinationOption}
         disabled={false}
         readOnly={false}
         options={destinationOptions ? destinationOptions : []}
         required={true}
         description={"Setup Guide"}
-        label="Source type"
+        label="Destination type"
+        menuPlacement="auto"
       />
       <PrimaryButton
         position="ml-auto"
