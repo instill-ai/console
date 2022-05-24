@@ -97,7 +97,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     ]);
   }, []);
 
-  const sourceIdOption = useMemo(() => {
+  const selectedSourceIdOption = useMemo(() => {
     if (!values.source.existing.id) return null;
 
     return (
@@ -135,6 +135,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       if (sourceIndex !== -1) {
         setStepNumber(stepNumber + 2);
         setFieldValue("source.existing.name", sources.data[sourceIndex].name);
+        setFieldValue("source.type", "existing");
         return;
       }
 
@@ -149,6 +150,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       createSource.mutate(payload, {
         onSuccess: (newSource) => {
           setFieldValue("source.existing.name", newSource.name);
+          setFieldValue("source.type", "existing");
           setStepNumber(stepNumber + 2);
         },
       });
@@ -183,7 +185,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
             readOnly={false}
             required={true}
             options={syncSourceOptions}
-            value={sourceIdOption}
+            value={selectedSourceIdOption}
             menuPlacement="auto"
           />
         ) : null}
