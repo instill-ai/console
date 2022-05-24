@@ -94,6 +94,12 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     ]);
   }, []);
 
+  const sourceIdOption = useMemo(() => {
+    if (!values.source.id) return null;
+
+    return syncSourceOptions.find((e) => e.value === values.source.id) || null;
+  }, [values.source.id]);
+
   // ###################################################################
   // #                                                                 #
   // # 2 - Create target source.                                       #
@@ -145,13 +151,6 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     setStepNumber(stepNumber + 1);
   };
 
-  const [sourceIdOption, setSourceIdOption] =
-    useState<Nullable<SingleSelectOption>>(null);
-
-  const sourceTypeOnChangeCb = (option: SingleSelectOption) => {
-    setSourceIdOption(option);
-  };
-
   return (
     <FormikStep>
       <div className="mb-[60px] flex flex-col gap-y-5">
@@ -177,7 +176,6 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
             readOnly={false}
             required={true}
             options={syncSourceOptions}
-            onChangeCb={sourceTypeOnChangeCb}
             value={sourceIdOption}
             menuPlacement="auto"
           />
