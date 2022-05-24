@@ -88,3 +88,30 @@ export const getPipelineQuery = async (
     return Promise.reject(err);
   }
 };
+
+export type CreatePipelinePayload = {
+  id: string;
+  recipe: {
+    source: string;
+    model_instances: string[];
+    destination: string;
+  };
+};
+
+export type CreatePipelineResponse = {
+  pipeline: PipelineWithRawRecipe;
+};
+
+export const createPipelineMutation = async (
+  payload: CreatePipelinePayload
+): Promise<PipelineWithRawRecipe> => {
+  try {
+    const { data } = await axios.post<CreatePipelineResponse>(
+      "/api/pipeline/create-pipeline",
+      payload
+    );
+    return Promise.resolve(data.pipeline);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
