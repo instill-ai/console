@@ -11,10 +11,11 @@ import { StepNumberState, Values } from "../CreatePipelineForm";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import {
   useCreateSource,
-  useSourceDefinitions,
+  useSources,
 } from "@/services/connector/SourceServices";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 export type SetupSourceStepProps = StepNumberState;
 
@@ -22,135 +23,133 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   stepNumber,
   setStepNumber,
 }) => {
-  const modeOptions = [
-    {
-      label: "Sync",
-      value: "MODE_SYNC",
-      startIcon: (
-        <SyncIcon
-          color="fill-instillGrey90"
-          position=""
-          width="w-[30px]"
-          height="h-[30px]"
-        />
-      ),
-    },
-    {
-      label: "Async",
-      value: "MODE_ASYNC",
-      startIcon: (
-        <AsyncIcon
-          color="fill-instillGrey90"
-          position=""
-          width="w-[30px]"
-          height="h-[30px]"
-        />
-      ),
-    },
-  ];
-
-  const sourceDefinitions = useSourceDefinitions();
   const { values, setFieldValue } = useFormikContext<Values>();
 
-  const [syncConnectionOptions, setSyncConnectionOptions] = useState<
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Initialize the source definition and pipelines              #
+  // #                                                                 #
+  // ###################################################################
+
+  const [modeOptions, setModeOptions] = useState<SingleSelectOption[]>([]);
+  const [syncSourceOptions, setSyncSourceOptions] = useState<
     SingleSelectOption[]
   >([]);
 
   useEffect(() => {
-    if (!sourceDefinitions.isSuccess) return;
+    setModeOptions([
+      {
+        label: "Sync",
+        value: "MODE_SYNC",
+        startIcon: (
+          <SyncIcon
+            color="fill-instillGrey90"
+            position=""
+            width="w-[30px]"
+            height="h-[30px]"
+          />
+        ),
+      },
+      {
+        label: "Async",
+        value: "MODE_ASYNC",
+        startIcon: (
+          <AsyncIcon
+            color="fill-instillGrey90"
+            position=""
+            width="w-[30px]"
+            height="h-[30px]"
+          />
+        ),
+      },
+    ]);
 
-    if (values.pipeline.mode === "MODE_SYNC") {
-      const syncDefinitions = sourceDefinitions.data.filter(
-        (e) =>
-          e.connector_definition.connection_type ===
-          "CONNECTION_TYPE_DIRECTNESS"
-      );
+    setSyncSourceOptions([
+      {
+        label: "gRPC",
+        value: "source-grpc",
+        startIcon: (
+          <ConnectorIcon
+            iconName="grpc.svg"
+            iconColor="fill-instillGrey90"
+            iconHeight="h-[30px]"
+            iconWidth="w-[30px]"
+            iconPosition="my-auto"
+          />
+        ),
+      },
+      {
+        label: "HTTP",
+        value: "source-http",
+        startIcon: (
+          <ConnectorIcon
+            iconName="http.svg"
+            iconColor="fill-instillGrey90"
+            iconHeight="h-[30px]"
+            iconWidth="w-[30px]"
+            iconPosition="my-auto"
+          />
+        ),
+      },
+    ]);
+  }, []);
 
-      setSyncConnectionOptions(
-        syncDefinitions.map((e) => {
-          return {
-            label: e.connector_definition.title,
-            value: e.id,
-            startIcon: (
-              <ConnectorIcon
-                type={e.connector_definition.title}
-                iconColor="fill-instillGrey90"
-                iconHeight="h-[30px]"
-                iconWidth="w-[30px]"
-                iconPosition="my-auto"
-              />
-            ),
-          };
-        })
-      );
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Create target source.                                       #
+  // #                                                                 #
+  // ###################################################################
 
-      return;
-    }
-
-    const asyncDefinitions = sourceDefinitions.data.filter(
-      (e) =>
-        e.connector_definition.connection_type !== "CONNECTION_TYPE_DIRECTNESS"
-    );
-
-    setSyncConnectionOptions(
-      asyncDefinitions.map((e) => {
-        return {
-          label: e.connector_definition.title,
-          value: e.id,
-          startIcon: (
-            <ConnectorIcon
-              type={e.connector_definition.title}
-              iconColor="fill-instillGrey90"
-              iconHeight="h-[30px]"
-              iconWidth="w-[30px]"
-              iconPosition="my-auto"
-            />
-          ),
-        };
-      })
-    );
-  }, [sourceDefinitions.isSuccess, values.pipeline.mode]);
+  const createSource = useCreateSource();
+  const sources = useSources();
 
   const canGoNext = useMemo(() => {
     if (!values.pipeline.mode) return false;
-    if (values.pipeline.mode === "MODE_SYNC" && !values.source.existing.id) {
+    if (values.pipeline.mode === "MODE_SYNC" && !values.source.id) {
       return false;
     }
 
     return true;
-  }, [values.pipeline.mode, values.source.existing]);
-
-  const createSource = useCreateSource();
+  }, [values.pipeline.mode, values.source.id]);
 
   const handleGoNext = () => {
+    if (!sources.isSuccess) return;
+
     if (values.pipeline.mode === "MODE_SYNC") {
-      setStepNumber(stepNumber + 2);
-      // const payload: CreateSourcePayload = {
-      //   id: values.source.existing.id,
-      //   source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
-      //   connector: {
-      //     configuration: "{}",
-      //   },
-      // };
+      const sourceIndex = sources.data.findIndex(
+        (e) => e.id === values.source.id
+      );
 
-      // console.log(payload);
+      if (sourceIndex !== -1) {
+        setStepNumber(stepNumber + 2);
+        return;
+      }
 
-      // createSource.mutate(payload, {
-      //   onSuccess: (newSource) => {
-      //     setFieldValue("source.existing.name", newSource.name);
-      //     setStepNumber(stepNumber + 2);
-      //   },
-      // });
+      const payload: CreateSourcePayload = {
+        id: values.source.id,
+        source_connector_definition: `source-connector-definitions/${values.source.id}`,
+        connector: {
+          configuration: "{}",
+        },
+      };
+
+      createSource.mutate(payload, {
+        onSuccess: (newSource) => {
+          setFieldValue("source.existing.name", newSource.name);
+          setStepNumber(stepNumber + 2);
+        },
+      });
 
       return;
     }
     setStepNumber(stepNumber + 1);
   };
 
-  // The source and destination type of sync mode will be the same, so we need to setup
-  // destination type and name here too.
+  const [sourceIdOption, setSourceIdOption] =
+    useState<Nullable<SingleSelectOption>>(null);
+
   const sourceTypeOnChangeCb = (option: SingleSelectOption) => {
-    setFieldValue("destination.existing.id", option.label);
+    setSourceIdOption(option);
   };
 
   return (
@@ -165,23 +164,25 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           readOnly={false}
           required={true}
           options={modeOptions}
-          defaultValue={modeOptions[0]}
+          value={modeOptions[0]}
+          menuPlacement="auto"
         />
         {values.pipeline.mode === "MODE_SYNC" ? (
           <SingleSelect
-            name="source.existing.id"
-            instanceId="data-source-type"
+            name="source.id"
+            instanceId="data-source-id"
             label="Source type"
             description={"Setup Guide"}
             disabled={false}
             readOnly={false}
             required={true}
-            options={syncConnectionOptions}
+            options={syncSourceOptions}
             onChangeCb={sourceTypeOnChangeCb}
+            value={sourceIdOption}
+            menuPlacement="auto"
           />
         ) : null}
       </div>
-
       <PrimaryButton
         onClickHandler={handleGoNext}
         disabled={canGoNext ? false : true}
