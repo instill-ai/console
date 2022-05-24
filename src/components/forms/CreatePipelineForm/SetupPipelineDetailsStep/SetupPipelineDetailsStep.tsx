@@ -4,12 +4,21 @@ import { useFormikContext } from "formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { Values } from "../CreatePipelineForm";
 import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
+import { useCreatePipeline } from "@/services/pipeline/PipelineServices";
+import { CreatePipelinePayload } from "@/lib/instill";
+import { useRouter } from "next/router";
 
 const SetupPipelineDetailsStep: FC = () => {
   const { values } = useFormikContext<Values>();
+  const router = useRouter();
+
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Create pipeline                                             #
+  // #                                                                 #
+  // ###################################################################
 
   const canSetupNewPipeline = useMemo(() => {
-    console.log(values);
     const validator = {
       pipelineIsValid: false,
       sourceIsValid: false,
@@ -20,38 +29,34 @@ const SetupPipelineDetailsStep: FC = () => {
     // Pipeline - Every pipeline's field is required
     if (
       values.pipeline.mode &&
-      values.pipeline.name &&
-      values.pipeline.description &&
-      values.pipeline.status
+      values.pipeline.id &&
+      values.pipeline.description
     ) {
       validator.pipelineIsValid = true;
     }
 
-    // Source - name and type are required
-    if (values.dataSource.existing.name && values.dataSource.existing.type) {
+    // Source - name is required
+    if (values.source.existing.name) {
       validator.sourceIsValid = true;
     }
 
-    if (values.dataSource.new.name && values.dataSource.new.type) {
+    if (values.source.new.name) {
       validator.sourceIsValid = true;
     }
 
-    // Destination - name and type are required
-    if (
-      values.dataDestination.existing.name &&
-      values.dataDestination.existing.type
-    ) {
+    // Destination - name id required
+    if (values.destination.existing.name) {
       validator.destinationIsValid = true;
     }
 
-    if (values.dataDestination.new.name && values.dataDestination.new.type) {
+    if (values.destination.new.name) {
       validator.destinationIsValid = true;
     }
 
     // Model - new - github
     if (
-      values.model.new.modelSource === "github" &&
-      values.model.new.name &&
+      values.model.new.modelDefinition === "github" &&
+      values.model.new.id &&
       values.model.new.modelInstance
     ) {
       validator.modelIsValid = true;
@@ -59,8 +64,8 @@ const SetupPipelineDetailsStep: FC = () => {
 
     // Model - new - local
     if (
-      values.model.new.modelSource === "local" &&
-      values.model.new.name &&
+      values.model.new.modelDefinition === "local" &&
+      values.model.new.id &&
       values.model.new.description &&
       values.model.new.file
     ) {
@@ -85,15 +90,44 @@ const SetupPipelineDetailsStep: FC = () => {
     }
   }, [values]);
 
+  const createPipeline = useCreatePipeline();
+
   const handleSetupNewPipeline = () => {
-    console.log(values);
+    if (!canSetupNewPipeline || !router.isReady) return;
+
+    const payload: CreatePipelinePayload = {
+      id: values.pipeline.id,
+      recipe: {
+        source:
+          values.source.type === "new"
+            ? values.source.new.name
+            : values.source.existing.name,
+        model_instances: [
+          values.model.type === "new"
+            ? values.model.new.modelInstance
+            : values.model.existing.name,
+        ],
+        destination:
+          values.destination.type === "new"
+            ? values.destination.new.name
+            : values.destination.existing.name,
+      },
+    };
+
+    console.log(payload, values.model.new.modelInstance);
+
+    createPipeline.mutate(payload, {
+      onSuccess: () => {
+        router.push("/pipelines");
+      },
+    });
   };
 
   return (
     <FormikStep>
       <div className="mb-5 flex flex-col gap-y-5">
         <TextField
-          name="pipeline.name"
+          name="pipeline.id"
           label="Name"
           description="Pick a name to help you identify this source in Instill"
           disabled={false}
@@ -112,14 +146,14 @@ const SetupPipelineDetailsStep: FC = () => {
           required={true}
           autoComplete="off"
           placeholder=""
-          value={values.pipeline.description}
+          value={values.pipeline.description ? values.pipeline.description : ""}
           enableCounter={false}
           counterWordLimit={0}
         />
         <ToggleField
           name="pipeline.status"
           label="Pipeline status"
-          disabled={false}
+          disabled={true}
           readOnly={false}
           required={true}
           defaultChecked={true}
