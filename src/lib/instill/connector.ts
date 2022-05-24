@@ -116,7 +116,9 @@ export type SourceWithDefinition = {
   connector: Connector;
 };
 
-export type GetSourceResponse = Source;
+export type GetSourceResponse = {
+  source_connector: Source;
+};
 
 export const getSourceQuery = async (sourceId: string): Promise<Source> => {
   try {
@@ -125,7 +127,7 @@ export const getSourceQuery = async (sourceId: string): Promise<Source> => {
       { id: sourceId }
     );
 
-    return Promise.resolve(data);
+    return Promise.resolve(data.source_connector);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -247,7 +249,9 @@ export type DestinationWithDefinition = {
   connector: Connector;
 };
 
-export type GetDestinationResponse = Destination;
+export type GetDestinationResponse = {
+  destination_connector: Destination;
+};
 
 export const getDestinationQuery = async (
   destinationId: string
@@ -257,7 +261,7 @@ export const getDestinationQuery = async (
       `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationId}`
     );
 
-    return Promise.resolve(data);
+    return Promise.resolve(data.destination_connector);
   } catch (err) {
     return Promise.reject(err);
   }
