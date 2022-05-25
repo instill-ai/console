@@ -118,7 +118,7 @@ export type SourceWithDefinition = {
   connector: Connector;
 };
 
-export type SourceWithPipelines = Source & {
+export type SourceWithPipelines = SourceWithDefinition & {
   pipelines: Pipeline[];
 };
 

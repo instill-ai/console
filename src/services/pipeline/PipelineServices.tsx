@@ -235,8 +235,8 @@ export const usePipelinesHaveTargetDestination = (
 // #                                                                 #
 // ###################################################################
 
-export const useCreatePipeline = (payload: CreatePipelinePayload) => {
-  return useMutation(async () => {
+export const useCreatePipeline = () => {
+  return useMutation(async (payload: CreatePipelinePayload) => {
     const res = await createPipelineMutation(payload);
     return Promise.resolve(res);
   });
