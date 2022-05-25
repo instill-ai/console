@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import axios from "axios";
 
 export type ConnectorState =
@@ -28,13 +29,13 @@ export type ConnectorDefinition = {
     connection_type: string;
     spec: {
       documentation_url: string;
-      changelog_url: string;
+      changelog_url?: string;
       connection_specification: Record<string, any>;
-      supports_incremental: string;
-      supports_normalization: string;
+      supports_incremental: boolean;
+      supports_normalization: boolean;
       supports_dbt: boolean;
       supported_destination_sync_modes: string[];
-      advanced_auth: Record<string, any>;
+      advanced_auth: Nullable<Record<string, any>>;
     };
     tombstone: boolean;
     public: boolean;
