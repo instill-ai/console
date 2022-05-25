@@ -2,46 +2,14 @@ import {
   createSourceMutation,
   CreateSourcePayload,
   getSourceDefinitionQuery,
-  getSourceQuery,
   listSourceDefinitionsQuery,
   listSourcesQuery,
-  Pipeline,
+  Source,
   SourceWithDefinition,
   SourceWithPipelines,
 } from "@/lib/instill";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { usePipelines } from "../pipeline/PipelineServices";
-import { Connector } from "./ConnectorType";
-
-export type SourceConnector = {
-  // "source-connectors/{id},
-  name: string;
-
-  // uuid
-  uid: string;
-
-  // source name
-  id: string;
-
-  // source-definitions/s3
-  source_connector_definition: string;
-  connector: Connector;
-};
-
-export type ListSourceConnectorsResponse = {
-  source_connectors: SourceConnector[];
-  next_page_token: string;
-  total_size: string;
-};
-
-export type Source = {
-  type: string;
-  name: string;
-  state: "connected" | "disconnected" | "error";
-  update_time: string;
-  create_time: string;
-  pipelines: Pipeline[];
-};
 
 export const useSourceDefinitions = () => {
   const queryClient = useQueryClient();
@@ -108,8 +76,25 @@ export const useSourcesWithPipelines = () => {
 };
 
 export const useCreateSource = () => {
-  return useMutation(async (payload: CreateSourcePayload) => {
-    const res = await createSourceMutation(payload);
-    return Promise.resolve(res);
-  });
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: CreateSourcePayload) => {
+      const res = await createSourceMutation(payload);
+      return Promise.resolve(res);
+    },
+    {
+      onSuccess: (newSource) => {
+        queryClient.setQueryData<Source>(["sources", newSource.id], newSource);
+        const oldSources = queryClient.getQueryData<Source[]>(["sources"]);
+        if (oldSources) {
+          queryClient.setQueryData<Source[]>(
+            ["sources"],
+            [...oldSources, newSource]
+          );
+        } else {
+          queryClient.invalidateQueries(["sources"]);
+        }
+      },
+    }
+  );
 };
