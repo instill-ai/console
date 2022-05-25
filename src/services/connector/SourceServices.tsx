@@ -1,11 +1,16 @@
 import {
   createSourceMutation,
   CreateSourcePayload,
+  getSourceDefinitionQuery,
+  getSourceQuery,
   listSourceDefinitionsQuery,
   listSourcesQuery,
   Pipeline,
+  SourceWithDefinition,
+  SourceWithPipelines,
 } from "@/lib/instill";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { usePipelines } from "../pipeline/PipelineServices";
 import { Connector } from "./ConnectorType";
 
 export type SourceConnector = {
@@ -55,9 +60,51 @@ export const useSourceDefinitions = () => {
 
 export const useSources = () => {
   return useQuery(["sources"], async () => {
-    const res = await listSourcesQuery();
-    return Promise.resolve(res);
+    const sources = await listSourcesQuery();
+    const sourcesWithDefinition: SourceWithDefinition[] = [];
+
+    for (const source of sources) {
+      const sourceDefinition = await getSourceDefinitionQuery(
+        source.source_connector_definition
+      );
+      sourcesWithDefinition.push({
+        ...source,
+        source_connector_definition: sourceDefinition,
+      });
+    }
+
+    return Promise.resolve(sourcesWithDefinition);
   });
+};
+
+export const useSourcesWithPipelines = () => {
+  const sources = useSources();
+  const pipelines = usePipelines(true);
+  return useQuery(
+    ["sources-with-pipelines"],
+    async () => {
+      if (!sources.data || !pipelines.data) return [];
+
+      console.log("hi");
+
+      const newSources: SourceWithPipelines[] = [];
+
+      for (const source of sources.data) {
+        const targetPipelines = pipelines.data.filter(
+          (e) => e.recipe.source.id === source.id
+        );
+        newSources.push({
+          ...source,
+          pipelines: targetPipelines,
+        });
+      }
+
+      return newSources;
+    },
+    {
+      enabled: sources.isSuccess ? (pipelines.isSuccess ? true : false) : false,
+    }
+  );
 };
 
 export const useCreateSource = () => {
