@@ -105,14 +105,6 @@ export type Source = {
   name: string;
   uid: string;
   id: string;
-  source_connector_definition: string;
-  connector: Connector;
-};
-
-export type SourceWithDefinition = {
-  name: string;
-  uid: string;
-  id: string;
   source_connector_definition: ConnectorDefinition;
   connector: Connector;
 };
@@ -235,14 +227,6 @@ export const getDestinationDefinitionQuery = async (
 // ###################################################################
 
 export type Destination = {
-  name: string;
-  uid: string;
-  id: string;
-  destination_connector_definition: string;
-  connector: Connector;
-};
-
-export type DestinationWithDefinition = {
   name: string;
   uid: string;
   id: string;
