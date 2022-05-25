@@ -9,28 +9,37 @@ import {
   SourceWithDefinition,
   SourceWithPipelines,
 } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { usePipelines } from "../pipeline/PipelineServices";
 
 export const useSourceDefinitions = () => {
-  const queryClient = useQueryClient();
-
   return useQuery(["sources", "definition"], async () => {
     const sourceDefinitions = await listSourceDefinitionsQuery();
     return Promise.resolve(sourceDefinitions);
   });
 };
 
-export const useSource = (sourceId: string) => {
-  return useQuery(["sources", sourceId], async () => {
-    const source = await getSourceQuery(sourceId);
-    const sourceDefinition = await getSourceDefinitionQuery(source.name);
-    const sourceWithDefinition: SourceWithDefinition = {
-      ...source,
-      source_connector_definition: sourceDefinition,
-    };
-    return Promise.resolve(sourceWithDefinition);
-  });
+export const useSource = (sourceId: Nullable<string>) => {
+  return useQuery(
+    ["sources", sourceId],
+    async () => {
+      if (!sourceId) {
+        return Promise.reject(new Error("invalid source id"));
+      }
+
+      const source = await getSourceQuery(sourceId);
+      const sourceDefinition = await getSourceDefinitionQuery(source.name);
+      const sourceWithDefinition: SourceWithDefinition = {
+        ...source,
+        source_connector_definition: sourceDefinition,
+      };
+      return Promise.resolve(sourceWithDefinition);
+    },
+    {
+      enabled: sourceId ? true : false,
+    }
+  );
 };
 
 export const useSources = () => {
@@ -82,7 +91,7 @@ export const useSourcesWithPipelines = () => {
   );
 };
 
-export const useSourceWithPipelines = (sourceId: string) => {
+export const useSourceWithPipelines = (sourceId: Nullable<string>) => {
   const pipelines = usePipelines(true);
   const source = useSource(sourceId);
   return useQuery(
