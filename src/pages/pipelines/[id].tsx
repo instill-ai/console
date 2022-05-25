@@ -5,7 +5,11 @@ import PageTitle from "@/components/ui/PageTitle";
 import { usePipeline } from "@/services/pipeline";
 import { useRouter } from "next/router";
 import PipelineOverViewTable from "@/services/pipeline/PipelineOverviewTable";
-import { StateLabel, PipelineModeLabel } from "@/components/ui";
+import {
+  StateLabel,
+  PipelineModeLabel,
+  TableLoadingPlaceholder,
+} from "@/components/ui";
 import { GetServerSideProps } from "next";
 import { listRepoFileContent } from "@/lib/github";
 import { transformSchemaToFormFields } from "@/services/transformation";
@@ -14,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const data = await listRepoFileContent(
     "instill-ai",
     "pipeline-backend",
-    "configs/models/pipeline.json"
+    "config/models/pipeline.json"
   );
 
   const decodeSchema = Buffer.from(data.content, "base64").toString();
@@ -84,7 +88,9 @@ const PipelineDetailsPage: FC<PipelineDetailsPageProps> & {
           </div>
           <PipelineOverViewTable pipeline={pipeline.data} isLoading={false} />
         </>
-      ) : null}
+      ) : (
+        <TableLoadingPlaceholder />
+      )}
     </PageContentContainer>
   );
 };
