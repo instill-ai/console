@@ -1,5 +1,6 @@
 import { Nullable } from "@/types/general";
 import axios from "axios";
+import { Pipeline } from "./pipeline";
 
 export type ConnectorState =
   | "STATE_CONNECTED"
@@ -107,6 +108,10 @@ export type Source = {
   id: string;
   source_connector_definition: ConnectorDefinition;
   connector: Connector;
+};
+
+export type SourceWithPipeline = Source & {
+  pipelines: Pipeline[];
 };
 
 export type GetSourceResponse = {
