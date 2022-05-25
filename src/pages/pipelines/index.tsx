@@ -1,7 +1,7 @@
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { PipelinesTable } from "@/services/pipeline";
-import axios from "axios";
+import { usePipelines } from "@/services/pipeline/PipelineServices";
 import { FC, ReactElement } from "react";
 
 interface GetLayOutProps {
@@ -13,19 +13,24 @@ interface GetLayOutProps {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const pipelines = [];
+  const pipelines = usePipelines(true);
 
   return (
     <PageContentContainer>
       <PageTitle
         title="Pipeline"
         breadcrumbs={["Pipeline"]}
-        enableButton={pipelines.length === 0 ? false : true}
+        enableButton={
+          pipelines.data ? (pipelines.data.length === 0 ? false : true) : false
+        }
         buttonName="Add new pipeline"
         buttonLink="/pipelines/create"
         marginBottom="mb-10"
       />
-      <PipelinesTable pipelines={[]} isLoadingPipeline={false} />
+      <PipelinesTable
+        pipelines={pipelines.data ? pipelines.data : []}
+        isLoadingPipeline={pipelines.isLoading}
+      />
     </PageContentContainer>
   );
 };
