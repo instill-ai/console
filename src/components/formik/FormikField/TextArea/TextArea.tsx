@@ -1,4 +1,5 @@
-import { BasicTextArea, BasicTextField } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
+import { BasicTextArea } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
@@ -15,6 +16,7 @@ export type TextAreaProps = {
   value?: string;
   enableCounter: boolean;
   counterWordLimit: number;
+  error: Nullable<string>;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
@@ -22,6 +24,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   form,
   name,
   onChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
@@ -35,7 +38,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
     <BasicTextArea
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
@@ -54,6 +57,7 @@ const FormikWrapper: FC<TextAreaProps> = ({
   value,
   enableCounter,
   counterWordLimit,
+  error,
 }) => {
   return (
     <Field
@@ -70,6 +74,7 @@ const FormikWrapper: FC<TextAreaProps> = ({
       value={value}
       enableCounter={enableCounter}
       counterWordLimit={counterWordLimit}
+      error={error}
     />
   );
 };

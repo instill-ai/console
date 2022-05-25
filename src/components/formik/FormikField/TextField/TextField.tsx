@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import { BasicTextField } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
@@ -14,6 +15,7 @@ export type TextFieldProps = {
   placeholder: string;
   type: string;
   autoComplete: string;
+  error: Nullable<string>;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
@@ -21,6 +23,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   form,
   name,
   onChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
@@ -34,7 +37,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
     <BasicTextField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
@@ -52,6 +55,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
   type,
   autoComplete,
   value,
+  error,
 }) => {
   return (
     <Field
@@ -67,6 +71,7 @@ const FormikWrapper: FC<TextFieldProps> = ({
       type={type}
       autoComplete={autoComplete}
       value={value}
+      error={error}
     />
   );
 };

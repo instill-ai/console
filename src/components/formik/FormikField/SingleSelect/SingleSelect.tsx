@@ -5,6 +5,7 @@ import {
   BasicSingleSelectProps,
   SingleSelectOption,
 } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
 export type SingleSelectProps = {
   name: string;
@@ -18,6 +19,7 @@ export type SingleSelectProps = {
   instanceId: string;
   menuPlacement: BasicSingleSelectProps["menuPlacement"];
   value: BasicSingleSelectProps["value"];
+  error: Nullable<string>;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -29,6 +31,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   onChangeCb,
   menuPlacement,
   value,
+  error,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
@@ -43,7 +46,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       {...props}
       id={name}
       instanceId={instanceId}
-      error={form.errors[field.name] as string}
+      error={error}
       options={options}
       onChangeInput={onChange}
       menuPlacement={menuPlacement}
@@ -64,6 +67,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   instanceId,
   menuPlacement,
   value,
+  error,
 }) => {
   return (
     <Field
@@ -79,6 +83,7 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       label={label}
       value={value}
       menuPlacement={menuPlacement}
+      error={error}
     />
   );
 };

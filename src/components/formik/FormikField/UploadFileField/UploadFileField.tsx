@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import {
   BasicTextField,
   BasicUploadFileField,
@@ -15,6 +16,7 @@ export type UploadFileFieldProps = {
   onChangeCb?: (value: string) => void;
   placeholder: string;
   uploadButtonText: string;
+  error: Nullable<string>;
 };
 
 const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
@@ -22,6 +24,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   form,
   name,
   onChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
@@ -35,7 +38,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
     <BasicUploadFileField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
@@ -51,6 +54,7 @@ const FormikWrapper: FC<UploadFileFieldProps> = ({
   onChangeCb,
   placeholder,
   uploadButtonText,
+  error,
 }) => {
   return (
     <Field
@@ -64,6 +68,7 @@ const FormikWrapper: FC<UploadFileFieldProps> = ({
       label={label}
       placeholder={placeholder}
       uploadButtonText={uploadButtonText}
+      error={error}
     />
   );
 };

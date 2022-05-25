@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Field, FieldProps } from "formik";
 import { BasicToggleField } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
 export type ToggleFieldProps = {
   name: string;
@@ -11,6 +12,7 @@ export type ToggleFieldProps = {
   label: string;
   onChangeCb?: (value: boolean) => void;
   defaultChecked: boolean;
+  error: Nullable<string>;
 };
 
 const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
@@ -19,6 +21,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   name,
   defaultChecked,
   onChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: boolean) => {
@@ -32,7 +35,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
     <BasicToggleField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
       defaultChecked={defaultChecked}
     />
@@ -48,6 +51,7 @@ const FormikWrapper: FC<ToggleFieldProps> = ({
   label,
   onChangeCb,
   defaultChecked,
+  error,
 }) => {
   return (
     <Field
@@ -60,6 +64,7 @@ const FormikWrapper: FC<ToggleFieldProps> = ({
       onChangeCb={onChangeCb}
       label={label}
       defaultChecked={defaultChecked}
+      error={error}
     />
   );
 };
