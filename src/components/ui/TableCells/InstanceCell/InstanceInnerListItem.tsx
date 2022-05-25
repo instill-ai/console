@@ -66,7 +66,7 @@ const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({
           color="fill-instillGrey90"
         />
       )}
-      <p className={cn("my-auto line-clamp-2", textColor, textStyle)}>
+      <p className={cn("my-auto line-clamp-1", textColor, textStyle)}>
         {item.name}
       </p>
     </div>

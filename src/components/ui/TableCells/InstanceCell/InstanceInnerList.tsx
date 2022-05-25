@@ -61,7 +61,6 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     }
 
     console.log(limit);
-
     setDisplayLimit(limit);
   }, []);
 
@@ -72,10 +71,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
 
   return (
     <div className="flex flex-row gap-x-[5px]">
-      <div
-        className="flex flex-wrap gap-x-[5px] gap-y-[5px]"
-        style={{ width: isExpand ? `${listItemsContainerWidth}px` : "" }}
-      >
+      <div className="flex flex-wrap gap-x-[5px] gap-y-[5px]">
         {items.map((e, index) => {
           if (displayLimit === 0 && index === 0) {
             return (
@@ -104,7 +100,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
           );
         })}
       </div>
-      {displayLimit === 0 ? null : (
+      {items.length === 1 ? null : (
         <div
           onClick={() => handleExpand()}
           className={cn(
