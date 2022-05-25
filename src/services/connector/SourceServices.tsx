@@ -2,6 +2,7 @@ import {
   createSourceMutation,
   CreateSourcePayload,
   getSourceDefinitionQuery,
+  getSourceQuery,
   listSourceDefinitionsQuery,
   listSourcesQuery,
   Source,
@@ -14,16 +15,22 @@ import { usePipelines } from "../pipeline/PipelineServices";
 export const useSourceDefinitions = () => {
   const queryClient = useQueryClient();
 
-  return useQuery(
-    ["source", "definitions"],
-    async () => {
-      const sourceDefinitions = await listSourceDefinitionsQuery();
-      return Promise.resolve(sourceDefinitions);
-    },
-    {
-      initialData: queryClient.getQueryData(["source", "definition-options"]),
-    }
-  );
+  return useQuery(["sources", "definition"], async () => {
+    const sourceDefinitions = await listSourceDefinitionsQuery();
+    return Promise.resolve(sourceDefinitions);
+  });
+};
+
+export const useSource = (sourceId: string) => {
+  return useQuery(["sources", sourceId], async () => {
+    const source = await getSourceQuery(sourceId);
+    const sourceDefinition = await getSourceDefinitionQuery(source.name);
+    const sourceWithDefinition: SourceWithDefinition = {
+      ...source,
+      source_connector_definition: sourceDefinition,
+    };
+    return Promise.resolve(sourceWithDefinition);
+  });
 };
 
 export const useSources = () => {
@@ -71,6 +78,47 @@ export const useSourcesWithPipelines = () => {
     },
     {
       enabled: sources.isSuccess ? (pipelines.isSuccess ? true : false) : false,
+    }
+  );
+};
+
+export const useSourceWithPipelines = (sourceId: string) => {
+  const pipelines = usePipelines(true);
+  const source = useSource(sourceId);
+  return useQuery(
+    ["sources", sourceId, "with-pipelines"],
+    async () => {
+      if (!sourceId) {
+        return Promise.reject(new Error("invalid source id"));
+      }
+
+      if (!pipelines.data) {
+        return Promise.reject(new Error("invalid pipeline data"));
+      }
+
+      if (!source.data) {
+        return Promise.reject(new Error("invalid source data"));
+      }
+
+      const targetPipelines = pipelines.data.filter(
+        (e) => e.recipe.source.id === sourceId
+      );
+
+      const sourceWithPipelines: SourceWithPipelines = {
+        ...source.data,
+        pipelines: targetPipelines,
+      };
+
+      return Promise.resolve(sourceWithPipelines);
+    },
+    {
+      enabled: sourceId
+        ? true
+        : source.isSuccess
+        ? pipelines.isSuccess
+          ? true
+          : false
+        : false,
     }
   );
 };
