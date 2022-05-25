@@ -1,5 +1,4 @@
-import { FC } from "react";
-import { Source } from "./SourceServices";
+import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
@@ -9,17 +8,20 @@ import {
   SourceTablePlaceholder,
   TableBody,
   TableContainer,
+  TableLoadingPlaceholder,
   TableRow,
 } from "@/components/ui";
+import { SourceWithPipelines } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
-export type SourceTableProps = {
-  sources: Source[];
+export type SourcesTableProps = {
+  sources: SourceWithPipelines[];
   isLoadingSources: boolean;
 };
 
-const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
+const SourcesTable: FC<SourcesTableProps> = ({ sources, isLoadingSources }) => {
   if (isLoadingSources) {
-    return <div>isLoading</div>;
+    return <TableLoadingPlaceholder />;
   }
 
   if (sources.length === 0) {
@@ -28,7 +30,11 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
 
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
-      <SourceTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
+      <SourceTableHead
+        offlineCounts={0}
+        onlineCounts={sources.length}
+        errorCounts={0}
+      />
       <TableBody>
         {sources.map((source) => (
           <TableRow
@@ -37,19 +43,26 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
             key={source.name}
           >
             <NameCell
-              name={source.name}
+              name={source.id}
               width="w-[234px]"
               state="STATE_ONLINE"
-              updatedAt={source.update_time}
+              updatedAt={source.connector.update_time}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft="pl-5"
               paddingRight=""
-              link={`/sources/${source.name}`}
+              link={`/sources/${source.id}`}
+              lineClamp="line-clamp-1"
+              displayUpdateTime={true}
             />
             <ConnectionTypeCell
-              name={source.type}
-              type={source.type}
+              definitionName={
+                source.source_connector_definition.connector_definition.title
+              }
+              iconDefinition={
+                source.source_connector_definition.connector_definition.icon
+              }
+              connectionName={source.id}
               cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"
@@ -58,6 +71,7 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
               paddingRight=""
             />
             <InstanceCell
+              cellType="expand"
               width="w-80"
               type="pipeline"
               instances={source.pipelines.map((e) => {
@@ -78,4 +92,4 @@ const SourceTable: FC<SourceTableProps> = ({ sources, isLoadingSources }) => {
   );
 };
 
-export default SourceTable;
+export default SourcesTable;
