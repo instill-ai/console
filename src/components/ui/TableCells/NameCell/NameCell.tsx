@@ -2,7 +2,7 @@ import { FC } from "react";
 import cn from "clsx";
 import StateIndicator from "../../StateIndicator";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
-import { State } from "@/types/general";
+import { Nullable, State } from "@/types/general";
 import CellBase, { CellBaseProps } from "../CellBase";
 import Link from "next/link";
 
@@ -11,7 +11,9 @@ export type NameCellProps = {
   width: string;
   updatedAt: string;
   name: string;
-  link?: string;
+  link: Nullable<string>;
+  lineClamp: Nullable<string>;
+  displayUpdateTime: boolean;
 } & CellBaseProps;
 
 const NameCell: FC<NameCellProps> = ({
@@ -24,6 +26,8 @@ const NameCell: FC<NameCellProps> = ({
   paddingRight,
   paddingTop,
   link,
+  lineClamp,
+  displayUpdateTime,
 }) => {
   const time = getHumanReadableStringFromTime(updatedAt, Date.now());
 
@@ -38,8 +42,10 @@ const NameCell: FC<NameCellProps> = ({
         />
       </div>
       <div className="flex flex-col gap-y-2">
-        <h3 className="instill-text-h3">{name}</h3>
-        <p className="instill-text-small text-instillGrey50">{`last sync ${time}`}</p>
+        <h3 className={cn("instill-text-h3", lineClamp)}>{name}</h3>
+        {displayUpdateTime ? (
+          <p className="instill-text-small text-instillGrey50">{`last sync ${time}`}</p>
+        ) : null}
       </div>
     </div>
   );
