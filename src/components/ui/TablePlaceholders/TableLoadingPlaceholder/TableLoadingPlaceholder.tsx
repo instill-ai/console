@@ -5,7 +5,7 @@ const TableLoadingPlaceholder: FC = () => {
   return (
     <div className="flex h-[300px] w-full bg-white">
       <div className="m-auto flex flex-col gap-y-2.5">
-        <div className="h-[72px] w-[72px] bg-instillBlue10">
+        <div className="m-auto flex h-[72px] w-[72px] bg-instillBlue10">
           <NoBgSquareProgress
             isLoading={true}
             blockSize={52}
