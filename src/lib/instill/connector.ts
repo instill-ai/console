@@ -126,11 +126,11 @@ export type GetSourceResponse = {
   source_connector: Source;
 };
 
-export const getSourceQuery = async (sourceId: string): Promise<Source> => {
+export const getSourceQuery = async (sourceName: string): Promise<Source> => {
   try {
     const { data } = await axios.post<GetSourceResponse>(
       "/api/connector/get-source",
-      { id: sourceId }
+      { name: sourceName }
     );
 
     return Promise.resolve(data.source_connector);
