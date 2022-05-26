@@ -1,6 +1,7 @@
 import {
   createDestinationMutation,
   CreateDestinationPayload,
+  getDestinationQuery,
   listDestinationDefinitionsQuery,
   listDestinationsQuery,
 } from "@/lib/instill";
@@ -23,6 +24,14 @@ export const useDestinations = () => {
   return useQuery(["destinations"], async () => {
     const destinations = await listDestinationsQuery();
     return Promise.resolve(destinations);
+  });
+};
+
+export const useDestination = (destinationName: string) => {
+  const destinationId = destinationName.split("/")[1];
+  return useQuery(["destinations", destinationId], async () => {
+    const destination = await getDestinationQuery(destinationName);
+    return Promise.resolve(destination);
   });
 };
 
