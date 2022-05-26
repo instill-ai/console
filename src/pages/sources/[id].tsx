@@ -1,25 +1,26 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
 import { listRepoFileContent } from "@/lib/github";
-import { usePipelinesHaveTargetSource } from "@/services/pipeline/PipelineServices";
-import ConnectorPipelinesTable from "@/services/connector/ConnectorPipelinesTable";
 import { StateLabel } from "@/components/ui";
+import { useSourceWithPipelines } from "@/services/connector/SourceServices";
+import { PipelinesTable } from "@/services/pipeline";
+import { ConfigureSourceForm } from "@/components/forms";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await listRepoFileContent(
     "instill-ai",
     "connector-backend",
-    "configs/models/source-definition.json"
+    "config/models/source_connector_definition.json"
   );
 
   const decodeSchema = Buffer.from(data.content, "base64").toString();
   const jsonSchema = JSON.parse(decodeSchema);
 
-  //const fields = transformSchemaToFormFields(jsonSchema);
+  console.log(jsonSchema);
 
   return {
     props: {
@@ -41,8 +42,31 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
 } = ({ fields }) => {
   const router = useRouter();
   const { id } = router.query;
+  const [isLoadingSources, setIsLoadingSources] = useState(false);
 
-  const pipelines = usePipelinesHaveTargetSource(id && id.toString());
+  const sourceWithPipelines = useSourceWithPipelines(id ? id.toString() : null);
+
+  useEffect(() => {
+    if (sourceWithPipelines.isError || sourceWithPipelines.isSuccess) {
+      setIsLoadingSources(false);
+      return;
+    }
+
+    if (sourceWithPipelines.isLoading) {
+      setIsLoadingSources(true);
+      return;
+    }
+
+    if (!sourceWithPipelines.data) {
+      setIsLoadingSources(true);
+      return;
+    }
+  }, [
+    sourceWithPipelines.isError,
+    sourceWithPipelines.isSuccess,
+    sourceWithPipelines.isLoading,
+    sourceWithPipelines.data,
+  ]);
 
   return (
     <PageContentContainer>
@@ -66,10 +90,21 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
           label="Connected"
         />
       </div>
-      <h3 className="instill-text-h3 mb-2.5 text-black">Overview</h3>
-      {pipelines.isSuccess ? (
-        <ConnectorPipelinesTable pipelines={pipelines.data} isLoading={false} />
-      ) : null}
+      <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
+      <div className="mb-10 flex">
+        <PipelinesTable
+          pipelines={
+            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+          }
+          isLoadingPipeline={isLoadingSources}
+        />
+      </div>
+      <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
+      <div>
+        <ConfigureSourceForm
+          source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+        />
+      </div>
     </PageContentContainer>
   );
 };
