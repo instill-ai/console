@@ -10,13 +10,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 
-  if (!body.id) {
-    return res.status(500).json("Destination id not provided");
+  if (!body.name) {
+    return res.status(500).json("Destination name not provided");
   }
 
   try {
     const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${body.id}`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${body.name}`
     );
 
     return res.status(200).json(data);
