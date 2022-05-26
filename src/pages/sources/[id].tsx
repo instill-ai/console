@@ -10,24 +10,24 @@ import { useSourceWithPipelines } from "@/services/connector/SourceServices";
 import { PipelinesTable } from "@/services/pipeline";
 import { ConfigureSourceForm } from "@/components/forms";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await listRepoFileContent(
-    "instill-ai",
-    "connector-backend",
-    "config/models/source_connector_definition.json"
-  );
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const data = await listRepoFileContent(
+//     "instill-ai",
+//     "connector-backend",
+//     "config/models/source_connector_definition.json"
+//   );
 
-  const decodeSchema = Buffer.from(data.content, "base64").toString();
-  const jsonSchema = JSON.parse(decodeSchema);
+//   const decodeSchema = Buffer.from(data.content, "base64").toString();
+//   const jsonSchema = JSON.parse(decodeSchema);
 
-  console.log(jsonSchema);
+//   console.log(jsonSchema);
 
-  return {
-    props: {
-      schema: jsonSchema,
-    },
-  };
-};
+//   return {
+//     props: {
+//       schema: jsonSchema,
+//     },
+//   };
+// };
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -39,12 +39,14 @@ export type SourceDetailsPageProps = {
 
 const SourceDetailsPage: FC<SourceDetailsPageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ fields }) => {
+} = () => {
   const router = useRouter();
   const { id } = router.query;
   const [isLoadingSources, setIsLoadingSources] = useState(false);
 
-  const sourceWithPipelines = useSourceWithPipelines(id ? id.toString() : null);
+  const sourceWithPipelines = useSourceWithPipelines(
+    id ? `source-connectors/${id.toString()}` : null
+  );
 
   useEffect(() => {
     if (sourceWithPipelines.isError || sourceWithPipelines.isSuccess) {
