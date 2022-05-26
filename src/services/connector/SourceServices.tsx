@@ -20,15 +20,15 @@ export const useSourceDefinitions = () => {
   });
 };
 
-export const useSource = (sourceId: Nullable<string>) => {
+export const useSource = (sourceName: Nullable<string>) => {
   return useQuery(
-    ["sources", sourceId],
+    ["sources", sourceName],
     async () => {
-      if (!sourceId) {
+      if (!sourceName) {
         return Promise.reject(new Error("invalid source id"));
       }
 
-      const source = await getSourceQuery(sourceId);
+      const source = await getSourceQuery(sourceName);
       const sourceDefinition = await getSourceDefinitionQuery(source.name);
       const sourceWithDefinition: SourceWithDefinition = {
         ...source,
@@ -37,7 +37,7 @@ export const useSource = (sourceId: Nullable<string>) => {
       return Promise.resolve(sourceWithDefinition);
     },
     {
-      enabled: sourceId ? true : false,
+      enabled: sourceName ? true : false,
     }
   );
 };
@@ -69,8 +69,6 @@ export const useSourcesWithPipelines = () => {
     async () => {
       if (!sources.data || !pipelines.data) return [];
 
-      console.log("hi");
-
       const newSources: SourceWithPipelines[] = [];
 
       for (const source of sources.data) {
@@ -91,26 +89,27 @@ export const useSourcesWithPipelines = () => {
   );
 };
 
-export const useSourceWithPipelines = (sourceId: Nullable<string>) => {
+export const useSourceWithPipelines = (sourceName: Nullable<string>) => {
   const pipelines = usePipelines(true);
-  const source = useSource(sourceId);
+  const source = useSource(sourceName);
   return useQuery(
-    ["sources", sourceId, "with-pipelines"],
+    ["sources", sourceName, "with-pipelines"],
     async () => {
-      if (!sourceId) {
-        return Promise.reject(new Error("invalid source id"));
+      if (!sourceName) {
+        return Promise.reject(new Error("invalid source name"));
+      }
+      console.log(pipelines.data, source.data, sourceName);
+
+      if (!source.data) {
+        return Promise.reject(new Error("invalid source data"));
       }
 
       if (!pipelines.data) {
         return Promise.reject(new Error("invalid pipeline data"));
       }
 
-      if (!source.data) {
-        return Promise.reject(new Error("invalid source data"));
-      }
-
       const targetPipelines = pipelines.data.filter(
-        (e) => e.recipe.source.id === sourceId
+        (e) => e.recipe.source.name === sourceName
       );
 
       const sourceWithPipelines: SourceWithPipelines = {
@@ -121,11 +120,11 @@ export const useSourceWithPipelines = (sourceId: Nullable<string>) => {
       return Promise.resolve(sourceWithPipelines);
     },
     {
-      enabled: sourceId
-        ? true
-        : source.isSuccess
-        ? pipelines.isSuccess
-          ? true
+      enabled: sourceName
+        ? source.isSuccess
+          ? pipelines.isSuccess
+            ? true
+            : false
           : false
         : false,
     }
