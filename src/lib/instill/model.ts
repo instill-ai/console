@@ -24,12 +24,12 @@ export type Model = {
   update_time: string;
 };
 
-export const getModelQuery = async (modelId: string): Promise<Model> => {
+export const getModelQuery = async (modelName: string): Promise<Model> => {
   try {
     const { data } = await axios.post<GetModelResponse>(
       "/api/model/get-model",
       {
-        id: modelId,
+        name: modelName,
       }
     );
     return Promise.resolve(data.model);
