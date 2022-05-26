@@ -96,7 +96,7 @@ const Sidebar: FC = () => {
   ];
 
   return (
-    <div className="flex h-screen w-[237px] flex-col bg-instillGrey95 pb-5">
+    <div className="sticky top-0 flex h-screen w-[237px] flex-col bg-instillGrey95 pb-5">
       <div className="mb-20 p-6">
         <Logo type="ColourLogomarkWhiteType" width={182} />
       </div>
