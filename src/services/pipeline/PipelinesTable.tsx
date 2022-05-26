@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
+import { TableLoadingPlaceholder } from "@/components/ui/TablePlaceholders";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
@@ -23,12 +24,14 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
   pipelines,
 }) => {
   if (isLoadingPipeline) {
-    return <div>isLoading</div>;
+    return <TableLoadingPlaceholder />;
   }
 
   if (pipelines.length === 0) {
     return <PipelineTablePlaceholder />;
   }
+
+  console.log(pipelines);
 
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
@@ -49,6 +52,9 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               paddingTop="pt-5"
               paddingLeft="pl-[15px]"
               paddingRight=""
+              link={`/pipelines/${pipeline.id}`}
+              lineClamp="line-clamp-2"
+              displayUpdateTime={false}
             />
             <ModeCell
               width="w-[100px]"
@@ -60,17 +66,26 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
             />
             <ConnectionTypeCell
               width="w-[125px]"
-              type={pipeline.recipe.source.definition}
-              name={pipeline.recipe.source.id}
-              cellType="expand"
+              iconDefinition={
+                pipeline.recipe.source.source_connector_definition
+                  .connector_definition.icon
+              }
+              definitionName={
+                pipeline.recipe.source.source_connector_definition
+                  .connector_definition.title
+              }
+              connectionName={pipeline.recipe.source.id}
+              cellType="shrink"
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight=""
+              lineClamp="line-clamp-2"
             />
             <InstanceCell
               type="model"
-              width="w-[190px]"
+              cellType="shrink"
+              width="w-[240px]"
               instances={pipeline.recipe.models.map((model) => {
                 const nameList = model.name.split("/");
                 const modelId = nameList[1];
@@ -87,14 +102,22 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               paddingRight=""
             />
             <ConnectionTypeCell
-              width="w-[160px]"
-              cellType="expand"
-              type={pipeline.recipe.destination.definition}
-              name={pipeline.recipe.destination.id}
+              width="w-[125px]"
+              cellType="shrink"
+              definitionName={
+                pipeline.recipe.destination.destination_connector_definition
+                  .connector_definition.title
+              }
+              connectionName={pipeline.recipe.destination.id}
+              iconDefinition={
+                pipeline.recipe.destination.destination_connector_definition
+                  .connector_definition.icon
+              }
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight="pr-5"
+              lineClamp="line-clamp-2"
             />
           </TableRow>
         ))}

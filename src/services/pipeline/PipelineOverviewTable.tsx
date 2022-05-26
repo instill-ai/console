@@ -3,6 +3,7 @@ import {
   PipelineOverviewTableHead,
   TableBody,
   TableContainer,
+  TableLoadingPlaceholder,
   TableRow,
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
@@ -19,7 +20,7 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return <div>isLoading</div>;
+    return <TableLoadingPlaceholder />;
   }
 
   return (
@@ -34,8 +35,15 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            type={pipeline.recipe.source.definition}
-            name={pipeline.recipe.source.id}
+            definitionName={
+              pipeline.recipe.source.source_connector_definition
+                .connector_definition.title
+            }
+            connectionName={pipeline.recipe.source.id}
+            iconDefinition={
+              pipeline.recipe.source.source_connector_definition
+                .connector_definition.icon
+            }
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""
@@ -52,8 +60,15 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            type={pipeline.recipe.destination.definition}
-            name={pipeline.recipe.destination.id}
+            definitionName={
+              pipeline.recipe.destination.destination_connector_definition
+                .connector_definition.title
+            }
+            connectionName={pipeline.recipe.destination.id}
+            iconDefinition={
+              pipeline.recipe.destination.destination_connector_definition
+                .connector_definition.icon
+            }
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""
