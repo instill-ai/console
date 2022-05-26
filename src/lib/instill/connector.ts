@@ -88,7 +88,7 @@ export const getSourceDefinitionQuery = async (
   try {
     const { data } = await axios.post<GetSourceDefinitionResponse>(
       "/api/connector/get-source-definition",
-      { id: sourceDefinitionName }
+      { name: sourceDefinitionName }
     );
     return Promise.resolve(data.source_connector_definition);
   } catch (err) {
