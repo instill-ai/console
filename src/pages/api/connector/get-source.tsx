@@ -1,5 +1,4 @@
 import { GetSourceResponse } from "@/lib/instill";
-import { GetUserResponse } from "@/lib/instill/mgmt";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
