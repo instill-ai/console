@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import { SingleSelect, TextField } from "../../formik/FormikField";
+import { SingleSelect } from "../../formik/FormikField";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
@@ -38,18 +38,14 @@ const CreateSourceForm: FC = () => {
     setSelectedSyncSourceDefinitionOption,
   ] = useState<Nullable<SingleSelectOption>>(null);
 
-  const [allSyncSourceCreated, setAllSyncSourceCreated] = useState(false);
-
   const sources = useSources();
   const createSource = useCreateSource();
 
   useEffect(() => {
     if (!sources.isSuccess) return;
 
-    const syncSources = [];
-
-    if (!sources.data.find((e) => e.id === "source-grpc")) {
-      syncSources.push({
+    setSyncSourceDefinitionOptions([
+      {
         label: "gRPC",
         value: "source-grpc",
         startIcon: (
@@ -61,11 +57,8 @@ const CreateSourceForm: FC = () => {
             iconPosition="my-auto"
           />
         ),
-      });
-    }
-
-    if (!sources.data.find((e) => e.id === "source-http")) {
-      syncSources.push({
+      },
+      {
         label: "HTTP",
         value: "source-http",
         startIcon: (
@@ -77,14 +70,8 @@ const CreateSourceForm: FC = () => {
             iconPosition="my-auto"
           />
         ),
-      });
-    }
-
-    if (syncSources.length === 0) {
-      setAllSyncSourceCreated(true);
-    }
-
-    setSyncSourceDefinitionOptions(syncSources);
+      },
+    ]);
   }, [sources.isSuccess]);
 
   const sourceDefinitionOnChange = useCallback((option: SingleSelectOption) => {
@@ -99,6 +86,11 @@ const CreateSourceForm: FC = () => {
 
         if (!values.definition) {
           error.definition = "Required";
+        }
+
+        if (sources.data?.find((e) => e.id === values.definition)) {
+          error.definition =
+            "You could only create one http and one grpc source. Check the setup guide for more information.";
         }
 
         return error;
@@ -140,7 +132,7 @@ const CreateSourceForm: FC = () => {
               name="definition"
               label="Source type"
               instanceId="source-type"
-              disabled={allSyncSourceCreated ? true : false}
+              disabled={false}
               readOnly={false}
               options={syncSourceDefinitionOptions}
               required={true}
@@ -152,22 +144,11 @@ const CreateSourceForm: FC = () => {
             />
             <PrimaryButton
               type="submit"
-              disabled={
-                allSyncSourceCreated ? true : formik.isValid ? false : true
-              }
+              disabled={formik.isValid ? false : true}
               position="ml-auto"
             >
               Set up Source
             </PrimaryButton>
-            {allSyncSourceCreated ? (
-              <div>
-                You could only create a http source and a grpc source, click{" "}
-                <Link href="/sources">
-                  <a className="text-instillBlue50 underline">link</a>
-                </Link>{" "}
-                to go back to sources list page.
-              </div>
-            ) : null}
           </FormBase>
         );
       }}
