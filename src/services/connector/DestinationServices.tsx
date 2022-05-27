@@ -28,7 +28,19 @@ export const useDestinationDefinitions = () => {
 export const useDestinations = () => {
   return useQuery(["destinations"], async () => {
     const destinations = await listDestinationsQuery();
-    return Promise.resolve(destinations);
+    const destinationsWithDefinition: DestinationWithDefinition[] = [];
+
+    for (const destination of destinations) {
+      const destinationDefinition = await getDestinationDefinitionQuery(
+        destination.destination_connector_definition
+      );
+      destinationsWithDefinition.push({
+        ...destination,
+        destination_connector_definition: destinationDefinition,
+      });
+    }
+
+    return Promise.resolve(destinationsWithDefinition);
   });
 };
 
@@ -88,6 +100,38 @@ export const useDestinationWithPipelines = (
           ? pipelines.isSuccess
             ? true
             : false
+          : false
+        : false,
+    }
+  );
+};
+
+export const useDestinationsWithPipelines = () => {
+  const destinations = useDestinations();
+  const pipelines = usePipelines(true);
+  return useQuery(
+    ["destinations", "with-pipelines"],
+    async () => {
+      if (!destinations.data || !pipelines.data) return [];
+
+      const newDestinations: DestinationWithPipelines[] = [];
+
+      for (const destination of destinations.data) {
+        const targetPipelines = pipelines.data.filter(
+          (e) => e.recipe.destination.id === destination.id
+        );
+        newDestinations.push({
+          ...destination,
+          pipelines: targetPipelines,
+        });
+      }
+
+      return newDestinations;
+    },
+    {
+      enabled: destinations.isSuccess
+        ? pipelines.isSuccess
+          ? true
           : false
         : false,
     }
