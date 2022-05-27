@@ -14,6 +14,7 @@ import ConnectorIcon from "./ConnectorIcon";
 import type { ConnectorIconProps } from "./ConnectorIcon";
 import ModelDefinitionIcon from "./ModelDefinitionIcon";
 import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
+import ModelDefinitionLabel from "./ModelDefinitionLabel";
 
 export {
   Sidebar,
@@ -26,6 +27,7 @@ export {
   PipelineModeLabel,
   ConnectorIcon,
   ModelDefinitionIcon,
+  ModelDefinitionLabel,
 };
 export type {
   StateIndicatorProps,
