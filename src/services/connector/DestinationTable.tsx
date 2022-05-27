@@ -2,17 +2,19 @@ import { FC } from "react";
 
 import {
   ConnectionTypeCell,
+  ConnectorTableHead,
   DestinationTablePlaceholder,
+  InstanceCell,
   NameCell,
-  SourceTableHead,
   TableBody,
   TableContainer,
+  TableLoadingPlaceholder,
   TableRow,
 } from "@/components/ui";
-import { Destination } from "@/lib/instill";
+import { DestinationWithPipelines } from "@/lib/instill";
 
 export type DestinationTableProps = {
-  destinations: Destination[];
+  destinations: DestinationWithPipelines[];
   isLoading: boolean;
 };
 
@@ -21,7 +23,7 @@ const DestinationTable: FC<DestinationTableProps> = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return <div>isLoading</div>;
+    return <TableLoadingPlaceholder />;
   }
 
   if (destinations.length === 0) {
@@ -30,28 +32,42 @@ const DestinationTable: FC<DestinationTableProps> = ({
 
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
-      <SourceTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
+      <ConnectorTableHead
+        definition="destination"
+        offlineCounts={0}
+        onlineCounts={destinations.length}
+        errorCounts={0}
+      />
       <TableBody>
         {destinations.map((destination) => (
           <TableRow
             bgColor="bg-white"
             borderColor="border-instillGrey20"
-            key={destination.id}
+            key={destination.name}
           >
             <NameCell
               name={destination.id}
               width="w-[234px]"
               state="STATE_ONLINE"
-              updatedAt={destination.updateTime}
+              updatedAt={destination.connector.update_time}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft="pl-5"
               paddingRight=""
-              link={`/sources/${destination.id}`}
+              link={`/destination/${destination.id}`}
+              lineClamp="line-clamp-1"
+              displayUpdateTime={true}
             />
             <ConnectionTypeCell
-              name={destination.id}
-              type={destination.definition}
+              definitionName={
+                destination.destination_connector_definition
+                  .connector_definition.title
+              }
+              iconDefinition={
+                destination.destination_connector_definition
+                  .connector_definition.icon
+              }
+              connectionName={destination.id}
               cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"
@@ -59,7 +75,8 @@ const DestinationTable: FC<DestinationTableProps> = ({
               paddingLeft=""
               paddingRight=""
             />
-            {/* <InstanceCell
+            <InstanceCell
+              cellType="expand"
               width="w-80"
               type="pipeline"
               instances={destination.pipelines.map((e) => {
@@ -72,7 +89,7 @@ const DestinationTable: FC<DestinationTableProps> = ({
               paddingTop="pt-5"
               paddingLeft=""
               paddingRight="pr-[15px]"
-            /> */}
+            />
           </TableRow>
         ))}
       </TableBody>

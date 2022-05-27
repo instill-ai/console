@@ -2,9 +2,9 @@ import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
+  ConnectorTableHead,
   InstanceCell,
   NameCell,
-  SourceTableHead,
   SourceTablePlaceholder,
   TableBody,
   TableContainer,
@@ -30,7 +30,8 @@ const SourcesTable: FC<SourcesTableProps> = ({ sources, isLoadingSources }) => {
 
   return (
     <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
-      <SourceTableHead
+      <ConnectorTableHead
+        definition="source"
         offlineCounts={0}
         onlineCounts={sources.length}
         errorCounts={0}
