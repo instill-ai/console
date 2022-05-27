@@ -28,9 +28,9 @@ const PageTitle: FC<PageTitleProps> = ({
     }
   }, [router, buttonLink, enableButton]);
   return (
-    <div className={cn("flex flex-col", marginBottom)}>
+    <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      <div className="flex min-h-[44px] flex-row">
+      <div className="flex min-h-[44px] w-full flex-row">
         <h2 className="instill-text-h2 mt-auto mr-auto text-black">{title}</h2>
         {enableButton ? (
           <PrimaryButton

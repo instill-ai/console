@@ -41,7 +41,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   const [modelInstanceOptions, setModelInstanceOptions] =
     useState<Nullable<SingleSelectOption[]>>(null);
 
-  const modelInstances = useAllModeInstances();
+  const modelInstances = useAllModeInstances(modelCreated ? false : true);
 
   useEffect(() => {
     if (!flowIsOnScreen || !modelInstances.isSuccess) return;
@@ -113,6 +113,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         label="Source type"
         menuPlacement="auto"
         value={existingModelIdOption}
+        error={null}
       />
       <PrimaryButton
         position="ml-auto"

@@ -90,7 +90,7 @@ export const useModelDefinition = (modelDefinitionId: string | null) => {
 // #                                                                 #
 // ###################################################################
 
-export const useAllModeInstances = () => {
+export const useAllModeInstances = (enable: boolean) => {
   const models = useModels();
   return useQuery(
     ["models", "all", "modelInstances"],
@@ -108,7 +108,7 @@ export const useAllModeInstances = () => {
       return Promise.resolve(modelInstances);
     },
     {
-      enabled: !!models.isSuccess,
+      enabled: enable ? true : models.isSuccess ? true : false,
     }
   );
 };
