@@ -12,13 +12,39 @@ import {
   deployModelAction,
   getModelDefinitionQuery,
   getModelInstanceQuery,
+  getModelQuery,
   listModelDefinitionsQuery,
   listModelInstancesQuery,
   listModelsQuery,
   Model,
   ModelWithInstance,
 } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+
+// ###################################################################
+// #                                                                 #
+// # [Query] Model                                                   #
+// #                                                                 #
+// ###################################################################
+
+export const useModel = (modelName: Nullable<string>) => {
+  return useQuery(
+    ["models", modelName],
+    async () => {
+      if (!modelName) {
+        return Promise.reject(new Error("Model name not provided"));
+      }
+
+      const model = await getModelQuery(modelName);
+
+      return Promise.resolve(model);
+    },
+    {
+      enabled: modelName ? true : false,
+    }
+  );
+};
 
 export const useModels = () => {
   return useQuery(["models"], async () => {
@@ -26,6 +52,12 @@ export const useModels = () => {
     return Promise.resolve(models);
   });
 };
+
+// ###################################################################
+// #                                                                 #
+// # [Mutation] Model                                                #
+// #                                                                 #
+// ###################################################################
 
 export const useCreateGithubModel = () => {
   const queryClient = useQueryClient();
@@ -147,28 +179,24 @@ export const useModelInstance = (modelInstanceId: string | undefined) => {
   );
 };
 
-export const useModelsWithInstances = () => {
-  const models = useModels();
+export const useModelWithInstances = (model: Model | null) => {
   return useQuery(
     ["models", "with-instances"],
     async () => {
-      if (!models.data) {
+      if (!model) {
         return Promise.reject(new Error("Model data not provided"));
       }
 
-      const modelsWithInstances: ModelWithInstance[] = [];
+      const modelInstances = await listModelInstancesQuery(model.name);
 
-      for (const model of models.data) {
-        const modelInstances = await listModelInstancesQuery(model.name);
-        modelsWithInstances.push({
-          ...model,
-          instances: modelInstances,
-        });
-      }
+      const modelWithInstances: ModelWithInstance = {
+        ...model,
+        instances: modelInstances,
+      };
 
-      return Promise.resolve(modelsWithInstances);
+      return Promise.resolve(modelWithInstances);
     },
-    { enabled: models.isSuccess ? true : false }
+    { enabled: model ? true : false }
   );
 };
 
