@@ -16,6 +16,7 @@ import {
   listModelInstancesQuery,
   listModelsQuery,
   Model,
+  ModelWithInstance,
 } from "@/lib/instill";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -86,7 +87,7 @@ export const useModelDefinition = (modelDefinitionId: string | null) => {
 
 // ###################################################################
 // #                                                                 #
-// # Model Instance                                                  #
+// # [Query] Model Instance                                          #
 // #                                                                 #
 // ###################################################################
 
@@ -145,6 +146,37 @@ export const useModelInstance = (modelInstanceId: string | undefined) => {
     }
   );
 };
+
+export const useModelsWithInstances = () => {
+  const models = useModels();
+  return useQuery(
+    ["models", "with-instances"],
+    async () => {
+      if (!models.data) {
+        return Promise.reject(new Error("Model data not provided"));
+      }
+
+      const modelsWithInstances: ModelWithInstance[] = [];
+
+      for (const model of models.data) {
+        const modelInstances = await listModelInstancesQuery(model.name);
+        modelsWithInstances.push({
+          ...model,
+          instances: modelInstances,
+        });
+      }
+
+      return Promise.resolve(modelsWithInstances);
+    },
+    { enabled: models.isSuccess ? true : false }
+  );
+};
+
+// ###################################################################
+// #                                                                 #
+// # [Action] Model Instance                                         #
+// #                                                                 #
+// ###################################################################
 
 export const useDeployModel = () => {
   return useMutation(async (modelInstanceName: string) => {
