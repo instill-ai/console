@@ -225,7 +225,7 @@ export const getDestinationDefinitionQuery = async (
   try {
     const { data } = await axios.post<GetDestinationDefinitionResponse>(
       "/api/connector/get-destination-definition",
-      { id: destinationDefinitionName }
+      { name: destinationDefinitionName }
     );
     return Promise.resolve(data.destination_connector_definition);
   } catch (err) {
@@ -259,12 +259,16 @@ export type GetDestinationResponse = {
   destination_connector: Destination;
 };
 
+export type DestinationWithPipelines = DestinationWithDefinition & {
+  pipelines: Pipeline[];
+};
+
 export const getDestinationQuery = async (
-  destinationId: string
+  destinationName: string
 ): Promise<Destination> => {
   try {
     const { data } = await axios.get<GetDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationId}`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector);
