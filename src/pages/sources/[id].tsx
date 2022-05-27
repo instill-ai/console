@@ -1,14 +1,13 @@
-import { FC, ReactElement, useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
+import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
-import { listRepoFileContent } from "@/lib/github";
 import { StateLabel } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector/SourceServices";
 import { PipelinesTable } from "@/services/pipeline";
 import { ConfigureSourceForm } from "@/components/forms";
+import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -42,33 +41,17 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [isLoadingSources, setIsLoadingSources] = useState(false);
 
   const sourceWithPipelines = useSourceWithPipelines(
     id ? `source-connectors/${id.toString()}` : null
   );
 
-  useEffect(() => {
-    if (sourceWithPipelines.isError || sourceWithPipelines.isSuccess) {
-      setIsLoadingSources(false);
-      return;
-    }
-
-    if (sourceWithPipelines.isLoading) {
-      setIsLoadingSources(true);
-      return;
-    }
-
-    if (!sourceWithPipelines.data) {
-      setIsLoadingSources(true);
-      return;
-    }
-  }, [
-    sourceWithPipelines.isError,
-    sourceWithPipelines.isSuccess,
-    sourceWithPipelines.isLoading,
-    sourceWithPipelines.data,
-  ]);
+  const isLoading = useMultiStageQueryLoadingState({
+    data: sourceWithPipelines.data,
+    isError: sourceWithPipelines.isError,
+    isSuccess: sourceWithPipelines.isSuccess,
+    isLoading: sourceWithPipelines.isLoading,
+  });
 
   return (
     <PageContentContainer>
@@ -98,7 +81,7 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
           pipelines={
             sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
           }
-          isLoadingPipeline={isLoadingSources}
+          isLoadingPipeline={isLoading}
         />
       </div>
       <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
