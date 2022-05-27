@@ -2,20 +2,22 @@ import { FC } from "react";
 import StateOverview from "../../StateOverview";
 import TableHeadBase from "../TableHeadBase";
 
-export type SourceTableHeadProps = {
+export type ConnectorTableHeadProps = {
+  definition: "source" | "destination";
   errorCounts: number;
   offlineCounts: number;
   onlineCounts: number;
 };
 
-const SourceTableHead: FC<SourceTableHeadProps> = ({
+const ConnectorTableHead: FC<ConnectorTableHeadProps> = ({
+  definition,
   errorCounts,
   offlineCounts,
   onlineCounts,
 }) => {
-  const SourceHeadItem = [
+  const ConnectorHeadItem = [
     {
-      key: "source-state-overview-head",
+      key: "connector-state-overview-head",
       item: (
         <StateOverview
           errorCounts={errorCounts}
@@ -25,11 +27,11 @@ const SourceTableHead: FC<SourceTableHeadProps> = ({
       ),
     },
     {
-      key: "source-type-head",
-      item: "Type",
+      key: "connector-type-head",
+      item: definition === "source" ? "Source" : "Destination",
     },
     {
-      key: "source-pipelines-head",
+      key: "connector-pipelines-head",
       item: "Pipelines",
     },
   ];
@@ -38,9 +40,9 @@ const SourceTableHead: FC<SourceTableHeadProps> = ({
     <TableHeadBase
       borderColor="border-instillGrey20"
       bgColor="bg-instillGrey05"
-      items={SourceHeadItem}
+      items={ConnectorHeadItem}
     />
   );
 };
 
-export default SourceTableHead;
+export default ConnectorTableHead;

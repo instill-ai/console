@@ -1,19 +1,19 @@
 import PipelinesTableHead from "./PipelinesTableHead";
 import type { PipelinesTableHeadProps } from "./PipelinesTableHead";
-import SourceTableHead from "./SourceTableHead";
-import type { SourceTableHeadProps } from "./SourceTableHead";
+import ConnectorTableHead from "./ConnectorTableHead";
+import type { ConnectorTableHeadProps } from "./ConnectorTableHead";
 import PipelineOverviewTableHead from "./PipelineOverviewTableHead";
 import type { PipelineOverviewTableHeadProps } from "./PipelineOverviewTableHead";
 import SourcePipelinesTableHead from "./SourcePipelinesTableHead";
 
 export {
   PipelinesTableHead,
-  SourceTableHead,
+  ConnectorTableHead,
   PipelineOverviewTableHead,
   SourcePipelinesTableHead,
 };
 export type {
   PipelinesTableHeadProps,
-  SourceTableHeadProps,
+  ConnectorTableHeadProps,
   PipelineOverviewTableHeadProps,
 };
