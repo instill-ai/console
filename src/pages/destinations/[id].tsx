@@ -1,32 +1,32 @@
 import { FC, ReactElement } from "react";
-import { GetServerSideProps } from "next";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
-import { listRepoFileContent } from "@/lib/github";
-import { usePipelinesHaveTargetDestination } from "@/services/pipeline/PipelineServices";
-import ConnectorPipelinesTable from "@/services/connector/ConnectorPipelinesTable";
 import { StateLabel } from "@/components/ui";
+import { PipelinesTable } from "@/services/pipeline";
+import { ConfigureDestinationForm } from "@/components/forms";
+import { useDestinationWithPipelines } from "@/services/connector/DestinationServices";
+import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await listRepoFileContent(
-    "instill-ai",
-    "connector-backend",
-    "configs/models/destination-definition.json"
-  );
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const data = await listRepoFileContent(
+//     "instill-ai",
+//     "connector-backend",
+//     "configs/models/destination-definition.json"
+//   );
 
-  const decodeSchema = Buffer.from(data.content, "base64").toString();
-  const jsonSchema = JSON.parse(decodeSchema);
+//   const decodeSchema = Buffer.from(data.content, "base64").toString();
+//   const jsonSchema = JSON.parse(decodeSchema);
 
-  //const fields = transformSchemaToFormFields(jsonSchema);
+//   //const fields = transformSchemaToFormFields(jsonSchema);
 
-  return {
-    props: {
-      schema: jsonSchema,
-    },
-  };
-};
+//   return {
+//     props: {
+//       schema: jsonSchema,
+//     },
+//   };
+// };
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -38,11 +38,20 @@ export type DestinationDetailsPageProps = {
 
 const DestinationDetailsPage: FC<DestinationDetailsPageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ fields }) => {
+} = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const pipelines = usePipelinesHaveTargetDestination(id && id.toString());
+  const destinationWithPipelines = useDestinationWithPipelines(
+    id ? `destination-connectors/${id.toString()}` : null
+  );
+
+  const isLoading = useMultiStageQueryLoadingState({
+    data: destinationWithPipelines.data,
+    isError: destinationWithPipelines.isError,
+    isSuccess: destinationWithPipelines.isSuccess,
+    isLoading: destinationWithPipelines.isLoading,
+  });
 
   return (
     <PageContentContainer>
@@ -68,10 +77,25 @@ const DestinationDetailsPage: FC<DestinationDetailsPageProps> & {
           label="Connected"
         />
       </div>
-      <h3 className="instill-text-h3 mb-2.5 text-black">Overview</h3>
-      {pipelines.isSuccess ? (
-        <ConnectorPipelinesTable pipelines={pipelines.data} isLoading={false} />
-      ) : null}
+      <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
+      <div className="mb-10 flex">
+        <PipelinesTable
+          pipelines={
+            destinationWithPipelines.data
+              ? destinationWithPipelines.data.pipelines
+              : []
+          }
+          isLoadingPipeline={isLoading}
+        />
+      </div>
+      <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
+      <div>
+        <ConfigureDestinationForm
+          destination={
+            destinationWithPipelines.data ? destinationWithPipelines.data : null
+          }
+        />
+      </div>
     </PageContentContainer>
   );
 };
