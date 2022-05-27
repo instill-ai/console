@@ -5,10 +5,14 @@ import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Formik } from "formik";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
+};
+
+type ConfigureSourceFormValue = {
+  definition: Nullable<string>;
 };
 
 const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
@@ -22,6 +26,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
     useState<SingleSelectOption[]>([]);
   const [selectedSourceDefinitionOption, setSelectedSourceDefinitionOption] =
     useState<Nullable<SingleSelectOption>>(null);
+  const [canEdit, setCanEdit] = useState(false);
 
   useEffect(() => {
     if (!source) return;
@@ -61,21 +66,36 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
     );
   }, [source]);
 
+  const sourceDefinitionOnChangeCb = useCallback(
+    (option: SingleSelectOption) => {
+      setSelectedSourceDefinitionOption(
+        syncSourceDefinitionOptions.find((e) => e.value === option.value) ||
+          null
+      );
+    },
+    []
+  );
+
   return (
     <Formik
-      initialValues={{ definition: source ? source.id : null }}
+      initialValues={
+        { definition: source ? source.id : null } as ConfigureSourceFormValue
+      }
       onSubmit={(values) => {
-        console.log(values);
+        if (!canEdit) {
+          setCanEdit(true);
+          return;
+        }
       }}
     >
-      {() => {
+      {(formik) => {
         return (
           <FormBase gapY="gap-y-5" padding={null}>
             <SingleSelect
               name="definition"
-              label="Source type"
-              instanceId="source-destinition"
-              disabled={true}
+              label="Data source"
+              instanceId="source-definition"
+              disabled={canEdit ? false : true}
               readOnly={false}
               options={syncSourceDefinitionOptions}
               required={true}
@@ -83,6 +103,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               menuPlacement="auto"
               value={selectedSourceDefinitionOption}
               error={null}
+              onChangeCb={sourceDefinitionOnChangeCb}
             />
             <div className="mt-10 flex flex-row">
               <div className="mr-auto flex flex-row gap-x-2.5">
@@ -93,9 +114,9 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                   Delete
                 </PrimaryButton>
               </div>
-              <div className="ml-autoƒ flex">
-                <PrimaryButton type="button" disabled={true}>
-                  Edit
+              <div className="ml-auto flex">
+                <PrimaryButton type="submit" disabled={true}>
+                  {canEdit ? "Done" : "Edit"}
                 </PrimaryButton>
               </div>
             </div>
