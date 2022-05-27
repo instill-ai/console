@@ -4,6 +4,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import SourcesTable from "@/services/connector/SourcesTable";
 import { useSourcesWithPipelines } from "@/services/connector/SourceServices";
+import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -12,27 +13,14 @@ interface GetLayOutProps {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const [isLoadingSources, setIsLoadingSources] = useState(true);
-
   const sources = useSourcesWithPipelines();
 
-  useEffect(() => {
-    console.log(
-      sources.isError,
-      sources.isSuccess,
-      sources.isIdle,
-      sources.isLoading
-    );
-    if (sources.isError || sources.isSuccess) {
-      setIsLoadingSources(false);
-      return;
-    }
-
-    if (sources.isLoading) {
-      setIsLoadingSources(true);
-      return;
-    }
-  }, [sources.isError, sources.isSuccess, sources.isLoading]);
+  const isLoading = useMultiStageQueryLoadingState({
+    data: sources.data,
+    isError: sources.isError,
+    isSuccess: sources.isSuccess,
+    isLoading: sources.isLoading,
+  });
 
   return (
     <PageContentContainer>
@@ -48,7 +36,7 @@ const SourcePage: FC & {
       />
       <SourcesTable
         sources={sources.data ? sources.data : []}
-        isLoadingSources={isLoadingSources}
+        isLoadingSources={isLoading}
       />
     </PageContentContainer>
   );
