@@ -125,7 +125,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                 </PrimaryButton>
               </div>
               <div className="ml-autoƒ flex">
-                <PrimaryButton type="submit" disabled={false}>
+                <PrimaryButton type="submit" disabled={true}>
                   {canEdit ? "Done" : "Edit"}
                 </PrimaryButton>
               </div>
