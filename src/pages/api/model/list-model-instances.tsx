@@ -10,13 +10,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 
-  if (!body.id) {
-    return res.status(500).json("Model id not provided");
+  if (!body.name) {
+    return res.status(500).json("Model name not provided");
   }
 
   try {
     const { data } = await axios.get<ListModelInstancesResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${body.id}/instances?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${body.name}/instances?view=VIEW_FULL`
     );
 
     return res.status(200).json(data);
