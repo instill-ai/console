@@ -29,7 +29,9 @@ export const useSource = (sourceName: Nullable<string>) => {
       }
 
       const source = await getSourceQuery(sourceName);
-      const sourceDefinition = await getSourceDefinitionQuery(source.name);
+      const sourceDefinition = await getSourceDefinitionQuery(
+        source.source_connector_definition
+      );
       const sourceWithDefinition: SourceWithDefinition = {
         ...source,
         source_connector_definition: sourceDefinition,
