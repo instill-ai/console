@@ -1,9 +1,3 @@
-// ###################################################################
-// #                                                                 #
-// # Model                                                           #
-// #                                                                 #
-// ###################################################################
-
 import {
   createGithubModelMutation,
   CreateGithubModelPayload,
@@ -18,6 +12,8 @@ import {
   listModelsQuery,
   Model,
   ModelWithInstance,
+  updateModelMutation,
+  UpdateModelPayload,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -64,7 +60,7 @@ export const useCreateGithubModel = () => {
   return useMutation(
     async (payload: CreateGithubModelPayload) => {
       const model = await createGithubModelMutation(payload);
-      return model;
+      return Promise.resolve(model);
     },
     {
       onSuccess: (newModel) => {
@@ -79,11 +75,26 @@ export const useCreateLocalModel = () => {
   return useMutation(
     async (payload: CreateLocalModelPayload) => {
       const model = await createLocalModelMutation(payload);
-      return model;
+      return Promise.resolve(model);
     },
     {
       onSuccess: (newModel) => {
         queryClient.setQueryData<Model>(["user", newModel.id], newModel);
+      },
+    }
+  );
+};
+
+export const useUpdateModel = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: UpdateModelPayload) => {
+      const model = await updateModelMutation(payload);
+      return Promise.resolve(model);
+    },
+    {
+      onSuccess: (newModel) => {
+        queryClient.setQueryData<Model>(["models", newModel.id], newModel);
       },
     }
   );
