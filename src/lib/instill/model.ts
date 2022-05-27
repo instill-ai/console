@@ -179,6 +179,26 @@ export const createLocalModelMutation = async (
   }
 };
 
+export type UpdateModelPayload = Partial<Model> & {
+  name: string;
+};
+
+export type UpdateModelResponse = {
+  model: Model;
+};
+
+export const updateModelMutation = async (payload: UpdateModelPayload) => {
+  try {
+    const { data } = await axios.post<UpdateModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      payload
+    );
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Action] Model                                                  #
