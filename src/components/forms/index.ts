@@ -6,6 +6,7 @@ import CreateSourceForm from "./CreateSourceForm";
 import OnboardingForm from "./OnboardingForm";
 import CreateModelForm from "./CreateModelForm";
 import ConfigureSourceForm from "./ConfigureSourceForm";
+import ConfigureDestinationForm from "./ConfigureDestinationForm";
 
 export {
   CreatePipelineForm,
@@ -14,5 +15,6 @@ export {
   CreateDestinationForm,
   CreateModelForm,
   ConfigureSourceForm,
+  ConfigureDestinationForm,
 };
 export type { StepNumberState };
