@@ -54,7 +54,7 @@ const DestinationTable: FC<DestinationTableProps> = ({
               paddingTop="pt-5"
               paddingLeft="pl-5"
               paddingRight=""
-              link={`/destination/${destination.id}`}
+              link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
             />
