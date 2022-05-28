@@ -7,11 +7,13 @@ import { GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
 export type ModelDefinitionLabelProps = {
   modelDefinition: Nullable<string>;
   marginBottom: Nullable<string>;
+  position: Nullable<string>;
 };
 
 const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
   modelDefinition,
   marginBottom,
+  position,
 }) => {
   const icon = {
     width: "w-[18px]",
@@ -38,11 +40,17 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
     );
 
   return (
-    <div className={cn("flex gap-x-2 px-2 py-[7px]", marginBottom)}>
+    <div
+      className={cn(
+        "flex gap-x-2 bg-white px-2 py-[7px]",
+        marginBottom,
+        position
+      )}
+    >
       {modelDefinition ? (
         <>
           {modelDefinitionIcon}
-          <p className="instill-text-small flex text-instillGrey90">
+          <p className="instill-text-small my-auto flex text-instillGrey90">
             {modelDefinition === "model-definitions/github"
               ? "GitHub"
               : "Local"}
