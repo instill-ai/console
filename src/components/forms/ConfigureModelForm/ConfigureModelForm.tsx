@@ -8,11 +8,10 @@ import { Formik } from "formik";
 import { FC } from "react";
 
 export type ConfigureModelFormProps = {
-  model: Model;
+  model: Nullable<Model>;
 };
 
 type ConfigureModelFormValue = {
-  state: Nullable<boolean>;
   description: Nullable<string>;
 };
 
@@ -24,8 +23,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
     <Formik
       initialValues={
         {
-          state: null,
-          description: model.description,
+          description: model ? model.description : null,
         } as ConfigureModelFormValue
       }
       onSubmit={(values) => {
@@ -34,7 +32,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
           return;
         }
 
-        if (!values.description || !values.state) return;
+        if (!values.description || !model) return;
 
         updateModel.mutate(
           {
@@ -43,7 +41,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
           },
           {
             onSuccess: () => {
-              console.log(values);
+              setCanEdit(false);
             },
           }
         );
@@ -52,16 +50,6 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
       {({ values }) => {
         return (
           <FormBase gapY="gap-y-5" padding={null}>
-            <ToggleField
-              name="state"
-              label="State"
-              disabled={canEdit ? false : true}
-              readOnly={false}
-              required={true}
-              defaultChecked={true}
-              description={""}
-              error={null}
-            />
             <TextArea
               name="description"
               label="Description"
