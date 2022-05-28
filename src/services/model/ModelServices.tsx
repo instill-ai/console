@@ -3,7 +3,7 @@ import {
   CreateGithubModelPayload,
   createLocalModelMutation,
   CreateLocalModelPayload,
-  deployModelAction,
+  deployModelInstanceAction,
   getModelDefinitionQuery,
   getModelInstanceQuery,
   getModelQuery,
@@ -145,7 +145,7 @@ export const useAllModeInstances = (enable: boolean) => {
       }
 
       for (const model of models.data) {
-        const instances = await listModelInstancesQuery(model.id);
+        const instances = await listModelInstancesQuery(model.name);
         modelInstances.push(...instances);
       }
 
@@ -165,7 +165,7 @@ export const useModelInstances = (modelId: string | undefined) => {
         return Promise.reject(new Error("Model id not provided"));
       }
 
-      const modelInstances = await listModelInstancesQuery(modelId);
+      const modelInstances = await listModelInstancesQuery(`models/${modelId}`);
       return Promise.resolve(modelInstances);
     },
     {
@@ -192,7 +192,7 @@ export const useModelInstance = (modelInstanceId: string | undefined) => {
 
 export const useModelWithInstances = (model: Model | null) => {
   return useQuery(
-    ["models", "with-instances"],
+    ["models", "with-instances", (model as Model).id],
     async () => {
       if (!model) {
         return Promise.reject(new Error("Model data not provided"));
@@ -211,15 +211,42 @@ export const useModelWithInstances = (model: Model | null) => {
   );
 };
 
+export const useModelsWithInstances = () => {
+  const models = useModels();
+  return useQuery(
+    ["models", "with-instances"],
+    async () => {
+      if (!models.data) {
+        return Promise.reject(new Error("Models data not provided"));
+      }
+
+      const modelsWithInstances: ModelWithInstance[] = [];
+
+      for (const model of models.data) {
+        const modelInstances = await listModelInstancesQuery(model.name);
+        modelsWithInstances.push({
+          ...model,
+          instances: modelInstances,
+        });
+      }
+
+      return Promise.resolve(modelsWithInstances);
+    },
+    {
+      enabled: models.isSuccess ? true : false,
+    }
+  );
+};
+
 // ###################################################################
 // #                                                                 #
 // # [Action] Model Instance                                         #
 // #                                                                 #
 // ###################################################################
 
-export const useDeployModel = () => {
+export const useDeployModelInstance = () => {
   return useMutation(async (modelInstanceName: string) => {
-    const modelInstance = await deployModelAction(modelInstanceName);
+    const modelInstance = await deployModelInstanceAction(modelInstanceName);
     return Promise.resolve(modelInstance);
   });
 };
