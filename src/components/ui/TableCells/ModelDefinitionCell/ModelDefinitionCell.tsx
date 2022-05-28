@@ -36,16 +36,19 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
       break;
     }
     case "model-definitions/github": {
-      <GitHubIcon
-        width={iconWidth}
-        height={iconHeight}
-        position={iconPosition}
-        color={iconColor}
-      />;
+      definitionIcon = (
+        <GitHubIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
+          color={iconColor}
+        />
+      );
       break;
     }
     default: {
-      definitionIcon = <div className={cn(iconWidth, iconHeight)}></div>;
+      definitionIcon = <div className={cn(iconWidth, iconHeight)} />;
+      break;
     }
   }
 
