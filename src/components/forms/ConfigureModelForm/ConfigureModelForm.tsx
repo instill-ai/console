@@ -1,12 +1,11 @@
-import { FormBase, TextArea, ToggleField } from "@/components/formik";
+import { Formik } from "formik";
+import { FC, useState } from "react";
+
+import { FormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { Model } from "@/lib/instill";
 import { useUpdateModel } from "@/services/model/ModelServices";
 import { Nullable } from "@/types/general";
-import { useState } from "@storybook/addons";
-import { Formik } from "formik";
-import { FC } from "react";
-import cn from "clsx";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
