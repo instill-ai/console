@@ -15,6 +15,8 @@ import type { ConnectorIconProps } from "./ConnectorIcon";
 import ModelDefinitionIcon from "./ModelDefinitionIcon";
 import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
 import ModelDefinitionLabel from "./ModelDefinitionLabel";
+import HorizontalDivider from "./HorizontalDivider";
+import type { HorizontalDividerProps } from "./HorizontalDivider";
 
 export {
   Sidebar,
@@ -28,6 +30,7 @@ export {
   ConnectorIcon,
   ModelDefinitionIcon,
   ModelDefinitionLabel,
+  HorizontalDivider,
 };
 export type {
   StateIndicatorProps,
@@ -35,6 +38,7 @@ export type {
   PipelineModeLabelProps,
   ConnectorIconProps,
   ModelDefinitionIconProps,
+  HorizontalDividerProps,
 };
 
 export * from "./TableHeads";
