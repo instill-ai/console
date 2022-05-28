@@ -1,22 +1,82 @@
-import { ModelTablePlaceholder } from "@/components/ui/TablePlaceholders";
-import { Model } from "@/lib/instill";
+import {
+  InstanceCell,
+  ModelTableHead,
+  ModelTablePlaceholder,
+  NameCell,
+  TableBody,
+  TableContainer,
+  TableLoadingPlaceholder,
+  TableRow,
+} from "@/components/ui";
+import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
+import { ModelWithInstance } from "@/lib/instill";
 import { FC } from "react";
 
 export type ModelTableProps = {
-  models: Model[];
+  models: ModelWithInstance[];
   isLoading: boolean;
 };
 
 const ModelTable: FC<ModelTableProps> = ({ models, isLoading }) => {
   if (isLoading) {
-    return <div>is loading</div>;
+    return <TableLoadingPlaceholder />;
   }
 
   if (models.length === 0) {
     return <ModelTablePlaceholder />;
   }
 
-  return <div></div>;
+  return (
+    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+      <ModelTableHead offlineCounts={0} onlineCounts={0} errorCounts={0} />
+      <TableBody>
+        {models.map((model) => (
+          <TableRow
+            bgColor="bg-white"
+            borderColor="border-instillGrey20"
+            key={model.id}
+          >
+            <NameCell
+              name={model.id}
+              width="w-[269px]"
+              state="STATE_ONLINE"
+              updatedAt={model.update_time}
+              paddingBottom="pb-5"
+              paddingTop="pt-5"
+              paddingLeft="pl-5"
+              paddingRight=""
+              link={`/models/${model.id}`}
+              lineClamp="line-clamp-1"
+              displayUpdateTime={false}
+            />
+            <ModelDefinitionCell
+              width="w-[269px]"
+              modelDefinition={model.model_definition}
+              paddingBottom="pb-5"
+              paddingTop="pt-5"
+              paddingLeft=""
+              paddingRight=""
+            />
+            <InstanceCell
+              type="model"
+              cellType="expand"
+              width="w-[269px]"
+              instances={model.instances.map((instance) => {
+                return {
+                  name: instance.id,
+                  state: instance.state,
+                };
+              })}
+              paddingBottom="pb-5"
+              paddingTop="pt-5"
+              paddingLeft=""
+              paddingRight="pr-5"
+            />
+          </TableRow>
+        ))}
+      </TableBody>
+    </TableContainer>
+  );
 };
 
 export default ModelTable;
