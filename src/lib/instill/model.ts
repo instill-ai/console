@@ -30,11 +30,8 @@ export type ModelWithInstance = Model & {
 
 export const getModelQuery = async (modelName: string): Promise<Model> => {
   try {
-    const { data } = await axios.post<GetModelResponse>(
-      "/api/model/get-model",
-      {
-        name: modelName,
-      }
+    const { data } = await axios.get<GetModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}?view=VIEW_FULL`
     );
     return Promise.resolve(data.model);
   } catch (err) {
@@ -51,8 +48,9 @@ export type ListModelsResponse = {
 export const listModelsQuery = async (): Promise<Model[]> => {
   try {
     const { data } = await axios.get<ListModelsResponse>(
-      "/api/model/list-models"
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models?view=VIEW_FULL`
     );
+
     return Promise.resolve(data.models);
   } catch (err) {
     return Promise.reject(err);
@@ -82,12 +80,12 @@ export type GetModelDefinitionResponse = {
   model_definition: ModelDefinition;
 };
 
-export const getModelDefinitionQuery = async (modelDefinitionId: string) => {
+export const getModelDefinitionQuery = async (modelDefinitionName: string) => {
   try {
-    const { data } = await axios.post<GetModelDefinitionResponse>(
-      "/api/model/get-model-definition",
-      { id: modelDefinitionId }
+    const { data } = await axios.get<GetModelDefinitionResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelDefinitionName}`
     );
+
     return Promise.resolve(data.model_definition);
   } catch (err) {
     return Promise.reject(err);
@@ -105,8 +103,9 @@ export const listModelDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListModelDefinitionsResponse>(
-      "/api/model/list-model-definitions"
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/model-definitions`
     );
+
     return Promise.resolve(data.model_definitions);
   } catch (err) {
     return Promise.reject(err);
@@ -134,7 +133,7 @@ export const createGithubModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.post<CreateGithubModelResponse>(
-      "/api/model/create-github-model",
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
       payload
     );
     return Promise.resolve(data.model);
@@ -187,7 +186,9 @@ export type UpdateModelResponse = {
   model: Model;
 };
 
-export const updateModelMutation = async (payload: UpdateModelPayload) => {
+export const updateModelMutation = async (
+  payload: UpdateModelPayload
+): Promise<Model> => {
   try {
     const { data } = await axios.post<UpdateModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
@@ -209,13 +210,10 @@ export type DeployModelResponse = {
   instance: ModelInstance;
 };
 
-export const deployModelAction = async (modelInstanceName: string) => {
+export const deployModelInstanceAction = async (modelInstanceName: string) => {
   try {
     const { data } = await axios.post<DeployModelResponse>(
-      "/api/model/deploy-model",
-      {
-        name: modelInstanceName,
-      }
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}:deploy`
     );
     return Promise.resolve(data.instance);
   } catch (err) {
@@ -248,12 +246,11 @@ export type ModelInstance = {
 };
 
 export const getModelInstanceQuery = async (
-  modelInstanceId: string
+  modelInstanceName: string
 ): Promise<ModelInstance> => {
   try {
-    const { data } = await axios.post<GetModelInstanceResponse>(
-      "/api/model/get-model-instance",
-      { id: modelInstanceId }
+    const { data } = await axios.get<GetModelInstanceResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}`
     );
 
     return Promise.resolve(data.instance);
@@ -272,11 +269,8 @@ export const listModelInstancesQuery = async (
   modelName: string
 ): Promise<ModelInstance[]> => {
   try {
-    const { data } = await axios.post<ListModelInstancesResponse>(
-      "/api/model/list-model-instances",
-      {
-        name: modelName,
-      }
+    const { data } = await axios.get<ListModelInstancesResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}/instances?view=VIEW_FULL`
     );
     return Promise.resolve(data.instances);
   } catch (err) {
