@@ -8,12 +8,22 @@ import ModeCell from "./ModeCell";
 import type { ModeCellProps } from "./ModeCell";
 import ModelsCell from "./ModelsCell";
 import type { ModelsCellProps } from "./ModelsCell";
+import ModelDefinitionCell from "./ModelDefinitionCell";
+import type { ModelDefintionCellProps } from "./ModelDefinitionCell";
 
-export { InstanceCell, NameCell, ConnectionTypeCell, ModeCell, ModelsCell };
+export {
+  InstanceCell,
+  NameCell,
+  ConnectionTypeCell,
+  ModeCell,
+  ModelsCell,
+  ModelDefinitionCell,
+};
 export type {
   InstanceCellProps,
   NameCellProps,
   ConnectionTypeCellProps,
   ModeCellProps,
   ModelsCellProps,
+  ModelDefintionCellProps,
 };
