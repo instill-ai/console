@@ -6,16 +6,21 @@ import { Nullable } from "@/types/general";
 import { useState } from "@storybook/addons";
 import { Formik } from "formik";
 import { FC } from "react";
+import cn from "clsx";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
+  marginBottom: Nullable<string>;
 };
 
 type ConfigureModelFormValue = {
   description: Nullable<string>;
 };
 
-const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
+const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
+  model,
+  marginBottom,
+}) => {
   const [canEdit, setCanEdit] = useState(false);
   const updateModel = useUpdateModel();
 
@@ -49,7 +54,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({ model }) => {
     >
       {({ values }) => {
         return (
-          <FormBase gapY="gap-y-5" padding={null}>
+          <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextArea
               name="description"
               label="Description"
