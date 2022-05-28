@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
@@ -18,26 +18,38 @@ const ModeCell: FC<ModeCellProps> = ({
   paddingRight,
   paddingTop,
 }) => {
-  const getModeIcon = () => {
-    if (mode === "MODE_ASYNC") {
-      return (
+  let modeIcon: ReactElement;
+  const iconWidth = "w-5";
+  const iconHeight = "h-5";
+  const iconPosition = "my-auto";
+
+  switch (mode) {
+    case "MODE_ASYNC":
+      modeIcon = (
         <AsyncIcon
-          width="w-5"
-          height="h-5"
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
           color="fill-[#FF8A00]"
-          position="my-auto"
         />
       );
-    }
-    return (
-      <SyncIcon
-        width="w-5"
-        height="h-5"
-        color="fill-instillNeonBlue"
-        position="my-auto"
-      />
-    );
-  };
+      break;
+
+    case "MODE_SYNC":
+      modeIcon = (
+        <SyncIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
+          color="fill-instillNeonBlue"
+        />
+      );
+      break;
+
+    default:
+      modeIcon = <div className={cn(iconWidth, iconHeight)} />;
+      break;
+  }
 
   return (
     <CellBase
@@ -47,7 +59,7 @@ const ModeCell: FC<ModeCellProps> = ({
       paddingBottom={paddingBottom}
     >
       <div className={cn("flex gap-x-2 px-2 py-3", width)}>
-        {getModeIcon()}
+        {modeIcon}
         <p className="instill-text-body text-instillGrey90">
           {mode === "MODE_ASYNC" ? "Async" : "Sync"}
         </p>
