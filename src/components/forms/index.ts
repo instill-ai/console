@@ -8,6 +8,8 @@ import CreateModelForm from "./CreateModelForm";
 import ConfigureSourceForm from "./ConfigureSourceForm";
 import ConfigureDestinationForm from "./ConfigureDestinationForm";
 import ConfigureModelForm from "./ConfigureModelForm";
+import ConfigureModelInstanceForm from "./ConfigureModelInstanceForm";
+import type { ConfigureModelInstanceFormProps } from "./ConfigureModelInstanceForm";
 
 export {
   CreatePipelineForm,
@@ -18,5 +20,6 @@ export {
   ConfigureSourceForm,
   ConfigureDestinationForm,
   ConfigureModelForm,
+  ConfigureModelInstanceForm,
 };
-export type { StepNumberState };
+export type { StepNumberState, ConfigureModelInstanceFormProps };
