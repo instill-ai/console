@@ -100,7 +100,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
     >
       {() => {
         return (
-          <FormBase gapY="gap-y-5" padding={null}>
+          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <SingleSelect
               name="definition"
               label="Data destination"

@@ -191,8 +191,9 @@ export const useModelInstance = (modelInstanceId: string | undefined) => {
 };
 
 export const useModelWithInstances = (model: Model | null) => {
+  const modelId = model?.id;
   return useQuery(
-    ["models", "with-instances", (model as Model).id],
+    ["models", "with-instances", modelId],
     async () => {
       if (!model) {
         return Promise.reject(new Error("Model data not provided"));
@@ -207,7 +208,7 @@ export const useModelWithInstances = (model: Model | null) => {
 
       return Promise.resolve(modelWithInstances);
     },
-    { enabled: model ? true : false }
+    { enabled: !!modelId }
   );
 };
 
