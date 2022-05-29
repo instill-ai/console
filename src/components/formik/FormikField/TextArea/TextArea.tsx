@@ -1,5 +1,5 @@
 import { Nullable } from "@/types/general";
-import { BasicTextArea } from "@instill-ai/design-system";
+import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
@@ -13,7 +13,7 @@ export type TextAreaProps = {
   onChangeCb?: (value: string) => void;
   placeholder: string;
   autoComplete: string;
-  value?: string;
+  value: BasicTextAreaProps["value"];
   enableCounter: boolean;
   counterWordLimit: number;
   error: Nullable<string>;

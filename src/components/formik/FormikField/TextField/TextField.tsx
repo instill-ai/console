@@ -1,11 +1,11 @@
 import { Nullable } from "@/types/general";
-import { BasicTextField } from "@instill-ai/design-system";
+import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
 export type TextFieldProps = {
   name: string;
-  value?: string;
+  value: BasicTextFieldProps["value"];
   disabled: boolean;
   readOnly: boolean;
   required: boolean;
