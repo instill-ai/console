@@ -74,7 +74,6 @@ const DestinationDetailsPage: FC<DestinationDetailsPageProps> & {
           iconPosition="my-auto"
           paddingY="py-2"
           paddingX="px-2"
-          label="Connected"
         />
       </div>
       <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
