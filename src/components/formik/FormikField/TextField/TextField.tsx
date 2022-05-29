@@ -3,19 +3,9 @@ import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextFieldProps = {
+export type TextFieldProps = BasicTextFieldProps & {
   name: string;
-  value: BasicTextFieldProps["value"];
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  type: string;
-  autoComplete: string;
-  error: Nullable<string>;
+  onChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({

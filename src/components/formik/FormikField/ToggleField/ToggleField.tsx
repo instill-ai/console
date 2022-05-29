@@ -1,18 +1,14 @@
 import { FC } from "react";
 import { Field, FieldProps } from "formik";
-import { BasicToggleField } from "@instill-ai/design-system";
+import {
+  BasicToggleField,
+  BasicToggleFieldProps,
+} from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type ToggleFieldProps = {
+export type ToggleFieldProps = BasicToggleFieldProps & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: boolean) => void;
-  defaultChecked: boolean;
-  error: Nullable<string>;
+  onChangeCb: Nullable<(value: boolean) => void>;
 };
 
 const ToggleField: FC<ToggleFieldProps & FieldProps> = ({

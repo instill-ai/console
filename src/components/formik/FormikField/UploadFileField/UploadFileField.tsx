@@ -1,22 +1,14 @@
 import { Nullable } from "@/types/general";
 import {
-  BasicTextField,
   BasicUploadFileField,
+  BasicUploadFileFieldProps,
 } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type UploadFileFieldProps = {
+export type UploadFileFieldProps = BasicUploadFileFieldProps & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  uploadButtonText: string;
-  error: Nullable<string>;
+  onChangeCb: Nullable<(value: string) => void>;
 };
 
 const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({

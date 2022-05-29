@@ -7,19 +7,9 @@ import {
 } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type SingleSelectProps = {
+export type SingleSelectProps = BasicSingleSelectProps & {
   name: string;
-  options: SingleSelectOption[];
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (option: SingleSelectOption) => void;
-  instanceId: string;
-  menuPlacement: BasicSingleSelectProps["menuPlacement"];
-  value: BasicSingleSelectProps["value"];
-  error: Nullable<string>;
+  onChangeCb: Nullable<(option: SingleSelectOption) => void>;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({

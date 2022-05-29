@@ -3,20 +3,9 @@ import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextAreaProps = {
+export type TextAreaProps = BasicTextAreaProps & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  autoComplete: string;
-  value: BasicTextAreaProps["value"];
-  enableCounter: boolean;
-  counterWordLimit: number;
-  error: Nullable<string>;
+  onChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
