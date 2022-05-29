@@ -44,7 +44,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   );
 };
 
-const FormikWrapper: FC<UploadFileFieldProps> = ({
+const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   name,
   disabled,
   readOnly,
@@ -73,4 +73,4 @@ const FormikWrapper: FC<UploadFileFieldProps> = ({
   );
 };
 
-export default FormikWrapper;
+export default UploadFileFieldFormikWrapper;

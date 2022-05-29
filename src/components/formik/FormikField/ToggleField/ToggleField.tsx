@@ -42,7 +42,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   );
 };
 
-const FormikWrapper: FC<ToggleFieldProps> = ({
+const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   name,
   disabled,
   readOnly,
@@ -69,4 +69,4 @@ const FormikWrapper: FC<ToggleFieldProps> = ({
   );
 };
 
-export default FormikWrapper;
+export default ToggleFieldFormikWrapper;

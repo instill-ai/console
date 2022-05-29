@@ -55,7 +55,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   );
 };
 
-const FormikWrapper: FC<SingleSelectProps> = ({
+const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   name,
   options,
   disabled,
@@ -88,4 +88,4 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   );
 };
 
-export default FormikWrapper;
+export default SingleSelectFieldFormikWrapper;

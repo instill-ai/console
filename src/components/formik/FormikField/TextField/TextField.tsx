@@ -43,7 +43,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   );
 };
 
-const FormikWrapper: FC<TextFieldProps> = ({
+const TextFieldFormikWrapper: FC<TextFieldProps> = ({
   name,
   disabled,
   readOnly,
@@ -76,4 +76,4 @@ const FormikWrapper: FC<TextFieldProps> = ({
   );
 };
 
-export default FormikWrapper;
+export default TextFieldFormikWrapper;

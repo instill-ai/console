@@ -44,7 +44,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   );
 };
 
-const FormikWrapper: FC<TextAreaProps> = ({
+const TextAreaFormikWrapper: FC<TextAreaProps> = ({
   name,
   disabled,
   readOnly,
@@ -79,4 +79,4 @@ const FormikWrapper: FC<TextAreaProps> = ({
   );
 };
 
-export default FormikWrapper;
+export default TextAreaFormikWrapper;
