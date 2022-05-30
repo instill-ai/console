@@ -181,7 +181,7 @@ export const createSourceMutation = async (
 ): Promise<Source> => {
   try {
     const { data } = await axios.post<CreateSourceResponse>(
-      "/api/connector/create-source",
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors`,
       payload
     );
     return Promise.resolve(data.source_connector);
