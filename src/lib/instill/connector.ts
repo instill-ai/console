@@ -147,7 +147,7 @@ export type ListSourcesResponse = {
 export const listSourcesQuery = async (): Promise<Source[]> => {
   try {
     const { data } = await axios.get<ListSourcesResponse>(
-      "/api/connector/list-sources"
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connectors);
