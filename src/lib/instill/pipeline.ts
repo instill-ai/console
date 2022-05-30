@@ -235,12 +235,11 @@ export type GetPipelineResponse = {
 };
 
 export const getPipelineQuery = async (
-  pipelineId: string
+  pipelineName: string
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const { data } = await axios.post<GetPipelineResponse>(
-      "/api/pipeline/get-pipeline",
-      { id: pipelineId }
+    const { data } = await axios.get<GetPipelineResponse>(
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipeline);

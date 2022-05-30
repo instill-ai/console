@@ -67,16 +67,16 @@ export const constructPipelineRecipeWithDefinition = async (
 // #                                                                 #
 // ###################################################################
 
-export const usePipeline = (id: string | undefined) => {
+export const usePipeline = (pipelineName: string | undefined) => {
   const queryClient = useQueryClient();
   return useQuery(
-    ["pipelines", id],
+    ["pipelines", pipelineName],
     async () => {
-      if (!id) {
-        return Promise.reject(new Error("invalid id"));
+      if (!pipelineName) {
+        return Promise.reject(new Error("invalid pipeline name"));
       }
 
-      const rawPipeline = await getPipelineQuery(id);
+      const rawPipeline = await getPipelineQuery(pipelineName);
       const recipe = await constructPipelineRecipeWithDefinition(
         rawPipeline.recipe
       );
@@ -89,10 +89,10 @@ export const usePipeline = (id: string | undefined) => {
       return Promise.resolve(pipeline);
     },
     {
-      enabled: id ? true : false,
+      enabled: pipelineName ? true : false,
       initialData: queryClient
         .getQueryData<Pipeline[]>(["pipelines"])
-        ?.find((e) => e.id === id),
+        ?.find((e) => e.name === pipelineName),
     }
   );
 };
