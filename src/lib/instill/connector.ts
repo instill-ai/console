@@ -223,10 +223,10 @@ export const getDestinationDefinitionQuery = async (
   destinationDefinitionName: string
 ) => {
   try {
-    const { data } = await axios.post<GetDestinationDefinitionResponse>(
-      "/api/connector/get-destination-definition",
-      { name: destinationDefinitionName }
+    const { data } = await axios.get<GetDestinationDefinitionResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}`
     );
+
     return Promise.resolve(data.destination_connector_definition);
   } catch (err) {
     return Promise.reject(err);
