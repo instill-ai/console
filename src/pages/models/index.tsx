@@ -3,6 +3,7 @@ import { FC, ReactElement } from "react";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import ModelTable from "@/services/model/ModelTable";
+import { useModelsWithInstances } from "@/services/model/ModelServices";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -11,18 +12,27 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const models = [];
+  const modelsWithInstances = useModelsWithInstances();
   return (
     <PageContentContainer>
       <PageTitle
         title="Model"
         breadcrumbs={["Model"]}
-        enableButton={models.length === 0 ? false : true}
+        enableButton={
+          modelsWithInstances.isSuccess
+            ? modelsWithInstances.data.length === 0
+              ? false
+              : true
+            : false
+        }
         buttonName="Add new model"
         buttonLink="/models/create"
         marginBottom="mb-10"
       />
-      <ModelTable models={[]} isLoading={false} />
+      <ModelTable
+        models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
+        isLoading={modelsWithInstances.isLoading}
+      />
     </PageContentContainer>
   );
 };

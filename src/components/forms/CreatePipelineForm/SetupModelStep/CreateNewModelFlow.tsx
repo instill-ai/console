@@ -24,8 +24,9 @@ import { PrimaryButton } from "@/components/ui/Buttons";
 import { StepNumberState, Values } from "../CreatePipelineForm";
 import { mockModelInstances, mockModelSourceOptions } from "../../MockData";
 import {
-  useCreateModel,
-  useDeployModel,
+  useCreateGithubModel,
+  useCreateLocalModel,
+  useDeployModelInstance,
   useModelDefinition,
   useModelDefinitions,
   useModelInstance,
@@ -33,7 +34,12 @@ import {
 } from "@/services/model/ModelServices";
 import useOnScreen from "@/hooks/useOnScreen";
 import { ModelDefinitionIcon } from "@/components/ui";
-import { CreateModelPayload, Model, ModelDefinition } from "@/lib/instill";
+import {
+  CreateGithubModelPayload,
+  CreateLocalModelPayload,
+  Model,
+} from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 // We need to pass modelCreated state to UseExistingModelFlow
 
@@ -49,7 +55,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   setModelCreated,
   modelCreated,
 }) => {
-  const { values, setFieldValue } = useFormikContext<Values>();
+  const { values, setFieldValue, validate } = useFormikContext<Values>();
 
   // ###################################################################
   // #                                                                 #
@@ -61,17 +67,13 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   const flowIsOnScreen = useOnScreen(flowRef);
   const modelDefinitions = useModelDefinitions();
 
-  const [modelDefinitionOptions, setModelDefinitionOptions] = useState<
-    SingleSelectOption[] | undefined
-  >();
-  const [targetModelDefinitionName, setTargetModelDefinitionName] = useState<
-    string | undefined
-  >();
+  const [modelDefinitionOptions, setModelDefinitionOptions] =
+    useState<Nullable<SingleSelectOption[]>>();
+  const [targetModelDefinitionName, setTargetModelDefinitionName] =
+    useState<Nullable<string>>(null);
 
   useEffect(() => {
     if (!flowIsOnScreen || !modelDefinitions.isSuccess) return;
-
-    console.log(modelDefinitions.data);
 
     setModelDefinitionOptions(
       modelDefinitions.data.map((e) => {
@@ -92,22 +94,32 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     );
   }, [flowIsOnScreen, modelDefinitions.isSuccess]);
 
+  const selectedModelDefinitionOption = useMemo(() => {
+    if (!values.model.new.modelDefinition || !modelDefinitionOptions) {
+      return null;
+    }
+
+    return (
+      modelDefinitionOptions?.find(
+        (e) => e.value === values.model.new.modelDefinition
+      ) || null
+    );
+  }, [values.model.new.modelDefinition, modelDefinitionOptions]);
+
   // ###################################################################
   // #                                                                 #
-  // # 2 - Set up github model                                         #
+  // # 2 - Set up github/local model                                   #
   // #                                                                 #
   // ###################################################################
 
-  const createModel = useCreateModel();
+  const createGithubModel = useCreateGithubModel();
   const targetModelDefinition = useModelDefinition(targetModelDefinitionName);
-  const [newModel, setNewModel] = useState<Model | undefined>();
+  const [newModel, setNewModel] = useState<Nullable<Model>>(null);
   const [isSettingModel, setIsSettingModel] = useState(false);
-  const [setupModelError, setSetupModelError] = useState<string | undefined>(
-    undefined
-  );
+  const [setupModelError, setSetupModelError] =
+    useState<Nullable<string>>(null);
 
   const canSetupModel = useMemo(() => {
-    console.log(values);
     if (!values.model.new.modelDefinition || modelCreated) return false;
 
     if (values.model.new.modelDefinition === "github") {
@@ -135,49 +147,80 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     modelCreated,
   ]);
 
-  const handelSetupGithubModel = async () => {
+  const createLocalModel = useCreateLocalModel();
+
+  const handelSetupModel = async () => {
+    console.log(targetModelDefinition);
     if (!targetModelDefinition.isSuccess) return;
 
-    console.log(targetModelDefinition.isFetched);
-
-    const configuration =
-      values.model.new.modelDefinition === "github"
-        ? {
-            repository: values.model.new.repo,
-          }
-        : {
-            description: values.model.new.description,
-          };
-
-    const payload: CreateModelPayload = {
-      id: values.model.new.id,
-      model_definition: targetModelDefinition.data.name,
-      configuration: JSON.stringify(configuration),
-    };
-
     setIsSettingModel(true);
+    setSetupModelError(null);
 
-    createModel.mutate(payload, {
-      onSuccess: (newModel) => {
-        setModelCreated(true);
-        setNewModel(newModel);
-        setIsSettingModel(false);
-      },
-      onError: (error) => {
-        if (error instanceof Error) {
-          setSetupModelError(error.message);
-        } else {
-          setSetupModelError("Something went wrong when setting up model");
-        }
-      },
-    });
+    if (values.model.new.modelDefinition === "github") {
+      const configuration = {
+        repository: values.model.new.repo,
+      };
+      console.log(values);
+
+      const payload: CreateGithubModelPayload = {
+        id: values.model.new.id,
+        model_definition: targetModelDefinition.data.name,
+        configuration: JSON.stringify(configuration),
+      };
+
+      createGithubModel.mutate(payload, {
+        onSuccess: (newModel) => {
+          setModelCreated(true);
+          setNewModel(newModel);
+          setIsSettingModel(false);
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            console.log(error);
+            setSetupModelError(error.message);
+          } else {
+            setSetupModelError(
+              "Something went wrong when setting up GitHub model"
+            );
+          }
+        },
+      });
+    } else {
+      if (
+        !values.model.new.id ||
+        !values.model.new.description ||
+        !values.model.new.file
+      ) {
+        return;
+      }
+
+      const payload: CreateLocalModelPayload = {
+        id: values.model.new.id,
+        desctiption: values.model.new.description,
+        model_definition: "model-definitions/local",
+        content: values.model.new.file,
+      };
+
+      createLocalModel.mutate(payload, {
+        onSuccess: (newModel) => {
+          console.log("local");
+          setModelCreated(true);
+          setNewModel(newModel);
+          setIsSettingModel(false);
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            console.log(error);
+            setSetupModelError(error.message);
+          } else {
+            setSetupModelError(
+              "Something went wrong when setting up local model"
+            );
+          }
+        },
+      });
+    }
   };
-
-  // ###################################################################
-  // #                                                                 #
-  // # 2 - Set up local model                                          #
-  // #                                                                 #
-  // ###################################################################
 
   const canDisplayLocalModelFlow = useMemo(() => {
     if (values.model.new.modelDefinition !== "local") {
@@ -188,12 +231,12 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   // ###################################################################
   // #                                                                 #
-  // # 3 - Deploy model instance                                       #
+  // # 2 - Deploy model instance                                       #
   // #                                                                 #
   // ###################################################################
 
   const modelInstances = useModelInstances(newModel?.id);
-  const deployModel = useDeployModel();
+  const deployModelInstance = useDeployModelInstance();
   const [isDeployingModel, setIsDeployingModel] = useState(false);
   const [deployModelError, setDeployModelError] = useState<
     string | undefined
@@ -231,11 +274,24 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     return options;
   }, [modelInstances.isSuccess, values.model.new.modelDefinition]);
 
+  const selectedModelInstanceOption = useMemo(() => {
+    if (!values.model.new.modelInstance || !modelInstanceOptions) {
+      return null;
+    }
+
+    return (
+      modelInstanceOptions.find(
+        (e) => e.value === values.model.new.modelInstance
+      ) || null
+    );
+  }, [modelInstanceOptions, values.model.new.modelInstance]);
+
   const handleDeployModel = async () => {
     setIsDeployingModel(true);
-    deployModel.mutate(values.model.new.modelInstance, {
+    deployModelInstance.mutate(values.model.new.modelInstance, {
       onSuccess: () => {
         setIsDeployingModel(false);
+        setFieldValue("model.type", "new");
         setStepNumber(stepNumber + 1);
       },
       onError: (error) => {
@@ -250,7 +306,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   const modelDefinitionOnChangeCb = (option: SingleSelectOption) => {
     setTargetModelDefinitionName(
-      modelDefinitions.data?.find((e) => e.id === option.value)?.name
+      modelDefinitions.data?.find((e) => e.id === option.value)?.name || null
     );
     if (option.value !== "github") {
       setFieldValue("model.new.modelInstance", null);
@@ -270,10 +326,12 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         placeholder=""
         type="text"
         autoComplete="off"
+        error={null}
       />
       <SingleSelect
         instanceId="new-model-definition"
         name="model.new.modelDefinition"
+        value={selectedModelDefinitionOption}
         disabled={modelCreated ? true : false}
         readOnly={false}
         required={true}
@@ -282,7 +340,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
         onChangeCb={modelDefinitionOnChangeCb}
         menuPlacement="auto"
-        defaultValue={null}
+        error={null}
       />
       {values.model.new.modelDefinition === "github" ? (
         <TextField
@@ -295,6 +353,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           placeholder=""
           type="text"
           autoComplete="off"
+          error={null}
         />
       ) : null}
 
@@ -309,9 +368,12 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             required={true}
             autoComplete="off"
             placeholder=""
-            value={values.model.new.description}
+            value={
+              values.model.new.description ? values.model.new.description : ""
+            }
             enableCounter={false}
             counterWordLimit={0}
+            error={null}
           />
           <UploadFileField
             name="model.new.file"
@@ -322,6 +384,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             required={true}
             readOnly={false}
             disabled={false}
+            error={null}
           />
         </>
       ) : null}
@@ -337,7 +400,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         ) : null}
         <PrimaryButton
           disabled={canSetupModel ? false : true}
-          onClickHandler={handelSetupGithubModel}
+          onClickHandler={handelSetupModel}
           position="ml-auto my-auto"
           type="button"
         >
@@ -353,6 +416,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           <SingleSelect
             instanceId="new-model-instances"
             name="model.new.modelInstance"
+            value={selectedModelInstanceOption}
             disabled={false}
             readOnly={false}
             required={true}
@@ -360,7 +424,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             label="Source type"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             menuPlacement="auto"
-            defaultValue={null}
+            error={null}
           />
           <div className="flex flex-row">
             {deployModelError ? (

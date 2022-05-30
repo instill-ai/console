@@ -36,7 +36,7 @@ const ConnectorPipelinesTable: FC<ConnectorPipelinesTableProps> = ({
             <NameCell
               name={pipeline.id}
               width="w-[191px]"
-              updatedAt={pipeline.updateTime}
+              updatedAt={pipeline.update_time}
               state={pipeline.state}
               paddingBottom="pb-5"
               paddingTop="pt-5"

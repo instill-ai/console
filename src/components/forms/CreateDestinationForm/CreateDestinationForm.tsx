@@ -14,7 +14,7 @@ const CreateDestinationForm: FC = () => {
     >
       {(formik) => {
         return (
-          <FormBase gapY="gap-y-5" padding={null}>
+          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
               name="name"
               label="Name"
@@ -25,6 +25,8 @@ const CreateDestinationForm: FC = () => {
               placeholder=""
               type="text"
               autoComplete="off"
+              error={null}
+              value={formik.values.name}
             />
             <SingleSelect
               name="type"
@@ -36,7 +38,7 @@ const CreateDestinationForm: FC = () => {
               required={true}
               description={"Setup Guide"}
               menuPlacement="auto"
-              defaultValue={null}
+              error={null}
             />
             <PrimaryButton
               type="submit"
