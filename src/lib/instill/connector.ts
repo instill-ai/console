@@ -319,7 +319,7 @@ export const createDestinationMutation = async (
 ): Promise<Destination> => {
   try {
     const { data } = await axios.post<CreateDestinationResponse>(
-      "/api/connector/create-destination",
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors`,
       payload
     );
     return Promise.resolve(data.destination_connector);
