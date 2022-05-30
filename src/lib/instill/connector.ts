@@ -70,7 +70,7 @@ export const listSourceDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListSourceDefinitionsResponse>(
-      "/api/connector/list-source-definitions"
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connector-definitions?view=VIEW_FULL`
     );
     return Promise.resolve(data.source_connector_definitions);
   } catch (err) {
