@@ -265,8 +265,8 @@ export const createPipelineMutation = async (
   payload: CreatePipelinePayload
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const { data } = await axios.post<CreatePipelineResponse>(
-      "/api/pipeline/create-pipeline",
+    const { data } = await axios.post<GetPipelineResponse>(
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines`,
       payload
     );
     return Promise.resolve(data.pipeline);
