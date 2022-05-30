@@ -207,7 +207,7 @@ export const listDestinationDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListDestinationDefinitionsResponse>(
-      "/api/connector/list-destination-definitions"
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`
     );
     return Promise.resolve(data.destination_connector_definitions);
   } catch (err) {
