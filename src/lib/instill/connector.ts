@@ -86,10 +86,10 @@ export const getSourceDefinitionQuery = async (
   sourceDefinitionName: string
 ): Promise<ConnectorDefinition> => {
   try {
-    const { data } = await axios.post<GetSourceDefinitionResponse>(
-      "/api/connector/get-source-definition",
-      { name: sourceDefinitionName }
+    const { data } = await axios.get<GetSourceDefinitionResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceDefinitionName}`
     );
+
     return Promise.resolve(data.source_connector_definition);
   } catch (err) {
     return Promise.reject(err);
