@@ -18,11 +18,11 @@ export type GetUserResponse = {
   user: User;
 };
 
-export const getUserQuery = async (userId: string): Promise<User> => {
+export const getUserQuery = async (userName: string): Promise<User> => {
   try {
-    const { data } = await axios.post<GetUserResponse>("/api/mgmt/get-user", {
-      id: userId,
-    });
+    const { data } = await axios.get<GetUserResponse>(
+      `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${userName}`
+    );
 
     return Promise.resolve(data.user);
   } catch (err) {

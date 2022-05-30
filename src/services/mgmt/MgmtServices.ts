@@ -5,6 +5,7 @@ import { parse } from "yaml";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { getUserQuery, updateUserMutation, User } from "@/lib/instill/mgmt";
+import { Nullable } from "@/types/general";
 
 type MgmtDefinitionJson = {
   title: string;
@@ -77,22 +78,22 @@ export const mockMgmtRoles: SingleSelectOption[] = [
   },
 ];
 
-export const useUser = (id: string) => {
+export const useUser = (userName: Nullable<string>) => {
   const queryClient = useQueryClient();
   return useQuery<User>(
-    ["user", id],
+    ["user", userName],
     async () => {
-      if (!id) {
-        return Promise.reject(new Error("invalid user id"));
+      if (!userName) {
+        return Promise.reject(new Error("invalid user name"));
       }
 
-      const user = await getUserQuery(id);
+      const user = await getUserQuery(userName);
 
       return Promise.resolve(user);
     },
     {
-      enabled: id ? true : false,
-      initialData: queryClient.getQueryData(["user", id]),
+      enabled: !!userName,
+      initialData: queryClient.getQueryData(["user", userName]),
     }
   );
 };
