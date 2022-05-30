@@ -128,9 +128,8 @@ export type GetSourceResponse = {
 
 export const getSourceQuery = async (sourceName: string): Promise<Source> => {
   try {
-    const { data } = await axios.post<GetSourceResponse>(
-      "/api/connector/get-source",
-      { name: sourceName }
+    const { data } = await axios.get<GetSourceResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connector);
