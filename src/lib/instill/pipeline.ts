@@ -221,7 +221,7 @@ export const listPipelinesQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListPipelinesResponse>(
-      "/api/pipeline/list-pipelines"
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipelines);
