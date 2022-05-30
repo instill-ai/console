@@ -59,6 +59,59 @@ RUN --mount=type=cache,target=/root/.yarn3-cache,id=yarn3-cache \
     yarn install --immutable --inline-builds
 
 ###################################################################
+# Stage 2: Build the app                                          #
+###################################################################
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
+ENV NODE_ENV=production
+ENV NEXTJS_IGNORE_ESLINT=1
+ENV NEXTJS_IGNORE_TYPECHECK=0
+
+WORKDIR /app
+
+COPY . .
+COPY --from=deps /workspace-install ./
+
+# Optional: if the app depends on global /static shared assets like images, locales...
+RUN yarn build
+
+# Does not play well with buildkit on CI
+# https://github.com/moby/buildkit/issues/1673
+# RUN --mount=type=cache,target=/root/.yarn3-cache,id=yarn3-cache \
+#     SKIP_POSTINSTALL=1 \
+#     YARN_CACHE_FOLDER=/root/.yarn3-cache \
+#     yarn workspaces focus nextjs-app --production
+
+###################################################################
+# Stage 3: Extract a minimal image from the build                 #
+###################################################################
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /next.config.js \
+                    /next-env.d.ts \    
+                    ./
+COPY --from=builder /public ./public
+COPY --from=builder --chown=nextjs:nodejs /.next ./.next
+COPY --from=builder /node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV NEXT_TELEMETRY_DISABLED 1
+
+CMD ["./node_modules/.bin/next", "start", "./", "-p", "3000"]
+
+
+###################################################################
 # Develop locally                                                 #
 ###################################################################
 
