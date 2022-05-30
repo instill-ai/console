@@ -6,7 +6,7 @@ const PipelineTablePlaceholder: FC = () => {
   const width = "w-[136px]";
   const height = "h-[136px]";
   const color = "fill-instillGrey95";
-  const position = "my-";
+  const position = "my-auto";
   const placeholderItems = [
     {
       id: "pipeline-placeholder-1",
