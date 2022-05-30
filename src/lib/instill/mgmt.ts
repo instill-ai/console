@@ -34,12 +34,12 @@ export type UpdateUserResponse = {
   user: User;
 };
 
-export const updateUserMutation = async (
+export const updateLocalUserMutation = async (
   user: Partial<User>
 ): Promise<User> => {
   try {
-    const { data } = await axios.post<UpdateUserResponse>(
-      "/api/submit-onboarded-form",
+    const { data } = await axios.patch(
+      `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
       {
         email: user.email,
         company_name: user.company_name,

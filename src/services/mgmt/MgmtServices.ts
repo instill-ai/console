@@ -4,7 +4,11 @@ import { parse } from "yaml";
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SingleSelectOption } from "@instill-ai/design-system";
-import { getUserQuery, updateUserMutation, User } from "@/lib/instill/mgmt";
+import {
+  getUserQuery,
+  updateLocalUserMutation,
+  User,
+} from "@/lib/instill/mgmt";
 import { Nullable } from "@/types/general";
 
 type MgmtDefinitionJson = {
@@ -102,7 +106,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (data: Partial<User>) => {
-      const user = await updateUserMutation(data);
+      const user = await updateLocalUserMutation(data);
       return Promise.resolve(user);
     },
     {
