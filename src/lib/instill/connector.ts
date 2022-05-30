@@ -286,7 +286,7 @@ export type ListDestinationsResponse = {
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
     const { data } = await axios.get<ListDestinationsResponse>(
-      "/api/connector/list-destinations"
+      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connectors);
