@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import { FormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
@@ -22,6 +22,16 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 }) => {
   const [canEdit, setCanEdit] = useState(false);
   const updateModel = useUpdateModel();
+
+  const validateForm = useCallback((values: ConfigureModelFormValue) => {
+    const errors: Partial<ConfigureModelFormValue> = {};
+
+    if (!values.description) {
+      errors.description = "Required";
+    }
+
+    return errors;
+  }, []);
 
   return (
     <Formik
@@ -50,23 +60,25 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
           }
         );
       }}
+      validate={validateForm}
     >
-      {({ values }) => {
+      {({ values, errors }) => {
         return (
           <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextArea
               name="description"
               label="Description"
               description="Fill with a short description of your model"
+              value={values.description ? values.description : ""}
+              error={errors.description || null}
+              onChangeCb={null}
               disabled={false}
               readOnly={false}
               required={true}
               autoComplete="off"
               placeholder=""
-              value={values.description ? values.description : ""}
               enableCounter={false}
               counterWordLimit={0}
-              error={null}
             />
             <PrimaryButton type="button" disabled={true} position="ml-auto">
               {canEdit ? "Done" : "Edit"}
