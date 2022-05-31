@@ -3,7 +3,10 @@ import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextFieldProps = BasicTextFieldProps & {
+export type TextFieldProps = Omit<
+  BasicTextFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
   onChangeCb: Nullable<(value: string) => void>;
 };

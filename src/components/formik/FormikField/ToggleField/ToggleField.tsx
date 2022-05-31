@@ -6,7 +6,10 @@ import {
 } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type ToggleFieldProps = BasicToggleFieldProps & {
+export type ToggleFieldProps = Omit<
+  BasicToggleFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
   onChangeCb: Nullable<(value: boolean) => void>;
 };

@@ -3,7 +3,7 @@ import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextAreaProps = BasicTextAreaProps & {
+export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput" | "id"> & {
   name: string;
   onChangeCb: Nullable<(value: string) => void>;
 };

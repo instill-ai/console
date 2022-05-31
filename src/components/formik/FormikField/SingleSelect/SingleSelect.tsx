@@ -7,7 +7,10 @@ import {
 } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type SingleSelectProps = BasicSingleSelectProps & {
+export type SingleSelectProps = Omit<
+  BasicSingleSelectProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
   onChangeCb: Nullable<(option: SingleSelectOption) => void>;
 };

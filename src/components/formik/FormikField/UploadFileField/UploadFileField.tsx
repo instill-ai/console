@@ -6,7 +6,10 @@ import {
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type UploadFileFieldProps = BasicUploadFileFieldProps & {
+export type UploadFileFieldProps = Omit<
+  BasicUploadFileFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
   onChangeCb: Nullable<(value: string) => void>;
 };
