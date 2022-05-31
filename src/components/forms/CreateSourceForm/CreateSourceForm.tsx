@@ -114,7 +114,7 @@ const CreateSourceForm: FC = () => {
     >
       {(formik) => {
         return (
-          <FormBase gapY="gap-y-5" padding={null}>
+          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             {/* <TextField
               name="id"
               label="Name"
@@ -131,15 +131,15 @@ const CreateSourceForm: FC = () => {
               name="definition"
               label="Source type"
               instanceId="source-type"
-              disabled={false}
-              readOnly={false}
               options={syncSourceDefinitionOptions}
-              required={true}
-              description={"Setup Guide"}
-              menuPlacement="auto"
               value={selectedSyncSourceDefinitionOption}
               onChangeCb={sourceDefinitionOnChange}
               error={formik.errors.definition || null}
+              disabled={false}
+              readOnly={false}
+              required={true}
+              description="Setup Guide"
+              menuPlacement="auto"
             />
             <PrimaryButton
               type="submit"
