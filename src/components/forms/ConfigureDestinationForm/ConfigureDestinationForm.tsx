@@ -1,7 +1,7 @@
 import { FormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { DestinationWithDefinition, SourceWithPipelines } from "@/lib/instill";
+import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Formik } from "formik";
@@ -90,30 +90,29 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
           definition: destination ? destination.id : null,
         } as ConfigureDestinationFormValue
       }
-      onSubmit={(values) => {
+      onSubmit={() => {
         if (!canEdit) {
           setCanEdit(true);
           return;
         }
-        console.log(values);
       }}
     >
-      {() => {
+      {(formik) => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <SingleSelect
               name="definition"
               label="Data destination"
               instanceId="destination-definition"
+              value={selectedDestinationDefinitionOption}
+              options={syncDestinationDefinitionOptions}
+              onChangeCb={destinationDefinitionOnChangeCb}
+              error={formik.errors.definition || null}
               disabled={true}
               readOnly={false}
-              options={syncDestinationDefinitionOptions}
               required={true}
               description={"Setup Guide"}
               menuPlacement="auto"
-              value={selectedDestinationDefinitionOption}
-              error={null}
-              onChangeCb={destinationDefinitionOnChangeCb}
             />
             <div className="mt-10 flex flex-row">
               <div className="mr-auto flex flex-row gap-x-2.5">
