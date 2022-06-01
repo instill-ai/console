@@ -6,10 +6,12 @@ import cn from "clsx";
 
 export type PipelineTablePlaceholderProps = {
   marginBottom: TablePlaceholderBaseProps["marginBottom"];
+  enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
 const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
@@ -271,6 +273,7 @@ const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
       createButtonLink="/pipelines/create"
       createButtonTitle="Create your first pipeline"
       marginBottom={marginBottom}
+      enableCreateButton={enablePlaceholderCreateButton}
     />
   );
 };

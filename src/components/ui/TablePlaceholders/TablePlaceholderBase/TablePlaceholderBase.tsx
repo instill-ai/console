@@ -14,6 +14,7 @@ export type TablePlaceholderBaseProps = {
   createButtonTitle: string;
   createButtonLink: string;
   marginBottom: Nullable<string>;
+  enableCreateButton: boolean;
 };
 
 const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
@@ -22,6 +23,7 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
   createButtonTitle,
   createButtonLink,
   marginBottom,
+  enableCreateButton,
 }) => {
   const router = useRouter();
   const handleOnClick = () => {
@@ -43,13 +45,15 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
         <h3 className="instill-text-h3 text-instillGrey80">
           {placeholderTitle}
         </h3>
-        <PrimaryButton
-          type="button"
-          disabled={false}
-          onClickHandler={handleOnClick}
-        >
-          {createButtonTitle}
-        </PrimaryButton>
+        {enableCreateButton ? (
+          <PrimaryButton
+            type="button"
+            disabled={false}
+            onClickHandler={handleOnClick}
+          >
+            {createButtonTitle}
+          </PrimaryButton>
+        ) : null}
       </div>
     </div>
   );

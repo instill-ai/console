@@ -13,10 +13,12 @@ import TablePlaceholderBase, {
 
 export type ModelTablePlaceholderProps = {
   marginBottom: TablePlaceholderBaseProps["marginBottom"];
+  enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
 const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
@@ -87,6 +89,7 @@ const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
       createButtonTitle="Upload your first model"
       createButtonLink="/models/create"
       marginBottom={marginBottom}
+      enableCreateButton={enablePlaceholderCreateButton}
     />
   );
 };

@@ -12,10 +12,12 @@ import TablePlaceholderBase, {
 
 export type SourceTablePlaceholderProps = {
   marginBottom: TablePlaceholderBaseProps["marginBottom"];
+  enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
 const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
@@ -58,6 +60,7 @@ const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
       createButtonTitle="Configurate your first source"
       createButtonLink="/sources/create"
       marginBottom={marginBottom}
+      enableCreateButton={enablePlaceholderCreateButton}
     />
   );
 };
