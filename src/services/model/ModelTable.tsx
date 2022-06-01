@@ -10,14 +10,20 @@ import {
 } from "@/components/ui";
 import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
 import { ModelWithInstance } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 import { FC } from "react";
 
 export type ModelTableProps = {
   models: ModelWithInstance[];
   isLoading: boolean;
+  marginBottom: Nullable<string>;
 };
 
-const ModelTable: FC<ModelTableProps> = ({ models, isLoading }) => {
+const ModelTable: FC<ModelTableProps> = ({
+  models,
+  isLoading,
+  marginBottom,
+}) => {
   if (isLoading) {
     return <TableLoadingPlaceholder />;
   }
@@ -27,7 +33,11 @@ const ModelTable: FC<ModelTableProps> = ({ models, isLoading }) => {
   }
 
   return (
-    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+    <TableContainer
+      marginBottom={marginBottom}
+      tableLayout="table-auto"
+      borderCollapse="border-collapse"
+    >
       <ModelTableHead offlineCounts={0} onlineCounts={0} errorCounts={0} />
       <TableBody>
         {models.map((model) => (

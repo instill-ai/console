@@ -1,4 +1,5 @@
 import { FC, memo } from "react";
+import cn from "clsx";
 
 import {
   ConnectionTypeCell,
@@ -13,15 +14,18 @@ import {
 } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { TableLoadingPlaceholder } from "@/components/ui/TablePlaceholders";
+import { Nullable } from "@/types/general";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
   pipelines: Pipeline[];
+  marginBottom: Nullable<string>;
 };
 
 const PipelinesTable: FC<PipelinesTableProps> = ({
   isLoadingPipeline,
   pipelines,
+  marginBottom,
 }) => {
   if (isLoadingPipeline) {
     return <TableLoadingPlaceholder />;
@@ -34,7 +38,11 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
   console.log(pipelines);
 
   return (
-    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+    <TableContainer
+      marginBottom={marginBottom}
+      tableLayout="table-auto"
+      borderCollapse="border-collapse"
+    >
       <PipelinesTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
       <TableBody>
         {pipelines.map((pipeline) => (

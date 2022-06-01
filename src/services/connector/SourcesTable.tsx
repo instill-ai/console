@@ -17,9 +17,14 @@ import { Nullable } from "@/types/general";
 export type SourcesTableProps = {
   sources: SourceWithPipelines[];
   isLoadingSources: boolean;
+  marginBottom: Nullable<string>;
 };
 
-const SourcesTable: FC<SourcesTableProps> = ({ sources, isLoadingSources }) => {
+const SourcesTable: FC<SourcesTableProps> = ({
+  sources,
+  isLoadingSources,
+  marginBottom,
+}) => {
   if (isLoadingSources) {
     return <TableLoadingPlaceholder />;
   }
@@ -29,7 +34,11 @@ const SourcesTable: FC<SourcesTableProps> = ({ sources, isLoadingSources }) => {
   }
 
   return (
-    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+    <TableContainer
+      marginBottom={marginBottom}
+      tableLayout="table-auto"
+      borderCollapse="border-collapse"
+    >
       <ConnectorTableHead
         definition="source"
         offlineCounts={0}

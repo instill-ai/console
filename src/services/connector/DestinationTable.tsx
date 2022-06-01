@@ -12,15 +12,18 @@ import {
   TableRow,
 } from "@/components/ui";
 import { DestinationWithPipelines } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 export type DestinationTableProps = {
   destinations: DestinationWithPipelines[];
   isLoading: boolean;
+  marginBottom: Nullable<string>;
 };
 
 const DestinationTable: FC<DestinationTableProps> = ({
   destinations,
   isLoading,
+  marginBottom,
 }) => {
   if (isLoading) {
     return <TableLoadingPlaceholder />;
@@ -31,7 +34,11 @@ const DestinationTable: FC<DestinationTableProps> = ({
   }
 
   return (
-    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+    <TableContainer
+      marginBottom={marginBottom}
+      tableLayout="table-auto"
+      borderCollapse="border-collapse"
+    >
       <ConnectorTableHead
         definition="destination"
         offlineCounts={0}
