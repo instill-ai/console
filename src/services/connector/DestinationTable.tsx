@@ -26,11 +26,11 @@ const DestinationTable: FC<DestinationTableProps> = ({
   marginBottom,
 }) => {
   if (isLoading) {
-    return <TableLoadingPlaceholder />;
+    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (destinations.length === 0) {
-    return <DestinationTablePlaceholder />;
+    return <DestinationTablePlaceholder marginBottom={marginBottom} />;
   }
 
   return (

@@ -25,11 +25,11 @@ const ModelTable: FC<ModelTableProps> = ({
   marginBottom,
 }) => {
   if (isLoading) {
-    return <TableLoadingPlaceholder />;
+    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (models.length === 0) {
-    return <ModelTablePlaceholder />;
+    return <ModelTablePlaceholder marginBottom={marginBottom} />;
   }
 
   return (

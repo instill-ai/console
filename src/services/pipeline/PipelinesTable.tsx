@@ -28,14 +28,12 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
   marginBottom,
 }) => {
   if (isLoadingPipeline) {
-    return <TableLoadingPlaceholder />;
+    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (pipelines.length === 0) {
-    return <PipelineTablePlaceholder />;
+    return <PipelineTablePlaceholder marginBottom={marginBottom} />;
   }
-
-  console.log(pipelines);
 
   return (
     <TableContainer

@@ -26,11 +26,11 @@ const SourcesTable: FC<SourcesTableProps> = ({
   marginBottom,
 }) => {
   if (isLoadingSources) {
-    return <TableLoadingPlaceholder />;
+    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (sources.length === 0) {
-    return <SourceTablePlaceholder />;
+    return <SourceTablePlaceholder marginBottom={marginBottom} />;
   }
 
   return (
