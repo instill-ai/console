@@ -7,7 +7,10 @@ import {
 } from "@instill-ai/design-system";
 
 import { SingleSelect, FormikStep } from "../../../formik";
-import { StepNumberState, Values } from "../CreatePipelineForm";
+import {
+  StepNumberState,
+  CreatePipelineFormValues,
+} from "../CreatePipelineForm";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import {
   useCreateSource,
@@ -22,17 +25,14 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   stepNumber,
   setStepNumber,
 }) => {
-  const { values, setFieldValue } = useFormikContext<Values>();
+  const { values, setFieldValue, errors } =
+    useFormikContext<CreatePipelineFormValues>();
 
   // ###################################################################
   // #                                                                 #
   // # 1 - Initialize the source definition and pipelines              #
   // #                                                                 #
   // ###################################################################
-  //
-  // Because we need to separate two flow: existing and new, we have two
-  // separate state in formik, although source may not be created at this
-  // moment, we still fill sync option into source.existing state.
 
   const [modeOptions, setModeOptions] = useState<SingleSelectOption[]>([]);
   const [syncSourceOptions, setSyncSourceOptions] = useState<
@@ -125,7 +125,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   }, [values.pipeline.mode, values.source.existing.id]);
 
   const handleGoNext = () => {
-    if (!sources.isSuccess) return;
+    if (!sources.isSuccess || !values.source.existing.id) return;
 
     if (values.pipeline.mode === "MODE_SYNC") {
       const sourceIndex = sources.data.findIndex(
@@ -134,7 +134,6 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
       if (sourceIndex !== -1) {
         setStepNumber(stepNumber + 2);
-        setFieldValue("source.existing.name", sources.data[sourceIndex].name);
         setFieldValue("source.type", "existing");
         return;
       }
@@ -149,7 +148,6 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
       createSource.mutate(payload, {
         onSuccess: (newSource) => {
-          setFieldValue("source.existing.name", newSource.name);
           setFieldValue("source.type", "existing");
           setStepNumber(stepNumber + 2);
         },
@@ -168,11 +166,13 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           instanceId="pipeline-mode"
           label="Pipeline mode"
           description={"Setup Guide"}
+          value={modeOptions[0]}
+          options={modeOptions}
+          additionalOnChangeCb={null}
+          error={errors.pipeline?.mode || null}
           disabled={true}
           readOnly={false}
           required={true}
-          options={modeOptions}
-          value={modeOptions[0]}
           menuPlacement="auto"
         />
         {values.pipeline.mode === "MODE_SYNC" ? (
@@ -181,11 +181,13 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
             instanceId="data-source-id"
             label="Source type"
             description={"Setup Guide"}
+            value={selectedSourceIdOption}
+            options={syncSourceOptions}
+            additionalOnChangeCb={null}
+            error={errors.source?.existing?.id || null}
             disabled={false}
             readOnly={false}
             required={true}
-            options={syncSourceOptions}
-            value={selectedSourceIdOption}
             menuPlacement="auto"
           />
         ) : null}
