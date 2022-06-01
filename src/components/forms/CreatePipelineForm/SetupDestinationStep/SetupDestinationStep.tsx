@@ -5,7 +5,10 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 import { ConnectorIcon, FormVerticalDividers } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { SingleSelect, FormikStep } from "../../../formik";
-import { StepNumberState, Values } from "../CreatePipelineForm";
+import {
+  StepNumberState,
+  CreatePipelineFormValues,
+} from "../CreatePipelineForm";
 import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
 import {
@@ -17,7 +20,8 @@ import { CreateDestinationPayload } from "@/lib/instill";
 export type SetupDestinationStepProps = StepNumberState;
 
 const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
-  const { values, setFieldValue } = useFormikContext<Values>();
+  const { values, setFieldValue, errors } =
+    useFormikContext<CreatePipelineFormValues>();
 
   // ###################################################################
   // #                                                                 #
@@ -71,7 +75,10 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
     useState<number>(-1);
 
   useEffect(() => {
-    if (values.pipeline.mode !== "MODE_SYNC") return;
+    if (values.pipeline.mode !== "MODE_SYNC" || !values.source.existing.id) {
+      return;
+    }
+
     const destinationId = values.source.existing.id.replace(
       "source",
       "destination"
@@ -98,7 +105,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
   const destinations = useDestinations();
 
   const handleGoNext = () => {
-    if (!destinations.isSuccess) {
+    if (!destinations.isSuccess || !values.destination.existing.id) {
       return;
     }
 
@@ -110,10 +117,6 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       );
 
       if (destinationIndex !== -1) {
-        setFieldValue(
-          "destination.existing.name",
-          destinations.data[destinationIndex].name
-        );
         setFieldValue("destination.type", "existing");
         setStepNumber(stepNumber + 1);
         return;
@@ -128,7 +131,6 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
 
       createDestination.mutate(payload, {
         onSuccess: (newDestination) => {
-          setFieldValue("destination.existing.name", newDestination.name);
           setFieldValue("destination.type", "existing");
           setStepNumber(stepNumber + 1);
         },
@@ -145,10 +147,12 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
             instanceId="destination-id"
             label="Destination type"
             description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
-            disabled={false}
-            readOnly={false}
             options={syncDestinationOptions}
             value={syncDestinationOptions[selectedSyncDestinationIndex]}
+            error={errors.destination?.existing?.id || null}
+            additionalOnChangeCb={null}
+            disabled={false}
+            readOnly={false}
             required={true}
             menuPlacement="auto"
           />
