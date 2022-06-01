@@ -7,9 +7,17 @@ import {
   SnowflakeIcon,
 } from "@instill-ai/design-system";
 import { FC } from "react";
-import TablePlaceholderBase from "../TablePlaceholderBase";
+import TablePlaceholderBase, {
+  TablePlaceholderBaseProps,
+} from "../TablePlaceholderBase";
 
-const DestinationTablePlaceholder: FC = () => {
+export type DestinationTablePlaceholderProps = {
+  marginBottom: TablePlaceholderBaseProps["marginBottom"];
+};
+
+const DestinationTablePlaceholder: FC<DestinationTablePlaceholderProps> = ({
+  marginBottom,
+}) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
 
@@ -46,6 +54,7 @@ const DestinationTablePlaceholder: FC = () => {
       placeholderTitle="No data destination"
       createButtonTitle="Configurate your first destination"
       createButtonLink="/destinations/create"
+      marginBottom={marginBottom}
     />
   );
 };

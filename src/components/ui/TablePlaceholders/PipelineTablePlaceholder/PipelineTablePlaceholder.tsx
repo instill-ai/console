@@ -1,8 +1,16 @@
 import { FC } from "react";
-import TablePlaceholderBase from "../TablePlaceholderBase";
+import TablePlaceholderBase, {
+  TablePlaceholderBaseProps,
+} from "../TablePlaceholderBase";
 import cn from "clsx";
 
-const PipelineTablePlaceholder: FC = () => {
+export type PipelineTablePlaceholderProps = {
+  marginBottom: TablePlaceholderBaseProps["marginBottom"];
+};
+
+const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
+  marginBottom,
+}) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
   const color = "fill-instillGrey95";
@@ -262,6 +270,7 @@ const PipelineTablePlaceholder: FC = () => {
       placeholderTitle="No pipeline"
       createButtonLink="/pipelines/create"
       createButtonTitle="Create your first pipeline"
+      marginBottom={marginBottom}
     />
   );
 };
