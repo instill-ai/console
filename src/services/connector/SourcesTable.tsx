@@ -13,24 +13,32 @@ import {
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import type { SourceTablePlaceholderProps } from "@/components/ui";
 
 export type SourcesTableProps = {
   sources: SourceWithPipelines[];
   isLoadingSources: boolean;
   marginBottom: Nullable<string>;
+  enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
 const SourcesTable: FC<SourcesTableProps> = ({
   sources,
   isLoadingSources,
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   if (isLoadingSources) {
     return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (sources.length === 0) {
-    return <SourceTablePlaceholder marginBottom={marginBottom} />;
+    return (
+      <SourceTablePlaceholder
+        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
+        marginBottom={marginBottom}
+      />
+    );
   }
 
   return (

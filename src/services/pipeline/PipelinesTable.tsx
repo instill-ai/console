@@ -11,28 +11,37 @@ import {
   TableBody,
   TableContainer,
   TableRow,
+  TableLoadingPlaceholder,
 } from "@/components/ui";
+
+import type { PipelineTablePlaceholderProps } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
-import { TableLoadingPlaceholder } from "@/components/ui/TablePlaceholders";
 import { Nullable } from "@/types/general";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
   pipelines: Pipeline[];
   marginBottom: Nullable<string>;
+  enablePlaceholderCreateButton: PipelineTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
 const PipelinesTable: FC<PipelinesTableProps> = ({
   isLoadingPipeline,
   pipelines,
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   if (isLoadingPipeline) {
     return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (pipelines.length === 0) {
-    return <PipelineTablePlaceholder marginBottom={marginBottom} />;
+    return (
+      <PipelineTablePlaceholder
+        marginBottom={marginBottom}
+        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
+      />
+    );
   }
 
   return (

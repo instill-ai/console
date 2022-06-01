@@ -11,6 +11,8 @@ import {
   TableLoadingPlaceholder,
   TableRow,
 } from "@/components/ui";
+import type { DestinationTablePlaceholderProps } from "@/components/ui";
+
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
@@ -18,19 +20,26 @@ export type DestinationTableProps = {
   destinations: DestinationWithPipelines[];
   isLoading: boolean;
   marginBottom: Nullable<string>;
+  enablePlaceholderCreateButton: DestinationTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
 const DestinationTable: FC<DestinationTableProps> = ({
   destinations,
   isLoading,
   marginBottom,
+  enablePlaceholderCreateButton,
 }) => {
   if (isLoading) {
     return <TableLoadingPlaceholder marginBottom={marginBottom} />;
   }
 
   if (destinations.length === 0) {
-    return <DestinationTablePlaceholder marginBottom={marginBottom} />;
+    return (
+      <DestinationTablePlaceholder
+        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
+        marginBottom={marginBottom}
+      />
+    );
   }
 
   return (
