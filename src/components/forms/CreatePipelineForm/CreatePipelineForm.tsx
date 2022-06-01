@@ -7,7 +7,7 @@ import SetupModelStep from "./SetupModelStep";
 import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
 import SetupPipelineModeStep from "./SetupPipelineModeStep";
 import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
-import { PipelineMode } from "@/lib/instill";
+import { PipelineMode, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
 export type StepNumberState = {
@@ -17,13 +17,13 @@ export type StepNumberState = {
 };
 
 type NewSource = {
-  id: string;
-  name: string;
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
 type ExistingSource = {
-  id: string;
-  name: string;
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
 type Source = {
@@ -33,13 +33,13 @@ type Source = {
 };
 
 type NewDestination = {
-  id: string;
-  name: string;
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
 type ExistingDestination = {
-  id: string;
-  name: string;
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
 type Destination = {
@@ -49,18 +49,17 @@ type Destination = {
 };
 
 type ExistingModel = {
-  id: string;
-  name: string;
+  id: Nullable<string>;
+  modelInstanceId: Nullable<string>;
 };
 
 type NewModel = {
-  id: string;
-  name: string;
-  modelDefinition: string;
-  modelInstance: string;
-  file?: string;
-  repo?: string;
-  description: string;
+  id: Nullable<string>;
+  modelDefinition: Nullable<string>;
+  modelInstanceId: Nullable<string>;
+  file: Nullable<string>;
+  repo: Nullable<string>;
+  description: Nullable<string>;
 };
 
 type Model = {
@@ -70,14 +69,13 @@ type Model = {
 };
 
 type Pipeline = {
-  id: string;
-  name: string;
-  mode: PipelineMode;
-  description: string;
-  status: string;
+  id: Nullable<string>;
+  mode: Nullable<PipelineMode>;
+  description: Nullable<string>;
+  state: Nullable<PipelineState>;
 };
 
-export type Values = {
+export type CreatePipelineFormValues = {
   source: Source;
   destination: Destination;
   model: Model;
@@ -89,38 +87,41 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
     <FormikMultiStep
       stepNumber={props.stepNumber}
       setStepNumber={props.setStepNumber}
-      initialValues={{
-        source: {
-          new: { id: null },
-          existing: { id: null },
-          type: null,
-        },
-        model: {
-          new: {
+      initialValues={
+        {
+          source: {
+            new: { id: null, definition: null },
+            existing: { id: null, definition: null },
+            type: null,
+          },
+          model: {
+            new: {
+              id: null,
+              modelDefinition: null,
+              modelInstanceId: null,
+              file: null,
+              description: null,
+              repo: null,
+            },
+            existing: {
+              id: null,
+              modelInstanceId: null,
+            },
+            type: null,
+          },
+          pipeline: {
+            mode: "MODE_SYNC",
             id: null,
-            modelDefinition: null,
-            modelInstance: null,
-            file: null,
             description: null,
-            repo: null,
+            state: "STATE_UNSPECIFIED",
           },
-          existing: {
-            id: null,
+          destination: {
+            new: { id: null, definition: null },
+            existing: { id: null, definition: null },
+            type: null,
           },
-          type: null,
-        },
-        pipeline: {
-          mode: "MODE_SYNC",
-          id: null,
-          description: null,
-          status: true,
-        },
-        destination: {
-          new: { id: null },
-          existing: { id: null },
-          type: null,
-        },
-      }}
+        } as CreatePipelineFormValues
+      }
       onSubmit={(_, actions) => {
         actions.setSubmitting(false);
       }}

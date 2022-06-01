@@ -141,7 +141,6 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     }
     return true;
   }, [
-    values.model.new.modelInstance,
     values.model.new.modelDefinition,
     values.model.new.id,
     values.model.new.file,
@@ -237,7 +236,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     const options: SingleSelectOption[] = modelInstances.data.map((e) => {
       return {
         label: e.id,
-        value: e.name,
+        value: e.id,
         startIcon: (
           <ModelInstanceIcon
             width="w-[30px]"
@@ -259,42 +258,45 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   }, [modelCreated, newModel, modelInstances.isSuccess]);
 
   const canDeployModel = useMemo(() => {
-    if (!values.model.new.modelInstance) return false;
+    if (!values.model.new.modelInstanceId) return false;
     return true;
-  }, [values.model.new.modelInstance]);
+  }, [values.model.new.modelInstanceId]);
 
   const selectedModelInstanceOption = useMemo(() => {
-    if (!values.model.new.modelInstance || !modelInstanceOptions) {
+    if (!values.model.new.modelInstanceId || !modelInstanceOptions) {
       return null;
     }
 
     return (
       modelInstanceOptions.find(
-        (e) => e.value === values.model.new.modelInstance
+        (e) => e.value === values.model.new.modelInstanceId
       ) || null
     );
-  }, [modelInstanceOptions, values.model.new.modelInstance]);
+  }, [modelInstanceOptions, values.model.new.modelInstanceId]);
 
   const deployModelInstance = useDeployModelInstance();
 
   const handleDeployModel = async () => {
-    if (!values.model.new.modelInstance) return;
+    if (!values.model.new.modelInstanceId || !values.model.new.id) return;
 
     setIsDeployingModel(true);
-    deployModelInstance.mutate(values.model.new.modelInstance, {
-      onSuccess: () => {
-        setIsDeployingModel(false);
-        setFieldValue("model.type", "new");
-        setStepNumber(stepNumber + 1);
-      },
-      onError: (error) => {
-        if (error instanceof Error) {
-          setDeployModelError(error.message);
-        } else {
-          setDeployModelError("Something went wrong when deploying model");
-        }
-      },
-    });
+    deployModelInstance.mutate(
+      `models/${values.model.new.id}/instances/${values.model.new.modelInstanceId}`,
+      {
+        onSuccess: () => {
+          setIsDeployingModel(false);
+          setFieldValue("model.type", "new");
+          setStepNumber(stepNumber + 1);
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setDeployModelError(error.message);
+          } else {
+            setDeployModelError("Something went wrong when deploying model");
+          }
+        },
+      }
+    );
   };
 
   const modelDefinitionOnChangeCb = useCallback(
@@ -415,7 +417,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             name="model.new.modelInstance"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}
-            error={errors.model?.new?.modelInstance || null}
+            error={errors.model?.new?.modelInstanceId || null}
             additionalOnChangeCb={null}
             disabled={false}
             readOnly={false}
