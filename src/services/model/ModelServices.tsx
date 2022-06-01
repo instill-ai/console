@@ -152,7 +152,7 @@ export const useAllModeInstances = (enable: boolean) => {
       return Promise.resolve(modelInstances);
     },
     {
-      enabled: enable ? true : models.isSuccess ? true : false,
+      enabled: enable ? (models.isSuccess ? true : false) : false,
     }
   );
 };
