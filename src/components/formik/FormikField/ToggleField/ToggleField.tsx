@@ -11,7 +11,7 @@ export type ToggleFieldProps = Omit<
   "onChangeInput" | "id"
 > & {
   name: string;
-  onChangeCb: Nullable<(value: boolean) => void>;
+  additionalOnChangeCb: Nullable<(value: boolean) => void>;
 };
 
 const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
@@ -19,14 +19,14 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   form,
   name,
   defaultChecked,
-  onChangeCb,
+  additionalOnChangeCb,
   error,
   ...props
 }) => {
   const onChange = (_: string, value: boolean) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -48,7 +48,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   defaultChecked,
   error,
 }) => {
@@ -60,7 +60,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       defaultChecked={defaultChecked}
       error={error}

@@ -11,21 +11,21 @@ export type UploadFileFieldProps = Omit<
   "onChangeInput" | "id"
 > & {
   name: string;
-  onChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
   error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -46,7 +46,7 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   uploadButtonText,
   error,
@@ -59,7 +59,7 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       uploadButtonText={uploadButtonText}

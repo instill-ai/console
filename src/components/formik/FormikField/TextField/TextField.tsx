@@ -8,21 +8,21 @@ export type TextFieldProps = Omit<
   "onChangeInput" | "id"
 > & {
   name: string;
-  onChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
   error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -43,7 +43,7 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   type,
   autoComplete,
@@ -58,7 +58,7 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       type={type}

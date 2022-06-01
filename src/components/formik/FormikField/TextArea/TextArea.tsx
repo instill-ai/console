@@ -5,21 +5,21 @@ import { FC } from "react";
 
 export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput" | "id"> & {
   name: string;
-  onChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
   error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -40,7 +40,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   autoComplete,
   value,
@@ -56,7 +56,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       autoComplete={autoComplete}

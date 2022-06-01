@@ -12,7 +12,7 @@ export type SingleSelectProps = Omit<
   "onChangeInput" | "id"
 > & {
   name: string;
-  onChangeCb: Nullable<(option: SingleSelectOption) => void>;
+  additionalOnChangeCb: Nullable<(option: SingleSelectOption) => void>;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -21,7 +21,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   options,
   name,
   instanceId,
-  onChangeCb,
+  additionalOnChangeCb,
   menuPlacement,
   value,
   error,
@@ -29,8 +29,8 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
     form.setFieldValue(field.name, option.value);
-    if (onChangeCb) {
-      onChangeCb(option);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(option);
     }
   };
 
@@ -56,7 +56,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   instanceId,
   menuPlacement,
   value,
@@ -72,7 +72,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       value={value}
       menuPlacement={menuPlacement}
