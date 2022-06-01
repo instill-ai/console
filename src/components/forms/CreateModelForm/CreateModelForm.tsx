@@ -322,7 +322,7 @@ const CreateNewModelFlow: FC = () => {
             {values.modelDefinition === "local" ? (
               <>
                 <TextArea
-                  name="model.new.description"
+                  name="description"
                   label="Description"
                   description="Fill with a short description of your new model"
                   value={values.description}
@@ -337,7 +337,7 @@ const CreateNewModelFlow: FC = () => {
                   counterWordLimit={0}
                 />
                 <UploadFileField
-                  name="model.new.file"
+                  name="file"
                   label="Upload a file"
                   description="Create and upload a zip file that contains all the model files from your computer"
                   error={errors.file || null}

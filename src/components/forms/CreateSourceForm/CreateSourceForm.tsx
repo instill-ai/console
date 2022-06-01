@@ -133,7 +133,7 @@ const CreateSourceForm: FC = () => {
               instanceId="source-type"
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
-              onChangeCb={sourceDefinitionOnChange}
+              additionalOnChangeCb={sourceDefinitionOnChange}
               error={formik.errors.definition || null}
               disabled={false}
               readOnly={false}

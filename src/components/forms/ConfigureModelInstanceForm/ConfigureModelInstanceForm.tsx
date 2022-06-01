@@ -21,9 +21,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
   marginBottom,
 }) => {
   const modelInstanceConfiguration = JSON.parse(modelInstance.configuration);
-
   const { repository, tag, html_url } = modelInstanceConfiguration;
-
   return (
     <Formik
       initialValues={
@@ -33,51 +31,55 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
           tag: tag ? tag : null,
         } as ConfigureModelInstanceFormValue
       }
+      enableReinitialize={true}
       onSubmit={(values) => {
         console.log(values);
       }}
     >
-      {({ values }) => {
+      {({ values, errors }) => {
         return (
           <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextField
               name="repo"
               label="GitHub repository"
               description="The URL of a GitHub repositories/organizations, e.g. 'instill-ai/yolov4'."
+              value={values.repo}
+              error={errors.repo || null}
+              additionalOnChangeCb={null}
               disabled={true}
               readOnly={false}
               required={true}
               placeholder=""
               type="text"
               autoComplete="off"
-              error={null}
-              value={values.repo}
             />
             <TextField
               name="tag"
               label="Tag"
               description="Tag of the GitHub repository, e.g., 'v0.1.0'."
+              value={values.tag}
+              error={errors.tag || null}
+              additionalOnChangeCb={null}
               disabled={true}
               readOnly={false}
               required={true}
               placeholder=""
               type="text"
               autoComplete="off"
-              error={null}
-              value={values.tag}
             />
             <TextField
               name="tag"
               label="Tag"
               description="GitHub repository URL, e.g., 'https://github.com/instill-ai/protobufs/tree/v2.0.0'."
+              value={values.repoUrl}
+              error={errors.repoUrl || null}
+              additionalOnChangeCb={null}
               disabled={true}
               readOnly={false}
               required={true}
               placeholder=""
               type="text"
               autoComplete="off"
-              error={null}
-              value={values.repoUrl}
             />
           </FormBase>
         );

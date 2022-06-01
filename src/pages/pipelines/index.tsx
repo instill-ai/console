@@ -30,6 +30,7 @@ const PipelinePage: FC & {
       <PipelinesTable
         pipelines={pipelines.data ? pipelines.data : []}
         isLoadingPipeline={pipelines.isLoading}
+        marginBottom={null}
       />
     </PageContentContainer>
   );
