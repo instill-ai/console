@@ -24,7 +24,8 @@ const GitHubModelFlow: FC = () => {
   const [progressMessageBoxState, setProgressMessageBoxState] =
     useState<progressMessageBoxState | null>(null);
 
-  const { values, setFieldValue } = useFormikContext<CreateModelFormValue>();
+  const { values, setFieldValue, errors } =
+    useFormikContext<CreateModelFormValue>();
 
   const displayFetchModelButton = useMemo(() => {
     if (fetched) return false;
@@ -103,6 +104,7 @@ const GitHubModelFlow: FC = () => {
       <TextField
         name="githubRepo"
         label="GitHub repository"
+        value={values.githubRepo}
         description="The URL of a GitHub repositories/organizations, e.g. 'instill-ai/yolov4'."
         disabled={false}
         readOnly={false}
@@ -111,6 +113,7 @@ const GitHubModelFlow: FC = () => {
         type="text"
         autoComplete="off"
         onChangeCb={githubRepoOnChangeCb}
+        error={errors.githubRepo || null}
       />
       {modelInstances ? (
         <SingleSelect
@@ -122,6 +125,8 @@ const GitHubModelFlow: FC = () => {
           options={modelInstances}
           required={true}
           description={"Setup Guide"}
+          menuPlacement="auto"
+          error={errors.instance || null}
         />
       ) : null}
       <div className="flex flex-row">

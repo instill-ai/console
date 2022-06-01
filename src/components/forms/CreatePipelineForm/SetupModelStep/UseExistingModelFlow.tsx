@@ -5,16 +5,17 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
-import useOnScreen from "@/hooks/useOnScreen";
 import { SingleSelect } from "../../../formik";
-import { StepNumberState, Values } from "../CreatePipelineForm";
+import {
+  StepNumberState,
+  CreatePipelineFormValues,
+} from "../CreatePipelineForm";
 import { useAllModeInstances } from "@/services/model/ModelServices";
 import { Nullable } from "@instill-ai/design-system/build/types/general";
 
@@ -28,9 +29,8 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   setStepNumber,
   stepNumber,
 }) => {
-  const { values, setFieldValue } = useFormikContext<Values>();
-  const flowRef = useRef<HTMLDivElement>(null);
-  const flowIsOnScreen = useOnScreen(flowRef);
+  const { values, setFieldValue, errors } =
+    useFormikContext<CreatePipelineFormValues>();
 
   // ###################################################################
   // #                                                                 #
@@ -44,7 +44,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   const modelInstances = useAllModeInstances(modelCreated ? false : true);
 
   useEffect(() => {
-    if (!flowIsOnScreen || !modelInstances.isSuccess) return;
+    if (!modelInstances.isSuccess) return;
 
     const onlineModelInstances = modelInstances.data.filter(
       (e) => e.state === "STATE_ONLINE"
@@ -61,9 +61,9 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         };
       })
     );
-  }, [flowIsOnScreen, modelInstances.isSuccess]);
+  }, [modelInstances.isSuccess]);
 
-  const existingModelIdOption = useMemo(() => {
+  const selectedModelInstanceOption = useMemo(() => {
     if (!values.model.existing.id || !modelInstanceOptions) return null;
 
     return (
@@ -88,32 +88,28 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
 
   const handleUseModel = useCallback(() => {
     if (!values.model.existing.id || !modelInstances.isSuccess) return;
-
-    setFieldValue(
-      "model.existing.name",
-      modelInstances.data.find((e) => e.id === values.model.existing.id)?.name
-    );
     setFieldValue("model.type", "existing");
     setStepNumber(stepNumber + 1);
   }, [values.model.existing.id, modelInstances.isSuccess]);
 
   return (
-    <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
+    <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="instill-text-h3 text-black">
         Select a existing online model
       </h3>
       <SingleSelect
         name="model.existing.id"
         instanceId="existing-model-id"
+        options={modelInstanceOptions ? modelInstanceOptions : []}
+        value={selectedModelInstanceOption}
+        error={errors.model?.existing?.id || null}
+        additionalOnChangeCb={null}
         disabled={modelCreated ? true : false}
         readOnly={false}
-        options={modelInstanceOptions ? modelInstanceOptions : []}
         required={true}
         description={"Setup Guide"}
         label="Source type"
         menuPlacement="auto"
-        value={existingModelIdOption}
-        error={null}
       />
       <PrimaryButton
         position="ml-auto"

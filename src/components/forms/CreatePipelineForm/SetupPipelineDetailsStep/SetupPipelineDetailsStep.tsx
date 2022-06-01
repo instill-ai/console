@@ -2,14 +2,14 @@ import { FC, useMemo } from "react";
 import { useFormikContext } from "formik";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { Values } from "../CreatePipelineForm";
+import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
 import { useCreatePipeline } from "@/services/pipeline/PipelineServices";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
 
 const SetupPipelineDetailsStep: FC = () => {
-  const { values } = useFormikContext<Values>();
+  const { values, errors } = useFormikContext<CreatePipelineFormValues>();
   const router = useRouter();
 
   // ###################################################################
@@ -26,7 +26,7 @@ const SetupPipelineDetailsStep: FC = () => {
       destinationIsValid: false,
     };
 
-    // Pipeline - Every pipeline's field is required
+    // Pipeline - Every pipeline's fields are required
     if (
       values.pipeline.mode &&
       values.pipeline.id &&
@@ -35,21 +35,24 @@ const SetupPipelineDetailsStep: FC = () => {
       validator.pipelineIsValid = true;
     }
 
-    // Source - name is required
-    if (values.source.existing.name) {
+    // Source - id and definition are required
+    if (values.source.existing.id || values.source.existing.definition) {
       validator.sourceIsValid = true;
     }
 
-    if (values.source.new.name) {
+    if (values.source.new.id || values.source.new.definition) {
       validator.sourceIsValid = true;
     }
 
-    // Destination - name id required
-    if (values.destination.existing.name) {
+    // Destination - id and definition are required
+    if (
+      values.destination.existing.id ||
+      values.destination.existing.definition
+    ) {
       validator.destinationIsValid = true;
     }
 
-    if (values.destination.new.name) {
+    if (values.destination.new.id || values.destination.new.definition) {
       validator.destinationIsValid = true;
     }
 
@@ -57,7 +60,7 @@ const SetupPipelineDetailsStep: FC = () => {
     if (
       values.model.new.modelDefinition === "github" &&
       values.model.new.id &&
-      values.model.new.modelInstance
+      values.model.new.modelInstanceId
     ) {
       validator.modelIsValid = true;
     }
@@ -72,11 +75,9 @@ const SetupPipelineDetailsStep: FC = () => {
       validator.modelIsValid = true;
     }
 
-    if (values.model.existing.name) {
+    if (values.model.existing.id) {
       validator.modelIsValid = true;
     }
-
-    console.log(validator);
 
     if (
       validator.pipelineIsValid &&
@@ -93,28 +94,46 @@ const SetupPipelineDetailsStep: FC = () => {
   const createPipeline = useCreatePipeline();
 
   const handleSetupNewPipeline = () => {
-    if (!canSetupNewPipeline || !router.isReady) return;
+    if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) return;
+
+    let sourceName: string;
+
+    if (values.source.type === "new") {
+      if (!values.source.new.id) return;
+      sourceName = `source-connectors/${values.source.new.id}`;
+    } else {
+      if (!values.source.existing.id) return;
+      sourceName = `source-connectors/${values.source.existing.id}`;
+    }
+
+    let modelInstanceName: string;
+
+    if (values.model.type === "new") {
+      if (!values.model.new.modelInstanceId || !values.model.new.id) return;
+      modelInstanceName = `models/${values.model.new.id}/instances/${values.model.new.modelInstanceId}`;
+    } else {
+      if (!values.model.existing.id) return;
+      modelInstanceName = `models/${values.model.existing.id}/instances/${values.model.existing.modelInstanceId}`;
+    }
+
+    let destinationName: string;
+
+    if (values.destination.type === "new") {
+      if (!values.destination.new.id) return;
+      destinationName = `destination-connectors/${values.destination.new.id}`;
+    } else {
+      if (!values.destination.existing.id) return;
+      destinationName = `destination-connectors/${values.destination.existing.id}`;
+    }
 
     const payload: CreatePipelinePayload = {
       id: values.pipeline.id,
       recipe: {
-        source:
-          values.source.type === "new"
-            ? values.source.new.name
-            : values.source.existing.name,
-        model_instances: [
-          values.model.type === "new"
-            ? values.model.new.modelInstance
-            : values.model.existing.name,
-        ],
-        destination:
-          values.destination.type === "new"
-            ? values.destination.new.name
-            : values.destination.existing.name,
+        source: sourceName,
+        model_instances: [modelInstanceName],
+        destination: destinationName,
       },
     };
-
-    console.log(payload, values.model.new.modelInstance);
 
     createPipeline.mutate(payload, {
       onSuccess: () => {
@@ -130,6 +149,9 @@ const SetupPipelineDetailsStep: FC = () => {
           name="pipeline.id"
           label="Name"
           description="Pick a name to help you identify this source in Instill"
+          value={values.pipeline.id}
+          error={errors.pipeline?.id || null}
+          additionalOnChangeCb={null}
           disabled={false}
           readOnly={false}
           required={true}
@@ -141,22 +163,26 @@ const SetupPipelineDetailsStep: FC = () => {
           name="pipeline.description"
           label="Description"
           description="Fill with a short description of your new pipeline"
+          value={values.pipeline.description}
+          error={errors.pipeline?.description || null}
+          additionalOnChangeCb={null}
           disabled={false}
           readOnly={false}
           required={true}
           autoComplete="off"
           placeholder=""
-          value={values.pipeline.description ? values.pipeline.description : ""}
           enableCounter={false}
           counterWordLimit={0}
         />
         <ToggleField
           name="pipeline.status"
           label="Pipeline status"
+          defaultChecked={true}
+          error={errors.pipeline?.state || null}
+          additionalOnChangeCb={null}
           disabled={true}
           readOnly={false}
           required={true}
-          defaultChecked={true}
           description="Turn this toggle off if you wish to not activate the pipeline now"
         />
         <PrimaryButton

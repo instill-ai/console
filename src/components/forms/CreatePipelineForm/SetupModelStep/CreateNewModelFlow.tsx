@@ -414,7 +414,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           </h3>
           <SingleSelect
             instanceId="new-model-instances"
-            name="model.new.modelInstance"
+            name="model.new.modelInstanceId"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}
             error={errors.model?.new?.modelInstanceId || null}

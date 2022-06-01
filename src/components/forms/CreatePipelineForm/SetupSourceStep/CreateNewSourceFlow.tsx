@@ -27,7 +27,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
 
   // ###################################################################
   // #                                                                 #
-  // # 1 - Initialize the source definition                            #
+  // # 1 - Initialize the source definition and sources                #
   // #                                                                 #
   // ###################################################################
 
