@@ -190,7 +190,7 @@ export const updateModelMutation = async (
   payload: UpdateModelPayload
 ): Promise<Model> => {
   try {
-    const { data } = await axios.post<UpdateModelResponse>(
+    const { data } = await axios.patch<UpdateModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
       payload
     );
