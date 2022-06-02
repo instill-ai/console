@@ -6,6 +6,7 @@ import { PrimaryButton } from "@/components/ui/Buttons";
 import { Model } from "@/lib/instill";
 import { useUpdateModel } from "@/services/model/ModelServices";
 import { Nullable } from "@/types/general";
+import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
@@ -21,6 +22,9 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   marginBottom,
 }) => {
   const [canEdit, setCanEdit] = useState(false);
+  const [updateModelError, setUpdateModelError] =
+    useState<Nullable<string>>(null);
+  const [isUpdateingModel, setIsUpdatingModel] = useState(false);
   const updateModel = useUpdateModel();
 
   const validateForm = useCallback((values: ConfigureModelFormValue) => {
@@ -33,6 +37,18 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     return errors;
   }, []);
 
+  const handleEditButton = (
+    values: ConfigureModelFormValue,
+    submitForm: () => Promise<any>
+  ) => {
+    if (!canEdit) {
+      setCanEdit(true);
+      return;
+    }
+
+    submitForm();
+  };
+
   return (
     <Formik
       initialValues={
@@ -40,14 +56,10 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
           description: model ? model.description : null,
         } as ConfigureModelFormValue
       }
+      enableReinitialize={true}
       onSubmit={(values) => {
-        if (!canEdit) {
-          setCanEdit(true);
-          return;
-        }
-
-        if (!values.description || !model) return;
-
+        if (!model || !values.description) return;
+        setIsUpdatingModel(true);
         updateModel.mutate(
           {
             name: model.name,
@@ -56,23 +68,33 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
           {
             onSuccess: () => {
               setCanEdit(false);
+              setIsUpdatingModel(false);
+            },
+            onError: (error) => {
+              if (error instanceof Error) {
+                setUpdateModelError(error.message);
+              } else {
+                setUpdateModelError(
+                  "Something went wrong when deploying model"
+                );
+              }
             },
           }
         );
       }}
       validate={validateForm}
     >
-      {({ values, errors }) => {
+      {({ values, errors, submitForm }) => {
         return (
           <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextArea
               name="description"
               label="Description"
               description="Fill with a short description of your model"
-              value={values.description ? values.description : ""}
+              value={values.description}
               error={errors.description || null}
-              onChangeCb={null}
-              disabled={false}
+              additionalOnChangeCb={null}
+              disabled={canEdit ? false : true}
               readOnly={false}
               required={true}
               autoComplete="off"
@@ -80,9 +102,25 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               enableCounter={false}
               counterWordLimit={0}
             />
-            <PrimaryButton type="button" disabled={true} position="ml-auto">
-              {canEdit ? "Done" : "Edit"}
-            </PrimaryButton>
+            <div className="flex flex-row">
+              {updateModelError ? (
+                <BasicProgressMessageBox width="w-[216px]" status="error">
+                  {updateModelError}
+                </BasicProgressMessageBox>
+              ) : isUpdateingModel ? (
+                <BasicProgressMessageBox width="w-[216px]" status="progressing">
+                  Updating model...
+                </BasicProgressMessageBox>
+              ) : null}
+              <PrimaryButton
+                disabled={false}
+                onClickHandler={() => handleEditButton(values, submitForm)}
+                position="ml-auto my-auto"
+                type="button"
+              >
+                {canEdit ? "Done" : "Edit"}
+              </PrimaryButton>
+            </div>
           </FormBase>
         );
       }}
