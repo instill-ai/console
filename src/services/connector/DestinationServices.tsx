@@ -153,11 +153,27 @@ export const useCreateDestination = () => {
       return Promise.resolve(res);
     },
     {
-      onSuccess: (newDestination) => {
-        queryClient.setQueryData<Destination[] | undefined>(
+      onSuccess: async (newDestination) => {
+        const destinationDefinition = await getDestinationDefinitionQuery(
+          newDestination.destination_connector_definition
+        );
+
+        const newDestinationWithDefinition: DestinationWithDefinition = {
+          ...newDestination,
+          destination_connector_definition: destinationDefinition,
+        };
+
+        queryClient.setQueryData<DestinationWithDefinition>(
+          ["destinations", newDestination.id],
+          newDestinationWithDefinition
+        );
+
+        queryClient.setQueryData<DestinationWithDefinition[]>(
           ["destinations"],
           (old) =>
-            old?.map((e) => (e.id === newDestination.id ? newDestination : e))
+            old
+              ? [newDestinationWithDefinition, ...old]
+              : [newDestinationWithDefinition]
         );
       },
     }

@@ -141,9 +141,23 @@ export const useCreateSource = () => {
       return Promise.resolve(res);
     },
     {
-      onSuccess: (newSource) => {
-        queryClient.setQueryData<Source[] | undefined>(["sources"], (old) =>
-          old?.map((e) => (e.id === newSource.id ? newSource : e))
+      onSuccess: async (newSource) => {
+        const sourceDefinition = await getSourceDefinitionQuery(
+          newSource.source_connector_definition
+        );
+
+        const newSourceWithDefinition: SourceWithDefinition = {
+          ...newSource,
+          source_connector_definition: sourceDefinition,
+        };
+
+        queryClient.setQueryData<SourceWithDefinition>(
+          ["sources", newSource.id],
+          newSourceWithDefinition
+        );
+
+        queryClient.setQueryData<SourceWithDefinition[]>(["sources"], (old) =>
+          old ? [newSourceWithDefinition, ...old] : [newSourceWithDefinition]
         );
       },
     }
