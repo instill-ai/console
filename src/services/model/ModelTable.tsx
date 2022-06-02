@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 import {
   InstanceCell,
   ModelTableHead,
@@ -12,7 +14,7 @@ import type { ModelTablePlaceholderProps } from "@/components/ui";
 import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
 import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { FC } from "react";
+import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type ModelTableProps = {
   models: ModelWithInstance[];
@@ -27,6 +29,8 @@ const ModelTable: FC<ModelTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
+  const stateOverviewCounts = useStateOverviewCounts(isLoading ? null : models);
+
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -46,7 +50,11 @@ const ModelTable: FC<ModelTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ModelTableHead offlineCounts={0} onlineCounts={0} errorCounts={0} />
+      <ModelTableHead
+        onlineCounts={stateOverviewCounts?.online || 0}
+        offlineCounts={stateOverviewCounts?.offline || 0}
+        errorCounts={stateOverviewCounts?.error || 0}
+      />
       <TableBody>
         {models.map((model) => (
           <TableRow

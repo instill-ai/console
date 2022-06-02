@@ -15,6 +15,7 @@ import type { DestinationTablePlaceholderProps } from "@/components/ui";
 
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type DestinationTableProps = {
   destinations: DestinationWithPipelines[];
@@ -29,6 +30,10 @@ const DestinationTable: FC<DestinationTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
+  const stateOverviewCounts = useStateOverviewCounts(
+    isLoading ? null : destinations
+  );
+
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -50,9 +55,9 @@ const DestinationTable: FC<DestinationTableProps> = ({
     >
       <ConnectorTableHead
         definition="destination"
-        offlineCounts={0}
-        onlineCounts={destinations.length}
-        errorCounts={0}
+        onlineCounts={stateOverviewCounts?.online || 0}
+        offlineCounts={stateOverviewCounts?.offline || 0}
+        errorCounts={stateOverviewCounts?.error || 0}
       />
       <TableBody>
         {destinations.map((destination) => (

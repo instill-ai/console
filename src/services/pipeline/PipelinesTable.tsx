@@ -1,5 +1,4 @@
 import { FC, memo } from "react";
-import cn from "clsx";
 
 import {
   ConnectionTypeCell,
@@ -17,6 +16,7 @@ import {
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;
@@ -31,6 +31,10 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
+  const stateOverviewCounts = useStateOverviewCounts(
+    isLoadingPipeline ? null : pipelines
+  );
+
   if (isLoadingPipeline) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -50,7 +54,11 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <PipelinesTableHead offlineCounts={1} onlineCounts={1} errorCounts={1} />
+      <PipelinesTableHead
+        onlineCounts={stateOverviewCounts?.online || 0}
+        offlineCounts={stateOverviewCounts?.offline || 0}
+        errorCounts={stateOverviewCounts?.error || 0}
+      />
       <TableBody>
         {pipelines.map((pipeline) => (
           <TableRow

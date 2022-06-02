@@ -14,6 +14,7 @@ import {
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import type { SourceTablePlaceholderProps } from "@/components/ui";
+import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type SourcesTableProps = {
   sources: SourceWithPipelines[];
@@ -28,6 +29,10 @@ const SourcesTable: FC<SourcesTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
+  const stateOverviewCounts = useStateOverviewCounts(
+    isLoadingSources ? null : sources
+  );
+
   if (isLoadingSources) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -49,9 +54,9 @@ const SourcesTable: FC<SourcesTableProps> = ({
     >
       <ConnectorTableHead
         definition="source"
-        offlineCounts={0}
-        onlineCounts={sources.length}
-        errorCounts={0}
+        onlineCounts={stateOverviewCounts?.online || 0}
+        offlineCounts={stateOverviewCounts?.offline || 0}
+        errorCounts={stateOverviewCounts?.error || 0}
       />
       <TableBody>
         {sources.map((source) => (
