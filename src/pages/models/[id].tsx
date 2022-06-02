@@ -23,14 +23,15 @@ import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
 } from "@/components/forms";
-import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import { SingleSelect } from "@/components/formik";
 import ModelInstanceTaskLabel from "@/components/ui/ModelInstanceTaskLabel/ModelInstanceTaskLabel";
+import { usePipelines } from "@/services/pipeline/PipelineServices";
+import { PipelinesTable } from "@/services/pipeline";
+import { Pipeline } from "@/lib/instill";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -46,13 +47,17 @@ const ModelDetailsPage: FC & {
   const router = useRouter();
   const { id } = router.query;
 
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Initialize Model and related modelInstances                 #
+  // #                                                                 #
+  // ###################################################################
+
   const model = useModel(id ? `models/${id}` : null);
 
   const modelWithInstances = useModelWithInstances(
     model.isSuccess ? model.data : null
   );
-
-  //const [modelInstanceOptions, setModelInstanceOptions] = use
 
   const modelInstanceOptions = useMemo<SingleSelectOption[]>(() => {
     if (!modelWithInstances.isSuccess || !router.isReady) return [];
@@ -101,11 +106,43 @@ const ModelDetailsPage: FC & {
     []
   );
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Initialize pipelines that use related modelInstane          #
+  // #                                                                 #
+  // ###################################################################
+
+  const pipelines = usePipelines(true);
+
+  const pipelinesGroupByModelInstance = useMemo(() => {
+    if (!pipelines.isSuccess || !modelWithInstances.isSuccess) return {};
+
+    const pipelinesGroup: Record<string, Pipeline[]> = {};
+
+    for (const modelInstance of modelWithInstances.data.instances) {
+      const targetPipelines = pipelines.data.filter((e) => {
+        if (e.recipe.models.find((e) => e.id === modelInstance.id)) {
+          return true;
+        } else {
+          false;
+        }
+      });
+      pipelinesGroup[modelInstance.id] = targetPipelines;
+    }
+    return pipelinesGroup;
+  }, [pipelines.isSuccess, modelWithInstances.isSuccess]);
+
+  const selectedModelInstancePipelines = useMemo(() => {
+    if (!selectedModelInstances || !pipelinesGroupByModelInstance) return [];
+
+    return pipelinesGroupByModelInstance[selectedModelInstances.id];
+  }, [pipelinesGroupByModelInstance, selectedModelInstances]);
+
   return (
     <PageContentContainer>
       <PageTitle
         title={id ? id.toString() : ""}
-        breadcrumbs={id ? ["Data Source", id.toString()] : ["Data Source"]}
+        breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
         enableButton={false}
         marginBottom="mb-5"
       />
@@ -159,6 +196,12 @@ const ModelDetailsPage: FC & {
         />
       </div>
       <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
+      <PipelinesTable
+        pipelines={selectedModelInstancePipelines}
+        isLoadingPipeline={pipelines.isLoading}
+        marginBottom="mb-10"
+        enablePlaceholderCreateButton={false}
+      />
       <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
       {modelWithInstances.isLoading ? null : selectedModelInstances ? (
         <ConfigureModelInstanceForm
