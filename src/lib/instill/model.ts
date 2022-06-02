@@ -24,8 +24,14 @@ export type Model = {
   update_time: string;
 };
 
+// - Becasuse model itself doesn't have state, we have to conclude model
+// state using model_instance state.
+// - model_instance.error > model_instance.online > model_instance.offline
+// - Model state will be error if there exist a error model_insance
+
 export type ModelWithInstance = Model & {
   instances: ModelInstance[];
+  state: ModelState;
 };
 
 export const getModelQuery = async (modelName: string): Promise<Model> => {

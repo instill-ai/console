@@ -11,6 +11,8 @@ import {
   listModelInstancesQuery,
   listModelsQuery,
   Model,
+  ModelInstance,
+  ModelState,
   ModelWithInstance,
   updateModelMutation,
   UpdateModelPayload,
@@ -204,6 +206,7 @@ export const useModelWithInstances = (model: Model | null) => {
       const modelWithInstances: ModelWithInstance = {
         ...model,
         instances: modelInstances,
+        state: determineModelState(modelInstances),
       };
 
       return Promise.resolve(modelWithInstances);
@@ -223,11 +226,23 @@ export const useModelsWithInstances = () => {
 
       const modelsWithInstances: ModelWithInstance[] = [];
 
+      // ###################################################################
+      // #                                                                 #
+      // # Prepare model state overview counts                             #
+      // #                                                                 #
+      // ###################################################################
+      //
+      // - Becasuse model itself doesn't have state, we have to conclude model
+      // state using model_instance state.
+      // - model_instance.error > model_instance.online > model_instance.offline
+      // - Model state will be error if there exist a error model_insance
+
       for (const model of models.data) {
         const modelInstances = await listModelInstancesQuery(model.name);
         modelsWithInstances.push({
           ...model,
           instances: modelInstances,
+          state: determineModelState(modelInstances),
         });
       }
 
@@ -237,6 +252,16 @@ export const useModelsWithInstances = () => {
       enabled: models.isSuccess ? true : false,
     }
   );
+};
+
+const determineModelState = (modelInstances: ModelInstance[]): ModelState => {
+  if (modelInstances.some((e) => e.state === "STATE_ERROR")) {
+    return "STATE_ERROR";
+  } else if (modelInstances.some((e) => e.state === "STATE_ONLINE")) {
+    return "STATE_ONLINE";
+  } else {
+    return "STATE_OFFLINE";
+  }
 };
 
 // ###################################################################
