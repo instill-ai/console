@@ -41,6 +41,8 @@ const ModelPage: FC & {
       <ModelTable
         models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
         isLoading={isLoading}
+        marginBottom={null}
+        enablePlaceholderCreateButton={true}
       />
     </PageContentContainer>
   );

@@ -37,6 +37,8 @@ const SourcePage: FC & {
       <SourcesTable
         sources={sources.data ? sources.data : []}
         isLoadingSources={isLoading}
+        marginBottom={null}
+        enablePlaceholderCreateButton={true}
       />
     </PageContentContainer>
   );
