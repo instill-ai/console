@@ -12,7 +12,7 @@ const TableLoadingPlaceholder: FC<TableLoadingPlaceholderProps> = ({
   marginBottom,
 }) => {
   return (
-    <div className={cn("flex h-[300px] w-full bg-white", marginBottom)}>
+    <div className={cn("flex min-h-[300px] w-full bg-white", marginBottom)}>
       <div className="m-auto flex flex-col gap-y-2.5">
         <div className="m-auto flex h-[72px] w-[72px] bg-instillBlue10">
           <NoBgSquareProgress
