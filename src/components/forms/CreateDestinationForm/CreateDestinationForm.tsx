@@ -6,7 +6,10 @@ import { SingleSelect } from "../../formik/FormikField";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 import { CreateDestinationPayload, CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import {
@@ -40,7 +43,6 @@ const CreateDestinationForm: FC = () => {
   ] = useState<Nullable<SingleSelectOption>>(null);
 
   const destinations = useDestinations();
-  const createDestination = useCreateDestination();
 
   useEffect(() => {
     setSyncDestinationDefinitionOptions([
@@ -80,6 +82,18 @@ const CreateDestinationForm: FC = () => {
     []
   );
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - handle state when create destination                        #
+  // #                                                                 #
+  // ###################################################################
+
+  const [createDestinationError, setCreateDestinationError] =
+    useState<Nullable<string>>(null);
+  const [isCreatingDestination, setIsCreatingDestination] = useState(false);
+
+  const createDestination = useCreateDestination();
+
   return (
     <Formik
       initialValues={{ id: null, definition: null }}
@@ -108,9 +122,12 @@ const CreateDestinationForm: FC = () => {
           },
         };
 
+        setIsCreatingDestination(true);
+
         createDestination.mutate(payload, {
           onSuccess: () => {
             router.push("/destinations");
+            setIsCreatingDestination(false);
           },
         });
       }}
@@ -136,7 +153,7 @@ const CreateDestinationForm: FC = () => {
               instanceId="source-type"
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
-              onChangeCb={destinationDefinitionOnChange}
+              additionalOnChangeCb={destinationDefinitionOnChange}
               error={formik.errors.definition || null}
               disabled={false}
               readOnly={false}
@@ -144,13 +161,24 @@ const CreateDestinationForm: FC = () => {
               description="Setup Guide"
               menuPlacement="auto"
             />
-            <PrimaryButton
-              type="submit"
-              disabled={formik.isValid ? false : true}
-              position="ml-auto"
-            >
-              Set up Source
-            </PrimaryButton>
+            <div className="flex flex-row">
+              {createDestinationError ? (
+                <BasicProgressMessageBox width="w-[216px]" status="error">
+                  {createDestinationError}
+                </BasicProgressMessageBox>
+              ) : isCreatingDestination ? (
+                <BasicProgressMessageBox width="w-[216px]" status="progressing">
+                  Setting model...
+                </BasicProgressMessageBox>
+              ) : null}
+              <PrimaryButton
+                disabled={formik.isValid ? false : true}
+                position="ml-auto my-auto"
+                type="submit"
+              >
+                Setup new model
+              </PrimaryButton>
+            </div>
           </FormBase>
         );
       }}
