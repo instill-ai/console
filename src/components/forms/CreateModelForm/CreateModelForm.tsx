@@ -244,8 +244,10 @@ const CreateNewModelFlow: FC = () => {
         onError: (error) => {
           if (error instanceof Error) {
             setDeployModelError(error.message);
+            setIsDeployingModel(false);
           } else {
             setDeployModelError("Something went wrong when deploying model");
+            setIsDeployingModel(false);
           }
         },
       }

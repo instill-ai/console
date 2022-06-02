@@ -129,6 +129,17 @@ const CreateDestinationForm: FC = () => {
             router.push("/destinations");
             setIsCreatingDestination(false);
           },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setCreateDestinationError(error.message);
+              setIsCreatingDestination(false);
+            } else {
+              setCreateDestinationError(
+                "Something went wrong when deploying model"
+              );
+              setIsCreatingDestination(false);
+            }
+          },
         });
       }}
     >

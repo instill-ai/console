@@ -6,7 +6,10 @@ import { SingleSelect } from "../../formik/FormikField";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 import {
   useCreateSource,
   useSources,
@@ -77,6 +80,16 @@ const CreateSourceForm: FC = () => {
     setSelectedSyncSourceDefinitionOption(option);
   }, []);
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - handle state when create destination                        #
+  // #                                                                 #
+  // ###################################################################
+
+  const [createSourceError, setCreateSourceError] =
+    useState<Nullable<string>>(null);
+  const [isCreatingSource, setIsCreatingSource] = useState(false);
+
   return (
     <Formik
       initialValues={{ id: null, definition: null }}
@@ -105,9 +118,21 @@ const CreateSourceForm: FC = () => {
           },
         };
 
+        setIsCreatingSource(true);
+
         createSource.mutate(payload, {
           onSuccess: () => {
+            setIsCreatingSource(false);
             router.push("/sources");
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setCreateSourceError(error.message);
+              setIsCreatingSource(false);
+            } else {
+              setCreateSourceError("Something went wrong when deploying model");
+              setIsCreatingSource(false);
+            }
           },
         });
       }}
@@ -141,13 +166,24 @@ const CreateSourceForm: FC = () => {
               description="Setup Guide"
               menuPlacement="auto"
             />
-            <PrimaryButton
-              type="submit"
-              disabled={formik.isValid ? false : true}
-              position="ml-auto"
-            >
-              Set up Source
-            </PrimaryButton>
+            <div className="flex flex-row">
+              {createSourceError ? (
+                <BasicProgressMessageBox width="w-[216px]" status="error">
+                  {createSourceError}
+                </BasicProgressMessageBox>
+              ) : isCreatingSource ? (
+                <BasicProgressMessageBox width="w-[216px]" status="progressing">
+                  Creating source...
+                </BasicProgressMessageBox>
+              ) : null}
+              <PrimaryButton
+                disabled={formik.isValid ? false : true}
+                position="ml-auto my-auto"
+                type="submit"
+              >
+                Setup new model
+              </PrimaryButton>
+            </div>
           </FormBase>
         );
       }}

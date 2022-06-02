@@ -103,7 +103,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               menuPlacement="auto"
               value={selectedSourceDefinitionOption}
               error={null}
-              onChangeCb={sourceDefinitionOnChangeCb}
+              additionalOnChangeCb={sourceDefinitionOnChangeCb}
             />
             <div className="mt-10 flex flex-row">
               <div className="mr-auto flex flex-row gap-x-2.5">
