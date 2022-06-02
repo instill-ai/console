@@ -23,39 +23,33 @@ const StateOverview: FC<StateOverviewProps> = ({
 
   return (
     <div className="flex flex-row">
-      {onlineCounts
-        ? getStateItem(
-            <StateIndicator
-              state="STATE_ONLINE"
-              width="w-3"
-              height="h-3"
-              position="my-auto"
-            />,
-            onlineCounts
-          )
-        : null}
-      {errorCounts
-        ? getStateItem(
-            <StateIndicator
-              state="STATE_ERROR"
-              width="w-3"
-              height="h-3"
-              position="my-auto"
-            />,
-            errorCounts
-          )
-        : null}
-      {offlineCounts
-        ? getStateItem(
-            <StateIndicator
-              state="STATE_OFFLINE"
-              width="w-3"
-              height="h-3"
-              position="my-auto"
-            />,
-            offlineCounts
-          )
-        : null}
+      {getStateItem(
+        <StateIndicator
+          state="STATE_ONLINE"
+          width="w-3"
+          height="h-3"
+          position="my-auto"
+        />,
+        onlineCounts
+      )}
+      {getStateItem(
+        <StateIndicator
+          state="STATE_ERROR"
+          width="w-3"
+          height="h-3"
+          position="my-auto"
+        />,
+        errorCounts
+      )}
+      {getStateItem(
+        <StateIndicator
+          state="STATE_OFFLINE"
+          width="w-3"
+          height="h-3"
+          position="my-auto"
+        />,
+        offlineCounts
+      )}
     </div>
   );
 };
