@@ -59,7 +59,14 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
       enableReinitialize={true}
       onSubmit={(values) => {
         if (!model || !values.description) return;
+
+        if (model.description === values.description) {
+          setCanEdit(false);
+          return;
+        }
+
         setIsUpdatingModel(true);
+
         updateModel.mutate(
           {
             name: model.name,
