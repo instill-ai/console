@@ -176,7 +176,7 @@ const CreateDestinationForm: FC = () => {
                 position="ml-auto my-auto"
                 type="submit"
               >
-                Setup new model
+                Creating destination...
               </PrimaryButton>
             </div>
           </FormBase>
