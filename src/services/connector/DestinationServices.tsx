@@ -1,6 +1,7 @@
 import {
   createDestinationMutation,
   CreateDestinationPayload,
+  Destination,
   DestinationWithDefinition,
   DestinationWithPipelines,
   getDestinationDefinitionQuery,
@@ -9,7 +10,7 @@ import {
   listDestinationsQuery,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { usePipelines } from "../pipeline/PipelineServices";
 
 // ###################################################################
@@ -145,8 +146,20 @@ export const useDestinationsWithPipelines = () => {
 // ###################################################################
 
 export const useCreateDestination = () => {
-  return useMutation(async (payload: CreateDestinationPayload) => {
-    const res = await createDestinationMutation(payload);
-    return Promise.resolve(res);
-  });
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: CreateDestinationPayload) => {
+      const res = await createDestinationMutation(payload);
+      return Promise.resolve(res);
+    },
+    {
+      onSuccess: (newDestination) => {
+        queryClient.setQueryData<Destination[] | undefined>(
+          ["destinations"],
+          (old) =>
+            old?.map((e) => (e.id === newDestination.id ? newDestination : e))
+        );
+      },
+    }
+  );
 };

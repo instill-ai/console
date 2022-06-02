@@ -142,16 +142,9 @@ export const useCreateSource = () => {
     },
     {
       onSuccess: (newSource) => {
-        queryClient.setQueryData<Source>(["sources", newSource.id], newSource);
-        const oldSources = queryClient.getQueryData<Source[]>(["sources"]);
-        if (oldSources) {
-          queryClient.setQueryData<Source[]>(
-            ["sources"],
-            [...oldSources, newSource]
-          );
-        } else {
-          queryClient.invalidateQueries(["sources"]);
-        }
+        queryClient.setQueryData<Source[] | undefined>(["sources"], (old) =>
+          old?.map((e) => (e.id === newSource.id ? newSource : e))
+        );
       },
     }
   );
