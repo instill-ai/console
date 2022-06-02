@@ -15,6 +15,7 @@ export type Connector = {
   org: string;
   create_time: string;
   update_time: string;
+  state: string;
 };
 
 export type ConnectorDefinition = {
