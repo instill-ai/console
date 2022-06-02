@@ -13,7 +13,6 @@ export type PipelineModeLabelProps = {
   iconPosition: string;
   paddingX: string;
   paddingY: string;
-  label: string;
 };
 
 const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
@@ -25,16 +24,17 @@ const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
   iconPosition,
   paddingX,
   paddingY,
-  label,
 }) => {
   let bgColor: string;
   let textColor: string;
   let modeIcon: ReactElement | null;
+  let label: string;
 
   switch (mode) {
     case "MODE_ASYNC": {
       bgColor = "bg-instillYellow30";
       textColor = "text-instillYellow50";
+      label = "Async";
       modeIcon = (
         <AsyncIcon
           color="fill-instillWarmOrange"
@@ -48,6 +48,7 @@ const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
     case "MODE_SYNC": {
       bgColor = "bg-[#EDEDFF]";
       textColor = "text-instillNeonBlue";
+      label = "Sync";
       modeIcon = (
         <SyncIcon
           color="fill-instillNeonBlue"
@@ -61,6 +62,7 @@ const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
     default: {
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
+      label = "";
       modeIcon = null;
     }
   }
