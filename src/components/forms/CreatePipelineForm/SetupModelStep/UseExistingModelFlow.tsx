@@ -64,13 +64,15 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   }, [modelInstances.isSuccess]);
 
   const selectedModelInstanceOption = useMemo(() => {
-    if (!values.model.existing.id || !modelInstanceOptions) return null;
+    if (!values.model.existing.modelInstanceId || !modelInstanceOptions)
+      return null;
 
     return (
-      modelInstanceOptions.find((e) => e.value === values.model.existing.id) ||
-      null
+      modelInstanceOptions.find(
+        (e) => e.value === values.model.existing.modelInstanceId
+      ) || null
     );
-  }, [values.model.existing.id, modelInstanceOptions]);
+  }, [values.model.existing.modelInstanceId, modelInstanceOptions]);
 
   // ###################################################################
   // #                                                                 #
@@ -79,16 +81,27 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   // ###################################################################
 
   const canUseExistingModel = useMemo(() => {
-    if (!values.model.existing.id) {
+    if (!values.model.existing.modelInstanceId) {
       return false;
     }
 
     return true;
-  }, [values.model.existing.id]);
+  }, [values.model.existing.modelInstanceId]);
 
   const handleUseModel = useCallback(() => {
-    if (!values.model.existing.id || !modelInstances.isSuccess) return;
+    if (!values.model.existing.modelInstanceId || !modelInstances.isSuccess)
+      return;
+
+    const targetModelInstance = modelInstances.data.find(
+      (e) => e.id === values.model.existing.modelInstanceId
+    );
+
+    if (!targetModelInstance) return;
+
+    const instanceNameList = targetModelInstance.name.split("/");
+
     setFieldValue("model.type", "existing");
+    setFieldValue("model.existing.id", instanceNameList[1]);
     setStepNumber(stepNumber + 1);
   }, [values.model.existing.id, modelInstances.isSuccess]);
 
@@ -98,11 +111,11 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         Select a existing online model
       </h3>
       <SingleSelect
-        name="model.existing.id"
-        instanceId="existing-model-id"
+        name="model.existing.modelInstanceId"
+        instanceId="existing-model-instanceId"
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
-        error={errors.model?.existing?.id || null}
+        error={errors.model?.existing?.modelInstanceId || null}
         additionalOnChangeCb={null}
         disabled={modelCreated ? true : false}
         readOnly={false}
