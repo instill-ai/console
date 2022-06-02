@@ -68,8 +68,8 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               autoComplete="off"
             />
             <TextField
-              name="tag"
-              label="Tag"
+              name="repoUrl"
+              label="GitHub repository URL"
               description="GitHub repository URL, e.g., 'https://github.com/instill-ai/protobufs/tree/v2.0.0'."
               value={values.repoUrl}
               error={errors.repoUrl || null}
