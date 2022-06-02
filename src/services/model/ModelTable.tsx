@@ -5,7 +5,7 @@ import {
   NameCell,
   TableBody,
   TableContainer,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
   TableRow,
 } from "@/components/ui";
 import type { ModelTablePlaceholderProps } from "@/components/ui";
@@ -28,7 +28,7 @@ const ModelTable: FC<ModelTableProps> = ({
   enablePlaceholderCreateButton,
 }) => {
   if (isLoading) {
-    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
+    return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
   if (models.length === 0) {

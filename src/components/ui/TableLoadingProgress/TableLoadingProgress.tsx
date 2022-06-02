@@ -4,11 +4,11 @@ import { NoBgSquareProgress } from "@instill-ai/design-system";
 
 import { Nullable } from "@/types/general";
 
-export type TableLoadingPlaceholderProps = {
+export type TableLoadingProgressProps = {
   marginBottom: Nullable<string>;
 };
 
-const TableLoadingPlaceholder: FC<TableLoadingPlaceholderProps> = ({
+const TableLoadingProgress: FC<TableLoadingProgressProps> = ({
   marginBottom,
 }) => {
   return (
@@ -29,4 +29,4 @@ const TableLoadingPlaceholder: FC<TableLoadingPlaceholderProps> = ({
   );
 };
 
-export default TableLoadingPlaceholder;
+export default TableLoadingProgress;

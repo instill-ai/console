@@ -8,7 +8,7 @@ import PipelineOverViewTable from "@/services/pipeline/PipelineOverviewTable";
 import {
   StateLabel,
   PipelineModeLabel,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
 } from "@/components/ui";
 import { GetServerSideProps } from "next";
 import { listRepoFileContent } from "@/lib/github";
@@ -83,13 +83,12 @@ const PipelineDetailsPage: FC<PipelineDetailsPageProps> & {
               paddingX="px-[5px]"
               paddingY="py-1.5"
               state={pipeline.data?.state}
-              label={pipeline.data.mode}
             />
           </div>
           <PipelineOverViewTable pipeline={pipeline.data} isLoading={false} />
         </>
       ) : (
-        <TableLoadingPlaceholder />
+        <TableLoadingProgress marginBottom={null} />
       )}
     </PageContentContainer>
   );

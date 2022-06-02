@@ -6,15 +6,12 @@ import PipelineTablePlaceholder from "./PipelineTablePlaceholder";
 import type { PipelineTablePlaceholderProps } from "./PipelineTablePlaceholder";
 import ModelTablePlaceholder from "./ModelTablePlaceholder";
 import type { ModelTablePlaceholderProps } from "./ModelTablePlaceholder";
-import TableLoadingPlaceholder from "./TableLoadingPlaceholder";
-import type { TableLoadingPlaceholderProps } from "./TableLoadingPlaceholder";
 
 export {
   DestinationTablePlaceholder,
   SourceTablePlaceholder,
   PipelineTablePlaceholder,
   ModelTablePlaceholder,
-  TableLoadingPlaceholder,
 };
 
 export type {
@@ -22,5 +19,4 @@ export type {
   SourceTablePlaceholderProps,
   PipelineTablePlaceholderProps,
   ModelTablePlaceholderProps,
-  TableLoadingPlaceholderProps,
 };

@@ -17,6 +17,8 @@ import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
 import ModelDefinitionLabel from "./ModelDefinitionLabel";
 import HorizontalDivider from "./HorizontalDivider";
 import type { HorizontalDividerProps } from "./HorizontalDivider";
+import TableLoadingProgress from "./TableLoadingProgress";
+import type { TableLoadingProgressProps } from "./TableLoadingProgress";
 
 export {
   Sidebar,
@@ -31,6 +33,7 @@ export {
   ModelDefinitionIcon,
   ModelDefinitionLabel,
   HorizontalDivider,
+  TableLoadingProgress,
 };
 export type {
   StateIndicatorProps,
@@ -39,6 +42,7 @@ export type {
   ConnectorIconProps,
   ModelDefinitionIconProps,
   HorizontalDividerProps,
+  TableLoadingProgressProps,
 };
 
 export * from "./TableHeads";

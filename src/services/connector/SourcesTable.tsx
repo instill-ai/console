@@ -8,7 +8,7 @@ import {
   SourceTablePlaceholder,
   TableBody,
   TableContainer,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
   TableRow,
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
@@ -29,7 +29,7 @@ const SourcesTable: FC<SourcesTableProps> = ({
   enablePlaceholderCreateButton,
 }) => {
   if (isLoadingSources) {
-    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
+    return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
   if (sources.length === 0) {

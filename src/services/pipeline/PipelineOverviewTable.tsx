@@ -3,7 +3,7 @@ import {
   PipelineOverviewTableHead,
   TableBody,
   TableContainer,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
   TableRow,
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
@@ -20,11 +20,15 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return <TableLoadingPlaceholder />;
+    return <TableLoadingProgress marginBottom={null} />;
   }
 
   return (
-    <TableContainer tableLayout="table-auto" borderCollapse="border-collapse">
+    <TableContainer
+      marginBottom={null}
+      tableLayout="table-auto"
+      borderCollapse="border-collapse"
+    >
       <PipelineOverviewTableHead
         sourceState="STATE_CONNECTED"
         modelState="STATE_ONLINE"

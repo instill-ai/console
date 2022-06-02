@@ -11,7 +11,7 @@ import {
   TableBody,
   TableContainer,
   TableRow,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
 } from "@/components/ui";
 
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
@@ -32,7 +32,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
   enablePlaceholderCreateButton,
 }) => {
   if (isLoadingPipeline) {
-    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
+    return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
   if (pipelines.length === 0) {

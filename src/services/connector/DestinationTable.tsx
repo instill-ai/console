@@ -8,7 +8,7 @@ import {
   NameCell,
   TableBody,
   TableContainer,
-  TableLoadingPlaceholder,
+  TableLoadingProgress,
   TableRow,
 } from "@/components/ui";
 import type { DestinationTablePlaceholderProps } from "@/components/ui";
@@ -30,7 +30,7 @@ const DestinationTable: FC<DestinationTableProps> = ({
   enablePlaceholderCreateButton,
 }) => {
   if (isLoading) {
-    return <TableLoadingPlaceholder marginBottom={marginBottom} />;
+    return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
   if (destinations.length === 0) {
