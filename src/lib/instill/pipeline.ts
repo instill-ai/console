@@ -129,6 +129,7 @@ export const mockPipelines: Pipeline[] = [
           create_time: "2022-05-25T02:12:39.644778Z",
           update_time: "2022-05-25T02:12:39.644778Z",
           org: "",
+          state: "STATE_CONNECTED",
         },
       },
       destination: {
@@ -186,6 +187,7 @@ export const mockPipelines: Pipeline[] = [
           create_time: "2022-05-25T02:13:45.383123Z",
           update_time: "2022-05-25T02:13:45.383123Z",
           org: "",
+          state: "STATE_CONNECTED",
         },
       },
       models: [
@@ -267,6 +269,29 @@ export const createPipelineMutation = async (
   try {
     const { data } = await axios.post<GetPipelineResponse>(
       `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines`,
+      payload
+    );
+    return Promise.resolve(data.pipeline);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type UpdatePipelinePayload = {
+  name: string;
+  description: string;
+};
+
+export type UpdatePipelineResponse = {
+  pipeline: PipelineWithRawRecipe;
+};
+
+export const updatePipelineMutation = async (
+  payload: UpdatePipelinePayload
+) => {
+  try {
+    const { data } = await axios.patch<UpdatePipelineResponse>(
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
       payload
     );
     return Promise.resolve(data.pipeline);
