@@ -151,7 +151,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
             value={syncDestinationOptions[selectedSyncDestinationIndex]}
             error={errors.destination?.existing?.id || null}
             additionalOnChangeCb={null}
-            disabled={false}
+            disabled={true}
             readOnly={false}
             required={true}
             menuPlacement="auto"
