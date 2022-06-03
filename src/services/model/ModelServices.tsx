@@ -66,7 +66,10 @@ export const useCreateGithubModel = () => {
     },
     {
       onSuccess: (newModel) => {
-        queryClient.setQueryData<Model>(["user", newModel.id], newModel);
+        queryClient.setQueryData<Model>(["models", newModel.id], newModel);
+        queryClient.setQueryData<Model[]>(["models"], (old) =>
+          old ? [...old, newModel] : [newModel]
+        );
       },
     }
   );
@@ -81,7 +84,10 @@ export const useCreateLocalModel = () => {
     },
     {
       onSuccess: (newModel) => {
-        queryClient.setQueryData<Model>(["user", newModel.id], newModel);
+        queryClient.setQueryData<Model>(["models", newModel.id], newModel);
+        queryClient.setQueryData<Model[]>(["models"], (old) =>
+          old ? [...old, newModel] : [newModel]
+        );
       },
     }
   );
@@ -97,6 +103,13 @@ export const useUpdateModel = () => {
     {
       onSuccess: (newModel) => {
         queryClient.setQueryData<Model>(["models", newModel.id], newModel);
+        queryClient.setQueryData<Model[]>(["models"], (old) => {
+          if (!old) {
+            return [newModel];
+          }
+
+          return [...old.filter((e) => e.id === newModel.id), newModel];
+        });
       },
     }
   );
