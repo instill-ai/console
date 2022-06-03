@@ -102,34 +102,43 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     >
       {({ values, errors, submitForm }) => {
         return (
-          <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
-            <ToggleField
-              name="state"
-              label="State"
-              defaultChecked={true}
-              error={errors?.state || null}
-              additionalOnChangeCb={null}
-              disabled={true}
-              readOnly={false}
-              required={true}
-              description={null}
-            />
-            <TextArea
-              name="description"
-              label="Description"
-              description="Fill with a short description of your model"
-              value={values.description}
-              error={errors.description || null}
-              additionalOnChangeCb={null}
-              disabled={canEdit ? false : true}
-              readOnly={false}
-              required={true}
-              autoComplete="off"
-              placeholder=""
-              enableCounter={false}
-              counterWordLimit={0}
-            />
+          <FormBase marginBottom={marginBottom} gapY={null} padding={null}>
+            <div className="mb-[60px] flex flex-col gap-y-5">
+              <ToggleField
+                name="state"
+                label="State"
+                defaultChecked={true}
+                error={errors?.state || null}
+                additionalOnChangeCb={null}
+                disabled={true}
+                readOnly={false}
+                required={true}
+                description={null}
+              />
+              <TextArea
+                name="description"
+                label="Description"
+                description="Fill with a short description of your model"
+                value={values.description}
+                error={errors.description || null}
+                additionalOnChangeCb={null}
+                disabled={canEdit ? false : true}
+                readOnly={false}
+                required={true}
+                autoComplete="off"
+                placeholder=""
+                enableCounter={false}
+                counterWordLimit={0}
+              />
+            </div>
             <div className="mb-10 flex flex-row">
+              <PrimaryButton
+                disabled={true}
+                position="mr-auto my-auto"
+                type="button"
+              >
+                Delete
+              </PrimaryButton>
               <PrimaryButton
                 disabled={false}
                 onClickHandler={() => handleEditButton(values, submitForm)}
