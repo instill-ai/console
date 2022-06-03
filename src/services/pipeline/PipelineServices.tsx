@@ -10,6 +10,8 @@ import {
   getSourceQuery,
   listPipelinesQuery,
   RawPipelineRecipe,
+  updatePipelineMutation,
+  UpdatePipelinePayload,
 } from "@/lib/instill";
 import type { Pipeline, PipelineRecipe, ModelInstance } from "@/lib/instill";
 import type { Nullable } from "@/types/general";
@@ -229,4 +231,39 @@ export const useCreatePipeline = () => {
     const res = await createPipelineMutation(payload);
     return Promise.resolve(res);
   });
+};
+
+export const useUpdatePipeline = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (payload: UpdatePipelinePayload) => {
+      const rawPipeline = await updatePipelineMutation(payload);
+
+      const recipe = await constructPipelineRecipeWithDefinition(
+        rawPipeline.recipe
+      );
+
+      const pipeline: Pipeline = {
+        ...rawPipeline,
+        recipe: recipe,
+      };
+
+      return Promise.resolve(pipeline);
+    },
+    {
+      onSuccess: (newPipeline) => {
+        queryClient.setQueryData<Pipeline>(
+          ["pipelines", newPipeline.id],
+          newPipeline
+        );
+        queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) => {
+          if (!old) {
+            return [newPipeline];
+          }
+
+          return [...old.filter((e) => e.id === newPipeline.id), newPipeline];
+        });
+      },
+    }
+  );
 };
