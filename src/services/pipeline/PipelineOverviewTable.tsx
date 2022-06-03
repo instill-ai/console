@@ -14,11 +14,13 @@ import { FC } from "react";
 export type PipelineOverViewTableProps = {
   pipeline: Nullable<Pipeline>;
   isLoading: boolean;
+  marginBottom: Nullable<string>;
 };
 
 const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
   pipeline,
   isLoading,
+  marginBottom,
 }) => {
   if (isLoading) {
     return <TableLoadingProgress marginBottom={null} />;
@@ -30,7 +32,7 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
 
   return (
     <TableContainer
-      marginBottom={null}
+      marginBottom={marginBottom}
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
