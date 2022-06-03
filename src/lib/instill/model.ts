@@ -165,7 +165,7 @@ export const createLocalModelMutation = async (
   try {
     const formData = new FormData();
     formData.append("id", payload.id);
-    formData.append("desctiption", payload.desctiption);
+    formData.append("description", payload.desctiption);
     formData.append("model_definition", payload.model_definition);
     formData.append("content", payload.content);
 
