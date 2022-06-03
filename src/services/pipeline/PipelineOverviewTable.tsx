@@ -8,10 +8,11 @@ import {
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
 import { Pipeline } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 import { FC } from "react";
 
 export type PipelineOverViewTableProps = {
-  pipeline: Pipeline;
+  pipeline: Nullable<Pipeline>;
   isLoading: boolean;
 };
 
@@ -21,6 +22,10 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
 }) => {
   if (isLoading) {
     return <TableLoadingProgress marginBottom={null} />;
+  }
+
+  if (!pipeline) {
+    return null;
   }
 
   return (
