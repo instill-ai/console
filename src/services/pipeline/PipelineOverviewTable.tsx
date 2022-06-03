@@ -36,11 +36,7 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <PipelineOverviewTableHead
-        sourceState="STATE_CONNECTED"
-        modelState="STATE_ONLINE"
-        destinationState="STATE_CONNECTED"
-      />
+      <PipelineOverviewTableHead />
       <TableBody>
         <TableRow borderColor="border-instillGrey20" bgColor="bg-white">
           <ConnectionTypeCell
@@ -61,7 +57,7 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
             paddingRight="pl-[15px]"
           />
           <ModelsCell
-            models={pipeline.recipe.models}
+            modelInstances={pipeline.recipe.models}
             width="w-[269px]"
             paddingBottom="pb-5"
             paddingTop="pt-5"
