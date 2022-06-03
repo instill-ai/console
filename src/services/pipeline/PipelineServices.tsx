@@ -11,21 +11,10 @@ import {
   listPipelinesQuery,
   RawPipelineRecipe,
 } from "@/lib/instill";
-import type {
-  Pipeline,
-  PipelineMode,
-  PipelineRecipe,
-  ModelInstance,
-} from "@/lib/instill";
-import type { Mode } from "@/types/general";
-import { useMemo, useState } from "react";
+import type { Pipeline, PipelineRecipe, ModelInstance } from "@/lib/instill";
+import type { Nullable } from "@/types/general";
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-
-export const transformMode = (mode: PipelineMode): Mode => {
-  if (mode === "MODE_ASYNC") return "async";
-  else if (mode === "MODE_SYNC") return "sync";
-  else return "unspecific";
-};
 
 export const constructPipelineRecipeWithDefinition = async (
   rawRecipe: RawPipelineRecipe
@@ -41,8 +30,8 @@ export const constructPipelineRecipeWithDefinition = async (
     );
     const instances: ModelInstance[] = [];
 
-    for (const modelInstanceId of rawRecipe.model_instances) {
-      const modelInstance = await getModelInstanceQuery(modelInstanceId);
+    for (const modelInstanceName of rawRecipe.model_instances) {
+      const modelInstance = await getModelInstanceQuery(modelInstanceName);
       instances.push(modelInstance);
     }
 
@@ -67,7 +56,7 @@ export const constructPipelineRecipeWithDefinition = async (
 // #                                                                 #
 // ###################################################################
 
-export const usePipeline = (pipelineName: string | undefined) => {
+export const usePipeline = (pipelineName: Nullable<string>) => {
   const queryClient = useQueryClient();
   return useQuery(
     ["pipelines", pipelineName],
