@@ -189,18 +189,18 @@ export const useModelInstances = (modelId: string | undefined) => {
   );
 };
 
-export const useModelInstance = (modelInstanceId: string | undefined) => {
+export const useModelInstance = (modelInstanceName: Nullable<string>) => {
   return useQuery(
-    ["models", "all", "modelInstances", modelInstanceId],
+    ["models", "all", "modelInstances", modelInstanceName],
     async () => {
-      if (!modelInstanceId) {
-        return Promise.reject(new Error("Model instance id not provided"));
+      if (!modelInstanceName) {
+        return Promise.reject(new Error("Model instance name not provided"));
       }
-      const modelInstances = await getModelInstanceQuery(modelInstanceId);
+      const modelInstances = await getModelInstanceQuery(modelInstanceName);
       return Promise.resolve(modelInstances);
     },
     {
-      enabled: !!modelInstanceId,
+      enabled: !!modelInstanceName,
     }
   );
 };
