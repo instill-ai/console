@@ -77,16 +77,16 @@ const DestinationDetailsPage: FC<DestinationDetailsPageProps> & {
         />
       </div>
       <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
-      <div className="mb-10 flex">
-        <PipelinesTable
-          pipelines={
-            destinationWithPipelines.data
-              ? destinationWithPipelines.data.pipelines
-              : []
-          }
-          isLoadingPipeline={isLoading}
-        />
-      </div>
+      <PipelinesTable
+        pipelines={
+          destinationWithPipelines.data
+            ? destinationWithPipelines.data.pipelines
+            : []
+        }
+        isLoadingPipeline={isLoading}
+        marginBottom="mb-10"
+        enablePlaceholderCreateButton={false}
+      />
       <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
       <div>
         <ConfigureDestinationForm
