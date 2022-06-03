@@ -3,10 +3,10 @@ import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
 import { groupBy } from "@/utils/arrayUtils";
 import CellBase, { CellBaseProps } from "../CellBase";
-import { ModelInstance } from "@/lib/instill";
+import { ModelInstance, ModelState } from "@/lib/instill";
 
 export type ModelsCellProps = CellBaseProps & {
-  models: ModelInstance[];
+  modelInstances: ModelInstance[];
   width: string;
 };
 
@@ -16,9 +16,26 @@ const ModelsCell: FC<ModelsCellProps> = ({
   paddingRight,
   paddingTop,
   width,
-  models,
+  modelInstances,
 }) => {
-  const groupByModel = groupBy(models, (i) => i.id);
+  const groupByModel = groupBy(modelInstances, (i) => {
+    const modelInstanceNameList = i.name.split("/");
+    return modelInstanceNameList[1];
+  });
+
+  const getStateTextColor = (state: ModelState) => {
+    switch (state) {
+      case "STATE_ERROR": {
+        return "text-instillRed";
+      }
+      case "STATE_OFFLINE": {
+        return "text-instillGrey70";
+      }
+      default: {
+        return "text-instillGreen50";
+      }
+    }
+  };
 
   return (
     <CellBase
@@ -41,14 +58,17 @@ const ModelsCell: FC<ModelsCellProps> = ({
                 {key}
               </p>
             </div>
-            {/* <div className="flex flex-col gap-y-1">
+            <div className="flex flex-col gap-y-1">
               {value.map((e) => (
                 <div
                   key={e.id}
-                  className="instill-text-body text-instillGrey90"
-                >{`${e.id}/${e.}`}</div>
+                  className={cn(
+                    "instill-text-body",
+                    getStateTextColor(e.state)
+                  )}
+                >{`${key}/${e.id}`}</div>
               ))}
-            </div> */}
+            </div>
           </div>
         ))}
       </div>
