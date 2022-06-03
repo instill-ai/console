@@ -50,13 +50,13 @@ type Destination = {
 
 type ExistingModel = {
   id: Nullable<string>;
-  modelInstanceId: Nullable<string>;
+  modelInstanceName: Nullable<string>;
 };
 
 type NewModel = {
   id: Nullable<string>;
   modelDefinition: Nullable<string>;
-  modelInstanceId: Nullable<string>;
+  modelInstanceName: Nullable<string>;
   file: Nullable<string>;
   repo: Nullable<string>;
   description: Nullable<string>;
@@ -98,14 +98,14 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
             new: {
               id: null,
               modelDefinition: null,
-              modelInstanceId: null,
+              modelInstanceName: null,
               file: null,
               description: null,
               repo: null,
             },
             existing: {
               id: null,
-              modelInstanceId: null,
+              modelInstanceName: null,
             },
             type: null,
           },

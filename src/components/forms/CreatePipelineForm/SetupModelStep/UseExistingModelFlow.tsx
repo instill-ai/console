@@ -53,26 +53,28 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     setModelInstanceOptions(
       onlineModelInstances.map((e) => {
         const instanceNameList = e.name.split("/");
-        const modelId = instanceNameList[2];
+        const modelId = instanceNameList[1];
 
         return {
           label: `${modelId}/${e.id}`,
-          value: e.id,
+          value: e.name,
         };
       })
     );
   }, [modelInstances.isSuccess]);
 
   const selectedModelInstanceOption = useMemo(() => {
-    if (!values.model.existing.modelInstanceId || !modelInstanceOptions)
+    if (!values.model.existing.modelInstanceName || !modelInstanceOptions)
       return null;
+
+    console.log(values.model.existing.modelInstanceName);
 
     return (
       modelInstanceOptions.find(
-        (e) => e.value === values.model.existing.modelInstanceId
+        (e) => e.value === values.model.existing.modelInstanceName
       ) || null
     );
-  }, [values.model.existing.modelInstanceId, modelInstanceOptions]);
+  }, [values.model.existing.modelInstanceName, modelInstanceOptions]);
 
   // ###################################################################
   // #                                                                 #
@@ -81,20 +83,22 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   // ###################################################################
 
   const canUseExistingModel = useMemo(() => {
-    if (!values.model.existing.modelInstanceId) {
+    if (!values.model.existing.modelInstanceName) {
       return false;
     }
 
     return true;
-  }, [values.model.existing.modelInstanceId]);
+  }, [values.model.existing.modelInstanceName]);
 
   const handleUseModel = useCallback(() => {
-    if (!values.model.existing.modelInstanceId || !modelInstances.isSuccess)
+    if (!values.model.existing.modelInstanceName || !modelInstances.isSuccess)
       return;
 
     const targetModelInstance = modelInstances.data.find(
-      (e) => e.id === values.model.existing.modelInstanceId
+      (e) => e.name === values.model.existing.modelInstanceName
     );
+
+    console.log(targetModelInstance);
 
     if (!targetModelInstance) return;
 
@@ -103,7 +107,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     setFieldValue("model.type", "existing");
     setFieldValue("model.existing.id", instanceNameList[1]);
     setStepNumber(stepNumber + 1);
-  }, [values.model.existing.id, modelInstances.isSuccess]);
+  }, [values.model.existing.modelInstanceName, modelInstances.isSuccess]);
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
@@ -111,11 +115,11 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         Select a existing online model
       </h3>
       <SingleSelect
-        name="model.existing.modelInstanceId"
+        name="model.existing.modelInstanceName"
         instanceId="existing-model-instanceId"
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
-        error={errors.model?.existing?.modelInstanceId || null}
+        error={errors.model?.existing?.modelInstanceName || null}
         additionalOnChangeCb={null}
         disabled={modelCreated ? true : false}
         readOnly={false}

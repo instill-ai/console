@@ -60,7 +60,7 @@ const SetupPipelineDetailsStep: FC = () => {
     if (
       values.model.new.modelDefinition === "github" &&
       values.model.new.id &&
-      values.model.new.modelInstanceId
+      values.model.new.modelInstanceName
     ) {
       validator.modelIsValid = true;
     }
@@ -109,11 +109,19 @@ const SetupPipelineDetailsStep: FC = () => {
     let modelInstanceName: string;
 
     if (values.model.type === "new") {
-      if (!values.model.new.modelInstanceId || !values.model.new.id) return;
-      modelInstanceName = `models/${values.model.new.id}/instances/${values.model.new.modelInstanceId}`;
+      if (!values.model.new.modelInstanceName || !values.model.new.id) {
+        return;
+      }
+      modelInstanceName = values.model.new.modelInstanceName;
     } else {
-      if (!values.model.existing.id) return;
-      modelInstanceName = `models/${values.model.existing.id}/instances/${values.model.existing.modelInstanceId}`;
+      if (
+        !values.model.existing.id ||
+        !values.model.existing.modelInstanceName
+      ) {
+        return;
+      }
+
+      modelInstanceName = values.model.existing.modelInstanceName;
     }
 
     let destinationName: string;
