@@ -173,21 +173,28 @@ const CreateDestinationForm: FC = () => {
               menuPlacement="auto"
             />
             <div className="flex flex-row">
-              {createDestinationError ? (
-                <BasicProgressMessageBox width="w-[216px]" status="error">
-                  {createDestinationError}
-                </BasicProgressMessageBox>
-              ) : isCreatingDestination ? (
-                <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                  Setting model...
-                </BasicProgressMessageBox>
-              ) : null}
+              <BasicProgressMessageBox
+                width="w-[216px]"
+                status={
+                  createDestinationError
+                    ? "error"
+                    : isCreatingDestination
+                    ? "progressing"
+                    : "success"
+                }
+              >
+                {createDestinationError
+                  ? createDestinationError
+                  : isCreatingDestination
+                  ? "Creating destination..."
+                  : "Successfully setup destination"}
+              </BasicProgressMessageBox>
               <PrimaryButton
                 disabled={formik.isValid ? false : true}
                 position="ml-auto my-auto"
                 type="submit"
               >
-                Creating destination...
+                Set up source
               </PrimaryButton>
             </div>
           </FormBase>
