@@ -18,6 +18,7 @@ import {
   HorizontalDivider,
   ModelDefinitionLabel,
   StateLabel,
+  ModelInstanceTaskLabel,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
@@ -28,7 +29,6 @@ import {
   BasicSingleSelect,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import ModelInstanceTaskLabel from "@/components/ui/ModelInstanceTaskLabel/ModelInstanceTaskLabel";
 import { usePipelines } from "@/services/pipeline/PipelineServices";
 import { PipelinesTable } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";

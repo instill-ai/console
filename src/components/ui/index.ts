@@ -19,6 +19,8 @@ import HorizontalDivider from "./HorizontalDivider";
 import type { HorizontalDividerProps } from "./HorizontalDivider";
 import TableLoadingProgress from "./TableLoadingProgress";
 import type { TableLoadingProgressProps } from "./TableLoadingProgress";
+import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
+import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
 
 export {
   Sidebar,
@@ -34,6 +36,7 @@ export {
   ModelDefinitionLabel,
   HorizontalDivider,
   TableLoadingProgress,
+  ModelInstanceTaskLabel,
 };
 export type {
   StateIndicatorProps,
@@ -43,6 +46,7 @@ export type {
   ModelDefinitionIconProps,
   HorizontalDividerProps,
   TableLoadingProgressProps,
+  ModelInstanceTaskLabelProps,
 };
 
 export * from "./TableHeads";
