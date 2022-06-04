@@ -261,7 +261,7 @@ export const useUpdatePipeline = () => {
             return [newPipeline];
           }
 
-          return [...old.filter((e) => e.id === newPipeline.id), newPipeline];
+          return [...old.filter((e) => e.id !== newPipeline.id), newPipeline];
         });
       },
     }

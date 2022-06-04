@@ -108,7 +108,7 @@ export const useUpdateModel = () => {
             return [newModel];
           }
 
-          return [...old.filter((e) => e.id === newModel.id), newModel];
+          return [...old.filter((e) => e.id !== newModel.id), newModel];
         });
       },
     }
