@@ -72,18 +72,17 @@ const SourceDetailsPage: FC<SourceDetailsPageProps> & {
           iconPosition="my-auto"
           paddingY="py-2"
           paddingX="px-2"
-          label="Connected"
         />
       </div>
       <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
-      <div className="mb-10 flex">
-        <PipelinesTable
-          pipelines={
-            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
-          }
-          isLoadingPipeline={isLoading}
-        />
-      </div>
+      <PipelinesTable
+        pipelines={
+          sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+        }
+        isLoadingPipeline={isLoading}
+        marginBottom="mb-10"
+        enablePlaceholderCreateButton={false}
+      />
       <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
       <div>
         <ConfigureSourceForm

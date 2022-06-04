@@ -32,7 +32,6 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
   children,
   initialValues,
   onSubmit,
-  enableBackToPrevious,
   getProgressionIndicator,
   formikInnerRef,
 }) => {
@@ -89,7 +88,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
     >
       {(formik) => {
         return (
-          <FormBase padding="pb-20" gapY={null}>
+          <FormBase marginBottom={null} padding="pb-20" gapY={null}>
             <div className="mb-15">{getProgressionIndicator(stepNumber)}</div>
             {step}
           </FormBase>

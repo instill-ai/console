@@ -63,7 +63,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               name="email"
               label="Your email"
               value={formik.values.email || ""}
-              onChangeCb={null}
+              additionalOnChangeCb={null}
               description="Fill your email address"
               disabled={false}
               readOnly={false}
@@ -79,7 +79,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               value={
                 formik.values.company_name ? formik.values.company_name : ""
               }
-              onChangeCb={null}
+              additionalOnChangeCb={null}
               description="Fill your company name"
               disabled={false}
               readOnly={false}
@@ -109,7 +109,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                   : null
               }
               error={formik.errors.role || null}
-              onChangeCb={null}
+              additionalOnChangeCb={null}
             />
             <ToggleField
               name="usage_data_collection"
@@ -124,7 +124,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               }
               description="We collect data only for product improvements"
               error={formik.errors.usage_data_collection || null}
-              onChangeCb={null}
+              additionalOnChangeCb={null}
             />
             <ToggleField
               name="newsletter_subscription"
@@ -139,7 +139,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               }
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
               error={formik.errors.newsletter_subscription || null}
-              onChangeCb={null}
+              additionalOnChangeCb={null}
             />
             <PrimaryButton
               disabled={formik.isValid ? false : true}
