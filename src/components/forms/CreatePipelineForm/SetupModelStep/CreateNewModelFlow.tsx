@@ -68,7 +68,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     useState<Nullable<SingleSelectOption[]>>();
 
   useEffect(() => {
-    if (!modelDefinitions.isSuccess) return;
+    if (!modelDefinitions.isSuccess || !modelDefinitions.data) return;
 
     setModelDefinitionOptions(
       modelDefinitions.data.map((e) => {
@@ -87,7 +87,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         };
       })
     );
-  }, [modelDefinitions.isSuccess]);
+  }, [modelDefinitions.isSuccess, modelDefinitions.data]);
 
   const selectedModelDefinitionOption = useMemo(() => {
     if (!values.model.new.modelDefinition || !modelDefinitionOptions) {
@@ -231,7 +231,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   const modelInstances = useModelInstances(newModel?.id);
   const modelInstanceOptions = useMemo(() => {
-    if (!modelInstances.isSuccess) return;
+    if (!modelInstances.isSuccess || !modelInstances.data) return;
 
     const options: SingleSelectOption[] = modelInstances.data.map((e) => {
       return {
@@ -248,7 +248,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       };
     });
     return options;
-  }, [modelInstances.isSuccess, values.model.new.modelDefinition]);
+  }, [modelInstances.isSuccess, modelInstances.data]);
 
   const canDisplayDeployModelSection = useMemo(() => {
     if (!modelCreated || !newModel || !modelInstances.isSuccess) {
@@ -302,7 +302,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         setFieldValue("model.new.modelInstance", null);
       }
     },
-    []
+    [setFieldValue]
   );
 
   return (

@@ -45,7 +45,7 @@ const ModelsCell: FC<ModelsCellProps> = ({
       paddingRight={paddingRight}
     >
       <div className={cn("flex flex-col gap-y-4", width)}>
-        {Object.entries(groupByModel).map(([key, value], i) => (
+        {Object.entries(groupByModel).map(([key, value]) => (
           <div key={key} className="flex flex-col gap-y-2">
             <div className="flex flex-row gap-x-1">
               <ModelInstanceIcon

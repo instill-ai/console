@@ -98,13 +98,13 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   }, []);
 
   const selectedSourceIdOption = useMemo(() => {
-    if (!values.source.existing.id) return null;
+    if (!values.source.existing.id || !syncSourceOptions) return null;
 
     return (
       syncSourceOptions.find((e) => e.value === values.source.existing.id) ||
       null
     );
-  }, [values.source.existing.id]);
+  }, [values.source.existing.id, syncSourceOptions]);
 
   // ###################################################################
   // #                                                                 #
@@ -147,7 +147,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       };
 
       createSource.mutate(payload, {
-        onSuccess: (newSource) => {
+        onSuccess: () => {
           setFieldValue("source.type", "existing");
           setStepNumber(stepNumber + 2);
         },

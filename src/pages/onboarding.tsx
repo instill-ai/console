@@ -3,7 +3,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { GetServerSideProps } from "next";
 import { FC, ReactElement } from "react";
-import cookie from "cookie";
+import { parse } from "cookie";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
 import axios from "axios";
 
@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let user: User | null;
 
   if (cookies) {
-    const cookieList = cookie.parse(cookies);
+    const cookieList = parse(cookies);
     if (cookieList["instill-ai-user-onboarded"]) {
       const { data } = await axios.get<GetUserResponse>(
         `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`

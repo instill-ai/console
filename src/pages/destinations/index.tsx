@@ -1,13 +1,9 @@
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import DestinationTable from "@/services/connector/DestinationTable";
-import {
-  useDestinations,
-  useDestinationsWithPipelines,
-  useDestinationWithPipelines,
-} from "@/services/connector/DestinationServices";
+import { useDestinationsWithPipelines } from "@/services/connector/DestinationServices";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 
 interface GetLayOutProps {

@@ -16,8 +16,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
   setStepNumber,
   stepNumber,
 }) => {
-  const { values, setFieldValue, errors } =
-    useFormikContext<CreatePipelineFormValues>();
+  const { values, errors } = useFormikContext<CreatePipelineFormValues>();
 
   // ###################################################################
   // #                                                                 #
@@ -31,7 +30,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
   const destinations = useDestinations();
 
   useEffect(() => {
-    if (!destinations.isSuccess) return;
+    if (!destinations.isSuccess || !destinations.data) return;
 
     setDestinationOptions(
       destinations.data.map((e) => {
@@ -41,7 +40,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         };
       })
     );
-  }, [destinations.isSuccess]);
+  }, [destinations.isSuccess, destinations.data]);
 
   const selectedDestinationOption = useMemo(() => {
     if (!values.destination.existing.id || !destinationOptions) return null;

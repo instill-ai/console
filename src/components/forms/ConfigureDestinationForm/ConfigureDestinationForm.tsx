@@ -80,7 +80,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
         ) || null
       );
     },
-    []
+    [syncDestinationDefinitionOptions]
   );
 
   return (

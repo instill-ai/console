@@ -66,7 +66,7 @@ const CreateNewModelFlow: FC = () => {
         ),
       };
     });
-  }, [modelDefinitions.isSuccess]);
+  }, [modelDefinitions.isSuccess, modelDefinitions.data]);
 
   const [selectedModelDefinitionOption, setSelectedModelDefinitionOption] =
     useState<Nullable<SingleSelectOption>>(null);
@@ -184,7 +184,7 @@ const CreateNewModelFlow: FC = () => {
 
   const modelInstances = useModelInstances(newModel?.id);
   const modelInstanceOptions = useMemo(() => {
-    if (!modelInstances.isSuccess) return;
+    if (!modelInstances.isSuccess) return [];
 
     const options: SingleSelectOption[] = modelInstances.data.map((e) => {
       return {
@@ -201,7 +201,7 @@ const CreateNewModelFlow: FC = () => {
       };
     });
     return options;
-  }, [modelInstances.isSuccess]);
+  }, [modelInstances.isSuccess, modelInstances.data]);
 
   const [selectedModelInstanceOption, setSelectedModelInstanceOption] =
     useState<Nullable<SingleSelectOption>>(null);

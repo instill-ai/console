@@ -18,7 +18,6 @@ import { CreateDestinationPayload } from "@/lib/instill";
 export type CreateNewDestinationFlowProps = StepNumberState;
 
 const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
-  maximumStepNumber,
   setStepNumber,
   stepNumber,
 }) => {
@@ -37,7 +36,8 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     useState<SingleSelectOption[] | null>(null);
 
   useEffect(() => {
-    if (!destinationDefinitions.isSuccess) return;
+    if (!destinationDefinitions.isSuccess || !destinationDefinitions.data)
+      return;
 
     setDestinationDefinitionOptions(
       destinationDefinitions.data.map((e) => {
@@ -56,7 +56,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         };
       })
     );
-  }, [destinationDefinitions.isSuccess]);
+  }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const selectedDestinationDefinition = useMemo(() => {
     if (
@@ -106,7 +106,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     };
 
     createDestination.mutate(payload, {
-      onSuccess: (newSource) => {
+      onSuccess: () => {
         setFieldValue("destination.type", "existing");
         setStepNumber(stepNumber + 1);
       },

@@ -44,7 +44,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   const modelInstances = useAllModeInstances(modelCreated ? false : true);
 
   useEffect(() => {
-    if (!modelInstances.isSuccess) return;
+    if (!modelInstances.isSuccess || !modelInstances.data) return;
 
     const onlineModelInstances = modelInstances.data.filter(
       (e) => e.state === "STATE_ONLINE"
@@ -61,7 +61,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         };
       })
     );
-  }, [modelInstances.isSuccess]);
+  }, [modelInstances.isSuccess, modelInstances.data]);
 
   const selectedModelInstanceOption = useMemo(() => {
     if (!values.model.existing.modelInstanceName || !modelInstanceOptions)
@@ -91,8 +91,13 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   }, [values.model.existing.modelInstanceName]);
 
   const handleUseModel = useCallback(() => {
-    if (!values.model.existing.modelInstanceName || !modelInstances.isSuccess)
+    if (
+      !values.model.existing.modelInstanceName ||
+      !modelInstances.isSuccess ||
+      !modelInstances.data
+    ) {
       return;
+    }
 
     const targetModelInstance = modelInstances.data.find(
       (e) => e.name === values.model.existing.modelInstanceName
@@ -107,7 +112,14 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     setFieldValue("model.type", "existing");
     setFieldValue("model.existing.id", instanceNameList[1]);
     setStepNumber(stepNumber + 1);
-  }, [values.model.existing.modelInstanceName, modelInstances.isSuccess]);
+  }, [
+    values.model.existing.modelInstanceName,
+    modelInstances.isSuccess,
+    modelInstances.data,
+    setFieldValue,
+    stepNumber,
+    setStepNumber,
+  ]);
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">

@@ -86,7 +86,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
     };
 
     createSource.mutate(payload, {
-      onSuccess: (newSource) => {
+      onSuccess: () => {
         setFieldValue("source.type", "new");
         setStepNumber(stepNumber + 1);
       },

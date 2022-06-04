@@ -32,11 +32,9 @@ interface GetLayOutProps {
   page: ReactElement;
 }
 
-export type SourceDetailsPageProps = {
-  fields: any;
-};
+// export type SourceDetailsPageProps = {};
 
-const SourceDetailsPage: FC<SourceDetailsPageProps> & {
+const SourceDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();

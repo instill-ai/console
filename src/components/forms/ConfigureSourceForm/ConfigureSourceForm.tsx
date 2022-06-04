@@ -73,7 +73,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
           null
       );
     },
-    []
+    [syncSourceDefinitionOptions]
   );
 
   return (
@@ -81,14 +81,14 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       initialValues={
         { definition: source ? source.id : null } as ConfigureSourceFormValue
       }
-      onSubmit={(values) => {
+      onSubmit={() => {
         if (!canEdit) {
           setCanEdit(true);
           return;
         }
       }}
     >
-      {(formik) => {
+      {() => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <SingleSelect

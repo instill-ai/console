@@ -68,7 +68,11 @@ const ModelDetailsPage: FC & {
         value: modelInsance.id,
       };
     });
-  }, [modelWithInstances.isSuccess, router.isReady]);
+  }, [
+    router.isReady,
+    modelWithInstances.isSuccess,
+    modelWithInstances.data?.instances,
+  ]);
 
   const [selectedModelInstanceOption, setSelectedModelInstanceOption] =
     useState<Nullable<SingleSelectOption>>(null);
@@ -84,7 +88,7 @@ const ModelDetailsPage: FC & {
           }
         : null
     );
-  }, [modelWithInstances.isSuccess]);
+  }, [modelWithInstances.isSuccess, modelWithInstances.data?.instances]);
 
   const selectedModelInstances = useMemo(() => {
     if (!selectedModelInstanceOption || !modelWithInstances.isSuccess)
@@ -95,7 +99,11 @@ const ModelDetailsPage: FC & {
         (e) => e.id === selectedModelInstanceOption.value
       ) || null
     );
-  }, [selectedModelInstanceOption, modelWithInstances.isSuccess]);
+  }, [
+    selectedModelInstanceOption,
+    modelWithInstances.isSuccess,
+    modelWithInstances.data?.instances,
+  ]);
 
   const modelInstanceOnChangeCb = useCallback(
     (_: string, option: SingleSelectOption) => {
@@ -115,7 +123,13 @@ const ModelDetailsPage: FC & {
   const pipelines = usePipelines(true);
 
   const pipelinesGroupByModelInstance = useMemo(() => {
-    if (!pipelines.isSuccess || !modelWithInstances.isSuccess) return {};
+    if (
+      !pipelines.isSuccess ||
+      !modelWithInstances.isSuccess ||
+      !pipelines.data
+    ) {
+      return {};
+    }
 
     const pipelinesGroup: Record<string, Pipeline[]> = {};
 
@@ -130,7 +144,12 @@ const ModelDetailsPage: FC & {
       pipelinesGroup[modelInstance.id] = targetPipelines;
     }
     return pipelinesGroup;
-  }, [pipelines.isSuccess, modelWithInstances.isSuccess]);
+  }, [
+    pipelines.isSuccess,
+    pipelines.data,
+    modelWithInstances.isSuccess,
+    modelWithInstances.data?.instances,
+  ]);
 
   const selectedModelInstancePipelines = useMemo(() => {
     if (!selectedModelInstances || !pipelinesGroupByModelInstance) return [];

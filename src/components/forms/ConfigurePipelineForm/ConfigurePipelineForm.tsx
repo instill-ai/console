@@ -3,8 +3,7 @@ import { FC, useCallback, useState } from "react";
 
 import { FormBase, TextArea, ToggleField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { Model, Pipeline, PipelineState } from "@/lib/instill";
-import { useUpdateModel } from "@/services/model/ModelServices";
+import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 import { useUpdatePipeline } from "@/services/pipeline/PipelineServices";
@@ -40,7 +39,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   const handleEditButton = (
     values: ConfigurePipelineFormValue,
-    submitForm: () => Promise<any>
+    submitForm: () => Promise<void>
   ) => {
     if (!canEdit) {
       setCanEdit(true);

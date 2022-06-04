@@ -10,7 +10,7 @@ import {
   BasicProgressMessageBox,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import { CreateDestinationPayload, CreateSourcePayload } from "@/lib/instill";
+import { CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import {
   useCreateDestination,

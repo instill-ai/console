@@ -5,3 +5,15 @@ Visual Data Preparation (VDP) console
 - Combine StatusLabel and ModeLabel under a single LabelBase
 - Make all the configuration form become self-generated from backend schema
 - Source and Destination's component are almost identical, combine their component together
+- Complete ConfigureDestination and ConfigureSource form
+- When updating cache in react-query, we use code below, this won't retain the order of the old array.
+
+```js
+queryClient.setQueryData<Model[]>(["models"], (old) => {
+	if (!old) {
+		return [newModel];
+	}
+
+	return [...old.filter((e) => e.id !== newModel.id), newModel];
+});
+```

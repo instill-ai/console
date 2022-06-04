@@ -5,11 +5,7 @@ import PageTitle from "@/components/ui/PageTitle";
 import { usePipeline } from "@/services/pipeline";
 import { useRouter } from "next/router";
 import PipelineOverViewTable from "@/services/pipeline/PipelineOverviewTable";
-import {
-  StateLabel,
-  PipelineModeLabel,
-  TableLoadingProgress,
-} from "@/components/ui";
+import { StateLabel, PipelineModeLabel } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/ConfigurePipelineForm";
 
 // export const getServerSideProps: GetServerSideProps = async () => {

@@ -39,7 +39,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
   const handleEditButton = (
     values: ConfigureModelFormValue,
-    submitForm: () => Promise<any>
+    submitForm: () => Promise<void>
   ) => {
     if (!canEdit) {
       setCanEdit(true);

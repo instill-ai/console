@@ -28,6 +28,8 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
   const [isExpand, setIsExpand] = useState(false);
 
   useEffect(() => {
+    if (!items) return;
+
     let itemsAccumulatedWidth = 0;
     let limit = 0;
 
@@ -60,9 +62,8 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
       }
     }
 
-    console.log(limit);
     setDisplayLimit(limit);
-  }, []);
+  }, [items, listItemsContainerWidth]);
 
   const handleExpand = () => {
     setIsExpand(true);

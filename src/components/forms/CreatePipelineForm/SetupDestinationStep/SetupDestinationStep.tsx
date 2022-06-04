@@ -91,7 +91,12 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
     setSelectedSyncDestinationIndex(index);
 
     setFieldValue("destination.existing.id", destinationId);
-  }, [values.pipeline.mode, values.source.existing.id, syncDestinationOptions]);
+  }, [
+    values.pipeline.mode,
+    values.source.existing.id,
+    syncDestinationOptions,
+    setFieldValue,
+  ]);
 
   // ###################################################################
   // #                                                                 #
@@ -130,7 +135,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       };
 
       createDestination.mutate(payload, {
-        onSuccess: (newDestination) => {
+        onSuccess: () => {
           setFieldValue("destination.type", "existing");
           setStepNumber(stepNumber + 1);
         },

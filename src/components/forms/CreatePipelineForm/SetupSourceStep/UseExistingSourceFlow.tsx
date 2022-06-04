@@ -33,7 +33,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
   const sources = useSources();
 
   useEffect(() => {
-    if (!sources.isSuccess) return;
+    if (!sources.isSuccess || !sources.data) return;
 
     setSourceOptions(
       sources.data.map((e) => {
@@ -52,7 +52,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
         };
       })
     );
-  }, [sources.isSuccess]);
+  }, [sources.isSuccess, sources.data]);
 
   const selectedSourceOption = useMemo(() => {
     if (!values.source.existing.id || !sourceOptions) return null;
@@ -60,7 +60,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
     return (
       sourceOptions.find((e) => e.value === values.source.existing.id) || null
     );
-  }, [values.source.existing.id]);
+  }, [values.source.existing.id, sourceOptions]);
 
   // ###################################################################
   // #                                                                 #
