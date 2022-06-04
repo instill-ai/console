@@ -115,19 +115,20 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
               menuPlacement="auto"
             />
             <div className="mt-10 flex flex-row">
-              <div className="mr-auto flex flex-row gap-x-2.5">
-                <PrimaryButton type="button" disabled={true}>
-                  Test connection
-                </PrimaryButton>
-                <PrimaryButton type="button" disabled={true}>
-                  Delete
-                </PrimaryButton>
-              </div>
-              <div className="ml-autoƒ flex">
-                <PrimaryButton type="submit" disabled={true}>
-                  {canEdit ? "Done" : "Edit"}
-                </PrimaryButton>
-              </div>
+              <PrimaryButton
+                type="button"
+                disabled={true}
+                position="mr-auto my-auto"
+              >
+                Delete
+              </PrimaryButton>
+              <PrimaryButton
+                type="submit"
+                disabled={true}
+                position="ml-auto my-auto"
+              >
+                {canEdit ? "Done" : "Edit"}
+              </PrimaryButton>
             </div>
           </FormBase>
         );
