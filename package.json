@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "docker:app:install": "docker buildx bake -f ./docker-compose.app.yml --progress=tty deps",
-    "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose.yml up --build",
+    "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose.app.yml up --build",
     "docker:prune-cache": "docker buildx prune",
     "docker:nuke-all": "npm-run-all --sequential --continue-on-error --print-label \"docker:nuke:*\"",
     "docker:nuke:images": "docker image rm -f $(docker image ls -q)",
