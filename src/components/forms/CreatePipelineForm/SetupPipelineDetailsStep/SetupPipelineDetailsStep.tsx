@@ -4,7 +4,10 @@ import { useFormikContext } from "formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
-import { useCreatePipeline } from "@/services/pipeline/PipelineServices";
+import {
+  useCreatePipeline,
+  useUpdatePipeline,
+} from "@/services/pipeline/PipelineServices";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
 
@@ -92,9 +95,17 @@ const SetupPipelineDetailsStep: FC = () => {
   }, [values]);
 
   const createPipeline = useCreatePipeline();
+  const updatePipeline = useUpdatePipeline();
 
   const handleSetupNewPipeline = () => {
-    if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) return;
+    if (
+      !canSetupNewPipeline ||
+      !router.isReady ||
+      !values.pipeline.id ||
+      !values.pipeline.description
+    ) {
+      return;
+    }
 
     let sourceName: string;
 
@@ -144,8 +155,23 @@ const SetupPipelineDetailsStep: FC = () => {
     };
 
     createPipeline.mutate(payload, {
-      onSuccess: () => {
-        router.push("/pipelines");
+      onSuccess: async (newPipeline) => {
+        if (!values.pipeline.description) {
+          router.push("/pipelines");
+          return;
+        }
+
+        updatePipeline.mutate(
+          {
+            name: newPipeline.name,
+            description: values.pipeline.description,
+          },
+          {
+            onSuccess: () => {
+              router.push("/pipelines");
+            },
+          }
+        );
       },
     });
   };
