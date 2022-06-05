@@ -5,17 +5,17 @@ networks:
     name: instill-network
 
 volumes:
+  conenctor_config:
+    name: connector-config
   conda_pack:
     name: conda-pack
   model_repository:
     name: model-repository
-  build_app:
-  nm_app:
 
 services:
   mgmt_backend_migrate:
     container_name: mgmt-backend-migrate
-    image: instill/mgmt-backend:v0.1.0-alpha
+    image: instill/mgmt-backend:${MGMT_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_USERNAME: postgres
@@ -29,7 +29,7 @@ services:
 
   mgmt_backend_init:
     container_name: mgmt-backend-init
-    image: instill/mgmt-backend:v0.1.0-alpha
+    image: instill/mgmt-backend:${MGMT_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_SERVER_PORT: 8080
@@ -43,7 +43,7 @@ services:
 
   mgmt_backend:
     container_name: mgmt-backend
-    image: instill/mgmt-backend:v0.1.0-alpha
+    image: instill/mgmt-backend:${MGMT_BACKEND_VERSION}
     restart: unless-stopped
     environment:
       CFG_SERVER_PORT: 8080
@@ -54,11 +54,11 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - mgmt_backend_migrate
+      - mgmt_backend_init
 
   pipeline_backend_migrate:
     container_name: pipeline-backend-migrate
-    image: instill/pipeline-backend:v0.4.0-alpha
+    image: instill/pipeline-backend:${PIPELINE_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_HOST: pg_sql
@@ -72,7 +72,7 @@ services:
 
   pipeline_backend:
     container_name: pipeline-backend
-    image: instill/pipeline-backend:v0.4.0-alpha
+    image: instill/pipeline-backend:${PIPELINE_BACKEND_VERSION}
     restart: unless-stopped
     environment:
       CFG_SERVER_PORT: 8081
@@ -80,6 +80,8 @@ services:
       CFG_DATABASE_PORT: 5432
       CFG_DATABASE_USERNAME: postgres
       CFG_DATABASE_PASSWORD: password
+      CFG_MGMTBACKEND_HOST: mgmt_backend
+      CFG_MGMTBACKEND_PORT: 8080
       CFG_CONNECTORBACKEND_HOST: connector_backend
       CFG_CONNECTORBACKEND_PORT: 8082
       CFG_MODELBACKEND_HOST: model_backend
@@ -97,7 +99,7 @@ services:
 
   connector_backend_migrate:
     container_name: connector-backend-migrate
-    image: instill/connector-backend:v0.1.0-alpha
+    image: instill/connector-backend:${CONNECTOR_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_HOST: pg_sql
@@ -111,7 +113,7 @@ services:
 
   connector_backend_init:
     container_name: connector-backend-init
-    image: instill/connector-backend:v0.1.0-alpha
+    image: instill/connector-backend:${CONNECTOR_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_HOST: pg_sql
@@ -122,9 +124,27 @@ services:
     depends_on:
       - connector_backend_migrate
 
+  connector_backend_worker:
+    container_name: connector-backend-worker
+    image: instill/connector-backend:${CONNECTOR_BACKEND_VERSION}
+    restart: unless-stopped
+    environment:
+      CFG_DATABASE_HOST: pg_sql
+      CFG_DATABASE_PORT: 5432
+      CFG_DATABASE_USERNAME: postgres
+      CFG_DATABASE_PASSWORD: password
+      CFG_TEMPORAL_CLIENTOPTIONS_HOSTPORT: temporal:7233
+    volumes:
+      - conenctor_config:/connector-config
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: ./connector-backend-worker
+    depends_on:
+      - connector_backend_init
+      - temporal
+
   connector_backend:
     container_name: connector-backend
-    image: instill/connector-backend:v0.1.0-alpha
+    image: instill/connector-backend:${CONNECTOR_BACKEND_VERSION}
     restart: unless-stopped
     environment:
       CFG_SERVER_PORT: 8082
@@ -132,14 +152,19 @@ services:
       CFG_DATABASE_PORT: 5432
       CFG_DATABASE_USERNAME: postgres
       CFG_DATABASE_PASSWORD: password
+      CFG_MGMTBACKEND_HOST: mgmt_backend
+      CFG_MGMTBACKEND_PORT: 8080
+      CFG_TEMPORAL_CLIENTOPTIONS_HOSTPORT: temporal:7233
+      CFG_SERVER_CORSORIGINS: http://localhost:3000
     ports:
       - 8082:8082
     depends_on:
       - connector_backend_init
+      - mgmt_backend
 
   model_backend_migrate:
     container_name: model-backend-migrate
-    image: instill/model-backend:v0.4.0-alpha
+    image: instill/model-backend:${MODEL_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_HOST: pg_sql
@@ -153,7 +178,7 @@ services:
 
   model_backend_init:
     container_name: model-backend-init
-    image: instill/model-backend:v0.4.0-alpha
+    image: instill/model-backend:${MODEL_BACKEND_VERSION}
     restart: on-failure
     environment:
       CFG_DATABASE_HOST: pg_sql
@@ -166,7 +191,7 @@ services:
 
   model_backend:
     container_name: model-backend
-    image: instill/model-backend:v0.4.0-alpha
+    image: instill/model-backend:${MODEL_BACKEND_VERSION}
     restart: unless-stopped
     environment:
       CFG_SERVER_PORT: 8083
@@ -188,13 +213,13 @@ services:
 
   triton_conda_env:
     container_name: triton-conda-env
-    image: instill/triton-conda-env:v0.2.1-alpha-cpu
+    image: instill/triton-conda-env:${TRITON_CONDA_ENV_VERSOIN}-cpu
     volumes:
       - conda_pack:/conda-pack
 
   triton_server:
     container_name: triton-server
-    image: nvcr.io/nvidia/tritonserver:${TRITONSERVER_VERSION}
+    image: ${TRITONSERVER_IMAGE_TAG}
     restart: unless-stopped
     command: tritonserver --model-store=/model-repository --model-control-mode=explicit --allow-http=true --strict-model-config=false
     ports:
@@ -215,7 +240,7 @@ services:
 
   pg_sql:
     container_name: pg-sql
-    image: postgres:14.1-alpine
+    image: postgres:${POSTGRESQL_VERSION}-alpine
     restart: unless-stopped
     ports:
       - 5432:5432
@@ -228,7 +253,7 @@ services:
 
   temporal:
     container_name: temporal
-    image: temporalio/auto-setup:1.15.0
+    image: temporalio/auto-setup:${TEMPORAL_VERSION}
     restart: unless-stopped
     environment:
       - DB=postgresql
@@ -239,15 +264,13 @@ services:
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
     ports:
       - 7233:7233
-    volumes:
-      - ./configs/temporal/dynamicconfig:/etc/temporal/config/dynamicconfig
     depends_on:
       pg_sql:
         condition: service_healthy
 
   temporal_admin_tools:
     container_name: temporal-admin-tools
-    image: temporalio/admin-tools:1.15.0
+    image: temporalio/admin-tools:${TEMPORAL_VERSION}
     restart: unless-stopped
     environment:
       - TEMPORAL_CLI_ADDRESS=temporal:7233
@@ -256,15 +279,13 @@ services:
     depends_on:
       - temporal
 
-  temporal_web:
-    container_name: temporal-web
-    image: temporalio/web:1.13.0
-    restart: unless-stopped
+  temporal_ui:
+    container_name: temporal-ui
+    image: temporalio/ui:${TEMPORAL_UI_VERSION}
     environment:
-      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
-      - TEMPORAL_PERMIT_WRITE_API=true
+      - TEMPORAL_ADDRESS=temporal:7233
     ports:
-      - 8088:8088
+      - 8088:8080
     depends_on:
       - temporal
 
@@ -279,25 +300,17 @@ services:
 
   redoc_openapi:
     container_name: redoc-openapi
-    image: volbrene/redoc:1.2.0
+    image: redocly/redoc:v2.0.0-rc.70
     environment:
-      - "URLS=[{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/pipeline/v1alpha/pipeline.swagger.json', name: 'Pipeline'},{url: 'https://raw.githubusercontent.com/instill-ai/protobufs/main/instill/model/v1alpha/model.swagger.json', name: 'Model'}]"
-      - PAGE_TITLE=Instill AI - API Reference
+      - SPEC_URL=https://raw.githubusercontent.com/instill-ai/protobufs/main/openapiv2/openapiv2.swagger.yaml
     ports:
-      - 3000:80
+      - 3001:80
 
-  app_develop:
-    container_name: app-develop
+  frontend:
+    container_name: instill-console
     stdin_open: true
     ports:
       - "3000:3000"
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      # Share the source code to allow development
-      - .:/app
-      # Prevent sharing of node_modules between host and container
-      # to avoid ownership and/or platform issues
-      - build_app:/app/.next
-      - nm_app:/app/node_modules
