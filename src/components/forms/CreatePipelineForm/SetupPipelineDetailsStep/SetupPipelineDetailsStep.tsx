@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
@@ -10,6 +10,8 @@ import {
 } from "@/services/pipeline/PipelineServices";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
+import { BasicProgressMessageBox } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
 const SetupPipelineDetailsStep: FC = () => {
   const { values, errors } = useFormikContext<CreatePipelineFormValues>();
@@ -17,7 +19,7 @@ const SetupPipelineDetailsStep: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 1 - Create pipeline                                             #
+  // # 1 - Validate create pipeline form data                          #
   // #                                                                 #
   // ###################################################################
 
@@ -94,8 +96,19 @@ const SetupPipelineDetailsStep: FC = () => {
     }
   }, [values]);
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Handle pipeline creation                                    #
+  // #                                                                 #
+  // ###################################################################
+
   const createPipeline = useCreatePipeline();
   const updatePipeline = useUpdatePipeline();
+
+  const [setupPipelineError, setSetupPipelineError] =
+    useState<Nullable<string>>(null);
+
+  const [isSettingPipeline, setIsSettingPipeline] = useState(false);
 
   const handleSetupNewPipeline = () => {
     if (
@@ -154,9 +167,12 @@ const SetupPipelineDetailsStep: FC = () => {
       },
     };
 
+    setIsSettingPipeline(true);
+
     createPipeline.mutate(payload, {
       onSuccess: async (newPipeline) => {
         if (!values.pipeline.description) {
+          setIsSettingPipeline(false);
           router.push("/pipelines");
           return;
         }
@@ -168,10 +184,27 @@ const SetupPipelineDetailsStep: FC = () => {
           },
           {
             onSuccess: () => {
+              setIsSettingPipeline(false);
               router.push("/pipelines");
+            },
+            onError: (error) => {
+              if (error instanceof Error) {
+                setSetupPipelineError(error.message);
+              } else {
+                setSetupPipelineError(
+                  "Something went wrong when deploying model"
+                );
+              }
             },
           }
         );
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setSetupPipelineError(error.message);
+        } else {
+          setSetupPipelineError("Something went wrong when deploying model");
+        }
       },
     });
   };
@@ -219,14 +252,25 @@ const SetupPipelineDetailsStep: FC = () => {
           required={true}
           description="Turn this toggle off if you wish to not activate the pipeline now"
         />
-        <PrimaryButton
-          position="ml-auto"
-          type="button"
-          disabled={canSetupNewPipeline ? false : true}
-          onClickHandler={handleSetupNewPipeline}
-        >
-          Set up pipeline
-        </PrimaryButton>
+        <div className="flex flex-row">
+          {setupPipelineError ? (
+            <BasicProgressMessageBox width="w-[216px]" status="error">
+              {setupPipelineError}
+            </BasicProgressMessageBox>
+          ) : isSettingPipeline ? (
+            <BasicProgressMessageBox width="w-[216px]" status="progressing">
+              Setting up pipeline...
+            </BasicProgressMessageBox>
+          ) : null}
+          <PrimaryButton
+            position="ml-auto my-auto"
+            type="button"
+            disabled={canSetupNewPipeline ? false : true}
+            onClickHandler={handleSetupNewPipeline}
+          >
+            Set up pipeline
+          </PrimaryButton>
+        </div>
       </div>
     </FormikStep>
   );
