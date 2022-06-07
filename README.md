@@ -17,3 +17,6 @@ queryClient.setQueryData<Model[]>(["models"], (old) => {
 	return [...old.filter((e) => e.id !== newModel.id), newModel];
 });
 ```
+
+- Error bundary
+- Suspense

@@ -1,4 +1,5 @@
-import { ConnectorState, ModelState, PipelineState } from "@/lib/instill";
+import { ModelState, PipelineState } from "@/lib/instill";
+import { ConnectorState } from "@/lib/instill/connector";
 
 export type State = PipelineState | ConnectorState | ModelState;
 
