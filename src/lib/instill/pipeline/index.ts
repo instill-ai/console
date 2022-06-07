@@ -9,7 +9,9 @@ import type {
   PipelineRecipe,
 } from "./types";
 
-export { mockPipelines };
+import type { ListPipelinesResponse, GetPipelineResponse } from "./queries";
+
+import { listPipelinesQuery, getPipelineQuery } from "./queries";
 
 export type {
   PipelineMode,
@@ -18,4 +20,8 @@ export type {
   PipelineWithRawRecipe,
   RawPipelineRecipe,
   PipelineRecipe,
+  ListPipelinesResponse,
+  GetPipelineResponse,
 };
+
+export { mockPipelines, listPipelinesQuery, getPipelineQuery };
