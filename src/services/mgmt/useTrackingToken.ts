@@ -1,7 +1,7 @@
 import { User } from "@/lib/instill/mgmt";
 import { useQuery, useQueryClient } from "react-query";
 import { v4 as uuidv4 } from "uuid";
-import { useUpdateUser } from "./MgmtServices";
+import useUpdateUser from "./useUpdateUser";
 
 const useTrackingToken = () => {
   const queryClient = useQueryClient();
