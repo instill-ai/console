@@ -24,6 +24,21 @@ import {
   getModelInstanceQuery,
 } from "./queries";
 
+import type {
+  CreateGithubModelPayload,
+  CreateGithubModelResponse,
+  CreateLocalModelPayload,
+  CreateLocalModelResponse,
+  UpdateModelPayload,
+  UpdateModelResponse,
+} from "./mutations";
+
+import {
+  createGithubModelMutation,
+  createLocalModelMutation,
+  updateModelMutation,
+} from "./mutations";
+
 export type {
   ModelDefinition,
   Model,
@@ -36,6 +51,12 @@ export type {
   GetModelResponse,
   ListModelInstancesResponse,
   GetModelInstanceResponse,
+  CreateGithubModelPayload,
+  CreateGithubModelResponse,
+  CreateLocalModelPayload,
+  CreateLocalModelResponse,
+  UpdateModelPayload,
+  UpdateModelResponse,
 };
 
 export {
@@ -45,4 +66,7 @@ export {
   getModelQuery,
   listModelInstancesQuery,
   getModelInstanceQuery,
+  createGithubModelMutation,
+  createLocalModelMutation,
+  updateModelMutation,
 };
