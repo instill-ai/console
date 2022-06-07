@@ -18,11 +18,19 @@ import type {
   CreatePipelineResponse,
   UpdatePipelinePayload,
   UpdatePipelineResponse,
-
-  createPipelineMutation,
-  updatePipelineMutation,
 } from "./mutations";
 
+import { createPipelineMutation, updatePipelineMutation } from "./mutations";
+
+import type {
+  ActivatePipelineResponse,
+  DeActivatePipelineResponse,
+} from "./actions";
+
+import {
+  activatePipelineMutation,
+  deActivatePipelineMutation,
+} from "./actions";
 
 export type {
   PipelineMode,
@@ -37,6 +45,8 @@ export type {
   CreatePipelineResponse,
   UpdatePipelinePayload,
   UpdatePipelineResponse,
+  ActivatePipelineResponse,
+  DeActivatePipelineResponse,
 };
 
 export {
@@ -45,4 +55,6 @@ export {
   getPipelineQuery,
   createPipelineMutation,
   updatePipelineMutation,
+  activatePipelineMutation,
+  deActivatePipelineMutation,
 };
