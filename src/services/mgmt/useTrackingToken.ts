@@ -7,32 +7,24 @@ const useTrackingToken = () => {
   const queryClient = useQueryClient();
   const updateUser = useUpdateUser();
 
-  return useQuery(
-    ["user", "tracking"],
-    async () => {
-      const user = queryClient.getQueryData<User>(["user"]);
+  return useQuery(["user", "tracking"], async () => {
+    const user = queryClient.getQueryData<User>(["user"]);
 
-      if (user) {
-        if (user.cookie_token) {
-          return Promise.resolve(user.cookie_token);
-        }
+    if (user) {
+      if (user.cookie_token) {
+        return Promise.resolve(user.cookie_token);
       }
-
-      const newTrackingToken = uuidv4();
-
-      const newUser = await updateUser.mutateAsync({
-        name: "users/local-user",
-        cookie_token: newTrackingToken,
-      });
-
-      return Promise.resolve(newUser.cookie_token);
-    },
-    {
-      onSuccess: (newUserTrackingToken) => {
-        queryClient.setQueryData(["user", "tracking"], newUserTrackingToken);
-      },
     }
-  );
+
+    const newTrackingToken = uuidv4();
+
+    const newUser = await updateUser.mutateAsync({
+      name: "users/local-user",
+      cookie_token: newTrackingToken,
+    });
+
+    return Promise.resolve(newUser.cookie_token);
+  });
 };
 
 export default useTrackingToken;
