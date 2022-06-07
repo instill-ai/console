@@ -16,14 +16,14 @@ import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
-export type ModelTableProps = {
+export type ModelsTableProps = {
   models: ModelWithInstance[];
   isLoading: boolean;
   marginBottom: Nullable<string>;
   enablePlaceholderCreateButton: ModelTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const ModelTable: FC<ModelTableProps> = ({
+const ModelsTable: FC<ModelsTableProps> = ({
   models,
   isLoading,
   marginBottom,
@@ -105,4 +105,4 @@ const ModelTable: FC<ModelTableProps> = ({
   );
 };
 
-export default ModelTable;
+export default ModelsTable;

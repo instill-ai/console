@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import ModelTable from "@/services/model/ModelTable";
+import { ModelsTable } from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model/ModelServices";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 
@@ -38,7 +38,7 @@ const ModelPage: FC & {
         buttonLink="/models/create"
         marginBottom="mb-10"
       />
-      <ModelTable
+      <ModelsTable
         models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
         isLoading={isLoading}
         marginBottom={null}

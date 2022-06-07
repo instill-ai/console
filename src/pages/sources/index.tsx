@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import { SourcesTable } from "@/components/ui/Tables";
+import { SourcesTable } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 import { useSourcesWithPipelines } from "@/services/connector";
 
