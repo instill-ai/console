@@ -39,6 +39,9 @@ import {
   updateModelMutation,
 } from "./mutations";
 
+import type { DeployModelResponse } from "./actions";
+import { deployModelInstanceAction } from "./actions";
+
 export type {
   ModelDefinition,
   Model,
@@ -57,6 +60,7 @@ export type {
   CreateLocalModelResponse,
   UpdateModelPayload,
   UpdateModelResponse,
+  DeployModelResponse,
 };
 
 export {
@@ -69,4 +73,5 @@ export {
   createGithubModelMutation,
   createLocalModelMutation,
   updateModelMutation,
+  deployModelInstanceAction,
 };
