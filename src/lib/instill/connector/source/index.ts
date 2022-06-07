@@ -18,7 +18,10 @@ import {
   getSourceQuery,
 } from "./queries";
 
-export {
+import type { CreateSourcePayload, CreateSourceResponse } from "./mutations";
+import { createSourceMutation } from "./mutations";
+
+export type {
   Source,
   SourceWithDefinition,
   SourceWithPipelines,
@@ -26,6 +29,8 @@ export {
   GetSourceDefinitionResponse,
   ListSourcesResponse,
   GetSourceResponse,
+  CreateSourcePayload,
+  CreateSourceResponse,
 };
 
 export {
@@ -33,4 +38,5 @@ export {
   getSourceDefinitionQuery,
   listSourcesQuery,
   getSourceQuery,
+  createSourceMutation,
 };
