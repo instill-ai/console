@@ -105,8 +105,8 @@ export const useUser = (userName: Nullable<string>) => {
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async (data: Partial<User>) => {
-      const user = await updateLocalUserMutation(data);
+    async (payload: Partial<User>) => {
+      const user = await updateLocalUserMutation(payload);
       return Promise.resolve(user);
     },
     {
