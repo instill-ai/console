@@ -12,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui";
 import type { DestinationTablePlaceholderProps } from "@/components/ui";
-
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
