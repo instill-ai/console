@@ -54,3 +54,5 @@ export * from "./TableHeads";
 export * from "./TableCells";
 
 export * from "./TablePlaceholders";
+
+export * from "./Tables";

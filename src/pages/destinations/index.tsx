@@ -2,9 +2,9 @@ import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import DestinationTable from "@/services/connector/DestinationTable";
-import { useDestinationsWithPipelines } from "@/services/connector/DestinationServices";
+import { DestinationsTable } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { useDestinationsWithPipelines } from "@/services/connector";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -38,7 +38,7 @@ const DestinationPage: FC & {
         buttonLink="/destinations/create"
         marginBottom="mb-10"
       />
-      <DestinationTable
+      <DestinationsTable
         destinations={destinations.data ? destinations.data : []}
         isLoading={isLoading}
         enablePlaceholderCreateButton={true}

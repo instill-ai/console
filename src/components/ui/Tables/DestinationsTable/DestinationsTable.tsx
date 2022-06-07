@@ -1,45 +1,45 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 import {
   ConnectionTypeCell,
   ConnectorTableHead,
+  DestinationTablePlaceholder,
   InstanceCell,
   NameCell,
-  SourceTablePlaceholder,
   TableBody,
   TableContainer,
   TableLoadingProgress,
   TableRow,
 } from "@/components/ui";
-import { SourceWithPipelines } from "@/lib/instill";
+import type { DestinationTablePlaceholderProps } from "@/components/ui";
+import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import type { SourceTablePlaceholderProps } from "@/components/ui";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
-export type SourcesTableProps = {
-  sources: SourceWithPipelines[];
-  isLoadingSources: boolean;
+export type DestinationsTableProps = {
+  destinations: DestinationWithPipelines[];
+  isLoading: boolean;
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
+  enablePlaceholderCreateButton: DestinationTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const SourcesTable: FC<SourcesTableProps> = ({
-  sources,
-  isLoadingSources,
+const DestinationsTable: FC<DestinationsTableProps> = ({
+  destinations,
+  isLoading,
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
   const stateOverviewCounts = useStateOverviewCounts(
-    isLoadingSources ? null : sources
+    isLoading ? null : destinations
   );
 
-  if (isLoadingSources) {
+  if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
-  if (sources.length === 0) {
+  if (destinations.length === 0) {
     return (
-      <SourceTablePlaceholder
+      <DestinationTablePlaceholder
         enablePlaceholderCreateButton={enablePlaceholderCreateButton}
         marginBottom={marginBottom}
       />
@@ -53,39 +53,41 @@ const SourcesTable: FC<SourcesTableProps> = ({
       borderCollapse="border-collapse"
     >
       <ConnectorTableHead
-        definition="source"
+        definition="destination"
         onlineCounts={stateOverviewCounts?.online || 0}
         offlineCounts={stateOverviewCounts?.offline || 0}
         errorCounts={stateOverviewCounts?.error || 0}
       />
       <TableBody>
-        {sources.map((source) => (
+        {destinations.map((destination) => (
           <TableRow
             bgColor="bg-white"
             borderColor="border-instillGrey20"
-            key={source.name}
+            key={destination.name}
           >
             <NameCell
-              name={source.id}
+              name={destination.id}
               width="w-[234px]"
               state="STATE_ONLINE"
-              updatedAt={source.connector.update_time}
+              updatedAt={destination.connector.update_time}
               paddingBottom="pb-5"
               paddingTop="pt-5"
               paddingLeft="pl-5"
               paddingRight=""
-              link={`/sources/${source.id}`}
+              link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
             />
             <ConnectionTypeCell
               definitionName={
-                source.source_connector_definition.connector_definition.title
+                destination.destination_connector_definition
+                  .connector_definition.title
               }
               iconDefinition={
-                source.source_connector_definition.connector_definition.icon
+                destination.destination_connector_definition
+                  .connector_definition.icon
               }
-              connectionName={source.id}
+              connectionName={destination.id}
               cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"
@@ -97,7 +99,7 @@ const SourcesTable: FC<SourcesTableProps> = ({
               cellType="expand"
               width="w-80"
               type="pipeline"
-              instances={source.pipelines.map((e) => {
+              instances={destination.pipelines.map((e) => {
                 return {
                   name: e.id,
                   state: e.state,
@@ -115,4 +117,4 @@ const SourcesTable: FC<SourcesTableProps> = ({
   );
 };
 
-export default SourcesTable;
+export default DestinationsTable;

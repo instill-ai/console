@@ -2,9 +2,9 @@ import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import SourcesTable from "@/services/connector/SourcesTable";
-import { useSourcesWithPipelines } from "@/services/connector/SourceServices";
+import { SourcesTable } from "@/components/ui/Tables";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { useSourcesWithPipelines } from "@/services/connector";
 
 interface GetLayOutProps {
   page: ReactElement;

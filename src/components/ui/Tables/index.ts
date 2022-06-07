@@ -1,6 +1,8 @@
-import type { DestinationTableProps } from "./DestinationTable";
-import DestinationTable from "./DestinationTable";
+import type { DestinationsTableProps } from "./DestinationsTable";
+import DestinationsTable from "./DestinationsTable";
+import type { SourcesTableProps } from "./SourcesTable";
+import SourcesTable from "./SourcesTable";
 
-export type { DestinationTableProps };
+export type { DestinationsTableProps, SourcesTableProps };
 
-export { DestinationTable };
+export { DestinationsTable, SourcesTable };
