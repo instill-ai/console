@@ -18,11 +18,19 @@ import {
   getDestinationQuery,
 } from "./queries";
 
+import type {
+  CreateDestinationPayload,
+  CreateDestinationResponse,
+} from "./mutations";
+
+import { createDestinationMutation } from "./mutations";
+
 export {
   listDestinationDefinitionsQuery,
   getDestinationDefinitionQuery,
   listDestinationsQuery,
   getDestinationQuery,
+  createDestinationMutation,
 };
 
 export type {
@@ -33,4 +41,6 @@ export type {
   GetDestinationDefinitionResponse,
   ListDestinationsResponse,
   GetDestinationResponse,
+  CreateDestinationPayload,
+  CreateDestinationResponse,
 };
