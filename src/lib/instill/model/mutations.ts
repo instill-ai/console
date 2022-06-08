@@ -82,3 +82,13 @@ export const updateModelMutation = async (
     return Promise.reject(err);
   }
 };
+
+export const deleteModelMutation = async (modelName: string) => {
+  try {
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}`
+    );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
