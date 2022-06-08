@@ -1,8 +1,9 @@
-import { useRouter } from "next/router";
 import { FC, useCallback } from "react";
+import { useRouter } from "next/router";
+import cn from "clsx";
+
 import Breadcrumb, { BreadcrumbProps } from "../Breadcrumb";
 import { PrimaryButton } from "../Buttons";
-import cn from "clsx";
 
 export type PageTitleProps = {
   title: string;
@@ -28,9 +29,9 @@ const PageTitle: FC<PageTitleProps> = ({
     }
   }, [router, buttonLink, enableButton]);
   return (
-    <div className={cn("flex flex-col", marginBottom)}>
+    <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      <div className="flex min-h-[44px] flex-row">
+      <div className="flex min-h-[44px] w-full flex-row">
         <h2 className="instill-text-h2 mt-auto mr-auto text-black">{title}</h2>
         {enableButton ? (
           <PrimaryButton

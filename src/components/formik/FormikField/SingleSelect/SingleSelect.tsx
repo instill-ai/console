@@ -2,20 +2,17 @@ import { FC } from "react";
 import { Field, FieldProps } from "formik";
 import {
   BasicSingleSelect,
+  BasicSingleSelectProps,
   SingleSelectOption,
 } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
-export type SingleSelectProps = {
+export type SingleSelectProps = Omit<
+  BasicSingleSelectProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
-  options: SingleSelectOption[];
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (option: SingleSelectOption) => void;
-  instanceId: string;
-  defaultValue?: SingleSelectOption;
+  additionalOnChangeCb: Nullable<(option: SingleSelectOption) => void>;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
@@ -24,13 +21,16 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   options,
   name,
   instanceId,
-  onChangeCb,
+  additionalOnChangeCb,
+  menuPlacement,
+  value,
+  error,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
     form.setFieldValue(field.name, option.value);
-    if (onChangeCb) {
-      onChangeCb(option);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(option);
     }
   };
 
@@ -39,14 +39,16 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       {...props}
       id={name}
       instanceId={instanceId}
-      error={form.errors[field.name] as string}
+      error={error}
       options={options}
       onChangeInput={onChange}
+      menuPlacement={menuPlacement}
+      value={value}
     />
   );
 };
 
-const FormikWrapper: FC<SingleSelectProps> = ({
+const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   name,
   options,
   disabled,
@@ -54,9 +56,11 @@ const FormikWrapper: FC<SingleSelectProps> = ({
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   instanceId,
-  defaultValue,
+  menuPlacement,
+  value,
+  error,
 }) => {
   return (
     <Field
@@ -68,11 +72,13 @@ const FormikWrapper: FC<SingleSelectProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
-      defaultValue={defaultValue}
+      value={value}
+      menuPlacement={menuPlacement}
+      error={error}
     />
   );
 };
 
-export default FormikWrapper;
+export default SingleSelectFieldFormikWrapper;

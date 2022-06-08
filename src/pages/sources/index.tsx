@@ -1,8 +1,9 @@
 import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import SourceTable from "@/services/connector/SourceTable";
+import { SourcesTable, PageTitle } from "@/components/ui";
+import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
+import { useSourcesWithPipelines } from "@/services/connector";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -11,18 +12,33 @@ interface GetLayOutProps {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const sources = [];
+  const sources = useSourcesWithPipelines();
+
+  const isLoading = useMultiStageQueryLoadingState({
+    data: sources.data,
+    isError: sources.isError,
+    isSuccess: sources.isSuccess,
+    isLoading: sources.isLoading,
+  });
+
   return (
     <PageContentContainer>
       <PageTitle
         title="Data Sources"
         breadcrumbs={["Data sources"]}
-        enableButton={sources.length === 0 ? false : true}
+        enableButton={
+          sources.data ? (sources.data.length === 0 ? false : true) : false
+        }
         buttonName="Add new source"
         buttonLink="/sources/create"
         marginBottom="mb-10"
       />
-      <SourceTable sources={[]} isLoadingSources={false} />
+      <SourcesTable
+        sources={sources.data ? sources.data : []}
+        isLoadingSources={isLoading}
+        marginBottom={null}
+        enablePlaceholderCreateButton={true}
+      />
     </PageContentContainer>
   );
 };

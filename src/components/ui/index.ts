@@ -5,16 +5,36 @@ import FormVerticalDividers from "./FormVerticalDividers";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
 import TableBody from "./TableBody";
-import {
-  SourceTablePlaceholder,
-  PipelineTablePlaceholder,
-  DestinationTablePlaceholder,
-} from "./TablePlaceholders";
 
-import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
-import PipelineModeLabel from "./PipelineModeLabel";
+import StateLabel from "./StateLabel";
 import type { PipelineModeLabelProps } from "./PipelineModeLabel";
+import PipelineModeLabel from "./PipelineModeLabel";
+import type { ConnectorIconProps } from "./ConnectorIcon";
+import ConnectorIcon from "./ConnectorIcon";
+import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
+import ModelDefinitionIcon from "./ModelDefinitionIcon";
+import ModelDefinitionLabel from "./ModelDefinitionLabel";
+import type { HorizontalDividerProps } from "./HorizontalDivider";
+import HorizontalDivider from "./HorizontalDivider";
+import type { TableLoadingProgressProps } from "./TableLoadingProgress";
+import TableLoadingProgress from "./TableLoadingProgress";
+import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
+import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
+import type { PageTitleProps } from "./PageTitle";
+import PageTitle from "./PageTitle";
+
+export type {
+  StateIndicatorProps,
+  StateLabelProps,
+  PipelineModeLabelProps,
+  ConnectorIconProps,
+  ModelDefinitionIconProps,
+  HorizontalDividerProps,
+  TableLoadingProgressProps,
+  ModelInstanceTaskLabelProps,
+  PageTitleProps,
+};
 
 export {
   Sidebar,
@@ -23,14 +43,23 @@ export {
   TableContainer,
   TableRow,
   TableBody,
-  SourceTablePlaceholder,
-  DestinationTablePlaceholder,
-  PipelineTablePlaceholder,
   StateLabel,
   PipelineModeLabel,
+  ConnectorIcon,
+  ModelDefinitionIcon,
+  ModelDefinitionLabel,
+  HorizontalDivider,
+  TableLoadingProgress,
+  ModelInstanceTaskLabel,
+  PageTitle,
 };
-export type { StateIndicatorProps, StateLabelProps, PipelineModeLabelProps };
 
 export * from "./TableHeads";
 
 export * from "./TableCells";
+
+export * from "./TablePlaceholders";
+
+export * from "./Tables";
+
+export * from "./Buttons";

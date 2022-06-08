@@ -2,7 +2,9 @@ import { FC } from "react";
 
 const PageContentContainer: FC = ({ children }) => {
   return (
-    <div className="flex h-full flex-col px-[138px] py-10">{children}</div>
+    <div className="flex min-h-full min-w-[927px] flex-col px-[138px] pt-10 pb-[100px]">
+      {children}
+    </div>
   );
 };
 

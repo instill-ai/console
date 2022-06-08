@@ -1,16 +1,17 @@
 import { FC } from "react";
 import { Field, FieldProps } from "formik";
-import { BasicToggleField } from "@instill-ai/design-system";
+import {
+  BasicToggleField,
+  BasicToggleFieldProps,
+} from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
-export type ToggleFieldProps = {
+export type ToggleFieldProps = Omit<
+  BasicToggleFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: boolean) => void;
-  defaultChecked: boolean;
+  additionalOnChangeCb: Nullable<(value: boolean) => void>;
 };
 
 const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
@@ -18,13 +19,14 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   form,
   name,
   defaultChecked,
-  onChangeCb,
+  additionalOnChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: boolean) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -32,22 +34,23 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
     <BasicToggleField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
       defaultChecked={defaultChecked}
     />
   );
 };
 
-const FormikWrapper: FC<ToggleFieldProps> = ({
+const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   name,
   disabled,
   readOnly,
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   defaultChecked,
+  error,
 }) => {
   return (
     <Field
@@ -57,11 +60,12 @@ const FormikWrapper: FC<ToggleFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       defaultChecked={defaultChecked}
+      error={error}
     />
   );
 };
 
-export default FormikWrapper;
+export default ToggleFieldFormikWrapper;

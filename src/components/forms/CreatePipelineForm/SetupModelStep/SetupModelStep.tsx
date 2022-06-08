@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { FormVerticalDividers } from "@/components/ui";
 import { FormikStep } from "../../../formik";
@@ -9,12 +9,21 @@ import UseExistingModelFlow from "./UseExistingModelFlow";
 export type SetupModelStepProps = StepNumberState;
 
 const SetupModelStep: FC<SetupModelStepProps> = (props) => {
+  const [modelCreated, setModelCreated] = useState(false);
   return (
     <FormikStep multiGroup={true}>
       <div className="flex flex-1 flex-row">
-        <UseExistingModelFlow {...props} />
+        <UseExistingModelFlow
+          {...props}
+          modelCreated={modelCreated}
+          setModelCreated={setModelCreated}
+        />
         <FormVerticalDividers />
-        <CreateNewModelFlow {...props} />
+        <CreateNewModelFlow
+          {...props}
+          modelCreated={modelCreated}
+          setModelCreated={setModelCreated}
+        />
       </div>
     </FormikStep>
   );

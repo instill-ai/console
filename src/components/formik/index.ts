@@ -16,6 +16,8 @@ import type {
 
 import { FormikStep, FormikMultiStep } from "./FormikMultiStep";
 import type { FormikMultiStepProps } from "./FormikMultiStep";
+import FormBase from "./FormBase";
+import type { FormBaseProps } from "./FormBase";
 
 export {
   SingleSelect,
@@ -25,6 +27,7 @@ export {
   UploadFileField,
   FormikStep,
   FormikMultiStep,
+  FormBase,
 };
 export type {
   SingleSelectProps,
@@ -33,4 +36,5 @@ export type {
   ToggleFieldProps,
   UploadFileFieldProps,
   FormikMultiStepProps,
+  FormBaseProps,
 };

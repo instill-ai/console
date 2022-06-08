@@ -7,6 +7,8 @@ import SetupModelStep from "./SetupModelStep";
 import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
 import SetupPipelineModeStep from "./SetupPipelineModeStep";
 import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
+import { PipelineMode, PipelineState } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 export type StepNumberState = {
   maximumStepNumber: number;
@@ -14,63 +16,68 @@ export type StepNumberState = {
   setStepNumber: Dispatch<SetStateAction<number>>;
 };
 
-type ExistingDataSource = {
-  name: string;
-  type: string;
+type NewSource = {
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
-type NewDataSource = {
-  name: string;
-  type: string;
+type ExistingSource = {
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
-type DataSource = {
-  existing: ExistingDataSource;
-  new: NewDataSource;
+type Source = {
+  new: NewSource;
+  existing: ExistingSource;
+  type: Nullable<"existing" | "new">;
 };
 
-type ExistingDataDestination = {
-  name: string;
-  type: string;
+type NewDestination = {
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
-type NewDataDestination = {
-  name: string;
-  type: string;
+type ExistingDestination = {
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
-type DataDestination = {
-  existing: ExistingDataDestination;
-  new: NewDataDestination;
+type Destination = {
+  new: NewDestination;
+  existing: ExistingDestination;
+  type: Nullable<"existing" | "new">;
 };
 
 type ExistingModel = {
-  name: string;
+  id: Nullable<string>;
+  modelInstanceName: Nullable<string>;
 };
 
 type NewModel = {
-  name: string;
-  modelSource: "local" | "github";
-  modelInstance: string;
-  file: string;
-  description: string;
+  id: Nullable<string>;
+  modelDefinition: Nullable<string>;
+  modelInstanceName: Nullable<string>;
+  file: Nullable<string>;
+  repo: Nullable<string>;
+  description: Nullable<string>;
 };
 
 type Model = {
   existing: ExistingModel;
   new: NewModel;
+  type: Nullable<"existing" | "new">;
 };
 
 type Pipeline = {
-  mode: "sync" | "async";
-  name: string;
-  description: string;
-  status: string;
+  id: Nullable<string>;
+  mode: Nullable<PipelineMode>;
+  description: Nullable<string>;
+  state: Nullable<PipelineState>;
 };
 
-export type Values = {
-  dataSource: DataSource;
-  dataDestination: DataDestination;
+export type CreatePipelineFormValues = {
+  source: Source;
+  destination: Destination;
   model: Model;
   pipeline: Pipeline;
 };
@@ -80,44 +87,42 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
     <FormikMultiStep
       stepNumber={props.stepNumber}
       setStepNumber={props.setStepNumber}
-      initialValues={{
-        dataSource: {
-          new: {
-            name: null,
+      initialValues={
+        {
+          source: {
+            new: { id: null, definition: null },
+            existing: { id: null, definition: null },
+            type: null,
           },
-          existing: {
-            name: null,
+          model: {
+            new: {
+              id: null,
+              modelDefinition: null,
+              modelInstanceName: null,
+              file: null,
+              description: null,
+              repo: null,
+            },
+            existing: {
+              id: null,
+              modelInstanceName: null,
+            },
+            type: null,
           },
-        },
-        model: {
-          new: {
-            name: null,
-            modelSource: null,
-            modelInstance: null,
-            file: null,
+          pipeline: {
+            mode: "MODE_SYNC",
+            id: null,
             description: null,
+            state: "STATE_UNSPECIFIED",
           },
-          existing: {
-            name: null,
+          destination: {
+            new: { id: null, definition: null },
+            existing: { id: null, definition: null },
+            type: null,
           },
-        },
-        pipeline: {
-          mode: null,
-          name: null,
-          description: null,
-          status: true,
-        },
-        dataDestination: {
-          new: {
-            name: null,
-          },
-          existing: {
-            name: null,
-          },
-        },
-      }}
-      onSubmit={(values, actions) => {
-        console.log(values);
+        } as CreatePipelineFormValues
+      }
+      onSubmit={(_, actions) => {
         actions.setSubmitting(false);
       }}
       enableBackToPrevious={false}

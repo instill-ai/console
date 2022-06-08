@@ -2,7 +2,7 @@ import { FC, ReactElement, useMemo, useState } from "react";
 
 import { CreatePipelineForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
+import { PageTitle } from "@/components/ui";
 
 interface GetLayOutProps {
   page: ReactElement;

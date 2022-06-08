@@ -1,33 +1,10 @@
 version: "3.9"
 services:
   develop:
-    container_name: app-develop
+    container_name: instill-console
     stdin_open: true
     ports:
       - "3000:3000"
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      # Share the source code to allow development
-      - .:/app
-      # Prevent sharing of node_modules between host and container
-      # to avoid ownership and/or platform issues
-      - build-app:/app/.next
-      - nm-app:/app/node_modules
-
-  # Convenience production "deps" stage service for debugging
-  # Build > docker buildx bake -f docker-compose.web-app.yml --progress=tty deps
-  deps:
-    container_name: web-app-multistage-deps
-    profiles:
-      - donotstart
-    stdin_open: true
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: deps
-
-volumes:
-  build-app:
-  nm-app:

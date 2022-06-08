@@ -1,2 +1,2 @@
-import DestinationTable from "./DestinationTable";
-import type { DestinationTableProps } from "./DestinationTable";
+export * from "./destination";
+export * from "./source";

@@ -1,33 +1,24 @@
+import { FC, ReactElement } from "react";
+import { GetServerSideProps } from "next";
+import { parse } from "cookie";
+import axios from "axios";
+
+import { PageTitle } from "@/components/ui";
 import OnboardingForm from "@/components/forms/OnboardingForm";
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { GetServerSideProps } from "next";
-import { FC, ReactElement } from "react";
-import cookie from "cookie";
-import { getUserQuery, GetUserResponse, User } from "@/lib/instill/mgmt";
-import axios from "axios";
+import { GetUserResponse, User } from "@/lib/instill/mgmt";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
   let user: User | null;
 
   if (cookies) {
-    const cookieList = cookie.parse(cookies);
+    const cookieList = parse(cookies);
     if (cookieList["instill-ai-user-onboarded"]) {
-      const res = await axios.get<GetUserResponse>(
+      const { data } = await axios.get<GetUserResponse>(
         `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
       );
-      user = {
-        id: res.data.user.id,
-        email: res.data.user.email,
-        companyName: res.data.user.company_name,
-        role: res.data.user.role,
-        usageDataCollection: res.data.user.usage_data_collection,
-        newsletterSubscription: res.data.user.newsletter_subscription,
-        type: res.data.user.type,
-        createTime: res.data.user.create_time,
-        updateTime: res.data.user.update_time,
-      };
+      user = data.user;
     } else {
       user = null;
     }

@@ -1,32 +1,28 @@
-import { BasicTextField } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
+import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextFieldProps = {
+export type TextFieldProps = Omit<
+  BasicTextFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
-  value?: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  type: string;
-  autoComplete: string;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -34,24 +30,25 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
     <BasicTextField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
 };
 
-const FormikWrapper: FC<TextFieldProps> = ({
+const TextFieldFormikWrapper: FC<TextFieldProps> = ({
   name,
   disabled,
   readOnly,
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   type,
   autoComplete,
   value,
+  error,
 }) => {
   return (
     <Field
@@ -61,14 +58,15 @@ const FormikWrapper: FC<TextFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       type={type}
       autoComplete={autoComplete}
       value={value}
+      error={error}
     />
   );
 };
 
-export default FormikWrapper;
+export default TextFieldFormikWrapper;

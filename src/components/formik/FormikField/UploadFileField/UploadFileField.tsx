@@ -1,33 +1,31 @@
+import { Nullable } from "@/types/general";
 import {
-  BasicTextField,
   BasicUploadFileField,
+  BasicUploadFileFieldProps,
 } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type UploadFileFieldProps = {
+export type UploadFileFieldProps = Omit<
+  BasicUploadFileFieldProps,
+  "onChangeInput" | "id"
+> & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  uploadButtonText: string;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -35,22 +33,23 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
     <BasicUploadFileField
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
 };
 
-const FormikWrapper: FC<UploadFileFieldProps> = ({
+const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   name,
   disabled,
   readOnly,
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   uploadButtonText,
+  error,
 }) => {
   return (
     <Field
@@ -60,12 +59,13 @@ const FormikWrapper: FC<UploadFileFieldProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       uploadButtonText={uploadButtonText}
+      error={error}
     />
   );
 };
 
-export default FormikWrapper;
+export default UploadFileFieldFormikWrapper;

@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "docker:app:install": "docker buildx bake -f ./docker-compose.app.yml --progress=tty deps",
-    "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose.yml up --build",
+    "docker:app:develop": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose.app.yml up --build",
     "docker:prune-cache": "docker buildx prune",
     "docker:nuke-all": "npm-run-all --sequential --continue-on-error --print-label \"docker:nuke:*\"",
     "docker:nuke:images": "docker image rm -f $(docker image ls -q)",
@@ -26,7 +26,7 @@
     "prettier:check": "prettier --check"
   },
   "dependencies": {
-    "@instill-ai/design-system": "^0.0.44",
+    "@instill-ai/design-system": "^0.0.60",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "cookie": "^0.5.0",
@@ -37,6 +37,7 @@
     "react-dom": "^17.0.2",
     "react-query": "^3.38.0",
     "react-select": "^5.3.1",
+    "uuid": "^8.3.2",
     "yaml": "^2.0.1"
   },
   "devDependencies": {
@@ -52,12 +53,14 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "@types/cookie": "^0.5.1",
     "@types/node": "^17.0.22",
     "@types/react": "^17.0.41",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "autoprefixer": "^10.4.4",

@@ -1,12 +1,13 @@
 import { FC } from "react";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
-import { mockMgmtRoles, useUpdateUser } from "@/services/mgmt/MgmtServices";
-import { SingleSelect, TextField, ToggleField } from "../../formik";
-import { User } from "@/lib/instill/mgmt";
+import { PrimaryButton } from "@/components/ui";
+import { useUpdateUser } from "@/services/mgmt";
+import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
+import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 
 export type OnBoardingFormProps = {
   user?: Partial<User> | null;
@@ -15,28 +16,24 @@ export type OnBoardingFormProps = {
 const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
-  console.log(user?.role);
   return (
     <Formik
       initialValues={{
-        email: user?.email ? user.email : null,
-        companyName: user?.companyName ? user.companyName : null,
+        email: user?.email || "",
+        company_name: user?.company_name || "",
         role: user?.role
           ? mockMgmtRoles.find((e) => e.value === user.role)?.value
           : null,
-        usageDataCollection: user?.usageDataCollection
-          ? user.usageDataCollection
-          : null,
-        newsletterSubscription: user?.newsletterSubscription
-          ? user.newsletterSubscription
-          : null,
+        usage_data_collection: user?.usage_data_collection || false,
+        newsletter_subscription: user?.newsletter_subscription || false,
       }}
+      enableReinitialize={true}
       onSubmit={async (values) => {
         if (
-          !values.companyName ||
+          !values.company_name ||
           !values.email ||
-          !values.newsletterSubscription ||
-          !values.usageDataCollection ||
+          !values.newsletter_subscription ||
+          !values.usage_data_collection ||
           !values.role
         ) {
           return;
@@ -45,10 +42,10 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
         const body: Partial<User> = {
           id: "local-user",
           email: values.email,
-          companyName: values.companyName,
+          company_name: values.company_name,
           role: values.role as string,
-          newsletterSubscription: values.newsletterSubscription,
-          usageDataCollection: values.usageDataCollection,
+          newsletter_subscription: values.newsletter_subscription,
+          usage_data_collection: values.usage_data_collection,
         };
 
         updateUser.mutate(body, {
@@ -61,12 +58,12 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     >
       {(formik) => {
         return (
-          <Form className="flex flex-col gap-y-5">
+          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
               name="email"
-              value={formik.values.email ? formik.values.email : ""}
-              onChangeCb={formik.handleChange}
               label="Your email"
+              value={formik.values.email || ""}
+              additionalOnChangeCb={null}
               description="Fill your email address"
               disabled={false}
               readOnly={false}
@@ -74,12 +71,15 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               placeholder=""
               type="email"
               autoComplete="on"
+              error={formik.errors.email || null}
             />
             <TextField
-              name="companyName"
+              name="company_name"
               label="Your company"
-              value={formik.values.companyName ? formik.values.companyName : ""}
-              onChangeCb={formik.handleChange}
+              value={
+                formik.values.company_name ? formik.values.company_name : ""
+              }
+              additionalOnChangeCb={null}
               description="Fill your company name"
               disabled={false}
               readOnly={false}
@@ -87,6 +87,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               placeholder=""
               type="text"
               autoComplete="off"
+              error={formik.errors.company_name || null}
             />
             <SingleSelect
               name="role"
@@ -97,35 +98,48 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               options={mockMgmtRoles}
               required={true}
               description={"Setup Guide"}
-              defaultValue={
+              menuPlacement="auto"
+              value={
                 user?.role
                   ? mockMgmtRoles.find((e) => e.value === user.role)
-                  : undefined
+                    ? (mockMgmtRoles.find(
+                        (e) => e.value === user.role
+                      ) as SingleSelectOption)
+                    : null
+                  : null
               }
+              error={formik.errors.role || null}
+              additionalOnChangeCb={null}
             />
             <ToggleField
-              name="usageDataCollection"
+              name="usage_data_collection"
               label="Anonymised usage data collection "
               disabled={false}
               readOnly={false}
               required={true}
               defaultChecked={
-                user?.usageDataCollection ? user?.usageDataCollection : false
+                user?.usage_data_collection
+                  ? user?.usage_data_collection
+                  : false
               }
               description="We collect data only for product improvements"
+              error={formik.errors.usage_data_collection || null}
+              additionalOnChangeCb={null}
             />
             <ToggleField
-              name="newsletterSubscription"
+              name="newsletter_subscription"
               label="Newsletter subscription"
               disabled={false}
               readOnly={false}
               required={true}
               defaultChecked={
-                user?.newsletterSubscription
-                  ? user?.newsletterSubscription
+                user?.newsletter_subscription
+                  ? user?.newsletter_subscription
                   : false
               }
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
+              error={formik.errors.newsletter_subscription || null}
+              additionalOnChangeCb={null}
             />
             <PrimaryButton
               disabled={formik.isValid ? false : true}
@@ -134,7 +148,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             >
               Start
             </PrimaryButton>
-          </Form>
+          </FormBase>
         );
       }}
     </Formik>

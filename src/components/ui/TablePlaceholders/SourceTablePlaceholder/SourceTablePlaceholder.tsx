@@ -6,9 +6,19 @@ import {
   MongoDbAtalasIcon,
 } from "@instill-ai/design-system";
 import { FC } from "react";
-import TablePlaceholderBase from "../TablePlaceholderBase";
+import TablePlaceholderBase, {
+  TablePlaceholderBaseProps,
+} from "../TablePlaceholderBase";
 
-const SourceTablePlaceholder: FC = () => {
+export type SourceTablePlaceholderProps = {
+  marginBottom: TablePlaceholderBaseProps["marginBottom"];
+  enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
+};
+
+const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
+  marginBottom,
+  enablePlaceholderCreateButton,
+}) => {
   const width = "w-[136px]";
   const height = "h-[136px]";
 
@@ -49,6 +59,8 @@ const SourceTablePlaceholder: FC = () => {
       placeholderTitle="No data source"
       createButtonTitle="Configurate your first source"
       createButtonLink="/sources/create"
+      marginBottom={marginBottom}
+      enableCreateButton={enablePlaceholderCreateButton}
     />
   );
 };

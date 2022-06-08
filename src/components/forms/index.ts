@@ -5,6 +5,11 @@ import CreateDestinationForm from "./CreateDestinationForm";
 import CreateSourceForm from "./CreateSourceForm";
 import OnboardingForm from "./OnboardingForm";
 import CreateModelForm from "./CreateModelForm";
+import ConfigureSourceForm from "./ConfigureSourceForm";
+import ConfigureDestinationForm from "./ConfigureDestinationForm";
+import ConfigureModelForm from "./ConfigureModelForm";
+import ConfigureModelInstanceForm from "./ConfigureModelInstanceForm";
+import type { ConfigureModelInstanceFormProps } from "./ConfigureModelInstanceForm";
 
 export {
   CreatePipelineForm,
@@ -12,5 +17,9 @@ export {
   OnboardingForm,
   CreateDestinationForm,
   CreateModelForm,
+  ConfigureSourceForm,
+  ConfigureDestinationForm,
+  ConfigureModelForm,
+  ConfigureModelInstanceForm,
 };
-export { StepNumberState };
+export type { StepNumberState, ConfigureModelInstanceFormProps };

@@ -2,7 +2,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { FC, ReactElement, useEffect } from "react";
-import cookie from "cookie";
+import { parse } from "cookie";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
@@ -34,14 +34,14 @@ const MainPage: FC<MainPageProps> & {
       return;
     }
 
-    const cookieList = cookie.parse(cookies);
+    const cookieList = parse(cookies);
 
     if (!cookieList["instill-ai-user-onboarded"]) {
       router.push("/onboarding");
     } else {
       router.push("/pipelines");
     }
-  }, [router]);
+  }, [router, cookies]);
 
   return <PageContentContainer></PageContentContainer>;
 };

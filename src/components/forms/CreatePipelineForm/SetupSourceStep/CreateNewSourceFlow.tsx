@@ -2,52 +2,104 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
-import useOnScreen from "@/hooks/useOnScreen";
+import { PrimaryButton } from "@/components/ui";
 import { SingleSelect, TextField } from "../../../formik";
 import { mockAsyncDataConnectionOptions } from "../../MockData";
-import { StepNumberState, Values } from "../CreatePipelineForm";
+import {
+  StepNumberState,
+  CreatePipelineFormValues,
+} from "../CreatePipelineForm";
+import { useCreateSource, useSources } from "@/services/connector";
+import { CreateSourcePayload } from "@/lib/instill";
 
 export type CreateNewSourceFlowProps = StepNumberState;
 
 const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
-  maximumStepNumber,
   stepNumber,
   setStepNumber,
 }) => {
+  const { values, errors, setFieldValue } =
+    useFormikContext<CreatePipelineFormValues>();
+  const flowRef = useRef<HTMLDivElement>(null);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Initialize the source definition and sources                #
+  // #                                                                 #
+  // ###################################################################
+
   const [sourceOptions, setSourceOptions] = useState<
     SingleSelectOption[] | null
   >(null);
 
-  const { values } = useFormikContext<Values>();
-
-  const flowRef = useRef<HTMLDivElement>(null);
-  const flowIsOnScreen = useOnScreen(flowRef);
+  const sources = useSources();
 
   useEffect(() => {
-    if (!flowIsOnScreen) return;
+    setSourceOptions(mockAsyncDataConnectionOptions);
+  }, []);
 
-    setTimeout(() => setSourceOptions(mockAsyncDataConnectionOptions), 3000);
-  }, [flowIsOnScreen]);
-
-  const canSetupNewSource = useMemo(() => {
-    if (!values.dataSource.new.name || !values.dataSource.new.type)
-      return false;
+  const canCreateNewSource = useMemo(() => {
+    if (!values.source.new.id || !values.source.new.definition) return false;
 
     return true;
-  }, [values.dataSource.new.name, values.dataSource.new.type]);
+  }, [values.source.new.id, values.source.new.definition]);
 
-  const handleSetupNewSource = () => {
-    setStepNumber(stepNumber + 1);
+  const selectedSourceOption = useMemo(() => {
+    if (!values.source.new.definition || !sourceOptions) return null;
+
+    return (
+      sourceOptions.find((e) => e.value === values.source.new.definition) ||
+      null
+    );
+  }, [values.source.new.definition, sourceOptions]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # 1 - Create new source                                           #
+  // #                                                                 #
+  // ###################################################################
+
+  const createSource = useCreateSource();
+
+  const handleCreateNewSource = () => {
+    if (!canCreateNewSource || !values.source.new.id || !sources.isSuccess) {
+      return;
+    }
+
+    const sourceIndex = sources.data.findIndex(
+      (e) => e.id === values.source.existing.id
+    );
+
+    if (sourceIndex !== -1) {
+      return;
+    }
+
+    const payload: CreateSourcePayload = {
+      id: values.source.new.id,
+      source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
+      connector: {
+        configuration: "{}",
+      },
+    };
+
+    createSource.mutate(payload, {
+      onSuccess: () => {
+        setFieldValue("source.type", "new");
+        setStepNumber(stepNumber + 1);
+      },
+    });
   };
 
   return (
     <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="instill-text-h3 text-black">Setup a new source</h3>
       <TextField
-        name="dataSource.new.name"
+        name="source.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"
+        value={values.source.new.id}
+        error={errors.source?.new?.id || null}
+        additionalOnChangeCb={null}
         disabled={false}
         readOnly={false}
         required={true}
@@ -56,20 +108,24 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
-        name="dataSource.new.type"
-        instanceId="new-data-source-type"
+        name="source.new.definition"
+        instanceId="new-data-source-definition"
+        label="Source type"
+        description="Setup Guide"
+        value={selectedSourceOption}
+        options={sourceOptions ? sourceOptions : []}
+        error={errors.source?.new?.definition || null}
+        additionalOnChangeCb={null}
+        menuPlacement="auto"
         disabled={false}
         readOnly={false}
-        options={sourceOptions ? sourceOptions : []}
         required={true}
-        description={"Setup Guide"}
-        label="Source type"
       />
       <PrimaryButton
         position="ml-auto"
         type="button"
-        disabled={canSetupNewSource ? false : true}
-        onClickHandler={handleSetupNewSource}
+        disabled={canCreateNewSource ? false : true}
+        onClickHandler={handleCreateNewSource}
       >
         Set up source
       </PrimaryButton>

@@ -1,33 +1,25 @@
-import { BasicTextArea, BasicTextField } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
+import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextAreaProps = {
+export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput" | "id"> & {
   name: string;
-  disabled: boolean;
-  readOnly: boolean;
-  required: boolean;
-  description: string;
-  label: string;
-  onChangeCb?: (value: string) => void;
-  placeholder: string;
-  autoComplete: string;
-  value?: string;
-  enableCounter: boolean;
-  counterWordLimit: number;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
   field,
   form,
   name,
-  onChangeCb,
+  additionalOnChangeCb,
+  error,
   ...props
 }) => {
   const onChange = (_: string, value: string) => {
     form.setFieldValue(field.name, value);
-    if (onChangeCb) {
-      onChangeCb(value);
+    if (additionalOnChangeCb) {
+      additionalOnChangeCb(value);
     }
   };
 
@@ -35,25 +27,26 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
     <BasicTextArea
       {...props}
       id={name}
-      error={form.errors[field.name] as string}
+      error={error}
       onChangeInput={onChange}
     />
   );
 };
 
-const FormikWrapper: FC<TextAreaProps> = ({
+const TextAreaFormikWrapper: FC<TextAreaProps> = ({
   name,
   disabled,
   readOnly,
   required,
   description,
   label,
-  onChangeCb,
+  additionalOnChangeCb,
   placeholder,
   autoComplete,
   value,
   enableCounter,
   counterWordLimit,
+  error,
 }) => {
   return (
     <Field
@@ -63,15 +56,16 @@ const FormikWrapper: FC<TextAreaProps> = ({
       readOnly={readOnly}
       required={required}
       description={description}
-      onChangeCb={onChangeCb}
+      additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       placeholder={placeholder}
       autoComplete={autoComplete}
       value={value}
       enableCounter={enableCounter}
       counterWordLimit={counterWordLimit}
+      error={error}
     />
   );
 };
 
-export default FormikWrapper;
+export default TextAreaFormikWrapper;
