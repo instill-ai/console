@@ -5,7 +5,6 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "../styles/global.css";
 import "@instill-ai/design-system/build/index.cjs.css";
-import { useTrackingToken } from "@/services/mgmt";
 
 export const queryCache = new QueryCache();
 
@@ -21,7 +20,6 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  useTrackingToken();
   return (
     <QueryClientProvider client={queryClient}>
       {getLayout(<Component {...pageProps} />)}
