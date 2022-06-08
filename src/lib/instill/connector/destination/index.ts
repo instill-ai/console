@@ -23,15 +23,10 @@ import type {
   CreateDestinationResponse,
 } from "./mutations";
 
-import { createDestinationMutation } from "./mutations";
-
-export {
-  listDestinationDefinitionsQuery,
-  getDestinationDefinitionQuery,
-  listDestinationsQuery,
-  getDestinationQuery,
+import {
   createDestinationMutation,
-};
+  deleteDestinationMutation,
+} from "./mutations";
 
 export type {
   Destination,
@@ -43,4 +38,13 @@ export type {
   GetDestinationResponse,
   CreateDestinationPayload,
   CreateDestinationResponse,
+};
+
+export {
+  listDestinationDefinitionsQuery,
+  getDestinationDefinitionQuery,
+  listDestinationsQuery,
+  getDestinationQuery,
+  createDestinationMutation,
+  deleteDestinationMutation,
 };
