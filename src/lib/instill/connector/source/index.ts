@@ -19,7 +19,7 @@ import {
 } from "./queries";
 
 import type { CreateSourcePayload, CreateSourceResponse } from "./mutations";
-import { createSourceMutation } from "./mutations";
+import { createSourceMutation, deleteSourceMutation } from "./mutations";
 
 export type {
   Source,
@@ -39,4 +39,5 @@ export {
   listSourcesQuery,
   getSourceQuery,
   createSourceMutation,
+  deleteSourceMutation,
 };
