@@ -3,9 +3,8 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 
 import { SingleSelect } from "../../formik/FormikField";
-import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
-import { ConnectorIcon } from "@/components/ui";
+import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
   BasicProgressMessageBox,
   SingleSelectOption,

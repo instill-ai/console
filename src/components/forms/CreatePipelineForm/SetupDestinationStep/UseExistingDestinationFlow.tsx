@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { SingleSelect } from "../../../formik";
 import {
   StepNumberState,

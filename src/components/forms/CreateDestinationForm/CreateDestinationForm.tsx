@@ -7,9 +7,8 @@ import {
 } from "@instill-ai/design-system";
 
 import { SingleSelect } from "../../formik/FormikField";
-import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
-import { ConnectorIcon } from "@/components/ui";
+import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useCreateDestination, useDestinations } from "@/services/connector";

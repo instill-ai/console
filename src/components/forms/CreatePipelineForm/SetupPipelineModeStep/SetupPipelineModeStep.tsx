@@ -11,7 +11,7 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";

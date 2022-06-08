@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { FormBase, TextArea, ToggleField } from "@/components/formik";
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useUpdatePipeline } from "@/services/pipeline";

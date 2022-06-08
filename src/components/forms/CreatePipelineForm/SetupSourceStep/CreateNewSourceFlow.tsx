@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { SingleSelect, TextField } from "../../../formik";
 import { mockAsyncDataConnectionOptions } from "../../MockData";
 import {

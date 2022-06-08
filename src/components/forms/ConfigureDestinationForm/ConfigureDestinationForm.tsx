@@ -1,11 +1,11 @@
-import { FormBase, SingleSelect } from "@/components/formik";
-import { ConnectorIcon } from "@/components/ui";
-import { PrimaryButton } from "@/components/ui/Buttons";
-import { DestinationWithDefinition } from "@/lib/instill";
-import { Nullable } from "@/types/general";
+import { FC, useState, useEffect, useCallback } from "react";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Formik } from "formik";
-import { FC, useState, useEffect, useCallback } from "react";
+
+import { FormBase, SingleSelect } from "@/components/formik";
+import { ConnectorIcon, PrimaryButton } from "@/components/ui";
+import { DestinationWithDefinition } from "@/lib/instill";
+import { Nullable } from "@/types/general";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;

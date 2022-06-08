@@ -2,12 +2,12 @@ import { FC } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
-import { User , mockMgmtRoles } from "@/lib/instill/mgmt";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 
 export type OnBoardingFormProps = {
   user?: Partial<User> | null;

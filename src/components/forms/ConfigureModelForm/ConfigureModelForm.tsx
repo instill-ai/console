@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { FormBase, TextArea } from "@/components/formik";
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { Model } from "@/lib/instill";
 import { useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";

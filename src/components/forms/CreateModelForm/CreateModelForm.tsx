@@ -14,7 +14,6 @@ import {
   TextField,
   UploadFileField,
 } from "../../formik";
-import { PrimaryButton } from "@/components/ui/Buttons";
 import {
   useCreateGithubModel,
   useCreateLocalModel,
@@ -22,7 +21,7 @@ import {
   useModelDefinitions,
   useModelInstances,
 } from "@/services/model";
-import { ModelDefinitionIcon } from "@/components/ui";
+import { ModelDefinitionIcon, PrimaryButton } from "@/components/ui";
 import {
   CreateGithubModelPayload,
   CreateLocalModelPayload,

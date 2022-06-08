@@ -2,8 +2,11 @@ import { FC, useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { ConnectorIcon, FormVerticalDividers } from "@/components/ui";
-import { PrimaryButton } from "@/components/ui/Buttons";
+import {
+  ConnectorIcon,
+  FormVerticalDividers,
+  PrimaryButton,
+} from "@/components/ui";
 import { SingleSelect, FormikStep } from "../../../formik";
 import {
   StepNumberState,

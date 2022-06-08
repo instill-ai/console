@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui/Buttons";
+import { PrimaryButton } from "@/components/ui";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
