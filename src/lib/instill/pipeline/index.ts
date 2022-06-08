@@ -20,7 +20,11 @@ import type {
   UpdatePipelineResponse,
 } from "./mutations";
 
-import { createPipelineMutation, updatePipelineMutation } from "./mutations";
+import {
+  createPipelineMutation,
+  updatePipelineMutation,
+  deletePipelineMutation,
+} from "./mutations";
 
 import type {
   ActivatePipelineResponse,
@@ -57,4 +61,5 @@ export {
   updatePipelineMutation,
   activatePipelineMutation,
   deActivatePipelineMutation,
+  deletePipelineMutation,
 };

@@ -50,3 +50,13 @@ export const updatePipelineMutation = async (
     return Promise.reject(err);
   }
 };
+
+export const deletePipelineMutation = async (pipelineName: string) => {
+  try {
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}`
+    );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
