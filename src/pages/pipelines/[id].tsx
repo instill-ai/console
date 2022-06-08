@@ -4,8 +4,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { usePipeline } from "@/services/pipeline";
 import { useRouter } from "next/router";
-import PipelineOverViewTable from "@/services/pipeline/PipelineOverviewTable";
-import { StateLabel, PipelineModeLabel } from "@/components/ui";
+import { PipelineTable , StateLabel, PipelineModeLabel } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/ConfigurePipelineForm";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
@@ -71,7 +70,7 @@ const PipelineDetailsPage: FC & {
           state={pipeline.data?.state || "STATE_UNSPECIFIED"}
         />
       </div>
-      <PipelineOverViewTable
+      <PipelineTable
         pipeline={pipeline.isSuccess ? pipeline.data : null}
         isLoading={false}
         marginBottom="mb-10"

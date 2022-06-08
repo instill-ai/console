@@ -11,13 +11,13 @@ import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { FC } from "react";
 
-export type PipelineOverViewTableProps = {
+export type PipelineTableProps = {
   pipeline: Nullable<Pipeline>;
   isLoading: boolean;
   marginBottom: Nullable<string>;
 };
 
-const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
+const PipelineTable: FC<PipelineTableProps> = ({
   pipeline,
   isLoading,
   marginBottom,
@@ -87,4 +87,4 @@ const PipelineOverViewTable: FC<PipelineOverViewTableProps> = ({
   );
 };
 
-export default PipelineOverViewTable;
+export default PipelineTable;
