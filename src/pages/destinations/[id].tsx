@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/forms";
-import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
 
 // export const getServerSideProps: GetServerSideProps = async () => {

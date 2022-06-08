@@ -5,7 +5,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/forms";
-import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(

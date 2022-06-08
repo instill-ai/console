@@ -1,8 +1,8 @@
 import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import { PageTitle , DestinationsTable } from "@/components/ui";
-import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { PageTitle, DestinationsTable } from "@/components/ui";
+import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationsWithPipelines } from "@/services/connector";
 
 interface GetLayOutProps {
