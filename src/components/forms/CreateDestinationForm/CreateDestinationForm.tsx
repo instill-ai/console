@@ -1,21 +1,18 @@
 import { FC, useEffect, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
+import {
+  BasicProgressMessageBox,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 
 import { SingleSelect } from "../../formik/FormikField";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
-import {
-  BasicProgressMessageBox,
-  SingleSelectOption,
-} from "@instill-ai/design-system";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import {
-  useCreateDestination,
-  useDestinations,
-} from "@/services/connector/DestinationServices";
+import { useCreateDestination, useDestinations } from "@/services/connector";
 
 export type CreateDestinationFormValues = {
   id: string;

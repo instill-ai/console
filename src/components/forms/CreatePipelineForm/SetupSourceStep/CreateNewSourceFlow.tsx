@@ -9,10 +9,7 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import {
-  useCreateSource,
-  useSources,
-} from "@/services/connector/SourceServices";
+import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 
 export type CreateNewSourceFlowProps = StepNumberState;

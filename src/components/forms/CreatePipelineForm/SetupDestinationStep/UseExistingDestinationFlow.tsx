@@ -8,7 +8,7 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import { useDestinations } from "@/services/connector/DestinationServices";
+import { useDestinations } from "@/services/connector";
 
 export type UseExistingDestinationFlowProps = StepNumberState;
 

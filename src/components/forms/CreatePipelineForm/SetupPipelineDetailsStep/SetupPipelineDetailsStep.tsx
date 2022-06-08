@@ -1,16 +1,13 @@
 import { FC, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
+import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
-import {
-  useCreatePipeline,
-  useUpdatePipeline,
-} from "@/services/pipeline/PipelineServices";
+import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
 const SetupPipelineDetailsStep: FC = () => {

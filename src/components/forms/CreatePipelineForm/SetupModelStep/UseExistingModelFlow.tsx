@@ -16,8 +16,8 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import { useAllModeInstances } from "@/services/model/ModelServices";
-import { Nullable } from "@instill-ai/design-system/build/types/general";
+import { useModelsInstances } from "@/services/model";
+import { Nullable } from "@/types/general";
 
 export type UseExistingModelFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
@@ -41,7 +41,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   const [modelInstanceOptions, setModelInstanceOptions] =
     useState<Nullable<SingleSelectOption[]>>(null);
 
-  const modelInstances = useAllModeInstances(modelCreated ? false : true);
+  const modelInstances = useModelsInstances(modelCreated ? false : true);
 
   useEffect(() => {
     if (!modelInstances.isSuccess || !modelInstances.data) return;

@@ -10,10 +10,7 @@ import {
   BasicProgressMessageBox,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import {
-  useCreateSource,
-  useSources,
-} from "@/services/connector/SourceServices";
+import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 

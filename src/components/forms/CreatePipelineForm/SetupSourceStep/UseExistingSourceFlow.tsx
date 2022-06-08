@@ -8,7 +8,7 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import { useSources } from "@/services/connector/SourceServices";
+import { useSources } from "@/services/connector";
 import { ConnectorIcon } from "@/components/ui";
 import { Nullable } from "@/types/general";
 

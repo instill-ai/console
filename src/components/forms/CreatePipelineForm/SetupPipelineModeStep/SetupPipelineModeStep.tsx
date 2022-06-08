@@ -12,10 +12,7 @@ import {
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
 import { PrimaryButton } from "@/components/ui/Buttons";
-import {
-  useCreateSource,
-  useSources,
-} from "@/services/connector/SourceServices";
+import { useCreateSource, useSources } from "@/services/connector";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
 

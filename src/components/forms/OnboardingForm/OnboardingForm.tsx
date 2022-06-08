@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
-import { mockMgmtRoles, useUpdateUser } from "@/services/mgmt/MgmtServices";
+import { useUpdateUser } from "@/services/mgmt";
 import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
-import { User } from "@/lib/instill/mgmt";
+import { User , mockMgmtRoles } from "@/lib/instill/mgmt";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 export type OnBoardingFormProps = {

@@ -11,10 +11,7 @@ import {
 } from "../CreatePipelineForm";
 import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
-import {
-  useCreateDestination,
-  useDestinations,
-} from "@/services/connector/DestinationServices";
+import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
 
 export type SetupDestinationStepProps = StepNumberState;

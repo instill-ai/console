@@ -31,7 +31,7 @@ import {
   useDeployModelInstance,
   useModelDefinitions,
   useModelInstances,
-} from "@/services/model/ModelServices";
+} from "@/services/model";
 import { ModelDefinitionIcon } from "@/components/ui";
 import {
   CreateGithubModelPayload,
@@ -229,7 +229,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     string | undefined
   >();
 
-  const modelInstances = useModelInstances(newModel?.id);
+  const modelInstances = useModelInstances(newModel ? newModel.id : null);
   const modelInstanceOptions = useMemo(() => {
     if (!modelInstances.isSuccess || !modelInstances.data) return;
 

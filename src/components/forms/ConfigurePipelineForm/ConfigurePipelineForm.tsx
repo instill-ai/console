@@ -1,12 +1,12 @@
-import { Formik } from "formik";
 import { FC, useCallback, useState } from "react";
+import { Formik } from "formik";
+import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { FormBase, TextArea, ToggleField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
-import { useUpdatePipeline } from "@/services/pipeline/PipelineServices";
+import { useUpdatePipeline } from "@/services/pipeline";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;

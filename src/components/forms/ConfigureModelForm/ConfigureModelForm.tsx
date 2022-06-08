@@ -1,12 +1,12 @@
-import { Formik } from "formik";
 import { FC, useCallback, useState } from "react";
+import { Formik } from "formik";
+import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { FormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { Model } from "@/lib/instill";
-import { useUpdateModel } from "@/services/model/ModelServices";
+import { useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;

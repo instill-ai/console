@@ -1,11 +1,12 @@
+import { FC, useState, useEffect, useCallback } from "react";
+import { Formik } from "formik";
+import { SingleSelectOption } from "@instill-ai/design-system";
+
 import { FormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon } from "@/components/ui";
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { SingleSelectOption } from "@instill-ai/design-system";
-import { Formik } from "formik";
-import { FC, useState, useEffect, useCallback } from "react";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;

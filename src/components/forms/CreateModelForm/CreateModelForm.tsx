@@ -1,4 +1,5 @@
 import { FC, useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import {
   BasicProgressMessageBox,
@@ -20,7 +21,7 @@ import {
   useDeployModelInstance,
   useModelDefinitions,
   useModelInstances,
-} from "@/services/model/ModelServices";
+} from "@/services/model";
 import { ModelDefinitionIcon } from "@/components/ui";
 import {
   CreateGithubModelPayload,
@@ -28,7 +29,6 @@ import {
   Model,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useRouter } from "next/router";
 
 type CreateModelFormValue = {
   id: Nullable<string>;
@@ -182,7 +182,7 @@ const CreateNewModelFlow: FC = () => {
   // #                                                                 #
   // ###################################################################
 
-  const modelInstances = useModelInstances(newModel?.id);
+  const modelInstances = useModelInstances(newModel ? newModel.id : null);
   const modelInstanceOptions = useMemo(() => {
     if (!modelInstances.isSuccess) return [];
 

@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo } from "react";
-import { SingleSelectOption } from "@instill-ai/design-system";
 import { useFormikContext } from "formik";
+import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui/Buttons";
 import { SingleSelect, TextField } from "../../../formik";
@@ -11,7 +11,7 @@ import {
 import {
   useCreateDestination,
   useDestinationDefinitions,
-} from "@/services/connector/DestinationServices";
+} from "@/services/connector";
 import { ConnectorIcon } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 
