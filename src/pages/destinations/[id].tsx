@@ -3,11 +3,10 @@ import { FC, ReactElement } from "react";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
-import { StateLabel } from "@/components/ui";
-import { PipelinesTable } from "@/services/pipeline";
+import { StateLabel, PipelinesTable } from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/forms";
-import { useDestinationWithPipelines } from "@/services/connector/DestinationServices";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
+import { useDestinationWithPipelines } from "@/services/connector";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(

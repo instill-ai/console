@@ -10,15 +10,13 @@ import {
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
 import { useRouter } from "next/router";
-import {
-  useModel,
-  useModelWithInstances,
-} from "@/services/model/ModelServices";
+import { useModel, useModelWithInstances } from "@/services/model";
 import {
   HorizontalDivider,
   ModelDefinitionLabel,
   StateLabel,
   ModelInstanceTaskLabel,
+  PipelinesTable,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
@@ -29,8 +27,7 @@ import {
   BasicSingleSelect,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import { usePipelines } from "@/services/pipeline/PipelineServices";
-import { PipelinesTable } from "@/services/pipeline";
+import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 
 interface GetLayOutProps {
