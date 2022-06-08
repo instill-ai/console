@@ -18,8 +18,9 @@ const useDeleteSource = (sourceName: string) => {
         ]);
 
         if (sources) {
-          queryClient.setQueryData<SourceWithDefinition[]>(["sources"], (old) =>
-            old ? old.filter((e) => e.name !== sourceName) : []
+          queryClient.setQueryData<SourceWithDefinition[]>(
+            ["sources"],
+            sources.filter((e) => e.name !== sourceName)
           );
         } else {
           queryClient.invalidateQueries(["sources"]);

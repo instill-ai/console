@@ -4,6 +4,7 @@ import useDestinationWithPipelines from "./useDestinationWithPipelines";
 import useDestinationsWithPipelines from "./useDestinationsWithPipelines";
 import useDestinationDefinitions from "./useDestinationDefinitions";
 import useCreateDestination from "./useCreateDestination";
+import useDeleteDestination from "./useDeleteDestination";
 
 export {
   useDestination,
@@ -12,4 +13,5 @@ export {
   useDestinationsWithPipelines,
   useDestinationDefinitions,
   useCreateDestination,
+  useDeleteDestination,
 };
