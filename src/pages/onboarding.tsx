@@ -1,11 +1,12 @@
+import { FC, ReactElement } from "react";
+import { GetServerSideProps } from "next";
+import { parse } from "cookie";
+import axios from "axios";
+
+import { PageTitle } from "@/components/ui";
 import OnboardingForm from "@/components/forms/OnboardingForm";
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { GetServerSideProps } from "next";
-import { FC, ReactElement } from "react";
-import { parse } from "cookie";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
-import axios from "axios";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;

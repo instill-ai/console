@@ -6,21 +6,35 @@ import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
 import TableBody from "./TableBody";
 
-import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
-import PipelineModeLabel from "./PipelineModeLabel";
+import StateLabel from "./StateLabel";
 import type { PipelineModeLabelProps } from "./PipelineModeLabel";
-import ConnectorIcon from "./ConnectorIcon";
+import PipelineModeLabel from "./PipelineModeLabel";
 import type { ConnectorIconProps } from "./ConnectorIcon";
-import ModelDefinitionIcon from "./ModelDefinitionIcon";
+import ConnectorIcon from "./ConnectorIcon";
 import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
+import ModelDefinitionIcon from "./ModelDefinitionIcon";
 import ModelDefinitionLabel from "./ModelDefinitionLabel";
-import HorizontalDivider from "./HorizontalDivider";
 import type { HorizontalDividerProps } from "./HorizontalDivider";
-import TableLoadingProgress from "./TableLoadingProgress";
+import HorizontalDivider from "./HorizontalDivider";
 import type { TableLoadingProgressProps } from "./TableLoadingProgress";
-import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
+import TableLoadingProgress from "./TableLoadingProgress";
 import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
+import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
+import type { PageTitleProps } from "./PageTitle";
+import PageTitle from "./PageTitle";
+
+export type {
+  StateIndicatorProps,
+  StateLabelProps,
+  PipelineModeLabelProps,
+  ConnectorIconProps,
+  ModelDefinitionIconProps,
+  HorizontalDividerProps,
+  TableLoadingProgressProps,
+  ModelInstanceTaskLabelProps,
+  PageTitleProps,
+};
 
 export {
   Sidebar,
@@ -37,16 +51,7 @@ export {
   HorizontalDivider,
   TableLoadingProgress,
   ModelInstanceTaskLabel,
-};
-export type {
-  StateIndicatorProps,
-  StateLabelProps,
-  PipelineModeLabelProps,
-  ConnectorIconProps,
-  ModelDefinitionIconProps,
-  HorizontalDividerProps,
-  TableLoadingProgressProps,
-  ModelInstanceTaskLabelProps,
+  PageTitle,
 };
 
 export * from "./TableHeads";

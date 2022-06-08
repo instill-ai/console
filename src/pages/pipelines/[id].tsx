@@ -2,9 +2,13 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
 import { usePipeline } from "@/services/pipeline";
-import { PipelineTable, StateLabel, PipelineModeLabel } from "@/components/ui";
+import {
+  PipelineTable,
+  StateLabel,
+  PipelineModeLabel,
+  PageTitle,
+} from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/ConfigurePipelineForm";
 
 // export const getServerSideProps: GetServerSideProps = async () => {

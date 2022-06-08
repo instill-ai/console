@@ -1,8 +1,7 @@
 import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { DestinationsTable } from "@/components/ui";
+import { PageTitle , DestinationsTable } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 import { useDestinationsWithPipelines } from "@/services/connector";
 

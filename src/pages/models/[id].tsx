@@ -6,10 +6,13 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useRouter } from "next/router";
+import {
+  BasicSingleSelect,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { useRouter } from "next/router";
 import { useModel, useModelWithInstances } from "@/services/model";
 import {
   HorizontalDivider,
@@ -17,16 +20,13 @@ import {
   StateLabel,
   ModelInstanceTaskLabel,
   PipelinesTable,
+  PageTitle,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
 } from "@/components/forms";
 import { Nullable } from "@/types/general";
-import {
-  BasicSingleSelect,
-  SingleSelectOption,
-} from "@instill-ai/design-system";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 

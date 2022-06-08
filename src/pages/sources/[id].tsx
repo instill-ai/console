@@ -2,8 +2,7 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { StateLabel, PipelinesTable } from "@/components/ui";
+import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";

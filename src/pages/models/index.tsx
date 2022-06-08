@@ -1,8 +1,7 @@
 import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { ModelsTable } from "@/components/ui/";
+import { ModelsTable, PageTitle } from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
 

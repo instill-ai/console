@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 
 import { CreateSourceForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
+import { PageTitle } from "@/components/ui";
 
 interface GetLayOutProps {
   page: ReactElement;

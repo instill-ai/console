@@ -1,8 +1,7 @@
 import { FC, ReactElement } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import PageTitle from "@/components/ui/PageTitle";
-import { PipelinesTable } from "@/components/ui";
+import { PipelinesTable, PageTitle } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
 
 interface GetLayOutProps {
