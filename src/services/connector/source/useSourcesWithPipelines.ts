@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
+
 import { SourceWithPipelines } from "@/lib/instill";
-import { usePipelines } from "@/services/pipeline/PipelineServices";
+import { usePipelines } from "@/services/pipeline";
 import useSources from "./useSources";
 
 const useSourcesWithPipelines = () => {
