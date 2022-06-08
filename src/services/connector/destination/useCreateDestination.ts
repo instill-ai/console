@@ -33,7 +33,10 @@ const useCreateDestination = () => {
           ["destinations"],
           (old) =>
             old
-              ? [newDestinationWithDefinition, ...old]
+              ? [
+                  ...old.filter((e) => e.id !== newDestination.id),
+                  newDestinationWithDefinition,
+                ]
               : [newDestinationWithDefinition]
         );
       },
