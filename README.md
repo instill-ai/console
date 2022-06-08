@@ -20,3 +20,4 @@ queryClient.setQueryData<Model[]>(["models"], (old) => {
 
 - Error bundary
 - Suspense
+- Refactor react-query queryKey to make it more reliable, especially model services
