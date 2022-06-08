@@ -1,8 +1,8 @@
 import { FC, ReactElement } from "react";
+import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import PageTitle from "@/components/ui/PageTitle";
-import { useRouter } from "next/router";
 import { StateLabel, PipelinesTable } from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/services/useMultiStageQueryLoadingState";
