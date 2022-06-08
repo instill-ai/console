@@ -6,6 +6,7 @@ import useModelDefinition from "./useModelDefinition";
 import useModelDefinitions from "./useModelDefinitions";
 import useModelInstance from "./useModelInstance";
 import useModelInstances from "./useModelInstances";
+import useModelsInstances from "./useModelsInstances";
 import useModels from "./useModels";
 import useModelsWithInstances from "./useModelsWithInstances";
 import useModelWithInstances from "./useModelWithInstances";
@@ -20,6 +21,7 @@ export {
   useModelDefinitions,
   useModelInstance,
   useModelInstances,
+  useModelsInstances,
   useModels,
   useModelsWithInstances,
   useModelWithInstances,
