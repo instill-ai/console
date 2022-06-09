@@ -23,6 +23,7 @@ export type AmplitudeEvent =
   | "hit_onboarding_page"
 
   // Critical event
+  | "fill_onboarding_form"
   | "create_local_model"
   | "create_github_model"
   | "delete_model"

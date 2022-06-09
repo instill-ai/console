@@ -8,6 +8,8 @@ import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type OnBoardingFormProps = {
   user?: Partial<User> | null;
@@ -16,6 +18,7 @@ export type OnBoardingFormProps = {
 const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
+  const { amplitudeIsInit } = useAmplitudeCtx();
   return (
     <Formik
       initialValues={{
@@ -50,6 +53,11 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
 
         updateUser.mutate(body, {
           onSuccess: async () => {
+            if (amplitudeIsInit) {
+              sendAmplitudeData("fill_onboarding_form", {
+                type: "critical_action",
+              });
+            }
             await axios.post("/api/set-user-onboarded-cookie");
             router.push("/pipelines");
           },
