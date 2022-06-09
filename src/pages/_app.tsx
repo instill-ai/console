@@ -29,10 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const trackingToken = useTrackingToken();
 
   useEffect(() => {
-    if (!trackingToken.isSuccess || !router.isReady) return;
-    initAmplitude(trackingToken.data);
+    if (!trackingToken || !router.isReady) return;
+    initAmplitude(trackingToken);
     setAmplitudeIsInit(true);
-  }, [router.isReady, trackingToken.isSuccess]);
+  }, [router.isReady, trackingToken]);
 
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>

@@ -1,27 +1,34 @@
-import { User, getUserQuery } from "@/lib/instill/mgmt";
-import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import useUpdateUser from "./useUpdateUser";
+
+import { getUserQuery, updateLocalUserMutation } from "@/lib/instill/mgmt";
+import { Nullable } from "@/types/general";
 
 const useTrackingToken = () => {
-  const updateUser = useUpdateUser();
+  const [trackingToken, setTrackingToken] = useState<Nullable<string>>(null);
 
-  return useQuery(["user", "tracking"], async () => {
-    const user = await getUserQuery("users/local-user");
+  useEffect(() => {
+    const fetchOrPatchToken = async () => {
+      const user = await getUserQuery("users/local-user");
+      if (user.cookie_token) {
+        setTrackingToken(user.cookie_token);
+        return;
+      }
 
-    if (user.cookie_token) {
-      return Promise.resolve(user.cookie_token);
-    }
+      const newTrackingToken = uuidv4();
 
-    const newTrackingToken = uuidv4();
+      const newUser = await updateLocalUserMutation({
+        name: "users/local-user",
+        cookie_token: newTrackingToken,
+      });
 
-    const newUser = await updateUser.mutateAsync({
-      name: "users/local-user",
-      cookie_token: newTrackingToken,
-    });
+      setTrackingToken(newTrackingToken);
+    };
 
-    return Promise.resolve(newUser.cookie_token as string);
-  });
+    fetchOrPatchToken().catch((err) => console.error(err));
+  }, []);
+
+  return trackingToken;
 };
 
 export default useTrackingToken;
