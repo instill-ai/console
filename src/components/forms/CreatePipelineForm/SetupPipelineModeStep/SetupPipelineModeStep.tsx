@@ -15,6 +15,8 @@ import { PrimaryButton } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type SetupSourceStepProps = StepNumberState;
 
@@ -24,6 +26,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 }) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -130,8 +133,14 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
       );
 
       if (sourceIndex !== -1) {
-        setStepNumber(stepNumber + 2);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("use_existing_source", {
+            type: "critical_action",
+            process: "pipeline",
+          });
+        }
         setFieldValue("source.type", "existing");
+        setStepNumber(stepNumber + 2);
         return;
       }
 
@@ -145,6 +154,12 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
 
       createSource.mutate(payload, {
         onSuccess: () => {
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_source", {
+              type: "critical_action",
+              process: "pipeline",
+            });
+          }
           setFieldValue("source.type", "existing");
           setStepNumber(stepNumber + 2);
         },

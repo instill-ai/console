@@ -12,6 +12,7 @@ import {
 import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
 
 export type CreateSourceFormValues = {
   id: string;
@@ -20,6 +21,7 @@ export type CreateSourceFormValues = {
 
 const CreateSourceForm: FC = () => {
   const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #

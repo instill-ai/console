@@ -9,10 +9,13 @@ import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 const SetupPipelineDetailsStep: FC = () => {
   const { values, errors } = useFormikContext<CreatePipelineFormValues>();
   const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -182,6 +185,12 @@ const SetupPipelineDetailsStep: FC = () => {
           {
             onSuccess: () => {
               setIsSettingPipeline(false);
+              if (amplitudeIsInit) {
+                sendAmplitudeData("create_pipeline", {
+                  type: "critical_action",
+                  process: "pipeline",
+                });
+              }
               router.push("/pipelines");
             },
             onError: (error) => {

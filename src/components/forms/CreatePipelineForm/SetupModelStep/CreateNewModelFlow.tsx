@@ -38,6 +38,8 @@ import {
   Model,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 // We need to pass modelCreated state to UseExistingModelFlow
 
@@ -54,6 +56,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 }) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -169,6 +172,12 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           setModelCreated(true);
           setNewModel(newModel);
           setIsSettingModel(false);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_github_model", {
+              type: "critical_action",
+              process: "pipeline",
+            });
+          }
         },
         onError: (error) => {
           if (error instanceof Error) {

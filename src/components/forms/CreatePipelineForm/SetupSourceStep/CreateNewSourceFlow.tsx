@@ -11,6 +11,8 @@ import {
 } from "../CreatePipelineForm";
 import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateNewSourceFlowProps = StepNumberState;
 
@@ -21,6 +23,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
   const { values, errors, setFieldValue } =
     useFormikContext<CreatePipelineFormValues>();
   const flowRef = useRef<HTMLDivElement>(null);
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -84,6 +87,12 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
 
     createSource.mutate(payload, {
       onSuccess: () => {
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_source", {
+            type: "critical_action",
+            process: "pipeline",
+          });
+        }
         setFieldValue("source.type", "new");
         setStepNumber(stepNumber + 1);
       },

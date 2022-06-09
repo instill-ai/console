@@ -9,6 +9,8 @@ import {
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
 import { useDestinations } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingDestinationFlowProps = StepNumberState;
 
@@ -17,6 +19,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
   stepNumber,
 }) => {
   const { values, errors } = useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -68,6 +71,12 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
 
   const handleUseExistingDestination = () => {
     if (!values.destination.existing.id || !destinations.isSuccess) return;
+    if (amplitudeIsInit) {
+      sendAmplitudeData("use_existing_destination", {
+        type: "critical_action",
+        process: "pipeline",
+      });
+    }
     setStepNumber(stepNumber + 1);
   };
 

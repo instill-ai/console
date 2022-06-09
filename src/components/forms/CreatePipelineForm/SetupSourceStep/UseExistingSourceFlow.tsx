@@ -10,6 +10,8 @@ import {
 import { useSources } from "@/services/connector";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingSourceFlowProps = StepNumberState;
 
@@ -19,6 +21,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
 }) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -81,6 +84,13 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
     );
 
     if (!source) return;
+
+    if (amplitudeIsInit) {
+      sendAmplitudeData("use_existing_source", {
+        type: "critical_action",
+        process: "pipeline",
+      });
+    }
 
     setFieldValue(
       "source.existing.definition",
