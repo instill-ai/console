@@ -16,12 +16,15 @@ import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type SetupDestinationStepProps = StepNumberState;
 
 const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -122,6 +125,12 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       );
 
       if (destinationIndex !== -1) {
+        if (amplitudeIsInit) {
+          sendAmplitudeData("use_existing_destination", {
+            type: "critical_action",
+            process: "pipeline",
+          });
+        }
         setFieldValue("destination.type", "existing");
         setStepNumber(stepNumber + 1);
         return;
@@ -136,6 +145,12 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
 
       createDestination.mutate(payload, {
         onSuccess: () => {
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_destination", {
+              type: "critical_action",
+              process: "pipeline",
+            });
+          }
           setFieldValue("destination.type", "existing");
           setStepNumber(stepNumber + 1);
         },

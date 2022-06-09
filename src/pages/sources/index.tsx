@@ -1,9 +1,12 @@
 import { FC, ReactElement } from "react";
+import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { SourcesTable, PageTitle } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useSourcesWithPipelines } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -20,6 +23,22 @@ const SourcePage: FC & {
     isSuccess: sources.isSuccess,
     isLoading: sources.isLoading,
   });
+
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_sources_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>

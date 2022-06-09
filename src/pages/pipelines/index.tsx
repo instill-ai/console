@@ -1,8 +1,11 @@
 import { FC, ReactElement } from "react";
+import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PipelinesTable, PageTitle } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -14,6 +17,22 @@ const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const pipelines = usePipelines(true);
+
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_pipelines_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>

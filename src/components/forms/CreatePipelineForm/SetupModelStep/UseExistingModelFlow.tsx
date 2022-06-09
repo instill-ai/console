@@ -18,6 +18,8 @@ import {
 } from "../CreatePipelineForm";
 import { useModelsInstances } from "@/services/model";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingModelFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
@@ -31,6 +33,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
 }) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -111,6 +114,14 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
 
     setFieldValue("model.type", "existing");
     setFieldValue("model.existing.id", instanceNameList[1]);
+
+    if (amplitudeIsInit) {
+      sendAmplitudeData("use_existing_model_instance", {
+        type: "critical_action",
+        process: "pipeline",
+      });
+    }
+
     setStepNumber(stepNumber + 1);
   }, [
     values.model.existing.modelInstanceName,

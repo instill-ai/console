@@ -13,6 +13,8 @@ import {
 } from "@/services/connector";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateNewDestinationFlowProps = StepNumberState;
 
@@ -22,6 +24,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
 }) => {
   const { values, errors, setFieldValue } =
     useFormikContext<CreatePipelineFormValues>();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -107,6 +110,12 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     createDestination.mutate(payload, {
       onSuccess: () => {
         setFieldValue("destination.type", "existing");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_destination", {
+            type: "critical_action",
+            process: "pipeline",
+          });
+        }
         setStepNumber(stepNumber + 1);
       },
     });

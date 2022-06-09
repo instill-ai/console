@@ -7,6 +7,8 @@ import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useUpdatePipeline } from "@/services/pipeline";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -22,6 +24,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   pipeline,
   marginBottom,
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   const [canEdit, setCanEdit] = useState(false);
   const [updatePipelineError, setUpdatePipelineError] =
     useState<Nullable<string>>(null);
@@ -87,6 +91,12 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               if (error instanceof Error) {
                 setUpdatePipelineError(error.message);
                 setIsUpdatingPipeline(false);
+                if (amplitudeIsInit) {
+                  sendAmplitudeData("update_pipeline", {
+                    type: "critical_action",
+                    process: "pipeline",
+                  });
+                }
               } else {
                 setUpdatePipelineError(
                   "Something went wrong when deploying model"

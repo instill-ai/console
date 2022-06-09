@@ -28,6 +28,8 @@ import {
   Model,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 type CreateModelFormValue = {
   id: Nullable<string>;
@@ -39,6 +41,8 @@ type CreateModelFormValue = {
 };
 
 const CreateNewModelFlow: FC = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   // ###################################################################
   // #                                                                 #
   // # 1 - Initialize the model definition                             #
@@ -131,6 +135,12 @@ const CreateNewModelFlow: FC = () => {
           setModelSet(true);
           setNewModel(newModel);
           setIsSettingModel(false);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_github_model", {
+              type: "critical_action",
+              process: "model",
+            });
+          }
         },
         onError: (error) => {
           if (error instanceof Error) {
@@ -160,6 +170,11 @@ const CreateNewModelFlow: FC = () => {
           setModelSet(true);
           setNewModel(newModel);
           setIsSettingModel(false);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_local_model", {
+              type: "critical_action",
+            });
+          }
         },
         onError: (error) => {
           if (error instanceof Error) {

@@ -29,6 +29,8 @@ import {
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -153,6 +155,21 @@ const ModelDetailsPage: FC & {
 
     return pipelinesGroupByModelInstance[selectedModelInstances.id];
   }, [pipelinesGroupByModelInstance, selectedModelInstances]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_model_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>

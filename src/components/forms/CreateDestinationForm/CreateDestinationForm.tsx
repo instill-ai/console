@@ -12,6 +12,8 @@ import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useCreateDestination, useDestinations } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateDestinationFormValues = {
   id: string;
@@ -20,6 +22,7 @@ export type CreateDestinationFormValues = {
 
 const CreateDestinationForm: FC = () => {
   const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -122,8 +125,14 @@ const CreateDestinationForm: FC = () => {
 
         createDestination.mutate(payload, {
           onSuccess: () => {
-            router.push("/destinations");
             setIsCreatingDestination(false);
+            if (amplitudeIsInit) {
+              sendAmplitudeData("create_destination", {
+                type: "critical_action",
+                process: "destination",
+              });
+            }
+            router.push("/destinations");
           },
           onError: (error) => {
             if (error instanceof Error) {
