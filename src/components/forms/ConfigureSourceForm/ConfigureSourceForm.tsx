@@ -18,7 +18,7 @@ type ConfigureSourceFormValue = {
 const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
   // ###################################################################
   // #                                                                 #
-  // # 1 - Initialize the source definition                            #
+  // # Initialize the source definition                                #
   // #                                                                 #
   // ###################################################################
 

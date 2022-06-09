@@ -7,6 +7,8 @@ import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useUpdatePipeline } from "@/services/pipeline";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -51,6 +53,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   const updatePipeline = useUpdatePipeline();
 
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   return (
     <Formik
       initialValues={
@@ -87,6 +91,11 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               if (error instanceof Error) {
                 setUpdatePipelineError(error.message);
                 setIsUpdatingPipeline(false);
+                if (amplitudeIsInit) {
+                  sendAmplitudeData("update_pipeline", {
+                    type: "critical_action",
+                  });
+                }
               } else {
                 setUpdatePipelineError(
                   "Something went wrong when deploying model"

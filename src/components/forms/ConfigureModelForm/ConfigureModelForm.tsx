@@ -7,6 +7,8 @@ import { PrimaryButton } from "@/components/ui";
 import { Model } from "@/lib/instill";
 import { useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
+import { sendAmplitudeData } from "@/lib/amplitude";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
@@ -49,6 +51,8 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     submitForm();
   };
 
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   return (
     <Formik
       initialValues={
@@ -76,6 +80,9 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
             onSuccess: () => {
               setCanEdit(false);
               setIsUpdatingModel(false);
+              if (amplitudeIsInit) {
+                sendAmplitudeData("update_model", { type: "critical_action" });
+              }
             },
             onError: (error) => {
               if (error instanceof Error) {
