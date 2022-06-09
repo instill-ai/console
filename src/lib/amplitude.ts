@@ -3,6 +3,7 @@ import { init, setUserId, track } from "@amplitude/analytics-browser";
 
 export type AmplitudeEventProperties = {
   type: "navigation" | "critical_action";
+  process?: "source" | "destination" | "pipeline" | "model";
 };
 
 export type AmplitudeEvent =
@@ -22,19 +23,24 @@ export type AmplitudeEvent =
   | "hit_onboarding_page"
 
   // Critical event
-  | "create_model"
+  | "create_local_model"
+  | "create_github_model"
   | "delete_model"
   | "update_model"
+  | "deploy_model_instance"
   | "update_model_instance"
+  | "use_existing_model_instance"
   | "create_pipeline"
   | "delete_pipeline"
   | "update_pipeline"
   | "create_destination"
   | "delete_destination"
-  | "update_delete_destination"
+  | "use_existing_destination"
+  | "update_destination"
   | "create_source"
   | "delete_source"
-  | "update_source";
+  | "update_source"
+  | "use_existing_source";
 
 export const initAmplitude = (userId: Nullable<string>) => {
   if (process.env.NEXT_PUBLIC_AMPLITUDE_KEY) {
