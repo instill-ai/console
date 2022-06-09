@@ -24,12 +24,17 @@ export type AmplitudeEvent =
   // Critical event
   | "create_model"
   | "delete_model"
+  | "update_model"
+  | "update_model_instance"
   | "create_pipeline"
   | "delete_pipeline"
+  | "update_pipeline"
   | "create_destination"
   | "delete_destination"
+  | "update_delete_destination"
   | "create_source"
-  | "delete_source";
+  | "delete_source"
+  | "update_source";
 
 export const initAmplitude = (userId: Nullable<string>) => {
   if (process.env.NEXT_PUBLIC_AMPLITUDE_KEY) {
