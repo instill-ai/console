@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
@@ -10,55 +11,98 @@ import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { Nullable } from "@/types/general";
 
 export type OnBoardingFormProps = {
   user?: Partial<User> | null;
+};
+
+type OnboardingFormValue = {
+  email: Nullable<string>;
+  company_name: Nullable<string>;
+  role: Nullable<string>;
+  newsletter_subscription: Nullable<boolean>;
+};
+
+type OnboardingFormError = {
+  email?: string;
+  company_name?: string;
+  role?: string;
+  newsletter_subscription?: string;
 };
 
 const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
+
+  const [selectedRoleOption, setSelectedRoleOption] =
+    useState<Nullable<SingleSelectOption>>(null);
+
+  const roleOnChangeCb = useCallback((option: SingleSelectOption) => {
+    setSelectedRoleOption(option);
+  }, []);
+
+  const validateForm = useCallback((values: OnboardingFormValue) => {
+    const errors: OnboardingFormError = {};
+
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!values.company_name) {
+      errors.company_name = "Required";
+    }
+
+    if (!values.role) {
+      errors.role = "Required";
+    }
+
+    return errors;
+  }, []);
+
   return (
     <Formik
-      initialValues={{
-        email: user?.email || "",
-        company_name: user?.company_name || "",
-        role: user?.role
-          ? mockMgmtRoles.find((e) => e.value === user.role)?.value
-          : null,
-        usage_data_collection: user?.usage_data_collection || false,
-        newsletter_subscription: user?.newsletter_subscription || false,
-      }}
+      initialValues={
+        {
+          email: null,
+          company_name: null,
+          role: null,
+          newsletter_subscription: false,
+        } as OnboardingFormValue
+      }
       enableReinitialize={true}
+      validate={validateForm}
       onSubmit={async (values) => {
-        if (
-          !values.company_name ||
-          !values.email ||
-          !values.newsletter_subscription ||
-          !values.usage_data_collection ||
-          !values.role
-        ) {
+        if (!values.company_name || !values.email || !values.role) {
           return;
         }
 
-        const body: Partial<User> = {
+        const token = uuidv4();
+
+        const payload: Partial<User> = {
           id: "local-user",
           email: values.email,
           company_name: values.company_name,
           role: values.role as string,
-          newsletter_subscription: values.newsletter_subscription,
-          usage_data_collection: values.usage_data_collection,
+          newsletter_subscription: values.newsletter_subscription
+            ? values.newsletter_subscription
+            : false,
+          cookie_token: token,
         };
 
-        updateUser.mutate(body, {
+        updateUser.mutate(payload, {
           onSuccess: async () => {
             if (amplitudeIsInit) {
               sendAmplitudeData("fill_onboarding_form", {
                 type: "critical_action",
               });
             }
-            await axios.post("/api/set-user-onboarded-cookie");
+            await axios.post("/api/set-user-cookie", { token });
             router.push("/pipelines");
           },
         });
@@ -101,38 +145,15 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               name="role"
               label="Your role"
               instanceId="new-data-destination-type"
+              options={mockMgmtRoles}
+              value={selectedRoleOption}
+              error={formik.errors.role || null}
+              additionalOnChangeCb={roleOnChangeCb}
               disabled={false}
               readOnly={false}
-              options={mockMgmtRoles}
               required={true}
               description={"Setup Guide"}
               menuPlacement="auto"
-              value={
-                user?.role
-                  ? mockMgmtRoles.find((e) => e.value === user.role)
-                    ? (mockMgmtRoles.find(
-                        (e) => e.value === user.role
-                      ) as SingleSelectOption)
-                    : null
-                  : null
-              }
-              error={formik.errors.role || null}
-              additionalOnChangeCb={null}
-            />
-            <ToggleField
-              name="usage_data_collection"
-              label="Anonymised usage data collection "
-              disabled={false}
-              readOnly={false}
-              required={true}
-              defaultChecked={
-                user?.usage_data_collection
-                  ? user?.usage_data_collection
-                  : false
-              }
-              description="We collect data only for product improvements"
-              error={formik.errors.usage_data_collection || null}
-              additionalOnChangeCb={null}
             />
             <ToggleField
               name="newsletter_subscription"
