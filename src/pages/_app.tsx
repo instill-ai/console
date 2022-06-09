@@ -29,9 +29,18 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const trackingToken = useTrackingToken();
 
   useEffect(() => {
-    if (!trackingToken || !router.isReady) return;
-    initAmplitude(trackingToken);
-    setAmplitudeIsInit(true);
+    if (!router.isReady) return;
+
+    if (!trackingToken) {
+      router.push("/onboarding");
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      initAmplitude(trackingToken);
+      setAmplitudeIsInit(true);
+    } else {
+      setAmplitudeIsInit(false);
+    }
   }, [router.isReady, trackingToken]);
 
   return (
