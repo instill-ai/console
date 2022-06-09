@@ -14,6 +14,12 @@ interface GetLayOutProps {
 const CreateModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 

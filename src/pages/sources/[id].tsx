@@ -51,6 +51,12 @@ const SourceDetailsPage: FC & {
     isLoading: sourceWithPipelines.isLoading,
   });
 
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(

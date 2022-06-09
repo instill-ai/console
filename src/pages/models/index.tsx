@@ -24,8 +24,13 @@ const ModelPage: FC & {
     isLoading: modelsWithInstances.isLoading,
   });
 
-  const router = useRouter();
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
 
+  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(

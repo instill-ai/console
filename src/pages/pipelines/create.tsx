@@ -46,6 +46,12 @@ const CreatePipelinePage: FC & {
     }
   }, [stepNumber]);
 
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 

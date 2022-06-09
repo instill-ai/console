@@ -46,6 +46,12 @@ const PipelineDetailsPage: FC & {
 
   const pipeline = usePipeline(id ? `pipelines/${id.toString()}` : null);
 
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(

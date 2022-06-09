@@ -51,6 +51,12 @@ const DestinationDetailsPage: FC & {
     isLoading: destinationWithPipelines.isLoading,
   });
 
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(

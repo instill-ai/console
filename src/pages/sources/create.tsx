@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
+import { useRouter } from "next/router";
 
 import { CreateSourceForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
-import { useRouter } from "next/router";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
@@ -14,6 +14,12 @@ interface GetLayOutProps {
 const CreateSourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  // ###################################################################
+  // #                                                                 #
+  // # Send page loaded data to Amplitude                              #
+  // #                                                                 #
+  // ###################################################################
+
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
