@@ -1,9 +1,12 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect } from "react";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { SourcesTable, PageTitle } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useSourcesWithPipelines } from "@/services/connector";
+import { useRouter } from "next/router";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -20,6 +23,15 @@ const SourcePage: FC & {
     isSuccess: sources.isSuccess,
     isLoading: sources.isLoading,
   });
+
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useEffect(() => {
+    if (router.isReady && amplitudeIsInit) {
+      sendAmplitudeData("hit_sources_page", { type: "navigation" });
+    }
+  }, [router.isReady, amplitudeIsInit]);
 
   return (
     <PageContentContainer>
