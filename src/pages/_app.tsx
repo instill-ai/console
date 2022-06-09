@@ -1,10 +1,14 @@
 import { NextPage } from "next";
 import { AppProps } from "next/app";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "../styles/global.css";
 import "@instill-ai/design-system/build/index.cjs.css";
+import { useRouter } from "next/router";
+import { initAmplitude } from "@/lib/amplitude";
+import { useTrackingToken } from "@/services/mgmt";
+import { AmplitudeCtx } from "context/AmplitudeContext";
 
 export const queryCache = new QueryCache();
 
@@ -20,11 +24,23 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
+  const router = useRouter();
+  const trackingToken = useTrackingToken();
+
+  useEffect(() => {
+    if (!trackingToken.isSuccess || !router.isReady) return;
+    initAmplitude(trackingToken.data);
+    setAmplitudeIsInit(true);
+  }, [router.isReady, trackingToken.isSuccess]);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      {getLayout(<Component {...pageProps} />)}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
+      <QueryClientProvider client={queryClient}>
+        {getLayout(<Component {...pageProps} />)}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </AmplitudeCtx.Provider>
   );
 }
 

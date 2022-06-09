@@ -20,7 +20,7 @@ const useTrackingToken = () => {
       cookie_token: newTrackingToken,
     });
 
-    return Promise.resolve(newUser.cookie_token);
+    return Promise.resolve(newUser.cookie_token as string);
   });
 };
 
