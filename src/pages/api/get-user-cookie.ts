@@ -9,14 +9,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 
-  const instillAiUserCookie: InstillAiUserCookie = JSON.parse(
-    cookies["instill-ai-user"]
-  );
+  const instillAiUserCookie: InstillAiUserCookie = cookies["instill-ai-user"]
+    ? JSON.parse(cookies["instill-ai-user"])
+    : { cookie_token: null };
 
-  return res.status(200).json({
-    status: "ok",
-    token: instillAiUserCookie,
-  });
+  return res.status(200).json(instillAiUserCookie);
 };
 
 export default handler;
