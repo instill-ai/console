@@ -29,17 +29,21 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const trackingToken = useTrackingToken();
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !trackingToken.data) return;
 
-    if (!trackingToken) {
+    if (trackingToken.data === "redirect-to-onboard") {
+      // We should clear the trackingToken to avoid once user had successfully setup user data, when we push them to the
+      // pipelines page, because there has no changes related to state, the trackingToken won't be flushed, so it remains
+      // redirect-to-onboard, so user will be redirected to onboarding page again.
+      trackingToken.setData(null);
       router.push("/onboarding");
     }
 
     if (process.env.NODE_ENV === "production" && !amplitudeIsInit) {
-      initAmplitude(trackingToken);
+      initAmplitude(trackingToken.data);
       setAmplitudeIsInit(true);
     }
-  }, [router.isReady, trackingToken, router.asPath]);
+  }, [router.isReady, trackingToken.data, router.asPath]);
 
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
