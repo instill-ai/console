@@ -35,13 +35,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       router.push("/onboarding");
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production" && !amplitudeIsInit) {
       initAmplitude(trackingToken);
       setAmplitudeIsInit(true);
-    } else {
-      setAmplitudeIsInit(false);
     }
-  }, [router.isReady, trackingToken]);
+  }, [router.isReady, trackingToken, router.asPath]);
 
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
