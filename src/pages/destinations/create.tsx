@@ -3,6 +3,9 @@ import { FC, ReactElement } from "react";
 import { CreateDestinationForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
+import { useRouter } from "next/router";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -11,6 +14,16 @@ interface GetLayOutProps {
 const CreateDestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_create_destination_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
+
   return (
     <PageContentContainer>
       <PageTitle

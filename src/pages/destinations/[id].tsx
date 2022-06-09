@@ -6,6 +6,8 @@ import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -48,6 +50,15 @@ const DestinationDetailsPage: FC & {
     isSuccess: destinationWithPipelines.isSuccess,
     isLoading: destinationWithPipelines.isLoading,
   });
+
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_destination_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>
