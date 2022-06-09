@@ -20,7 +20,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
 }) => {
   // ###################################################################
   // #                                                                 #
-  // # 1 - Initialize the destination definition                       #
+  // # Initialize the destination definition                           #
   // #                                                                 #
   // ###################################################################
 

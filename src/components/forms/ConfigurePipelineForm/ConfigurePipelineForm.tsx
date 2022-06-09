@@ -24,6 +24,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   pipeline,
   marginBottom,
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   const [canEdit, setCanEdit] = useState(false);
   const [updatePipelineError, setUpdatePipelineError] =
     useState<Nullable<string>>(null);
@@ -52,8 +54,6 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   };
 
   const updatePipeline = useUpdatePipeline();
-
-  const { amplitudeIsInit } = useAmplitudeCtx();
 
   return (
     <Formik

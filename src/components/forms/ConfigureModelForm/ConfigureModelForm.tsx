@@ -23,6 +23,8 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   model,
   marginBottom,
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   const [canEdit, setCanEdit] = useState(false);
   const [updateModelError, setUpdateModelError] =
     useState<Nullable<string>>(null);
@@ -50,8 +52,6 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
     submitForm();
   };
-
-  const { amplitudeIsInit } = useAmplitudeCtx();
 
   return (
     <Formik
