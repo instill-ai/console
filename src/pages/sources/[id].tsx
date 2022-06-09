@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
@@ -7,7 +7,7 @@ import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
-import { sendAmplitudeData } from "@/lib/amplitude";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -53,11 +53,12 @@ const SourceDetailsPage: FC & {
 
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  useEffect(() => {
-    if (router.isReady && amplitudeIsInit) {
-      sendAmplitudeData("hit_source_page", { type: "navigation" });
-    }
-  }, [router.isReady, amplitudeIsInit]);
+  useSendAmplitudeData(
+    "hit_source_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>

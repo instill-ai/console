@@ -1,11 +1,11 @@
-import { FC, ReactElement, useEffect } from "react";
+import { FC, ReactElement } from "react";
 
 import { CreateSourceForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
 import { useRouter } from "next/router";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
-import { sendAmplitudeData } from "@/lib/amplitude";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -17,11 +17,12 @@ const CreateSourcePage: FC & {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  useEffect(() => {
-    if (router.isReady && amplitudeIsInit) {
-      sendAmplitudeData("hit_create_source_page", { type: "navigation" });
-    }
-  }, [router.isReady, amplitudeIsInit]);
+  useSendAmplitudeData(
+    "hit_create_source_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>
