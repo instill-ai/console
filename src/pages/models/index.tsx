@@ -1,9 +1,12 @@
 import { FC, ReactElement } from "react";
+import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { ModelsTable, PageTitle } from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -20,6 +23,17 @@ const ModelPage: FC & {
     isSuccess: modelsWithInstances.isSuccess,
     isLoading: modelsWithInstances.isLoading,
   });
+
+  const router = useRouter();
+
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_models_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>
