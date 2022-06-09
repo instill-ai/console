@@ -94,6 +94,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                 if (amplitudeIsInit) {
                   sendAmplitudeData("update_pipeline", {
                     type: "critical_action",
+                    process: "pipeline",
                   });
                 }
               } else {

@@ -81,7 +81,10 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               setCanEdit(false);
               setIsUpdatingModel(false);
               if (amplitudeIsInit) {
-                sendAmplitudeData("update_model", { type: "critical_action" });
+                sendAmplitudeData("update_model", {
+                  type: "critical_action",
+                  process: "model",
+                });
               }
             },
             onError: (error) => {
