@@ -10,6 +10,8 @@ import {
   PageTitle,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/ConfigurePipelineForm";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -43,6 +45,15 @@ const PipelineDetailsPage: FC & {
   const { id } = router.query;
 
   const pipeline = usePipeline(id ? `pipelines/${id.toString()}` : null);
+
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_pipeline_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>

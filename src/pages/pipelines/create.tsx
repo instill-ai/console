@@ -1,8 +1,11 @@
 import { FC, ReactElement, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 
 import { CreatePipelineForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -42,6 +45,16 @@ const CreatePipelinePage: FC & {
         };
     }
   }, [stepNumber]);
+
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  useSendAmplitudeData(
+    "hit_create_pipeline_page",
+    { type: "navigation" },
+    router.isReady,
+    amplitudeIsInit
+  );
 
   return (
     <PageContentContainer>
