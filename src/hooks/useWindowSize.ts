@@ -24,24 +24,23 @@ const getWindowSize = (): { width: number; height: number } => {
 };
 
 const useWindowSize = (): Nullable<WindowSize> => {
-  const [windowDimensions, setWindowDimensions] =
-    useState<Nullable<WindowSize>>(null);
+  const [windowSize, setWindowSize] = useState<Nullable<WindowSize>>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
 
-    setWindowDimensions(getWindowSize());
+    setWindowSize(getWindowSize());
     const handleResize = () => {
-      setWindowDimensions(getWindowSize());
+      setWindowSize(getWindowSize());
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [getWindowSize]);
 
-  return windowDimensions;
+  return windowSize;
 };
 
 export default useWindowSize;
