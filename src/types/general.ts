@@ -6,3 +6,7 @@ export type State = PipelineState | ConnectorState | ModelState;
 export type Mode = "sync" | "async" | "unspecific";
 
 export type Nullable<T> = T | null;
+
+export type InstillAiUserCookie = {
+  cookie_token: string;
+};

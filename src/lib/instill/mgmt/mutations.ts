@@ -6,18 +6,12 @@ export type UpdateUserResponse = {
 };
 
 export const updateLocalUserMutation = async (
-  user: Partial<User>
+  payload: Partial<User>
 ): Promise<User> => {
   try {
     const { data } = await axios.patch(
       `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
-      {
-        email: user.email,
-        company_name: user.company_name,
-        role: user.role,
-        usage_data_collection: user.usage_data_collection,
-        newsletter_subscription: user.newsletter_subscription,
-      }
+      payload
     );
 
     return Promise.resolve(data.user);
