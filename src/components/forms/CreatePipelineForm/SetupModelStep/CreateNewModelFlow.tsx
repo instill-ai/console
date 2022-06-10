@@ -237,7 +237,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     string | undefined
   >();
 
-  const modelInstances = useModelInstances(newModel ? newModel.id : null);
+  const modelInstances = useModelInstances(newModel ? newModel.name : null);
   const modelInstanceOptions = useMemo(() => {
     if (!modelInstances.isSuccess || !modelInstances.data) return;
 

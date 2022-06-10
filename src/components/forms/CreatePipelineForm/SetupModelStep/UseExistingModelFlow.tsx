@@ -106,8 +106,6 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
       (e) => e.name === values.model.existing.modelInstanceName
     );
 
-    console.log(targetModelInstance);
-
     if (!targetModelInstance) return;
 
     const instanceNameList = targetModelInstance.name.split("/");
