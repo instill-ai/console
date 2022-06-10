@@ -1,4 +1,8 @@
-import PrimaryButton from "./PrimaryButton";
 import type { PrimaryButtonProps } from "./PrimaryButton";
+import PrimaryButton from "./PrimaryButton";
+import type { CollapseSidebarButtonProps } from "./CollapseSidebarButton";
+import CollapseSidebarButton from "./CollapseSidebarButton";
 
-export { PrimaryButton, PrimaryButtonProps };
+export type { PrimaryButtonProps, CollapseSidebarButtonProps };
+
+export { PrimaryButton, CollapseSidebarButton };
