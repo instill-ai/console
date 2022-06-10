@@ -11,6 +11,7 @@ export type ButtonBaseProps = {
   position?: string;
   type?: "button" | "submit" | "reset";
   dataFlag?: string | number;
+  padding: string;
 };
 
 const ButtonBase: FC<ButtonBaseProps> = ({
@@ -24,6 +25,7 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   type,
   dataFlag,
   children,
+  padding,
 }) => {
   return (
     <button
@@ -32,11 +34,12 @@ const ButtonBase: FC<ButtonBaseProps> = ({
       type={type}
       data-flag={dataFlag}
       className={cn(
-        "rounded-[1px] px-5 py-2.5",
+        "rounded-[1px]",
         disabled
           ? cn(disabledBgColor, disabledTextColor)
           : cn(bgColor, textColor),
-        position
+        position,
+        padding
       )}
     >
       {children}
