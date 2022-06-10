@@ -17,10 +17,8 @@ const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
         height: entries[0].contentRect.height,
       });
     });
-  }, []);
 
-  useEffect(() => {
-    if (!ref.current || !observerRef.current) return;
+    if (!ref.current) return;
 
     observerRef.current.observe(ref.current);
 
@@ -29,7 +27,7 @@ const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
         observerRef.current.disconnect();
       }
     };
-  }, [ref]);
+  }, []);
 
   return refSize;
 };
