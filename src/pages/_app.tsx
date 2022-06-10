@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     if (trackingToken.data === "redirect-to-onboard") {
       // We should clear the trackingToken to avoid once user had successfully setup user data, when we push them to the
       // pipelines page, because there has no changes related to state, the trackingToken won't be flushed, so it remains
-      // redirect-to-onboard, so user will be redirected to onboarding page again.
+      // redirect-to-onboard, user will be redirected to onboarding page again.
       trackingToken.setData(null);
       router.push("/onboarding");
     }
