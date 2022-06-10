@@ -18,6 +18,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
       textColor="text-instillGrey05"
       disabledBgColor="bg-instillGrey15"
       disabledTextColor="text-instillGrey50"
+      padding="px-5 py-2.5"
     >
       {props.children}
     </ButtonBase>

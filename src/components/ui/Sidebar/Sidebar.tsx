@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import {
   DataDestinationIcon,
   DataSourceIcon,
@@ -9,16 +9,23 @@ import {
   ResourceIcon,
 } from "@instill-ai/design-system";
 import Tab from "./Tab";
+import { CollapseSidebarButton } from "../Buttons";
 
 const Sidebar: FC = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const iconColor = "fill-instillGrey30";
+  const iconWidth = "w-[30px]";
+  const iconHeight = "h-[30px]";
+  const iconPosition = isCollapsed ? "m-auto" : "my-auto";
+
   const tabs = [
     {
       icon: (
         <PipelineIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-pipleine",
@@ -28,10 +35,10 @@ const Sidebar: FC = () => {
     {
       icon: (
         <DataSourceIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-data-source",
@@ -41,10 +48,10 @@ const Sidebar: FC = () => {
     {
       icon: (
         <ModelIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-model",
@@ -54,10 +61,10 @@ const Sidebar: FC = () => {
     {
       icon: (
         <DataDestinationIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-data-destination",
@@ -70,10 +77,10 @@ const Sidebar: FC = () => {
     {
       icon: (
         <GearIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-setting",
@@ -83,10 +90,10 @@ const Sidebar: FC = () => {
     {
       icon: (
         <ResourceIcon
-          color="fill-instillGrey30"
-          width="w-[30px]"
-          height="h-[30px]"
-          position="my-auto"
+          color={iconColor}
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
         />
       ),
       id: "sidebar-resources",
@@ -95,10 +102,28 @@ const Sidebar: FC = () => {
     },
   ];
 
+  const handleCollapseSidebar = useCallback(() => {
+    setIsCollapsed((prev) => !prev);
+  }, []);
+
   return (
-    <div className="sticky top-0 flex h-screen w-[237px] flex-col bg-instillGrey95 pb-5">
-      <div className="mb-20 p-6">
-        <Logo type="ColourLogomarkWhiteType" width={182} />
+    <div className="sticky top-0 flex h-screen flex-col bg-instillGrey90 pb-5">
+      <div className="relative mb-20 py-6">
+        <div className="flex px-6">
+          <Logo
+            type={isCollapsed ? "colourLogomark" : "ColourLogomarkWhiteType"}
+            width={isCollapsed ? 38 : 182}
+          />
+        </div>
+
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
+          <CollapseSidebarButton
+            disabled={false}
+            isCollapse={isCollapsed}
+            position="m-auto"
+            onClickHandler={handleCollapseSidebar}
+          />
+        </div>
       </div>
       <div className="flex h-full flex-col">
         <div className="mb-auto flex flex-col">
@@ -108,6 +133,7 @@ const Sidebar: FC = () => {
               tabName={tab.tabName}
               link={tab.link}
               icon={tab.icon}
+              isCollapsed={isCollapsed}
             />
           ))}
         </div>
@@ -118,6 +144,7 @@ const Sidebar: FC = () => {
               tabName={tab.tabName}
               link={tab.link}
               icon={tab.icon}
+              isCollapsed={isCollapsed}
             />
           ))}
         </div>
