@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^0.4.1",
-    "@instill-ai/design-system": "^0.0.61",
+    "@instill-ai/design-system": "^0.0.62",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "cookie": "^0.5.0",
