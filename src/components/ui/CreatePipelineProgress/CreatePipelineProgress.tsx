@@ -3,6 +3,8 @@ import { getElementPosition } from "@instill-ai/design-system";
 
 import useOnScreen from "@/hooks/useOnScreen";
 import ProgressStep from "./ProgressStep";
+import useWindowSize from "@/hooks/useWindowSize";
+import useRefSize from "@/hooks/useRefSize";
 
 /**
  * We make current number 0 & 1 stay at the first step
@@ -30,6 +32,8 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
   const thirdConnectionLineRef = useRef<HTMLDivElement>(null);
 
   const contanierIsOnScreen = useOnScreen(containerRef);
+  const windowSize = useWindowSize();
+  const containerSize = useRefSize(containerRef);
 
   // Calculate the position and wdith of three connection line
 
@@ -115,7 +119,7 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
         />
       </>
     );
-  }, [contanierIsOnScreen]);
+  }, [contanierIsOnScreen, windowSize, containerSize]);
 
   // Update connection line's color according to current progression
 
