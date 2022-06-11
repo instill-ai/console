@@ -1,14 +1,15 @@
 import { deletePipelineMutation, Pipeline } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeletePipeline = (pipelineName: string) => {
+const useDeletePipeline = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async () => {
+    async (pipelineName: string) => {
       await deletePipelineMutation(pipelineName);
+      return pipelineName;
     },
     {
-      onSuccess: () => {
+      onSuccess: (pipelineName) => {
         const pipelineId = pipelineName.split("/")[1];
 
         queryClient.removeQueries(["pipelines", pipelineId], { exact: true });
