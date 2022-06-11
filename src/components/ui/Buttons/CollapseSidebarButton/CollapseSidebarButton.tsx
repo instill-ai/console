@@ -4,7 +4,12 @@ import { CollapseRightIcon, CollapseLeftIcon } from "@instill-ai/design-system";
 
 export type CollapseSidebarButtonProps = Omit<
   ButtonBaseProps,
-  "bgColor" | "textColor" | "disabledBgColor" | "disabledTextColor" | "padding"
+  | "bgColor"
+  | "textColor"
+  | "disabledBgColor"
+  | "disabledTextColor"
+  | "padding"
+  | "width"
 > & {
   isCollapse: boolean;
 };
@@ -21,6 +26,7 @@ const CollapseSidebarButton: FC<CollapseSidebarButtonProps> = (props) => {
       textColor="text-instillGrey05"
       disabledBgColor="bg-instillGrey90"
       disabledTextColor="text-instillGrey50"
+      width={null}
       padding="p-[3px]"
     >
       {props.isCollapse ? (
