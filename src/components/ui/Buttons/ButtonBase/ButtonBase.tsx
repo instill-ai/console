@@ -1,5 +1,6 @@
 import { FC } from "react";
 import cn from "clsx";
+import { Nullable } from "@/types/general";
 
 export type ButtonBaseProps = {
   disabled: boolean;
@@ -12,6 +13,7 @@ export type ButtonBaseProps = {
   type?: "button" | "submit" | "reset";
   dataFlag?: string | number;
   padding: string;
+  width: Nullable<string>;
 };
 
 const ButtonBase: FC<ButtonBaseProps> = ({
@@ -26,6 +28,7 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   dataFlag,
   children,
   padding,
+  width,
 }) => {
   return (
     <button
@@ -39,7 +42,8 @@ const ButtonBase: FC<ButtonBaseProps> = ({
           ? cn(disabledBgColor, disabledTextColor)
           : cn(bgColor, textColor),
         position,
-        padding
+        padding,
+        width
       )}
     >
       {children}
