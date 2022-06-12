@@ -21,6 +21,7 @@ const useModelsInstances = (enable: boolean) => {
     },
     {
       enabled: enable ? (models.isSuccess ? true : false) : false,
+      retry: 3,
     }
   );
 };

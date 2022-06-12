@@ -4,14 +4,15 @@ import {
 } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeleteDestination = (destinationName: string) => {
+const useDeleteDestination = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async () => {
+    async (destinationName: string) => {
       await deleteDestinationMutation(destinationName);
+      return destinationName;
     },
     {
-      onSuccess: () => {
+      onSuccess: (destinationName) => {
         const destinationId = destinationName.split("/")[1];
 
         queryClient.removeQueries(["destinations", destinationId], {
@@ -27,8 +28,6 @@ const useDeleteDestination = (destinationName: string) => {
             ["destinations"],
             destinations.filter((e) => e.name !== destinationName)
           );
-        } else {
-          queryClient.invalidateQueries(["sources"]);
         }
       },
     }

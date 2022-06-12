@@ -18,6 +18,7 @@ const useUser = (userName: Nullable<string>) => {
     {
       enabled: !!userName,
       initialData: queryClient.getQueryData(["user", userName]),
+      retry: 3,
     }
   );
 };

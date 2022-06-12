@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
       <QueryClientProvider client={queryClient}>
         {getLayout(<Component {...pageProps} />)}
+        <div id="modal-root" />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AmplitudeCtx.Provider>

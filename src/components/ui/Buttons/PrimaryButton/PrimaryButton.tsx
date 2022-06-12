@@ -3,7 +3,15 @@ import ButtonBase, { ButtonBaseProps } from "../ButtonBase";
 
 export type PrimaryButtonProps = Omit<
   ButtonBaseProps,
-  "bgColor" | "textColor" | "disabledBgColor" | "disabledTextColor"
+  | "bgColor"
+  | "textColor"
+  | "disabledBgColor"
+  | "disabledTextColor"
+  | "padding"
+  | "width"
+  | "borderSize"
+  | "borderColor"
+  | "disabledBorderColor"
 >;
 
 const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
@@ -14,6 +22,10 @@ const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
       position={props.position}
       type={props.type}
       dataFlag={props.dataFlag}
+      width={null}
+      borderSize={null}
+      borderColor={null}
+      disabledBorderColor={null}
       bgColor="bg-instillBlue50"
       textColor="text-instillGrey05"
       disabledBgColor="bg-instillGrey15"

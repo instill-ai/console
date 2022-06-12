@@ -42,6 +42,7 @@ const useSourceWithPipelines = (sourceName: Nullable<string>) => {
             : false
           : false
         : false,
+      retry: 3,
     }
   );
 };

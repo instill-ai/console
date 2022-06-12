@@ -38,6 +38,7 @@ const useModelsWithInstances = () => {
     },
     {
       enabled: models.isSuccess ? true : false,
+      retry: 3,
     }
   );
 };

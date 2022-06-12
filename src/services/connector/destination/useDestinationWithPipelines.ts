@@ -42,6 +42,7 @@ const useDestinationWithPipelines = (destinationName: Nullable<string>) => {
             : false
           : false
         : false,
+      retry: 3,
     }
   );
 };

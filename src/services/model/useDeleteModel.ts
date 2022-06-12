@@ -1,14 +1,15 @@
 import { deleteModelMutation, Model } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeleteModel = (modelName: string) => {
+const useDeleteModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async () => {
+    async (modelName: string) => {
       await deleteModelMutation(modelName);
+      return modelName;
     },
     {
-      onSuccess: () => {
+      onSuccess: (modelName) => {
         const modelId = modelName.split("/")[1];
 
         queryClient.removeQueries(["models", modelId], { exact: true });
@@ -20,8 +21,6 @@ const useDeleteModel = (modelName: string) => {
             ["models"],
             models.filter((e) => e.name !== modelName)
           );
-        } else {
-          queryClient.invalidateQueries(["models"]);
         }
       },
     }

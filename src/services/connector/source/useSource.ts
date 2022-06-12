@@ -26,6 +26,7 @@ const useSource = (sourceName: Nullable<string>) => {
     },
     {
       enabled: sourceName ? true : false,
+      retry: 3,
     }
   );
 };

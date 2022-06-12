@@ -27,6 +27,7 @@ const useDestination = (destinationName: Nullable<string>) => {
     },
     {
       enabled: destinationName ? true : false,
+      retry: 3,
     }
   );
 };

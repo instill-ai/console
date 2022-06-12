@@ -1,14 +1,15 @@
 import { deleteSourceMutation, SourceWithDefinition } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeleteSource = (sourceName: string) => {
+const useDeleteSource = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async () => {
+    async (sourceName: string) => {
       await deleteSourceMutation(sourceName);
+      return sourceName;
     },
     {
-      onSuccess: () => {
+      onSuccess: (sourceName) => {
         const sourceId = sourceName.split("/")[1];
 
         queryClient.removeQueries(["sources", sourceId], { exact: true });
@@ -22,8 +23,6 @@ const useDeleteSource = (sourceName: string) => {
             ["sources"],
             sources.filter((e) => e.name !== sourceName)
           );
-        } else {
-          queryClient.invalidateQueries(["sources"]);
         }
       },
     }

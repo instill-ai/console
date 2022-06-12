@@ -41,6 +41,7 @@ const usePipelinesHaveTargetDestination = (destinationId: Nullable<string>) => {
         }
       },
       enabled: destinationId ? (pipelines.data ? true : false) : false,
+      retry: 3,
     }
   );
 };

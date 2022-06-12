@@ -1,11 +1,19 @@
 import { FC, useState, useEffect, useCallback } from "react";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 import { Formik } from "formik";
+import { useRouter } from "next/router";
 
 import { FormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { DeleteResourceModal } from "@/components/modals";
+import { useDeleteDestination } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
@@ -18,6 +26,9 @@ type ConfigureDestinationFormValue = {
 const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
   destination,
 }) => {
+  const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   // ###################################################################
   // #                                                                 #
   // # Initialize the destination definition                           #
@@ -83,57 +94,128 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
     [syncDestinationDefinitionOptions]
   );
 
-  return (
-    <Formik
-      initialValues={
-        {
-          definition: destination ? destination.id : null,
-        } as ConfigureDestinationFormValue
-      }
-      onSubmit={() => {
-        if (!canEdit) {
-          setCanEdit(true);
-          return;
+  // ###################################################################
+  // #                                                                 #
+  // # Handle delete source                                            #
+  // #                                                                 #
+  // ###################################################################
+
+  const [deleteDestinationModalIsOpen, setDeleteDestinationModalIsOpen] =
+    useState(false);
+  const [isDeletingDestination, setIsDeletingDestination] = useState(false);
+  const [deleteDestinationError, setDeleteDestinationError] =
+    useState<Nullable<string>>(null);
+
+  const deleteDestination = useDeleteDestination();
+
+  const handleDeleteDestination = useCallback(() => {
+    if (!destination) return;
+
+    setIsDeletingDestination(true);
+    deleteDestination.mutate(destination.name, {
+      onSuccess: () => {
+        setIsDeletingDestination(false);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_destination", {
+            type: "critical_action",
+            process: "destination",
+          });
         }
-      }}
-    >
-      {(formik) => {
-        return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-            <SingleSelect
-              name="definition"
-              label="Data destination"
-              instanceId="destination-definition"
-              value={selectedDestinationDefinitionOption}
-              options={syncDestinationDefinitionOptions}
-              additionalOnChangeCb={destinationDefinitionOnChangeCb}
-              error={formik.errors.definition || null}
-              disabled={true}
-              readOnly={false}
-              required={true}
-              description={"Setup Guide"}
-              menuPlacement="auto"
-            />
-            <div className="mt-10 flex flex-row">
-              <PrimaryButton
-                type="button"
-                disabled={true}
-                position="mr-auto my-auto"
-              >
-                Delete
-              </PrimaryButton>
-              <PrimaryButton
-                type="submit"
-                disabled={true}
-                position="ml-auto my-auto"
-              >
-                {canEdit ? "Done" : "Edit"}
-              </PrimaryButton>
-            </div>
-          </FormBase>
-        );
-      }}
-    </Formik>
+        router.push("/destinations");
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setDeleteDestinationError(error.message);
+          setIsDeletingDestination(false);
+        } else {
+          setDeleteDestinationError(
+            "Something went wrong when deleting destination"
+          );
+          setIsDeletingDestination(false);
+        }
+      },
+    });
+    setDeleteDestinationModalIsOpen(false);
+  }, [destination]);
+
+  return (
+    <>
+      <Formik
+        initialValues={
+          {
+            definition: destination ? destination.id : null,
+          } as ConfigureDestinationFormValue
+        }
+        onSubmit={() => {
+          if (!canEdit) {
+            setCanEdit(true);
+            return;
+          }
+        }}
+      >
+        {(formik) => {
+          return (
+            <FormBase marginBottom={null} gapY={null} padding={null}>
+              <div className="mb-10 flex flex-col gap-y-5">
+                <SingleSelect
+                  name="definition"
+                  label="Data destination"
+                  instanceId="destination-definition"
+                  value={selectedDestinationDefinitionOption}
+                  options={syncDestinationDefinitionOptions}
+                  additionalOnChangeCb={destinationDefinitionOnChangeCb}
+                  error={formik.errors.definition || null}
+                  disabled={true}
+                  readOnly={false}
+                  required={true}
+                  description={"Setup Guide"}
+                  menuPlacement="auto"
+                />
+              </div>
+              <div className="mb-10 flex flex-row">
+                <PrimaryButton
+                  type="button"
+                  disabled={true}
+                  position="mr-auto my-auto"
+                  onClickHandler={() => {
+                    setDeleteDestinationModalIsOpen(true);
+                  }}
+                >
+                  Delete
+                </PrimaryButton>
+                <PrimaryButton
+                  type="submit"
+                  disabled={true}
+                  position="ml-auto my-auto"
+                >
+                  {canEdit ? "Done" : "Edit"}
+                </PrimaryButton>
+              </div>
+              <div className="flex">
+                {deleteDestinationError ? (
+                  <BasicProgressMessageBox width="w-[25vw]" status="error">
+                    {deleteDestinationError}
+                  </BasicProgressMessageBox>
+                ) : isDeletingDestination ? (
+                  <BasicProgressMessageBox
+                    width="w-[25vw]"
+                    status="progressing"
+                  >
+                    Deleting destination...
+                  </BasicProgressMessageBox>
+                ) : null}
+              </div>
+            </FormBase>
+          );
+        }}
+      </Formik>
+      <DeleteResourceModal
+        modalIsOpen={deleteDestinationModalIsOpen}
+        setModalIsOpen={setDeleteDestinationModalIsOpen}
+        handleDeleteResource={handleDeleteDestination}
+        resource={destination}
+      />
+    </>
   );
 };
 

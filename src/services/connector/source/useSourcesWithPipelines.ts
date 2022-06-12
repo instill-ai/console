@@ -28,6 +28,7 @@ const useSourcesWithPipelines = () => {
     },
     {
       enabled: sources.isSuccess ? (pipelines.isSuccess ? true : false) : false,
+      retry: 3,
     }
   );
 };
