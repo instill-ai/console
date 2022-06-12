@@ -6,7 +6,10 @@ export type ButtonBaseProps = {
   disabled: boolean;
   disabledBgColor: string;
   disabledTextColor: string;
-  bgColor: string;
+  borderSize: Nullable<string>;
+  borderColor: Nullable<string>;
+  disabledBorderColor: Nullable<string>;
+  bgColor: Nullable<string>;
   textColor: string;
   onClickHandler?: (values?: any) => any;
   position?: string;
@@ -29,6 +32,9 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   children,
   padding,
   width,
+  borderSize,
+  borderColor,
+  disabledBorderColor,
 }) => {
   return (
     <button
@@ -38,9 +44,10 @@ const ButtonBase: FC<ButtonBaseProps> = ({
       data-flag={dataFlag}
       className={cn(
         "rounded-[1px]",
+        borderSize,
         disabled
-          ? cn(disabledBgColor, disabledTextColor)
-          : cn(bgColor, textColor),
+          ? cn(disabledBgColor, disabledTextColor, disabledBorderColor)
+          : cn(bgColor, textColor, borderColor),
         position,
         padding,
         width
