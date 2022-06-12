@@ -14,6 +14,7 @@ const useModelInstance = (modelInstanceName: Nullable<string>) => {
     },
     {
       enabled: modelInstanceName ? true : false,
+      retry: 3,
     }
   );
 };

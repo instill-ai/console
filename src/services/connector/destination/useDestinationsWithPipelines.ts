@@ -32,6 +32,7 @@ const useDestinationsWithPipelines = () => {
           ? true
           : false
         : false,
+      retry: 3,
     }
   );
 };

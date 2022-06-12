@@ -13,7 +13,7 @@ const useModelDefinition = (modelDefinitionName: Nullable<string>) => {
       const definition = await getModelDefinitionQuery(modelDefinitionName);
       return Promise.resolve(definition);
     },
-    { enabled: modelDefinitionName ? true : false }
+    { enabled: modelDefinitionName ? true : false, retry: 3 }
   );
 };
 

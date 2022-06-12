@@ -29,6 +29,7 @@ const usePipeline = (pipelineName: Nullable<string>) => {
       initialData: queryClient
         .getQueryData<Pipeline[]>(["pipelines"])
         ?.find((e) => e.name === pipelineName),
+      retry: 3,
     }
   );
 };

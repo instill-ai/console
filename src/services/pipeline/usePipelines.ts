@@ -21,6 +21,7 @@ const usePipelines = (enable: boolean) => {
     },
     {
       enabled: enable ? true : false,
+      retry: 3,
     }
   );
 };

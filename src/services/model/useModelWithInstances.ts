@@ -25,7 +25,7 @@ const useModelWithInstances = (model: Nullable<Model>) => {
 
       return Promise.resolve(modelWithInstances);
     },
-    { enabled: model ? true : false }
+    { enabled: model ? true : false, retry: 3 }
   );
 };
 
