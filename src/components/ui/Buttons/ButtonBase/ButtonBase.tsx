@@ -3,19 +3,19 @@ import cn from "clsx";
 import { Nullable } from "@/types/general";
 
 export type ButtonBaseProps = {
+  type: "button" | "submit" | "reset";
   disabled: boolean;
-  disabledBgColor: string;
-  disabledTextColor: string;
+  onClickHandler: Nullable<(values?: any) => any>;
+  bgColor: Nullable<string>;
+  disabledBgColor: Nullable<string>;
+  textColor: Nullable<string>;
+  disabledTextColor: Nullable<string>;
   borderSize: Nullable<string>;
   borderColor: Nullable<string>;
   disabledBorderColor: Nullable<string>;
-  bgColor: Nullable<string>;
-  textColor: string;
-  onClickHandler?: (values?: any) => any;
-  position?: string;
-  type?: "button" | "submit" | "reset";
-  dataFlag?: string | number;
-  padding: string;
+  position: Nullable<string>;
+  dataFlag?: Nullable<string | number>;
+  padding: Nullable<string>;
   width: Nullable<string>;
 };
 
@@ -39,7 +39,7 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   return (
     <button
       disabled={disabled}
-      onClick={onClickHandler}
+      onClick={onClickHandler ? onClickHandler : undefined}
       type={type}
       data-flag={dataFlag}
       className={cn(
