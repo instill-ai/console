@@ -178,6 +178,7 @@ const CreateSourceForm: FC = () => {
                 disabled={formik.isValid ? false : true}
                 position="ml-auto my-auto"
                 type="submit"
+                onClickHandler={null}
               >
                 Setup new model
               </PrimaryButton>

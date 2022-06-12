@@ -38,6 +38,7 @@ const PageTitle: FC<PageTitleProps> = ({
             type="button"
             disabled={false}
             onClickHandler={onClickHandler}
+            position={null}
           >
             {buttonName}
           </PrimaryButton>

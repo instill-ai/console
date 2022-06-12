@@ -174,6 +174,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               disabled={formik.isValid ? false : true}
               type="submit"
               position="ml-auto"
+              onClickHandler={null}
             >
               Start
             </PrimaryButton>

@@ -140,6 +140,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
         />
         <div className="grid grid-cols-2 gap-x-5">
           <OutlineButton
+            type="button"
             disabled={false}
             disabledBgColor="bg-instillGrey15"
             bgColor="bg-white"
@@ -150,10 +151,12 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
             borderColor="border-instillGrey50"
             disabledBorderColor={null}
             onClickHandler={() => setModalIsOpen(false)}
+            position={null}
           >
             Cancel
           </OutlineButton>
           <OutlineButton
+            type="button"
             disabled={canDeleteResource ? false : true}
             disabledBgColor="bg-instillGrey15"
             bgColor="bg-white"
@@ -166,6 +169,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
             borderColor="border-instillRed"
             disabledBorderColor={null}
             onClickHandler={handleDeleteResource}
+            position={null}
           >
             Delete
           </OutlineButton>
