@@ -120,7 +120,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
           setIsDeletingDestination(false);
         } else {
           setDeleteDestinationError(
-            "Something went wrong when deleting source"
+            "Something went wrong when deleting destination"
           );
           setIsDeletingDestination(false);
         }
