@@ -188,9 +188,10 @@ const CreateDestinationForm: FC = () => {
                 </BasicProgressMessageBox>
               ) : null}
               <PrimaryButton
+                type="submit"
                 disabled={formik.isValid ? false : true}
                 position="ml-auto my-auto"
-                type="submit"
+                onClickHandler={null}
               >
                 Set up source
               </PrimaryButton>

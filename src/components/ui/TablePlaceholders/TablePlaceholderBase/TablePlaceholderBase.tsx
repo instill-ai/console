@@ -50,6 +50,7 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
             type="button"
             disabled={false}
             onClickHandler={handleOnClick}
+            position={null}
           >
             {createButtonTitle}
           </PrimaryButton>

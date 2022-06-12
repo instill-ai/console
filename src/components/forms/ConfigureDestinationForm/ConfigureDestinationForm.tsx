@@ -187,6 +187,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                   type="submit"
                   disabled={true}
                   position="ml-auto my-auto"
+                  onClickHandler={null}
                 >
                   {canEdit ? "Done" : "Edit"}
                 </PrimaryButton>
