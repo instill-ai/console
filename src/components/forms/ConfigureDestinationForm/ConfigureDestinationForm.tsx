@@ -10,8 +10,8 @@ import { FormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import DeleteResourceModal from "@/components/modals/DeleteResourceModal";
-import { useDeleteDestination, useDeleteSource } from "@/services/connector";
+import { DeleteResourceModal } from "@/components/modals";
+import { useDeleteDestination } from "@/services/connector";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
@@ -182,7 +182,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                   {canEdit ? "Done" : "Edit"}
                 </PrimaryButton>
               </div>
-              <div className="">
+              <div className="flex">
                 {deleteDestinationError ? (
                   <BasicProgressMessageBox width="w-[25vw]" status="error">
                     {deleteDestinationError}

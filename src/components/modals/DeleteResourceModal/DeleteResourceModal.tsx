@@ -30,6 +30,7 @@ export type DeleteResourceModalProps = {
 
 const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
   modalIsOpen,
+  setModalIsOpen,
   resource,
   handleDeleteResource,
 }) => {
@@ -148,6 +149,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
             borderSize="border"
             borderColor="border-instillGrey50"
             disabledBorderColor={null}
+            onClickHandler={() => setModalIsOpen(false)}
           >
             Cancel
           </OutlineButton>
