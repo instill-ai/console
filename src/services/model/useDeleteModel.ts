@@ -21,8 +21,6 @@ const useDeleteModel = () => {
             ["models"],
             models.filter((e) => e.name !== modelName)
           );
-        } else {
-          queryClient.invalidateQueries(["models"]);
         }
       },
     }

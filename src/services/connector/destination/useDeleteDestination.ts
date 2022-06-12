@@ -21,15 +21,13 @@ const useDeleteDestination = () => {
 
         const destinations = queryClient.getQueryData<
           DestinationWithDefinition[]
-        >(["destinations"]);
+        >(["sources"]);
 
         if (destinations) {
           queryClient.setQueryData<DestinationWithDefinition[]>(
             ["destinations"],
             destinations.filter((e) => e.name !== destinationName)
           );
-        } else {
-          queryClient.invalidateQueries(["sources"]);
         }
       },
     }

@@ -23,8 +23,6 @@ const useDeleteSource = () => {
             ["sources"],
             sources.filter((e) => e.name !== sourceName)
           );
-        } else {
-          queryClient.invalidateQueries(["sources"]);
         }
       },
     }

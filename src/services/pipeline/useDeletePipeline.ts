@@ -21,8 +21,6 @@ const useDeletePipeline = () => {
             ["pipelines"],
             pipelines.filter((e) => e.name !== pipelineName)
           );
-        } else {
-          queryClient.invalidateQueries(["pipelines"]);
         }
       },
     }
