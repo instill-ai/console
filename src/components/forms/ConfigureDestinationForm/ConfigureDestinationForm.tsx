@@ -12,6 +12,8 @@ import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteDestination } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
@@ -25,6 +27,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
   destination,
 }) => {
   const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -112,6 +115,12 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
     deleteDestination.mutate(destination.name, {
       onSuccess: () => {
         setIsDeletingDestination(false);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_destination", {
+            type: "critical_action",
+            process: "destination",
+          });
+        }
         router.push("/destinations");
       },
       onError: (error) => {
@@ -192,7 +201,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                     width="w-[25vw]"
                     status="progressing"
                   >
-                    Deleting destination
+                    Deleting destination...
                   </BasicProgressMessageBox>
                 ) : null}
               </div>

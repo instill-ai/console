@@ -12,6 +12,8 @@ import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteSource } from "@/services/connector";
+import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -23,6 +25,7 @@ type ConfigureSourceFormValue = {
 
 const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
   const router = useRouter();
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
   // #                                                                 #
@@ -104,6 +107,12 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
     deleteSource.mutate(source.name, {
       onSuccess: () => {
         setIsDeletingSource(false);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_source", {
+            type: "critical_action",
+            process: "source",
+          });
+        }
         router.push("/sources");
       },
       onError: (error) => {
@@ -180,7 +189,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                     width="w-[25vw]"
                     status="progressing"
                   >
-                    Deleting source
+                    Deleting source...
                   </BasicProgressMessageBox>
                 ) : null}
               </div>

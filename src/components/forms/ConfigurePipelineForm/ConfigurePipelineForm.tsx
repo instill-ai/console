@@ -79,6 +79,12 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     deletePipeline.mutate(pipeline.name, {
       onSuccess: () => {
         setIsDeletingPipeline(false);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_pipeline", {
+            type: "critical_action",
+            process: "destination",
+          });
+        }
         router.push("/pipelines");
       },
       onError: (error) => {
