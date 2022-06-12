@@ -7,8 +7,11 @@ export type PrimaryButtonProps = Omit<
   | "textColor"
   | "disabledBgColor"
   | "disabledTextColor"
-  | "width"
   | "padding"
+  | "width"
+  | "borderSize"
+  | "borderColor"
+  | "disabledBorderColor"
 >;
 
 const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
@@ -19,12 +22,15 @@ const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
       position={props.position}
       type={props.type}
       dataFlag={props.dataFlag}
+      width={null}
+      borderSize={null}
+      borderColor={null}
+      disabledBorderColor={null}
       bgColor="bg-instillBlue50"
       textColor="text-instillGrey05"
       disabledBgColor="bg-instillGrey15"
       disabledTextColor="text-instillGrey50"
       padding="px-5 py-2.5"
-      width={null}
     >
       {props.children}
     </ButtonBase>
