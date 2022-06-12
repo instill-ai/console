@@ -154,7 +154,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               <div className="mb-10 flex flex-row">
                 <PrimaryButton
                   type="button"
-                  disabled={deleteSourceModalIsOpen ? true : false}
+                  disabled={true}
                   position="mr-auto my-auto"
                   onClickHandler={() => {
                     setDeleteSourceModalIsOpen(true);

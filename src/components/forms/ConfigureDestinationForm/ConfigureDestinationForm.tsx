@@ -166,7 +166,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
               <div className="mb-10 flex flex-row">
                 <PrimaryButton
                   type="button"
-                  disabled={deleteDestinationModalIsOpen ? true : false}
+                  disabled={true}
                   position="mr-auto my-auto"
                   onClickHandler={() => {
                     setDeleteDestinationModalIsOpen(true);
