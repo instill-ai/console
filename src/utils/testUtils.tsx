@@ -86,3 +86,13 @@ export function renderWithClient(
       ),
   };
 }
+
+export function createWrapper() {
+  const testQueryClient = createTestQueryClient();
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={testQueryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+  return wrapper;
+}
