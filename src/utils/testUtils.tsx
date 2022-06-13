@@ -1,12 +1,13 @@
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { render } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 /**
  * This function will create NextRouter mock object
- * 
+ *
  * @param router - Additional router info
- * @returns 
+ * @returns
  */
 
 export function createMockRouter(router: Partial<NextRouter>): NextRouter {
@@ -41,26 +42,36 @@ export function createMockRouter(router: Partial<NextRouter>): NextRouter {
   };
 }
 
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
 /**
- *  This function will render desired ui component using testing-library render method. 
+ *  This function will render desired ui component using testing-library render method.
  * @param ui - desired rendered component
  * @param router - Additional router info
- * @returns 
- * 
- * - renderer - When testing component's changed, It's better to change the props by ourself, 
- * this function can be used to update props of the rendered component.
+ * @returns
+ *
+ * - renderer - When testing component's changed, It's better to change the props by ourself,
+ *   this function can be used to update props of the rendered component.
  * - others returned variables are documented in testing-library's documents.
  * - You can add whatever used context here to render it when testing.
  * @link https://testing-library.com/docs/react-testing-library/api/#render
  */
 
-export function renderWithContext(
+export function renderWithClient(
   ui: React.ReactElement,
   router: Partial<NextRouter>
 ) {
+  const testQueryClient = createTestQueryClient();
   const { rerender, ...result } = render(
     <RouterContext.Provider value={createMockRouter({ ...router })}>
-      {ui}
+      <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
     </RouterContext.Provider>
   );
   return {
@@ -68,7 +79,9 @@ export function renderWithContext(
     rerender: (rerenderUi: React.ReactElement) =>
       rerender(
         <RouterContext.Provider value={createMockRouter({ ...router })}>
-          {rerenderUi}
+          <QueryClientProvider client={testQueryClient}>
+            {rerenderUi}
+          </QueryClientProvider>
         </RouterContext.Provider>
       ),
   };
