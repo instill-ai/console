@@ -1,5 +1,5 @@
 import { getHumanReadableStringFromTime } from "./timeUtils";
-import { createMockRouter, renderWithContext } from "./testUtils";
+import { createMockRouter, renderWithClient, createWrapper } from "./test";
 import { getTextWidth } from "./dimensionUtils";
 import { groupBy } from "./arrayUtils";
 import determineModelState from "./determineModelState";
@@ -7,7 +7,8 @@ import determineModelState from "./determineModelState";
 export {
   getHumanReadableStringFromTime,
   createMockRouter,
-  renderWithContext,
+  renderWithClient,
+  createWrapper,
   getTextWidth,
   groupBy,
   determineModelState,
