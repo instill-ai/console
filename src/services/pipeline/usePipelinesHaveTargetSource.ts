@@ -41,6 +41,7 @@ const usePipelinesHaveTargetSource = (sourceId: Nullable<string>) => {
         }
       },
       enabled: sourceId ? (pipelines.data ? true : false) : false,
+      retry: 3,
     }
   );
 };
