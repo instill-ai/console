@@ -7,8 +7,8 @@ import "@testing-library/jest-dom/extend-expect";
 
 // ref: https://nextjs.org/docs/basic-features/environment-variables#test-environment-variables
 import { loadEnvConfig } from "@next/env";
-import { server } from "mocks";
 import axios from "axios";
+import { server } from "./src/mocks";
 
 loadEnvConfig(process.cwd());
 
