@@ -1,3 +1,2 @@
-import getSourceHandler from "./getSource";
-
-export { getSourceHandler };
+export { default } from "./getSource";
+export * from "./getSource";
