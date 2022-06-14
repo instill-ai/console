@@ -46,7 +46,7 @@ export const createLocalModelMutation = async (
     formData.append("model_definition", payload.model_definition);
     formData.append("content", payload.content);
 
-    const { data } = await axios.post<CreateGithubModelResponse>(
+    const { data } = await axios.post<CreateLocalModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
       formData,
       {
