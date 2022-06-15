@@ -36,7 +36,7 @@ export const testModelInstance = async (payload: TestModelInstancePayload) => {
     formData.append("file", payload.content);
 
     const { data } = await axios.post<TestModelInstanceResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.modelInstanceName}:test-trigger`,
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.modelInstanceName}:test-multipart`,
       formData,
       {
         headers: {
