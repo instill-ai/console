@@ -31,6 +31,7 @@ export type AmplitudeEvent =
   | "deploy_model_instance"
   | "update_model_instance"
   | "use_existing_model_instance"
+  | "test_model_instance"
   | "create_pipeline"
   | "delete_pipeline"
   | "update_pipeline"
