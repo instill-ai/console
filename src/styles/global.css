@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 @layer utilities {
-  .instill-text-h1 {
+  .text-instill-h1 {
     @apply font-sans text-[32px] font-medium leading-[42px];
   }
-  .instill-text-h2 {
+  .text-instill-h2 {
     @apply font-mono text-[20px] font-medium leading-[26px];
   }
   .instill-text-h3 {

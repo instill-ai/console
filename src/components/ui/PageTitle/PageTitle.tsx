@@ -32,7 +32,7 @@ const PageTitle: FC<PageTitleProps> = ({
     <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <div className="flex min-h-[44px] w-full flex-row">
-        <h2 className="instill-text-h2 mt-auto mr-auto text-black">{title}</h2>
+        <h2 className="text-instill-h2 mt-auto mr-auto text-black">{title}</h2>
         {enableButton ? (
           <PrimaryButton
             type="button"

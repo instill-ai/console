@@ -194,7 +194,7 @@ const ModelDetailsPage: FC & {
         marginBottom="mb-10"
       />
       <div className="mb-5 flex flex-row gap-x-2.5">
-        <h2 className="instill-text-h2 my-auto text-black ">{`${
+        <h2 className="text-instill-h2 my-auto text-black ">{`${
           model.isSuccess ? model.data.id : ""
         }`}</h2>
         <BasicSingleSelect
