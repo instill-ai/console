@@ -315,7 +315,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="instill-text-h3 text-black">Set up a new model</h3>
+      <h3 className="text-instill-h3 text-black">Set up a new model</h3>
       <TextField
         name="model.new.id"
         label="Name"
@@ -414,7 +414,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
       {canDisplayDeployModelSection ? (
         <>
-          <h3 className="instill-text-h3 mt-[60px] mb-5 text-black">
+          <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
             Deploy a model instance
           </h3>
           <SingleSelect

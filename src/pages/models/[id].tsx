@@ -194,7 +194,7 @@ const ModelDetailsPage: FC & {
         marginBottom="mb-10"
       />
       <div className="mb-5 flex flex-row gap-x-2.5">
-        <h2 className="text-instill-h2 my-auto text-black ">{`${
+        <h2 className="my-auto text-black text-instill-h2 ">{`${
           model.isSuccess ? model.data.id : ""
         }`}</h2>
         <BasicSingleSelect
@@ -229,14 +229,14 @@ const ModelDetailsPage: FC & {
           iconPosition="my-auto"
         />
       </div>
-      <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Overview</h3>
       <PipelinesTable
         pipelines={selectedModelInstancePipelines}
         isLoadingPipeline={pipelines.isLoading}
         marginBottom="mb-10"
         enablePlaceholderCreateButton={false}
       />
-      <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
       {modelWithInstances.isLoading ? null : selectedModelInstances ? (
         <>
           <ConfigureModelInstanceForm

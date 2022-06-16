@@ -75,7 +75,7 @@ const SourceDetailsPage: FC & {
         marginBottom="mb-[50px]"
       />
       <div className="mb-5 flex flex-row gap-x-5">
-        <h3 className="instill-text-h3 my-auto text-black">State</h3>
+        <h3 className="text-instill-h3 my-auto text-black">State</h3>
         <StateLabel
           enableIcon={true}
           enableBgColor={true}
@@ -87,7 +87,7 @@ const SourceDetailsPage: FC & {
           paddingX="px-2"
         />
       </div>
-      <h3 className="instill-text-h3 mb-5 text-black">Overview</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Overview</h3>
       <PipelinesTable
         pipelines={
           sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
@@ -96,7 +96,7 @@ const SourceDetailsPage: FC & {
         marginBottom="mb-10"
         enablePlaceholderCreateButton={false}
       />
-      <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
       <div>
         <ConfigureSourceForm
           source={sourceWithPipelines.data ? sourceWithPipelines.data : null}

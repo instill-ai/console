@@ -42,7 +42,7 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
         ))}
       </div>
       <div className="m-auto flex flex-col gap-y-5">
-        <h3 className="instill-text-h3 text-instillGrey80">
+        <h3 className="text-instill-h3 text-instillGrey80">
           {placeholderTitle}
         </h3>
         {enableCreateButton ? (

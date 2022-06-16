@@ -11,7 +11,7 @@
   .text-instill-h2 {
     @apply font-mono text-[20px] font-medium leading-[26px];
   }
-  .instill-text-h3 {
+  .text-instill-h3 {
     @apply font-sans text-base font-normal leading-[28px];
   }
   .instill-text-body {
