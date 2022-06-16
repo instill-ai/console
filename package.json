@@ -22,7 +22,8 @@
     "build-storybook": "build-storybook",
     "prepare": "husky install",
     "prettier:fix": "prettier --write",
-    "prettier:check": "prettier --check"
+    "prettier:check": "prettier --check",
+    "lint": "next lint"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^0.4.1",
