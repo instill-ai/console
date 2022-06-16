@@ -31,6 +31,7 @@ import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import TestModelInstanceForm from "@/components/forms/TestModelInstanceForm/TestModelInstanceForm";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -237,10 +238,13 @@ const ModelDetailsPage: FC & {
       />
       <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
       {modelWithInstances.isLoading ? null : selectedModelInstances ? (
-        <ConfigureModelInstanceForm
-          modelInstance={selectedModelInstances}
-          marginBottom="mb-10"
-        />
+        <>
+          <ConfigureModelInstanceForm
+            modelInstance={selectedModelInstances}
+            marginBottom="mb-10"
+          />
+          <TestModelInstanceForm modelInstance={selectedModelInstances} />
+        </>
       ) : null}
     </PageContentContainer>
   );
