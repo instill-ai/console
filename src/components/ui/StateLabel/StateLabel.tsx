@@ -150,7 +150,7 @@ const StateLabel: FC<StateLabelProps> = ({
       )}
     >
       {enableIcon ? stateIcon : null}
-      <span className={cn("instill-text-small my-auto", textColor)}>
+      <span className={cn("my-auto text-instill-small", textColor)}>
         {stateLabelName}
       </span>
     </div>

@@ -54,7 +54,7 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
       )}
     >
       {modelInstanceTaskIcon}
-      <p className="instill-text-small my-auto flex text-instillGrey90">
+      <p className="my-auto flex text-instillGrey90 text-instill-small">
         {modelInstanceTaskLabel}
       </p>
     </div>

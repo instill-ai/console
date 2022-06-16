@@ -113,7 +113,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
               : ""
           )}
         >
-          <p className="instill-text-small my-auto text-instillGrey70">{`+ ${
+          <p className="my-auto text-instillGrey70 text-instill-small">{`+ ${
             items.length - displayLimit
           }`}</p>
         </div>

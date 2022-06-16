@@ -8,13 +8,10 @@
   .text-instill-h3 {
     @apply font-sans text-base font-normal leading-[28px];
   }
-  .text-instill-body {
-    @apply font-sans text-sm font-normal leading-[18px];
-  }
   .instill-text-bold-body {
     @apply font-sans text-sm font-semibold leading-[18px];
   }
-  .instill-text-small {
+  .text-instill-small {
     @apply font-mono text-xs font-normal;
   }
   .instill-input-highlight {

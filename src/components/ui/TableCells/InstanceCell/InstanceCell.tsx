@@ -102,7 +102,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
               enableItemBgColor={true}
               indicator="state"
               listItemsContainerWidth={widthInNumber}
-              textStyle="instill-text-small"
+              textStyle="text-instill-small"
             />
           </div>
         </CellBase>

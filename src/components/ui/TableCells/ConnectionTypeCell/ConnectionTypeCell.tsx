@@ -186,7 +186,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
           <div className="flex flex-col gap-y-[6px]">
             <div className="flex flex-row gap-x-[5px]">
               {icon}
-              <p className="instill-text-small my-auto text-instillGrey90">
+              <p className="my-auto text-instillGrey90 text-instill-small">
                 {definitionName}
               </p>
             </div>
