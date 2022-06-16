@@ -3,7 +3,6 @@ import {
   BasicProgressMessageBox,
   BasicUploadFileField,
 } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
 import { ModelInstance } from "@/lib/instill";
@@ -20,16 +19,15 @@ export type TestModelInstanceFormProps = {
 const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
   modelInstance,
 }) => {
-  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [resultBlockIsOpen, setResultBlockIsOpen] = useState(false);
 
-  const test = {
-    result: {
-      category: "hi",
-      score: 0.12345,
-    },
-  };
+  // ###################################################################
+  // #                                                                 #
+  // # Handle testing the model                                        #
+  // #                                                                 #
+  // ###################################################################
+
+  const [resultBlockIsOpen, setResultBlockIsOpen] = useState(false);
 
   const [isTestingModelInstance, setIsTestingModelInstance] = useState(false);
   const [testModelInstanceError, setTestModelInstanceError] =
@@ -40,10 +38,7 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
   const testModelInstance = useTestModelInstance();
 
   const fileOnChangeCb = (_: string, file: string) => {
-    console.log(file);
     if (!modelInstance || !file) return;
-
-    console.log(file);
 
     setTestModelInstanceError(null);
     setIsTestingModelInstance(true);
