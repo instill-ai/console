@@ -2,7 +2,7 @@ import { FC } from "react";
 import cn from "clsx";
 
 import { Nullable } from "@/types/general";
-import { GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
+import { ArtiVCIcon, GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
 
 export type ModelDefinitionLabelProps = {
   modelDefinition: Nullable<string>;
@@ -25,6 +25,13 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
   const modelDefinitionIcon =
     modelDefinition === "model-definitions/github" ? (
       <GitHubIcon
+        width={icon.width}
+        height={icon.height}
+        position={icon.position}
+        color={icon.color}
+      />
+    ) : modelDefinition === "model-definitions/artivc" ? (
+      <ArtiVCIcon
         width={icon.width}
         height={icon.height}
         position={icon.position}

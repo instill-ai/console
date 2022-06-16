@@ -1,7 +1,7 @@
 import { FC, ReactElement } from "react";
 import cn from "clsx";
 import CellBase, { CellBaseProps } from "../CellBase";
-import { GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
+import { ArtiVCIcon, GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
 
 export type ModelDefintionCellProps = {
   width: string;
@@ -38,6 +38,17 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
     case "model-definitions/github": {
       definitionIcon = (
         <GitHubIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
+          color={iconColor}
+        />
+      );
+      break;
+    }
+    case "model-definitions/artivc": {
+      definitionIcon = (
+        <ArtiVCIcon
           width={iconWidth}
           height={iconHeight}
           position={iconPosition}
