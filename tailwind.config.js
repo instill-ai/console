@@ -74,7 +74,7 @@ module.exports = {
 
     // We have to use plugin to let intelligence pick up our custom classname's style
     // ref: https://github.com/tailwindlabs/tailwindcss-intellisense/issues/227
-    ({ addUtilities, theme, addComponents }) => {
+    ({ addUtilities }) => {
       addUtilities({
         ".text-instill-h1": {
           fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
@@ -118,9 +118,6 @@ module.exports = {
         ".instill-progress-message-box-shadow": {
           boxShadow: "2px 2px 5px 4px rgba(0, 0, 0, 0.04)",
         },
-      });
-
-      addComponents({
         ".instill-input-no-highlight": {
           "@apply focus:outline-none focus:ring-0 focus:ring-opacity-0": {},
         },
