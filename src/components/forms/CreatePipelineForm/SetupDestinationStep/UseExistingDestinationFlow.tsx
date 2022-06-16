@@ -82,7 +82,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="instill-text-h3 text-black">
+      <h3 className="text-instill-h3 text-black">
         Select a existing destination
       </h3>
       <SingleSelect

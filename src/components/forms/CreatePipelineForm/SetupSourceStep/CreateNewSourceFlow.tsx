@@ -101,7 +101,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
 
   return (
     <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="instill-text-h3 text-black">Setup a new source</h3>
+      <h3 className="text-instill-h3 text-black">Setup a new source</h3>
       <TextField
         name="source.new.id"
         label="Name"

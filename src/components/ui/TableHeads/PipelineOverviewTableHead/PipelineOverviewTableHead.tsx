@@ -5,7 +5,7 @@ const PipelineOverviewTableHead: FC = () => {
   const getHeadItem = (name: string) => {
     return (
       <div className="flex flex-row gap-x-[15px]">
-        <div className="instill-text-body my-auto text-instillGrey90">
+        <div className="my-auto text-instillGrey90 text-instill-body">
           {name}
         </div>
       </div>

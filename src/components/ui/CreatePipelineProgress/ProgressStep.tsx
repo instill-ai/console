@@ -25,7 +25,7 @@ const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
         >
           <p
             className={cn(
-              "instill-text-h3 m-auto",
+              "m-auto text-instill-h3",
               isCurrent
                 ? "text-instillBlue50"
                 : isPassed
@@ -38,7 +38,7 @@ const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
         </div>
         <p
           className={cn(
-            "instill-text-small mx-auto",
+            "mx-auto text-instill-small",
             isCurrent
               ? "text-instillBlue50"
               : isPassed

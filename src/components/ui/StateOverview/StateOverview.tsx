@@ -17,7 +17,7 @@ const StateOverview: FC<StateOverviewProps> = ({
     return (
       <div className="flex flex-row gap-x-[5px] py-[3px] pl-[3px] pr-[10px]">
         {icon}
-        <p className="instill-text-body text-black">{counts}</p>
+        <p className="text-black text-instill-body">{counts}</p>
       </div>
     );
   };

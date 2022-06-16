@@ -69,5 +69,63 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+
+    // We have to use plugin to let intelligence pick up our custom classname's style
+    // ref: https://github.com/tailwindlabs/tailwindcss-intellisense/issues/227
+    ({ addUtilities }) => {
+      addUtilities({
+        ".text-instill-h1": {
+          fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
+          fontSize: "32px",
+          fontWeight: 500,
+          lineHeight: "42px",
+        },
+        ".text-instill-h2": {
+          fontFamily: `IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`,
+          fontSize: "20px",
+          fontWeight: 500,
+          lineHeight: "26px",
+        },
+        ".text-instill-h3": {
+          fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
+          fontSize: "16px",
+          fontWeight: 500,
+          lineHeight: "28px",
+        },
+        ".text-instill-body": {
+          fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
+          fontSize: "14px",
+          fontWeight: 400,
+          lineHeight: "18px",
+        },
+        ".text-instill-bold-body": {
+          fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
+          fontSize: "14px",
+          fontWeight: 600,
+          lineHeight: "18px",
+        },
+        ".text-instill-small": {
+          fontFamily: `IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`,
+          fontSize: "12px",
+          fontWeight: 400,
+          lineHeight: "16px",
+        },
+        ".instill-input-focus-shadow": {
+          boxShadow: "0px 0px 0px 3px rgba(64, 168, 245, 0.2)",
+        },
+        ".instill-progress-message-box-shadow": {
+          boxShadow: "2px 2px 5px 4px rgba(0, 0, 0, 0.04)",
+        },
+        ".instill-input-no-highlight": {
+          "@apply focus:outline-none focus:ring-0 focus:ring-opacity-0": {},
+        },
+        ".instill-input-highlight": {
+          "@apply focus:border-instillBlue50 focus:outline-none focus:ring-0 focus:ring-white":
+            {},
+        },
+      });
+    },
+  ],
 };

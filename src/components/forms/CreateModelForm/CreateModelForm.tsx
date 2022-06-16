@@ -387,7 +387,7 @@ const CreateNewModelFlow: FC = () => {
             </div>
             {canDisplayDeployModelSection ? (
               <>
-                <h3 className="instill-text-h3 mt-[60px] mb-5 text-black">
+                <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
                   Deploy a model instance
                 </h3>
                 <SingleSelect

@@ -77,7 +77,7 @@ const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
       )}
     >
       {enableIcon ? modeIcon : null}
-      <span className={cn("instill-text-small my-auto", textColor)}>
+      <span className={cn("my-auto text-instill-small", textColor)}>
         {label}
       </span>
     </div>

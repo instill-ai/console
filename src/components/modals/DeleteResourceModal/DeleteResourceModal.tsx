@@ -122,7 +122,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
       modalIsOpen={modalIsOpen}
     >
       <div className="flex flex-col gap-y-5">
-        <h2 className="instill-text-h2">{modalDetails.title}</h2>
+        <h2 className="text-instill-h2">{modalDetails.title}</h2>
         <p>{modalDetails.description}</p>
         <BasicTextField
           id="confirmation-code"

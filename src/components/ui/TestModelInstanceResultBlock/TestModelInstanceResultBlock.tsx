@@ -18,7 +18,7 @@ const TestModelInstanceResultBlock: FC<TestModelInstanceResultBlockProps> = ({
   return (
     <div className={cn("flex flex-col bg-white", width)}>
       <div className="flex flex-row p-2.5">
-        <p className="instill-text-body my-auto mr-auto text-instillGrey90">
+        <p className="my-auto mr-auto text-instillGrey90 text-instill-body">
           Testing result
         </p>
         <button

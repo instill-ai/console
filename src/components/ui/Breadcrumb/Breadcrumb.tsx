@@ -10,7 +10,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
       {breadcrumbs.map((e, index) => {
         if (breadcrumbs.length === 1) {
           return (
-            <span key={e} className="instill-text-body text-instillGrey70">
+            <span key={e} className="text-instillGrey70 text-instill-body">
               {`${e}`}
             </span>
           );
@@ -18,13 +18,13 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
 
         if (index === breadcrumbs.length - 1) {
           return (
-            <span key={e} className="instill-text-body text-instillBlue50">
+            <span key={e} className="text-instillBlue50 text-instill-body">
               &nbsp;{`${e}`}
             </span>
           );
         }
         return (
-          <span key={e} className="instill-text-body text-instillGrey70">
+          <span key={e} className="text-instillGrey70 text-instill-body">
             {`${e}`}&nbsp;/
           </span>
         );

@@ -50,7 +50,7 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
       {modelDefinition ? (
         <>
           {modelDefinitionIcon}
-          <p className="instill-text-small my-auto flex text-instillGrey90">
+          <p className="my-auto flex text-instillGrey90 text-instill-small">
             {modelDefinition === "model-definitions/github"
               ? "GitHub"
               : "Local"}

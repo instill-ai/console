@@ -61,7 +61,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
     >
       <div className={cn("flex flex-row gap-x-2", width)}>
         {definitionIcon}
-        <p className="instill-text-body my-auto flex text-instillGrey90">
+        <p className="my-auto flex text-instillGrey90 text-instill-body">
           {modelDefinition === "model-definitions/local" ? "Local" : "GitHub"}
         </p>
       </div>

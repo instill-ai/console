@@ -96,7 +96,7 @@ const PipelineDetailsPage: FC & {
         isLoading={false}
         marginBottom="mb-10"
       />
-      <h3 className="instill-text-h3 mb-5 text-black">Settings</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
       <ConfigurePipelineForm
         pipeline={pipeline.isSuccess ? pipeline.data : null}
         marginBottom={null}

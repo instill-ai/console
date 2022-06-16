@@ -21,7 +21,7 @@ const TableLoadingProgress: FC<TableLoadingProgressProps> = ({
             position="m-auto"
           />
         </div>
-        <p className="instill-text-small mx-auto text-instillGrey50">
+        <p className="mx-auto text-instillGrey50 text-instill-small">
           loading...
         </p>
       </div>

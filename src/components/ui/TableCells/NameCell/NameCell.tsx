@@ -42,9 +42,9 @@ const NameCell: FC<NameCellProps> = ({
         />
       </div>
       <div className="flex flex-col gap-y-2">
-        <h3 className={cn("instill-text-h3", lineClamp)}>{name}</h3>
+        <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>
         {displayUpdateTime ? (
-          <p className="instill-text-small text-instillGrey50">{`last sync ${time}`}</p>
+          <p className="text-instillGrey50 text-instill-small">{`last sync ${time}`}</p>
         ) : null}
       </div>
     </div>
