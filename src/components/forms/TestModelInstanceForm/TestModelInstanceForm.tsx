@@ -4,6 +4,7 @@ import {
   BasicUploadFileField,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { AxiosError } from "axios";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -11,7 +12,6 @@ import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import TestModelInstanceResultBlock from "@/components/ui/TestModelInstanceResultBlock";
 import { useTestModelInstance } from "@/services/model";
-import { AxiosError } from "axios";
 
 export type TestModelInstanceFormProps = {
   modelInstance: Nullable<ModelInstance>;
@@ -110,7 +110,7 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
           ) : null}
         </div>
         <TestModelInstanceResultBlock
-          width="w-[33vw]"
+          width="w-[42vw]"
           result={testModelInstanceResult ? testModelInstanceResult : ""}
           blockIsOpen={resultBlockIsOpen}
           setBlockIsOpen={setResultBlockIsOpen}
