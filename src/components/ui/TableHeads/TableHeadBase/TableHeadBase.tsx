@@ -23,7 +23,7 @@ const TableHeadBase: FC<TableHeadBaseProps> = ({
         {items.map((e, index) => {
           const element =
             typeof e.item === "string" ? (
-              <p className="instill-text-body text-instillGrey90 flex">
+              <p className="flex text-instillGrey90 text-instill-body">
                 {e.item}
               </p>
             ) : (

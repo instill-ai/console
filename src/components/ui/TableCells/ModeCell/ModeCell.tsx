@@ -60,7 +60,7 @@ const ModeCell: FC<ModeCellProps> = ({
     >
       <div className={cn("flex gap-x-2 px-2 py-3", width)}>
         {modeIcon}
-        <p className="instill-text-body text-instillGrey90">
+        <p className="text-instillGrey90 text-instill-body">
           {mode === "MODE_ASYNC" ? "Async" : "Sync"}
         </p>
       </div>

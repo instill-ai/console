@@ -63,7 +63,7 @@ const ModelsCell: FC<ModelsCellProps> = ({
                 <div
                   key={e.id}
                   className={cn(
-                    "instill-text-body",
+                    "text-instill-body",
                     getStateTextColor(e.state)
                   )}
                 >{`${key}/${e.id}`}</div>

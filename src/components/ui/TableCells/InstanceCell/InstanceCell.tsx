@@ -79,7 +79,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
               enableItemBgColor={false}
               indicator="modelInstance"
               listItemsContainerWidth={widthInNumber}
-              textStyle="instill-text-body"
+              textStyle="text-instill-body"
             />
           </div>
         </CellBase>
@@ -93,7 +93,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
           <div className={cn("flex flex-col gap-y-3", width)}>
             <div className="flex flex-row gap-x-3">
               {icon}
-              <p className="instill-text-body text-instillGrey90">
+              <p className="text-instillGrey90 text-instill-body">
                 {instances ? instances.length : 0}
               </p>
             </div>

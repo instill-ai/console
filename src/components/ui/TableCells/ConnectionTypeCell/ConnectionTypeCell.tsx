@@ -164,7 +164,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
             {icon}
             <p
               className={cn(
-                "instill-text-body my-auto text-instillGrey90",
+                "my-auto text-instillGrey90 text-instill-body",
                 lineClamp
               )}
             >
@@ -192,7 +192,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
             </div>
             <p
               className={cn(
-                "instill-text-body my-auto text-instillGrey90",
+                "my-auto text-instillGrey90 text-instill-body",
                 lineClamp
               )}
             >

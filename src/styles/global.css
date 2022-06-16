@@ -5,16 +5,10 @@
 @tailwind utilities;
 
 @layer utilities {
-  .text-instill-h1 {
-    @apply font-sans text-[32px] font-medium leading-[42px];
-  }
-  .text-instill-h2 {
-    @apply font-mono text-[20px] font-medium leading-[26px];
-  }
   .text-instill-h3 {
     @apply font-sans text-base font-normal leading-[28px];
   }
-  .instill-text-body {
+  .text-instill-body {
     @apply font-sans text-sm font-normal leading-[18px];
   }
   .instill-text-bold-body {
