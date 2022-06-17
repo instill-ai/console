@@ -97,6 +97,12 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     ]);
   }, []);
 
+  const selectedModeOption = useMemo(() => {
+    if (!modeOptions || !values.pipeline.mode) return null;
+
+    return modeOptions.find((e) => e.value === values.pipeline.mode) || null;
+  }, [modeOptions, values.pipeline.mode]);
+
   const selectedSourceIdOption = useMemo(() => {
     if (!values.source.existing.id || !syncSourceOptions) return null;
 
@@ -178,7 +184,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           instanceId="pipeline-mode"
           label="Pipeline mode"
           description={"Setup Guide"}
-          value={modeOptions[0]}
+          value={selectedModeOption}
           options={modeOptions}
           additionalOnChangeCb={null}
           error={errors.pipeline?.mode || null}
