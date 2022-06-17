@@ -1,4 +1,8 @@
-import { GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
+import {
+  ArtiVcIcon,
+  GitHubIcon,
+  LocalUploadIcon,
+} from "@instill-ai/design-system";
 import { FC } from "react";
 
 export type ModelDefinitionIconProps = {
@@ -30,6 +34,16 @@ const ModelDefinitionIcon: FC<ModelDefinitionIconProps> = ({
     case "github.svg": {
       return (
         <GitHubIcon
+          width={iconWidth}
+          height={iconHeight}
+          color={iconColor}
+          position={iconPosition}
+        />
+      );
+    }
+    case "artivc.svg": {
+      return (
+        <ArtiVcIcon
           width={iconWidth}
           height={iconHeight}
           color={iconColor}

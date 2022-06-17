@@ -1,4 +1,5 @@
 import {
+  ArtiVcIcon,
   GitHubIcon,
   GoogleSheetIcon,
   GrpcIcon,
@@ -70,6 +71,18 @@ export const mockModelSourceOptions = [
     value: "local",
     startIcon: (
       <LocalUploadIcon
+        width="w-[30px]"
+        height="h-[30px]"
+        color="fill-instillGrey90"
+        position="my-auto"
+      />
+    ),
+  },
+  {
+    label: "ArtiVC",
+    value: "artivc",
+    startIcon: (
+      <ArtiVcIcon
         width="w-[30px]"
         height="h-[30px]"
         color="fill-instillGrey90"
