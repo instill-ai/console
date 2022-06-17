@@ -72,6 +72,13 @@ module.exports = {
       },
     },
     {
+      files: ["e2e/*.spec.{js,ts}"],
+      extends: ["plugin:playwright/playwright-test"],
+      rules: {
+        "jest/no-done-callback": "off",
+      },
+    },
+    {
       // To disambiguate unit from e2e (playwright) test files, the *.spec.ts
       // is used across this repo, so we can apply a different ruleset.
       files: ["*.spec.ts"],
