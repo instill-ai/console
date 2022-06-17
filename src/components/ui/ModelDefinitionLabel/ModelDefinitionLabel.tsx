@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 import cn from "clsx";
 
 import { Nullable } from "@/types/general";
-import { ArtiVCIcon, GitHubIcon, LocalUploadIcon } from "@instill-ai/design-system";
+import {
+  ArtiVcIcon,
+  GitHubIcon,
+  LocalUploadIcon,
+} from "@instill-ai/design-system";
 
 export type ModelDefinitionLabelProps = {
   modelDefinition: Nullable<string>;
@@ -22,29 +26,54 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
     color: "fill-instillGrey95",
   };
 
-  const modelDefinitionIcon =
-    modelDefinition === "model-definitions/github" ? (
-      <GitHubIcon
-        width={icon.width}
-        height={icon.height}
-        position={icon.position}
-        color={icon.color}
-      />
-    ) : modelDefinition === "model-definitions/artivc" ? (
-      <ArtiVCIcon
-        width={icon.width}
-        height={icon.height}
-        position={icon.position}
-        color={icon.color}
-      />
-    ) : (
-      <LocalUploadIcon
-        width={icon.width}
-        height={icon.height}
-        position={icon.position}
-        color={icon.color}
-      />
-    );
+  let modelDefinitionIcon: Nullable<ReactElement>;
+  let modelDefinitionLabel: Nullable<string>;
+
+  switch (modelDefinition) {
+    case "model-definitions/github": {
+      modelDefinitionIcon = (
+        <GitHubIcon
+          width={icon.width}
+          height={icon.height}
+          position={icon.position}
+          color={icon.color}
+        />
+      );
+      modelDefinitionLabel = "GitHub";
+      break;
+    }
+
+    case "model-definitions/local": {
+      modelDefinitionIcon = (
+        <LocalUploadIcon
+          width={icon.width}
+          height={icon.height}
+          position={icon.position}
+          color={icon.color}
+        />
+      );
+      modelDefinitionLabel = "Local";
+      break;
+    }
+
+    case "model-definitions/artivc": {
+      modelDefinitionIcon = (
+        <ArtiVcIcon
+          width={icon.width}
+          height={icon.height}
+          position={icon.position}
+          color={icon.color}
+        />
+      );
+      modelDefinitionLabel = "ArtiVC";
+      break;
+    }
+
+    default: {
+      modelDefinitionIcon = null;
+      modelDefinitionLabel = modelDefinition?.split("/")[1] || null;
+    }
+  }
 
   return (
     <div
@@ -58,9 +87,7 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
         <>
           {modelDefinitionIcon}
           <p className="my-auto flex text-instillGrey90 text-instill-small">
-            {modelDefinition === "model-definitions/github"
-              ? "GitHub"
-              : "Local"}
+            {modelDefinitionLabel}
           </p>
         </>
       ) : null}
