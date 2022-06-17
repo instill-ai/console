@@ -1,5 +1,5 @@
 import {
-  ArtiVCIcon,
+  ArtiVcIcon,
   GitHubIcon,
   GoogleSheetIcon,
   GrpcIcon,
@@ -82,7 +82,7 @@ export const mockModelSourceOptions = [
     label: "ArtiVC",
     value: "artivc",
     startIcon: (
-      <ArtiVCIcon
+      <ArtiVcIcon
         width="w-[30px]"
         height="h-[30px]"
         color="fill-instillGrey90"
