@@ -41,20 +41,11 @@ module.exports = {
     // eslint-plugin-react-hooks
     "plugin:react-hooks/recommended",
 
-    // eslint-plugin-jest
-    "plugin:jest/recommended",
-
-    // eslint-plugin-jest-formatting
-    "plugin:jest-formatting/recommended",
-
     // eslint-plugin-storybook
     "plugin:storybook/recommended",
 
     // eslint-plugin-testing-library
     "plugin:testing-library/react",
-
-    // playwright
-    "plugin:playwright/playwright-test",
   ],
   rules: {
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
@@ -64,7 +55,10 @@ module.exports = {
     {
       // For performance run jest/recommended on test files, not regular code
       files: ["**/?(*.)+(test).{js,jsx,ts,tsx}"],
-      extends: ["plugin:jest/recommended"],
+      extends: [
+        "plugin:jest/recommended",
+        "plugin:jest-formatting/recommended",
+      ],
       rules: {
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-object-literal-type-assertion": "off",
@@ -72,11 +66,9 @@ module.exports = {
       },
     },
     {
+      // We use playwright eslint plugin on e2e test
       files: ["e2e/*.spec.{js,ts}"],
       extends: ["plugin:playwright/playwright-test"],
-      rules: {
-        "jest/no-done-callback": "off",
-      },
     },
     {
       // To disambiguate unit from e2e (playwright) test files, the *.spec.ts
