@@ -52,6 +52,9 @@ module.exports = {
 
     // eslint-plugin-testing-library
     "plugin:testing-library/react",
+
+    // playwright
+    "plugin:playwright/playwright-test",
   ],
   rules: {
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
