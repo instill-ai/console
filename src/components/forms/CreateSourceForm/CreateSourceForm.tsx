@@ -180,7 +180,7 @@ const CreateSourceForm: FC = () => {
                 type="submit"
                 onClickHandler={null}
               >
-                Setup new model
+                Setup new source
               </PrimaryButton>
             </div>
           </FormBase>
