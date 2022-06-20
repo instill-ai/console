@@ -33,7 +33,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   return (
     <BasicToggleField
       {...props}
-      id={name}
+      id={field.name}
       error={error}
       onChangeInput={onChange}
       defaultChecked={defaultChecked}

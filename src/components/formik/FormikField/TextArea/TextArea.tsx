@@ -26,7 +26,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   return (
     <BasicTextArea
       {...props}
-      id={name}
+      id={field.name}
       error={error}
       onChangeInput={onChange}
     />

@@ -29,7 +29,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   return (
     <BasicTextField
       {...props}
-      id={name}
+      id={field.name}
       error={error}
       onChangeInput={onChange}
     />
