@@ -41,12 +41,6 @@ module.exports = {
     // eslint-plugin-react-hooks
     "plugin:react-hooks/recommended",
 
-    // eslint-plugin-jest
-    "plugin:jest/recommended",
-
-    // eslint-plugin-jest-formatting
-    "plugin:jest-formatting/recommended",
-
     // eslint-plugin-storybook
     "plugin:storybook/recommended",
 
@@ -61,12 +55,20 @@ module.exports = {
     {
       // For performance run jest/recommended on test files, not regular code
       files: ["**/?(*.)+(test).{js,jsx,ts,tsx}"],
-      extends: ["plugin:jest/recommended"],
+      extends: [
+        "plugin:jest/recommended",
+        "plugin:jest-formatting/recommended",
+      ],
       rules: {
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-object-literal-type-assertion": "off",
         "@typescript-eslint/no-empty-function": "off",
       },
+    },
+    {
+      // We use playwright eslint plugin on e2e test
+      files: ["e2e/*.spec.{js,ts}"],
+      extends: ["plugin:playwright/playwright-test"],
     },
     {
       // To disambiguate unit from e2e (playwright) test files, the *.spec.ts

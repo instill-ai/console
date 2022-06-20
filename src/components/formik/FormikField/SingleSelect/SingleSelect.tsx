@@ -37,7 +37,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   return (
     <BasicSingleSelect
       {...props}
-      id={name}
+      id={field.name}
       instanceId={instanceId}
       error={error}
       options={options}

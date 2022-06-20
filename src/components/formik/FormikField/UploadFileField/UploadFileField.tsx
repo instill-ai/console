@@ -32,7 +32,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   return (
     <BasicUploadFileField
       {...props}
-      id={name}
+      id={field.name}
       error={error}
       onChangeInput={onChange}
     />

@@ -91,7 +91,7 @@ module.exports = {
         ".text-instill-h3": {
           fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
           fontSize: "16px",
-          fontWeight: 500,
+          fontWeight: 400,
           lineHeight: "28px",
         },
         ".text-instill-body": {
