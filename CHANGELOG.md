@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.1.0-alpha...instillai-console-v0.2.0-alpha) (2022-06-20)
+
+
+### Features
+
+* change images tag name ([#23](https://github.com/instill-ai/console/issues/23)) ([56d9589](https://github.com/instill-ai/console/commit/56d95890d7c7df28d2dbd8e5de1406df42dd2625))
+
 ## [0.1.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.0.1-alpha...instillai-console-v0.1.0-alpha) (2022-06-20)
 
 
