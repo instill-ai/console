@@ -160,7 +160,7 @@ const CreateSourceForm: FC = () => {
             <SingleSelect
               name="sourceDefinition"
               label="Source type"
-              instanceId="source-type"
+              instanceId="source-definition"
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}
