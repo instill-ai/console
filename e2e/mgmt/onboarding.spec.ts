@@ -25,7 +25,7 @@ test("should disable start button, if email input is not correct", async ({
   await page.type("#company_name", "instill-ai");
 
   // Select role
-  await page.locator("#role").click();
+  await page.locator("#role").click({ force: true });
   await page.locator("#react-select-role-option-0").click();
 
   const startButtonState = await page.locator("text=Start").isDisabled();
@@ -59,13 +59,11 @@ test("should successfully fill in the onboarding form and submit", async ({
   await page.type("#company_name", "instill-ai");
 
   // Select role
-  await page.locator("#role").click();
+  await page.locator("#role").click({ force: true });
   await page.locator("#react-select-role-option-0").click();
 
   // Accept newsletter subscription
   await page.locator("#newsletter_subscription").check();
-
-  await page.screenshot({ path: "test.png" });
 
   // Click Start and wait for navigation
   await page.locator("text=Start").click();
