@@ -13,6 +13,7 @@ import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateSourceFormValues = {
   id: string;
@@ -121,6 +122,12 @@ const CreateSourceForm: FC = () => {
         createSource.mutate(payload, {
           onSuccess: () => {
             setIsCreatingSource(false);
+            if (amplitudeIsInit) {
+              sendAmplitudeData("create_source", {
+                type: "critical_action",
+                process: "source",
+              });
+            }
             router.push("/sources");
           },
           onError: (error) => {
@@ -151,7 +158,7 @@ const CreateSourceForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
-              name="definition"
+              name="source"
               label="Source type"
               instanceId="source-type"
               options={syncSourceDefinitionOptions}
