@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.2.0-alpha...instillai-console-v0.3.0-alpha) (2022-06-21)
+
+
+### Features
+
+* log github action output ([#25](https://github.com/instill-ai/console/issues/25)) ([71d7a6c](https://github.com/instill-ai/console/commit/71d7a6cbbd88ba7ea3841668d2e01dd048f9d71f))
+
 ## [0.2.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.1.0-alpha...instillai-console-v0.2.0-alpha) (2022-06-20)
 
 
