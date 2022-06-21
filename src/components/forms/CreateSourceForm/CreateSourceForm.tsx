@@ -91,15 +91,15 @@ const CreateSourceForm: FC = () => {
 
   return (
     <Formik
-      initialValues={{ id: null, definition: null }}
+      initialValues={{ id: null, sourceDefinition: null }}
       validate={(values) => {
         const error: Partial<CreateSourceFormValues> = {};
 
-        if (!values.definition) {
+        if (!values.sourceDefinition) {
           error.definition = "Required";
         }
 
-        if (sources.data?.find((e) => e.id === values.definition)) {
+        if (sources.data?.find((e) => e.id === values.sourceDefinition)) {
           error.definition =
             "You could only create one http and one grpc source. Check the setup guide for more information.";
         }
@@ -107,11 +107,11 @@ const CreateSourceForm: FC = () => {
         return error;
       }}
       onSubmit={(values) => {
-        if (!values.definition) return;
+        if (!values.sourceDefinition) return;
 
         const payload: CreateSourcePayload = {
-          id: values.definition,
-          source_connector_definition: `source-connector-definitions/${values.definition}`,
+          id: values.sourceDefinition,
+          source_connector_definition: `source-connector-definitions/${values.sourceDefinition}`,
           connector: {
             configuration: "{}",
           },
@@ -158,13 +158,13 @@ const CreateSourceForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
-              name="source"
+              name="sourceDefinition"
               label="Source type"
               instanceId="source-type"
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}
-              error={formik.errors.definition || null}
+              error={formik.errors.sourceDefinition || null}
               disabled={false}
               readOnly={false}
               required={true}
