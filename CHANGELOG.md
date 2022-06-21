@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.1.0-alpha...instillai-console-v0.2.0-alpha) (2022-06-21)
+
+
+### Features
+
+* add empty package_name ([#29](https://github.com/instill-ai/console/issues/29)) ([ca1ea06](https://github.com/instill-ai/console/commit/ca1ea06e6d28cdf0015f71b3613422749da1a936))
+
 ## [0.1.0-alpha](https://github.com/instill-ai/console/compare/instillai-console-v0.3.0-alpha...instillai-console-v0.1.0-alpha) (2022-06-21)
 
 
