@@ -17,7 +17,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     cookie_token: body.token,
   };
 
-  setCookie(res, JSON.stringify(payload), "instill-ai-user", 60 * 60 * 24 * 30);
+  setCookie(
+    res,
+    JSON.stringify(payload),
+    "instill-ai-user",
+    "localhost",
+    60 * 60 * 24 * 30,
+    true
+  );
 
   return res.status(200).json({
     status: "ok",
