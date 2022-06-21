@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0-alpha](https://github.com/instill-ai/console/compare/v0.1.0-alpha...v0.2.0-alpha) (2022-06-21)
+
+
+### Features
+
+* add source e2e test ([#35](https://github.com/instill-ai/console/issues/35)) ([339a9f6](https://github.com/instill-ai/console/commit/339a9f65b3731d92faccea20999d40e2aea47c35))
+
 ## [0.1.0-alpha](https://github.com/instill-ai/console/compare/v0.1.0-alpha...v0.1.0-alpha) (2022-06-21)
 
 
