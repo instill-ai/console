@@ -180,8 +180,8 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     <FormikStep>
       <div className="mb-[60px] flex flex-col gap-y-5">
         <SingleSelect
+          id="pipelineMode"
           name="pipeline.mode"
-          instanceId="pipeline-mode"
           label="Pipeline mode"
           description={"Setup Guide"}
           value={selectedModeOption}
@@ -195,8 +195,8 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
         />
         {values.pipeline.mode === "MODE_SYNC" ? (
           <SingleSelect
+            id="existingSourceId"
             name="source.existing.id"
-            instanceId="data-source-id"
             label="Source type"
             description={"Setup Guide"}
             value={selectedSourceIdOption}

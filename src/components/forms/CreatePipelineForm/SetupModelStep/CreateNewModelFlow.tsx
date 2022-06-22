@@ -315,7 +315,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="text-instill-h3 text-black">Set up a new model</h3>
+      <h3 className="text-black text-instill-h3">Set up a new model</h3>
       <TextField
         name="model.new.id"
         label="Name"
@@ -331,9 +331,9 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
-        instanceId="new-model-definition"
+        id="modelDefinition"
         name="model.new.modelDefinition"
-        label="Source type"
+        label="Model type"
         description={"Setup Guide"}
         value={selectedModelDefinitionOption}
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -414,11 +414,11 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
       {canDisplayDeployModelSection ? (
         <>
-          <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
+          <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
             Deploy a model instance
           </h3>
           <SingleSelect
-            instanceId="new-model-instances"
+            id="modelInstanceName"
             name="model.new.modelInstanceName"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}

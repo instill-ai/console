@@ -20,7 +20,7 @@ export type ConfigureSourceFormProps = {
 };
 
 type ConfigureSourceFormValue = {
-  definition: Nullable<string>;
+  sourceDefinition: Nullable<string>;
 };
 
 const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
@@ -132,7 +132,9 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
     <>
       <Formik
         initialValues={
-          { definition: source ? source.id : null } as ConfigureSourceFormValue
+          {
+            sourceDefinition: source ? source.id : null,
+          } as ConfigureSourceFormValue
         }
         onSubmit={() => {
           if (!canEdit) {
@@ -146,9 +148,9 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
             <FormBase marginBottom={null} gapY={null} padding={null}>
               <div className="mb-10 flex flex-col">
                 <SingleSelect
-                  name="definition"
+                  id="sourceDefinition"
+                  name="sourceDefinition"
                   label="Data source"
-                  instanceId="source-definition"
                   disabled={canEdit ? false : true}
                   readOnly={false}
                   options={syncSourceDefinitionOptions}

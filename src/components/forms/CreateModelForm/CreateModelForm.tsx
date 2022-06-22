@@ -307,8 +307,8 @@ const CreateNewModelFlow: FC = () => {
             />
             <SingleSelect
               name="modelDefinition"
-              instanceId="new-model-definition"
-              label="Source type"
+              id="modelDefinition"
+              label="Model type"
               description={"Setup Guide"}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -387,11 +387,11 @@ const CreateNewModelFlow: FC = () => {
             </div>
             {canDisplayDeployModelSection ? (
               <>
-                <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
+                <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
                   Deploy a model instance
                 </h3>
                 <SingleSelect
-                  instanceId="new-model-instances"
+                  id="modelInstanceId"
                   name="modelInstanceId"
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}

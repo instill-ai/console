@@ -158,9 +158,9 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
             <FormBase marginBottom={null} gapY={null} padding={null}>
               <div className="mb-10 flex flex-col gap-y-5">
                 <SingleSelect
+                  id="destinationDefinition"
                   name="definition"
                   label="Data destination"
-                  instanceId="destination-definition"
                   value={selectedDestinationDefinitionOption}
                   options={syncDestinationDefinitionOptions}
                   additionalOnChangeCb={destinationDefinitionOnChangeCb}

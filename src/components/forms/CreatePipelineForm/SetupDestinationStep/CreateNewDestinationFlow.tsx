@@ -123,7 +123,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="text-instill-h3 text-black">Setup a new destination</h3>
+      <h3 className="text-black text-instill-h3">Setup a new destination</h3>
       <TextField
         name="destination.new.id"
         label="Name"
@@ -139,9 +139,9 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
+        id="destinationDefinition"
         name="dataDestination.new.definition"
-        instanceId="new-data-destination"
-        label="Source type"
+        label="Destination type"
         disabled={false}
         readOnly={false}
         options={destinationDefinitionOptions || []}

@@ -9,7 +9,7 @@ import { Nullable } from "@/types/general";
 
 export type SingleSelectProps = Omit<
   BasicSingleSelectProps,
-  "onChangeInput" | "id"
+  "onChangeInput" | "instanceId"
 > & {
   name: string;
   additionalOnChangeCb: Nullable<(option: SingleSelectOption) => void>;
@@ -20,7 +20,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   form,
   options,
   name,
-  instanceId,
+  id,
   additionalOnChangeCb,
   menuPlacement,
   value,
@@ -37,8 +37,8 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   return (
     <BasicSingleSelect
       {...props}
-      id={field.name}
-      instanceId={instanceId}
+      id={id}
+      instanceId={id}
       error={error}
       options={options}
       onChangeInput={onChange}
@@ -49,6 +49,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
 };
 
 const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
+  id,
   name,
   options,
   disabled,
@@ -57,7 +58,6 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   description,
   label,
   additionalOnChangeCb,
-  instanceId,
   menuPlacement,
   value,
   error,
@@ -65,7 +65,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   return (
     <Field
       name={name}
-      instanceId={instanceId}
+      id={id}
       component={SingleSelect}
       options={options}
       disabled={disabled}

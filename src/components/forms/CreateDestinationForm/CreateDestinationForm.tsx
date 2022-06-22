@@ -171,9 +171,9 @@ const CreateDestinationForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
+              id="destinationDefinition"
               name="destinationDefinition"
               label="Destination type"
-              instanceId="destination-definition"
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
               additionalOnChangeCb={destinationDefinitionOnChange}

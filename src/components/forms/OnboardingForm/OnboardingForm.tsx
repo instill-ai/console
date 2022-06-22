@@ -142,9 +142,9 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               error={formik.errors.company_name || null}
             />
             <SingleSelect
+              id="role"
               name="role"
               label="Your role"
-              instanceId="role"
               options={mockMgmtRoles}
               value={selectedRoleOption}
               error={formik.errors.role || null}
