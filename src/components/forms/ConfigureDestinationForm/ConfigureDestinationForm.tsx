@@ -136,7 +136,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       },
     });
     setDeleteDestinationModalIsOpen(false);
-  }, [destination]);
+  }, [destination, amplitudeIsInit, router, deleteDestination]);
 
   return (
     <>

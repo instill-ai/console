@@ -128,6 +128,7 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
     setFieldValue,
     stepNumber,
     setStepNumber,
+    amplitudeIsInit,
   ]);
 
   return (

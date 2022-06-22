@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       initAmplitude(trackingToken.data);
       setAmplitudeIsInit(true);
     }
-  }, [router.isReady, trackingToken.data, router.asPath]);
+  }, [router.isReady, trackingToken, router.asPath, amplitudeIsInit, router]);
 
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>

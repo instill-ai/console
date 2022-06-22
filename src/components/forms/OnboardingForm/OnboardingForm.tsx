@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { SingleSelectOption } from "@instill-ai/design-system";
@@ -65,36 +65,39 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     return errors;
   }, []);
 
-  const handleSubmit = useCallback((values) => {
-    if (!values.companyName || !values.email || !values.role) {
-      return;
-    }
+  const handleSubmit = useCallback(
+    (values) => {
+      if (!values.companyName || !values.email || !values.role) {
+        return;
+      }
 
-    const token = uuidv4();
+      const token = uuidv4();
 
-    const payload: Partial<User> = {
-      id: "local-user",
-      email: values.email,
-      company_name: values.companyName,
-      role: values.role as string,
-      newsletter_subscription: values.newsletterSubscription
-        ? values.newsletterSubscription
-        : false,
-      cookie_token: token,
-    };
+      const payload: Partial<User> = {
+        id: "local-user",
+        email: values.email,
+        company_name: values.companyName,
+        role: values.role as string,
+        newsletter_subscription: values.newsletterSubscription
+          ? values.newsletterSubscription
+          : false,
+        cookie_token: token,
+      };
 
-    updateUser.mutate(payload, {
-      onSuccess: async () => {
-        if (amplitudeIsInit) {
-          sendAmplitudeData("fill_onboarding_form", {
-            type: "critical_action",
-          });
-        }
-        await axios.post("/api/set-user-cookie", { token });
-        router.push("/pipelines");
-      },
-    });
-  }, []);
+      updateUser.mutate(payload, {
+        onSuccess: async () => {
+          if (amplitudeIsInit) {
+            sendAmplitudeData("fill_onboarding_form", {
+              type: "critical_action",
+            });
+          }
+          await axios.post("/api/set-user-cookie", { token });
+          router.push("/pipelines");
+        },
+      });
+    },
+    [amplitudeIsInit, router, updateUser]
+  );
 
   return (
     <Formik

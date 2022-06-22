@@ -100,7 +100,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       },
     });
     setDeletePipelineModalIsOpen(false);
-  }, [pipeline]);
+  }, [pipeline, amplitudeIsInit, router, deletePipeline]);
 
   return (
     <>

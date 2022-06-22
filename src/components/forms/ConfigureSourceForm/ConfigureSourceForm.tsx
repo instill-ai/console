@@ -126,7 +126,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       },
     });
     setDeleteSourceModalIsOpen(false);
-  }, [source]);
+  }, [source, amplitudeIsInit, router, deleteSource]);
 
   return (
     <>
