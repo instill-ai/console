@@ -12,7 +12,6 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   field,
   form,
   id,
-  name,
   additionalOnChangeCb,
   error,
   ...props

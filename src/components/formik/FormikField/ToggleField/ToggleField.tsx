@@ -15,7 +15,6 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   field,
   form,
   id,
-  name,
   defaultChecked,
   additionalOnChangeCb,
   error,

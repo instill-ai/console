@@ -19,7 +19,6 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   field,
   form,
   options,
-  name,
   id,
   additionalOnChangeCb,
   menuPlacement,

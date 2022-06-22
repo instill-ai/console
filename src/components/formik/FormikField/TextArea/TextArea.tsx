@@ -12,7 +12,6 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   field,
   form,
   id,
-  name,
   additionalOnChangeCb,
   error,
   ...props
