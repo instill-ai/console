@@ -34,7 +34,7 @@ jobs:
         id: set_version
         with:
           script: |
-            const tag = '${{ github.ref_name }}'
+            const tag = '${{ github.event.release.tag_name }}'
             const no_v_tag = tag.replace('v', '')
             core.setOutput('tag', tag)
             core.setOutput('no_v_tag', no_v_tag)

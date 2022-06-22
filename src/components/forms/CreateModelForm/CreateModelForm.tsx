@@ -292,6 +292,7 @@ const CreateNewModelFlow: FC = () => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
+              id="modelId"
               name="id"
               label="Name"
               description="Pick a name to help you identify this source in Instill"
@@ -307,8 +308,8 @@ const CreateNewModelFlow: FC = () => {
             />
             <SingleSelect
               name="modelDefinition"
-              instanceId="new-model-definition"
-              label="Source type"
+              id="modelDefinition"
+              label="Model type"
               description={"Setup Guide"}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -321,6 +322,7 @@ const CreateNewModelFlow: FC = () => {
             />
             {values.modelDefinition === "github" ? (
               <TextField
+                id="modelRepo"
                 name="repo"
                 label="GitHub repository"
                 description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
@@ -338,6 +340,7 @@ const CreateNewModelFlow: FC = () => {
             {values.modelDefinition === "local" ? (
               <>
                 <TextArea
+                  id="description"
                   name="description"
                   label="Description"
                   description="Fill with a short description of your new model"
@@ -353,6 +356,7 @@ const CreateNewModelFlow: FC = () => {
                   counterWordLimit={0}
                 />
                 <UploadFileField
+                  id="file"
                   name="file"
                   label="Upload a file"
                   description="Create and upload a zip file that contains all the model files from your computer"
@@ -387,11 +391,11 @@ const CreateNewModelFlow: FC = () => {
             </div>
             {canDisplayDeployModelSection ? (
               <>
-                <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
+                <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
                   Deploy a model instance
                 </h3>
                 <SingleSelect
-                  instanceId="new-model-instances"
+                  id="modelInstanceId"
                   name="modelInstanceId"
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}

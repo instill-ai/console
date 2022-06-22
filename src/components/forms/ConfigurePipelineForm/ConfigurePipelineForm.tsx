@@ -100,7 +100,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       },
     });
     setDeletePipelineModalIsOpen(false);
-  }, [pipeline]);
+  }, [pipeline, amplitudeIsInit, router, deletePipeline]);
 
   return (
     <>
@@ -162,6 +162,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
             <FormBase marginBottom={marginBottom} gapY={null} padding={null}>
               <div className="mb-[60px] flex flex-col gap-y-5">
                 <ToggleField
+                  id="pipelineState"
                   name="state"
                   label="State"
                   defaultChecked={true}
@@ -173,6 +174,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   description={null}
                 />
                 <TextArea
+                  id="pipelineDescription"
                   name="description"
                   label="Description"
                   description="Fill with a short description of your model"

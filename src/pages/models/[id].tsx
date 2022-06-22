@@ -198,8 +198,8 @@ const ModelDetailsPage: FC & {
           model.isSuccess ? model.data.id : ""
         }`}</h2>
         <BasicSingleSelect
-          id="model-instance-tag"
-          instanceId="model-instance-tag"
+          id="modelInstanceTag"
+          instanceId="modelInstanceTag"
           menuPlacement="auto"
           label={null}
           description={null}
@@ -229,14 +229,14 @@ const ModelDetailsPage: FC & {
           iconPosition="my-auto"
         />
       </div>
-      <h3 className="text-instill-h3 mb-5 text-black">Overview</h3>
+      <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
       <PipelinesTable
         pipelines={selectedModelInstancePipelines}
         isLoadingPipeline={pipelines.isLoading}
         marginBottom="mb-10"
         enablePlaceholderCreateButton={false}
       />
-      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
+      <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
       {modelWithInstances.isLoading ? null : selectedModelInstances ? (
         <>
           <ConfigureModelInstanceForm
