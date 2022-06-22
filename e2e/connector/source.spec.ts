@@ -1,15 +1,11 @@
 import { test, expect } from "@playwright/test";
 
 test("should create new source", async ({ page }) => {
-  if (!process.env.NEXT_PUBLIC_MAIN_URL) {
-    throw new Error("env not found");
-  }
-
-  await page.goto(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources/create`);
+  await page.goto("/sources/create");
 
   // Select source type
   await page.locator("#sourceDefinition").click({ force: true });
-  await page.locator("#react-select-source-definition-option-0").click();
+  await page.locator("#react-select-sourceDefinition-option-0").click();
 
   // Create the source
   await page.locator("text=Set up source").click();
@@ -20,11 +16,7 @@ test("should create new source", async ({ page }) => {
 });
 
 test("should navigate to source details page", async ({ page }) => {
-  if (!process.env.NEXT_PUBLIC_MAIN_URL) {
-    throw new Error("env not found");
-  }
-
-  await page.goto(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources`);
+  await page.goto("/sources");
   await page.locator("h3", { hasText: "source-grpc" }).click();
 
   expect(page.url()).toBe(
