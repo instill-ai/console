@@ -8,7 +8,7 @@ import { FC } from "react";
 
 export type UploadFileFieldProps = Omit<
   BasicUploadFileFieldProps,
-  "onChangeInput" | "id"
+  "onChangeInput"
 > & {
   name: string;
   additionalOnChangeCb: Nullable<(value: string) => void>;
@@ -17,7 +17,7 @@ export type UploadFileFieldProps = Omit<
 const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   field,
   form,
-  name,
+  id,
   additionalOnChangeCb,
   error,
   ...props
@@ -32,7 +32,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   return (
     <BasicUploadFileField
       {...props}
-      id={field.name}
+      id={id}
       error={error}
       onChangeInput={onChange}
     />
@@ -40,6 +40,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
 };
 
 const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
+  id,
   name,
   disabled,
   readOnly,
@@ -53,6 +54,7 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
 }) => {
   return (
     <Field
+      id={id}
       name={name}
       component={UploadFileField}
       disabled={disabled}

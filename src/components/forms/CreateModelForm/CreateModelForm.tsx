@@ -356,6 +356,7 @@ const CreateNewModelFlow: FC = () => {
                   counterWordLimit={0}
                 />
                 <UploadFileField
+                  id="file"
                   name="file"
                   label="Upload a file"
                   description="Create and upload a zip file that contains all the model files from your computer"
