@@ -250,8 +250,9 @@ const SetupPipelineDetailsStep: FC = () => {
           counterWordLimit={0}
         />
         <ToggleField
-          name="pipeline.status"
-          label="Pipeline status"
+          id="pipelineState"
+          name="pipeline.state"
+          label="Pipeline state"
           defaultChecked={true}
           error={errors.pipeline?.state || null}
           additionalOnChangeCb={null}

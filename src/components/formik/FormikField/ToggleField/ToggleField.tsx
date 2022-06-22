@@ -6,10 +6,7 @@ import {
 } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type ToggleFieldProps = Omit<
-  BasicToggleFieldProps,
-  "onChangeInput" | "id"
-> & {
+export type ToggleFieldProps = Omit<BasicToggleFieldProps, "onChangeInput"> & {
   name: string;
   additionalOnChangeCb: Nullable<(value: boolean) => void>;
 };
@@ -17,6 +14,7 @@ export type ToggleFieldProps = Omit<
 const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   field,
   form,
+  id,
   name,
   defaultChecked,
   additionalOnChangeCb,
@@ -33,7 +31,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   return (
     <BasicToggleField
       {...props}
-      id={field.name}
+      id={id}
       error={error}
       onChangeInput={onChange}
       defaultChecked={defaultChecked}
@@ -42,6 +40,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
 };
 
 const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
+  id,
   name,
   disabled,
   readOnly,
@@ -54,6 +53,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
 }) => {
   return (
     <Field
+      id={id}
       name={name}
       component={ToggleField}
       disabled={disabled}
