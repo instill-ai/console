@@ -173,7 +173,7 @@ const CreateDestinationForm: FC = () => {
             <SingleSelect
               name="destinationDefinition"
               label="Destination type"
-              instanceId="destination-type"
+              instanceId="destination-definition"
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
               additionalOnChangeCb={destinationDefinitionOnChange}
