@@ -219,6 +219,7 @@ const SetupPipelineDetailsStep: FC = () => {
     <FormikStep>
       <div className="mb-5 flex flex-col gap-y-5">
         <TextField
+          id="pipelineId"
           name="pipeline.id"
           label="Name"
           description="Pick a name to help you identify this source in Instill"

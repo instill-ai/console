@@ -292,6 +292,7 @@ const CreateNewModelFlow: FC = () => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
+              id="modelId"
               name="id"
               label="Name"
               description="Pick a name to help you identify this source in Instill"
@@ -321,6 +322,7 @@ const CreateNewModelFlow: FC = () => {
             />
             {values.modelDefinition === "github" ? (
               <TextField
+                id="modelRepo"
                 name="repo"
                 label="GitHub repository"
                 description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."

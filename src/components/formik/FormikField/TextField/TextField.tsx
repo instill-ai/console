@@ -3,10 +3,7 @@ import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextFieldProps = Omit<
-  BasicTextFieldProps,
-  "onChangeInput" | "id"
-> & {
+export type TextFieldProps = Omit<BasicTextFieldProps, "onChangeInput"> & {
   name: string;
   additionalOnChangeCb: Nullable<(value: string) => void>;
 };
@@ -14,6 +11,7 @@ export type TextFieldProps = Omit<
 const TextField: FC<TextFieldProps & FieldProps> = ({
   field,
   form,
+  id,
   name,
   additionalOnChangeCb,
   error,
@@ -27,16 +25,12 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   };
 
   return (
-    <BasicTextField
-      {...props}
-      id={field.name}
-      error={error}
-      onChangeInput={onChange}
-    />
+    <BasicTextField {...props} id={id} error={error} onChangeInput={onChange} />
   );
 };
 
 const TextFieldFormikWrapper: FC<TextFieldProps> = ({
+  id,
   name,
   disabled,
   readOnly,
@@ -52,6 +46,7 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
 }) => {
   return (
     <Field
+      id={id}
       name={name}
       component={TextField}
       disabled={disabled}

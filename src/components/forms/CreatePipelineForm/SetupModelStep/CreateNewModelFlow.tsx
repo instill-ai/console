@@ -317,6 +317,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
     <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="text-black text-instill-h3">Set up a new model</h3>
       <TextField
+        id="modelId"
         name="model.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"
@@ -346,6 +347,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       />
       {values.model.new.modelDefinition === "github" ? (
         <TextField
+          id="modelRepo"
           name="model.new.repo"
           label="GitHub repository"
           description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."

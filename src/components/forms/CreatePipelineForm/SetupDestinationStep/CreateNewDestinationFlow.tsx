@@ -125,6 +125,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="text-black text-instill-h3">Setup a new destination</h3>
       <TextField
+        id="destinationId"
         name="destination.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"

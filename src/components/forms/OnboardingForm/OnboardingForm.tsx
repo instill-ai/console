@@ -112,6 +112,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
+              id="email"
               name="email"
               label="Your email"
               value={formik.values.email || ""}
@@ -126,6 +127,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               error={formik.errors.email || null}
             />
             <TextField
+              id="companyName"
               name="company_name"
               label="Your company"
               value={

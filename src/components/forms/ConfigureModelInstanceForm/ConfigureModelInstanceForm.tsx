@@ -40,6 +40,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
         return (
           <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextField
+              id="repo"
               name="repo"
               label="GitHub repository"
               description="The URL of a GitHub repositories/organizations, e.g. 'instill-ai/yolov4'."
@@ -54,6 +55,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               autoComplete="off"
             />
             <TextField
+              id="tag"
               name="tag"
               label="Tag"
               description="Tag of the GitHub repository, e.g., 'v0.1.0'."
@@ -68,6 +70,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               autoComplete="off"
             />
             <TextField
+              id="repoUrl"
               name="repoUrl"
               label="GitHub repository URL"
               description="GitHub repository URL, e.g., 'https://github.com/instill-ai/protobufs/tree/v2.0.0'."
