@@ -24,12 +24,14 @@ const ModalBase: FC<ModalBaseProps> = ({
     el.current.setAttribute("class", "relative z-10");
     el.current.setAttribute("aria-labelledby", "modal-title");
 
-    // We assume `modalRoot` exists with '!'
-    const modalRoot = document.querySelector("#modal-root") as HTMLElement;
-    modalRoot!.appendChild(el.current);
+    const modalRoot = document.querySelector("#modal-root");
+    if (modalRoot) {
+      modalRoot.appendChild(el.current);
+    }
+
     return () => {
-      if (!el.current) return;
-      modalRoot!.removeChild(el.current);
+      if (!el.current || !modalRoot) return;
+      modalRoot.removeChild(el.current);
     };
   }, []);
 

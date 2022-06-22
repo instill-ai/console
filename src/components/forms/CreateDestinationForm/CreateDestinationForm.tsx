@@ -93,20 +93,25 @@ const CreateDestinationForm: FC = () => {
 
   const createDestination = useCreateDestination();
 
-  const validateForm = useCallback((values) => {
-    const error: Partial<CreateDestinationFormValues> = {};
+  const validateForm = useCallback(
+    (values) => {
+      const error: Partial<CreateDestinationFormValues> = {};
 
-    if (!values.destinationDefinition) {
-      error.definition = "Required";
-    }
+      if (!values.destinationDefinition) {
+        error.definition = "Required";
+      }
 
-    if (destinations.data?.find((e) => e.id === values.destinationDefinition)) {
-      error.definition =
-        "You could only create one http and one grpc destination. Check the setup guide for more information.";
-    }
+      if (
+        destinations.data?.find((e) => e.id === values.destinationDefinition)
+      ) {
+        error.definition =
+          "You could only create one http and one grpc destination. Check the setup guide for more information.";
+      }
 
-    return error;
-  }, []);
+      return error;
+    },
+    [destinations.data]
+  );
 
   const onSubmitHandler = useCallback(
     (values) => {
@@ -146,7 +151,7 @@ const CreateDestinationForm: FC = () => {
         },
       });
     },
-    [amplitudeIsInit]
+    [amplitudeIsInit, router, createDestination, destinations.isSuccess]
   );
 
   return (
@@ -171,9 +176,9 @@ const CreateDestinationForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
+              id="destinationDefinition"
               name="destinationDefinition"
               label="Destination type"
-              instanceId="destination-definition"
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
               additionalOnChangeCb={destinationDefinitionOnChange}

@@ -158,9 +158,9 @@ const CreateSourceForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
+              id="sourceDefinition"
               name="sourceDefinition"
               label="Source type"
-              instanceId="source-definition"
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}

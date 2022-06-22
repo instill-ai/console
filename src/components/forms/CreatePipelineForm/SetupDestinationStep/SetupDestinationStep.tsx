@@ -163,8 +163,8 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       {values.pipeline.mode === "MODE_SYNC" ? (
         <div className="flex flex-col gap-y-5">
           <SingleSelect
+            id="existingDestinationId"
             name="destination.existing.id"
-            instanceId="destination-id"
             label="Destination type"
             description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
             options={syncDestinationOptions}

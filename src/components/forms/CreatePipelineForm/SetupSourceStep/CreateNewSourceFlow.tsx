@@ -101,8 +101,9 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
 
   return (
     <div ref={flowRef} className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="text-instill-h3 text-black">Setup a new source</h3>
+      <h3 className="text-black text-instill-h3">Setup a new source</h3>
       <TextField
+        id="sourceId"
         name="source.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"
@@ -117,8 +118,8 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
+        id="sourceDefinition"
         name="source.new.definition"
-        instanceId="new-data-source-definition"
         label="Source type"
         description="Setup Guide"
         value={selectedSourceOption}
