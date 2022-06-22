@@ -7,8 +7,6 @@ test("should create new source", async ({ page }) => {
 
   await page.goto(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources/create`);
 
-  page.screenshot({ path: "test.png" });
-
   // Select source type
   await page.locator("#sourceDefinition").click({ force: true });
   await page.locator("#react-select-source-definition-option-0").click();
