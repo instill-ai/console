@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0-alpha](https://github.com/instill-ai/console/compare/v0.2.0-alpha...v0.3.0-alpha) (2022-06-22)
+
+
+### Features
+
+* add destination e2e test ([#38](https://github.com/instill-ai/console/issues/38)) ([2bd8cc9](https://github.com/instill-ai/console/commit/2bd8cc9b38d52717beaf165fa602e31d04f24dfd))
+
 ## [0.2.0-alpha](https://github.com/instill-ai/console/compare/v0.1.0-alpha...v0.2.0-alpha) (2022-06-21)
 
 
