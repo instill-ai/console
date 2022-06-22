@@ -200,7 +200,7 @@ const CreateDestinationForm: FC = () => {
                 position="ml-auto my-auto"
                 onClickHandler={null}
               >
-                Set up source
+                Set up destination
               </PrimaryButton>
             </div>
           </FormBase>
