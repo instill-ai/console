@@ -364,6 +364,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       {canDisplayLocalModelFlow ? (
         <>
           <TextArea
+            id="description"
             name="model.new.description"
             label="Description"
             description="Fill with a short description of your new model"

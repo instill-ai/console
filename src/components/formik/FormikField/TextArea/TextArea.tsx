@@ -3,7 +3,7 @@ import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { FC } from "react";
 
-export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput" | "id"> & {
+export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput"> & {
   name: string;
   additionalOnChangeCb: Nullable<(value: string) => void>;
 };
@@ -11,6 +11,7 @@ export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput" | "id"> & {
 const TextArea: FC<TextAreaProps & FieldProps> = ({
   field,
   form,
+  id,
   name,
   additionalOnChangeCb,
   error,
@@ -24,16 +25,12 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   };
 
   return (
-    <BasicTextArea
-      {...props}
-      id={field.name}
-      error={error}
-      onChangeInput={onChange}
-    />
+    <BasicTextArea {...props} id={id} error={error} onChangeInput={onChange} />
   );
 };
 
 const TextAreaFormikWrapper: FC<TextAreaProps> = ({
+  id,
   name,
   disabled,
   readOnly,
@@ -50,6 +47,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
 }) => {
   return (
     <Field
+      id={id}
       name={name}
       component={TextArea}
       disabled={disabled}

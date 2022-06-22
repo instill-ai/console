@@ -338,6 +338,7 @@ const CreateNewModelFlow: FC = () => {
             {values.modelDefinition === "local" ? (
               <>
                 <TextArea
+                  id="description"
                   name="description"
                   label="Description"
                   description="Fill with a short description of your new model"

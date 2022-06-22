@@ -105,6 +105,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         return (
           <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
             <TextArea
+              id="description"
               name="description"
               label="Description"
               description="Fill with a short description of your model"
