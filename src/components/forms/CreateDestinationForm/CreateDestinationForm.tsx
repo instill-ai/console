@@ -26,11 +26,11 @@ const CreateDestinationForm: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 1 - Initialize the source definition                            #
+  // # 1 - Initialize the destination definition                       #
   // #                                                                 #
   // ###################################################################
   //
-  // A user can only have a http source and a grpc source
+  // A user can only have a http destination and a grpc destination
 
   const [
     syncDestinationDefinitionOptions,
@@ -102,7 +102,7 @@ const CreateDestinationForm: FC = () => {
 
     if (destinations.data?.find((e) => e.id === values.destinationDefinition)) {
       error.definition =
-        "You could only create one http and one grpc source. Check the setup guide for more information.";
+        "You could only create one http and one grpc destination. Check the setup guide for more information.";
     }
 
     return error;
@@ -161,8 +161,8 @@ const CreateDestinationForm: FC = () => {
             {/* <TextField
               name="id"
               label="Name"
-              description="Pick a name to help you identify this source in Instill"
-              disabled={allSyncSourceCreated ? true : false}
+              description="Pick a name to help you identify this destination in Instill"
+              disabled={allSyncDestinationCreated ? true : false}
               readOnly={false}
               required={true}
               placeholder=""
