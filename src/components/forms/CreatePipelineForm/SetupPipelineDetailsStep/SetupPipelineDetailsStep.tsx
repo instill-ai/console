@@ -219,6 +219,7 @@ const SetupPipelineDetailsStep: FC = () => {
     <FormikStep>
       <div className="mb-5 flex flex-col gap-y-5">
         <TextField
+          id="pipelineId"
           name="pipeline.id"
           label="Name"
           description="Pick a name to help you identify this source in Instill"
@@ -233,6 +234,7 @@ const SetupPipelineDetailsStep: FC = () => {
           autoComplete="off"
         />
         <TextArea
+          id="description"
           name="pipeline.description"
           label="Description"
           description="Fill with a short description of your new pipeline"
@@ -248,8 +250,9 @@ const SetupPipelineDetailsStep: FC = () => {
           counterWordLimit={0}
         />
         <ToggleField
-          name="pipeline.status"
-          label="Pipeline status"
+          id="pipelineState"
+          name="pipeline.state"
+          label="Pipeline state"
           defaultChecked={true}
           error={errors.pipeline?.state || null}
           additionalOnChangeCb={null}

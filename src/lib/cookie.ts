@@ -5,15 +5,18 @@ export const setCookie = (
   res: NextApiResponse,
   value: string,
   key: string,
-  maxAge: number
+  domain: string,
+  maxAge: number,
+  httOnly: boolean
 ) => {
   const cookie = serialize(key, value, {
     maxAge: maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
-    httpOnly: true,
+    httpOnly: httOnly,
     secure: process.env.NODE_ENV === "production" ? true : false,
     path: "/",
     sameSite: "lax",
+    domain: domain,
   });
 
   res.setHeader("Set-Cookie", cookie);

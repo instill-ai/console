@@ -35,6 +35,7 @@ jobs:
       - name: Tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}
         run: |
+          echo "${{ steps.release.outputs }}"
           git tag -d v${{ steps.release.outputs.major }} || true
           git tag -d v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} || true
           git push origin :v${{ steps.release.outputs.major }} || true

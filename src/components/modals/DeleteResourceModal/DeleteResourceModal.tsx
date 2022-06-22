@@ -125,7 +125,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
         <h2 className="text-instill-h2">{modalDetails.title}</h2>
         <p>{modalDetails.description}</p>
         <BasicTextField
-          id="confirmation-code"
+          id="confirmationCode"
           type="text"
           label={`Please type "${resource ? resource.id : ""}" to confirm.`}
           onChangeInput={handleCodeChange}

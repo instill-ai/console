@@ -315,8 +315,9 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
-      <h3 className="text-instill-h3 text-black">Set up a new model</h3>
+      <h3 className="text-black text-instill-h3">Set up a new model</h3>
       <TextField
+        id="modelId"
         name="model.new.id"
         label="Name"
         description="Pick a name to help you identify this source in Instill"
@@ -331,9 +332,9 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
         autoComplete="off"
       />
       <SingleSelect
-        instanceId="new-model-definition"
+        id="modelDefinition"
         name="model.new.modelDefinition"
-        label="Source type"
+        label="Model type"
         description={"Setup Guide"}
         value={selectedModelDefinitionOption}
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -346,6 +347,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       />
       {values.model.new.modelDefinition === "github" ? (
         <TextField
+          id="modelRepo"
           name="model.new.repo"
           label="GitHub repository"
           description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
@@ -364,6 +366,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       {canDisplayLocalModelFlow ? (
         <>
           <TextArea
+            id="description"
             name="model.new.description"
             label="Description"
             description="Fill with a short description of your new model"
@@ -379,6 +382,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             counterWordLimit={0}
           />
           <UploadFileField
+            id="modelFile"
             name="model.new.file"
             label="Upload a file"
             description="Create and upload a zip file that contains all the model files from your computer"
@@ -414,11 +418,11 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
 
       {canDisplayDeployModelSection ? (
         <>
-          <h3 className="text-instill-h3 mt-[60px] mb-5 text-black">
+          <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
             Deploy a model instance
           </h3>
           <SingleSelect
-            instanceId="new-model-instances"
+            id="modelInstanceName"
             name="model.new.modelInstanceName"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}

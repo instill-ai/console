@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { SingleSelectOption } from "@instill-ai/design-system";
@@ -19,16 +19,16 @@ export type OnBoardingFormProps = {
 
 type OnboardingFormValue = {
   email: Nullable<string>;
-  company_name: Nullable<string>;
+  companyName: Nullable<string>;
   role: Nullable<string>;
-  newsletter_subscription: Nullable<boolean>;
+  newsletterSubscription: Nullable<boolean>;
 };
 
 type OnboardingFormError = {
   email?: string;
-  company_name?: string;
+  companyName?: string;
   role?: string;
-  newsletter_subscription?: string;
+  newsletterSubscription?: string;
 };
 
 const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
@@ -54,8 +54,8 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
       errors.email = "Invalid email address";
     }
 
-    if (!values.company_name) {
-      errors.company_name = "Required";
+    if (!values.companyName) {
+      errors.companyName = "Required";
     }
 
     if (!values.role) {
@@ -65,53 +65,59 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     return errors;
   }, []);
 
+  const handleSubmit = useCallback(
+    (values) => {
+      if (!values.companyName || !values.email || !values.role) {
+        return;
+      }
+
+      const token = uuidv4();
+
+      const payload: Partial<User> = {
+        id: "local-user",
+        email: values.email,
+        company_name: values.companyName,
+        role: values.role as string,
+        newsletter_subscription: values.newsletterSubscription
+          ? values.newsletterSubscription
+          : false,
+        cookie_token: token,
+      };
+
+      updateUser.mutate(payload, {
+        onSuccess: async () => {
+          if (amplitudeIsInit) {
+            sendAmplitudeData("fill_onboarding_form", {
+              type: "critical_action",
+            });
+          }
+          await axios.post("/api/set-user-cookie", { token });
+          router.push("/pipelines");
+        },
+      });
+    },
+    [amplitudeIsInit, router, updateUser]
+  );
+
   return (
     <Formik
       initialValues={
         {
           email: null,
-          company_name: null,
+          companyName: null,
           role: null,
-          newsletter_subscription: false,
+          newsletterSubscription: false,
         } as OnboardingFormValue
       }
       enableReinitialize={true}
       validate={validateForm}
-      onSubmit={async (values) => {
-        if (!values.company_name || !values.email || !values.role) {
-          return;
-        }
-
-        const token = uuidv4();
-
-        const payload: Partial<User> = {
-          id: "local-user",
-          email: values.email,
-          company_name: values.company_name,
-          role: values.role as string,
-          newsletter_subscription: values.newsletter_subscription
-            ? values.newsletter_subscription
-            : false,
-          cookie_token: token,
-        };
-
-        updateUser.mutate(payload, {
-          onSuccess: async () => {
-            if (amplitudeIsInit) {
-              sendAmplitudeData("fill_onboarding_form", {
-                type: "critical_action",
-              });
-            }
-            await axios.post("/api/set-user-cookie", { token });
-            router.push("/pipelines");
-          },
-        });
-      }}
+      onSubmit={handleSubmit}
     >
       {(formik) => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
+              id="email"
               name="email"
               label="Your email"
               value={formik.values.email || ""}
@@ -126,11 +132,10 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               error={formik.errors.email || null}
             />
             <TextField
-              name="company_name"
+              id="companyName"
+              name="companyName"
               label="Your company"
-              value={
-                formik.values.company_name ? formik.values.company_name : ""
-              }
+              value={formik.values.companyName ? formik.values.companyName : ""}
               additionalOnChangeCb={null}
               description="Fill your company name"
               disabled={false}
@@ -139,12 +144,12 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               placeholder=""
               type="text"
               autoComplete="off"
-              error={formik.errors.company_name || null}
+              error={formik.errors.companyName || null}
             />
             <SingleSelect
+              id="role"
               name="role"
               label="Your role"
-              instanceId="role"
               options={mockMgmtRoles}
               value={selectedRoleOption}
               error={formik.errors.role || null}
@@ -156,7 +161,8 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               menuPlacement="auto"
             />
             <ToggleField
-              name="newsletter_subscription"
+              id="newsletterSubscription"
+              name="newsletterSubscription"
               label="Newsletter subscription"
               disabled={false}
               readOnly={false}
@@ -167,7 +173,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                   : false
               }
               description="Receive the latest news from Instill AI: open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
-              error={formik.errors.newsletter_subscription || null}
+              error={formik.errors.newsletterSubscription || null}
               additionalOnChangeCb={null}
             />
             <PrimaryButton
