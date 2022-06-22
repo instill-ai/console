@@ -26,11 +26,11 @@ const CreateDestinationForm: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 1 - Initialize the source definition                            #
+  // # 1 - Initialize the destination definition                       #
   // #                                                                 #
   // ###################################################################
   //
-  // A user can only have a http source and a grpc source
+  // A user can only have a http destination and a grpc destination
 
   const [
     syncDestinationDefinitionOptions,
@@ -93,60 +93,67 @@ const CreateDestinationForm: FC = () => {
 
   const createDestination = useCreateDestination();
 
+  const validateForm = useCallback((values) => {
+    const error: Partial<CreateDestinationFormValues> = {};
+
+    if (!values.destinationDefinition) {
+      error.definition = "Required";
+    }
+
+    if (destinations.data?.find((e) => e.id === values.destinationDefinition)) {
+      error.definition =
+        "You could only create one http and one grpc destination. Check the setup guide for more information.";
+    }
+
+    return error;
+  }, []);
+
+  const onSubmitHandler = useCallback(
+    (values) => {
+      if (!values.destinationDefinition || !destinations.isSuccess) return;
+
+      const payload: CreateDestinationPayload = {
+        id: values.destinationDefinition,
+        destination_connector_definition: `destination-connector-definitions/${values.destinationDefinition}`,
+        connector: {
+          configuration: "{}",
+        },
+      };
+
+      setIsCreatingDestination(true);
+
+      createDestination.mutate(payload, {
+        onSuccess: () => {
+          setIsCreatingDestination(false);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_destination", {
+              type: "critical_action",
+              process: "destination",
+            });
+          }
+          router.push("/destinations");
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setCreateDestinationError(error.message);
+            setIsCreatingDestination(false);
+          } else {
+            setCreateDestinationError(
+              "Something went wrong when deploying model"
+            );
+            setIsCreatingDestination(false);
+          }
+        },
+      });
+    },
+    [amplitudeIsInit]
+  );
+
   return (
     <Formik
-      initialValues={{ id: null, definition: null }}
-      validate={(values) => {
-        const error: Partial<CreateDestinationFormValues> = {};
-
-        if (!values.definition) {
-          error.definition = "Required";
-        }
-
-        if (destinations.data?.find((e) => e.id === values.definition)) {
-          error.definition =
-            "You could only create one http and one grpc source. Check the setup guide for more information.";
-        }
-
-        return error;
-      }}
-      onSubmit={(values) => {
-        if (!values.definition || !destinations.isSuccess) return;
-
-        const payload: CreateDestinationPayload = {
-          id: values.definition,
-          destination_connector_definition: `destination-connector-definitions/${values.definition}`,
-          connector: {
-            configuration: "{}",
-          },
-        };
-
-        setIsCreatingDestination(true);
-
-        createDestination.mutate(payload, {
-          onSuccess: () => {
-            setIsCreatingDestination(false);
-            if (amplitudeIsInit) {
-              sendAmplitudeData("create_destination", {
-                type: "critical_action",
-                process: "destination",
-              });
-            }
-            router.push("/destinations");
-          },
-          onError: (error) => {
-            if (error instanceof Error) {
-              setCreateDestinationError(error.message);
-              setIsCreatingDestination(false);
-            } else {
-              setCreateDestinationError(
-                "Something went wrong when deploying model"
-              );
-              setIsCreatingDestination(false);
-            }
-          },
-        });
-      }}
+      initialValues={{ id: null, destinationDefinition: null }}
+      validate={validateForm}
+      onSubmit={onSubmitHandler}
     >
       {(formik) => {
         return (
@@ -154,8 +161,8 @@ const CreateDestinationForm: FC = () => {
             {/* <TextField
               name="id"
               label="Name"
-              description="Pick a name to help you identify this source in Instill"
-              disabled={allSyncSourceCreated ? true : false}
+              description="Pick a name to help you identify this destination in Instill"
+              disabled={allSyncDestinationCreated ? true : false}
               readOnly={false}
               required={true}
               placeholder=""
@@ -164,13 +171,13 @@ const CreateDestinationForm: FC = () => {
               value={formik.values.id || ""}
             /> */}
             <SingleSelect
-              name="definition"
-              label="Source type"
-              instanceId="source-type"
+              name="destinationDefinition"
+              label="Destination type"
+              instanceId="destination-definition"
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
               additionalOnChangeCb={destinationDefinitionOnChange}
-              error={formik.errors.definition || null}
+              error={formik.errors.destinationDefinition || null}
               disabled={false}
               readOnly={false}
               required={true}
@@ -193,7 +200,7 @@ const CreateDestinationForm: FC = () => {
                 position="ml-auto my-auto"
                 onClickHandler={null}
               >
-                Set up source
+                Set up destination
               </PrimaryButton>
             </div>
           </FormBase>

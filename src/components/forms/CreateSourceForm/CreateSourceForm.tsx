@@ -187,7 +187,7 @@ const CreateSourceForm: FC = () => {
                 type="submit"
                 onClickHandler={null}
               >
-                Setup new source
+                Set up source
               </PrimaryButton>
             </div>
           </FormBase>
