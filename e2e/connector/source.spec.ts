@@ -12,7 +12,7 @@ test("should create new source", async ({ page }) => {
   await page.locator("#react-select-source-definition-option-0").click();
 
   // Create the source
-  await page.locator("text=Setup new source").click();
+  await page.locator("text=Set up source").click();
   await page.waitForNavigation();
 
   expect(page.url()).toBe(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources`);
