@@ -8,5 +8,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        DISABLE_USAGE_COLLECTION: "false"
+    environment:
+      - DISABLE_USAGE_COLLECTION=false

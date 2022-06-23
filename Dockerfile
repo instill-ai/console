@@ -23,7 +23,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 ARG DISABLE_USAGE_COLLECTION
 
-RUN NEXT_PUBLIC_DISABLE_USAGE_COLLECTION=${DISABLE_USAGE_COLLECTION} yarn build
+RUN NEXT_PUBLIC_DISABLE_USAGE_COLLECTION=NEXT_PUBLIC_DISABLE_USAGE_COLLECTION yarn build
 
 # If using npm comment out above and use below instead
 # RUN npm run build
@@ -50,10 +50,17 @@ COPY --from=builder /app/.env.production ./.env.production
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Because we need to execute this script, it needs to be copied with this user group
+COPY --from=builder --chown=nextjs:nodejs /app/entrypoint.sh ./entrypoint.sh
+
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
+
+# Permisions to execute script
+RUN ["chmod", "+x", "./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["node", "server.js"]
