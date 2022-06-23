@@ -19,3 +19,8 @@
   - NEXT_PUBLIC_MODEL_API_ENDPOINT=http://localhost:8083
   - NEXT_PUBLIC_API_VERSION=v1alpha
   - NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME=instill-ai-user
+
+## About the config `fullyParallel`
+
+- This config will force every test run in parallel even you specific `test.describe.serial`.
+- We recommend you set `fullyParallel: false` and control this behavior with fine-grained control.
