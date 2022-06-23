@@ -234,7 +234,7 @@ const SetupPipelineDetailsStep: FC = () => {
           autoComplete="off"
         />
         <TextArea
-          id="description"
+          id="pipelineDescription"
           name="pipeline.description"
           label="Description"
           description="Fill with a short description of your new pipeline"
