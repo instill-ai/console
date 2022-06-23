@@ -31,6 +31,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;
 
+    if (process.env.NEXT_PUBLIC_DISABLE_USAGE_COLLECTION === "true") {
+      setAmplitudeIsInit(false);
+      return;
+    }
+
     if (trackingToken.data === "redirect-to-onboard") {
       // We should clear the trackingToken to avoid once user had successfully setup user data, when we push them to the
       // pipelines page, because there has no changes related to state, the trackingToken won't be flushed, so it remains
