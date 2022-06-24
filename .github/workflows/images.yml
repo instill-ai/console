@@ -23,6 +23,7 @@ jobs:
       - name: Build and push (latest)
         uses: docker/build-push-action@v3
         with:
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: instill/console:latest
           cache-from: type=registry,ref=instill/console:buildcache
@@ -43,6 +44,7 @@ jobs:
         if: github.event_name == 'release'
         uses: docker/build-push-action@v3
         with:
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: instill/console:${{steps.set_version.outputs.no_v_tag}}
           cache-from: type=registry,ref=instill/console:buildcache
