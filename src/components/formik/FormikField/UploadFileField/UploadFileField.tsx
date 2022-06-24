@@ -19,6 +19,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   form,
   id,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   error,
   ...props
 }) => {
@@ -35,6 +36,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
       id={id}
       error={error}
       onChangeInput={onChange}
+      additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );
 };
@@ -48,6 +50,7 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   description,
   label,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   placeholder,
   uploadButtonText,
   error,
@@ -63,6 +66,7 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
       description={description}
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
+      additionalMessageOnLabel={additionalMessageOnLabel}
       placeholder={placeholder}
       uploadButtonText={uploadButtonText}
       error={error}

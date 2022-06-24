@@ -17,6 +17,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   id,
   defaultChecked,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   error,
   ...props
 }) => {
@@ -34,6 +35,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
       error={error}
       onChangeInput={onChange}
       defaultChecked={defaultChecked}
+      additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );
 };
@@ -47,6 +49,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   description,
   label,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   defaultChecked,
   error,
 }) => {
@@ -61,6 +64,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
       description={description}
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
+      additionalMessageOnLabel={additionalMessageOnLabel}
       defaultChecked={defaultChecked}
       error={error}
     />

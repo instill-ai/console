@@ -13,6 +13,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   form,
   id,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   error,
   ...props
 }) => {
@@ -24,7 +25,13 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   };
 
   return (
-    <BasicTextArea {...props} id={id} error={error} onChangeInput={onChange} />
+    <BasicTextArea
+      {...props}
+      id={id}
+      error={error}
+      onChangeInput={onChange}
+      additionalMessageOnLabel={additionalMessageOnLabel}
+    />
   );
 };
 
@@ -36,6 +43,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
   required,
   description,
   label,
+  additionalMessageOnLabel,
   additionalOnChangeCb,
   placeholder,
   autoComplete,
@@ -55,6 +63,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
       description={description}
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
+      additionalMessageOnLabel={additionalMessageOnLabel}
       placeholder={placeholder}
       autoComplete={autoComplete}
       value={value}

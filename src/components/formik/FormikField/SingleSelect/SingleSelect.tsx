@@ -24,6 +24,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   menuPlacement,
   value,
   error,
+  additionalMessageOnLabel,
   ...props
 }) => {
   const onChange = (_: string, option: SingleSelectOption) => {
@@ -43,6 +44,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       onChangeInput={onChange}
       menuPlacement={menuPlacement}
       value={value}
+      additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );
 };
@@ -57,6 +59,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   description,
   label,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   menuPlacement,
   value,
   error,
@@ -73,6 +76,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
       description={description}
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
+      additionalMessageOnLabel={additionalMessageOnLabel}
       value={value}
       menuPlacement={menuPlacement}
       error={error}

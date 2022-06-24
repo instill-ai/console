@@ -12,6 +12,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   field,
   form,
   id,
+  additionalMessageOnLabel,
   additionalOnChangeCb,
   error,
   ...props
@@ -24,7 +25,13 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   };
 
   return (
-    <BasicTextField {...props} id={id} error={error} onChangeInput={onChange} />
+    <BasicTextField
+      {...props}
+      id={id}
+      error={error}
+      onChangeInput={onChange}
+      additionalMessageOnLabel={additionalMessageOnLabel}
+    />
   );
 };
 
@@ -36,6 +43,7 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
   required,
   description,
   label,
+  additionalMessageOnLabel,
   additionalOnChangeCb,
   placeholder,
   type,
@@ -54,6 +62,7 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
       description={description}
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
+      additionalMessageOnLabel={additionalMessageOnLabel}
       placeholder={placeholder}
       type={type}
       autoComplete={autoComplete}
