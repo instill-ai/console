@@ -363,6 +363,7 @@ const CreateNewModelFlow: FC = () => {
                   id="file"
                   name="file"
                   label="Upload a file"
+                  additionalMessageOnLabel={null}
                   description="Create and upload a zip file that contains all the model files from your computer"
                   error={errors.file || null}
                   additionalOnChangeCb={null}
