@@ -106,6 +106,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         id="sourceId"
         name="source.new.id"
         label="Name"
+        additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.source.new.id}
         error={errors.source?.new?.id || null}

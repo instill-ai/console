@@ -295,6 +295,7 @@ const CreateNewModelFlow: FC = () => {
               id="modelId"
               name="id"
               label="Name"
+              additionalMessageOnLabel={null}
               description="Pick a name to help you identify this source in Instill"
               value={values.id}
               error={errors.id || null}
@@ -326,6 +327,7 @@ const CreateNewModelFlow: FC = () => {
                 id="modelRepo"
                 name="repo"
                 label="GitHub repository"
+                additionalMessageOnLabel={null}
                 description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
                 value={values.repo}
                 error={errors.repo || null}

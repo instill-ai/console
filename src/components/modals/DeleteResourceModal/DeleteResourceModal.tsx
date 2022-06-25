@@ -128,6 +128,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
           id="confirmationCode"
           type="text"
           label={`Please type "${resource ? resource.id : ""}" to confirm.`}
+          additionalMessageOnLabel={null}
           onChangeInput={handleCodeChange}
           value={confirmationCode}
           autoComplete="off"

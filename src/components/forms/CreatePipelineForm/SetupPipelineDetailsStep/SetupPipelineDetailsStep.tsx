@@ -222,6 +222,7 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineId"
           name="pipeline.id"
           label="Name"
+          additionalMessageOnLabel={null}
           description="Pick a name to help you identify this source in Instill"
           value={values.pipeline.id}
           error={errors.pipeline?.id || null}

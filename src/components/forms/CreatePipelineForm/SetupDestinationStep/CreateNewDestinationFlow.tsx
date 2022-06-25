@@ -128,6 +128,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationId"
         name="destination.new.id"
         label="Name"
+        additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.destination.new.id}
         error={errors.destination?.new?.id || null}
