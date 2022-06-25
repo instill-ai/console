@@ -167,6 +167,8 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="newsletterSubscription"
               name="newsletterSubscription"
               label="Newsletter subscription"
+              value={formik.values.newsletterSubscription || false}
+              additionalMessageOnLabel={null}
               disabled={false}
               readOnly={false}
               required={true}
@@ -185,7 +187,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               position="ml-auto"
               onClickHandler={null}
             >
-              Start
+              Start∏
             </PrimaryButton>
           </FormBase>
         );

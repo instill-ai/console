@@ -102,6 +102,18 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     setDeletePipelineModalIsOpen(false);
   }, [pipeline, amplitudeIsInit, router, deletePipeline]);
 
+  const determinePipelineState = useCallback(
+    (values: ConfigurePipelineFormValue) => {
+      switch (values.state) {
+        case "STATE_ACTIVE":
+          return true;
+        default:
+          return false;
+      }
+    },
+    []
+  );
+
   return (
     <>
       <Formik
@@ -165,6 +177,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   id="pipelineState"
                   name="state"
                   label="State"
+                  value={determinePipelineState(values)}
+                  additionalMessageOnLabel={null}
                   defaultChecked={true}
                   error={errors?.state || null}
                   additionalOnChangeCb={null}
