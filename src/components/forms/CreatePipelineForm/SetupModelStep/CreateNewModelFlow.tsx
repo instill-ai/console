@@ -370,6 +370,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
             id="description"
             name="model.new.description"
             label="Description"
+            additionalMessageOnLabel={null}
             description="Fill with a short description of your new model"
             value={values.model.new.description}
             error={errors.model?.new?.description || null}

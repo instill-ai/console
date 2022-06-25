@@ -237,6 +237,7 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineDescription"
           name="pipeline.description"
           label="Description"
+          additionalMessageOnLabel={null}
           description="Fill with a short description of your new pipeline"
           value={values.pipeline.description}
           error={errors.pipeline?.description || null}

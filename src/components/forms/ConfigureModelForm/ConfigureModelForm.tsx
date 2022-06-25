@@ -108,6 +108,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               id="description"
               name="description"
               label="Description"
+              additionalMessageOnLabel={null}
               description="Fill with a short description of your model"
               value={values.description}
               error={errors.description || null}

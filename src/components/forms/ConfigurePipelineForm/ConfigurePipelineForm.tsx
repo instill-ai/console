@@ -177,6 +177,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   id="pipelineDescription"
                   name="description"
                   label="Description"
+                  additionalMessageOnLabel={null}
                   description="Fill with a short description of your model"
                   value={values.description}
                   error={errors.description || null}
