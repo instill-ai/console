@@ -143,6 +143,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationDefinition"
         name="dataDestination.new.definition"
         label="Destination type"
+        additionalMessageOnLabel={null}
         disabled={false}
         readOnly={false}
         options={destinationDefinitionOptions || []}

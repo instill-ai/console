@@ -108,6 +108,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
         id="existingSourceId"
         name="source.existing.id"
         label="Source type"
+        additionalMessageOnLabel={null}
         description={"Setup Guide"}
         options={sourceOptions ? sourceOptions : []}
         value={selectedSourceOption}

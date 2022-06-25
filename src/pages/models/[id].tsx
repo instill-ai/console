@@ -202,6 +202,7 @@ const ModelDetailsPage: FC & {
           instanceId="modelInstanceTag"
           menuPlacement="auto"
           label={null}
+          additionalMessageOnLabel={null}
           description={null}
           disabled={false}
           readOnly={false}

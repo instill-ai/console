@@ -179,6 +179,7 @@ const CreateDestinationForm: FC = () => {
               id="destinationDefinition"
               name="destinationDefinition"
               label="Destination type"
+              additionalMessageOnLabel={null}
               options={syncDestinationDefinitionOptions}
               value={selectedSyncDestinationDefinitionOption}
               additionalOnChangeCb={destinationDefinitionOnChange}

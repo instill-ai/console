@@ -121,6 +121,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         id="sourceDefinition"
         name="source.new.definition"
         label="Source type"
+        additionalMessageOnLabel={null}
         description="Setup Guide"
         value={selectedSourceOption}
         options={sourceOptions ? sourceOptions : []}

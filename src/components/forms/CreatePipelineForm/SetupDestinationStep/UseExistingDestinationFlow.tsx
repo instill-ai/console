@@ -88,6 +88,8 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
       <SingleSelect
         id="existingDestinationId"
         name="destination.existing.id"
+        label="Destination type"
+        additionalMessageOnLabel={null}
         disabled={false}
         readOnly={false}
         options={destinationOptions ? destinationOptions : []}
@@ -96,7 +98,6 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         additionalOnChangeCb={null}
         required={true}
         description={"Setup Guide"}
-        label="Destination type"
         menuPlacement="auto"
       />
       <PrimaryButton

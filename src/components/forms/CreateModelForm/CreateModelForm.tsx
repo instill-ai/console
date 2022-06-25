@@ -310,6 +310,7 @@ const CreateNewModelFlow: FC = () => {
               name="modelDefinition"
               id="modelDefinition"
               label="Model type"
+              additionalMessageOnLabel={null}
               description={"Setup Guide"}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -397,6 +398,8 @@ const CreateNewModelFlow: FC = () => {
                 <SingleSelect
                   id="modelInstanceId"
                   name="modelInstanceId"
+                  label="Source type"
+                  additionalMessageOnLabel={null}
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}
                   error={errors.modelInstanceId || null}
@@ -405,7 +408,6 @@ const CreateNewModelFlow: FC = () => {
                   readOnly={false}
                   required={true}
                   description={"Setup Guide"}
-                  label="Source type"
                   menuPlacement="auto"
                 />
                 <div className="flex flex-row">
