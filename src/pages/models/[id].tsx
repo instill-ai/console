@@ -80,7 +80,6 @@ const ModelDetailsPage: FC & {
     useState<Nullable<SingleSelectOption>>(null);
 
   useEffect(() => {
-    console.log(modelInstances);
     if (!modelInstances.isSuccess) return;
 
     setSelectedModelInstanceOption(
@@ -201,7 +200,7 @@ const ModelDetailsPage: FC & {
         },
       });
     }
-  }, [selectedModelInstances]);
+  }, [selectedModelInstances, deployModelInstance, unDeployModelInstance]);
 
   // ###################################################################
   // #                                                                 #
