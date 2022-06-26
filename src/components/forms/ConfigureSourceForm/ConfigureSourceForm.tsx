@@ -151,6 +151,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                   id="sourceDefinition"
                   name="sourceDefinition"
                   label="Data source"
+                  additionalMessageOnLabel={null}
                   disabled={canEdit ? false : true}
                   readOnly={false}
                   options={syncSourceDefinitionOptions}

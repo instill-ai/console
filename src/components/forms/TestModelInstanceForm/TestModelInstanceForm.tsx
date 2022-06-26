@@ -82,6 +82,7 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
         <BasicUploadFileField
           id="file"
           label="Upload a file"
+          additionalMessageOnLabel={null}
           description="Create and upload a zip file that contains all the model files from your computer"
           error={null}
           onChangeInput={fileOnChangeCb}

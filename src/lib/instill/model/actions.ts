@@ -16,6 +16,23 @@ export const deployModelInstanceAction = async (modelInstanceName: string) => {
   }
 };
 
+export type UnDeployModelResponse = {
+  instance: ModelInstance;
+};
+
+export const udDeployModelInstanceAction = async (
+  modelInstanceName: string
+) => {
+  try {
+    const { data } = await axios.post<UnDeployModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}:undeploy`
+    );
+    return Promise.resolve(data.instance);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 export type TestModelInstancePayload = {
   modelInstanceName: string;
   content: string;

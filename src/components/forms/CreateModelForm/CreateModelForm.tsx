@@ -295,6 +295,7 @@ const CreateNewModelFlow: FC = () => {
               id="modelId"
               name="id"
               label="Name"
+              additionalMessageOnLabel={null}
               description="Pick a name to help you identify this source in Instill"
               value={values.id}
               error={errors.id || null}
@@ -310,6 +311,7 @@ const CreateNewModelFlow: FC = () => {
               name="modelDefinition"
               id="modelDefinition"
               label="Model type"
+              additionalMessageOnLabel={null}
               description={"Setup Guide"}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -325,6 +327,7 @@ const CreateNewModelFlow: FC = () => {
                 id="modelRepo"
                 name="repo"
                 label="GitHub repository"
+                additionalMessageOnLabel={null}
                 description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
                 value={values.repo}
                 error={errors.repo || null}
@@ -343,6 +346,7 @@ const CreateNewModelFlow: FC = () => {
                   id="description"
                   name="description"
                   label="Description"
+                  additionalMessageOnLabel={null}
                   description="Fill with a short description of your new model"
                   value={values.description}
                   error={errors.description || null}
@@ -359,6 +363,7 @@ const CreateNewModelFlow: FC = () => {
                   id="file"
                   name="file"
                   label="Upload a file"
+                  additionalMessageOnLabel={null}
                   description="Create and upload a zip file that contains all the model files from your computer"
                   error={errors.file || null}
                   additionalOnChangeCb={null}
@@ -397,6 +402,8 @@ const CreateNewModelFlow: FC = () => {
                 <SingleSelect
                   id="modelInstanceId"
                   name="modelInstanceId"
+                  label="Source type"
+                  additionalMessageOnLabel={null}
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}
                   error={errors.modelInstanceId || null}
@@ -405,7 +412,6 @@ const CreateNewModelFlow: FC = () => {
                   readOnly={false}
                   required={true}
                   description={"Setup Guide"}
-                  label="Source type"
                   menuPlacement="auto"
                 />
                 <div className="flex flex-row">

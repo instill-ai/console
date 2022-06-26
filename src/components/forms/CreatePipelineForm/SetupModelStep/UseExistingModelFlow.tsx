@@ -139,6 +139,8 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
       <SingleSelect
         id="existingModelInstanceName"
         name="model.existing.modelInstanceName"
+        label="Source type"
+        additionalMessageOnLabel={null}
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
         error={errors.model?.existing?.modelInstanceName || null}
@@ -147,7 +149,6 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
         readOnly={false}
         required={true}
         description={"Setup Guide"}
-        label="Source type"
         menuPlacement="auto"
       />
       <PrimaryButton

@@ -36,7 +36,7 @@ const MainPage: FC<MainPageProps> & {
 
     const cookieList = parse(cookies);
 
-    if (!cookieList["instill-ai-user-onboarded"]) {
+    if (!cookieList["instill-ai-user"]) {
       router.push("/onboarding");
     } else {
       router.push("/pipelines");

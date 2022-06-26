@@ -161,6 +161,7 @@ const CreateSourceForm: FC = () => {
               id="sourceDefinition"
               name="sourceDefinition"
               label="Source type"
+              additionalMessageOnLabel={null}
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}

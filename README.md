@@ -21,9 +21,10 @@ queryClient.setQueryData<Model[]>(["models"], (old) => {
 - Error bundary
 - Suspense
 - Refactor react-query queryKey to make it more reliable, especially model services
-- Right now the data type is 
-	- PipelineWithRawRecipe -> process -> Pipeline
-	- Source -> process -> SourceWithDefinition
-	- Try to refactor above with same logic
+- Right now the data type is
+  - PipelineWithRawRecipe -> process -> Pipeline
+  - Source -> process -> SourceWithDefinition
+  - Try to refactor above with same logic
 - Complete Button base design in design-system
 - Fix RawPipelineRecipe type
+- Unify react-query cache key

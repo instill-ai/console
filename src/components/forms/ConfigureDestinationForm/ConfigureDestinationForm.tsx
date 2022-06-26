@@ -161,6 +161,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                   id="destinationDefinition"
                   name="definition"
                   label="Data destination"
+                  additionalMessageOnLabel={null}
                   value={selectedDestinationDefinitionOption}
                   options={syncDestinationDefinitionOptions}
                   additionalOnChangeCb={destinationDefinitionOnChangeCb}

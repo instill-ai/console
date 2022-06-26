@@ -40,8 +40,11 @@ import {
   deleteModelMutation,
 } from "./mutations";
 
-import type { DeployModelResponse } from "./actions";
-import { deployModelInstanceAction } from "./actions";
+import type { DeployModelResponse, UnDeployModelResponse } from "./actions";
+import {
+  deployModelInstanceAction,
+  udDeployModelInstanceAction,
+} from "./actions";
 
 export type {
   ModelDefinition,
@@ -62,6 +65,7 @@ export type {
   UpdateModelPayload,
   UpdateModelResponse,
   DeployModelResponse,
+  UnDeployModelResponse,
 };
 
 export {
@@ -76,4 +80,5 @@ export {
   updateModelMutation,
   deleteModelMutation,
   deployModelInstanceAction,
+  udDeployModelInstanceAction,
 };

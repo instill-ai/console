@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
-import { deployModelInstanceAction, ModelInstance } from "@/lib/instill";
+import { ModelInstance, udDeployModelInstanceAction } from "@/lib/instill";
 
-const useDeployModelInstance = () => {
+const useUnDeployModelInstance = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (modelInstanceName: string) => {
-      const modelInstance = await deployModelInstanceAction(modelInstanceName);
+      const modelInstance = await udDeployModelInstanceAction(
+        modelInstanceName
+      );
       return Promise.resolve(modelInstance);
     },
     {
@@ -35,4 +37,4 @@ const useDeployModelInstance = () => {
   );
 };
 
-export default useDeployModelInstance;
+export default useUnDeployModelInstance;

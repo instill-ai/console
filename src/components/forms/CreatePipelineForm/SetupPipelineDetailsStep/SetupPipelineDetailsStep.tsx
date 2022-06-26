@@ -222,6 +222,7 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineId"
           name="pipeline.id"
           label="Name"
+          additionalMessageOnLabel={null}
           description="Pick a name to help you identify this source in Instill"
           value={values.pipeline.id}
           error={errors.pipeline?.id || null}
@@ -237,6 +238,7 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineDescription"
           name="pipeline.description"
           label="Description"
+          additionalMessageOnLabel={null}
           description="Fill with a short description of your new pipeline"
           value={values.pipeline.description}
           error={errors.pipeline?.description || null}
@@ -253,7 +255,9 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineState"
           name="pipeline.state"
           label="Pipeline state"
+          additionalMessageOnLabel={null}
           defaultChecked={true}
+          value={true}
           error={errors.pipeline?.state || null}
           additionalOnChangeCb={null}
           disabled={true}

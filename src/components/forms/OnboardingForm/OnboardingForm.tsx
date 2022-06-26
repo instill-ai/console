@@ -120,6 +120,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="email"
               name="email"
               label="Your email"
+              additionalMessageOnLabel={null}
               value={formik.values.email || ""}
               additionalOnChangeCb={null}
               description="Fill your email address"
@@ -135,6 +136,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="companyName"
               name="companyName"
               label="Your company"
+              additionalMessageOnLabel={null}
               value={formik.values.companyName ? formik.values.companyName : ""}
               additionalOnChangeCb={null}
               description="Fill your company name"
@@ -150,6 +152,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="role"
               name="role"
               label="Your role"
+              additionalMessageOnLabel={null}
               options={mockMgmtRoles}
               value={selectedRoleOption}
               error={formik.errors.role || null}
@@ -164,6 +167,8 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="newsletterSubscription"
               name="newsletterSubscription"
               label="Newsletter subscription"
+              value={formik.values.newsletterSubscription || false}
+              additionalMessageOnLabel={null}
               disabled={false}
               readOnly={false}
               required={true}
@@ -182,7 +187,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               position="ml-auto"
               onClickHandler={null}
             >
-              Start
+              Start∏
             </PrimaryButton>
           </FormBase>
         );
