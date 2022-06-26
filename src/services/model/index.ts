@@ -13,6 +13,7 @@ import useModelWithInstances from "./useModelWithInstances";
 import useUpdateModel from "./useUpdateModel";
 import useDeleteModel from "./useDeleteModel";
 import useTestModelInstance from "./useTestModelInstance";
+import useUnDeployModelInstance from "./useUnDeployModelInstance";
 
 export {
   useCreateGithubModel,
@@ -30,4 +31,5 @@ export {
   useUpdateModel,
   useDeleteModel,
   useTestModelInstance,
+  useUnDeployModelInstance,
 };
