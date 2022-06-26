@@ -4,7 +4,7 @@ import { Nullable } from "@/types/general";
 
 const useModelInstances = (modelName: Nullable<string>) => {
   return useQuery(
-    ["models", modelName, "modelInstances"],
+    ["models", modelName?.split("/")[1], "modelInstances"],
     async () => {
       if (!modelName) {
         return Promise.reject(new Error("Model name not provided"));
