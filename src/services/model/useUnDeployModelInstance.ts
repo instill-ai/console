@@ -15,12 +15,12 @@ const useUnDeployModelInstance = () => {
         const modelId = newModelInstance.name.split("/")[1];
 
         queryClient.setQueryData<ModelInstance>(
-          ["models", newModelId, "modelInstances", newModelInstance.id],
+          ["models", modelId, "modelInstances", newModelInstance.id],
           newModelInstance
         );
 
         queryClient.setQueryData<ModelInstance[]>(
-          ["models", newModelId, "modelInstances"],
+          ["models", modelId, "modelInstances"],
           (old) => {
             if (!old) {
               return [newModelInstance];
