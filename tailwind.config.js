@@ -125,6 +125,9 @@ module.exports = {
           "@apply focus:border-instillBlue50 focus:outline-none focus:ring-0 focus:ring-white":
             {},
         },
+        ".instill-toggle-loading-shadow": {
+          boxShadow: "0px 0px 0px 3px #FFFCE3",
+        },
       });
     },
   ],
