@@ -166,9 +166,12 @@ const ModelDetailsPage: FC & {
 
   const [isChangingModelInstanceState, setIsChangingModelInstanceState] =
     useState(false);
+  const [
+    hasErrorWhenChangingModelInstanceState,
+    setHasErrorWhenChangingModelInstanceState,
+  ] = useState(false);
 
   const modelInstanceBoolState = useMemo(() => {
-    console.log(selectedModelInstances);
     if (selectedModelInstances?.state === "STATE_ONLINE") {
       return true;
     }
@@ -183,13 +186,19 @@ const ModelDetailsPage: FC & {
       setIsChangingModelInstanceState(true);
       unDeployModelInstance.mutate(selectedModelInstances.name, {
         onSuccess: () => setIsChangingModelInstanceState(false),
-        onError: () => setIsChangingModelInstanceState(false),
+        onError: () => {
+          setIsChangingModelInstanceState(false);
+          setHasErrorWhenChangingModelInstanceState(true);
+        },
       });
     } else {
       setIsChangingModelInstanceState(true);
       deployModelInstance.mutate(selectedModelInstances.name, {
         onSuccess: () => setIsChangingModelInstanceState(false),
-        onError: () => setIsChangingModelInstanceState(false),
+        onError: () => {
+          setIsChangingModelInstanceState(false);
+          setHasErrorWhenChangingModelInstanceState(true);
+        },
       });
     }
   }, [selectedModelInstances]);
@@ -281,7 +290,11 @@ const ModelDetailsPage: FC & {
           defaultChecked={
             selectedModelInstances?.state === "STATE_ONLINE" ? true : false
           }
-          error={null}
+          error={
+            hasErrorWhenChangingModelInstanceState
+              ? "There is an error. Please try again."
+              : null
+          }
           state={
             isChangingModelInstanceState
               ? "STATE_LOADING"
