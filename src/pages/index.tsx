@@ -6,6 +6,7 @@ import { parse } from "cookie";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
+  console.log(cookies);
   return {
     props: {
       cookies: cookies ? cookies : null,
@@ -36,7 +37,7 @@ const MainPage: FC<MainPageProps> & {
 
     const cookieList = parse(cookies);
 
-    if (!cookieList["instill-ai-user-onboarded"]) {
+    if (!cookieList["instill-ai-user"]) {
       router.push("/onboarding");
     } else {
       router.push("/pipelines");
