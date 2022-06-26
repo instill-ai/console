@@ -10,10 +10,16 @@ import { useRouter } from "next/router";
 import {
   BasicSingleSelect,
   SingleSelectOption,
+  StatefulToggleField,
 } from "@instill-ai/design-system";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import { useModel, useModelWithInstances } from "@/services/model";
+import {
+  useDeployModelInstance,
+  useModel,
+  useModelInstances,
+  useUnDeployModelInstance,
+} from "@/services/model";
 import {
   HorizontalDivider,
   ModelDefinitionLabel,
@@ -55,54 +61,50 @@ const ModelDetailsPage: FC & {
 
   const model = useModel(id ? `models/${id}` : null);
 
-  const modelWithInstances = useModelWithInstances(
-    model.isSuccess ? model.data : null
+  const modelInstances = useModelInstances(
+    model.isSuccess ? model.data.name : null
   );
 
   const modelInstanceOptions = useMemo<SingleSelectOption[]>(() => {
-    if (!modelWithInstances.isSuccess || !router.isReady) return [];
+    if (!modelInstances.isSuccess || !router.isReady) return [];
 
-    return modelWithInstances.data.instances.map((modelInsance) => {
+    return modelInstances.data.map((modelInstance) => {
       return {
-        label: modelInsance.id,
-        value: modelInsance.id,
+        label: modelInstance.id,
+        value: modelInstance.id,
       };
     });
-  }, [
-    router.isReady,
-    modelWithInstances.isSuccess,
-    modelWithInstances.data?.instances,
-  ]);
+  }, [router.isReady, modelInstances.isSuccess, modelInstances.data]);
 
   const [selectedModelInstanceOption, setSelectedModelInstanceOption] =
     useState<Nullable<SingleSelectOption>>(null);
 
   useEffect(() => {
-    if (!modelWithInstances.isSuccess) return;
+    console.log(modelInstances);
+    if (!modelInstances.isSuccess) return;
 
     setSelectedModelInstanceOption(
-      modelWithInstances.isSuccess
+      modelInstances.isSuccess
         ? {
-            value: modelWithInstances.data.instances[0].id,
-            label: modelWithInstances.data.instances[0].id,
+            value: modelInstances.data[0].id,
+            label: modelInstances.data[0].id,
           }
         : null
     );
-  }, [modelWithInstances.isSuccess, modelWithInstances.data?.instances]);
+  }, [modelInstances.isSuccess, modelInstances.data]);
 
   const selectedModelInstances = useMemo(() => {
-    if (!selectedModelInstanceOption || !modelWithInstances.isSuccess)
-      return null;
+    if (!selectedModelInstanceOption || !modelInstances.isSuccess) return null;
 
     return (
-      modelWithInstances.data.instances.find(
+      modelInstances.data.find(
         (e) => e.id === selectedModelInstanceOption.value
       ) || null
     );
   }, [
     selectedModelInstanceOption,
-    modelWithInstances.isSuccess,
-    modelWithInstances.data?.instances,
+    modelInstances.isSuccess,
+    modelInstances.data,
   ]);
 
   const modelInstanceOnChangeCb = useCallback(
@@ -123,17 +125,13 @@ const ModelDetailsPage: FC & {
   const pipelines = usePipelines(true);
 
   const pipelinesGroupByModelInstance = useMemo(() => {
-    if (
-      !pipelines.isSuccess ||
-      !modelWithInstances.isSuccess ||
-      !pipelines.data
-    ) {
+    if (!pipelines.isSuccess || !modelInstances.isSuccess || !pipelines.data) {
       return {};
     }
 
     const pipelinesGroup: Record<string, Pipeline[]> = {};
 
-    for (const modelInstance of modelWithInstances.data.instances) {
+    for (const modelInstance of modelInstances.data) {
       const targetPipelines = pipelines.data.filter((e) => {
         if (e.recipe.models.find((e) => e.id === modelInstance.id)) {
           return true;
@@ -147,8 +145,8 @@ const ModelDetailsPage: FC & {
   }, [
     pipelines.isSuccess,
     pipelines.data,
-    modelWithInstances.isSuccess,
-    modelWithInstances.data?.instances,
+    modelInstances.isSuccess,
+    modelInstances.data,
   ]);
 
   const selectedModelInstancePipelines = useMemo(() => {
@@ -156,6 +154,45 @@ const ModelDetailsPage: FC & {
 
     return pipelinesGroupByModelInstance[selectedModelInstances.id];
   }, [pipelinesGroupByModelInstance, selectedModelInstances]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # Toggle the model instance state                                 #
+  // #                                                                 #
+  // ###################################################################
+
+  const deployModelInstance = useDeployModelInstance();
+  const unDeployModelInstance = useUnDeployModelInstance();
+
+  const [isChangingModelInstanceState, setIsChangingModelInstanceState] =
+    useState(false);
+
+  const modelInstanceBoolState = useMemo(() => {
+    console.log(selectedModelInstances);
+    if (selectedModelInstances?.state === "STATE_ONLINE") {
+      return true;
+    }
+
+    return false;
+  }, [selectedModelInstances]);
+
+  const handleToggleModelInstanceState = useCallback(() => {
+    if (!selectedModelInstances) return;
+
+    if (selectedModelInstances.state === "STATE_ONLINE") {
+      setIsChangingModelInstanceState(true);
+      unDeployModelInstance.mutate(selectedModelInstances.name, {
+        onSuccess: () => setIsChangingModelInstanceState(false),
+        onError: () => setIsChangingModelInstanceState(false),
+      });
+    } else {
+      setIsChangingModelInstanceState(true);
+      deployModelInstance.mutate(selectedModelInstances.name, {
+        onSuccess: () => setIsChangingModelInstanceState(false),
+        onError: () => setIsChangingModelInstanceState(false),
+      });
+    }
+  }, [selectedModelInstances]);
 
   // ###################################################################
   // #                                                                 #
@@ -230,6 +267,28 @@ const ModelDetailsPage: FC & {
           iconPosition="my-auto"
         />
       </div>
+      <div className="mb-10">
+        <StatefulToggleField
+          id="pipelineStateToggleButton"
+          value={modelInstanceBoolState}
+          disabled={false}
+          readOnly={false}
+          required={false}
+          description={null}
+          onChangeInput={handleToggleModelInstanceState}
+          label="State"
+          additionalMessageOnLabel={null}
+          defaultChecked={
+            selectedModelInstances?.state === "STATE_ONLINE" ? true : false
+          }
+          error={null}
+          state={
+            isChangingModelInstanceState
+              ? "STATE_LOADING"
+              : selectedModelInstances?.state || "STATE_UNSPECIFIED"
+          }
+        />
+      </div>
       <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
       <PipelinesTable
         pipelines={selectedModelInstancePipelines}
@@ -238,7 +297,7 @@ const ModelDetailsPage: FC & {
         enablePlaceholderCreateButton={false}
       />
       <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
-      {modelWithInstances.isLoading ? null : selectedModelInstances ? (
+      {modelInstances.isLoading ? null : selectedModelInstances ? (
         <>
           <ConfigureModelInstanceForm
             modelInstance={selectedModelInstances}
