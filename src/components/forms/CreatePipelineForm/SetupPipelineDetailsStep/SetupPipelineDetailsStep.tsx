@@ -32,11 +32,7 @@ const SetupPipelineDetailsStep: FC = () => {
     };
 
     // Pipeline - Every pipeline's fields are required
-    if (
-      values.pipeline.mode &&
-      values.pipeline.id &&
-      values.pipeline.description
-    ) {
+    if (values.pipeline.mode && values.pipeline.id) {
       validator.pipelineIsValid = true;
     }
 
@@ -74,7 +70,6 @@ const SetupPipelineDetailsStep: FC = () => {
     if (
       values.model.new.modelDefinition === "local" &&
       values.model.new.id &&
-      values.model.new.description &&
       values.model.new.file
     ) {
       validator.modelIsValid = true;
@@ -111,12 +106,7 @@ const SetupPipelineDetailsStep: FC = () => {
   const [isSettingPipeline, setIsSettingPipeline] = useState(false);
 
   const handleSetupNewPipeline = () => {
-    if (
-      !canSetupNewPipeline ||
-      !router.isReady ||
-      !values.pipeline.id ||
-      !values.pipeline.description
-    ) {
+    if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) {
       return;
     }
 
@@ -245,7 +235,7 @@ const SetupPipelineDetailsStep: FC = () => {
           additionalOnChangeCb={null}
           disabled={false}
           readOnly={false}
-          required={true}
+          required={false}
           autoComplete="off"
           placeholder=""
           enableCounter={false}

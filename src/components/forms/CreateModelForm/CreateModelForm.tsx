@@ -106,7 +106,7 @@ const CreateNewModelFlow: FC = () => {
         return true;
       }
 
-      if (!values.file || !values.id || !values.description) {
+      if (!values.file || !values.id) {
         return false;
       }
       return true;
@@ -353,7 +353,7 @@ const CreateNewModelFlow: FC = () => {
                   additionalOnChangeCb={null}
                   disabled={modelSet ? true : false}
                   readOnly={false}
-                  required={true}
+                  required={false}
                   autoComplete="off"
                   placeholder=""
                   enableCounter={false}
