@@ -319,7 +319,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       <TextField
         id="modelId"
         name="model.new.id"
-        label="Name"
+        label="id"
         additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.model.new.id}
@@ -429,7 +429,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           <SingleSelect
             id="modelInstanceName"
             name="model.new.modelInstanceName"
-            label="Source type"
+            label="Model instances"
             additionalMessageOnLabel={null}
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}

@@ -221,7 +221,7 @@ const SetupPipelineDetailsStep: FC = () => {
         <TextField
           id="pipelineId"
           name="pipeline.id"
-          label="Name"
+          label="id"
           additionalMessageOnLabel={null}
           description="Pick a name to help you identify this source in Instill"
           value={values.pipeline.id}

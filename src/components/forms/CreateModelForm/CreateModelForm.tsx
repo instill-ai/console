@@ -294,7 +294,7 @@ const CreateNewModelFlow: FC = () => {
             <TextField
               id="modelId"
               name="id"
-              label="Name"
+              label="Id"
               additionalMessageOnLabel={null}
               description="Pick a name to help you identify this source in Instill"
               value={values.id}
