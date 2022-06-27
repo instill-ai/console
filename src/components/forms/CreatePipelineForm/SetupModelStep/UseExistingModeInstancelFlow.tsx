@@ -21,12 +21,12 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-export type UseExistingModelFlowProps = StepNumberState & {
+export type UseExistingModeInstancelFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
   modelCreated: boolean;
 };
 
-const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
+const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
   modelCreated,
   setStepNumber,
   stepNumber,
@@ -134,12 +134,12 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="text-black text-instill-h3">
-        Select a existing online model
+        Select an existing online model instance
       </h3>
       <SingleSelect
         id="existingModelInstanceName"
         name="model.existing.modelInstanceName"
-        label="Source type"
+        label="Online model instances"
         additionalMessageOnLabel={null}
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
@@ -163,4 +163,4 @@ const UseExistingModelFlow: FC<UseExistingModelFlowProps> = ({
   );
 };
 
-export default UseExistingModelFlow;
+export default UseExistingModeInstancelFlow;

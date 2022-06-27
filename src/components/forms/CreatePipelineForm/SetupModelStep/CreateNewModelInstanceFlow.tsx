@@ -41,14 +41,14 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-// We need to pass modelCreated state to UseExistingModelFlow
+// We need to pass modelCreated state to UseExistingModelInstanceFlow
 
-export type CreateNewModelFlowProps = StepNumberState & {
+export type CreateNewModelInstanceFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
   modelCreated: boolean;
 };
 
-const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
+const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   setStepNumber,
   stepNumber,
   setModelCreated,
@@ -466,4 +466,4 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   );
 };
 
-export default CreateNewModelFlow;
+export default CreateNewModelInstanceFlow;
