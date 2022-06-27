@@ -38,6 +38,8 @@ type CreateModelFormValue = {
   file: Nullable<string>;
   repo: Nullable<string>;
   description: Nullable<string>;
+  gcsBucketPath: Nullable<string>;
+  credentials: Nullable<string>;
 };
 
 const CreateNewModelFlow: FC = () => {
@@ -278,6 +280,7 @@ const CreateNewModelFlow: FC = () => {
           file: null,
           repo: null,
           description: null,
+          gcsBucketPath: null,
         } as CreateModelFormValue
       }
       onSubmit={async (values) => {
@@ -372,6 +375,43 @@ const CreateNewModelFlow: FC = () => {
                   required={true}
                   readOnly={false}
                   disabled={modelSet ? true : false}
+                />
+              </>
+            ) : null}
+            {values.modelDefinition === "artivc" ? (
+              <>
+                <TextField
+                  id="gcsBucketPath"
+                  name="gcsBucketPath"
+                  label="GCS Bucket Path"
+                  additionalMessageOnLabel={null}
+                  description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
+                  value={values.gcsBucketPath}
+                  error={errors.gcsBucketPath || null}
+                  additionalOnChangeCb={null}
+                  disabled={false}
+                  readOnly={false}
+                  required={true}
+                  placeholder=""
+                  type="text"
+                  autoComplete="off"
+                />
+                <TextArea
+                  id="credentials"
+                  name="credentials"
+                  label="Credentials JSON"
+                  additionalMessageOnLabel={null}
+                  description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
+                  value={values.credentials}
+                  error={errors.credentials || null}
+                  additionalOnChangeCb={null}
+                  disabled={false}
+                  readOnly={false}
+                  required={false}
+                  autoComplete="off"
+                  placeholder=""
+                  enableCounter={false}
+                  counterWordLimit={0}
                 />
               </>
             ) : null}
