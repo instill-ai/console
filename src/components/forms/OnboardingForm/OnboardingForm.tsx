@@ -177,7 +177,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                   ? user?.newsletter_subscription
                   : false
               }
-              description="eceive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
+              description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
               error={formik.errors.newsletterSubscription || null}
               additionalOnChangeCb={null}
             />
