@@ -154,13 +154,13 @@ const CreateNewModelFlow: FC = () => {
         },
       });
     } else {
-      if (!values.id || !values.description || !values.file) {
+      if (!values.id || !values.file) {
         return;
       }
 
       const payload: CreateLocalModelPayload = {
         id: values.id,
-        desctiption: values.description,
+        desctiption: values.description ? values.description : "",
         model_definition: "model-definitions/local",
         content: values.file,
       };
@@ -196,7 +196,7 @@ const CreateNewModelFlow: FC = () => {
   // #                                                                 #
   // ###################################################################
 
-  const modelInstances = useModelInstances(newModel ? newModel.id : null);
+  const modelInstances = useModelInstances(newModel ? newModel.name : null);
   const modelInstanceOptions = useMemo(() => {
     if (!modelInstances.isSuccess) return [];
 
