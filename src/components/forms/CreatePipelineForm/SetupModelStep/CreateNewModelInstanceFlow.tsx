@@ -134,11 +134,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       return true;
     }
 
-    if (
-      !values.model.new.file ||
-      !values.model.new.id ||
-      !values.model.new.description
-    ) {
+    if (!values.model.new.file || !values.model.new.id) {
       return false;
     }
     return true;
@@ -379,7 +375,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             additionalOnChangeCb={null}
             disabled={false}
             readOnly={false}
-            required={true}
+            required={false}
             autoComplete="off"
             placeholder=""
             enableCounter={false}
