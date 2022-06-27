@@ -165,7 +165,7 @@ const CreateDestinationForm: FC = () => {
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             {/* <TextField
               name="id"
-              label="Name"
+              label="Id"
               description="Pick a name to help you identify this destination in Instill"
               disabled={allSyncDestinationCreated ? true : false}
               readOnly={false}

@@ -41,14 +41,14 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-// We need to pass modelCreated state to UseExistingModelFlow
+// We need to pass modelCreated state to UseExistingModelInstanceFlow
 
-export type CreateNewModelFlowProps = StepNumberState & {
+export type CreateNewModelInstanceFlowProps = StepNumberState & {
   setModelCreated: Dispatch<SetStateAction<boolean>>;
   modelCreated: boolean;
 };
 
-const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
+const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   setStepNumber,
   stepNumber,
   setModelCreated,
@@ -319,7 +319,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
       <TextField
         id="modelId"
         name="model.new.id"
-        label="Name"
+        label="id"
         additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.model.new.id}
@@ -429,7 +429,7 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
           <SingleSelect
             id="modelInstanceName"
             name="model.new.modelInstanceName"
-            label="Source type"
+            label="Model instances"
             additionalMessageOnLabel={null}
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}
@@ -466,4 +466,4 @@ const CreateNewModelFlow: FC<CreateNewModelFlowProps> = ({
   );
 };
 
-export default CreateNewModelFlow;
+export default CreateNewModelInstanceFlow;

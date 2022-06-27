@@ -147,7 +147,7 @@ const CreateSourceForm: FC = () => {
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             {/* <TextField
               name="id"
-              label="Name"
+              label="id"
               description="Pick a name to help you identify this source in Instill"
               disabled={allSyncSourceCreated ? true : false}
               readOnly={false}

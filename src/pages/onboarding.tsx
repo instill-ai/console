@@ -47,7 +47,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
   return (
     <PageContentContainer>
       <PageTitle
-        title="Welcome to world&lsquo;s first AI-integrated pipeline dashboard"
+        title="Welcome to VDP console"
         breadcrumbs={["Onboarding"]}
         enableButton={false}
         marginBottom="mb-10"
