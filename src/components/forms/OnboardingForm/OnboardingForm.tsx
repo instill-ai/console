@@ -187,7 +187,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               position="ml-auto"
               onClickHandler={null}
             >
-              Start∏
+              Start
             </PrimaryButton>
           </FormBase>
         );
