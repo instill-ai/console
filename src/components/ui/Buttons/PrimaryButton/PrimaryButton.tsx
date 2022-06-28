@@ -12,6 +12,9 @@ export type PrimaryButtonProps = Omit<
   | "borderSize"
   | "borderColor"
   | "disabledBorderColor"
+  | "hoveredBgColor"
+  | "hoveredTextColor"
+  | "hoveredBorderColor"
 >;
 
 const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
@@ -25,9 +28,12 @@ const PrimaryButton: FC<PrimaryButtonProps> = (props) => {
       width={null}
       borderSize={null}
       borderColor={null}
+      hoveredBorderColor={null}
       disabledBorderColor={null}
       bgColor="bg-instillBlue50"
+      hoveredBgColor="hover:bg-instillBlue80"
       textColor="text-instillGrey05"
+      hoveredTextColor="hover:text-instillBlue10"
       disabledBgColor="bg-instillGrey15"
       disabledTextColor="text-instillGrey50"
       padding="px-5 py-2.5"
