@@ -29,10 +29,13 @@ const CollapseSidebarButton: FC<CollapseSidebarButtonProps> = (props) => {
       borderSize={null}
       borderColor={null}
       disabledBorderColor={null}
+      hoveredBorderColor={null}
       bgColor="bg-instillGrey90"
-      textColor="text-instillGrey05"
+      hoveredBgColor="hover:bg-instillGrey80"
+      textColor={null}
+      hoveredTextColor={null}
       disabledBgColor="bg-instillGrey90"
-      disabledTextColor="text-instillGrey50"
+      disabledTextColor={null}
       padding="p-[3px]"
     >
       {props.isCollapse ? (
@@ -40,14 +43,14 @@ const CollapseSidebarButton: FC<CollapseSidebarButtonProps> = (props) => {
           width="w-[14px]"
           height="h-[14px]"
           position="m-auto"
-          color="fill-instillGrey05"
+          color="fill-instillGrey05 group-hover:fill-instillBlue50"
         />
       ) : (
         <CollapseLeftIcon
           width="w-[14px]"
           height="h-[14px]"
           position="m-auto"
-          color="fill-instillGrey05"
+          color="fill-instillGrey05 group-hover:fill-instillBlue50"
         />
       )}
     </ButtonBase>
