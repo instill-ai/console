@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0-alpha](https://github.com/instill-ai/console/compare/v0.1.0-alpha...v0.2.0-alpha) (2022-06-28)
+
+
+### Features
+
+* let user add backend related env with docker-compose environment ([#62](https://github.com/instill-ai/console/issues/62)) ([507534a](https://github.com/instill-ai/console/commit/507534a7d68b4ccc02f9c930fe230610abe23ca9))
+
+
+### Bug Fixes
+
+* fix create model form error ([#61](https://github.com/instill-ai/console/issues/61)) ([392ee23](https://github.com/instill-ai/console/commit/392ee2315c7037ac69bce12a122b811990c57954))
+* fix various UI issue related to form ([#56](https://github.com/instill-ai/console/issues/56)) ([482cabf](https://github.com/instill-ai/console/commit/482cabf4ccf5731c2d40aa7c9f8f879f71a0ad68))
+
 ## [0.1.0-alpha](https://github.com/instill-ai/console/compare/v0.2.0-alpha...v0.1.0-alpha) (2022-06-26)
 
 
