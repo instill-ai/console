@@ -61,6 +61,39 @@ export const createLocalModelMutation = async (
   }
 };
 
+export type ArtivcConfiguration = {
+  url: string;
+  credential: Record<string, string>;
+};
+
+export type CreateArtivcModelPayload = {
+  id: string;
+  model_definition: string;
+  configuration: ArtivcConfiguration;
+};
+
+export type CreateArtivcModelResponse = {
+  model: Model;
+};
+
+export const createArtivcModelMutation = async (
+  payload: CreateArtivcModelPayload
+) => {
+  try {
+    const { data } = await axios.post<CreateLocalModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
+      {
+        id: payload.id,
+        model_definition: payload.model_definition,
+        configuration: JSON.stringify(payload.configuration),
+      }
+    );
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 export type UpdateModelPayload = Partial<Model> & {
   name: string;
 };

@@ -29,6 +29,8 @@ import type {
   CreateGithubModelResponse,
   CreateLocalModelPayload,
   CreateLocalModelResponse,
+  CreateArtivcModelPayload,
+  CreateArtivcModelResponse,
   UpdateModelPayload,
   UpdateModelResponse,
 } from "./mutations";
@@ -36,6 +38,7 @@ import type {
 import {
   createGithubModelMutation,
   createLocalModelMutation,
+  createArtivcModelMutation,
   updateModelMutation,
   deleteModelMutation,
 } from "./mutations";
@@ -66,6 +69,8 @@ export type {
   UpdateModelResponse,
   DeployModelResponse,
   UnDeployModelResponse,
+  CreateArtivcModelPayload,
+  CreateArtivcModelResponse,
 };
 
 export {
@@ -81,4 +86,5 @@ export {
   deleteModelMutation,
   deployModelInstanceAction,
   udDeployModelInstanceAction,
+  createArtivcModelMutation,
 };
