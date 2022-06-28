@@ -7,11 +7,14 @@ export type ButtonBaseProps = {
   disabled: boolean;
   onClickHandler: Nullable<(values?: any) => any>;
   bgColor: Nullable<string>;
+  hoveredBgColor: Nullable<string>;
   disabledBgColor: Nullable<string>;
   textColor: Nullable<string>;
+  hoveredTextColor: Nullable<string>;
   disabledTextColor: Nullable<string>;
   borderSize: Nullable<string>;
   borderColor: Nullable<string>;
+  hoveredBorderColor: Nullable<string>;
   disabledBorderColor: Nullable<string>;
   position: Nullable<string>;
   dataFlag?: Nullable<string | number>;
@@ -21,10 +24,12 @@ export type ButtonBaseProps = {
 
 const ButtonBase: FC<ButtonBaseProps> = ({
   bgColor,
+  hoveredBgColor,
   disabled,
   disabledBgColor,
   disabledTextColor,
   textColor,
+  hoveredTextColor,
   onClickHandler,
   position,
   type,
@@ -34,6 +39,7 @@ const ButtonBase: FC<ButtonBaseProps> = ({
   width,
   borderSize,
   borderColor,
+  hoveredBorderColor,
   disabledBorderColor,
 }) => {
   return (
@@ -43,11 +49,18 @@ const ButtonBase: FC<ButtonBaseProps> = ({
       type={type}
       data-flag={dataFlag}
       className={cn(
-        "rounded-[1px]",
+        "group rounded-[1px]",
         borderSize,
         disabled
           ? cn(disabledBgColor, disabledTextColor, disabledBorderColor)
-          : cn(bgColor, textColor, borderColor),
+          : cn(
+              bgColor,
+              hoveredBgColor,
+              textColor,
+              hoveredTextColor,
+              borderColor,
+              hoveredBorderColor
+            ),
         position,
         padding,
         width
