@@ -14,9 +14,9 @@ import { CollapseSidebarButton } from "../Buttons";
 const Sidebar: FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const iconColor = "fill-instillGrey30";
-  const iconWidth = "w-[30px]";
-  const iconHeight = "h-[30px]";
-  const iconPosition = isCollapsed ? "m-auto" : "my-auto";
+  const iconWidth = "w-[38px]";
+  const iconHeight = "h-[38px]";
+  const iconPosition = isCollapsed ? "my-auto" : "my-auto";
 
   const tabs = [
     {
@@ -109,7 +109,7 @@ const Sidebar: FC = () => {
   return (
     <div className="sticky top-0 flex h-screen flex-col bg-instillGrey90 pb-5">
       <div className="relative mb-20 py-6">
-        <div className="flex px-6">
+        <div className="flex px-8">
           <Logo
             type={isCollapsed ? "colourLogomark" : "ColourLogomarkWhiteType"}
             width={isCollapsed ? 38 : 182}
