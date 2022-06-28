@@ -19,6 +19,9 @@ const OutlineButton: FC<OutlineButtonProps> = (props) => {
       borderSize={props.borderSize}
       borderColor={props.borderColor}
       disabledBorderColor={props.disabledBorderColor}
+      hoveredBgColor={props.hoveredBgColor}
+      hoveredBorderColor={props.hoveredBorderColor}
+      hoveredTextColor={props.hoveredTextColor}
       padding="px-5 py-2.5"
     >
       {props.children}

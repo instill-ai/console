@@ -1,101 +1,45 @@
 import { FC, useCallback, useState } from "react";
-import {
-  DataDestinationIcon,
-  DataSourceIcon,
-  GearIcon,
-  Logo,
-  ModelIcon,
-  PipelineIcon,
-  ResourceIcon,
-} from "@instill-ai/design-system";
-import Tab from "./Tab";
+import { Logo } from "@instill-ai/design-system";
+import Tab, { TabProps } from "./Tab";
 import { CollapseSidebarButton } from "../Buttons";
+import { useRouter } from "next/router";
+
+type Tab = Omit<TabProps, "isCollapsed" | "isCurrent"> & { id: string };
 
 const Sidebar: FC = () => {
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const iconColor = "fill-instillGrey30";
-  const iconWidth = "w-[38px]";
-  const iconHeight = "h-[38px]";
-  const iconPosition = isCollapsed ? "my-auto" : "my-auto";
 
-  const tabs = [
+  const tabs: Tab[] = [
     {
-      icon: (
-        <PipelineIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-pipleine",
       tabName: "Pipeline",
       link: "/pipelines",
     },
     {
-      icon: (
-        <DataSourceIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-data-source",
       tabName: "Data source",
       link: "/sources",
     },
     {
-      icon: (
-        <ModelIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-model",
       tabName: "Model",
       link: "/models",
     },
     {
-      icon: (
-        <DataDestinationIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-data-destination",
       tabName: "Data destination",
       link: "/destinations",
     },
   ];
 
-  const subTabs = [
+  const subTabs: Tab[] = [
     {
-      icon: (
-        <GearIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-setting",
       tabName: "Setting",
       link: "/setting",
     },
     {
-      icon: (
-        <ResourceIcon
-          color={iconColor}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ),
       id: "sidebar-resources",
       tabName: "Resources",
       link: "/resources",
@@ -105,6 +49,16 @@ const Sidebar: FC = () => {
   const handleCollapseSidebar = useCallback(() => {
     setIsCollapsed((prev) => !prev);
   }, []);
+
+  const determineCurrentTab = useCallback(
+    (link: string) => {
+      if (router.asPath === link) {
+        return true;
+      }
+      return false;
+    },
+    [router.asPath]
+  );
 
   return (
     <div className="sticky top-0 flex h-screen flex-col bg-instillGrey90 pb-5">
@@ -133,8 +87,8 @@ const Sidebar: FC = () => {
               key={tab.id}
               tabName={tab.tabName}
               link={tab.link}
-              icon={tab.icon}
               isCollapsed={isCollapsed}
+              isCurrent={determineCurrentTab(tab.link)}
             />
           ))}
         </div>
@@ -144,8 +98,8 @@ const Sidebar: FC = () => {
               key={tab.id}
               tabName={tab.tabName}
               link={tab.link}
-              icon={tab.icon}
               isCollapsed={isCollapsed}
+              isCurrent={determineCurrentTab(tab.link)}
             />
           ))}
         </div>

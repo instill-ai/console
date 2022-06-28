@@ -145,11 +145,14 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
             disabled={false}
             disabledBgColor="bg-instillGrey15"
             bgColor="bg-white"
+            hoveredBgColor="hover:bg-instillGrey50"
             disabledTextColor="text-instillGrey50"
             textColor="text-instillGrey50"
+            hoveredTextColor="hover:text-instillGrey05"
             width="w-full"
             borderSize="border"
             borderColor="border-instillGrey50"
+            hoveredBorderColor={null}
             disabledBorderColor={null}
             onClickHandler={() => setModalIsOpen(false)}
             position={null}
@@ -161,13 +164,16 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
             disabled={canDeleteResource ? false : true}
             disabledBgColor="bg-instillGrey15"
             bgColor="bg-white"
+            hoveredBgColor="hover:bg-instillRed"
             disabledTextColor="text-instillGrey30"
             textColor={
               canDeleteResource ? "text-instillRed" : "text-instillGrey50"
             }
+            hoveredTextColor="hover:text-instillRed10"
             width="w-full"
             borderSize={canDeleteResource ? "border" : null}
             borderColor="border-instillRed"
+            hoveredBorderColor={null}
             disabledBorderColor={null}
             onClickHandler={handleDeleteResource}
             position={null}
