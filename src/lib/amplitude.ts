@@ -26,6 +26,7 @@ export type AmplitudeEvent =
   | "fill_onboarding_form"
   | "create_local_model"
   | "create_github_model"
+  | "create_artivc_model"
   | "delete_model"
   | "update_model"
   | "deploy_model_instance"
