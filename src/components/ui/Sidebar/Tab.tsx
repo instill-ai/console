@@ -20,7 +20,7 @@ const Tab: FC<TabProps> = ({ icon, tabName, link, isCollapsed }) => {
           }
         )}
       >
-        {icon}
+        <div className="px-1"> {icon}</div>
         {isCollapsed ? null : (
           <p className="my-auto text-base leading-[28px] text-instillGrey30 group-hover:text-instillBlue10">
             {tabName}

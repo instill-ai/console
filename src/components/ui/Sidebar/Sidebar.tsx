@@ -14,8 +14,8 @@ import { CollapseSidebarButton } from "../Buttons";
 const Sidebar: FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const iconColor = "fill-instillGrey30 group-hover:fill-instillBlue10";
-  const iconWidth = "w-[38px]";
-  const iconHeight = "h-[38px]";
+  const iconWidth = "w-[30px]";
+  const iconHeight = "h-[30px]";
   const iconPosition = isCollapsed ? "my-auto" : "my-auto";
 
   const tabs = [
