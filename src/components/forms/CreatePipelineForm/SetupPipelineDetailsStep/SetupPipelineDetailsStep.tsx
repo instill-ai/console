@@ -75,6 +75,14 @@ const SetupPipelineDetailsStep: FC = () => {
       validator.modelIsValid = true;
     }
 
+    // Model - new - artivc
+    if (
+      values.model.new.modelDefinition === "artivc" &&
+      values.model.new.gcsBucketPath
+    ) {
+      validator.modelIsValid = true;
+    }
+
     if (values.model.existing.id) {
       validator.modelIsValid = true;
     }
@@ -109,6 +117,8 @@ const SetupPipelineDetailsStep: FC = () => {
     if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) {
       return;
     }
+
+    console.log(values);
 
     let sourceName: string;
 
