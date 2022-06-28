@@ -15,6 +15,7 @@ export type CollapseSidebarButtonProps = Omit<
   | "disabledBorderColor"
   | "hoveredBgColor"
   | "hoveredTextColor"
+  | "hoveredBorderColor"
 > & {
   isCollapse: boolean;
 };
