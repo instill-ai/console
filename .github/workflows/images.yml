@@ -39,7 +39,11 @@ jobs:
             const no_v_tag = tag.replace('v', '')
             core.setOutput('tag', tag)
             core.setOutput('no_v_tag', no_v_tag)
-            
+
+      - name: Download airbyte icons
+        if: github.event_name == 'release'
+        run: yarn download-airbyte-icons
+
       - name: Build and push (release)
         if: github.event_name == 'release'
         uses: docker/build-push-action@v3
