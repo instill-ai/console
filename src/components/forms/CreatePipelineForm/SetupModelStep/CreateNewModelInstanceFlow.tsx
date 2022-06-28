@@ -25,6 +25,7 @@ import {
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
 import {
+  useCreateArtivcModel,
   useCreateGithubModel,
   useCreateLocalModel,
   useDeployModelInstance,
@@ -33,6 +34,7 @@ import {
 } from "@/services/model";
 import { ModelDefinitionIcon, PrimaryButton } from "@/components/ui";
 import {
+  CreateArtivcModelPayload,
   CreateGithubModelPayload,
   CreateLocalModelPayload,
   Model,
@@ -109,20 +111,10 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   // #                                                                 #
   // ###################################################################
 
-  const createGithubModel = useCreateGithubModel();
-  const createLocalModel = useCreateLocalModel();
-
   const [newModel, setNewModel] = useState<Nullable<Model>>(null);
   const [isSettingModel, setIsSettingModel] = useState(false);
   const [setupModelError, setSetupModelError] =
     useState<Nullable<string>>(null);
-
-  const canDisplayLocalModelFlow = useMemo(() => {
-    if (values.model.new.modelDefinition !== "local") {
-      return false;
-    }
-    return true;
-  }, [values.model.new.modelDefinition]);
 
   const canCreateModel = useMemo(() => {
     if (!values.model.new.modelDefinition || modelCreated) return false;
@@ -134,9 +126,17 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       return true;
     }
 
-    if (!values.model.new.file || !values.model.new.id) {
+    if (values.model.new.modelDefinition === "local") {
+      if (!values.model.new.file || !values.model.new.id) {
+        return false;
+      }
+      return true;
+    }
+
+    if (!values.model.new.gcsBucketPath || !values.model.new.id) {
       return false;
     }
+
     return true;
   }, [
     values.model.new.modelDefinition,
@@ -144,8 +144,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     values.model.new.file,
     values.model.new.description,
     values.model.new.repo,
+    values.model.new.gcsBucketPath,
+    values.model.new.credentials,
     modelCreated,
   ]);
+
+  const createGithubModel = useCreateGithubModel();
+  const createLocalModel = useCreateLocalModel();
+  const createArtivcModel = useCreateArtivcModel();
 
   const handelCreateModel = async () => {
     if (!values.model.new.id) return;
@@ -186,18 +192,16 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           }
         },
       });
-    } else {
-      if (
-        !values.model.new.id ||
-        !values.model.new.description ||
-        !values.model.new.file
-      ) {
+    } else if (values.model.new.modelDefinition === "local") {
+      if (!values.model.new.id || !values.model.new.file) {
         return;
       }
 
       const payload: CreateLocalModelPayload = {
         id: values.model.new.id,
-        desctiption: values.model.new.description,
+        desctiption: values.model.new.description
+          ? values.model.new.description
+          : "",
         model_definition: "model-definitions/local",
         content: values.model.new.file,
       };
@@ -207,6 +211,40 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           setModelCreated(true);
           setNewModel(newModel);
           setIsSettingModel(false);
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            console.log(error);
+            setSetupModelError(error.message);
+          } else {
+            setSetupModelError(
+              "Something went wrong when setting up local model"
+            );
+          }
+        },
+      });
+    } else {
+      if (!values.model.new.gcsBucketPath) return;
+
+      const payload: CreateArtivcModelPayload = {
+        id: values.model.new.id,
+        model_definition: "model-definitions/artivc",
+        configuration: {
+          url: values.model.new.gcsBucketPath,
+          credential: values.model.new.credentials,
+        },
+      };
+
+      createArtivcModel.mutate(payload, {
+        onSuccess: (newModel) => {
+          setModelCreated(true);
+          setNewModel(newModel);
+          setIsSettingModel(false);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_artivc_model", {
+              type: "critical_action",
+            });
+          }
         },
         onError: (error) => {
           if (error instanceof Error) {
@@ -229,9 +267,8 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   // ###################################################################
 
   const [isDeployingModel, setIsDeployingModel] = useState(false);
-  const [deployModelError, setDeployModelError] = useState<
-    string | undefined
-  >();
+  const [deployModelError, setDeployModelError] =
+    useState<Nullable<string>>(null);
 
   const modelInstances = useModelInstances(newModel ? newModel.name : null);
   const modelInstanceOptions = useMemo(() => {
@@ -362,7 +399,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         />
       ) : null}
 
-      {canDisplayLocalModelFlow ? (
+      {values.model.new.modelDefinition === "local" ? (
         <>
           <TextArea
             id="description"
@@ -394,6 +431,43 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             required={true}
             readOnly={false}
             disabled={false}
+          />
+        </>
+      ) : null}
+      {values.model.new.modelDefinition === "artivc" ? (
+        <>
+          <TextField
+            id="gcsBucketPath"
+            name="model.new.gcsBucketPath"
+            label="GCS Bucket Path"
+            additionalMessageOnLabel={null}
+            description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
+            value={values.model.new.gcsBucketPath}
+            error={errors.model?.new?.gcsBucketPath || null}
+            additionalOnChangeCb={null}
+            disabled={false}
+            readOnly={false}
+            required={true}
+            placeholder=""
+            type="text"
+            autoComplete="off"
+          />
+          <TextArea
+            id="credentials"
+            name="model.new.credentials"
+            label="Credentials JSON"
+            additionalMessageOnLabel={null}
+            description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
+            value={values.model.new.credentials}
+            error={errors.model?.new?.credentials || null}
+            additionalOnChangeCb={null}
+            disabled={false}
+            readOnly={false}
+            required={false}
+            autoComplete="off"
+            placeholder=""
+            enableCounter={false}
+            counterWordLimit={0}
           />
         </>
       ) : null}

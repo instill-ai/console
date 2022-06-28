@@ -1,5 +1,6 @@
 import useCreateGithubModel from "./useCreateGithubModel";
 import useCreateLocalModel from "./useCreateLocalModel";
+import useCreateArtivcModel from "./useCreateArtivcModel";
 import useDeployModelInstance from "./useDeployModelInstance";
 import useModel from "./useModel";
 import useModelDefinition from "./useModelDefinition";
@@ -18,6 +19,7 @@ import useUnDeployModelInstance from "./useUnDeployModelInstance";
 export {
   useCreateGithubModel,
   useCreateLocalModel,
+  useCreateArtivcModel,
   useDeployModelInstance,
   useModel,
   useModelDefinition,

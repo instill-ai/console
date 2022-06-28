@@ -60,6 +60,8 @@ type NewModel = {
   file: Nullable<string>;
   repo: Nullable<string>;
   description: Nullable<string>;
+  gcsBucketPath: Nullable<string>;
+  credentials: Nullable<string>;
 };
 
 type Model = {
@@ -102,6 +104,8 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
               file: null,
               description: null,
               repo: null,
+              gcsBucketPath: null,
+              credentials: null,
             },
             existing: {
               id: null,

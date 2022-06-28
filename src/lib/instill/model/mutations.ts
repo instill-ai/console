@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import axios from "axios";
 import { Model } from "./types";
 
@@ -53,6 +54,44 @@ export const createLocalModelMutation = async (
         headers: {
           "Content-Type": "multipart/form-data",
         },
+      }
+    );
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type ArtivcConfiguration = {
+  url: string;
+  credential: Nullable<string>;
+};
+
+export type CreateArtivcModelPayload = {
+  id: string;
+  model_definition: string;
+  configuration: ArtivcConfiguration;
+};
+
+export type CreateArtivcModelResponse = {
+  model: Model;
+};
+
+export const createArtivcModelMutation = async (
+  payload: CreateArtivcModelPayload
+) => {
+  try {
+    const { data } = await axios.post<CreateLocalModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      {
+        id: payload.id,
+        model_definition: payload.model_definition,
+        configuration: JSON.stringify({
+          url: payload.configuration.url,
+          credential: payload.configuration.credential
+            ? payload.configuration.credential
+            : undefined,
+        }),
       }
     );
     return Promise.resolve(data.model);
