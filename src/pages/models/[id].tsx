@@ -31,13 +31,13 @@ import {
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
+  TestModelInstanceForm,
 } from "@/components/forms";
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import TestModelInstanceForm from "@/components/forms/TestModelInstanceForm/TestModelInstanceForm";
 
 interface GetLayOutProps {
   page: ReactElement;

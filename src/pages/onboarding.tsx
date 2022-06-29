@@ -4,7 +4,7 @@ import { parse } from "cookie";
 import axios from "axios";
 
 import { PageTitle } from "@/components/ui";
-import OnboardingForm from "@/components/forms/OnboardingForm";
+import { OnboardingForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
 
