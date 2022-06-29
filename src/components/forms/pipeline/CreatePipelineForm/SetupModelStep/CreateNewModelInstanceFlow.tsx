@@ -19,7 +19,7 @@ import {
   TextArea,
   TextField,
   UploadFileField,
-} from "../../../formik";
+} from "@/components/formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,

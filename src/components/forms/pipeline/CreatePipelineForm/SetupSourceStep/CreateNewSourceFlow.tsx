@@ -3,8 +3,8 @@ import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
-import { SingleSelect, TextField } from "../../../formik";
-import { mockAsyncDataConnectionOptions } from "../../MockData";
+import { SingleSelect, TextField } from "@/components/formik";
+import { mockAsyncDataConnectionOptions } from "../../../MockData";
 import {
   StepNumberState,
   CreatePipelineFormValues,

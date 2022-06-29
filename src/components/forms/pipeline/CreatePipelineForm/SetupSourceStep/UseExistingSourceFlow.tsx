@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useMemo } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { SingleSelect } from "../../../formik";
+import { SingleSelect } from "@/components/formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,

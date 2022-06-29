@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 import { FormVerticalDividers } from "@/components/ui";
-import { FormikStep } from "../../../formik";
+import { FormikStep } from "@/components/formik";
 import { StepNumberState } from "../CreatePipelineForm";
 import CreateNewModelInstanceFlow from "./CreateNewModelInstanceFlow";
 import UseExistingModeInstancelFlow from "./UseExistingModeInstancelFlow";

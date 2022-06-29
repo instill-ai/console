@@ -4,7 +4,12 @@ import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
-import { TextArea, TextField, ToggleField, FormikStep } from "../../../formik";
+import {
+  TextArea,
+  TextField,
+  ToggleField,
+  FormikStep,
+} from "@/components/formik";
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";

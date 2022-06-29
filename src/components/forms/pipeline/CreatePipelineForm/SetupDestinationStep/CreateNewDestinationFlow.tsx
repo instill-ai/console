@@ -2,7 +2,6 @@ import { FC, useState, useEffect, useMemo } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
-import { SingleSelect, TextField } from "../../../formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,
@@ -15,6 +14,7 @@ import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { SingleSelect, TextField } from "@/components/formik";
 
 export type CreateNewDestinationFlowProps = StepNumberState;
 

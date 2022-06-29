@@ -7,7 +7,7 @@ import {
   FormVerticalDividers,
   PrimaryButton,
 } from "@/components/ui";
-import { SingleSelect, FormikStep } from "../../../formik";
+import { SingleSelect, FormikStep } from "@/components/formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,

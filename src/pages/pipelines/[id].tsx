@@ -9,7 +9,7 @@ import {
   PipelineModeLabel,
   PageTitle,
 } from "@/components/ui";
-import ConfigurePipelineForm from "@/components/forms/ConfigurePipelineForm";
+import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 
@@ -96,7 +96,7 @@ const PipelineDetailsPage: FC & {
         isLoading={false}
         marginBottom="mb-10"
       />
-      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
+      <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
       <ConfigurePipelineForm
         pipeline={pipeline.isSuccess ? pipeline.data : null}
         marginBottom={null}

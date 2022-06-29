@@ -6,7 +6,7 @@ import {
   SyncIcon,
 } from "@instill-ai/design-system";
 
-import { SingleSelect, FormikStep } from "../../../formik";
+import { SingleSelect, FormikStep } from "@/components/formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,

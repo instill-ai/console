@@ -11,7 +11,7 @@ import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
-import { SingleSelect } from "../../../formik";
+import { SingleSelect } from "@/components/formik";
 import {
   StepNumberState,
   CreatePipelineFormValues,

@@ -17,7 +17,7 @@ export type ConfigurePipelineFormProps = {
   marginBottom: Nullable<string>;
 };
 
-type ConfigurePipelineFormValue = {
+export type ConfigurePipelineFormValue = {
   description: Nullable<string>;
   state: Nullable<PipelineState>;
 };
