@@ -19,7 +19,7 @@ export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
 };
 
-type ConfigureSourceFormValue = {
+export type ConfigureSourceFormValue = {
   sourceDefinition: Nullable<string>;
 };
 
