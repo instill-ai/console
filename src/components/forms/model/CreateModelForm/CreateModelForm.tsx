@@ -13,7 +13,7 @@ import {
   TextArea,
   TextField,
   UploadFileField,
-} from "../../formik";
+} from "../../../formik";
 import {
   useCreateArtivcModel,
   useCreateGithubModel,
@@ -33,7 +33,7 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-type CreateModelFormValue = {
+export type CreateModelFormValue = {
   id: Nullable<string>;
   modelDefinition: Nullable<string>;
   modelInstanceId: Nullable<string>;

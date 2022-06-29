@@ -15,7 +15,7 @@ export type ConfigureModelFormProps = {
   marginBottom: Nullable<string>;
 };
 
-type ConfigureModelFormValue = {
+export type ConfigureModelFormValue = {
   description: Nullable<string>;
 };
 

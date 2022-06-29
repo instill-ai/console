@@ -10,7 +10,7 @@ export type ConfigureModelInstanceFormProps = {
   marginBottom: Nullable<string>;
 };
 
-type ConfigureModelInstanceFormValue = {
+export type ConfigureModelInstanceFormValue = {
   repo: Nullable<string>;
   tag: Nullable<string>;
   repoUrl: Nullable<string>;
