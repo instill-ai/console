@@ -6,7 +6,7 @@ import {
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
-import { SingleSelect } from "../../formik/FormikField";
+import { SingleSelect } from "../../../../formik/FormikField";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";

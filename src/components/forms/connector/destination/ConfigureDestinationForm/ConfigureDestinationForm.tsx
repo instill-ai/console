@@ -19,7 +19,7 @@ export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
 };
 
-type ConfigureDestinationFormValue = {
+export type ConfigureDestinationFormValue = {
   definition: Nullable<string>;
 };
 
