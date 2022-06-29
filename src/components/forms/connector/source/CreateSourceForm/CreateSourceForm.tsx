@@ -2,7 +2,7 @@ import { FC, useEffect, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 
-import { SingleSelect } from "../../formik/FormikField";
+import { SingleSelect } from "../../../../formik/FormikField";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
