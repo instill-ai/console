@@ -7,7 +7,12 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
-import { FormBase, SingleSelect, TextField, ToggleField } from "../../formik";
+import {
+  FormBase,
+  SingleSelect,
+  TextField,
+  ToggleField,
+} from "@/components/formik";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -17,7 +22,7 @@ export type OnBoardingFormProps = {
   user?: Partial<User> | null;
 };
 
-type OnboardingFormValue = {
+export type OnboardingFormValue = {
   email: Nullable<string>;
   companyName: Nullable<string>;
   role: Nullable<string>;
