@@ -47,4 +47,4 @@ The solution will be cell-design in normal formik's form's flow. Take `CreatePip
 - We will have a flag for every step's validation like `validModel`, at the end of the flow, it only needs to check the value of this kind of flag.
 - About the complicated form like model definition and destination connection, we generate them from json-schema and compose a block(not a formik container), it's not a `<form></form>` HTML tag, but a pure functional component. It will digest the user's input, validate the input then submit. After the request is complete, it will fill in the return value(most of the cases, it will fill in the identifier of the resource, take connector for example, it may fill in `source-connectors/hi`) and move on.
 
-In this implementation we could have very flexible block that can install in near every form. and we will call each of this kind of component FormCell.
+In this implementation we could have very flexible block that can install in near every form.
