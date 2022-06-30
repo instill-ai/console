@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2-alpha](https://github.com/instill-ai/console/compare/v0.3.1-alpha...v0.3.2-alpha) (2022-06-30)
+
+
+### Bug Fixes
+
+* fix not setup node env and deps issue at image action ([56ec66d](https://github.com/instill-ai/console/commit/56ec66d3af36f9e53e177de623f390aa369f37be))
+* fix version ([#83](https://github.com/instill-ai/console/issues/83)) ([66abfc9](https://github.com/instill-ai/console/commit/66abfc9bee82180f34d2a1163a85f3f84c074887))
+
 ## [0.3.1-alpha](https://github.com/instill-ai/console/compare/v0.3.0-alpha...v0.3.1-alpha) (2022-06-30)
 
 
