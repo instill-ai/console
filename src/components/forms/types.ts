@@ -1,7 +1,7 @@
-import { AirbyteJSONSchema } from "@/lib/airbyte";
+import { AirbyteJsonSchema } from "@/lib/airbyte";
 import type { JSONSchema7TypeName, JSONSchema7Type } from "json-schema";
 
-type FormBaseField = {
+type AirbyteFormBaseField = {
   fieldKey: string;
   path: string;
   isRequired: boolean;
@@ -11,38 +11,43 @@ type FormBaseField = {
   airbyte_hidden?: boolean;
 };
 
-type FormItem = {
+type AirbyteFormItem = {
   _type: "formItem";
   type: JSONSchema7TypeName;
   isSecret?: boolean;
   multiline?: boolean;
-} & FormBaseField &
-  AirbyteJSONSchema;
+} & AirbyteFormBaseField &
+  AirbyteJsonSchema;
 
-type FormGroupItem = {
+type AirbyteFormGroupItem = {
   _type: "formGroup";
-  jsonSchema: AirbyteJSONSchema;
-  properties: FormTree[];
+  jsonSchema: AirbyteJsonSchema;
+  properties: AirbyteFormTree[];
   isLoading?: boolean;
   hasOauth?: boolean;
   default?: JSONSchema7Type;
   examples?: JSONSchema7Type;
-} & FormBaseField;
+} & AirbyteFormBaseField;
 
-type FormConditionItem = {
+type AirbyteFormConditionItem = {
   _type: "formCondition";
-  conditions: Record<string, FormGroupItem | FormBaseField>;
-} & FormBaseField;
+  conditions: Record<string, AirbyteFormGroupItem | AirbyteFormBaseField>;
+} & AirbyteFormBaseField;
 
-type FormObjectArrayItem = {
+type AirbyteFormObjectArrayItem = {
   _type: "objectArray";
-  properties: FormTree;
-} & FormBaseField;
+  properties: AirbyteFormTree;
+} & AirbyteFormBaseField;
 
-type FormTree =
-  | FormGroupItem
-  | FormItem
-  | FormConditionItem
-  | FormObjectArrayItem;
+type AirbyteFormTree =
+  | AirbyteFormGroupItem
+  | AirbyteFormItem
+  | AirbyteFormConditionItem
+  | AirbyteFormObjectArrayItem;
 
-export type { FormTree, FormConditionItem, FormGroupItem, FormObjectArrayItem };
+export type {
+  AirbyteFormTree,
+  AirbyteFormConditionItem,
+  AirbyteFormGroupItem,
+  AirbyteFormObjectArrayItem,
+};
