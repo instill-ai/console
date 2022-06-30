@@ -27,6 +27,7 @@ import {
   ModelInstanceTaskLabel,
   PipelinesTable,
   PageTitle,
+  ModelInstanceReadmeCard,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
@@ -311,6 +312,7 @@ const ModelDetailsPage: FC & {
       <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
       {modelInstances.isLoading ? null : selectedModelInstances ? (
         <>
+          <ModelInstanceReadmeCard marginBottom="mb-5" />
           <ConfigureModelInstanceForm
             modelInstance={selectedModelInstances}
             marginBottom="mb-10"
