@@ -23,6 +23,8 @@ import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
 import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
 import type { PageTitleProps } from "./PageTitle";
 import PageTitle from "./PageTitle";
+import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
+import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
 
 export type {
   StateIndicatorProps,
@@ -34,6 +36,7 @@ export type {
   TableLoadingProgressProps,
   ModelInstanceTaskLabelProps,
   PageTitleProps,
+  ModelInstanceReadmeCardProps,
 };
 
 export {
@@ -52,6 +55,7 @@ export {
   TableLoadingProgress,
   ModelInstanceTaskLabel,
   PageTitle,
+  ModelInstanceReadmeCard,
 };
 
 export * from "./TableHeads";
