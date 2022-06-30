@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0-alpha](https://github.com/instill-ai/console/compare/v0.2.0-alpha...v0.3.0-alpha) (2022-06-30)
+
+
+### Features
+
+* add ModelInstanceReadmeCard ([#76](https://github.com/instill-ai/console/issues/76)) ([28d3927](https://github.com/instill-ai/console/commit/28d3927e256edb27d4dc5bcb51109efe4b069f05))
+* add script to download airbyte's icons ([#66](https://github.com/instill-ai/console/issues/66)) ([96dd22e](https://github.com/instill-ai/console/commit/96dd22e69fd4c2d7054092dc4c4ebc7c7add1ffb))
+* support ArtiVC ([#64](https://github.com/instill-ai/console/issues/64)) ([1f1fd11](https://github.com/instill-ai/console/commit/1f1fd11320997572f89677308408302fc47516be))
+
+
+### Bug Fixes
+
+* fix env var injection ([#74](https://github.com/instill-ai/console/issues/74)) ([8c37895](https://github.com/instill-ai/console/commit/8c3789521c2591fb7b777f5d0c458ddaa02e6dba))
+* fix missing title and typo when deploy model instance ([#75](https://github.com/instill-ai/console/issues/75)) ([33e01b9](https://github.com/instill-ai/console/commit/33e01b911bdcdf5bbc5de7257e5900c21d6e79f2))
+* fix model instance task parsing issue ([#77](https://github.com/instill-ai/console/issues/77)) ([bac5eb0](https://github.com/instill-ai/console/commit/bac5eb0afa7b75583d4045504a21047309f7246a))
+* fix sidebar style ([#68](https://github.com/instill-ai/console/issues/68)) ([63d2463](https://github.com/instill-ai/console/commit/63d24632de34818700737d87d75654f37d094fe0))
+
 ## [0.2.0-alpha](https://github.com/instill-ai/console/compare/v0.1.0-alpha...v0.2.0-alpha) (2022-06-28)
 
 
