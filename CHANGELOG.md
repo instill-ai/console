@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0-alpha](https://github.com/instill-ai/console/compare/v0.3.1-alpha...v0.4.0-alpha) (2022-06-30)
+
+
+### Features
+
+* setup node and install deps ([#80](https://github.com/instill-ai/console/issues/80)) ([06d41cb](https://github.com/instill-ai/console/commit/06d41cb7069493e0b2d0a62f335d8a3e66cfa5b9))
+
 ## [0.3.1-alpha](https://github.com/instill-ai/console/compare/v0.3.0-alpha...v0.3.1-alpha) (2022-06-30)
 
 
