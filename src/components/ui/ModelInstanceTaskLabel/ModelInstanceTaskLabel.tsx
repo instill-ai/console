@@ -4,6 +4,7 @@ import cn from "clsx";
 import { Nullable } from "@/types/general";
 import {
   ImageClassificationIcon,
+  KeypointDetectionIcon,
   ObjectDetectionIcon,
 } from "@instill-ai/design-system";
 
@@ -26,22 +27,25 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
   };
 
   let modelInstanceTaskIcon: ReactElement;
-  let modelInstanceTaskLabel: string;
+  const taskNameList = task?.split("_");
+  const taskName = taskNameList?.slice(1, taskNameList.length);
+  const modelInstanceTaskLabel = taskName?.join(" ") || "Task not found";
 
   switch (task) {
     case "TASK_CLASSIFICATION":
       modelInstanceTaskIcon = <ImageClassificationIcon {...icon} />;
-      modelInstanceTaskLabel = "Classification";
       break;
 
     case "TASK_DETECTION":
       modelInstanceTaskIcon = <ObjectDetectionIcon {...icon} />;
-      modelInstanceTaskLabel = "Detection";
+      break;
+
+    case "TASK_KEYPOINT":
+      modelInstanceTaskIcon = <KeypointDetectionIcon {...icon} />;
       break;
 
     default:
       modelInstanceTaskIcon = <div className={cn(icon.width, icon.height)} />;
-      modelInstanceTaskLabel = "Task not found";
       break;
   }
 
@@ -54,7 +58,7 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
       )}
     >
       {modelInstanceTaskIcon}
-      <p className="my-auto flex text-instillGrey90 text-instill-small">
+      <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
         {modelInstanceTaskLabel}
       </p>
     </div>
