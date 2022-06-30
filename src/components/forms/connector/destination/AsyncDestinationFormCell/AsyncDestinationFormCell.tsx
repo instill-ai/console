@@ -42,6 +42,36 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
     );
   }, [cellState?.destinationDefinition, destinationOptions]);
 
+  const selectedDestinationProperties = useMemo(() => {
+    if (!selectedDestinationOption || !destinationDefinitions.isSuccess) {
+      return null;
+    }
+
+    const selectedDestination = destinationDefinitions.data.find(
+      (e) => e.name === selectedDestinationOption.value
+    );
+
+    if (!selectedDestination) {
+      return null;
+    }
+
+    const properties =
+      selectedDestination.connector_definition.spec.connection_specification;
+
+    const propertyList = [];
+
+    for (const [key, value] of Object.entries(properties)) {
+      propertyList.push({
+        ...value,
+        type: value.type,
+        description: value.description,
+        order: value.order,
+        tutle: value.title,
+        key: key,
+      });
+    }
+  }, [selectedDestinationOption]);
+
   return (
     <Fragment>
       <BasicSingleSelect
