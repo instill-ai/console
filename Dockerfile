@@ -14,7 +14,17 @@ RUN yarn install --frozen-lockfile
 FROM --platform=$BUILDPLATFORM node:16-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+
+# You need to make sure the .env doesn't have senesitive data. Please store sensitive data at .env.local.
+# Pay attention about the duplicated env variables, nextjs will always prioritize the .env file. Store the env variables
+# at .env.local if they will conflict with the same variables on production, e.g. some variables comes from docker-compose.
+
 COPY . .
+
+# We use .env to load env variables for Jest, please move your important variable into .env.production, we will remove .env
+# on production
+
+RUN rm -rf ./.env
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -47,9 +57,8 @@ RUN adduser --system --uid 1001 nextjs
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
-# COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/.env.production ./.env.production
+# COPY --from=builder /app/.env.production ./.env.production
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size 
