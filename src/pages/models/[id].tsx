@@ -315,6 +315,7 @@ const ModelDetailsPage: FC & {
             modelInstance={selectedModelInstances}
             marginBottom="mb-10"
           />
+          <h3 className="mb-5 text-black text-instill-h3">Testings</h3>
           <TestModelInstanceForm modelInstance={selectedModelInstances} />
         </>
       ) : null}
