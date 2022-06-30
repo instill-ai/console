@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3-alpha](https://github.com/instill-ai/console/compare/v0.3.2-alpha...v0.3.3-alpha) (2022-06-30)
+
+
+### Bug Fixes
+
+* fix condition issue when installing deps at image action ([#84](https://github.com/instill-ai/console/issues/84)) ([03b32b9](https://github.com/instill-ai/console/commit/03b32b9c63e7620d28a671aefdd9fee7b22e1ab0))
+
 ## [0.3.2-alpha](https://github.com/instill-ai/console/compare/v0.3.1-alpha...v0.3.2-alpha) (2022-06-30)
 
 
