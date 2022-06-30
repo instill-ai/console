@@ -51,8 +51,8 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfileme == 'release'
+        if: github.event_name == 'release'
+        run: yarn install --frozen-lockfile
 
       - name: Download airbyte icons
         if: github.event_name == 'release'
