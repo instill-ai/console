@@ -14,6 +14,7 @@ import { Nullable } from "@/types/general";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import AsyncDestinationFormCell from "../AsyncDestinationFormCell";
 
 export type CreateDestinationFormValues = {
   id: string;
@@ -190,6 +191,7 @@ const CreateDestinationForm: FC = () => {
               description="Setup Guide"
               menuPlacement="auto"
             />
+            <AsyncDestinationFormCell />
             <div className="flex flex-row">
               {createDestinationError ? (
                 <BasicProgressMessageBox width="w-[216px]" status="error">
