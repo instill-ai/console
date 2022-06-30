@@ -488,7 +488,7 @@ const CreateNewModelFlow: FC = () => {
                 <SingleSelect
                   id="modelInstanceId"
                   name="modelInstanceId"
-                  label="Source type"
+                  label="Model Instances"
                   additionalMessageOnLabel={null}
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}
