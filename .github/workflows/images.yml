@@ -41,7 +41,18 @@ jobs:
             core.setOutput('no_v_tag', no_v_tag)
 
       - name: Checkout
-        uses: actions/checkout@v3
+        if: github.event_name == 'release'
+        uses: actions/checkout@3
+
+      - name: Setup node env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          cache: "yarn"
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfileme == 'release'
 
       - name: Download airbyte icons
         if: github.event_name == 'release'
