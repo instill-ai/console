@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# We use this script to replace all the NEXT_PUBLIC_DISABLE_USAGE_COLLECTION env from "NEXT_PUBLIC_DISABLE_USAGE_COLLECTION"
-# to true/false, user could input this variable from docker-compose env config
+# We have built our production bundle with something like NEXT_PUBLIC_...=NEXT_PUBLIC_...
+# Upon build nextjs will replace all the process.env.NEXT_PUBLIC_... with NEXT_PUBLIC_...
+# Then we use this script to replace all NEXT_PUBLIC_... to the desired variable
+
+# Caveat: Because upon the very first time we run this script, it will replace all the NEXT_PUBLIC_... to target value
+# So it won't have any effect you run anytime onward, the script can't recognize what is your desired value, so it 
+# can't dynamic change that for you, in other word, if you change the env variable in docker-compose, you need to re-build 
+# the whole container.
 
 echo "DISABLE_USAGE_COLLECTION=$DISABLE_USAGE_COLLECTION"
 test -n "$DISABLE_USAGE_COLLECTION"
