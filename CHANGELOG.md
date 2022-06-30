@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1-alpha](https://github.com/instill-ai/console/compare/v0.3.0-alpha...v0.3.1-alpha) (2022-06-30)
+
+
+### Bug Fixes
+
+* fix release github action error ([#78](https://github.com/instill-ai/console/issues/78)) ([4bec7e5](https://github.com/instill-ai/console/commit/4bec7e52cedd86cf1b87133c4488382019b8732b))
+
 ## [0.3.0-alpha](https://github.com/instill-ai/console/compare/v0.2.0-alpha...v0.3.0-alpha) (2022-06-30)
 
 
