@@ -19,12 +19,12 @@ export const deletePipeline = async (page: Page, pipelineId: string) => {
   await page.locator("role=dialog >> button:has-text('Delete')").click();
   await Promise.all([
     page.waitForResponse((response) => {
-      if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+      if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
         throw new Error("env not provided");
       }
       return response
         .url()
-        .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+        .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
     }),
   ]);
 };

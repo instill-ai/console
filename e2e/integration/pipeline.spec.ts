@@ -83,12 +83,12 @@ test.describe.serial("Simple sync pipeline with local model", () => {
 
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
     await page.waitForNavigation();
@@ -106,12 +106,12 @@ test.describe.serial("Simple sync pipeline with local model", () => {
     await page.locator("button", { hasText: "Done" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
     await expect(pipelineDescription).toHaveValue("modified");
@@ -127,12 +127,12 @@ test.describe.serial("Simple sync pipeline with local model", () => {
     await page.locator("role=dialog >> button:has-text('Delete')").click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
   });
@@ -217,12 +217,12 @@ test.describe.serial("Simple sync pipeline with github model", () => {
 
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
     await page.waitForNavigation();
@@ -240,12 +240,12 @@ test.describe.serial("Simple sync pipeline with github model", () => {
     await page.locator("button", { hasText: "Done" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
     await expect(pipelineDescription).toHaveValue("modified");
@@ -261,12 +261,12 @@ test.describe.serial("Simple sync pipeline with github model", () => {
     await page.locator("role=dialog >> button:has-text('Delete')").click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL);
       }),
     ]);
     await page.waitForNavigation();
