@@ -82,15 +82,19 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
         <BasicUploadFileField
           id="file"
           label="Upload a file"
-          additionalMessageOnLabel={null}
-          description="Create and upload a zip file that contains all the model files from your computer"
+          additionalMessageOnLabel={
+            modelInstance?.state === "STATE_ONLINE"
+              ? null
+              : "You could only test model when it is online"
+          }
+          description="Upload an image file from your computer to test the model instance"
           error={null}
           onChangeInput={fileOnChangeCb}
           placeholder=""
           uploadButtonText="Upload"
           required={true}
           readOnly={false}
-          disabled={false}
+          disabled={modelInstance?.state === "STATE_ONLINE" ? false : true}
         />
       </div>
       <div className="flex flex-row">
