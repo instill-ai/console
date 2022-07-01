@@ -13,7 +13,7 @@
 - We use `.env` and `dotenv` to digest environment variables.
 - Make sure your `.env` file have following variables:
   - NEXT_PUBLIC_MAIN_URL=http://localhost:3000
-  - NEXT_PUBLIC_MGMT_API_ENDPOINT=http://localhost:8080
+  - NEXT_PUBLIC_MGMT_BACKEND_BASE_URL=http://localhost:8080
   - NEXT_PUBLIC_PIPELINE_API_ENDPOINT=http://localhost:8081
   - NEXT_PUBLIC_CONNECTOR_API_ENDPOINT=http://localhost:8082
   - NEXT_PUBLIC_MODEL_API_ENDPOINT=http://localhost:8083

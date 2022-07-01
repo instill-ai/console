@@ -10,7 +10,7 @@ export const updateLocalUserMutation = async (
 ): Promise<User> => {
   try {
     const { data } = await axios.patch(
-      `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
       payload
     );
 

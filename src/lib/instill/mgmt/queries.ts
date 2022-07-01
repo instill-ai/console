@@ -8,7 +8,7 @@ export type GetUserResponse = {
 export const getUserQuery = async (userName: string): Promise<User> => {
   try {
     const { data } = await axios.get<GetUserResponse>(
-      `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${userName}`
+      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${userName}`
     );
 
     return Promise.resolve(data.user);
