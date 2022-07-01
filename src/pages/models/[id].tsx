@@ -83,14 +83,16 @@ const ModelDetailsPage: FC & {
   useEffect(() => {
     if (!modelInstances.isSuccess) return;
 
-    setSelectedModelInstanceOption(
-      modelInstances.isSuccess
-        ? {
-            value: modelInstances.data[0].id,
-            label: modelInstances.data[0].id,
-          }
-        : null
-    );
+    if (!selectedModelInstanceOption) {
+      setSelectedModelInstanceOption(
+        modelInstances.isSuccess
+          ? {
+              value: modelInstances.data[0].id,
+              label: modelInstances.data[0].id,
+            }
+          : null
+      );
+    }
   }, [modelInstances.isSuccess, modelInstances.data]);
 
   const selectedModelInstances = useMemo(() => {
@@ -177,6 +179,10 @@ const ModelDetailsPage: FC & {
     }
 
     return false;
+  }, [selectedModelInstances]);
+
+  useEffect(() => {
+    setHasErrorWhenChangingModelInstanceState(false);
   }, [selectedModelInstances]);
 
   const handleToggleModelInstanceState = useCallback(() => {
