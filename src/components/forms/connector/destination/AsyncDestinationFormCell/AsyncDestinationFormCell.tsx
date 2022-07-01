@@ -4,6 +4,7 @@ import {
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { useDestinationDefinitions } from "@/services/connector";
+import { airbyteSchemaToAirbyteFormTree } from "@/lib/airbytes/airbyteSchemaToAirbyteFormTree";
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
@@ -42,35 +43,25 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
     );
   }, [cellState?.destinationDefinition, destinationOptions]);
 
-  const selectedDestinationProperties = useMemo(() => {
-    if (!selectedDestinationOption || !destinationDefinitions.isSuccess) {
-      return null;
-    }
+  // const selectedDestinationFromTree = useMemo(() => {
+  //   if (!selectedDestinationOption || !destinationDefinitions.isSuccess) {
+  //     return null;
+  //   }
 
-    const selectedDestination = destinationDefinitions.data.find(
-      (e) => e.name === selectedDestinationOption.value
-    );
+  //   const selectedDestination = destinationDefinitions.data.find(
+  //     (e) => e.name === selectedDestinationOption.value
+  //   );
 
-    if (!selectedDestination) {
-      return null;
-    }
+  //   if (!selectedDestination) {
+  //     return null;
+  //   }
 
-    const properties =
-      selectedDestination.connector_definition.spec.connection_specification;
+  //   const formTree = airbyteSchemaToAirbyteFormTree(
+  //     selectedDestination.connector_definition.spec.connection_specification
+  //   );
 
-    const propertyList = [];
-
-    for (const [key, value] of Object.entries(properties)) {
-      propertyList.push({
-        ...value,
-        type: value.type,
-        description: value.description,
-        order: value.order,
-        tutle: value.title,
-        key: key,
-      });
-    }
-  }, [selectedDestinationOption]);
+  //   console.log(formTree);
+  // }, [selectedDestinationOption]);
 
   return (
     <Fragment>
