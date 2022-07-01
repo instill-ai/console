@@ -50,13 +50,13 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
       return null;
     }
 
-    const selectedDestination = destinationDefinitions.data.find(
-      (e) => e.name === selectedDestinationOption.value
-    );
+    //   const selectedDestination = destinationDefinitions.data.find(
+    //     (e) => e.name === selectedDestinationOption.value
+    //   );
 
-    if (!selectedDestination) {
-      return null;
-    }
+    //   if (!selectedDestination) {
+    //     return null;
+    //   }
 
     const formTree = airbyteSchemaToAirbyteFormTree(
       selectedDestination.connector_definition.spec.connection_specification
