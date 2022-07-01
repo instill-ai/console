@@ -1,4 +1,9 @@
-import type { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import type {
+  JSONSchema7,
+  JSONSchema7Definition,
+  JSONSchema7TypeName,
+  JSONSchema7Type,
+} from "json-schema";
 
 /**
  * This is the official airbyte schema json type they are using in their web-app
@@ -13,12 +18,12 @@ type AirbyteJsonSchemaProps = {
   order?: number;
 };
 
-export type AirbyteJsonSchemaDefinition = AirbyteJsonSchema | boolean;
+type AirbyteJsonSchemaDefinition = AirbyteJsonSchema | boolean;
 
 /**
  * Remaps all {@link JSONSchema7} to Airbyte Json schema
  */
-export type AirbyteJsonSchema = {
+type AirbyteJsonSchema = {
   [Property in keyof JSONSchema7]+?: JSONSchema7[Property] extends boolean
     ? boolean
     : Property extends "properties" | "patternProperties" | "definitions"
@@ -33,3 +38,56 @@ export type AirbyteJsonSchema = {
     ? AirbyteJsonSchemaDefinition | AirbyteJsonSchemaDefinition[]
     : JSONSchema7[Property];
 } & AirbyteJsonSchemaProps;
+
+type AirbyteFormBaseField = {
+  fieldKey: string;
+  path: string;
+  isRequired: boolean;
+  order?: number;
+  title?: string;
+  description?: string;
+  airbyte_hidden?: boolean;
+};
+
+type AirbyteFormItem = {
+  _type: "formItem";
+  type: JSONSchema7TypeName;
+  isSecret?: boolean;
+  multiline?: boolean;
+} & AirbyteFormBaseField &
+  AirbyteJsonSchema;
+
+type AirbyteFormGroupItem = {
+  _type: "formGroup";
+  jsonSchema: AirbyteJsonSchema;
+  properties: AirbyteFormTree[];
+  isLoading?: boolean;
+  hasOauth?: boolean;
+  default?: JSONSchema7Type;
+  examples?: JSONSchema7Type;
+} & AirbyteFormBaseField;
+
+type AirbyteFormConditionItem = {
+  _type: "formCondition";
+  conditions: Record<string, AirbyteFormGroupItem | AirbyteFormBaseField>;
+} & AirbyteFormBaseField;
+
+type AirbyteFormObjectArrayItem = {
+  _type: "objectArray";
+  properties: AirbyteFormTree;
+} & AirbyteFormBaseField;
+
+type AirbyteFormTree =
+  | AirbyteFormGroupItem
+  | AirbyteFormItem
+  | AirbyteFormConditionItem
+  | AirbyteFormObjectArrayItem;
+
+export type {
+  AirbyteFormTree,
+  AirbyteFormConditionItem,
+  AirbyteFormGroupItem,
+  AirbyteFormObjectArrayItem,
+  AirbyteJsonSchemaDefinition,
+  AirbyteJsonSchema,
+};
