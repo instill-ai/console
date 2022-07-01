@@ -172,16 +172,16 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               id="newsletterSubscription"
               name="newsletterSubscription"
               label="Newsletter subscription"
-              value={formik.values.newsletterSubscription || false}
+              value={
+                formik.values.newsletterSubscription ??
+                user?.newsletter_subscription
+                  ? user?.newsletter_subscription ?? false
+                  : false
+              }
               additionalMessageOnLabel={null}
               disabled={false}
               readOnly={false}
               required={true}
-              defaultChecked={
-                user?.newsletter_subscription
-                  ? user?.newsletter_subscription
-                  : false
-              }
               description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
               error={formik.errors.newsletterSubscription || null}
               additionalOnChangeCb={null}

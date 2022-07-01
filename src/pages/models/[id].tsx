@@ -287,9 +287,6 @@ const ModelDetailsPage: FC & {
           onChangeInput={handleToggleModelInstanceState}
           label="State"
           additionalMessageOnLabel={null}
-          defaultChecked={
-            selectedModelInstances?.state === "STATE_ONLINE" ? true : false
-          }
           error={
             hasErrorWhenChangingModelInstanceState
               ? "There is an error. Please try again."
