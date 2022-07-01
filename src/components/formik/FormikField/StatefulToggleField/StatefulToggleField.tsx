@@ -16,7 +16,6 @@ const StatefulToggleFieldWrapper: FC<ToggleFieldProps & FieldProps> = ({
   field,
   form,
   id,
-  defaultChecked,
   additionalOnChangeCb,
   additionalMessageOnLabel,
   error,
@@ -35,7 +34,6 @@ const StatefulToggleFieldWrapper: FC<ToggleFieldProps & FieldProps> = ({
       id={id}
       error={error}
       onChangeInput={onChange}
-      defaultChecked={defaultChecked}
       additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );
@@ -51,7 +49,6 @@ const StatefulToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   label,
   additionalOnChangeCb,
   additionalMessageOnLabel,
-  defaultChecked,
   error,
   state,
 }) => {
@@ -67,7 +64,6 @@ const StatefulToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       additionalMessageOnLabel={additionalMessageOnLabel}
-      defaultChecked={defaultChecked}
       error={error}
       state={state}
     />

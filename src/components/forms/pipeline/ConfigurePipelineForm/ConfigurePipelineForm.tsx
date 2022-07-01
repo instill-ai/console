@@ -107,8 +107,15 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       switch (values.state) {
         case "STATE_ACTIVE":
           return true;
-        default:
+        case "STATE_ERROR":
           return false;
+        case "STATE_UNSPECIFIED":
+          return false;
+        case "STATE_INACTIVE":
+          return false;
+        default:
+          // If the values.state is null or undefinded
+          return true;
       }
     },
     []
@@ -179,7 +186,6 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   label="State"
                   value={determinePipelineState(values)}
                   additionalMessageOnLabel={null}
-                  defaultChecked={true}
                   error={errors?.state || null}
                   additionalOnChangeCb={null}
                   disabled={true}

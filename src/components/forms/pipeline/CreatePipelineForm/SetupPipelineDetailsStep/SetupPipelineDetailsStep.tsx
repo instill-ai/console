@@ -261,7 +261,6 @@ const SetupPipelineDetailsStep: FC = () => {
           name="pipeline.state"
           label="Pipeline state"
           additionalMessageOnLabel={null}
-          defaultChecked={true}
           value={true}
           error={errors.pipeline?.state || null}
           additionalOnChangeCb={null}
