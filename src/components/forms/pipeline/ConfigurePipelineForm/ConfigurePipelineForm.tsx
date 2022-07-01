@@ -172,7 +172,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
         {({ values, errors, submitForm }) => {
           return (
             <FormBase marginBottom={marginBottom} gapY={null} padding={null}>
-              <div className="mb-[60px] flex flex-col gap-y-5">
+              <div className="mb-10 flex flex-col gap-y-5">
                 <ToggleField
                   id="pipelineState"
                   name="state"
@@ -204,6 +204,16 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   enableCounter={false}
                   counterWordLimit={0}
                 />
+              </div>
+              <div className="mb-[60px] flex flex-col">
+                <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
+                <p className="text-black text-instill-body">
+                  Please refer to the{" "}
+                  <a href="#" className="text-instillBlue50">
+                    guide
+                  </a>{" "}
+                  about how to trigger the pipeline
+                </p>
               </div>
               <div className="mb-10 flex flex-row">
                 <PrimaryButton
