@@ -19,7 +19,7 @@ export const listDestinationDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListDestinationDefinitionsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`
     );
     return Promise.resolve(data.destination_connector_definitions);
   } catch (err) {
@@ -36,7 +36,7 @@ export const getDestinationDefinitionQuery = async (
 ) => {
   try {
     const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}`
     );
 
     return Promise.resolve(data.destination_connector_definition);
@@ -60,7 +60,7 @@ export const getDestinationQuery = async (
 ): Promise<Destination> => {
   try {
     const { data } = await axios.get<GetDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector);
@@ -78,7 +78,7 @@ export type ListDestinationsResponse = {
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
     const { data } = await axios.get<ListDestinationsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connectors);

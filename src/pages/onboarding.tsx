@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const cookieList = parse(cookies);
     if (cookieList["instill-ai-user-onboarded"]) {
       const { data } = await axios.get<GetUserResponse>(
-        `${process.env.NEXT_PUBLIC_MGMT_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
+        `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
       );
       user = data.user;
     } else {

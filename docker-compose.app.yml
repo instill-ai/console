@@ -10,8 +10,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - DISABLE_USAGE_COLLECTION=false
-      - MGMT_API_ENDPOINT=http://localhost:8080
-      - PIPELINE_API_ENDPOINT=http://localhost:8081
-      - CONNECTOR_API_ENDPOINT=http://localhost:8082
-      - MODEL_API_ENDPOINT=http://localhost:8083
+      - MGMT_BACKEND_BASE_URL=http://localhost:8080
+      - PIPELINE_BACKEND_BASE_URL=http://localhost:8081
+      - CONNECTOR_BACKEND_BASE_URL=http://localhost:8082
+      - MODEL_BACKEND_BASE_URL=http://localhost:8083
       - API_VERSION=v1alpha

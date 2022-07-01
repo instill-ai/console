@@ -19,7 +19,7 @@ export const createPipelineMutation = async (
 ): Promise<PipelineWithRawRecipe> => {
   try {
     const { data } = await axios.post<CreatePipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines`,
+      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines`,
       payload
     );
     return Promise.resolve(data.pipeline);
@@ -42,7 +42,7 @@ export const updatePipelineMutation = async (
 ) => {
   try {
     const { data } = await axios.patch<UpdatePipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
       payload
     );
     return Promise.resolve(data.pipeline);
@@ -54,7 +54,7 @@ export const updatePipelineMutation = async (
 export const deletePipelineMutation = async (pipelineName: string) => {
   try {
     await axios.delete(
-      `${process.env.NEXT_PUBLIC_PIPELINE_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}`
+      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}`
     );
   } catch (err) {
     return Promise.reject(err);
