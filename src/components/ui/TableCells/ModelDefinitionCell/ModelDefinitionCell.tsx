@@ -26,9 +26,11 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
   const iconColor = "fill-instillGrey90";
 
   let definitionIcon: ReactElement;
+  let definitionLabel: string;
 
   switch (modelDefinition) {
     case "model-definitions/local": {
+      definitionLabel = "Local";
       definitionIcon = (
         <LocalUploadIcon
           width={iconWidth}
@@ -40,6 +42,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
       break;
     }
     case "model-definitions/github": {
+      definitionLabel = "GitHub";
       definitionIcon = (
         <GitHubIcon
           width={iconWidth}
@@ -51,6 +54,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
       break;
     }
     case "model-definitions/artivc": {
+      definitionLabel = "ArtiVC";
       definitionIcon = (
         <ArtiVcIcon
           width={iconWidth}
@@ -63,6 +67,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
     }
     default: {
       definitionIcon = <div className={cn(iconWidth, iconHeight)} />;
+      definitionLabel = modelDefinition.split("/")[0];
       break;
     }
   }
@@ -77,7 +82,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
       <div className={cn("flex flex-row gap-x-2", width)}>
         {definitionIcon}
         <p className="my-auto flex text-instillGrey90 text-instill-body">
-          {modelDefinition === "model-definitions/local" ? "Local" : "GitHub"}
+          {definitionLabel}
         </p>
       </div>
     </CellBase>
