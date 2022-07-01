@@ -3,11 +3,11 @@
  * ref: https://github.com/airbytehq/airbyte/blob/29ce34f1cee4878a6e9368890d87820c0d379844/airbyte-webapp/src/core/jsonSchema/schemaToUiWidget.ts
  */
 
-import { AirbyteFormTree } from "@/components/forms/types";
 import type {
   AirbyteJsonSchema,
   AirbyteJsonSchemaDefinition,
-} from "@/lib/airbyte";
+  AirbyteFormTree,
+} from "./types";
 
 export const airbyteSchemaToAirbyteFormTree = (
   jsonSchema: AirbyteJsonSchemaDefinition,
