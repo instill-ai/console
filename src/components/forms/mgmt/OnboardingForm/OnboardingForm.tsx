@@ -51,20 +51,11 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const validateForm = useCallback((values: OnboardingFormValue) => {
     const errors: OnboardingFormError = {};
 
-    if (!values.email) {
-      errors.email = "Required";
-    } else if (
+    if (
+      values.email &&
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
       errors.email = "Invalid email address";
-    }
-
-    if (!values.companyName) {
-      errors.companyName = "Required";
-    }
-
-    if (!values.role) {
-      errors.role = "Required";
     }
 
     return errors;
@@ -72,10 +63,6 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
 
   const handleSubmit = useCallback(
     (values) => {
-      if (!values.companyName || !values.email || !values.role) {
-        return;
-      }
-
       const token = uuidv4();
 
       const payload: Partial<User> = {
@@ -131,7 +118,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               description="Fill your email address"
               disabled={false}
               readOnly={false}
-              required={true}
+              required={false}
               placeholder=""
               type="email"
               autoComplete="on"
@@ -147,7 +134,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               description="Fill your company name"
               disabled={false}
               readOnly={false}
-              required={true}
+              required={false}
               placeholder=""
               type="text"
               autoComplete="off"
@@ -164,7 +151,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               additionalOnChangeCb={roleOnChangeCb}
               disabled={false}
               readOnly={false}
-              required={true}
+              required={false}
               description={"Setup Guide"}
               menuPlacement="auto"
             />
