@@ -31,7 +31,7 @@ const getSourceHandler = rest.get<
   GetSourceParam,
   GetSourceResponse
 >(
-  `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/:sourceId`,
+  `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/:sourceId`,
   (req, res, ctx) => {
     const { sourceId } = req.params;
     return res(ctx.json(getPredefindedSource(sourceId)));

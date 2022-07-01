@@ -19,7 +19,7 @@ export const listSourceDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListSourceDefinitionsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connector-definitions?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connector-definitions?view=VIEW_FULL`
     );
     return Promise.resolve(data.source_connector_definitions);
   } catch (err) {
@@ -36,7 +36,7 @@ export const getSourceDefinitionQuery = async (
 ): Promise<ConnectorDefinition> => {
   try {
     const { data } = await axios.get<GetSourceDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceDefinitionName}`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceDefinitionName}`
     );
 
     return Promise.resolve(data.source_connector_definition);
@@ -58,7 +58,7 @@ export type GetSourceResponse = {
 export const getSourceQuery = async (sourceName: string): Promise<Source> => {
   try {
     const { data } = await axios.get<GetSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceName}?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connector);
@@ -76,7 +76,7 @@ export type ListSourcesResponse = {
 export const listSourcesQuery = async (): Promise<Source[]> => {
   try {
     const { data } = await axios.get<ListSourcesResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connectors);
