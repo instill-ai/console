@@ -87,7 +87,7 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
               ? null
               : "You could only test model when it is online"
           }
-          description="Create and upload a zip file that contains all the model files from your computer"
+          description="Upload an image file from your computer to test the model instance"
           error={null}
           onChangeInput={fileOnChangeCb}
           placeholder=""
