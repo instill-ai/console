@@ -34,12 +34,12 @@ test.describe.serial("Simple sync pipeline with local model", () => {
     await page.locator("button", { hasText: "Setup new model" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL);
       }),
     ]);
 
@@ -49,12 +49,12 @@ test.describe.serial("Simple sync pipeline with local model", () => {
     await page.locator("button", { hasText: "Deploy" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL);
       }),
     ]);
 
@@ -168,12 +168,12 @@ test.describe.serial("Simple sync pipeline with github model", () => {
     await page.locator("button", { hasText: "Setup new model" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL);
       }),
     ]);
 
@@ -183,12 +183,12 @@ test.describe.serial("Simple sync pipeline with github model", () => {
     await page.locator("button", { hasText: "Deploy" }).click();
     await Promise.all([
       page.waitForResponse((response) => {
-        if (!process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT) {
+        if (!process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL) {
           throw new Error("env not provided");
         }
         return response
           .url()
-          .includes(process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT);
+          .includes(process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL);
       }),
     ]);
 

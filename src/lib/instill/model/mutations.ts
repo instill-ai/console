@@ -17,7 +17,7 @@ export const createGithubModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.post<CreateGithubModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
       payload
     );
     return Promise.resolve(data.model);
@@ -48,7 +48,7 @@ export const createLocalModelMutation = async (
     formData.append("content", payload.content);
 
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
       formData,
       {
         headers: {
@@ -82,7 +82,7 @@ export const createArtivcModelMutation = async (
 ) => {
   try {
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -113,7 +113,7 @@ export const updateModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.patch<UpdateModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
       payload
     );
     return Promise.resolve(data.model);
@@ -125,7 +125,7 @@ export const updateModelMutation = async (
 export const deleteModelMutation = async (modelName: string) => {
   try {
     await axios.delete(
-      `${process.env.NEXT_PUBLIC_MODEL_API_ENDPOINT}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}`
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}`
     );
   } catch (err) {
     return Promise.reject(err);
