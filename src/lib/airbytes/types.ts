@@ -83,20 +83,16 @@ type AirbyteFormTree =
   | AirbyteFormConditionItem
   | AirbyteFormObjectArrayItem;
 
-type AirbyteFormValue = {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | AirbyteFormValue;
-};
+type AirbyteFormValue = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
 
 export type {
   AirbyteFormTree,
   AirbyteFormConditionItem,
   AirbyteFormGroupItem,
+  AirbyteFormItem,
   AirbyteFormObjectArrayItem,
   AirbyteJsonSchemaDefinition,
   AirbyteJsonSchema,
