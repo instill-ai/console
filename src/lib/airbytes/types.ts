@@ -4,6 +4,7 @@ import type {
   JSONSchema7TypeName,
   JSONSchema7Type,
 } from "json-schema";
+import { ReactNode } from "react";
 
 /**
  * This is the official airbyte schema json type they are using in their web-app
@@ -72,6 +73,13 @@ type AirbyteFormConditionItem = {
   conditions: Record<string, AirbyteFormGroupItem | AirbyteFormBaseField>;
 } & AirbyteFormBaseField;
 
+type AirbyteFormConditionItemWithUiFields = {
+  _type: "formCondition";
+  conditions: Record<string, AirbyteFormGroupItem | AirbyteFormBaseField> & {
+    uiFields: ReactNode;
+  };
+} & AirbyteFormBaseField;
+
 type AirbyteFormObjectArrayItem = {
   _type: "objectArray";
   properties: AirbyteFormTree;
@@ -93,6 +101,7 @@ type AirbyteFormErrors = Record<string, string>;
 export type {
   AirbyteFormTree,
   AirbyteFormConditionItem,
+  AirbyteFormConditionItemWithUiFields,
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormObjectArrayItem,
