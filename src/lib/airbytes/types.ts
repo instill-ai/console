@@ -83,10 +83,12 @@ type AirbyteFormTree =
   | AirbyteFormConditionItem
   | AirbyteFormObjectArrayItem;
 
-type AirbyteFormValue = Record<
+type AirbyteFormValues = Record<
   string,
   string | number | boolean | null | undefined
 >;
+
+type AirbyteFormErrors = Record<string, string>;
 
 export type {
   AirbyteFormTree,
@@ -96,5 +98,6 @@ export type {
   AirbyteFormObjectArrayItem,
   AirbyteJsonSchemaDefinition,
   AirbyteJsonSchema,
-  AirbyteFormValue,
+  AirbyteFormValues,
+  AirbyteFormErrors,
 };
