@@ -191,7 +191,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   disabled={true}
                   readOnly={false}
                   required={true}
-                  description={null}
+                  description=""
                 />
                 <TextArea
                   id="pipelineDescription"

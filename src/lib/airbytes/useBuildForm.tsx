@@ -1,25 +1,32 @@
+import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,
   BasicTextArea,
+  BasicTextField,
   BasicToggleField,
+  ProtectedBasicTextField,
 } from "@instill-ai/design-system";
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 import {
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormTree,
-  AirbyteFormValue,
+  AirbyteFormValues,
 } from "./types";
 
 const useBuildForm = (
-  formTree: AirbyteFormTree
-  //formFieldValue: Record<string, any>,
-
-  //disabledAll: boolean
+  formTree: Nullable<AirbyteFormTree>,
+  disabledAll: boolean,
+  values: AirbyteFormValues,
+  setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
+  errors: Record<string, string>
 ) => {
-  if (formTree._type === "formGroup") {
-    console.log("hi");
-  }
+  const fields = useMemo(() => {
+    if (!formTree) return <></>;
+    return pickComponent(formTree, disabledAll, values, setValues, errors);
+  }, [formTree, disabledAll, values, errors]);
+
+  return fields;
 };
 
 export default useBuildForm;
@@ -27,8 +34,8 @@ export default useBuildForm;
 export const pickComponent = (
   formTree: AirbyteFormTree,
   disabledAll: boolean,
-  values: AirbyteFormValue,
-  setValues: Dispatch<SetStateAction<AirbyteFormValue>>,
+  values: AirbyteFormValues,
+  setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
   errors: Record<string, string>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
@@ -57,6 +64,32 @@ export const pickComponent = (
 
   const placeholder = getPlaceholder(formTree);
 
+  console.log(formTree);
+
+  if (formTree.type === "boolean") {
+    return (
+      <BasicToggleField
+        id={formTree.fieldKey}
+        required={formTree.isRequired}
+        description={formTree.description}
+        label={formTree.title ?? null}
+        additionalMessageOnLabel={null}
+        disabled={disabledAll}
+        readOnly={false}
+        error={errors[formTree.path] ?? null}
+        value={(values[formTree.path] as boolean) ?? false}
+        onChangeInput={(_, value) =>
+          setValues((prev) => {
+            return {
+              ...prev,
+              [formTree.path]: value,
+            };
+          })
+        }
+      />
+    );
+  }
+
   if (formTree.type === "string" && formTree.enum && formTree.enum.length) {
     const options = formTree.enum.map((e) => {
       return {
@@ -70,7 +103,7 @@ export const pickComponent = (
         id={formTree.fieldKey}
         instanceId={formTree.fieldKey}
         required={formTree.isRequired}
-        description={formTree.description}
+        description={formTree.description ?? ""}
         label={formTree.title ?? null}
         disabled={disabledAll}
         error={errors[formTree.path] ?? null}
@@ -100,8 +133,9 @@ export const pickComponent = (
       <BasicTextArea
         id={formTree.fieldKey}
         required={formTree.isRequired}
-        description={formTree.description}
+        description={formTree.description ?? ""}
         label={formTree.title ?? null}
+        additionalMessageOnLabel={null}
         disabled={disabledAll}
         placeholder={placeholder ?? ""}
         error={errors[formTree.path] ?? null}
@@ -115,7 +149,6 @@ export const pickComponent = (
           })
         }
         autoComplete="off"
-        additionalMessageOnLabel={null}
         enableCounter={false}
         counterWordLimit={0}
         readOnly={false}
@@ -123,16 +156,54 @@ export const pickComponent = (
     );
   }
 
-  if (formTree.type === "boolean") {
+  if (formTree.type === "string" && formTree.isSecret) {
     return (
-      <BasicToggleField
+      <ProtectedBasicTextField
         id={formTree.fieldKey}
         required={formTree.isRequired}
-        description={formTree.description}
+        description={formTree.description ?? ""}
         label={formTree.title ?? null}
+        additionalMessageOnLabel={null}
         disabled={disabledAll}
+        placeholder={placeholder ?? ""}
+        error={errors[formTree.path] ?? null}
+        value={(values[formTree.path] as string) ?? ""}
+        onChangeInput={(_, value) =>
+          setValues((prev) => {
+            return {
+              ...prev,
+              [formTree.path]: value,
+            };
+          })
+        }
         readOnly={false}
-        error={errors[formTree.path]}
+      />
+    );
+  }
+
+  if (formTree.type === "string") {
+    return (
+      <BasicTextField
+        id={formTree.fieldKey}
+        required={formTree.isRequired}
+        description={formTree.description ?? ""}
+        label={formTree.title ?? null}
+        additionalMessageOnLabel={null}
+        disabled={disabledAll}
+        placeholder={placeholder ?? ""}
+        error={errors[formTree.path] ?? null}
+        value={(values[formTree.path] as string) ?? ""}
+        onChangeInput={(_, value) =>
+          setValues((prev) => {
+            return {
+              ...prev,
+              [formTree.path]: value,
+            };
+          })
+        }
+        autoComplete="off"
+        readOnly={false}
+        type="text"
       />
     );
   }

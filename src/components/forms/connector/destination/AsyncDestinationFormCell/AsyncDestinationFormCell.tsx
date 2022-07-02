@@ -5,6 +5,8 @@ import {
 } from "@instill-ai/design-system";
 import { useDestinationDefinitions } from "@/services/connector";
 import { airbyteSchemaToAirbyteFormTree } from "@/lib/airbytes/airbyteSchemaToAirbyteFormTree";
+import useBuildForm from "@/lib/airbytes/useBuildForm";
+import { AirbyteFormErrors, AirbyteFormValues } from "@/lib/airbytes";
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
@@ -43,25 +45,38 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
     );
   }, [cellState?.destinationDefinition, destinationOptions]);
 
-  // const selectedDestinationFromTree = useMemo(() => {
-  //   if (!selectedDestinationOption || !destinationDefinitions.isSuccess) {
-  //     return null;
-  //   }
+  const selectedDestinationFromTree = useMemo(() => {
+    if (!selectedDestinationOption || !destinationDefinitions.isSuccess) {
+      return null;
+    }
 
-  //   const selectedDestination = destinationDefinitions.data.find(
-  //     (e) => e.name === selectedDestinationOption.value
-  //   );
+    const selectedDestination = destinationDefinitions.data.find(
+      (e) => e.name === selectedDestinationOption.value
+    );
 
-  //   if (!selectedDestination) {
-  //     return null;
-  //   }
+    if (!selectedDestination) {
+      return null;
+    }
 
-  //   const formTree = airbyteSchemaToAirbyteFormTree(
-  //     selectedDestination.connector_definition.spec.connection_specification
-  //   );
+    const formTree = airbyteSchemaToAirbyteFormTree(
+      selectedDestination.connector_definition.spec.connection_specification
+    );
 
-  //   console.log(formTree);
-  // }, [selectedDestinationOption]);
+    return formTree;
+  }, [selectedDestinationOption]);
+
+  const [fieldValues, setFieldValues] = useState<AirbyteFormValues>({});
+  const [fieldErrors, setFieldErrors] = useState<AirbyteFormErrors>({});
+
+  const fields = useBuildForm(
+    selectedDestinationFromTree,
+    false,
+    fieldValues,
+    setFieldValues,
+    fieldErrors
+  );
+
+  console.log(fields);
 
   return (
     <Fragment>
@@ -71,7 +86,7 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
         menuPlacement="auto"
         label="Destination type"
         additionalMessageOnLabel={null}
-        description={null}
+        description={""}
         disabled={false}
         readOnly={false}
         required={false}
@@ -79,7 +94,6 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
         value={selectedDestinationOption}
         options={destinationOptions}
         onChangeInput={(_, option) => {
-          console.log(option);
           setCellState((prev) => {
             return {
               ...prev,
@@ -88,6 +102,7 @@ const AsyncDestinationFormCell: FC<AsyncDestinationFormCellProps> = () => {
           });
         }}
       />
+      {fields}
     </Fragment>
   );
 };

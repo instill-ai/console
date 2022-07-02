@@ -64,7 +64,6 @@ export const buildConnectorFieldFromDefinition = (
               readOnly={false}
               required={true}
               placeholder=""
-              autoComplete="off"
               onChangeInput={() => {
                 console.log("hi");
               }}

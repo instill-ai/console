@@ -255,7 +255,7 @@ const ModelDetailsPage: FC & {
           menuPlacement="auto"
           label={null}
           additionalMessageOnLabel={null}
-          description={null}
+          description=""
           disabled={false}
           readOnly={false}
           required={false}
@@ -289,7 +289,7 @@ const ModelDetailsPage: FC & {
           disabled={false}
           readOnly={false}
           required={false}
-          description={null}
+          description={""}
           onChangeInput={handleToggleModelInstanceState}
           label="State"
           additionalMessageOnLabel={null}
