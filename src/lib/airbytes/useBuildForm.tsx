@@ -7,7 +7,9 @@ import {
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
 import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
+import OneOfConditionForm from "./components/OneOfConditionForm/OneOfConditionForm";
 import {
+  AirbyteFormConditionItemWithUiFields,
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormTree,
@@ -40,16 +42,41 @@ export const pickComponent = (
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
-      <>
+      <div className="flex flex-col gap-y-5">
         {formTree.properties.map((e) =>
           pickComponent(e, disabledAll, values, setValues, errors)
         )}
-      </>
+      </div>
     );
   }
 
   if (formTree._type === "formCondition") {
-    return <div></div>;
+    const conditionsWithUiFields: AirbyteFormConditionItemWithUiFields["conditions"] =
+      Object.fromEntries(
+        Object.entries(formTree.conditions).map(([k, v]) => {
+          return [
+            k,
+            {
+              ...v,
+              uiFields: pickComponent(
+                v,
+                disabledAll,
+                values,
+                setValues,
+                errors
+              ),
+            },
+          ];
+        })
+      );
+
+    return (
+      <OneOfConditionForm
+        formTree={{ ...formTree, conditions: conditionsWithUiFields }}
+        values={values}
+        setValues={setValues}
+      />
+    );
   }
 
   if (formTree._type === "objectArray") {
@@ -62,16 +89,35 @@ export const pickComponent = (
     );
   }
 
-  const placeholder = getPlaceholder(formTree);
+  // The const field is for condition render form, to represent the key of the condition itself
+  // ref: https://github.com/airbytehq/airbyte/blob/59e20f20de73ced59ae2c782612fa7554fc1fced/airbyte-webapp/src/views/Connector/ServiceForm/components/Sections/FormSection.tsx#L28
+  /**
+   *  {
+        "const": "SSH_KEY_AUTH",
+        "description": "Connect through a jump server tunnel host using username and ssh key",
+        "order": 0,
+        "_type": "formItem",
+        "path": "tunnel_method.tunnel_method",
+        "fieldKey": "tunnel_method",
+        "isRequired": true,
+        "isSecret": false,
+        "multiline": false,
+        "type": "string"
+      }
+   */
 
-  console.log(formTree);
+  if (formTree.const !== undefined) {
+    return null;
+  }
+
+  const placeholder = getPlaceholder(formTree);
 
   if (formTree.type === "boolean") {
     return (
       <BasicToggleField
         id={formTree.fieldKey}
         required={formTree.isRequired}
-        description={formTree.description}
+        description={formTree.description ?? ""}
         label={formTree.title ?? null}
         additionalMessageOnLabel={null}
         disabled={disabledAll}
@@ -101,6 +147,7 @@ export const pickComponent = (
     return (
       <BasicSingleSelect
         id={formTree.fieldKey}
+        key={formTree.path}
         instanceId={formTree.fieldKey}
         required={formTree.isRequired}
         description={formTree.description ?? ""}
@@ -132,6 +179,7 @@ export const pickComponent = (
     return (
       <BasicTextArea
         id={formTree.fieldKey}
+        key={formTree.path}
         required={formTree.isRequired}
         description={formTree.description ?? ""}
         label={formTree.title ?? null}
@@ -160,6 +208,7 @@ export const pickComponent = (
     return (
       <ProtectedBasicTextField
         id={formTree.fieldKey}
+        key={formTree.path}
         required={formTree.isRequired}
         description={formTree.description ?? ""}
         label={formTree.title ?? null}
@@ -181,32 +230,33 @@ export const pickComponent = (
     );
   }
 
-  if (formTree.type === "string") {
-    return (
-      <BasicTextField
-        id={formTree.fieldKey}
-        required={formTree.isRequired}
-        description={formTree.description ?? ""}
-        label={formTree.title ?? null}
-        additionalMessageOnLabel={null}
-        disabled={disabledAll}
-        placeholder={placeholder ?? ""}
-        error={errors[formTree.path] ?? null}
-        value={(values[formTree.path] as string) ?? ""}
-        onChangeInput={(_, value) =>
-          setValues((prev) => {
-            return {
-              ...prev,
-              [formTree.path]: value,
-            };
-          })
-        }
-        autoComplete="off"
-        readOnly={false}
-        type="text"
-      />
-    );
-  }
+  const inputType = formTree.type === "integer" ? "number" : "text";
+
+  return (
+    <BasicTextField
+      id={formTree.fieldKey}
+      key={formTree.path}
+      required={formTree.isRequired}
+      description={formTree.description ?? ""}
+      label={formTree.title ?? null}
+      additionalMessageOnLabel={null}
+      disabled={disabledAll}
+      placeholder={placeholder ?? ""}
+      error={errors[formTree.path] ?? null}
+      value={(values[formTree.path] as string) ?? ""}
+      onChangeInput={(_, value) =>
+        setValues((prev) => {
+          return {
+            ...prev,
+            [formTree.path]: value,
+          };
+        })
+      }
+      autoComplete="off"
+      readOnly={false}
+      type={inputType}
+    />
+  );
 };
 
 const getPlaceholder = (
