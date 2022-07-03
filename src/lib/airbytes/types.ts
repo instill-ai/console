@@ -78,13 +78,6 @@ type AirbyteFormConditionItemWithUiFields = {
   conditions: Record<string, AirbyteFormGroupItem & { uiFields: ReactNode }>;
 } & AirbyteFormBaseField;
 
-type AirbyteFormConditionItemWithUiFields = {
-  _type: "formCondition";
-  conditions: Record<string, AirbyteFormGroupItem | AirbyteFormBaseField> & {
-    uiFields: ReactNode;
-  };
-} & AirbyteFormBaseField;
-
 type AirbyteFormObjectArrayItem = {
   _type: "objectArray";
   properties: AirbyteFormTree;
