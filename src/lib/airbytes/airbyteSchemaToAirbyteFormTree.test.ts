@@ -246,15 +246,6 @@ test("should reformat jsonSchema to formTree representation when has oneOf", () 
     fieldKey: "key",
     properties: [
       {
-        _type: "formItem",
-        path: "key.start_date",
-        fieldKey: "start_date",
-        isRequired: true,
-        isSecret: false,
-        multiline: false,
-        type: "string",
-      },
-      {
         _type: "formCondition",
         path: "key.credentials",
         description: "Credentials Condition Description",
@@ -318,6 +309,15 @@ test("should reformat jsonSchema to formTree representation when has oneOf", () 
           },
         },
         isRequired: true,
+      },
+      {
+        _type: "formItem",
+        path: "key.start_date",
+        fieldKey: "start_date",
+        isRequired: true,
+        isSecret: false,
+        multiline: false,
+        type: "string",
       },
     ],
     isRequired: true,

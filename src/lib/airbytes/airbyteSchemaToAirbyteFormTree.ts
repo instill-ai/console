@@ -72,15 +72,28 @@ export const airbyteSchemaToAirbyteFormTree = (
   }
 
   if (jsonSchema.type === "object") {
-    const properties = Object.entries(jsonSchema.properties || []).map(
-      ([k, schema]) =>
+    // We sort the order of the items here, the item withour order field will be sorted to
+    // the bottom of the array
+
+    const properties = Object.entries(jsonSchema.properties || [])
+      .map(([k, schema]) =>
         airbyteSchemaToAirbyteFormTree(
           schema,
           k,
           path ? `${path}.${k}` : k,
           jsonSchema
         )
-    );
+      )
+      .sort((a, b) => {
+        if (typeof a.order === "undefined") {
+          return 1;
+        }
+
+        if (typeof b.order === "undefined") {
+          return -1;
+        }
+        return a.order > b.order ? 1 : -1;
+      });
 
     return {
       ...pickDefaultFields(jsonSchema),
