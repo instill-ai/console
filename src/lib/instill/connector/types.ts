@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/general";
+import type { JSONSchema7 } from "json-schema";
 
 export type ConnectorState =
   | "STATE_CONNECTED"
@@ -30,7 +31,7 @@ export type ConnectorDefinition = {
     spec: {
       documentation_url: string;
       changelog_url?: string;
-      connection_specification: Record<string, any>;
+      connection_specification: JSONSchema7;
       supports_incremental: boolean;
       supports_normalization: boolean;
       supports_dbt: boolean;

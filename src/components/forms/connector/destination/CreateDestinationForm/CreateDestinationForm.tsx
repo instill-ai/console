@@ -6,7 +6,7 @@ import {
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
-import { SingleSelect } from "../../../../formik/FormikField";
+import { TextField } from "../../../../formik/FormikField";
 import { FormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
@@ -14,6 +14,7 @@ import { Nullable } from "@/types/general";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import AsyncDestinationFormCell from "../AsyncDestinationFormCell";
 
 export type CreateDestinationFormValues = {
   id: string;
@@ -163,33 +164,23 @@ const CreateDestinationForm: FC = () => {
       {(formik) => {
         return (
           <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-            {/* <TextField
+            <TextField
+              id="id"
               name="id"
-              label="Id"
+              label="ID"
+              additionalMessageOnLabel={null}
               description="Pick a name to help you identify this destination in Instill"
-              disabled={allSyncDestinationCreated ? true : false}
+              disabled={false}
               readOnly={false}
               required={true}
               placeholder=""
               type="text"
               autoComplete="off"
               value={formik.values.id || ""}
-            /> */}
-            <SingleSelect
-              id="destinationDefinition"
-              name="destinationDefinition"
-              label="Destination type"
-              additionalMessageOnLabel={null}
-              options={syncDestinationDefinitionOptions}
-              value={selectedSyncDestinationDefinitionOption}
-              additionalOnChangeCb={destinationDefinitionOnChange}
-              error={formik.errors.destinationDefinition || null}
-              disabled={false}
-              readOnly={false}
-              required={true}
-              description="Setup Guide"
-              menuPlacement="auto"
+              error={null}
+              additionalOnChangeCb={null}
             />
+            <AsyncDestinationFormCell />
             <div className="flex flex-row">
               {createDestinationError ? (
                 <BasicProgressMessageBox width="w-[216px]" status="error">

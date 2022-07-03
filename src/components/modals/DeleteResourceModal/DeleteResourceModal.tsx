@@ -137,7 +137,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
           disabled={false}
           readOnly={false}
           required={false}
-          description={null}
+          description=""
         />
         <div className="grid grid-cols-2 gap-x-5">
           <OutlineButton
