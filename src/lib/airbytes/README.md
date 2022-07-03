@@ -18,3 +18,5 @@ We are using Airbyte protocol for generating, maintain, create our connectors, f
   - How they loop though json schema and construct FormBlock(In our terms, it's FormTree)
 - [Airbyte - FormSection](https://github.com/airbytehq/airbyte/blob/master/airbyte-webapp/src/views/Connector/ServiceForm/components/Sections/FormSection.tsx)
   - The FormSection is how they control their UI widget
+- [Airbyte - Control](https://github.com/airbytehq/airbyte/blob/master/airbyte-webapp/src/views/Connector/ServiceForm/components/Property/Control.tsx)
+  - How they generate field based on their type, array, boolean, string, integer, array
