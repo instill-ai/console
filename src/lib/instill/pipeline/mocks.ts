@@ -34,7 +34,7 @@ export const mockPipelines: Pipeline[] = [
                 "https://docs.instill.tech/connectors/definitions/source-grpc-directness",
               connection_specification: {
                 $schema: "http://json-schema.org/draft-07/schema#",
-                additional_properties: false,
+                additionalProperties: false,
                 properties: {},
                 required: [],
                 title: "Directness gRPC Source Connector Spec",
@@ -92,7 +92,7 @@ export const mockPipelines: Pipeline[] = [
                 "https://docs.instill.tech/connectors/definitions/destination-grpc-directness",
               connection_specification: {
                 $schema: "http://json-schema.org/draft-07/schema#",
-                additional_properties: false,
+                additionalProperties: false,
                 properties: {},
                 required: [],
                 title: "Directness gRPC Destination Connector Spec",
