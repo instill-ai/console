@@ -109,3 +109,11 @@ export type {
   AirbyteFormValues,
   AirbyteFormErrors,
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// This type is especially for jsonSchema OneOf properties
+// {"key.subkey.credential": { selectedItem: "oauth" }}
+export type SelectedItem = {
+  selectedItem: string;
+};
+export type SelectedItemMap = Record<string, SelectedItem>;
