@@ -27,7 +27,8 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   additionalMessageOnLabel,
   ...props
 }) => {
-  const onChange = (_: string, option: SingleSelectOption) => {
+  const onChange = (_: string, option: Nullable<SingleSelectOption>) => {
+    if (!option) return;
     form.setFieldValue(field.name, option.value);
     if (additionalOnChangeCb) {
       additionalOnChangeCb(option);
