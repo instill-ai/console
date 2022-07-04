@@ -18,7 +18,8 @@ const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
       const modelInstanceReadme = await getModelInstanceReadme(
         modelInstanceName
       );
-      return Promise.resolve(modelInstanceReadme);
+
+      return Promise.resolve(window.atob(modelInstanceReadme.contents));
     },
     {
       enabled: modelInstanceName ? true : false,

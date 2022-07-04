@@ -2,9 +2,10 @@ import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import cn from "clsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
 export type ModelInstanceReadmeCardProps = {
-  markdown: string;
+  markdown: Nullable<string>;
   marginBottom: string;
   isLoading: boolean;
 };
