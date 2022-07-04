@@ -4,8 +4,6 @@
 
 @tailwind utilities;
 
-@layer utilities 
-
 @font-face {
   font-family: "instill";
   font-style: normal;
@@ -14,3 +12,5 @@
     /* Super Modern Browsers */ url("/fonts/instillFont-Regular.woff")
       format("woff");
 }
+
+
