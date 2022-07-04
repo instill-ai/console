@@ -2,7 +2,6 @@ import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import cn from "clsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
-import "../../../styles/github-markdown.css";
 
 export type ModelInstanceReadmeCardProps = {
   markdown: string;
