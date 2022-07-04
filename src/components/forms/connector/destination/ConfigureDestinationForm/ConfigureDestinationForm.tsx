@@ -6,7 +6,7 @@ import {
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 
-import { FormBase, SingleSelect } from "@/components/formik";
+import { FormikFormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -155,7 +155,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       >
         {(formik) => {
           return (
-            <FormBase marginBottom={null} gapY={null} padding={null}>
+            <FormikFormBase marginBottom={null} gapY={null} padding={null}>
               <div className="mb-10 flex flex-col gap-y-5">
                 <SingleSelect
                   id="destinationDefinition"
@@ -207,7 +207,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                   </BasicProgressMessageBox>
                 ) : null}
               </div>
-            </FormBase>
+            </FormikFormBase>
           );
         }}
       </Formik>

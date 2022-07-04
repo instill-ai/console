@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
-import { FormBase, TextArea } from "@/components/formik";
+import { FormikFormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
 import { Model } from "@/lib/instill";
 import { useUpdateModel } from "@/services/model";
@@ -103,7 +103,11 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     >
       {({ values, errors, submitForm }) => {
         return (
-          <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
+          <FormikFormBase
+            marginBottom={marginBottom}
+            gapY="gap-y-5"
+            padding={null}
+          >
             <TextArea
               id="description"
               name="description"
@@ -140,7 +144,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
                 {canEdit ? "Done" : "Edit"}
               </PrimaryButton>
             </div>
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

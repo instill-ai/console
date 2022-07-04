@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { BasicProgressMessageBox } from "@instill-ai/design-system";
 
-import { FormBase, TextArea, ToggleField } from "@/components/formik";
+import { FormikFormBase, TextArea, ToggleField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -178,7 +178,11 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       >
         {({ values, errors, submitForm }) => {
           return (
-            <FormBase marginBottom={marginBottom} gapY={null} padding={null}>
+            <FormikFormBase
+              marginBottom={marginBottom}
+              gapY={null}
+              padding={null}
+            >
               <div className="mb-10 flex flex-col gap-y-5">
                 <ToggleField
                   id="pipelineState"
@@ -265,7 +269,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   </BasicProgressMessageBox>
                 ) : null}
               </div>
-            </FormBase>
+            </FormikFormBase>
           );
         }}
       </Formik>

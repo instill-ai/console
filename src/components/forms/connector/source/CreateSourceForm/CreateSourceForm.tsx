@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 
 import { SingleSelect } from "../../../../formik/FormikField";
-import { FormBase } from "@/components/formik";
+import { FormikFormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
   BasicProgressMessageBox,
@@ -144,7 +144,7 @@ const CreateSourceForm: FC = () => {
     >
       {(formik) => {
         return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             {/* <TextField
               name="id"
               label="ID"
@@ -191,7 +191,7 @@ const CreateSourceForm: FC = () => {
                 Set up source
               </PrimaryButton>
             </div>
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

@@ -8,7 +8,7 @@ import {
 } from "@instill-ai/design-system";
 
 import {
-  FormBase,
+  FormikFormBase,
   SingleSelect,
   TextArea,
   TextField,
@@ -339,7 +339,7 @@ const CreateNewModelFlow: FC = () => {
     >
       {({ errors, values }) => {
         return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
               id="modelId"
               name="id"
@@ -524,7 +524,7 @@ const CreateNewModelFlow: FC = () => {
                 </div>
               </>
             ) : null}
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

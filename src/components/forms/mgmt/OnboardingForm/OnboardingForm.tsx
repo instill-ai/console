@@ -8,7 +8,7 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import {
-  FormBase,
+  FormikFormBase,
   SingleSelect,
   TextField,
   ToggleField,
@@ -107,7 +107,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     >
       {(formik) => {
         return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <TextField
               id="email"
               name="email"
@@ -181,7 +181,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             >
               Start
             </PrimaryButton>
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

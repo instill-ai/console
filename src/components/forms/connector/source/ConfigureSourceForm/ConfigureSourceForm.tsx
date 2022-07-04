@@ -6,7 +6,7 @@ import {
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
-import { FormBase, SingleSelect } from "@/components/formik";
+import { FormikFormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -145,7 +145,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       >
         {() => {
           return (
-            <FormBase marginBottom={null} gapY={null} padding={null}>
+            <FormikFormBase marginBottom={null} gapY={null} padding={null}>
               <div className="mb-10 flex flex-col">
                 <SingleSelect
                   id="sourceDefinition"
@@ -197,7 +197,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                   </BasicProgressMessageBox>
                 ) : null}
               </div>
-            </FormBase>
+            </FormikFormBase>
           );
         }}
       </Formik>

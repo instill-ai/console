@@ -12,7 +12,7 @@
 
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { Dispatch, RefObject, SetStateAction, Children, useState } from "react";
-import FormBase from "../FormBase";
+import FormikFormBase from "../FormikFormBase";
 
 type FormValue = Record<string, any>;
 
@@ -88,10 +88,10 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
     >
       {() => {
         return (
-          <FormBase marginBottom={null} padding="pb-20" gapY={null}>
+          <FormikFormBase marginBottom={null} padding="pb-20" gapY={null}>
             <div className="mb-15">{getProgressionIndicator(stepNumber)}</div>
             {step}
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>
