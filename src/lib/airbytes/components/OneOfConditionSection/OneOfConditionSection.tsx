@@ -15,13 +15,13 @@ import {
   AirbyteFormValues,
 } from "../../types";
 
-export type OneOfConditionFormProps = {
+export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;
   values: AirbyteFormValues;
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>;
 };
 
-const OneOfConditionForm: FC<OneOfConditionFormProps> = ({
+const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   formTree,
   values,
   setValues,
@@ -86,4 +86,4 @@ const OneOfConditionForm: FC<OneOfConditionFormProps> = ({
   );
 };
 
-export default OneOfConditionForm;
+export default OneOfConditionSection;

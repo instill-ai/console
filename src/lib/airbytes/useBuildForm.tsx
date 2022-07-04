@@ -7,7 +7,7 @@ import {
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
 import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
-import OneOfConditionForm from "./components/OneOfConditionForm/OneOfConditionForm";
+import OneOfConditionSection from "./components/OneOfConditionSection/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormGroupItem,
@@ -71,7 +71,7 @@ export const pickComponent = (
       );
 
     return (
-      <OneOfConditionForm
+      <OneOfConditionSection
         formTree={{ ...formTree, conditions: conditionsWithUiFields }}
         values={values}
         setValues={setValues}
