@@ -1,4 +1,4 @@
-import { AirbyteFormTree } from "./types";
+import { AirbyteFormTree } from "../types";
 
 test("should render FormCondition to UI component", () => {
   const formTree: AirbyteFormTree = {

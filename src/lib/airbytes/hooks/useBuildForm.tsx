@@ -7,14 +7,14 @@ import {
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
 import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
-import OneOfConditionSection from "./components/OneOfConditionSection/OneOfConditionSection";
+import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormTree,
   AirbyteFormValues,
-} from "./types";
+} from "../types";
 
 const useBuildForm = (
   formTree: Nullable<AirbyteFormTree>,
