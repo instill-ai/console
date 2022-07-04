@@ -1,4 +1,5 @@
 import "../src/styles/global.css";
+import "@instill-ai/design-system/build/index.cjs.css";
 import * as NextImage from "next/image";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
