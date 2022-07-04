@@ -10,6 +10,7 @@ import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
+  AirbyteFormErrors,
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormTree,
@@ -21,7 +22,7 @@ const useBuildForm = (
   disabledAll: boolean,
   values: AirbyteFormValues,
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: Record<string, string>
+  errors: AirbyteFormErrors
 ) => {
   const fields = useMemo(() => {
     if (!formTree) return <></>;
@@ -38,7 +39,7 @@ export const pickComponent = (
   disabledAll: boolean,
   values: AirbyteFormValues,
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: Record<string, string>
+  errors: AirbyteFormErrors
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
