@@ -94,7 +94,7 @@ type AirbyteFormValues = Record<
   string | number | boolean | null | undefined
 >;
 
-type AirbyteFormErrors = Record<string, string>;
+type AirbyteFormErrors = Record<string, string | null | undefined>;
 
 export type {
   AirbyteFormTree,
