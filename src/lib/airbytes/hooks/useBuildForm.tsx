@@ -43,7 +43,7 @@ export const pickComponent = (
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
-      <div className="flex flex-col gap-y-5">
+      <div key={formTree.path} className="flex flex-col gap-y-5">
         {formTree.properties.map((e) =>
           pickComponent(e, disabledAll, values, setValues, errors)
         )}
@@ -116,6 +116,7 @@ export const pickComponent = (
   if (formTree.type === "boolean") {
     return (
       <BasicToggleField
+        key={formTree.path}
         id={formTree.fieldKey}
         required={formTree.isRequired}
         description={formTree.description ?? ""}
@@ -165,7 +166,7 @@ export const pickComponent = (
           setValues((prev) => {
             return {
               ...prev,
-              [formTree.path]: value,
+              [formTree.path]: value?.value,
             };
           })
         }
