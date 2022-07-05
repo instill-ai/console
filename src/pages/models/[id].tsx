@@ -112,7 +112,7 @@ const ModelDetailsPage: FC & {
   ]);
 
   const modelInstanceOnChangeCb = useCallback(
-    (_: string, option: SingleSelectOption) => {
+    (_: string, option: Nullable<SingleSelectOption>) => {
       if (!option) return;
 
       setSelectedModelInstanceOption(option);
