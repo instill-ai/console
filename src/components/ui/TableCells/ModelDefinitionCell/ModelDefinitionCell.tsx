@@ -67,7 +67,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
     }
     default: {
       definitionIcon = <div className={cn(iconWidth, iconHeight)} />;
-      definitionLabel = modelDefinition.split("/")[0];
+      definitionLabel = modelDefinition.split("/")[1];
       break;
     }
   }
