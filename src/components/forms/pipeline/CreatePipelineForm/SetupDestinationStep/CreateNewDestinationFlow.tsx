@@ -127,7 +127,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
       <TextField
         id="destinationId"
         name="destination.new.id"
-        label="Id"
+        label="ID"
         additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.destination.new.id}
