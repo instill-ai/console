@@ -13,6 +13,7 @@ import type {
   GetModelResponse,
   ListModelInstancesResponse,
   GetModelInstanceResponse,
+  GetModelInstanceReadmeQuery,
 } from "./queries";
 
 import {
@@ -22,6 +23,7 @@ import {
   getModelQuery,
   listModelInstancesQuery,
   getModelInstanceQuery,
+  getModelInstanceReadme,
 } from "./queries";
 
 import type {
@@ -71,6 +73,7 @@ export type {
   UnDeployModelResponse,
   CreateArtivcModelPayload,
   CreateArtivcModelResponse,
+  GetModelInstanceReadmeQuery,
 };
 
 export {
@@ -87,4 +90,5 @@ export {
   deployModelInstanceAction,
   udDeployModelInstanceAction,
   createArtivcModelMutation,
+  getModelInstanceReadme,
 };

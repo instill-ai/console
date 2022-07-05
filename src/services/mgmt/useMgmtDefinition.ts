@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { parse } from "yaml";
 import { listRepoFileContent } from "@/lib/github";
 
 const useMgmtDefinition = () => {
@@ -9,11 +8,11 @@ const useMgmtDefinition = () => {
       const { content } = await listRepoFileContent(
         "instill-ai",
         "mgmt-backend",
-        "protocol/mgmt_protocol.yaml"
+        "config/models/user.json"
       );
 
       const decode = window.atob(content);
-      return Promise.resolve(parse(decode));
+      return Promise.resolve(decode);
     },
     {
       retry: 3,

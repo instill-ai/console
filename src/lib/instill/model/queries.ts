@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Model, ModelDefinition, ModelInstance } from "./types";
+import {
+  Model,
+  ModelDefinition,
+  ModelInstance,
+  ModelInstanceReadme,
+} from "./types";
 
 // ###################################################################
 // #                                                                 #
@@ -120,6 +125,21 @@ export const listModelInstancesQuery = async (
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}/instances?view=VIEW_FULL`
     );
     return Promise.resolve(data.instances);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type GetModelInstanceReadmeQuery = {
+  readme: ModelInstanceReadme;
+};
+
+export const getModelInstanceReadme = async (modelInstanceName: string) => {
+  try {
+    const { data } = await axios.get<GetModelInstanceReadmeQuery>(
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}/readme`
+    );
+    return Promise.resolve(data.readme);
   } catch (err) {
     return Promise.reject(err);
   }

@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 // ###################################################################
 // #                                                                 #
 // # Model Definition                                                #
@@ -65,4 +67,12 @@ export type ModelInstance = {
   configuration: string;
   create_time: string;
   update_time: string;
+};
+
+export type ModelInstanceReadme = {
+  name: string;
+  size: number;
+  type: string;
+  contents: string;
+  encoding: string;
 };

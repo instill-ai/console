@@ -17,6 +17,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
   useDeployModelInstance,
   useModel,
+  useModelInstanceReadme,
   useModelInstances,
   useUnDeployModelInstance,
 } from "@/services/model";
@@ -39,6 +40,7 @@ import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useMgmtDefinition } from "@/services/mgmt";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -156,6 +158,20 @@ const ModelDetailsPage: FC & {
 
     return pipelinesGroupByModelInstance[selectedModelInstances.id];
   }, [pipelinesGroupByModelInstance, selectedModelInstances]);
+
+  // ###################################################################
+  // #                                                                 #
+  // # Get model instance's readme                                     #
+  // #                                                                 #
+  // ###################################################################
+
+  const mgmt = useMgmtDefinition();
+
+  const modelInstanceReadme = useModelInstanceReadme(
+    modelInstances.data?.find(
+      (e) => e.id === selectedModelInstanceOption?.value
+    )?.name ?? null
+  );
 
   // ###################################################################
   // #                                                                 #
@@ -315,7 +331,13 @@ const ModelDetailsPage: FC & {
       <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
       {modelInstances.isLoading ? null : selectedModelInstances ? (
         <>
-          <ModelInstanceReadmeCard marginBottom="mb-5" />
+          <ModelInstanceReadmeCard
+            isLoading={modelInstanceReadme.isLoading}
+            markdown={
+              modelInstanceReadme.isSuccess ? modelInstanceReadme.data : null
+            }
+            marginBottom="mb-5"
+          />
           <ConfigureModelInstanceForm
             modelInstance={selectedModelInstances}
             marginBottom="mb-10"
