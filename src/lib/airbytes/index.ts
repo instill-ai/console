@@ -1,5 +1,5 @@
 export * from "./types";
 
-import useBuildForm from "./hooks";
+import { useBuildForm, useBuildYup } from "./hooks";
 
-export { useBuildForm };
+export { useBuildForm, useBuildYup };
