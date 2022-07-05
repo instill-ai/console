@@ -3,20 +3,19 @@ import { Dispatch, FC, Fragment, SetStateAction, useMemo } from "react";
 import { airbyteSchemaToAirbyteFormTree } from "../../airbyteSchemaToAirbyteFormTree";
 import { AirbyteFormErrors, AirbyteFormValues } from "../../types";
 import useBuildForm from "../../hooks/useBuildForm";
+import { Nullable } from "@/types/general";
 
 export type AirbyteDestinationFieldsProps = {
   fieldValues: AirbyteFormValues;
   setFieldValues: Dispatch<SetStateAction<AirbyteFormValues>>;
   fieldErrors: AirbyteFormErrors;
-  setFieldErrors: Dispatch<SetStateAction<AirbyteFormErrors>>;
-  selectedDestinationDefinition: ConnectorDefinition;
+  selectedDestinationDefinition: Nullable<ConnectorDefinition>;
 };
 
 const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   fieldValues,
   setFieldValues,
   fieldErrors,
-  setFieldErrors,
   selectedDestinationDefinition,
 }) => {
   const selectedDestinationFormTree = useMemo(() => {
