@@ -19,6 +19,8 @@ echo "CONNECTOR_BACKEND_BASE_URL=$CONNECTOR_BACKEND_BASE_URL"
 test -n "$CONNECTOR_BACKEND_BASE_URL"
 echo "MODEL_BACKEND_BASE_URL=$MODEL_BACKEND_BASE_URL"
 test -n "$MODEL_BACKEND_BASE_URL"
+echo "CONSOLE_DOMAIN=$CONSOLE_DOMAIN"
+test -n "$CONSOLE_DOMAIN"
 echo "API_VERSION=$API_VERSION"
 test -n "$API_VERSION"
 
@@ -28,6 +30,7 @@ find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 se
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL#$CONNECTOR_BACKEND_BASE_URL#g"
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_MODEL_BACKEND_BASE_URL#$MODEL_BACKEND_BASE_URL#g"
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_API_VERSION#$API_VERSION#g"
+find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONSOLE_DOMAIN#$CONSOLE_DOMAIN#g"
 
 echo "Starting Nextjs"
 exec "$@"
