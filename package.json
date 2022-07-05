@@ -17,6 +17,7 @@
     "docker:nuke:prune-buildx": "docker buildx prune",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
+    "start": "next start",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
