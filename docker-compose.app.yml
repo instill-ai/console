@@ -10,8 +10,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - DISABLE_USAGE_COLLECTION=false
-      - MGMT_BACKEND_BASE_URL=http://localhost:8080
+      - MGMT_BACKEND_BASE_URL=http://localhost:8084
       - PIPELINE_BACKEND_BASE_URL=http://localhost:8081
       - CONNECTOR_BACKEND_BASE_URL=http://localhost:8082
       - MODEL_BACKEND_BASE_URL=http://localhost:8083
+      - CONSOLE_DOMAIN=localhost
       - API_VERSION=v1alpha
