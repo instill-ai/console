@@ -1,9 +1,10 @@
 import { AirbyteJsonSchema, SelectedItemMap } from "./types";
 import * as yup from "yup";
+import { Nullable } from "@/types/general";
 
 const airbyteSchemaToYup = (
   jsonSchema: AirbyteJsonSchema,
-  selectedItemMap: SelectedItemMap,
+  selectedItemMap: Nullable<SelectedItemMap>,
   parentSchema?: AirbyteJsonSchema,
   propertyKey?: string,
   propertyPath: string | undefined = propertyKey
@@ -55,7 +56,7 @@ const airbyteSchemaToYup = (
             )
           );
       }
-      console.log("array", schema);
+      //console.log("array", schema);
       break;
     }
     case "object": {
@@ -82,7 +83,7 @@ const airbyteSchemaToYup = (
         objectSchema = objectSchema.default({});
       }
 
-      console.log("object", objectSchema);
+      //console.log("object", objectSchema);
       schema = objectSchema;
       break;
     }
@@ -95,7 +96,7 @@ const airbyteSchemaToYup = (
           "form.pattern.error"
         );
       }
-      console.log("string", schema);
+      //console.log("string", schema);
       break;
     }
     case "boolean": {

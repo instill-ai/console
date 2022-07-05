@@ -5,7 +5,7 @@ import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 
 const useBuildYup = (
   jsonSchema: Nullable<AirbyteJsonSchema>,
-  selectedItemMap: SelectedItemMap
+  selectedItemMap: Nullable<SelectedItemMap>
 ) => {
   const yup = useMemo(() => {
     if (!jsonSchema) return null;
