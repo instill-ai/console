@@ -50,11 +50,7 @@ const ModelsTable: FC<ModelsTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ModelTableHead
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
-      />
+      <ModelTableHead />
       <TableBody>
         {models.map((model) => (
           <TableRow
@@ -74,6 +70,7 @@ const ModelsTable: FC<ModelsTableProps> = ({
               link={`/models/${model.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={false}
+              displayStateIndicator={false}
             />
             <ModelDefinitionCell
               width="w-[269px]"

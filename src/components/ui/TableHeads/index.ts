@@ -5,7 +5,6 @@ import type { ConnectorTableHeadProps } from "./ConnectorTableHead";
 import PipelineOverviewTableHead from "./PipelineOverviewTableHead";
 import SourcePipelinesTableHead from "./SourcePipelinesTableHead";
 import ModelTableHead from "./ModelTableHead";
-import type { ModelTableHeadProps } from "./ModelTableHead";
 
 export {
   PipelinesTableHead,
@@ -14,8 +13,4 @@ export {
   SourcePipelinesTableHead,
   ModelTableHead,
 };
-export type {
-  PipelinesTableHeadProps,
-  ConnectorTableHeadProps,
-  ModelTableHeadProps,
-};
+export type { PipelinesTableHeadProps, ConnectorTableHeadProps };

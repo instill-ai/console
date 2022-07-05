@@ -14,6 +14,7 @@ export type NameCellProps = {
   link: Nullable<string>;
   lineClamp: Nullable<string>;
   displayUpdateTime: boolean;
+  displayStateIndicator: boolean;
 } & CellBaseProps;
 
 const NameCell: FC<NameCellProps> = ({
@@ -28,18 +29,23 @@ const NameCell: FC<NameCellProps> = ({
   link,
   lineClamp,
   displayUpdateTime,
+  displayStateIndicator,
 }) => {
   const time = getHumanReadableStringFromTime(updatedAt, Date.now());
 
   const CellItem = () => (
     <div className={cn("flex flex-row gap-x-2.5", width)}>
-      <div className="flex h-8 w-8">
-        <StateIndicator
-          state={state}
-          width="w-[18px]"
-          height="h-[18px]"
-          position="m-auto"
-        />
+      <div
+        className={cn("flex", displayStateIndicator ? "h-8 w-8" : "h-4 w-4")}
+      >
+        {displayStateIndicator ? (
+          <StateIndicator
+            state={state}
+            width="w-[18px]"
+            height="h-[18px]"
+            position="m-auto"
+          />
+        ) : null}
       </div>
       <div className="flex flex-col gap-y-2">
         <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>

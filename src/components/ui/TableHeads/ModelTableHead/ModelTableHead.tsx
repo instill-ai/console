@@ -1,28 +1,13 @@
 import { FC } from "react";
-import StateOverview from "../../StateOverview";
 import TableHeadBase from "../TableHeadBase";
 
-export type ModelTableHeadProps = {
-  errorCounts: number;
-  offlineCounts: number;
-  onlineCounts: number;
-};
+// export type ModelTableHeadProps = {};
 
-const ModelTableHead: FC<ModelTableHeadProps> = ({
-  errorCounts,
-  offlineCounts,
-  onlineCounts,
-}) => {
+const ModelTableHead: FC = () => {
   const ModelHeadItem = [
     {
-      key: "model-state-overview-head",
-      item: (
-        <StateOverview
-          errorCounts={errorCounts}
-          offlineCounts={offlineCounts}
-          onlineCounts={onlineCounts}
-        />
-      ),
+      key: "model-name",
+      item: <></>,
     },
     {
       key: "model-source-head",
