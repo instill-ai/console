@@ -77,6 +77,7 @@ const SourcesTable: FC<SourcesTableProps> = ({
               link={`/sources/${source.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
+              displayStateIndicator={true}
             />
             <ConnectionTypeCell
               definitionName={

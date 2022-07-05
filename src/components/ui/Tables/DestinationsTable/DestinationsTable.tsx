@@ -77,6 +77,7 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
+              displayStateIndicator={true}
             />
             <ConnectionTypeCell
               definitionName={
