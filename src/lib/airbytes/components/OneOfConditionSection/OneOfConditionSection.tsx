@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,
   SingleSelectOption,
@@ -12,6 +13,7 @@ import {
 } from "react";
 import {
   AirbyteFormConditionItemWithUiFields,
+  AirbyteFormItem,
   AirbyteFormValues,
 } from "../../types";
 
@@ -27,15 +29,16 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   setValues,
 }) => {
   const conditionOptions: SingleSelectOption[] = useMemo(() => {
-    return Object.entries(formTree.conditions).map(([k]) => {
+    return Object.entries(formTree.conditions).map(([k, v]) => {
       return {
         label: k.toString(),
-        value: k.toString(),
+        value: (v.properties.find((e) => "const" in e) as AirbyteFormItem)
+          ?.const as string,
       };
     });
   }, [formTree.conditions]);
 
-  const selectedCondition = useMemo(() => {
+  const selectedConditionOption = useMemo(() => {
     if (!conditionOptions) return null;
 
     if (!values[formTree.path]) {
@@ -47,11 +50,17 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
     );
   }, [formTree.path, values[formTree.path], conditionOptions]);
 
+  const selectedCondition = useMemo(() => {
+    if (!selectedConditionOption) return null;
+
+    return formTree.conditions[selectedConditionOption.label] ?? null;
+  }, [selectedConditionOption, formTree.conditions]);
+
   const onConditionChange = useCallback(
-    (_: string, option: SingleSelectOption) => {
+    (_: string, option: Nullable<SingleSelectOption>) => {
       setValues((prev) => ({
         ...prev,
-        [formTree.path]: option.value,
+        [formTree.path]: option ? option.value : null,
       }));
     },
     [formTree.path]
@@ -73,15 +82,13 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
             readOnly={false}
             required={false}
             error={null}
-            value={selectedCondition}
+            value={selectedConditionOption}
             options={conditionOptions}
             onChangeInput={onConditionChange}
           />
         </div>
       </div>
-      {selectedCondition
-        ? formTree.conditions[selectedCondition.value].uiFields
-        : null}
+      {selectedCondition ? selectedCondition.uiFields : null}
     </div>
   );
 };
