@@ -352,7 +352,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       <TextField
         id="modelId"
         name="model.new.id"
-        label="id"
+        label="ID"
         additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.model.new.id}

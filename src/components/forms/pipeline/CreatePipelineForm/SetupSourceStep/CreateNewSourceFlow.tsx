@@ -105,7 +105,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
       <TextField
         id="sourceId"
         name="source.new.id"
-        label="id"
+        label="ID"
         additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.source.new.id}
