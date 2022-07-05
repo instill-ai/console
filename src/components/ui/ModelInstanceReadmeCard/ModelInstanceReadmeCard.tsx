@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import cn from "clsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
+import remarkFrontmatter from "remark-frontmatter";
 
 export type ModelInstanceReadmeCardProps = {
   markdown: Nullable<string>;
@@ -18,8 +19,9 @@ const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
   return (
     <div
       className={cn(
-        "flex min-h-[200px] w-full flex-col border border-instillGrey20 bg-white p-5",
-        marginBottom
+        "flex w-full flex-col border border-instillGrey20 bg-white p-5",
+        marginBottom,
+        { "min-h-[200px]": !markdown || isLoading }
       )}
     >
       {isLoading ? (
@@ -32,7 +34,9 @@ const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
         </div>
       ) : markdown ? (
         <div className="markdown-body">
-          <ReactMarkdown>{markdown}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkFrontmatter]}>
+            {markdown}
+          </ReactMarkdown>
         </div>
       ) : (
         <>

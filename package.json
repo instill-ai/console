@@ -42,6 +42,7 @@
     "react-markdown": "^8.0.3",
     "react-query": "^3.38.0",
     "react-select": "^5.3.1",
+    "remark-frontmatter": "^4.0.1",
     "uuid": "^8.3.2",
     "yaml": "^2.0.1"
   },
