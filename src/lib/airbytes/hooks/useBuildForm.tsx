@@ -1,3 +1,4 @@
+import dot from "@/lib/dot";
 import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,
@@ -15,6 +16,7 @@ import {
   AirbyteFormItem,
   AirbyteFormTree,
   AirbyteFormValues,
+  SelectedItemMap,
 } from "../types";
 
 const useBuildForm = (
@@ -22,11 +24,19 @@ const useBuildForm = (
   disabledAll: boolean,
   values: AirbyteFormValues,
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: AirbyteFormErrors
+  errors: AirbyteFormErrors,
+  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ) => {
   const fields = useMemo(() => {
     if (!formTree) return <></>;
-    return pickComponent(formTree, disabledAll, values, setValues, errors);
+    return pickComponent(
+      formTree,
+      disabledAll,
+      values,
+      setValues,
+      errors,
+      setSelectedConditionMap
+    );
   }, [formTree, disabledAll, values, errors]);
 
   return fields;
@@ -39,13 +49,21 @@ export const pickComponent = (
   disabledAll: boolean,
   values: AirbyteFormValues,
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: AirbyteFormErrors
+  errors: AirbyteFormErrors,
+  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
       <div key={formTree.path} className="flex flex-col gap-y-5">
         {formTree.properties.map((e) =>
-          pickComponent(e, disabledAll, values, setValues, errors)
+          pickComponent(
+            e,
+            disabledAll,
+            values,
+            setValues,
+            errors,
+            setSelectedConditionMap
+          )
         )}
       </div>
     );
@@ -64,7 +82,8 @@ export const pickComponent = (
                 disabledAll,
                 values,
                 setValues,
-                errors
+                errors,
+                setSelectedConditionMap
               ),
             },
           ];
@@ -76,6 +95,7 @@ export const pickComponent = (
         formTree={{ ...formTree, conditions: conditionsWithUiFields }}
         values={values}
         setValues={setValues}
+        setSelectedConditionMap={setSelectedConditionMap}
       />
     );
   }
@@ -86,7 +106,8 @@ export const pickComponent = (
       disabledAll,
       values,
       setValues,
-      errors
+      errors,
+      setSelectedConditionMap
     );
   }
 
@@ -128,8 +149,11 @@ export const pickComponent = (
         value={(values[formTree.path] as boolean) ?? false}
         onChangeInput={(_, value) =>
           setValues((prev) => {
+            const configuration = prev.configuration || {};
+            dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
+              configuration: configuration,
               [formTree.path]: value,
             };
           })
@@ -162,11 +186,14 @@ export const pickComponent = (
           options.find((e) => e.value === formTree.default) ??
           null
         }
-        onChangeInput={(_, value) =>
+        onChangeInput={(_, option) =>
           setValues((prev) => {
+            const configuration = prev.configuration || {};
+            dot.setter(configuration, formTree.path, option?.value);
             return {
               ...prev,
-              [formTree.path]: value?.value,
+              configuration: configuration,
+              [formTree.path]: option?.value,
             };
           })
         }
@@ -192,8 +219,11 @@ export const pickComponent = (
         value={(values[formTree.path] as string) ?? ""}
         onChangeInput={(_, value) =>
           setValues((prev) => {
+            const configuration = prev.configuration || {};
+            dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
+              configuration: configuration,
               [formTree.path]: value,
             };
           })
@@ -221,8 +251,11 @@ export const pickComponent = (
         value={(values[formTree.path] as string) ?? ""}
         onChangeInput={(_, value) =>
           setValues((prev) => {
+            const configuration = prev.configuration || {};
+            dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
+              configuration: configuration,
               [formTree.path]: value,
             };
           })
@@ -248,8 +281,11 @@ export const pickComponent = (
       value={(values[formTree.path] as string) ?? ""}
       onChangeInput={(_, value) =>
         setValues((prev) => {
+          const configuration = prev.configuration || {};
+          dot.setter(configuration, formTree.path, value);
           return {
             ...prev,
+            configuration: configuration,
             [formTree.path]: value,
           };
         })
