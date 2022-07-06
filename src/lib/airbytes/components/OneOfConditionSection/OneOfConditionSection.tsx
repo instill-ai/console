@@ -15,18 +15,21 @@ import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormItem,
   AirbyteFormValues,
+  SelectedItemMap,
 } from "../../types";
 
 export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;
   values: AirbyteFormValues;
   setValues: Dispatch<SetStateAction<AirbyteFormValues>>;
+  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
 
 const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   formTree,
   values,
   setValues,
+  setSelectedConditionMap,
 }) => {
   const conditionOptions: SingleSelectOption[] = useMemo(() => {
     return Object.entries(formTree.conditions).map(([k, v]) => {
@@ -61,6 +64,13 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
       setValues((prev) => ({
         ...prev,
         [formTree.path]: option ? option.value : null,
+      }));
+
+      setSelectedConditionMap((prev) => ({
+        ...(prev || {}),
+        [formTree.path]: {
+          selectedItem: option ? option.label : null,
+        },
       }));
     },
     [formTree.path]

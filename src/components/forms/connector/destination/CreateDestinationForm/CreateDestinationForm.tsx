@@ -19,9 +19,11 @@ import { FormBase } from "@/components/forms/commons";
 import {
   AirbyteFormErrors,
   AirbyteFormValues,
+  SelectedItemMap,
   useBuildYup,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
+import { ValidationError } from "yup";
 
 export type CreateDestinationFormValues = AirbyteFormValues;
 export type CreateDestinationFormErrors = AirbyteFormErrors;
@@ -97,12 +99,15 @@ const CreateDestinationForm: FC = () => {
     useState<Nullable<string>>(null);
   const [isCreatingDestination, setIsCreatingDestination] = useState(false);
 
+  const [selectedConditionMap, setSelectedConditionMap] =
+    useState<Nullable<SelectedItemMap>>(null);
+
   const createDestination = useCreateDestination();
 
   const validateSchema = useBuildYup(
     selectedDestinationDefinition?.connector_definition.spec
       .connection_specification ?? null,
-    null
+    selectedConditionMap
   );
 
   const submitHandler = useCallback(async () => {
@@ -114,12 +119,16 @@ const CreateDestinationForm: FC = () => {
       return;
     }
 
-    console.log(createDestinationValues, validateSchema);
-
     try {
-      validateSchema.validateSync(createDestinationValues);
+      console.log(validateSchema);
+      validateSchema.validateSync(createDestinationValues.configuration, {
+        abortEarly: false,
+      });
     } catch (err) {
-      console.log(err);
+      if (err instanceof ValidationError) {
+        console.log(err.inner);
+      }
+
       return;
     }
 
@@ -212,6 +221,7 @@ const CreateDestinationForm: FC = () => {
         fieldValues={createDestinationValues}
         setFieldValues={setCreateDestinationFormValues}
         fieldErrors={createDestinationErrors}
+        setSelectedConditionMap={setSelectedConditionMap}
       />
       <div className="flex flex-row">
         {createDestinationError ? (
