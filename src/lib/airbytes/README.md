@@ -12,7 +12,7 @@ We are using Airbyte protocol for generating, maintain, create our connectors, f
 
 ## Implementation details
 
-### Input will be store as different structure
+### Store in the `value.configuration` and the value itself
 
 In our backend we have to input flatten data
 
@@ -23,12 +23,25 @@ In our backend we have to input flatten data
   }
 ```
 
-But we the YUP we build validate the configuration in a object
+But the YUP we build validate the configuration in a object
 
 ```js
 {
   tunnel_method: {
     tunnel_key: "key";
+  }
+}
+```
+
+So right now we actually have something like this
+
+```js
+{
+  tunnel_method.tunnel_key: "key"
+  configuration: {
+    tunnel_method: {
+      tunnel_key: "key";
+    }
   }
 }
 ```
