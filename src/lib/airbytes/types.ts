@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import type {
   JSONSchema7,
   JSONSchema7Definition,
@@ -113,6 +114,6 @@ export type {
 // This type is especially for jsonSchema OneOf properties
 // {"key.subkey.credential": { selectedItem: "oauth" }}
 export type SelectedItem = {
-  selectedItem: string;
+  selectedItem: Nullable<string>;
 };
 export type SelectedItemMap = Record<string, SelectedItem>;
