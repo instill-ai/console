@@ -89,10 +89,9 @@ type AirbyteFormTree =
   | AirbyteFormConditionItem
   | AirbyteFormObjectArrayItem;
 
-type AirbyteFormValues = Record<
-  string,
-  string | number | boolean | null | undefined
->;
+type AirbyteFormValues = {
+  [k: string]: string | number | boolean | null | undefined | AirbyteFormValues;
+};
 
 type AirbyteFormErrors = Record<string, string | null | undefined>;
 
