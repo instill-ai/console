@@ -18,34 +18,24 @@ import {
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { FormBase } from "@/components/forms/commons";
 import {
-  AirbyteFormErrors,
-  AirbyteFormValues,
+  AirbyteFieldValues,
+  AirbyteFieldErrors,
   SelectedItemMap,
-  useBuildYup,
+  useBuildAirbyteYup,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
 
-export type CreateDestinationFieldValues = AirbyteFormValues;
-export type CreateDestinationFieldErrors = AirbyteFormErrors;
+type FieldValues = AirbyteFieldValues;
 
-const initialCreateDestinationFieldValues = {
-  id: null,
-  definition: null,
-};
-
-const initialCreateDestinationFieldErrors = {
-  id: null,
-  definition: null,
-};
+type FieldErrors = AirbyteFieldErrors;
 
 const CreateDestinationForm: FC = () => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [createDestinationFieldValues, setCreateDestinationFieldValues] =
-    useState<CreateDestinationFieldValues>(initialCreateDestinationFieldValues);
-  const [createDestinationFieldErrors, setCreateDestinationFieldErrors] =
-    useState<CreateDestinationFieldErrors>(initialCreateDestinationFieldErrors);
+
+  const [fieldValues, setFieldValues] = useState<Nullable<FieldValues>>(null);
+  const [fieldErrors, setFieldErrors] = useState<Nullable<FieldErrors>>(null);
 
   // ###################################################################
   // #                                                                 #
@@ -71,31 +61,30 @@ const CreateDestinationForm: FC = () => {
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const selectedDestinationOption = useMemo(() => {
-    if (!createDestinationFieldValues?.definition || !destinationOptions) {
+    if (!fieldValues || !fieldValues.definition || !destinationOptions) {
       return null;
     }
 
     return (
-      destinationOptions.find(
-        (e) => e.value === createDestinationFieldValues.definition
-      ) || null
+      destinationOptions.find((e) => e.value === fieldValues.definition) || null
     );
-  }, [createDestinationFieldValues?.definition, destinationOptions]);
+  }, [fieldValues?.definition, destinationOptions]);
 
   const selectedDestinationDefinition = useMemo(() => {
-    if (!destinationDefinitions.isSuccess || !createDestinationFieldValues) {
+    if (
+      !destinationDefinitions.isSuccess ||
+      !fieldValues ||
+      !fieldValues.definition
+    ) {
       return null;
     }
 
     return (
       destinationDefinitions.data.find(
-        (e) => e.name === createDestinationFieldValues.definition
+        (e) => e.name === fieldValues.definition
       ) ?? null
     );
-  }, [
-    destinationDefinitions.isSuccess,
-    createDestinationFieldValues?.definition,
-  ]);
+  }, [destinationDefinitions.isSuccess, fieldValues?.definition]);
 
   // ###################################################################
   // #                                                                 #
@@ -112,56 +101,96 @@ const CreateDestinationForm: FC = () => {
 
   const createDestination = useCreateDestination();
 
-  const validateSchema = useBuildYup(
+  const airbyteYup = useBuildAirbyteYup(
     selectedDestinationDefinition?.connector_definition.spec
       .connection_specification ?? null,
     selectedConditionMap,
     null
   );
 
-  useEffect(() => {
-    console.log(
-      "errors",
-      createDestinationFieldErrors,
-      createDestinationFieldValues
-    );
-  }, [createDestinationFieldErrors]);
+  /**
+   *  We store our data in two form, one is in dot.notation and the other is in object and
+   *  the airbyteYup is planned to verify object part of the data
+   *
+   * {
+   *    tunnel_method: "SSH",
+   *    tunnel_method.tunnel_key: "hi",
+   *    configuration: {
+   *      tunnel_method: {
+   *        tunnel_method: "SSH",
+   *        tunnel_key: "hi"
+   *      }
+   *    }
+   * }
+   *
+   */
+
+  const formYup = useMemo(() => {
+    if (!airbyteYup) return null;
+
+    return yup.object({
+      id: yup.string().required(),
+      configuration: airbyteYup,
+    });
+  }, [airbyteYup]);
 
   const submitHandler = useCallback(async () => {
-    if (!validateSchema) {
+    if (!fieldValues || !airbyteYup || !formYup) {
       return;
     }
 
+    console.log(fieldValues);
+
     try {
-      validateSchema.validateSync(createDestinationFieldValues.configuration, {
-        abortEarly: false,
-      });
+      formYup.validateSync(fieldValues, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
-        const errors: Record<string, string> = {};
+        const errors = {} as FieldErrors;
         for (const err of error.inner) {
           if (err.path) {
             const message = err.message.replace(err.path, "This field");
-            errors[err.path] = message;
+            const pathList = err.path.split(".");
+
+            // Because we are using { configuration: airbyteYup } to construct the yup, yup will add "configuration" as prefix at the start
+            // of the path like configuration.tunnel_method
+            if (pathList[0] === "configuration") {
+              pathList.shift();
+            }
+
+            const removeConfigurationPrefixList = pathList.join(".");
+            errors[removeConfigurationPrefixList] = message;
           }
         }
-        setCreateDestinationFieldErrors(errors);
+        setFieldErrors(errors);
       }
 
       return;
     }
 
-    console.log("pass");
+    setFieldErrors(null);
 
-    const { id, definition, description, ...configuration } =
-      createDestinationFieldValues;
+    const { id, definition, configuration, ...dotNotationConfiguration } =
+      fieldValues;
+
+    const finalConfiguration: AirbyteFieldValues = {};
+
+    /**
+     * We need to extract data from tunnel_method_tunnel_key: "hi" to tunnel_key: "hu"
+     */
+
+    Object.entries(dotNotationConfiguration).forEach(([k, v]) => {
+      const pathList = k.split(".");
+      finalConfiguration[pathList[pathList.length - 1]] = v;
+    });
 
     const payload: CreateDestinationPayload = {
-      id: createDestinationFieldValues.id as string,
-      destination_connector_definition: `destination-connector-definitions/${createDestinationFieldValues.definition}`,
+      id: fieldValues.id as string,
+      destination_connector_definition: `destination-connector-definitions/${
+        fieldValues.definition as string
+      }`,
       connector: {
-        description: createDestinationFieldValues.description as string,
-        configuration: JSON.stringify(configuration),
+        description: fieldValues.description as string,
+        configuration: JSON.stringify(finalConfiguration),
       },
     };
 
@@ -190,10 +219,10 @@ const CreateDestinationForm: FC = () => {
     //     }
     //   },
     // });
-  }, [amplitudeIsInit, router, createDestination, validateSchema]);
+  }, [amplitudeIsInit, router, createDestination, airbyteYup]);
 
-  const updateFieldValues = useCallback((field: string, value: any) => {
-    setCreateDestinationFieldValues((prev) => {
+  const updateFieldValues = useCallback((field: string, value: string) => {
+    setFieldValues((prev) => {
       return {
         ...prev,
         [field]: value,
@@ -203,7 +232,7 @@ const CreateDestinationForm: FC = () => {
 
   return (
     <FormBase marginBottom={null} padding={null} noValidate={true}>
-      <div className="flex flex-col gap-y-5">
+      <div className="mb-10 flex flex-col gap-y-5">
         <BasicTextField
           id="id"
           label="ID"
@@ -216,8 +245,8 @@ const CreateDestinationForm: FC = () => {
           placeholder=""
           type="text"
           autoComplete="off"
-          value={(createDestinationFieldValues?.id as string) ?? null}
-          error={createDestinationFieldErrors.id ?? null}
+          value={fieldValues ? (fieldValues.id as string) ?? null : null}
+          error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
           onChangeInput={(id, value) => updateFieldValues(id, value)}
         />
         <BasicSingleSelect
@@ -231,24 +260,24 @@ const CreateDestinationForm: FC = () => {
           disabled={false}
           readOnly={false}
           required={false}
-          error={createDestinationFieldErrors.definition ?? null}
+          error={
+            fieldErrors ? (fieldErrors.definition as string) ?? null : null
+          }
           value={selectedDestinationOption}
           options={destinationOptions}
           onChangeInput={(id, option) => {
-            setCreateDestinationFieldErrors(
-              initialCreateDestinationFieldErrors
-            );
-            setCreateDestinationFieldValues(
-              initialCreateDestinationFieldValues
-            );
-            updateFieldValues(id, option?.value);
+            setFieldErrors(null);
+            setFieldValues((prev) => ({
+              id: prev?.id ?? null,
+              definition: option?.value ?? null,
+            }));
           }}
         />
         <AirbyteDestinationFields
           selectedDestinationDefinition={selectedDestinationDefinition}
-          fieldValues={createDestinationFieldValues}
-          setFieldValues={setCreateDestinationFieldValues}
-          fieldErrors={createDestinationFieldErrors}
+          fieldValues={fieldValues}
+          setFieldValues={setFieldValues}
+          fieldErrors={fieldErrors}
           setSelectedConditionMap={setSelectedConditionMap}
         />
       </div>
