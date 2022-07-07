@@ -91,16 +91,10 @@ type AirbyteFormTree =
   | AirbyteFormObjectArrayItem;
 
 type AirbyteFieldValues = {
-  [k: string]:
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | AirbyteFieldValues;
+  [k: string]: string | number | boolean | null | AirbyteFieldValues;
 };
 
-type AirbyteFieldErrors = Record<string, string | null | undefined>;
+type AirbyteFieldErrors = Record<string, string | null>;
 
 export type {
   AirbyteFormTree,
