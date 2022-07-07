@@ -17,15 +17,16 @@ const airbyteSchemaToYup = (
     | yup.BooleanSchema
     | null = null;
 
-  if (jsonSchema.oneOf && selectedItemMap && propertyPath) {
-    let selectedSchema = jsonSchema.oneOf.find(
-      (condition) =>
-        typeof condition !== "boolean" &&
-        condition.title === selectedItemMap[propertyPath]?.selectedItem
-    );
-
+  if (jsonSchema.oneOf) {
     // Select first oneOf path if no item selected
-    selectedSchema = selectedSchema ?? jsonSchema.oneOf[0];
+    const selectedSchema =
+      selectedItemMap && propertyPath
+        ? jsonSchema.oneOf.find(
+            (condition) =>
+              typeof condition !== "boolean" &&
+              condition.title === selectedItemMap[propertyPath]?.selectedItem
+          )
+        : jsonSchema.oneOf[0];
 
     if (selectedSchema && typeof selectedSchema !== "boolean") {
       return airbyteSchemaToYup(
