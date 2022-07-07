@@ -22,9 +22,9 @@ import {
 const useBuildAirbyteFields = (
   formTree: Nullable<AirbyteFormTree>,
   disabledAll: boolean,
-  values: AirbyteFieldValues,
-  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>,
-  errors: AirbyteFieldErrors,
+  values: Nullable<AirbyteFieldValues>,
+  setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>,
+  errors: Nullable<AirbyteFieldErrors>,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ) => {
   const fields = useMemo(() => {
@@ -47,9 +47,9 @@ export default useBuildAirbyteFields;
 export const pickComponent = (
   formTree: AirbyteFormTree,
   disabledAll: boolean,
-  values: AirbyteFieldValues,
-  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>,
-  errors: AirbyteFieldErrors,
+  values: Nullable<AirbyteFieldValues>,
+  setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>,
+  errors: Nullable<AirbyteFieldErrors>,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
@@ -145,11 +145,11 @@ export const pickComponent = (
         additionalMessageOnLabel={null}
         disabled={disabledAll}
         readOnly={false}
-        error={errors[formTree.path] ?? null}
-        value={(values[formTree.path] as boolean) ?? false}
+        error={errors ? errors[formTree.path] ?? null : null}
+        value={values ? (values[formTree.path] as boolean) ?? false : false}
         onChangeInput={(_, value) =>
           setValues((prev) => {
-            const configuration = prev.configuration || {};
+            const configuration = prev?.configuration ?? {};
             dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
@@ -179,21 +179,23 @@ export const pickComponent = (
         description={formTree.description ?? ""}
         label={formTree.title ?? null}
         disabled={disabledAll}
-        error={errors[formTree.path] ?? null}
+        error={errors ? errors[formTree.path] ?? null : null}
         options={options}
         value={
-          options.find((e) => e.value === values[formTree.path]) ??
-          options.find((e) => e.value === formTree.default) ??
-          null
+          values
+            ? options.find((e) => e.value === values[formTree.path]) ??
+              options.find((e) => e.value === formTree.default) ??
+              null
+            : null
         }
         onChangeInput={(_, option) =>
           setValues((prev) => {
-            const configuration = prev.configuration || {};
-            dot.setter(configuration, formTree.path, option?.value);
+            const configuration = prev?.configuration || {};
+            dot.setter(configuration, formTree.path, option?.value ?? null);
             return {
               ...prev,
               configuration: configuration,
-              [formTree.path]: option?.value,
+              [formTree.path]: option?.value ?? null,
             };
           })
         }
@@ -215,11 +217,11 @@ export const pickComponent = (
         additionalMessageOnLabel={null}
         disabled={disabledAll}
         placeholder={placeholder ?? ""}
-        error={errors[formTree.path] ?? null}
-        value={(values[formTree.path] as string) ?? ""}
+        error={errors ? errors[formTree.path] ?? null : null}
+        value={values ? (values[formTree.path] as string) ?? "" : ""}
         onChangeInput={(_, value) =>
           setValues((prev) => {
-            const configuration = prev.configuration || {};
+            const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
@@ -247,11 +249,11 @@ export const pickComponent = (
         additionalMessageOnLabel={null}
         disabled={disabledAll}
         placeholder={placeholder ?? ""}
-        error={errors[formTree.path] ?? null}
-        value={(values[formTree.path] as string) ?? ""}
+        error={errors ? errors[formTree.path] ?? null : null}
+        value={values ? (values[formTree.path] as string) ?? "" : ""}
         onChangeInput={(_, value) =>
           setValues((prev) => {
-            const configuration = prev.configuration || {};
+            const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, value);
             return {
               ...prev,
@@ -277,11 +279,11 @@ export const pickComponent = (
       additionalMessageOnLabel={null}
       disabled={disabledAll}
       placeholder={placeholder ?? ""}
-      error={errors[formTree.path] ?? null}
-      value={(values[formTree.path] as string) ?? ""}
+      error={errors ? errors[formTree.path] ?? null : null}
+      value={values ? (values[formTree.path] as string) ?? "" : ""}
       onChangeInput={(_, value) =>
         setValues((prev) => {
-          const configuration = prev.configuration || {};
+          const configuration = prev?.configuration || {};
           dot.setter(configuration, formTree.path, value);
           return {
             ...prev,
