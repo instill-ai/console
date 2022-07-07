@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import { DestinationWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
-import useDestinations from "./useDestinations";
+import { useDestinations } from "../queries";
 
 const useDestinationsWithPipelines = () => {
   const destinations = useDestinations();

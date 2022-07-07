@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
 import { Nullable } from "@/types/general";
-import useDestination from "./useDestination";
+import { useDestination } from "../queries";
 
 const useDestinationWithPipelines = (destinationName: Nullable<string>) => {
   const pipelines = usePipelines(true);

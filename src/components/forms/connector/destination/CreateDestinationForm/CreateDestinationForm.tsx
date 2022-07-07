@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
@@ -6,6 +6,7 @@ import {
   BasicTextField,
   SingleSelectOption,
 } from "@instill-ai/design-system";
+import * as yup from "yup";
 
 import { PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
@@ -25,22 +26,26 @@ import {
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
 
-export type CreateDestinationFormValues = AirbyteFormValues;
-export type CreateDestinationFormErrors = AirbyteFormErrors;
+export type CreateDestinationFieldValues = AirbyteFormValues;
+export type CreateDestinationFieldErrors = AirbyteFormErrors;
+
+const initialCreateDestinationFieldValues = {
+  id: null,
+  definition: null,
+};
+
+const initialCreateDestinationFieldErrors = {
+  id: null,
+  definition: null,
+};
 
 const CreateDestinationForm: FC = () => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [createDestinationValues, setCreateDestinationFormValues] =
-    useState<CreateDestinationFormValues>({
-      id: null,
-      definition: null,
-    });
-  const [createDestinationErrors, setCreateDestinationErrors] =
-    useState<CreateDestinationFormErrors>({
-      id: null,
-      definition: null,
-    });
+  const [createDestinationFieldValues, setCreateDestinationFieldValues] =
+    useState<CreateDestinationFieldValues>(initialCreateDestinationFieldValues);
+  const [createDestinationFieldErrors, setCreateDestinationFieldErrors] =
+    useState<CreateDestinationFieldErrors>(initialCreateDestinationFieldErrors);
 
   // ###################################################################
   // #                                                                 #
@@ -66,28 +71,31 @@ const CreateDestinationForm: FC = () => {
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const selectedDestinationOption = useMemo(() => {
-    if (!createDestinationValues?.definition || !destinationOptions) {
+    if (!createDestinationFieldValues?.definition || !destinationOptions) {
       return null;
     }
 
     return (
       destinationOptions.find(
-        (e) => e.value === createDestinationValues.definition
+        (e) => e.value === createDestinationFieldValues.definition
       ) || null
     );
-  }, [createDestinationValues?.definition, destinationOptions]);
+  }, [createDestinationFieldValues?.definition, destinationOptions]);
 
   const selectedDestinationDefinition = useMemo(() => {
-    if (!destinationDefinitions.isSuccess || !createDestinationValues) {
+    if (!destinationDefinitions.isSuccess || !createDestinationFieldValues) {
       return null;
     }
 
     return (
       destinationDefinitions.data.find(
-        (e) => e.name === createDestinationValues.definition
+        (e) => e.name === createDestinationFieldValues.definition
       ) ?? null
     );
-  }, [destinationDefinitions.isSuccess, createDestinationValues?.definition]);
+  }, [
+    destinationDefinitions.isSuccess,
+    createDestinationFieldValues?.definition,
+  ]);
 
   // ###################################################################
   // #                                                                 #
@@ -107,26 +115,37 @@ const CreateDestinationForm: FC = () => {
   const validateSchema = useBuildYup(
     selectedDestinationDefinition?.connector_definition.spec
       .connection_specification ?? null,
-    selectedConditionMap
+    selectedConditionMap,
+    null
   );
 
+  useEffect(() => {
+    console.log(
+      "errors",
+      createDestinationFieldErrors,
+      createDestinationFieldValues
+    );
+  }, [createDestinationFieldErrors]);
+
   const submitHandler = useCallback(async () => {
-    if (
-      !createDestinationValues.id ||
-      !createDestinationValues.definition ||
-      !validateSchema
-    ) {
+    if (!validateSchema) {
       return;
     }
 
     try {
-      console.log(validateSchema);
-      validateSchema.validateSync(createDestinationValues.configuration, {
+      validateSchema.validateSync(createDestinationFieldValues.configuration, {
         abortEarly: false,
       });
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        console.log(err.inner);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        const errors: Record<string, string> = {};
+        for (const err of error.inner) {
+          if (err.path) {
+            const message = err.message.replace(err.path, "This field");
+            errors[err.path] = message;
+          }
+        }
+        setCreateDestinationFieldErrors(errors);
       }
 
       return;
@@ -135,13 +154,13 @@ const CreateDestinationForm: FC = () => {
     console.log("pass");
 
     const { id, definition, description, ...configuration } =
-      createDestinationValues;
+      createDestinationFieldValues;
 
     const payload: CreateDestinationPayload = {
-      id: createDestinationValues.id as string,
-      destination_connector_definition: `destination-connector-definitions/${createDestinationValues.definition}`,
+      id: createDestinationFieldValues.id as string,
+      destination_connector_definition: `destination-connector-definitions/${createDestinationFieldValues.definition}`,
       connector: {
-        description: createDestinationValues.description as string,
+        description: createDestinationFieldValues.description as string,
         configuration: JSON.stringify(configuration),
       },
     };
@@ -174,7 +193,7 @@ const CreateDestinationForm: FC = () => {
   }, [amplitudeIsInit, router, createDestination, validateSchema]);
 
   const updateFieldValues = useCallback((field: string, value: any) => {
-    setCreateDestinationFormValues((prev) => {
+    setCreateDestinationFieldValues((prev) => {
       return {
         ...prev,
         [field]: value,
@@ -183,46 +202,56 @@ const CreateDestinationForm: FC = () => {
   }, []);
 
   return (
-    <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-      <BasicTextField
-        id="id"
-        label="ID"
-        key="id"
-        additionalMessageOnLabel={null}
-        description="Pick a name to help you identify this destination in Instill"
-        disabled={false}
-        readOnly={false}
-        required={true}
-        placeholder=""
-        type="text"
-        autoComplete="off"
-        value={(createDestinationValues?.id as string) ?? null}
-        error={null}
-        onChangeInput={(id, value) => updateFieldValues(id, value)}
-      />
-      <BasicSingleSelect
-        id="definition"
-        key="definition"
-        instanceId="definition"
-        menuPlacement="auto"
-        label="Destination type"
-        additionalMessageOnLabel={null}
-        description={""}
-        disabled={false}
-        readOnly={false}
-        required={false}
-        error={null}
-        value={selectedDestinationOption}
-        options={destinationOptions}
-        onChangeInput={(id, option) => updateFieldValues(id, option?.value)}
-      />
-      <AirbyteDestinationFields
-        selectedDestinationDefinition={selectedDestinationDefinition}
-        fieldValues={createDestinationValues}
-        setFieldValues={setCreateDestinationFormValues}
-        fieldErrors={createDestinationErrors}
-        setSelectedConditionMap={setSelectedConditionMap}
-      />
+    <FormBase marginBottom={null} padding={null} noValidate={true}>
+      <div className="flex flex-col gap-y-5">
+        <BasicTextField
+          id="id"
+          label="ID"
+          key="id"
+          additionalMessageOnLabel={null}
+          description="Pick a name to help you identify this destination in Instill"
+          disabled={false}
+          readOnly={false}
+          required={true}
+          placeholder=""
+          type="text"
+          autoComplete="off"
+          value={(createDestinationFieldValues?.id as string) ?? null}
+          error={createDestinationFieldErrors.id ?? null}
+          onChangeInput={(id, value) => updateFieldValues(id, value)}
+        />
+        <BasicSingleSelect
+          id="definition"
+          key="definition"
+          instanceId="definition"
+          menuPlacement="auto"
+          label="Destination type"
+          additionalMessageOnLabel={null}
+          description={""}
+          disabled={false}
+          readOnly={false}
+          required={false}
+          error={createDestinationFieldErrors.definition ?? null}
+          value={selectedDestinationOption}
+          options={destinationOptions}
+          onChangeInput={(id, option) => {
+            setCreateDestinationFieldErrors(
+              initialCreateDestinationFieldErrors
+            );
+            setCreateDestinationFieldValues(
+              initialCreateDestinationFieldValues
+            );
+            updateFieldValues(id, option?.value);
+          }}
+        />
+        <AirbyteDestinationFields
+          selectedDestinationDefinition={selectedDestinationDefinition}
+          fieldValues={createDestinationFieldValues}
+          setFieldValues={setCreateDestinationFieldValues}
+          fieldErrors={createDestinationFieldErrors}
+          setSelectedConditionMap={setSelectedConditionMap}
+        />
+      </div>
       <div className="flex flex-row">
         {createDestinationError ? (
           <BasicProgressMessageBox width="w-[216px]" status="error">
