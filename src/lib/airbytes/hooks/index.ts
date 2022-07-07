@@ -1,4 +1,4 @@
-import useBuildForm from "./useBuildForm";
-import useBuildYup from "./useBuildYup";
+import useBuildAirbyteFields from "./useBuildAirbyteFields";
+import useBuildAirbyteYup from "./useBuildAirbyteYup";
 
-export { useBuildForm, useBuildYup };
+export { useBuildAirbyteFields, useBuildAirbyteYup };

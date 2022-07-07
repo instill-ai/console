@@ -1,5 +1,5 @@
 export * from "./types";
 
-import { useBuildForm, useBuildYup } from "./hooks";
+import { useBuildAirbyteFields, useBuildAirbyteYup } from "./hooks";
 
-export { useBuildForm, useBuildYup };
+export { useBuildAirbyteFields, useBuildAirbyteYup };

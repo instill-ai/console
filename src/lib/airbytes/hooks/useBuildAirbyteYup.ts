@@ -4,7 +4,7 @@ import { AnySchema } from "yup";
 import airbyteSchemaToYup from "../airbyteSchemaToYup";
 import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 
-const useBuildYup = (
+const useBuildAirbyteYup = (
   jsonSchema: Nullable<AirbyteJsonSchema>,
   selectedItemMap: Nullable<SelectedItemMap>,
   additionalSchema: Nullable<AnySchema>
@@ -20,4 +20,4 @@ const useBuildYup = (
   return yup;
 };
 
-export default useBuildYup;
+export default useBuildAirbyteYup;

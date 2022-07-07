@@ -11,20 +11,20 @@ import { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
-  AirbyteFormErrors,
+  AirbyteFieldErrors,
   AirbyteFormGroupItem,
   AirbyteFormItem,
   AirbyteFormTree,
-  AirbyteFormValues,
+  AirbyteFieldValues,
   SelectedItemMap,
 } from "../types";
 
-const useBuildForm = (
+const useBuildAirbyteFields = (
   formTree: Nullable<AirbyteFormTree>,
   disabledAll: boolean,
-  values: AirbyteFormValues,
-  setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: AirbyteFormErrors,
+  values: AirbyteFieldValues,
+  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>,
+  errors: AirbyteFieldErrors,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ) => {
   const fields = useMemo(() => {
@@ -42,14 +42,14 @@ const useBuildForm = (
   return fields;
 };
 
-export default useBuildForm;
+export default useBuildAirbyteFields;
 
 export const pickComponent = (
   formTree: AirbyteFormTree,
   disabledAll: boolean,
-  values: AirbyteFormValues,
-  setValues: Dispatch<SetStateAction<AirbyteFormValues>>,
-  errors: AirbyteFormErrors,
+  values: AirbyteFieldValues,
+  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>,
+  errors: AirbyteFieldErrors,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
