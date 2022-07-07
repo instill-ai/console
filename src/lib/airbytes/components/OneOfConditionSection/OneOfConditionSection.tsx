@@ -14,14 +14,14 @@ import {
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormItem,
-  AirbyteFormValues,
+  AirbyteFieldValues,
   SelectedItemMap,
 } from "../../types";
 
 export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;
-  values: AirbyteFormValues;
-  setValues: Dispatch<SetStateAction<AirbyteFormValues>>;
+  values: AirbyteFieldValues;
+  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
 

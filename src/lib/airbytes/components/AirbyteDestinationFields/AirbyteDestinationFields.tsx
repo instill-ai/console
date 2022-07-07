@@ -2,17 +2,17 @@ import { ConnectorDefinition } from "@/lib/instill";
 import { Dispatch, FC, Fragment, SetStateAction, useMemo } from "react";
 import { airbyteSchemaToAirbyteFormTree } from "../../airbyteSchemaToAirbyteFormTree";
 import {
-  AirbyteFormErrors,
-  AirbyteFormValues,
+  AirbyteFieldErrors,
+  AirbyteFieldValues,
   SelectedItemMap,
 } from "../../types";
-import useBuildForm from "../../hooks/useBuildForm";
+import useBuildForm from "../../hooks/useBuildAirbyteFields";
 import { Nullable } from "@/types/general";
 
 export type AirbyteDestinationFieldsProps = {
-  fieldValues: AirbyteFormValues;
-  setFieldValues: Dispatch<SetStateAction<AirbyteFormValues>>;
-  fieldErrors: AirbyteFormErrors;
+  fieldValues: AirbyteFieldValues;
+  setFieldValues: Dispatch<SetStateAction<AirbyteFieldValues>>;
+  fieldErrors: AirbyteFieldErrors;
   selectedDestinationDefinition: Nullable<ConnectorDefinition>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };

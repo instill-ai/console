@@ -100,7 +100,7 @@ type AirbyteFieldValues = {
     | AirbyteFieldValues;
 };
 
-type AirbyteFidldErrors = Record<string, string | null | undefined>;
+type AirbyteFieldErrors = Record<string, string | null | undefined>;
 
 export type {
   AirbyteFormTree,
@@ -113,7 +113,7 @@ export type {
   AirbyteJsonSchemaDefinition,
   AirbyteJsonSchema,
   AirbyteFieldValues,
-  AirbyteFidldErrors,
+  AirbyteFieldErrors,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
