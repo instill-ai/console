@@ -90,11 +90,17 @@ type AirbyteFormTree =
   | AirbyteFormConditionItem
   | AirbyteFormObjectArrayItem;
 
-type AirbyteFormValues = {
-  [k: string]: string | number | boolean | null | undefined | AirbyteFormValues;
+type AirbyteFieldValues = {
+  [k: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | AirbyteFieldValues;
 };
 
-type AirbyteFormErrors = Record<string, string | null | undefined>;
+type AirbyteFidldErrors = Record<string, string | null | undefined>;
 
 export type {
   AirbyteFormTree,
@@ -106,8 +112,8 @@ export type {
   AirbyteFormObjectArrayItem,
   AirbyteJsonSchemaDefinition,
   AirbyteJsonSchema,
-  AirbyteFormValues,
-  AirbyteFormErrors,
+  AirbyteFieldValues,
+  AirbyteFidldErrors,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
