@@ -20,8 +20,8 @@ import {
 
 export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;
-  values: AirbyteFieldValues;
-  setValues: Dispatch<SetStateAction<AirbyteFieldValues>>;
+  values: Nullable<AirbyteFieldValues>;
+  setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
 
@@ -44,14 +44,16 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   const selectedConditionOption = useMemo(() => {
     if (!conditionOptions) return null;
 
-    if (!values[formTree.path]) {
+    // If there has no selection, default to choose the first condition
+
+    if (!values || !values[formTree.path]) {
       return conditionOptions[0];
     }
 
     return (
       conditionOptions.find((k) => k.value === values[formTree.path]) || null
     );
-  }, [formTree.path, values[formTree.path], conditionOptions]);
+  }, [formTree.path, values, conditionOptions]);
 
   const selectedCondition = useMemo(() => {
     if (!selectedConditionOption) return null;

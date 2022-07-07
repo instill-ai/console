@@ -6,13 +6,13 @@ import {
   AirbyteFieldValues,
   SelectedItemMap,
 } from "../../types";
-import useBuildForm from "../../hooks/useBuildAirbyteFields";
+import useBuildAirbyteFields from "../../hooks/useBuildAirbyteFields";
 import { Nullable } from "@/types/general";
 
 export type AirbyteDestinationFieldsProps = {
-  fieldValues: AirbyteFieldValues;
-  setFieldValues: Dispatch<SetStateAction<AirbyteFieldValues>>;
-  fieldErrors: AirbyteFieldErrors;
+  fieldValues: Nullable<AirbyteFieldValues>;
+  setFieldValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
+  fieldErrors: Nullable<AirbyteFieldErrors>;
   selectedDestinationDefinition: Nullable<ConnectorDefinition>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
@@ -37,7 +37,7 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
     return formTree;
   }, [selectedDestinationDefinition]);
 
-  const fields = useBuildForm(
+  const fields = useBuildAirbyteFields(
     selectedDestinationFormTree,
     false,
     fieldValues,
