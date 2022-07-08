@@ -1,13 +1,22 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
   BasicSingleSelect,
   BasicTextArea,
   BasicTextField,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import * as yup from "yup";
+import Image from "next/image";
 
 import { PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
@@ -32,7 +41,15 @@ type FieldValues = AirbyteFieldValues;
 
 type FieldErrors = AirbyteFieldErrors;
 
-const CreateDestinationForm: FC = () => {
+export type CreateDestinationFormProps = {
+  setResult: Nullable<(destinationId: string) => void>;
+  setStepNumber: Nullable<Dispatch<SetStateAction<number>>>;
+};
+
+const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
+  setResult,
+  setStepNumber,
+}) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -54,8 +71,17 @@ const CreateDestinationForm: FC = () => {
 
     for (const definition of destinationDefinitions.data) {
       options.push({
-        label: definition.id,
+        label: definition.connector_definition.title,
         value: definition.name,
+        startIcon: (
+          <Image
+            className="my-auto"
+            src={`/airbyteIcons/${definition.connector_definition.icon}`}
+            width={24}
+            height={24}
+            layout="fixed"
+          />
+        ),
       });
     }
 
@@ -93,13 +119,16 @@ const CreateDestinationForm: FC = () => {
   // # 2 - handle state when create destination                        #
   // #                                                                 #
   // ###################################################################
-
-  const [createDestinationError, setCreateDestinationError] =
-    useState<Nullable<string>>(null);
-  const [isCreatingDestination, setIsCreatingDestination] = useState(false);
-
   const [selectedConditionMap, setSelectedConditionMap] =
     useState<Nullable<SelectedItemMap>>(null);
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const createDestination = useCreateDestination();
 
@@ -141,9 +170,8 @@ const CreateDestinationForm: FC = () => {
       return;
     }
 
-    console.log(fieldValues);
-
     try {
+      console.log(formYup);
       formYup.validateSync(fieldValues, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -170,21 +198,6 @@ const CreateDestinationForm: FC = () => {
     }
 
     setFieldErrors(null);
-
-    const { id, definition, configuration, ...dotNotationConfiguration } =
-      fieldValues;
-
-    /**
-     * We need to extract data from tunnel_method_tunnel_key: "hi" to tunnel_key: "hi"
-     */
-
-    const finalConfiguration: AirbyteFieldValues = {};
-
-    Object.entries(dotNotationConfiguration).forEach(([k, v]) => {
-      const pathList = k.split(".");
-      finalConfiguration[pathList[pathList.length - 1]] = v;
-    });
-
     const payload: CreateDestinationPayload = {
       id: fieldValues.id as string,
       destination_connector_definition: `destination-connector-definitions/${
@@ -192,17 +205,32 @@ const CreateDestinationForm: FC = () => {
       }`,
       connector: {
         description: fieldValues.description as string,
-        configuration: JSON.stringify(finalConfiguration),
+        configuration: JSON.stringify(fieldValues.configuration),
       },
     };
 
-    console.log(payload);
-
-    setIsCreatingDestination(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Creating destination...",
+    }));
 
     createDestination.mutate(payload, {
-      onSuccess: () => {
-        setIsCreatingDestination(false);
+      onSuccess: (newDestination) => {
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Creating destination succeed.",
+        }));
+        if (setResult) {
+          setResult(newDestination.id);
+        }
+
+        if (setStepNumber) {
+          setStepNumber((prev) => prev + 1);
+        }
         if (amplitudeIsInit) {
           sendAmplitudeData("create_destination", {
             type: "critical_action",
@@ -213,13 +241,19 @@ const CreateDestinationForm: FC = () => {
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setCreateDestinationError(error.message);
-          setIsCreatingDestination(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setCreateDestinationError(
-            "Something went wrong when deploying model"
-          );
-          setIsCreatingDestination(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when deploying model",
+          }));
         }
       },
     });
@@ -307,15 +341,12 @@ const CreateDestinationForm: FC = () => {
         />
       </div>
       <div className="flex flex-row">
-        {createDestinationError ? (
-          <BasicProgressMessageBox width="w-[216px]" status="error">
-            {createDestinationError}
-          </BasicProgressMessageBox>
-        ) : isCreatingDestination ? (
-          <BasicProgressMessageBox width="w-[216px]" status="progressing">
-            Updating model...
-          </BasicProgressMessageBox>
-        ) : null}
+        <BasicProgressMessageBox
+          state={messageBoxState}
+          setState={setMessageBoxState}
+          width="w-[25vw]"
+          closable={true}
+        />
         <PrimaryButton
           type="submit"
           disabled={false}
