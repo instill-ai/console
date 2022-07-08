@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
   BasicSingleSelect,
+  BasicTextArea,
   BasicTextField,
   SingleSelectOption,
 } from "@instill-ai/design-system";
@@ -25,6 +26,7 @@ import {
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
+import { sendAmplitudeData } from "@/lib/amplitude";
 
 type FieldValues = AirbyteFieldValues;
 
@@ -157,8 +159,8 @@ const CreateDestinationForm: FC = () => {
               pathList.shift();
             }
 
-            const removeConfigurationPrefixList = pathList.join(".");
-            errors[removeConfigurationPrefixList] = message;
+            const removeConfigurationPrefixPath = pathList.join(".");
+            errors[removeConfigurationPrefixPath] = message;
           }
         }
         setFieldErrors(errors);
@@ -172,11 +174,11 @@ const CreateDestinationForm: FC = () => {
     const { id, definition, configuration, ...dotNotationConfiguration } =
       fieldValues;
 
-    const finalConfiguration: AirbyteFieldValues = {};
-
     /**
-     * We need to extract data from tunnel_method_tunnel_key: "hi" to tunnel_key: "hu"
+     * We need to extract data from tunnel_method_tunnel_key: "hi" to tunnel_key: "hi"
      */
+
+    const finalConfiguration: AirbyteFieldValues = {};
 
     Object.entries(dotNotationConfiguration).forEach(([k, v]) => {
       const pathList = k.split(".");
@@ -194,31 +196,33 @@ const CreateDestinationForm: FC = () => {
       },
     };
 
-    // setIsCreatingDestination(true);
+    console.log(payload);
 
-    // createDestination.mutate(payload, {
-    //   onSuccess: () => {
-    //     setIsCreatingDestination(false);
-    //     if (amplitudeIsInit) {
-    //       sendAmplitudeData("create_destination", {
-    //         type: "critical_action",
-    //         process: "destination",
-    //       });
-    //     }
-    //     router.push("/destinations");
-    //   },
-    //   onError: (error) => {
-    //     if (error instanceof Error) {
-    //       setCreateDestinationError(error.message);
-    //       setIsCreatingDestination(false);
-    //     } else {
-    //       setCreateDestinationError(
-    //         "Something went wrong when deploying model"
-    //       );
-    //       setIsCreatingDestination(false);
-    //     }
-    //   },
-    // });
+    setIsCreatingDestination(true);
+
+    createDestination.mutate(payload, {
+      onSuccess: () => {
+        setIsCreatingDestination(false);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_destination", {
+            type: "critical_action",
+            process: "destination",
+          });
+        }
+        router.push("/destinations");
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setCreateDestinationError(error.message);
+          setIsCreatingDestination(false);
+        } else {
+          setCreateDestinationError(
+            "Something went wrong when deploying model"
+          );
+          setIsCreatingDestination(false);
+        }
+      },
+    });
   }, [amplitudeIsInit, router, createDestination, airbyteYup]);
 
   const updateFieldValues = useCallback((field: string, value: string) => {
@@ -247,6 +251,27 @@ const CreateDestinationForm: FC = () => {
           autoComplete="off"
           value={fieldValues ? (fieldValues.id as string) ?? null : null}
           error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
+          onChangeInput={(id, value) => updateFieldValues(id, value)}
+        />
+        <BasicTextArea
+          id="description"
+          label="Description"
+          key="description"
+          additionalMessageOnLabel={null}
+          description="Fill with a short description of your data destination"
+          disabled={false}
+          readOnly={false}
+          required={true}
+          placeholder=""
+          autoComplete="off"
+          enableCounter={false}
+          counterWordLimit={0}
+          error={
+            fieldErrors ? (fieldErrors.description as string) ?? null : null
+          }
+          value={
+            fieldValues ? (fieldValues.description as string) ?? null : null
+          }
           onChangeInput={(id, value) => updateFieldValues(id, value)}
         />
         <BasicSingleSelect
