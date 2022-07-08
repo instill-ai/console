@@ -1,4 +1,6 @@
+import { Nullable } from "@/types/general";
 import axios from "axios";
+import { getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Destination } from "./types";
 
@@ -14,14 +16,40 @@ export type ListDestinationDefinitionsResponse = {
   total_size: string;
 };
 
-export const listDestinationDefinitionsQuery = async (): Promise<
-  ConnectorDefinition[]
-> => {
+export type ListDestinationDefinitionsPayload = {
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+};
+
+export const listDestinationDefinitionsQuery = async (
+  pageSize: Nullable<number>,
+  nextPageToken: Nullable<string>
+): Promise<ConnectorDefinition[]> => {
   try {
-    const { data } = await axios.get<ListDestinationDefinitionsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`
+    const definitions: ConnectorDefinition[] = [];
+    const queryString = getQueryString(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken
     );
-    return Promise.resolve(data.destination_connector_definitions);
+
+    const { data } = await axios.get<ListDestinationDefinitionsResponse>(
+      queryString
+    );
+
+    definitions.push(...data.destination_connector_definitions);
+
+    if (data.next_page_token) {
+      console.log(data);
+      definitions.push(
+        ...(await listDestinationDefinitionsQuery(
+          pageSize,
+          data.next_page_token
+        ))
+      );
+    }
+
+    return Promise.resolve(definitions);
   } catch (err) {
     return Promise.reject(err);
   }

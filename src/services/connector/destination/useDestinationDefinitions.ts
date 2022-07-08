@@ -5,7 +5,10 @@ const useDestinationDefinitions = () => {
   return useQuery(
     ["destinations", "definition"],
     async () => {
-      const destinationDefinition = await listDestinationDefinitionsQuery();
+      const destinationDefinition = await listDestinationDefinitionsQuery(
+        10,
+        null
+      );
       return Promise.resolve(destinationDefinition);
     },
     {
