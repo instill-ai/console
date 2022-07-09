@@ -92,7 +92,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
         activate: true,
         status: "progressing",
         description: null,
-        message: "Uploading the form...",
+        message: "Uploading...",
       }));
 
       updateUser.mutate(payload, {
@@ -107,7 +107,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             activate: true,
             status: "progressing",
             description: null,
-            message: "Upload the form succeeded",
+            message: "Upload succeeded",
           }));
 
           await axios.post("/api/set-user-cookie", { token });

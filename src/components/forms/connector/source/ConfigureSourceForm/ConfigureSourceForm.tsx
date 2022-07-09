@@ -113,7 +113,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       activate: true,
       status: "progressing",
       description: null,
-      message: "Deleting source...",
+      message: "Deleting...",
     }));
 
     deleteSource.mutate(source.name, {
@@ -122,7 +122,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
           activate: true,
           status: "success",
           description: null,
-          message: "Delete source succeeded.",
+          message: "Delete succeeded.",
         }));
 
         if (amplitudeIsInit) {
@@ -146,7 +146,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when deleting source",
+            message: "Something went wrong when deleting the source",
           }));
         }
       },

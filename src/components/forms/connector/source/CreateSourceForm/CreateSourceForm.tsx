@@ -124,7 +124,7 @@ const CreateSourceForm: FC = () => {
       activate: true,
       status: "progressing",
       description: null,
-      message: "Creating source...",
+      message: "Creating...",
     }));
 
     createSource.mutate(payload, {
@@ -133,7 +133,7 @@ const CreateSourceForm: FC = () => {
           activate: true,
           status: "progressing",
           description: null,
-          message: "Creating source succeeded",
+          message: "Create succeeded",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("create_source", {
@@ -156,7 +156,7 @@ const CreateSourceForm: FC = () => {
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when creating source",
+            message: "Something went wrong when creating the source",
           }));
         }
       },

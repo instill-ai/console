@@ -121,7 +121,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       activate: true,
       status: "progressing",
       description: null,
-      message: "Deleting destination...",
+      message: "Deleting...",
     }));
 
     deleteDestination.mutate(destination.name, {
@@ -130,7 +130,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Delete destination succeeded.",
+          message: "Delete succeeded.",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_destination", {
@@ -153,7 +153,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when deleting destination",
+            message: "Something went wrong when deleting the destination",
           }));
         }
       },

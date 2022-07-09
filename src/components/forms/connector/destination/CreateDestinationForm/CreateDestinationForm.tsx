@@ -214,7 +214,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
       activate: true,
       status: "progressing",
       description: null,
-      message: "Creating destination...",
+      message: "Creating...",
     }));
 
     createDestination.mutate(payload, {
@@ -223,7 +223,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Creating destination succeeded.",
+          message: "Create succeeded.",
         }));
         if (setResult) {
           setResult(newDestination.id);
@@ -253,7 +253,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when deploying model",
+            message: "Something went wrong when create the destination",
           }));
         }
       },
