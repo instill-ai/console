@@ -198,6 +198,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     }
 
     setFieldErrors(null);
+
     const payload: CreateDestinationPayload = {
       id: fieldValues.id as string,
       destination_connector_definition: `destination-connector-definitions/${
