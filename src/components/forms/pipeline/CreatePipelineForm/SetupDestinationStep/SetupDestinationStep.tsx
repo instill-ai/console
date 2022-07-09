@@ -191,12 +191,13 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
         <div className="flex flex-1 flex-row">
           <UseExistingDestinationFlow {...props} />
           <FormVerticalDividers />
-          <CreateDestinationForm
+          <CreateNewDestinationFlow {...props} />
+          {/* <CreateDestinationForm
             setStepNumber={props.setStepNumber}
             setResult={(id) => {
               setFieldValue("destination.new.id", id);
             }}
-          />
+          /> */}
         </div>
       )}
     </FormikStep>
