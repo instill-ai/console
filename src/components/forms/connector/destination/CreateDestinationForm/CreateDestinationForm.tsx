@@ -223,7 +223,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Creating destination succeed.",
+          message: "Creating destination succeeded.",
         }));
         if (setResult) {
           setResult(newDestination.id);

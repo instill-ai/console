@@ -133,7 +133,7 @@ const CreateSourceForm: FC = () => {
           activate: true,
           status: "progressing",
           description: null,
-          message: "Creating source succeed",
+          message: "Creating source succeeded",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("create_source", {
