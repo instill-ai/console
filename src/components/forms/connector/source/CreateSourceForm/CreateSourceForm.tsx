@@ -179,8 +179,8 @@ const CreateSourceForm: FC = () => {
         return (
           <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <SingleSelect
-              id="sourceDefinition"
-              name="sourceDefinition"
+              id="definition"
+              name="definition"
               label="Source type"
               additionalMessageOnLabel={null}
               options={syncSourceDefinitionOptions}
