@@ -38,7 +38,7 @@ const CreateDestinationPage: FC & {
         enableButton={false}
         marginBottom="mb-10"
       />
-      <CreateDestinationForm />
+      <CreateDestinationForm setResult={null} setStepNumber={null} />
     </PageContentContainer>
   );
 };
