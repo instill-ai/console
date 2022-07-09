@@ -153,7 +153,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when deleting the destination",
+            message: "Something went wrong when delete the destination",
           }));
         }
       },

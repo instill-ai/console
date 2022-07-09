@@ -92,7 +92,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
           setCanEdit(false);
           setMessageBoxState(() => ({
             activate: true,
-            status: "progressing",
+            status: "success",
             description: null,
             message: "Update succeeded",
           }));

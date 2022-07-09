@@ -131,7 +131,7 @@ const CreateSourceForm: FC = () => {
       onSuccess: () => {
         setMessageBoxState(() => ({
           activate: true,
-          status: "progressing",
+          status: "success",
           description: null,
           message: "Create succeeded",
         }));
@@ -156,7 +156,7 @@ const CreateSourceForm: FC = () => {
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when creating the source",
+            message: "Something went wrong when create the source",
           }));
         }
       },

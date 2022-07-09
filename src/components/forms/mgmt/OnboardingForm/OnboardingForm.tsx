@@ -105,7 +105,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
 
           setMessageBoxState(() => ({
             activate: true,
-            status: "progressing",
+            status: "success",
             description: null,
             message: "Upload succeeded",
           }));

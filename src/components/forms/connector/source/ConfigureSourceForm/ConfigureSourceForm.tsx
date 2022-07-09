@@ -146,7 +146,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
             activate: true,
             status: "error",
             description: null,
-            message: "Something went wrong when deleting the source",
+            message: "Something went wrong when delete the source",
           }));
         }
       },
