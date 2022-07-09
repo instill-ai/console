@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import {
   BasicProgressMessageBox,
   BasicUploadFileField,
+  ProgressMessageBoxState,
 } from "@instill-ai/design-system";
-import { AxiosError } from "axios";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -29,9 +29,14 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
 
   const [resultBlockIsOpen, setResultBlockIsOpen] = useState(false);
 
-  const [isTestingModelInstance, setIsTestingModelInstance] = useState(false);
-  const [testModelInstanceError, setTestModelInstanceError] =
-    useState<Nullable<string>>(null);
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
   const [testModelInstanceResult, setTestModelInstanceResult] =
     useState<Nullable<string>>(null);
 
@@ -40,8 +45,12 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
   const fileOnChangeCb = (_: string, file: string) => {
     if (!modelInstance || !file) return;
 
-    setTestModelInstanceError(null);
-    setIsTestingModelInstance(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Testing...",
+    }));
 
     testModelInstance.mutate(
       {
@@ -50,7 +59,12 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
       },
       {
         onSuccess: (result) => {
-          setIsTestingModelInstance(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Test succeeded",
+          }));
           setResultBlockIsOpen(true);
           setTestModelInstanceResult(JSON.stringify(result, null, "\t"));
           if (amplitudeIsInit) {
@@ -61,15 +75,22 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
           }
         },
         onError: (error) => {
-          if (error instanceof AxiosError) {
-            setTestModelInstanceError(error.response?.data.title);
+          if (error instanceof Error) {
             setResultBlockIsOpen(false);
-            setIsTestingModelInstance(false);
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
           } else {
-            setTestModelInstanceError(
-              "Something went wrong when deploying model"
-            );
-            setIsTestingModelInstance(false);
+            setResultBlockIsOpen(false);
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when test the model instance",
+            }));
           }
         },
       }
@@ -99,15 +120,12 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
       </div>
       <div className="flex flex-row">
         <div className="mr-auto flex">
-          {testModelInstanceError ? (
-            <BasicProgressMessageBox width="w-[25vw]" status="error">
-              {testModelInstanceError}
-            </BasicProgressMessageBox>
-          ) : isTestingModelInstance ? (
-            <BasicProgressMessageBox width="w-[25vw]" status="progressing">
-              Testing...
-            </BasicProgressMessageBox>
-          ) : null}
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
         </div>
         <TestModelInstanceResultBlock
           width="w-[42vw]"
