@@ -23,7 +23,7 @@ The repo mainly follows the guideline of Next.js and has some personal touch on 
 
 # About the UI components
 
-We are following the principles of Instill-ai's design system, you could find the detailed description [here](https://github.com/instill-ai/design-system)
+We are following the principles of Instill-ai's design system, you could find the detailed description [here](https://github.com/instill-ai/design-system).
 
 # Code quality tools.
 
@@ -35,22 +35,24 @@ To setup the local dev environment with this repo, you need follow the below ste
 
 1. Clone the [VDP repo](https://github.com/instill-ai/vdp)
 2. Comment out the console part in the [docker-compose-dev.yml](https://github.com/instill-ai/vdp/blob/f563393dca62fc1961e1a370f5a38fb9bc51c5a3/docker-compose-dev.yml#L510) of the vdp folder. This is because we don’t want the latest image to interrupt our development.
-3. In the VDP folder you just clone, use this script `make build PROFILE=all` to build the full images of vdp, this step will take some time if this is your first time setting up the VDP.
-4. In the same VDP folder, use the script `make dev PROFILE=all` This will bring up the full working VDP backend, except the console you comment out at the second step.
+3. In the VDP folder you just clone, use `make build PROFILE=all` to build the full images of vdp, this step will take some time if this is your first time setting up the VDP.
+4. In the same VDP folder, use `make dev PROFILE=all` This will bring up the full working VDP backend, except the console you comment out at the second step.
 5. Clone the [console repo](https://github.com/instill-ai/console)
-6. Install yarn if you don’t have it, use can use `npm install` or using `brew install yarn` if you have homebrew
-7. Install all the dependencies, use `yarn install`
+6. Install yarn if you don’t have it, use `npm install` or `brew install yarn` if you have homebrew.
+7. Install all the dependencies, use `yarn install`.
 8. Make sure the environment variables in the `.env` file are correct. They should map one-to-one to the config of the VDP. By default they are
 
+```
 - NEXT_PUBLIC_MAIN_URL=http://localhost:3000
 - NEXT_PUBLIC_MGMT_BACKEND_BASE_URL=http://localhost:8084
 - NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL=http://localhost:8081
 - NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL=http://localhost:8082
 - NEXT_PUBLIC_MODEL_BACKEND_BASE_URL=http://localhost:8083
 - NEXT_PUBLIC_API_VERSION=v1alpha
+```
 
-9. You can now use `yarn dev` to run the local next.js server and your VDP has been set up correctly, it should not have any error at the browser inspection window.
-10. If you want to build a docker container you could use this script `yarn docker:app:develop`
+9. You can now use `yarn dev` to run the local Next.js server if your VDP has been set up correctly, it should not have any error at the browser inspection window.
+10. If you want to build a docker container you could use `yarn docker:app:develop`.
 
 # Available scripts
 
