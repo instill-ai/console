@@ -11,6 +11,7 @@ import { useFormikContext } from "formik";
 import {
   BasicProgressMessageBox,
   ModelInstanceIcon,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
@@ -112,9 +113,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   // ###################################################################
 
   const [newModel, setNewModel] = useState<Nullable<Model>>(null);
-  const [isSettingModel, setIsSettingModel] = useState(false);
-  const [setupModelError, setSetupModelError] =
-    useState<Nullable<string>>(null);
+
+  const [createModelMessageBoxState, setCreateModelMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const canCreateModel = useMemo(() => {
     if (!values.model.new.modelDefinition || modelCreated) return false;
@@ -142,10 +148,8 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     values.model.new.modelDefinition,
     values.model.new.id,
     values.model.new.file,
-    values.model.new.description,
     values.model.new.repo,
     values.model.new.gcsBucketPath,
-    values.model.new.credentials,
     modelCreated,
   ]);
 
@@ -156,8 +160,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   const handelCreateModel = async () => {
     if (!values.model.new.id) return;
 
-    setIsSettingModel(true);
-    setSetupModelError(null);
+    setCreateModelMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Creating...",
+    }));
 
     if (values.model.new.modelDefinition === "github") {
       const configuration = {
@@ -173,7 +181,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         onSuccess: (newModel) => {
           setModelCreated(true);
           setNewModel(newModel);
-          setIsSettingModel(false);
+          setCreateModelMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
           if (amplitudeIsInit) {
             sendAmplitudeData("create_github_model", {
               type: "critical_action",
@@ -183,12 +196,19 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         },
         onError: (error) => {
           if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
           } else {
-            setSetupModelError(
-              "Something went wrong when setting up GitHub model"
-            );
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the GitHub model",
+            }));
           }
         },
       });
@@ -210,16 +230,28 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         onSuccess: (newModel) => {
           setModelCreated(true);
           setNewModel(newModel);
-          setIsSettingModel(false);
+          setCreateModelMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
         },
         onError: (error) => {
           if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
           } else {
-            setSetupModelError(
-              "Something went wrong when setting up local model"
-            );
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the local model",
+            }));
           }
         },
       });
@@ -239,7 +271,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         onSuccess: (newModel) => {
           setModelCreated(true);
           setNewModel(newModel);
-          setIsSettingModel(false);
+          setCreateModelMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
           if (amplitudeIsInit) {
             sendAmplitudeData("create_artivc_model", {
               type: "critical_action",
@@ -248,12 +285,19 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         },
         onError: (error) => {
           if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
           } else {
-            setSetupModelError(
-              "Something went wrong when setting up local model"
-            );
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the ArtiVC model",
+            }));
           }
         },
       });
@@ -266,9 +310,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   // #                                                                 #
   // ###################################################################
 
-  const [isDeployingModel, setIsDeployingModel] = useState(false);
-  const [deployModelError, setDeployModelError] =
-    useState<Nullable<string>>(null);
+  const [
+    deployModelInstanceMessageBoxState,
+    setDeployModelInstanceMessageBoxState,
+  ] = useState<ProgressMessageBoxState>({
+    activate: false,
+    message: null,
+    description: null,
+    status: null,
+  });
 
   const modelInstances = useModelInstances(newModel ? newModel.name : null);
   const modelInstanceOptions = useMemo(() => {
@@ -320,18 +370,39 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   const handleDeployModel = async () => {
     if (!values.model.new.modelInstanceName || !values.model.new.id) return;
 
-    setIsDeployingModel(true);
+    setDeployModelInstanceMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deploying...",
+    }));
+
     deployModelInstance.mutate(values.model.new.modelInstanceName, {
       onSuccess: () => {
-        setIsDeployingModel(false);
+        setDeployModelInstanceMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Deploy succeeded",
+        }));
         setFieldValue("model.type", "new");
         setStepNumber(stepNumber + 1);
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setDeployModelError(error.message);
+          setDeployModelInstanceMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setDeployModelError("Something went wrong when deploying model");
+          setDeployModelInstanceMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when deploy the model instance",
+          }));
         }
       },
     });
@@ -472,15 +543,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         </>
       ) : null}
       <div className="flex flex-row">
-        {setupModelError ? (
-          <BasicProgressMessageBox width="w-[216px]" status="error">
-            {setupModelError}
-          </BasicProgressMessageBox>
-        ) : isSettingModel ? (
-          <BasicProgressMessageBox width="w-[216px]" status="progressing">
-            Setting model...
-          </BasicProgressMessageBox>
-        ) : null}
+        <BasicProgressMessageBox
+          state={createModelMessageBoxState}
+          setState={setCreateModelMessageBoxState}
+          width="w-[25vw]"
+          closable={true}
+        />
         <PrimaryButton
           disabled={canCreateModel ? false : true}
           onClickHandler={handelCreateModel}
@@ -512,15 +580,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             menuPlacement="auto"
           />
           <div className="flex flex-row">
-            {deployModelError ? (
-              <BasicProgressMessageBox width="w-[216px]" status="error">
-                {deployModelError}
-              </BasicProgressMessageBox>
-            ) : isDeployingModel ? (
-              <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                Deploying model...
-              </BasicProgressMessageBox>
-            ) : null}
+            <BasicProgressMessageBox
+              state={deployModelInstanceMessageBoxState}
+              setState={setDeployModelInstanceMessageBoxState}
+              width="w-[25vw]"
+              closable={true}
+            />
             <PrimaryButton
               disabled={canDeployModel ? false : true}
               onClickHandler={handleDeployModel}

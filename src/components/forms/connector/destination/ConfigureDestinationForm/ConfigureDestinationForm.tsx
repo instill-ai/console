@@ -1,12 +1,13 @@
 import { FC, useState, useEffect, useCallback } from "react";
 import {
   BasicProgressMessageBox,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 
-import { FormBase, SingleSelect } from "@/components/formik";
+import { FormikFormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -102,19 +103,35 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
 
   const [deleteDestinationModalIsOpen, setDeleteDestinationModalIsOpen] =
     useState(false);
-  const [isDeletingDestination, setIsDeletingDestination] = useState(false);
-  const [deleteDestinationError, setDeleteDestinationError] =
-    useState<Nullable<string>>(null);
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const deleteDestination = useDeleteDestination();
 
   const handleDeleteDestination = useCallback(() => {
     if (!destination) return;
 
-    setIsDeletingDestination(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deleting...",
+    }));
+
     deleteDestination.mutate(destination.name, {
       onSuccess: () => {
-        setIsDeletingDestination(false);
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Delete succeeded.",
+        }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_destination", {
             type: "critical_action",
@@ -125,13 +142,19 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setDeleteDestinationError(error.message);
-          setIsDeletingDestination(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setDeleteDestinationError(
-            "Something went wrong when deleting destination"
-          );
-          setIsDeletingDestination(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when delete the destination",
+          }));
         }
       },
     });
@@ -155,7 +178,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       >
         {(formik) => {
           return (
-            <FormBase marginBottom={null} gapY={null} padding={null}>
+            <FormikFormBase marginBottom={null} gapY={null} padding={null}>
               <div className="mb-10 flex flex-col gap-y-5">
                 <SingleSelect
                   id="destinationDefinition"
@@ -194,20 +217,14 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                 </PrimaryButton>
               </div>
               <div className="flex">
-                {deleteDestinationError ? (
-                  <BasicProgressMessageBox width="w-[25vw]" status="error">
-                    {deleteDestinationError}
-                  </BasicProgressMessageBox>
-                ) : isDeletingDestination ? (
-                  <BasicProgressMessageBox
-                    width="w-[25vw]"
-                    status="progressing"
-                  >
-                    Deleting destination...
-                  </BasicProgressMessageBox>
-                ) : null}
+                <BasicProgressMessageBox
+                  state={messageBoxState}
+                  setState={setMessageBoxState}
+                  width="w-[25vw]"
+                  closable={true}
+                />
               </div>
-            </FormBase>
+            </FormikFormBase>
           );
         }}
       </Formik>

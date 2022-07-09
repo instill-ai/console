@@ -1,5 +1,5 @@
 import CreateDestinationForm from "./CreateDestinationForm";
-import type { CreateDestinationFormValues } from "./CreateDestinationForm";
+import type { CreateDestinationFormProps } from "./CreateDestinationForm";
 import ConfigureDestinationForm from "./ConfigureDestinationForm";
 import type {
   ConfigureDestinationFormProps,
@@ -8,7 +8,7 @@ import type {
 
 export { CreateDestinationForm, ConfigureDestinationForm };
 export type {
-  CreateDestinationFormValues,
+  CreateDestinationFormProps,
   ConfigureDestinationFormProps,
   ConfigureDestinationFormValue,
 };

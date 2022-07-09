@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import type {
   JSONSchema7,
   JSONSchema7Definition,
@@ -89,12 +90,11 @@ type AirbyteFormTree =
   | AirbyteFormConditionItem
   | AirbyteFormObjectArrayItem;
 
-type AirbyteFormValues = Record<
-  string,
-  string | number | boolean | null | undefined
->;
+type AirbyteFieldValues = {
+  [k: string]: string | number | boolean | null | AirbyteFieldValues;
+};
 
-type AirbyteFormErrors = Record<string, string>;
+type AirbyteFieldErrors = Record<string, string | null>;
 
 export type {
   AirbyteFormTree,
@@ -106,6 +106,14 @@ export type {
   AirbyteFormObjectArrayItem,
   AirbyteJsonSchemaDefinition,
   AirbyteJsonSchema,
-  AirbyteFormValues,
-  AirbyteFormErrors,
+  AirbyteFieldValues,
+  AirbyteFieldErrors,
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// This type is especially for jsonSchema OneOf properties
+// {"key.subkey.credential": { selectedItem: "oauth" }}
+export type SelectedItem = {
+  selectedItem: Nullable<string>;
+};
+export type SelectedItemMap = Record<string, SelectedItem>;

@@ -3,10 +3,11 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 
 import { SingleSelect } from "../../../../formik/FormikField";
-import { FormBase } from "@/components/formik";
+import { FormikFormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
   BasicProgressMessageBox,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { useCreateSource, useSources } from "@/services/connector";
@@ -16,8 +17,8 @@ import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateSourceFormValues = {
-  id: string;
-  definition: string;
+  id: Nullable<string>;
+  definition: Nullable<string>;
 };
 
 const CreateSourceForm: FC = () => {
@@ -81,91 +82,111 @@ const CreateSourceForm: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 2 - handle state when create destination                        #
+  // # 2 - handle create source                                        #
   // #                                                                 #
   // ###################################################################
 
-  const [createSourceError, setCreateSourceError] =
-    useState<Nullable<string>>(null);
-  const [isCreatingSource, setIsCreatingSource] = useState(false);
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
+  const validateForm = useCallback(
+    (values: CreateSourceFormValues) => {
+      const error: Partial<CreateSourceFormValues> = {};
+
+      if (!values.definition) {
+        error.definition = "Required";
+      }
+
+      if (sources.data?.find((e) => e.id === values.definition)) {
+        error.definition =
+          "You could only create one http and one grpc source. Check the setup guide for more information.";
+      }
+
+      return error;
+    },
+    [sources.data]
+  );
+
+  const handleSubmit = useCallback(
+    (values: CreateSourceFormValues) => {
+      if (!values.definition) return;
+
+      const payload: CreateSourcePayload = {
+        id: values.definition,
+        source_connector_definition: `source-connector-definitions/${values.definition}`,
+        connector: {
+          configuration: "{}",
+        },
+      };
+
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Creating...",
+      }));
+
+      createSource.mutate(payload, {
+        onSuccess: () => {
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_source", {
+              type: "critical_action",
+              process: "source",
+            });
+          }
+          router.push("/sources");
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the source",
+            }));
+          }
+        },
+      });
+    },
+    [amplitudeIsInit, createSource, router]
+  );
 
   return (
     <Formik
-      initialValues={{ id: null, sourceDefinition: null }}
-      validate={(values) => {
-        const error: Partial<CreateSourceFormValues> = {};
-
-        if (!values.sourceDefinition) {
-          error.definition = "Required";
-        }
-
-        if (sources.data?.find((e) => e.id === values.sourceDefinition)) {
-          error.definition =
-            "You could only create one http and one grpc source. Check the setup guide for more information.";
-        }
-
-        return error;
-      }}
-      onSubmit={(values) => {
-        if (!values.sourceDefinition) return;
-
-        const payload: CreateSourcePayload = {
-          id: values.sourceDefinition,
-          source_connector_definition: `source-connector-definitions/${values.sourceDefinition}`,
-          connector: {
-            configuration: "{}",
-          },
-        };
-
-        setIsCreatingSource(true);
-
-        createSource.mutate(payload, {
-          onSuccess: () => {
-            setIsCreatingSource(false);
-            if (amplitudeIsInit) {
-              sendAmplitudeData("create_source", {
-                type: "critical_action",
-                process: "source",
-              });
-            }
-            router.push("/sources");
-          },
-          onError: (error) => {
-            if (error instanceof Error) {
-              setCreateSourceError(error.message);
-              setIsCreatingSource(false);
-            } else {
-              setCreateSourceError("Something went wrong when deploying model");
-              setIsCreatingSource(false);
-            }
-          },
-        });
-      }}
+      initialValues={{ id: null, definition: null } as CreateSourceFormValues}
+      validate={validateForm}
+      onSubmit={handleSubmit}
     >
       {(formik) => {
         return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-            {/* <TextField
-              name="id"
-              label="ID"
-              description="Pick a name to help you identify this source in Instill"
-              disabled={allSyncSourceCreated ? true : false}
-              readOnly={false}
-              required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-              value={formik.values.id || ""}
-            /> */}
+          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
             <SingleSelect
-              id="sourceDefinition"
-              name="sourceDefinition"
+              id="definition"
+              name="definition"
               label="Source type"
               additionalMessageOnLabel={null}
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}
-              error={formik.errors.sourceDefinition || null}
+              error={formik.errors.definition || null}
               disabled={false}
               readOnly={false}
               required={true}
@@ -173,15 +194,12 @@ const CreateSourceForm: FC = () => {
               menuPlacement="auto"
             />
             <div className="flex flex-row">
-              {createSourceError ? (
-                <BasicProgressMessageBox width="w-[216px]" status="error">
-                  {createSourceError}
-                </BasicProgressMessageBox>
-              ) : isCreatingSource ? (
-                <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                  Creating source...
-                </BasicProgressMessageBox>
-              ) : null}
+              <BasicProgressMessageBox
+                state={messageBoxState}
+                setState={setMessageBoxState}
+                width="w-[25vw]"
+                closable={true}
+              />
               <PrimaryButton
                 disabled={formik.isValid ? false : true}
                 position="ml-auto my-auto"
@@ -191,7 +209,7 @@ const CreateSourceForm: FC = () => {
                 Set up source
               </PrimaryButton>
             </div>
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

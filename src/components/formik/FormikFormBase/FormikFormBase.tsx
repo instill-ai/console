@@ -3,13 +3,13 @@ import { FC } from "react";
 import cn from "clsx";
 import { Form } from "formik";
 
-export type FormBaseProps = {
+export type FormikFormBaseProps = {
   padding: Nullable<string>;
   gapY: Nullable<string>;
   marginBottom: Nullable<string>;
 };
 
-const FormBase: FC<FormBaseProps> = ({
+const FormikFormBase: FC<FormikFormBaseProps> = ({
   children,
   padding,
   gapY,
@@ -22,4 +22,4 @@ const FormBase: FC<FormBaseProps> = ({
   );
 };
 
-export default FormBase;
+export default FormikFormBase;

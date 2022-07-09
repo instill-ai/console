@@ -1,6 +1,9 @@
 import { FC, useMemo, useState } from "react";
 import { useFormikContext } from "formik";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  ProgressMessageBoxState,
+} from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
@@ -13,7 +16,6 @@ import {
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
-import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
@@ -106,25 +108,25 @@ const SetupPipelineDetailsStep: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 2 - Handle pipeline creation                                    #
+  // # 2 - Handle create pipeline                                      #
   // #                                                                 #
   // ###################################################################
 
   const createPipeline = useCreatePipeline();
   const updatePipeline = useUpdatePipeline();
 
-  const [setupPipelineError, setSetupPipelineError] =
-    useState<Nullable<string>>(null);
-
-  const [isSettingPipeline, setIsSettingPipeline] = useState(false);
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const handleSetupNewPipeline = () => {
     if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) {
       return;
     }
-
-    console.log(values);
-
     let sourceName: string;
 
     if (values.source.type === "new") {
@@ -172,16 +174,26 @@ const SetupPipelineDetailsStep: FC = () => {
       },
     };
 
-    setIsSettingPipeline(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Creating...",
+    }));
 
     createPipeline.mutate(payload, {
       onSuccess: async (newPipeline) => {
         if (!values.pipeline.description) {
-          setIsSettingPipeline(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
+
           router.push("/pipelines");
           return;
         }
-
         updatePipeline.mutate(
           {
             name: newPipeline.name,
@@ -189,7 +201,6 @@ const SetupPipelineDetailsStep: FC = () => {
           },
           {
             onSuccess: () => {
-              setIsSettingPipeline(false);
               if (amplitudeIsInit) {
                 sendAmplitudeData("create_pipeline", {
                   type: "critical_action",
@@ -200,11 +211,19 @@ const SetupPipelineDetailsStep: FC = () => {
             },
             onError: (error) => {
               if (error instanceof Error) {
-                setSetupPipelineError(error.message);
+                setMessageBoxState(() => ({
+                  activate: true,
+                  status: "error",
+                  description: null,
+                  message: error.message,
+                }));
               } else {
-                setSetupPipelineError(
-                  "Something went wrong when deploying model"
-                );
+                setMessageBoxState(() => ({
+                  activate: true,
+                  status: "error",
+                  description: null,
+                  message: "Something went wrong when create the pipeline",
+                }));
               }
             },
           }
@@ -212,9 +231,19 @@ const SetupPipelineDetailsStep: FC = () => {
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setSetupPipelineError(error.message);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setSetupPipelineError("Something went wrong when deploying model");
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when create the pipeline",
+          }));
         }
       },
     });
@@ -270,15 +299,12 @@ const SetupPipelineDetailsStep: FC = () => {
           description="Turn this toggle off if you wish to not activate the pipeline now"
         />
         <div className="flex flex-row">
-          {setupPipelineError ? (
-            <BasicProgressMessageBox width="w-[216px]" status="error">
-              {setupPipelineError}
-            </BasicProgressMessageBox>
-          ) : isSettingPipeline ? (
-            <BasicProgressMessageBox width="w-[216px]" status="progressing">
-              Setting up pipeline...
-            </BasicProgressMessageBox>
-          ) : null}
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
           <PrimaryButton
             position="ml-auto my-auto"
             type="button"

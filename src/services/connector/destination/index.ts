@@ -1,10 +1,15 @@
-import useDestination from "./useDestination";
-import useDestinations from "./useDestinations";
-import useDestinationWithPipelines from "./useDestinationWithPipelines";
-import useDestinationsWithPipelines from "./useDestinationsWithPipelines";
-import useDestinationDefinitions from "./useDestinationDefinitions";
-import useCreateDestination from "./useCreateDestination";
-import useDeleteDestination from "./useDeleteDestination";
+import {
+  useDestination,
+  useDestinations,
+  useDestinationDefinitions,
+} from "./queries";
+
+import { useCreateDestination, useDeleteDestination } from "./mutations";
+
+import {
+  useDestinationsWithPipelines,
+  useDestinationWithPipelines,
+} from "./helpers";
 
 export {
   useDestination,

@@ -1,8 +1,11 @@
 import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  ProgressMessageBoxState,
+} from "@instill-ai/design-system";
 
-import { FormBase, TextArea, ToggleField } from "@/components/formik";
+import { FormikFormBase, TextArea, ToggleField } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -29,10 +32,23 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
+  // ###################################################################
+  // #                                                                 #
+  // # Handle update pipeline                                          #
+  // #                                                                 #
+  // ###################################################################
+
   const [canEdit, setCanEdit] = useState(false);
-  const [updatePipelineError, setUpdatePipelineError] =
-    useState<Nullable<string>>(null);
-  const [isUpdateingPipeline, setIsUpdatingPipeline] = useState(false);
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
+  const updatePipeline = useUpdatePipeline();
 
   const validateForm = useCallback((values: ConfigurePipelineFormValue) => {
     const errors: Partial<ConfigurePipelineFormValue> = {};
@@ -56,29 +72,92 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     submitForm();
   };
 
-  const updatePipeline = useUpdatePipeline();
+  const handleUpdatePipeline = useCallback(
+    (values: ConfigurePipelineFormValue) => {
+      if (!pipeline || !values.description) return;
+
+      if (
+        pipeline.description === values.description &&
+        pipeline.state === values.state
+      ) {
+        setCanEdit(false);
+        return;
+      }
+
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Updating...",
+      }));
+
+      updatePipeline.mutate(
+        {
+          name: pipeline.name,
+          description: values.description,
+        },
+        {
+          onSuccess: () => {
+            setCanEdit(false);
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "progressing",
+              description: null,
+              message: "Update succeeded",
+            }));
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: error.message,
+              }));
+            } else {
+              setMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: "Something went wrong when update the pipeline",
+              }));
+            }
+          },
+        }
+      );
+    },
+    [updatePipeline, pipeline]
+  );
 
   // ###################################################################
   // #                                                                 #
-  // # Handle delete source                                            #
+  // # Handle delete pipeline                                          #
   // #                                                                 #
   // ###################################################################
 
   const [deletePipelineModalIsOpen, setDeletePipelineModalIsOpen] =
     useState(false);
-  const [isDeletingPipeline, setIsDeletingPipeline] = useState(false);
-  const [deletePipelineError, setDeletePipelineError] =
-    useState<Nullable<string>>(null);
 
   const deletePipeline = useDeletePipeline();
 
   const handleDeletePipeline = useCallback(() => {
     if (!pipeline) return;
 
-    setIsDeletingPipeline(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deleting...",
+    }));
+
     deletePipeline.mutate(pipeline.name, {
       onSuccess: () => {
-        setIsDeletingPipeline(false);
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Delete succeeded",
+        }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_pipeline", {
             type: "critical_action",
@@ -89,13 +168,19 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setDeletePipelineError(error.message);
-          setIsDeletingPipeline(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setDeletePipelineError(
-            "Something went wrong when deleting destination"
-          );
-          setIsDeletingPipeline(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when delete the pipeline",
+          }));
         }
       },
     });
@@ -131,54 +216,16 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
           } as ConfigurePipelineFormValue
         }
         enableReinitialize={true}
-        onSubmit={(values) => {
-          if (!pipeline || !values.description) return;
-
-          if (
-            pipeline.description === values.description &&
-            pipeline.state === values.state
-          ) {
-            setCanEdit(false);
-            return;
-          }
-
-          setIsUpdatingPipeline(true);
-
-          updatePipeline.mutate(
-            {
-              name: pipeline.name,
-              description: values.description,
-            },
-            {
-              onSuccess: () => {
-                setCanEdit(false);
-                setIsUpdatingPipeline(false);
-              },
-              onError: (error) => {
-                if (error instanceof Error) {
-                  setUpdatePipelineError(error.message);
-                  setIsUpdatingPipeline(false);
-                  if (amplitudeIsInit) {
-                    sendAmplitudeData("update_pipeline", {
-                      type: "critical_action",
-                      process: "pipeline",
-                    });
-                  }
-                } else {
-                  setUpdatePipelineError(
-                    "Something went wrong when deploying model"
-                  );
-                  setIsUpdatingPipeline(false);
-                }
-              },
-            }
-          );
-        }}
+        onSubmit={handleUpdatePipeline}
         validate={validateForm}
       >
         {({ values, errors, submitForm }) => {
           return (
-            <FormBase marginBottom={marginBottom} gapY={null} padding={null}>
+            <FormikFormBase
+              marginBottom={marginBottom}
+              gapY={null}
+              padding={null}
+            >
               <div className="mb-10 flex flex-col gap-y-5">
                 <ToggleField
                   id="pipelineState"
@@ -240,32 +287,14 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                 </PrimaryButton>
               </div>
               <div className="flex">
-                {updatePipelineError ? (
-                  <BasicProgressMessageBox width="w-[25vw]" status="error">
-                    {updatePipelineError}
-                  </BasicProgressMessageBox>
-                ) : isUpdateingPipeline ? (
-                  <BasicProgressMessageBox
-                    width="w-[25vw]"
-                    status="progressing"
-                  >
-                    Updating pipeline...
-                  </BasicProgressMessageBox>
-                ) : null}
-                {deletePipelineError ? (
-                  <BasicProgressMessageBox width="w-[25vw]" status="error">
-                    {deletePipelineError}
-                  </BasicProgressMessageBox>
-                ) : isDeletingPipeline ? (
-                  <BasicProgressMessageBox
-                    width="w-[25vw]"
-                    status="progressing"
-                  >
-                    Deleting pipeline...
-                  </BasicProgressMessageBox>
-                ) : null}
+                <BasicProgressMessageBox
+                  state={messageBoxState}
+                  setState={setMessageBoxState}
+                  width="w-[25vw]"
+                  closable={true}
+                />
               </div>
-            </FormBase>
+            </FormikFormBase>
           );
         }}
       </Formik>

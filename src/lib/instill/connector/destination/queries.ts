@@ -40,7 +40,6 @@ export const listDestinationDefinitionsQuery = async (
     definitions.push(...data.destination_connector_definitions);
 
     if (data.next_page_token) {
-      console.log(data);
       definitions.push(
         ...(await listDestinationDefinitionsQuery(
           pageSize,

@@ -25,6 +25,12 @@ describe("getter", () => {
 });
 
 describe("setter", () => {
+  it("sets empty object", () => {
+    const obj = {};
+    dot.setter(obj, "foo", "bar");
+    expect(obj).toEqual({ foo: "bar" });
+  });
+
   it("sets flat value", () => {
     const obj = { foo: "bar" };
     dot.setter(obj, "flat", "value");

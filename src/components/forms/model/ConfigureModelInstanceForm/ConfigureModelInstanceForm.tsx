@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Formik } from "formik";
 
-import { FormBase, TextField } from "@/components/formik";
+import { FormikFormBase, TextField } from "@/components/formik";
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
@@ -38,7 +38,11 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
     >
       {({ values, errors }) => {
         return (
-          <FormBase marginBottom={marginBottom} gapY="gap-y-5" padding={null}>
+          <FormikFormBase
+            marginBottom={marginBottom}
+            gapY="gap-y-5"
+            padding={null}
+          >
             <TextField
               id="repo"
               name="repo"
@@ -87,7 +91,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               type="text"
               autoComplete="off"
             />
-          </FormBase>
+          </FormikFormBase>
         );
       }}
     </Formik>

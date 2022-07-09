@@ -1,209 +1,370 @@
-import { FC, useEffect, useCallback, useState } from "react";
-import { Formik } from "formik";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
+  BasicSingleSelect,
+  BasicTextArea,
+  BasicTextField,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
+import * as yup from "yup";
+import Image from "next/image";
 
-import { TextField } from "../../../../formik/FormikField";
-import { FormBase } from "@/components/formik";
-import { ConnectorIcon, PrimaryButton } from "@/components/ui";
+import { PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useCreateDestination, useDestinations } from "@/services/connector";
+import {
+  useCreateDestination,
+  useDestinationDefinitions,
+} from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { FormBase } from "@/components/forms/commons";
+import {
+  AirbyteFieldValues,
+  AirbyteFieldErrors,
+  SelectedItemMap,
+  useBuildAirbyteYup,
+} from "@/lib/airbytes";
+import { AirbyteDestinationFields } from "@/lib/airbytes/components";
+import { ValidationError } from "yup";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import AsyncDestinationFormCell from "../AsyncDestinationFormCell";
 
-export type CreateDestinationFormValues = {
-  id: string;
-  definition: string;
+type FieldValues = AirbyteFieldValues;
+
+type FieldErrors = AirbyteFieldErrors;
+
+export type CreateDestinationFormProps = {
+  setResult: Nullable<(destinationId: string) => void>;
+  setStepNumber: Nullable<Dispatch<SetStateAction<number>>>;
 };
 
-const CreateDestinationForm: FC = () => {
+const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
+  setResult,
+  setStepNumber,
+}) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
+
+  const [fieldValues, setFieldValues] = useState<Nullable<FieldValues>>(null);
+  const [fieldErrors, setFieldErrors] = useState<Nullable<FieldErrors>>(null);
 
   // ###################################################################
   // #                                                                 #
   // # 1 - Initialize the destination definition                       #
   // #                                                                 #
   // ###################################################################
-  //
-  // A user can only have a http destination and a grpc destination
 
-  const [
-    syncDestinationDefinitionOptions,
-    setSyncDestinationDefinitionOptions,
-  ] = useState<SingleSelectOption[]>([]);
-  const [
-    selectedSyncDestinationDefinitionOption,
-    setSelectedSyncDestinationDefinitionOption,
-  ] = useState<Nullable<SingleSelectOption>>(null);
+  const destinationDefinitions = useDestinationDefinitions();
 
-  const destinations = useDestinations();
+  const destinationOptions = useMemo(() => {
+    if (!destinationDefinitions.isSuccess) return [];
 
-  useEffect(() => {
-    setSyncDestinationDefinitionOptions([
-      {
-        label: "gRPC",
-        value: "destination-grpc",
+    const options: SingleSelectOption[] = [];
+
+    for (const definition of destinationDefinitions.data) {
+      options.push({
+        label: definition.connector_definition.title,
+        value: definition.name,
         startIcon: (
-          <ConnectorIcon
-            iconName="grpc.svg"
-            iconColor="fill-instillGrey90"
-            iconHeight="h-[30px]"
-            iconWidth="w-[30px]"
-            iconPosition="my-auto"
+          <Image
+            className="my-auto"
+            src={`/airbyteIcons/${definition.connector_definition.icon}`}
+            width={24}
+            height={24}
+            layout="fixed"
           />
         ),
-      },
-      {
-        label: "HTTP",
-        value: "destination-http",
-        startIcon: (
-          <ConnectorIcon
-            iconName="http.svg"
-            iconColor="fill-instillGrey90"
-            iconHeight="h-[30px]"
-            iconWidth="w-[30px]"
-            iconPosition="my-auto"
-          />
-        ),
-      },
-    ]);
-  }, []);
+      });
+    }
 
-  const destinationDefinitionOnChange = useCallback(
-    (option: SingleSelectOption) => {
-      setSelectedSyncDestinationDefinitionOption(option);
-    },
-    []
-  );
+    return options;
+  }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
+
+  const selectedDestinationOption = useMemo(() => {
+    if (!fieldValues?.definition || !destinationOptions) {
+      return null;
+    }
+
+    return (
+      destinationOptions.find((e) => e.value === fieldValues.definition) || null
+    );
+  }, [fieldValues?.definition, destinationOptions]);
+
+  const selectedDestinationDefinition = useMemo(() => {
+    if (!destinationDefinitions.isSuccess || !fieldValues?.definition) {
+      return null;
+    }
+
+    return (
+      destinationDefinitions.data.find(
+        (e) => e.name === fieldValues.definition
+      ) ?? null
+    );
+  }, [
+    destinationDefinitions.isSuccess,
+    destinationDefinitions.data,
+    fieldValues?.definition,
+  ]);
 
   // ###################################################################
   // #                                                                 #
   // # 2 - handle state when create destination                        #
   // #                                                                 #
   // ###################################################################
+  const [selectedConditionMap, setSelectedConditionMap] =
+    useState<Nullable<SelectedItemMap>>(null);
 
-  const [createDestinationError, setCreateDestinationError] =
-    useState<Nullable<string>>(null);
-  const [isCreatingDestination, setIsCreatingDestination] = useState(false);
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const createDestination = useCreateDestination();
 
-  const validateForm = useCallback(
-    (values) => {
-      const error: Partial<CreateDestinationFormValues> = {};
-
-      if (!values.destinationDefinition) {
-        error.definition = "Required";
-      }
-
-      if (
-        destinations.data?.find((e) => e.id === values.destinationDefinition)
-      ) {
-        error.definition =
-          "You could only create one http and one grpc destination. Check the setup guide for more information.";
-      }
-
-      return error;
-    },
-    [destinations.data]
+  const airbyteYup = useBuildAirbyteYup(
+    selectedDestinationDefinition?.connector_definition.spec
+      .connection_specification ?? null,
+    selectedConditionMap,
+    null
   );
 
-  const onSubmitHandler = useCallback(
-    (values) => {
-      if (!values.destinationDefinition || !destinations.isSuccess) return;
+  /**
+   *  We store our data in two form, one is in dot.notation and the other is in object and
+   *  the airbyteYup is planned to verify object part of the data
+   *
+   * {
+   *    tunnel_method: "SSH",
+   *    tunnel_method.tunnel_key: "hi",
+   *    configuration: {
+   *      tunnel_method: {
+   *        tunnel_method: "SSH",
+   *        tunnel_key: "hi"
+   *      }
+   *    }
+   * }
+   *
+   */
 
-      const payload: CreateDestinationPayload = {
-        id: values.destinationDefinition,
-        destination_connector_definition: `destination-connector-definitions/${values.destinationDefinition}`,
-        connector: {
-          configuration: "{}",
-        },
+  const formYup = useMemo(() => {
+    if (!airbyteYup) return null;
+
+    return yup.object({
+      id: yup.string().required(),
+      configuration: airbyteYup,
+    });
+  }, [airbyteYup]);
+
+  const submitHandler = useCallback(async () => {
+    if (!fieldValues || !formYup) {
+      return;
+    }
+
+    try {
+      formYup.validateSync(fieldValues, { abortEarly: false });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        const errors = {} as FieldErrors;
+        for (const err of error.inner) {
+          if (err.path) {
+            const message = err.message.replace(err.path, "This field");
+            const pathList = err.path.split(".");
+
+            // Because we are using { configuration: airbyteYup } to construct the yup, yup will add "configuration" as prefix at the start
+            // of the path like configuration.tunnel_method
+            if (pathList[0] === "configuration") {
+              pathList.shift();
+            }
+
+            const removeConfigurationPrefixPath = pathList.join(".");
+            errors[removeConfigurationPrefixPath] = message;
+          }
+        }
+        setFieldErrors(errors);
+      }
+
+      return;
+    }
+
+    setFieldErrors(null);
+
+    const payload: CreateDestinationPayload = {
+      id: fieldValues.id as string,
+      destination_connector_definition: `destination-connector-definitions/${
+        fieldValues.definition as string
+      }`,
+      connector: {
+        description: fieldValues.description as string,
+        configuration: JSON.stringify(fieldValues.configuration),
+      },
+    };
+
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Creating...",
+    }));
+
+    createDestination.mutate(payload, {
+      onSuccess: (newDestination) => {
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Create succeeded.",
+        }));
+        if (setResult) {
+          setResult(newDestination.id);
+        }
+
+        if (setStepNumber) {
+          setStepNumber((prev) => prev + 1);
+        }
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_destination", {
+            type: "critical_action",
+            process: "destination",
+          });
+        }
+        router.push("/destinations");
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
+        } else {
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when create the destination",
+          }));
+        }
+      },
+    });
+  }, [
+    amplitudeIsInit,
+    router,
+    createDestination,
+    formYup,
+    fieldValues,
+    setResult,
+    setStepNumber,
+  ]);
+
+  const updateFieldValues = useCallback((field: string, value: string) => {
+    setFieldValues((prev) => {
+      return {
+        ...prev,
+        [field]: value,
       };
-
-      setIsCreatingDestination(true);
-
-      createDestination.mutate(payload, {
-        onSuccess: () => {
-          setIsCreatingDestination(false);
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_destination", {
-              type: "critical_action",
-              process: "destination",
-            });
-          }
-          router.push("/destinations");
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            setCreateDestinationError(error.message);
-            setIsCreatingDestination(false);
-          } else {
-            setCreateDestinationError(
-              "Something went wrong when deploying model"
-            );
-            setIsCreatingDestination(false);
-          }
-        },
-      });
-    },
-    [amplitudeIsInit, router, createDestination, destinations.isSuccess]
-  );
+    });
+  }, []);
 
   return (
-    <Formik
-      initialValues={{ id: null, destinationDefinition: null }}
-      validate={validateForm}
-      onSubmit={onSubmitHandler}
-    >
-      {(formik) => {
-        return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-            <TextField
-              id="id"
-              name="id"
-              label="ID"
-              additionalMessageOnLabel={null}
-              description="Pick a name to help you identify this destination in Instill"
-              disabled={false}
-              readOnly={false}
-              required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-              value={formik.values.id || ""}
-              error={null}
-              additionalOnChangeCb={null}
-            />
-            <AsyncDestinationFormCell />
-            <div className="flex flex-row">
-              {createDestinationError ? (
-                <BasicProgressMessageBox width="w-[216px]" status="error">
-                  {createDestinationError}
-                </BasicProgressMessageBox>
-              ) : isCreatingDestination ? (
-                <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                  Updating model...
-                </BasicProgressMessageBox>
-              ) : null}
-              <PrimaryButton
-                type="submit"
-                disabled={formik.isValid ? false : true}
-                position="ml-auto my-auto"
-                onClickHandler={null}
-              >
-                Set up destination
-              </PrimaryButton>
-            </div>
-          </FormBase>
-        );
-      }}
-    </Formik>
+    <FormBase marginBottom={null} padding={null} noValidate={true}>
+      <div className="mb-10 flex flex-col gap-y-5">
+        <BasicTextField
+          id="id"
+          label="ID"
+          key="id"
+          additionalMessageOnLabel={null}
+          description="Pick a name to help you identify this destination in Instill"
+          disabled={false}
+          readOnly={false}
+          required={true}
+          placeholder=""
+          type="text"
+          autoComplete="off"
+          value={fieldValues ? (fieldValues.id as string) ?? null : null}
+          error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
+          onChangeInput={(id, value) => updateFieldValues(id, value)}
+        />
+        <BasicTextArea
+          id="description"
+          label="Description"
+          key="description"
+          additionalMessageOnLabel={null}
+          description="Fill with a short description of your data destination"
+          disabled={false}
+          readOnly={false}
+          required={true}
+          placeholder=""
+          autoComplete="off"
+          enableCounter={false}
+          counterWordLimit={0}
+          error={
+            fieldErrors ? (fieldErrors.description as string) ?? null : null
+          }
+          value={
+            fieldValues ? (fieldValues.description as string) ?? null : null
+          }
+          onChangeInput={(id, value) => updateFieldValues(id, value)}
+        />
+        <BasicSingleSelect
+          id="definition"
+          key="definition"
+          instanceId="definition"
+          menuPlacement="auto"
+          label="Destination type"
+          additionalMessageOnLabel={null}
+          description={""}
+          disabled={false}
+          readOnly={false}
+          required={false}
+          error={
+            fieldErrors ? (fieldErrors.definition as string) ?? null : null
+          }
+          value={selectedDestinationOption}
+          options={destinationOptions}
+          onChangeInput={(id, option) => {
+            setFieldErrors(null);
+            setFieldValues((prev) => ({
+              id: prev?.id ?? null,
+              definition: option?.value ?? null,
+            }));
+          }}
+        />
+        <AirbyteDestinationFields
+          selectedDestinationDefinition={selectedDestinationDefinition}
+          fieldValues={fieldValues}
+          setFieldValues={setFieldValues}
+          fieldErrors={fieldErrors}
+          setSelectedConditionMap={setSelectedConditionMap}
+        />
+      </div>
+      <div className="flex flex-row">
+        <BasicProgressMessageBox
+          state={messageBoxState}
+          setState={setMessageBoxState}
+          width="w-[25vw]"
+          closable={true}
+        />
+        <PrimaryButton
+          type="submit"
+          disabled={false}
+          position="ml-auto my-auto"
+          onClickHandler={() => submitHandler()}
+        >
+          Set up destination
+        </PrimaryButton>
+      </div>
+    </FormBase>
   );
 };
 

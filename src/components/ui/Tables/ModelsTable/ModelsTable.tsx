@@ -14,7 +14,6 @@ import type { ModelTablePlaceholderProps } from "@/components/ui";
 import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
 import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type ModelsTableProps = {
   models: ModelWithInstance[];
@@ -29,8 +28,6 @@ const ModelsTable: FC<ModelsTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
-  const stateOverviewCounts = useStateOverviewCounts(isLoading ? null : models);
-
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }

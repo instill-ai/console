@@ -3,12 +3,16 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  ProgressMessageBoxState,
+  SingleSelectOption,
+} from "@instill-ai/design-system";
 
 import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import {
-  FormBase,
+  FormikFormBase,
   SingleSelect,
   TextField,
   ToggleField,
@@ -44,6 +48,14 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const [selectedRoleOption, setSelectedRoleOption] =
     useState<Nullable<SingleSelectOption>>(null);
 
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
   const roleOnChangeCb = useCallback((option: SingleSelectOption) => {
     setSelectedRoleOption(option);
   }, []);
@@ -76,6 +88,13 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
         cookie_token: token,
       };
 
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Uploading...",
+      }));
+
       updateUser.mutate(payload, {
         onSuccess: async () => {
           if (amplitudeIsInit) {
@@ -83,8 +102,33 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
               type: "critical_action",
             });
           }
+
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Upload succeeded",
+          }));
+
           await axios.post("/api/set-user-cookie", { token });
           router.push("/pipelines");
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when upload the form",
+            }));
+          }
         },
       });
     },
@@ -107,81 +151,93 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     >
       {(formik) => {
         return (
-          <FormBase marginBottom={null} gapY="gap-y-5" padding={null}>
-            <TextField
-              id="email"
-              name="email"
-              label="Your email"
-              additionalMessageOnLabel={null}
-              value={formik.values.email || ""}
-              additionalOnChangeCb={null}
-              description="Fill your email address"
-              disabled={false}
-              readOnly={false}
-              required={false}
-              placeholder=""
-              type="email"
-              autoComplete="on"
-              error={formik.errors.email || null}
-            />
-            <TextField
-              id="companyName"
-              name="companyName"
-              label="Your company"
-              additionalMessageOnLabel={null}
-              value={formik.values.companyName ? formik.values.companyName : ""}
-              additionalOnChangeCb={null}
-              description="Fill your company name"
-              disabled={false}
-              readOnly={false}
-              required={false}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-              error={formik.errors.companyName || null}
-            />
-            <SingleSelect
-              id="role"
-              name="role"
-              label="Your role"
-              additionalMessageOnLabel={null}
-              options={mockMgmtRoles}
-              value={selectedRoleOption}
-              error={formik.errors.role || null}
-              additionalOnChangeCb={roleOnChangeCb}
-              disabled={false}
-              readOnly={false}
-              required={false}
-              description={"Setup Guide"}
-              menuPlacement="auto"
-            />
-            <ToggleField
-              id="newsletterSubscription"
-              name="newsletterSubscription"
-              label="Newsletter subscription"
-              value={
-                formik.values.newsletterSubscription ??
-                user?.newsletter_subscription
-                  ? user?.newsletter_subscription ?? false
-                  : false
-              }
-              additionalMessageOnLabel={null}
-              disabled={false}
-              readOnly={false}
-              required={true}
-              description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
-              error={formik.errors.newsletterSubscription || null}
-              additionalOnChangeCb={null}
-            />
-            <PrimaryButton
-              disabled={formik.isValid ? false : true}
-              type="submit"
-              position="ml-auto"
-              onClickHandler={null}
-            >
-              Start
-            </PrimaryButton>
-          </FormBase>
+          <FormikFormBase marginBottom={null} gapY={null} padding={null}>
+            <div className="flex flex-col gap-y-5">
+              <TextField
+                id="email"
+                name="email"
+                label="Your email"
+                additionalMessageOnLabel={null}
+                value={formik.values.email || ""}
+                additionalOnChangeCb={null}
+                description="Fill your email address"
+                disabled={false}
+                readOnly={false}
+                required={false}
+                placeholder=""
+                type="email"
+                autoComplete="on"
+                error={formik.errors.email || null}
+              />
+              <TextField
+                id="companyName"
+                name="companyName"
+                label="Your company"
+                additionalMessageOnLabel={null}
+                value={
+                  formik.values.companyName ? formik.values.companyName : ""
+                }
+                additionalOnChangeCb={null}
+                description="Fill your company name"
+                disabled={false}
+                readOnly={false}
+                required={false}
+                placeholder=""
+                type="text"
+                autoComplete="off"
+                error={formik.errors.companyName || null}
+              />
+              <SingleSelect
+                id="role"
+                name="role"
+                label="Your role"
+                additionalMessageOnLabel={null}
+                options={mockMgmtRoles}
+                value={selectedRoleOption}
+                error={formik.errors.role || null}
+                additionalOnChangeCb={roleOnChangeCb}
+                disabled={false}
+                readOnly={false}
+                required={false}
+                description={"Setup Guide"}
+                menuPlacement="auto"
+              />
+              <ToggleField
+                id="newsletterSubscription"
+                name="newsletterSubscription"
+                label="Newsletter subscription"
+                value={
+                  formik.values.newsletterSubscription ??
+                  user?.newsletter_subscription
+                    ? user?.newsletter_subscription ?? false
+                    : false
+                }
+                additionalMessageOnLabel={null}
+                disabled={false}
+                readOnly={false}
+                required={true}
+                description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
+                error={formik.errors.newsletterSubscription || null}
+                additionalOnChangeCb={null}
+              />
+            </div>
+            <div className="flex flex-row">
+              <BasicProgressMessageBox
+                state={messageBoxState}
+                setState={setMessageBoxState}
+                width="w-[25vw]"
+                closable={true}
+              />
+              <PrimaryButton
+                disabled={formik.isValid ? false : true}
+                type="submit"
+                position="ml-auto my-auto"
+                onClickHandler={null}
+              >
+                Start
+              </PrimaryButton>
+            </div>
+          </FormikFormBase>
         );
       }}
     </Formik>
