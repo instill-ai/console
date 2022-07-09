@@ -2,6 +2,7 @@ import { FC, useState, useEffect, useCallback } from "react";
 import { Formik } from "formik";
 import {
   BasicProgressMessageBox,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
@@ -94,19 +95,36 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
   // ###################################################################
 
   const [deleteSourceModalIsOpen, setDeleteSourceModalIsOpen] = useState(false);
-  const [isDeletingSource, setIsDeletingSource] = useState(false);
-  const [deleteSourceError, setDeleteSourceError] =
-    useState<Nullable<string>>(null);
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const deleteSource = useDeleteSource();
 
   const handleDeleteSource = useCallback(() => {
     if (!source) return;
 
-    setIsDeletingSource(true);
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deleting source...",
+    }));
+
     deleteSource.mutate(source.name, {
       onSuccess: () => {
-        setIsDeletingSource(false);
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Delete source succeed.",
+        }));
+
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_source", {
             type: "critical_action",
@@ -117,11 +135,19 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setDeleteSourceError(error.message);
-          setIsDeletingSource(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: error.message,
+          }));
         } else {
-          setDeleteSourceError("Something went wrong when deleting source");
-          setIsDeletingSource(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when deleting source",
+          }));
         }
       },
     });
@@ -184,18 +210,12 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                 </PrimaryButton>
               </div>
               <div className="flex">
-                {deleteSourceError ? (
-                  <BasicProgressMessageBox width="w-[25vw]" status="error">
-                    {deleteSourceError}
-                  </BasicProgressMessageBox>
-                ) : isDeletingSource ? (
-                  <BasicProgressMessageBox
-                    width="w-[25vw]"
-                    status="progressing"
-                  >
-                    Deleting source...
-                  </BasicProgressMessageBox>
-                ) : null}
+                <BasicProgressMessageBox
+                  state={messageBoxState}
+                  setState={setMessageBoxState}
+                  width="w-[25vw]"
+                  closable={true}
+                />
               </div>
             </FormikFormBase>
           );
