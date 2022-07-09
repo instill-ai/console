@@ -18,6 +18,7 @@ import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { CreateDestinationForm } from "@/components/forms/connector";
 
 export type SetupDestinationStepProps = StepNumberState;
 
@@ -190,7 +191,12 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
         <div className="flex flex-1 flex-row">
           <UseExistingDestinationFlow {...props} />
           <FormVerticalDividers />
-          <CreateNewDestinationFlow {...props} />
+          <CreateDestinationForm
+            setStepNumber={props.setStepNumber}
+            setResult={(id) => {
+              setFieldValue("destination.new.id", id);
+            }}
+          />
         </div>
       )}
     </FormikStep>
