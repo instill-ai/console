@@ -1,6 +1,9 @@
 import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
-import { BasicProgressMessageBox } from "@instill-ai/design-system";
+import {
+  BasicProgressMessageBox,
+  ProgressMessageBoxState,
+} from "@instill-ai/design-system";
 
 import { FormikFormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
@@ -24,22 +27,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   marginBottom,
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-
   const [canEdit, setCanEdit] = useState(false);
-  const [updateModelError, setUpdateModelError] =
-    useState<Nullable<string>>(null);
-  const [isUpdateingModel, setIsUpdatingModel] = useState(false);
-  const updateModel = useUpdateModel();
-
-  const validateForm = useCallback((values: ConfigureModelFormValue) => {
-    const errors: Partial<ConfigureModelFormValue> = {};
-
-    if (!values.description) {
-      errors.description = "Required";
-    }
-
-    return errors;
-  }, []);
 
   const handleEditButton = (
     values: ConfigureModelFormValue,
@@ -53,6 +41,90 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     submitForm();
   };
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - handle update model                                         #
+  // #                                                                 #
+  // ###################################################################
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
+  const updateModel = useUpdateModel();
+
+  const validateForm = useCallback((values: ConfigureModelFormValue) => {
+    const errors: Partial<ConfigureModelFormValue> = {};
+
+    if (!values.description) {
+      errors.description = "Required";
+    }
+
+    return errors;
+  }, []);
+
+  const handleSubmit = useCallback((values: ConfigureModelFormValue) => {
+    if (!model || !values.description) return;
+
+    if (model.description === values.description) {
+      setCanEdit(false);
+      return;
+    }
+
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Updating...",
+    }));
+
+    updateModel.mutate(
+      {
+        name: model.name,
+        description: values.description,
+      },
+      {
+        onSuccess: () => {
+          setCanEdit(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "progressing",
+            description: null,
+            message: "Update succeeded",
+          }));
+
+          if (amplitudeIsInit) {
+            sendAmplitudeData("update_model", {
+              type: "critical_action",
+              process: "model",
+            });
+          }
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when update the model",
+            }));
+          }
+        },
+      }
+    );
+  }, []);
+
   return (
     <Formik
       initialValues={
@@ -61,44 +133,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         } as ConfigureModelFormValue
       }
       enableReinitialize={true}
-      onSubmit={(values) => {
-        if (!model || !values.description) return;
-
-        if (model.description === values.description) {
-          setCanEdit(false);
-          return;
-        }
-
-        setIsUpdatingModel(true);
-
-        updateModel.mutate(
-          {
-            name: model.name,
-            description: values.description,
-          },
-          {
-            onSuccess: () => {
-              setCanEdit(false);
-              setIsUpdatingModel(false);
-              if (amplitudeIsInit) {
-                sendAmplitudeData("update_model", {
-                  type: "critical_action",
-                  process: "model",
-                });
-              }
-            },
-            onError: (error) => {
-              if (error instanceof Error) {
-                setUpdateModelError(error.message);
-              } else {
-                setUpdateModelError(
-                  "Something went wrong when deploying model"
-                );
-              }
-            },
-          }
-        );
-      }}
+      onSubmit={handleSubmit}
       validate={validateForm}
     >
       {({ values, errors, submitForm }) => {
@@ -126,15 +161,12 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               counterWordLimit={0}
             />
             <div className="flex flex-row">
-              {updateModelError ? (
-                <BasicProgressMessageBox width="w-[216px]" status="error">
-                  {updateModelError}
-                </BasicProgressMessageBox>
-              ) : isUpdateingModel ? (
-                <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                  Updating model...
-                </BasicProgressMessageBox>
-              ) : null}
+              <BasicProgressMessageBox
+                state={messageBoxState}
+                setState={setMessageBoxState}
+                width="w-[25vw]"
+                closable={true}
+              />
               <PrimaryButton
                 disabled={false}
                 onClickHandler={() => handleEditButton(values, submitForm)}
