@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import {
   BasicProgressMessageBox,
   ModelInstanceIcon,
+  ProgressMessageBoxState,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
@@ -87,17 +88,22 @@ const CreateNewModelFlow: FC = () => {
 
   // ###################################################################
   // #                                                                 #
-  // # 2 - Set up github/local model                                   #
+  // # 2 - Create github/local/artivc model                            #
   // #                                                                 #
   // ###################################################################
 
   const [modelCreated, setModelCreated] = useState(false);
   const [newModel, setNewModel] = useState<Nullable<Model>>(null);
-  const [isSettingModel, setIsSettingModel] = useState(false);
-  const [setupModelError, setSetupModelError] =
-    useState<Nullable<string>>(null);
 
-  const validateSetupModelValue = useCallback(
+  const [createModelMessageBoxState, setCreateModelMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
+  const validateCreateModelValue = useCallback(
     (values: CreateModelFormValue) => {
       if (!values.modelDefinition || modelCreated) return false;
 
@@ -128,115 +134,160 @@ const CreateNewModelFlow: FC = () => {
   const createLocalModel = useCreateLocalModel();
   const createArtivcModel = useCreateArtivcModel();
 
-  const handelCreateModel = async (values: CreateModelFormValue) => {
-    if (!values.id) return;
+  const handelCreateModel = useCallback(
+    async (values: CreateModelFormValue) => {
+      if (!values.id) return;
 
-    setIsSettingModel(true);
-    setSetupModelError(null);
+      setCreateModelMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Creating...",
+      }));
 
-    if (values.modelDefinition === "github") {
-      const configuration = {
-        repository: values.repo,
-      };
-      const payload: CreateGithubModelPayload = {
-        id: values.id,
-        model_definition: "model-definitions/github",
-        configuration: JSON.stringify(configuration),
-      };
+      if (values.modelDefinition === "github") {
+        const configuration = {
+          repository: values.repo,
+        };
+        const payload: CreateGithubModelPayload = {
+          id: values.id,
+          model_definition: "model-definitions/github",
+          configuration: JSON.stringify(configuration),
+        };
 
-      createGithubModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setIsSettingModel(false);
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_github_model", {
-              type: "critical_action",
-              process: "model",
-            });
-          }
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
-          } else {
-            setSetupModelError(
-              "Something went wrong when setting up GitHub model"
-            );
-          }
-        },
-      });
-    } else if (values.modelDefinition === "local") {
-      if (!values.id || !values.file) {
-        return;
+        createGithubModel.mutate(payload, {
+          onSuccess: (newModel) => {
+            setModelCreated(true);
+            setNewModel(newModel);
+
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "success",
+              description: null,
+              message: "Create succeeded",
+            }));
+
+            if (amplitudeIsInit) {
+              sendAmplitudeData("create_github_model", {
+                type: "critical_action",
+                process: "model",
+              });
+            }
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: error.message,
+              }));
+            } else {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: "Something went wrong when create the GitHub model",
+              }));
+            }
+          },
+        });
+      } else if (values.modelDefinition === "local") {
+        if (!values.id || !values.file) {
+          return;
+        }
+
+        const payload: CreateLocalModelPayload = {
+          id: values.id,
+          desctiption: values.description ? values.description : "",
+          model_definition: "model-definitions/local",
+          content: values.file,
+        };
+
+        createLocalModel.mutate(payload, {
+          onSuccess: (newModel) => {
+            setModelCreated(true);
+            setNewModel(newModel);
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "success",
+              description: null,
+              message: "Create succeeded",
+            }));
+            if (amplitudeIsInit) {
+              sendAmplitudeData("create_local_model", {
+                type: "critical_action",
+              });
+            }
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: error.message,
+              }));
+            } else {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: "Something went wrong when create the local model",
+              }));
+            }
+          },
+        });
+      } else {
+        if (!values.gcsBucketPath) return;
+
+        const payload: CreateArtivcModelPayload = {
+          id: values.id,
+          model_definition: "model-definitions/artivc",
+          configuration: {
+            url: values.gcsBucketPath,
+            credential: values.credentials,
+          },
+        };
+
+        createArtivcModel.mutate(payload, {
+          onSuccess: (newModel) => {
+            setModelCreated(true);
+            setNewModel(newModel);
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "success",
+              description: null,
+              message: "Create succeeded",
+            }));
+            if (amplitudeIsInit) {
+              sendAmplitudeData("create_artivc_model", {
+                type: "critical_action",
+              });
+            }
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: error.message,
+              }));
+            } else {
+              setCreateModelMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: "Something went wrong when create the ArtiVC model",
+              }));
+            }
+          },
+        });
       }
-
-      const payload: CreateLocalModelPayload = {
-        id: values.id,
-        desctiption: values.description ? values.description : "",
-        model_definition: "model-definitions/local",
-        content: values.file,
-      };
-
-      createLocalModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setIsSettingModel(false);
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_local_model", {
-              type: "critical_action",
-            });
-          }
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
-          } else {
-            setSetupModelError(
-              "Something went wrong when setting up local model"
-            );
-          }
-        },
-      });
-    } else {
-      if (!values.gcsBucketPath) return;
-
-      const payload: CreateArtivcModelPayload = {
-        id: values.id,
-        model_definition: "model-definitions/artivc",
-        configuration: {
-          url: values.gcsBucketPath,
-          credential: values.credentials,
-        },
-      };
-
-      createArtivcModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setIsSettingModel(false);
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_artivc_model", {
-              type: "critical_action",
-            });
-          }
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            console.log(error);
-            setSetupModelError(error.message);
-          } else {
-            setSetupModelError(
-              "Something went wrong when setting up local model"
-            );
-          }
-        },
-      });
-    }
-  };
+    },
+    []
+  );
 
   // ###################################################################
   // #                                                                 #
@@ -279,11 +330,18 @@ const CreateNewModelFlow: FC = () => {
   // ###################################################################
 
   const router = useRouter();
-  const [isDeployingModel, setIsDeployingModel] = useState(false);
-  const [deployModelError, setDeployModelError] =
-    useState<Nullable<string>>(null);
 
-  const canDisplayDeployModelSection = useMemo(() => {
+  const [
+    deployModelInstanceMessageBoxState,
+    setDeployModelInstanceMessageBoxState,
+  ] = useState<ProgressMessageBoxState>({
+    activate: false,
+    message: null,
+    description: null,
+    status: null,
+  });
+
+  const canDisplayDeployModelInstanceSection = useMemo(() => {
     if (!modelCreated || !newModel || !modelInstances.isSuccess) {
       return false;
     }
@@ -292,24 +350,44 @@ const CreateNewModelFlow: FC = () => {
 
   const deployModelInstance = useDeployModelInstance();
 
-  const handleDeployModel = async (values: CreateModelFormValue) => {
+  const handleDeployModelInstance = async (values: CreateModelFormValue) => {
     if (!values.modelInstanceId || !values.id) return;
 
-    setIsDeployingModel(true);
+    setDeployModelInstanceMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deploying...",
+    }));
+
     deployModelInstance.mutate(
       `models/${values.id}/instances/${values.modelInstanceId}`,
       {
         onSuccess: () => {
-          setIsDeployingModel(false);
+          setDeployModelInstanceMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Deploy succeeded",
+          }));
+
           router.push("/models");
         },
         onError: (error) => {
           if (error instanceof Error) {
-            setDeployModelError(error.message);
-            setIsDeployingModel(false);
+            setDeployModelInstanceMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
           } else {
-            setDeployModelError("Something went wrong when deploying model");
-            setIsDeployingModel(false);
+            setDeployModelInstanceMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when deploy the model instance",
+            }));
           }
         },
       }
@@ -329,12 +407,8 @@ const CreateNewModelFlow: FC = () => {
           gcsBucketPath: null,
         } as CreateModelFormValue
       }
-      onSubmit={async (values) => {
-        if (!modelCreated) {
-          await handelCreateModel(values);
-        } else {
-          await handleDeployModel(values);
-        }
+      onSubmit={() => {
+        console.log("submit");
       }}
     >
       {({ errors, values }) => {
@@ -462,17 +536,14 @@ const CreateNewModelFlow: FC = () => {
               </>
             ) : null}
             <div className="flex flex-row">
-              {setupModelError ? (
-                <BasicProgressMessageBox width="w-[216px]" status="error">
-                  {setupModelError}
-                </BasicProgressMessageBox>
-              ) : isSettingModel ? (
-                <BasicProgressMessageBox width="w-[216px]" status="progressing">
-                  Setting model...
-                </BasicProgressMessageBox>
-              ) : null}
+              <BasicProgressMessageBox
+                state={createModelMessageBoxState}
+                setState={setCreateModelMessageBoxState}
+                width="w-[25vw]"
+                closable={true}
+              />
               <PrimaryButton
-                disabled={validateSetupModelValue(values) ? false : true}
+                disabled={validateCreateModelValue(values) ? false : true}
                 onClickHandler={() => handelCreateModel(values)}
                 position="ml-auto my-auto"
                 type="button"
@@ -480,7 +551,7 @@ const CreateNewModelFlow: FC = () => {
                 Setup new model
               </PrimaryButton>
             </div>
-            {canDisplayDeployModelSection ? (
+            {canDisplayDeployModelInstanceSection ? (
               <>
                 <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
                   Deploy a model instance
@@ -501,21 +572,15 @@ const CreateNewModelFlow: FC = () => {
                   menuPlacement="auto"
                 />
                 <div className="flex flex-row">
-                  {deployModelError ? (
-                    <BasicProgressMessageBox width="w-[216px]" status="error">
-                      {deployModelError}
-                    </BasicProgressMessageBox>
-                  ) : isDeployingModel ? (
-                    <BasicProgressMessageBox
-                      width="w-[216px]"
-                      status="progressing"
-                    >
-                      Deploying model...
-                    </BasicProgressMessageBox>
-                  ) : null}
+                  <BasicProgressMessageBox
+                    state={deployModelInstanceMessageBoxState}
+                    setState={setDeployModelInstanceMessageBoxState}
+                    width="w-[25vw]"
+                    closable={true}
+                  />
                   <PrimaryButton
                     disabled={values.modelInstanceId ? false : true}
-                    onClickHandler={() => handleDeployModel(values)}
+                    onClickHandler={() => handleDeployModelInstance(values)}
                     position="ml-auto my-auto"
                     type="button"
                   >
