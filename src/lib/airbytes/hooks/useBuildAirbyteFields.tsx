@@ -37,7 +37,14 @@ const useBuildAirbyteFields = (
       errors,
       setSelectedConditionMap
     );
-  }, [formTree, disabledAll, values, errors]);
+  }, [
+    formTree,
+    disabledAll,
+    values,
+    errors,
+    setSelectedConditionMap,
+    setValues,
+  ]);
 
   return fields;
 };

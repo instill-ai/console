@@ -126,7 +126,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
         }
       );
     },
-    []
+    [updatePipeline, pipeline]
   );
 
   // ###################################################################

@@ -148,10 +148,8 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     values.model.new.modelDefinition,
     values.model.new.id,
     values.model.new.file,
-    values.model.new.description,
     values.model.new.repo,
     values.model.new.gcsBucketPath,
-    values.model.new.credentials,
     modelCreated,
   ]);
 

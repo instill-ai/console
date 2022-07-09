@@ -15,7 +15,7 @@ const useBuildAirbyteYup = (
     return additionalSchema
       ? airbyteSchema.concat(additionalSchema)
       : airbyteSchema;
-  }, [jsonSchema, selectedItemMap]);
+  }, [jsonSchema, selectedItemMap, additionalSchema]);
 
   return yup;
 };

@@ -18,7 +18,6 @@ import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { CreateDestinationForm } from "@/components/forms/connector";
 
 export type SetupDestinationStepProps = StepNumberState;
 

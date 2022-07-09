@@ -89,7 +89,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const selectedDestinationOption = useMemo(() => {
-    if (!fieldValues || !fieldValues.definition || !destinationOptions) {
+    if (!fieldValues?.definition || !destinationOptions) {
       return null;
     }
 
@@ -99,11 +99,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   }, [fieldValues?.definition, destinationOptions]);
 
   const selectedDestinationDefinition = useMemo(() => {
-    if (
-      !destinationDefinitions.isSuccess ||
-      !fieldValues ||
-      !fieldValues.definition
-    ) {
+    if (!destinationDefinitions.isSuccess || !fieldValues?.definition) {
       return null;
     }
 
@@ -112,7 +108,11 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         (e) => e.name === fieldValues.definition
       ) ?? null
     );
-  }, [destinationDefinitions.isSuccess, fieldValues?.definition]);
+  }, [
+    destinationDefinitions.isSuccess,
+    destinationDefinitions.data,
+    fieldValues?.definition,
+  ]);
 
   // ###################################################################
   // #                                                                 #
@@ -166,12 +166,11 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   }, [airbyteYup]);
 
   const submitHandler = useCallback(async () => {
-    if (!fieldValues || !airbyteYup || !formYup) {
+    if (!fieldValues || !formYup) {
       return;
     }
 
     try {
-      console.log(formYup);
       formYup.validateSync(fieldValues, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -258,7 +257,15 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         }
       },
     });
-  }, [amplitudeIsInit, router, createDestination, airbyteYup]);
+  }, [
+    amplitudeIsInit,
+    router,
+    createDestination,
+    formYup,
+    fieldValues,
+    setResult,
+    setStepNumber,
+  ]);
 
   const updateFieldValues = useCallback((field: string, value: string) => {
     setFieldValues((prev) => {

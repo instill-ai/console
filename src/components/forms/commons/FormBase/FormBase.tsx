@@ -1,7 +1,6 @@
 import { Nullable } from "@/types/general";
 import { FC, FormEvent, useCallback } from "react";
 import cn from "clsx";
-import { Form } from "formik";
 
 export type FormBaseProps = {
   padding: Nullable<string>;

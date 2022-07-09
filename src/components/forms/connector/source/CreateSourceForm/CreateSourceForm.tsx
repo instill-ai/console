@@ -94,74 +94,80 @@ const CreateSourceForm: FC = () => {
       status: null,
     });
 
-  const validateForm = useCallback((values: CreateSourceFormValues) => {
-    const error: Partial<CreateSourceFormValues> = {};
+  const validateForm = useCallback(
+    (values: CreateSourceFormValues) => {
+      const error: Partial<CreateSourceFormValues> = {};
 
-    if (!values.definition) {
-      error.definition = "Required";
-    }
+      if (!values.definition) {
+        error.definition = "Required";
+      }
 
-    if (sources.data?.find((e) => e.id === values.definition)) {
-      error.definition =
-        "You could only create one http and one grpc source. Check the setup guide for more information.";
-    }
+      if (sources.data?.find((e) => e.id === values.definition)) {
+        error.definition =
+          "You could only create one http and one grpc source. Check the setup guide for more information.";
+      }
 
-    return error;
-  }, []);
+      return error;
+    },
+    [sources.data]
+  );
 
-  const handleSubmit = useCallback((values: CreateSourceFormValues) => {
-    if (!values.definition) return;
+  const handleSubmit = useCallback(
+    (values: CreateSourceFormValues) => {
+      if (!values.definition) return;
 
-    const payload: CreateSourcePayload = {
-      id: values.definition,
-      source_connector_definition: `source-connector-definitions/${values.definition}`,
-      connector: {
-        configuration: "{}",
-      },
-    };
+      const payload: CreateSourcePayload = {
+        id: values.definition,
+        source_connector_definition: `source-connector-definitions/${values.definition}`,
+        connector: {
+          configuration: "{}",
+        },
+      };
 
-    setMessageBoxState(() => ({
-      activate: true,
-      status: "progressing",
-      description: null,
-      message: "Creating...",
-    }));
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Creating...",
+      }));
 
-    createSource.mutate(payload, {
-      onSuccess: () => {
-        setMessageBoxState(() => ({
-          activate: true,
-          status: "success",
-          description: null,
-          message: "Create succeeded",
-        }));
-        if (amplitudeIsInit) {
-          sendAmplitudeData("create_source", {
-            type: "critical_action",
-            process: "source",
-          });
-        }
-        router.push("/sources");
-      },
-      onError: (error) => {
-        if (error instanceof Error) {
+      createSource.mutate(payload, {
+        onSuccess: () => {
           setMessageBoxState(() => ({
             activate: true,
-            status: "error",
+            status: "success",
             description: null,
-            message: error.message,
+            message: "Create succeeded",
           }));
-        } else {
-          setMessageBoxState(() => ({
-            activate: true,
-            status: "error",
-            description: null,
-            message: "Something went wrong when create the source",
-          }));
-        }
-      },
-    });
-  }, []);
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_source", {
+              type: "critical_action",
+              process: "source",
+            });
+          }
+          router.push("/sources");
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.message,
+            }));
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the source",
+            }));
+          }
+        },
+      });
+    },
+    [amplitudeIsInit, createSource, router]
+  );
 
   return (
     <Formik

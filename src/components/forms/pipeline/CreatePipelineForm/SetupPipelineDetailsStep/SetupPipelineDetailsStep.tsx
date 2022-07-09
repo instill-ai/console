@@ -16,7 +16,6 @@ import {
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
-import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 

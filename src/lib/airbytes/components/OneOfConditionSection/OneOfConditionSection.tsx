@@ -3,14 +3,7 @@ import {
   BasicSingleSelect,
   SingleSelectOption,
 } from "@instill-ai/design-system";
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useMemo,
-  useCallback,
-  useState,
-} from "react";
+import { Dispatch, FC, SetStateAction, useMemo, useCallback } from "react";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormItem,
@@ -75,7 +68,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
         },
       }));
     },
-    [formTree.path]
+    [formTree.path, setSelectedConditionMap, setValues]
   );
 
   return (

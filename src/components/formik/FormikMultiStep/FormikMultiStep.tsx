@@ -10,6 +10,8 @@
 // transition. Each page has an optional submit handler, and the top-level
 // submit is called when the final page is submitted.
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { Dispatch, RefObject, SetStateAction, Children, useState } from "react";
 import FormikFormBase from "../FormikFormBase";

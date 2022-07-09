@@ -67,63 +67,66 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     return errors;
   }, []);
 
-  const handleSubmit = useCallback((values: ConfigureModelFormValue) => {
-    if (!model || !values.description) return;
+  const handleSubmit = useCallback(
+    (values: ConfigureModelFormValue) => {
+      if (!model || !values.description) return;
 
-    if (model.description === values.description) {
-      setCanEdit(false);
-      return;
-    }
-
-    setMessageBoxState(() => ({
-      activate: true,
-      status: "progressing",
-      description: null,
-      message: "Updating...",
-    }));
-
-    updateModel.mutate(
-      {
-        name: model.name,
-        description: values.description,
-      },
-      {
-        onSuccess: () => {
-          setCanEdit(false);
-          setMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Update succeeded",
-          }));
-
-          if (amplitudeIsInit) {
-            sendAmplitudeData("update_model", {
-              type: "critical_action",
-              process: "model",
-            });
-          }
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: error.message,
-            }));
-          } else {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: "Something went wrong when update the model",
-            }));
-          }
-        },
+      if (model.description === values.description) {
+        setCanEdit(false);
+        return;
       }
-    );
-  }, []);
+
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "progressing",
+        description: null,
+        message: "Updating...",
+      }));
+
+      updateModel.mutate(
+        {
+          name: model.name,
+          description: values.description,
+        },
+        {
+          onSuccess: () => {
+            setCanEdit(false);
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "success",
+              description: null,
+              message: "Update succeeded",
+            }));
+
+            if (amplitudeIsInit) {
+              sendAmplitudeData("update_model", {
+                type: "critical_action",
+                process: "model",
+              });
+            }
+          },
+          onError: (error) => {
+            if (error instanceof Error) {
+              setMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: error.message,
+              }));
+            } else {
+              setMessageBoxState(() => ({
+                activate: true,
+                status: "error",
+                description: null,
+                message: "Something went wrong when update the model",
+              }));
+            }
+          },
+        }
+      );
+    },
+    [amplitudeIsInit, model, updateModel]
+  );
 
   return (
     <Formik

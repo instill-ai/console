@@ -40,7 +40,6 @@ import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import { useMgmtDefinition } from "@/services/mgmt";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -95,7 +94,11 @@ const ModelDetailsPage: FC & {
           : null
       );
     }
-  }, [modelInstances.isSuccess, modelInstances.data]);
+  }, [
+    modelInstances.isSuccess,
+    modelInstances.data,
+    selectedModelInstanceOption,
+  ]);
 
   const selectedModelInstances = useMemo(() => {
     if (!selectedModelInstanceOption || !modelInstances.isSuccess) return null;
@@ -164,8 +167,6 @@ const ModelDetailsPage: FC & {
   // # Get model instance's readme                                     #
   // #                                                                 #
   // ###################################################################
-
-  const mgmt = useMgmtDefinition();
 
   const modelInstanceReadme = useModelInstanceReadme(
     modelInstances.data?.find(
