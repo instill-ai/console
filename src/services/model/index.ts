@@ -16,6 +16,7 @@ import useDeleteModel from "./useDeleteModel";
 import useTestModelInstance from "./useTestModelInstance";
 import useUnDeployModelInstance from "./useUnDeployModelInstance";
 import useModelInstanceReadme from "./useModelInstanceReadme";
+import useCreateHuggingFaceModel from "./useCreateHuggingFaceModel";
 
 export {
   useCreateGithubModel,
@@ -36,4 +37,5 @@ export {
   useTestModelInstance,
   useUnDeployModelInstance,
   useModelInstanceReadme,
+  useCreateHuggingFaceModel,
 };
