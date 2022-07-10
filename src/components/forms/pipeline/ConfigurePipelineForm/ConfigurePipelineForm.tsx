@@ -244,18 +244,11 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   id="pipelineDescription"
                   name="description"
                   label="Description"
-                  additionalMessageOnLabel={null}
                   description="Fill with a short description of your model"
                   value={values.description}
                   error={errors.description || null}
-                  additionalOnChangeCb={null}
                   disabled={canEdit ? false : true}
-                  readOnly={false}
                   required={true}
-                  autoComplete="off"
-                  placeholder=""
-                  enableCounter={false}
-                  counterWordLimit={0}
                 />
               </div>
               <div className="mb-[60px] flex flex-col">

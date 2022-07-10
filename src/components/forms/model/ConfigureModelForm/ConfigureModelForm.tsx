@@ -150,18 +150,11 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               id="description"
               name="description"
               label="Description"
-              additionalMessageOnLabel={null}
               description="Fill with a short description of your model"
               value={values.description}
               error={errors.description || null}
-              additionalOnChangeCb={null}
               disabled={canEdit ? false : true}
-              readOnly={false}
               required={true}
-              autoComplete="off"
-              placeholder=""
-              enableCounter={false}
-              counterWordLimit={0}
             />
             <div className="flex flex-row">
               <BasicProgressMessageBox

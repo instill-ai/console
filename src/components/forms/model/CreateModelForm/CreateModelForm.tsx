@@ -466,18 +466,10 @@ const CreateNewModelFlow: FC = () => {
                   id="description"
                   name="description"
                   label="Description"
-                  additionalMessageOnLabel={null}
                   description="Fill with a short description of your new model"
                   value={values.description}
                   error={errors.description || null}
-                  additionalOnChangeCb={null}
                   disabled={modelCreated ? true : false}
-                  readOnly={false}
-                  required={false}
-                  autoComplete="off"
-                  placeholder=""
-                  enableCounter={false}
-                  counterWordLimit={0}
                 />
                 <UploadFileField
                   id="file"
@@ -517,18 +509,9 @@ const CreateNewModelFlow: FC = () => {
                   id="credentials"
                   name="credentials"
                   label="Credentials JSON"
-                  additionalMessageOnLabel={null}
                   description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
                   value={values.credentials}
                   error={errors.credentials || null}
-                  additionalOnChangeCb={null}
-                  disabled={false}
-                  readOnly={false}
-                  required={false}
-                  autoComplete="off"
-                  placeholder=""
-                  enableCounter={false}
-                  counterWordLimit={0}
                 />
               </>
             ) : null}

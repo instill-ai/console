@@ -237,10 +237,6 @@ export const pickComponent = (
             };
           })
         }
-        autoComplete="off"
-        enableCounter={false}
-        counterWordLimit={0}
-        readOnly={false}
       />
     );
   }

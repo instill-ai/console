@@ -299,15 +299,8 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           id="description"
           label="Description"
           key="description"
-          additionalMessageOnLabel={null}
           description="Fill with a short description of your data destination"
-          disabled={false}
-          readOnly={false}
           required={true}
-          placeholder=""
-          autoComplete="off"
-          enableCounter={false}
-          counterWordLimit={0}
           error={
             fieldErrors ? (fieldErrors.description as string) ?? null : null
           }
