@@ -5,7 +5,7 @@ import { FC } from "react";
 
 export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput"> & {
   name: string;
-  additionalOnChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb?: Nullable<(value: string) => void>;
 };
 
 const TextArea: FC<TextAreaProps & FieldProps> = ({
