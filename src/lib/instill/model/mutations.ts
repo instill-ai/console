@@ -108,6 +108,46 @@ export const createArtivcModelMutation = async (
   }
 };
 
+export type HuggingFaceConfiguration = {
+  repo_id: string;
+  html_url: Nullable<string>;
+};
+
+export type CreateHuggingFaceModelPayload = {
+  id: string;
+  model_definition: string;
+  desctiption: string;
+  configuration: HuggingFaceConfiguration;
+};
+
+export type CreateHuggingFaceModelResponse = {
+  model: Model;
+};
+
+export const createHuggingFaceModelMutation = async (
+  payload: CreateHuggingFaceModelPayload
+) => {
+  try {
+    const { data } = await axios.post<CreateLocalModelResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      {
+        id: payload.id,
+        model_definition: payload.model_definition,
+        description: payload.desctiption,
+        configuration: JSON.stringify({
+          repo_id: payload.configuration.repo_id,
+          html_url: payload.configuration.html_url
+            ? payload.configuration.html_url
+            : undefined,
+        }),
+      }
+    );
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 export type UpdateModelPayload = Partial<Model> & {
   name: string;
 };
