@@ -184,16 +184,13 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                   id="destinationDefinition"
                   name="definition"
                   label="Data destination"
-                  additionalMessageOnLabel={null}
                   value={selectedDestinationDefinitionOption}
                   options={syncDestinationDefinitionOptions}
                   additionalOnChangeCb={destinationDefinitionOnChangeCb}
                   error={formik.errors.definition || null}
                   disabled={true}
-                  readOnly={false}
                   required={true}
                   description={"Setup Guide"}
-                  menuPlacement="auto"
                 />
               </div>
               <div className="mb-10 flex flex-row">

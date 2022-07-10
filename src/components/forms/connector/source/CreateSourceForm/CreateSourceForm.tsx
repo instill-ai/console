@@ -182,16 +182,12 @@ const CreateSourceForm: FC = () => {
               id="definition"
               name="definition"
               label="Source type"
-              additionalMessageOnLabel={null}
               options={syncSourceDefinitionOptions}
               value={selectedSyncSourceDefinitionOption}
               additionalOnChangeCb={sourceDefinitionOnChange}
               error={formik.errors.definition || null}
-              disabled={false}
-              readOnly={false}
               required={true}
               description="Setup Guide"
-              menuPlacement="auto"
             />
             <div className="flex flex-row">
               <BasicProgressMessageBox

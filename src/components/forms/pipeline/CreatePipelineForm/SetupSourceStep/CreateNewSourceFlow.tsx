@@ -122,15 +122,10 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         id="sourceDefinition"
         name="source.new.definition"
         label="Source type"
-        additionalMessageOnLabel={null}
         description="Setup Guide"
         value={selectedSourceOption}
         options={sourceOptions ? sourceOptions : []}
         error={errors.source?.new?.definition || null}
-        additionalOnChangeCb={null}
-        menuPlacement="auto"
-        disabled={false}
-        readOnly={false}
         required={true}
       />
       <PrimaryButton

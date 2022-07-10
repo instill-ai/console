@@ -144,16 +144,11 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationDefinition"
         name="dataDestination.new.definition"
         label="Destination type"
-        additionalMessageOnLabel={null}
-        disabled={false}
-        readOnly={false}
         options={destinationDefinitionOptions || []}
         value={selectedDestinationDefinition}
         error={errors.destination?.existing?.definition || null}
-        additionalOnChangeCb={null}
         required={true}
         description={"Setup Guide"}
-        menuPlacement="auto"
       />
       <PrimaryButton
         position="ml-auto"

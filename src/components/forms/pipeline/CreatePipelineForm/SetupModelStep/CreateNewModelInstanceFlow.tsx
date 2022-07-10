@@ -440,16 +440,13 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         id="modelDefinition"
         name="model.new.modelDefinition"
         label="Model type"
-        additionalMessageOnLabel={null}
         description={"Setup Guide"}
         value={selectedModelDefinitionOption}
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
         error={errors.model?.new?.modelDefinition || null}
         additionalOnChangeCb={modelDefinitionOnChangeCb}
         disabled={modelCreated ? true : false}
-        readOnly={false}
         required={true}
-        menuPlacement="auto"
       />
       {values.model.new.modelDefinition === "github" ? (
         <TextField
@@ -568,16 +565,11 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             id="modelInstanceName"
             name="model.new.modelInstanceName"
             label="Model instances"
-            additionalMessageOnLabel={null}
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}
             error={errors.model?.new?.modelInstanceName || null}
-            additionalOnChangeCb={null}
-            disabled={false}
-            readOnly={false}
             required={true}
             description={"Setup Guide"}
-            menuPlacement="auto"
           />
           <div className="flex flex-row">
             <BasicProgressMessageBox
