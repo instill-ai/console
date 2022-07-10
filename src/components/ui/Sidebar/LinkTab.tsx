@@ -10,7 +10,7 @@ import {
   ResourceIcon,
 } from "@instill-ai/design-system";
 
-export type TabProps = {
+export type LinkTabProps = {
   tabName: string;
   link:
     | "/sources"
@@ -23,7 +23,12 @@ export type TabProps = {
   isCurrent: boolean;
 };
 
-const Tab: FC<TabProps> = ({ tabName, link, isCollapsed, isCurrent }) => {
+const LinkTab: FC<LinkTabProps> = ({
+  tabName,
+  link,
+  isCollapsed,
+  isCurrent,
+}) => {
   let icon: ReactElement;
 
   const iconColor = cn(
@@ -32,7 +37,7 @@ const Tab: FC<TabProps> = ({ tabName, link, isCollapsed, isCurrent }) => {
   );
   const iconWidth = "w-[30px]";
   const iconHeight = "h-[30px]";
-  const iconPosition = isCollapsed ? "my-auto" : "my-auto";
+  const iconPosition = "my-auto";
 
   switch (link) {
     case "/sources":
@@ -123,4 +128,4 @@ const Tab: FC<TabProps> = ({ tabName, link, isCollapsed, isCurrent }) => {
   );
 };
 
-export default Tab;
+export default LinkTab;

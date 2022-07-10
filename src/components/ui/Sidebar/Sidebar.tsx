@@ -1,14 +1,15 @@
 import { FC, useCallback, useState } from "react";
 import { Logo } from "@instill-ai/design-system";
-import Tab, { TabProps } from "./Tab";
+import LinkTab, { LinkTabProps } from "./LinkTab";
 import { CollapseSidebarButton } from "../Buttons";
 import { useRouter } from "next/router";
 
-type Tab = Omit<TabProps, "isCollapsed" | "isCurrent"> & { id: string };
+type Tab = Omit<LinkTabProps, "isCollapsed" | "isCurrent"> & { id: string };
 
 const Sidebar: FC = () => {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [resourceTabIsOpen, setResourceTabIsOpen] = useState(false);
 
   const tabs: Tab[] = [
     {
@@ -34,11 +35,11 @@ const Sidebar: FC = () => {
   ];
 
   const subTabs: Tab[] = [
-    {
-      id: "sidebar-setting",
-      tabName: "Setting",
-      link: "/setting",
-    },
+    // {
+    //   id: "sidebar-setting",
+    //   tabName: "Setting",
+    //   link: "/setting",
+    // },
     {
       id: "sidebar-resources",
       tabName: "Resources",
@@ -83,7 +84,7 @@ const Sidebar: FC = () => {
       <div className="flex h-full flex-col">
         <div className="mb-auto flex flex-col">
           {tabs.map((tab) => (
-            <Tab
+            <LinkTab
               key={tab.id}
               tabName={tab.tabName}
               link={tab.link}
@@ -94,7 +95,7 @@ const Sidebar: FC = () => {
         </div>
         <div className="mt-auto flex flex-col">
           {subTabs.map((tab) => (
-            <Tab
+            <LinkTab
               key={tab.id}
               tabName={tab.tabName}
               link={tab.link}
@@ -104,6 +105,7 @@ const Sidebar: FC = () => {
           ))}
         </div>
       </div>
+      <div className="relative">{resourceTabIsOpen ? <div></div> : null}</div>
     </div>
   );
 };
