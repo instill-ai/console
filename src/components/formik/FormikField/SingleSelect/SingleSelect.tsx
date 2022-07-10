@@ -12,7 +12,7 @@ export type SingleSelectProps = Omit<
   "onChangeInput" | "instanceId"
 > & {
   name: string;
-  additionalOnChangeCb: Nullable<(option: SingleSelectOption) => void>;
+  additionalOnChangeCb?: Nullable<(option: SingleSelectOption) => void>;
 };
 
 const SingleSelect: FC<SingleSelectProps & FieldProps> = ({

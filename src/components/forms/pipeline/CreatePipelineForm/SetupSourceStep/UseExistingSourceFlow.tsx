@@ -108,15 +108,10 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
         id="existingSourceId"
         name="source.existing.id"
         label="Source type"
-        additionalMessageOnLabel={null}
         description={"Setup Guide"}
         options={sourceOptions ? sourceOptions : []}
         value={selectedSourceOption}
         error={errors.source?.existing?.id || null}
-        additionalOnChangeCb={null}
-        menuPlacement="auto"
-        disabled={false}
-        readOnly={false}
         required={true}
       />
       <PrimaryButton

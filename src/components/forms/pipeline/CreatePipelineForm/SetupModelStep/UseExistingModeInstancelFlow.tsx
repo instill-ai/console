@@ -140,16 +140,12 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
         id="existingModelInstanceName"
         name="model.existing.modelInstanceName"
         label="Online model instances"
-        additionalMessageOnLabel={null}
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
         error={errors.model?.existing?.modelInstanceName || null}
-        additionalOnChangeCb={null}
         disabled={modelCreated ? true : false}
-        readOnly={false}
         required={true}
         description={"Setup Guide"}
-        menuPlacement="auto"
       />
       <PrimaryButton
         position="ml-auto"

@@ -183,16 +183,12 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           id="pipelineMode"
           name="pipeline.mode"
           label="Pipeline mode"
-          additionalMessageOnLabel={null}
           description={"Setup Guide"}
           value={selectedModeOption}
           options={modeOptions}
-          additionalOnChangeCb={null}
           error={errors.pipeline?.mode || null}
           disabled={true}
-          readOnly={false}
           required={true}
-          menuPlacement="auto"
         />
         {values.pipeline.mode === "MODE_SYNC" ? (
           <SingleSelect

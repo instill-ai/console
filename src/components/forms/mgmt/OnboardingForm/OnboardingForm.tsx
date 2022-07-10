@@ -191,16 +191,11 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 id="role"
                 name="role"
                 label="Your role"
-                additionalMessageOnLabel={null}
                 options={mockMgmtRoles}
                 value={selectedRoleOption}
                 error={formik.errors.role || null}
                 additionalOnChangeCb={roleOnChangeCb}
-                disabled={false}
-                readOnly={false}
-                required={false}
                 description={"Setup Guide"}
-                menuPlacement="auto"
               />
               <ToggleField
                 id="newsletterSubscription"

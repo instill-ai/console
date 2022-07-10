@@ -177,15 +177,11 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                   id="sourceDefinition"
                   name="sourceDefinition"
                   label="Data source"
-                  additionalMessageOnLabel={null}
                   disabled={canEdit ? false : true}
-                  readOnly={false}
                   options={syncSourceDefinitionOptions}
                   required={true}
                   description={"Setup Guide"}
-                  menuPlacement="auto"
                   value={selectedSourceDefinitionOption}
-                  error={null}
                   additionalOnChangeCb={sourceDefinitionOnChangeCb}
                 />
               </div>

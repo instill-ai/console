@@ -89,16 +89,11 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         id="existingDestinationId"
         name="destination.existing.id"
         label="Destination type"
-        additionalMessageOnLabel={null}
-        disabled={false}
-        readOnly={false}
         options={destinationOptions ? destinationOptions : []}
         value={selectedDestinationOption}
         error={errors.destination?.existing?.id || null}
-        additionalOnChangeCb={null}
         required={true}
         description={"Setup Guide"}
-        menuPlacement="auto"
       />
       <PrimaryButton
         position="ml-auto"
