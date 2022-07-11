@@ -94,12 +94,12 @@ export const createArtivcModelMutation = async (
       {
         id: payload.id,
         model_definition: payload.model_definition,
-        configuration: JSON.stringify({
+        configuration: {
           url: payload.configuration.url,
           credential: payload.configuration.credential
             ? payload.configuration.credential
             : undefined,
-        }),
+        },
       }
     );
     return Promise.resolve(data.model);
