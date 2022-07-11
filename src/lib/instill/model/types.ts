@@ -73,6 +73,6 @@ export type ModelInstanceReadme = {
   name: string;
   size: number;
   type: string;
-  contents: string;
+  content: string;
   encoding: string;
 };

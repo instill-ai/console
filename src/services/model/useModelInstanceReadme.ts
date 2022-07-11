@@ -19,7 +19,7 @@ const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
         modelInstanceName
       );
 
-      return Promise.resolve(window.atob(modelInstanceReadme.contents));
+      return Promise.resolve(window.atob(modelInstanceReadme.content));
     },
     {
       enabled: modelInstanceName ? true : false,
