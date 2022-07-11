@@ -224,7 +224,9 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           ? values.model.new.description
           : "",
         model_definition: "model-definitions/local",
-        content: values.model.new.file,
+        configuration: {
+          content: values.model.new.file,
+        },
       };
 
       createLocalModel.mutate(payload, {

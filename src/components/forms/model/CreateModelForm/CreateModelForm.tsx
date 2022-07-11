@@ -202,7 +202,9 @@ const CreateNewModelFlow: FC = () => {
           id: values.id,
           desctiption: values.description ? values.description : "",
           model_definition: "model-definitions/local",
-          content: values.file,
+          configuration: {
+            content: values.file,
+          },
         };
 
         createLocalModel.mutate(payload, {
