@@ -116,7 +116,7 @@ export type HuggingFaceConfiguration = {
 export type CreateHuggingFaceModelPayload = {
   id: string;
   model_definition: string;
-  desctiption: string;
+  desctiption: Nullable<string>;
   configuration: HuggingFaceConfiguration;
 };
 
@@ -136,7 +136,7 @@ export const createHuggingFaceModelMutation = async (
         description: payload.desctiption,
         configuration: JSON.stringify({
           repo_id: payload.configuration.repo_id,
-          html_url: payload.configuration.html_url
+          url: payload.configuration.html_url
             ? payload.configuration.html_url
             : undefined,
         }),
