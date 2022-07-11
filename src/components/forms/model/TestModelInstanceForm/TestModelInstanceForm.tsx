@@ -127,12 +127,14 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
             closable={true}
           />
         </div>
-        <TestModelInstanceResultBlock
-          width="w-[42vw]"
-          result={testModelInstanceResult ? testModelInstanceResult : ""}
-          blockIsOpen={resultBlockIsOpen}
-          setBlockIsOpen={setResultBlockIsOpen}
-        />
+        {testModelInstanceResult ? (
+          <TestModelInstanceResultBlock
+            width="w-[42vw]"
+            result={testModelInstanceResult}
+            blockIsOpen={resultBlockIsOpen}
+            setBlockIsOpen={setResultBlockIsOpen}
+          />
+        ) : null}
       </div>
     </>
   );
