@@ -46,7 +46,6 @@ const ModelDefinitionIcon: FC<ModelDefinitionIconProps> = ({
         <ArtiVcIcon
           width={iconWidth}
           height={iconHeight}
-          color={iconColor}
           position={iconPosition}
         />
       );
