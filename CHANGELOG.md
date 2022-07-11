@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.4.0-alpha](https://github.com/instill-ai/console/compare/v0.3.3-alpha...v0.4.0-alpha) (2022-07-11)
+
+
+### Features
+
+* add dot notation path setter and getter ([#108](https://github.com/instill-ai/console/issues/108)) ([e31e172](https://github.com/instill-ai/console/commit/e31e172c3c9066092f3eb865e88a8e7d77d6b210))
+* add new readme ([#122](https://github.com/instill-ai/console/issues/122)) ([00057c5](https://github.com/instill-ai/console/commit/00057c527efeb813a28eb6aabcdbf5180d39131f))
+* add trigger section at configure pipeline form ([#86](https://github.com/instill-ai/console/issues/86)) ([2ca6dee](https://github.com/instill-ai/console/commit/2ca6dee9237bb0d5d4a4fa87f1444951a0a2da41))
+* implement Airbyte form and adapt new message box ([#125](https://github.com/instill-ai/console/issues/125)) ([9e061aa](https://github.com/instill-ai/console/commit/9e061aa3019230b38379da479f10b164ebec853f))
+* Implement airbyte form builder ([#101](https://github.com/instill-ai/console/issues/101)) ([d39b4a4](https://github.com/instill-ai/console/commit/d39b4a4cd5bb2934df3907bada61ae5a68be08f9))
+* Implement delete model service ([#137](https://github.com/instill-ai/console/issues/137)) ([3d10302](https://github.com/instill-ai/console/commit/3d103029422ad94cb4d4d079c37df34a53b368af))
+* Implement hugging face definition ([#138](https://github.com/instill-ai/console/issues/138)) ([9415cbe](https://github.com/instill-ai/console/commit/9415cbee3b5b47f83b959fcc168b71e7fe051606))
+* Implement model instance readme ([#102](https://github.com/instill-ai/console/issues/102)) ([72f3f4c](https://github.com/instill-ai/console/commit/72f3f4c45c418e3f66ed19d7422d2098d185f1bb))
+* Implement resource tab ([#128](https://github.com/instill-ai/console/issues/128)) ([b2bf64d](https://github.com/instill-ai/console/commit/b2bf64db43500e0847c36ad6c6e3353418a530ed))
+* recursive request destination definition ([#115](https://github.com/instill-ai/console/issues/115)) ([923ed69](https://github.com/instill-ai/console/commit/923ed69bf2b8f07bf6bb45f10187d712467488e9))
+* stop user from testing model instance if it is offline ([#88](https://github.com/instill-ai/console/issues/88)) ([b855723](https://github.com/instill-ai/console/commit/b8557236e9368e650c455d5a292e2fa9b2ba5364))
+
+
+### Bug Fixes
+
+* correctly set cookie ([#105](https://github.com/instill-ai/console/issues/105)) ([175cefc](https://github.com/instill-ai/console/commit/175cefc6e5c4937ffd643665445ca78a314aab7c))
+* fix action ([#107](https://github.com/instill-ai/console/issues/107)) ([2df85f3](https://github.com/instill-ai/console/commit/2df85f3c67ad9fbdf105ecb750fbd2a5dac774fe))
+* fix model label ([#98](https://github.com/instill-ai/console/issues/98)) ([c5a2d47](https://github.com/instill-ai/console/commit/c5a2d47ddaa4c42dd2630475e6f51da0f124ec59))
+* fix toggle field ([#96](https://github.com/instill-ai/console/issues/96)) ([8abf4af](https://github.com/instill-ai/console/commit/8abf4affc917200f1f662144065bd582f5ee081f))
+* fix toggle model will cause re-order model instance dropdown issue ([#99](https://github.com/instill-ai/console/issues/99)) ([fe38860](https://github.com/instill-ai/console/commit/fe38860f66004a90e8e5e886c5c43b9c9c3bb01a))
+* fix typo ([#104](https://github.com/instill-ai/console/issues/104)) ([fe54ae6](https://github.com/instill-ai/console/commit/fe54ae64916706ba4ff88245963e86bf809b807f))
+* fix typo ([#123](https://github.com/instill-ai/console/issues/123)) ([eb43b32](https://github.com/instill-ai/console/commit/eb43b32e801bdf862e4ced3955e69b1a2cc581fc))
+
 ## [0.3.3-alpha](https://github.com/instill-ai/console/compare/v0.3.2-alpha...v0.3.3-alpha) (2022-06-30)
 
 
