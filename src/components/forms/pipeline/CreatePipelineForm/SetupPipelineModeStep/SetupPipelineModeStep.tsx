@@ -154,7 +154,7 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
         id: values.source.existing.id,
         source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
         connector: {
-          configuration: "{}",
+          configuration: {},
         },
       };
 

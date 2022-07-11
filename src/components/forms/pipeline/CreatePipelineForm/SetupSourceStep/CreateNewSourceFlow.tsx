@@ -81,7 +81,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
       id: values.source.new.id,
       source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
       connector: {
-        configuration: "{}",
+        configuration: {},
       },
     };
 
