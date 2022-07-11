@@ -37,10 +37,6 @@ import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-type FieldValues = AirbyteFieldValues;
-
-type FieldErrors = AirbyteFieldErrors;
-
 export type CreateDestinationFormProps = {
   setResult: Nullable<(destinationId: string) => void>;
   setStepNumber: Nullable<Dispatch<SetStateAction<number>>>;
@@ -53,8 +49,10 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  const [fieldValues, setFieldValues] = useState<Nullable<FieldValues>>(null);
-  const [fieldErrors, setFieldErrors] = useState<Nullable<FieldErrors>>(null);
+  const [fieldValues, setFieldValues] =
+    useState<Nullable<AirbyteFieldValues>>(null);
+  const [fieldErrors, setFieldErrors] =
+    useState<Nullable<AirbyteFieldErrors>>(null);
 
   // ###################################################################
   // #                                                                 #
@@ -174,7 +172,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
       formYup.validateSync(fieldValues, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
-        const errors = {} as FieldErrors;
+        const errors = {} as AirbyteFieldErrors;
         for (const err of error.inner) {
           if (err.path) {
             const message = err.message.replace(err.path, "This field");
@@ -205,7 +203,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
       }`,
       connector: {
         description: fieldValues.description as string,
-        configuration: JSON.stringify(fieldValues.configuration),
+        configuration: fieldValues.configuration as AirbyteFieldValues,
       },
     };
 

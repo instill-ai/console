@@ -10,7 +10,7 @@ export type CreateSourcePayload = {
   source_connector_definition: string;
   connector: {
     description?: string;
-    configuration: string;
+    configuration: Record<string, any> | Record<string, never>;
   };
 };
 

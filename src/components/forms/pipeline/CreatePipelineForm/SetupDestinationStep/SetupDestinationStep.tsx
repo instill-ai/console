@@ -139,7 +139,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
         id: values.destination.existing.id,
         destination_connector_definition: `destination-connector-definitions/${values.destination.existing.id}`,
         connector: {
-          configuration: "{}",
+          configuration: {},
         },
       };
 

@@ -82,12 +82,7 @@ export const mockModelSourceOptions = [
     label: "ArtiVC",
     value: "artivc",
     startIcon: (
-      <ArtiVcIcon
-        width="w-[30px]"
-        height="h-[30px]"
-        color="fill-instillGrey90"
-        position="my-auto"
-      />
+      <ArtiVcIcon width="w-[30px]" height="h-[30px]" position="my-auto" />
     ),
   },
 ];

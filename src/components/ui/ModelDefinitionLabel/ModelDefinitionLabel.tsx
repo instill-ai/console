@@ -62,7 +62,6 @@ const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
           width={icon.width}
           height={icon.height}
           position={icon.position}
-          color={icon.color}
         />
       );
       modelDefinitionLabel = "ArtiVC";

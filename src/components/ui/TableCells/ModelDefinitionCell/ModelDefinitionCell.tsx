@@ -60,7 +60,6 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
           width={iconWidth}
           height={iconHeight}
           position={iconPosition}
-          color={iconColor}
         />
       );
       break;

@@ -120,7 +120,7 @@ const CreateSourceForm: FC = () => {
         id: values.definition,
         source_connector_definition: `source-connector-definitions/${values.definition}`,
         connector: {
-          configuration: "{}",
+          configuration: {},
         },
       };
 
