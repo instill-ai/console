@@ -12,6 +12,7 @@ import {
 import {
   DestinationWithDefinition,
   Model,
+  ModelInstance,
   Pipeline,
   SourceWithDefinition,
 } from "@/lib/instill";
@@ -21,7 +22,11 @@ import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 
 export type DeleteResourceModalProps = {
   resource: Nullable<
-    SourceWithDefinition | DestinationWithDefinition | Pipeline | Model
+    | SourceWithDefinition
+    | DestinationWithDefinition
+    | Pipeline
+    | Model
+    | ModelInstance
   >;
   modalIsOpen: boolean;
   setModalIsOpen: Dispatch<SetStateAction<boolean>>;
