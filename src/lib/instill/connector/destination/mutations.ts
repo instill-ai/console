@@ -1,3 +1,4 @@
+import { AirbyteFieldValues } from "@/lib/airbytes";
 import axios from "axios";
 import { Destination } from "./types";
 
@@ -10,7 +11,10 @@ export type CreateDestinationPayload = {
   destination_connector_definition: string;
   connector: {
     description?: string;
-    configuration: string;
+    configuration:
+      | Record<string, any>
+      | AirbyteFieldValues
+      | Record<string, never>;
   };
 };
 
