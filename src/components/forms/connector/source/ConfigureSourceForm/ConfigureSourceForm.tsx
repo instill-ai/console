@@ -15,6 +15,8 @@ import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteSource } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
+import { ErrorDetails } from "@/lib/instill/types";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -134,12 +136,13 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
         router.push("/sources");
       },
       onError: (error) => {
-        if (error instanceof Error) {
+        if (error instanceof AxiosError) {
           setMessageBoxState(() => ({
             activate: true,
+            message: `${error.response?.status} - ${error.response?.data.message}`,
+            description: (error.response?.data.details as ErrorDetails[])[0]
+              .violations[0].description,
             status: "error",
-            description: null,
-            message: error.message,
           }));
         } else {
           setMessageBoxState(() => ({
@@ -188,7 +191,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               <div className="mb-10 flex flex-row">
                 <PrimaryButton
                   type="button"
-                  disabled={true}
+                  disabled={false}
                   position="mr-auto my-auto"
                   onClickHandler={() => {
                     setDeleteSourceModalIsOpen(true);

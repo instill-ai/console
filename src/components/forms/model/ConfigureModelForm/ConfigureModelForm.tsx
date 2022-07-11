@@ -176,7 +176,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         if (error instanceof AxiosError) {
           setMessageBoxState({
             activate: true,
-            message: error.message,
+            message: `${error.response?.status} - ${error.response?.data.message}`,
             description: (error.response?.data.details as ErrorDetails[])[0]
               .violations[0].description,
             status: "error",
@@ -213,16 +213,18 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               gapY="gap-y-5"
               padding={null}
             >
-              <TextArea
-                id="description"
-                name="description"
-                label="Description"
-                description="Fill with a short description of your model"
-                value={values.description}
-                error={errors.description || null}
-                disabled={canEdit ? false : true}
-                required={true}
-              />
+              <div className="mb-10 flex flex-col">
+                <TextArea
+                  id="description"
+                  name="description"
+                  label="Description"
+                  description="Fill with a short description of your model"
+                  value={values.description}
+                  error={errors.description || null}
+                  disabled={canEdit ? false : true}
+                  required={true}
+                />
+              </div>
               <div className="flex flex-row">
                 <OutlineButton
                   disabled={false}
