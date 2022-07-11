@@ -64,7 +64,7 @@ export type ModelInstance = {
   state: ModelState;
   task: string;
   model_definition: string;
-  configuration: string;
+  configuration: Record<string, any>;
   create_time: string;
   update_time: string;
 };
