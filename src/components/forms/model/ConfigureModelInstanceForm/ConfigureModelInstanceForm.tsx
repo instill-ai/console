@@ -11,7 +11,6 @@ import {
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
 import { TestModelInstanceSection } from "@/components/sections";
-import { useModelDefinition } from "@/services/model";
 
 export type ConfigureModelInstanceFormProps = {
   modelInstance: ModelInstance;

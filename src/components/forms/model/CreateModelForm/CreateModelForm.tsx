@@ -350,7 +350,13 @@ const CreateNewModelFlow: FC = () => {
         });
       }
     },
-    [amplitudeIsInit, createArtivcModel, createGithubModel, createLocalModel]
+    [
+      amplitudeIsInit,
+      createArtivcModel,
+      createGithubModel,
+      createLocalModel,
+      createHuggingFaceModel,
+    ]
   );
 
   // ###################################################################
