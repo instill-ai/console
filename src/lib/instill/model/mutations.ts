@@ -110,7 +110,6 @@ export const createArtivcModelMutation = async (
 
 export type HuggingFaceConfiguration = {
   repo_id: string;
-  html_url: Nullable<string>;
 };
 
 export type CreateHuggingFaceModelPayload = {
@@ -134,12 +133,9 @@ export const createHuggingFaceModelMutation = async (
         id: payload.id,
         model_definition: payload.model_definition,
         description: payload.desctiption,
-        configuration: JSON.stringify({
+        configuration: {
           repo_id: payload.configuration.repo_id,
-          url: payload.configuration.html_url
-            ? payload.configuration.html_url
-            : undefined,
-        }),
+        },
       }
     );
     return Promise.resolve(data.model);
