@@ -28,6 +28,7 @@ import {
 import {
   useCreateArtivcModel,
   useCreateGithubModel,
+  useCreateHuggingFaceModel,
   useCreateLocalModel,
   useDeployModelInstance,
   useModelDefinitions,
@@ -37,12 +38,14 @@ import { ModelDefinitionIcon, PrimaryButton } from "@/components/ui";
 import {
   CreateArtivcModelPayload,
   CreateGithubModelPayload,
+  CreateHuggingFaceModelPayload,
   CreateLocalModelPayload,
   Model,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
 
 // We need to pass modelCreated state to UseExistingModelInstanceFlow
 
@@ -77,6 +80,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
 
     setModelDefinitionOptions(
       modelDefinitions.data.map((e) => {
+        console.log(e.id);
         return {
           label: e.title,
           value: e.id,
@@ -139,7 +143,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       return true;
     }
 
-    if (!values.model.new.gcsBucketPath || !values.model.new.id) {
+    if (values.model.new.modelDefinition === "artivc") {
+      if (!values.model.new.gcsBucketPath || !values.model.new.id) {
+        return false;
+      }
+
+      return true;
+    }
+
+    if (!values.model.new.huggingFaceRepo) {
       return false;
     }
 
@@ -150,12 +162,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     values.model.new.file,
     values.model.new.repo,
     values.model.new.gcsBucketPath,
+    values.model.new.huggingFaceRepo,
     modelCreated,
   ]);
 
   const createGithubModel = useCreateGithubModel();
   const createLocalModel = useCreateLocalModel();
   const createArtivcModel = useCreateArtivcModel();
+  const createHuggingFaceModel = useCreateHuggingFaceModel();
 
   const handelCreateModel = async () => {
     if (!values.model.new.id) return;
@@ -196,12 +210,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           }
         },
         onError: (error) => {
-          if (error instanceof Error) {
+          if (error instanceof AxiosError) {
             setCreateModelMessageBoxState(() => ({
               activate: true,
               status: "error",
               description: null,
-              message: error.message,
+              message: error.response?.data.message ?? error.message,
             }));
           } else {
             setCreateModelMessageBoxState(() => ({
@@ -241,12 +255,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           }));
         },
         onError: (error) => {
-          if (error instanceof Error) {
+          if (error instanceof AxiosError) {
             setCreateModelMessageBoxState(() => ({
               activate: true,
               status: "error",
               description: null,
-              message: error.message,
+              message: error.response?.data.message ?? error.message,
             }));
           } else {
             setCreateModelMessageBoxState(() => ({
@@ -258,7 +272,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           }
         },
       });
-    } else {
+    } else if (values.model.new.modelDefinition === "artivc") {
       if (!values.model.new.gcsBucketPath) return;
 
       const payload: CreateArtivcModelPayload = {
@@ -287,12 +301,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           }
         },
         onError: (error) => {
-          if (error instanceof Error) {
+          if (error instanceof AxiosError) {
             setCreateModelMessageBoxState(() => ({
               activate: true,
               status: "error",
               description: null,
-              message: error.message,
+              message: error.response?.data.message ?? error.message,
             }));
           } else {
             setCreateModelMessageBoxState(() => ({
@@ -300,6 +314,52 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
               status: "error",
               description: null,
               message: "Something went wrong when create the ArtiVC model",
+            }));
+          }
+        },
+      });
+    } else {
+      if (!values.model.new.huggingFaceRepo) return;
+
+      const payload: CreateHuggingFaceModelPayload = {
+        id: values.model.new.id,
+        model_definition: "model-definitions/huggingface",
+        desctiption: values.model.new.description ?? null,
+        configuration: {
+          repo_id: values.model.new.huggingFaceRepo,
+        },
+      };
+
+      createHuggingFaceModel.mutate(payload, {
+        onSuccess: (newModel) => {
+          setModelCreated(true);
+          setNewModel(newModel);
+          setCreateModelMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Create succeeded",
+          }));
+          if (amplitudeIsInit) {
+            sendAmplitudeData("create_artivc_model", {
+              type: "critical_action",
+            });
+          }
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: error.response?.data.message ?? error.message,
+            }));
+          } else {
+            setCreateModelMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when create the HuggingFace model",
             }));
           }
         },
@@ -469,7 +529,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           autoComplete="off"
         />
       ) : null}
-
       {values.model.new.modelDefinition === "local" ? (
         <>
           <TextArea
@@ -521,6 +580,34 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
             value={values.model.new.credentials}
             error={errors.model?.new?.credentials || null}
+          />
+        </>
+      ) : null}
+      {values.model.new.modelDefinition === "huggingface" ? (
+        <>
+          <TextField
+            id="huggingFaceRepo"
+            name="model.new.huggingFaceRepo"
+            label="HuggingFace model ID"
+            additionalMessageOnLabel={null}
+            description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
+            value={values.model.new.huggingFaceRepo}
+            error={errors.model?.new?.huggingFaceRepo || null}
+            additionalOnChangeCb={null}
+            disabled={modelCreated ? true : false}
+            readOnly={false}
+            required={true}
+            placeholder=""
+            type="text"
+            autoComplete="off"
+          />
+          <TextArea
+            id="description"
+            name="model.new.description"
+            label="Description"
+            description="Fill with a short description of your new model"
+            value={values.model.new.description}
+            error={errors.model?.new?.description || null}
           />
         </>
       ) : null}

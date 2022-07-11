@@ -35,6 +35,8 @@ import type {
   CreateArtivcModelResponse,
   UpdateModelPayload,
   UpdateModelResponse,
+  CreateHuggingFaceModelPayload,
+  CreateHuggingFaceModelResponse,
 } from "./mutations";
 
 import {
@@ -43,6 +45,7 @@ import {
   createArtivcModelMutation,
   updateModelMutation,
   deleteModelMutation,
+  createHuggingFaceModelMutation,
 } from "./mutations";
 
 import type { DeployModelResponse, UnDeployModelResponse } from "./actions";
@@ -74,6 +77,8 @@ export type {
   CreateArtivcModelPayload,
   CreateArtivcModelResponse,
   GetModelInstanceReadmeQuery,
+  CreateHuggingFaceModelPayload,
+  CreateHuggingFaceModelResponse,
 };
 
 export {
@@ -91,4 +96,5 @@ export {
   udDeployModelInstanceAction,
   createArtivcModelMutation,
   getModelInstanceReadme,
+  createHuggingFaceModelMutation,
 };

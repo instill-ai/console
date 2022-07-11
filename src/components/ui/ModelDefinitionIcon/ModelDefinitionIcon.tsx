@@ -1,9 +1,11 @@
 import {
   ArtiVcIcon,
   GitHubIcon,
+  HuggingFaceIcon,
   LocalUploadIcon,
 } from "@instill-ai/design-system";
 import { FC } from "react";
+import cn from "clsx";
 
 export type ModelDefinitionIconProps = {
   iconName: string;
@@ -50,9 +52,18 @@ const ModelDefinitionIcon: FC<ModelDefinitionIconProps> = ({
         />
       );
     }
+    case "huggingface.svg": {
+      return (
+        <HuggingFaceIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
+        />
+      );
+    }
 
     default: {
-      return <div>icon not found</div>;
+      return <div className={cn(iconWidth, iconHeight)} />;
     }
   }
 };

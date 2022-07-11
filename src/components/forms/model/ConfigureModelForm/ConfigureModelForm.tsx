@@ -192,7 +192,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         modalState.setModalIsOpen(false);
       },
     });
-  }, [model, amplitudeIsInit, router, deleteModel]);
+  }, [model, amplitudeIsInit, router, deleteModel, modalState]);
 
   return (
     <>
