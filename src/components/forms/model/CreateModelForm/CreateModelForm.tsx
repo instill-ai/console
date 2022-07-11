@@ -35,6 +35,7 @@ import {
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
 
 export type CreateModelFormValue = {
   id: Nullable<string>;
@@ -189,12 +190,12 @@ const CreateNewModelFlow: FC = () => {
             }
           },
           onError: (error) => {
-            if (error instanceof Error) {
+            if (error instanceof AxiosError) {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
                 description: null,
-                message: error.message,
+                message: error.response?.data.message ?? error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -237,12 +238,12 @@ const CreateNewModelFlow: FC = () => {
             }
           },
           onError: (error) => {
-            if (error instanceof Error) {
+            if (error instanceof AxiosError) {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
                 description: null,
-                message: error.message,
+                message: error.response?.data.message ?? error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -283,12 +284,12 @@ const CreateNewModelFlow: FC = () => {
             }
           },
           onError: (error) => {
-            if (error instanceof Error) {
+            if (error instanceof AxiosError) {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
                 description: null,
-                message: error.message,
+                message: error.response?.data.message ?? error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -305,11 +306,10 @@ const CreateNewModelFlow: FC = () => {
 
         const payload: CreateHuggingFaceModelPayload = {
           id: values.id,
-          model_definition: "model-definitions/artivc",
+          model_definition: "model-definitions/huggingface",
           desctiption: values.description ?? null,
           configuration: {
             repo_id: values.huggingFaceRepo,
-            html_url: values.huggingFaceUrl,
           },
         };
 
@@ -330,12 +330,12 @@ const CreateNewModelFlow: FC = () => {
             }
           },
           onError: (error) => {
-            if (error instanceof Error) {
+            if (error instanceof AxiosError) {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
                 description: null,
-                message: error.message,
+                message: error.response?.data.message ?? error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -438,12 +438,12 @@ const CreateNewModelFlow: FC = () => {
           router.push("/models");
         },
         onError: (error) => {
-          if (error instanceof Error) {
+          if (error instanceof AxiosError) {
             setDeployModelInstanceMessageBoxState(() => ({
               activate: true,
               status: "error",
               description: null,
-              message: error.message,
+              message: error.response?.data.message ?? error.message,
             }));
           } else {
             setDeployModelInstanceMessageBoxState(() => ({
@@ -607,22 +607,6 @@ const CreateNewModelFlow: FC = () => {
                   disabled={modelCreated ? true : false}
                   enableCounter={true}
                   counterWordLimit={1023}
-                />
-                <TextField
-                  id="huggingFaceUrl"
-                  name="huggingFaceUrl"
-                  label="HuggingFace repository URL"
-                  additionalMessageOnLabel={null}
-                  description="The URL of the HuggingFace repository, e.g. `https://huggingface.co/facebook/deit-base-distilled-patch16-224`."
-                  value={values.huggingFaceUrl}
-                  error={errors.huggingFaceUrl || null}
-                  additionalOnChangeCb={null}
-                  disabled={modelCreated ? true : false}
-                  readOnly={false}
-                  required={false}
-                  placeholder=""
-                  type="text"
-                  autoComplete="off"
                 />
               </>
             ) : null}
