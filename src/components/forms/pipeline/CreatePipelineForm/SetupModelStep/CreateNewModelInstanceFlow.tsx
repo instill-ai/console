@@ -168,13 +168,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     }));
 
     if (values.model.new.modelDefinition === "github") {
-      const configuration = {
-        repository: values.model.new.repo,
-      };
+      if (!values.model.new.repo) return;
+
       const payload: CreateGithubModelPayload = {
         id: values.model.new.id,
         model_definition: "model-definitions/github",
-        configuration: JSON.stringify(configuration),
+        configuration: {
+          repository: values.model.new.repo,
+        },
       };
 
       createGithubModel.mutate(payload, {
@@ -223,7 +224,9 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           ? values.model.new.description
           : "",
         model_definition: "model-definitions/local",
-        content: values.model.new.file,
+        configuration: {
+          content: values.model.new.file,
+        },
       };
 
       createLocalModel.mutate(payload, {

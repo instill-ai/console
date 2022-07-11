@@ -20,8 +20,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
   modelInstance,
   marginBottom,
 }) => {
-  const modelInstanceConfiguration = JSON.parse(modelInstance.configuration);
-  const { repository, tag, html_url } = modelInstanceConfiguration;
+  const { repository, tag, html_url } = modelInstance.configuration;
   return (
     <Formik
       initialValues={
