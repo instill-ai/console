@@ -75,10 +75,17 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
       }
 
       case "models": {
-        title = "Delete This Model";
-        description =
-          "This action cannot be undone. This will permanently delete the model.";
-        break;
+        if (resource.name.split("/")[2]) {
+          title = "Delete This Model Instance";
+          description =
+            "This action cannot be undone. This will permanently delete the model instance.";
+          break;
+        } else {
+          title = "Delete This Model";
+          description =
+            "This action cannot be undone. This will permanently delete the model.";
+          break;
+        }
       }
 
       default: {
