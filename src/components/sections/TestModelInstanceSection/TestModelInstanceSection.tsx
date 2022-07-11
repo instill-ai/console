@@ -4,6 +4,7 @@ import {
   BasicUploadFileField,
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
+import cn from "clsx";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -12,12 +13,14 @@ import { sendAmplitudeData } from "@/lib/amplitude";
 import TestModelInstanceResultBlock from "@/components/ui/TestModelInstanceResultBlock";
 import { useTestModelInstance } from "@/services/model";
 
-export type TestModelInstanceFormProps = {
+export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
+  marginBottom: Nullable<string>;
 };
 
-const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
+const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   modelInstance,
+  marginBottom,
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -98,7 +101,8 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
   };
 
   return (
-    <>
+    <div className={cn("flex flex-col", marginBottom)}>
+      <h3 className="mb-5 text-black text-instill-h3">Testing</h3>
       <div className="mb-10 flex flex-col gap-y-5">
         <BasicUploadFileField
           id="file"
@@ -127,15 +131,17 @@ const TestModelInstanceForm: FC<TestModelInstanceFormProps> = ({
             closable={true}
           />
         </div>
-        <TestModelInstanceResultBlock
-          width="w-[42vw]"
-          result={testModelInstanceResult ? testModelInstanceResult : ""}
-          blockIsOpen={resultBlockIsOpen}
-          setBlockIsOpen={setResultBlockIsOpen}
-        />
+        {testModelInstanceResult ? (
+          <TestModelInstanceResultBlock
+            width="w-[42vw]"
+            result={testModelInstanceResult}
+            blockIsOpen={resultBlockIsOpen}
+            setBlockIsOpen={setResultBlockIsOpen}
+          />
+        ) : null}
       </div>
-    </>
+    </div>
   );
 };
 
-export default TestModelInstanceForm;
+export default TestModelInstanceSection;

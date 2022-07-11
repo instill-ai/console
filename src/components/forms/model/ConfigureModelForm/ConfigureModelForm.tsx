@@ -8,10 +8,16 @@ import {
 import { FormikFormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
 import { Model } from "@/lib/instill";
-import { useUpdateModel } from "@/services/model";
+import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
+import useDeleteResourceModalState from "@/hooks/useDeleteResourceModalState";
+import { useRouter } from "next/router";
+import OutlineButton from "@/components/ui/Buttons/OutlineButton";
+import { DeleteResourceModal } from "@/components/modals";
+import { AxiosError } from "axios";
+import { ErrorDetails } from "@/lib/instill/types";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
@@ -27,6 +33,8 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   marginBottom,
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const router = useRouter();
+
   const [canEdit, setCanEdit] = useState(false);
 
   const handleEditButton = (
@@ -43,7 +51,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
   // ###################################################################
   // #                                                                 #
-  // # 2 - handle update model                                         #
+  // # 1 - handle update model                                         #
   // #                                                                 #
   // ###################################################################
 
@@ -128,54 +136,143 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     [amplitudeIsInit, model, updateModel]
   );
 
+  // ###################################################################
+  // #                                                                 #
+  // # 2 - Handle delete model                                         #
+  // #                                                                 #
+  // ###################################################################
+
+  const modalState = useDeleteResourceModalState();
+
+  const deleteModel = useDeleteModel();
+
+  const handleDeleteModel = useCallback(() => {
+    if (!model) return;
+
+    setMessageBoxState({
+      activate: true,
+      message: "Deleting...",
+      description: null,
+      status: "progressing",
+    });
+
+    deleteModel.mutate(model.name, {
+      onSuccess: () => {
+        setMessageBoxState({
+          activate: true,
+          message: "Deleting succeeded.",
+          description: null,
+          status: "success",
+        });
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_model", {
+            type: "critical_action",
+            process: "model",
+          });
+        }
+        router.push("/models");
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          setMessageBoxState({
+            activate: true,
+            message: `${error.response?.status} - ${error.response?.data.message}`,
+            description: (error.response?.data.details as ErrorDetails[])[0]
+              .violations[0].description,
+            status: "error",
+          });
+        } else {
+          setMessageBoxState({
+            activate: true,
+            message: "Something went wrong when delete the model",
+            description: null,
+            status: "error",
+          });
+        }
+        modalState.setModalIsOpen(false);
+      },
+    });
+  }, [model, amplitudeIsInit, router, deleteModel]);
+
   return (
-    <Formik
-      initialValues={
-        {
-          description: model ? model.description : null,
-        } as ConfigureModelFormValue
-      }
-      enableReinitialize={true}
-      onSubmit={handleSubmit}
-      validate={validateForm}
-    >
-      {({ values, errors, submitForm }) => {
-        return (
-          <FormikFormBase
-            marginBottom={marginBottom}
-            gapY="gap-y-5"
-            padding={null}
-          >
-            <TextArea
-              id="description"
-              name="description"
-              label="Description"
-              description="Fill with a short description of your model"
-              value={values.description}
-              error={errors.description || null}
-              disabled={canEdit ? false : true}
-              required={true}
-            />
-            <div className="flex flex-row">
-              <BasicProgressMessageBox
-                state={messageBoxState}
-                setState={setMessageBoxState}
-                width="w-[25vw]"
-                closable={true}
-              />
-              <PrimaryButton
-                disabled={false}
-                onClickHandler={() => handleEditButton(values, submitForm)}
-                position="ml-auto my-auto"
-                type="button"
-              >
-                {canEdit ? "Done" : "Edit"}
-              </PrimaryButton>
-            </div>
-          </FormikFormBase>
-        );
-      }}
-    </Formik>
+    <>
+      <Formik
+        initialValues={
+          {
+            description: model ? model.description : null,
+          } as ConfigureModelFormValue
+        }
+        enableReinitialize={true}
+        onSubmit={handleSubmit}
+        validate={validateForm}
+      >
+        {({ values, errors, submitForm }) => {
+          return (
+            <FormikFormBase
+              marginBottom={marginBottom}
+              gapY="gap-y-5"
+              padding={null}
+            >
+              <div className="mb-10 flex flex-col">
+                <TextArea
+                  id="description"
+                  name="description"
+                  label="Description"
+                  description="Fill with a short description of your model"
+                  value={values.description}
+                  error={errors.description || null}
+                  disabled={canEdit ? false : true}
+                  required={true}
+                />
+              </div>
+              <div className="flex flex-row">
+                <OutlineButton
+                  disabled={false}
+                  onClickHandler={() => modalState.setModalIsOpen(true)}
+                  position="mr-auto my-auto"
+                  type="button"
+                  disabledBgColor="bg-instillGrey15"
+                  bgColor="bg-white"
+                  hoveredBgColor="hover:bg-instillRed"
+                  disabledTextColor="text-instillGrey50"
+                  textColor="text-instillRed"
+                  hoveredTextColor="hover:text-instillGrey05"
+                  width={null}
+                  borderSize="border"
+                  borderColor="border-instillRed"
+                  hoveredBorderColor={null}
+                  disabledBorderColor="border-instillGrey15"
+                >
+                  Delete
+                </OutlineButton>
+                <PrimaryButton
+                  disabled={false}
+                  onClickHandler={() => handleEditButton(values, submitForm)}
+                  position="ml-auto my-auto"
+                  type="button"
+                >
+                  {canEdit ? "Done" : "Edit"}
+                </PrimaryButton>
+              </div>
+              <div className="flex flex-row">
+                <BasicProgressMessageBox
+                  state={messageBoxState}
+                  setState={setMessageBoxState}
+                  width="w-[25vw]"
+                  closable={true}
+                />
+              </div>
+            </FormikFormBase>
+          );
+        }}
+      </Formik>
+      <DeleteResourceModal
+        resource={model}
+        modalIsOpen={modalState.modalIsOpen}
+        setModalIsOpen={modalState.setModalIsOpen}
+        handleDeleteResource={handleDeleteModel}
+      />
+    </>
   );
 };
 

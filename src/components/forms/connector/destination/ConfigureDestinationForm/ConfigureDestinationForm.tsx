@@ -15,6 +15,8 @@ import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteDestination } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
+import { ErrorDetails } from "@/lib/instill/types";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
@@ -141,12 +143,13 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
         router.push("/destinations");
       },
       onError: (error) => {
-        if (error instanceof Error) {
+        if (error instanceof AxiosError) {
           setMessageBoxState(() => ({
             activate: true,
+            message: `${error.response?.status} - ${error.response?.data.message}`,
+            description: (error.response?.data.details as ErrorDetails[])[0]
+              .violations[0].description,
             status: "error",
-            description: null,
-            message: error.message,
           }));
         } else {
           setMessageBoxState(() => ({

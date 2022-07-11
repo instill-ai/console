@@ -1,9 +1,17 @@
-import { FC } from "react";
-import { Formik } from "formik";
+import { FC, useCallback, useState } from "react";
+import cn from "clsx";
 
-import { FormikFormBase, TextField } from "@/components/formik";
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { FormBase } from "../../commons";
+import { PrimaryButton } from "@/components/ui";
+import {
+  BasicProgressMessageBox,
+  BasicTextField,
+  ProgressMessageBoxState,
+} from "@instill-ai/design-system";
+import { TestModelInstanceSection } from "@/components/sections";
+import { useModelDefinition } from "@/services/model";
 
 export type ConfigureModelInstanceFormProps = {
   modelInstance: ModelInstance;
@@ -20,80 +28,112 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
   modelInstance,
   marginBottom,
 }) => {
-  const { repository, tag, html_url } = modelInstance.configuration;
+  const [canEdit, setCanEdit] = useState(false);
+
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
+
+  const handleEditButton = () => {
+    if (!canEdit) {
+      setCanEdit(true);
+      return;
+    }
+  };
+
+  const handler = useCallback(() => {
+    console.log("hi");
+  }, []);
+
   return (
-    <Formik
-      initialValues={
-        {
-          repo: repository ? repository : null,
-          repoUrl: html_url ? html_url : null,
-          tag: tag ? tag : null,
-        } as ConfigureModelInstanceFormValue
-      }
-      enableReinitialize={true}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
-    >
-      {({ values, errors }) => {
-        return (
-          <FormikFormBase
-            marginBottom={marginBottom}
-            gapY="gap-y-5"
-            padding={null}
-          >
-            <TextField
-              id="repo"
-              name="repo"
-              label="GitHub repository"
-              additionalMessageOnLabel={null}
-              description="The URL of a GitHub repositories/organizations, e.g. 'instill-ai/yolov4'."
-              value={values.repo}
-              error={errors.repo || null}
-              additionalOnChangeCb={null}
-              disabled={true}
-              readOnly={false}
-              required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-            />
-            <TextField
-              id="tag"
-              name="tag"
-              label="Tag"
-              additionalMessageOnLabel={null}
-              description="Tag of the GitHub repository, e.g., 'v0.1.0'."
-              value={values.tag}
-              error={errors.tag || null}
-              additionalOnChangeCb={null}
-              disabled={true}
-              readOnly={false}
-              required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-            />
-            <TextField
-              id="repoUrl"
-              name="repoUrl"
-              label="GitHub repository URL"
-              additionalMessageOnLabel={null}
-              description="GitHub repository URL, e.g., 'https://github.com/instill-ai/protobufs/tree/v2.0.0'."
-              value={values.repoUrl}
-              error={errors.repoUrl || null}
-              additionalOnChangeCb={null}
-              disabled={true}
-              readOnly={false}
-              required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
-            />
-          </FormikFormBase>
-        );
-      }}
-    </Formik>
+    <div className={cn("flex flex-col", marginBottom)}>
+      <FormBase padding={null} marginBottom="mb-10" noValidate={true}>
+        <div className="flex flex-col gap-y-5">
+          {modelInstance.model_definition === "model-definitions/local" ? (
+            <></>
+          ) : null}
+          {modelInstance.model_definition === "model-definitions/github" ? (
+            <>
+              <BasicTextField
+                id="modelRepo"
+                label="GitHub repository"
+                additionalMessageOnLabel={null}
+                description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+                value={modelInstance.configuration.repository}
+                error={null}
+                disabled={true}
+                readOnly={false}
+                required={true}
+                placeholder=""
+                type="text"
+                autoComplete="off"
+                onChangeInput={handler}
+              />
+            </>
+          ) : null}
+          {modelInstance.model_definition === "model-definitions/artivc" ? (
+            <>
+              <BasicTextField
+                id="tag"
+                label="ArtiVC version"
+                additionalMessageOnLabel={null}
+                description="Tag of the ArtiVC, e.g., `v0.1.0`."
+                value={modelInstance.configuration.tag}
+                error={null}
+                disabled={true}
+                readOnly={false}
+                required={true}
+                placeholder=""
+                type="text"
+                autoComplete="off"
+                onChangeInput={handler}
+              />
+              <BasicTextField
+                id="url"
+                label="Cloud storage url"
+                additionalMessageOnLabel={null}
+                description="the cloud storage url, e.g. `gs://public-europe-west2-c-artifacts/vdp/public-models/yolov4`."
+                value={modelInstance.configuration.url}
+                error={null}
+                disabled={true}
+                readOnly={false}
+                required={true}
+                placeholder=""
+                type="text"
+                autoComplete="off"
+                onChangeInput={handler}
+              />
+            </>
+          ) : null}
+        </div>
+      </FormBase>
+      <TestModelInstanceSection
+        modelInstance={modelInstance}
+        marginBottom="mb-10"
+      />
+      <div className="mb-10 flex flex-row">
+        <PrimaryButton
+          disabled={true}
+          onClickHandler={() => handleEditButton()}
+          position="ml-auto my-auto"
+          type="button"
+        >
+          {canEdit ? "Done" : "Edit"}
+        </PrimaryButton>
+      </div>
+      <div className="flex flex-row">
+        <BasicProgressMessageBox
+          state={messageBoxState}
+          setState={setMessageBoxState}
+          width="w-[25vw]"
+          closable={true}
+        />
+      </div>
+    </div>
   );
 };
 

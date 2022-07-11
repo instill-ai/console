@@ -10,20 +10,12 @@ import type {
   ConfigureModelFormProps,
   ConfigureModelFormValue,
 } from "./ConfigureModelForm";
-import TestModelInstanceForm from "./TestModelInstanceForm";
-import type { TestModelInstanceFormProps } from "./TestModelInstanceForm";
 
-export {
-  ConfigureModelInstanceForm,
-  CreateModelForm,
-  ConfigureModelForm,
-  TestModelInstanceForm,
-};
+export { ConfigureModelInstanceForm, CreateModelForm, ConfigureModelForm };
 export type {
   ConfigureModelInstanceFormProps,
   ConfigureModelInstanceFormValue,
   CreateModelFormValue,
   ConfigureModelFormProps,
   ConfigureModelFormValue,
-  TestModelInstanceFormProps,
 };
