@@ -146,13 +146,14 @@ const CreateNewModelFlow: FC = () => {
       }));
 
       if (values.modelDefinition === "github") {
-        const configuration = {
-          repository: values.repo,
-        };
+        if (!values.repo) return;
+
         const payload: CreateGithubModelPayload = {
           id: values.id,
           model_definition: "model-definitions/github",
-          configuration: JSON.stringify(configuration),
+          configuration: {
+            repository: values.repo,
+          },
         };
 
         createGithubModel.mutate(payload, {

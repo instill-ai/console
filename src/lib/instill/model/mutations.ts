@@ -2,10 +2,14 @@ import { Nullable } from "@/types/general";
 import axios from "axios";
 import { Model } from "./types";
 
+export type CreateGithubModelConfiguration = {
+  repository: string;
+};
+
 export type CreateGithubModelPayload = {
   id: string;
   model_definition: string;
-  configuration: string;
+  configuration: CreateGithubModelConfiguration;
 };
 
 export type CreateGithubModelResponse = {
@@ -26,11 +30,15 @@ export const createGithubModelMutation = async (
   }
 };
 
+export type CreateLocalModelConfiguration = {
+  content: string;
+};
+
 export type CreateLocalModelPayload = {
   id: string;
   desctiption: string;
   model_definition: string;
-  content: string;
+  configuration: CreateLocalModelConfiguration;
 };
 
 export type CreateLocalModelResponse = {
@@ -45,7 +53,7 @@ export const createLocalModelMutation = async (
     formData.append("id", payload.id);
     formData.append("description", payload.desctiption);
     formData.append("model_definition", payload.model_definition);
-    formData.append("content", payload.content);
+    formData.append("content", payload.configuration.content);
 
     const { data } = await axios.post<CreateLocalModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
