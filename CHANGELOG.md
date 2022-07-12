@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.0-alpha](https://github.com/instill-ai/console/compare/v0.4.0-alpha...v0.5.0-alpha) (2022-07-12)
+
+
+### Features
+
+* add additional tracking attribute ([#142](https://github.com/instill-ai/console/issues/142)) ([451d830](https://github.com/instill-ai/console/commit/451d8305887de928333dfa308d62cc47aa2624e0))
+* add ga ([#147](https://github.com/instill-ai/console/issues/147)) ([2183570](https://github.com/instill-ai/console/commit/2183570d0f91f08ef740fc878348a676d10f8038))
+* add hugging face icon at model table ([#152](https://github.com/instill-ai/console/issues/152)) ([5f50328](https://github.com/instill-ai/console/commit/5f503286d628b279e66026cf169c7fdbb924ed07))
+* make description field be a universal optional field when create model ([#151](https://github.com/instill-ai/console/issues/151)) ([f7718a5](https://github.com/instill-ai/console/commit/f7718a5041faa54f3b32443ef98eadfe28927d14))
+* make sure readme is correct ([#139](https://github.com/instill-ai/console/issues/139)) ([e5622a8](https://github.com/instill-ai/console/commit/e5622a8692e1ab37ca929d1ca56645ccabeab291))
+* set page title ([#146](https://github.com/instill-ai/console/issues/146)) ([f5ecca8](https://github.com/instill-ai/console/commit/f5ecca89e7e21cc6d4be2b91fa643813f8bb636e))
+* stop user delete resource on demo website ([#149](https://github.com/instill-ai/console/issues/149)) ([dd68df6](https://github.com/instill-ai/console/commit/dd68df6d7922e483c6b16c381dda8ee6e0b77c10))
+
+
+### Bug Fixes
+
+* use instill owned icons when interact with instill owned destination ([#150](https://github.com/instill-ai/console/issues/150)) ([d466a09](https://github.com/instill-ai/console/commit/d466a094a3afdff9df4a1e89e448f15460ef1251))
+
 ## [0.4.0-alpha](https://github.com/instill-ai/console/compare/v0.3.3-alpha...v0.4.0-alpha) (2022-07-11)
 
 
