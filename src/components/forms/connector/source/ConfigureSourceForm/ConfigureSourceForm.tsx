@@ -17,6 +17,7 @@ import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
 import { ErrorDetails } from "@/lib/instill/types";
+import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -189,16 +190,29 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                 />
               </div>
               <div className="mb-10 flex flex-row">
-                <PrimaryButton
-                  type="button"
-                  disabled={false}
+                <OutlineButton
+                  disabled={
+                    process.env.CONSOLE_BASE_URL === "https://demo.instill.tech"
+                      ? true
+                      : false
+                  }
+                  onClickHandler={() => setDeleteSourceModalIsOpen(true)}
                   position="mr-auto my-auto"
-                  onClickHandler={() => {
-                    setDeleteSourceModalIsOpen(true);
-                  }}
+                  type="button"
+                  disabledBgColor="bg-instillGrey15"
+                  bgColor="bg-white"
+                  hoveredBgColor="hover:bg-instillRed"
+                  disabledTextColor="text-instillGrey50"
+                  textColor="text-instillRed"
+                  hoveredTextColor="hover:text-instillGrey05"
+                  width={null}
+                  borderSize="border"
+                  borderColor="border-instillRed"
+                  hoveredBorderColor={null}
+                  disabledBorderColor="border-instillGrey15"
                 >
                   Delete
-                </PrimaryButton>
+                </OutlineButton>
                 <PrimaryButton
                   type="submit"
                   disabled={true}
