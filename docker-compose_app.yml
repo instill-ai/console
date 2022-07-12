@@ -16,3 +16,4 @@ services:
       - MODEL_BACKEND_BASE_URL=http://localhost:8083
       - CONSOLE_DOMAIN=localhost
       - API_VERSION=v1alpha
+      - CONSOLE_EDITION=local:ce-dev
