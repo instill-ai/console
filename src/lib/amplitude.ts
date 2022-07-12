@@ -59,5 +59,8 @@ export const sendAmplitudeData = (
   eventType: AmplitudeEvent,
   eventProperties: AmplitudeEventProperties
 ) => {
-  track(eventType, eventProperties);
+  track(eventType, {
+    ...eventProperties,
+    edition: process.env.NEXT_PUBLIC_CONSOLE_EDITION,
+  });
 };
