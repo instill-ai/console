@@ -15,7 +15,7 @@ async function downloadAirbyteIcons() {
       const iconUrl = await axios.get(icon.download_url, {
         responseType: "stream",
       });
-      const path = `./public/airbyteIcons/${icon.name}`;
+      const path = `./public/icons/airbyte/${icon.name}`;
       const writer = fs.createWriteStream(path);
       iconUrl.data.pipe(writer);
 
