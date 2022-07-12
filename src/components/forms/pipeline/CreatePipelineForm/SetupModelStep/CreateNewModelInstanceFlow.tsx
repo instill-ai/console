@@ -187,6 +187,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       const payload: CreateGithubModelPayload = {
         id: values.model.new.id,
         model_definition: "model-definitions/github",
+        description: values.model.new.description ?? null,
         configuration: {
           repository: values.model.new.repo,
         },
@@ -234,9 +235,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
 
       const payload: CreateLocalModelPayload = {
         id: values.model.new.id,
-        desctiption: values.model.new.description
-          ? values.model.new.description
-          : "",
+        description: values.model.new.description ?? null,
         model_definition: "model-definitions/local",
         configuration: {
           content: values.model.new.file,
@@ -278,6 +277,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       const payload: CreateArtivcModelPayload = {
         id: values.model.new.id,
         model_definition: "model-definitions/artivc",
+        description: values.model.new.description ?? null,
         configuration: {
           url: values.model.new.gcsBucketPath,
           credential: values.model.new.credentials,
@@ -324,7 +324,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       const payload: CreateHuggingFaceModelPayload = {
         id: values.model.new.id,
         model_definition: "model-definitions/huggingface",
-        desctiption: values.model.new.description ?? null,
+        description: values.model.new.description ?? null,
         configuration: {
           repo_id: values.model.new.huggingFaceRepo,
         },
@@ -512,22 +512,32 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         required={true}
       />
       {values.model.new.modelDefinition === "github" ? (
-        <TextField
-          id="modelRepo"
-          name="model.new.repo"
-          label="GitHub repository"
-          additionalMessageOnLabel={null}
-          description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
-          value={values.model.new.repo}
-          error={errors.model?.new?.repo || null}
-          additionalOnChangeCb={null}
-          disabled={modelCreated ? true : false}
-          readOnly={false}
-          required={true}
-          placeholder=""
-          type="text"
-          autoComplete="off"
-        />
+        <>
+          <TextArea
+            id="description"
+            name="model.new.description"
+            label="Description"
+            description="Fill with a short description of your new model"
+            value={values.model.new.description}
+            error={errors.model?.new?.description || null}
+          />
+          <TextField
+            id="modelRepo"
+            name="model.new.repo"
+            label="GitHub repository"
+            additionalMessageOnLabel={null}
+            description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+            value={values.model.new.repo}
+            error={errors.model?.new?.repo || null}
+            additionalOnChangeCb={null}
+            disabled={modelCreated ? true : false}
+            readOnly={false}
+            required={true}
+            placeholder=""
+            type="text"
+            autoComplete="off"
+          />
+        </>
       ) : null}
       {values.model.new.modelDefinition === "local" ? (
         <>
@@ -557,6 +567,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       ) : null}
       {values.model.new.modelDefinition === "artivc" ? (
         <>
+          <TextArea
+            id="description"
+            name="model.new.description"
+            label="Description"
+            description="Fill with a short description of your new model"
+            value={values.model.new.description}
+            error={errors.model?.new?.description || null}
+          />
           <TextField
             id="gcsBucketPath"
             name="model.new.gcsBucketPath"
@@ -585,6 +603,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       ) : null}
       {values.model.new.modelDefinition === "huggingface" ? (
         <>
+          <TextArea
+            id="description"
+            name="model.new.description"
+            label="Description"
+            description="Fill with a short description of your new model"
+            value={values.model.new.description}
+            error={errors.model?.new?.description || null}
+          />
           <TextField
             id="huggingFaceRepo"
             name="model.new.huggingFaceRepo"
@@ -615,7 +641,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         <BasicProgressMessageBox
           state={createModelMessageBoxState}
           setState={setCreateModelMessageBoxState}
-          width="w-[25vw]"
+          width="w-[15vw]"
           closable={true}
         />
         <PrimaryButton
@@ -647,7 +673,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             <BasicProgressMessageBox
               state={deployModelInstanceMessageBoxState}
               setState={setDeployModelInstanceMessageBoxState}
-              width="w-[25vw]"
+              width="w-[15vw]"
               closable={true}
             />
             <PrimaryButton
