@@ -6,6 +6,7 @@ import { PageTitle } from "@/components/ui";
 import { CreateModelForm } from "@/components/forms";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -31,15 +32,18 @@ const CreateModelPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Set Up New Model"
-        breadcrumbs={["Model", "Settings"]}
-        enableButton={false}
-        marginBottom="mb-10"
-      />
-      <CreateModelForm />
-    </PageContentContainer>
+    <>
+      <PageHead title="Create model" />
+      <PageContentContainer>
+        <PageTitle
+          title="Set Up New Model"
+          breadcrumbs={["Model", "Settings"]}
+          enableButton={false}
+          marginBottom="mb-10"
+        />
+        <CreateModelForm />
+      </PageContentContainer>
+    </>
   );
 };
 

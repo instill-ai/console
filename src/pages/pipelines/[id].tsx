@@ -12,6 +12,7 @@ import {
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -62,46 +63,51 @@ const PipelineDetailsPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title={id ? id.toString() : ""}
-        breadcrumbs={id ? ["Pipeline", id.toString()] : ["Pipeline"]}
-        enableButton={false}
-        marginBottom="mb-5"
+    <>
+      <PageHead
+        title={pipeline.isLoading ? "" : (pipeline.data?.name as string)}
       />
-      <div className="mb-10 flex flex-row gap-x-2.5">
-        <PipelineModeLabel
-          enableBgColor={true}
-          enableIcon={true}
-          iconWidth="w-[18px]"
-          iconHeight="h-[18px]"
-          iconPosition="my-auto"
-          paddingX="px-[5px]"
-          paddingY="py-1.5"
-          mode={pipeline.data?.mode || "MODE_UNSPECIFIED"}
+      <PageContentContainer>
+        <PageTitle
+          title={id ? id.toString() : ""}
+          breadcrumbs={id ? ["Pipeline", id.toString()] : ["Pipeline"]}
+          enableButton={false}
+          marginBottom="mb-5"
         />
-        <StateLabel
-          enableBgColor={true}
-          enableIcon={true}
-          iconWidth="w-[18px]"
-          iconHeight="h-[18px]"
-          iconPosition="my-auto"
-          paddingX="px-[5px]"
-          paddingY="py-1.5"
-          state={pipeline.data?.state || "STATE_UNSPECIFIED"}
+        <div className="mb-10 flex flex-row gap-x-2.5">
+          <PipelineModeLabel
+            enableBgColor={true}
+            enableIcon={true}
+            iconWidth="w-[18px]"
+            iconHeight="h-[18px]"
+            iconPosition="my-auto"
+            paddingX="px-[5px]"
+            paddingY="py-1.5"
+            mode={pipeline.data?.mode || "MODE_UNSPECIFIED"}
+          />
+          <StateLabel
+            enableBgColor={true}
+            enableIcon={true}
+            iconWidth="w-[18px]"
+            iconHeight="h-[18px]"
+            iconPosition="my-auto"
+            paddingX="px-[5px]"
+            paddingY="py-1.5"
+            state={pipeline.data?.state || "STATE_UNSPECIFIED"}
+          />
+        </div>
+        <PipelineTable
+          pipeline={pipeline.isSuccess ? pipeline.data : null}
+          isLoading={false}
+          marginBottom="mb-10"
         />
-      </div>
-      <PipelineTable
-        pipeline={pipeline.isSuccess ? pipeline.data : null}
-        isLoading={false}
-        marginBottom="mb-10"
-      />
-      <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
-      <ConfigurePipelineForm
-        pipeline={pipeline.isSuccess ? pipeline.data : null}
-        marginBottom={null}
-      />
-    </PageContentContainer>
+        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <ConfigurePipelineForm
+          pipeline={pipeline.isSuccess ? pipeline.data : null}
+          marginBottom={null}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 

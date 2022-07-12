@@ -7,6 +7,7 @@ import { useModelsWithInstances } from "@/services/model";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -41,28 +42,31 @@ const ModelPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Model"
-        breadcrumbs={["Model"]}
-        enableButton={
-          modelsWithInstances.isSuccess
-            ? modelsWithInstances.data.length === 0
-              ? false
-              : true
-            : false
-        }
-        buttonName="Add new model"
-        buttonLink="/models/create"
-        marginBottom="mb-10"
-      />
-      <ModelsTable
-        models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
-        isLoading={isLoading}
-        marginBottom={null}
-        enablePlaceholderCreateButton={true}
-      />
-    </PageContentContainer>
+    <>
+      <PageHead title="models" />
+      <PageContentContainer>
+        <PageTitle
+          title="Model"
+          breadcrumbs={["Model"]}
+          enableButton={
+            modelsWithInstances.isSuccess
+              ? modelsWithInstances.data.length === 0
+                ? false
+                : true
+              : false
+          }
+          buttonName="Add new model"
+          buttonLink="/models/create"
+          marginBottom="mb-10"
+        />
+        <ModelsTable
+          models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
+          isLoading={isLoading}
+          marginBottom={null}
+          enablePlaceholderCreateButton={true}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 

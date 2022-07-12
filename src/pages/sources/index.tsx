@@ -7,6 +7,7 @@ import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadin
 import { useSourcesWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -41,24 +42,27 @@ const SourcePage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Data Sources"
-        breadcrumbs={["Data sources"]}
-        enableButton={
-          sources.data ? (sources.data.length === 0 ? false : true) : false
-        }
-        buttonName="Add new source"
-        buttonLink="/sources/create"
-        marginBottom="mb-10"
-      />
-      <SourcesTable
-        sources={sources.data ? sources.data : []}
-        isLoadingSources={isLoading}
-        marginBottom={null}
-        enablePlaceholderCreateButton={true}
-      />
-    </PageContentContainer>
+    <>
+      <PageHead title="source-connectors" />
+      <PageContentContainer>
+        <PageTitle
+          title="Data Sources"
+          breadcrumbs={["Data sources"]}
+          enableButton={
+            sources.data ? (sources.data.length === 0 ? false : true) : false
+          }
+          buttonName="Add new source"
+          buttonLink="/sources/create"
+          marginBottom="mb-10"
+        />
+        <SourcesTable
+          sources={sources.data ? sources.data : []}
+          isLoadingSources={isLoading}
+          marginBottom={null}
+          enablePlaceholderCreateButton={true}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 

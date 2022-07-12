@@ -6,6 +6,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -63,19 +64,22 @@ const CreatePipelinePage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title={currentPage ? currentPage.title : ""}
-        breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
-        enableButton={false}
-        marginBottom="mb-10"
-      />
-      <CreatePipelineForm
-        stepNumber={stepNumber}
-        setStepNumber={setStepNumber}
-        maximumStepNumber={4}
-      />
-    </PageContentContainer>
+    <>
+      <PageHead title="Create pipeline" />
+      <PageContentContainer>
+        <PageTitle
+          title={currentPage ? currentPage.title : ""}
+          breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
+          enableButton={false}
+          marginBottom="mb-10"
+        />
+        <CreatePipelineForm
+          stepNumber={stepNumber}
+          setStepNumber={setStepNumber}
+          maximumStepNumber={4}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 

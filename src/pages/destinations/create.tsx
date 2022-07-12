@@ -6,6 +6,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -31,15 +32,18 @@ const CreateDestinationPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Set Up New Destination"
-        breadcrumbs={["Data Destination", "Destination Settings"]}
-        enableButton={false}
-        marginBottom="mb-10"
-      />
-      <CreateDestinationForm setResult={null} setStepNumber={null} />
-    </PageContentContainer>
+    <>
+      <PageHead title="Create destination-connector" />
+      <PageContentContainer>
+        <PageTitle
+          title="Set Up New Destination"
+          breadcrumbs={["Data Destination", "Destination Settings"]}
+          enableButton={false}
+          marginBottom="mb-10"
+        />
+        <CreateDestinationForm setResult={null} setStepNumber={null} />
+      </PageContentContainer>
+    </>
   );
 };
 
