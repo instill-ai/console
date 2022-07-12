@@ -3,15 +3,15 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 export interface PageHeadProps {
-  pageTitle: string;
+  title: string;
 }
 
-const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
+const PageHead: FC<PageHeadProps> = ({ title }) => {
   const router = useRouter();
   const meta = {
     type: "website",
     siteName: "Instill AI - Visual Data Preparation (VDP)",
-    pageTitle,
+    title,
     pageDescription:
       "Visual Data Preparation (VDP) is an open-source visual data ETL tool to streamline the end-to-end visual data processing pipeline",
   };
@@ -24,7 +24,7 @@ const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
   return (
     <>
       <Head>
-        <title>{meta.pageTitle + " | VDP"}</title>
+        <title>{meta.title + " | VDP"}</title>
         {meta.pageDescription && (
           <meta content={meta.pageDescription} name="description" />
         )}
@@ -33,10 +33,10 @@ const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
         <meta property="og:type" content={meta.type} />
         <meta property="og:site_name" content={meta.siteName} />
         <meta property="og:description" content={meta.pageDescription} />
-        <meta property="og:title" content={meta.pageTitle + " | VDP"} />
+        <meta property="og:title" content={meta.title + " | VDP"} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={meta.siteName} />
-        <meta name="twitter:title" content={meta.pageTitle + " | VDP"} />
+        <meta name="twitter:title" content={meta.title + " | VDP"} />
         <meta name="twitter:description" content={meta.pageDescription} />
       </Head>
     </>
