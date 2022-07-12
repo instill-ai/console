@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { Nullable } from "@/types/general";
 
 export interface PageHeadProps {
-  title: string;
+  title: Nullable<string>;
 }
 
 const PageHead: FC<PageHeadProps> = ({ title }) => {
@@ -11,7 +12,9 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
   const meta = {
     type: "website",
     siteName: "Instill AI - Visual Data Preparation (VDP)",
-    title,
+    title: title
+      ? title + " | VDP"
+      : "Instill AI - Visual Data Preparation (VDP)",
     pageDescription:
       "Visual Data Preparation (VDP) is an open-source visual data ETL tool to streamline the end-to-end visual data processing pipeline",
   };
@@ -24,7 +27,7 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
   return (
     <>
       <Head>
-        <title>{meta.title + " | VDP"}</title>
+        <title>{meta.title}</title>
         {meta.pageDescription && (
           <meta content={meta.pageDescription} name="description" />
         )}
@@ -33,10 +36,10 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
         <meta property="og:type" content={meta.type} />
         <meta property="og:site_name" content={meta.siteName} />
         <meta property="og:description" content={meta.pageDescription} />
-        <meta property="og:title" content={meta.title + " | VDP"} />
+        <meta property="og:title" content={meta.title} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={meta.siteName} />
-        <meta name="twitter:title" content={meta.title + " | VDP"} />
+        <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.pageDescription} />
       </Head>
     </>
