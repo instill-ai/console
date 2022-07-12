@@ -9,6 +9,7 @@ export type CreateGithubModelConfiguration = {
 export type CreateGithubModelPayload = {
   id: string;
   model_definition: string;
+  description: Nullable<string>;
   configuration: CreateGithubModelConfiguration;
 };
 
@@ -22,7 +23,14 @@ export const createGithubModelMutation = async (
   try {
     const { data } = await axios.post<CreateGithubModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
-      payload
+      {
+        id: payload.id,
+        model_definition: payload.model_definition,
+        description: payload.description ?? undefined,
+        configuration: {
+          repository: payload.configuration.repository,
+        },
+      }
     );
     return Promise.resolve(data.model);
   } catch (err) {
@@ -36,7 +44,7 @@ export type CreateLocalModelConfiguration = {
 
 export type CreateLocalModelPayload = {
   id: string;
-  desctiption: string;
+  description: Nullable<string>;
   model_definition: string;
   configuration: CreateLocalModelConfiguration;
 };
@@ -51,9 +59,12 @@ export const createLocalModelMutation = async (
   try {
     const formData = new FormData();
     formData.append("id", payload.id);
-    formData.append("description", payload.desctiption);
     formData.append("model_definition", payload.model_definition);
     formData.append("content", payload.configuration.content);
+
+    if (payload.description) {
+      formData.append("description", payload.description);
+    }
 
     const { data } = await axios.post<CreateLocalModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
@@ -78,6 +89,7 @@ export type ArtivcConfiguration = {
 export type CreateArtivcModelPayload = {
   id: string;
   model_definition: string;
+  description: Nullable<string>;
   configuration: ArtivcConfiguration;
 };
 
@@ -94,6 +106,7 @@ export const createArtivcModelMutation = async (
       {
         id: payload.id,
         model_definition: payload.model_definition,
+        description: payload.description ?? undefined,
         configuration: {
           url: payload.configuration.url,
           credential: payload.configuration.credential
@@ -115,7 +128,7 @@ export type HuggingFaceConfiguration = {
 export type CreateHuggingFaceModelPayload = {
   id: string;
   model_definition: string;
-  desctiption: Nullable<string>;
+  description: Nullable<string>;
   configuration: HuggingFaceConfiguration;
 };
 
@@ -132,7 +145,7 @@ export const createHuggingFaceModelMutation = async (
       {
         id: payload.id,
         model_definition: payload.model_definition,
-        description: payload.desctiption,
+        description: payload.description ?? undefined,
         configuration: {
           repo_id: payload.configuration.repo_id,
         },

@@ -165,6 +165,7 @@ const CreateNewModelFlow: FC = () => {
         const payload: CreateGithubModelPayload = {
           id: values.id,
           model_definition: "model-definitions/github",
+          description: values.description ?? null,
           configuration: {
             repository: values.repo,
           },
@@ -214,7 +215,7 @@ const CreateNewModelFlow: FC = () => {
 
         const payload: CreateLocalModelPayload = {
           id: values.id,
-          desctiption: values.description ? values.description : "",
+          description: values.description ? values.description : "",
           model_definition: "model-definitions/local",
           configuration: {
             content: values.file,
@@ -261,6 +262,7 @@ const CreateNewModelFlow: FC = () => {
         const payload: CreateArtivcModelPayload = {
           id: values.id,
           model_definition: "model-definitions/artivc",
+          description: values.description ?? null,
           configuration: {
             url: values.gcsBucketPath,
             credential: values.credentials,
@@ -307,7 +309,7 @@ const CreateNewModelFlow: FC = () => {
         const payload: CreateHuggingFaceModelPayload = {
           id: values.id,
           model_definition: "model-definitions/huggingface",
-          desctiption: values.description ?? null,
+          description: values.description ?? null,
           configuration: {
             repo_id: values.huggingFaceRepo,
           },
@@ -513,22 +515,33 @@ const CreateNewModelFlow: FC = () => {
               required={true}
             />
             {values.modelDefinition === "github" ? (
-              <TextField
-                id="modelRepo"
-                name="repo"
-                label="GitHub repository"
-                additionalMessageOnLabel={null}
-                description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
-                value={values.repo}
-                error={errors.repo || null}
-                additionalOnChangeCb={null}
-                disabled={modelCreated ? true : false}
-                readOnly={false}
-                required={true}
-                placeholder=""
-                type="text"
-                autoComplete="off"
-              />
+              <>
+                <TextArea
+                  id="description"
+                  name="description"
+                  label="Description"
+                  description="Fill with a short description of your new model"
+                  value={values.description}
+                  error={errors.description || null}
+                  disabled={modelCreated ? true : false}
+                />
+                <TextField
+                  id="modelRepo"
+                  name="repo"
+                  label="GitHub repository"
+                  additionalMessageOnLabel={null}
+                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+                  value={values.repo}
+                  error={errors.repo || null}
+                  additionalOnChangeCb={null}
+                  disabled={modelCreated ? true : false}
+                  readOnly={false}
+                  required={true}
+                  placeholder=""
+                  type="text"
+                  autoComplete="off"
+                />
+              </>
             ) : null}
             {values.modelDefinition === "local" ? (
               <>
@@ -559,6 +572,15 @@ const CreateNewModelFlow: FC = () => {
             ) : null}
             {values.modelDefinition === "artivc" ? (
               <>
+                <TextArea
+                  id="description"
+                  name="description"
+                  label="Description"
+                  description="Fill with a short description of your new model"
+                  value={values.description}
+                  error={errors.description || null}
+                  disabled={modelCreated ? true : false}
+                />
                 <TextField
                   id="gcsBucketPath"
                   name="gcsBucketPath"
@@ -587,6 +609,17 @@ const CreateNewModelFlow: FC = () => {
             ) : null}
             {values.modelDefinition === "huggingface" ? (
               <>
+                <TextArea
+                  id="description"
+                  name="description"
+                  label="Description"
+                  description="Fill with a short description of your new model"
+                  value={values.description}
+                  error={errors.description || null}
+                  disabled={modelCreated ? true : false}
+                  enableCounter={true}
+                  counterWordLimit={1023}
+                />
                 <TextField
                   id="huggingFaceRepo"
                   name="huggingFaceRepo"
@@ -602,17 +635,6 @@ const CreateNewModelFlow: FC = () => {
                   placeholder=""
                   type="text"
                   autoComplete="off"
-                />
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description of your new model"
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={modelCreated ? true : false}
-                  enableCounter={true}
-                  counterWordLimit={1023}
                 />
               </>
             ) : null}
