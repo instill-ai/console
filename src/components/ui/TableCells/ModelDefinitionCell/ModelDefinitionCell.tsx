@@ -4,6 +4,7 @@ import CellBase, { CellBaseProps } from "../CellBase";
 import {
   ArtiVcIcon,
   GitHubIcon,
+  HuggingFaceIcon,
   LocalUploadIcon,
 } from "@instill-ai/design-system";
 
@@ -57,6 +58,17 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
       definitionLabel = "ArtiVC";
       definitionIcon = (
         <ArtiVcIcon
+          width={iconWidth}
+          height={iconHeight}
+          position={iconPosition}
+        />
+      );
+      break;
+    }
+    case "model-definitions/huggingface": {
+      definitionLabel = "Hugging Face";
+      definitionIcon = (
+        <HuggingFaceIcon
           width={iconWidth}
           height={iconHeight}
           position={iconPosition}
