@@ -8,6 +8,7 @@ import { ConfigureSourceForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -67,42 +68,51 @@ const SourceDetailsPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title={id ? id.toString() : ""}
-        breadcrumbs={id ? ["Data Source", id.toString()] : ["Data Source"]}
-        enableButton={false}
-        marginBottom="mb-[50px]"
-      />
-      <div className="mb-5 flex flex-row gap-x-5">
-        <h3 className="text-instill-h3 my-auto text-black">State</h3>
-        <StateLabel
-          enableIcon={true}
-          enableBgColor={true}
-          state="STATE_CONNECTED"
-          iconHeight="h-[18px]"
-          iconWidth="w-[18px]"
-          iconPosition="my-auto"
-          paddingY="py-2"
-          paddingX="px-2"
-        />
-      </div>
-      <h3 className="text-instill-h3 mb-5 text-black">Overview</h3>
-      <PipelinesTable
-        pipelines={
-          sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+    <>
+      <PageHead
+        title={
+          isLoading
+            ? ""
+            : (("Source | " + sourceWithPipelines.data?.id) as string)
         }
-        isLoadingPipeline={isLoading}
-        marginBottom="mb-10"
-        enablePlaceholderCreateButton={false}
       />
-      <h3 className="text-instill-h3 mb-5 text-black">Settings</h3>
-      <div>
-        <ConfigureSourceForm
-          source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+      <PageContentContainer>
+        <PageTitle
+          title={id ? id.toString() : ""}
+          breadcrumbs={id ? ["Data Source", id.toString()] : ["Data Source"]}
+          enableButton={false}
+          marginBottom="mb-[50px]"
         />
-      </div>
-    </PageContentContainer>
+        <div className="mb-5 flex flex-row gap-x-5">
+          <h3 className="my-auto text-black text-instill-h3">State</h3>
+          <StateLabel
+            enableIcon={true}
+            enableBgColor={true}
+            state="STATE_CONNECTED"
+            iconHeight="h-[18px]"
+            iconWidth="w-[18px]"
+            iconPosition="my-auto"
+            paddingY="py-2"
+            paddingX="px-2"
+          />
+        </div>
+        <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
+        <PipelinesTable
+          pipelines={
+            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+          }
+          isLoadingPipeline={isLoading}
+          marginBottom="mb-10"
+          enablePlaceholderCreateButton={false}
+        />
+        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <div>
+          <ConfigureSourceForm
+            source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+          />
+        </div>
+      </PageContentContainer>
+    </>
   );
 };
 

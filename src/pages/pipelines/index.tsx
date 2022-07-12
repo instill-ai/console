@@ -6,6 +6,7 @@ import { PipelinesTable, PageTitle } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -35,24 +36,31 @@ const PipelinePage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Pipeline"
-        breadcrumbs={["Pipeline"]}
-        enableButton={
-          pipelines.data ? (pipelines.data.length === 0 ? false : true) : false
-        }
-        buttonName="Add new pipeline"
-        buttonLink="/pipelines/create"
-        marginBottom="mb-10"
-      />
-      <PipelinesTable
-        pipelines={pipelines.data ? pipelines.data : []}
-        isLoadingPipeline={pipelines.isLoading}
-        marginBottom={null}
-        enablePlaceholderCreateButton={true}
-      />
-    </PageContentContainer>
+    <>
+      <PageHead title="Pipelines" />
+      <PageContentContainer>
+        <PageTitle
+          title="Pipeline"
+          breadcrumbs={["Pipeline"]}
+          enableButton={
+            pipelines.data
+              ? pipelines.data.length === 0
+                ? false
+                : true
+              : false
+          }
+          buttonName="Add new pipeline"
+          buttonLink="/pipelines/create"
+          marginBottom="mb-10"
+        />
+        <PipelinesTable
+          pipelines={pipelines.data ? pipelines.data : []}
+          isLoadingPipeline={pipelines.isLoading}
+          marginBottom={null}
+          enablePlaceholderCreateButton={true}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 

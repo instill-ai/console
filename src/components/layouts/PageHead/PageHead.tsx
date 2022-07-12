@@ -12,9 +12,7 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
   const meta = {
     type: "website",
     siteName: "Instill AI - Visual Data Preparation (VDP)",
-    title: title
-      ? title + " | VDP"
-      : "Instill AI - Visual Data Preparation (VDP)",
+    title: title ? title : "Instill AI - Visual Data Preparation (VDP)",
     pageDescription:
       "Visual Data Preparation (VDP) is an open-source visual data ETL tool to streamline the end-to-end visual data processing pipeline",
   };

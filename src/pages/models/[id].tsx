@@ -39,6 +39,7 @@ import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -241,110 +242,119 @@ const ModelDetailsPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title={id ? id.toString() : ""}
-        breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
-        enableButton={false}
-        marginBottom="mb-5"
+    <>
+      <PageHead
+        title={
+          selectedModelInstances
+            ? "Model Instance | " + selectedModelInstances.id
+            : ""
+        }
       />
-      <ModelDefinitionLabel
-        modelDefinition={model.data ? model.data.model_definition : null}
-        marginBottom="mb-5"
-        position="mr-auto"
-      />
-      <ConfigureModelForm
-        model={model.isSuccess ? model.data : null}
-        marginBottom="mb-[60px]"
-      />
-      <HorizontalDivider
-        borderColor="border-instillGrey30"
-        marginBottom="mb-10"
-      />
-      <div className="mb-5 flex flex-row gap-x-2.5">
-        <h2 className="my-auto text-black text-instill-h2 ">{`${
-          model.isSuccess ? model.data.id : ""
-        }`}</h2>
-        <BasicSingleSelect
-          id="modelInstanceTag"
-          instanceId="modelInstanceTag"
-          menuPlacement="auto"
-          label={null}
-          additionalMessageOnLabel={null}
-          description=""
-          disabled={false}
-          readOnly={false}
-          required={false}
-          error={null}
-          value={selectedModelInstanceOption}
-          options={modelInstanceOptions}
-          onChangeInput={modelInstanceOnChangeCb}
+      <PageContentContainer>
+        <PageTitle
+          title={id ? id.toString() : ""}
+          breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
+          enableButton={false}
+          marginBottom="mb-5"
         />
-      </div>
-      <div className="mb-10 flex flex-row gap-x-2.5">
-        <ModelInstanceTaskLabel
-          task={selectedModelInstances ? selectedModelInstances.task : null}
-          marginBottom={null}
-          position={null}
+        <ModelDefinitionLabel
+          modelDefinition={model.data ? model.data.model_definition : null}
+          marginBottom="mb-5"
+          position="mr-auto"
         />
-        <StateLabel
-          enableBgColor={true}
-          enableIcon={true}
-          state={selectedModelInstances ? selectedModelInstances.state : null}
-          paddingX="px-[5px]"
-          paddingY="py-[5px]"
-          iconHeight="h-3"
-          iconWidth="w-3"
-          iconPosition="my-auto"
+        <ConfigureModelForm
+          model={model.isSuccess ? model.data : null}
+          marginBottom="mb-[60px]"
         />
-      </div>
-      <div className="mb-10">
-        <StatefulToggleField
-          id="pipelineStateToggleButton"
-          value={modelInstanceBoolState}
-          disabled={false}
-          readOnly={false}
-          required={false}
-          description={""}
-          onChangeInput={handleToggleModelInstanceState}
-          label="State"
-          additionalMessageOnLabel={null}
-          error={
-            hasErrorWhenChangingModelInstanceState
-              ? "There is an error. Please try again."
-              : null
-          }
-          state={
-            isChangingModelInstanceState
-              ? "STATE_LOADING"
-              : selectedModelInstances?.state || "STATE_UNSPECIFIED"
-          }
+        <HorizontalDivider
+          borderColor="border-instillGrey30"
+          marginBottom="mb-10"
         />
-      </div>
-      <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
-      <PipelinesTable
-        pipelines={selectedModelInstancePipelines}
-        isLoadingPipeline={pipelines.isLoading}
-        marginBottom="mb-10"
-        enablePlaceholderCreateButton={false}
-      />
-      <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
-      {modelInstances.isLoading ? null : selectedModelInstances ? (
-        <>
-          <ModelInstanceReadmeCard
-            isLoading={modelInstanceReadme.isLoading}
-            markdown={
-              modelInstanceReadme.isSuccess ? modelInstanceReadme.data : null
+        <div className="mb-5 flex flex-row gap-x-2.5">
+          <h2 className="my-auto text-black text-instill-h2 ">{`${
+            model.isSuccess ? model.data.id : ""
+          }`}</h2>
+          <BasicSingleSelect
+            id="modelInstanceTag"
+            instanceId="modelInstanceTag"
+            menuPlacement="auto"
+            label={null}
+            additionalMessageOnLabel={null}
+            description=""
+            disabled={false}
+            readOnly={false}
+            required={false}
+            error={null}
+            value={selectedModelInstanceOption}
+            options={modelInstanceOptions}
+            onChangeInput={modelInstanceOnChangeCb}
+          />
+        </div>
+        <div className="mb-10 flex flex-row gap-x-2.5">
+          <ModelInstanceTaskLabel
+            task={selectedModelInstances ? selectedModelInstances.task : null}
+            marginBottom={null}
+            position={null}
+          />
+          <StateLabel
+            enableBgColor={true}
+            enableIcon={true}
+            state={selectedModelInstances ? selectedModelInstances.state : null}
+            paddingX="px-[5px]"
+            paddingY="py-[5px]"
+            iconHeight="h-3"
+            iconWidth="w-3"
+            iconPosition="my-auto"
+          />
+        </div>
+        <div className="mb-10">
+          <StatefulToggleField
+            id="pipelineStateToggleButton"
+            value={modelInstanceBoolState}
+            disabled={false}
+            readOnly={false}
+            required={false}
+            description={""}
+            onChangeInput={handleToggleModelInstanceState}
+            label="State"
+            additionalMessageOnLabel={null}
+            error={
+              hasErrorWhenChangingModelInstanceState
+                ? "There is an error. Please try again."
+                : null
             }
-            marginBottom="mb-5"
+            state={
+              isChangingModelInstanceState
+                ? "STATE_LOADING"
+                : selectedModelInstances?.state || "STATE_UNSPECIFIED"
+            }
           />
-          <ConfigureModelInstanceForm
-            modelInstance={selectedModelInstances}
-            marginBottom="mb-10"
-          />
-        </>
-      ) : null}
-    </PageContentContainer>
+        </div>
+        <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
+        <PipelinesTable
+          pipelines={selectedModelInstancePipelines}
+          isLoadingPipeline={pipelines.isLoading}
+          marginBottom="mb-10"
+          enablePlaceholderCreateButton={false}
+        />
+        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        {modelInstances.isLoading ? null : selectedModelInstances ? (
+          <>
+            <ModelInstanceReadmeCard
+              isLoading={modelInstanceReadme.isLoading}
+              markdown={
+                modelInstanceReadme.isSuccess ? modelInstanceReadme.data : null
+              }
+              marginBottom="mb-5"
+            />
+            <ConfigureModelInstanceForm
+              modelInstance={selectedModelInstances}
+              marginBottom="mb-10"
+            />
+          </>
+        ) : null}
+      </PageContentContainer>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadin
 import { useDestinationsWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -41,28 +42,31 @@ const DestinationPage: FC & {
   );
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Data Destination"
-        breadcrumbs={["Data destination"]}
-        enableButton={
-          destinations.data
-            ? destinations.data.length === 0
-              ? false
-              : true
-            : false
-        }
-        buttonName="Add new destination"
-        buttonLink="/destinations/create"
-        marginBottom="mb-10"
-      />
-      <DestinationsTable
-        destinations={destinations.data ? destinations.data : []}
-        isLoading={isLoading}
-        enablePlaceholderCreateButton={true}
-        marginBottom={null}
-      />
-    </PageContentContainer>
+    <>
+      <PageHead title="Destinations" />
+      <PageContentContainer>
+        <PageTitle
+          title="Data Destination"
+          breadcrumbs={["Data destination"]}
+          enableButton={
+            destinations.data
+              ? destinations.data.length === 0
+                ? false
+                : true
+              : false
+          }
+          buttonName="Add new destination"
+          buttonLink="/destinations/create"
+          marginBottom="mb-10"
+        />
+        <DestinationsTable
+          destinations={destinations.data ? destinations.data : []}
+          isLoading={isLoading}
+          enablePlaceholderCreateButton={true}
+          marginBottom={null}
+        />
+      </PageContentContainer>
+    </>
   );
 };
 
