@@ -23,6 +23,8 @@ echo "CONSOLE_DOMAIN=$CONSOLE_DOMAIN"
 test -n "$CONSOLE_DOMAIN"
 echo "API_VERSION=$API_VERSION"
 test -n "$API_VERSION"
+echo "CONSOLE_EDITION=$CONSOLE_EDITION"
+test -n "$CONSOLE_EDITION"
 
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_DISABLE_USAGE_COLLECTION#$DISABLE_USAGE_COLLECTION#g"
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_MGMT_BACKEND_BASE_URL#$MGMT_BACKEND_BASE_URL#g"
@@ -31,6 +33,7 @@ find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 se
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_MODEL_BACKEND_BASE_URL#$MODEL_BACKEND_BASE_URL#g"
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_API_VERSION#$API_VERSION#g"
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONSOLE_DOMAIN#$CONSOLE_DOMAIN#g"
+find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONSOLE_EDITION#$CONSOLE_EDITION#g"
 
 echo "Starting Nextjs"
 exec "$@"
