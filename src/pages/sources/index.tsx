@@ -43,7 +43,7 @@ const SourcePage: FC & {
 
   return (
     <>
-      <PageHead title="Sources" />
+      <PageHead title="source-connectors" />
       <PageContentContainer>
         <PageTitle
           title="Data Sources"

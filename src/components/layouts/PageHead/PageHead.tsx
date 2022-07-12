@@ -25,7 +25,7 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
   return (
     <>
       <Head>
-        <title>{meta.title}</title>
+        <title>{"VDP | " + meta.title}</title>
         {meta.pageDescription && (
           <meta content={meta.pageDescription} name="description" />
         )}

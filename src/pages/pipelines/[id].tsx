@@ -65,11 +65,7 @@ const PipelineDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={
-          pipeline.isLoading
-            ? ""
-            : (("Pipeline | " + pipeline.data?.id) as string)
-        }
+        title={pipeline.isLoading ? "" : (pipeline.data?.name as string)}
       />
       <PageContentContainer>
         <PageTitle

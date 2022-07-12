@@ -241,15 +241,17 @@ const ModelDetailsPage: FC & {
     amplitudeIsInit
   );
 
+  const pageTitle = useMemo(() => {
+    if (!selectedModelInstances) return null;
+
+    const nameList = selectedModelInstances.name.split("/");
+
+    return `${nameList[1]}/${nameList[3]}`;
+  }, [selectedModelInstances]);
+
   return (
     <>
-      <PageHead
-        title={
-          selectedModelInstances
-            ? "Model Instance | " + selectedModelInstances.id
-            : ""
-        }
-      />
+      <PageHead title={pageTitle ? pageTitle : ""} />
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}

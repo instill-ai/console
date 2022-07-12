@@ -70,11 +70,7 @@ const SourceDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={
-          isLoading
-            ? ""
-            : (("Source | " + sourceWithPipelines.data?.id) as string)
-        }
+        title={isLoading ? "" : (sourceWithPipelines.data?.name as string)}
       />
       <PageContentContainer>
         <PageTitle

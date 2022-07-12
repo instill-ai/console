@@ -33,7 +33,7 @@ const CreateSourcePage: FC & {
 
   return (
     <>
-      <PageHead title="Create Source" />
+      <PageHead title="Create source-connector" />
       <PageContentContainer>
         <PageTitle
           title="Set Up New Source"

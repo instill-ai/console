@@ -33,7 +33,7 @@ const CreateDestinationPage: FC & {
 
   return (
     <>
-      <PageHead title="Create Destination" />
+      <PageHead title="Create destination-connector" />
       <PageContentContainer>
         <PageTitle
           title="Set Up New Destination"

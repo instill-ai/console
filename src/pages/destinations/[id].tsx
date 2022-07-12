@@ -70,9 +70,7 @@ const DestinationDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={
-          isLoading ? "" : "Destination | " + destinationWithPipelines.data?.id
-        }
+        title={isLoading ? "" : (destinationWithPipelines.data?.name as string)}
       />
       <PageContentContainer>
         <PageTitle

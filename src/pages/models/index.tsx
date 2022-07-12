@@ -43,7 +43,7 @@ const ModelPage: FC & {
 
   return (
     <>
-      <PageHead title="Models" />
+      <PageHead title="models" />
       <PageContentContainer>
         <PageTitle
           title="Model"

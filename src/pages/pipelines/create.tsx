@@ -65,7 +65,7 @@ const CreatePipelinePage: FC & {
 
   return (
     <>
-      <PageHead title="Create Pipeline" />
+      <PageHead title="Create pipeline" />
       <PageContentContainer>
         <PageTitle
           title={currentPage ? currentPage.title : ""}

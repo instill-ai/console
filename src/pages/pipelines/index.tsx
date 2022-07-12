@@ -37,7 +37,7 @@ const PipelinePage: FC & {
 
   return (
     <>
-      <PageHead title="Pipelines" />
+      <PageHead title="pipelines" />
       <PageContentContainer>
         <PageTitle
           title="Pipeline"

@@ -43,7 +43,7 @@ const DestinationPage: FC & {
 
   return (
     <>
-      <PageHead title="Destinations" />
+      <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
           title="Data Destination"

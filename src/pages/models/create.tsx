@@ -33,7 +33,7 @@ const CreateModelPage: FC & {
 
   return (
     <>
-      <PageHead title="Create Model" />
+      <PageHead title="Create model" />
       <PageContentContainer>
         <PageTitle
           title="Set Up New Model"
