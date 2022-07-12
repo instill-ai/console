@@ -24,7 +24,7 @@ const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
   return (
     <>
       <Head>
-        <title>{meta.pageTitle}</title>
+        <title>{meta.pageTitle + " | VDP"}</title>
         {meta.pageDescription && (
           <meta content={meta.pageDescription} name="description" />
         )}
@@ -33,10 +33,10 @@ const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
         <meta property="og:type" content={meta.type} />
         <meta property="og:site_name" content={meta.siteName} />
         <meta property="og:description" content={meta.pageDescription} />
-        <meta property="og:title" content={meta.pageTitle} />
+        <meta property="og:title" content={meta.pageTitle + " | VDP"} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={meta.siteName} />
-        <meta name="twitter:title" content={meta.pageTitle} />
+        <meta name="twitter:title" content={meta.pageTitle + " | VDP"} />
         <meta name="twitter:description" content={meta.pageDescription} />
       </Head>
     </>
