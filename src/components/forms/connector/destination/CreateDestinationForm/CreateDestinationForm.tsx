@@ -74,7 +74,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         startIcon: (
           <Image
             className="my-auto"
-            src={`/airbyteIcons/${definition.connector_definition.icon}`}
+            src={`/icons/airbyte/${definition.connector_definition.icon}`}
             width={24}
             height={24}
             layout="fixed"
