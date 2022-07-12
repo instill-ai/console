@@ -14,6 +14,7 @@ import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { DeleteResourceModal } from "@/components/modals";
 import { useRouter } from "next/router";
+import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -262,14 +263,29 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                 </p>
               </div>
               <div className="mb-10 flex flex-row">
-                <PrimaryButton
-                  disabled={deletePipelineModalIsOpen ? true : false}
+                <OutlineButton
+                  disabled={
+                    process.env.CONSOLE_BASE_URL === "https://demo.instill.tech"
+                      ? true
+                      : false
+                  }
+                  onClickHandler={() => setDeletePipelineModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"
-                  onClickHandler={() => setDeletePipelineModalIsOpen(true)}
+                  disabledBgColor="bg-instillGrey15"
+                  bgColor="bg-white"
+                  hoveredBgColor="hover:bg-instillRed"
+                  disabledTextColor="text-instillGrey50"
+                  textColor="text-instillRed"
+                  hoveredTextColor="hover:text-instillGrey05"
+                  width={null}
+                  borderSize="border"
+                  borderColor="border-instillRed"
+                  hoveredBorderColor={null}
+                  disabledBorderColor="border-instillGrey15"
                 >
                   Delete
-                </PrimaryButton>
+                </OutlineButton>
                 <PrimaryButton
                   disabled={false}
                   onClickHandler={() => handleEditButton(values, submitForm)}

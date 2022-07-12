@@ -227,7 +227,11 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               </div>
               <div className="flex flex-row">
                 <OutlineButton
-                  disabled={false}
+                  disabled={
+                    process.env.CONSOLE_BASE_URL === "https://demo.instill.tech"
+                      ? true
+                      : false
+                  }
                   onClickHandler={() => modalState.setModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"
