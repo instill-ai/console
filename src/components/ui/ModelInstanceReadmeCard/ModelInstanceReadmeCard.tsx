@@ -32,7 +32,7 @@ const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
             position="m-auto"
           />
         </div>
-      ) : markdown ? (
+      ) : markdown && markdown !== "" ? (
         <div className="markdown-body">
           <ReactMarkdown remarkPlugins={[remarkFrontmatter]}>
             {markdown}
