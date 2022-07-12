@@ -17,15 +17,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     cookie_token: body.token,
   };
 
-  if (!process.env.NEXT_PUBLIC_CONSOLE_DOMAIN) {
-    return res.status(500).end("Env CONSOLE_DOMAIN is not provided");
+  if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
+    return res.status(500).end("Env CONSOLE_BASE_URL is not provided");
   }
+
+  const hostname = new URL(process.env.NEXT_PUBLIC_CONSOLE_BASE_URL).hostname;
 
   setCookie(
     res,
     JSON.stringify(payload),
     "instill-ai-user",
-    process.env.NEXT_PUBLIC_CONSOLE_DOMAIN,
+    hostname,
     60 * 60 * 24 * 30,
     process.env.NODE_ENV === "production" ? true : false
   );

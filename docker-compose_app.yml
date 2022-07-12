@@ -14,6 +14,6 @@ services:
       - PIPELINE_BACKEND_BASE_URL=http://localhost:8081
       - CONNECTOR_BACKEND_BASE_URL=http://localhost:8082
       - MODEL_BACKEND_BASE_URL=http://localhost:8083
-      - CONSOLE_DOMAIN=localhost
+      - CONSOLE_BASE_URL=http://localhost:3000
       - API_VERSION=v1alpha
       - CONSOLE_EDITION=local:ce-dev
