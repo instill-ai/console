@@ -44,7 +44,7 @@ export type CreateLocalModelConfiguration = {
 
 export type CreateLocalModelPayload = {
   id: string;
-  desctiption: Nullable<string>;
+  description: Nullable<string>;
   model_definition: string;
   configuration: CreateLocalModelConfiguration;
 };
@@ -62,8 +62,8 @@ export const createLocalModelMutation = async (
     formData.append("model_definition", payload.model_definition);
     formData.append("content", payload.configuration.content);
 
-    if (payload.desctiption) {
-      formData.append("description", payload.desctiption);
+    if (payload.description) {
+      formData.append("description", payload.description);
     }
 
     const { data } = await axios.post<CreateLocalModelResponse>(
