@@ -74,7 +74,13 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         startIcon: (
           <Image
             className="my-auto"
-            src={`/airbyteIcons/${definition.connector_definition.icon}`}
+            src={
+              definition.connector_definition.docker_repository.split(
+                "/"
+              )[0] === "airbyte"
+                ? `/icons/airbyte/${definition.connector_definition.icon}`
+                : `/icons/instill/${definition.connector_definition.icon}`
+            }
             width={24}
             height={24}
             layout="fixed"
