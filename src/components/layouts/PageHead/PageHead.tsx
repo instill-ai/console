@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Nullable } from "@/types/general";
@@ -22,6 +22,12 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
       ? `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}${router.asPath}`
       : `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}${router.asPath}` + "/";
 
+  const [hostName, setHostName] = useState<Nullable<string>>(null);
+
+  useEffect(() => {
+    setHostName(new URL(window.location.href).hostname);
+  }, []);
+
   return (
     <>
       <Head>
@@ -39,6 +45,26 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
         <meta name="twitter:site" content={meta.siteName} />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.pageDescription} />
+        {hostName === "demo.instill.tech" ? (
+          <>
+            <script
+              async={true}
+              src={`https://www.googletagmanager.com/gtag/js?id=G-EDRC5TDLDT`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EDRC5TDLDT', {
+              page_path: window.location.pathname,
+            });
+          `,
+              }}
+            />
+          </>
+        ) : null}
       </Head>
     </>
   );
