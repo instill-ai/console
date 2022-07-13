@@ -15,6 +15,7 @@ import { sendAmplitudeData } from "@/lib/amplitude";
 import { DeleteResourceModal } from "@/components/modals";
 import { useRouter } from "next/router";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
+import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -135,6 +136,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   // # Handle delete pipeline                                          #
   // #                                                                 #
   // ###################################################################
+
+  const { disableResourceDeletion } = useDeleteResourceGuard();
 
   const [deletePipelineModalIsOpen, setDeletePipelineModalIsOpen] =
     useState(false);
@@ -264,12 +267,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               </div>
               <div className="mb-10 flex flex-row">
                 <OutlineButton
-                  disabled={
-                    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}` ===
-                    "https://demo.instill.tech"
-                      ? true
-                      : false
-                  }
+                  disabled={disableResourceDeletion}
                   onClickHandler={() => setDeletePipelineModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"

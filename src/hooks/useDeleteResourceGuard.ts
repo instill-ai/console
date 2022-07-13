@@ -1,17 +1,20 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const useDeleteResourceGuard = () => {
-  const disable = useMemo(() => {
+  const [disableResourceDeletion, setDisableResourceDeletion] = useState(false);
+
+  useEffect(() => {
     const hostname = new URL(window.location.href).hostname;
 
     if (hostname === "demo.instill.tech") {
-      return true;
+      setDisableResourceDeletion(true);
+      return;
     }
 
-    return false;
-  }, [window.location.href]);
+    setDisableResourceDeletion(false);
+  }, []);
 
-  return { disable };
+  return { disableResourceDeletion };
 };
 
 export default useDeleteResourceGuard;

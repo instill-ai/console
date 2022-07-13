@@ -18,6 +18,7 @@ import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
 import { ErrorDetails } from "@/lib/instill/types";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
+import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -96,6 +97,8 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
   // # Handle delete destination                                       #
   // #                                                                 #
   // ###################################################################
+
+  const { disableResourceDeletion } = useDeleteResourceGuard();
 
   const [deleteSourceModalIsOpen, setDeleteSourceModalIsOpen] = useState(false);
 
@@ -191,12 +194,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               </div>
               <div className="mb-10 flex flex-row">
                 <OutlineButton
-                  disabled={
-                    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}` ===
-                    "https://demo.instill.tech"
-                      ? true
-                      : false
-                  }
+                  disabled={disableResourceDeletion}
                   onClickHandler={() => setDeleteSourceModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"
