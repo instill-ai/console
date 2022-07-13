@@ -265,7 +265,8 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               <div className="mb-10 flex flex-row">
                 <OutlineButton
                   disabled={
-                    process.env.CONSOLE_BASE_URL === "https://demo.instill.tech"
+                    process.env.NEXT_PUBLIC_CONSOLE_BASE_URL ===
+                    "https://demo.instill.tech"
                       ? true
                       : false
                   }
