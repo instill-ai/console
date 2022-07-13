@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2-alpha](https://github.com/instill-ai/console/compare/v0.5.1-alpha...v0.5.2-alpha) (2022-07-13)
+
+
+### Bug Fixes
+
+* fix env variables issue  ([#157](https://github.com/instill-ai/console/issues/157)) ([58e2bb1](https://github.com/instill-ai/console/commit/58e2bb1789e6cde3d252d8d5dc9afcb2581a0ae7))
+
 ## [0.5.1-alpha](https://github.com/instill-ai/console/compare/v0.5.0-alpha...v0.5.1-alpha) (2022-07-13)
 
 
