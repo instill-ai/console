@@ -1,3 +1,4 @@
+import { Nullable } from "@/types/general";
 import axios from "axios";
 import { PipelineWithRawRecipe } from "./types";
 
@@ -30,7 +31,7 @@ export const createPipelineMutation = async (
 
 export type UpdatePipelinePayload = {
   name: string;
-  description: string;
+  description: Nullable<string>;
 };
 
 export type UpdatePipelineResponse = {
@@ -43,7 +44,10 @@ export const updatePipelineMutation = async (
   try {
     const { data } = await axios.patch<UpdatePipelineResponse>(
       `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
-      payload
+      {
+        ...payload,
+        description: payload.description ?? undefined,
+      }
     );
     return Promise.resolve(data.pipeline);
   } catch (err) {
