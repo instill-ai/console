@@ -49,6 +49,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   additionalOnChangeCb,
   additionalMessageOnLabel,
   error,
+  value,
 }) => {
   return (
     <Field
@@ -63,6 +64,7 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
       label={label}
       additionalMessageOnLabel={additionalMessageOnLabel}
       error={error}
+      value={value}
     />
   );
 };
