@@ -20,7 +20,7 @@ export type UnDeployModelResponse = {
   instance: ModelInstance;
 };
 
-export const udDeployModelInstanceAction = async (
+export const unDeployModelInstanceAction = async (
   modelInstanceName: string
 ) => {
   try {
