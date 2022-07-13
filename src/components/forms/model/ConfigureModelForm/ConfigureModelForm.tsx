@@ -18,6 +18,7 @@ import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 import { DeleteResourceModal } from "@/components/modals";
 import { AxiosError } from "axios";
 import { ErrorDetails } from "@/lib/instill/types";
+import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
@@ -142,6 +143,8 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   // #                                                                 #
   // ###################################################################
 
+  const { disableResourceDeletion } = useDeleteResourceGuard();
+
   const modalState = useDeleteResourceModalState();
 
   const deleteModel = useDeleteModel();
@@ -227,12 +230,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               </div>
               <div className="flex flex-row">
                 <OutlineButton
-                  disabled={
-                    process.env.NEXT_PUBLIC_CONSOLE_BASE_URL ===
-                    "https://demo.instill.tech"
-                      ? true
-                      : false
-                  }
+                  disabled={disableResourceDeletion}
                   onClickHandler={() => modalState.setModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"

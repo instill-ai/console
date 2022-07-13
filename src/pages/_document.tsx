@@ -13,7 +13,7 @@ export const Document: FC = () => {
           property="twitter:image"
           content={`${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/images/instill-open-graph.png`}
         />
-        {process.env.NEXT_PUBLIC_CONSOLE_BASE_URL ===
+        {`${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}` ===
         "https://demo.instill.tech" ? (
           <>
             <script

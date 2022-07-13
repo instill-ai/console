@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback } from "react";
+import { FC, useState, useEffect, useCallback, useMemo } from "react";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
@@ -18,6 +18,7 @@ import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
 import { ErrorDetails } from "@/lib/instill/types";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
+import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureDestinationFormProps = {
   destination: Nullable<DestinationWithDefinition>;
@@ -103,6 +104,8 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
   // # Handle delete source                                            #
   // #                                                                 #
   // ###################################################################
+
+  const { disableResourceDeletion } = useDeleteResourceGuard();
 
   const [deleteDestinationModalIsOpen, setDeleteDestinationModalIsOpen] =
     useState(false);
@@ -199,12 +202,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
               </div>
               <div className="mb-10 flex flex-row">
                 <OutlineButton
-                  disabled={
-                    process.env.NEXT_PUBLIC_CONSOLE_BASE_URL ===
-                    "https://demo.instill.tech"
-                      ? true
-                      : false
-                  }
+                  disabled={disableResourceDeletion}
                   onClickHandler={() => setDeleteDestinationModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"
