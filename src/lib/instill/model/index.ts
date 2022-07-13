@@ -51,7 +51,7 @@ import {
 import type { DeployModelResponse, UnDeployModelResponse } from "./actions";
 import {
   deployModelInstanceAction,
-  udDeployModelInstanceAction,
+  unDeployModelInstanceAction,
 } from "./actions";
 
 export type {
@@ -93,7 +93,7 @@ export {
   updateModelMutation,
   deleteModelMutation,
   deployModelInstanceAction,
-  udDeployModelInstanceAction,
+  unDeployModelInstanceAction,
   createArtivcModelMutation,
   getModelInstanceReadme,
   createHuggingFaceModelMutation,

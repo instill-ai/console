@@ -6,6 +6,8 @@ import usePipelinesHaveTargetDestination from "./usePipelinesHaveTargetDestinati
 import usePipelinesHaveTargetSource from "./usePipelinesHaveTargetSource";
 import useUpdatePipeline from "./useUpdatePipeline";
 import useDeletePipeline from "./useDeletePipeline";
+import useActivatePipeline from "./useActivatePipeline";
+import useDeActivatePipeline from "./useDeActivatePipeline";
 
 export {
   useCreatePipeline,
@@ -16,4 +18,6 @@ export {
   usePipelinesHaveTargetSource,
   useUpdatePipeline,
   useDeletePipeline,
+  useActivatePipeline,
+  useDeActivatePipeline,
 };

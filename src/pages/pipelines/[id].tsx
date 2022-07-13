@@ -2,7 +2,11 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
-import { usePipeline } from "@/services/pipeline";
+import {
+  useActivatePipeline,
+  useDeActivatePipeline,
+  usePipeline,
+} from "@/services/pipeline";
 import {
   PipelineTable,
   StateLabel,
@@ -13,6 +17,8 @@ import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipeline
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
+import ChagneResourceStateSection from "@/components/sections/ChagneResourceStateSection";
+import { Pipeline } from "@/lib/instill";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   const data = await listRepoFileContent(
@@ -46,6 +52,9 @@ const PipelineDetailsPage: FC & {
   const { id } = router.query;
 
   const pipeline = usePipeline(id ? `pipelines/${id.toString()}` : null);
+
+  const deActivatePipeline = useDeActivatePipeline();
+  const activatePipeline = useActivatePipeline();
 
   // ###################################################################
   // #                                                                 #
@@ -99,6 +108,12 @@ const PipelineDetailsPage: FC & {
         <PipelineTable
           pipeline={pipeline.isSuccess ? pipeline.data : null}
           isLoading={false}
+          marginBottom="mb-10"
+        />
+        <ChagneResourceStateSection
+          resource={pipeline.isLoading ? null : (pipeline.data as Pipeline)}
+          switchOn={activatePipeline}
+          switchOff={deActivatePipeline}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Settings</h3>

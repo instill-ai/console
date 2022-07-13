@@ -55,10 +55,6 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   const validateForm = useCallback((values: ConfigurePipelineFormValue) => {
     const errors: Partial<ConfigurePipelineFormValue> = {};
 
-    if (!values.description) {
-      errors.description = "Required";
-    }
-
     return errors;
   }, []);
 
@@ -76,7 +72,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   const handleUpdatePipeline = useCallback(
     (values: ConfigurePipelineFormValue) => {
-      if (!pipeline || !values.description) return;
+      if (!pipeline) return;
 
       if (
         pipeline.description === values.description &&
@@ -96,14 +92,14 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
       updatePipeline.mutate(
         {
           name: pipeline.name,
-          description: values.description,
+          description: values.description ?? null,
         },
         {
           onSuccess: () => {
             setCanEdit(false);
             setMessageBoxState(() => ({
               activate: true,
-              status: "progressing",
+              status: "success",
               description: null,
               message: "Update succeeded",
             }));
@@ -191,25 +187,6 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     setDeletePipelineModalIsOpen(false);
   }, [pipeline, amplitudeIsInit, router, deletePipeline]);
 
-  const determinePipelineState = useCallback(
-    (values: ConfigurePipelineFormValue) => {
-      switch (values.state) {
-        case "STATE_ACTIVE":
-          return true;
-        case "STATE_ERROR":
-          return false;
-        case "STATE_UNSPECIFIED":
-          return false;
-        case "STATE_INACTIVE":
-          return false;
-        default:
-          // If the values.state is null or undefinded
-          return true;
-      }
-    },
-    []
-  );
-
   return (
     <>
       <Formik
@@ -230,20 +207,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               gapY={null}
               padding={null}
             >
-              <div className="mb-10 flex flex-col gap-y-5">
-                <ToggleField
-                  id="pipelineState"
-                  name="state"
-                  label="State"
-                  value={determinePipelineState(values)}
-                  additionalMessageOnLabel={null}
-                  error={errors?.state || null}
-                  additionalOnChangeCb={null}
-                  disabled={true}
-                  readOnly={false}
-                  required={true}
-                  description=""
-                />
+              <div className="mb-10 flex flex-col">
                 <TextArea
                   id="pipelineDescription"
                   name="description"
