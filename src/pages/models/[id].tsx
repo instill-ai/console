@@ -40,6 +40,7 @@ import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
+import ChagneResourceStateSection from "@/components/sections/ChagneResourceStateSection";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -185,21 +186,11 @@ const ModelDetailsPage: FC & {
 
   const [isChangingModelInstanceState, setIsChangingModelInstanceState] =
     useState(false);
-  const [
-    hasErrorWhenChangingModelInstanceState,
-    setHasErrorWhenChangingModelInstanceState,
-  ] = useState(false);
-
-  const modelInstanceBoolState = useMemo(() => {
-    if (selectedModelInstances?.state === "STATE_ONLINE") {
-      return true;
-    }
-
-    return false;
-  }, [selectedModelInstances]);
+  const [changeModelInstanceStateError, setChangeModelInstanceStateError] =
+    useState<Nullable<string>>();
 
   useEffect(() => {
-    setHasErrorWhenChangingModelInstanceState(false);
+    setChangeModelInstanceStateError(null);
   }, [selectedModelInstances]);
 
   const handleToggleModelInstanceState = useCallback(() => {
@@ -211,7 +202,9 @@ const ModelDetailsPage: FC & {
         onSuccess: () => setIsChangingModelInstanceState(false),
         onError: () => {
           setIsChangingModelInstanceState(false);
-          setHasErrorWhenChangingModelInstanceState(true);
+          setChangeModelInstanceStateError(
+            "There is an error. Please try again."
+          );
         },
       });
     } else {
@@ -220,7 +213,9 @@ const ModelDetailsPage: FC & {
         onSuccess: () => setIsChangingModelInstanceState(false),
         onError: () => {
           setIsChangingModelInstanceState(false);
-          setHasErrorWhenChangingModelInstanceState(true);
+          setChangeModelInstanceStateError(
+            "There is an error. Please try again."
+          );
         },
       });
     }
@@ -309,29 +304,12 @@ const ModelDetailsPage: FC & {
             iconPosition="my-auto"
           />
         </div>
-        <div className="mb-10">
-          <StatefulToggleField
-            id="pipelineStateToggleButton"
-            value={modelInstanceBoolState}
-            disabled={false}
-            readOnly={false}
-            required={false}
-            description={""}
-            onChangeInput={handleToggleModelInstanceState}
-            label="State"
-            additionalMessageOnLabel={null}
-            error={
-              hasErrorWhenChangingModelInstanceState
-                ? "There is an error. Please try again."
-                : null
-            }
-            state={
-              isChangingModelInstanceState
-                ? "STATE_LOADING"
-                : selectedModelInstances?.state || "STATE_UNSPECIFIED"
-            }
-          />
-        </div>
+        <ChagneResourceStateSection
+          resource={selectedModelInstances}
+          switchOn={deployModelInstance}
+          switchOff={unDeployModelInstance}
+          marginBottom="mb-10"
+        />
         <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
         <PipelinesTable
           pipelines={selectedModelInstancePipelines}
