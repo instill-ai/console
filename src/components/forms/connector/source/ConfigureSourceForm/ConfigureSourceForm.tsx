@@ -192,7 +192,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
               <div className="mb-10 flex flex-row">
                 <OutlineButton
                   disabled={
-                    process.env.NEXT_PUBLIC_CONSOLE_BASE_URL ===
+                    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}` ===
                     "https://demo.instill.tech"
                       ? true
                       : false
