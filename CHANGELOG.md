@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1-alpha](https://github.com/instill-ai/console/compare/v0.5.0-alpha...v0.5.1-alpha) (2022-07-13)
+
+
+### Bug Fixes
+
+* fix delete resource issue ([#155](https://github.com/instill-ai/console/issues/155)) ([6b79630](https://github.com/instill-ai/console/commit/6b79630c19952c53622098a072eab5b290133325))
+
 ## [0.5.0-alpha](https://github.com/instill-ai/console/compare/v0.4.0-alpha...v0.5.0-alpha) (2022-07-12)
 
 
