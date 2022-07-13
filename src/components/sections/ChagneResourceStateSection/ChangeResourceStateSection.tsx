@@ -4,16 +4,17 @@ import { StatefulToggleField } from "@instill-ai/design-system";
 import { FC, useState, useEffect, useCallback } from "react";
 import { UseMutationResult } from "react-query";
 import cn from "clsx";
+import { AxiosError } from "axios";
 
 export type ChangeResourceStateSectionProps = {
   resource: Nullable<ModelInstance | Pipeline>;
-  deployResource: UseMutationResult<
+  switchOff: UseMutationResult<
     ModelInstance | Pipeline,
     unknown,
     string,
     unknown
   >;
-  unDeployResource: UseMutationResult<
+  switchOn: UseMutationResult<
     ModelInstance | Pipeline,
     unknown,
     string,
@@ -24,8 +25,8 @@ export type ChangeResourceStateSectionProps = {
 
 const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
   resource,
-  deployResource,
-  unDeployResource,
+  switchOn,
+  switchOff,
   marginBottom,
 }) => {
   const [isChanging, setIsChanging] = useState(false);
@@ -44,33 +45,52 @@ const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
       resource.state === "STATE_ONLINE" ||
       resource.state === "STATE_ACTIVE"
     ) {
-      unDeployResource.mutate(resource.name, {
+      switchOff.mutate(resource.name, {
         onSuccess: () => {
           setIsChanging(false);
         },
-        onError: () => {
+        onError: (error) => {
           setIsChanging(false);
-          setError("There is an error. Please try again.");
+          if (error instanceof AxiosError) {
+            setError(
+              error.response?.data.message ??
+                "There is an error. Please try again."
+            );
+          } else {
+            setError("There is an error. Please try again.");
+          }
         },
       });
     } else {
-      deployResource.mutate(resource.name, {
+      switchOn.mutate(resource.name, {
         onSuccess: () => {
           setIsChanging(false);
         },
-        onError: () => {
+        onError: (error) => {
           setIsChanging(false);
-          setError("There is an error. Please try again.");
+          if (error instanceof AxiosError) {
+            setError(
+              error.response?.data.message ??
+                "There is an error. Please try again."
+            );
+          } else {
+            setError("There is an error. Please try again.");
+          }
         },
       });
     }
-  }, [deployResource, unDeployResource]);
+  }, [switchOn, switchOff]);
 
   return (
     <div className={cn(marginBottom)}>
       <StatefulToggleField
         id="pipelineStateToggleButton"
-        value={resource?.state === "STATE_ONLINE" ? true : false}
+        value={
+          resource?.state === "STATE_ONLINE" ||
+          resource?.state === "STATE_ACTIVE"
+            ? true
+            : false
+        }
         disabled={false}
         readOnly={false}
         required={false}
