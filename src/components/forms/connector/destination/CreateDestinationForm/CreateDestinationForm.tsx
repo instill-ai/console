@@ -287,14 +287,8 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           id="id"
           label="ID"
           key="id"
-          additionalMessageOnLabel={null}
           description="Pick a name to help you identify this destination in Instill"
-          disabled={false}
-          readOnly={false}
           required={true}
-          placeholder=""
-          type="text"
-          autoComplete="off"
           value={fieldValues ? (fieldValues.id as string) ?? null : null}
           error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
           onChangeInput={(id, value) => updateFieldValues(id, value)}
