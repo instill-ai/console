@@ -8,6 +8,8 @@ import {
   PipelineIcon,
   ResourceIcon,
   RotatableArrowIcon,
+  DiscordIcon,
+  GitHubIcon,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
@@ -122,72 +124,121 @@ const Sidebar: FC = () => {
 
   const subTabs: Tab[] = useMemo(() => {
     return [
-      // {
-      //   id: "sidebar-setting",
-      //   tabName: "Setting",
-      //   link: "/setting",
-      // },
       {
-        id: "sidebar-resources",
-        type: "button",
-        tabName: "Resources",
-        startIcon: (
-          <ResourceIcon
-            color={cn(
-              resourceTabIsOpen ? "fill-instillBlue50" : "fill-instillGrey30",
-              "group-hover:fill-instillBlue10"
-            )}
-            width={iconWidth}
-            height={iconHeight}
-            position={iconPosition}
-          />
-        ),
-        onClickHandler: () => {
-          setResourceTabIsOpen((prev) => !prev);
-        },
-        getTextColor: () => {
-          return resourceTabIsOpen
-            ? "text-instillBlue50"
-            : "text-instillGrey30";
-        },
-      },
-    ];
-  }, [resourceTabIsOpen]);
-
-  const resourceTabs: Tab[] = useMemo(() => {
-    return [
-      {
-        id: "docs",
+        id: "sidebar-documentation",
         type: "link",
         tabName: "Documentation",
-        link: "https://docs.instill.tech/",
-        endIcon: (
-          <RotatableArrowIcon
-            color="fill-instillGrey30 group-hover:fill-instillBlue10"
+        link: "https://docs.instill.tech",
+        startIcon: (
+          <ResourceIcon
+            color="group-hover:fill-instillBlue10 fill-instillGrey30"
             width={iconWidth}
             height={iconHeight}
             position={iconPosition}
-            rotate="-rotate-45"
           />
         ),
       },
       {
-        id: "discord",
+        id: "sidebar-community",
         type: "link",
-        tabName: "Join our Discord",
+        tabName: "Community",
         link: "https://discord.com/invite/sevxWsqpGh",
-        endIcon: (
-          <RotatableArrowIcon
-            color="fill-instillGrey30 group-hover:fill-instillBlue10"
+        startIcon: (
+          <DiscordIcon
+            color="group-hover:fill-instillBlue10 fill-instillGrey30"
             width={iconWidth}
             height={iconHeight}
             position={iconPosition}
-            rotate="-rotate-45"
+          />
+        ),
+      },
+      {
+        id: "sidebar-github",
+        type: "link",
+        tabName: "GitHub",
+        link: "https://github.com/instill-ai/vdp",
+        startIcon: (
+          <GitHubIcon
+            color="group-hover:fill-instillBlue10 fill-instillGrey30"
+            width={iconWidth}
+            height={iconHeight}
+            position={iconPosition}
           />
         ),
       },
     ];
   }, []);
+
+  // The way we make collasable resource tab
+
+  // const subTabs: Tab[] = useMemo(() => {
+  //   return [
+  //     // {
+  //     //   id: "sidebar-setting",
+  //     //   tabName: "Setting",
+  //     //   link: "/setting",
+  //     // },
+  //     {
+  //       id: "sidebar-resources",
+  //       type: "button",
+  //       tabName: "Resources",
+  //       startIcon: (
+  //         <ResourceIcon
+  //           color={cn(
+  //             resourceTabIsOpen ? "fill-instillBlue50" : "fill-instillGrey30",
+  //             "group-hover:fill-instillBlue10"
+  //           )}
+  //           width={iconWidth}
+  //           height={iconHeight}
+  //           position={iconPosition}
+  //         />
+  //       ),
+  //       onClickHandler: () => {
+  //         setResourceTabIsOpen((prev) => !prev);
+  //       },
+  //       getTextColor: () => {
+  //         return resourceTabIsOpen
+  //           ? "text-instillBlue50"
+  //           : "text-instillGrey30";
+  //       },
+  //     },
+  //   ];
+  // }, [resourceTabIsOpen]);
+
+  // const resourceTabs: Tab[] = useMemo(() => {
+  //   return [
+  //     {
+  //       id: "docs",
+  //       type: "link",
+  //       tabName: "Documentation",
+  //       link: "https://docs.instill.tech/",
+  //       endIcon: (
+  //         <RotatableArrowIcon
+  //           color="fill-instillGrey30 group-hover:fill-instillBlue10"
+  //           width={iconWidth}
+  //           height={iconHeight}
+  //           position={iconPosition}
+  //           rotate="-rotate-45"
+  //         />
+  //       ),
+  //     },
+  //     {
+  //       id: "discord",
+  //       type: "link",
+  //       tabName: "Join our Discord",
+  //       link: "https://discord.com/invite/sevxWsqpGh",
+  //       endIcon: (
+  //         <RotatableArrowIcon
+  //           color="fill-instillGrey30 group-hover:fill-instillBlue10"
+  //           width={iconWidth}
+  //           height={iconHeight}
+  //           position={iconPosition}
+  //           rotate="-rotate-45"
+  //         />
+  //       ),
+  //     },
+  //   ];
+  // }, []);
 
   const handleCollapseSidebar = useCallback(() => {
     setResourceTabIsOpen(false);
@@ -273,7 +324,7 @@ const Sidebar: FC = () => {
           })}
         </div>
       </div>
-      <div className="relative">
+      {/* <div className="relative">
         {resourceTabIsOpen ? (
           <div className="absolute bottom-0 right-0 translate-x-full translate-y-5 bg-instillGrey90 py-5">
             {resourceTabs.map((tab) => {
@@ -304,7 +355,7 @@ const Sidebar: FC = () => {
             })}
           </div>
         ) : null}
-      </div>
+      </div> */}
     </div>
   );
 };
