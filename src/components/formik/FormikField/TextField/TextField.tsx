@@ -5,7 +5,7 @@ import { FC } from "react";
 
 export type TextFieldProps = Omit<BasicTextFieldProps, "onChangeInput"> & {
   name: string;
-  additionalOnChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb?: Nullable<(value: string) => void>;
 };
 
 const TextField: FC<TextFieldProps & FieldProps> = ({
