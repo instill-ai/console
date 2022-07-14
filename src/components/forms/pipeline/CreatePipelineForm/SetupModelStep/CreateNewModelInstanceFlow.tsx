@@ -487,17 +487,11 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         id="modelId"
         name="model.new.id"
         label="ID"
-        additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.model.new.id}
         error={errors.model?.new?.id || null}
-        additionalOnChangeCb={null}
         disabled={modelCreated ? true : false}
-        readOnly={false}
         required={true}
-        placeholder=""
-        type="text"
-        autoComplete="off"
       />
       <SingleSelect
         id="modelDefinition"
@@ -525,17 +519,11 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             id="modelRepo"
             name="model.new.repo"
             label="GitHub repository"
-            additionalMessageOnLabel={null}
             description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
             value={values.model.new.repo}
             error={errors.model?.new?.repo || null}
-            additionalOnChangeCb={null}
             disabled={modelCreated ? true : false}
-            readOnly={false}
             required={true}
-            placeholder=""
-            type="text"
-            autoComplete="off"
           />
         </>
       ) : null}
@@ -579,17 +567,10 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             id="gcsBucketPath"
             name="model.new.gcsBucketPath"
             label="GCS Bucket Path"
-            additionalMessageOnLabel={null}
             description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
             value={values.model.new.gcsBucketPath}
             error={errors.model?.new?.gcsBucketPath || null}
-            additionalOnChangeCb={null}
-            disabled={false}
-            readOnly={false}
             required={true}
-            placeholder=""
-            type="text"
-            autoComplete="off"
           />
           <TextArea
             id="credentials"
@@ -615,17 +596,11 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             id="huggingFaceRepo"
             name="model.new.huggingFaceRepo"
             label="HuggingFace model ID"
-            additionalMessageOnLabel={null}
             description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
             value={values.model.new.huggingFaceRepo}
             error={errors.model?.new?.huggingFaceRepo || null}
-            additionalOnChangeCb={null}
             disabled={modelCreated ? true : false}
-            readOnly={false}
             required={true}
-            placeholder=""
-            type="text"
-            autoComplete="off"
           />
           <TextArea
             id="description"

@@ -60,16 +60,10 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               <BasicTextField
                 id="modelRepo"
                 label="GitHub repository"
-                additionalMessageOnLabel={null}
                 description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
                 value={modelInstance.configuration.repository}
-                error={null}
                 disabled={true}
-                readOnly={false}
                 required={true}
-                placeholder=""
-                type="text"
-                autoComplete="off"
                 onChangeInput={handler}
               />
             </>
@@ -79,31 +73,19 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               <BasicTextField
                 id="tag"
                 label="ArtiVC version"
-                additionalMessageOnLabel={null}
                 description="Tag of the ArtiVC, e.g., `v0.1.0`."
                 value={modelInstance.configuration.tag}
-                error={null}
                 disabled={true}
-                readOnly={false}
                 required={true}
-                placeholder=""
-                type="text"
-                autoComplete="off"
                 onChangeInput={handler}
               />
               <BasicTextField
                 id="url"
                 label="Cloud storage url"
-                additionalMessageOnLabel={null}
                 description="the cloud storage url, e.g. `gs://public-europe-west2-c-artifacts/vdp/public-models/yolov4`."
                 value={modelInstance.configuration.url}
-                error={null}
                 disabled={true}
-                readOnly={false}
                 required={true}
-                placeholder=""
-                type="text"
-                autoComplete="off"
                 onChangeInput={handler}
               />
             </>

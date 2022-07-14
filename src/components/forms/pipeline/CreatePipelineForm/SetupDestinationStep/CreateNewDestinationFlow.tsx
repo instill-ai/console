@@ -128,17 +128,10 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationId"
         name="destination.new.id"
         label="ID"
-        additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.destination.new.id}
         error={errors.destination?.new?.id || null}
-        additionalOnChangeCb={null}
-        disabled={false}
-        readOnly={false}
         required={true}
-        placeholder=""
-        type="text"
-        autoComplete="off"
       />
       <SingleSelect
         id="destinationDefinition"

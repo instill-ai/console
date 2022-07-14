@@ -140,16 +140,8 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
           id="confirmationCode"
           type="text"
           label={`Please type "${resource ? resource.id : ""}" to confirm.`}
-          additionalMessageOnLabel={null}
           onChangeInput={handleCodeChange}
           value={confirmationCode}
-          autoComplete="off"
-          placeholder={""}
-          error={null}
-          disabled={false}
-          readOnly={false}
-          required={false}
-          description=""
         />
         <div className="grid grid-cols-2 gap-x-5">
           <OutlineButton
