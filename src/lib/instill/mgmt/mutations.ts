@@ -6,7 +6,7 @@ export type UpdateUserResponse = {
 };
 
 export const updateLocalUserMutation = async (
-  payload: Partial<User>
+  payload: Partial<User> & { email: string }
 ): Promise<User> => {
   try {
     const { data } = await axios.patch(

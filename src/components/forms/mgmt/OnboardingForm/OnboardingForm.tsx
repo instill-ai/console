@@ -63,24 +63,27 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
   const validateForm = useCallback((values: OnboardingFormValue) => {
     const errors: OnboardingFormError = {};
 
-    if (
-      values.email &&
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "Invalid email address";
+    if (!values.email) {
+      errors.email = "Email is required";
+    } else {
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = "Invalid email address";
+      }
     }
 
     return errors;
   }, []);
 
   const handleSubmit = useCallback(
-    (values) => {
+    (values: OnboardingFormValue) => {
+      if (!values.email) return;
+
       const token = uuidv4();
 
       const payload: Partial<User> = {
         id: "local-user",
         email: values.email,
-        company_name: values.companyName,
+        company_name: values.companyName ?? undefined,
         role: values.role as string,
         newsletter_subscription: values.newsletterSubscription
           ? values.newsletterSubscription
@@ -152,7 +155,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
       {(formik) => {
         return (
           <FormikFormBase marginBottom={null} gapY={null} padding={null}>
-            <div className="flex flex-col gap-y-5">
+            <div className="mb-10 flex flex-col gap-y-5">
               <TextField
                 id="email"
                 name="email"
@@ -160,6 +163,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 description="Fill your email address"
                 value={formik.values.email || ""}
                 error={formik.errors.email || null}
+                required={true}
               />
               <TextField
                 id="companyName"
