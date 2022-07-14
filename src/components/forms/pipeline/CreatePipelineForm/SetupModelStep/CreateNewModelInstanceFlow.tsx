@@ -471,14 +471,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     });
   };
 
-  const modelDefinitionOnChangeCb = useCallback(
-    (option: SingleSelectOption) => {
-      if (option.value !== "github") {
-        setFieldValue("model.new.modelInstance", null);
-      }
-    },
-    [setFieldValue]
-  );
+  const modelDefinitionOnChangeCb = useCallback(() => {
+    setFieldValue("model.new.description", null);
+    setFieldValue("model.new.repo", null);
+    setFieldValue("model.new.file", null);
+    setFieldValue("model.new.gcsBucketPath", null);
+    setFieldValue("model.new.credentials", null);
+    setFieldValue("model.new.huggingFaceRepo", null);
+  }, [setFieldValue]);
 
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
@@ -601,14 +601,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             error={errors.model?.new?.huggingFaceRepo || null}
             disabled={modelCreated ? true : false}
             required={true}
-          />
-          <TextArea
-            id="description"
-            name="model.new.description"
-            label="Description"
-            description="Fill with a short description of your new model"
-            value={values.model.new.description}
-            error={errors.model?.new?.description || null}
           />
         </>
       ) : null}
