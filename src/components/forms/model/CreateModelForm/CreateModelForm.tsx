@@ -47,7 +47,6 @@ export type CreateModelFormValue = {
   gcsBucketPath: Nullable<string>;
   credentials: Nullable<string>;
   huggingFaceRepo: Nullable<string>;
-  huggingFaceUrl: Nullable<string>;
 };
 
 const CreateNewModelFlow: FC = () => {
@@ -477,6 +476,8 @@ const CreateNewModelFlow: FC = () => {
           repo: null,
           description: null,
           gcsBucketPath: null,
+          credentials: null,
+          huggingFaceRepo: null,
         } as CreateModelFormValue
       }
       onSubmit={() => {
