@@ -157,34 +157,18 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 id="email"
                 name="email"
                 label="Your email"
-                additionalMessageOnLabel={null}
-                value={formik.values.email || ""}
-                additionalOnChangeCb={null}
                 description="Fill your email address"
-                disabled={false}
-                readOnly={false}
-                required={false}
-                placeholder=""
-                type="email"
-                autoComplete="on"
+                value={formik.values.email || ""}
                 error={formik.errors.email || null}
               />
               <TextField
                 id="companyName"
                 name="companyName"
                 label="Your company"
-                additionalMessageOnLabel={null}
+                description="Fill your company name"
                 value={
                   formik.values.companyName ? formik.values.companyName : ""
                 }
-                additionalOnChangeCb={null}
-                description="Fill your company name"
-                disabled={false}
-                readOnly={false}
-                required={false}
-                placeholder=""
-                type="text"
-                autoComplete="off"
                 error={formik.errors.companyName || null}
               />
               <SingleSelect

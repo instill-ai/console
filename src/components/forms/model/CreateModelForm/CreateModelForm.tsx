@@ -490,17 +490,11 @@ const CreateNewModelFlow: FC = () => {
               id="modelId"
               name="id"
               label="ID"
-              additionalMessageOnLabel={null}
               description="Pick a name to help you identify this source in Instill"
               value={values.id}
               error={errors.id || null}
-              additionalOnChangeCb={null}
               disabled={modelCreated ? true : false}
-              readOnly={false}
               required={true}
-              placeholder=""
-              type="text"
-              autoComplete="off"
             />
             <SingleSelect
               name="modelDefinition"
@@ -529,17 +523,11 @@ const CreateNewModelFlow: FC = () => {
                   id="modelRepo"
                   name="repo"
                   label="GitHub repository"
-                  additionalMessageOnLabel={null}
                   description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
                   value={values.repo}
                   error={errors.repo || null}
-                  additionalOnChangeCb={null}
                   disabled={modelCreated ? true : false}
-                  readOnly={false}
                   required={true}
-                  placeholder=""
-                  type="text"
-                  autoComplete="off"
                 />
               </>
             ) : null}
@@ -585,17 +573,10 @@ const CreateNewModelFlow: FC = () => {
                   id="gcsBucketPath"
                   name="gcsBucketPath"
                   label="GCS Bucket Path"
-                  additionalMessageOnLabel={null}
                   description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
                   value={values.gcsBucketPath}
                   error={errors.gcsBucketPath || null}
-                  additionalOnChangeCb={null}
-                  disabled={false}
-                  readOnly={false}
                   required={true}
-                  placeholder=""
-                  type="text"
-                  autoComplete="off"
                 />
                 <TextArea
                   id="credentials"
@@ -624,17 +605,11 @@ const CreateNewModelFlow: FC = () => {
                   id="huggingFaceRepo"
                   name="huggingFaceRepo"
                   label="HuggingFace model ID"
-                  additionalMessageOnLabel={null}
                   description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
                   value={values.huggingFaceRepo}
                   error={errors.huggingFaceRepo || null}
-                  additionalOnChangeCb={null}
                   disabled={modelCreated ? true : false}
-                  readOnly={false}
                   required={true}
-                  placeholder=""
-                  type="text"
-                  autoComplete="off"
                 />
               </>
             ) : null}

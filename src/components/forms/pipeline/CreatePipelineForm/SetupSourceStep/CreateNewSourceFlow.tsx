@@ -106,17 +106,10 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         id="sourceId"
         name="source.new.id"
         label="ID"
-        additionalMessageOnLabel={null}
         description="Pick a name to help you identify this source in Instill"
         value={values.source.new.id}
         error={errors.source?.new?.id || null}
-        additionalOnChangeCb={null}
-        disabled={false}
-        readOnly={false}
         required={true}
-        placeholder=""
-        type="text"
-        autoComplete="off"
       />
       <SingleSelect
         id="sourceDefinition"

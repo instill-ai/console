@@ -256,17 +256,10 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineId"
           name="pipeline.id"
           label="ID"
-          additionalMessageOnLabel={null}
           description="Pick a name to help you identify this source in Instill"
           value={values.pipeline.id}
           error={errors.pipeline?.id || null}
-          additionalOnChangeCb={null}
-          disabled={false}
-          readOnly={false}
           required={true}
-          placeholder=""
-          type="text"
-          autoComplete="off"
         />
         <TextArea
           id="pipelineDescription"
