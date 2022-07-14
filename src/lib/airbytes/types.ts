@@ -69,14 +69,21 @@ type AirbyteFormGroupItem = {
   examples?: JSONSchema7Type;
 } & AirbyteFormBaseField;
 
+type AirbyteCondition = Record<string, AirbyteFormGroupItem>;
+
+type AirbyteConditionWithUiField = Record<
+  string,
+  AirbyteFormGroupItem & { uiField: ReactNode }
+>;
+
 type AirbyteFormConditionItem = {
   _type: "formCondition";
-  conditions: Record<string, AirbyteFormGroupItem>;
+  conditions: AirbyteCondition;
 } & AirbyteFormBaseField;
 
 type AirbyteFormConditionItemWithUiFields = {
   _type: "formCondition";
-  conditions: Record<string, AirbyteFormGroupItem & { uiFields: ReactNode }>;
+  conditions: AirbyteConditionWithUiField;
 } & AirbyteFormBaseField;
 
 type AirbyteFormObjectArrayItem = {
@@ -108,6 +115,8 @@ export type {
   AirbyteJsonSchema,
   AirbyteFieldValues,
   AirbyteFieldErrors,
+  AirbyteCondition,
+  AirbyteConditionWithUiField,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
