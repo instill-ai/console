@@ -112,7 +112,15 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
         }
       }
     }
-  }, [conditionOptions, selectedConditionMap]);
+  }, [
+    conditionOptions,
+    selectedConditionMap,
+    conditionPath,
+    formTree.conditions,
+    formTree.path,
+    setSelectedConditionMap,
+    setValues,
+  ]);
 
   const onConditionChange = useCallback(
     (_: string, option: Nullable<SingleSelectOption>) => {
@@ -190,7 +198,13 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
         },
       }));
     },
-    [formTree.path, setSelectedConditionMap, setValues]
+    [
+      formTree.path,
+      setSelectedConditionMap,
+      setValues,
+      conditionPath,
+      formTree.conditions,
+    ]
   );
 
   return (

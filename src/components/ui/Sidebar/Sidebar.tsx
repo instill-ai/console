@@ -7,7 +7,6 @@ import {
   ModelIcon,
   PipelineIcon,
   ResourceIcon,
-  RotatableArrowIcon,
   DiscordIcon,
   GitHubIcon,
 } from "@instill-ai/design-system";
@@ -44,11 +43,10 @@ const iconPosition = "my-auto";
 const Sidebar: FC = () => {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [resourceTabIsOpen, setResourceTabIsOpen] = useState(false);
+  // const [resourceTabIsOpen, setResourceTabIsOpen] = useState(false);
 
   const currentTab = useMemo(() => {
-    setResourceTabIsOpen(false);
-    return router.asPath;
+    return "/" + router.asPath.split("/")[1];
   }, [router.asPath]);
 
   const getIconColor = useCallback(
@@ -241,7 +239,7 @@ const Sidebar: FC = () => {
   // }, []);
 
   const handleCollapseSidebar = useCallback(() => {
-    setResourceTabIsOpen(false);
+    //setResourceTabIsOpen(false);
     setIsCollapsed((prev) => !prev);
   }, []);
 

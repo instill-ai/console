@@ -79,7 +79,7 @@ const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
         },
       });
     }
-  }, [switchOn, switchOff]);
+  }, [switchOn, switchOff, resource]);
 
   return (
     <div className={cn(marginBottom)}>

@@ -5,7 +5,7 @@ import {
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
 
-import { FormikFormBase, TextArea, ToggleField } from "@/components/formik";
+import { FormikFormBase, TextArea } from "@/components/formik";
 import { PrimaryButton } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
