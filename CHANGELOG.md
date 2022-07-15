@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.0-alpha](https://github.com/instill-ai/console/compare/v0.5.2-alpha...v0.6.0-alpha) (2022-07-15)
+
+
+### Features
+
+* make email field required at onboarding form ([#169](https://github.com/instill-ai/console/issues/169)) ([1411de7](https://github.com/instill-ai/console/commit/1411de7347ace7b42b5bb0827695779d29a1a214))
+* move ga code to PageHead ([#160](https://github.com/instill-ai/console/issues/160)) ([3c49122](https://github.com/instill-ai/console/commit/3c49122e8d51b0ecab11e3d73ab502470c96180a))
+* update sidebar design ([#167](https://github.com/instill-ai/console/issues/167)) ([d8899f5](https://github.com/instill-ai/console/commit/d8899f509eed1255fe8ff1ba2cbf7360e6665875))
+* update TextField props and remove props that have default ([#164](https://github.com/instill-ai/console/issues/164)) ([7d2a8b6](https://github.com/instill-ai/console/commit/7d2a8b6cca8edde6ed270cff175ef7b267fb351b))
+
+
+### Bug Fixes
+
+* fix action issue ([#172](https://github.com/instill-ai/console/issues/172)) ([c02e4ad](https://github.com/instill-ai/console/commit/c02e4ad6b272d822d9f6a5a02b19f261a3c36fcd))
+* fix Airbyte nested form validation issue ([#171](https://github.com/instill-ai/console/issues/171)) ([1101acc](https://github.com/instill-ai/console/commit/1101accb680d07a210eaa283cdf35dc0e6ec5e64))
+* fix description field is duplicated when create pipeline ([#165](https://github.com/instill-ai/console/issues/165)) ([7ef7b1a](https://github.com/instill-ai/console/commit/7ef7b1a023d36983488c8a963bd47493342bb700))
+
 ## [0.5.2-alpha](https://github.com/instill-ai/console/compare/v0.5.1-alpha...v0.5.2-alpha) (2022-07-13)
 
 
