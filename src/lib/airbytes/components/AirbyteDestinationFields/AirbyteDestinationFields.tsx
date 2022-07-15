@@ -14,6 +14,7 @@ export type AirbyteDestinationFieldsProps = {
   setFieldValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
   fieldErrors: Nullable<AirbyteFieldErrors>;
   selectedDestinationDefinition: Nullable<ConnectorDefinition>;
+  selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
 
@@ -22,6 +23,7 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   setFieldValues,
   fieldErrors,
   selectedDestinationDefinition,
+  selectedConditionMap,
   setSelectedConditionMap,
 }) => {
   const selectedDestinationFormTree = useMemo(() => {
@@ -43,6 +45,7 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
     fieldValues,
     setFieldValues,
     fieldErrors,
+    selectedConditionMap,
     setSelectedConditionMap
   );
 

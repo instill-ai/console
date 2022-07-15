@@ -336,6 +336,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           fieldValues={fieldValues}
           setFieldValues={setFieldValues}
           fieldErrors={fieldErrors}
+          selectedConditionMap={selectedConditionMap}
           setSelectedConditionMap={setSelectedConditionMap}
         />
       </div>

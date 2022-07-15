@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import {
   BasicSingleSelect,
   SingleSelectOption,
-  StatefulToggleField,
 } from "@instill-ai/design-system";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
@@ -183,43 +182,6 @@ const ModelDetailsPage: FC & {
 
   const deployModelInstance = useDeployModelInstance();
   const unDeployModelInstance = useUnDeployModelInstance();
-
-  const [isChangingModelInstanceState, setIsChangingModelInstanceState] =
-    useState(false);
-  const [changeModelInstanceStateError, setChangeModelInstanceStateError] =
-    useState<Nullable<string>>();
-
-  useEffect(() => {
-    setChangeModelInstanceStateError(null);
-  }, [selectedModelInstances]);
-
-  const handleToggleModelInstanceState = useCallback(() => {
-    if (!selectedModelInstances) return;
-
-    if (selectedModelInstances.state === "STATE_ONLINE") {
-      setIsChangingModelInstanceState(true);
-      unDeployModelInstance.mutate(selectedModelInstances.name, {
-        onSuccess: () => setIsChangingModelInstanceState(false),
-        onError: () => {
-          setIsChangingModelInstanceState(false);
-          setChangeModelInstanceStateError(
-            "There is an error. Please try again."
-          );
-        },
-      });
-    } else {
-      setIsChangingModelInstanceState(true);
-      deployModelInstance.mutate(selectedModelInstances.name, {
-        onSuccess: () => setIsChangingModelInstanceState(false),
-        onError: () => {
-          setIsChangingModelInstanceState(false);
-          setChangeModelInstanceStateError(
-            "There is an error. Please try again."
-          );
-        },
-      });
-    }
-  }, [selectedModelInstances, deployModelInstance, unDeployModelInstance]);
 
   // ###################################################################
   // #                                                                 #
