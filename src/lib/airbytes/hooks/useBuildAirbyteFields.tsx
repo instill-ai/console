@@ -108,7 +108,6 @@ export const pickComponent = (
       <OneOfConditionSection
         key={formTree.path}
         formTree={{ ...formTree, conditions: conditionsWithUiFields }}
-        values={values}
         setValues={setValues}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
