@@ -140,7 +140,7 @@ const ModelDetailsPage: FC & {
 
     for (const modelInstance of modelInstances.data) {
       const targetPipelines = pipelines.data.filter((e) => {
-        if (e.recipe.models.find((e) => e.id === modelInstance.id)) {
+        if (e.recipe.models.find((e) => e.name === modelInstance.name)) {
           return true;
         } else {
           false;
