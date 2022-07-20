@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1-alpha](https://github.com/instill-ai/console/compare/v0.6.0-alpha...v0.6.1-alpha) (2022-07-20)
+
+
+### Bug Fixes
+
+* fix get pipeline bug on model page ([#174](https://github.com/instill-ai/console/issues/174)) ([5e8116d](https://github.com/instill-ai/console/commit/5e8116d98f4a80fa9f22cfa87c9238616700aa3f))
+
 ## [0.6.0-alpha](https://github.com/instill-ai/console/compare/v0.5.2-alpha...v0.6.0-alpha) (2022-07-15)
 
 
