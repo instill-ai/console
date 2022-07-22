@@ -1,8 +1,9 @@
 export type ErrorDetails = {
   "@type": string;
-  violations: {
+  violations?: {
     type: string;
     description: string;
     subject: string;
   }[];
+  description?: string;
 };
