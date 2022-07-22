@@ -16,7 +16,7 @@ import { useDeleteDestination } from "@/services/connector";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
-import { ErrorDetails } from "@/lib/instill/types";
+import { ErrorDetails, Violation } from "@/lib/instill/types";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
@@ -151,8 +151,10 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
           setMessageBoxState(() => ({
             activate: true,
             message: `${error.response?.status} - ${error.response?.data.message}`,
-            description: (error.response?.data.details as ErrorDetails[])[0]
-              .violations[0].description,
+            description: (
+              (error.response?.data.details as ErrorDetails[])[0]
+                .violations as Violation[]
+            )[0].description,
             status: "error",
           }));
         } else {
