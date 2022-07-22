@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2-alpha](https://github.com/instill-ai/console/compare/v0.6.1-alpha...v0.6.2-alpha) (2022-07-22)
+
+
+### Bug Fixes
+
+* fix ArtiVC model creation issue ([#178](https://github.com/instill-ai/console/issues/178)) ([d8ef4e0](https://github.com/instill-ai/console/commit/d8ef4e0a7d60e936ed75c9c7bd64feb6fe48be05))
+
 ## [0.6.1-alpha](https://github.com/instill-ai/console/compare/v0.6.0-alpha...v0.6.1-alpha) (2022-07-20)
 
 
