@@ -78,7 +78,7 @@ const Sidebar: FC = () => {
       {
         id: "sidebar-data-source",
         type: "link",
-        tabName: "Data source",
+        tabName: "Source",
         link: "/sources",
         startIcon: (
           <DataSourceIcon
@@ -106,7 +106,7 @@ const Sidebar: FC = () => {
       {
         id: "sidebar-data-destination",
         type: "link",
-        tabName: "Data destination",
+        tabName: "Destination",
         link: "/destinations",
         startIcon: (
           <DataDestinationIcon

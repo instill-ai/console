@@ -110,7 +110,7 @@ export const createArtivcModelMutation = async (
         configuration: {
           url: payload.configuration.url,
           credential: payload.configuration.credential
-            ? payload.configuration.credential
+            ? JSON.parse(payload.configuration.credential)
             : undefined,
         },
       }
