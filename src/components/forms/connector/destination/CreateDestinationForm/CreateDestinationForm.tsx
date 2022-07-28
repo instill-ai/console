@@ -36,6 +36,8 @@ import {
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
+import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateDestinationFormProps = {
   setResult: Nullable<(destinationId: string) => void>;
@@ -106,12 +108,6 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     if (!destinationDefinitions.isSuccess || !fieldValues?.definition) {
       return null;
     }
-
-    console.log(
-      destinationDefinitions.data.find(
-        (e) => e.name === fieldValues.definition
-      ) ?? null
-    );
 
     return (
       destinationDefinitions.data.find(
@@ -294,8 +290,6 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
       };
     }
 
-    console.log(payload);
-
     setMessageBoxState(() => ({
       activate: true,
       status: "progressing",
@@ -327,11 +321,13 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         router.push("/destinations");
       },
       onError: (error) => {
-        if (error instanceof Error) {
+        if (error instanceof AxiosError) {
           setMessageBoxState(() => ({
             activate: true,
             status: "error",
-            description: null,
+            description:
+              (error.response?.data.details as ErrorDetails[])[0].description ??
+              null,
             message: error.message,
           }));
         } else {
