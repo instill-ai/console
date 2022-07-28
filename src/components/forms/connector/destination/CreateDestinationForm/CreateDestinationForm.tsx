@@ -36,6 +36,8 @@ import {
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { AxiosError } from "axios";
+import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateDestinationFormProps = {
   setResult: Nullable<(destinationId: string) => void>;
@@ -118,6 +120,44 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     fieldValues?.definition,
   ]);
 
+  // Instill Ai provided connector HTTP and gRPC can only have default id destination-http and destination-grpc
+  // We need to make sure user have proper instruction on this issue.
+
+  const canSetIdField = useMemo(() => {
+    if (!selectedDestinationDefinition) return true;
+
+    if (
+      selectedDestinationDefinition.connector_definition.docker_repository ===
+        "instill-ai/destination-grpc" ||
+      selectedDestinationDefinition.connector_definition.docker_repository ===
+        "instill-ai/destination-http"
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [selectedDestinationDefinition]);
+
+  const defaultId = useMemo(() => {
+    if (!selectedDestinationDefinition) return null;
+
+    if (
+      selectedDestinationDefinition.connector_definition.docker_repository ===
+      "instill-ai/destination-grpc"
+    ) {
+      return "destination-grpc";
+    }
+
+    if (
+      selectedDestinationDefinition.connector_definition.docker_repository ===
+      "instill-ai/destination-http"
+    ) {
+      return "destination-http";
+    }
+
+    return null;
+  }, [selectedDestinationDefinition]);
+
   // ###################################################################
   // #                                                                 #
   // # 2 - handle state when create destination                        #
@@ -164,7 +204,9 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     if (!airbyteYup) return null;
 
     return yup.object({
-      id: yup.string().required(),
+      id: canSetIdField
+        ? yup.string().required()
+        : yup.string().nullable().notRequired(),
       configuration: airbyteYup,
     });
   }, [airbyteYup]);
@@ -202,16 +244,51 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
 
     setFieldErrors(null);
 
-    const payload: CreateDestinationPayload = {
-      id: fieldValues.id as string,
-      destination_connector_definition: `destination-connector-definitions/${
-        fieldValues.definition as string
-      }`,
-      connector: {
-        description: fieldValues.description as string,
-        configuration: fieldValues.configuration as AirbyteFieldValues,
-      },
-    };
+    let payload = {} as CreateDestinationPayload;
+
+    if (
+      selectedDestinationDefinition?.connector_definition.docker_repository ===
+      "instill-ai/destination-grpc"
+    ) {
+      payload = {
+        id: "destination-grpc",
+        destination_connector_definition: `destination-connector-definitions/${
+          fieldValues.definition as string
+        }`,
+        connector: {
+          description: fieldValues.description as string,
+          configuration:
+            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+        },
+      };
+    } else if (
+      selectedDestinationDefinition?.connector_definition.docker_repository ===
+      "instill-ai/destination-http"
+    ) {
+      payload = {
+        id: "destination-http",
+        destination_connector_definition: `destination-connector-definitions/${
+          fieldValues.definition as string
+        }`,
+        connector: {
+          description: fieldValues.description as string,
+          configuration:
+            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+        },
+      };
+    } else {
+      payload = {
+        id: fieldValues.id as string,
+        destination_connector_definition: `destination-connector-definitions/${
+          fieldValues.definition as string
+        }`,
+        connector: {
+          description: fieldValues.description as string,
+          configuration:
+            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+        },
+      };
+    }
 
     setMessageBoxState(() => ({
       activate: true,
@@ -244,11 +321,13 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
         router.push("/destinations");
       },
       onError: (error) => {
-        if (error instanceof Error) {
+        if (error instanceof AxiosError) {
           setMessageBoxState(() => ({
             activate: true,
             status: "error",
-            description: null,
+            description:
+              (error.response?.data.details as ErrorDetails[])[0].description ??
+              null,
             message: error.message,
           }));
         } else {
@@ -269,6 +348,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     fieldValues,
     setResult,
     setStepNumber,
+    selectedDestinationDefinition,
   ]);
 
   const updateFieldValues = useCallback((field: string, value: string) => {
@@ -289,16 +369,29 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           key="id"
           description="Pick a name to help you identify this destination in Instill"
           required={true}
-          value={fieldValues ? (fieldValues.id as string) ?? null : null}
+          disabled={canSetIdField ? false : true}
+          additionalMessageOnLabel={
+            canSetIdField
+              ? null
+              : `${selectedDestinationOption?.label} destination's id can only be ${defaultId}`
+          }
+          value={
+            canSetIdField
+              ? fieldValues
+                ? (fieldValues.id as string) ?? null
+                : null
+              : defaultId
+          }
           error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
           onChangeInput={(id, value) => updateFieldValues(id, value)}
         />
+
         <BasicTextArea
           id="description"
           label="Description"
           key="description"
           description="Fill with a short description of your data destination"
-          required={true}
+          required={false}
           error={
             fieldErrors ? (fieldErrors.description as string) ?? null : null
           }
