@@ -189,12 +189,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 id="newsletterSubscription"
                 name="newsletterSubscription"
                 label="Newsletter subscription"
-                value={
-                  formik.values.newsletterSubscription ??
-                  user?.newsletter_subscription
-                    ? user?.newsletter_subscription ?? false
-                    : false
-                }
+                value={formik.values.newsletterSubscription ?? false}
                 additionalMessageOnLabel={null}
                 disabled={false}
                 readOnly={false}
