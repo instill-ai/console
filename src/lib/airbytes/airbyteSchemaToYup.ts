@@ -57,7 +57,6 @@ const airbyteSchemaToYup = (
             )
           );
       }
-      //console.log("array", schema);
       break;
     }
     case "object": {
@@ -84,7 +83,6 @@ const airbyteSchemaToYup = (
         objectSchema = objectSchema.default({});
       }
 
-      //console.log("object", objectSchema);
       schema = objectSchema;
       break;
     }
@@ -97,7 +95,6 @@ const airbyteSchemaToYup = (
           "form.pattern.error"
         );
       }
-      //console.log("string", schema);
       break;
     }
     case "boolean": {

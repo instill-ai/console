@@ -30,7 +30,6 @@ const useBuildAirbyteFields = (
 ) => {
   const fields = useMemo(() => {
     if (!formTree) return <></>;
-    console.log("new fields");
     return pickComponent(
       formTree,
       disabledAll,
@@ -294,19 +293,25 @@ export const pickComponent = (
       placeholder={placeholder ?? ""}
       error={errors ? errors[formTree.path] ?? null : null}
       value={values ? (values[formTree.path] as string) ?? "" : ""}
-      onChangeInput={(_, value) =>
+      onChangeInput={(_, value) => {
+        // In HTML type=number input, the value is still string, we need to transfer it into number
+        // But in HTML number input, user can input e as exponential, parseInt will return NaN.
+        // In this case, we pass the value to the Yup, and let it guard for us.
+
         setValues((prev) => {
-          console.log(formTree);
           const configuration = prev?.configuration || {};
-          dot.setter(configuration, formTree.path, value);
-          console.log(configuration);
+          dot.setter(
+            configuration,
+            formTree.path,
+            inputType === "number" ? parseInt(value) : value
+          );
           return {
             ...prev,
             configuration: configuration,
             [formTree.path]: value,
           };
-        })
-      }
+        });
+      }}
       autoComplete="off"
       readOnly={false}
       type={inputType}

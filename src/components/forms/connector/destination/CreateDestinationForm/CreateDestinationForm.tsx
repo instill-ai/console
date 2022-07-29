@@ -217,7 +217,10 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     }
 
     try {
-      formYup.validateSync(fieldValues, { abortEarly: false });
+      formYup.validateSync(fieldValues, {
+        abortEarly: false,
+        strict: true,
+      });
     } catch (error) {
       if (error instanceof ValidationError) {
         const errors = {} as AirbyteFieldErrors;
