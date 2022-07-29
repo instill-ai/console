@@ -25,6 +25,12 @@ describe("getter", () => {
 });
 
 describe("setter", () => {
+  it("sets empty object with number", () => {
+    const obj = {};
+    dot.setter(obj, "foo", 123);
+    expect(obj).toEqual({ foo: 123 });
+  });
+
   it("sets empty object", () => {
     const obj = {};
     dot.setter(obj, "foo", "bar");
