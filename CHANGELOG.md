@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.3-alpha](https://github.com/instill-ai/console/compare/v0.6.2-alpha...v0.6.3-alpha) (2022-07-29)
+
+
+### Bug Fixes
+
+* fix can't correctly create Airbyte destination ([#185](https://github.com/instill-ai/console/issues/185)) ([732844d](https://github.com/instill-ai/console/commit/732844d8c47f355f5e807a6fd08f5ad558a690cf))
+* fix destination cache not remove and create http & grpc issue ([#184](https://github.com/instill-ai/console/issues/184)) ([8c35d95](https://github.com/instill-ai/console/commit/8c35d9590cb029ca18287d33b68cde77f99b122e))
+* fix onboarding form ([#182](https://github.com/instill-ai/console/issues/182)) ([a944e1d](https://github.com/instill-ai/console/commit/a944e1dc6275ac741f8a376ae6298794b1c89b1d))
+
 ## [0.6.2-alpha](https://github.com/instill-ai/console/compare/v0.6.1-alpha...v0.6.2-alpha) (2022-07-22)
 
 
