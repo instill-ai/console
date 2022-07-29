@@ -70,8 +70,6 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
     if (!values.model.existing.modelInstanceName || !modelInstanceOptions)
       return null;
 
-    console.log(values.model.existing.modelInstanceName);
-
     return (
       modelInstanceOptions.find(
         (e) => e.value === values.model.existing.modelInstanceName

@@ -82,9 +82,6 @@ export const transformSchemaToFormFields = (
     formField.placeholder = fieldConfig.ui_placeholder ?? null;
     formField.disabled = fieldConfig.ui_disabled ?? false;
     formField.default = fieldConfig.default ?? null;
-
-    console.log(formField);
-
     formFields.push(formField);
   }
 

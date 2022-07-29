@@ -291,7 +291,6 @@ const CreateNewModelFlow: FC = () => {
           },
           onError: (error) => {
             if (error instanceof AxiosError) {
-              console.log(error);
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",

@@ -80,7 +80,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
 
     setModelDefinitionOptions(
       modelDefinitions.data.map((e) => {
-        console.log(e.id);
         return {
           label: e.title,
           value: e.id,

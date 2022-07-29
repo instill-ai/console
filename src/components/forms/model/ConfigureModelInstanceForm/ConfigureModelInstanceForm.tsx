@@ -44,6 +44,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
     }
   };
 
+  // TODO: remove this placeholder
   const handler = useCallback(() => {
     console.log("hi");
   }, []);
