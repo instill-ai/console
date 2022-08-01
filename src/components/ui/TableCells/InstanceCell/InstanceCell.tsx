@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import cn from "clsx";
 import {
   getTailwindClassNumber,
+  ModelInstanceIcon,
   PipelineIcon,
 } from "@instill-ai/design-system";
 import InstanceInnerList from "./InstanceInnerList";
@@ -38,7 +39,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
   switch (type) {
     case "model":
       icon = (
-        <PipelineIcon
+        <ModelInstanceIcon
           width={iconWidth}
           height={iconHeight}
           position={iconPosition}
