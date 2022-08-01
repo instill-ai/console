@@ -201,6 +201,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     if (!fieldValues || !formYup) {
       return;
     }
+
     try {
       formYup.validateSync(fieldValues, {
         abortEarly: false,

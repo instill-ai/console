@@ -35,7 +35,7 @@ export const unDeployModelInstanceAction = async (
 
 export type TestModelInstancePayload = {
   modelInstanceName: string;
-  content: string;
+  content: File;
 };
 
 type TestModelInstanceResult = {

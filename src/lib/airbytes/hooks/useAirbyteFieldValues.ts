@@ -10,7 +10,6 @@ const useAirbyteFieldValues = (formTree: Nullable<AirbyteFormTree>) => {
   useEffect(() => {
     if (!formTree) return;
     if (fieldValues && fieldValues.configuration) return;
-    console.log("let's pick");
     pickInitialValues(formTree, fieldValues, setFieldValues);
   }, [formTree, fieldValues, setFieldValues]);
 
@@ -57,7 +56,6 @@ export const pickInitialValues = (
         const defaultValue = formTree.default as boolean;
         const configuration = prev?.configuration ?? {};
         dot.setter(configuration, formTree.path, defaultValue);
-        console.log(configuration);
         return {
           ...prev,
           configuration: configuration,

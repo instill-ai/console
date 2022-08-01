@@ -46,7 +46,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   const testModelInstance = useTestModelInstance();
 
   const fileOnChangeCb = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.value;
+    const file = event.target.files ? event.target.files[0] : null;
     if (!modelInstance || !file) return;
 
     setMessageBoxState(() => ({
