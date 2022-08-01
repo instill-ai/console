@@ -4,6 +4,7 @@ import { airbyteSchemaToAirbyteFormTree } from "../../airbyteSchemaToAirbyteForm
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
+  AirbyteFormTree,
   SelectedItemMap,
 } from "../../types";
 import useBuildAirbyteFields from "../../hooks/useBuildAirbyteFields";
@@ -13,7 +14,7 @@ export type AirbyteDestinationFieldsProps = {
   fieldValues: Nullable<AirbyteFieldValues>;
   setFieldValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
   fieldErrors: Nullable<AirbyteFieldErrors>;
-  selectedDestinationDefinition: Nullable<ConnectorDefinition>;
+  destinationFormTree: Nullable<AirbyteFormTree>;
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
 };
@@ -22,25 +23,12 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   fieldValues,
   setFieldValues,
   fieldErrors,
-  selectedDestinationDefinition,
+  destinationFormTree,
   selectedConditionMap,
   setSelectedConditionMap,
 }) => {
-  const selectedDestinationFormTree = useMemo(() => {
-    if (!selectedDestinationDefinition) {
-      return null;
-    }
-
-    const formTree = airbyteSchemaToAirbyteFormTree(
-      selectedDestinationDefinition.connector_definition.spec
-        .connection_specification
-    );
-
-    return formTree;
-  }, [selectedDestinationDefinition]);
-
   const fields = useBuildAirbyteFields(
-    selectedDestinationFormTree,
+    destinationFormTree,
     false,
     fieldValues,
     setFieldValues,

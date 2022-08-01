@@ -1,5 +1,15 @@
 export * from "./types";
 
-import { useBuildAirbyteFields, useBuildAirbyteYup } from "./hooks";
+import {
+  useBuildAirbyteFields,
+  useBuildAirbyteYup,
+  useAirbyteFormTree,
+  useAirbyteFieldValues,
+} from "./hooks";
 
-export { useBuildAirbyteFields, useBuildAirbyteYup };
+export {
+  useBuildAirbyteFields,
+  useBuildAirbyteYup,
+  useAirbyteFormTree,
+  useAirbyteFieldValues,
+};
