@@ -286,12 +286,12 @@ export const pickComponent = (
 
   return (
     <BasicTextField
+      type={inputType}
       id={formTree.fieldKey}
       key={formTree.path}
       required={formTree.isRequired}
       description={formTree.description ?? ""}
       label={formTree.title ?? formTree.fieldKey ?? null}
-      additionalMessageOnLabel={null}
       disabled={disabledAll}
       placeholder={placeholder ?? ""}
       error={errors ? errors[formTree.path] ?? null : null}
@@ -316,9 +316,12 @@ export const pickComponent = (
           };
         });
       }}
-      autoComplete="off"
-      readOnly={false}
-      type="text"
+      // Prevent type=number default behavior
+      onWheel={(event) => {
+        if (inputType === "number") {
+          event.currentTarget.blur();
+        }
+      }}
     />
   );
 };

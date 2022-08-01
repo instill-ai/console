@@ -5,7 +5,8 @@ import {
   useCallback,
   useMemo,
   useState,
- ChangeEvent } from "react";
+  ChangeEvent,
+} from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
@@ -413,11 +414,6 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           instanceId="definition"
           menuPlacement="auto"
           label="Destination type"
-          additionalMessageOnLabel={null}
-          description={""}
-          disabled={false}
-          readOnly={false}
-          required={false}
           error={
             fieldErrors ? (fieldErrors.definition as string) ?? null : null
           }
