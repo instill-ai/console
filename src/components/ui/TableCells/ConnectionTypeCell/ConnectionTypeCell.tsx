@@ -43,6 +43,8 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   const iconHeight = "h-8";
   const position = "my-auto";
 
+  console.log(definitionName);
+
   switch (iconDefinition) {
     case "snowflake.svg": {
       icon = (
@@ -168,7 +170,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
                 lineClamp
               )}
             >
-              {connectionName}
+              {definitionName}
             </p>
           </div>
         </div>
