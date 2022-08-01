@@ -4,7 +4,7 @@ import {
   BasicUploadFileFieldProps,
 } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
-import { ChangeEvent , FC } from "react";
+import { ChangeEvent, FC } from "react";
 
 export type UploadFileFieldProps = Omit<
   BasicUploadFileFieldProps,
@@ -24,7 +24,10 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   ...props
 }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    form.setFieldValue(field.name, event.target.value);
+    form.setFieldValue(
+      field.name,
+      event.target.files ? event.target.files[0] : null
+    );
     if (additionalOnChangeCb) {
       additionalOnChangeCb(event.target.value);
     }

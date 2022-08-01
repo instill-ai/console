@@ -39,7 +39,7 @@ export const createGithubModelMutation = async (
 };
 
 export type CreateLocalModelConfiguration = {
-  content: string;
+  content: File;
 };
 
 export type CreateLocalModelPayload = {

@@ -57,7 +57,7 @@ type NewModel = {
   id: Nullable<string>;
   modelDefinition: Nullable<string>;
   modelInstanceName: Nullable<string>;
-  file: Nullable<string>;
+  file: Nullable<File>;
   repo: Nullable<string>;
   description: Nullable<string>;
   gcsBucketPath: Nullable<string>;
