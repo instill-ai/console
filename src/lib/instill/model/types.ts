@@ -55,7 +55,11 @@ export type ModelWithInstance = Model & {
 // #                                                                 #
 // ###################################################################
 
-export type ModelState = "STATE_ONLINE" | "STATE_OFFLINE" | "STATE_ERROR";
+export type ModelState =
+  | "STATE_ONLINE"
+  | "STATE_OFFLINE"
+  | "STATE_ERROR"
+  | "STATE_UNSPECIFIED";
 
 export type ModelInstance = {
   name: string;

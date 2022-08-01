@@ -61,7 +61,10 @@ export const useStateOverviewCounts = (items: Item[] | null) => {
       for (const item of items as Source[]) {
         if (item.connector.state === "STATE_CONNECTED") {
           counts.online += 1;
-        } else if (item.connector.state === "STATE_DISCONNECTED") {
+        } else if (
+          item.connector.state === "STATE_DISCONNECTED" ||
+          item.connector.state === "STATE_UNSPECIFIED"
+        ) {
           counts.offline += 1;
         } else {
           counts.error += 1;
@@ -75,7 +78,10 @@ export const useStateOverviewCounts = (items: Item[] | null) => {
       for (const item of items as Destination[]) {
         if (item.connector.state === "STATE_CONNECTED") {
           counts.online += 1;
-        } else if (item.connector.state === "STATE_DISCONNECTED") {
+        } else if (
+          item.connector.state === "STATE_DISCONNECTED" ||
+          item.connector.state === "STATE_UNSPECIFIED"
+        ) {
           counts.offline += 1;
         } else {
           counts.error += 1;
@@ -89,7 +95,10 @@ export const useStateOverviewCounts = (items: Item[] | null) => {
       for (const item of items as ModelWithInstance[]) {
         if (item.state === "STATE_ONLINE") {
           counts.online += 1;
-        } else if (item.state === "STATE_OFFLINE") {
+        } else if (
+          item.state === "STATE_OFFLINE" ||
+          item.state === "STATE_UNSPECIFIED"
+        ) {
           counts.offline += 1;
         } else {
           counts.error += 1;
@@ -100,7 +109,10 @@ export const useStateOverviewCounts = (items: Item[] | null) => {
     for (const item of items as ModelInstance[]) {
       if (item.state === "STATE_ONLINE") {
         counts.online += 1;
-      } else if (item.state === "STATE_OFFLINE") {
+      } else if (
+        item.state === "STATE_OFFLINE" ||
+        item.state === "STATE_UNSPECIFIED"
+      ) {
         counts.offline += 1;
       } else {
         counts.error += 1;
