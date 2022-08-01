@@ -143,7 +143,7 @@ const StateLabel: FC<StateLabelProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-row gap-x-[5px]",
+        "flex flex-row gap-x-2",
         paddingX,
         paddingY,
         enableBgColor ? bgColor : ""

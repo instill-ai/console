@@ -86,7 +86,10 @@ const DestinationDetailsPage: FC & {
           <StateLabel
             enableIcon={true}
             enableBgColor={true}
-            state="STATE_CONNECTED"
+            state={
+              destinationWithPipelines.data?.connector.state ??
+              "STATE_UNSPECIFIED"
+            }
             iconHeight="h-[18px]"
             iconWidth="w-[18px]"
             iconPosition="my-auto"
