@@ -7,7 +7,7 @@ import {
   BasicToggleField,
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
-import { useEffect , Dispatch, ReactNode, SetStateAction, useMemo } from "react";
+import { useEffect, Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
@@ -165,7 +165,7 @@ export const pickComponent = (
         value={values ? (values[formTree.path] as boolean) ?? false : false}
         onChange={(event) =>
           setValues((prev) => {
-            const value = event.target.value;
+            const value = event.target.checked;
             const configuration = prev?.configuration ?? {};
             dot.setter(configuration, formTree.path, value);
             return {
