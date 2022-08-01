@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.0-alpha](https://github.com/instill-ai/console/compare/v0.6.3-alpha...v0.7.0-alpha) (2022-08-01)
+
+
+### Features
+
+* set default value for Airbyte form ([#202](https://github.com/instill-ai/console/issues/202)) ([82d352a](https://github.com/instill-ai/console/commit/82d352aba3b7b5bc43f27efdd520774813064a9c))
+
+
+### Bug Fixes
+
+* fix hostname issue ([#201](https://github.com/instill-ai/console/issues/201)) ([4a8f196](https://github.com/instill-ai/console/commit/4a8f1960cf61d7aa84c21b2f5ac381ceb219c586))
+* fix model table's instance icon ([#196](https://github.com/instill-ai/console/issues/196)) ([e521d97](https://github.com/instill-ai/console/commit/e521d97955bb533b523d6d3a4bd3b10e43b205dc))
+* fix toggle field issue ([#203](https://github.com/instill-ai/console/issues/203)) ([5959c87](https://github.com/instill-ai/console/commit/5959c8705891e113e37a4b12943e80629ad857d3))
+* fix wrong connector state ([#199](https://github.com/instill-ai/console/issues/199)) ([9df6d64](https://github.com/instill-ai/console/commit/9df6d646a1ea6421c0156eebbb3f2d43e3f9c591))
+* remove default scroll behavior of number input field ([#200](https://github.com/instill-ai/console/issues/200)) ([376e1bd](https://github.com/instill-ai/console/commit/376e1bdd3637a671478d0121d7ef5354bf243f79))
+
 ## [0.6.3-alpha](https://github.com/instill-ai/console/compare/v0.6.2-alpha...v0.6.3-alpha) (2022-07-29)
 
 
