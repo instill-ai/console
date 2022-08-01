@@ -141,7 +141,7 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
       <div className="grid grid-cols-4">
         <ProgressStep
           stepNum={1}
-          stepName="Date source"
+          stepName="Source"
           ref={firstStepCubeRef}
           isCurrent={
             currentProgress === 0 ? true : currentProgress === 1 ? true : false
@@ -158,7 +158,7 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
         <ProgressStep
           stepNum={3}
           ref={thirdStepCubeRef}
-          stepName="Data Destination"
+          stepName="Destination"
           isCurrent={currentProgress === 3 ? true : false}
           isPassed={currentProgress > 3 ? true : false}
         />
