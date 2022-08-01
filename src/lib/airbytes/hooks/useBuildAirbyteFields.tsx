@@ -163,8 +163,9 @@ export const pickComponent = (
         readOnly={false}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as boolean) ?? false : false}
-        onChangeInput={(_, value) =>
+        onChange={(event) =>
           setValues((prev) => {
+            const value = event.target.value;
             const configuration = prev?.configuration ?? {};
             dot.setter(configuration, formTree.path, value);
             return {
@@ -204,7 +205,7 @@ export const pickComponent = (
               null
             : null
         }
-        onChangeInput={(_, option) =>
+        onChange={(option) =>
           setValues((prev) => {
             const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, option?.value ?? null);
@@ -235,8 +236,9 @@ export const pickComponent = (
         placeholder={placeholder ?? ""}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as string) ?? "" : ""}
-        onChangeInput={(_, value) =>
+        onChange={(event) =>
           setValues((prev) => {
+            const value = event.target.value;
             const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, value);
             return {
@@ -263,8 +265,9 @@ export const pickComponent = (
         placeholder={placeholder ?? ""}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as string) ?? "" : ""}
-        onChangeInput={(_, value) =>
+        onChange={(event) =>
           setValues((prev) => {
+            const value = event.target.value;
             const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, value);
             return {
@@ -293,12 +296,13 @@ export const pickComponent = (
       placeholder={placeholder ?? ""}
       error={errors ? errors[formTree.path] ?? null : null}
       value={values ? (values[formTree.path] as string) ?? "" : ""}
-      onChangeInput={(_, value) => {
+      onChange={(event) => {
         // In HTML type=number input, the value is still string, we need to transfer it into number
         // But in HTML number input, user can input e as exponential, parseInt will return NaN.
         // In this case, we pass the value to the Yup, and let it guard for us.
 
         setValues((prev) => {
+          const value = event.target.value;
           const configuration = prev?.configuration || {};
           dot.setter(
             configuration,
@@ -314,7 +318,7 @@ export const pickComponent = (
       }}
       autoComplete="off"
       readOnly={false}
-      type={inputType}
+      type="text"
     />
   );
 };

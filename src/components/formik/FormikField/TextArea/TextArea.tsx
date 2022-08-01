@@ -1,9 +1,9 @@
 import { Nullable } from "@/types/general";
 import { BasicTextArea, BasicTextAreaProps } from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 
-export type TextAreaProps = Omit<BasicTextAreaProps, "onChangeInput"> & {
+export type TextAreaProps = Omit<BasicTextAreaProps, "onChange"> & {
   name: string;
   additionalOnChangeCb?: Nullable<(value: string) => void>;
 };
@@ -17,10 +17,10 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
   error,
   ...props
 }) => {
-  const onChange = (_: string, value: string) => {
-    form.setFieldValue(field.name, value);
+  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    form.setFieldValue(field.name, event.target.value);
     if (additionalOnChangeCb) {
-      additionalOnChangeCb(value);
+      additionalOnChangeCb(event.target.value);
     }
   };
 
@@ -29,7 +29,7 @@ const TextArea: FC<TextAreaProps & FieldProps> = ({
       {...props}
       id={id}
       error={error}
-      onChangeInput={onChange}
+      onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );

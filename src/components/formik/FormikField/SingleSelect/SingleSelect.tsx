@@ -9,7 +9,7 @@ import { Nullable } from "@/types/general";
 
 export type SingleSelectProps = Omit<
   BasicSingleSelectProps,
-  "onChangeInput" | "instanceId"
+  "onChange" | "instanceId"
 > & {
   name: string;
   additionalOnChangeCb?: Nullable<(option: SingleSelectOption) => void>;
@@ -27,7 +27,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
   additionalMessageOnLabel,
   ...props
 }) => {
-  const onChange = (_: string, option: Nullable<SingleSelectOption>) => {
+  const onChange = (option: Nullable<SingleSelectOption>) => {
     if (!option) return;
     form.setFieldValue(field.name, option.value);
     if (additionalOnChangeCb) {
@@ -42,7 +42,7 @@ const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
       instanceId={id}
       error={error}
       options={options}
-      onChangeInput={onChange}
+      onChange={onChange}
       menuPlacement={menuPlacement}
       value={value}
       additionalMessageOnLabel={additionalMessageOnLabel}

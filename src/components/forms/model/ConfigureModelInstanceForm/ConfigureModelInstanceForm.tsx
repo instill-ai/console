@@ -44,11 +44,6 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
     }
   };
 
-  // TODO: remove this placeholder
-  const handler = useCallback(() => {
-    console.log("hi");
-  }, []);
-
   return (
     <div className={cn("flex flex-col", marginBottom)}>
       <FormBase padding={null} marginBottom="mb-10" noValidate={true}>
@@ -65,7 +60,6 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
                 value={modelInstance.configuration.repository}
                 disabled={true}
                 required={true}
-                onChangeInput={handler}
               />
             </>
           ) : null}
@@ -78,7 +72,6 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
                 value={modelInstance.configuration.tag}
                 disabled={true}
                 required={true}
-                onChangeInput={handler}
               />
               <BasicTextField
                 id="url"
@@ -87,7 +80,6 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
                 value={modelInstance.configuration.url}
                 disabled={true}
                 required={true}
-                onChangeInput={handler}
               />
             </>
           ) : null}

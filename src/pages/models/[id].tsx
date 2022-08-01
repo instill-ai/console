@@ -115,7 +115,7 @@ const ModelDetailsPage: FC & {
   ]);
 
   const modelInstanceOnChangeCb = useCallback(
-    (_: string, option: Nullable<SingleSelectOption>) => {
+    (option: Nullable<SingleSelectOption>) => {
       if (!option) return;
 
       setSelectedModelInstanceOption(option);
@@ -246,7 +246,7 @@ const ModelDetailsPage: FC & {
             error={null}
             value={selectedModelInstanceOption}
             options={modelInstanceOptions}
-            onChangeInput={modelInstanceOnChangeCb}
+            onChange={modelInstanceOnChangeCb}
           />
         </div>
         <div className="mb-10 flex flex-row gap-x-2.5">

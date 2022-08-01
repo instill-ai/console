@@ -91,11 +91,7 @@ const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
             ? true
             : false
         }
-        disabled={false}
-        readOnly={false}
-        required={false}
-        description={""}
-        onChangeInput={changeResourceStateHandler}
+        onChange={changeResourceStateHandler}
         label="State"
         additionalMessageOnLabel={null}
         error={error}
