@@ -68,7 +68,7 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
             <NameCell
               name={destination.id}
               width="w-[234px]"
-              state="STATE_ONLINE"
+              state={destination.connector.state}
               updatedAt={destination.connector.update_time}
               paddingBottom="pb-5"
               paddingTop="pt-5"

@@ -4,7 +4,8 @@ import type { JSONSchema7 } from "json-schema";
 export type ConnectorState =
   | "STATE_CONNECTED"
   | "STATE_DISCONNECTED"
-  | "STATE_ERROR";
+  | "STATE_ERROR"
+  | "STATE_UNSPECIFIED";
 
 export type Connector = {
   description: string;
