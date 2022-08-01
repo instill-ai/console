@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { Field, FieldProps } from "formik";
 import {
   BasicToggleField,
@@ -6,7 +6,7 @@ import {
 } from "@instill-ai/design-system";
 import { Nullable } from "@/types/general";
 
-export type ToggleFieldProps = Omit<BasicToggleFieldProps, "onChangeInput"> & {
+export type ToggleFieldProps = Omit<BasicToggleFieldProps, "onChange"> & {
   name: string;
   additionalOnChangeCb: Nullable<(value: boolean) => void>;
 };
@@ -20,10 +20,10 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   error,
   ...props
 }) => {
-  const onChange = (_: string, value: boolean) => {
-    form.setFieldValue(field.name, value);
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    form.setFieldValue(field.name, event.target.checked);
     if (additionalOnChangeCb) {
-      additionalOnChangeCb(value);
+      additionalOnChangeCb(event.target.checked);
     }
   };
 
@@ -32,7 +32,7 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
       {...props}
       id={id}
       error={error}
-      onChangeInput={onChange}
+      onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );

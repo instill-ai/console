@@ -5,6 +5,7 @@ import {
   useCallback,
   useMemo,
   useState,
+  ChangeEvent,
 } from "react";
 import { useRouter } from "next/router";
 import {
@@ -386,7 +387,9 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
               : defaultId
           }
           error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
-          onChangeInput={(id, value) => updateFieldValues(id, value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            updateFieldValues("id", event.target.value)
+          }
         />
 
         <BasicTextArea
@@ -401,7 +404,9 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           value={
             fieldValues ? (fieldValues.description as string) ?? null : null
           }
-          onChangeInput={(id, value) => updateFieldValues(id, value)}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            updateFieldValues("id", event.target.value)
+          }
         />
         <BasicSingleSelect
           id="definition"
@@ -409,17 +414,12 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           instanceId="definition"
           menuPlacement="auto"
           label="Destination type"
-          additionalMessageOnLabel={null}
-          description={""}
-          disabled={false}
-          readOnly={false}
-          required={false}
           error={
             fieldErrors ? (fieldErrors.definition as string) ?? null : null
           }
           value={selectedDestinationOption}
           options={destinationOptions}
-          onChangeInput={(id, option) => {
+          onChange={(option) => {
             setFieldErrors(null);
             setFieldValues((prev) => ({
               id: prev?.id ?? null,

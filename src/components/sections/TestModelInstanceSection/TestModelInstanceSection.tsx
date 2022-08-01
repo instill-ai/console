@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import {
   BasicProgressMessageBox,
   BasicUploadFileField,
@@ -45,7 +45,8 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
 
   const testModelInstance = useTestModelInstance();
 
-  const fileOnChangeCb = (_: string, file: string) => {
+  const fileOnChangeCb = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.value;
     if (!modelInstance || !file) return;
 
     setMessageBoxState(() => ({
@@ -114,7 +115,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           }
           description="Upload an image file from your computer to test the model instance"
           error={null}
-          onChangeInput={fileOnChangeCb}
+          onChange={fileOnChangeCb}
           placeholder=""
           uploadButtonText="Upload"
           required={true}

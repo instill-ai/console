@@ -123,7 +123,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   ]);
 
   const onConditionChange = useCallback(
-    (_: string, option: Nullable<SingleSelectOption>) => {
+    (option: Nullable<SingleSelectOption>) => {
       if (option) {
         const selectedCondition = formTree.conditions[option.label] ?? null;
         setSelectedConditionOption(option);
@@ -217,17 +217,12 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
             instanceId={formTree.path}
             menuPlacement="auto"
             label={formTree.title ?? null}
-            additionalMessageOnLabel={null}
-            description=""
-            disabled={false}
-            readOnly={false}
-            required={false}
             error={
               errors ? (conditionPath ? errors[conditionPath] : null) : null
             }
             value={selectedConditionOption}
             options={conditionOptions}
-            onChangeInput={onConditionChange}
+            onChange={onConditionChange}
           />
         </div>
       </div>

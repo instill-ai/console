@@ -1,5 +1,6 @@
 import { BasicTextField } from "@instill-ai/design-system";
 import {
+  ChangeEvent,
   Dispatch,
   FC,
   memo,
@@ -118,9 +119,12 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
   const [confirmationCode, setConfirmationCode] =
     useState<Nullable<string>>(null);
 
-  const handleCodeChange = useCallback((_, input: string) => {
-    setConfirmationCode(input);
-  }, []);
+  const handleCodeChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setConfirmationCode(event.target.value);
+    },
+    []
+  );
 
   const canDeleteResource = useMemo(() => {
     if (!resource || confirmationCode !== resource.id) return false;
@@ -140,7 +144,7 @@ const DeleteResourceModal: FC<DeleteResourceModalProps> = ({
           id="confirmationCode"
           type="text"
           label={`Please type "${resource ? resource.id : ""}" to confirm.`}
-          onChangeInput={handleCodeChange}
+          onChange={handleCodeChange}
           value={confirmationCode}
         />
         <div className="grid grid-cols-2 gap-x-5">
