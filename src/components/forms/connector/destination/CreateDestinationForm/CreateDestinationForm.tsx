@@ -20,7 +20,7 @@ import * as yup from "yup";
 import Image from "next/image";
 
 import { PrimaryButton } from "@/components/ui";
-import { CreateDestinationPayload } from "@/lib/instill";
+import { ConnectorDefinition, CreateDestinationPayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import {
   useCreateDestination,
@@ -33,6 +33,8 @@ import {
   AirbyteFieldErrors,
   SelectedItemMap,
   useBuildAirbyteYup,
+  useAirbyteFormTree,
+  useAirbyteFieldValues,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { ValidationError } from "yup";
@@ -51,11 +53,6 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
 }) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-
-  const [fieldValues, setFieldValues] =
-    useState<Nullable<AirbyteFieldValues>>(null);
-  const [fieldErrors, setFieldErrors] =
-    useState<Nullable<AirbyteFieldErrors>>(null);
 
   // ###################################################################
   // #                                                                 #
@@ -95,31 +92,19 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     return options;
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
-  const selectedDestinationOption = useMemo(() => {
-    if (!fieldValues?.definition || !destinationOptions) {
-      return null;
-    }
+  const [selectedDestinationDefinition, setSelectedDestinationDefinition] =
+    useState<Nullable<ConnectorDefinition>>(null);
 
-    return (
-      destinationOptions.find((e) => e.value === fieldValues.definition) || null
-    );
-  }, [fieldValues?.definition, destinationOptions]);
+  const [selectedDestinationOption, setSelectedDestinationOption] =
+    useState<Nullable<SingleSelectOption>>(null);
 
-  const selectedDestinationDefinition = useMemo(() => {
-    if (!destinationDefinitions.isSuccess || !fieldValues?.definition) {
-      return null;
-    }
+  const destinationFormTree = useAirbyteFormTree(selectedDestinationDefinition);
 
-    return (
-      destinationDefinitions.data.find(
-        (e) => e.name === fieldValues.definition
-      ) ?? null
-    );
-  }, [
-    destinationDefinitions.isSuccess,
-    destinationDefinitions.data,
-    fieldValues?.definition,
-  ]);
+  const { fieldValues, setFieldValues } =
+    useAirbyteFieldValues(destinationFormTree);
+
+  const [fieldErrors, setFieldErrors] =
+    useState<Nullable<AirbyteFieldErrors>>(null);
 
   // Instill Ai provided connector HTTP and gRPC can only have default id destination-http and destination-grpc
   // We need to make sure user have proper instruction on this issue.
@@ -216,7 +201,6 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     if (!fieldValues || !formYup) {
       return;
     }
-
     try {
       formYup.validateSync(fieldValues, {
         abortEarly: false,
@@ -421,6 +405,14 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           options={destinationOptions}
           onChange={(option) => {
             setFieldErrors(null);
+            setSelectedDestinationOption(option);
+            setSelectedDestinationDefinition(
+              destinationDefinitions.data
+                ? destinationDefinitions.data.find(
+                    (e) => e.name === option?.value
+                  ) ?? null
+                : null
+            );
             setFieldValues((prev) => ({
               id: prev?.id ?? null,
               definition: option?.value ?? null,
@@ -428,7 +420,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           }}
         />
         <AirbyteDestinationFields
-          selectedDestinationDefinition={selectedDestinationDefinition}
+          destinationFormTree={destinationFormTree}
           fieldValues={fieldValues}
           setFieldValues={setFieldValues}
           fieldErrors={fieldErrors}
