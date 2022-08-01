@@ -2,7 +2,6 @@ import { FC, ReactNode } from "react";
 import cn from "clsx";
 import {
   getTailwindClassNumber,
-  ModelIcon,
   ModelInstanceIcon,
   PipelineIcon,
 } from "@instill-ai/design-system";
