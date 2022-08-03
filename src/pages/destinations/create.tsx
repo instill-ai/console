@@ -41,7 +41,15 @@ const CreateDestinationPage: FC & {
           enableButton={false}
           marginBottom="mb-10"
         />
-        <CreateDestinationForm setResult={null} setStepNumber={null} />
+        <CreateDestinationForm
+          flex1={false}
+          onSuccessCb={() => router.push("/destinations")}
+          setResult={null}
+          title={null}
+          padding={null}
+          marginBottom={null}
+          pipelineMode={null}
+        />
       </PageContentContainer>
     </>
   );

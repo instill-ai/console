@@ -133,47 +133,42 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
   const handleGoNext = () => {
     if (!sources.isSuccess || !values.source.existing.id) return;
 
-    if (values.pipeline.mode === "MODE_SYNC") {
-      const sourceIndex = sources.data.findIndex(
-        (e) => e.id === values.source.existing.id
-      );
+    const sourceIndex = sources.data.findIndex(
+      (e) => e.id === values.source.existing.id
+    );
 
-      if (sourceIndex !== -1) {
+    if (sourceIndex !== -1) {
+      if (amplitudeIsInit) {
+        sendAmplitudeData("use_existing_source", {
+          type: "critical_action",
+          process: "pipeline",
+        });
+      }
+      setFieldValue("source.type", "existing");
+      setStepNumber(stepNumber + 2);
+      return;
+    }
+
+    const payload: CreateSourcePayload = {
+      id: values.source.existing.id,
+      source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
+      connector: {
+        configuration: {},
+      },
+    };
+
+    createSource.mutate(payload, {
+      onSuccess: () => {
         if (amplitudeIsInit) {
-          sendAmplitudeData("use_existing_source", {
+          sendAmplitudeData("create_source", {
             type: "critical_action",
             process: "pipeline",
           });
         }
         setFieldValue("source.type", "existing");
         setStepNumber(stepNumber + 2);
-        return;
-      }
-
-      const payload: CreateSourcePayload = {
-        id: values.source.existing.id,
-        source_connector_definition: `source-connector-definitions/${values.source.existing.id}`,
-        connector: {
-          configuration: {},
-        },
-      };
-
-      createSource.mutate(payload, {
-        onSuccess: () => {
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_source", {
-              type: "critical_action",
-              process: "pipeline",
-            });
-          }
-          setFieldValue("source.type", "existing");
-          setStepNumber(stepNumber + 2);
-        },
-      });
-
-      return;
-    }
-    setStepNumber(stepNumber + 1);
+      },
+    });
   };
 
   return (
@@ -187,26 +182,23 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           value={selectedModeOption}
           options={modeOptions}
           error={errors.pipeline?.mode || null}
-          disabled={true}
           required={true}
         />
-        {values.pipeline.mode === "MODE_SYNC" ? (
-          <SingleSelect
-            id="existingSourceId"
-            name="source.existing.id"
-            label="Source type"
-            additionalMessageOnLabel={null}
-            description={"Setup Guide"}
-            value={selectedSourceIdOption}
-            options={syncSourceOptions}
-            additionalOnChangeCb={null}
-            error={errors.source?.existing?.id || null}
-            disabled={false}
-            readOnly={false}
-            required={true}
-            menuPlacement="auto"
-          />
-        ) : null}
+        <SingleSelect
+          id="existingSourceId"
+          name="source.existing.id"
+          label="Source type"
+          additionalMessageOnLabel={null}
+          description={"Setup Guide"}
+          value={selectedSourceIdOption}
+          options={syncSourceOptions}
+          additionalOnChangeCb={null}
+          error={errors.source?.existing?.id || null}
+          disabled={false}
+          readOnly={false}
+          required={true}
+          menuPlacement="auto"
+        />
       </div>
       <PrimaryButton
         onClickHandler={handleGoNext}

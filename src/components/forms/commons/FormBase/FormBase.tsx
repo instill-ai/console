@@ -4,6 +4,7 @@ import cn from "clsx";
 
 export type FormBaseProps = {
   padding: Nullable<string>;
+  flex1: Nullable<boolean>;
   marginBottom: Nullable<string>;
   noValidate: boolean;
 };
@@ -13,6 +14,7 @@ const FormBase: FC<FormBaseProps> = ({
   padding,
   marginBottom,
   noValidate,
+  flex1,
 }) => {
   const submitHandler = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,7 +23,9 @@ const FormBase: FC<FormBaseProps> = ({
   return (
     <form
       onSubmit={submitHandler}
-      className={cn("flex h-full flex-col", padding, marginBottom)}
+      className={cn("flex h-full flex-col", padding, marginBottom, {
+        "flex-1": flex1,
+      })}
       noValidate={noValidate}
     >
       {children}

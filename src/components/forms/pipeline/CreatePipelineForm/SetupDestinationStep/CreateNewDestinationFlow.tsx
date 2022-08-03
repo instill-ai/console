@@ -1,6 +1,7 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { useFormikContext } from "formik";
 import { SingleSelectOption } from "@instill-ai/design-system";
+import Image from "next/image";
 
 import {
   StepNumberState,
@@ -41,23 +42,55 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     if (!destinationDefinitions.isSuccess || !destinationDefinitions.data)
       return;
 
-    setDestinationDefinitionOptions(
-      destinationDefinitions.data.map((e) => {
-        return {
-          label: e.connector_definition.title,
-          value: e.id,
-          startIcon: (
-            <ConnectorIcon
-              iconName={e.connector_definition.icon}
-              iconColor="fill-instillGrey90"
-              iconHeight="h-[30px]"
-              iconWidth="w-[30px]"
-              iconPosition="my-auto"
-            />
-          ),
-        };
-      })
-    );
+    if (values.pipeline.mode === "MODE_ASYNC") {
+      console.log(destinationDefinitions);
+      setDestinationDefinitionOptions(
+        destinationDefinitions.data
+          .filter(
+            (e) =>
+              e.name !== "destination-connector-definitions/destination-http" &&
+              e.name !== "destination-connector-definitions/destination-grpc"
+          )
+          .map((e) => {
+            return {
+              label: e.connector_definition.title,
+              value: e.id,
+              startIcon: (
+                <Image
+                  className="my-auto"
+                  src={
+                    e.connector_definition.docker_repository.split("/")[0] ===
+                    "airbyte"
+                      ? `/icons/airbyte/${e.connector_definition.icon}`
+                      : `/icons/instill/${e.connector_definition.icon}`
+                  }
+                  width={24}
+                  height={24}
+                  layout="fixed"
+                />
+              ),
+            };
+          })
+      );
+    } else {
+      setDestinationDefinitionOptions(
+        destinationDefinitions.data.map((e) => {
+          return {
+            label: e.connector_definition.title,
+            value: e.id,
+            startIcon: (
+              <ConnectorIcon
+                iconName={e.connector_definition.icon}
+                iconColor="fill-instillGrey90"
+                iconHeight="h-[30px]"
+                iconWidth="w-[30px]"
+                iconPosition="my-auto"
+              />
+            ),
+          };
+        })
+      );
+    }
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const selectedDestinationDefinition = useMemo(() => {
@@ -110,6 +143,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     createDestination.mutate(payload, {
       onSuccess: () => {
         setFieldValue("destination.type", "existing");
+        setFieldValue("destination.type", "existing");
         if (amplitudeIsInit) {
           sendAmplitudeData("create_destination", {
             type: "critical_action",
@@ -135,7 +169,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
       />
       <SingleSelect
         id="destinationDefinition"
-        name="dataDestination.new.definition"
+        name="destination.new.definition"
         label="Destination type"
         options={destinationDefinitionOptions || []}
         value={selectedDestinationDefinition}

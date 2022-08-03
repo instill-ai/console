@@ -35,14 +35,31 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
   useEffect(() => {
     if (!destinations.isSuccess || !destinations.data) return;
 
-    setDestinationOptions(
-      destinations.data.map((e) => {
-        return {
-          label: e.id,
-          value: e.id,
-        };
-      })
-    );
+    if (values.pipeline.mode === "MODE_ASYNC") {
+      setDestinationOptions(
+        destinations.data
+          .filter(
+            (e) =>
+              e.name !== "destination-connectors/destination-http" &&
+              e.name !== "destination-connectors/destination-grpc"
+          )
+          .map((e) => {
+            return {
+              label: e.id,
+              value: e.id,
+            };
+          })
+      );
+    } else {
+      setDestinationOptions(
+        destinations.data.map((e) => {
+          return {
+            label: e.id,
+            value: e.id,
+          };
+        })
+      );
+    }
   }, [destinations.isSuccess, destinations.data]);
 
   const selectedDestinationOption = useMemo(() => {

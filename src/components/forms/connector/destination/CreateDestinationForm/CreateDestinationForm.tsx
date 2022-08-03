@@ -1,11 +1,10 @@
 import {
-  Dispatch,
   FC,
-  SetStateAction,
   useCallback,
   useMemo,
   useState,
   ChangeEvent,
+  ReactElement,
 } from "react";
 import { useRouter } from "next/router";
 import {
@@ -20,7 +19,11 @@ import * as yup from "yup";
 import Image from "next/image";
 
 import { PrimaryButton } from "@/components/ui";
-import { ConnectorDefinition, CreateDestinationPayload } from "@/lib/instill";
+import {
+  ConnectorDefinition,
+  CreateDestinationPayload,
+  PipelineMode,
+} from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import {
   useCreateDestination,
@@ -44,12 +47,25 @@ import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateDestinationFormProps = {
   setResult: Nullable<(destinationId: string) => void>;
-  setStepNumber: Nullable<Dispatch<SetStateAction<number>>>;
+  flex1: boolean;
+  title: Nullable<ReactElement>;
+  padding: Nullable<string>;
+  marginBottom: Nullable<string>;
+  onSuccessCb: Nullable<() => void>;
+
+  // Pipeline mode will only work when setup the pipeline.
+  // Please pass null if this is not under pipeline flow.
+  pipelineMode: Nullable<PipelineMode>;
 };
 
 const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   setResult,
-  setStepNumber,
+  flex1,
+  title,
+  padding,
+  marginBottom,
+  onSuccessCb,
+  pipelineMode,
 }) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -65,31 +81,50 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   const destinationOptions = useMemo(() => {
     if (!destinationDefinitions.isSuccess) return [];
 
-    const options: SingleSelectOption[] = [];
-
-    for (const definition of destinationDefinitions.data) {
-      options.push({
-        label: definition.connector_definition.title,
-        value: definition.name,
-        startIcon: (
-          <Image
-            className="my-auto"
-            src={
-              definition.connector_definition.docker_repository.split(
-                "/"
-              )[0] === "airbyte"
-                ? `/icons/airbyte/${definition.connector_definition.icon}`
-                : `/icons/instill/${definition.connector_definition.icon}`
-            }
-            width={24}
-            height={24}
-            layout="fixed"
-          />
-        ),
-      });
+    if (pipelineMode === "MODE_ASYNC") {
+      return destinationDefinitions.data
+        .filter(
+          (e) =>
+            e.name !== "destination-connector-definitions/destination-http" &&
+            e.name !== "destination-connector-definitions/destination-grpc"
+        )
+        .map((e) => ({
+          label: e.connector_definition.title,
+          value: e.name,
+          startIcon: (
+            <Image
+              className="my-auto"
+              src={
+                e.connector_definition.docker_repository.split("/")[0] ===
+                "airbyte"
+                  ? `/icons/airbyte/${e.connector_definition.icon}`
+                  : `/icons/instill/${e.connector_definition.icon}`
+              }
+              width={24}
+              height={24}
+              layout="fixed"
+            />
+          ),
+        }));
     }
 
-    return options;
+    return destinationDefinitions.data.map((e) => ({
+      label: e.connector_definition.title,
+      value: e.name,
+      startIcon: (
+        <Image
+          className="my-auto"
+          src={
+            e.connector_definition.docker_repository.split("/")[0] === "airbyte"
+              ? `/icons/airbyte/${e.connector_definition.icon}`
+              : `/icons/instill/${e.connector_definition.icon}`
+          }
+          width={24}
+          height={24}
+          layout="fixed"
+        />
+      ),
+    }));
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
   const [selectedDestinationDefinition, setSelectedDestinationDefinition] =
@@ -294,20 +329,15 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           description: null,
           message: "Create succeeded.",
         }));
-        if (setResult) {
-          setResult(newDestination.id);
-        }
+        if (setResult) setResult(newDestination.id);
 
-        if (setStepNumber) {
-          setStepNumber((prev) => prev + 1);
-        }
         if (amplitudeIsInit) {
           sendAmplitudeData("create_destination", {
             type: "critical_action",
             process: "destination",
           });
         }
-        router.push("/destinations");
+        if (onSuccessCb) onSuccessCb();
       },
       onError: (error) => {
         if (error instanceof AxiosError) {
@@ -336,8 +366,8 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     formYup,
     fieldValues,
     setResult,
-    setStepNumber,
     selectedDestinationDefinition,
+    onSuccessCb,
   ]);
 
   const updateFieldValues = useCallback((field: string, value: string) => {
@@ -350,8 +380,14 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   }, []);
 
   return (
-    <FormBase marginBottom={null} padding={null} noValidate={true}>
+    <FormBase
+      padding={padding}
+      noValidate={true}
+      flex1={flex1}
+      marginBottom={marginBottom}
+    >
       <div className="mb-10 flex flex-col gap-y-5">
+        {title}
         <BasicTextField
           id="id"
           label="ID"
@@ -390,7 +426,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
             fieldValues ? (fieldValues.description as string) ?? null : null
           }
           onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-            updateFieldValues("id", event.target.value)
+            updateFieldValues("description", event.target.value)
           }
         />
         <BasicSingleSelect
@@ -437,7 +473,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           closable={true}
         />
         <PrimaryButton
-          type="submit"
+          type="button"
           disabled={false}
           position="ml-auto my-auto"
           onClickHandler={() => submitHandler()}
