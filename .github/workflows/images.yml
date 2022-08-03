@@ -44,20 +44,42 @@ jobs:
         if: github.event_name == 'release'
         uses: actions/checkout@v3
 
-      - name: Setup node env
+      - name: Setup node
         if: github.event_name == 'release'
         uses: actions/setup-node@v3
         with:
-          node-version: 14
-          cache: "yarn"
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2.0.1
+        if: github.event_name == 'release'
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        if: github.event_name == 'release'
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        if: github.event_name == 'release'
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         if: github.event_name == 'release'
-        run: yarn install --frozen-lockfile
+        run: rm -rf node_modules && pnpm i --frozen-lockfile
 
       - name: Download airbyte icons
         if: github.event_name == 'release'
-        run: yarn download-airbyte-icons
+        run: pnpm download-airbyte-icons
 
       - name: Build and push (release)
         if: github.event_name == 'release'

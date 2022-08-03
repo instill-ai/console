@@ -53,11 +53,14 @@
     "@storybook/addon-interactions": "^6.5.9",
     "@storybook/addon-links": "^6.5.9",
     "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/addons": "^6.5.9",
     "@storybook/builder-webpack5": "^6.5.9",
+    "@storybook/client-api": "^6.5.9",
     "@storybook/manager-webpack5": "^6.5.9",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
     "@tailwindcss/line-clamp": "^0.4.0",
+    "@testing-library/dom": "^8.16.0",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -88,6 +91,8 @@
     "postcss": "^8.4.12",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.8",
+    "react-is": "^18.2.0",
+    "require-from-string": "^2.0.2",
     "storybook-addon-next-router": "^4.0.0",
     "tailwindcss": "^3.0.23",
     "typescript": "^4.6.2",
@@ -103,5 +108,6 @@
       "yarn prettier:fix",
       "eslint --cache --fix"
     ]
-  }
+  },
+  "packageManager": "pnpm@7.5.0"
 }
