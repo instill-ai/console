@@ -12,12 +12,12 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import CreateNewDestinationFlow from "./CreateNewDestinationFlow";
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import { CreateDestinationForm } from "@/components/forms/connector";
 
 export type SetupDestinationStepProps = StepNumberState;
 
@@ -186,13 +186,22 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
         <div className="flex flex-1 flex-row">
           <UseExistingDestinationFlow {...props} />
           <FormVerticalDividers />
-          <CreateNewDestinationFlow {...props} />
-          {/* <CreateDestinationForm
-            setStepNumber={props.setStepNumber}
-            setResult={(id) => {
-              setFieldValue("destination.new.id", id);
+          <CreateDestinationForm
+            setResult={(destinationId) => {
+              setFieldValue("destination.type", "new");
+              setFieldValue("destination.new.id", destinationId);
             }}
-          /> */}
+            onSuccessCb={() => props.setStepNumber((prev) => prev + 1)}
+            title={
+              <h3 className="text-black text-instill-h3">
+                Setup a new destination
+              </h3>
+            }
+            flex1={true}
+            padding="p-5"
+            marginBottom={null}
+            pipelineMode={values.pipeline.mode}
+          />
         </div>
       )}
     </FormikStep>

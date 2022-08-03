@@ -46,7 +46,12 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
 
   return (
     <div className={cn("flex flex-col", marginBottom)}>
-      <FormBase padding={null} marginBottom="mb-10" noValidate={true}>
+      <FormBase
+        padding={null}
+        marginBottom="mb-10"
+        noValidate={true}
+        flex1={false}
+      >
         <div className="flex flex-col gap-y-5">
           {modelInstance.model_definition === "model-definitions/local" ? (
             <></>
