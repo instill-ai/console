@@ -269,19 +269,6 @@ const SetupPipelineDetailsStep: FC = () => {
           value={values.pipeline.description}
           error={errors.pipeline?.description || null}
         />
-        <ToggleField
-          id="pipelineState"
-          name="pipeline.state"
-          label="Pipeline state"
-          additionalMessageOnLabel={null}
-          value={true}
-          error={errors.pipeline?.state || null}
-          additionalOnChangeCb={null}
-          disabled={true}
-          readOnly={false}
-          required={true}
-          description="Turn this toggle off if you wish to not activate the pipeline now"
-        />
         <div className="flex flex-row">
           <BasicProgressMessageBox
             state={messageBoxState}
