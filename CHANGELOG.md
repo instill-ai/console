@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0-alpha](https://github.com/instill-ai/console/compare/v0.7.0-alpha...v0.8.0-alpha) (2022-08-03)
+
+
+### Features
+
+* migrate to pnpm ([#208](https://github.com/instill-ai/console/issues/208)) ([d53240e](https://github.com/instill-ai/console/commit/d53240e50196b9fa1db6861358f00a232cda7bf7))
+* remove pipeline state toggle button ([#207](https://github.com/instill-ai/console/issues/207)) ([f303243](https://github.com/instill-ai/console/commit/f3032435f8ef05fc29dbf2fcfc8b2f0017d3c6a6))
+* support create airbyte destination under pipeline flow ([#205](https://github.com/instill-ai/console/issues/205)) ([ed73b63](https://github.com/instill-ai/console/commit/ed73b63e88d849df0f09e7f5137fd749480baee1))
+
+
+### Bug Fixes
+
+* fix pnpm dockerfile issue ([#209](https://github.com/instill-ai/console/issues/209)) ([049f45c](https://github.com/instill-ai/console/commit/049f45c8b2eb1852b48577238741fd6da8c774b3))
+
 ## [0.7.0-alpha](https://github.com/instill-ai/console/compare/v0.6.3-alpha...v0.7.0-alpha) (2022-08-01)
 
 
