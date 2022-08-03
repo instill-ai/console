@@ -6,6 +6,7 @@ specifiers:
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
   '@instill-ai/design-system': ^0.0.103
+  '@next/env': ^12.2.3
   '@playwright/test': ^1.22.2
   '@storybook/addon-actions': ^6.5.9
   '@storybook/addon-docs': ^6.5.9
@@ -25,9 +26,11 @@ specifiers:
   '@testing-library/react': ^12.1.4
   '@testing-library/user-event': ^13.5.0
   '@types/cookie': ^0.5.1
+  '@types/jest': ^28.1.6
   '@types/json-schema': ^7.0.11
   '@types/node': ^17.0.22
   '@types/react': ^17.0.41
+  '@types/react-dom': ^18.0.6
   '@types/uuid': ^8.3.4
   '@typescript-eslint/eslint-plugin': ^5.20.0
   '@typescript-eslint/parser': ^5.20.0
@@ -78,7 +81,6 @@ specifiers:
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
   '@instill-ai/design-system': 0.0.103_b4usidsfzquyh4hx4nnzn3lrei
-  '@types/json-schema': 7.0.11
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
@@ -100,6 +102,7 @@ devDependencies:
   '@babel/core': 7.18.10
   '@commitlint/cli': 16.3.0
   '@commitlint/config-conventional': 16.2.4
+  '@next/env': 12.2.3
   '@playwright/test': 1.24.2
   '@storybook/addon-actions': 6.5.9_sfoxds7t5ydpegc3knd667wn6m
   '@storybook/addon-docs': 6.5.9_jlqaz2oa4t2bvxu24qlxjc546e
@@ -119,8 +122,11 @@ devDependencies:
   '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
   '@testing-library/user-event': 13.5.0_gwcpuyfvwbszhlmedmugzivgzu
   '@types/cookie': 0.5.1
+  '@types/jest': 28.1.6
+  '@types/json-schema': 7.0.11
   '@types/node': 17.0.45
   '@types/react': 17.0.48
+  '@types/react-dom': 18.0.6
   '@types/uuid': 8.3.4
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
@@ -4288,6 +4294,7 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -4364,6 +4371,12 @@ packages:
 
   /@types/react-dom/17.0.17:
     resolution: {integrity: sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==}
+    dependencies:
+      '@types/react': 17.0.48
+    dev: true
+
+  /@types/react-dom/18.0.6:
+    resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
     dependencies:
       '@types/react': 17.0.48
     dev: true
