@@ -75,7 +75,7 @@ const SourceDetailsPage: FC & {
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}
-          breadcrumbs={id ? ["Data Source", id.toString()] : ["Data Source"]}
+          breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
           enableButton={false}
           marginBottom="mb-[50px]"
         />

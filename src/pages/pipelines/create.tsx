@@ -26,7 +26,7 @@ const CreatePipelinePage: FC & {
         };
       case 1:
         return {
-          title: "Set Up data source",
+          title: "Set Up source",
           breadcrumbs: ["Pipeline", "Source setting"],
         };
       case 2:
@@ -36,7 +36,7 @@ const CreatePipelinePage: FC & {
         };
       case 3:
         return {
-          title: "Set Up Data Destination",
+          title: "Set Up Destination",
           breadcrumbs: ["Pipeline", "Destination setting"],
         };
       case 4:

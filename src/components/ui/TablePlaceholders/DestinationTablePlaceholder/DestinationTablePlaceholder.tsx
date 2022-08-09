@@ -53,7 +53,7 @@ const DestinationTablePlaceholder: FC<DestinationTablePlaceholderProps> = ({
   return (
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
-      placeholderTitle="No data destination"
+      placeholderTitle="No destination"
       createButtonTitle="Configurate your first destination"
       createButtonLink="/destinations/create"
       marginBottom={marginBottom}

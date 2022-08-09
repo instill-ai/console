@@ -60,7 +60,7 @@ test.describe.serial("Simple sync pipeline with local model", () => {
 
     const isOnSetupDestinationStep = await page
       .locator("h2", {
-        hasText: "Set Up Data Destination",
+        hasText: "Set Up Destination",
       })
       .isVisible();
 
@@ -194,7 +194,7 @@ test.describe.serial("Simple sync pipeline with github model", () => {
 
     const isOnSetupDestinationStep = await page
       .locator("h2", {
-        hasText: "Set Up Data Destination",
+        hasText: "Set Up Destination",
       })
       .isVisible();
 
