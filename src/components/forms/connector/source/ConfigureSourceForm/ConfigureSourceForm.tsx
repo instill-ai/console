@@ -185,7 +185,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
                 <SingleSelect
                   id="sourceDefinition"
                   name="sourceDefinition"
-                  label="Data source"
+                  label="Source"
                   disabled={canEdit ? false : true}
                   options={syncSourceDefinitionOptions}
                   required={true}

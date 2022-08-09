@@ -46,8 +46,8 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
-          title="Data Destination"
-          breadcrumbs={["Data destination"]}
+          title="Destination"
+          breadcrumbs={["Destination"]}
           enableButton={
             destinations.data
               ? destinations.data.length === 0

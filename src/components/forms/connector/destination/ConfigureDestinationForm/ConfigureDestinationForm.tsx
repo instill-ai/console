@@ -192,7 +192,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
                 <SingleSelect
                   id="destinationDefinition"
                   name="definition"
-                  label="Data destination"
+                  label="Destination"
                   value={selectedDestinationDefinitionOption}
                   options={syncDestinationDefinitionOptions}
                   additionalOnChangeCb={destinationDefinitionOnChangeCb}

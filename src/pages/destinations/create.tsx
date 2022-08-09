@@ -37,7 +37,7 @@ const CreateDestinationPage: FC & {
       <PageContentContainer>
         <PageTitle
           title="Set Up New Destination"
-          breadcrumbs={["Data Destination", "Destination Settings"]}
+          breadcrumbs={["Destination", "Destination Settings"]}
           enableButton={false}
           marginBottom="mb-10"
         />

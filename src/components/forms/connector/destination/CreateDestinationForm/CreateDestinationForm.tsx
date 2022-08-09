@@ -417,7 +417,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           id="description"
           label="Description"
           key="description"
-          description="Fill with a short description of your data destination"
+          description="Fill with a short description of your destination"
           required={false}
           error={
             fieldErrors ? (fieldErrors.description as string) ?? null : null

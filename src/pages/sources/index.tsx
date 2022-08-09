@@ -46,8 +46,8 @@ const SourcePage: FC & {
       <PageHead title="source-connectors" />
       <PageContentContainer>
         <PageTitle
-          title="Data Sources"
-          breadcrumbs={["Data sources"]}
+          title="Sources"
+          breadcrumbs={["Sources"]}
           enableButton={
             sources.data ? (sources.data.length === 0 ? false : true) : false
           }

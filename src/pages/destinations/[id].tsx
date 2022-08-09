@@ -75,9 +75,7 @@ const DestinationDetailsPage: FC & {
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}
-          breadcrumbs={
-            id ? ["Data Destination", id.toString()] : ["Data Destination"]
-          }
+          breadcrumbs={id ? ["Destination", id.toString()] : ["Destination"]}
           enableButton={false}
           marginBottom="mb-[50px]"
         />
