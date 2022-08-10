@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0-alpha](https://github.com/instill-ai/console/compare/v0.8.0-alpha...v0.9.0-alpha) (2022-08-10)
+
+
+### Features
+
+* update sidebar docs link ([#217](https://github.com/instill-ai/console/issues/217)) ([2d026b1](https://github.com/instill-ai/console/commit/2d026b183896acbb937a78499e5c8314f67435ac))
+
 ## [0.8.0-alpha](https://github.com/instill-ai/console/compare/v0.7.0-alpha...v0.8.0-alpha) (2022-08-03)
 
 
