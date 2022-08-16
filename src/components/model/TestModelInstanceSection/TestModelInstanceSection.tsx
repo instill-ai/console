@@ -6,8 +6,9 @@ import {
 } from "@instill-ai/design-system";
 import cn from "clsx";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { CH } from "@code-hike/mdx/components";
 
-import { ModelInstance } from "@/lib/instill";
+import { getTemplateCodeBlockMdxQuery, ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -16,13 +17,11 @@ import { useTestModelInstance } from "@/services/model";
 export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
   marginBottom: Nullable<string>;
-  testResultTemplate: MDXRemoteSerializeResult;
 };
 
 const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   modelInstance,
   marginBottom,
-  testResultTemplate,
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -32,7 +31,8 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   // #                                                                 #
   // ###################################################################
 
-  const [resultBlockIsOpen, setResultBlockIsOpen] = useState(false);
+  const [testResult, setTestResult] =
+    useState<Nullable<MDXRemoteSerializeResult>>(null);
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -41,9 +41,6 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
       description: null,
       status: null,
     });
-
-  const [testModelInstanceResult, setTestModelInstanceResult] =
-    useState<Nullable<string>>(null);
 
   const testModelInstance = useTestModelInstance();
 
@@ -58,21 +55,35 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
       message: "Testing...",
     }));
 
+    setTestResult(null);
+
     testModelInstance.mutate(
       {
         modelInstanceName: modelInstance?.name,
         content: file,
       },
       {
-        onSuccess: (result) => {
+        onSuccess: async (result) => {
           setMessageBoxState(() => ({
             activate: true,
             status: "success",
             description: null,
             message: "Test succeeded",
           }));
-          setResultBlockIsOpen(true);
-          setTestModelInstanceResult(JSON.stringify(result, null, "\t"));
+
+          try {
+            const source = await getTemplateCodeBlockMdxQuery(
+              "test-result-template.mdx",
+              "{{instill-test-result}}",
+              JSON.stringify(result, null, "\t")
+            );
+
+            setTestResult(source);
+          } catch (err) {
+            console.log(err);
+            setTestResult(null);
+          }
+
           if (amplitudeIsInit) {
             sendAmplitudeData("test_model_instance", {
               type: "critical_action",
@@ -81,8 +92,8 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           }
         },
         onError: (error) => {
+          setTestResult(null);
           if (error instanceof Error) {
-            setResultBlockIsOpen(false);
             setMessageBoxState(() => ({
               activate: true,
               status: "error",
@@ -90,7 +101,6 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
               message: error.message,
             }));
           } else {
-            setResultBlockIsOpen(false);
             setMessageBoxState(() => ({
               activate: true,
               status: "error",
@@ -125,8 +135,8 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           disabled={modelInstance?.state === "STATE_ONLINE" ? false : true}
         />
       </div>
-      <div className="flex">
-        {testModelInstanceResult ? <MDXRemote {...testResultTemplate} /> : null}
+      <div className="w-full">
+        {testResult ? <MDXRemote {...testResult} components={{ CH }} /> : null}
       </div>
       <BasicProgressMessageBox
         state={messageBoxState}
