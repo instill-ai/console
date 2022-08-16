@@ -6,7 +6,7 @@ import { UseMutationResult } from "react-query";
 import cn from "clsx";
 import { AxiosError } from "axios";
 
-export type ChangeResourceStateSectionProps = {
+export type ChangeResourceStateButtonProps = {
   resource: Nullable<ModelInstance | Pipeline>;
   switchOff: UseMutationResult<
     ModelInstance | Pipeline,
@@ -23,7 +23,7 @@ export type ChangeResourceStateSectionProps = {
   marginBottom?: string;
 };
 
-const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
+const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   resource,
   switchOn,
   switchOff,
@@ -103,4 +103,4 @@ const ChangeResourceStateSection: FC<ChangeResourceStateSectionProps> = ({
   );
 };
 
-export default ChangeResourceStateSection;
+export default ChangeResourceStateButton;
