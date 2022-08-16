@@ -1,16 +1,14 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import cn from "clsx";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { FormBase } from "../../commons";
-import { PrimaryButton } from "@/components/ui";
 import {
   BasicProgressMessageBox,
   BasicTextField,
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
-import { TestModelInstanceSection } from "@/components/sections";
 
 export type ConfigureModelInstanceFormProps = {
   modelInstance: ModelInstance;
@@ -90,11 +88,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
           ) : null}
         </div>
       </FormBase>
-      <TestModelInstanceSection
-        modelInstance={modelInstance}
-        marginBottom="mb-10"
-      />
-      <div className="mb-10 flex flex-row">
+      {/* <div className="mb-10 flex flex-row">
         <PrimaryButton
           disabled={true}
           onClickHandler={() => handleEditButton()}
@@ -103,7 +97,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
         >
           {canEdit ? "Done" : "Edit"}
         </PrimaryButton>
-      </div>
+      </div> */}
       <div className="flex flex-row">
         <BasicProgressMessageBox
           state={messageBoxState}
