@@ -28,6 +28,7 @@ import {
   PipelinesTable,
   PageTitle,
   ModelInstanceReadmeCard,
+  ChangeResourceStateButton,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
@@ -39,15 +40,11 @@ import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
-import ChagneResourceStateSection from "@/components/sections/ChagneResourceStateSection";
+import { TestModelInstanceSection } from "@/components/model";
 
 interface GetLayOutProps {
   page: ReactElement;
 }
-
-// export type SourceDetailsPageProps = {
-//   fields: any;
-// };
 
 const ModelDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -266,7 +263,7 @@ const ModelDetailsPage: FC & {
             iconPosition="my-auto"
           />
         </div>
-        <ChagneResourceStateSection
+        <ChangeResourceStateButton
           resource={selectedModelInstances}
           switchOn={deployModelInstance}
           switchOff={unDeployModelInstance}
@@ -290,6 +287,10 @@ const ModelDetailsPage: FC & {
               marginBottom="mb-5"
             />
             <ConfigureModelInstanceForm
+              modelInstance={selectedModelInstances}
+              marginBottom="mb-10"
+            />
+            <TestModelInstanceSection
               modelInstance={selectedModelInstances}
               marginBottom="mb-10"
             />

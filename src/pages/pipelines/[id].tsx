@@ -1,7 +1,5 @@
 import { FC, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { serialize } from "next-mdx-remote/serialize";
-import { remarkCodeHike } from "@code-hike/mdx";
 import { CH } from "@code-hike/mdx/components";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
@@ -15,59 +13,28 @@ import {
   StateLabel,
   PipelineModeLabel,
   PageTitle,
+  ChangeResourceStateButton,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
-import ChagneResourceStateSection from "@/components/sections/ChagneResourceStateSection";
 import { Pipeline } from "@/lib/instill";
 import { GetServerSideProps } from "next";
-import fs from "fs";
-import { join } from "path";
-import { readFile } from "fs/promises";
 import { MDXRemoteSerializeResult, MDXRemote } from "next-mdx-remote";
 import { Nullable } from "@/types/general";
+import { getTemplateCodeBlockMdx } from "@/lib/markdown";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const templatePath = join(
-    process.cwd(),
-    "src",
-    "markdown",
-    "pipeline-code-snippet.mdx"
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const snippetSource = await getTemplateCodeBlockMdx(
+    "pipeline-code-template.mdx",
+    "instill-pipeline-id",
+    `${context.params?.id}`
   );
-  const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
-
-  const theme = JSON.parse(
-    await readFile(
-      join(process.cwd(), "src", "styles", "rose-pine-moon.json"),
-      {
-        encoding: "utf-8",
-      }
-    )
-  );
-
-  const templateSource = await serialize(template, {
-    parseFrontmatter: false,
-    mdxOptions: {
-      useDynamicImport: true,
-      remarkPlugins: [
-        [
-          remarkCodeHike,
-          {
-            theme,
-            lineNumbers: false,
-            showCopyButton: true,
-            autoImport: false,
-          },
-        ],
-      ],
-    },
-  });
 
   return {
     props: {
-      templateSource,
+      snippetSource,
     },
   };
 };
@@ -77,12 +44,12 @@ type GetLayOutProps = {
 };
 
 type PipelinePageProps = {
-  templateSource: MDXRemoteSerializeResult;
+  snippetSource: MDXRemoteSerializeResult;
 };
 
 const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ templateSource }) => {
+} = ({ snippetSource }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -101,16 +68,14 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
     useState<Nullable<MDXRemoteSerializeResult>>(null);
 
   useEffect(() => {
-    const newSnippet: MDXRemoteSerializeResult = {
-      compiledSource: templateSource.compiledSource.replace(
-        "{{pipeline-id}}",
+    setSnippet({
+      compiledSource: snippetSource.compiledSource.replaceAll(
+        "instill-pipeline-id",
         `${id}`
       ),
-      scope: templateSource.scope,
-      frontmatter: templateSource.frontmatter,
-    };
-
-    setSnippet(newSnippet);
+      scope: snippetSource.scope,
+      frontmatter: snippetSource.frontmatter,
+    });
   }, []);
 
   // ###################################################################
@@ -167,7 +132,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           isLoading={false}
           marginBottom="mb-10"
         />
-        <ChagneResourceStateSection
+        <ChangeResourceStateButton
           resource={pipeline.isLoading ? null : (pipeline.data as Pipeline)}
           switchOn={activatePipeline}
           switchOff={deActivatePipeline}
