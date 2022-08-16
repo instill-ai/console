@@ -5,22 +5,24 @@ import {
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
 import cn from "clsx";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import TestModelInstanceResultBlock from "@/components/ui/TestModelInstanceResultBlock";
 import { useTestModelInstance } from "@/services/model";
 
 export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
   marginBottom: Nullable<string>;
+  testResultTemplate: MDXRemoteSerializeResult;
 };
 
 const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   modelInstance,
   marginBottom,
+  testResultTemplate,
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -123,24 +125,15 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           disabled={modelInstance?.state === "STATE_ONLINE" ? false : true}
         />
       </div>
-      <div className="flex flex-row">
-        <div className="mr-auto flex">
-          <BasicProgressMessageBox
-            state={messageBoxState}
-            setState={setMessageBoxState}
-            width="w-[25vw]"
-            closable={true}
-          />
-        </div>
-        {testModelInstanceResult ? (
-          <TestModelInstanceResultBlock
-            width="w-[42vw]"
-            result={testModelInstanceResult}
-            blockIsOpen={resultBlockIsOpen}
-            setBlockIsOpen={setResultBlockIsOpen}
-          />
-        ) : null}
+      <div className="flex">
+        {testModelInstanceResult ? <MDXRemote {...testResultTemplate} /> : null}
       </div>
+      <BasicProgressMessageBox
+        state={messageBoxState}
+        setState={setMessageBoxState}
+        width="w-[25vw]"
+        closable={true}
+      />
     </div>
   );
 };
