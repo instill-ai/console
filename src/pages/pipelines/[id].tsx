@@ -1,5 +1,6 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { CH } from "@code-hike/mdx/components";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
@@ -12,42 +13,43 @@ import {
   StateLabel,
   PipelineModeLabel,
   PageTitle,
+  ChangeResourceStateButton,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
-import ChagneResourceStateSection from "@/components/sections/ChagneResourceStateSection";
 import { Pipeline } from "@/lib/instill";
+import { GetServerSideProps } from "next";
+import { MDXRemoteSerializeResult, MDXRemote } from "next-mdx-remote";
+import { Nullable } from "@/types/general";
+import { getTemplateCodeBlockMdx } from "@/lib/markdown";
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const data = await listRepoFileContent(
-//     "instill-ai",
-//     "pipeline-backend",
-//     "config/models/pipeline.json"
-//   );
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const snippetSource = await getTemplateCodeBlockMdx(
+    "pipeline-code-template.mdx",
+    "instill-pipeline-id",
+    `${context.params?.id}`
+  );
 
-//   const decodeSchema = Buffer.from(data.content, "base64").toString();
-//   const jsonSchema = JSON.parse(decodeSchema);
+  return {
+    props: {
+      snippetSource,
+    },
+  };
+};
 
-//   const fields = transformSchemaToFormFields(jsonSchema);
-
-//   console.log(fields);
-
-//   return {
-//     props: {
-//       fields,
-//     },
-//   };
-// };
-
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
+};
 
-const PipelineDetailsPage: FC & {
+type PipelinePageProps = {
+  snippetSource: MDXRemoteSerializeResult;
+};
+
+const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = () => {
+} = ({ snippetSource }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -55,6 +57,26 @@ const PipelineDetailsPage: FC & {
 
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
+
+  // ###################################################################
+  // #                                                                 #
+  // # Setup code block                                                #
+  // #                                                                 #
+  // ###################################################################
+
+  const [snippet, setSnippet] =
+    useState<Nullable<MDXRemoteSerializeResult>>(null);
+
+  useEffect(() => {
+    setSnippet({
+      compiledSource: snippetSource.compiledSource.replaceAll(
+        "instill-pipeline-id",
+        `${id}`
+      ),
+      scope: snippetSource.scope,
+      frontmatter: snippetSource.frontmatter,
+    });
+  }, []);
 
   // ###################################################################
   // #                                                                 #
@@ -110,7 +132,7 @@ const PipelineDetailsPage: FC & {
           isLoading={false}
           marginBottom="mb-10"
         />
-        <ChagneResourceStateSection
+        <ChangeResourceStateButton
           resource={pipeline.isLoading ? null : (pipeline.data as Pipeline)}
           switchOn={activatePipeline}
           switchOff={deActivatePipeline}
@@ -121,6 +143,22 @@ const PipelineDetailsPage: FC & {
           pipeline={pipeline.isSuccess ? pipeline.data : null}
           marginBottom={null}
         />
+        <div className="mb-5 flex flex-col">
+          <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
+          <p className="text-black text-instill-body">
+            You can now trigger the pipeline via sending REST requests.
+          </p>
+        </div>
+        <div>
+          {snippet ? (
+            <MDXRemote
+              compiledSource={snippet.compiledSource}
+              scope={snippet.scope}
+              frontmatter={snippet.frontmatter}
+              components={{ CH }}
+            />
+          ) : null}
+        </div>
       </PageContentContainer>
     </>
   );

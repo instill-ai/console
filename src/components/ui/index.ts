@@ -25,6 +25,8 @@ import type { PageTitleProps } from "./PageTitle";
 import PageTitle from "./PageTitle";
 import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
 import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
+import ChangeResourceStateButton from "./ChangeResourceStateButton";
+import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
 
 export type {
   StateIndicatorProps,
@@ -37,6 +39,7 @@ export type {
   ModelInstanceTaskLabelProps,
   PageTitleProps,
   ModelInstanceReadmeCardProps,
+  ChangeResourceStateButtonProps,
 };
 
 export {
@@ -56,6 +59,7 @@ export {
   ModelInstanceTaskLabel,
   PageTitle,
   ModelInstanceReadmeCard,
+  ChangeResourceStateButton,
 };
 
 export * from "./TableHeads";
