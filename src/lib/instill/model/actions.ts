@@ -61,7 +61,8 @@ export const testModelInstance = async (payload: TestModelInstancePayload) => {
         },
       }
     );
-    return Promise.resolve(data.output);
+
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }
