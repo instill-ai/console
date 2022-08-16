@@ -1,15 +1,18 @@
 import { join } from "path";
 import fs from "fs";
-import { readFile } from "fs/promises";
 import { serialize } from "next-mdx-remote/serialize";
 import { remarkCodeHike } from "@code-hike/mdx";
 
 /**
  * Get template from /src/lib/markdown/template and generate code-block
- * template with code-hike and rose-pine-moon theme
+ * with code-hike and rose-pine-moon theme
  */
 
-export const getCodeTemplateMdxSource = async (templateName: string) => {
+export const getTemplateCodeBlockMdx = async (
+  templateName: string,
+  match: string,
+  value: string
+) => {
   try {
     const templatePath = join(
       process.cwd(),
@@ -19,18 +22,18 @@ export const getCodeTemplateMdxSource = async (templateName: string) => {
       "template",
       templateName
     );
+
     const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
+    const codeStr = template.replaceAll(match, value);
 
     const theme = JSON.parse(
-      await readFile(
+      fs.readFileSync(
         join(process.cwd(), "src", "styles", "rose-pine-moon.json"),
-        {
-          encoding: "utf-8",
-        }
+        { encoding: "utf-8" }
       )
     );
 
-    const templateSource = await serialize(template, {
+    const templateSource = await serialize(codeStr, {
       parseFrontmatter: false,
       mdxOptions: {
         useDynamicImport: true,
