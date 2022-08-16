@@ -5,6 +5,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
+import "@code-hike/mdx/dist/index.css";
 
 import "@instill-ai/design-system/build/index.cjs.css";
 import { useRouter } from "next/router";

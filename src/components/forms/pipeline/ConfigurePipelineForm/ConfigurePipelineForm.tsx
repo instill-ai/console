@@ -219,16 +219,6 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   required={true}
                 />
               </div>
-              <div className="mb-[60px] flex flex-col">
-                <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
-                <p className="text-black text-instill-body">
-                  Please refer to the{" "}
-                  <a href="#" className="text-instillBlue50">
-                    guide
-                  </a>{" "}
-                  about how to trigger the pipeline
-                </p>
-              </div>
               <div className="mb-10 flex flex-row">
                 <OutlineButton
                   disabled={disableResourceDeletion}
