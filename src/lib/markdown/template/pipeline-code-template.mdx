@@ -1,7 +1,7 @@
 <CH.Code>
 
 ```sh cURL(url)
-curl -X POST http://localhost:8081/v1alpha/pipelines/{{pipeline-id}}:trigger -d '{
+curl -X POST http://localhost:8081/v1alpha/pipelines/instill-pipeline-id:trigger -d '{
   "inputs": [
     {
       "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
@@ -14,7 +14,7 @@ curl -X POST http://localhost:8081/v1alpha/pipelines/{{pipeline-id}}:trigger -d 
 ```
 
 ```sh cURL(base64)
-curl -X POST http://localhost:8081/v1alpha/pipelines/{{pipeline-id}}:trigger -d '{
+curl -X POST http://localhost:8081/v1alpha/pipelines/instill-pipeline-id:trigger -d '{
   "inputs": [
     {
       "image_base64": "/9j/4AAQSk...D/2Q=="
@@ -25,7 +25,7 @@ curl -X POST http://localhost:8081/v1alpha/pipelines/{{pipeline-id}}:trigger -d 
 ```
 
 ```sh cURL(multipart)
-curl -X POST http://localhost:8081/v1alpha/pipelines/{{pipeline-id}}:trigger-multipart \
+curl -X POST http://localhost:8081/v1alpha/pipelines/instill-pipeline-id:trigger-multipart \
 --form 'file=@"dog.jpg"' \
 --form 'file=@"horse.jpg"'
 ```
