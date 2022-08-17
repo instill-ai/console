@@ -506,6 +506,17 @@ const CreateNewModelFlow: FC = () => {
               disabled={modelCreated ? true : false}
               required={true}
             />
+            <TextArea
+              id="description"
+              name="description"
+              label="Description"
+              description="Fill with a short description of your new model"
+              value={values.description}
+              error={errors.description || null}
+              disabled={modelCreated ? true : false}
+              enableCounter={true}
+              counterWordLimit={1023}
+            />
             <SingleSelect
               name="modelDefinition"
               id="modelDefinition"
@@ -520,15 +531,6 @@ const CreateNewModelFlow: FC = () => {
             />
             {values.modelDefinition === "github" ? (
               <>
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description of your new model"
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={modelCreated ? true : false}
-                />
                 <TextField
                   id="modelRepo"
                   name="repo"
@@ -543,15 +545,6 @@ const CreateNewModelFlow: FC = () => {
             ) : null}
             {values.modelDefinition === "local" ? (
               <>
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description of your new model"
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={modelCreated ? true : false}
-                />
                 <UploadFileField
                   id="file"
                   name="file"
@@ -570,15 +563,6 @@ const CreateNewModelFlow: FC = () => {
             ) : null}
             {values.modelDefinition === "artivc" ? (
               <>
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description of your new model"
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={modelCreated ? true : false}
-                />
                 <TextField
                   id="gcsBucketPath"
                   name="gcsBucketPath"
@@ -600,17 +584,6 @@ const CreateNewModelFlow: FC = () => {
             ) : null}
             {values.modelDefinition === "huggingface" ? (
               <>
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description of your new model"
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={modelCreated ? true : false}
-                  enableCounter={true}
-                  counterWordLimit={1023}
-                />
                 <TextField
                   id="huggingFaceRepo"
                   name="huggingFaceRepo"
