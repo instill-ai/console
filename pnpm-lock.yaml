@@ -6,7 +6,7 @@ specifiers:
   '@code-hike/mdx': ^0.7.3
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
-  '@instill-ai/design-system': ^0.0.106
+  '@instill-ai/design-system': ^0.0.109
   '@next/env': ^12.2.3
   '@playwright/test': ^1.22.2
   '@storybook/addon-actions': ^6.5.9
@@ -82,7 +82,7 @@ specifiers:
 
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
-  '@instill-ai/design-system': 0.0.106_b4usidsfzquyh4hx4nnzn3lrei
+  '@instill-ai/design-system': 0.0.109_b4usidsfzquyh4hx4nnzn3lrei
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
@@ -2065,8 +2065,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system/0.0.106_b4usidsfzquyh4hx4nnzn3lrei:
-    resolution: {integrity: sha512-w01eSFcWm5D8ErgJJ1J+eF/vjvZsur/cnOAA9V+/Fb6HB1L3oL/FQum+3pUpqyTBFH27jP9rHA2kCWLqEiebhg==}
+  /@instill-ai/design-system/0.0.109_b4usidsfzquyh4hx4nnzn3lrei:
+    resolution: {integrity: sha512-8eWDtpPllrhA2zXqGsBoOh7cszfkkSLrmlHyhIyaVNFFj0cqH/sLE6FHoHMiAMixBsoN6rlq22/Ftr0HQxCYsA==}
     peerDependencies:
       clsx: ^1.1.1
       react: ^17.0.2
@@ -8760,7 +8760,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.16.3
+      uglify-js: 3.17.0
     dev: true
 
   /hard-rejection/2.1.0:
@@ -12768,6 +12768,15 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
+  /postcss/8.4.16:
+    resolution: {integrity: sha512-ipHE1XBvKzm5xI7hiHCZJCSugxvsdq2mPnsq5+UF+VHCjiBvtDrlxJfMBToWaP9D5XlgNmcFGqoHmUn0EYEaRQ==}
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      nanoid: 3.3.4
+      picocolors: 1.0.0
+      source-map-js: 1.0.2
+    dev: false
+
   /prelude-ls/1.1.2:
     resolution: {integrity: sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==}
     engines: {node: '>= 0.8.0'}
@@ -13822,7 +13831,7 @@ packages:
       htmlparser2: 6.1.0
       is-plain-object: 5.0.0
       parse-srcset: 1.0.2
-      postcss: 8.4.14
+      postcss: 8.4.16
     dev: false
 
   /saxes/5.0.1:
@@ -15104,8 +15113,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uglify-js/3.16.3:
-    resolution: {integrity: sha512-uVbFqx9vvLhQg0iBaau9Z75AxWJ8tqM9AV890dIZCLApF4rTcyHwmAvLeEdYRs+BzYWu8Iw81F79ah0EfTXbaw==}
+  /uglify-js/3.17.0:
+    resolution: {integrity: sha512-aTeNPVmgIMPpm1cxXr2Q/nEbvkmV8yq66F3om7X3P/cvOXQ0TMQ64Wk63iyT1gPlmdmGzjGpyLh1f3y8MZWXGg==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
