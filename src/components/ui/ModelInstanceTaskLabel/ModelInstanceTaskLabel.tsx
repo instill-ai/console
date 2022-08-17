@@ -6,6 +6,7 @@ import {
   ImageClassificationIcon,
   KeypointDetectionIcon,
   ObjectDetectionIcon,
+  OpticalCharacterRecognitionIcon,
 } from "@instill-ai/design-system";
 
 export type ModelInstanceTaskLabelProps = {
@@ -42,6 +43,10 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
 
     case "TASK_KEYPOINT":
       modelInstanceTaskIcon = <KeypointDetectionIcon {...icon} />;
+      break;
+
+    case "TASK_OCR":
+      modelInstanceTaskIcon = <OpticalCharacterRecognitionIcon {...icon} />;
       break;
 
     default:
