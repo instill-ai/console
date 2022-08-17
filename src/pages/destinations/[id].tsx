@@ -79,7 +79,7 @@ const DestinationDetailsPage: FC & {
           enableButton={false}
           marginBottom="mb-[50px]"
         />
-        <div className="mb-5 flex flex-row gap-x-5">
+        <div className="mb-10 flex flex-row gap-x-5">
           <h3 className="my-auto text-black text-instill-h3">State</h3>
           <StateLabel
             enableIcon={true}
@@ -95,7 +95,7 @@ const DestinationDetailsPage: FC & {
             paddingX="px-2"
           />
         </div>
-        <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
+        <h3 className="mb-5 text-black text-instill-h3">In Use by Pipelines</h3>
         <PipelinesTable
           pipelines={
             destinationWithPipelines.data
