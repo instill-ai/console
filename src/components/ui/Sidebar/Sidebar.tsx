@@ -3,7 +3,7 @@ import cn from "clsx";
 import {
   DataDestinationIcon,
   DataSourceIcon,
-  Logo,
+  VdpLogo,
   ModelIcon,
   PipelineIcon,
   ResourceIcon,
@@ -247,9 +247,9 @@ const Sidebar: FC = () => {
     <div className="sticky top-0 flex h-screen flex-col bg-instillGrey90 pb-5">
       <div className="relative mb-20 py-6">
         <div className="flex px-5">
-          <Logo
-            type={isCollapsed ? "colourLogomark" : "ColourLogomarkWhiteType"}
-            width={isCollapsed ? 38 : 182}
+          <VdpLogo
+            type={isCollapsed ? "square" : "expand"}
+            width={isCollapsed ? 44 : 124}
           />
         </div>
 
