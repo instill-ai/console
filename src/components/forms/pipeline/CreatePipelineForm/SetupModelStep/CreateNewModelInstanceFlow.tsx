@@ -492,6 +492,14 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         disabled={modelCreated ? true : false}
         required={true}
       />
+      <TextArea
+        id="description"
+        name="model.new.description"
+        label="Description"
+        description="Fill with a short description of your new model"
+        value={values.model.new.description}
+        error={errors.model?.new?.description || null}
+      />
       <SingleSelect
         id="modelDefinition"
         name="model.new.modelDefinition"
@@ -506,14 +514,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       />
       {values.model.new.modelDefinition === "github" ? (
         <>
-          <TextArea
-            id="description"
-            name="model.new.description"
-            label="Description"
-            description="Fill with a short description of your new model"
-            value={values.model.new.description}
-            error={errors.model?.new?.description || null}
-          />
           <TextField
             id="modelRepo"
             name="model.new.repo"
@@ -528,14 +528,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       ) : null}
       {values.model.new.modelDefinition === "local" ? (
         <>
-          <TextArea
-            id="description"
-            name="model.new.description"
-            label="Description"
-            description="Fill with a short description of your new model"
-            value={values.model.new.description}
-            error={errors.model?.new?.description || null}
-          />
           <UploadFileField
             id="modelFile"
             name="model.new.file"
@@ -554,14 +546,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       ) : null}
       {values.model.new.modelDefinition === "artivc" ? (
         <>
-          <TextArea
-            id="description"
-            name="model.new.description"
-            label="Description"
-            description="Fill with a short description of your new model"
-            value={values.model.new.description}
-            error={errors.model?.new?.description || null}
-          />
           <TextField
             id="gcsBucketPath"
             name="model.new.gcsBucketPath"
@@ -583,14 +567,6 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       ) : null}
       {values.model.new.modelDefinition === "huggingface" ? (
         <>
-          <TextArea
-            id="description"
-            name="model.new.description"
-            label="Description"
-            description="Fill with a short description of your new model"
-            value={values.model.new.description}
-            error={errors.model?.new?.description || null}
-          />
           <TextField
             id="huggingFaceRepo"
             name="model.new.huggingFaceRepo"
