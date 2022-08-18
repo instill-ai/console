@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import {
   BasicProgressMessageBox,
   BasicUploadFileField,
@@ -6,11 +6,7 @@ import {
 } from "@instill-ai/design-system";
 import cn from "clsx";
 
-import {
-  getCodeSourceQuery,
-  getShikiSourceQuery,
-  ModelInstance,
-} from "@/lib/instill";
+import { getCodeSourceQuery, ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
