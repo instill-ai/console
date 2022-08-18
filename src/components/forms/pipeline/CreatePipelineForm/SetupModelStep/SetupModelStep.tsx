@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import { FormVerticalDividers } from "@/components/ui";
+import { FormVerticalDivider } from "@/components/ui";
 import { FormikStep } from "@/components/formik";
 import { StepNumberState } from "../CreatePipelineForm";
 import CreateNewModelInstanceFlow from "./CreateNewModelInstanceFlow";
@@ -18,7 +18,7 @@ const SetupModelStep: FC<SetupModelStepProps> = (props) => {
           modelCreated={modelCreated}
           setModelCreated={setModelCreated}
         />
-        <FormVerticalDividers />
+        <FormVerticalDivider />
         <CreateNewModelInstanceFlow
           {...props}
           modelCreated={modelCreated}

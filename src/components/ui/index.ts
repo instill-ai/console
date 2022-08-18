@@ -4,7 +4,7 @@ import type { BreadcrumbProps } from "./Breadcrumb";
 import Sidebar from "./Sidebar";
 import StateIndicator from "./StateIndicator";
 import type { StateIndicatorProps } from "./StateIndicator";
-import FormVerticalDividers from "./FormVerticalDividers";
+import FormVerticalDivider from "./FormVerticalDivider";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
 import TableBody from "./TableBody";
@@ -35,7 +35,7 @@ import ErrorBoundary from "./ErrorBoundary";
 export {
   Sidebar,
   StateIndicator,
-  FormVerticalDividers,
+  FormVerticalDivider,
   TableContainer,
   TableRow,
   TableBody,
