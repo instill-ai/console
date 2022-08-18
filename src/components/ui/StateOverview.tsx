@@ -1,19 +1,19 @@
 import { Nullable } from "@/types/general";
-import { FC, memo, ReactNode } from "react";
-import StateIndicator from "../StateIndicator";
+import { memo, ReactNode } from "react";
+import StateIcon from "./StateIcon";
 
 export type StateOverviewProps = {
-  errorCounts: Nullable<number>;
-  onlineCounts: Nullable<number>;
-  offlineCounts: Nullable<number>;
+  errorCounts: number;
+  onlineCounts: number;
+  offlineCounts: number;
 };
 
-const StateOverview: FC<StateOverviewProps> = ({
+const StateOverview = ({
   errorCounts,
   onlineCounts,
   offlineCounts,
-}) => {
-  const getStateItem = (icon: ReactNode, counts: Nullable<number>) => {
+}: StateOverviewProps) => {
+  const getItem = (icon: ReactNode, counts: Nullable<number>) => {
     return (
       <div className="flex flex-row gap-x-[5px] py-[3px] pl-[3px] pr-[10px]">
         {icon}
@@ -24,8 +24,8 @@ const StateOverview: FC<StateOverviewProps> = ({
 
   return (
     <div className="flex flex-row">
-      {getStateItem(
-        <StateIndicator
+      {getItem(
+        <StateIcon
           state="STATE_ONLINE"
           width="w-3"
           height="h-3"
@@ -33,8 +33,8 @@ const StateOverview: FC<StateOverviewProps> = ({
         />,
         onlineCounts
       )}
-      {getStateItem(
-        <StateIndicator
+      {getItem(
+        <StateIcon
           state="STATE_ERROR"
           width="w-3"
           height="h-3"
@@ -42,8 +42,8 @@ const StateOverview: FC<StateOverviewProps> = ({
         />,
         errorCounts
       )}
-      {getStateItem(
-        <StateIndicator
+      {getItem(
+        <StateIcon
           state="STATE_OFFLINE"
           width="w-3"
           height="h-3"

@@ -255,7 +255,11 @@ const ModelDetailsPage: FC & {
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
-            state={selectedModelInstances ? selectedModelInstances.state : null}
+            state={
+              selectedModelInstances
+                ? selectedModelInstances.state
+                : "STATE_UNSPECIFIED"
+            }
             paddingX="px-[5px]"
             paddingY="py-[5px]"
             iconHeight="h-3"

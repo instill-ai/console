@@ -1,4 +1,3 @@
-import { FC } from "react";
 import cn from "clsx";
 
 export type HorizontalDividerProps = {
@@ -6,10 +5,10 @@ export type HorizontalDividerProps = {
   borderColor: string;
 };
 
-const HorizontalDivider: FC<HorizontalDividerProps> = ({
+const HorizontalDivider = ({
   marginBottom,
   borderColor,
-}) => {
+}: HorizontalDividerProps) => {
   return (
     <div className={cn("flex w-full border-b", marginBottom, borderColor)} />
   );

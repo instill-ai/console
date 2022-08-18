@@ -1,52 +1,42 @@
+import Breadcrumb from "./Breadcrumb";
+import type { BreadcrumbProps } from "./Breadcrumb";
+
 import Sidebar from "./Sidebar";
-import StateIndicator from "./StateIndicator";
-import type { StateIndicatorProps } from "./StateIndicator";
-import FormVerticalDividers from "./FormVerticalDividers";
+import StateIcon from "./StateIcon";
+import type { StateIconProps } from "./StateIcon";
+import FormVerticalDivider from "./FormVerticalDivider";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
 import TableBody from "./TableBody";
 
-import type { StateLabelProps } from "./StateLabel";
 import StateLabel from "./StateLabel";
-import type { PipelineModeLabelProps } from "./PipelineModeLabel";
+import type { StateLabelProps } from "./StateLabel";
 import PipelineModeLabel from "./PipelineModeLabel";
-import type { ConnectorIconProps } from "./ConnectorIcon";
+import type { PipelineModeLabelProps } from "./PipelineModeLabel";
 import ConnectorIcon from "./ConnectorIcon";
-import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
+import type { ConnectorIconProps } from "./ConnectorIcon";
 import ModelDefinitionIcon from "./ModelDefinitionIcon";
+import type { ModelDefinitionIconProps } from "./ModelDefinitionIcon";
 import ModelDefinitionLabel from "./ModelDefinitionLabel";
-import type { HorizontalDividerProps } from "./HorizontalDivider";
+import type { ModelDefinitionLabelProps } from "./ModelDefinitionLabel";
 import HorizontalDivider from "./HorizontalDivider";
-import type { TableLoadingProgressProps } from "./TableLoadingProgress";
+import type { HorizontalDividerProps } from "./HorizontalDivider";
 import TableLoadingProgress from "./TableLoadingProgress";
-import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
+import type { TableLoadingProgressProps } from "./TableLoadingProgress";
 import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
-import type { PageTitleProps } from "./PageTitle";
+import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
 import PageTitle from "./PageTitle";
+import type { PageTitleProps } from "./PageTitle";
 import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
 import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
 import ChangeResourceStateButton from "./ChangeResourceStateButton";
 import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
 import ErrorBoundary from "./ErrorBoundary";
 
-export type {
-  StateIndicatorProps,
-  StateLabelProps,
-  PipelineModeLabelProps,
-  ConnectorIconProps,
-  ModelDefinitionIconProps,
-  HorizontalDividerProps,
-  TableLoadingProgressProps,
-  ModelInstanceTaskLabelProps,
-  PageTitleProps,
-  ModelInstanceReadmeCardProps,
-  ChangeResourceStateButtonProps,
-};
-
 export {
   Sidebar,
-  StateIndicator,
-  FormVerticalDividers,
+  StateIcon,
+  FormVerticalDivider,
   TableContainer,
   TableRow,
   TableBody,
@@ -62,6 +52,23 @@ export {
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
   ErrorBoundary,
+  Breadcrumb,
+};
+
+export type {
+  StateIconProps,
+  StateLabelProps,
+  PipelineModeLabelProps,
+  ConnectorIconProps,
+  ModelDefinitionIconProps,
+  HorizontalDividerProps,
+  TableLoadingProgressProps,
+  ModelInstanceTaskLabelProps,
+  PageTitleProps,
+  ModelInstanceReadmeCardProps,
+  ChangeResourceStateButtonProps,
+  BreadcrumbProps,
+  ModelDefinitionLabelProps,
 };
 
 export * from "./TableHeads";

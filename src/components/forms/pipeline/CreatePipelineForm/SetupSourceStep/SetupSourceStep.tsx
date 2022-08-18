@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { FormVerticalDividers } from "@/components/ui";
+import { FormVerticalDivider } from "@/components/ui";
 import { FormikStep } from "@/components/formik";
 import { StepNumberState } from "../CreatePipelineForm";
 import CreateNewSourceFlow from "./CreateNewSourceFlow";
@@ -13,7 +13,7 @@ const SetupSourceStep: FC<SetupSourceStepProps> = (props) => {
     <FormikStep>
       <div className="flex flex-1 flex-row">
         <UseExistingSourceFlow {...props} />
-        <FormVerticalDividers {...props} />
+        <FormVerticalDivider />
         <CreateNewSourceFlow {...props} />
       </div>
     </FormikStep>

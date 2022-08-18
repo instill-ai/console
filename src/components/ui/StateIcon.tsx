@@ -3,71 +3,66 @@ import {
   StatusOffIcon,
   StatusOnIcon,
 } from "@instill-ai/design-system";
-import { FC, memo, ReactElement } from "react";
-import { State } from "types/general";
+import { memo, ReactElement } from "react";
+import { Nullable, State } from "types/general";
 
-export type StateIndicatorProps = {
+export type StateIconProps = {
   state: State;
   width: string;
   height: string;
-  position: string;
+  position: Nullable<string>;
 };
 
-const StateIndicator: FC<StateIndicatorProps> = ({
-  state,
-  width,
-  height,
-  position,
-}) => {
-  let statusIcon: ReactElement;
+const StateIcon = ({ state, width, height, position }: StateIconProps) => {
+  let icon: ReactElement;
 
   switch (state) {
     case "STATE_ERROR":
-      statusIcon = (
+      icon = (
         <StatusErrorIcon
           color="fill-instillRed"
           width={width}
           height={height}
-          position={position}
+          position={position || undefined}
         />
       );
       break;
     case "STATE_ACTIVE":
     case "STATE_ONLINE":
     case "STATE_CONNECTED":
-      statusIcon = (
+      icon = (
         <StatusOnIcon
           color="fill-instillGreen"
           width={width}
           height={height}
-          position={position}
+          position={position || undefined}
         />
       );
       break;
     case "STATE_OFFLINE":
     case "STATE_INACTIVE":
     case "STATE_DISCONNECTED":
-      statusIcon = (
+      icon = (
         <StatusOffIcon
           color="fill-instillGrey50"
           width={width}
           height={height}
-          position={position}
+          position={position || undefined}
         />
       );
       break;
     default:
-      statusIcon = (
+      icon = (
         <StatusOffIcon
           color="fill-instillGrey50"
           width={width}
           height={height}
-          position={position}
+          position={position || undefined}
         />
       );
   }
 
-  return statusIcon;
+  return icon;
 };
 
-export default memo(StateIndicator);
+export default memo(StateIcon);

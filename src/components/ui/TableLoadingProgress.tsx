@@ -1,4 +1,3 @@
-import { FC } from "react";
 import cn from "clsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
 
@@ -8,9 +7,7 @@ export type TableLoadingProgressProps = {
   marginBottom: Nullable<string>;
 };
 
-const TableLoadingProgress: FC<TableLoadingProgressProps> = ({
-  marginBottom,
-}) => {
+const TableLoadingProgress = ({ marginBottom }: TableLoadingProgressProps) => {
   return (
     <div className={cn("flex min-h-[300px] w-full bg-white", marginBottom)}>
       <div className="m-auto flex flex-col gap-y-2.5">

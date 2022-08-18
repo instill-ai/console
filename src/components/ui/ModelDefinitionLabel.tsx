@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { ReactElement } from "react";
 import cn from "clsx";
 
 import { Nullable } from "@/types/general";
@@ -14,11 +14,11 @@ export type ModelDefinitionLabelProps = {
   position: Nullable<string>;
 };
 
-const ModelDefinitionLabel: FC<ModelDefinitionLabelProps> = ({
+const ModelDefinitionLabel = ({
   modelDefinition,
   marginBottom,
   position,
-}) => {
+}: ModelDefinitionLabelProps) => {
   const icon = {
     width: "w-[18px]",
     height: "h-[18px]",

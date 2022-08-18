@@ -1,12 +1,13 @@
-import { FC } from "react";
 import cn from "clsx";
+import { ReactNode } from "react";
 
 export type TableRowProps = {
   borderColor: string;
   bgColor: string;
+  children: ReactNode;
 };
 
-const TableRow: FC<TableRowProps> = ({ children, borderColor, bgColor }) => {
+const TableRow = ({ children, borderColor, bgColor }: TableRowProps) => {
   return <tr className={cn("border", borderColor, bgColor)}>{children}</tr>;
 };
 

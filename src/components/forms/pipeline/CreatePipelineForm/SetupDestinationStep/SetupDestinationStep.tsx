@@ -4,7 +4,7 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 
 import {
   ConnectorIcon,
-  FormVerticalDividers,
+  FormVerticalDivider,
   PrimaryButton,
 } from "@/components/ui";
 import { SingleSelect, FormikStep } from "@/components/formik";
@@ -185,7 +185,7 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
       ) : (
         <div className="flex flex-1 flex-row">
           <UseExistingDestinationFlow {...props} />
-          <FormVerticalDividers />
+          <FormVerticalDivider />
           <CreateDestinationForm
             setResult={(destinationId) => {
               setFieldValue("destination.type", "new");

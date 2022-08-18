@@ -4,7 +4,6 @@ import {
   HuggingFaceIcon,
   LocalUploadIcon,
 } from "@instill-ai/design-system";
-import { FC } from "react";
 import cn from "clsx";
 
 export type ModelDefinitionIconProps = {
@@ -15,13 +14,13 @@ export type ModelDefinitionIconProps = {
   iconColor: string;
 };
 
-const ModelDefinitionIcon: FC<ModelDefinitionIconProps> = ({
+const ModelDefinitionIcon = ({
   iconName,
   iconColor,
   iconHeight,
   iconWidth,
   iconPosition,
-}) => {
+}: ModelDefinitionIconProps) => {
   switch (iconName) {
     case "local.svg": {
       return (
