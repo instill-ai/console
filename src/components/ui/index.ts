@@ -1,3 +1,6 @@
+import Breadcrumb from "./Breadcrumb";
+import type { BreadcrumbProps } from "./Breadcrumb";
+
 import Sidebar from "./Sidebar";
 import StateIndicator from "./StateIndicator";
 import type { StateIndicatorProps } from "./StateIndicator";
@@ -29,20 +32,6 @@ import ChangeResourceStateButton from "./ChangeResourceStateButton";
 import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
 import ErrorBoundary from "./ErrorBoundary";
 
-export type {
-  StateIndicatorProps,
-  StateLabelProps,
-  PipelineModeLabelProps,
-  ConnectorIconProps,
-  ModelDefinitionIconProps,
-  HorizontalDividerProps,
-  TableLoadingProgressProps,
-  ModelInstanceTaskLabelProps,
-  PageTitleProps,
-  ModelInstanceReadmeCardProps,
-  ChangeResourceStateButtonProps,
-};
-
 export {
   Sidebar,
   StateIndicator,
@@ -62,6 +51,22 @@ export {
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
   ErrorBoundary,
+  Breadcrumb,
+};
+
+export type {
+  StateIndicatorProps,
+  StateLabelProps,
+  PipelineModeLabelProps,
+  ConnectorIconProps,
+  ModelDefinitionIconProps,
+  HorizontalDividerProps,
+  TableLoadingProgressProps,
+  ModelInstanceTaskLabelProps,
+  PageTitleProps,
+  ModelInstanceReadmeCardProps,
+  ChangeResourceStateButtonProps,
+  BreadcrumbProps,
 };
 
 export * from "./TableHeads";
