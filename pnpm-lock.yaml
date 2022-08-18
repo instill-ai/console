@@ -30,8 +30,9 @@ specifiers:
   '@types/jest': ^28.1.6
   '@types/json-schema': ^7.0.11
   '@types/node': ^17.0.22
+  '@types/prismjs': ^1.26.0
   '@types/react': ^17.0.41
-  '@types/react-dom': ^18.0.6
+  '@types/react-dom': 17.0.17
   '@types/uuid': ^8.3.4
   '@typescript-eslint/eslint-plugin': ^5.20.0
   '@typescript-eslint/parser': ^5.20.0
@@ -40,6 +41,7 @@ specifiers:
   babel-loader: ^8.2.4
   clsx: ^1.1.1
   cookie: ^0.5.0
+  copy-to-clipboard: ^3.3.2
   cross-env: ^7.0.3
   dotenv: ^16.0.1
   eslint: ^8.13.0
@@ -63,6 +65,7 @@ specifiers:
   postcss: ^8.4.12
   prettier: ^2.6.2
   prettier-plugin-tailwindcss: ^0.1.8
+  prismjs: ^1.28.0
   react: ^17.0.2
   react-code-blocks: ^0.0.9-0
   react-dom: ^17.0.2
@@ -72,6 +75,7 @@ specifiers:
   react-select: ^5.3.1
   remark-frontmatter: ^4.0.1
   require-from-string: ^2.0.2
+  shiki: ^0.11.1
   storybook-addon-next-router: ^4.0.0
   tailwindcss: ^3.0.23
   typescript: ^4.6.2
@@ -86,9 +90,11 @@ dependencies:
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
+  copy-to-clipboard: 3.3.2
   cross-env: 7.0.3
   formik: 2.2.9_react@17.0.2
   next: 12.2.3_gdjom6r726p3grwsawiv52ijca
+  prismjs: 1.28.0
   react: 17.0.2
   react-code-blocks: 0.0.9-0_v5ja746gkdtknuc6tj46sve3be
   react-dom: 17.0.2_react@17.0.2
@@ -96,6 +102,7 @@ dependencies:
   react-query: 3.39.2_sfoxds7t5ydpegc3knd667wn6m
   react-select: 5.4.0_akpexhzbkw3xxfu7ga2ccxyxla
   remark-frontmatter: 4.0.1
+  shiki: 0.11.1
   uuid: 8.3.2
   yaml: 2.1.1
   yup: 0.32.11
@@ -128,8 +135,9 @@ devDependencies:
   '@types/jest': 28.1.6
   '@types/json-schema': 7.0.11
   '@types/node': 17.0.45
+  '@types/prismjs': 1.26.0
   '@types/react': 17.0.48
-  '@types/react-dom': 18.0.6
+  '@types/react-dom': 17.0.17
   '@types/uuid': 8.3.4
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
@@ -4445,6 +4453,10 @@ packages:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
     dev: true
 
+  /@types/prismjs/1.26.0:
+    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==}
+    dev: true
+
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
 
@@ -4454,12 +4466,6 @@ packages:
 
   /@types/react-dom/17.0.17:
     resolution: {integrity: sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==}
-    dependencies:
-      '@types/react': 17.0.48
-    dev: true
-
-  /@types/react-dom/18.0.6:
-    resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
     dependencies:
       '@types/react': 17.0.48
     dev: true
@@ -6597,6 +6603,12 @@ packages:
     resolution: {integrity: sha512-XgZ0pFcakEUlbwQEVNg3+QAis1FyTL3Qel9FYy8pSkQqoG3PNoT0bOCQtOXcOkur21r2Eq2kI+IE+gsmAEVlYw==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /copy-to-clipboard/3.3.2:
+    resolution: {integrity: sha512-Vme1Z6RUDzrb6xAI7EZlVZ5uvOk2F//GaxKUxajDqm9LhOVM1inxNAD2vy+UZDYsd0uyA9s7b3/FVZPSxqrCfg==}
+    dependencies:
+      toggle-selection: 1.0.6
+    dev: false
 
   /core-js-compat/3.24.1:
     resolution: {integrity: sha512-XhdNAGeRnTpp8xbD+sR/HFDK9CbeeeqXT6TuofXh3urqEevzkWmLRgrVoykodsw8okqo2pu1BOmuCKrHx63zdw==}
@@ -10480,7 +10492,6 @@ packages:
 
   /jsonc-parser/3.1.0:
     resolution: {integrity: sha512-DRf0QjnNeCUds3xTjKlQQ3DpJD51GvDjJfnxUVWg6PZTo2otSm+slzNAxU/35hF8/oJIKoG9slq30JYOsF2azg==}
-    dev: true
 
   /jsonfile/6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
@@ -14042,6 +14053,14 @@ packages:
       vscode-textmate: 5.2.0
     dev: true
 
+  /shiki/0.11.1:
+    resolution: {integrity: sha512-EugY9VASFuDqOexOgXR18ZV+TbFrQHeCpEYaXamO+SZlsnT/2LxuLBX25GGtIrwaEVFXUAbUQ601SWE2rMwWHA==}
+    dependencies:
+      jsonc-parser: 3.1.0
+      vscode-oniguruma: 1.6.2
+      vscode-textmate: 6.0.0
+    dev: false
+
   /side-channel/1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
     dependencies:
@@ -14896,6 +14915,10 @@ packages:
       safe-regex: 1.1.0
     dev: true
 
+  /toggle-selection/1.0.6:
+    resolution: {integrity: sha512-BiZS+C1OS8g/q2RRbJmy59xpyghNBqrr6k5L/uKBGRsTfxmu3ffiRnd8mlGPUVayg8pvfi5urfnu8TU7DVOkLQ==}
+    dev: false
+
   /toidentifier/1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
@@ -15557,11 +15580,14 @@ packages:
 
   /vscode-oniguruma/1.6.2:
     resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
-    dev: true
 
   /vscode-textmate/5.2.0:
     resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
     dev: true
+
+  /vscode-textmate/6.0.0:
+    resolution: {integrity: sha512-gu73tuZfJgu+mvCSy4UZwd2JXykjK9zAZsfmDeut5dx/1a7FeTk0XwJsSuqQn+cuMCGVbIBfl+s53X4T19DnzQ==}
+    dev: false
 
   /w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}

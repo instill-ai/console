@@ -13,6 +13,8 @@ import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
 import PipelineModeLabel from "./PipelineModeLabel";
 import type { PipelineModeLabelProps } from "./PipelineModeLabel";
+import CodeBlock from "./CodeBlock";
+import type { CodeBlockProps } from "./CodeBlock";
 import ConnectorIcon from "./ConnectorIcon";
 import type { ConnectorIconProps } from "./ConnectorIcon";
 import ModelDefinitionIcon from "./ModelDefinitionIcon";
@@ -53,6 +55,7 @@ export {
   ChangeResourceStateButton,
   ErrorBoundary,
   Breadcrumb,
+  CodeBlock,
 };
 
 export type {
@@ -69,6 +72,7 @@ export type {
   ChangeResourceStateButtonProps,
   BreadcrumbProps,
   ModelDefinitionLabelProps,
+  CodeBlockProps,
 };
 
 export * from "./TableHeads";

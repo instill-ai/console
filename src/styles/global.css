@@ -14,3 +14,10 @@
 }
 
 
+.code-block > pre {
+  border-radius: 6px;
+  padding: 30px 20px;
+  overflow: scroll;
+  font-size: 14px;
+}
+

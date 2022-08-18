@@ -6,6 +6,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@code-hike/mdx/dist/index.css";
+import "../styles/shiki.css";
+import "../styles/prism-rose-pine-moon.css";
 
 import "@instill-ai/design-system/build/index.cjs.css";
 import { useRouter } from "next/router";

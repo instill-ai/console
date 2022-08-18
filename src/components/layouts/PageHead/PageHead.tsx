@@ -45,6 +45,19 @@ const PageHead: FC<PageHeadProps> = ({ title }) => {
         <meta name="twitter:site" content={meta.siteName} />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.pageDescription} />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/images/favicon-16x16.png"
+        />
+        <link rel="shortcut icon" href="/images/favicon.ico" />
         {hostName === "demo.instill.tech" ? (
           <>
             <script

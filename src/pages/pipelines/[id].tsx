@@ -1,6 +1,6 @@
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import { CH } from "@code-hike/mdx/components";
+import Prism from "prismjs";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
@@ -14,6 +14,7 @@ import {
   PipelineModeLabel,
   PageTitle,
   ChangeResourceStateButton,
+  CodeBlock,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
@@ -21,20 +22,46 @@ import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 import { Pipeline } from "@/lib/instill";
 import { GetServerSideProps } from "next";
-import { MDXRemoteSerializeResult, MDXRemote } from "next-mdx-remote";
-import { Nullable } from "@/types/general";
-import { getTemplateCodeBlockMdx } from "@/lib/markdown";
+import { join } from "path";
+import fs from "fs";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const snippetSource = await getTemplateCodeBlockMdx(
-    "pipeline-code-template.mdx",
+  // const snippetSource = await getTemplateCodeBlockMdx(
+  //   "pipeline-code-template.mdx",
+  //   "instill-pipeline-id",
+  //   `${context.params?.id}`
+  // );
+
+  const templatePath = join(
+    process.cwd(),
+    "src",
+    "lib",
+    "markdown",
+    "template",
+    "pipeline-snippet-simple.mdx"
+  );
+
+  const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
+  const codeStr = template.replaceAll(
     "instill-pipeline-id",
     `${context.params?.id}`
   );
 
+  const snippet = `curl -X POST http://localhost:8081/v1alpha/pipelines/${context.params?.id}:trigger -d '{
+    "inputs": [
+      {
+        "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+      },
+      {
+        "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
+      }
+    ]
+  }'`;
+
   return {
     props: {
-      snippetSource,
+      snippetSource: codeStr,
+      snippetCode: snippet,
     },
   };
 };
@@ -44,12 +71,13 @@ type GetLayOutProps = {
 };
 
 type PipelinePageProps = {
-  snippetSource: MDXRemoteSerializeResult;
+  snippetSource: string;
+  snippetCode: string;
 };
 
 const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ snippetSource }) => {
+} = ({ snippetSource, snippetCode }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -64,18 +92,22 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   // #                                                                 #
   // ###################################################################
 
-  const [snippet, setSnippet] =
-    useState<Nullable<MDXRemoteSerializeResult>>(null);
+  // const [snippet, setSnippet] =
+  //   useState<Nullable<MDXRemoteSerializeResult>>(null);
+
+  // useEffect(() => {
+  //   setSnippet({
+  //     compiledSource: snippetSource.compiledSource.replaceAll(
+  //       "instill-pipeline-id",
+  //       `${id}`
+  //     ),
+  //     scope: snippetSource.scope,
+  //     frontmatter: snippetSource.frontmatter,
+  //   });
+  // }, []);
 
   useEffect(() => {
-    setSnippet({
-      compiledSource: snippetSource.compiledSource.replaceAll(
-        "instill-pipeline-id",
-        `${id}`
-      ),
-      scope: snippetSource.scope,
-      frontmatter: snippetSource.frontmatter,
-    });
+    Prism.highlightAll();
   }, []);
 
   // ###################################################################
@@ -149,16 +181,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             You can now trigger the pipeline via sending REST requests.
           </p>
         </div>
-        <div>
-          {snippet ? (
-            <MDXRemote
-              compiledSource={snippet.compiledSource}
-              scope={snippet.scope}
-              frontmatter={snippet.frontmatter}
-              components={{ CH }}
-            />
-          ) : null}
-        </div>
+        <CodeBlock source={snippetSource} code={snippetCode} />
       </PageContentContainer>
     </>
   );
