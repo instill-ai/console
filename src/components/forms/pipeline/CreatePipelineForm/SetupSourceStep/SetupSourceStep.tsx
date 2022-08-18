@@ -13,7 +13,7 @@ const SetupSourceStep: FC<SetupSourceStepProps> = (props) => {
     <FormikStep>
       <div className="flex flex-1 flex-row">
         <UseExistingSourceFlow {...props} />
-        <FormVerticalDivider {...props} />
+        <FormVerticalDivider />
         <CreateNewSourceFlow {...props} />
       </div>
     </FormikStep>

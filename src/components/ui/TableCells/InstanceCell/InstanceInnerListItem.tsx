@@ -1,8 +1,8 @@
-import { FC, memo } from "react";
+import { memo } from "react";
 import { Instance } from "./InstanceCell";
 import cn from "clsx";
-import StateIndicator from "../../StateIndicator";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
+import StateIcon from "../../StateIcon";
 
 export type InstanceInnerListItemProps = {
   item: Instance;
@@ -11,12 +11,12 @@ export type InstanceInnerListItemProps = {
   textStyle: string;
 };
 
-const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({
+const InstanceInnerListItem = ({
   item,
   enableItemBgColor,
   indicator,
   textStyle,
-}) => {
+}: InstanceInnerListItemProps) => {
   const { state } = item;
   let textColor: string;
   let bgColor: string;
@@ -52,12 +52,7 @@ const InstanceInnerListItem: FC<InstanceInnerListItemProps> = ({
       key={`instance-item-list-${item.name}`}
     >
       {indicator === "state" ? (
-        <StateIndicator
-          state={state}
-          width="w-3"
-          height="h-3"
-          position="my-auto"
-        />
+        <StateIcon state={state} width="w-3" height="h-3" position="my-auto" />
       ) : (
         <ModelInstanceIcon
           width="w-[21px]"

@@ -1,10 +1,10 @@
 import { FC } from "react";
 import cn from "clsx";
-import StateIndicator from "../../StateIndicator";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
 import { Nullable, State } from "@/types/general";
 import CellBase, { CellBaseProps } from "../CellBase";
 import Link from "next/link";
+import StateIcon from "../../StateIcon";
 
 export type NameCellProps = {
   state: State;
@@ -39,7 +39,7 @@ const NameCell: FC<NameCellProps> = ({
         className={cn("flex", displayStateIndicator ? "h-8 w-8" : "h-4 w-4")}
       >
         {displayStateIndicator ? (
-          <StateIndicator
+          <StateIcon
             state={state}
             width="w-[18px]"
             height="h-[18px]"

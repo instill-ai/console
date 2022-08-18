@@ -1,7 +1,6 @@
-import { FC, ReactElement } from "react";
+import { ReactElement } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
-
 import { PipelineMode } from "@/lib/instill";
 
 export type PipelineModeLabelProps = {
@@ -15,7 +14,7 @@ export type PipelineModeLabelProps = {
   paddingY: string;
 };
 
-const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
+const PipelineModeLabel = ({
   mode,
   enableBgColor,
   enableIcon,
@@ -24,7 +23,7 @@ const PipelineModeLabel: FC<PipelineModeLabelProps> = ({
   iconPosition,
   paddingX,
   paddingY,
-}) => {
+}: PipelineModeLabelProps) => {
   let bgColor: string;
   let textColor: string;
   let modeIcon: ReactElement | null;

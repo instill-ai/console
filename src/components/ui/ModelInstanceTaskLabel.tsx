@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { ReactElement } from "react";
 import cn from "clsx";
 
 import { Nullable } from "@/types/general";
@@ -15,12 +15,12 @@ export type ModelInstanceTaskLabelProps = {
   position: Nullable<string>;
 };
 
-const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
+const ModelInstanceTaskLabel = ({
   task,
   marginBottom,
   position,
-}) => {
-  const icon = {
+}: ModelInstanceTaskLabelProps) => {
+  const iconStyle = {
     width: "w-[18px]",
     height: "h-[18px]",
     position: "my-auto",
@@ -30,27 +30,30 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
   let modelInstanceTaskIcon: ReactElement;
   const taskNameList = task?.split("_");
   const taskName = taskNameList?.slice(1, taskNameList.length);
-  const modelInstanceTaskLabel = taskName?.join(" ") || "Task not found";
 
   switch (task) {
     case "TASK_CLASSIFICATION":
-      modelInstanceTaskIcon = <ImageClassificationIcon {...icon} />;
+      modelInstanceTaskIcon = <ImageClassificationIcon {...iconStyle} />;
       break;
 
     case "TASK_DETECTION":
-      modelInstanceTaskIcon = <ObjectDetectionIcon {...icon} />;
+      modelInstanceTaskIcon = <ObjectDetectionIcon {...iconStyle} />;
       break;
 
     case "TASK_KEYPOINT":
-      modelInstanceTaskIcon = <KeypointDetectionIcon {...icon} />;
+      modelInstanceTaskIcon = <KeypointDetectionIcon {...iconStyle} />;
       break;
 
     case "TASK_OCR":
-      modelInstanceTaskIcon = <OpticalCharacterRecognitionIcon {...icon} />;
+      modelInstanceTaskIcon = (
+        <OpticalCharacterRecognitionIcon {...iconStyle} />
+      );
       break;
 
     default:
-      modelInstanceTaskIcon = <div className={cn(icon.width, icon.height)} />;
+      modelInstanceTaskIcon = (
+        <div className={cn(iconStyle.width, iconStyle.height)} />
+      );
       break;
   }
 
@@ -64,7 +67,7 @@ const ModelInstanceTaskLabel: FC<ModelInstanceTaskLabelProps> = ({
     >
       {modelInstanceTaskIcon}
       <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
-        {modelInstanceTaskLabel}
+        {taskName?.join(" ") || "Task not found"}
       </p>
     </div>
   );

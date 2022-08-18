@@ -4,9 +4,9 @@ import TableHeadBase, { Item } from "../TableHeadBase";
 import { Nullable } from "@/types/general";
 
 export type PipelinesTableHeadProps = {
-  errorCounts: Nullable<number>;
-  offlineCounts: Nullable<number>;
-  onlineCounts: Nullable<number>;
+  errorCounts: number;
+  offlineCounts: number;
+  onlineCounts: number;
 };
 
 const PipelinesTableHead: FC<PipelinesTableHeadProps> = ({

@@ -1,9 +1,9 @@
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 import cn from "clsx";
 
-import Breadcrumb, { BreadcrumbProps } from "../Breadcrumb";
-import { PrimaryButton } from "../Buttons";
+import Breadcrumb, { BreadcrumbProps } from "./Breadcrumb";
+import { PrimaryButton } from "./Buttons";
 
 export type PageTitleProps = {
   title: string;
@@ -14,14 +14,14 @@ export type PageTitleProps = {
   marginBottom: string;
 };
 
-const PageTitle: FC<PageTitleProps> = ({
+const PageTitle = ({
   title,
   enableButton,
   buttonName,
   buttonLink,
   breadcrumbs,
   marginBottom,
-}) => {
+}: PageTitleProps) => {
   const router = useRouter();
   const onClickHandler = useCallback(() => {
     if (enableButton && buttonLink) {
