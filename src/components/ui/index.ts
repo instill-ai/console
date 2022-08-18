@@ -27,6 +27,7 @@ import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
 import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
 import ChangeResourceStateButton from "./ChangeResourceStateButton";
 import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
+import ErrorBoundary from "./ErrorBoundary";
 
 export type {
   StateIndicatorProps,
@@ -60,6 +61,7 @@ export {
   PageTitle,
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
+  ErrorBoundary,
 };
 
 export * from "./TableHeads";
