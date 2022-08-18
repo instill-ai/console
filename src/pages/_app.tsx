@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { initAmplitude } from "@/lib/amplitude";
 import { useTrackingToken } from "@/services/mgmt";
 import { AmplitudeCtx } from "context/AmplitudeContext";
+import { ErrorBoundary } from "@/components/ui";
 
 export const queryCache = new QueryCache();
 
@@ -56,7 +57,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
       <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
+        <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
