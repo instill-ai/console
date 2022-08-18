@@ -1,5 +1,6 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
+import Prism from "prismjs";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
@@ -13,7 +14,7 @@ import {
   PipelineModeLabel,
   PageTitle,
   ChangeResourceStateButton,
-  ShikiCodeBlock,
+  CodeBlock,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
@@ -21,6 +22,8 @@ import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 import { Pipeline } from "@/lib/instill";
 import { GetServerSideProps } from "next";
+import { join } from "path";
+import fs from "fs";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const snippetSource = await getTemplateCodeBlockMdx(
@@ -29,25 +32,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   `${context.params?.id}`
   // );
 
-  const shiki = await import("shiki");
-  const highlighter = await shiki.getHighlighter({
-    theme: "rose-pine-moon",
-  });
+  const templatePath = join(
+    process.cwd(),
+    "src",
+    "lib",
+    "markdown",
+    "template",
+    "pipeline-snippet-simple.mdx"
+  );
+
+  const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
+  const codeStr = template.replaceAll(
+    "instill-pipeline-id",
+    `${context.params?.id}`
+  );
 
   const snippet = `curl -X POST http://localhost:8081/v1alpha/pipelines/${context.params?.id}:trigger -d '{
-  "inputs": [
-    {
-      "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
-    },
-    {
-      "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
-    }
-  ]
-}'`;
+    "inputs": [
+      {
+        "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+      },
+      {
+        "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
+      }
+    ]
+  }'`;
 
   return {
     props: {
-      snippetSource: highlighter.codeToHtml(snippet, { lang: "bash" }),
+      snippetSource: codeStr,
       snippetCode: snippet,
     },
   };
@@ -92,6 +105,10 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   //     frontmatter: snippetSource.frontmatter,
   //   });
   // }, []);
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
 
   // ###################################################################
   // #                                                                 #
@@ -164,7 +181,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             You can now trigger the pipeline via sending REST requests.
           </p>
         </div>
-        <ShikiCodeBlock source={snippetSource} code={snippetCode} />
+        <CodeBlock source={snippetSource} code={snippetCode} />
       </PageContentContainer>
     </>
   );

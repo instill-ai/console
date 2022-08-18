@@ -41,3 +41,20 @@ export const getShikiSourceQuery = async (source: string) => {
     return Promise.reject(err);
   }
 };
+
+export const getCodeSourceQuery = async (
+  templateName: string,
+  match: string,
+  value: string
+) => {
+  try {
+    const response = await axios.post("/api/get-code-source", {
+      templateName,
+      match,
+      value,
+    });
+    return Promise.resolve(response.data as string);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};

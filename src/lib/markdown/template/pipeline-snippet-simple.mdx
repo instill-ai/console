@@ -1,0 +1,12 @@
+```bash
+curl -X POST http://localhost:8081/v1alpha/pipelines/instill-pipeline-id:trigger -d '{
+  "inputs": [
+    {
+      "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+    },
+    {
+      "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
+    }
+  ]
+}'
+```

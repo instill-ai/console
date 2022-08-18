@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import {
   BasicProgressMessageBox,
   BasicUploadFileField,
@@ -6,12 +6,17 @@ import {
 } from "@instill-ai/design-system";
 import cn from "clsx";
 
-import { getShikiSourceQuery, ModelInstance } from "@/lib/instill";
+import {
+  getCodeSourceQuery,
+  getShikiSourceQuery,
+  ModelInstance,
+} from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "context/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useTestModelInstance } from "@/services/model";
-import { ShikiCodeBlock } from "@/components/ui";
+import { CodeBlock } from "@/components/ui";
+import Prism from "prismjs";
 
 export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
@@ -71,14 +76,20 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           }));
 
           try {
-            const source = await getShikiSourceQuery(
+            const source = await getCodeSourceQuery(
+              "test-result-template.mdx",
+              "instilltestresult",
               JSON.stringify(result, null, "\t")
             );
+
+            console.log(source);
 
             setTestResult({
               source,
               code: JSON.stringify(result, null, "\t"),
             });
+
+            Prism.highlightAll();
           } catch (err) {
             console.log(err);
             setTestResult(null);
@@ -135,9 +146,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           disabled={modelInstance?.state === "STATE_ONLINE" ? false : true}
         />
       </div>
-      <div className="w-full mb-10">
-        {testResult ? <ShikiCodeBlock {...testResult} /> : null}
-      </div>
+      {testResult ? <CodeBlock marginBottom="mb-10" {...testResult} /> : null}
       <BasicProgressMessageBox
         state={messageBoxState}
         setState={setMessageBoxState}

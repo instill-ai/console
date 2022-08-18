@@ -1,13 +1,16 @@
 import { CheckIcon, CopyIcon } from "@instill-ai/design-system";
 import copy from "copy-to-clipboard";
 import { useCallback, useState } from "react";
+import Markdown from "react-markdown";
+import cn from "clsx";
 
-export type ShikiCodeBlockProps = {
+export type CodeBlockProps = {
   source: string;
   code: string;
+  marginBottom?: string;
 };
 
-const ShikiCodeBlock = ({ source, code }: ShikiCodeBlockProps) => {
+const CodeBlock = ({ source, code, marginBottom }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -21,8 +24,8 @@ const ShikiCodeBlock = ({ source, code }: ShikiCodeBlockProps) => {
   }, [code]);
 
   return (
-    <div className="relative">
-      <div dangerouslySetInnerHTML={{ __html: source }} />
+    <div className={cn("relative", marginBottom)}>
+      <Markdown className="code-block">{source}</Markdown>
       <button
         onClick={handleCopy}
         type="button"
@@ -38,4 +41,4 @@ const ShikiCodeBlock = ({ source, code }: ShikiCodeBlockProps) => {
   );
 };
 
-export default ShikiCodeBlock;
+export default CodeBlock;
