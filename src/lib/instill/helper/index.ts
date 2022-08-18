@@ -30,3 +30,14 @@ export const getTemplateCodeBlockMdxQuery = async (
     return Promise.reject(err);
   }
 };
+
+export const getShikiSourceQuery = async (source: string) => {
+  try {
+    const response = await axios.post("/api/get-shiki-source", {
+      source,
+    });
+    return Promise.resolve(response.data as string);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
