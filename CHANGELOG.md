@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.10.0-alpha](https://github.com/instill-ai/console/compare/v0.9.0-alpha...v0.10.0-alpha) (2022-08-18)
+
+
+### Features
+
+* add error boundary ([#232](https://github.com/instill-ai/console/issues/232)) ([56f9f97](https://github.com/instill-ai/console/commit/56f9f97e80753915424ac6fadaa59252566f03c2))
+* Implement code-hike snippet ([#223](https://github.com/instill-ai/console/issues/223)) ([c0b1b21](https://github.com/instill-ai/console/commit/c0b1b219c6e55fddb4bb7d6952b7795c5c52f705))
+* update design system ([#228](https://github.com/instill-ai/console/issues/228)) ([410d4b8](https://github.com/instill-ai/console/commit/410d4b880676a172ac352aeb84250d10301dd531))
+* update logo ([#226](https://github.com/instill-ai/console/issues/226)) ([a3b566b](https://github.com/instill-ai/console/commit/a3b566b1f03eb342f9d3d78be7f122bb0facbe61))
+* update object-detection icon and add ocr icon ([#227](https://github.com/instill-ai/console/issues/227)) ([652f114](https://github.com/instill-ai/console/commit/652f1148e4dc3855c5a89e65651468daa6e84573))
+
+
+### Bug Fixes
+
+* fix code hike issue ([#237](https://github.com/instill-ai/console/issues/237)) ([d582ada](https://github.com/instill-ai/console/commit/d582adaa5c92b6b18b3e0eff0a53073cacd407ab))
+
 ## [0.9.0-alpha](https://github.com/instill-ai/console/compare/v0.8.0-alpha...v0.9.0-alpha) (2022-08-10)
 
 
