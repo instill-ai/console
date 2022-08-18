@@ -13,6 +13,8 @@ import StateLabel from "./StateLabel";
 import type { StateLabelProps } from "./StateLabel";
 import PipelineModeLabel from "./PipelineModeLabel";
 import type { PipelineModeLabelProps } from "./PipelineModeLabel";
+import ShikiCodeBlock from "./ShikiCodeBlock";
+import type { ShikiCodeBlockProps } from "./ShikiCodeBlock";
 import ConnectorIcon from "./ConnectorIcon";
 import type { ConnectorIconProps } from "./ConnectorIcon";
 import ModelDefinitionIcon from "./ModelDefinitionIcon";
@@ -53,6 +55,7 @@ export {
   ChangeResourceStateButton,
   ErrorBoundary,
   Breadcrumb,
+  ShikiCodeBlock,
 };
 
 export type {
@@ -69,6 +72,7 @@ export type {
   ChangeResourceStateButtonProps,
   BreadcrumbProps,
   ModelDefinitionLabelProps,
+  ShikiCodeBlockProps,
 };
 
 export * from "./TableHeads";
