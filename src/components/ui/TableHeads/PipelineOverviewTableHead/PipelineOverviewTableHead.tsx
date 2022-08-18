@@ -19,7 +19,7 @@ const PipelineOverviewTableHead: FC = () => {
     },
     {
       key: "pipeline-models",
-      item: getHeadItem("Models"),
+      item: getHeadItem("Model instances"),
     },
     {
       key: "pipeline-destination",

@@ -55,7 +55,7 @@ const DestinationPage: FC & {
                 : true
               : false
           }
-          buttonName="Add new destination"
+          buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"
         />

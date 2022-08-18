@@ -271,7 +271,7 @@ const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
       placeholderItems={placeholderItems}
       placeholderTitle="No pipeline"
       createButtonLink="/pipelines/create"
-      createButtonTitle="Create your first pipeline"
+      createButtonTitle="Set up your first pipeline"
       marginBottom={marginBottom}
       enableCreateButton={enablePlaceholderCreateButton}
     />

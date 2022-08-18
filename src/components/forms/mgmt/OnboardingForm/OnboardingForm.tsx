@@ -183,7 +183,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 value={selectedRoleOption}
                 error={formik.errors.role || null}
                 additionalOnChangeCb={roleOnChangeCb}
-                description={"Setup Guide"}
+                description="Pick a role closest to your job in your company"
               />
               <ToggleField
                 id="newsletterSubscription"

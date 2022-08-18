@@ -110,7 +110,6 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         value={selectedDestinationOption}
         error={errors.destination?.existing?.id || null}
         required={true}
-        description={"Setup Guide"}
       />
       <PrimaryButton
         position="ml-auto"
@@ -118,7 +117,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         disabled={canUseExistingDestination ? false : true}
         onClickHandler={handleUseExistingDestination}
       >
-        Use destination
+        Select
       </PrimaryButton>
     </div>
   );

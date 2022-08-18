@@ -392,7 +392,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           id="id"
           label="ID"
           key="id"
-          description="Pick a name to help you identify this destination in Instill"
+          description="Pick a name to help you identify this resource. The ID conforms to RFC-1034, which restricts to letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
           required={true}
           disabled={canSetIdField ? false : true}
           additionalMessageOnLabel={
@@ -417,7 +417,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           id="description"
           label="Description"
           key="description"
-          description="Fill with a short description of your destination"
+          description="Fill with a short description of your destination."
           required={false}
           error={
             fieldErrors ? (fieldErrors.description as string) ?? null : null
@@ -455,6 +455,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
               definition: option?.value ?? null,
             }));
           }}
+          description="Setup Guide"
         />
         <AirbyteDestinationFields
           destinationFormTree={destinationFormTree}
@@ -478,7 +479,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           position="ml-auto my-auto"
           onClickHandler={() => submitHandler()}
         >
-          Set up destination
+          Set up
         </PrimaryButton>
       </div>
     </FormBase>

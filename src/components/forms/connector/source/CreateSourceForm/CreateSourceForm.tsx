@@ -202,7 +202,7 @@ const CreateSourceForm: FC = () => {
                 type="submit"
                 onClickHandler={null}
               >
-                Set up source
+                Set up
               </PrimaryButton>
             </div>
           </FormikFormBase>

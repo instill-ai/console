@@ -1,6 +1,11 @@
 import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
+<<<<<<< HEAD
 import Prism from "prismjs";
+=======
+import { CH } from "@code-hike/mdx/components";
+import fs from "fs";
+>>>>>>> fc870b8 (fix: unify text of console)
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
@@ -22,6 +27,7 @@ import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 import { Pipeline } from "@/lib/instill";
 import { GetServerSideProps } from "next";
+<<<<<<< HEAD
 import { join } from "path";
 import fs from "fs";
 
@@ -32,13 +38,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   `${context.params?.id}`
   // );
 
+=======
+import { MDXRemoteSerializeResult, MDXRemote } from "next-mdx-remote";
+import { Nullable } from "@/types/general";
+import { getTemplateCodeBlockMdx } from "@/lib/markdown";
+import { join } from "path";
+import { serialize } from "next-mdx-remote/serialize";
+import { remarkCodeHike } from "@code-hike/mdx";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+>>>>>>> fc870b8 (fix: unify text of console)
   const templatePath = join(
     process.cwd(),
     "src",
     "lib",
     "markdown",
     "template",
+<<<<<<< HEAD
     "pipeline-snippet-simple.mdx"
+=======
+    "pipeline-code-template.mdx"
+  );
+
+  const theme = JSON.parse(
+    fs.readFileSync(
+      join(process.cwd(), "src", "styles", "rose-pine-moon.json"),
+      { encoding: "utf-8" }
+    )
+>>>>>>> fc870b8 (fix: unify text of console)
   );
 
   const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
@@ -47,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `${context.params?.id}`
   );
 
+<<<<<<< HEAD
   const snippet = `curl -X POST http://localhost:8081/v1alpha/pipelines/${context.params?.id}:trigger -d '{
     "inputs": [
       {
@@ -57,6 +85,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     ]
   }'`;
+=======
+  const snippetSource = await serialize(codeStr, {
+    mdxOptions: {
+      remarkPlugins: [[remarkCodeHike, { autoImport: false, theme }]],
+      useDynamicImport: true,
+    },
+  });
+>>>>>>> fc870b8 (fix: unify text of console)
 
   return {
     props: {
@@ -170,7 +206,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
         />
-        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <ConfigurePipelineForm
           pipeline={pipeline.isSuccess ? pipeline.data : null}
           marginBottom={null}

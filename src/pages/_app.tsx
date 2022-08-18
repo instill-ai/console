@@ -35,6 +35,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const trackingToken = useTrackingToken();
 
   useEffect(() => {
+    console.log("ver3");
     if (!router.isReady || !trackingToken.data) return;
 
     if (process.env.NEXT_PUBLIC_DISABLE_USAGE_COLLECTION === "true") {

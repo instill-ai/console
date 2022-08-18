@@ -54,7 +54,7 @@ const DestinationTablePlaceholder: FC<DestinationTablePlaceholderProps> = ({
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
       placeholderTitle="No destination"
-      createButtonTitle="Configurate your first destination"
+      createButtonTitle="Set up your first destination"
       createButtonLink="/destinations/create"
       marginBottom={marginBottom}
       enableCreateButton={enablePlaceholderCreateButton}

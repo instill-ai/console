@@ -183,7 +183,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         disabled={canCreateNewDestination ? false : true}
         onClickHandler={handleCreateNewDestination}
       >
-        Set up source
+        Set up
       </PrimaryButton>
     </div>
   );

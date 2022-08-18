@@ -503,7 +503,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       <SingleSelect
         id="modelDefinition"
         name="model.new.modelDefinition"
-        label="Model type"
+        label="Model source"
         description={"Setup Guide"}
         value={selectedModelDefinitionOption}
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -592,7 +592,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           position="ml-auto my-auto"
           type="button"
         >
-          Setup new model
+          Set up
         </PrimaryButton>
       </div>
 

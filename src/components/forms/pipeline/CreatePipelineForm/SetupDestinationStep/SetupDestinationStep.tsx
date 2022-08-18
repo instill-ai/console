@@ -166,7 +166,9 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
             id="existingDestinationId"
             name="destination.existing.id"
             label="Destination type"
-            description="With the selection of Sync type for the Pipeline, the destination will be same as the source."
+            description={
+              "With the selection of Sync mode for the Pipeline, the destination will be the same as the source. <a href='https://www.instill.tech/docs/core-concepts/pipeline#sync-mode'>Learn more →</a>"
+            }
             options={syncDestinationOptions}
             value={syncDestinationOptions[selectedSyncDestinationIndex]}
             error={errors.destination?.existing?.id || null}

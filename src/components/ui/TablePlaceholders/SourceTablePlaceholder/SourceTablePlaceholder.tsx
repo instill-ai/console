@@ -57,7 +57,7 @@ const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
       placeholderTitle="No source"
-      createButtonTitle="Configurate your first source"
+      createButtonTitle="Set up your first source"
       createButtonLink="/sources/create"
       marginBottom={marginBottom}
       enableCreateButton={enablePlaceholderCreateButton}

@@ -216,7 +216,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   value={values.description}
                   error={errors.description || null}
                   disabled={canEdit ? false : true}
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="mb-10 flex flex-row">

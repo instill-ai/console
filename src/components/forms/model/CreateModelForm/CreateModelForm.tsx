@@ -500,7 +500,7 @@ const CreateNewModelFlow: FC = () => {
               id="modelId"
               name="id"
               label="ID"
-              description="Pick a name to help you identify this source in Instill"
+              description="Pick a name to help you identify this resource. The ID conforms to RFC-1034, which restricts to letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
               value={values.id}
               error={errors.id || null}
               disabled={modelCreated ? true : false}
@@ -520,7 +520,7 @@ const CreateNewModelFlow: FC = () => {
             <SingleSelect
               name="modelDefinition"
               id="modelDefinition"
-              label="Model type"
+              label="Model source"
               description={"Setup Guide"}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
@@ -609,7 +609,7 @@ const CreateNewModelFlow: FC = () => {
                 position="ml-auto my-auto"
                 type="button"
               >
-                Setup new model
+                Set up
               </PrimaryButton>
             </div>
             {canDisplayDeployModelInstanceSection ? (

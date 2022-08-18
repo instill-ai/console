@@ -11,7 +11,7 @@ const ModelTableHead: FC = () => {
     },
     {
       key: "model-source-head",
-      item: "Source",
+      item: "Model source",
     },
     {
       key: "model-instances-head",

@@ -92,7 +92,7 @@ const SourceDetailsPage: FC & {
             paddingX="px-2"
           />
         </div>
-        <h3 className="mb-5 text-black text-instill-h3">In Use by Pipelines</h3>
+        <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={
             sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
@@ -101,7 +101,7 @@ const SourceDetailsPage: FC & {
           marginBottom="mb-10"
           enablePlaceholderCreateButton={false}
         />
-        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>
           <ConfigureSourceForm
             source={sourceWithPipelines.data ? sourceWithPipelines.data : null}

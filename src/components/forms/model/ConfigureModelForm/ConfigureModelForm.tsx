@@ -227,7 +227,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
                   value={values.description}
                   error={errors.description || null}
                   disabled={canEdit ? false : true}
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="flex flex-row">

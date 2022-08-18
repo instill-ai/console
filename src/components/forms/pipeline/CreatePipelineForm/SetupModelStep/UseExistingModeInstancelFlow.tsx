@@ -143,7 +143,6 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
         error={errors.model?.existing?.modelInstanceName || null}
         disabled={modelCreated ? true : false}
         required={true}
-        description={"Setup Guide"}
       />
       <PrimaryButton
         position="ml-auto"
@@ -151,7 +150,7 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
         disabled={modelCreated ? true : canUseExistingModel ? false : true}
         onClickHandler={handleUseModel}
       >
-        Use model
+        Select
       </PrimaryButton>
     </div>
   );

@@ -277,7 +277,7 @@ const SetupPipelineDetailsStep: FC = () => {
             disabled={canSetupNewPipeline ? false : true}
             onClickHandler={handleSetupNewPipeline}
           >
-            Set up pipeline
+            Set up
           </PrimaryButton>
         </div>
       </div>
