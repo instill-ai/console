@@ -180,7 +180,12 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
       >
         {() => {
           return (
-            <FormikFormBase marginBottom={null} gapY={null} padding={null}>
+            <FormikFormBase
+              marginBottom={null}
+              gapY={null}
+              padding={null}
+              minWidth={null}
+            >
               <div className="mb-10 flex flex-col">
                 <SingleSelect
                   id="sourceDefinition"

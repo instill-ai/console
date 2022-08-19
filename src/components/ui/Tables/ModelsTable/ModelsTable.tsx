@@ -66,7 +66,7 @@ const ModelsTable: FC<ModelsTableProps> = ({
               paddingRight=""
               link={`/models/${model.id}`}
               lineClamp="line-clamp-1"
-              displayUpdateTime={false}
+              displayUpdateTime={true}
               displayStateIndicator={false}
             />
             <ModelDefinitionCell

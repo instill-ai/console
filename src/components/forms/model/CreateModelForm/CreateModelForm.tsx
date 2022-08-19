@@ -495,7 +495,12 @@ const CreateNewModelFlow: FC = () => {
     >
       {({ errors, values }) => {
         return (
-          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase
+            marginBottom={null}
+            gapY="gap-y-5"
+            padding={null}
+            minWidth={null}
+          >
             <TextField
               id="modelId"
               name="id"

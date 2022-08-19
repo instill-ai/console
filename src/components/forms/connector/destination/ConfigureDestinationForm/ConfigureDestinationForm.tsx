@@ -187,7 +187,12 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
       >
         {(formik) => {
           return (
-            <FormikFormBase marginBottom={null} gapY={null} padding={null}>
+            <FormikFormBase
+              marginBottom={null}
+              gapY={null}
+              padding={null}
+              minWidth={null}
+            >
               <div className="mb-10 flex flex-col gap-y-5">
                 <SingleSelect
                   id="destinationDefinition"

@@ -379,6 +379,20 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
     });
   }, []);
 
+  const getSetupGuide = useCallback(() => {
+    if (selectedDestinationDefinition) {
+      if (selectedDestinationDefinition.id === "destination-http") {
+        return "https://www.instill.tech/docs/destination-connectors/http";
+      } else if (selectedDestinationDefinition.id === "destination-grpc") {
+        return "https://www.instill.tech/docs/destination-connectors/grpc";
+      }
+    }
+
+    return selectedDestinationDefinition
+      ? selectedDestinationDefinition.connector_definition.documentation_url
+      : "https://www.instill.tech/docs/destination-connectors/overview";
+  }, [selectedDestinationDefinition]);
+
   return (
     <FormBase
       padding={padding}
@@ -459,12 +473,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
               definition: option?.value ?? null,
             }));
           }}
-          description={`<a href='${
-            selectedDestinationDefinition
-              ? selectedDestinationDefinition.connector_definition
-                  .documentation_url
-              : "https://docs.airbyte.com/category/destinations"
-          }'>Setup Guide</a>`}
+          description={`<a href='${getSetupGuide()}'>Setup Guide</a>`}
         />
         <AirbyteDestinationFields
           destinationFormTree={destinationFormTree}

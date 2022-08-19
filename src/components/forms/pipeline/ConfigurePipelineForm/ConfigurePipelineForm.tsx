@@ -206,6 +206,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               marginBottom={marginBottom}
               gapY={null}
               padding={null}
+              minWidth={null}
             >
               <div className="mb-10 flex flex-col">
                 <TextArea

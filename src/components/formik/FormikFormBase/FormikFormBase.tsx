@@ -7,6 +7,7 @@ export type FormikFormBaseProps = {
   padding: Nullable<string>;
   gapY: Nullable<string>;
   marginBottom: Nullable<string>;
+  minWidth: Nullable<string>;
 };
 
 const FormikFormBase: FC<FormikFormBaseProps> = ({
@@ -14,9 +15,18 @@ const FormikFormBase: FC<FormikFormBaseProps> = ({
   padding,
   gapY,
   marginBottom,
+  minWidth,
 }) => {
   return (
-    <Form className={cn("flex h-full flex-col", padding, gapY, marginBottom)}>
+    <Form
+      className={cn(
+        "flex h-full flex-col",
+        padding,
+        gapY,
+        marginBottom,
+        minWidth
+      )}
+    >
       {children}
     </Form>
   );

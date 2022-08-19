@@ -217,6 +217,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               marginBottom={marginBottom}
               gapY="gap-y-5"
               padding={null}
+              minWidth={null}
             >
               <div className="mb-10 flex flex-col">
                 <TextArea

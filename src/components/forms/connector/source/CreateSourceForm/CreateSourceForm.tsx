@@ -177,7 +177,12 @@ const CreateSourceForm: FC = () => {
     >
       {(formik) => {
         return (
-          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase
+            marginBottom={null}
+            gapY="gap-y-5"
+            padding={null}
+            minWidth={null}
+          >
             <SingleSelect
               id="definition"
               name="definition"
@@ -187,7 +192,13 @@ const CreateSourceForm: FC = () => {
               additionalOnChangeCb={sourceDefinitionOnChange}
               error={formik.errors.definition || null}
               required={true}
-              description="Setup Guide"
+              description={`<a href=${
+                formik.values.definition === null
+                  ? "https://www.instill.tech/docs/source-connectors/overview"
+                  : formik.values.definition === "source-http"
+                  ? "https://www.instill.tech/docs/source-connectors/http"
+                  : "https://www.instill.tech/docs/source-connectors/grpc"
+              }>Setup Guide</a>`}
             />
             <div className="flex flex-row">
               <BasicProgressMessageBox
