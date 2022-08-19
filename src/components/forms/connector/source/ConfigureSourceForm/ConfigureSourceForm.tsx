@@ -128,7 +128,7 @@ const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
           activate: true,
           status: "success",
           description: null,
-          message: "Delete succeeded.",
+          message: "Succeed.",
         }));
 
         if (amplitudeIsInit) {

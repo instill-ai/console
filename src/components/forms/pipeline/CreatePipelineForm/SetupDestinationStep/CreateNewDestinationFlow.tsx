@@ -93,7 +93,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     }
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
-  const selectedDestinationDefinition = useMemo(() => {
+  const selectedDestinationDefinitionOption = useMemo(() => {
     if (
       !destinationDefinitions.isSuccess ||
       !destinationDefinitionOptions ||
@@ -176,7 +176,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         name="destination.new.definition"
         label="Destination type"
         options={destinationDefinitionOptions || []}
-        value={selectedDestinationDefinition}
+        value={selectedDestinationDefinitionOption}
         error={errors.destination?.existing?.definition || null}
         required={true}
         description={"Setup Guide"}

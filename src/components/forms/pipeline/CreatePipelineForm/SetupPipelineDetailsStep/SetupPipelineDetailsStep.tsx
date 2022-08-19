@@ -183,7 +183,7 @@ const SetupPipelineDetailsStep: FC = () => {
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
 
           router.push("/pipelines");

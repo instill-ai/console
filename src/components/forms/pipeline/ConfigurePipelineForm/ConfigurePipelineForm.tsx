@@ -101,7 +101,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               activate: true,
               status: "success",
               description: null,
-              message: "Update succeeded",
+              message: "Succeed.",
             }));
           },
           onError: (error) => {
@@ -156,7 +156,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Delete succeeded",
+          message: "Succeed.",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_pipeline", {

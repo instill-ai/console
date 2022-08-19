@@ -180,7 +180,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
 
             if (amplitudeIsInit) {
@@ -232,7 +232,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_local_model", {
@@ -281,7 +281,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_artivc_model", {
@@ -329,7 +329,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_artivc_model", {
@@ -448,7 +448,7 @@ const CreateNewModelFlow: FC = () => {
             activate: true,
             status: "success",
             description: null,
-            message: "Deploy succeeded",
+            message: "Succeed.",
           }));
 
           router.push("/models");

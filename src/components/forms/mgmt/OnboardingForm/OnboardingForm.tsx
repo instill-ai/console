@@ -110,7 +110,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             activate: true,
             status: "success",
             description: null,
-            message: "Upload succeeded",
+            message: "Succeed.",
           }));
 
           await axios.post("/api/set-user-cookie", { token });

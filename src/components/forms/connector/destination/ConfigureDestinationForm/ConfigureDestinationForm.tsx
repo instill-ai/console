@@ -136,7 +136,7 @@ const ConfigureDestinationForm: FC<ConfigureDestinationFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Delete succeeded.",
+          message: "Succeed.",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_destination", {

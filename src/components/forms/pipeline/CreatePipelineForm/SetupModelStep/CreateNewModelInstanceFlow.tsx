@@ -200,7 +200,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
           if (amplitudeIsInit) {
             sendAmplitudeData("create_github_model", {
@@ -249,7 +249,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
         },
         onError: (error) => {
@@ -291,7 +291,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
           if (amplitudeIsInit) {
             sendAmplitudeData("create_artivc_model", {
@@ -337,7 +337,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
           if (amplitudeIsInit) {
             sendAmplitudeData("create_artivc_model", {
@@ -445,7 +445,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Deploy succeeded",
+          message: "Succeed.",
         }));
         setFieldValue("model.type", "new");
         setStepNumber(stepNumber + 1);
@@ -479,6 +479,21 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     setFieldValue("model.new.huggingFaceRepo", null);
   }, [setFieldValue]);
 
+  const getModelSetupGuide = useCallback(() => {
+    switch (values.model.new.modelDefinition) {
+      case "github":
+        return "https://www.instill.tech/docs/import-models/github";
+      case "artivc":
+        return "https://www.instill.tech/docs/import-models/artivc";
+      case "local":
+        return "https://www.instill.tech/docs/import-models/local";
+      case "huggingface":
+        return "https://www.instill.tech/docs/import-models/huggingface";
+      default:
+        return "https://www.instill.tech/docs/import-models/overview";
+    }
+  }, [values.model.new.modelDefinition]);
+
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="text-black text-instill-h3">Set up a new model</h3>
@@ -508,7 +523,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         id="modelDefinition"
         name="model.new.modelDefinition"
         label="Model source"
-        description={"Setup Guide"}
+        description={`<a href="${getModelSetupGuide()}">Setup Guide</a>`}
         value={selectedModelDefinitionOption}
         options={modelDefinitionOptions ? modelDefinitionOptions : []}
         error={errors.model?.new?.modelDefinition || null}
@@ -613,7 +628,9 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             value={selectedModelInstanceOption}
             error={errors.model?.new?.modelInstanceName || null}
             required={true}
-            description={"Setup Guide"}
+            description={
+              "<a href='https://www.instill.tech/docs/core-concepts/model#model-instance'>Setup Guide</a>"
+            }
           />
           <div className="flex flex-row">
             <BasicProgressMessageBox

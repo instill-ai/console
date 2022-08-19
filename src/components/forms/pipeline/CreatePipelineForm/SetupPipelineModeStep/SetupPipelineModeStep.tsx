@@ -178,7 +178,11 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           id="pipelineMode"
           name="pipeline.mode"
           label="Pipeline mode"
-          description={"Setup Guide"}
+          description={`<a href=${
+            values.pipeline.mode === "MODE_ASYNC"
+              ? "https://www.instill.tech/docs/core-concepts/pipeline#async-mode"
+              : "https://www.instill.tech/docs/core-concepts/pipeline#sync-mode"
+          }>Setup Guide</a>`}
           value={selectedModeOption}
           options={modeOptions}
           error={errors.pipeline?.mode || null}
@@ -189,7 +193,13 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           name="source.existing.id"
           label="Source type"
           additionalMessageOnLabel={null}
-          description={"Setup Guide"}
+          description={`<a href=${
+            values.source.existing.id === null
+              ? "https://www.instill.tech/docs/source-connectors/overview"
+              : values.source.existing.id === "source-http"
+              ? "https://www.instill.tech/docs/source-connectors/http"
+              : "https://www.instill.tech/docs/source-connectors/grpc"
+          }>Setup Guide</a>`}
           value={selectedSourceIdOption}
           options={syncSourceOptions}
           additionalOnChangeCb={null}

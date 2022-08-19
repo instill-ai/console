@@ -327,7 +327,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Create succeeded.",
+          message: "Succeed.",
         }));
         if (setResult) setResult(newDestination.id);
 
@@ -459,7 +459,12 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
               definition: option?.value ?? null,
             }));
           }}
-          description="Setup Guide"
+          description={`<a href='${
+            selectedDestinationDefinition
+              ? selectedDestinationDefinition.connector_definition
+                  .documentation_url
+              : "https://docs.airbyte.com/category/destinations"
+          }'>Setup Guide</a>`}
         />
         <AirbyteDestinationFields
           destinationFormTree={destinationFormTree}

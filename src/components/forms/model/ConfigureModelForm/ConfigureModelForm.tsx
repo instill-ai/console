@@ -104,7 +104,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               activate: true,
               status: "success",
               description: null,
-              message: "Update succeeded",
+              message: "Succeed.",
             }));
 
             if (amplitudeIsInit) {
@@ -163,7 +163,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
       onSuccess: () => {
         setMessageBoxState({
           activate: true,
-          message: "Deleting succeeded.",
+          message: "Succeed.",
           description: null,
           status: "success",
         });
