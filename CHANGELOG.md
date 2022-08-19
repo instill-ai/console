@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1-alpha](https://github.com/instill-ai/console/compare/v0.10.0-alpha...v0.10.1-alpha) (2022-08-19)
+
+
+### Bug Fixes
+
+* fix various typo ([#239](https://github.com/instill-ai/console/issues/239)) ([a85f74e](https://github.com/instill-ai/console/commit/a85f74e48c53f47782a01c367b6e1854f6c9776d))
+
 ## [0.10.0-alpha](https://github.com/instill-ai/console/compare/v0.9.0-alpha...v0.10.0-alpha) (2022-08-18)
 
 
