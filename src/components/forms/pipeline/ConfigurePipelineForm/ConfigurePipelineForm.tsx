@@ -101,7 +101,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               activate: true,
               status: "success",
               description: null,
-              message: "Update succeeded",
+              message: "Succeed.",
             }));
           },
           onError: (error) => {
@@ -156,7 +156,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
           activate: true,
           status: "success",
           description: null,
-          message: "Delete succeeded",
+          message: "Succeed.",
         }));
         if (amplitudeIsInit) {
           sendAmplitudeData("delete_pipeline", {
@@ -206,17 +206,18 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
               marginBottom={marginBottom}
               gapY={null}
               padding={null}
+              minWidth={null}
             >
               <div className="mb-10 flex flex-col">
                 <TextArea
                   id="pipelineDescription"
                   name="description"
                   label="Description"
-                  description="Fill with a short description of your model"
+                  description="Fill with a short description."
                   value={values.description}
                   error={errors.description || null}
                   disabled={canEdit ? false : true}
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="mb-10 flex flex-row">

@@ -110,7 +110,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
             activate: true,
             status: "success",
             description: null,
-            message: "Upload succeeded",
+            message: "Succeed.",
           }));
 
           await axios.post("/api/set-user-cookie", { token });
@@ -154,7 +154,12 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
     >
       {(formik) => {
         return (
-          <FormikFormBase marginBottom={null} gapY={null} padding={null}>
+          <FormikFormBase
+            marginBottom={null}
+            gapY={null}
+            padding={null}
+            minWidth={null}
+          >
             <div className="mb-10 flex flex-col gap-y-5">
               <TextField
                 id="email"
@@ -183,7 +188,7 @@ const OnboardingForm: FC<OnBoardingFormProps> = ({ user }) => {
                 value={selectedRoleOption}
                 error={formik.errors.role || null}
                 additionalOnChangeCb={roleOnChangeCb}
-                description={"Setup Guide"}
+                description="Pick a role closest to your job in your company"
               />
               <ToggleField
                 id="newsletterSubscription"

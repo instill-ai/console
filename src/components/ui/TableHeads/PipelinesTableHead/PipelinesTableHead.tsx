@@ -35,7 +35,7 @@ const PipelinesTableHead: FC<PipelinesTableHeadProps> = ({
     },
     {
       key: "pipeline-models-head",
-      item: "Models",
+      item: "Model instances",
     },
     {
       key: "pipeline-destination-head",

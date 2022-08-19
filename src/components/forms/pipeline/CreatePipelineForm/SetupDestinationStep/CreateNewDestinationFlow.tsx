@@ -43,7 +43,6 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
       return;
 
     if (values.pipeline.mode === "MODE_ASYNC") {
-      console.log(destinationDefinitions);
       setDestinationDefinitionOptions(
         destinationDefinitions.data
           .filter(
@@ -93,7 +92,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
     }
   }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
 
-  const selectedDestinationDefinition = useMemo(() => {
+  const selectedDestinationDefinitionOption = useMemo(() => {
     if (
       !destinationDefinitions.isSuccess ||
       !destinationDefinitionOptions ||
@@ -162,7 +161,11 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationId"
         name="destination.new.id"
         label="ID"
-        description="Pick a name to help you identify this source in Instill"
+        description={
+          "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+          "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+          "the last a letter or a number, and a 63 character maximum."
+        }
         value={values.destination.new.id}
         error={errors.destination?.new?.id || null}
         required={true}
@@ -172,7 +175,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         name="destination.new.definition"
         label="Destination type"
         options={destinationDefinitionOptions || []}
-        value={selectedDestinationDefinition}
+        value={selectedDestinationDefinitionOption}
         error={errors.destination?.existing?.definition || null}
         required={true}
         description={"Setup Guide"}
@@ -183,7 +186,7 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         disabled={canCreateNewDestination ? false : true}
         onClickHandler={handleCreateNewDestination}
       >
-        Set up source
+        Set up
       </PrimaryButton>
     </div>
   );

@@ -86,7 +86,7 @@ const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
       placeholderTitle="No model"
-      createButtonTitle="Upload your first model"
+      createButtonTitle="Set up your first model"
       createButtonLink="/models/create"
       marginBottom={marginBottom}
       enableCreateButton={enablePlaceholderCreateButton}

@@ -183,7 +183,7 @@ const SetupPipelineDetailsStep: FC = () => {
             activate: true,
             status: "success",
             description: null,
-            message: "Create succeeded",
+            message: "Succeed.",
           }));
 
           router.push("/pipelines");
@@ -251,7 +251,11 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineId"
           name="pipeline.id"
           label="ID"
-          description="Pick a name to help you identify this source in Instill"
+          description={
+            "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+            "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+            "the last a letter or a number, and a 63 character maximum."
+          }
           value={values.pipeline.id}
           error={errors.pipeline?.id || null}
           required={true}
@@ -260,7 +264,7 @@ const SetupPipelineDetailsStep: FC = () => {
           id="pipelineDescription"
           name="pipeline.description"
           label="Description"
-          description="Fill with a short description of your new pipeline"
+          description="Fill with a short description."
           value={values.pipeline.description}
           error={errors.pipeline?.description || null}
         />
@@ -277,7 +281,7 @@ const SetupPipelineDetailsStep: FC = () => {
             disabled={canSetupNewPipeline ? false : true}
             onClickHandler={handleSetupNewPipeline}
           >
-            Set up pipeline
+            Set up
           </PrimaryButton>
         </div>
       </div>

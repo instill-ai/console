@@ -23,9 +23,6 @@ export const getTemplateCodeBlockMdx = async (
       templateName
     );
 
-    const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
-    const codeStr = template.replaceAll(match, value);
-
     const theme = JSON.parse(
       fs.readFileSync(
         join(process.cwd(), "src", "styles", "rose-pine-moon.json"),
@@ -33,21 +30,13 @@ export const getTemplateCodeBlockMdx = async (
       )
     );
 
+    const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
+    const codeStr = template.replaceAll(match, value);
+
     const templateSource = await serialize(codeStr, {
-      parseFrontmatter: false,
       mdxOptions: {
+        remarkPlugins: [[remarkCodeHike, { autoImport: false, theme }]],
         useDynamicImport: true,
-        remarkPlugins: [
-          [
-            remarkCodeHike,
-            {
-              theme,
-              lineNumbers: false,
-              showCopyButton: true,
-              autoImport: false,
-            },
-          ],
-        ],
       },
     });
 

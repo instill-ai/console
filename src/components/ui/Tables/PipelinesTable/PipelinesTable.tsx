@@ -77,7 +77,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               paddingRight=""
               link={`/pipelines/${pipeline.id}`}
               lineClamp="line-clamp-2"
-              displayUpdateTime={false}
+              displayUpdateTime={true}
               displayStateIndicator={true}
             />
             <ModeCell

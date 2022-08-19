@@ -180,7 +180,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
 
             if (amplitudeIsInit) {
@@ -232,7 +232,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_local_model", {
@@ -281,7 +281,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_artivc_model", {
@@ -329,7 +329,7 @@ const CreateNewModelFlow: FC = () => {
               activate: true,
               status: "success",
               description: null,
-              message: "Create succeeded",
+              message: "Succeed.",
             }));
             if (amplitudeIsInit) {
               sendAmplitudeData("create_artivc_model", {
@@ -448,7 +448,7 @@ const CreateNewModelFlow: FC = () => {
             activate: true,
             status: "success",
             description: null,
-            message: "Deploy succeeded",
+            message: "Succeed.",
           }));
 
           router.push("/models");
@@ -474,6 +474,21 @@ const CreateNewModelFlow: FC = () => {
     );
   };
 
+  const getModelSetupGuide = useCallback((values: CreateModelFormValue) => {
+    switch (values.modelDefinition) {
+      case "github":
+        return "https://www.instill.tech/docs/import-models/github";
+      case "artivc":
+        return "https://www.instill.tech/docs/import-models/artivc";
+      case "local":
+        return "https://www.instill.tech/docs/import-models/local";
+      case "huggingface":
+        return "https://www.instill.tech/docs/import-models/huggingface";
+      default:
+        return "https://www.instill.tech/docs/import-models/overview";
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={
@@ -495,12 +510,21 @@ const CreateNewModelFlow: FC = () => {
     >
       {({ errors, values }) => {
         return (
-          <FormikFormBase marginBottom={null} gapY="gap-y-5" padding={null}>
+          <FormikFormBase
+            marginBottom={null}
+            gapY="gap-y-5"
+            padding={null}
+            minWidth={null}
+          >
             <TextField
               id="modelId"
               name="id"
               label="ID"
-              description="Pick a name to help you identify this source in Instill"
+              description={
+                "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+                "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+                "the last a letter or a number, and a 63 character maximum."
+              }
               value={values.id}
               error={errors.id || null}
               disabled={modelCreated ? true : false}
@@ -510,7 +534,7 @@ const CreateNewModelFlow: FC = () => {
               id="description"
               name="description"
               label="Description"
-              description="Fill with a short description of your new model"
+              description="Fill with a short description."
               value={values.description}
               error={errors.description || null}
               disabled={modelCreated ? true : false}
@@ -520,8 +544,10 @@ const CreateNewModelFlow: FC = () => {
             <SingleSelect
               name="modelDefinition"
               id="modelDefinition"
-              label="Model type"
-              description={"Setup Guide"}
+              label="Model source"
+              description={`<a href="${getModelSetupGuide(
+                values
+              )}">Setup Guide</a>`}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
               error={errors.modelDefinition || null}
@@ -535,7 +561,7 @@ const CreateNewModelFlow: FC = () => {
                   id="modelRepo"
                   name="repo"
                   label="GitHub repository"
-                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov7`."
                   value={values.repo}
                   error={errors.repo || null}
                   disabled={modelCreated ? true : false}
@@ -609,7 +635,7 @@ const CreateNewModelFlow: FC = () => {
                 position="ml-auto my-auto"
                 type="button"
               >
-                Setup new model
+                Set up
               </PrimaryButton>
             </div>
             {canDisplayDeployModelInstanceSection ? (

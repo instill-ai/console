@@ -26,12 +26,6 @@ import { join } from "path";
 import fs from "fs";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const snippetSource = await getTemplateCodeBlockMdx(
-  //   "pipeline-code-template.mdx",
-  //   "instill-pipeline-id",
-  //   `${context.params?.id}`
-  // );
-
   const templatePath = join(
     process.cwd(),
     "src",
@@ -170,7 +164,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
         />
-        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <ConfigurePipelineForm
           pipeline={pipeline.isSuccess ? pipeline.data : null}
           marginBottom={null}

@@ -273,14 +273,14 @@ const ModelDetailsPage: FC & {
           switchOff={unDeployModelInstance}
           marginBottom="mb-10"
         />
-        <h3 className="mb-5 text-black text-instill-h3">Overview</h3>
+        <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={selectedModelInstancePipelines}
           isLoadingPipeline={pipelines.isLoading}
           marginBottom="mb-10"
           enablePlaceholderCreateButton={false}
         />
-        <h3 className="mb-5 text-black text-instill-h3">Settings</h3>
+        <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {modelInstances.isLoading ? null : selectedModelInstances ? (
           <>
             <ModelInstanceReadmeCard

@@ -14,7 +14,7 @@
 
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { Dispatch, RefObject, SetStateAction, Children, useState } from "react";
-import FormikFormBase from "../FormikFormBase";
+import FormikFormBase, { FormikFormBaseProps } from "../FormikFormBase";
 
 type FormValue = Record<string, any>;
 
@@ -26,6 +26,7 @@ export type FormikMultiStepProps = {
   onSubmit: (values: any, formikHelpers: FormikHelpers<FormValue>) => void;
   enableBackToPrevious: boolean;
   formikInnerRef?: RefObject<FormikProps<Record<string, any>>>;
+  minWidth: FormikFormBaseProps["minWidth"];
 };
 
 export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
@@ -36,6 +37,7 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
   onSubmit,
   getProgressionIndicator,
   formikInnerRef,
+  minWidth,
 }) => {
   const steps = Children.toArray(children) as React.ReactElement[];
 
@@ -90,7 +92,12 @@ export const FormikMultiStep: React.FC<FormikMultiStepProps> = ({
     >
       {() => {
         return (
-          <FormikFormBase marginBottom={null} padding="pb-20" gapY={null}>
+          <FormikFormBase
+            marginBottom={null}
+            padding="pb-20"
+            gapY={null}
+            minWidth={minWidth}
+          >
             <div className="mb-15">{getProgressionIndicator(stepNumber)}</div>
             {step}
           </FormikFormBase>

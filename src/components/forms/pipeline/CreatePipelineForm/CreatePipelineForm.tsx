@@ -135,6 +135,7 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
       getProgressionIndicator={(stepNumber: number) => (
         <CreatePipelineProgress currentProgress={stepNumber} />
       )}
+      minWidth="min-w-[1120px]"
     >
       <SetupPipelineModeStep {...props} />
       <SetupSourceStep {...props} />

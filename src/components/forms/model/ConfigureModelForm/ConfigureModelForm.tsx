@@ -104,7 +104,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               activate: true,
               status: "success",
               description: null,
-              message: "Update succeeded",
+              message: "Succeed.",
             }));
 
             if (amplitudeIsInit) {
@@ -163,7 +163,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
       onSuccess: () => {
         setMessageBoxState({
           activate: true,
-          message: "Deleting succeeded.",
+          message: "Succeed.",
           description: null,
           status: "success",
         });
@@ -217,17 +217,18 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
               marginBottom={marginBottom}
               gapY="gap-y-5"
               padding={null}
+              minWidth={null}
             >
               <div className="mb-10 flex flex-col">
                 <TextArea
                   id="description"
                   name="description"
                   label="Description"
-                  description="Fill with a short description of your model"
+                  description="Fill with a short description."
                   value={values.description}
                   error={errors.description || null}
                   disabled={canEdit ? false : true}
-                  required={true}
+                  required={false}
                 />
               </div>
               <div className="flex flex-row">

@@ -46,12 +46,12 @@ const SourcePage: FC & {
       <PageHead title="source-connectors" />
       <PageContentContainer>
         <PageTitle
-          title="Sources"
-          breadcrumbs={["Sources"]}
+          title="Source"
+          breadcrumbs={["Source"]}
           enableButton={
             sources.data ? (sources.data.length === 0 ? false : true) : false
           }
-          buttonName="Add new source"
+          buttonName="Set up new source"
           buttonLink="/sources/create"
           marginBottom="mb-10"
         />

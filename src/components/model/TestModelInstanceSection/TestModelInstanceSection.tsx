@@ -78,8 +78,6 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
               JSON.stringify(result, null, "\t")
             );
 
-            console.log(source);
-
             setTestResult({
               source,
               code: JSON.stringify(result, null, "\t"),
