@@ -59,7 +59,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               <BasicTextField
                 id="modelRepo"
                 label="GitHub repository"
-                description="The name of a public GitHub repository, e.g. `instill-ai/yolov7`."
+                description="The name of a public GitHub repository, e.g. `instill-ai/model-yolov7`."
                 value={modelInstance.configuration.repository}
                 disabled={true}
                 required={true}
@@ -71,7 +71,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               <BasicTextField
                 id="tag"
                 label="ArtiVC version"
-                description="Tag of the ArtiVC, e.g., `v0.1.0`."
+                description="Tag of the ArtiVC, e.g. `v0.1.0`."
                 value={modelInstance.configuration.tag}
                 disabled={true}
                 required={true}

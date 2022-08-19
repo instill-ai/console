@@ -561,7 +561,7 @@ const CreateNewModelFlow: FC = () => {
                   id="modelRepo"
                   name="repo"
                   label="GitHub repository"
-                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov7`."
+                  description="The name of a public GitHub repository, e.g. `instill-ai/model-yolov7`."
                   value={values.repo}
                   error={errors.repo || null}
                   disabled={modelCreated ? true : false}
