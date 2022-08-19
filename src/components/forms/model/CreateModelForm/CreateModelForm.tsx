@@ -474,6 +474,21 @@ const CreateNewModelFlow: FC = () => {
     );
   };
 
+  const getModelSetupGuide = useCallback((values: CreateModelFormValue) => {
+    switch (values.modelDefinition) {
+      case "github":
+        return "https://www.instill.tech/docs/import-models/github";
+      case "artivc":
+        return "https://www.instill.tech/docs/import-models/artivc";
+      case "local":
+        return "https://www.instill.tech/docs/import-models/local";
+      case "huggingface":
+        return "https://www.instill.tech/docs/import-models/huggingface";
+      default:
+        return "https://www.instill.tech/docs/import-models/overview";
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={
@@ -530,7 +545,9 @@ const CreateNewModelFlow: FC = () => {
               name="modelDefinition"
               id="modelDefinition"
               label="Model source"
-              description={"Setup Guide"}
+              description={`<a href="${getModelSetupGuide(
+                values
+              )}">Setup Guide</a>`}
               value={selectedModelDefinitionOption}
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
               error={errors.modelDefinition || null}
