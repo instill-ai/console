@@ -16,9 +16,7 @@ export const getHumanReadableStringFromTime = (
   }
 
   if (prev > next) {
-    throw new Error(
-      `prevTime - ${prevTime} is ahead of nextTime - ${nextTime}`
-    );
+    return "0 second ago";
   }
 
   const seconds = next - prev;
@@ -28,7 +26,7 @@ export const getHumanReadableStringFromTime = (
   }
 
   if (seconds < 60) {
-    return `${seconds} seconds ago`;
+    return `${Math.round(seconds)} seconds ago`;
   }
 
   const minutes = Math.floor(seconds / 60);

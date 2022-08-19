@@ -39,7 +39,10 @@ const NameCell: FC<NameCellProps> = ({
   const CellItem = () => (
     <div className={cn("flex flex-row gap-x-2.5", width)}>
       <div
-        className={cn("flex", displayStateIndicator ? "h-8 w-8" : "h-4 w-4")}
+        className={cn(
+          "flex",
+          displayStateIndicator ? "min-h-8 min-w-8" : "h-4 w-4"
+        )}
       >
         {displayStateIndicator ? (
           <StateIcon
@@ -53,7 +56,9 @@ const NameCell: FC<NameCellProps> = ({
       <div className="flex flex-col gap-y-2">
         <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>
         {displayUpdateTime ? (
-          <p className="text-instillGrey50 text-instill-small">{`last update at ${time}`}</p>
+          <p className="text-instillGrey50 text-instill-small">
+            {`last updated at ${time}`}
+          </p>
         ) : null}
       </div>
     </div>
