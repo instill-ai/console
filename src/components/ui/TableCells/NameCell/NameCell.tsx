@@ -57,7 +57,7 @@ const NameCell: FC<NameCellProps> = ({
         <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>
         {displayUpdateTime ? (
           <p className="text-instillGrey50 text-instill-small">
-            {`last update at ${time}`}
+            {`last updated at ${time}`}
           </p>
         ) : null}
       </div>
