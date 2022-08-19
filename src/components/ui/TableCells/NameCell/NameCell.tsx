@@ -31,7 +31,10 @@ const NameCell: FC<NameCellProps> = ({
   displayUpdateTime,
   displayStateIndicator,
 }) => {
-  const time = getHumanReadableStringFromTime(updatedAt, Date.now());
+  const time = getHumanReadableStringFromTime(
+    updatedAt,
+    new Date(Date.now()).toUTCString()
+  );
 
   const CellItem = () => (
     <div className={cn("flex flex-row gap-x-2.5", width)}>
