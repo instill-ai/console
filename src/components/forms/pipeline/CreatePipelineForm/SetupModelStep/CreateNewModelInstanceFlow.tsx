@@ -486,7 +486,11 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         id="modelId"
         name="model.new.id"
         label="ID"
-        description="Pick a name to help you identify this source in Instill"
+        description={
+          "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+          "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+          "the last a letter or a number, and a 63 character maximum."
+        }
         value={values.model.new.id}
         error={errors.model?.new?.id || null}
         disabled={modelCreated ? true : false}
@@ -496,7 +500,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
         id="description"
         name="model.new.description"
         label="Description"
-        description="Fill with a short description of your new model"
+        description="Fill with a short description."
         value={values.model.new.description}
         error={errors.model?.new?.description || null}
       />
@@ -518,7 +522,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             id="modelRepo"
             name="model.new.repo"
             label="GitHub repository"
-            description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+            description="The name of a public GitHub repository, e.g. `instill-ai/yolov7`."
             value={values.model.new.repo}
             error={errors.model?.new?.repo || null}
             disabled={modelCreated ? true : false}

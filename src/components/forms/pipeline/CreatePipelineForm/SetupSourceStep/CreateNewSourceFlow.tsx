@@ -106,7 +106,11 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         id="sourceId"
         name="source.new.id"
         label="ID"
-        description="Pick a name to help you identify this source in Instill"
+        description={
+          "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+          "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+          "the last a letter or a number, and a 63 character maximum."
+        }
         value={values.source.new.id}
         error={errors.source?.new?.id || null}
         required={true}

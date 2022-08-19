@@ -21,27 +21,27 @@ const CreatePipelinePage: FC & {
     switch (stepNumber) {
       case 0:
         return {
-          title: "Choose Pipeline Type",
+          title: "Set up source",
           breadcrumbs: ["Pipeline", "Source setting"],
         };
       case 1:
         return {
-          title: "Set Up source",
+          title: "Set up source",
           breadcrumbs: ["Pipeline", "Source setting"],
         };
       case 2:
         return {
-          title: "Set Up Model",
+          title: "Set up Model",
           breadcrumbs: ["Pipeline", "Model setting"],
         };
       case 3:
         return {
-          title: "Set Up Destination",
+          title: "Set up Destination",
           breadcrumbs: ["Pipeline", "Destination setting"],
         };
       case 4:
         return {
-          title: "Set Up Pipeline",
+          title: "Set up Pipeline",
           breadcrumbs: ["Pipeline", "Pipeline setting"],
         };
     }

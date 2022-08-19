@@ -162,7 +162,11 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         id="destinationId"
         name="destination.new.id"
         label="ID"
-        description="Pick a name to help you identify this source in Instill"
+        description={
+          "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+          "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+          "the last a letter or a number, and a 63 character maximum."
+        }
         value={values.destination.new.id}
         error={errors.destination?.new?.id || null}
         required={true}

@@ -500,7 +500,11 @@ const CreateNewModelFlow: FC = () => {
               id="modelId"
               name="id"
               label="ID"
-              description="Pick a name to help you identify this resource. The ID conforms to RFC-1034, which restricts to letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+              description={
+                "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+                "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+                "the last a letter or a number, and a 63 character maximum."
+              }
               value={values.id}
               error={errors.id || null}
               disabled={modelCreated ? true : false}
@@ -510,7 +514,7 @@ const CreateNewModelFlow: FC = () => {
               id="description"
               name="description"
               label="Description"
-              description="Fill with a short description of your new model"
+              description="Fill with a short description."
               value={values.description}
               error={errors.description || null}
               disabled={modelCreated ? true : false}
@@ -535,7 +539,7 @@ const CreateNewModelFlow: FC = () => {
                   id="modelRepo"
                   name="repo"
                   label="GitHub repository"
-                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov4`."
+                  description="The name of a public GitHub repository, e.g. `instill-ai/yolov7`."
                   value={values.repo}
                   error={errors.repo || null}
                   disabled={modelCreated ? true : false}
