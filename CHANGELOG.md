@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.2-alpha](https://github.com/instill-ai/console/compare/v0.10.1-alpha...v0.10.2-alpha) (2022-08-19)
+
+
+### Bug Fixes
+
+* fix the calculation of last updated time ([#242](https://github.com/instill-ai/console/issues/242)) ([75186a8](https://github.com/instill-ai/console/commit/75186a802124faabfe31a956aee62c3c60f3fb83))
+* update the sample github repos ([#241](https://github.com/instill-ai/console/issues/241)) ([41f234a](https://github.com/instill-ai/console/commit/41f234ad32df24418cee74bcb06d89e4a103c67a))
+
 ## [0.10.1-alpha](https://github.com/instill-ai/console/compare/v0.10.0-alpha...v0.10.1-alpha) (2022-08-19)
 
 
