@@ -43,7 +43,6 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
       return;
 
     if (values.pipeline.mode === "MODE_ASYNC") {
-      console.log(destinationDefinitions);
       setDestinationDefinitionOptions(
         destinationDefinitions.data
           .filter(
