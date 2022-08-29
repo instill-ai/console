@@ -13,7 +13,7 @@ import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteDestination } from "@/services/connector";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
 import { ErrorDetails, Violation } from "@/lib/instill/types";

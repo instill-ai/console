@@ -14,7 +14,7 @@ import {
 import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { Nullable } from "@/types/general";
 import { FormBase } from "@/components/forms";

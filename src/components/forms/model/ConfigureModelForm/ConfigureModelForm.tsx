@@ -11,7 +11,7 @@ import { Model } from "@/lib/instill";
 import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import useDeleteResourceModalState from "@/hooks/useDeleteResourceModalState";
 import { useRouter } from "next/router";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";

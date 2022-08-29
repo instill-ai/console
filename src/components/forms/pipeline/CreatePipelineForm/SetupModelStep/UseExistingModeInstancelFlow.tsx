@@ -18,7 +18,7 @@ import {
 } from "../CreatePipelineForm";
 import { useModelsInstances } from "@/services/model";
 import { Nullable } from "@/types/general";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingModeInstancelFlowProps = StepNumberState & {

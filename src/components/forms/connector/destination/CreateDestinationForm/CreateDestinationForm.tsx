@@ -29,7 +29,7 @@ import {
   useCreateDestination,
   useDestinationDefinitions,
 } from "@/services/connector";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { FormBase } from "@/components/forms/commons";
 import {
   AirbyteFieldValues,

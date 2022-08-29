@@ -15,7 +15,7 @@ import { PrimaryButton } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type SetupSourceStepProps = StepNumberState;

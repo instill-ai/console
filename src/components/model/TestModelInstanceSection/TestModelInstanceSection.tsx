@@ -8,7 +8,7 @@ import cn from "clsx";
 
 import { getCodeSourceQuery, ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useTestModelInstance } from "@/services/model";
 import { CodeBlock } from "@/components/ui";
