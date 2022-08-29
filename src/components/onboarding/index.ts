@@ -1,8 +1,8 @@
 import OnboardingForm from "./OnboardingForm";
 import type {
-  OnBoardingFormProps,
+  OnboardingFormProps,
   OnboardingFormValue,
 } from "./OnboardingForm";
 
 export { OnboardingForm };
-export type { OnBoardingFormProps, OnboardingFormValue };
+export type { OnboardingFormProps, OnboardingFormValue };

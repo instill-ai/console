@@ -4,9 +4,9 @@ import { parse } from "cookie";
 import axios from "axios";
 
 import { PageTitle } from "@/components/ui";
-import { OnboardingForm } from "@/components/forms";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
+import { OnboardingForm } from "@/components/onboarding";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (cookies) {
     const cookieList = parse(cookies);
-    if (cookieList["instill-ai-user-onboarded"]) {
+    if (cookieList["instill-ai-user"]) {
       const { data } = await axios.get<GetUserResponse>(
         `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
       );
