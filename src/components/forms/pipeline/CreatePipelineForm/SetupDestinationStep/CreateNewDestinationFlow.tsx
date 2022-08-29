@@ -13,7 +13,7 @@ import {
 } from "@/services/connector";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { SingleSelect, TextField } from "@/components/formik";
 

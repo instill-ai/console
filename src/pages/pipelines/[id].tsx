@@ -17,7 +17,7 @@ import {
   CodeBlock,
 } from "@/components/ui";
 import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 import { Pipeline } from "@/lib/instill";

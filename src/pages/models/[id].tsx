@@ -37,7 +37,7 @@ import {
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 import { TestModelInstanceSection } from "@/components/model";

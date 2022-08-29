@@ -10,7 +10,7 @@ import {
 import { useSources } from "@/services/connector";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import { Nullable } from "@/types/general";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingSourceFlowProps = StepNumberState;

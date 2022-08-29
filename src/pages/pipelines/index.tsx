@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PipelinesTable, PageTitle } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 

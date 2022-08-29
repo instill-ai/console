@@ -13,7 +13,7 @@ import "@instill-ai/design-system/build/index.cjs.css";
 import { useRouter } from "next/router";
 import { initAmplitude } from "@/lib/amplitude";
 import { useTrackingToken } from "@/services/mgmt";
-import { AmplitudeCtx } from "context/AmplitudeContext";
+import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { ErrorBoundary } from "@/components/ui";
 
 export const queryCache = new QueryCache();

@@ -11,7 +11,7 @@ import { TextArea, TextField, FormikStep } from "@/components/formik";
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { CreatePipelinePayload } from "@/lib/instill";
 import { useRouter } from "next/router";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 const SetupPipelineDetailsStep: FC = () => {

@@ -15,7 +15,7 @@ import {
 import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { CreateDestinationForm } from "@/components/forms/connector";
 

@@ -11,7 +11,7 @@ import {
 } from "../CreatePipelineForm";
 import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateNewSourceFlowProps = StepNumberState;

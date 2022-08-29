@@ -5,7 +5,7 @@ import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle, DestinationsTable } from "@/components/ui";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationsWithPipelines } from "@/services/connector";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 

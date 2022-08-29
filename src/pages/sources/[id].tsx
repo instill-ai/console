@@ -6,7 +6,7 @@ import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/forms";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
-import { useAmplitudeCtx } from "context/AmplitudeContext";
+import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 

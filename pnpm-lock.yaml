@@ -25,7 +25,7 @@ specifiers:
   '@testing-library/dom': ^8.16.0
   '@testing-library/jest-dom': ^5.16.3
   '@testing-library/react': ^12.1.4
-  '@testing-library/user-event': ^13.5.0
+  '@testing-library/user-event': ^14.4.3
   '@types/cookie': ^0.5.1
   '@types/jest': ^28.1.6
   '@types/json-schema': ^7.0.11
@@ -33,6 +33,7 @@ specifiers:
   '@types/prismjs': ^1.26.0
   '@types/react': ^17.0.41
   '@types/react-dom': 17.0.17
+  '@types/testing-library__jest-dom': ^5.14.5
   '@types/uuid': ^8.3.4
   '@typescript-eslint/eslint-plugin': ^5.20.0
   '@typescript-eslint/parser': ^5.20.0
@@ -133,7 +134,7 @@ devDependencies:
   '@testing-library/dom': 8.16.0
   '@testing-library/jest-dom': 5.16.4
   '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
-  '@testing-library/user-event': 13.5.0_gwcpuyfvwbszhlmedmugzivgzu
+  '@testing-library/user-event': 14.4.3_gwcpuyfvwbszhlmedmugzivgzu
   '@types/cookie': 0.5.1
   '@types/jest': 28.1.6
   '@types/json-schema': 7.0.11
@@ -141,6 +142,7 @@ devDependencies:
   '@types/prismjs': 1.26.0
   '@types/react': 17.0.48
   '@types/react-dom': 17.0.17
+  '@types/testing-library__jest-dom': 5.14.5
   '@types/uuid': 8.3.4
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
@@ -4212,6 +4214,15 @@ packages:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
       '@babel/runtime': 7.18.9
+      '@testing-library/dom': 8.16.0
+    dev: true
+
+  /@testing-library/user-event/14.4.3_gwcpuyfvwbszhlmedmugzivgzu:
+    resolution: {integrity: sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==}
+    engines: {node: '>=12', npm: '>=6'}
+    peerDependencies:
+      '@testing-library/dom': '>=7.21.4'
+    dependencies:
       '@testing-library/dom': 8.16.0
     dev: true
 
