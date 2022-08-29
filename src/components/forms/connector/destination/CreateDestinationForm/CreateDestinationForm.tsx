@@ -54,7 +54,7 @@ export type CreateDestinationFormProps = {
   onSuccessCb: Nullable<() => void>;
 
   // Pipeline mode will only work when setup the pipeline.
-  // Please pass null if this is not under pipeline flow.
+  // Please pass null if this is not under create pipeline flow.
   pipelineMode: Nullable<PipelineMode>;
 };
 
