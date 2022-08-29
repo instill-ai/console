@@ -6,10 +6,14 @@ const createJestConfig = nextJest({
 });
 
 // Add any custom config to be passed to Jest
+
+/** @type {import('jest').Config} */
+
 const customJestConfig = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
-  modulePathIgnorePatterns: ["<rootDir>/e2e/"],
+  modulePathIgnorePatterns: ["<rootDir>/e2e/", "<rootDir>/.next/"],
+  testPathIgnorePatterns: ["<rootDir>/node_modules/"],
   moduleNameMapper: {
     "^@/components/(.*)$": "<rootDir>/src/components/$1",
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
@@ -20,6 +24,9 @@ const customJestConfig = {
     "^@/lib/(.*)$": "<rootDir>/src/lib/$1",
     "^@/pages/(.*)$": "<rootDir>/src/pages/$1",
     "^@/mocks/(.*)$": "<rootDir>/src/mocks/$1",
+    "^@/contexts/(.*)$": "<rootDir>/src/mocks/$1",
+    "react-markdown": "<rootDir>/src/utils/test/react-markdown.jsx",
+    "remark-frontmatter": "<rootDir>/src/utils/test/remark-frontmatter.js",
   },
 };
 
