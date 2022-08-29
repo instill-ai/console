@@ -1,7 +1,2 @@
-import {
-  createMockRouter,
-  createWrapper,
-  renderWithClient,
-  renderWithContext,
-} from "./utils";
-export { createMockRouter, createWrapper, renderWithClient, renderWithContext };
+import { createMockRouter, createWrapper, renderWithClient } from "./utils";
+export { createMockRouter, createWrapper, renderWithClient };

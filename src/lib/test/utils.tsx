@@ -72,7 +72,11 @@ export function renderWithClient(
   const testQueryClient = createTestQueryClient();
   const { rerender, ...result } = render(
     <RouterContext.Provider value={createMockRouter({ ...router })}>
-      <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
+      <AmplitudeCtx.Provider
+        value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
+      >
+        <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>
+      </AmplitudeCtx.Provider>
     </RouterContext.Provider>
   );
   return {
@@ -96,32 +100,4 @@ export function createWrapper() {
     </QueryClientProvider>
   );
   return wrapper;
-}
-
-export function renderWithContext(
-  ui: React.ReactElement,
-  router: Partial<NextRouter>
-) {
-  const { rerender, ...result } = render(
-    <RouterContext.Provider value={createMockRouter({ ...router })}>
-      <AmplitudeCtx.Provider
-        value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
-      >
-        {ui}
-      </AmplitudeCtx.Provider>
-    </RouterContext.Provider>
-  );
-  return {
-    ...result,
-    rerender: (rerenderUi: React.ReactElement) =>
-      rerender(
-        <RouterContext.Provider value={createMockRouter({ ...router })}>
-          <AmplitudeCtx.Provider
-            value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
-          >
-            {ui}
-          </AmplitudeCtx.Provider>
-        </RouterContext.Provider>
-      ),
-  };
 }

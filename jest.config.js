@@ -24,9 +24,9 @@ const customJestConfig = {
     "^@/lib/(.*)$": "<rootDir>/src/lib/$1",
     "^@/pages/(.*)$": "<rootDir>/src/pages/$1",
     "^@/mocks/(.*)$": "<rootDir>/src/mocks/$1",
-    "^@/contexts/(.*)$": "<rootDir>/src/mocks/$1",
-    "react-markdown": "<rootDir>/src/utils/test/react-markdown.jsx",
-    "remark-frontmatter": "<rootDir>/src/utils/test/remark-frontmatter.js",
+    "^@/contexts/(.*)$": "<rootDir>/src/contexts/$1",
+    "react-markdown": "<rootDir>/src/lib/test/react-markdown.jsx",
+    "remark-frontmatter": "<rootDir>/src/lib/test/remark-frontmatter.js",
   },
 };
 
