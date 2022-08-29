@@ -2,6 +2,7 @@ import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { render } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
 
 /**
  * This function will create NextRouter mock object
@@ -95,4 +96,32 @@ export function createWrapper() {
     </QueryClientProvider>
   );
   return wrapper;
+}
+
+export function renderWithContext(
+  ui: React.ReactElement,
+  router: Partial<NextRouter>
+) {
+  const { rerender, ...result } = render(
+    <RouterContext.Provider value={createMockRouter({ ...router })}>
+      <AmplitudeCtx.Provider
+        value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
+      >
+        {ui}
+      </AmplitudeCtx.Provider>
+    </RouterContext.Provider>
+  );
+  return {
+    ...result,
+    rerender: (rerenderUi: React.ReactElement) =>
+      rerender(
+        <RouterContext.Provider value={createMockRouter({ ...router })}>
+          <AmplitudeCtx.Provider
+            value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
+          >
+            {ui}
+          </AmplitudeCtx.Provider>
+        </RouterContext.Provider>
+      ),
+  };
 }
