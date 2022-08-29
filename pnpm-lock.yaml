@@ -33,6 +33,7 @@ specifiers:
   '@types/prismjs': ^1.26.0
   '@types/react': ^17.0.41
   '@types/react-dom': 17.0.17
+  '@types/testing-library__jest-dom': ^5.14.5
   '@types/uuid': ^8.3.4
   '@typescript-eslint/eslint-plugin': ^5.20.0
   '@typescript-eslint/parser': ^5.20.0
@@ -141,6 +142,7 @@ devDependencies:
   '@types/prismjs': 1.26.0
   '@types/react': 17.0.48
   '@types/react-dom': 17.0.17
+  '@types/testing-library__jest-dom': 5.14.5
   '@types/uuid': 8.3.4
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
