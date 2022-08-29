@@ -69,7 +69,10 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
       setFormIsDirty(true);
       setValues((prev) => ({
         ...prev,
-        [key]: event.target.value,
+        [key]:
+          key === "newsletterSubscription"
+            ? event.target.checked
+            : event.target.value,
       }));
     },
     []

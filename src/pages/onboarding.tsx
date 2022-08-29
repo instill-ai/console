@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
 import axios from "axios";
@@ -7,34 +7,29 @@ import { PageTitle } from "@/components/ui";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
 import { OnboardingForm } from "@/components/onboarding";
+import { Nullable } from "@/types/general";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = context.req.headers.cookie;
-  let user: User | null;
-
-  if (cookies) {
-    const cookieList = parse(cookies);
-    if (cookieList["instill-ai-user"]) {
-      const { data } = await axios.get<GetUserResponse>(
-        `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
-      );
-      user = data.user;
-    } else {
-      user = null;
-    }
+export const getServerSideProps: GetServerSideProps<
+  OnBoardingPageProps
+> = async (context) => {
+  if (context.req.headers.cookie) {
+    const cookies = parse(context.req.headers.cookie);
+    return {
+      props: {
+        cookies,
+      },
+    };
   } else {
-    user = null;
+    return {
+      props: {
+        cookies: null,
+      },
+    };
   }
-
-  return {
-    props: {
-      user,
-    },
-  };
 };
 
 export type OnBoardingPageProps = {
-  user: User | null;
+  cookies: Nullable<Record<string, string>>;
 };
 
 interface GetLayOutProps {
@@ -43,7 +38,30 @@ interface GetLayOutProps {
 
 const OnBoardingPage: FC<OnBoardingPageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ user }) => {
+} = ({ cookies }) => {
+  const [user, setUser] = useState<Nullable<User>>(null);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get<GetUserResponse>(
+          `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
+        );
+        setFetched(true);
+        setUser(res.data.user);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (cookies) {
+      fetchUser();
+    } else {
+      setFetched(true);
+    }
+  }, []);
+
   return (
     <PageContentContainer>
       <PageTitle
@@ -52,7 +70,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
         enableButton={false}
         marginBottom="mb-10"
       />
-      <OnboardingForm user={user} />
+      {fetched ? <OnboardingForm user={user} /> : null}
     </PageContentContainer>
   );
 };
