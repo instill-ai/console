@@ -652,7 +652,9 @@ const CreateNewModelFlow: FC = () => {
                   error={errors.modelInstanceId || null}
                   additionalOnChangeCb={modelInstanceOnChangeCb}
                   required={true}
-                  description={"Setup Guide"}
+                  description={
+                    "<a href='https://www.instill.tech/docs/core-concepts/model#model-instance'>Setup Guide</a>"
+                  }
                 />
                 <div className="flex flex-row">
                   <BasicProgressMessageBox

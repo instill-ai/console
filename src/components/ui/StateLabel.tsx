@@ -68,7 +68,7 @@ const StateLabel = ({
     default:
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
-      stateLabelName = "Not specific";
+      stateLabelName = "Unspecified";
   }
 
   return (

@@ -2,17 +2,17 @@ import { SingleSelectOption } from "@instill-ai/design-system";
 
 export const mockMgmtRoles: SingleSelectOption[] = [
   {
-    label: "Manager (who make decisions)",
+    label: "Manager (who makes decisions)",
     value: "Manager",
   },
   {
     label:
-      "AI Researcher (who devises ML algorithms, train and evaluate models)",
+      "AI Researcher (who devises ML algorithms, trains and evaluates models)",
     value: "AI Researcher",
   },
   {
     label:
-      "AI Engineer (who prepare dataset and make models delivered by AI Researchers production-ready)",
+      "AI Engineer (who prepares dataset and makes models delivered by AI Researchers production-ready)",
     value: "AI Engineer",
   },
   {
