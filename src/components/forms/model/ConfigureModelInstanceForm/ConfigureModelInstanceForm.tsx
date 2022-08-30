@@ -59,7 +59,7 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
               <BasicTextField
                 id="modelRepo"
                 label="GitHub repository"
-                description="The name of a public GitHub repository, e.g. `instill-ai/model-yolov7`."
+                description="The name of a public GitHub repository, e.g. `instill-ai/model-mobilenetv2`."
                 value={modelInstance.configuration.repository}
                 disabled={true}
                 required={true}
