@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.10.3-alpha](https://github.com/instill-ai/console/compare/v0.10.2-alpha...v0.10.3-alpha) (2022-08-30)
+
+
+### Bug Fixes
+
+* fix onboard cookie issue ([#252](https://github.com/instill-ai/console/issues/252)) ([a4a93cc](https://github.com/instill-ai/console/commit/a4a93ccf6193150f74b09c9c251ce2fcb417b50a))
+* fix various typo ([#249](https://github.com/instill-ai/console/issues/249)) ([d60f860](https://github.com/instill-ai/console/commit/d60f8601a0b4e6d6d92e0c5d81eabafa6d50cc10))
+* update the sample github repos ([#253](https://github.com/instill-ai/console/issues/253)) ([82592dd](https://github.com/instill-ai/console/commit/82592ddb9f19fbe3522f5c614eb5454b9135cc27))
+
 ## [0.10.2-alpha](https://github.com/instill-ai/console/compare/v0.10.1-alpha...v0.10.2-alpha) (2022-08-19)
 
 
