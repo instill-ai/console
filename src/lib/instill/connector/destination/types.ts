@@ -17,6 +17,7 @@ export type DestinationWithDefinition = {
   connector: Connector;
 };
 
-export type DestinationWithPipelines = DestinationWithDefinition & {
+export type DestinationWithPipelines = {
   pipelines: Pipeline[];
+  destination: DestinationWithDefinition;
 };

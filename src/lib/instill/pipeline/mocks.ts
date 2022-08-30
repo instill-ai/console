@@ -62,7 +62,7 @@ export const mockPipelines: Pipeline[] = [
         },
         connector: {
           description: "",
-          configuration: "null",
+          configuration: {},
           tombstone: false,
           user: "users/local-user",
           create_time: "2022-05-25T02:12:39.644778Z",
@@ -120,7 +120,7 @@ export const mockPipelines: Pipeline[] = [
         },
         connector: {
           description: "",
-          configuration: "null",
+          configuration: {},
           tombstone: false,
           user: "users/local-user",
           create_time: "2022-05-25T02:13:45.383123Z",
