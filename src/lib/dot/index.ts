@@ -51,9 +51,34 @@ const setter = (obj: any, path: DotPath, value: any) => {
   }
 };
 
+/**
+ * Convert normal object to Dot
+ */
+
+const toDot = (obj: any, parentKey?: string, result: any = {}) => {
+  if (!isObject(obj)) {
+    throw new Error(
+      "Target value is not a object, toDot function only process object."
+    );
+  }
+
+  for (const key in obj) {
+    const value = obj[key];
+    const dotKey = parentKey ? parentKey + "." + key : key;
+    if (value && isObject(value)) {
+      toDot(value, dotKey, result);
+    } else {
+      result[dotKey] = value;
+    }
+  }
+
+  return result;
+};
+
 export default {
   getter,
   setter,
+  toDot,
 };
 
 const toPath = (path: DotPath): string[] => {
