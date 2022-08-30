@@ -63,7 +63,7 @@ export const getDestinationDefinitionQuery = async (
 ) => {
   try {
     const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}`
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector_definition);
