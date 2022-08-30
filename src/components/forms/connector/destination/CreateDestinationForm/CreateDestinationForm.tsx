@@ -135,8 +135,10 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
 
   const destinationFormTree = useAirbyteFormTree(selectedDestinationDefinition);
 
-  const { fieldValues, setFieldValues } =
-    useAirbyteFieldValues(destinationFormTree);
+  const { fieldValues, setFieldValues } = useAirbyteFieldValues(
+    destinationFormTree,
+    null
+  );
 
   const [fieldErrors, setFieldErrors] =
     useState<Nullable<AirbyteFieldErrors>>(null);

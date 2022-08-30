@@ -3,9 +3,12 @@ import { Nullable } from "@/types/general";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AirbyteFieldValues, AirbyteFormTree } from "../types";
 
-const useAirbyteFieldValues = (formTree: Nullable<AirbyteFormTree>) => {
+const useAirbyteFieldValues = (
+  formTree: Nullable<AirbyteFormTree>,
+  initialValue: Nullable<AirbyteFieldValues>
+) => {
   const [fieldValues, setFieldValues] =
-    useState<Nullable<AirbyteFieldValues>>(null);
+    useState<Nullable<AirbyteFieldValues>>(initialValue);
 
   useEffect(() => {
     if (!formTree) return;
