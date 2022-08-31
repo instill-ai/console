@@ -1,12 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 
-import {
-  ConnectorIcon,
-  FormVerticalDivider,
-  PrimaryButton,
-} from "@/components/ui";
+import { ConnectorIcon, FormVerticalDivider } from "@/components/ui";
 import { SingleSelect, FormikStep } from "@/components/formik";
 import {
   StepNumberState,
@@ -175,14 +171,15 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
             disabled={true}
             required={true}
           />
-          <PrimaryButton
+          <SolidButton
             position="ml-auto"
             disabled={false}
             type="button"
+            color="primary"
             onClickHandler={handleGoNext}
           >
             Next
-          </PrimaryButton>
+          </SolidButton>
         </div>
       ) : (
         <div className="flex flex-1 flex-row">

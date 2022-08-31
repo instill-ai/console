@@ -5,6 +5,7 @@ import {
   BasicSingleSelect,
   BasicTextArea,
   ProgressMessageBoxState,
+  SolidButton,
 } from "@instill-ai/design-system";
 import { AxiosError } from "axios";
 import Image from "next/image";
@@ -22,7 +23,6 @@ import dot from "@/lib/dot";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { FormBase } from "@/components/forms";
-import { PrimaryButton } from "@/components/ui";
 import { useUpdateDestination } from "@/services/connector/destination/mutations";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -266,14 +266,15 @@ const ConfigureDestinationForm = ({
           width="w-[25vw]"
           closable={true}
         />
-        <PrimaryButton
+        <SolidButton
           type="button"
+          color="primary"
           disabled={false}
           position="ml-auto my-auto"
           onClickHandler={() => handleSubmit()}
         >
           {canEdit ? "Save" : "Edit"}
-        </PrimaryButton>
+        </SolidButton>
       </div>
     </FormBase>
   );

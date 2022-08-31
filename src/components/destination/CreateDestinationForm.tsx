@@ -13,11 +13,11 @@ import {
   BasicTextField,
   ProgressMessageBoxState,
   SingleSelectOption,
+  SolidButton,
 } from "@instill-ai/design-system";
 import * as yup from "yup";
 import Image from "next/image";
 
-import { PrimaryButton } from "@/components/ui";
 import {
   ConnectorDefinition,
   CreateDestinationPayload,
@@ -495,14 +495,15 @@ const CreateDestinationForm = ({
           width="w-[25vw]"
           closable={true}
         />
-        <PrimaryButton
+        <SolidButton
           type="button"
+          color="primary"
           disabled={false}
           position="ml-auto my-auto"
           onClickHandler={() => submitHandler()}
         >
           Set up
-        </PrimaryButton>
+        </SolidButton>
       </div>
     </FormBase>
   );

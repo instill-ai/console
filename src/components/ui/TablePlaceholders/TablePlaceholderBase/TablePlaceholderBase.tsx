@@ -1,8 +1,8 @@
-import { FC, Fragment, ReactElement } from "react";
+import { Fragment, ReactElement } from "react";
 import { useRouter } from "next/router";
 import cn from "clsx";
+import { SolidButton } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "../../Buttons";
 import { Nullable } from "@/types/general";
 
 export type TablePlaceholderBaseProps = {
@@ -17,14 +17,14 @@ export type TablePlaceholderBaseProps = {
   enableCreateButton: boolean;
 };
 
-const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
+const TablePlaceholderBase = ({
   placeholderItems,
   placeholderTitle,
   createButtonTitle,
   createButtonLink,
   marginBottom,
   enableCreateButton,
-}) => {
+}: TablePlaceholderBaseProps) => {
   const router = useRouter();
   const handleOnClick = () => {
     router.push(createButtonLink);
@@ -46,14 +46,15 @@ const TablePlaceholderBase: FC<TablePlaceholderBaseProps> = ({
           {placeholderTitle}
         </h3>
         {enableCreateButton ? (
-          <PrimaryButton
+          <SolidButton
             type="button"
+            color="primary"
             disabled={false}
             onClickHandler={handleOnClick}
             position={null}
           >
             {createButtonTitle}
-          </PrimaryButton>
+          </SolidButton>
         ) : null}
       </div>
     </div>

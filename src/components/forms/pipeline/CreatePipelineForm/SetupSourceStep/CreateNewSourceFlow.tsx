@@ -1,8 +1,7 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui";
 import { SingleSelect, TextField } from "@/components/formik";
 import { mockAsyncDataConnectionOptions } from "../../../MockData";
 import {
@@ -125,14 +124,15 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
         error={errors.source?.new?.definition || null}
         required={true}
       />
-      <PrimaryButton
+      <SolidButton
         position="ml-auto"
         type="button"
+        color="primary"
         disabled={canCreateNewSource ? false : true}
         onClickHandler={handleCreateNewSource}
       >
         Set up source
-      </PrimaryButton>
+      </SolidButton>
     </div>
   );
 };

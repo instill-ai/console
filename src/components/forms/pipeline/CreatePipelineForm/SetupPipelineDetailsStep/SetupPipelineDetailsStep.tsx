@@ -3,9 +3,9 @@ import { useFormikContext } from "formik";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
+  SolidButton,
 } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui";
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, FormikStep } from "@/components/formik";
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
@@ -275,14 +275,15 @@ const SetupPipelineDetailsStep: FC = () => {
             width="w-[25vw]"
             closable={true}
           />
-          <PrimaryButton
+          <SolidButton
             position="ml-auto my-auto"
             type="button"
+            color="primary"
             disabled={canSetupNewPipeline ? false : true}
             onClickHandler={handleSetupNewPipeline}
           >
             Set up
-          </PrimaryButton>
+          </SolidButton>
         </div>
       </div>
     </FormikStep>

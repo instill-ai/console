@@ -8,9 +8,8 @@ import {
   useState,
 } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui";
 import { SingleSelect } from "@/components/formik";
 import {
   StepNumberState,
@@ -144,14 +143,15 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
         disabled={modelCreated ? true : false}
         required={true}
       />
-      <PrimaryButton
+      <SolidButton
         position="ml-auto"
         type="button"
+        color="primary"
         disabled={modelCreated ? true : canUseExistingModel ? false : true}
         onClickHandler={handleUseModel}
       >
         Select
-      </PrimaryButton>
+      </SolidButton>
     </div>
   );
 };

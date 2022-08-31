@@ -1,4 +1,4 @@
-import { BasicTextField } from "@instill-ai/design-system";
+import { BasicTextField, OutlineButton } from "@instill-ai/design-system";
 import {
   ChangeEvent,
   Dispatch,
@@ -18,7 +18,6 @@ import {
 } from "@/lib/instill";
 import ModalBase from "../ModalBase";
 import { Nullable } from "@/types/general";
-import { OutlineButton } from "@/components/ui";
 
 export type DeleteResourceModalProps = {
   resource: Nullable<
@@ -150,42 +149,18 @@ const DeleteResourceModal = ({
           <OutlineButton
             type="button"
             disabled={false}
-            disabledBgColor="bg-instillGrey15"
-            bgColor="bg-white"
-            hoveredBgColor="hover:bg-instillGrey50"
-            disabledTextColor="text-instillGrey50"
-            textColor="text-instillGrey50"
-            hoveredTextColor="hover:text-instillGrey05"
-            width="w-full"
-            borderSize="border"
-            borderColor="border-instillGrey50"
-            hoveredBorderColor={null}
-            disabledBorderColor={null}
             onClickHandler={() => setModalIsOpen(false)}
-            position={null}
+            color="secondary"
           >
-            Cancel
+            <p className="mx-auto">Cancel</p>
           </OutlineButton>
           <OutlineButton
             type="button"
-            disabled={canDeleteResource ? false : true}
-            disabledBgColor="bg-instillGrey15"
-            bgColor="bg-white"
-            hoveredBgColor="hover:bg-instillRed"
-            disabledTextColor="text-instillGrey30"
-            textColor={
-              canDeleteResource ? "text-instillRed" : "text-instillGrey50"
-            }
-            hoveredTextColor="hover:text-instillRed10"
-            width="w-full"
-            borderSize={canDeleteResource ? "border" : null}
-            borderColor="border-instillRed"
-            hoveredBorderColor={null}
-            disabledBorderColor={null}
             onClickHandler={handleDeleteResource}
-            position={null}
+            color="secondary"
+            disabled={canDeleteResource ? false : true}
           >
-            Delete
+            <p className="mx-auto">Delete</p>
           </OutlineButton>
         </div>
       </div>

@@ -1,15 +1,16 @@
 import { useEffect, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
-
-import { SingleSelect } from "../formik/FormikField";
-import { FormikFormBase } from "@/components/formik";
-import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
   SingleSelectOption,
+  SolidButton,
 } from "@instill-ai/design-system";
+
+import { SingleSelect } from "../formik/FormikField";
+import { FormikFormBase } from "@/components/formik";
+import { ConnectorIcon } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -207,14 +208,15 @@ const CreateSourceForm = () => {
                 width="w-[25vw]"
                 closable={true}
               />
-              <PrimaryButton
+              <SolidButton
                 disabled={formik.isValid ? false : true}
                 position="ml-auto my-auto"
                 type="submit"
+                color="primary"
                 onClickHandler={null}
               >
                 Set up
-              </PrimaryButton>
+              </SolidButton>
             </div>
           </FormikFormBase>
         );

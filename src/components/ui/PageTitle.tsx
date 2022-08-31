@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import cn from "clsx";
 
 import Breadcrumb, { BreadcrumbProps } from "./Breadcrumb";
-import { PrimaryButton } from "./Buttons";
+import { SolidButton } from "@instill-ai/design-system";
 
 export type PageTitleProps = {
   title: string;
@@ -34,14 +34,15 @@ const PageTitle = ({
       <div className="flex min-h-[44px] w-full flex-row">
         <h2 className="text-instill-h2 mt-auto mr-auto text-black">{title}</h2>
         {enableButton ? (
-          <PrimaryButton
+          <SolidButton
             type="button"
+            color="primary"
             disabled={false}
             onClickHandler={onClickHandler}
             position={null}
           >
             {buttonName}
-          </PrimaryButton>
+          </SolidButton>
         ) : null}
       </div>
     </div>

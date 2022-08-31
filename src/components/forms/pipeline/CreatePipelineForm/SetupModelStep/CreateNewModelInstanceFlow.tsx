@@ -13,6 +13,7 @@ import {
   ModelInstanceIcon,
   ProgressMessageBoxState,
   SingleSelectOption,
+  SolidButton,
 } from "@instill-ai/design-system";
 
 import {
@@ -34,7 +35,7 @@ import {
   useModelDefinitions,
   useModelInstances,
 } from "@/services/model";
-import { ModelDefinitionIcon, PrimaryButton } from "@/components/ui";
+import { ModelDefinitionIcon } from "@/components/ui";
 import {
   CreateArtivcModelPayload,
   CreateGithubModelPayload,
@@ -605,14 +606,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
           width="w-[15vw]"
           closable={true}
         />
-        <PrimaryButton
+        <SolidButton
           disabled={canCreateModel ? false : true}
           onClickHandler={handelCreateModel}
           position="ml-auto my-auto"
           type="button"
+          color="primary"
         >
           Set up
-        </PrimaryButton>
+        </SolidButton>
       </div>
 
       {canDisplayDeployModelSection ? (
@@ -639,14 +641,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
               width="w-[15vw]"
               closable={true}
             />
-            <PrimaryButton
+            <SolidButton
               disabled={canDeployModel ? false : true}
               onClickHandler={handleDeployModel}
               position="ml-auto my-auto"
               type="button"
+              color="primary"
             >
               Deploy
-            </PrimaryButton>
+            </SolidButton>
           </div>
         </>
       ) : null}

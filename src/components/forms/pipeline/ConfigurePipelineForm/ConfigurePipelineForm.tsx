@@ -1,19 +1,20 @@
 import { FC, useCallback, useState } from "react";
 import { Formik } from "formik";
+import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
+  OutlineButton,
+  SolidButton,
 } from "@instill-ai/design-system";
 
 import { FormikFormBase, TextArea } from "@/components/formik";
-import { PrimaryButton , DeleteResourceModal } from "@/components/ui";
+import { DeleteResourceModal } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { useRouter } from "next/router";
-import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigurePipelineFormProps = {
@@ -225,28 +226,19 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   onClickHandler={() => setDeletePipelineModalIsOpen(true)}
                   position="mr-auto my-auto"
                   type="button"
-                  disabledBgColor="bg-instillGrey15"
-                  bgColor="bg-white"
-                  hoveredBgColor="hover:bg-instillRed"
-                  disabledTextColor="text-instillGrey50"
-                  textColor="text-instillRed"
-                  hoveredTextColor="hover:text-instillGrey05"
-                  width={null}
-                  borderSize="border"
-                  borderColor="border-instillRed"
-                  hoveredBorderColor={null}
-                  disabledBorderColor="border-instillGrey15"
+                  color="danger"
                 >
                   Delete
                 </OutlineButton>
-                <PrimaryButton
+                <SolidButton
                   disabled={false}
                   onClickHandler={() => handleEditButton(values, submitForm)}
                   position="ml-auto my-auto"
                   type="button"
+                  color="primary"
                 >
                   {canEdit ? "Done" : "Edit"}
-                </PrimaryButton>
+                </SolidButton>
               </div>
               <div className="flex">
                 <BasicProgressMessageBox

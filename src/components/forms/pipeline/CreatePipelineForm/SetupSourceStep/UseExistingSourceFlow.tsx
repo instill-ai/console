@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 
 import { SingleSelect } from "@/components/formik";
 import {
@@ -8,7 +8,7 @@ import {
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
 import { useSources } from "@/services/connector";
-import { ConnectorIcon, PrimaryButton } from "@/components/ui";
+import { ConnectorIcon } from "@/components/ui";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -114,14 +114,15 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
         error={errors.source?.existing?.id || null}
         required={true}
       />
-      <PrimaryButton
+      <SolidButton
         position="ml-auto"
         type="button"
+        color="primary"
         disabled={canUseExistingSource ? false : true}
         onClickHandler={handleUseExistingSource}
       >
         Use model
-      </PrimaryButton>
+      </SolidButton>
     </div>
   );
 };

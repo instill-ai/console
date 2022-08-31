@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { useFormikContext } from "formik";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 import Image from "next/image";
 
 import {
@@ -11,7 +11,7 @@ import {
   useCreateDestination,
   useDestinationDefinitions,
 } from "@/services/connector";
-import { ConnectorIcon, PrimaryButton } from "@/components/ui";
+import { ConnectorIcon } from "@/components/ui";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -180,14 +180,15 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         required={true}
         description={"Setup Guide"}
       />
-      <PrimaryButton
+      <SolidButton
         position="ml-auto"
         type="button"
+        color="primary"
         disabled={canCreateNewDestination ? false : true}
         onClickHandler={handleCreateNewDestination}
       >
         Set up
-      </PrimaryButton>
+      </SolidButton>
     </div>
   );
 };

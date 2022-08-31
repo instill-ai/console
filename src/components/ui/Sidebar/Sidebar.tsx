@@ -9,11 +9,11 @@ import {
   ResourceIcon,
   DiscordIcon,
   GitHubIcon,
+  CollapseSidebarButton,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
 import LinkTab from "./LinkTab";
-import { CollapseSidebarButton } from "../Buttons";
 import ButtonTab from "./ButtonTab";
 
 type Tab =
@@ -255,7 +255,6 @@ const Sidebar: FC = () => {
 
         <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
           <CollapseSidebarButton
-            type="button"
             disabled={false}
             isCollapse={isCollapsed}
             position="m-auto"

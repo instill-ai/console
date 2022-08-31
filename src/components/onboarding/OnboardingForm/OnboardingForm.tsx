@@ -9,9 +9,9 @@ import {
   SingleSelectOption,
   BasicSingleSelect,
   BasicToggleField,
+  SolidButton,
 } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
@@ -239,14 +239,15 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
           width="w-[25vw]"
           closable={true}
         />
-        <PrimaryButton
+        <SolidButton
           disabled={!formIsValid}
           type="button"
           position="ml-auto my-auto"
+          color="primary"
           onClickHandler={handleSubmit}
         >
           Start
-        </PrimaryButton>
+        </SolidButton>
       </div>
     </FormBase>
   );

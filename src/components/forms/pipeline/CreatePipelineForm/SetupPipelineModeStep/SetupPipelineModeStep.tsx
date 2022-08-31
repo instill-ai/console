@@ -4,6 +4,7 @@ import {
   AsyncIcon,
   SingleSelectOption,
   SyncIcon,
+  SolidButton,
 } from "@instill-ai/design-system";
 
 import { SingleSelect, FormikStep } from "@/components/formik";
@@ -11,7 +12,6 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import { PrimaryButton } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import ConnectorIcon from "@/components/ui/ConnectorIcon";
 import { CreateSourcePayload } from "@/lib/instill";
@@ -210,14 +210,15 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
           menuPlacement="auto"
         />
       </div>
-      <PrimaryButton
+      <SolidButton
         onClickHandler={handleGoNext}
         disabled={canGoNext ? false : true}
         type="button"
         position="ml-auto"
+        color="primary"
       >
         Next
-      </PrimaryButton>
+      </SolidButton>
     </FormikStep>
   );
 };

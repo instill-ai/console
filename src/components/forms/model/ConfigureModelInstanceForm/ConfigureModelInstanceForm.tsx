@@ -88,16 +88,6 @@ const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
           ) : null}
         </div>
       </FormBase>
-      {/* <div className="mb-10 flex flex-row">
-        <PrimaryButton
-          disabled={true}
-          onClickHandler={() => handleEditButton()}
-          position="ml-auto my-auto"
-          type="button"
-        >
-          {canEdit ? "Done" : "Edit"}
-        </PrimaryButton>
-      </div> */}
       <div className="flex flex-row">
         <BasicProgressMessageBox
           state={messageBoxState}
