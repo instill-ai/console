@@ -9,10 +9,9 @@ import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
 import { FormikFormBase, SingleSelect } from "@/components/formik";
-import { ConnectorIcon, PrimaryButton } from "@/components/ui";
+import { ConnectorIcon, PrimaryButton , DeleteResourceModal } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteSource } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";

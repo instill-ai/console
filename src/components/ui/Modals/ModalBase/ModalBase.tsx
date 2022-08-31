@@ -1,5 +1,5 @@
 import { Nullable } from "@/types/general";
-import { FC, useRef, useEffect } from "react";
+import { useRef, useEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import cn from "clsx";
 
@@ -7,14 +7,15 @@ export type ModalBaseProps = {
   modalIsOpen: boolean;
   modalBgColor: Nullable<string>;
   modalPadding: Nullable<string>;
+  children?: ReactNode;
 };
 
-const ModalBase: FC<ModalBaseProps> = ({
+const ModalBase = ({
   children,
   modalIsOpen,
   modalBgColor,
   modalPadding,
-}) => {
+}: ModalBaseProps) => {
   const el = useRef<HTMLDivElement>();
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { FormikFormBase, TextArea } from "@/components/formik";
-import { PrimaryButton } from "@/components/ui";
+import { PrimaryButton , DeleteResourceModal } from "@/components/ui";
 import { Model } from "@/lib/instill";
 import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
@@ -15,7 +15,6 @@ import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import useDeleteResourceModalState from "@/hooks/useDeleteResourceModalState";
 import { useRouter } from "next/router";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
-import { DeleteResourceModal } from "@/components/modals";
 import { AxiosError } from "axios";
 import { ErrorDetails, Violation } from "@/lib/instill/types";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";

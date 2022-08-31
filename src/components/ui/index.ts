@@ -96,3 +96,5 @@ export * from "./TablePlaceholders";
 export * from "./Tables";
 
 export * from "./Buttons";
+
+export * from "./Modals";

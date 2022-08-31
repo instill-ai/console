@@ -6,13 +6,12 @@ import {
 } from "@instill-ai/design-system";
 
 import { FormikFormBase, TextArea } from "@/components/formik";
-import { PrimaryButton } from "@/components/ui";
+import { PrimaryButton , DeleteResourceModal } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { DeleteResourceModal } from "@/components/modals";
 import { useRouter } from "next/router";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";

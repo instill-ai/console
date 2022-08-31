@@ -1,8 +1,13 @@
-import type { PrimaryButtonProps } from "./PrimaryButton";
 import PrimaryButton from "./PrimaryButton";
-import type { CollapseSidebarButtonProps } from "./CollapseSidebarButton";
+import type { PrimaryButtonProps } from "./PrimaryButton";
 import CollapseSidebarButton from "./CollapseSidebarButton";
+import type { CollapseSidebarButtonProps } from "./CollapseSidebarButton";
+import OutlineButton from "./OutlineButton";
+import type { OutlineButtonProps } from "@instill-ai/design-system";
 
-export type { PrimaryButtonProps, CollapseSidebarButtonProps };
-
-export { PrimaryButton, CollapseSidebarButton };
+export { PrimaryButton, CollapseSidebarButton, OutlineButton };
+export type {
+  PrimaryButtonProps,
+  CollapseSidebarButtonProps,
+  OutlineButtonProps,
+};
