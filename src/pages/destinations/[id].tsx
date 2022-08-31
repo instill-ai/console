@@ -1,18 +1,23 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useMemo } from "react";
 import { useRouter } from "next/router";
 
-import { PageBase, PageContentContainer } from "@/components/layouts";
-import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
+import {
+  StateLabel,
+  PipelinesTable,
+  PageTitle,
+  PageBase,
+  PageContentContainer,
+  PageHead,
+} from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/destination";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
 
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
+};
 
 const DestinationDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -23,6 +28,12 @@ const DestinationDetailsPage: FC & {
   const destinationWithPipelines = useDestinationWithPipelines(
     id ? `destination-connectors/${id.toString()}` : null
   );
+
+  const destination = useMemo(() => {
+    if (!destinationWithPipelines.isSuccess) return null;
+    const { pipelines, ...destination } = destinationWithPipelines.data;
+    return destination;
+  }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
 
   const isLoading = useMultiStageQueryLoadingState({
     data: destinationWithPipelines.data,
@@ -49,11 +60,7 @@ const DestinationDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={
-          isLoading
-            ? ""
-            : (destinationWithPipelines.data?.destination.name as string)
-        }
+        title={isLoading ? "" : (destinationWithPipelines.data?.name as string)}
       />
       <PageContentContainer>
         <PageTitle
@@ -68,7 +75,7 @@ const DestinationDetailsPage: FC & {
             enableIcon={true}
             enableBgColor={true}
             state={
-              destinationWithPipelines.data?.destination.connector.state ??
+              destinationWithPipelines.data?.connector.state ??
               "STATE_UNSPECIFIED"
             }
             iconHeight="h-[18px]"
@@ -91,10 +98,8 @@ const DestinationDetailsPage: FC & {
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>
-          {destinationWithPipelines.isSuccess ? (
-            <ConfigureDestinationForm
-              destination={destinationWithPipelines.data.destination}
-            />
+          {destination ? (
+            <ConfigureDestinationForm destination={destination} />
           ) : null}
         </div>
       </PageContentContainer>

@@ -1,13 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Nullable } from "@/types/general";
 
-export interface PageHeadProps {
+export type PageHeadProps = {
   title: Nullable<string>;
-}
+};
 
-const PageHead: FC<PageHeadProps> = ({ title }) => {
+const PageHead = ({ title }: PageHeadProps) => {
   const router = useRouter();
   const meta = {
     type: "website",

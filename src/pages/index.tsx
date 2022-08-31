@@ -1,4 +1,4 @@
-import { PageBase, PageContentContainer } from "@/components/layouts";
+import { PageBase, PageContentContainer } from "@/components/ui";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { FC, ReactElement, useEffect } from "react";

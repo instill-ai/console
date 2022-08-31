@@ -27,6 +27,12 @@ import TableLoadingProgress from "./TableLoadingProgress";
 import type { TableLoadingProgressProps } from "./TableLoadingProgress";
 import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
 import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
+import PageBase from "./PageBase";
+import type { PageBaseProps } from "./PageBase";
+import PageContentContainer from "./PageContentContainer";
+import type { PageContentContainerProps } from "./PageContentContainer";
+import PageHead from "./PageHead";
+import type { PageHeadProps } from "./PageHead";
 import PageTitle from "./PageTitle";
 import type { PageTitleProps } from "./PageTitle";
 import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
@@ -50,6 +56,9 @@ export {
   HorizontalDivider,
   TableLoadingProgress,
   ModelInstanceTaskLabel,
+  PageBase,
+  PageContentContainer,
+  PageHead,
   PageTitle,
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
@@ -67,6 +76,9 @@ export type {
   HorizontalDividerProps,
   TableLoadingProgressProps,
   ModelInstanceTaskLabelProps,
+  PageBaseProps,
+  PageContentContainerProps,
+  PageHeadProps,
   PageTitleProps,
   ModelInstanceReadmeCardProps,
   ChangeResourceStateButtonProps,

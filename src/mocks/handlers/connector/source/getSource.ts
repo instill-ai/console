@@ -14,7 +14,7 @@ export const getPredefindedSource = (sourceId: string): GetSourceResponse => {
       source_connector_definition: `source-connector-definitions/${sourceId}`,
       connector: {
         description: "",
-        configuration: "{}",
+        configuration: {},
         state: "STATE_CONNECTED",
         tombstone: false,
         user: "users/local-user",

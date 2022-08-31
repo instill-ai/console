@@ -1,11 +1,11 @@
-import { Sidebar } from "components/ui";
-import { FC, ReactNode } from "react";
+import { Sidebar } from "@/components/ui";
+import { ReactNode } from "react";
 
-export interface PageBaseProps {
+export type PageBaseProps = {
   children: ReactNode;
-}
+};
 
-const PageBase: FC<PageBaseProps> = ({ children }) => {
+const PageBase = ({ children }: PageBaseProps) => {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1 flex-row">
