@@ -1,5 +1,4 @@
 import { FC, useCallback, useState } from "react";
-import { Formik } from "formik";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 import {
@@ -7,17 +6,16 @@ import {
   ProgressMessageBoxState,
   OutlineButton,
   SolidButton,
+  BasicTextArea,
 } from "@instill-ai/design-system";
 
-import { FormikFormBase, TextArea } from "@/components/formik";
-import { DeleteResourceModal } from "@/components/ui";
+import { DeleteResourceModal, FormBase } from "@/components/ui";
 import { Model } from "@/lib/instill";
 import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import useDeleteResourceModalState from "@/hooks/useDeleteResourceModalState";
-import { ErrorDetails, Violation } from "@/lib/instill/types";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureModelFormProps = {
@@ -25,7 +23,11 @@ export type ConfigureModelFormProps = {
   marginBottom: Nullable<string>;
 };
 
-export type ConfigureModelFormValue = {
+export type ConfigureModelFormValues = {
+  description: Nullable<string>;
+};
+
+export type ConfigureModelFormErrors = {
   description: Nullable<string>;
 };
 
@@ -37,23 +39,13 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   const router = useRouter();
 
   const [canEdit, setCanEdit] = useState(false);
-
-  const handleEditButton = (
-    values: ConfigureModelFormValue,
-    submitForm: () => Promise<void>
-  ) => {
-    if (!canEdit) {
-      setCanEdit(true);
-      return;
-    }
-
-    submitForm();
-  };
+  const [fieldValues, setFieldValues] = useState<ConfigureModelFormValues>({
+    description: model ? model.description : null,
+  });
+  const [formIsDirty, setFormIsDirty] = useState(false);
 
   // ###################################################################
-  // #                                                                 #
-  // # 1 - handle update model                                         #
-  // #                                                                 #
+  // # 1 - Handle update model                                         #
   // ###################################################################
 
   const [messageBoxState, setMessageBoxState] =
@@ -66,87 +58,79 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
   const updateModel = useUpdateModel();
 
-  const validateForm = useCallback((values: ConfigureModelFormValue) => {
-    const errors: Partial<ConfigureModelFormValue> = {};
-
-    if (!values.description) {
-      errors.description = "Required";
+  const handleSubmit = useCallback(() => {
+    if (!canEdit) {
+      setCanEdit(true);
+      return;
     }
 
-    return errors;
-  }, []);
+    if (!model || !formIsDirty) {
+      setCanEdit(false);
+      return;
+    }
 
-  const handleSubmit = useCallback(
-    (values: ConfigureModelFormValue) => {
-      if (!model || !values.description) return;
+    if (model.description === fieldValues.description) {
+      setCanEdit(false);
+      return;
+    }
 
-      if (model.description === values.description) {
-        setCanEdit(false);
-        return;
-      }
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Updating...",
+    }));
 
-      setMessageBoxState(() => ({
-        activate: true,
-        status: "progressing",
-        description: null,
-        message: "Updating...",
-      }));
+    updateModel.mutate(
+      {
+        name: model.name,
+        description: fieldValues.description || undefined,
+      },
+      {
+        onSuccess: () => {
+          setCanEdit(false);
+          setFormIsDirty(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Succeed.",
+          }));
 
-      updateModel.mutate(
-        {
-          name: model.name,
-          description: values.description,
+          if (amplitudeIsInit) {
+            sendAmplitudeData("update_model", {
+              type: "critical_action",
+              process: "model",
+            });
+          }
         },
-        {
-          onSuccess: () => {
-            setCanEdit(false);
+        onError: (error) => {
+          if (error instanceof Error) {
             setMessageBoxState(() => ({
               activate: true,
-              status: "success",
+              status: "error",
               description: null,
-              message: "Succeed.",
+              message: error.message,
             }));
-
-            if (amplitudeIsInit) {
-              sendAmplitudeData("update_model", {
-                type: "critical_action",
-                process: "model",
-              });
-            }
-          },
-          onError: (error) => {
-            if (error instanceof Error) {
-              setMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: error.message,
-              }));
-            } else {
-              setMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: "Something went wrong when update the model",
-              }));
-            }
-          },
-        }
-      );
-    },
-    [amplitudeIsInit, model, updateModel]
-  );
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when update the model",
+            }));
+          }
+        },
+      }
+    );
+  }, [amplitudeIsInit, model, updateModel, fieldValues]);
 
   // ###################################################################
-  // #                                                                 #
   // # 2 - Handle delete model                                         #
-  // #                                                                 #
   // ###################################################################
 
   const { disableResourceDeletion } = useDeleteResourceGuard();
-
   const modalState = useDeleteResourceModalState();
-
   const deleteModel = useDeleteModel();
 
   const handleDeleteModel = useCallback(() => {
@@ -180,10 +164,11 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
           setMessageBoxState({
             activate: true,
             message: `${error.response?.status} - ${error.response?.data.message}`,
-            description: (
-              (error.response?.data.details as ErrorDetails[])[0]
-                .violations as Violation[]
-            )[0].description,
+            description: JSON.stringify(
+              error.response?.data.details,
+              null,
+              "\t"
+            ),
             status: "error",
           });
         } else {
@@ -201,68 +186,58 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
   return (
     <>
-      <Formik
-        initialValues={
-          {
-            description: model ? model.description : null,
-          } as ConfigureModelFormValue
-        }
-        enableReinitialize={true}
-        onSubmit={handleSubmit}
-        validate={validateForm}
+      <FormBase
+        marginBottom={marginBottom}
+        padding={null}
+        flex1={false}
+        noValidate={true}
       >
-        {({ values, errors, submitForm }) => {
-          return (
-            <FormikFormBase
-              marginBottom={marginBottom}
-              gapY="gap-y-5"
-              padding={null}
-              minWidth={null}
-            >
-              <div className="mb-10 flex flex-col">
-                <TextArea
-                  id="description"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description."
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={canEdit ? false : true}
-                  required={false}
-                />
-              </div>
-              <div className="flex flex-row">
-                <OutlineButton
-                  disabled={disableResourceDeletion}
-                  onClickHandler={() => modalState.setModalIsOpen(true)}
-                  position="mr-auto my-auto"
-                  type="button"
-                  color="danger"
-                >
-                  Delete
-                </OutlineButton>
-                <SolidButton
-                  disabled={false}
-                  onClickHandler={() => handleEditButton(values, submitForm)}
-                  position="ml-auto my-auto"
-                  type="button"
-                  color="primary"
-                >
-                  {canEdit ? "Done" : "Edit"}
-                </SolidButton>
-              </div>
-              <div className="flex flex-row">
-                <BasicProgressMessageBox
-                  state={messageBoxState}
-                  setState={setMessageBoxState}
-                  width="w-[25vw]"
-                  closable={true}
-                />
-              </div>
-            </FormikFormBase>
-          );
-        }}
-      </Formik>
+        <div className="mb-10 flex flex-col">
+          <BasicTextArea
+            id="description"
+            name="description"
+            label="Description"
+            description="Fill with a short description."
+            value={fieldValues.description}
+            disabled={canEdit ? false : true}
+            required={false}
+            onChange={(event) => {
+              setFormIsDirty(true);
+              setFieldValues({
+                description: event.target.value,
+              });
+            }}
+          />
+        </div>
+        <div className="flex flex-row mb-8">
+          <OutlineButton
+            disabled={disableResourceDeletion}
+            onClickHandler={() => modalState.setModalIsOpen(true)}
+            position="mr-auto my-auto"
+            type="button"
+            color="danger"
+          >
+            Delete
+          </OutlineButton>
+          <SolidButton
+            disabled={false}
+            onClickHandler={handleSubmit}
+            position="ml-auto my-auto"
+            type="button"
+            color="primary"
+          >
+            {canEdit ? "Save" : "Edit"}
+          </SolidButton>
+        </div>
+        <div className="flex flex-row">
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
+        </div>
+      </FormBase>
       <DeleteResourceModal
         resource={model}
         modalIsOpen={modalState.modalIsOpen}

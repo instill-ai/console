@@ -23,14 +23,14 @@ export type OnboardingFormProps = {
   user: Nullable<Partial<User>>;
 };
 
-export type OnboardingFormValue = {
+export type OnboardingFormValues = {
   email: Nullable<string>;
   companyName: Nullable<string>;
   role: Nullable<string>;
   newsletterSubscription: Nullable<boolean>;
 };
 
-type OnboardingFormError = {
+type OnboardingFormErrors = {
   email?: string;
   companyName?: string;
   role?: string;
@@ -42,7 +42,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  const [values, setValues] = useState<OnboardingFormValue>({
+  const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
     companyName: null,
     role: null,
@@ -65,9 +65,9 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
   // Handle fields change
 
   const handleFieldChange = useCallback(
-    (key: keyof OnboardingFormValue, event: ChangeEvent<HTMLInputElement>) => {
+    (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
       setFormIsDirty(true);
-      setValues((prev) => ({
+      setFieldValues((prev) => ({
         ...prev,
         [key]:
           key === "newsletterSubscription"
@@ -83,7 +83,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
       if (!option) return;
 
       setSelectedRoleOption(option);
-      setValues((prev) => ({
+      setFieldValues((prev) => ({
         ...prev,
         role: option.value as string,
       }));
@@ -93,46 +93,48 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
   // Validate form and deal with error handling
 
-  const [errors, setErrors] = useState<OnboardingFormError>({});
+  const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({});
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    if (!values.email) {
+    if (!fieldValues.email) {
       if (formIsDirty) {
-        errors.email = "Email is required";
-        setErrors({
+        fieldErrors.email = "Email is required";
+        setFieldErrors({
           email: "Email is required",
         });
       }
     } else {
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        setErrors({
+      if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(fieldValues.email)
+      ) {
+        setFieldErrors({
           email: "Invalid email address",
         });
         return;
       } else {
-        setErrors({
+        setFieldErrors({
           email: undefined,
         });
         setFormIsValid(true);
       }
     }
-  }, [values]);
+  }, [fieldValues]);
 
   // Handle form submission
 
   const handleSubmit = useCallback(() => {
-    if (!values.email) return;
+    if (!fieldValues.email) return;
 
     const token = uuidv4();
 
     const payload: Partial<User> = {
       id: "local-user",
-      email: values.email,
-      company_name: values.companyName ?? undefined,
-      role: values.role as string,
-      newsletter_subscription: values.newsletterSubscription
-        ? values.newsletterSubscription
+      email: fieldValues.email,
+      company_name: fieldValues.companyName ?? undefined,
+      role: fieldValues.role as string,
+      newsletter_subscription: fieldValues.newsletterSubscription
+        ? fieldValues.newsletterSubscription
         : false,
       cookie_token: user ? user.cookie_token : token,
     };
@@ -183,7 +185,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
         }
       },
     });
-  }, [user, values, amplitudeIsInit, router, updateUser]);
+  }, [user, fieldValues, amplitudeIsInit, router, updateUser]);
 
   return (
     <FormBase
@@ -198,17 +200,17 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
           label="Your email"
           description="Fill your email address"
           required={true}
-          value={values.email}
+          value={fieldValues.email}
           onChange={(event) => handleFieldChange("email", event)}
-          error={errors.email}
+          error={fieldErrors.email}
         />
         <BasicTextField
           id="companyName"
           label="Your company"
           description="Fill your company name"
-          value={values.companyName}
+          value={fieldValues.companyName}
           onChange={(event) => handleFieldChange("companyName", event)}
-          error={errors.companyName}
+          error={fieldErrors.companyName}
         />
         <BasicSingleSelect
           id="role"
@@ -218,18 +220,18 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
           value={selectedRoleOption}
           description="Pick a role closest to your job in your company"
           onChange={handleRoleChange}
-          error={errors.role}
+          error={fieldErrors.role}
         />
         <BasicToggleField
           id="newsletterSubscription"
           label="Newsletter subscription"
-          value={values.newsletterSubscription || false}
+          value={fieldValues.newsletterSubscription || false}
           required={true}
           description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
           onChange={(event) =>
             handleFieldChange("newsletterSubscription", event)
           }
-          error={errors.newsletterSubscription}
+          error={fieldErrors.newsletterSubscription}
         />
       </div>
       <div className="flex flex-row">
