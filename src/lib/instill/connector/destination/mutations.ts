@@ -1,4 +1,5 @@
 import { AirbyteFieldValues } from "@/lib/airbytes";
+import { AtLeast } from "@/types/general";
 import axios from "axios";
 import { Destination } from "./types";
 
@@ -37,6 +38,24 @@ export const deleteDestinationMutation = async (destinationName: string) => {
     await axios.delete(
       `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}`
     );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export type UpdateDestinationResponse = {
+  destination_connector: Destination;
+};
+
+export const updateDestinationMutation = async (
+  payload: AtLeast<Destination, "name">
+) => {
+  try {
+    const { data } = await axios.patch<UpdateDestinationResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      payload
+    );
+    return Promise.resolve(data.destination_connector);
   } catch (err) {
     return Promise.reject(err);
   }
