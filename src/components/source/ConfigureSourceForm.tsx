@@ -1,17 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
-import { Formik } from "formik";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
   SingleSelectOption,
   OutlineButton,
   SolidButton,
+  BasicSingleSelect,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
-import { FormikFormBase, SingleSelect } from "@/components/formik";
-import { ConnectorIcon, DeleteResourceModal } from "@/components/ui";
+import { ConnectorIcon, DeleteResourceModal, FormBase } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useDeleteSource } from "@/services/connector";
@@ -22,24 +21,26 @@ import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
+  marginBottom: Nullable<string>;
 };
 
 export type ConfigureSourceFormValue = {
   sourceDefinition: Nullable<string>;
 };
 
-const ConfigureSourceForm = ({ source }: ConfigureSourceFormProps) => {
+const ConfigureSourceForm = ({
+  source,
+  marginBottom,
+}: ConfigureSourceFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
-  // #                                                                 #
   // # Initialize the source definition                                #
-  // #                                                                 #
   // ###################################################################
 
-  const [syncSourceDefinitionOptions, setSyncSourceDefinitionOptions] =
-    useState<SingleSelectOption[]>([]);
+  const [sourceDefinitionOptions, setSourceDefinitionOptions] =
+    useState<Nullable<SingleSelectOption[]>>(null);
   const [selectedSourceDefinitionOption, setSelectedSourceDefinitionOption] =
     useState<Nullable<SingleSelectOption>>(null);
   const [canEdit, setCanEdit] = useState(false);
@@ -76,26 +77,26 @@ const ConfigureSourceForm = ({ source }: ConfigureSourceFormProps) => {
       },
     ];
 
-    setSyncSourceDefinitionOptions(options);
+    setSourceDefinitionOptions(options);
     setSelectedSourceDefinitionOption(
       options.find((e) => e.value === source.id) || null
     );
   }, [source]);
 
-  const sourceDefinitionOnChangeCb = useCallback(
-    (option: SingleSelectOption) => {
-      setSelectedSourceDefinitionOption(
-        syncSourceDefinitionOptions.find((e) => e.value === option.value) ||
-          null
-      );
-    },
-    [syncSourceDefinitionOptions]
-  );
+  // ###################################################################
+  // # Handle delete destination                                       #
+  // ###################################################################
+
+  const handleSubmit = useCallback(() => {
+    if (canEdit) {
+      setCanEdit(false);
+    } else {
+      setCanEdit(true);
+    }
+  }, []);
 
   // ###################################################################
-  // #                                                                 #
   // # Handle delete destination                                       #
-  // #                                                                 #
   // ###################################################################
 
   const { disableResourceDeletion } = useDeleteResourceGuard();
@@ -165,72 +166,52 @@ const ConfigureSourceForm = ({ source }: ConfigureSourceFormProps) => {
 
   return (
     <>
-      <Formik
-        initialValues={
-          {
-            sourceDefinition: source ? source.id : null,
-          } as ConfigureSourceFormValue
-        }
-        onSubmit={() => {
-          if (!canEdit) {
-            setCanEdit(true);
-            return;
-          }
-        }}
+      <FormBase
+        padding={null}
+        marginBottom={marginBottom}
+        noValidate={true}
+        flex1={false}
       >
-        {() => {
-          return (
-            <FormikFormBase
-              marginBottom={null}
-              gapY={null}
-              padding={null}
-              minWidth={null}
-            >
-              <div className="mb-10 flex flex-col">
-                <SingleSelect
-                  id="sourceDefinition"
-                  name="sourceDefinition"
-                  label="Source"
-                  disabled={canEdit ? false : true}
-                  options={syncSourceDefinitionOptions}
-                  required={true}
-                  description={"Setup Guide"}
-                  value={selectedSourceDefinitionOption}
-                  additionalOnChangeCb={sourceDefinitionOnChangeCb}
-                />
-              </div>
-              <div className="mb-10 flex flex-row">
-                <OutlineButton
-                  disabled={disableResourceDeletion}
-                  onClickHandler={() => setDeleteSourceModalIsOpen(true)}
-                  position="mr-auto my-auto"
-                  type="button"
-                  color="danger"
-                >
-                  Delete
-                </OutlineButton>
-                <SolidButton
-                  type="submit"
-                  disabled={true}
-                  position="ml-auto my-auto"
-                  color="primary"
-                  onClickHandler={null}
-                >
-                  {canEdit ? "Done" : "Edit"}
-                </SolidButton>
-              </div>
-              <div className="flex">
-                <BasicProgressMessageBox
-                  state={messageBoxState}
-                  setState={setMessageBoxState}
-                  width="w-[25vw]"
-                  closable={true}
-                />
-              </div>
-            </FormikFormBase>
-          );
-        }}
-      </Formik>
+        <div className="mb-10 flex flex-col">
+          <BasicSingleSelect
+            id="sourceDefinition"
+            instanceId="sourceDefinition"
+            label="Source"
+            disabled={canEdit ? false : true}
+            options={sourceDefinitionOptions || []}
+            required={true}
+            value={selectedSourceDefinitionOption}
+          />
+        </div>
+        <div className="mb-10 flex flex-row">
+          <OutlineButton
+            disabled={disableResourceDeletion}
+            onClickHandler={() => setDeleteSourceModalIsOpen(true)}
+            position="mr-auto my-auto"
+            type="button"
+            color="danger"
+          >
+            Delete
+          </OutlineButton>
+          <SolidButton
+            type="submit"
+            disabled={true}
+            position="ml-auto my-auto"
+            color="primary"
+            onClickHandler={handleSubmit}
+          >
+            {canEdit ? "Done" : "Edit"}
+          </SolidButton>
+        </div>
+        <div className="flex">
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
+        </div>
+      </FormBase>
       <DeleteResourceModal
         resource={source}
         modalIsOpen={deleteSourceModalIsOpen}
