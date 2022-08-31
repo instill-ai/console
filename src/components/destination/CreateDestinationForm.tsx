@@ -1,5 +1,4 @@
 import {
-  FC,
   useCallback,
   useMemo,
   useState,
@@ -58,7 +57,7 @@ export type CreateDestinationFormProps = {
   pipelineMode: Nullable<PipelineMode>;
 };
 
-const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
+const CreateDestinationForm = ({
   setResult,
   flex1,
   title,
@@ -66,7 +65,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
   marginBottom,
   onSuccessCb,
   pipelineMode,
-}) => {
+}: CreateDestinationFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 

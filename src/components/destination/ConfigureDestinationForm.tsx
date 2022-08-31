@@ -1,3 +1,14 @@
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import * as yup from "yup";
+import {
+  BasicProgressMessageBox,
+  BasicSingleSelect,
+  BasicTextArea,
+  ProgressMessageBoxState,
+} from "@instill-ai/design-system";
+import { AxiosError } from "axios";
+import Image from "next/image";
+
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
@@ -10,21 +21,11 @@ import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import dot from "@/lib/dot";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
-import { FormBase } from "../forms";
-import { PrimaryButton } from "../ui";
-import * as yup from "yup";
-import {
-  BasicProgressMessageBox,
-  BasicSingleSelect,
-  BasicTextArea,
-  ProgressMessageBoxState,
-} from "@instill-ai/design-system";
+import { FormBase } from "@/components/forms";
+import { PrimaryButton } from "@/components/ui";
 import { useUpdateDestination } from "@/services/connector/destination/mutations";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { AxiosError } from "axios";
-import Image from "next/image";
 
 export type ConfigureDestinationFormProps = {
   destination: DestinationWithDefinition;

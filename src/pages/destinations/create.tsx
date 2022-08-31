@@ -1,7 +1,7 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { CreateDestinationForm } from "@/components/forms";
+import { CreateDestinationForm } from "@/components/destination";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { PageTitle } from "@/components/ui";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
