@@ -47,8 +47,19 @@ export type UpdateDestinationResponse = {
   destination_connector: Destination;
 };
 
+export type UpdateDestinationPayload = {
+  name: string;
+  connector: {
+    description?: string;
+    configuration:
+      | Record<string, any>
+      | AirbyteFieldValues
+      | Record<string, never>;
+  };
+};
+
 export const updateDestinationMutation = async (
-  payload: AtLeast<Destination, "name">
+  payload: UpdateDestinationPayload
 ) => {
   try {
     const { data } = await axios.patch<UpdateDestinationResponse>(
