@@ -10,3 +10,5 @@ export type Nullable<T> = T | null;
 export type InstillAiUserCookie = {
   cookie_token: string;
 };
+
+export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
