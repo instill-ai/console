@@ -7,7 +7,14 @@ import {
   BasicToggleField,
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
-import { useEffect, Dispatch, ReactNode, SetStateAction, useMemo } from "react";
+import {
+  useEffect,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useMemo,
+  Fragment,
+} from "react";
 import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
@@ -65,7 +72,7 @@ export const pickComponent = (
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
-      <div key={formTree.path} className="flex flex-col gap-y-5">
+      <Fragment key={formTree.path}>
         {formTree.properties.map((e) =>
           pickComponent(
             e,
@@ -77,7 +84,7 @@ export const pickComponent = (
             setSelectedConditionMap
           )
         )}
-      </div>
+      </Fragment>
     );
   }
 
