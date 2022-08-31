@@ -3,37 +3,16 @@ import { useRouter } from "next/router";
 
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
-import { ConfigureDestinationForm } from "@/components/forms";
+import { ConfigureDestinationForm } from "@/components/destination";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import PageHead from "@/components/layouts/PageHead";
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const data = await listRepoFileContent(
-//     "instill-ai",
-//     "connector-backend",
-//     "configs/models/destination-definition.json"
-//   );
-
-//   const decodeSchema = Buffer.from(data.content, "base64").toString();
-//   const jsonSchema = JSON.parse(decodeSchema);
-
-//   //const fields = transformSchemaToFormFields(jsonSchema);
-
-//   return {
-//     props: {
-//       schema: jsonSchema,
-//     },
-//   };
-// };
-
 interface GetLayOutProps {
   page: ReactElement;
 }
-
-// export type DestinationDetailsPageProps = {};
 
 const DestinationDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -70,7 +49,11 @@ const DestinationDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={isLoading ? "" : (destinationWithPipelines.data?.name as string)}
+        title={
+          isLoading
+            ? ""
+            : (destinationWithPipelines.data?.destination.name as string)
+        }
       />
       <PageContentContainer>
         <PageTitle
@@ -85,7 +68,7 @@ const DestinationDetailsPage: FC & {
             enableIcon={true}
             enableBgColor={true}
             state={
-              destinationWithPipelines.data?.connector.state ??
+              destinationWithPipelines.data?.destination.connector.state ??
               "STATE_UNSPECIFIED"
             }
             iconHeight="h-[18px]"
@@ -108,13 +91,11 @@ const DestinationDetailsPage: FC & {
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>
-          <ConfigureDestinationForm
-            destination={
-              destinationWithPipelines.data
-                ? destinationWithPipelines.data
-                : null
-            }
-          />
+          {destinationWithPipelines.isSuccess ? (
+            <ConfigureDestinationForm
+              destination={destinationWithPipelines.data.destination}
+            />
+          ) : null}
         </div>
       </PageContentContainer>
     </>

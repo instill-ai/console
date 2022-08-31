@@ -22,6 +22,7 @@ import type {
   CreateDestinationPayload,
   CreateDestinationResponse,
   UpdateDestinationResponse,
+  UpdateDestinationPayload,
 } from "./mutations";
 
 import {
@@ -41,6 +42,7 @@ export type {
   CreateDestinationPayload,
   CreateDestinationResponse,
   UpdateDestinationResponse,
+  UpdateDestinationPayload,
 };
 
 export {
