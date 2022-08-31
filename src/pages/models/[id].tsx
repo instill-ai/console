@@ -35,13 +35,12 @@ import {
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
-} from "@/components/forms";
+ TestModelInstanceSection } from "@/components/model";
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import { TestModelInstanceSection } from "@/components/model";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -2,4 +2,4 @@
 
 Please refer to [instill.tech](https://github.com/instill-ai/instill.tech/tree/main/src/components) repo 
 
-This folder need rapidly refactoring.
+This folder is under rapidly refactoring.

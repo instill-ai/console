@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import {
@@ -15,7 +15,7 @@ import {
   TextArea,
   TextField,
   UploadFileField,
-} from "../../../formik";
+} from "../formik";
 import {
   useCreateArtivcModel,
   useCreateGithubModel,
@@ -51,7 +51,7 @@ export type CreateModelFormValue = {
   huggingFaceRepo: Nullable<string>;
 };
 
-const CreateNewModelFlow: FC = () => {
+const CreateModelForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
@@ -684,4 +684,4 @@ const CreateNewModelFlow: FC = () => {
   );
 };
 
-export default CreateNewModelFlow;
+export default CreateModelForm;

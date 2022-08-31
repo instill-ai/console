@@ -7,7 +7,7 @@ import {
   PageBase,
   PageContentContainer,
 } from "@/components/ui";
-import { CreateModelForm } from "@/components/forms";
+import { CreateModelForm } from "@/components/model";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 

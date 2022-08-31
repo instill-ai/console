@@ -3,7 +3,7 @@ import cn from "clsx";
 
 import { ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { FormBase } from "../../commons";
+import { FormBase } from "../forms/commons";
 import {
   BasicProgressMessageBox,
   BasicTextField,
