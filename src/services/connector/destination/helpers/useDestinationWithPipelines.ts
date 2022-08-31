@@ -28,7 +28,7 @@ const useDestinationWithPipelines = (destinationName: Nullable<string>) => {
       );
 
       const destinationWithPipelines: DestinationWithPipelines = {
-        ...destination.data,
+        destination: destination.data,
         pipelines: targetPipelines,
       };
 

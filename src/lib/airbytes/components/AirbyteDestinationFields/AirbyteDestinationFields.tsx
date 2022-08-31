@@ -1,6 +1,4 @@
-import { ConnectorDefinition } from "@/lib/instill";
-import { Dispatch, FC, Fragment, SetStateAction, useMemo } from "react";
-import { airbyteSchemaToAirbyteFormTree } from "../../airbyteSchemaToAirbyteFormTree";
+import { Dispatch, FC, Fragment, SetStateAction } from "react";
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,

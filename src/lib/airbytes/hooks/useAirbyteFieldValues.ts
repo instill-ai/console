@@ -12,6 +12,7 @@ const useAirbyteFieldValues = (
 
   useEffect(() => {
     if (!formTree) return;
+    if (initialValue) return;
     if (fieldValues && fieldValues.configuration) return;
     pickInitialValues(formTree, fieldValues, setFieldValues);
   }, [formTree, fieldValues, setFieldValues]);

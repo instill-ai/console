@@ -272,6 +272,8 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
 
     let payload = {} as CreateDestinationPayload;
 
+    // destination-grpc and destination-http come from instill-ai and follow our own payload
+
     if (
       selectedDestinationDefinition?.connector_definition.docker_repository ===
       "instill-ai/destination-grpc"
@@ -484,6 +486,7 @@ const CreateDestinationForm: FC<CreateDestinationFormProps> = ({
           fieldErrors={fieldErrors}
           selectedConditionMap={selectedConditionMap}
           setSelectedConditionMap={setSelectedConditionMap}
+          disableAll={false}
         />
       </div>
       <div className="flex flex-row">
