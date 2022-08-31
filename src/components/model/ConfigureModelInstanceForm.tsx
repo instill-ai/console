@@ -1,14 +1,14 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import cn from "clsx";
-
-import { ModelInstance } from "@/lib/instill";
-import { Nullable } from "@/types/general";
-import { FormBase } from "../forms/commons";
 import {
   BasicProgressMessageBox,
   BasicTextField,
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
+
+import { ModelInstance } from "@/lib/instill";
+import { Nullable } from "@/types/general";
+import { FormBase } from "@/components/ui";
 
 export type ConfigureModelInstanceFormProps = {
   modelInstance: ModelInstance;
@@ -21,10 +21,10 @@ export type ConfigureModelInstanceFormValue = {
   repoUrl: Nullable<string>;
 };
 
-const ConfigureModelInstanceForm: FC<ConfigureModelInstanceFormProps> = ({
+const ConfigureModelInstanceForm = ({
   modelInstance,
   marginBottom,
-}) => {
+}: ConfigureModelInstanceFormProps) => {
   const [canEdit, setCanEdit] = useState(false);
 
   const [messageBoxState, setMessageBoxState] =

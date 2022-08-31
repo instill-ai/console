@@ -4,6 +4,8 @@ import type { BreadcrumbProps } from "./Breadcrumb";
 import Sidebar from "./Sidebar";
 import StateIcon from "./StateIcon";
 import type { StateIconProps } from "./StateIcon";
+import FormBase from "./FormBase";
+import type { FormBaseProps } from "./FormBase";
 import FormVerticalDivider from "./FormVerticalDivider";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
@@ -44,6 +46,7 @@ import ErrorBoundary from "./ErrorBoundary";
 export {
   Sidebar,
   StateIcon,
+  FormBase,
   FormVerticalDivider,
   TableContainer,
   TableRow,
@@ -70,6 +73,7 @@ export {
 export type {
   StateIconProps,
   StateLabelProps,
+  FormBaseProps,
   PipelineModeLabelProps,
   ConnectorIconProps,
   ModelDefinitionIconProps,

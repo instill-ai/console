@@ -3,7 +3,6 @@ import { useFormikContext } from "formik";
 import { SingleSelectOption, SolidButton } from "@instill-ai/design-system";
 
 import { SingleSelect, TextField } from "@/components/formik";
-import { mockAsyncDataConnectionOptions } from "../../../forms/MockData";
 import {
   StepNumberState,
   CreatePipelineFormValues,
@@ -37,7 +36,7 @@ const CreateNewSourceFlow: FC<CreateNewSourceFlowProps> = ({
   const sources = useSources();
 
   useEffect(() => {
-    setSourceOptions(mockAsyncDataConnectionOptions);
+    setSourceOptions([]);
   }, []);
 
   const canCreateNewSource = useMemo(() => {

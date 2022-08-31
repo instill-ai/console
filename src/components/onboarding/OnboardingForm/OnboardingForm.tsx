@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -17,7 +17,7 @@ import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { Nullable } from "@/types/general";
-import { FormBase } from "@/components/forms";
+import { FormBase } from "@/components/ui";
 
 export type OnboardingFormProps = {
   user: Nullable<Partial<User>>;
@@ -37,7 +37,7 @@ type OnboardingFormError = {
   newsletterSubscription?: string;
 };
 
-const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
+const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();

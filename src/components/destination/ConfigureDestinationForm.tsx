@@ -22,7 +22,7 @@ import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import dot from "@/lib/dot";
 import { DestinationWithDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { FormBase } from "@/components/forms";
+import { FormBase } from "@/components/ui";
 import { useUpdateDestination } from "@/services/connector/destination/mutations";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
