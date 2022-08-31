@@ -21,7 +21,7 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
+import { ConfigurePipelineForm } from "@/components/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import { Pipeline } from "@/lib/instill";

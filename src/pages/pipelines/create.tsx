@@ -1,7 +1,7 @@
 import { FC, ReactElement, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
-import { CreatePipelineForm } from "@/components/forms";
+import { CreatePipelineForm } from "@/components/pipeline";
 import {
   PageTitle,
   PageHead,
