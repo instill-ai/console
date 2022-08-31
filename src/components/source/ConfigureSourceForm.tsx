@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Formik } from "formik";
 import {
   BasicProgressMessageBox,
@@ -6,6 +6,7 @@ import {
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { AxiosError } from "axios";
 
 import { FormikFormBase, SingleSelect } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
@@ -15,7 +16,6 @@ import { DeleteResourceModal } from "@/components/modals";
 import { useDeleteSource } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { AxiosError } from "axios";
 import { ErrorDetails, Violation } from "@/lib/instill/types";
 import OutlineButton from "@/components/ui/Buttons/OutlineButton";
 import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
@@ -28,7 +28,7 @@ export type ConfigureSourceFormValue = {
   sourceDefinition: Nullable<string>;
 };
 
-const ConfigureSourceForm: FC<ConfigureSourceFormProps> = ({ source }) => {
+const ConfigureSourceForm = ({ source }: ConfigureSourceFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 

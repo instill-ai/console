@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PageBase, PageContentContainer } from "@/components/layouts";
 import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
-import { ConfigureSourceForm } from "@/components/forms";
+import { ConfigureSourceForm } from "@/components/source";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";

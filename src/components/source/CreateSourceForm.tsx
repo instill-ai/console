@@ -1,8 +1,8 @@
-import { FC, useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 
-import { SingleSelect } from "../../../../formik/FormikField";
+import { SingleSelect } from "../formik/FormikField";
 import { FormikFormBase } from "@/components/formik";
 import { ConnectorIcon, PrimaryButton } from "@/components/ui";
 import {
@@ -21,7 +21,7 @@ export type CreateSourceFormValues = {
   definition: Nullable<string>;
 };
 
-const CreateSourceForm: FC = () => {
+const CreateSourceForm = () => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
