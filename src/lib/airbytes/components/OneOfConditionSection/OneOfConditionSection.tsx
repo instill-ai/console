@@ -27,6 +27,7 @@ export type OneOfConditionSectionProps = {
   setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
+  disableAll: boolean;
 };
 
 const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
@@ -35,6 +36,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   setValues,
   selectedConditionMap,
   setSelectedConditionMap,
+  disableAll,
 }) => {
   // Caveat:
   // It's tempting to use selectedCondition as state and use it to get uiField here
@@ -215,6 +217,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
           <BasicSingleSelect
             id={formTree.path}
             instanceId={formTree.path}
+            disabled={disableAll}
             menuPlacement="auto"
             label={formTree.title ?? null}
             error={

@@ -111,6 +111,7 @@ export const pickComponent = (
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
         errors={errors}
+        disableAll={disabledAll}
       />
     );
   }
