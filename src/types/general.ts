@@ -1,5 +1,6 @@
 import { ModelState, PipelineState } from "@/lib/instill";
 import { ConnectorState } from "@/lib/instill/connector";
+import { Dispatch, SetStateAction } from "react";
 
 export type State = PipelineState | ConnectorState | ModelState;
 
@@ -12,3 +13,5 @@ export type InstillAiUserCookie = {
 };
 
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
+
+export type UseCustomHookResult<T> = [T, Dispatch<SetStateAction<T>>];
