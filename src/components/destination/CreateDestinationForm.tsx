@@ -17,6 +17,7 @@ import {
 } from "@instill-ai/design-system";
 import * as yup from "yup";
 import Image from "next/image";
+import { AxiosError } from "axios";
 
 import {
   ConnectorDefinition,
@@ -39,9 +40,7 @@ import {
   useAirbyteFieldValues,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
-import { ValidationError } from "yup";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { AxiosError } from "axios";
 import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateDestinationFormProps = {
@@ -70,9 +69,7 @@ const CreateDestinationForm = ({
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
-  // #                                                                 #
   // # 1 - Initialize the destination definition                       #
-  // #                                                                 #
   // ###################################################################
 
   const destinationDefinitions = useDestinationDefinitions();
@@ -181,12 +178,13 @@ const CreateDestinationForm = ({
   }, [selectedDestinationDefinition]);
 
   // ###################################################################
-  // #                                                                 #
   // # 2 - handle state when create destination                        #
-  // #                                                                 #
   // ###################################################################
+
   const [selectedConditionMap, setSelectedConditionMap] =
     useState<Nullable<SelectedItemMap>>(null);
+
+  const [formIsDirty, setFormIsDirty] = useState(false);
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -244,7 +242,7 @@ const CreateDestinationForm = ({
         strict: true,
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
+      if (error instanceof yup.ValidationError) {
         const errors = {} as AirbyteFieldErrors;
         for (const err of error.inner) {
           if (err.path) {
@@ -486,6 +484,8 @@ const CreateDestinationForm = ({
           selectedConditionMap={selectedConditionMap}
           setSelectedConditionMap={setSelectedConditionMap}
           disableAll={false}
+          formIsDirty={formIsDirty}
+          setFormIsDirty={setFormIsDirty}
         />
       </div>
       <div className="flex flex-row">

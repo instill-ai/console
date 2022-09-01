@@ -34,7 +34,8 @@ const useBuildAirbyteFields = (
   errors: Nullable<AirbyteFieldErrors>,
   selectedConditionMap: Nullable<SelectedItemMap>,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>,
-  setFormIsDirty?: Dispatch<SetStateAction<boolean>>
+  formIsDirty: boolean,
+  setFormIsDirty: Dispatch<SetStateAction<boolean>>
 ) => {
   const fields = useMemo(() => {
     if (!formTree) return <></>;
@@ -46,6 +47,7 @@ const useBuildAirbyteFields = (
       errors,
       selectedConditionMap,
       setSelectedConditionMap,
+      formIsDirty,
       setFormIsDirty
     );
   }, [
@@ -56,6 +58,7 @@ const useBuildAirbyteFields = (
     selectedConditionMap,
     setSelectedConditionMap,
     setValues,
+    formIsDirty,
     setFormIsDirty,
   ]);
 
@@ -72,7 +75,8 @@ export const pickComponent = (
   errors: Nullable<AirbyteFieldErrors>,
   selectedConditionMap: Nullable<SelectedItemMap>,
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>,
-  setFormIsDirty?: Dispatch<SetStateAction<boolean>>
+  formIsDirty: boolean,
+  setFormIsDirty: Dispatch<SetStateAction<boolean>>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
@@ -86,6 +90,7 @@ export const pickComponent = (
             errors,
             selectedConditionMap,
             setSelectedConditionMap,
+            formIsDirty,
             setFormIsDirty
           )
         )}
@@ -109,6 +114,7 @@ export const pickComponent = (
                 errors,
                 selectedConditionMap,
                 setSelectedConditionMap,
+                formIsDirty,
                 setFormIsDirty
               ),
             },
@@ -125,6 +131,7 @@ export const pickComponent = (
         setSelectedConditionMap={setSelectedConditionMap}
         errors={errors}
         disableAll={disabledAll}
+        formIsDirty={formIsDirty}
         setFormIsDirty={setFormIsDirty}
       />
     );
@@ -139,6 +146,7 @@ export const pickComponent = (
       errors,
       selectedConditionMap,
       setSelectedConditionMap,
+      formIsDirty,
       setFormIsDirty
     );
   }
