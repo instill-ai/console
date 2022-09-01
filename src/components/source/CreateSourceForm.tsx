@@ -1,16 +1,14 @@
-import { useEffect, useCallback, useState } from "react";
-import { Formik } from "formik";
+import { useEffect, useCallback, useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
+  BasicSingleSelect,
   ProgressMessageBoxState,
   SingleSelectOption,
   SolidButton,
 } from "@instill-ai/design-system";
 
-import { SingleSelect } from "../formik/FormikField";
-import { FormikFormBase } from "@/components/formik";
-import { ConnectorIcon } from "@/components/ui";
+import { ConnectorIcon, FormBase } from "@/components/ui";
 import { useCreateSource, useSources } from "@/services/connector";
 import { CreateSourcePayload } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -18,28 +16,32 @@ import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type CreateSourceFormValues = {
-  id: Nullable<string>;
   definition: Nullable<string>;
 };
 
-const CreateSourceForm = () => {
+export type CreateSourceFormErrors = {
+  definition: Nullable<string>;
+};
+
+export type CreateSourceFormProps = {
+  marginBottom: Nullable<string>;
+};
+
+const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ###################################################################
-  // #                                                                 #
   // # 1 - Initialize the source definition                            #
-  // #                                                                 #
   // ###################################################################
   //
   // A user can only have a http source and a grpc source
 
-  const [syncSourceDefinitionOptions, setSyncSourceDefinitionOptions] =
-    useState<SingleSelectOption[]>([]);
-  const [
-    selectedSyncSourceDefinitionOption,
-    setSelectedSyncSourceDefinitionOption,
-  ] = useState<Nullable<SingleSelectOption>>(null);
+  const [sourceDefinitionOptions, setSourceDefinitionOptions] = useState<
+    SingleSelectOption[]
+  >([]);
+  const [selectedSourceDefinitionOption, setSelectedSourceDefinitionOption] =
+    useState<Nullable<SingleSelectOption>>(null);
 
   const sources = useSources();
   const createSource = useCreateSource();
@@ -47,7 +49,7 @@ const CreateSourceForm = () => {
   useEffect(() => {
     if (!sources.isSuccess) return;
 
-    setSyncSourceDefinitionOptions([
+    setSourceDefinitionOptions([
       {
         label: "gRPC",
         value: "source-grpc",
@@ -77,15 +79,30 @@ const CreateSourceForm = () => {
     ]);
   }, [sources.isSuccess]);
 
-  const sourceDefinitionOnChange = useCallback((option: SingleSelectOption) => {
-    setSelectedSyncSourceDefinitionOption(option);
-  }, []);
-
   // ###################################################################
-  // #                                                                 #
   // # 2 - handle create source                                        #
-  // #                                                                 #
   // ###################################################################
+
+  const [fieldValues, setFieldValues] = useState<CreateSourceFormValues>({
+    definition: null,
+  });
+
+  const [fieldErrors, setFieldErrors] = useState<CreateSourceFormErrors>({
+    definition: null,
+  });
+
+  const handleDefinitionChange = useCallback(
+    (option: Nullable<SingleSelectOption>) => {
+      setFieldErrors({
+        definition: null,
+      });
+      setSelectedSourceDefinitionOption(option);
+      setFieldValues({
+        definition: (option?.value as string) || null,
+      });
+    },
+    []
+  );
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -95,133 +112,117 @@ const CreateSourceForm = () => {
       status: null,
     });
 
-  const validateForm = useCallback(
-    (values: CreateSourceFormValues) => {
-      const error: Partial<CreateSourceFormValues> = {};
+  const handleSubmit = useCallback(() => {
+    if (!fieldValues.definition) return;
 
-      if (!values.definition) {
-        error.definition = "Required";
-      }
+    if (!fieldValues.definition) {
+      setFieldErrors({
+        definition: "Required",
+      });
+      return;
+    }
 
-      if (sources.data?.find((e) => e.id === values.definition)) {
-        error.definition =
-          "You could only create one http and one grpc source. Check the setup guide for more information.";
-      }
+    if (sources.data?.find((e) => e.id === fieldValues.definition)) {
+      setFieldErrors({
+        definition:
+          "You could only create one http and one grpc source. Check the setup guide for more information.",
+      });
+      return;
+    }
 
-      return error;
-    },
-    [sources.data]
-  );
+    const payload: CreateSourcePayload = {
+      id: fieldValues.definition,
+      source_connector_definition: `source-connector-definitions/${fieldValues.definition}`,
+      connector: {
+        configuration: {},
+      },
+    };
 
-  const handleSubmit = useCallback(
-    (values: CreateSourceFormValues) => {
-      if (!values.definition) return;
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Creating...",
+    }));
 
-      const payload: CreateSourcePayload = {
-        id: values.definition,
-        source_connector_definition: `source-connector-definitions/${values.definition}`,
-        connector: {
-          configuration: {},
-        },
-      };
-
-      setMessageBoxState(() => ({
-        activate: true,
-        status: "progressing",
-        description: null,
-        message: "Creating...",
-      }));
-
-      createSource.mutate(payload, {
-        onSuccess: () => {
+    createSource.mutate(payload, {
+      onSuccess: () => {
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Succeed.",
+        }));
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_source", {
+            type: "critical_action",
+            process: "source",
+          });
+        }
+        router.push("/sources");
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
           setMessageBoxState(() => ({
             activate: true,
-            status: "success",
+            status: "error",
             description: null,
-            message: "Succeed.",
+            message: error.message,
           }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_source", {
-              type: "critical_action",
-              process: "source",
-            });
-          }
-          router.push("/sources");
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: error.message,
-            }));
-          } else {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: "Something went wrong when create the source",
-            }));
-          }
-        },
-      });
-    },
-    [amplitudeIsInit, createSource, router]
-  );
+        } else {
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when create the source",
+          }));
+        }
+      },
+    });
+  }, [amplitudeIsInit, createSource, router, fieldValues]);
 
   return (
-    <Formik
-      initialValues={{ id: null, definition: null } as CreateSourceFormValues}
-      validate={validateForm}
-      onSubmit={handleSubmit}
+    <FormBase
+      padding={null}
+      marginBottom={marginBottom}
+      noValidate={true}
+      flex1={false}
     >
-      {(formik) => {
-        return (
-          <FormikFormBase
-            marginBottom={null}
-            gapY="gap-y-5"
-            padding={null}
-            minWidth={null}
-          >
-            <SingleSelect
-              id="definition"
-              name="definition"
-              label="Source type"
-              options={syncSourceDefinitionOptions}
-              value={selectedSyncSourceDefinitionOption}
-              additionalOnChangeCb={sourceDefinitionOnChange}
-              error={formik.errors.definition || null}
-              required={true}
-              description={`<a href=${
-                formik.values.definition === null
-                  ? "https://www.instill.tech/docs/source-connectors/overview"
-                  : formik.values.definition === "source-http"
-                  ? "https://www.instill.tech/docs/source-connectors/http"
-                  : "https://www.instill.tech/docs/source-connectors/grpc"
-              }>Setup Guide</a>`}
-            />
-            <div className="flex flex-row">
-              <BasicProgressMessageBox
-                state={messageBoxState}
-                setState={setMessageBoxState}
-                width="w-[25vw]"
-                closable={true}
-              />
-              <SolidButton
-                disabled={formik.isValid ? false : true}
-                position="ml-auto my-auto"
-                type="submit"
-                color="primary"
-                onClickHandler={null}
-              >
-                Set up
-              </SolidButton>
-            </div>
-          </FormikFormBase>
-        );
-      }}
-    </Formik>
+      <BasicSingleSelect
+        id="sourceDefinition"
+        label="Source type"
+        instanceId="sourceDefinition"
+        options={sourceDefinitionOptions}
+        value={selectedSourceDefinitionOption}
+        error={fieldErrors.definition || null}
+        onChange={handleDefinitionChange}
+        required={true}
+        description={`<a href=${
+          fieldValues.definition === null
+            ? "https://www.instill.tech/docs/source-connectors/overview"
+            : fieldValues.definition === "source-http"
+            ? "https://www.instill.tech/docs/source-connectors/http"
+            : "https://www.instill.tech/docs/source-connectors/grpc"
+        }>Setup Guide</a>`}
+      />
+      <div className="flex flex-row">
+        <BasicProgressMessageBox
+          state={messageBoxState}
+          setState={setMessageBoxState}
+          width="w-[25vw]"
+          closable={true}
+        />
+        <SolidButton
+          disabled={false}
+          position="ml-auto my-auto"
+          type="button"
+          color="primary"
+          onClickHandler={handleSubmit}
+        >
+          Set up
+        </SolidButton>
+      </div>
+    </FormBase>
   );
 };
 
