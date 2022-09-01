@@ -16,6 +16,7 @@ export type AirbyteDestinationFieldsProps = {
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
   disableAll: boolean;
+  setFormIsDirty?: Dispatch<SetStateAction<boolean>>;
 };
 
 const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
@@ -26,6 +27,7 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   selectedConditionMap,
   setSelectedConditionMap,
   disableAll,
+  setFormIsDirty,
 }) => {
   const fields = useBuildAirbyteFields(
     destinationFormTree,
@@ -34,7 +36,8 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
     setFieldValues,
     fieldErrors,
     selectedConditionMap,
-    setSelectedConditionMap
+    setSelectedConditionMap,
+    setFormIsDirty
   );
 
   return <Fragment>{fields}</Fragment>;

@@ -33,7 +33,8 @@ const useBuildAirbyteFields = (
   setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>,
   errors: Nullable<AirbyteFieldErrors>,
   selectedConditionMap: Nullable<SelectedItemMap>,
-  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
+  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>,
+  setFormIsDirty?: Dispatch<SetStateAction<boolean>>
 ) => {
   const fields = useMemo(() => {
     if (!formTree) return <></>;
@@ -44,7 +45,8 @@ const useBuildAirbyteFields = (
       setValues,
       errors,
       selectedConditionMap,
-      setSelectedConditionMap
+      setSelectedConditionMap,
+      setFormIsDirty
     );
   }, [
     formTree,
@@ -54,6 +56,7 @@ const useBuildAirbyteFields = (
     selectedConditionMap,
     setSelectedConditionMap,
     setValues,
+    setFormIsDirty,
   ]);
 
   return fields;
@@ -68,7 +71,8 @@ export const pickComponent = (
   setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>,
   errors: Nullable<AirbyteFieldErrors>,
   selectedConditionMap: Nullable<SelectedItemMap>,
-  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>
+  setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>,
+  setFormIsDirty?: Dispatch<SetStateAction<boolean>>
 ): ReactNode => {
   if (formTree._type === "formGroup") {
     return (
@@ -81,7 +85,8 @@ export const pickComponent = (
             setValues,
             errors,
             selectedConditionMap,
-            setSelectedConditionMap
+            setSelectedConditionMap,
+            setFormIsDirty
           )
         )}
       </Fragment>
@@ -103,7 +108,8 @@ export const pickComponent = (
                 setValues,
                 errors,
                 selectedConditionMap,
-                setSelectedConditionMap
+                setSelectedConditionMap,
+                setFormIsDirty
               ),
             },
           ];
@@ -119,6 +125,7 @@ export const pickComponent = (
         setSelectedConditionMap={setSelectedConditionMap}
         errors={errors}
         disableAll={disabledAll}
+        setFormIsDirty={setFormIsDirty}
       />
     );
   }
@@ -131,7 +138,8 @@ export const pickComponent = (
       setValues,
       errors,
       selectedConditionMap,
-      setSelectedConditionMap
+      setSelectedConditionMap,
+      setFormIsDirty
     );
   }
 
@@ -171,18 +179,20 @@ export const pickComponent = (
         readOnly={false}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as boolean) ?? false : false}
-        onChange={(event) =>
+        onChange={(event) => {
+          if (setFormIsDirty) setFormIsDirty(true);
           setValues((prev) => {
             const value = event.target.checked;
             const configuration = prev?.configuration ?? {};
             dot.setter(configuration, formTree.path, value);
+
             return {
               ...prev,
               configuration: configuration,
               [formTree.path]: value,
             };
-          })
-        }
+          });
+        }}
       />
     );
   }
@@ -222,7 +232,8 @@ export const pickComponent = (
               null
             : null
         }
-        onChange={(option) =>
+        onChange={(option) => {
+          if (setFormIsDirty) setFormIsDirty(true);
           setValues((prev) => {
             const configuration = prev?.configuration || {};
             dot.setter(configuration, formTree.path, option?.value ?? null);
@@ -231,8 +242,8 @@ export const pickComponent = (
               configuration: configuration,
               [formTree.path]: option?.value ?? null,
             };
-          })
-        }
+          });
+        }}
         readOnly={false}
         menuPlacement="auto"
         additionalMessageOnLabel={null}
@@ -253,7 +264,8 @@ export const pickComponent = (
         placeholder={placeholder ?? ""}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as string) ?? "" : ""}
-        onChange={(event) =>
+        onChange={(event) => {
+          if (setFormIsDirty) setFormIsDirty(true);
           setValues((prev) => {
             const value = event.target.value;
             const configuration = prev?.configuration || {};
@@ -263,8 +275,8 @@ export const pickComponent = (
               configuration: configuration,
               [formTree.path]: value,
             };
-          })
-        }
+          });
+        }}
       />
     );
   }
@@ -282,7 +294,8 @@ export const pickComponent = (
         placeholder={placeholder ?? ""}
         error={errors ? errors[formTree.path] ?? null : null}
         value={values ? (values[formTree.path] as string) ?? "" : ""}
-        onChange={(event) =>
+        onChange={(event) => {
+          if (setFormIsDirty) setFormIsDirty(true);
           setValues((prev) => {
             const value = event.target.value;
             const configuration = prev?.configuration || {};
@@ -292,8 +305,8 @@ export const pickComponent = (
               configuration: configuration,
               [formTree.path]: value,
             };
-          })
-        }
+          });
+        }}
         readOnly={false}
       />
     );
@@ -317,7 +330,7 @@ export const pickComponent = (
         // In HTML type=number input, the value is still string, we need to transfer it into number
         // But in HTML number input, user can input e as exponential, parseInt will return NaN.
         // In this case, we pass the value to the Yup, and let it guard for us.
-
+        if (setFormIsDirty) setFormIsDirty(true);
         setValues((prev) => {
           const value = event.target.value;
           const configuration = prev?.configuration || {};

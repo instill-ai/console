@@ -28,6 +28,7 @@ export type OneOfConditionSectionProps = {
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
   disableAll: boolean;
+  setFormIsDirty?: Dispatch<SetStateAction<boolean>>;
 };
 
 const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
@@ -37,6 +38,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   selectedConditionMap,
   setSelectedConditionMap,
   disableAll,
+  setFormIsDirty,
 }) => {
   // Caveat:
   // It's tempting to use selectedCondition as state and use it to get uiField here
@@ -199,6 +201,10 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
           selectedItem: option ? option.label : null,
         },
       }));
+
+      if (setFormIsDirty) {
+        setFormIsDirty(true);
+      }
     },
     [
       formTree.path,
@@ -206,6 +212,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
       setValues,
       conditionPath,
       formTree.conditions,
+      setFormIsDirty,
     ]
   );
 
