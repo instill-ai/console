@@ -51,6 +51,83 @@ Due to the time constraint, we haven't figured out how to properly combine this 
 1. Rebuild the airbyteSchemaToYup, make result yup flatten
 2. Flatten the data at the end, when we need to post the payload
 
+### How to remove old condition configuration when user select new one?
+
+Take this destination for example, what if user select another tunnel_method? How do we update the tunnel_method as whole.
+
+```js
+{
+  id: "sample",
+  name: "destination-connectors/sample,
+  uid: "badd8615-d68e-4fc1-8bc1-817766e285ec",
+  {
+    "description": "",
+    "configuration": {
+        "database": "foo-1",
+        "host": "fooHost",
+        "password": "admin",
+        "port": 3306,
+        "tunnel_method": {
+            "ssh_key": "barKey",
+            "tunnel_host": "barHost",
+            "tunnel_method": "NO_TUNNEL",
+            "tunnel_port": 22,
+            "tunnel_user": "barUser"
+        },
+        "username": "yoyoyman"
+    },
+    "state": "STATE_UNSPECIFIED",
+    "tombstone": false,
+    "user": "users/local-user",
+    "create_time": "2022-09-01T05:55:44.498367Z",
+    "update_time": "2022-09-01T05:55:44.498367Z"
+  }
+}
+```
+
+### How to edit OneOfCondition section when we have initial values?
+
+When user created a new destination and they want to edit it at ConfigurationDestinationForm, how to let them edit OneOfCondition section?
+
+Here is the sample destination response.
+
+```js
+{
+  id: "sample",
+  name: "destination-connectors/sample,
+  uid: "badd8615-d68e-4fc1-8bc1-817766e285ec",
+  {
+    "description": "",
+    "configuration": {
+        "database": "foo-1",
+        "host": "fooHost",
+        "password": "admin",
+        "port": 3306,
+        "tunnel_method": {
+            "ssh_key": "barKey",
+            "tunnel_host": "barHost",
+            "tunnel_method": "NO_TUNNEL",
+            "tunnel_port": 22,
+            "tunnel_user": "barUser"
+        },
+        "username": "yoyoyman"
+    },
+    "state": "STATE_UNSPECIFIED",
+    "tombstone": false,
+    "user": "users/local-user",
+    "create_time": "2022-09-01T05:55:44.498367Z",
+    "update_time": "2022-09-01T05:55:44.498367Z"
+  }
+}
+```
+
+Now we have a OneOfCondition field tunnel_method, how can we let the initial form construction knows we should display tunnel_method with "NO_TUNNEL" condition?
+
+- We use selectedConditionMap to store the current selection of condition. When the selectedConditionMap is empty (initial state), we choose the first condition as default.
+- When deal with configuration, once we get the initial value we have to map AirbyteFormTree and the configuration values to form the proper initial selectedConditionMap.
+- At OneOfConditionSection, when form is not dirty we will initialize correct selected condition.
+
+
 ## Issues
 
 - How to validate all the form, including oneOf condition and the nested oneOf
