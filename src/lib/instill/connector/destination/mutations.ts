@@ -62,11 +62,12 @@ export const updateDestinationMutation = async (
   payload: UpdateDestinationPayload
 ) => {
   try {
-    const { data } = await axios.patch<UpdateDestinationResponse>(
+    const { name, ...data } = payload;
+    const res = await axios.patch<UpdateDestinationResponse>(
       `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
-      payload
+      data
     );
-    return Promise.resolve(data.destination_connector);
+    return Promise.resolve(res.data.destination_connector);
   } catch (err) {
     return Promise.reject(err);
   }
