@@ -27,7 +27,7 @@ const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [ref]);
 
   return refSize;
 };

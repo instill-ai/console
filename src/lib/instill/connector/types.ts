@@ -1,6 +1,8 @@
 import { Nullable } from "@/types/general";
 import type { JSONSchema7 } from "json-schema";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 export type ConnectorState =
   | "STATE_CONNECTED"
   | "STATE_DISCONNECTED"
@@ -9,7 +11,7 @@ export type ConnectorState =
 
 export type Connector = {
   description: string;
-  configuration: string;
+  configuration: Record<string, any>;
   tombstone: boolean;
   user: string;
   org: string;

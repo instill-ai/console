@@ -4,6 +4,8 @@ import type { BreadcrumbProps } from "./Breadcrumb";
 import Sidebar from "./Sidebar";
 import StateIcon from "./StateIcon";
 import type { StateIconProps } from "./StateIcon";
+import FormBase from "./FormBase";
+import type { FormBaseProps } from "./FormBase";
 import FormVerticalDivider from "./FormVerticalDivider";
 import TableContainer from "./TableContainer";
 import TableRow from "./TableRow";
@@ -27,6 +29,12 @@ import TableLoadingProgress from "./TableLoadingProgress";
 import type { TableLoadingProgressProps } from "./TableLoadingProgress";
 import ModelInstanceTaskLabel from "./ModelInstanceTaskLabel";
 import type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
+import PageBase from "./PageBase";
+import type { PageBaseProps } from "./PageBase";
+import PageContentContainer from "./PageContentContainer";
+import type { PageContentContainerProps } from "./PageContentContainer";
+import PageHead from "./PageHead";
+import type { PageHeadProps } from "./PageHead";
 import PageTitle from "./PageTitle";
 import type { PageTitleProps } from "./PageTitle";
 import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
@@ -38,6 +46,7 @@ import ErrorBoundary from "./ErrorBoundary";
 export {
   Sidebar,
   StateIcon,
+  FormBase,
   FormVerticalDivider,
   TableContainer,
   TableRow,
@@ -50,6 +59,9 @@ export {
   HorizontalDivider,
   TableLoadingProgress,
   ModelInstanceTaskLabel,
+  PageBase,
+  PageContentContainer,
+  PageHead,
   PageTitle,
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
@@ -61,12 +73,16 @@ export {
 export type {
   StateIconProps,
   StateLabelProps,
+  FormBaseProps,
   PipelineModeLabelProps,
   ConnectorIconProps,
   ModelDefinitionIconProps,
   HorizontalDividerProps,
   TableLoadingProgressProps,
   ModelInstanceTaskLabelProps,
+  PageBaseProps,
+  PageContentContainerProps,
+  PageHeadProps,
   PageTitleProps,
   ModelInstanceReadmeCardProps,
   ChangeResourceStateButtonProps,
@@ -76,11 +92,7 @@ export type {
 };
 
 export * from "./TableHeads";
-
 export * from "./TableCells";
-
 export * from "./TablePlaceholders";
-
 export * from "./Tables";
-
-export * from "./Buttons";
+export * from "./Modals";

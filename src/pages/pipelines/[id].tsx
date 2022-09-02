@@ -1,8 +1,10 @@
 import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import Prism from "prismjs";
+import { highlightAll } from "prismjs";
+import { GetServerSideProps } from "next";
+import { join } from "path";
+import fs from "fs";
 
-import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
   useActivatePipeline,
   useDeActivatePipeline,
@@ -15,15 +17,14 @@ import {
   PageTitle,
   ChangeResourceStateButton,
   CodeBlock,
+  PageBase,
+  PageContentContainer,
+  PageHead,
 } from "@/components/ui";
-import ConfigurePipelineForm from "@/components/forms/pipeline/ConfigurePipelineForm";
+import { ConfigurePipelineForm } from "@/components/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
 import { Pipeline } from "@/lib/instill";
-import { GetServerSideProps } from "next";
-import { join } from "path";
-import fs from "fs";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const templatePath = join(
@@ -101,7 +102,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   // }, []);
 
   useEffect(() => {
-    Prism.highlightAll();
+    highlightAll();
   }, []);
 
   // ###################################################################

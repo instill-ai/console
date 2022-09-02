@@ -3,15 +3,19 @@ import { Nullable } from "@/types/general";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AirbyteFieldValues, AirbyteFormTree } from "../types";
 
-const useAirbyteFieldValues = (formTree: Nullable<AirbyteFormTree>) => {
+const useAirbyteFieldValues = (
+  formTree: Nullable<AirbyteFormTree>,
+  initialValue: Nullable<AirbyteFieldValues>
+) => {
   const [fieldValues, setFieldValues] =
-    useState<Nullable<AirbyteFieldValues>>(null);
+    useState<Nullable<AirbyteFieldValues>>(initialValue);
 
   useEffect(() => {
     if (!formTree) return;
+    if (initialValue) return;
     if (fieldValues && fieldValues.configuration) return;
     pickInitialValues(formTree, fieldValues, setFieldValues);
-  }, [formTree, fieldValues, setFieldValues]);
+  }, [formTree, fieldValues, setFieldValues, initialValue]);
 
   return { fieldValues, setFieldValues };
 };
@@ -31,7 +35,7 @@ export const pickInitialValues = (
   }
 
   if (formTree._type === "formCondition") {
-    Object.entries(formTree.conditions).map(([_, v]) => {
+    Object.entries(formTree.conditions).map(([, v]) => {
       pickInitialValues(v, fieldValues, setFieldValues);
     });
     return;

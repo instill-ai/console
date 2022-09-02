@@ -13,6 +13,7 @@ import {
   useState,
   useEffect,
 } from "react";
+import getConditionFormPath from "../../getConditionFormPath";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormItem,
@@ -27,6 +28,9 @@ export type OneOfConditionSectionProps = {
   setValues: Dispatch<SetStateAction<Nullable<AirbyteFieldValues>>>;
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
+  disableAll: boolean;
+  formIsDirty: boolean;
+  setFormIsDirty: Dispatch<SetStateAction<boolean>>;
 };
 
 const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
@@ -35,122 +39,120 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   setValues,
   selectedConditionMap,
   setSelectedConditionMap,
+  disableAll,
+  formIsDirty,
+  setFormIsDirty,
 }) => {
-  // Caveat:
-  // It's tempting to use selectedCondition as state and use it to get uiField here
-  //
-  // const [selectedCondition, setSelectedCondition] =
-  // useState<Nullable<AirbyteFormGroupItemWithUiField>>(null);
-  //
-  // return (<>{selectedCondition ? selectedCondition.uiFields : null}</>)
-  //
-  // Beaware that the selectedCondition value will get wiped out everytime the component re-render, so the field's
-  // value will disappear. We should use the parent's component's props to store this kind of data.
+  // ##########################################################################
+  // # 1 - Initialize state                                                   #
+  // ##########################################################################
+
+  // We store the uiFields in formTree and pass it to this component to preserve
+  // the state of UI fields
 
   const [selectedConditionOption, setSelectedConditionOption] =
     useState<Nullable<SingleSelectOption>>(null);
-  const [conditionPath, setConditionPath] = useState<Nullable<string>>(null);
 
   const conditionOptions: SingleSelectOption[] = useMemo(() => {
+    // Sometimes the const field is missing, we need to find a workaround
+    // TODO: Known issue: snowflake
+
     return Object.entries(formTree.conditions).map(([k, v]) => {
       return {
         label: k.toString(),
-        value: (v.properties.find((e) => "const" in e) as AirbyteFormItem)
-          ?.const as string,
+        value:
+          ((v.properties.find((e) => "const" in e) as AirbyteFormItem)
+            ?.const as string | undefined) ?? k.toString(),
       };
     });
   }, [formTree.conditions]);
 
-  // Upon the initialize of the form, user haven't chosen any condition, we have to choose default one
-  // Be careful of the update, make sure it won't cause infinite loop.
+  // We rely on the field inside of condition with const key and use its path
+  // to set correct value. But sometimes Airbyte's conditionForm's condition
+  // don't have proper const field We need to find the workaround. You can find
+  // more information in the README.
+
+  const [conditionPath, setConditionPath] = useState<Nullable<string>>(null);
 
   useEffect(() => {
-    if (!selectedConditionMap || !selectedConditionMap[formTree.path]) {
-      setSelectedConditionOption(conditionOptions[0]);
+    const conditionFormPath = getConditionFormPath(formTree);
+    setConditionPath(conditionFormPath);
+  }, [formTree]);
 
+  useEffect(() => {
+    // When create new destination, upon the initialize of the form, user haven't
+    // chosen any condition, we have to choose default one. Be careful of the update,
+    // make sure it won't cause infinite loop.
+    // if (!selectedConditionMap || !selectedConditionMap[formTree.path]) {
+    //   setSelectedConditionOption(conditionOptions[0]);
+
+    //   const selectedCondition =
+    //     formTree.conditions[conditionOptions[0].label] ?? null;
+
+    //   const targetConstField = selectedCondition.properties.find(
+    //     (e) => "const" in e
+    //   ) as AirbyteFormItem;
+
+    //   setConditionPath(targetConstField?.path ?? null);
+
+    //   setSelectedConditionMap((prev) => ({
+    //     ...(prev || {}),
+    //     [formTree.path]: {
+    //       selectedItem: selectedCondition
+    //         ? selectedCondition.title ?? null
+    //         : null,
+    //     },
+    //   }));
+
+    //   if (targetConstField) {
+    //     setValues((prev) => {
+    //       const configuration = prev?.configuration ?? {};
+    //       dot.setter(
+    //         configuration,
+    //         targetConstField.path,
+    //         targetConstField.const
+    //       );
+    //       return {
+    //         ...prev,
+    //         configuration,
+    //       };
+    //     });
+    //   } else {
+    //     // Sometimes Airbyte doesn't have proper const field. We need to find a work around
+    //     if (conditionPath) {
+    //       setValues((prev) => {
+    //         const configuration = prev?.configuration ?? {};
+    //         dot.setter(configuration, conditionPath, selectedCondition.title);
+    //         return {
+    //           ...prev,
+    //           configuration,
+    //         };
+    //       });
+    //     }
+    //   }
+    //   return;
+    // }
+
+    // When user want to configure destination, they already had the initial value of conditionForm,
+    // we need to display correct condition field.
+    if (
+      selectedConditionMap &&
+      selectedConditionMap[formTree.path] &&
+      !formIsDirty
+    ) {
       const selectedCondition =
-        formTree.conditions[conditionOptions[0].label] ?? null;
-
-      const targetConstField = selectedCondition.properties.find(
-        (e) => "const" in e
-      ) as AirbyteFormItem;
-      setConditionPath(targetConstField?.path ?? null);
-
-      setSelectedConditionMap((prev) => ({
-        ...(prev || {}),
-        [formTree.path]: {
-          selectedItem: selectedCondition
-            ? selectedCondition.title ?? null
-            : null,
-        },
-      }));
-
-      if (targetConstField) {
-        setValues((prev) => {
-          const configuration = prev?.configuration ?? {};
-          dot.setter(
-            configuration,
-            targetConstField.path,
-            targetConstField.const
-          );
-          return {
-            ...prev,
-            configuration,
-          };
-        });
-      } else {
-        // Airbyte's doesn't have proper const field. We need to find a work around
-        if (conditionPath) {
-          setValues((prev) => {
-            const configuration = prev?.configuration ?? {};
-            dot.setter(configuration, conditionPath, selectedCondition.title);
-            return {
-              ...prev,
-              configuration,
-            };
-          });
-        }
-      }
+        conditionOptions.find(
+          (e) => e.label === selectedConditionMap[formTree.path].selectedItem
+        ) || null;
+      setSelectedConditionOption(selectedCondition);
     }
-  }, [
-    conditionOptions,
-    selectedConditionMap,
-    conditionPath,
-    formTree.conditions,
-    formTree.path,
-    setSelectedConditionMap,
-    setValues,
-  ]);
+  }, [selectedConditionMap, formTree.path, conditionOptions, formIsDirty]);
 
   const onConditionChange = useCallback(
     (option: Nullable<SingleSelectOption>) => {
       if (option) {
         const selectedCondition = formTree.conditions[option.label] ?? null;
         setSelectedConditionOption(option);
-
-        // We will rely on the field inside of condition with const key and use its path to set correct value
-        // e.g. Snowflake's loading method
-        //
-        // "[Recommended] Internal Staging": {
-        //   fieldKey: "loading_method"
-        //   properties: [
-        //     {
-        //       "default": "Internal Staging",
-        //       "description": "",
-        //       "title": "",
-        //       "const": "Internal Staging",
-        //       "_type": "formItem",
-        //       "path": "loading_method.method",
-        //       "fieldKey": "method",
-        //       "isRequired": true,
-        //       "isSecret": false,
-        //       "multiline": false,
-        //       "type": "string"
-        //      }
-        //      ...
-        //   ]
-        //   ...
-        // }
 
         const targetConstField = selectedCondition.properties.find(
           (e) => "const" in e
@@ -194,9 +196,13 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
       setSelectedConditionMap((prev) => ({
         ...(prev || {}),
         [formTree.path]: {
-          selectedItem: option ? option.label : null,
+          selectedItem: option ? (option.label as string) : null,
         },
       }));
+
+      if (setFormIsDirty) {
+        setFormIsDirty(true);
+      }
     },
     [
       formTree.path,
@@ -204,6 +210,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
       setValues,
       conditionPath,
       formTree.conditions,
+      setFormIsDirty,
     ]
   );
 
@@ -215,6 +222,7 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
           <BasicSingleSelect
             id={formTree.path}
             instanceId={formTree.path}
+            disabled={disableAll}
             menuPlacement="auto"
             label={formTree.title ?? null}
             error={

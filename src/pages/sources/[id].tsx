@@ -1,39 +1,23 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { PageBase, PageContentContainer } from "@/components/layouts";
-import { StateLabel, PipelinesTable, PageTitle } from "@/components/ui";
+import {
+  StateLabel,
+  PipelinesTable,
+  PageTitle,
+  PageBase,
+  PageContentContainer,
+  PageHead,
+} from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
-import { ConfigureSourceForm } from "@/components/forms";
+import { ConfigureSourceForm } from "@/components/source";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const data = await listRepoFileContent(
-//     "instill-ai",
-//     "connector-backend",
-//     "config/models/source_connector_definition.json"
-//   );
-
-//   const decodeSchema = Buffer.from(data.content, "base64").toString();
-//   const jsonSchema = JSON.parse(decodeSchema);
-
-//   console.log(jsonSchema);
-
-//   return {
-//     props: {
-//       schema: jsonSchema,
-//     },
-//   };
-// };
-
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
-
-// export type SourceDetailsPageProps = {};
+};
 
 const SourceDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -105,6 +89,7 @@ const SourceDetailsPage: FC & {
         <div>
           <ConfigureSourceForm
             source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+            marginBottom={null}
           />
         </div>
       </PageContentContainer>

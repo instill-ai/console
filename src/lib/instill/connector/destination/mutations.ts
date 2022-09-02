@@ -41,3 +41,33 @@ export const deleteDestinationMutation = async (destinationName: string) => {
     return Promise.reject(err);
   }
 };
+
+export type UpdateDestinationResponse = {
+  destination_connector: Destination;
+};
+
+export type UpdateDestinationPayload = {
+  name: string;
+  connector: {
+    description?: string;
+    configuration:
+      | Record<string, any>
+      | AirbyteFieldValues
+      | Record<string, never>;
+  };
+};
+
+export const updateDestinationMutation = async (
+  payload: UpdateDestinationPayload
+) => {
+  try {
+    const { name, ...data } = payload;
+    const res = await axios.patch<UpdateDestinationResponse>(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${name}`,
+      data
+    );
+    return Promise.resolve(res.data.destination_connector);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};

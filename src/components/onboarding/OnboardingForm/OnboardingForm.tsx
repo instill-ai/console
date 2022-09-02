@@ -1,7 +1,8 @@
-import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+
 import {
   BasicProgressMessageBox,
   BasicTextField,
@@ -9,44 +10,43 @@ import {
   SingleSelectOption,
   BasicSingleSelect,
   BasicToggleField,
+  SolidButton,
 } from "@instill-ai/design-system";
 
-import { PrimaryButton } from "@/components/ui";
 import { useUpdateUser } from "@/services/mgmt";
 import { User, mockMgmtRoles } from "@/lib/instill/mgmt";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { Nullable } from "@/types/general";
-import { FormBase } from "@/components/forms";
+import { FormBase } from "@/components/ui";
 
 export type OnboardingFormProps = {
   user: Nullable<Partial<User>>;
 };
 
-export type OnboardingFormValue = {
+export type OnboardingFormValues = {
   email: Nullable<string>;
   companyName: Nullable<string>;
   role: Nullable<string>;
   newsletterSubscription: Nullable<boolean>;
 };
 
-type OnboardingFormError = {
-  email?: string;
-  companyName?: string;
-  role?: string;
-  newsletterSubscription?: string;
+type OnboardingFormErrors = {
+  email: Nullable<string>;
+  companyName: Nullable<string>;
+  role: Nullable<string>;
 };
 
-const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
+const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  const [values, setValues] = useState<OnboardingFormValue>({
+  const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
     companyName: null,
     role: null,
-    newsletterSubscription: null,
+    newsletterSubscription: true,
   });
 
   const [selectedRoleOption, setSelectedRoleOption] =
@@ -65,9 +65,9 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
   // Handle fields change
 
   const handleFieldChange = useCallback(
-    (key: keyof OnboardingFormValue, event: ChangeEvent<HTMLInputElement>) => {
+    (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
       setFormIsDirty(true);
-      setValues((prev) => ({
+      setFieldValues((prev) => ({
         ...prev,
         [key]:
           key === "newsletterSubscription"
@@ -83,7 +83,7 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
       if (!option) return;
 
       setSelectedRoleOption(option);
-      setValues((prev) => ({
+      setFieldValues((prev) => ({
         ...prev,
         role: option.value as string,
       }));
@@ -93,46 +93,55 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
 
   // Validate form and deal with error handling
 
-  const [errors, setErrors] = useState<OnboardingFormError>({});
+  const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({
+    email: null,
+    companyName: null,
+    role: null,
+  });
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    if (!values.email) {
-      if (formIsDirty) {
-        errors.email = "Email is required";
-        setErrors({
-          email: "Email is required",
-        });
-      }
+    if (!formIsDirty) return;
+    const errors = {} as OnboardingFormErrors;
+
+    if (!fieldValues.email) {
+      errors["email"] = "Email is required";
     } else {
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        setErrors({
-          email: "Invalid email address",
-        });
-        return;
-      } else {
-        setErrors({
-          email: undefined,
-        });
-        setFormIsValid(true);
+      if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(fieldValues.email)
+      ) {
+        errors["email"] = "Invalid email address";
       }
     }
-  }, [values]);
 
-  // Handle form submission
+    if (!fieldValues.companyName) {
+      errors["companyName"] = "Company name is required";
+    }
+
+    if (!fieldValues.role) {
+      errors["role"] = "Role is required";
+    }
+
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      setFormIsValid(true);
+    }
+  }, [fieldValues, formIsDirty]);
 
   const handleSubmit = useCallback(() => {
-    if (!values.email) return;
+    if (!fieldValues.email || !fieldValues.companyName || !fieldValues.role)
+      return;
 
     const token = uuidv4();
 
     const payload: Partial<User> = {
       id: "local-user",
-      email: values.email,
-      company_name: values.companyName ?? undefined,
-      role: values.role as string,
-      newsletter_subscription: values.newsletterSubscription
-        ? values.newsletterSubscription
+      email: fieldValues.email,
+      company_name: fieldValues.companyName ?? undefined,
+      role: fieldValues.role as string,
+      newsletter_subscription: fieldValues.newsletterSubscription
+        ? fieldValues.newsletterSubscription
         : false,
       cookie_token: user ? user.cookie_token : token,
     };
@@ -183,7 +192,7 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
         }
       },
     });
-  }, [user, values, amplitudeIsInit, router, updateUser]);
+  }, [user, fieldValues, amplitudeIsInit, router, updateUser]);
 
   return (
     <FormBase
@@ -198,38 +207,39 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
           label="Your email"
           description="Fill your email address"
           required={true}
-          value={values.email}
+          value={fieldValues.email}
           onChange={(event) => handleFieldChange("email", event)}
-          error={errors.email}
+          error={fieldErrors.email}
         />
         <BasicTextField
           id="companyName"
           label="Your company"
+          required={true}
           description="Fill your company name"
-          value={values.companyName}
+          value={fieldValues.companyName}
           onChange={(event) => handleFieldChange("companyName", event)}
-          error={errors.companyName}
+          error={fieldErrors.companyName}
         />
         <BasicSingleSelect
           id="role"
           instanceId="role"
           label="Your role"
+          required={true}
           options={mockMgmtRoles}
           value={selectedRoleOption}
           description="Pick a role closest to your job in your company"
           onChange={handleRoleChange}
-          error={errors.role}
+          error={fieldErrors.role}
         />
         <BasicToggleField
           id="newsletterSubscription"
           label="Newsletter subscription"
-          value={values.newsletterSubscription || false}
+          value={fieldValues.newsletterSubscription || false}
           required={true}
           description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
           onChange={(event) =>
             handleFieldChange("newsletterSubscription", event)
           }
-          error={errors.newsletterSubscription}
         />
       </div>
       <div className="flex flex-row">
@@ -239,14 +249,15 @@ const OnboardingForm: FC<OnboardingFormProps> = ({ user }) => {
           width="w-[25vw]"
           closable={true}
         />
-        <PrimaryButton
+        <SolidButton
           disabled={!formIsValid}
           type="button"
           position="ml-auto my-auto"
+          color="primary"
           onClickHandler={handleSubmit}
         >
           Start
-        </PrimaryButton>
+        </SolidButton>
       </div>
     </FormBase>
   );

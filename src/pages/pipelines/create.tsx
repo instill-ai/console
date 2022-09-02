@@ -1,16 +1,19 @@
 import { FC, ReactElement, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
-import { CreatePipelineForm } from "@/components/forms";
-import { PageBase, PageContentContainer } from "@/components/layouts";
-import { PageTitle } from "@/components/ui";
+import { CreatePipelineForm } from "@/components/pipeline";
+import {
+  PageTitle,
+  PageHead,
+  PageBase,
+  PageContentContainer,
+} from "@/components/ui";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
 
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
+};
 
 const CreatePipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;

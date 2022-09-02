@@ -1,7 +1,6 @@
 import { FC } from "react";
 import StateOverview from "../../StateOverview";
 import TableHeadBase, { Item } from "../TableHeadBase";
-import { Nullable } from "@/types/general";
 
 export type PipelinesTableHeadProps = {
   errorCounts: number;

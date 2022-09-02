@@ -3,8 +3,12 @@ import { GetServerSideProps } from "next";
 import { parse } from "cookie";
 import axios from "axios";
 
-import { PageTitle } from "@/components/ui";
-import { PageBase, PageContentContainer } from "@/components/layouts";
+import {
+  PageTitle,
+  PageBase,
+  PageContentContainer,
+  PageHead,
+} from "@/components/ui";
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
 import { OnboardingForm } from "@/components/onboarding";
 import { Nullable } from "@/types/general";
@@ -32,9 +36,9 @@ export type OnBoardingPageProps = {
   cookies: Nullable<Record<string, string>>;
 };
 
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
+};
 
 const OnBoardingPage: FC<OnBoardingPageProps> & {
   getLayout?: FC<GetLayOutProps>;
@@ -60,18 +64,21 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
     } else {
       setFetched(true);
     }
-  }, []);
+  }, [cookies]);
 
   return (
-    <PageContentContainer>
-      <PageTitle
-        title="Welcome to VDP console"
-        breadcrumbs={["Onboarding"]}
-        enableButton={false}
-        marginBottom="mb-10"
-      />
-      {fetched ? <OnboardingForm user={user} /> : null}
-    </PageContentContainer>
+    <>
+      <PageHead title="Onboarding" />
+      <PageContentContainer>
+        <PageTitle
+          title="Welcome to VDP console"
+          breadcrumbs={["Onboarding"]}
+          enableButton={false}
+          marginBottom="mb-10"
+        />
+        {fetched ? <OnboardingForm user={user} /> : null}
+      </PageContentContainer>
+    </>
   );
 };
 

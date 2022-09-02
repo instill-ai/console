@@ -12,7 +12,6 @@ import {
   SingleSelectOption,
 } from "@instill-ai/design-system";
 
-import { PageBase, PageContentContainer } from "@/components/layouts";
 import {
   useDeployModelInstance,
   useModel,
@@ -29,22 +28,23 @@ import {
   PageTitle,
   ModelInstanceReadmeCard,
   ChangeResourceStateButton,
+  PageBase,
+  PageContentContainer,
+  PageHead,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
-} from "@/components/forms";
+ TestModelInstanceSection } from "@/components/model";
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
-import { TestModelInstanceSection } from "@/components/model";
 
-interface GetLayOutProps {
+type GetLayOutProps = {
   page: ReactElement;
-}
+};
 
 const ModelDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;

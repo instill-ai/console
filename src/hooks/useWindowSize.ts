@@ -6,25 +6,25 @@ export type WindowSize = {
   height: number;
 };
 
-const getWindowSize = (): { width: number; height: number } => {
-  const width =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
-
-  const height =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-
-  return {
-    width,
-    height,
-  };
-};
-
 const useWindowSize = (): Nullable<WindowSize> => {
   const [windowSize, setWindowSize] = useState<Nullable<WindowSize>>(null);
+
+  const getWindowSize = (): { width: number; height: number } => {
+    const width =
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
+
+    const height =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight;
+
+    return {
+      width,
+      height,
+    };
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -38,7 +38,7 @@ const useWindowSize = (): Nullable<WindowSize> => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [getWindowSize]);
+  }, []);
 
   return windowSize;
 };

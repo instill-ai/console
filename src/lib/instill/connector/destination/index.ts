@@ -21,11 +21,14 @@ import {
 import type {
   CreateDestinationPayload,
   CreateDestinationResponse,
+  UpdateDestinationResponse,
+  UpdateDestinationPayload,
 } from "./mutations";
 
 import {
   createDestinationMutation,
   deleteDestinationMutation,
+  updateDestinationMutation,
 } from "./mutations";
 
 export type {
@@ -38,6 +41,8 @@ export type {
   GetDestinationResponse,
   CreateDestinationPayload,
   CreateDestinationResponse,
+  UpdateDestinationResponse,
+  UpdateDestinationPayload,
 };
 
 export {
@@ -47,4 +52,5 @@ export {
   getDestinationQuery,
   createDestinationMutation,
   deleteDestinationMutation,
+  updateDestinationMutation,
 };

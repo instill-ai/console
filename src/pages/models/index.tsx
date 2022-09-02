@@ -1,13 +1,17 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { PageBase, PageContentContainer } from "@/components/layouts";
-import { ModelsTable, PageTitle } from "@/components/ui/";
+import {
+  ModelsTable,
+  PageTitle,
+  PageBase,
+  PageContentContainer,
+  PageHead,
+} from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
-import PageHead from "@/components/layouts/PageHead";
 
 interface GetLayOutProps {
   page: ReactElement;

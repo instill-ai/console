@@ -15,5 +15,5 @@ export const useSendAmplitudeData = (
     if (!amplitudeIsReady || !routerIsReady) return;
 
     sendAmplitudeData(event, properties);
-  }, [routerIsReady, amplitudeIsReady]);
+  }, [routerIsReady, amplitudeIsReady, event, properties]);
 };

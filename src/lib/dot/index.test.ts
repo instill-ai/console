@@ -105,6 +105,7 @@ describe("setter", () => {
     expect(obj).toEqual({ x: "y", foo: { 0: "b" } });
   });
 
+  // /* eslint-disable  jest/no-commented-out-tests */
   // We are currently don't support bracket path
 
   // it("supports bracket path", () => {
@@ -123,5 +124,50 @@ describe("setter", () => {
     const obj = { x: [{ y: true }] };
     dot.setter(obj, "x.0.y.z", true);
     expect(obj).toEqual({ x: [{ y: { z: true } }] });
+  });
+});
+
+describe("toDot", () => {
+  it("can covert simple object to dot path object", () => {
+    const obj = {
+      foo: "hi",
+      bar: "yo",
+      fooBar: 123,
+      test: {
+        foo: "hi2",
+        bar: "yo2",
+      },
+    };
+
+    const dotObj = dot.toDot(obj);
+    expect(dotObj).toEqual({
+      foo: "hi",
+      bar: "yo",
+      fooBar: 123,
+      "test.foo": "hi2",
+      "test.bar": "yo2",
+    });
+  });
+
+  it("can conver nested object to dot path object", () => {
+    const obj = {
+      nested: {
+        foo: {
+          bar: 123,
+          nested: {
+            foo: "bar",
+          },
+        },
+        hello: "how are you",
+        good: null,
+      },
+    };
+    const dotObj = dot.toDot(obj);
+    expect(dotObj).toEqual({
+      "nested.foo.bar": 123,
+      "nested.foo.nested.foo": "bar",
+      "nested.hello": "how are you",
+      "nested.good": null,
+    });
   });
 });

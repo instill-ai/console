@@ -1,6 +1,4 @@
-import { ConnectorDefinition } from "@/lib/instill";
-import { Dispatch, FC, Fragment, SetStateAction, useMemo } from "react";
-import { airbyteSchemaToAirbyteFormTree } from "../../airbyteSchemaToAirbyteFormTree";
+import { Dispatch, FC, Fragment, SetStateAction } from "react";
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
@@ -17,6 +15,9 @@ export type AirbyteDestinationFieldsProps = {
   destinationFormTree: Nullable<AirbyteFormTree>;
   selectedConditionMap: Nullable<SelectedItemMap>;
   setSelectedConditionMap: Dispatch<SetStateAction<Nullable<SelectedItemMap>>>;
+  disableAll: boolean;
+  formIsDirty: boolean;
+  setFormIsDirty: Dispatch<SetStateAction<boolean>>;
 };
 
 const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
@@ -26,15 +27,20 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   destinationFormTree,
   selectedConditionMap,
   setSelectedConditionMap,
+  disableAll,
+  formIsDirty,
+  setFormIsDirty,
 }) => {
   const fields = useBuildAirbyteFields(
     destinationFormTree,
-    false,
+    disableAll,
     fieldValues,
     setFieldValues,
     fieldErrors,
     selectedConditionMap,
-    setSelectedConditionMap
+    setSelectedConditionMap,
+    formIsDirty,
+    setFormIsDirty
   );
 
   return <Fragment>{fields}</Fragment>;
