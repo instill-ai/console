@@ -40,7 +40,6 @@ const pickPath = (
   if (formTree._type === "formCondition") {
     const newPaths: string[] = [];
     Object.entries(formTree.conditions).forEach(([, v]) => {
-      console.log(v);
       const childPaths = pickPath(v, paths);
       newPaths.push(...childPaths);
     });

@@ -1262,7 +1262,7 @@ test("should find one selected condition map", () => {
 
   expect(selectedConditionMap).toEqual({
     loading_method: {
-      selectedItem: "Internal Staging",
+      selectedItem: "[Recommended] Internal Staging",
     },
   });
 });
@@ -2532,7 +2532,7 @@ test("should find multiple selected condition map", () => {
 
   expect(selectedConditionMap).toEqual({
     loading_method: {
-      selectedItem: "Internal Staging",
+      selectedItem: "[Recommended] Internal Staging",
     },
     credentials: {
       selectedItem: "OAuth2.0",

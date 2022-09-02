@@ -1,5 +1,10 @@
 import getConditionFormPath from "./getConditionFormPath";
-import { AirbyteFieldValues, AirbyteFormTree, SelectedItemMap } from "./types";
+import {
+  AirbyteFieldValues,
+  AirbyteFormItem,
+  AirbyteFormTree,
+  SelectedItemMap,
+} from "./types";
 
 const pickSelectedConditionMap = (
   formTree: AirbyteFormTree,
@@ -26,9 +31,24 @@ const pickSelectedConditionMap = (
     let map = {} as SelectedItemMap;
 
     if (conditionFormPath && initialValue[conditionFormPath]) {
-      map[formTree.path] = {
-        selectedItem: initialValue[conditionFormPath] as string,
-      };
+      const conditionValue = initialValue[conditionFormPath];
+      const conditionTitle: string[] = [];
+
+      // Internally we all use condition.title as selectedItem value
+
+      Object.entries(formTree.conditions).forEach(([k, v]) => {
+        const constField = v.properties.find((e) => "const" in e) as
+          | AirbyteFormItem
+          | undefined;
+        if (constField && conditionValue === constField.const) {
+          conditionTitle.push(k);
+        }
+      });
+      if (conditionTitle.length > 0) {
+        map[formTree.path] = {
+          selectedItem: conditionTitle[0] as string,
+        };
+      }
     }
 
     Object.entries(formTree.conditions).map(([, v]) => {

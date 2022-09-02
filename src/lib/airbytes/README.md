@@ -12,44 +12,48 @@ We are using Airbyte protocol for generating, maintain, create our connectors, f
 
 ## Implementation details
 
-### Store in the `value.configuration` and the value itself
+### About selectedConditionMap
 
-In our backend we have to input flatten data
+- Internally we all use condition.title as selectedItem value. not the const field's value
 
-```js
-  {
-    tunnel_method: "SSH",
-    tunnel_key: "key"
-  }
-```
+### How to get the condition's path
 
-But the YUP we build validate the configuration in a object
-
+We rely on the field inside of condition with const key and use its path to set correct value. e.g. Snowflake's loading method
+  
 ```js
 {
-  tunnel_method: {
-    tunnel_key: "key";
-  }
-}
-```
-
-So right now we actually have something like this
-
-```js
-{
-  tunnel_method.tunnel_key: "key"
-  configuration: {
-    tunnel_method: {
-      tunnel_key: "key";
+  title: "Data Staging Method",
+  path: "loading_method",
+  "conditions": [
+    {
+      "[Recommended] Internal Staging": {
+        fieldKey: "loading_method"
+        properties: [
+          {
+            "default": "Internal Staging",
+            "description": "",
+            "title": "",
+            "const": "Internal Staging",
+            "_type": "formItem",
+            "path": "loading_method.method", // <-- This is the correct path
+            "fieldKey": "method",
+            "isRequired": true,
+            "isSecret": false,
+            "multiline": false,
+            "type": "string"
+            }
+            ...
+        ]
+        ...
+      }
     }
-  }
+  ]
 }
-```
+}
+```  
 
-Due to the time constraint, we haven't figured out how to properly combine this two situation, here are possible direction
-
-1. Rebuild the airbyteSchemaToYup, make result yup flatten
-2. Flatten the data at the end, when we need to post the payload
+But sometimes the const field is not there (due to some human error of Airbyte side), we 
+need to find the workaround. Normally there are multiple conditions under the conditionForm, we could loop though all the field to find the right one.
 
 ### How to remove old condition configuration when user select new one?
 
@@ -185,6 +189,12 @@ Now we have a OneOfCondition field tunnel_method, how can we let the initial for
 ## Issues
 
 - How to validate all the form, including oneOf condition and the nested oneOf
+- SnowFlakes auth_type doesn't have const field
+
+## Caveats
+
+- Be careful of selectedConditionMap, it will affect the yup which will affect the strip value that will be sent as payload too.
+- When build the yup, airbyte use condition.title to find the target condition. Take `tunnel_method` for example, it will use tunnel_method's title like `[Recommended] Internal Staging` to find the target value. But we actually send it's value `Internal Staging` to the backend. So next time when we fetch the backend, the data will store `Internal Staging` not the `[Recommended] Internal Staging`
 
 ## Useful refernece
 
