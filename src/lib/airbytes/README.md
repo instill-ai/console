@@ -85,6 +85,60 @@ Take this destination for example, what if user select another tunnel_method? Ho
 }
 ```
 
+The short answer is we don't bother control the field values at the first place. Because we had built up Yup according to the user selected condition. We then use yup to help us strip un-used/not-wanted/old condition data. 
+
+```js
+// This is the original data
+{
+  "configuration": {
+      "database": "we3",
+      "host": "yojhojo",
+      "password": "ewr",
+      "port": 3306,
+      "tunnel_method": {
+          "ssh_key": "ewr",
+          "tunnel_host": "wer",
+          "tunnel_method": "SSH_KEY_AUTH",
+          "tunnel_port": 22,
+          "tunnel_user": "wer",
+          "tunnel_user_password": "ewrewr343434"
+      },
+      "username": "234"
+  },
+  "database": "we3",
+  "host": "yojhojo",
+  "password": "ewr",
+  "port": 3306,
+  "tunnel_method.ssh_key": "ewr",
+  "tunnel_method.tunnel_host": "wer",
+  "tunnel_method.tunnel_method": "SSH_KEY_AUTH",
+  "tunnel_method.tunnel_port": 22,
+  "tunnel_method.tunnel_user": "wer",
+  "username": "234",
+  "tunnel_method": "SSH_KEY_AUTH",
+  "tunnel_method.tunnel_user_password": "ewrewr343434"
+}
+
+// This is the striped data, we stripe tunnel_method.tunnel_user_password and other not used 
+// Ui data (data that is not in configuration)
+{
+  "configuration": {
+    "username": "234",
+    "tunnel_method": {
+        "tunnel_user": "wer",
+        "tunnel_port": 22,
+        "tunnel_method": "SSH_KEY_AUTH",
+        "tunnel_host": "wer",
+        "ssh_key": "ewr"
+    },
+    "port": 3306,
+    "password": "ewr",
+    "host": "yojhojo",
+    "database": "we3"
+  }
+}
+```
+
 ### How to edit OneOfCondition section when we have initial values?
 
 When user created a new destination and they want to edit it at ConfigurationDestinationForm, how to let them edit OneOfCondition section?
@@ -143,3 +197,4 @@ Now we have a OneOfCondition field tunnel_method, how can we let the initial for
 - [Airbyte - Control](https://github.com/airbytehq/airbyte/blob/master/airbyte-webapp/src/views/Connector/ServiceForm/components/Property/Control.tsx)
   - How they generate field based on their type, array, boolean, string, integer, array
 - [Airbyte - schemaToYup](https://github.com/airbytehq/airbyte/blob/59e20f20de73ced59ae2c782612fa7554fc1fced/airbyte-webapp/src/core/jsonSchema/schemaToYup.ts)
+

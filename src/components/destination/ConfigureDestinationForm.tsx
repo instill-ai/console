@@ -13,14 +13,18 @@ import Image from "next/image";
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
-  SelectedItemMap,
   useAirbyteFieldValues,
   useAirbyteFormTree,
   useBuildAirbyteYup,
+  useAirbyteSelectedConditionMap,
+  SelectedItemMap,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import dot from "@/lib/dot";
-import { DestinationWithDefinition } from "@/lib/instill";
+import {
+  DestinationWithDefinition,
+  UpdateDestinationPayload,
+} from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { FormBase } from "@/components/ui";
 import { useUpdateDestination } from "@/services/connector/destination/mutations";
@@ -35,10 +39,7 @@ const ConfigureDestinationForm = ({
   destination,
 }: ConfigureDestinationFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [fieldErrors, setFieldErrors] =
-    useState<Nullable<AirbyteFieldErrors>>(null);
-  const [selectedConditionMap, setSelectedConditionMap] =
-    useState<Nullable<SelectedItemMap>>(null);
+
   const [canEdit, setCanEdit] = useState(false);
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -48,14 +49,48 @@ const ConfigureDestinationForm = ({
       status: null,
     });
 
+  const destinationDefinitionOption = useMemo(() => {
+    return {
+      label: destination.destination_connector_definition.id,
+      value: destination.destination_connector_definition.id,
+      startIcon: (
+        <Image
+          className="my-auto"
+          src={
+            destination.destination_connector_definition.connector_definition.docker_repository.split(
+              "/"
+            )[0] === "airbyte"
+              ? `/icons/airbyte/${destination.destination_connector_definition.connector_definition.icon}`
+              : `/icons/instill/${destination.destination_connector_definition.connector_definition.icon}`
+          }
+          width={24}
+          height={24}
+          layout="fixed"
+        />
+      ),
+    };
+  }, []);
+
+  const [formIsDirty, setFormIsDirty] = useState(false);
+
+  const [fieldErrors, setFieldErrors] =
+    useState<Nullable<AirbyteFieldErrors>>(null);
+
   const destinationFormTree = useAirbyteFormTree(
     destination.destination_connector_definition
   );
 
-  const initialValues = {
+  const initialValues: AirbyteFieldValues = {
     configuration: destination.connector.configuration,
     ...dot.toDot(destination.connector.configuration),
+    description: destination.connector.description || undefined,
   };
+
+  const [selectedConditionMap, setSelectedConditionMap] =
+    useAirbyteSelectedConditionMap(destinationFormTree, initialValues);
+
+  // const [selectedConditionMap, setSelectedConditionMap] =
+  //   useState<Nullable<SelectedItemMap>>(null);
 
   const { fieldValues, setFieldValues } = useAirbyteFieldValues(
     destinationFormTree,
@@ -80,6 +115,7 @@ const ConfigureDestinationForm = ({
   const updateDestination = useUpdateDestination();
 
   const updateFieldValues = useCallback((field: string, value: string) => {
+    setFormIsDirty(true);
     setFieldValues((prev) => {
       return {
         ...prev,
@@ -102,14 +138,20 @@ const ConfigureDestinationForm = ({
       return;
     }
 
+    let stripValues = {} as { configuration: AirbyteFieldValues };
+
     if (!canEdit) {
       setCanEdit(true);
       return;
     } else {
+      if (!formIsDirty) return;
       try {
-        formYup.validateSync(fieldValues, {
+        // Use yup to strip old condition values
+
+        stripValues = formYup.validateSync(fieldValues, {
           abortEarly: false,
-          strict: true,
+          strict: false,
+          stripUnknown: true,
         });
       } catch (error) {
         if (error instanceof yup.ValidationError) {
@@ -136,25 +178,25 @@ const ConfigureDestinationForm = ({
       }
       setFieldErrors(null);
 
-      const payload = {
+      const payload: UpdateDestinationPayload = {
         name: destination.name,
         connector: {
-          configuration:
-            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+          description: fieldValues.description as string | undefined,
+          ...stripValues,
         },
       };
-
-      console.log(payload);
 
       setMessageBoxState(() => ({
         activate: true,
         status: "progressing",
         description: null,
-        message: "Creating...",
+        message: "Updating...",
       }));
+
       updateDestination.mutate(payload, {
         onSuccess: () => {
           setCanEdit(false);
+          setFormIsDirty(false);
           setMessageBoxState(() => ({
             activate: true,
             status: "success",
@@ -193,7 +235,15 @@ const ConfigureDestinationForm = ({
 
       return;
     }
-  }, [amplitudeIsInit, formYup, fieldValues]);
+  }, [
+    amplitudeIsInit,
+    formYup,
+    fieldValues,
+    canEdit,
+    setCanEdit,
+    formIsDirty,
+    setFormIsDirty,
+  ]);
 
   return (
     <FormBase padding="" noValidate={true} flex1={false} marginBottom={null}>
@@ -204,31 +254,8 @@ const ConfigureDestinationForm = ({
           instanceId="definition"
           label="Destination type"
           disabled={true}
-          value={{
-            label: destination.destination_connector_definition.id,
-            value: destination.destination_connector_definition.id,
-            startIcon: (
-              <Image
-                className="my-auto"
-                src={
-                  destination.destination_connector_definition.connector_definition.docker_repository.split(
-                    "/"
-                  )[0] === "airbyte"
-                    ? `/icons/airbyte/${destination.destination_connector_definition.connector_definition.icon}`
-                    : `/icons/instill/${destination.destination_connector_definition.connector_definition.icon}`
-                }
-                width={24}
-                height={24}
-                layout="fixed"
-              />
-            ),
-          }}
-          options={[
-            {
-              label: destination.destination_connector_definition.id,
-              value: destination.destination_connector_definition.id,
-            },
-          ]}
+          value={destinationDefinitionOption}
+          options={[]}
           description={`<a href='${destination.destination_connector_definition.connector_definition.documentation_url}'>Setup Guide</a>`}
         />
         <BasicTextArea
@@ -256,6 +283,8 @@ const ConfigureDestinationForm = ({
           selectedConditionMap={selectedConditionMap}
           setSelectedConditionMap={setSelectedConditionMap}
           disableAll={!canEdit}
+          formIsDirty={formIsDirty}
+          setFormIsDirty={setFormIsDirty}
         />
       </div>
 
