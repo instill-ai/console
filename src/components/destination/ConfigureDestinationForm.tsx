@@ -17,7 +17,6 @@ import {
   useAirbyteFormTree,
   useBuildAirbyteYup,
   useAirbyteSelectedConditionMap,
-  SelectedItemMap,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import dot from "@/lib/dot";
@@ -40,14 +39,22 @@ const ConfigureDestinationForm = ({
 }: ConfigureDestinationFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  const [canEdit, setCanEdit] = useState(false);
-  const [messageBoxState, setMessageBoxState] =
-    useState<ProgressMessageBoxState>({
-      activate: false,
-      message: null,
-      description: null,
-      status: null,
-    });
+  // ##########################################################################
+  // # 1 - Get the destination definition and static state for fields         #
+  // ##########################################################################
+
+  const isSyncDestination = useMemo(() => {
+    if (
+      destination.destination_connector_definition.connector_definition
+        .docker_repository === "instill-ai/destination-grpc" ||
+      destination.destination_connector_definition.connector_definition
+        .docker_repository === "instill-ai/destination-http"
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [destination]);
 
   const destinationDefinitionOption = useMemo(() => {
     return {
@@ -71,6 +78,10 @@ const ConfigureDestinationForm = ({
     };
   }, []);
 
+  // ##########################################################################
+  // # 2 - Create interior state for managing the form                        #
+  // ##########################################################################
+
   const [formIsDirty, setFormIsDirty] = useState(false);
 
   const [fieldErrors, setFieldErrors] =
@@ -89,13 +100,19 @@ const ConfigureDestinationForm = ({
   const [selectedConditionMap, setSelectedConditionMap] =
     useAirbyteSelectedConditionMap(destinationFormTree, initialValues);
 
-  // const [selectedConditionMap, setSelectedConditionMap] =
-  //   useState<Nullable<SelectedItemMap>>(null);
-
   const { fieldValues, setFieldValues } = useAirbyteFieldValues(
     destinationFormTree,
     initialValues
   );
+
+  const [canEdit, setCanEdit] = useState(false);
+  const [messageBoxState, setMessageBoxState] =
+    useState<ProgressMessageBoxState>({
+      activate: false,
+      message: null,
+      description: null,
+      status: null,
+    });
 
   const airbyteYup = useBuildAirbyteYup(
     destination.destination_connector_definition.connector_definition.spec
@@ -124,6 +141,10 @@ const ConfigureDestinationForm = ({
     });
   }, []);
 
+  // ##########################################################################
+  // # 2 - Configure destination                                              #
+  // ##########################################################################
+
   const handleSubmit = useCallback(async () => {
     if (
       destination.destination_connector_definition.connector_definition
@@ -146,7 +167,9 @@ const ConfigureDestinationForm = ({
     } else {
       if (!formIsDirty) return;
       try {
-        // Use yup to strip old condition values
+        // We use yup to strip not necessary condition value. Please read
+        // /lib/airbyte/README.md for more information, especially the section
+        // How to remove old condition configuration when user select new one?
 
         stripValues = formYup.validateSync(fieldValues, {
           abortEarly: false,
@@ -213,15 +236,16 @@ const ConfigureDestinationForm = ({
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
-            console.log(error);
-            // setMessageBoxState(() => ({
-            //   activate: true,
-            //   status: "error",
-            //   description:
-            //     (error.response?.data.details as ErrorDetails[])[0]
-            //       .description ?? null,
-            //   message: error.message,
-            // }));
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: JSON.stringify(
+                error.response?.data.details,
+                null,
+                "\t"
+              ),
+              message: error.message,
+            }));
           } else {
             setMessageBoxState(() => ({
               activate: true,
@@ -258,23 +282,25 @@ const ConfigureDestinationForm = ({
           options={[]}
           description={`<a href='${destination.destination_connector_definition.connector_definition.documentation_url}'>Setup Guide</a>`}
         />
-        <BasicTextArea
-          id="description"
-          label="Description"
-          key="description"
-          description="Fill with a short description."
-          required={false}
-          error={
-            fieldErrors ? (fieldErrors.description as string) ?? null : null
-          }
-          value={
-            fieldValues ? (fieldValues.description as string) ?? null : null
-          }
-          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-            updateFieldValues("description", event.target.value)
-          }
-          disabled={!canEdit}
-        />
+        {!isSyncDestination ? (
+          <BasicTextArea
+            id="description"
+            label="Description"
+            key="description"
+            description="Fill with a short description."
+            required={false}
+            error={
+              fieldErrors ? (fieldErrors.description as string) ?? null : null
+            }
+            value={
+              fieldValues ? (fieldValues.description as string) ?? null : null
+            }
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+              updateFieldValues("description", event.target.value)
+            }
+            disabled={!canEdit}
+          />
+        ) : null}
         <AirbyteDestinationFields
           destinationFormTree={destinationFormTree}
           fieldValues={fieldValues}
@@ -287,7 +313,6 @@ const ConfigureDestinationForm = ({
           setFormIsDirty={setFormIsDirty}
         />
       </div>
-
       <div className="flex flex-row">
         <BasicProgressMessageBox
           state={messageBoxState}
@@ -298,7 +323,7 @@ const ConfigureDestinationForm = ({
         <SolidButton
           type="button"
           color="primary"
-          disabled={false}
+          disabled={isSyncDestination}
           position="ml-auto my-auto"
           onClickHandler={() => handleSubmit()}
         >

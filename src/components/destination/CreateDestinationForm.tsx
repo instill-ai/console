@@ -41,7 +41,6 @@ import {
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateDestinationFormProps = {
   setResult: Nullable<(destinationId: string) => void>;
@@ -68,9 +67,9 @@ const CreateDestinationForm = ({
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  // ###################################################################
-  // # 1 - Initialize the destination definition                       #
-  // ###################################################################
+  // ##########################################################################
+  // # 1 - Get the destination definition and static state for fields         #
+  // ##########################################################################
 
   const destinationDefinitions = useDestinationDefinitions();
 
@@ -129,18 +128,9 @@ const CreateDestinationForm = ({
   const [selectedDestinationOption, setSelectedDestinationOption] =
     useState<Nullable<SingleSelectOption>>(null);
 
-  const destinationFormTree = useAirbyteFormTree(selectedDestinationDefinition);
-
-  const { fieldValues, setFieldValues } = useAirbyteFieldValues(
-    destinationFormTree,
-    null
-  );
-
-  const [fieldErrors, setFieldErrors] =
-    useState<Nullable<AirbyteFieldErrors>>(null);
-
-  // Instill Ai provided connector HTTP and gRPC can only have default id destination-http and destination-grpc
-  // We need to make sure user have proper instruction on this issue.
+  // Instill Ai provided connector HTTP and gRPC can only have default id
+  // destination-http and destination-grpc. We need to make sure user have
+  // proper instruction on this issue.
 
   const canSetIdField = useMemo(() => {
     if (!selectedDestinationDefinition) return true;
@@ -177,9 +167,33 @@ const CreateDestinationForm = ({
     return null;
   }, [selectedDestinationDefinition]);
 
-  // ###################################################################
-  // # 2 - handle state when create destination                        #
-  // ###################################################################
+  const getSetupGuide = useCallback(() => {
+    if (selectedDestinationDefinition) {
+      if (selectedDestinationDefinition.id === "destination-http") {
+        return "https://www.instill.tech/docs/destination-connectors/http";
+      } else if (selectedDestinationDefinition.id === "destination-grpc") {
+        return "https://www.instill.tech/docs/destination-connectors/grpc";
+      }
+    }
+
+    return selectedDestinationDefinition
+      ? selectedDestinationDefinition.connector_definition.documentation_url
+      : "https://www.instill.tech/docs/destination-connectors/overview";
+  }, [selectedDestinationDefinition]);
+
+  // ##########################################################################
+  // # 2 - Create interior state for managing the form                        #
+  // ##########################################################################
+
+  const destinationFormTree = useAirbyteFormTree(selectedDestinationDefinition);
+
+  const { fieldValues, setFieldValues } = useAirbyteFieldValues(
+    destinationFormTree,
+    null
+  );
+
+  const [fieldErrors, setFieldErrors] =
+    useState<Nullable<AirbyteFieldErrors>>(null);
 
   const [selectedConditionMap, setSelectedConditionMap] =
     useState<Nullable<SelectedItemMap>>(null);
@@ -204,13 +218,14 @@ const CreateDestinationForm = ({
   );
 
   /**
-   *  We store our data in two form, one is in dot.notation and the other is in object and
-   *  the airbyteYup is planned to verify object part of the data
+   *  We store our data in two form, one is in dot.notation and the other
+   *  is in object and the airbyteYup is planned to verify object part of
+   *  the data
    *
    * {
    *    tunnel_method: "SSH",
-   *    tunnel_method.tunnel_key: "hi",
-   *    configuration: {
+   *    tunnel_method.tunnel_key: "hi", <--- yup won't verify this
+   *    configuration: { <--- yup will verify this object
    *      tunnel_method: {
    *        tunnel_method: "SSH",
    *        tunnel_key: "hi"
@@ -231,15 +246,27 @@ const CreateDestinationForm = ({
     });
   }, [airbyteYup]);
 
+  // ##########################################################################
+  // # 3 - Create the destination                                             #
+  // ##########################################################################
+
   const submitHandler = useCallback(async () => {
     if (!fieldValues || !formYup) {
       return;
     }
 
+    let stripValues = {} as { configuration: AirbyteFieldValues };
+
     try {
-      formYup.validateSync(fieldValues, {
+      // We use yup to strip not necessary condition values
+      // Please read /lib/airbyte/README.md for more information, especially
+      // the section: How to remove old condition configuration when user
+      // select new one?
+
+      stripValues = formYup.validateSync(fieldValues, {
         abortEarly: false,
-        strict: true,
+        strict: false,
+        stripUnknown: true,
       });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
@@ -249,8 +276,11 @@ const CreateDestinationForm = ({
             const message = err.message.replace(err.path, "This field");
             const pathList = err.path.split(".");
 
-            // Because we are using { configuration: airbyteYup } to construct the yup, yup will add "configuration" as prefix at the start
-            // of the path like configuration.tunnel_method
+            // Because we are using { configuration: airbyteYup } to
+            // construct the yup, yup will add "configuration" as prefix at
+            // the start of the path like configuration.tunnel_method, we
+            // need to remove the prefix to make it clearner.
+
             if (pathList[0] === "configuration") {
               pathList.shift();
             }
@@ -269,7 +299,8 @@ const CreateDestinationForm = ({
 
     let payload = {} as CreateDestinationPayload;
 
-    // destination-grpc and destination-http come from instill-ai and follow our own payload
+    // destination-grpc and destination-http come from instill-ai and follow
+    // our own payload
 
     if (
       selectedDestinationDefinition?.connector_definition.docker_repository ===
@@ -282,8 +313,7 @@ const CreateDestinationForm = ({
         }`,
         connector: {
           description: fieldValues.description as string,
-          configuration:
-            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+          configuration: {},
         },
       };
     } else if (
@@ -297,8 +327,7 @@ const CreateDestinationForm = ({
         }`,
         connector: {
           description: fieldValues.description as string,
-          configuration:
-            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+          configuration: {},
         },
       };
     } else {
@@ -309,8 +338,7 @@ const CreateDestinationForm = ({
         }`,
         connector: {
           description: fieldValues.description as string,
-          configuration:
-            (fieldValues.configuration as AirbyteFieldValues) ?? {},
+          ...stripValues,
         },
       };
     }
@@ -345,9 +373,11 @@ const CreateDestinationForm = ({
           setMessageBoxState(() => ({
             activate: true,
             status: "error",
-            description:
-              (error.response?.data.details as ErrorDetails[])[0].description ??
+            description: JSON.stringify(
+              error.response?.data.details,
               null,
+              "\t"
+            ),
             message: error.message,
           }));
         } else {
@@ -379,20 +409,6 @@ const CreateDestinationForm = ({
       };
     });
   }, []);
-
-  const getSetupGuide = useCallback(() => {
-    if (selectedDestinationDefinition) {
-      if (selectedDestinationDefinition.id === "destination-http") {
-        return "https://www.instill.tech/docs/destination-connectors/http";
-      } else if (selectedDestinationDefinition.id === "destination-grpc") {
-        return "https://www.instill.tech/docs/destination-connectors/grpc";
-      }
-    }
-
-    return selectedDestinationDefinition
-      ? selectedDestinationDefinition.connector_definition.documentation_url
-      : "https://www.instill.tech/docs/destination-connectors/overview";
-  }, [selectedDestinationDefinition]);
 
   return (
     <FormBase

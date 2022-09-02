@@ -85,7 +85,7 @@ Take this destination for example, what if user select another tunnel_method? Ho
 }
 ```
 
-The short answer is we don't bother control the field values at the first place. Because we had built up Yup according to the user selected condition. We then use yup to help us strip un-used/not-wanted/old condition data. 
+The short answer is we don't bother control the field values at the first place. Because we had built up Yup according to the user selected condition. We can use yup to help us strip un-used/not-wanted/old condition data. 
 
 ```js
 // This is the original data
@@ -119,8 +119,8 @@ The short answer is we don't bother control the field values at the first place.
   "tunnel_method.tunnel_user_password": "ewrewr343434"
 }
 
-// This is the striped data, we stripe tunnel_method.tunnel_user_password and other not used 
-// Ui data (data that is not in configuration)
+// This is the striped data, we stripe tunnel_method.tunnel_user_password and others not used Ui 
+// data (data that is not in configuration)
 {
   "configuration": {
     "username": "234",
