@@ -2,6 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+
 import {
   BasicProgressMessageBox,
   BasicTextField,
@@ -31,10 +32,9 @@ export type OnboardingFormValues = {
 };
 
 type OnboardingFormErrors = {
-  email?: string;
-  companyName?: string;
-  role?: string;
-  newsletterSubscription?: string;
+  email: Nullable<string>;
+  companyName: Nullable<string>;
+  role: Nullable<string>;
 };
 
 const OnboardingForm = ({ user }: OnboardingFormProps) => {
@@ -46,7 +46,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
     email: null,
     companyName: null,
     role: null,
-    newsletterSubscription: null,
+    newsletterSubscription: true,
   });
 
   const [selectedRoleOption, setSelectedRoleOption] =
@@ -93,38 +93,45 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
   // Validate form and deal with error handling
 
-  const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({});
+  const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({
+    email: null,
+    companyName: null,
+    role: null,
+  });
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
+    if (!formIsDirty) return;
+    const errors = {} as OnboardingFormErrors;
+
     if (!fieldValues.email) {
-      if (formIsDirty) {
-        fieldErrors.email = "Email is required";
-        setFieldErrors({
-          email: "Email is required",
-        });
-      }
+      errors["email"] = "Email is required";
     } else {
       if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(fieldValues.email)
       ) {
-        setFieldErrors({
-          email: "Invalid email address",
-        });
-        return;
-      } else {
-        setFieldErrors({
-          email: undefined,
-        });
-        setFormIsValid(true);
+        errors["email"] = "Invalid email address";
       }
     }
-  }, [fieldValues, fieldErrors, formIsDirty]);
 
-  // Handle form submission
+    if (!fieldValues.companyName) {
+      errors["companyName"] = "Company name is required";
+    }
+
+    if (!fieldValues.role) {
+      errors["role"] = "Role is required";
+    }
+
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      setFormIsValid(true);
+    }
+  }, [fieldValues, formIsDirty]);
 
   const handleSubmit = useCallback(() => {
-    if (!fieldValues.email) return;
+    if (!fieldValues.email || !fieldValues.companyName || !fieldValues.role)
+      return;
 
     const token = uuidv4();
 
@@ -207,6 +214,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
         <BasicTextField
           id="companyName"
           label="Your company"
+          required={true}
           description="Fill your company name"
           value={fieldValues.companyName}
           onChange={(event) => handleFieldChange("companyName", event)}
@@ -216,6 +224,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
           id="role"
           instanceId="role"
           label="Your role"
+          required={true}
           options={mockMgmtRoles}
           value={selectedRoleOption}
           description="Pick a role closest to your job in your company"
@@ -231,7 +240,6 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
           onChange={(event) =>
             handleFieldChange("newsletterSubscription", event)
           }
-          error={fieldErrors.newsletterSubscription}
         />
       </div>
       <div className="flex flex-row">
