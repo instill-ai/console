@@ -12,7 +12,7 @@ import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useTestModelInstance } from "@/services/model";
 import { CodeBlock } from "@/components/ui";
-import Prism from "prismjs";
+import { highlightAll } from "prismjs";
 
 export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
@@ -83,7 +83,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
               code: JSON.stringify(result, null, "\t"),
             });
 
-            Prism.highlightAll();
+            highlightAll();
           } catch (err) {
             console.log(err);
             setTestResult(null);

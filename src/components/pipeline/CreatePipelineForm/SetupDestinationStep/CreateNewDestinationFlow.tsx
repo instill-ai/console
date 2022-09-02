@@ -90,7 +90,11 @@ const CreateNewDestinationFlow: FC<CreateNewDestinationFlowProps> = ({
         })
       );
     }
-  }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
+  }, [
+    destinationDefinitions.isSuccess,
+    destinationDefinitions.data,
+    values.pipeline.mode,
+  ]);
 
   const selectedDestinationDefinitionOption = useMemo(() => {
     if (

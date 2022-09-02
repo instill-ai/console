@@ -43,9 +43,7 @@ const DestinationDetailsPage: FC & {
   });
 
   // ###################################################################
-  // #                                                                 #
   // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
   // ###################################################################
 
   const { amplitudeIsInit } = useAmplitudeCtx();

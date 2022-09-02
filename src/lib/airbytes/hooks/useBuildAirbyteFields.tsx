@@ -7,14 +7,7 @@ import {
   BasicToggleField,
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
-import {
-  useEffect,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useMemo,
-  Fragment,
-} from "react";
+import { Dispatch, ReactNode, SetStateAction, useMemo, Fragment } from "react";
 import OneOfConditionSection from "../components/OneOfConditionSection";
 import {
   AirbyteFormConditionItemWithUiFields,
@@ -206,15 +199,6 @@ export const pickComponent = (
   }
 
   if (formTree.type === "string" && formTree.enum && formTree.enum.length) {
-    let setDefault = false;
-    if (!values) {
-      setDefault = true;
-    } else {
-      if (!values[formTree.path]) {
-        setDefault = true;
-      }
-    }
-
     const options = formTree.enum.map((e) => {
       return {
         label: e?.toString() ?? "",

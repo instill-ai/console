@@ -89,6 +89,7 @@ const SourceDetailsPage: FC & {
         <div>
           <ConfigureSourceForm
             source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+            marginBottom={null}
           />
         </div>
       </PageContentContainer>

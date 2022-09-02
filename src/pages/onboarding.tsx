@@ -59,7 +59,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
     } else {
       setFetched(true);
     }
-  }, []);
+  }, [cookies]);
 
   return (
     <PageContentContainer>

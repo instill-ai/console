@@ -123,7 +123,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         },
       }
     );
-  }, [amplitudeIsInit, model, updateModel, fieldValues]);
+  }, [amplitudeIsInit, model, updateModel, fieldValues, canEdit, formIsDirty]);
 
   // ###################################################################
   // # 2 - Handle delete model                                         #

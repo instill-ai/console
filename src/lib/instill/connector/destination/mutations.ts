@@ -1,5 +1,4 @@
 import { AirbyteFieldValues } from "@/lib/airbytes";
-import { AtLeast } from "@/types/general";
 import axios from "axios";
 import { Destination } from "./types";
 
@@ -64,7 +63,7 @@ export const updateDestinationMutation = async (
   try {
     const { name, ...data } = payload;
     const res = await axios.patch<UpdateDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${name}`,
       data
     );
     return Promise.resolve(res.data.destination_connector);

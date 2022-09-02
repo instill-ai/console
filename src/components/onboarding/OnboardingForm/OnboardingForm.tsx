@@ -119,7 +119,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
         setFormIsValid(true);
       }
     }
-  }, [fieldValues]);
+  }, [fieldValues, fieldErrors, formIsDirty]);
 
   // Handle form submission
 

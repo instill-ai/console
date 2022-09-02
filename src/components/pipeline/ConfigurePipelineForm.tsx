@@ -52,7 +52,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   const updatePipeline = useUpdatePipeline();
 
-  const validateForm = useCallback((values: ConfigurePipelineFormValue) => {
+  const validateForm = useCallback(() => {
     const errors: Partial<ConfigurePipelineFormValue> = {};
 
     return errors;

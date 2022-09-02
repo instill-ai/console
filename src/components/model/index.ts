@@ -3,13 +3,10 @@ import type { TestModelInstanceSectionProps } from "./TestModelInstanceSection";
 import ConfigureModelForm from "./ConfigureModelForm";
 import type {
   ConfigureModelFormProps,
-  ConfigureModelFormValue,
+  ConfigureModelFormValues,
 } from "./ConfigureModelForm";
 import ConfigureModelInstanceForm from "./ConfigureModelInstanceForm";
-import type {
-  ConfigureModelInstanceFormProps,
-  ConfigureModelInstanceFormValue,
-} from "./ConfigureModelInstanceForm";
+import type { ConfigureModelInstanceFormProps } from "./ConfigureModelInstanceForm";
 import CreateModelForm from "./CreateModelForm";
 import type { CreateModelFormValue } from "./CreateModelForm";
 
@@ -22,8 +19,7 @@ export {
 export type {
   TestModelInstanceSectionProps,
   ConfigureModelFormProps,
-  ConfigureModelFormValue,
+  ConfigureModelFormValues,
   ConfigureModelInstanceFormProps,
-  ConfigureModelInstanceFormValue,
   CreateModelFormValue,
 };

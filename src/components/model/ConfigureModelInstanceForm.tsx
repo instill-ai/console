@@ -14,18 +14,10 @@ export type ConfigureModelInstanceFormProps = {
   marginBottom: Nullable<string>;
 };
 
-export type ConfigureModelInstanceFormValue = {
-  repo: Nullable<string>;
-  tag: Nullable<string>;
-  repoUrl: Nullable<string>;
-};
-
 const ConfigureModelInstanceForm = ({
   modelInstance,
   marginBottom,
 }: ConfigureModelInstanceFormProps) => {
-  const [canEdit, setCanEdit] = useState(false);
-
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
       activate: false,
@@ -33,13 +25,6 @@ const ConfigureModelInstanceForm = ({
       description: null,
       status: null,
     });
-
-  const handleEditButton = () => {
-    if (!canEdit) {
-      setCanEdit(true);
-      return;
-    }
-  };
 
   return (
     <FormBase

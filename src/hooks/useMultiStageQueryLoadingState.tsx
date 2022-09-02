@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export type UseMultiStageQueryLoadingStatePayload = {
   data: any;
   isLoading: boolean;

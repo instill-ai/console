@@ -59,7 +59,7 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
         })
       );
     }
-  }, [destinations.isSuccess, destinations.data]);
+  }, [destinations.isSuccess, destinations.data, values.pipeline.mode]);
 
   const selectedDestinationOption = useMemo(() => {
     if (!values.destination.existing.id || !destinationOptions) return null;

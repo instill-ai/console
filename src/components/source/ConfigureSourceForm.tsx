@@ -93,7 +93,7 @@ const ConfigureSourceForm = ({
     } else {
       setCanEdit(true);
     }
-  }, []);
+  }, [canEdit]);
 
   // ###################################################################
   // # Handle delete destination                                       #

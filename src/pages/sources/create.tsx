@@ -44,7 +44,7 @@ const CreateSourcePage: FC & {
           enableButton={false}
           marginBottom="mb-10"
         />
-        <CreateSourceForm />
+        <CreateSourceForm marginBottom={null} />
       </PageContentContainer>
     </>
   );

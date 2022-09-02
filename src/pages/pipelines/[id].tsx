@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import Prism from "prismjs";
+import { highlightAll } from "prismjs";
 import { GetServerSideProps } from "next";
 import { join } from "path";
 import fs from "fs";
@@ -102,7 +102,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   // }, []);
 
   useEffect(() => {
-    Prism.highlightAll();
+    highlightAll();
   }, []);
 
   // ###################################################################

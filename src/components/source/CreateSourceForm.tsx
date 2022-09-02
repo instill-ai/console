@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, ChangeEvent } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
@@ -179,7 +179,7 @@ const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
         }
       },
     });
-  }, [amplitudeIsInit, createSource, router, fieldValues]);
+  }, [amplitudeIsInit, createSource, router, fieldValues, sources.data]);
 
   return (
     <FormBase

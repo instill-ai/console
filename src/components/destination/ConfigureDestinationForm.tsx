@@ -76,7 +76,12 @@ const ConfigureDestinationForm = ({
         />
       ),
     };
-  }, []);
+  }, [
+    destination.destination_connector_definition.id,
+    destination.destination_connector_definition.connector_definition
+      .docker_repository,
+    destination.destination_connector_definition.connector_definition.icon,
+  ]);
 
   // ##########################################################################
   // # 2 - Create interior state for managing the form                        #
@@ -131,15 +136,18 @@ const ConfigureDestinationForm = ({
 
   const updateDestination = useUpdateDestination();
 
-  const updateFieldValues = useCallback((field: string, value: string) => {
-    setFormIsDirty(true);
-    setFieldValues((prev) => {
-      return {
-        ...prev,
-        [field]: value,
-      };
-    });
-  }, []);
+  const updateFieldValues = useCallback(
+    (field: string, value: string) => {
+      setFormIsDirty(true);
+      setFieldValues((prev) => {
+        return {
+          ...prev,
+          [field]: value,
+        };
+      });
+    },
+    [setFieldValues, setFormIsDirty]
+  );
 
   // ##########################################################################
   // # 2 - Configure destination                                              #
@@ -267,6 +275,10 @@ const ConfigureDestinationForm = ({
     setCanEdit,
     formIsDirty,
     setFormIsDirty,
+    destination.destination_connector_definition.connector_definition
+      .docker_repository,
+    destination.name,
+    updateDestination,
   ]);
 
   return (

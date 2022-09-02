@@ -69,7 +69,7 @@ const pickInitialSelectedMap = (
 
     const conditionArray = Object.entries(formTree.conditions);
 
-    for (const [_, v] of conditionArray) {
+    for (const [, v] of conditionArray) {
       const targetConstField = v.properties.find((e) => "const" in e) as
         | AirbyteFormItem
         | undefined;
@@ -90,7 +90,7 @@ const pickInitialSelectedMap = (
         },
       };
     }
-    Object.entries(formTree.conditions).map(([_, v]) => {
+    Object.entries(formTree.conditions).map(([, v]) => {
       const childMap = pickInitialSelectedMap(v, initialValue, parentMap);
       map = {
         ...map,

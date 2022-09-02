@@ -105,6 +105,7 @@ describe("setter", () => {
     expect(obj).toEqual({ x: "y", foo: { 0: "b" } });
   });
 
+  // /* eslint-disable  jest/no-commented-out-tests */
   // We are currently don't support bracket path
 
   // it("supports bracket path", () => {

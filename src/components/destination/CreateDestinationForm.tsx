@@ -5,7 +5,6 @@ import {
   ChangeEvent,
   ReactElement,
 } from "react";
-import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
   BasicSingleSelect,
@@ -64,7 +63,6 @@ const CreateDestinationForm = ({
   onSuccessCb,
   pipelineMode,
 }: CreateDestinationFormProps) => {
-  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   // ##########################################################################
@@ -120,7 +118,11 @@ const CreateDestinationForm = ({
         />
       ),
     }));
-  }, [destinationDefinitions.isSuccess, destinationDefinitions.data]);
+  }, [
+    destinationDefinitions.isSuccess,
+    destinationDefinitions.data,
+    pipelineMode,
+  ]);
 
   const [selectedDestinationDefinition, setSelectedDestinationDefinition] =
     useState<Nullable<ConnectorDefinition>>(null);
@@ -244,7 +246,7 @@ const CreateDestinationForm = ({
         : yup.string().nullable().notRequired(),
       configuration: airbyteYup,
     });
-  }, [airbyteYup]);
+  }, [airbyteYup, canSetIdField]);
 
   // ##########################################################################
   // # 3 - Create the destination                                             #
@@ -392,7 +394,6 @@ const CreateDestinationForm = ({
     });
   }, [
     amplitudeIsInit,
-    router,
     createDestination,
     formYup,
     fieldValues,
@@ -401,14 +402,17 @@ const CreateDestinationForm = ({
     onSuccessCb,
   ]);
 
-  const updateFieldValues = useCallback((field: string, value: string) => {
-    setFieldValues((prev) => {
-      return {
-        ...prev,
-        [field]: value,
-      };
-    });
-  }, []);
+  const updateFieldValues = useCallback(
+    (field: string, value: string) => {
+      setFieldValues((prev) => {
+        return {
+          ...prev,
+          [field]: value,
+        };
+      });
+    },
+    [setFieldValues]
+  );
 
   return (
     <FormBase
