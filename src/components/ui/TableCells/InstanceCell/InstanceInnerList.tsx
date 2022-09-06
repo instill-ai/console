@@ -22,7 +22,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
   indicator,
   textStyle,
 }) => {
-  const remainItemsIndicatorWidth = 26;
+  const remainItemsIndicatorWidth = 32;
 
   const [displayLimit, setDisplayLimit] = useState(0);
   const [isExpand, setIsExpand] = useState(false);
@@ -34,7 +34,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     let limit = 0;
 
     for (const item of items) {
-      const textWidth = getTextWidth(item.name, "normal 14px sans");
+      const textWidth = getTextWidth(item.name, "normal 12px sans");
       if (!textWidth) {
         continue;
       }
@@ -42,14 +42,16 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
       const paddingX = 5;
       const stateIndicatorWidth = 12;
       const gapBetweenTextAndIndicator = 5;
-      const gapBetweenItem = 5;
+      const gapBetweenItems = 5;
+      const buffer = 10;
 
       const listItemComponentWidth =
         textWidth +
         paddingX * 2 +
         stateIndicatorWidth +
         gapBetweenTextAndIndicator +
-        gapBetweenItem;
+        gapBetweenItems +
+        buffer;
 
       if (
         itemsAccumulatedWidth + listItemComponentWidth >
