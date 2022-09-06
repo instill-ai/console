@@ -4,6 +4,7 @@ import {
   BasicProgressMessageBox,
   BasicSingleSelect,
   BasicTextArea,
+  OutlineButton,
   ProgressMessageBoxState,
   SolidButton,
 } from "@instill-ai/design-system";
@@ -25,10 +26,15 @@ import {
   UpdateDestinationPayload,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { FormBase } from "@/components/ui";
-import { useUpdateDestination } from "@/services/connector/destination/mutations";
+import { DeleteResourceModal, FormBase } from "@/components/ui";
+import {
+  useDeleteDestination,
+  useUpdateDestination,
+} from "@/services/connector/destination/mutations";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useRouter } from "next/router";
 
 export type ConfigureDestinationFormProps = {
   destination: DestinationWithDefinition;
@@ -38,6 +44,7 @@ const ConfigureDestinationForm = ({
   destination,
 }: ConfigureDestinationFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const router = useRouter();
 
   // ##########################################################################
   // # 1 - Get the destination definition and static state for fields         #
@@ -282,68 +289,150 @@ const ConfigureDestinationForm = ({
     updateDestination,
   ]);
 
+  // ##########################################################################
+  // # 3 - Handle delete destination                                          #
+  // ##########################################################################
+
+  const { disableResourceDeletion } = useDeleteResourceGuard();
+
+  const [deleteDestinationModalIsOpen, setDeleteDestinationModalIsOpen] =
+    useState(false);
+
+  const deleteDestination = useDeleteDestination();
+
+  const handleDeleteDestination = useCallback(() => {
+    if (!destination) return;
+
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Deleting...",
+    }));
+
+    deleteDestination.mutate(destination.name, {
+      onSuccess: () => {
+        setMessageBoxState(() => ({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Succeed.",
+        }));
+
+        if (amplitudeIsInit) {
+          sendAmplitudeData("delete_destination", {
+            type: "critical_action",
+            process: "destination",
+          });
+        }
+        router.push("/destinations");
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          setMessageBoxState(() => ({
+            activate: true,
+            message: `${error.response?.status} - ${error.response?.data.message}`,
+            description: JSON.stringify(
+              error.response?.data.details,
+              null,
+              "\t"
+            ),
+            status: "error",
+          }));
+        } else {
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: null,
+            message: "Something went wrong when delete the source",
+          }));
+        }
+      },
+    });
+    setDeleteDestinationModalIsOpen(false);
+  }, []);
+
   return (
-    <FormBase padding="" noValidate={true} flex1={false} marginBottom={null}>
-      <div className="flex flex-col mb-8 gap-y-5">
-        <BasicSingleSelect
-          id="definition"
-          key="definition"
-          instanceId="definition"
-          label="Destination type"
-          disabled={true}
-          value={destinationDefinitionOption}
-          options={[]}
-          description={`<a href='${destination.destination_connector_definition.connector_definition.documentation_url}'>Setup Guide</a>`}
-        />
-        {!isSyncDestination ? (
-          <BasicTextArea
-            id="description"
-            label="Description"
-            key="description"
-            description="Fill with a short description."
-            required={false}
-            error={
-              fieldErrors ? (fieldErrors.description as string) ?? null : null
-            }
-            value={
-              fieldValues ? (fieldValues.description as string) ?? null : null
-            }
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-              updateFieldValues("description", event.target.value)
-            }
-            disabled={!canEdit}
+    <>
+      <FormBase padding="" noValidate={true} flex1={false} marginBottom={null}>
+        <div className="flex flex-col mb-8 gap-y-5">
+          <BasicSingleSelect
+            id="definition"
+            key="definition"
+            instanceId="definition"
+            label="Destination type"
+            disabled={true}
+            value={destinationDefinitionOption}
+            options={[]}
+            description={`<a href='${destination.destination_connector_definition.connector_definition.documentation_url}'>Setup Guide</a>`}
           />
-        ) : null}
-        <AirbyteDestinationFields
-          destinationFormTree={destinationFormTree}
-          fieldValues={fieldValues}
-          setFieldValues={setFieldValues}
-          fieldErrors={fieldErrors}
-          selectedConditionMap={selectedConditionMap}
-          setSelectedConditionMap={setSelectedConditionMap}
-          disableAll={!canEdit}
-          formIsDirty={formIsDirty}
-          setFormIsDirty={setFormIsDirty}
-        />
-      </div>
-      <div className="flex flex-row">
-        <BasicProgressMessageBox
-          state={messageBoxState}
-          setState={setMessageBoxState}
-          width="w-[25vw]"
-          closable={true}
-        />
-        <SolidButton
-          type="button"
-          color="primary"
-          disabled={isSyncDestination}
-          position="ml-auto my-auto"
-          onClickHandler={() => handleSubmit()}
-        >
-          {canEdit ? "Save" : "Edit"}
-        </SolidButton>
-      </div>
-    </FormBase>
+          {!isSyncDestination ? (
+            <BasicTextArea
+              id="description"
+              label="Description"
+              key="description"
+              description="Fill with a short description."
+              required={false}
+              error={
+                fieldErrors ? (fieldErrors.description as string) ?? null : null
+              }
+              value={
+                fieldValues ? (fieldValues.description as string) ?? null : null
+              }
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                updateFieldValues("description", event.target.value)
+              }
+              disabled={!canEdit}
+            />
+          ) : null}
+          <AirbyteDestinationFields
+            destinationFormTree={destinationFormTree}
+            fieldValues={fieldValues}
+            setFieldValues={setFieldValues}
+            fieldErrors={fieldErrors}
+            selectedConditionMap={selectedConditionMap}
+            setSelectedConditionMap={setSelectedConditionMap}
+            disableAll={!canEdit}
+            formIsDirty={formIsDirty}
+            setFormIsDirty={setFormIsDirty}
+          />
+        </div>
+        <div className="flex flex-row mb-10">
+          <OutlineButton
+            disabled={disableResourceDeletion}
+            onClickHandler={() => setDeleteDestinationModalIsOpen(true)}
+            position="mr-auto my-auto"
+            type="button"
+            color="danger"
+          >
+            Delete
+          </OutlineButton>
+          <SolidButton
+            type="button"
+            color="primary"
+            disabled={isSyncDestination}
+            position="ml-auto my-auto"
+            onClickHandler={() => handleSubmit()}
+          >
+            {canEdit ? "Save" : "Edit"}
+          </SolidButton>
+        </div>
+        <div className="flex">
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
+        </div>
+      </FormBase>
+      <DeleteResourceModal
+        resource={destination}
+        modalIsOpen={deleteDestinationModalIsOpen}
+        setModalIsOpen={setDeleteDestinationModalIsOpen}
+        handleDeleteResource={handleDeleteDestination}
+      />
+    </>
   );
 };
 
