@@ -6,7 +6,7 @@ specifiers:
   '@code-hike/mdx': ^0.7.3
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
-  '@instill-ai/design-system': ^0.0.113
+  '@instill-ai/design-system': ^0.0.114
   '@next/env': ^12.2.3
   '@playwright/test': ^1.25.1
   '@storybook/addon-actions': ^6.5.9
@@ -89,7 +89,7 @@ specifiers:
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
   '@code-hike/mdx': 0.7.3_react@17.0.2
-  '@instill-ai/design-system': 0.0.113_b4usidsfzquyh4hx4nnzn3lrei
+  '@instill-ai/design-system': 0.0.114_b4usidsfzquyh4hx4nnzn3lrei
   '@playwright/test': 1.25.1
   axios: 0.27.2
   clsx: 1.2.1
@@ -2077,8 +2077,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system/0.0.113_b4usidsfzquyh4hx4nnzn3lrei:
-    resolution: {integrity: sha512-GMgSNTpsHAlN266b6sgUwK7Xp7YXoyxLI4Or34JJMUm7RbTnyerUndUzXOEX3YaaSLVyGhHjj9sVAZPSPWbL+Q==}
+  /@instill-ai/design-system/0.0.114_b4usidsfzquyh4hx4nnzn3lrei:
+    resolution: {integrity: sha512-Dp/w/zym/ZGr/5TH64FfwDKWAqFPKSAHMIdb+yci4g8jlk22cmaCYf3UZts7L458dlN0YwttYVXi6otIlPov0A==}
     peerDependencies:
       clsx: ^1.1.1
       react: ^17.0.2
