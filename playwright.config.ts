@@ -13,7 +13,7 @@ if (!process.env.NEXT_PUBLIC_MAIN_URL) {
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testDir: "./e2e",
+  testDir: "./integration",
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
