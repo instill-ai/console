@@ -8,7 +8,7 @@ export type SetCookiePayload = {
   key: string;
   hostname: Nullable<string>;
   maxAge: number;
-  httOnly: boolean;
+  httpOnly: boolean;
 };
 
 export const setCookie = ({
@@ -17,12 +17,12 @@ export const setCookie = ({
   key,
   hostname,
   maxAge,
-  httOnly,
+  httpOnly,
 }: SetCookiePayload) => {
   const cookie = serialize(key, value, {
     maxAge: maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
-    httpOnly: httOnly,
+    httpOnly: httpOnly,
     secure: process.env.NODE_ENV === "production" ? true : false,
     path: "/",
     sameSite: "lax",

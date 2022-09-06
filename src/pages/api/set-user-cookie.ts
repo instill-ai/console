@@ -26,8 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         cookie_token: body.token,
       }),
       hostname: hostname ?? null,
-      maxAge: 60 * 60 * 24 * 30,
-      httOnly: process.env.NODE_ENV === "production" ? true : false,
+      maxAge: 60 * 60 * 24 * 2,
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
     };
 
     setCookie(payload);
