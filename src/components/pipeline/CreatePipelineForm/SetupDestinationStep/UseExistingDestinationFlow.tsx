@@ -10,6 +10,7 @@ import {
 import { useDestinations } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
+import Image from "next/image";
 
 export type UseExistingDestinationFlowProps = StepNumberState;
 
@@ -46,6 +47,21 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
             return {
               label: e.id,
               value: e.id,
+              startIcon: (
+                <Image
+                  className="my-auto"
+                  src={
+                    e.destination_connector_definition.connector_definition.docker_repository.split(
+                      "/"
+                    )[0] === "airbyte"
+                      ? `/icons/airbyte/${e.destination_connector_definition.connector_definition.icon}`
+                      : `/icons/instill/${e.destination_connector_definition.connector_definition.icon}`
+                  }
+                  width={24}
+                  height={24}
+                  layout="fixed"
+                />
+              ),
             };
           })
       );
