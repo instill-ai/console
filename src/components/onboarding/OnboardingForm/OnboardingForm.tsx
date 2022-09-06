@@ -133,7 +133,13 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
     if (!fieldValues.email || !fieldValues.companyName || !fieldValues.role)
       return;
 
-    const token = uuidv4();
+    let token: string | undefined = undefined;
+
+    if (user && user.cookie_token && user.cookie_token !== "") {
+      token = user.cookie_token;
+    } else {
+      token = uuidv4();
+    }
 
     const payload: Partial<User> = {
       id: "local-user",
@@ -143,7 +149,7 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
       newsletter_subscription: fieldValues.newsletterSubscription
         ? fieldValues.newsletterSubscription
         : false,
-      cookie_token: user ? user.cookie_token : token,
+      cookie_token: token,
     };
 
     setMessageBoxState(() => ({
