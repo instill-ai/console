@@ -1,35 +1,19 @@
-import { FC, ReactNode } from "react";
 import cn from "clsx";
-import {
-  BigQueryIcon,
-  GoogleSheetIcon,
-  GrpcIcon,
-  HttpIcon,
-  MongoDbIcon,
-  MySqlIcon,
-  PostgreSqlIcon,
-  RedshiftIcon,
-  SalesforceIcon,
-  ShopifyIcon,
-  SlackIcon,
-  SnowflakeIcon,
-} from "@instill-ai/design-system";
-
+import Image from "next/image";
 import CellBase, { CellBaseProps } from "../CellBase";
+import { ConnectorDefinition } from "@/lib/instill";
 
 export type ConnectionTypeCellProps = CellBaseProps & {
-  iconDefinition: string;
-  definitionName: string;
   cellType: "shrink" | "expand";
-  connectionName: string;
+  connectorName: string;
   width: string;
   lineClamp?: string;
+  connectorDefinition: ConnectorDefinition;
 };
 
-const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
-  iconDefinition,
-  definitionName,
-  connectionName,
+const ConnectionTypeCell = ({
+  connectorDefinition,
+  connectorName,
   width,
   paddingBottom,
   paddingLeft,
@@ -37,119 +21,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
   paddingTop,
   cellType,
   lineClamp,
-}) => {
-  let icon: ReactNode;
-  const iconWidth = "w-8";
-  const iconHeight = "h-8";
-  const position = "my-auto";
-
-  switch (iconDefinition) {
-    case "snowflake.svg": {
-      icon = (
-        <SnowflakeIcon
-          width={iconWidth}
-          height={iconHeight}
-          position="my-auto"
-        />
-      );
-      break;
-    }
-    case "googlesheet.svg": {
-      icon = (
-        <GoogleSheetIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "bigquery.svg": {
-      icon = (
-        <BigQueryIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "grpc.svg": {
-      icon = (
-        <GrpcIcon width={iconWidth} height={iconHeight} position={position} />
-      );
-      break;
-    }
-    case "http.svg": {
-      icon = (
-        <HttpIcon width={iconWidth} height={iconHeight} position={position} />
-      );
-      break;
-    }
-    case "mongodb.svg": {
-      icon = (
-        <MongoDbIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "mysql.svg": {
-      icon = (
-        <MySqlIcon width={iconWidth} height={iconHeight} position={position} />
-      );
-      break;
-    }
-    case "postgresql.svg": {
-      icon = (
-        <PostgreSqlIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "redshift.svg": {
-      icon = (
-        <RedshiftIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "salesforce.svg": {
-      icon = (
-        <SalesforceIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "shopify.svg": {
-      icon = (
-        <ShopifyIcon
-          width={iconWidth}
-          height={iconHeight}
-          position={position}
-        />
-      );
-      break;
-    }
-    case "slack.svg": {
-      icon = (
-        <SlackIcon width={iconWidth} height={iconHeight} position={position} />
-      );
-      break;
-    }
-  }
-
+}: ConnectionTypeCellProps) => {
   if (cellType === "shrink") {
     return (
       <CellBase
@@ -158,17 +30,28 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
         paddingRight={paddingRight}
         paddingBottom={paddingBottom}
       >
-        {}
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-row gap-x-2.5">
-            {icon}
+            <Image
+              className="my-auto"
+              src={
+                connectorDefinition.connector_definition.docker_repository.split(
+                  "/"
+                )[0] === "airbyte"
+                  ? `/icons/airbyte/${connectorDefinition.connector_definition.icon}`
+                  : `/icons/instill/${connectorDefinition.connector_definition.icon}`
+              }
+              width={32}
+              height={32}
+              layout="fixed"
+            />
             <p
               className={cn(
                 "my-auto text-instillGrey90 text-instill-body",
                 lineClamp
               )}
             >
-              {definitionName}
+              {connectorDefinition.connector_definition.title}
             </p>
           </div>
         </div>
@@ -185,9 +68,21 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-col gap-y-[6px]">
             <div className="flex flex-row gap-x-[5px]">
-              {icon}
+              <Image
+                className="my-auto"
+                src={
+                  connectorDefinition.connector_definition.docker_repository.split(
+                    "/"
+                  )[0] === "airbyte"
+                    ? `/icons/airbyte/${connectorDefinition.connector_definition.icon}`
+                    : `/icons/instill/${connectorDefinition.connector_definition.icon}`
+                }
+                width={32}
+                height={32}
+                layout="fixed"
+              />
               <p className="my-auto text-instillGrey90 text-instill-small">
-                {definitionName}
+                {connectorDefinition.connector_definition.title}
               </p>
             </div>
             <p
@@ -196,7 +91,7 @@ const ConnectionTypeCell: FC<ConnectionTypeCellProps> = ({
                 lineClamp
               )}
             >
-              {connectionName}
+              {connectorName}
             </p>
           </div>
         </div>
