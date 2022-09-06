@@ -157,7 +157,7 @@ const DeleteResourceModal = ({
           <OutlineButton
             type="button"
             onClickHandler={handleDeleteResource}
-            color="secondary"
+            color="danger"
             disabled={canDeleteResource ? false : true}
           >
             <p className="mx-auto">Delete</p>
