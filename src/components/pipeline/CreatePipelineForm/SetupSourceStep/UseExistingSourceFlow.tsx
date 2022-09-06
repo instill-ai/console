@@ -102,7 +102,7 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
   return (
     <div className="flex flex-1 flex-col gap-y-5 p-5">
       <h3 className="text-black text-instill-h3">
-        Select a existing online source
+        Select an existing online source
       </h3>
       <SingleSelect
         id="existingSourceId"
