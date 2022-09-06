@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       status: "ok",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).end(String(err));
   }
 };
