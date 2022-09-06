@@ -96,7 +96,7 @@ const ConfigureSourceForm = ({
   }, [canEdit]);
 
   // ###################################################################
-  // # Handle delete destination                                       #
+  // # Handle delete source                                            #
   // ###################################################################
 
   const { disableResourceDeletion } = useDeleteResourceGuard();
