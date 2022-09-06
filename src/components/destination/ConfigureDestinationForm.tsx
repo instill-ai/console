@@ -58,7 +58,8 @@ const ConfigureDestinationForm = ({
 
   const destinationDefinitionOption = useMemo(() => {
     return {
-      label: destination.destination_connector_definition.id,
+      label:
+        destination.destination_connector_definition.connector_definition.title,
       value: destination.destination_connector_definition.id,
       startIcon: (
         <Image
