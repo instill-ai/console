@@ -19,7 +19,8 @@
     "prettier:fix": "prettier --write",
     "prettier:check": "prettier --check",
     "lint": "next lint",
-    "download-airbyte-icons": "node ./downloadAirbyteIcons.js"
+    "download-airbyte-icons": "node ./downloadAirbyteIcons.js",
+    "integration": "npx playwright test"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^0.4.1",

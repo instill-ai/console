@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { openCreatePipelinePage, openPipelinePage } from "../common/pipeline";
+import { openCreatePipelinePage, openPipelinePage } from "./common/pipeline";
 
 test.describe.serial("Simple sync pipeline with local model", () => {
   const testPipelineId = "test-pipeline-13ef55rrrr3";
