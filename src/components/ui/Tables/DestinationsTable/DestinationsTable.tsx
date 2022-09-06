@@ -80,15 +80,8 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               displayStateIndicator={true}
             />
             <ConnectionTypeCell
-              definitionName={
-                destination.destination_connector_definition
-                  .connector_definition.title
-              }
-              iconDefinition={
-                destination.destination_connector_definition
-                  .connector_definition.icon
-              }
-              connectionName={destination.id}
+              connectorDefinition={destination.destination_connector_definition}
+              connectorName={destination.id}
               cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"

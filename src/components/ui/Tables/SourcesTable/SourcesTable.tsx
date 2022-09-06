@@ -80,13 +80,8 @@ const SourcesTable: FC<SourcesTableProps> = ({
               displayStateIndicator={true}
             />
             <ConnectionTypeCell
-              definitionName={
-                source.source_connector_definition.connector_definition.title
-              }
-              iconDefinition={
-                source.source_connector_definition.connector_definition.icon
-              }
-              connectionName={source.id}
+              connectorDefinition={source.source_connector_definition}
+              connectorName={source.id}
               cellType="shrink"
               width="w-[234px]"
               paddingBottom="pb-5"

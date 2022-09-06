@@ -42,15 +42,10 @@ const PipelineTable: FC<PipelineTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            definitionName={
+            connectorDefinition={
               pipeline.recipe.source.source_connector_definition
-                .connector_definition.title
             }
-            connectionName={pipeline.recipe.source.id}
-            iconDefinition={
-              pipeline.recipe.source.source_connector_definition
-                .connector_definition.icon
-            }
+            connectorName={pipeline.recipe.source.id}
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""
@@ -67,15 +62,10 @@ const PipelineTable: FC<PipelineTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
-            definitionName={
+            connectorDefinition={
               pipeline.recipe.destination.destination_connector_definition
-                .connector_definition.title
             }
-            connectionName={pipeline.recipe.destination.id}
-            iconDefinition={
-              pipeline.recipe.destination.destination_connector_definition
-                .connector_definition.icon
-            }
+            connectorName={pipeline.recipe.destination.id}
             paddingBottom="pb-5"
             paddingTop="pt-5"
             paddingLeft=""
