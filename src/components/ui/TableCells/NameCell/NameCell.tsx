@@ -22,10 +22,7 @@ const NameCell: FC<NameCellProps> = ({
   width,
   updatedAt,
   name,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
+  padding,
   link,
   lineClamp,
   displayUpdateTime,
@@ -65,12 +62,7 @@ const NameCell: FC<NameCellProps> = ({
   );
 
   return (
-    <CellBase
-      paddingTop={paddingTop}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-    >
+    <CellBase padding={padding}>
       {link ? (
         <Link href={link}>
           <a>

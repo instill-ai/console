@@ -1,16 +1,18 @@
-import { FC, memo } from "react";
+import { FC, memo, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
   InstanceCell,
   ModeCell,
   NameCell,
-  PipelinesTableHead,
   PipelineTablePlaceholder,
   TableBody,
   TableContainer,
   TableRow,
   TableLoadingProgress,
+  TableHead,
+  TableHeadItem,
+  StateOverview,
 } from "@/components/ui";
 
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
@@ -35,6 +37,37 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
     isLoadingPipeline ? null : pipelines
   );
 
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "pipeline-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "pipeline-mode-head",
+        item: "Mode",
+      },
+      {
+        key: "pipeline-source-head",
+        item: "Source",
+      },
+      {
+        key: "pipeline-models-head",
+        item: "Model instances",
+      },
+      {
+        key: "pipeline-destination-head",
+        item: "Destination",
+      },
+    ];
+  }, [stateOverviewCounts]);
+
   if (isLoadingPipeline) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -54,10 +87,10 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <PipelinesTableHead
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {pipelines.map((pipeline) => (
@@ -71,23 +104,13 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               width="w-[191px]"
               updatedAt={pipeline.update_time}
               state={pipeline.state}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft="pl-[15px]"
-              paddingRight=""
+              padding="py-5 pl-[15px]"
               link={`/pipelines/${pipeline.id}`}
               lineClamp="line-clamp-2"
               displayUpdateTime={true}
               displayStateIndicator={true}
             />
-            <ModeCell
-              width="w-[100px]"
-              mode={pipeline.mode}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
-            />
+            <ModeCell width="w-[100px]" mode={pipeline.mode} padding="py-5" />
             <ConnectionTypeCell
               width="w-[125px]"
               connectorDefinition={
@@ -95,10 +118,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
               }
               connectorName={pipeline.recipe.source.id}
               cellType="shrink"
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
               lineClamp="line-clamp-2"
             />
             <InstanceCell
@@ -115,10 +135,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
                   state: model.state,
                 };
               })}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
             />
             <ConnectionTypeCell
               width="w-[125px]"
@@ -127,10 +144,7 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
                 pipeline.recipe.destination.destination_connector_definition
               }
               connectorName={pipeline.recipe.destination.id}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight="pr-5"
+              padding="py-5 pr-5"
               lineClamp="line-clamp-2"
             />
           </TableRow>

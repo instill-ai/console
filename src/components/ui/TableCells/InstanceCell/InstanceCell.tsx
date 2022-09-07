@@ -26,10 +26,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
   cellType,
   instances,
   type,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
+  padding,
 }) => {
   let icon: ReactNode;
   const iconHeight = "h-5";
@@ -68,12 +65,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
   return (
     <>
       {cellType === "shrink" ? (
-        <CellBase
-          paddingTop={paddingTop}
-          paddingLeft={paddingLeft}
-          paddingRight={paddingRight}
-          paddingBottom={paddingBottom}
-        >
+        <CellBase padding={padding}>
           <div className={cn("flex", width)}>
             <InstanceInnerList
               items={instances}
@@ -85,12 +77,7 @@ const InstanceCell: FC<InstanceCellProps> = ({
           </div>
         </CellBase>
       ) : (
-        <CellBase
-          paddingTop={paddingTop}
-          paddingLeft={paddingLeft}
-          paddingRight={paddingRight}
-          paddingBottom={paddingBottom}
-        >
+        <CellBase padding={padding}>
           <div
             className={cn("flex flex-col", width, {
               "gap-y-3": instances.length > 0,

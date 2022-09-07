@@ -1,25 +1,13 @@
-import { FC } from "react";
-import cn from "clsx";
+import { ReactNode } from "react";
+import { Nullable } from "@/types/general";
 
 export type CellBaseProps = {
-  paddingTop: string;
-  paddingLeft: string;
-  paddingRight: string;
-  paddingBottom: string;
+  padding: Nullable<string>;
+  children?: ReactNode;
 };
 
-const CellBase: FC<CellBaseProps> = ({
-  children,
-  paddingTop,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-}) => {
-  return (
-    <td className={cn(paddingTop, paddingBottom, paddingLeft, paddingRight)}>
-      {children}
-    </td>
-  );
+const CellBase = ({ children, padding }: CellBaseProps) => {
+  return <td className={padding ? padding : undefined}>{children}</td>;
 };
 
 export default CellBase;

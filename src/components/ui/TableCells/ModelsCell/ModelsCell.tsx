@@ -11,10 +11,7 @@ export type ModelsCellProps = CellBaseProps & {
 };
 
 const ModelsCell: FC<ModelsCellProps> = ({
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
+  padding,
   width,
   modelInstances,
 }) => {
@@ -38,12 +35,7 @@ const ModelsCell: FC<ModelsCellProps> = ({
   };
 
   return (
-    <CellBase
-      paddingBottom={paddingBottom}
-      paddingLeft={paddingLeft}
-      paddingTop={paddingTop}
-      paddingRight={paddingRight}
-    >
+    <CellBase padding={padding}>
       <div className={cn("flex flex-col gap-y-4", width)}>
         {Object.entries(groupByModel).map(([key, value]) => (
           <div key={key} className="flex flex-col gap-y-2">

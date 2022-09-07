@@ -10,14 +10,7 @@ export type ModeCellProps = CellBaseProps & {
   mode: PipelineMode;
 };
 
-const ModeCell: FC<ModeCellProps> = ({
-  width,
-  mode,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-}) => {
+const ModeCell: FC<ModeCellProps> = ({ width, mode, padding }) => {
   let modeIcon: ReactElement;
   const iconWidth = "w-5";
   const iconHeight = "h-5";
@@ -52,12 +45,7 @@ const ModeCell: FC<ModeCellProps> = ({
   }
 
   return (
-    <CellBase
-      paddingTop={paddingTop}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-    >
+    <CellBase padding={padding}>
       <div className={cn("flex gap-x-2 mr-auto", width)}>
         {modeIcon}
         <p className="text-instillGrey90 text-instill-body">

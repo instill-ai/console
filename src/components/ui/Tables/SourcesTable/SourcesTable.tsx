@@ -1,8 +1,7 @@
-import { FC } from "react";
+import { useMemo } from "react";
 
 import {
   ConnectionTypeCell,
-  ConnectorTableHead,
   InstanceCell,
   NameCell,
   SourceTablePlaceholder,
@@ -10,11 +9,14 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHeadItem,
+  TableHead,
+  SourceTablePlaceholderProps,
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import type { SourceTablePlaceholderProps } from "@/components/ui";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import StateOverview from "../../StateOverview";
 
 export type SourcesTableProps = {
   sources: SourceWithPipelines[];
@@ -23,15 +25,38 @@ export type SourcesTableProps = {
   enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const SourcesTable: FC<SourcesTableProps> = ({
+const SourcesTable = ({
   sources,
   isLoadingSources,
   marginBottom,
   enablePlaceholderCreateButton,
-}) => {
+}: SourcesTableProps) => {
   const stateOverviewCounts = useStateOverviewCounts(
     isLoadingSources ? null : sources
   );
+
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "connector-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "connector-type-head",
+        item: "Source",
+      },
+      {
+        key: "connector-pipelines-head",
+        item: "Pipelines",
+      },
+    ];
+  }, [stateOverviewCounts]);
 
   if (isLoadingSources) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
@@ -52,11 +77,10 @@ const SourcesTable: FC<SourcesTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ConnectorTableHead
-        definition="source"
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {sources.map((source) => (
@@ -70,10 +94,7 @@ const SourcesTable: FC<SourcesTableProps> = ({
               width="w-[234px]"
               state="STATE_ONLINE"
               updatedAt={source.connector.update_time}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft="pl-5"
-              paddingRight=""
+              padding="py-5 pl-5"
               link={`/sources/${source.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
@@ -84,25 +105,19 @@ const SourcesTable: FC<SourcesTableProps> = ({
               connectorName={source.id}
               cellType="shrink"
               width="w-[234px]"
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
             />
             <InstanceCell
               cellType="expand"
               width="w-80"
               type="pipeline"
+              padding="py-5 pr-[15px]"
               instances={source.pipelines.map((e) => {
                 return {
                   name: e.id,
                   state: e.state,
                 };
               })}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight="pr-[15px]"
             />
           </TableRow>
         ))}

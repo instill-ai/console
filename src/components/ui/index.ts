@@ -42,6 +42,10 @@ import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
 import ChangeResourceStateButton from "./ChangeResourceStateButton";
 import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
 import ErrorBoundary from "./ErrorBoundary";
+import StateOverview from "./StateOverview";
+import type { StateOverviewProps } from "./StateOverview";
+import TableHead from "./TableHead";
+import type { TableHeadProps, TableHeadItem } from "./TableHead";
 
 export {
   Sidebar,
@@ -51,6 +55,7 @@ export {
   TableContainer,
   TableRow,
   TableBody,
+  TableHead,
   StateLabel,
   PipelineModeLabel,
   ConnectorIcon,
@@ -68,6 +73,7 @@ export {
   ErrorBoundary,
   Breadcrumb,
   CodeBlock,
+  StateOverview,
 };
 
 export type {
@@ -89,9 +95,11 @@ export type {
   BreadcrumbProps,
   ModelDefinitionLabelProps,
   CodeBlockProps,
+  TableHeadProps,
+  TableHeadItem,
+  StateOverviewProps,
 };
 
-export * from "./TableHeads";
 export * from "./TableCells";
 export * from "./TablePlaceholders";
 export * from "./Tables";

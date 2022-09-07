@@ -1,22 +1,18 @@
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import cn from "clsx";
 
-export type Item = {
+export type TableHeadItem = {
   key: string;
   item: string | ReactNode;
 };
 
-export type TableHeadBaseProps = {
-  items: Item[];
+export type TableHeadProps = {
+  items: TableHeadItem[];
   bgColor: string;
   borderColor: string;
 };
 
-const TableHeadBase: FC<TableHeadBaseProps> = ({
-  items,
-  bgColor,
-  borderColor,
-}) => {
+const TableHead = ({ items, bgColor, borderColor }: TableHeadProps) => {
   return (
     <thead className={cn("border", borderColor, bgColor)}>
       <tr>
@@ -57,4 +53,4 @@ const TableHeadBase: FC<TableHeadBaseProps> = ({
   );
 };
 
-export default TableHeadBase;
+export default TableHead;

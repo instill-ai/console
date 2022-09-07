@@ -1,8 +1,7 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
-  ConnectorTableHead,
   DestinationTablePlaceholder,
   InstanceCell,
   NameCell,
@@ -10,11 +9,14 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHeadItem,
+  TableHead,
 } from "@/components/ui";
 import type { DestinationTablePlaceholderProps } from "@/components/ui";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import StateOverview from "../../StateOverview";
 
 export type DestinationsTableProps = {
   destinations: DestinationWithPipelines[];
@@ -32,6 +34,29 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
   const stateOverviewCounts = useStateOverviewCounts(
     isLoading ? null : destinations
   );
+
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "connector-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "connector-type-head",
+        item: "Destination",
+      },
+      {
+        key: "connector-pipelines-head",
+        item: "Pipelines",
+      },
+    ];
+  }, [stateOverviewCounts]);
 
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
@@ -52,11 +77,10 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ConnectorTableHead
-        definition="destination"
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {destinations.map((destination) => (
@@ -70,10 +94,7 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               width="w-[234px]"
               state={destination.connector.state}
               updatedAt={destination.connector.update_time}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft="pl-5"
-              paddingRight=""
+              padding="pl-5 py-5"
               link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
@@ -84,25 +105,19 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               connectorName={destination.id}
               cellType="shrink"
               width="w-[234px]"
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
             />
             <InstanceCell
               cellType="expand"
               width="w-80"
               type="pipeline"
+              padding="py-5 pr-[15px]"
               instances={destination.pipelines.map((e) => {
                 return {
                   name: e.id,
                   state: e.state,
                 };
               })}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight="pr-[15px]"
             />
           </TableRow>
         ))}
