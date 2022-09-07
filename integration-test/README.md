@@ -24,3 +24,8 @@
 
 - This config will force every test run in parallel even you specific `test.describe.serial`.
 - We recommend you set `fullyParallel: false` and control this behavior with fine-grained control.
+
+## About the flaky test
+
+- If the test behavior is related to backend, remember that backend can only handle a request at a time. So if the test run in sequence and the time between requests is too short, the request will fail.
+- We have to limit the test worker to one, because the test suite might run to quick to make backend panic.
