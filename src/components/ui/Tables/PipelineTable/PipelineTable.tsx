@@ -42,34 +42,25 @@ const PipelineTable: FC<PipelineTableProps> = ({
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
+            padding="py-5 pl-[15px]"
             connectorDefinition={
               pipeline.recipe.source.source_connector_definition
             }
             connectorName={pipeline.recipe.source.id}
-            paddingBottom="pb-5"
-            paddingTop="pt-5"
-            paddingLeft=""
-            paddingRight="pl-[15px]"
           />
           <ModelsCell
             modelInstances={pipeline.recipe.models}
             width="w-[269px]"
-            paddingBottom="pb-5"
-            paddingTop="pt-5"
-            paddingLeft=""
-            paddingRight=""
+            padding="py-5"
           />
           <ConnectionTypeCell
             cellType="expand"
             width="w-[269px]"
+            padding="py-5 pr-[15px]"
             connectorDefinition={
               pipeline.recipe.destination.destination_connector_definition
             }
             connectorName={pipeline.recipe.destination.id}
-            paddingBottom="pb-5"
-            paddingTop="pt-5"
-            paddingLeft=""
-            paddingRight="pr-[15px]"
           />
         </TableRow>
       </TableBody>

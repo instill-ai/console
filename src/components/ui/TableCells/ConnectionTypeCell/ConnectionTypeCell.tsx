@@ -15,21 +15,13 @@ const ConnectionTypeCell = ({
   connectorDefinition,
   connectorName,
   width,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
+  padding,
   cellType,
   lineClamp,
 }: ConnectionTypeCellProps) => {
   if (cellType === "shrink") {
     return (
-      <CellBase
-        paddingTop={paddingTop}
-        paddingLeft={paddingLeft}
-        paddingRight={paddingRight}
-        paddingBottom={paddingBottom}
-      >
+      <CellBase padding={padding}>
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-row gap-x-2.5">
             <Image
@@ -59,12 +51,7 @@ const ConnectionTypeCell = ({
     );
   } else {
     return (
-      <CellBase
-        paddingTop={paddingTop}
-        paddingLeft={paddingLeft}
-        paddingRight={paddingRight}
-        paddingBottom={paddingBottom}
-      >
+      <CellBase padding={padding}>
         <div className={cn("py-2.5", width)}>
           <div className="flex flex-col gap-y-[6px]">
             <div className="flex flex-row gap-x-[5px]">

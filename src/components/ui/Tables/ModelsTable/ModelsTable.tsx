@@ -59,11 +59,8 @@ const ModelsTable: FC<ModelsTableProps> = ({
               name={model.id}
               width="w-[269px]"
               state="STATE_ONLINE"
+              padding="py-5 pl-5"
               updatedAt={model.update_time}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft="pl-5"
-              paddingRight=""
               link={`/models/${model.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
@@ -72,25 +69,17 @@ const ModelsTable: FC<ModelsTableProps> = ({
             <ModelDefinitionCell
               width="w-[269px]"
               modelDefinition={model.model_definition}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
             />
             <InstanceCell
               type="model"
               cellType="expand"
               width="w-[269px]"
-              instances={model.instances.map((instance) => {
-                return {
-                  name: instance.id,
-                  state: instance.state,
-                };
-              })}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight="pr-5"
+              padding="py-5 pr-5"
+              instances={model.instances.map((instance) => ({
+                name: instance.id,
+                state: instance.state,
+              }))}
             />
           </TableRow>
         ))}

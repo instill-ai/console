@@ -14,10 +14,7 @@ export type ModelDefintionCellProps = {
 } & CellBaseProps;
 
 const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
+  padding,
   modelDefinition,
   width,
 }) => {
@@ -84,12 +81,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
   }
 
   return (
-    <CellBase
-      paddingTop={paddingTop}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-    >
+    <CellBase padding={padding}>
       <div className={cn("flex flex-row gap-x-2", width)}>
         {definitionIcon}
         <p className="my-auto flex text-instillGrey90 text-instill-body">

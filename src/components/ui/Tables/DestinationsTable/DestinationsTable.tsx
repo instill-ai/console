@@ -70,10 +70,7 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               width="w-[234px]"
               state={destination.connector.state}
               updatedAt={destination.connector.update_time}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft="pl-5"
-              paddingRight=""
+              padding="pl-5 py-5"
               link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
@@ -84,25 +81,19 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
               connectorName={destination.id}
               cellType="shrink"
               width="w-[234px]"
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight=""
+              padding="py-5"
             />
             <InstanceCell
               cellType="expand"
               width="w-80"
               type="pipeline"
+              padding="py-5 pr-[15px]"
               instances={destination.pipelines.map((e) => {
                 return {
                   name: e.id,
                   state: e.state,
                 };
               })}
-              paddingBottom="pb-5"
-              paddingTop="pt-5"
-              paddingLeft=""
-              paddingRight="pr-[15px]"
             />
           </TableRow>
         ))}
