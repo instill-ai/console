@@ -11,12 +11,17 @@ test("first time enter user should go to the onboarding page", async ({
   );
 });
 
-test("should disable start button, if email input is not correct", async ({
+test("should disable start button, if email input format is not correct", async ({
   page,
 }) => {
   await page.goto("/onboarding");
-  await page.locator("#email").fill("instill");
-  await page.type("#companyName", "instill-ai");
+  const emailField = page.locator("#email");
+  await emailField.fill("instill");
+  await expect(emailField).toHaveValue("instill");
+
+  const companyField = page.locator("#companyName");
+  await companyField.fill("instill-ai");
+  await expect(companyField).toHaveValue("instill-ai");
 
   // Select role
   await page.locator("#role").click({ force: true });
@@ -53,24 +58,37 @@ test("should successfully fill in the onboarding form and submit", async ({
   context,
   browserName,
 }) => {
-  // await removeRegisteredUser();
+  await removeRegisteredUser();
   await page.goto("/onboarding");
-  await page.locator("#email").fill("instill@gmail.com");
-  await page.type("#companyName", "instill-ai");
+
+  const emailField = page.locator("#email");
+  await emailField.fill("instill@gmail.com");
+  await expect(emailField).toHaveValue("instill@gmail.com");
+
+  const companyField = page.locator("#companyName");
+  await companyField.fill("instill-ai");
+  await expect(companyField).toHaveValue("instill-ai");
 
   // Select role
   await page.locator("#role").click({ force: true });
   await page.locator("#react-select-role-option-0").click();
+  await expect(page.locator("data-testid=role-selected-option")).toHaveText(
+    "Manager (who makes decisions)"
+  );
 
   // Accept newsletter subscription
   await page.locator("#newsletterSubscription").check();
+
+  const startButton = page.locator("text=Start");
+  const startButtonState = await startButton.isDisabled();
+  expect(startButtonState).not.toBeTruthy();
 
   // Click Start and wait for navigation
   await Promise.all([
     // It is important to call waitForNavigation before click to set up waiting.
     page.waitForNavigation(),
     // Clicking the link will indirectly cause a navigation.
-    await page.locator("text=Start").click({ force: true }),
+    startButton.click(),
   ]);
 
   expect(page.url()).toBe(`${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines`);
