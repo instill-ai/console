@@ -84,12 +84,7 @@ test("should successfully fill in the onboarding form and submit", async ({
   expect(startButtonState).not.toBeTruthy();
 
   // Click Start and wait for navigation
-  await Promise.all([
-    // It is important to call waitForNavigation before click to set up waiting.
-    page.waitForNavigation(),
-    // Clicking the link will indirectly cause a navigation.
-    startButton.click(),
-  ]);
+  await Promise.all([page.waitForNavigation(), startButton.click()]);
 
   expect(page.url()).toBe(`${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines`);
 
