@@ -1,4 +1,4 @@
-import { FC, memo } from "react";
+import { FC, memo, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
@@ -11,6 +11,9 @@ import {
   TableContainer,
   TableRow,
   TableLoadingProgress,
+  TableHead,
+  TableHeadItem,
+  StateOverview,
 } from "@/components/ui";
 
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
@@ -35,6 +38,37 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
     isLoadingPipeline ? null : pipelines
   );
 
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "pipeline-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "pipeline-mode-head",
+        item: "Mode",
+      },
+      {
+        key: "pipeline-source-head",
+        item: "Source",
+      },
+      {
+        key: "pipeline-models-head",
+        item: "Model instances",
+      },
+      {
+        key: "pipeline-destination-head",
+        item: "Destination",
+      },
+    ];
+  }, [stateOverviewCounts]);
+
   if (isLoadingPipeline) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -54,10 +88,10 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <PipelinesTableHead
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {pipelines.map((pipeline) => (

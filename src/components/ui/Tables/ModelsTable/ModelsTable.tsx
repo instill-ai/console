@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import {
   InstanceCell,
@@ -9,6 +9,8 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHead,
+  TableHeadItem,
 } from "@/components/ui";
 import type { ModelTablePlaceholderProps } from "@/components/ui";
 import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
@@ -28,6 +30,23 @@ const ModelsTable: FC<ModelsTableProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "model-name",
+        item: <></>,
+      },
+      {
+        key: "model-source-head",
+        item: "Model source",
+      },
+      {
+        key: "model-instances-head",
+        item: "Instances",
+      },
+    ];
+  }, []);
+
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
@@ -47,7 +66,11 @@ const ModelsTable: FC<ModelsTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ModelTableHead />
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
+      />
       <TableBody>
         {models.map((model) => (
           <TableRow

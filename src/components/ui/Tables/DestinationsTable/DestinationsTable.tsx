@@ -1,8 +1,7 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
-  ConnectorTableHead,
   DestinationTablePlaceholder,
   InstanceCell,
   NameCell,
@@ -10,11 +9,14 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHeadItem,
+  TableHead,
 } from "@/components/ui";
 import type { DestinationTablePlaceholderProps } from "@/components/ui";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import StateOverview from "../../StateOverview";
 
 export type DestinationsTableProps = {
   destinations: DestinationWithPipelines[];
@@ -32,6 +34,29 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
   const stateOverviewCounts = useStateOverviewCounts(
     isLoading ? null : destinations
   );
+
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "connector-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "connector-type-head",
+        item: "Destination",
+      },
+      {
+        key: "connector-pipelines-head",
+        item: "Pipelines",
+      },
+    ];
+  }, [stateOverviewCounts]);
 
   if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
@@ -52,11 +77,10 @@ const DestinationsTable: FC<DestinationsTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ConnectorTableHead
-        definition="destination"
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {destinations.map((destination) => (

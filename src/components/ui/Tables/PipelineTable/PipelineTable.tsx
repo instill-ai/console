@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   ConnectionTypeCell,
   PipelineOverviewTableHead,
@@ -5,11 +6,12 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHead,
+  TableHeadItem,
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { FC } from "react";
 
 export type PipelineTableProps = {
   pipeline: Nullable<Pipeline>;
@@ -17,11 +19,38 @@ export type PipelineTableProps = {
   marginBottom: Nullable<string>;
 };
 
-const PipelineTable: FC<PipelineTableProps> = ({
+const PipelineTable = ({
   pipeline,
   isLoading,
   marginBottom,
-}) => {
+}: PipelineTableProps) => {
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    const getHeadItem = (name: string) => {
+      return (
+        <div className="flex flex-row gap-x-[15px]">
+          <div className="my-auto text-instillGrey90 text-instill-body">
+            {name}
+          </div>
+        </div>
+      );
+    };
+
+    return [
+      {
+        key: "pipeline-source",
+        item: getHeadItem("Source"),
+      },
+      {
+        key: "pipeline-models",
+        item: getHeadItem("Model instances"),
+      },
+      {
+        key: "pipeline-destination",
+        item: getHeadItem("Destination"),
+      },
+    ];
+  }, []);
+
   if (isLoading) {
     return <TableLoadingProgress marginBottom={null} />;
   }
@@ -36,7 +65,11 @@ const PipelineTable: FC<PipelineTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <PipelineOverviewTableHead />
+      <TableHead
+        bgColor="bg-instillGrey05"
+        borderColor="border-instillGrey20"
+        items={tableHeadItems}
+      />
       <TableBody>
         <TableRow borderColor="border-instillGrey20" bgColor="bg-white">
           <ConnectionTypeCell

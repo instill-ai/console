@@ -1,8 +1,7 @@
-import { FC } from "react";
+import { useMemo } from "react";
 
 import {
   ConnectionTypeCell,
-  ConnectorTableHead,
   InstanceCell,
   NameCell,
   SourceTablePlaceholder,
@@ -10,11 +9,14 @@ import {
   TableContainer,
   TableLoadingProgress,
   TableRow,
+  TableHeadItem,
+  TableHead,
+  SourceTablePlaceholderProps,
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import type { SourceTablePlaceholderProps } from "@/components/ui";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import StateOverview from "../../StateOverview";
 
 export type SourcesTableProps = {
   sources: SourceWithPipelines[];
@@ -23,15 +25,38 @@ export type SourcesTableProps = {
   enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const SourcesTable: FC<SourcesTableProps> = ({
+const SourcesTable = ({
   sources,
   isLoadingSources,
   marginBottom,
   enablePlaceholderCreateButton,
-}) => {
+}: SourcesTableProps) => {
   const stateOverviewCounts = useStateOverviewCounts(
     isLoadingSources ? null : sources
   );
+
+  const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    return [
+      {
+        key: "connector-state-overview-head",
+        item: (
+          <StateOverview
+            errorCounts={stateOverviewCounts?.error || 0}
+            offlineCounts={stateOverviewCounts?.offline || 0}
+            onlineCounts={stateOverviewCounts?.online || 0}
+          />
+        ),
+      },
+      {
+        key: "connector-type-head",
+        item: "Source",
+      },
+      {
+        key: "connector-pipelines-head",
+        item: "Pipelines",
+      },
+    ];
+  }, [stateOverviewCounts]);
 
   if (isLoadingSources) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
@@ -52,11 +77,10 @@ const SourcesTable: FC<SourcesTableProps> = ({
       tableLayout="table-auto"
       borderCollapse="border-collapse"
     >
-      <ConnectorTableHead
-        definition="source"
-        onlineCounts={stateOverviewCounts?.online || 0}
-        offlineCounts={stateOverviewCounts?.offline || 0}
-        errorCounts={stateOverviewCounts?.error || 0}
+      <TableHead
+        borderColor="border-instillGrey20"
+        bgColor="bg-instillGrey05"
+        items={tableHeadItems}
       />
       <TableBody>
         {sources.map((source) => (
