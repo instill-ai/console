@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `${context.params?.id}`
   );
 
-  const snippet = `curl -X POST http://localhost:8081/v1alpha/pipelines/${context.params?.id}:trigger -d '{
+  const snippet = `curl -X POST ${process.env.PIPELINE_BACKEND_BASE_URL}/v1alpha/pipelines/${context.params?.id}:trigger -d '{
     "inputs": [
       {
         "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
