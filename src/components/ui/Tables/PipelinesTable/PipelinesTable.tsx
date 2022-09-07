@@ -5,7 +5,6 @@ import {
   InstanceCell,
   ModeCell,
   NameCell,
-  PipelinesTableHead,
   PipelineTablePlaceholder,
   TableBody,
   TableContainer,

@@ -2,7 +2,6 @@ import { FC, useMemo } from "react";
 
 import {
   InstanceCell,
-  ModelTableHead,
   ModelTablePlaceholder,
   NameCell,
   TableBody,

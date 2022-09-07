@@ -1,13 +1,12 @@
 import { useMemo } from "react";
 import {
   ConnectionTypeCell,
-  PipelineOverviewTableHead,
   TableBody,
   TableContainer,
   TableLoadingProgress,
   TableRow,
-  TableHead,
   TableHeadItem,
+  TableHead,
 } from "@/components/ui";
 import ModelsCell from "@/components/ui/TableCells/ModelsCell";
 import { Pipeline } from "@/lib/instill";
