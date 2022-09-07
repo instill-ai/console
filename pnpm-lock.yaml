@@ -6,9 +6,9 @@ specifiers:
   '@code-hike/mdx': ^0.7.3
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
-  '@instill-ai/design-system': ^0.0.113
+  '@instill-ai/design-system': ^0.0.114
   '@next/env': ^12.2.3
-  '@playwright/test': ^1.22.2
+  '@playwright/test': ^1.25.1
   '@storybook/addon-actions': ^6.5.9
   '@storybook/addon-docs': ^6.5.9
   '@storybook/addon-essentials': ^6.5.9
@@ -89,7 +89,8 @@ specifiers:
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
   '@code-hike/mdx': 0.7.3_react@17.0.2
-  '@instill-ai/design-system': 0.0.113_b4usidsfzquyh4hx4nnzn3lrei
+  '@instill-ai/design-system': 0.0.114_b4usidsfzquyh4hx4nnzn3lrei
+  '@playwright/test': 1.25.1
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
@@ -117,7 +118,6 @@ devDependencies:
   '@commitlint/cli': 16.3.0
   '@commitlint/config-conventional': 16.2.4
   '@next/env': 12.2.3
-  '@playwright/test': 1.24.2
   '@storybook/addon-actions': 6.5.9_sfoxds7t5ydpegc3knd667wn6m
   '@storybook/addon-docs': 6.5.9_jlqaz2oa4t2bvxu24qlxjc546e
   '@storybook/addon-essentials': 6.5.9_jacq6fhor4e7x7ykgqc5jis55i
@@ -2077,8 +2077,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system/0.0.113_b4usidsfzquyh4hx4nnzn3lrei:
-    resolution: {integrity: sha512-GMgSNTpsHAlN266b6sgUwK7Xp7YXoyxLI4Or34JJMUm7RbTnyerUndUzXOEX3YaaSLVyGhHjj9sVAZPSPWbL+Q==}
+  /@instill-ai/design-system/0.0.114_b4usidsfzquyh4hx4nnzn3lrei:
+    resolution: {integrity: sha512-Dp/w/zym/ZGr/5TH64FfwDKWAqFPKSAHMIdb+yci4g8jlk22cmaCYf3UZts7L458dlN0YwttYVXi6otIlPov0A==}
     peerDependencies:
       clsx: ^1.1.1
       react: ^17.0.2
@@ -2640,14 +2640,14 @@ packages:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
 
-  /@playwright/test/1.24.2:
-    resolution: {integrity: sha512-Q4X224pRHw4Dtkk5PoNJplZCokLNvVbXD9wDQEMrHcEuvWpJWEQDeJ9gEwkZ3iCWSFSWBshIX177B231XW4wOQ==}
+  /@playwright/test/1.25.1:
+    resolution: {integrity: sha512-IJ4X0yOakXtwkhbnNzKkaIgXe6df7u3H3FnuhI9Jqh+CdO0e/lYQlDLYiyI9cnXK8E7UAppAWP+VqAv6VX7HQg==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 17.0.45
-      playwright-core: 1.24.2
-    dev: true
+      playwright-core: 1.25.1
+    dev: false
 
   /@pmmmwh/react-refresh-webpack-plugin/0.5.7_metx475lqcp4j5c75za4zf7xbi:
     resolution: {integrity: sha512-bcKCAzF0DV2IIROp9ZHkRJa6O4jy7NlnHdWL3GmcUxYWNjLXkK5kfELELwEfSP5hXPfVL/qOGMAROuMQb9GG8Q==}
@@ -4437,7 +4437,6 @@ packages:
 
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -12672,11 +12671,11 @@ packages:
       find-up: 5.0.0
     dev: true
 
-  /playwright-core/1.24.2:
-    resolution: {integrity: sha512-zfAoDoPY/0sDLsgSgLZwWmSCevIg1ym7CppBwllguVBNiHeixZkc1AdMuYUPZC6AdEYc4CxWEyLMBTw2YcmRrA==}
+  /playwright-core/1.25.1:
+    resolution: {integrity: sha512-lSvPCmA2n7LawD2Hw7gSCLScZ+vYRkhU8xH0AapMyzwN+ojoDqhkH/KIEUxwNu2PjPoE/fcE0wLAksdOhJ2O5g==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: true
+    dev: false
 
   /pnp-webpack-plugin/1.6.4_typescript@4.7.4:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
