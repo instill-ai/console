@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.11.0-alpha](https://github.com/instill-ai/console/compare/v0.10.3-alpha...v0.11.0-alpha) (2022-09-07)
+
+
+### Features
+
+* add buffer into calculation of instance cell more button ([#268](https://github.com/instill-ai/console/issues/268)) ([19d1470](https://github.com/instill-ai/console/commit/19d1470637b135f3f94c7d9d84f672467cc24bc3))
+* add destination configuration form ([#255](https://github.com/instill-ai/console/issues/255)) ([0164946](https://github.com/instill-ai/console/commit/0164946fd9c8a4b17b26abc2e3054c584405ebb8))
+* Implement onboarding integration test ([#271](https://github.com/instill-ai/console/issues/271)) ([f9c494e](https://github.com/instill-ai/console/commit/f9c494e29b437f661c9507f1ef6a3d691a1c3d38))
+* Implement source integration test ([#272](https://github.com/instill-ai/console/issues/272)) ([b85a285](https://github.com/instill-ai/console/commit/b85a2850162c0b23b237eb6af6e56f74cdf01126))
+* use env var in pipeline snippet ([#275](https://github.com/instill-ai/console/issues/275)) ([3bc4d7a](https://github.com/instill-ai/console/commit/3bc4d7a93f9bae6c603a0159479f1475203fa38d))
+
+
+### Bug Fixes
+
+* fix cookie_token wrongly set issue ([#269](https://github.com/instill-ai/console/issues/269)) ([7e25d9d](https://github.com/instill-ai/console/commit/7e25d9d52a1c6480014ba5a6f8f04ac71f6e2151))
+* fix Select a existing to Select an existing ([#264](https://github.com/instill-ai/console/issues/264)) ([87a8584](https://github.com/instill-ai/console/commit/87a8584fcfc34e39904e6d5e98c7df41c990c8fe))
+* fix the missing destination deletion ([#267](https://github.com/instill-ai/console/issues/267)) ([f96e65c](https://github.com/instill-ai/console/commit/f96e65c3ef010b56bbf280d4b1b7efba4c5fa8c8))
+* fix various issues related to destination icons and displayed title ([#266](https://github.com/instill-ai/console/issues/266)) ([d86c25c](https://github.com/instill-ai/console/commit/d86c25c766bf4f070d25f84ee03e5a8d34d9f829))
+
 ## [0.10.3-alpha](https://github.com/instill-ai/console/compare/v0.10.2-alpha...v0.10.3-alpha) (2022-08-30)
 
 
