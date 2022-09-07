@@ -134,6 +134,7 @@ const DeleteResourceModal = ({
       modalBgColor="bg-white"
       modalPadding="p-5"
       modalIsOpen={modalIsOpen}
+      dataTestId="delete-resource-modal"
     >
       <div className="flex flex-col gap-y-5">
         <h2 className="text-instill-h2">{modalDetails.title}</h2>

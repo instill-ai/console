@@ -8,6 +8,7 @@ export type ModalBaseProps = {
   modalBgColor: Nullable<string>;
   modalPadding: Nullable<string>;
   children?: ReactNode;
+  dataTestId?: string;
 };
 
 const ModalBase = ({
@@ -15,6 +16,7 @@ const ModalBase = ({
   modalIsOpen,
   modalBgColor,
   modalPadding,
+  dataTestId,
 }: ModalBaseProps) => {
   const el = useRef<HTMLDivElement>();
 
@@ -23,7 +25,6 @@ const ModalBase = ({
     el.current.setAttribute("role", "dialog");
     el.current.setAttribute("aria-modal", "true");
     el.current.setAttribute("class", "relative z-10");
-    el.current.setAttribute("aria-labelledby", "modal-title");
 
     const modalRoot = document.querySelector("#modal-root");
     if (modalRoot) {
@@ -53,6 +54,7 @@ const ModalBase = ({
                     modalBgColor,
                     modalPadding
                   )}
+                  data-testId={dataTestId}
                 >
                   {children}
                 </div>

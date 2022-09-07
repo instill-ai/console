@@ -79,6 +79,7 @@ const StateLabel = ({
         paddingY,
         enableBgColor ? bgColor : ""
       )}
+      data-testid="state-label"
     >
       {enableIcon ? (
         <StateIcon
