@@ -64,6 +64,7 @@ const ModelInstanceTaskLabel = ({
         marginBottom,
         position
       )}
+      data-testid="model-task-label"
     >
       {modelInstanceTaskIcon}
       <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
