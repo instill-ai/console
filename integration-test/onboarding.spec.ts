@@ -80,8 +80,7 @@ test("should successfully fill in the onboarding form and submit", async ({
   await page.locator("#newsletterSubscription").check();
 
   const startButton = page.locator("text=Start");
-  const startButtonState = await startButton.isDisabled();
-  expect(startButtonState).not.toBeTruthy();
+  expect(await startButton.isEnabled()).toBeTruthy();
 
   // Click Start and wait for navigation
   await Promise.all([page.waitForNavigation(), startButton.click()]);
