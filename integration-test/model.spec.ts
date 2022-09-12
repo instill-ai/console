@@ -164,20 +164,84 @@ test.describe.serial("Local model", () => {
 
     // Should update model description
     await modelDescriptionField.type(modelAdditionalDescription);
-    await saveButton.click();
+    await expect(modelDescriptionField).toHaveValue(
+      modelDescription + modelAdditionalDescription
+    );
+    await Promise.all([
+      page.waitForResponse(
+        new URL(
+          `/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`,
+          `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}`
+        ).toString()
+      ),
+      saveButton.click(),
+    ]);
 
     // Reload page
     await page.goto(`/models/${modelId}`);
 
     // Should have updated model description
-    const newModelDescriptionField = page.locator("#description");
-    await expect(newModelDescriptionField).toHaveCount(1);
-    await expect(newModelDescriptionField).toHaveValue(
+    await expect(modelDescriptionField).toHaveCount(1);
+    await expect(modelDescriptionField).toHaveValue(
       modelDescription + modelAdditionalDescription
     );
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
-  }) => {});
+  }) => {
+    await page.goto(`/models/${modelId}`);
+
+    // Check we can open delete model modal (To avoid flaky test)
+    const openDeleteModelModalButton = page.locator("button", {
+      hasText: "Delete",
+    });
+    expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
+
+    // Open delete source modal
+    await openDeleteModelModalButton.click();
+    const deleteResourceModal = page.locator(
+      "data-testid=delete-resource-modal"
+    );
+    await expect(deleteResourceModal).toHaveCount(1);
+
+    // Check delete resource modal has proper title
+    const modalTitle = deleteResourceModal.locator("h2", {
+      hasText: "Delete This Model",
+    });
+    await expect(modalTitle).toHaveCount(1);
+
+    // Check delete resource modal has proper confirmation code
+    const confirmationCode = deleteResourceModal.locator("label", {
+      hasText: `Please type "${modelId}" to confirm.`,
+    });
+    await expect(confirmationCode).toHaveCount(1);
+
+    // Check delete resource modal's delete button is disabled
+    const deleteButton = deleteResourceModal.locator("button", {
+      hasText: "Delete",
+    });
+    expect(await deleteButton.isDisabled()).toBeTruthy();
+
+    // Check delete resource modal's cancel button is enabled
+    const cancelButton = deleteResourceModal.locator("button", {
+      hasText: "Cancel",
+    });
+    expect(await cancelButton.isEnabled()).toBeTruthy();
+
+    // Input confirmation code
+    const confirmationCodeInput =
+      deleteResourceModal.locator("#confirmationCode");
+    await confirmationCodeInput.type(modelId);
+    await expect(confirmationCodeInput).toHaveValue(modelId);
+    expect(await deleteButton.isEnabled()).toBeTruthy();
+
+    // Delete model and navigate to models page
+    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
+    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+
+    // Check whether the list item not exist
+    const modelItemTitle = page.locator("h3", { hasText: modelId });
+    await expect(modelItemTitle).toHaveCount(0);
+  });
 });

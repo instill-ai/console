@@ -91,7 +91,7 @@ test.describe.serial("Sync source", () => {
     });
     await expect(confirmationCode).toHaveCount(1);
 
-    // Check delete resource modal's delete button is not enabled
+    // Check delete resource modal's delete button is disabled
     const deleteButton = deleteResourceModal.locator("button", {
       hasText: "Delete",
     });
