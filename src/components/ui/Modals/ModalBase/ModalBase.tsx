@@ -54,7 +54,7 @@ const ModalBase = ({
                     modalBgColor,
                     modalPadding
                   )}
-                  data-testId={dataTestId}
+                  data-testid={dataTestId}
                 >
                   {children}
                 </div>
