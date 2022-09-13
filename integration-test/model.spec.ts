@@ -89,7 +89,7 @@ test.describe.serial("Local model", () => {
     const modelItemTitle = page.locator("h3", { hasText: modelId });
     await expect(modelItemTitle).toHaveCount(1);
 
-    // Should navigate to source details page
+    // Should navigate to model details page
     await Promise.all([
       page.waitForNavigation(),
       page.locator("h3", { hasText: modelId }).click(),
@@ -184,7 +184,7 @@ test.describe.serial("Local model", () => {
     });
     expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
 
-    // Open delete source modal
+    // Open delete model modal
     await openDeleteModelModalButton.click();
     const deleteResourceModal = page.locator(
       "data-testid=delete-resource-modal"
@@ -324,7 +324,7 @@ test.describe.serial("Hugging face model", () => {
     const modelItemTitle = page.locator("h3", { hasText: modelId });
     await expect(modelItemTitle).toHaveCount(1);
 
-    // Should navigate to source details page
+    // Should navigate to model details page
     await Promise.all([
       page.waitForNavigation(),
       page.locator("h3", { hasText: modelId }).click(),
@@ -419,7 +419,7 @@ test.describe.serial("Hugging face model", () => {
     });
     expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
 
-    // Open delete source modal
+    // Open delete model modal
     await openDeleteModelModalButton.click();
     const deleteResourceModal = page.locator(
       "data-testid=delete-resource-modal"
@@ -559,7 +559,7 @@ test.describe.serial("GitHub model", () => {
     const modelItemTitle = page.locator("h3", { hasText: modelId });
     await expect(modelItemTitle).toHaveCount(1);
 
-    // Should navigate to source details page
+    // Should navigate to model details page
     await Promise.all([
       page.waitForNavigation(),
       page.locator("h3", { hasText: modelId }).click(),
@@ -654,7 +654,7 @@ test.describe.serial("GitHub model", () => {
     });
     expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
 
-    // Open delete source modal
+    // Open delete model modal
     await openDeleteModelModalButton.click();
     const deleteResourceModal = page.locator(
       "data-testid=delete-resource-modal"
