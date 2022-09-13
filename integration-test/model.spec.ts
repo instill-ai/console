@@ -5,30 +5,7 @@ test.describe.serial("Local model", () => {
   const modelDescription = "Local test model";
   const modelAdditionalDescription = " hi, i am here";
   const modelInstanceTag = "latest";
-
-  test("should have create button", async ({ page }) => {
-    await page.goto("/models");
-
-    // Make sure model page has correct page title
-    const modelTitle = page.locator("h2", { hasText: "Model" });
-    await expect(modelTitle).toHaveCount(1);
-
-    // Make sure the add new model button is enabled
-    const setupFirstModelButton = page.locator("button", {
-      hasText: "Set up your first model",
-    });
-    expect(await setupFirstModelButton.isEnabled()).toBeTruthy();
-
-    // Should navigate to /models/create
-    await Promise.all([
-      page.waitForNavigation(),
-      setupFirstModelButton.click(),
-    ]);
-
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/models/create`
-    );
-  });
+  const modelSource = "Local";
 
   test("should create local model", async ({ page }) => {
     await page.goto("/models/create");
@@ -51,10 +28,14 @@ test.describe.serial("Local model", () => {
     await page
       .locator("#react-select-modelDefinition-input")
       .click({ force: true });
-    await page.locator("#react-select-modelDefinition-option-2").click();
+    await page
+      .locator("data-testid=modelDefinition-selected-option", {
+        hasText: modelSource,
+      })
+      .click();
     await expect(
       page.locator("data-testid=modelDefinition-selected-option")
-    ).toHaveText("Local");
+    ).toHaveText(modelSource);
 
     // Input local model file
     const fileInput = page.locator("input#file");
