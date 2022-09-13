@@ -37,7 +37,6 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
-import { ErrorDetails } from "@/lib/instill/types";
 
 export type CreateModelFormValue = {
   id: Nullable<string>;
@@ -196,10 +195,12 @@ const CreateModelForm = () => {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
-                description:
-                  (error.response?.data.details as ErrorDetails[])[0]
-                    .description ?? null,
-                message: error.response?.data.message ?? error.message,
+                description: JSON.stringify(
+                  error.response?.data.details,
+                  null,
+                  "\t"
+                ),
+                message: error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -246,10 +247,12 @@ const CreateModelForm = () => {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
-                description:
-                  (error.response?.data.details as ErrorDetails[])[0]
-                    .description ?? null,
-                message: error.response?.data.message ?? error.message,
+                description: JSON.stringify(
+                  error.response?.data.details,
+                  null,
+                  "\t"
+                ),
+                message: error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -295,10 +298,12 @@ const CreateModelForm = () => {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
-                description:
-                  (error.response?.data.details as ErrorDetails[])[0]
-                    .description ?? null,
-                message: error.response?.data.message ?? error.message,
+                description: JSON.stringify(
+                  error.response?.data.details,
+                  null,
+                  "\t"
+                ),
+                message: error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({
@@ -343,10 +348,12 @@ const CreateModelForm = () => {
               setCreateModelMessageBoxState(() => ({
                 activate: true,
                 status: "error",
-                description:
-                  (error.response?.data.details as ErrorDetails[])[0]
-                    .description ?? null,
-                message: error.response?.data.message ?? error.message,
+                description: JSON.stringify(
+                  error.response?.data.details,
+                  null,
+                  "\t"
+                ),
+                message: error.message,
               }));
             } else {
               setCreateModelMessageBoxState(() => ({

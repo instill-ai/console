@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 import {
@@ -40,9 +40,14 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
 
   const [canEdit, setCanEdit] = useState(false);
   const [fieldValues, setFieldValues] = useState<ConfigureModelFormValues>({
-    description: model ? model.description : null,
+    description: null,
   });
   const [formIsDirty, setFormIsDirty] = useState(false);
+
+  useEffect(() => {
+    if (!model) return;
+    setFieldValues({ description: model.description });
+  }, [model]);
 
   // ###################################################################
   // # 1 - Handle update model                                         #

@@ -23,7 +23,7 @@ test.describe.serial("Sync source", () => {
   }) => {
     await page.goto("/sources");
 
-    // Check whether the list item exist
+    // Check source item exist
     const sourceItemTitle = page.locator("h3", { hasText: "source-grpc" });
     await expect(sourceItemTitle).toHaveCount(1);
 
@@ -61,7 +61,9 @@ test.describe.serial("Sync source", () => {
     expect(await openDeleteSourceModalButton.isEnabled()).toBeTruthy();
   });
 
-  test("should have proper delete source modal", async ({ page }) => {
+  test("should have proper delete source modal and delete source", async ({
+    page,
+  }) => {
     await page.goto("/sources/source-grpc");
 
     // Check we can open delete source modal (To avoid flaky test)
@@ -89,7 +91,7 @@ test.describe.serial("Sync source", () => {
     });
     await expect(confirmationCode).toHaveCount(1);
 
-    // Check delete resource modal's delete button is not enabled
+    // Check delete resource modal's delete button is disabled
     const deleteButton = deleteResourceModal.locator("button", {
       hasText: "Delete",
     });
