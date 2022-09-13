@@ -89,6 +89,7 @@ const ConfigureDestinationForm = ({
     destination.destination_connector_definition.connector_definition
       .docker_repository,
     destination.destination_connector_definition.connector_definition.icon,
+    destination.destination_connector_definition.connector_definition.title,
   ]);
 
   // ##########################################################################
@@ -350,7 +351,7 @@ const ConfigureDestinationForm = ({
       },
     });
     setDeleteDestinationModalIsOpen(false);
-  }, []);
+  }, [amplitudeIsInit, deleteDestination, destination, router]);
 
   return (
     <>

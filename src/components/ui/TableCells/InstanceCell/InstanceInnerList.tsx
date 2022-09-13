@@ -6,6 +6,7 @@ import { Instance } from "./InstanceCell";
 import InstanceInnerListItem, {
   InstanceInnerListItemProps,
 } from "./InstanceInnerListItem";
+import { useRouter } from "next/router";
 
 export type InstanceInnerListProps = {
   listItemsContainerWidth: number;
@@ -22,10 +23,21 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
   indicator,
   textStyle,
 }) => {
+  const router = useRouter();
   const remainItemsIndicatorWidth = 32;
 
   const [displayLimit, setDisplayLimit] = useState(0);
   const [isExpand, setIsExpand] = useState(false);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsExpand(false);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router]);
 
   useEffect(() => {
     if (!items) return;
@@ -65,7 +77,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     }
 
     setDisplayLimit(limit);
-  }, [items, listItemsContainerWidth]);
+  }, [items, listItemsContainerWidth, router]);
 
   const handleExpand = () => {
     setIsExpand(true);
@@ -76,6 +88,7 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     <div className="flex flex-row gap-x-[5px]">
       <div className="flex flex-wrap gap-x-[5px] gap-y-[5px]">
         {items.map((e, index) => {
+          console.log(displayLimit, items.length);
           if (displayLimit === 0 && index === 0) {
             return (
               <InstanceInnerListItem
