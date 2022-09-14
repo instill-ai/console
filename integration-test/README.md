@@ -31,3 +31,39 @@
 - We have to limit the test worker to one, because the test suite might run to quick to make backend panic.
 - Remember to `make down` backend every time you want have another round of test.
 - use `expect().to` after every behavior to make sure the behavior succeeded.
+- `page.waitForResponse` is not particularly reliable. If you are facing some flaky test, try to rewrite the whole part with some visual hint, like.
+
+```js
+
+// waitForResponse is flaky
+
+const saveButton = page.locator("button", { hasText: "Save" });
+expect(await saveButton.isEnabled()).toBeTruthy();
+const succeedMessage = page.locator("h3", { hasText: "Succeed" });
+await Promise.all([saveButton.click(), page.waitForResponse("your url"));
+
+// Rewrite with visual hint
+
+const saveButton = page.locator("button", { hasText: "Save" });
+expect(await saveButton.isEnabled()).toBeTruthy();
+const succeedMessage = page.locator("h3", { hasText: "Succeed" });
+await Promise.all([saveButton.click(), succeedMessage.isVisible()]);
+```
+
+- If your interaction will trigger some action on other element, wrap them with promise.all.
+
+```js
+
+// This will be flaky
+
+await editButton.click();
+await expect(pipelineDescriptionField.isEditable()).toBeTruthy(),
+
+// Wrap with promise.all to avoid flaky test
+
+await Promise.all([
+  editButton.click(),
+  expect(pipelineDescriptionField.isEditable()).toBeTruthy(),
+]);
+
+```
