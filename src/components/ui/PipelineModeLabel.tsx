@@ -74,6 +74,7 @@ const PipelineModeLabel = ({
         paddingY,
         enableBgColor ? bgColor : ""
       )}
+      data-testid="pipeline-mode-label"
     >
       {enableIcon ? modeIcon : null}
       <span className={cn("my-auto text-instill-small", textColor)}>
