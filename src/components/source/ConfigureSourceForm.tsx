@@ -200,7 +200,7 @@ const ConfigureSourceForm = ({
             color="primary"
             onClickHandler={handleSubmit}
           >
-            {canEdit ? "Done" : "Edit"}
+            {canEdit ? "Save" : "Edit"}
           </SolidButton>
         </div>
         <div className="flex">
