@@ -5,6 +5,10 @@
 
 ## Caveats
 
+### Use `locator.fill()` instead of `locator.type()`
+
+`locator.type()` may act different among browser and cause troubles, if you don't need to test typing feature, we encourage you to use `locator.fill()`.
+
 ### About the usage of `click({force: true})`
 
 - Our SingleSelect have multiple clickable item, including the label and the select itself. Sometimes the label will intercept
