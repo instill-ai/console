@@ -92,3 +92,18 @@ export const expectUpdateModelDescription = async (
   await modelDescriptionField.isVisible();
   await expect(modelDescriptionField).toHaveValue(modelDescription);
 };
+
+export const expectCorrectModelList = async (page: Page, modelId: string) => {
+  // Should list model item
+  const modelItemTitle = page.locator("h3", { hasText: modelId });
+  await expect(modelItemTitle).toHaveCount(1);
+
+  // Should navigate to model details page
+  await Promise.all([
+    page.locator("h3", { hasText: modelId }).click(),
+    page.waitForNavigation(),
+  ]);
+  expect(page.url()).toEqual(
+    `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
+  );
+};
