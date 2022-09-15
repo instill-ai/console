@@ -1,3 +1,4 @@
+import { ModelState } from "@/lib/instill";
 import { Page, expect } from "@playwright/test";
 
 export const expectDeleteModelModalWork = async (
@@ -106,4 +107,57 @@ export const expectCorrectModelList = async (page: Page, modelId: string) => {
   expect(page.url()).toEqual(
     `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
   );
+};
+
+export type ExpectCorrectModelDetailsProps = {
+  page: Page;
+  modelId: string;
+  modelDescription: string;
+  modelInstanceTag: string;
+  modelState: ModelState;
+  modelTask: string;
+};
+
+export const expectCorrectModelDetails = async ({
+  page,
+  modelId,
+  modelDescription,
+  modelInstanceTag,
+  modelState,
+  modelTask,
+}: ExpectCorrectModelDetailsProps) => {
+  // Should have proper title
+  const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
+  await expect(modelDetailsPageTitle).toHaveCount(2);
+
+  // Should have proper model description
+  const modelDescriptionField = page.locator("#description");
+  await expect(modelDescriptionField).toHaveValue(modelDescription);
+
+  // Should have correct model instance tag
+  const modelInstanceTagOption = page.locator(
+    "data-testid=modelInstanceTag-selected-option"
+  );
+  await expect(modelInstanceTagOption).toHaveText(modelInstanceTag);
+
+  // Should display task fill classification
+  const modelTaskLabel = page.locator("data-testid=model-task-label");
+  await expect(modelTaskLabel).toHaveText(modelTask);
+
+  // Should display online and have correct toggle button state
+  const modelStateLabel = page.locator("data-testid=state-label");
+  const stateToggle = page.locator("#pipelineStateToggleButton");
+  if (modelState === "STATE_ONLINE") {
+    await expect(modelStateLabel).toHaveText("Online");
+    expect(await stateToggle.isChecked()).toBeTruthy();
+  } else if (modelState === "STATE_OFFLINE") {
+    await expect(modelStateLabel).toHaveText("Offline");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  } else if (modelState === "STATE_UNSPECIFIED") {
+    await expect(modelStateLabel).toHaveText("Unspecific");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  } else {
+    await expect(modelStateLabel).toHaveText("Error");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  }
 };
