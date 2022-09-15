@@ -1,10 +1,8 @@
-import { ModelState } from "@/lib/instill";
-import { Page, expect } from "@playwright/test";
+import { Page, expect, Locator } from "@playwright/test";
 
-export const expectDeleteModelModalWork = async (
-  page: Page,
-  modelId: string
-) => {
+export const expectToDeleteModel = async (page: Page, modelId: string) => {
+  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+
   // Should enable open delete model modal button
   const openDeleteModelModalButton = page.locator("button", {
     hasText: "Delete",
@@ -61,11 +59,13 @@ export const expectDeleteModelModalWork = async (
   await expect(modelItemTitle).toHaveCount(0);
 };
 
-export const expectUpdateModelDescription = async (
+export const expectToUpdateModelDescription = async (
   page: Page,
   modelId: string,
   modelDescription: string
 ) => {
+  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+
   // Should enable edit button
   const editButton = page.locator("button", { hasText: "Edit" });
   expect(await editButton.isEnabled()).toBeTruthy();
@@ -95,6 +95,8 @@ export const expectUpdateModelDescription = async (
 };
 
 export const expectCorrectModelList = async (page: Page, modelId: string) => {
+  await page.goto("/models", { waitUntil: "networkidle" });
+
   // Should list model item
   const modelItemTitle = page.locator("h3", { hasText: modelId });
   await expect(modelItemTitle).toHaveCount(1);
@@ -114,7 +116,11 @@ export type ExpectCorrectModelDetailsProps = {
   modelId: string;
   modelDescription: string;
   modelInstanceTag: string;
-  modelState: ModelState;
+  modelState:
+    | "STATE_ONLINE"
+    | "STATE_OFFLINE"
+    | "STATE_UNSPECIFIED"
+    | "STATE_ERROR";
   modelTask: string;
 };
 
@@ -126,6 +132,8 @@ export const expectCorrectModelDetails = async ({
   modelState,
   modelTask,
 }: ExpectCorrectModelDetailsProps) => {
+  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+
   // Should have proper title
   const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
   await expect(modelDetailsPageTitle).toHaveCount(2);
@@ -160,4 +168,51 @@ export const expectCorrectModelDetails = async ({
     await expect(modelStateLabel).toHaveText("Error");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   }
+};
+
+export const expectToDeployModel = async (
+  page: Page,
+  modelInstanceTag: string,
+  setupButton: Locator,
+  timeout?: number
+) => {
+  // Should create model and display model instance section
+  const modelInstanceTitle = page.locator("h3", {
+    hasText: "Deploy a model instance",
+  });
+  const modelInstanceIdOption = page.locator(
+    "#react-select-modelInstanceId-input"
+  );
+  const deployButton = page.locator("button", { hasText: "Deploy" });
+
+  await Promise.all([
+    modelInstanceTitle.isVisible(),
+    modelInstanceIdOption.isVisible(),
+    deployButton.isVisible(),
+    setupButton.click(),
+  ]);
+
+  // Should disable deploy button
+  expect(await deployButton.isDisabled()).toBeTruthy();
+
+  // Should select latest model instance
+  await modelInstanceIdOption.click({ force: true });
+  await page
+    .locator("data-testid=modelInstanceId-selected-option", {
+      hasText: modelInstanceTag,
+    })
+    .click();
+  await expect(
+    page.locator("data-testid=modelInstanceId-selected-option")
+  ).toHaveText(modelInstanceTag);
+
+  // Should enable deploy button
+  expect(await deployButton.isEnabled()).toBeTruthy();
+
+  // Should deploy model
+  await Promise.all([
+    page.waitForNavigation({ timeout }),
+    deployButton.click(),
+  ]);
+  expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
 };
