@@ -1,234 +1,96 @@
 import { test, expect } from "@playwright/test";
+import {
+  expectCorrectModelDetails,
+  expectCorrectModelList,
+  expectToDeleteModel,
+  expectToDeployModel,
+  expectToUpdateModelDescription,
+} from "./common/model";
+import { addInstillCookie, delay } from "./helper";
 
 test.describe.serial("Local model", () => {
   const modelId = `local-model-${Math.floor(Math.random() * 10000)}`;
   const modelDescription = "Local test model";
-  const modelAdditionalDescription = " hi, i am here";
   const modelInstanceTag = "latest";
   const modelSource = "Local";
 
-  test("should create local model", async ({ page }) => {
-    await page.goto("/models/create");
+  test.afterAll(async () => {
+    await delay(500);
+  });
 
-    // Check set up button is disabled
+  test("should create local model", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await page.goto("/models/create", { waitUntil: "networkidle" });
+
+    // Should disable set up button
     const setupButton = page.locator("button", { hasText: "Set up" });
     expect(await setupButton.isDisabled()).toBeTruthy();
 
-    // Input model id
+    // Should input model id
     const idInput = page.locator("input#modelId");
-    await idInput.type(modelId);
-    await expect(idInput).toHaveValue(modelId);
+    await idInput.fill(modelId);
 
-    // Input model description
+    // Should input model description
     const descriptionInput = page.locator("textarea#description");
-    await descriptionInput.type(modelDescription);
-    await expect(descriptionInput).toHaveValue(modelDescription);
+    await descriptionInput.fill(modelDescription);
 
-    // Select model source - local
+    // Should select model source - local and have according fields
+    const fileInput = page.locator("input#file");
     await page
       .locator("#react-select-modelDefinition-input")
       .click({ force: true });
-    await page
-      .locator("data-testid=modelDefinition-selected-option", {
-        hasText: modelSource,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelDefinition-selected-option")
-    ).toHaveText(modelSource);
+    await Promise.all([
+      page
+        .locator("data-testid=modelDefinition-selected-option", {
+          hasText: modelSource,
+        })
+        .click(),
+      fileInput.isVisible(),
+    ]);
 
-    // Input local model file
-    const fileInput = page.locator("input#file");
-    await expect(fileInput).toHaveCount(1);
-    fileInput.setInputFiles("./integration-test/data/dummy-cls-model.zip");
-    await expect(fileInput).toHaveValue(/dummy-cls-model.zip/);
+    // Should input local file and enable set up button
+    await Promise.all([
+      fileInput.setInputFiles("./integration-test/data/dummy-cls-model.zip"),
+      setupButton.isEnabled(),
+    ]);
 
-    // Check setup button is enabled
-    expect(await setupButton.isEnabled()).toBeTruthy();
-
-    // Create model
-    await setupButton.click();
-
-    // Check model instance is displayed
-    const modelInstanceTitle = page.locator("h3", {
-      hasText: "Deploy a model instance",
-    });
-    await expect(modelInstanceTitle).toHaveCount(1);
-
-    // Check deploy button is disabled
-    const deployButton = page.locator("button", { hasText: "Deploy" });
-    expect(await deployButton.isDisabled()).toBeTruthy();
-
-    // Select latest model instance
-    await page
-      .locator("#react-select-modelInstanceId-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=modelInstanceId-selected-option", {
-        hasText: modelInstanceTag,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelInstanceId-selected-option")
-    ).toHaveText(modelInstanceTag);
-
-    // Check deploy button is enabled
-    expect(await deployButton.isEnabled()).toBeTruthy();
-
-    // Deploy model
-    await Promise.all([page.waitForNavigation(), deployButton.click()]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+    await expectToDeployModel(page, modelInstanceTag, setupButton);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
+    context,
   }) => {
-    await page.goto("/models");
-
-    // Should have model item in list
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(1);
-
-    // Should navigate to model details page
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator("h3", { hasText: modelId }).click(),
-    ]);
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
-    );
+    await addInstillCookie(context);
+    await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have proper title
-    const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
-    await expect(modelDetailsPageTitle).toHaveCount(2);
-
-    // Should have proper model description
-    const modelDescriptionField = page.locator("#description");
-    await expect(modelDescriptionField).toHaveValue(modelDescription);
-
-    // Should have correct model instance tag - latest
-    const modelInstanceTagOption = page.locator(
-      "data-testid=modelInstanceTag-selected-option"
-    );
-    await expect(modelInstanceTagOption).toHaveText(modelInstanceTag);
-
-    // Should display online
-    const modelStateLabel = page.locator("data-testid=state-label");
-    await expect(modelStateLabel).toHaveText("Online");
-
-    // Should display task type classification
-    const modelTaskLabel = page.locator("data-testid=model-task-label");
-    await expect(modelTaskLabel).toHaveText("CLASSIFICATION");
-
-    // Should have state toggle at on state
-    const stateToggle = page.locator("#pipelineStateToggleButton");
-    expect(await stateToggle.isChecked()).toBeTruthy();
+  test("should display proper model details page", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectCorrectModelDetails({
+      page,
+      modelId,
+      modelDescription,
+      modelInstanceTag,
+      modelState: "STATE_ONLINE",
+      modelTask: "CLASSIFICATION",
+    });
   });
 
-  test("should update description", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have edit button enabled
-    const editButton = page.locator("button", { hasText: "Edit" });
-    expect(await editButton.isEnabled()).toBeTruthy();
-
-    // Should have description field disabled
-    const modelDescriptionField = page.locator("#description");
-    expect(await modelDescriptionField.isDisabled()).toBeTruthy();
-
-    // Should enabled description field
-    await editButton.click();
-    expect(await modelDescriptionField.isEnabled()).toBeTruthy();
-
-    // Should have save button
-    const saveButton = page.locator("button", { hasText: "Save" });
-    expect(await saveButton.isEnabled()).toBeTruthy();
-
-    // Should update model description
-    await modelDescriptionField.type(modelAdditionalDescription);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
-    await Promise.all([
-      page.waitForResponse(
-        new URL(
-          `/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`,
-          `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}`
-        ).toString()
-      ),
-      saveButton.click(),
-    ]);
-
-    // Reload page
-    await page.goto(`/models/${modelId}`);
-
-    // Should have updated model description
-    await expect(modelDescriptionField).toHaveCount(1);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
+  test.skip("should update description", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await expectToUpdateModelDescription(page, modelId, "");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
+    context,
   }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Check we can open delete model modal (To avoid flaky test)
-    const openDeleteModelModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
-
-    // Open delete model modal
-    await openDeleteModelModalButton.click();
-    const deleteResourceModal = page.locator(
-      "data-testid=delete-resource-modal"
-    );
-    await expect(deleteResourceModal).toHaveCount(1);
-
-    // Check delete resource modal has proper title
-    const modalTitle = deleteResourceModal.locator("h2", {
-      hasText: "Delete This Model",
-    });
-    await expect(modalTitle).toHaveCount(1);
-
-    // Check delete resource modal has proper confirmation code
-    const confirmationCode = deleteResourceModal.locator("label", {
-      hasText: `Please type "${modelId}" to confirm.`,
-    });
-    await expect(confirmationCode).toHaveCount(1);
-
-    // Check delete resource modal's delete button is disabled
-    const deleteButton = deleteResourceModal.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
-
-    // Check delete resource modal's cancel button is enabled
-    const cancelButton = deleteResourceModal.locator("button", {
-      hasText: "Cancel",
-    });
-    expect(await cancelButton.isEnabled()).toBeTruthy();
-
-    // Input confirmation code
-    const confirmationCodeInput =
-      deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeInput.type(modelId);
-    await expect(confirmationCodeInput).toHaveValue(modelId);
-    expect(await deleteButton.isEnabled()).toBeTruthy();
-
-    // Delete model and navigate to models page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
-
-    // Check whether the list item not exist
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(0);
+    await addInstillCookie(context);
+    await expectToDeleteModel(page, modelId);
   });
 });
 
@@ -236,234 +98,83 @@ test.describe.serial("Hugging face model", () => {
   const modelId = `huggingface-model-${Math.floor(Math.random() * 10000)}`;
   const modelDescription = "Hugging face test model";
   const modelSource = "Hugging Face";
-  const modelAdditionalDescription = " hi, there";
   const huggingFaceId = "google/vit-base-patch16-224";
   const modelInstanceTag = "latest";
 
-  test("should create huggingface model", async ({ page }) => {
-    await page.goto("/models/create");
+  test("should create huggingface model", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await page.goto("/models/create", { waitUntil: "networkidle" });
 
-    // Check set up button is disabled
+    // Should disable setup button
     const setupButton = page.locator("button", { hasText: "Set up" });
     expect(await setupButton.isDisabled()).toBeTruthy();
 
-    // Input model id
+    // Should input model id
     const idInput = page.locator("input#modelId");
-    await idInput.type(modelId);
-    await expect(idInput).toHaveValue(modelId);
+    await idInput.fill(modelId);
 
-    // Input model description
+    // Should input model description
     const descriptionInput = page.locator("textarea#description");
-    await descriptionInput.type(modelDescription);
-    await expect(descriptionInput).toHaveValue(modelDescription);
+    await descriptionInput.fill(modelDescription);
 
-    // Select model source - Hugging face
+    // Should select model source - Hugging face and have according fields
+    const huggingFaceIdInput = page.locator("input#huggingFaceRepo");
     await page
       .locator("#react-select-modelDefinition-input")
       .click({ force: true });
-    await page
-      .locator("data-testid=modelDefinition-selected-option", {
-        hasText: modelSource,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelDefinition-selected-option")
-    ).toHaveText(modelSource);
 
-    // Input Hugging face id
-    const huggingFaceIdInput = page.locator("input#huggingFaceRepo");
-    await huggingFaceIdInput.type(huggingFaceId);
-    await expect(huggingFaceIdInput).toHaveValue(huggingFaceId);
-
-    // Check setup button is enabled
-    expect(await setupButton.isEnabled()).toBeTruthy();
-
-    // Create model
-    await setupButton.click();
-
-    // Check model instance is displayed
-    const modelInstanceTitle = page.locator("h3", {
-      hasText: "Deploy a model instance",
-    });
-    await expect(modelInstanceTitle).toHaveCount(1);
-
-    // Check deploy button is disabled
-    const deployButton = page.locator("button", { hasText: "Deploy" });
-    expect(await deployButton.isDisabled()).toBeTruthy();
-
-    // Select latest model instance
-    await page
-      .locator("#react-select-modelInstanceId-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=modelInstanceId-selected-option", {
-        hasText: modelInstanceTag,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelInstanceId-selected-option")
-    ).toHaveText(modelInstanceTag);
-
-    // Check deploy button is enabled
-    expect(await deployButton.isEnabled()).toBeTruthy();
-
-    // Deploy model
     await Promise.all([
-      page.waitForNavigation({ timeout: 60000 }),
-      deployButton.click(),
+      page
+        .locator("data-testid=modelDefinition-selected-option", {
+          hasText: modelSource,
+        })
+        .click(),
+      huggingFaceIdInput.isVisible(),
     ]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+
+    // Should input Huggingface id and enable set up button
+    await Promise.all([
+      huggingFaceIdInput.fill(huggingFaceId),
+      setupButton.isEnabled(),
+    ]);
+
+    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
+    context,
   }) => {
-    await page.goto("/models");
-
-    // Should have model item in list
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(1);
-
-    // Should navigate to model details page
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator("h3", { hasText: modelId }).click(),
-    ]);
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
-    );
+    await addInstillCookie(context);
+    await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have proper title
-    const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
-    await expect(modelDetailsPageTitle).toHaveCount(2);
-
-    // Should have proper model description
-    const modelDescriptionField = page.locator("#description");
-    await expect(modelDescriptionField).toHaveValue(modelDescription);
-
-    // Should have correct model instance tag
-    const modelInstanceTagOption = page.locator(
-      "data-testid=modelInstanceTag-selected-option"
-    );
-    await expect(modelInstanceTagOption).toHaveText(modelInstanceTag);
-
-    // Should display online
-    const modelStateLabel = page.locator("data-testid=state-label");
-    await expect(modelStateLabel).toHaveText("Online");
-
-    // Should display task type classification
-    const modelTaskLabel = page.locator("data-testid=model-task-label");
-    await expect(modelTaskLabel).toHaveText("CLASSIFICATION");
-
-    // Should have state toggle at on state
-    const stateToggle = page.locator("#pipelineStateToggleButton");
-    expect(await stateToggle.isChecked()).toBeTruthy();
+  test("should display proper model details page", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectCorrectModelDetails({
+      page,
+      modelId,
+      modelDescription,
+      modelInstanceTag,
+      modelState: "STATE_ONLINE",
+      modelTask: "CLASSIFICATION",
+    });
   });
 
-  test("should update description", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have edit button enabled
-    const editButton = page.locator("button", { hasText: "Edit" });
-    expect(await editButton.isEnabled()).toBeTruthy();
-
-    // Should have description field disabled
-    const modelDescriptionField = page.locator("#description");
-    expect(await modelDescriptionField.isDisabled()).toBeTruthy();
-
-    // Should enabled description field
-    await editButton.click();
-    expect(await modelDescriptionField.isEnabled()).toBeTruthy();
-
-    // Should have save button
-    const saveButton = page.locator("button", { hasText: "Save" });
-    expect(await saveButton.isEnabled()).toBeTruthy();
-
-    // Should update model description
-    await modelDescriptionField.type(modelAdditionalDescription);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
-    await Promise.all([
-      page.waitForResponse(
-        new URL(
-          `/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`,
-          `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}`
-        ).toString()
-      ),
-      saveButton.click(),
-    ]);
-
-    // Reload page
-    await page.goto(`/models/${modelId}`);
-
-    // Should have updated model description
-    await expect(modelDescriptionField).toHaveCount(1);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
+  test.skip("should update description", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await expectToUpdateModelDescription(page, modelId, "");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
+    context,
   }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Check we can open delete model modal (To avoid flaky test)
-    const openDeleteModelModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
-
-    // Open delete model modal
-    await openDeleteModelModalButton.click();
-    const deleteResourceModal = page.locator(
-      "data-testid=delete-resource-modal"
-    );
-    await expect(deleteResourceModal).toHaveCount(1);
-
-    // Check delete resource modal has proper title
-    const modalTitle = deleteResourceModal.locator("h2", {
-      hasText: "Delete This Model",
-    });
-    await expect(modalTitle).toHaveCount(1);
-
-    // Check delete resource modal has proper confirmation code
-    const confirmationCode = deleteResourceModal.locator("label", {
-      hasText: `Please type "${modelId}" to confirm.`,
-    });
-    await expect(confirmationCode).toHaveCount(1);
-
-    // Check delete resource modal's delete button is disabled
-    const deleteButton = deleteResourceModal.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
-
-    // Check delete resource modal's cancel button is enabled
-    const cancelButton = deleteResourceModal.locator("button", {
-      hasText: "Cancel",
-    });
-    expect(await cancelButton.isEnabled()).toBeTruthy();
-
-    // Input confirmation code
-    const confirmationCodeInput =
-      deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeInput.type(modelId);
-    await expect(confirmationCodeInput).toHaveValue(modelId);
-    expect(await deleteButton.isEnabled()).toBeTruthy();
-
-    // Delete model and navigate to models page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
-
-    // Check whether the list item not exist
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(0);
+    await addInstillCookie(context);
+    await expectToDeleteModel(page, modelId);
   });
 });
 
@@ -471,235 +182,177 @@ test.describe.serial("GitHub model", () => {
   const modelId = `github-model-${Math.floor(Math.random() * 10000)}`;
   const modelSource = "GitHub";
   const modelDescription = "Github test model";
-  const modelAdditionalDescription = " hi, there";
   const modelRepo = "instill-ai/model-mobilenetv2";
   const modelInstanceTag = "v1.0-cpu";
 
-  test("should create github model", async ({ page }) => {
-    await page.goto("/models/create");
+  test("should create github model", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await page.goto("/models/create", { waitUntil: "networkidle" });
 
-    // Check set up button is disabled
+    // Should disable set up button
     const setupButton = page.locator("button", { hasText: "Set up" });
     expect(await setupButton.isDisabled()).toBeTruthy();
 
-    // Input model id
+    // Should input model id
     const idInput = page.locator("input#modelId");
-    await idInput.type(modelId);
-    await expect(idInput).toHaveValue(modelId);
+    await idInput.fill(modelId);
 
-    // Input model description
+    // Should input model description
     const descriptionInput = page.locator("textarea#description");
-    await descriptionInput.type(modelDescription);
-    await expect(descriptionInput).toHaveValue(modelDescription);
+    await descriptionInput.fill(modelDescription);
 
-    // Select model source - GitHub
+    // Should select model source - GitHub and display according fields
+    const githubRepoInput = page.locator("input#modelRepo");
     await page
       .locator("#react-select-modelDefinition-input")
       .click({ force: true });
-    await page
-      .locator("data-testid=modelDefinition-selected-option", {
-        hasText: modelSource,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelDefinition-selected-option")
-    ).toHaveText(modelSource);
 
-    // Input GitHub repo url
-    const githubRepoInput = page.locator("input#modelRepo");
-    await githubRepoInput.type(modelRepo);
-    await expect(githubRepoInput).toHaveValue(modelRepo);
-
-    // Check setup button is enabled
-    expect(await setupButton.isEnabled()).toBeTruthy();
-
-    // Create model
-    await setupButton.click();
-
-    // Check model instance is displayed
-    const modelInstanceTitle = page.locator("h3", {
-      hasText: "Deploy a model instance",
-    });
-    await expect(modelInstanceTitle).toHaveCount(1);
-
-    // Check deploy button is disabled
-    const deployButton = page.locator("button", { hasText: "Deploy" });
-    expect(await deployButton.isDisabled()).toBeTruthy();
-
-    // Select latest model instance
-    await page
-      .locator("#react-select-modelInstanceId-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=modelInstanceId-selected-option", {
-        hasText: modelInstanceTag,
-      })
-      .click();
-    await expect(
-      page.locator("data-testid=modelInstanceId-selected-option")
-    ).toHaveText(modelInstanceTag);
-
-    // Check deploy button is enabled
-    expect(await deployButton.isEnabled()).toBeTruthy();
-
-    // Deploy model
     await Promise.all([
-      page.waitForNavigation({ timeout: 20000 }),
-      deployButton.click(),
+      page
+        .locator("data-testid=modelDefinition-selected-option", {
+          hasText: modelSource,
+        })
+        .click(),
+      githubRepoInput.isVisible(),
     ]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+
+    // Should input GitHub repo url
+    await Promise.all([
+      githubRepoInput.fill(modelRepo),
+      setupButton.isEnabled(),
+    ]);
+
+    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
+    context,
   }) => {
-    await page.goto("/models");
-
-    // Should have model item in list
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(1);
-
-    // Should navigate to model details page
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator("h3", { hasText: modelId }).click(),
-    ]);
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
-    );
+    await addInstillCookie(context);
+    await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have proper title
-    const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
-    await expect(modelDetailsPageTitle).toHaveCount(2);
-
-    // Should have proper model description
-    // const modelDescriptionField = page.locator("#description");
-    // await expect(modelDescriptionField).toHaveValue(modelDescription);
-
-    // Should have correct model instance tag
-    // const modelInstanceTagOption = page.locator(
-    //   "data-testid=modelInstanceTag-selected-option"
-    // );
-    // await expect(modelInstanceTagOption).toHaveText(modelInstanceTag);
-
-    // Should display online
-    // const modelStateLabel = page.locator("data-testid=state-label");
-    // await expect(modelStateLabel).toHaveText("Online");
-
-    // Should display task type classification
-    const modelTaskLabel = page.locator("data-testid=model-task-label");
-    await expect(modelTaskLabel).toHaveText("CLASSIFICATION");
-
-    // Should have state toggle at on state
-    // const stateToggle = page.locator("#pipelineStateToggleButton");
-    // expect(await stateToggle.isChecked()).toBeTruthy();
+  test("should display proper model details page", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectCorrectModelDetails({
+      page,
+      modelId,
+      modelDescription,
+      modelInstanceTag: "v1.0-gpu", // Because we don't have a way to indicate which instance just created.
+      modelState: "STATE_OFFLINE",
+      modelTask: "CLASSIFICATION",
+    });
   });
 
-  test.skip("should update description", async ({ page }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Should have edit button enabled
-    const editButton = page.locator("button", { hasText: "Edit" });
-    expect(await editButton.isEnabled()).toBeTruthy();
-
-    // Should have description field disabled
-    const modelDescriptionField = page.locator("#description");
-    expect(await modelDescriptionField.isDisabled()).toBeTruthy();
-
-    // Should enabled description field
-    await editButton.click();
-    expect(await modelDescriptionField.isEnabled()).toBeTruthy();
-
-    // Should have save button
-    const saveButton = page.locator("button", { hasText: "Save" });
-    expect(await saveButton.isEnabled()).toBeTruthy();
-
-    // Should update model description
-    await modelDescriptionField.type(modelAdditionalDescription);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
-    await Promise.all([
-      page.waitForResponse(
-        new URL(
-          `/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`,
-          `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}`
-        ).toString()
-      ),
-      saveButton.click(),
-    ]);
-
-    // Reload page
-    await page.goto(`/models/${modelId}`);
-
-    // Should have updated model description
-    await expect(modelDescriptionField).toHaveCount(1);
-    await expect(modelDescriptionField).toHaveValue(
-      modelDescription + modelAdditionalDescription
-    );
+  test.skip("should update description", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await expectToUpdateModelDescription(page, modelId, "");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
+    context,
   }) => {
-    await page.goto(`/models/${modelId}`);
-
-    // Check we can open delete model modal (To avoid flaky test)
-    const openDeleteModelModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteModelModalButton.isEnabled()).toBeTruthy();
-
-    // Open delete model modal
-    await openDeleteModelModalButton.click();
-    const deleteResourceModal = page.locator(
-      "data-testid=delete-resource-modal"
-    );
-    await expect(deleteResourceModal).toHaveCount(1);
-
-    // Check delete resource modal has proper title
-    const modalTitle = deleteResourceModal.locator("h2", {
-      hasText: "Delete This Model",
-    });
-    await expect(modalTitle).toHaveCount(1);
-
-    // Check delete resource modal has proper confirmation code
-    const confirmationCode = deleteResourceModal.locator("label", {
-      hasText: `Please type "${modelId}" to confirm.`,
-    });
-    await expect(confirmationCode).toHaveCount(1);
-
-    // Check delete resource modal's delete button is disabled
-    const deleteButton = deleteResourceModal.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
-
-    // Check delete resource modal's cancel button is enabled
-    const cancelButton = deleteResourceModal.locator("button", {
-      hasText: "Cancel",
-    });
-    expect(await cancelButton.isEnabled()).toBeTruthy();
-
-    // Input confirmation code
-    const confirmationCodeInput =
-      deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeInput.type(modelId);
-    await expect(confirmationCodeInput).toHaveValue(modelId);
-    expect(await deleteButton.isEnabled()).toBeTruthy();
-
-    // Delete model and navigate to models page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-    expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
-
-    // Check whether the list item not exist
-    const modelItemTitle = page.locator("h3", { hasText: modelId });
-    await expect(modelItemTitle).toHaveCount(0);
+    await addInstillCookie(context);
+    await expectToDeleteModel(page, modelId);
   });
 });
 
-test.describe.serial("Artivc model", () => {});
+test.describe.serial("Artivc model", () => {
+  const modelId = `artivc-model-${Math.floor(Math.random() * 10000)}`;
+  const modelDescription = "ArtiVC test model";
+  const modelSource = "ArtiVC";
+  const modelBucket = "gs://test-20062";
+  const modelInstanceTag = "v1.0-cpu";
+
+  test("should create artivc model", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await page.goto("/models/create", { waitUntil: "networkidle" });
+
+    // Should disable set up button
+    const setupButton = page.locator("button", { hasText: "Set up" });
+    expect(await setupButton.isDisabled()).toBeTruthy();
+
+    // Should input model id
+    const idInput = page.locator("input#modelId");
+    await idInput.fill(modelId);
+
+    // Should input model description
+    const descriptionInput = page.locator("textarea#description");
+    await descriptionInput.fill(modelDescription);
+
+    // Should select model source - GitHub and display according fields
+    const bucketField = page.locator("input#gcsBucketPath");
+    const credentialsField = page.locator("textarea#credentials");
+    await page
+      .locator("#react-select-modelDefinition-input")
+      .click({ force: true });
+
+    await Promise.all([
+      page
+        .locator("data-testid=modelDefinition-selected-option", {
+          hasText: modelSource,
+        })
+        .click(),
+      bucketField.isVisible(),
+      credentialsField.isVisible(),
+    ]);
+
+    // Should input GitHub repo url
+    await Promise.all([
+      setupButton.isEnabled(),
+      await bucketField.fill(modelBucket),
+    ]);
+
+    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
+  });
+
+  test("should have proper model list and navigate to model details page", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectCorrectModelList(page, modelId);
+  });
+
+  test("should display proper model details page", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectCorrectModelDetails({
+      page,
+      modelId,
+      modelDescription,
+      modelInstanceTag: "v1.0-cpu",
+      modelState: "STATE_ONLINE",
+      modelTask: "CLASSIFICATION",
+      additionalRule: async () => {
+        // Should have correct artivc version/model instance tag
+        const artivcVersionField = page.locator("input#tag");
+        await expect(artivcVersionField).toHaveValue(modelInstanceTag);
+
+        // Should have correct cloud storage url/model bucket
+        const cloudStorageUrl = page.locator("input#url");
+        await expect(cloudStorageUrl).toHaveValue(modelBucket);
+      },
+    });
+  });
+
+  test.skip("should update description", async ({ page, context }) => {
+    await addInstillCookie(context);
+    await expectToUpdateModelDescription(page, modelId, "");
+  });
+
+  test("should have proper delete model modal and delete this model", async ({
+    page,
+    context,
+  }) => {
+    await addInstillCookie(context);
+    await expectToDeleteModel(page, modelId);
+  });
+});
