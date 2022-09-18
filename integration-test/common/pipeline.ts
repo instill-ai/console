@@ -16,6 +16,8 @@ export const expectToDeletePipeline = async (
   page: Page,
   pipelineId: string
 ) => {
+  await page.goto(`/pipelines/${pipelineId}`);
+
   // Should enable open delete pipeline modal button
   const openDeleteModelModalButton = page.locator("button", {
     hasText: "Delete",
@@ -71,4 +73,40 @@ export const expectToDeletePipeline = async (
   // Should not display deleted pipeline
   const modelItemTitle = page.locator("h3", { hasText: pipelineId });
   await expect(modelItemTitle).toHaveCount(0);
+};
+
+export const expectToUpdatePipelineDescription = async (
+  page: Page,
+  pipelineId: string,
+  newDescription: string
+) => {
+  await page.goto(`/pipelines/${pipelineId}`);
+
+  // Should enable edit button
+  const editButton = page.locator("button", { hasText: "Edit" });
+  expect(await editButton.isEnabled()).toBeTruthy();
+
+  // Should have editable description field
+  const pipelineDescriptionField = page.locator("textarea#pipelineDescription");
+  await Promise.all([
+    editButton.click(),
+    pipelineDescriptionField.isEditable(),
+  ]);
+
+  // Should input new description
+  await pipelineDescriptionField.fill(newDescription);
+
+  // Should enable save button
+  const saveButton = page.locator("button", { hasText: "Save" });
+  expect(await saveButton.isEnabled()).toBeTruthy();
+
+  // Should wait for update
+  const succeedMessage = page.locator("h3", { hasText: "Succeed" });
+  await Promise.all([saveButton.click(), succeedMessage.isVisible()]);
+
+  // Reload page
+  await page.goto(`/pipelines/${pipelineId}`);
+
+  // Should have new description
+  await expect(pipelineDescriptionField).toHaveValue(newDescription);
 };
