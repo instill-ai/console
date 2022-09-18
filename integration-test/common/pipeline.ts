@@ -110,3 +110,58 @@ export const expectToUpdatePipelineDescription = async (
   // Should have new description
   await expect(pipelineDescriptionField).toHaveValue(newDescription);
 };
+
+export type ExpectCorrectPipelineDetailsProps = {
+  page: Page;
+  id: string;
+  mode: string;
+  state:
+    | "STATE_ACTIVE"
+    | "STATE_INACTIVE"
+    | "STATE_UNSPECIFIED"
+    | "STATE_ERROR";
+  description: string;
+  additionalRule?: () => Promise<void>;
+};
+
+export const expectCorrectPipelineDetails = async ({
+  page,
+  id,
+  mode,
+  state,
+  description,
+  additionalRule,
+}: ExpectCorrectPipelineDetailsProps) => {
+  await page.goto(`/pipelines/${id}`);
+
+  // Should have correct title
+  const titleField = page.locator("h2", { hasText: id });
+  await expect(titleField).toHaveCount(1);
+
+  // Should have correct mode label
+  const modeLabel = page.locator("data-testid=pipeline-mode-label");
+  await expect(modeLabel).toHaveText(mode);
+
+  // Should have correct state label and toggle state button
+  const stateLabel = page.locator("data-testid=state-label");
+  const stateToggle = page.locator("#pipelineStateToggleButton");
+  if (state === "STATE_ACTIVE") {
+    await expect(stateLabel).toHaveText("Active");
+    expect(await stateToggle.isChecked()).toBeTruthy();
+  } else if (state === "STATE_INACTIVE") {
+    await expect(stateLabel).toHaveText("Inactive");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  } else if (state === "STATE_UNSPECIFIED") {
+    await expect(stateLabel).toHaveText("Unspecific");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  } else {
+    await expect(stateLabel).toHaveText("Error");
+    expect(await stateToggle.isChecked()).not.toBeTruthy();
+  }
+
+  // Should have correct description
+  const descriptionField = page.locator("textarea#pipelineDescription");
+  await expect(descriptionField).toHaveValue(description);
+
+  if (additionalRule) await additionalRule();
+};
