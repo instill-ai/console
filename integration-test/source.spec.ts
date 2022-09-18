@@ -2,18 +2,25 @@ import { test, expect } from "@playwright/test";
 
 test.describe.serial("Sync source", () => {
   test("should create source", async ({ page }) => {
-    await page.goto("/sources/create");
+    await page.goto("/sources/create", { waitUntil: "networkidle" });
 
-    // Select gRPC source
-    await page.locator("#sourceDefinition").click({ force: true });
-    await page.locator("#react-select-sourceDefinition-option-0").click();
+    // Should select gRPC source
+    const sourceDefinitionOption = page.locator("#sourceDefinition");
+    await sourceDefinitionOption.click({ force: true });
+    await page
+      .locator("data-testid=sourceDefinition-selected-option", {
+        hasText: "gRPC",
+      })
+      .click();
     await expect(
       page.locator("data-testid=sourceDefinition-selected-option")
     ).toHaveText("gRPC");
 
-    // Set up source
+    // Should enable set up button
     const setupButton = page.locator("button:has-text('Set up')");
     expect(await setupButton.isEnabled()).toBeTruthy();
+
+    // Should set up source
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources`);
   });
@@ -21,97 +28,92 @@ test.describe.serial("Sync source", () => {
   test("should have proper sources list and navigate to source details page", async ({
     page,
   }) => {
-    await page.goto("/sources");
+    await page.goto("/sources", { waitUntil: "networkidle" });
 
-    // Check source item exist
+    // Should have crrrect table item
     const sourceItemTitle = page.locator("h3", { hasText: "source-grpc" });
     await expect(sourceItemTitle).toHaveCount(1);
 
-    // Navigate to source details page
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator("h3", { hasText: "source-grpc" }).click(),
-    ]);
+    // Should navigate to source details page
+    await Promise.all([page.waitForNavigation(), sourceItemTitle.click()]);
     expect(page.url()).toEqual(
       `${process.env.NEXT_PUBLIC_MAIN_URL}/sources/source-grpc`
     );
   });
 
   test("should have proper source details page", async ({ page }) => {
-    await page.goto("/sources/source-grpc");
+    await page.goto("/sources/source-grpc", { waitUntil: "networkidle" });
 
-    // Check title exist
+    // Should have correct title
     const pageTitle = page.locator("h2", { hasText: "source-grpc" });
     await expect(pageTitle).toHaveCount(1);
 
-    // Check source state is correct
+    // Should have correct state
     const sourceStateLabel = page.locator("data-testid=state-label");
     await expect(sourceStateLabel).toHaveText("Connected");
 
-    // Check source definition is correct
+    // Should have correct definition
     const sourceDefinitionOption = page.locator(
       "data-testid=sourceDefinition-selected-option"
     );
     await expect(sourceDefinitionOption).toHaveText("gRPC");
-
-    // Check we can open delete source modal
-    const openDeleteSourceModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteSourceModalButton.isEnabled()).toBeTruthy();
   });
 
   test("should have proper delete source modal and delete source", async ({
     page,
   }) => {
-    await page.goto("/sources/source-grpc");
+    await page.goto("/sources/source-grpc", { waitUntil: "networkidle" });
 
-    // Check we can open delete source modal (To avoid flaky test)
+    // Should enable open delete source modal button
     const openDeleteSourceModalButton = page.locator("button", {
       hasText: "Delete",
     });
     expect(await openDeleteSourceModalButton.isEnabled()).toBeTruthy();
 
-    // Open delete source modal
-    await openDeleteSourceModalButton.click();
+    // Should open delete source modal
     const deleteResourceModal = page.locator(
       "data-testid=delete-resource-modal"
     );
-    await expect(deleteResourceModal).toHaveCount(1);
+    await Promise.all([
+      openDeleteSourceModalButton.click(),
+      deleteResourceModal.isVisible(),
+    ]);
 
-    // Check delete resource modal has proper title
+    // Should have correct modal title
     const modalTitle = deleteResourceModal.locator("h2", {
       hasText: "Delete This Source",
     });
     await expect(modalTitle).toHaveCount(1);
 
-    // Check delete resource modal has proper confirmation code
-    const confirmationCode = deleteResourceModal.locator("label", {
+    // Should have correct confirmation code hint
+    const confirmationCodeHint = deleteResourceModal.locator("label", {
       hasText: `Please type "source-grpc" to confirm.`,
     });
-    await expect(confirmationCode).toHaveCount(1);
+    await expect(confirmationCodeHint).toHaveCount(1);
 
-    // Check delete resource modal's delete button is disabled
-    const deleteButton = deleteResourceModal.locator("button", {
+    // Should disable delete source button
+    const deleteSourceButton = deleteResourceModal.locator("button", {
       hasText: "Delete",
     });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
+    expect(await deleteSourceButton.isDisabled()).toBeTruthy();
 
-    // Check delete resource modal's cancel button is enabled
+    // Should enable cancel button
     const cancelButton = deleteResourceModal.locator("button", {
       hasText: "Cancel",
     });
     expect(await cancelButton.isEnabled()).toBeTruthy();
 
-    // Input confirmation code
+    // Should Input confirmation code
     const confirmationCodeInput =
       deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeInput.type("source-grpc");
-    await expect(confirmationCodeInput).toHaveValue("source-grpc");
-    expect(await deleteButton.isEnabled()).toBeTruthy();
+
+    await Promise.all([
+      confirmationCodeInput.fill("source-grpc"),
+      deleteSourceButton.isEnabled(),
+    ]);
 
     // Delete source and navigate to sources page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
+    await Promise.all([page.waitForNavigation(), deleteSourceButton.click()]);
     expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources`);
 
     // Check whether the list item not exist

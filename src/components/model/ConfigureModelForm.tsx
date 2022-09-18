@@ -89,7 +89,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     updateModel.mutate(
       {
         name: model.name,
-        description: fieldValues.description || undefined,
+        description: fieldValues.description || "",
       },
       {
         onSuccess: () => {

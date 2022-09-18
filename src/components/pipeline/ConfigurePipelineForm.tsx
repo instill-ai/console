@@ -237,7 +237,7 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
                   type="button"
                   color="primary"
                 >
-                  {canEdit ? "Done" : "Edit"}
+                  {canEdit ? "Save" : "Edit"}
                 </SolidButton>
               </div>
               <div className="flex">
