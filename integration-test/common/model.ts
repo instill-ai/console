@@ -122,6 +122,7 @@ export type ExpectCorrectModelDetailsProps = {
     | "STATE_UNSPECIFIED"
     | "STATE_ERROR";
   modelTask: string;
+  additionalRule?: () => Promise<void>;
 };
 
 export const expectCorrectModelDetails = async ({
@@ -131,6 +132,7 @@ export const expectCorrectModelDetails = async ({
   modelInstanceTag,
   modelState,
   modelTask,
+  additionalRule,
 }: ExpectCorrectModelDetailsProps) => {
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
@@ -162,12 +164,14 @@ export const expectCorrectModelDetails = async ({
     await expect(modelStateLabel).toHaveText("Offline");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else if (modelState === "STATE_UNSPECIFIED") {
-    await expect(modelStateLabel).toHaveText("Unspecific");
+    await expect(modelStateLabel).toHaveText("Unspecified");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else {
     await expect(modelStateLabel).toHaveText("Error");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   }
+
+  if (additionalRule) await additionalRule();
 };
 
 export const expectToDeployModel = async (
