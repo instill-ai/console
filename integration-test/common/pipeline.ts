@@ -111,6 +111,26 @@ export const expectToUpdatePipelineDescription = async (
   await expect(pipelineDescriptionField).toHaveValue(newDescription);
 };
 
+export const expectCorrectPipelineList = async (
+  page: Page,
+  pipelineId: string
+) => {
+  await page.goto("/pipelines");
+
+  // Should have pipeline item in list
+  const pipelineItemTitle = page.locator("h3", { hasText: pipelineId });
+  await expect(pipelineItemTitle).toHaveCount(1);
+
+  // Should navigate to pipeline details page
+  await Promise.all([
+    page.waitForNavigation(),
+    page.locator("h3", { hasText: pipelineId }).click(),
+  ]);
+  expect(page.url()).toEqual(
+    `${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines/${pipelineId}`
+  );
+};
+
 export type ExpectCorrectPipelineDetailsProps = {
   page: Page;
   id: string;
@@ -152,7 +172,7 @@ export const expectCorrectPipelineDetails = async ({
     await expect(stateLabel).toHaveText("Inactive");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else if (state === "STATE_UNSPECIFIED") {
-    await expect(stateLabel).toHaveText("Unspecific");
+    await expect(stateLabel).toHaveText("Unspecified");
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else {
     await expect(stateLabel).toHaveText("Error");
