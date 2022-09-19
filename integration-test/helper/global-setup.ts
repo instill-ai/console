@@ -5,7 +5,7 @@ async function globalSetup(config: FullConfig) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   await addRegisteredUser();
-  await page.context().storageState({ path: "storageState.json" });
+  await page.context().storageState({ path: "playwright-state.json" });
   await browser.close();
 }
 
