@@ -15,7 +15,7 @@ if (!process.env.NEXT_PUBLIC_MAIN_URL) {
 const config: PlaywrightTestConfig = {
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 60 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.

@@ -95,10 +95,11 @@ test.describe.serial("Local model", () => {
 });
 
 test.describe.serial("Hugging face model", () => {
+  test.setTimeout(120 * 1000);
   const modelId = `huggingface-model-${Math.floor(Math.random() * 10000)}`;
   const modelDescription = "Hugging face test model";
   const modelSource = "Hugging Face";
-  const huggingFaceId = "google/vit-base-patch16-224";
+  const huggingFaceId = "apple/mobilevit-small";
   const modelInstanceTag = "latest";
 
   test("should create huggingface model", async ({ page, context }) => {
