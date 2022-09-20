@@ -1,5 +1,5 @@
 //import { Nullable } from "@/types/general";
-import { Page, expect, BrowserContext, Locator } from "@playwright/test";
+import { Page, expect, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });

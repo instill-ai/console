@@ -88,7 +88,6 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     <div className="flex flex-row gap-x-[5px]">
       <div className="flex flex-wrap gap-x-[5px] gap-y-[5px]">
         {items.map((e, index) => {
-          console.log(displayLimit, items.length);
           if (displayLimit === 0 && index === 0) {
             return (
               <InstanceInnerListItem
