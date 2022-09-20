@@ -1,3 +1,4 @@
+//import { Nullable } from "@/types/general";
 import { Page, expect, BrowserContext, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
@@ -177,21 +178,19 @@ export const expectCorrectModelDetails = async ({
 export const expectToDeployModel = async (
   page: Page,
   modelInstanceTag: string,
-  timeout?: number
+  waitForElement: Locator | null,
+  timeout: number | null
 ) => {
-  // Should select model instance
+  // Should select target model instance tag
   const modelInstanceIdOption = page.locator(
-    "#react-select-modelInstanceId-input"
+    "#react-select-modelInstanceTag-input"
   );
   await modelInstanceIdOption.click({ force: true });
   await page
-    .locator("data-testid=modelInstanceId-selected-option", {
+    .locator("data-testid=modelInstanceTag-selected-option", {
       hasText: modelInstanceTag,
     })
     .click();
-  await expect(
-    page.locator("data-testid=modelInstanceId-selected-option")
-  ).toHaveText(modelInstanceTag);
 
   // Should enable deploy button
   const deployButton = page.locator("button", { hasText: "Deploy" });
@@ -199,7 +198,12 @@ export const expectToDeployModel = async (
 
   // Should deploy model
   await Promise.all([
-    page.waitForNavigation({ timeout }),
+    waitForElement
+      ? waitForElement.waitFor({
+          state: "visible",
+          timeout: timeout ? timeout : undefined,
+        })
+      : page.waitForNavigation({ timeout: timeout ? timeout : undefined }),
     deployButton.click(),
   ]);
 
@@ -209,67 +213,7 @@ export const expectToDeployModel = async (
 export type ExpectToSetupLocalModel = {
   page: Page;
   modelId: string;
+  modelDescription: string;
   modelInstanceTag: string;
-  finishElement: Locator;
-};
-
-export const expectToSetupLocalModel = async ({
-  page,
-  modelId,
-  modelInstanceTag,
-  finishElement,
-}: ExpectToSetupLocalModel) => {
-  // Should input model id
-  const modelIdField = page.locator("input#modelId");
-  await modelIdField.fill(modelId);
-
-  // Should select model source - local and display file field
-  const modelDefinitinoOption = page.locator(
-    "#react-select-modelDefinition-input"
-  );
-  const fileField = page.locator("input#modelFile");
-  await modelDefinitinoOption.click({ force: true });
-  const selectedModelDefinition = page.locator(
-    "data-testid=modelDefinition-selected-option",
-    {
-      hasText: "Local",
-    }
-  );
-  await Promise.all([
-    fileField.waitFor({ state: "visible" }),
-    selectedModelDefinition.click(),
-  ]);
-
-  // Should input local model file and enable set up model button
-  const setupButton = page.locator("button", { hasText: "Set up" });
-  await fileField.setInputFiles("./integration-test/data/dummy-cls-model.zip");
-  expect(await setupButton.isEnabled()).toBeTruthy();
-
-  // Should set up model and display model instance section
-  const succeedMessage = page.locator("h3", { hasText: "Succeed" });
-  await Promise.all([
-    succeedMessage.waitFor({ state: "visible" }),
-    setupButton.click(),
-  ]);
-
-  // Should disable deploy button
-  const deployButton = page.locator("button", { hasText: "Deploy" });
-  expect(await deployButton.isDisabled()).toBeTruthy();
-
-  // Should select model instance tag - latest and enable deploy button
-  await page
-    .locator("#react-select-modelInstanceName-input")
-    .click({ force: true });
-  await page
-    .locator("data-testid=modelInstanceName-selected-option", {
-      hasText: modelInstanceTag,
-    })
-    .click();
-  expect(await deployButton.isEnabled()).toBeTruthy();
-
-  // Should deploy model and display finish locator
-  await Promise.all([
-    finishElement.waitFor({ state: "visible" }),
-    deployButton.click(),
-  ]);
+  waitForElement?: Locator;
 };
