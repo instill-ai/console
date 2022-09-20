@@ -66,15 +66,15 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
   }, [modelInstances.isSuccess, modelInstances.data]);
 
   const selectedModelInstanceOption = useMemo(() => {
-    if (!values.model.existing.modelInstanceName || !modelInstanceOptions)
+    if (!values.model.existing.modelInstanceTag || !modelInstanceOptions)
       return null;
 
     return (
       modelInstanceOptions.find(
-        (e) => e.value === values.model.existing.modelInstanceName
+        (e) => e.value === values.model.existing.modelInstanceTag
       ) || null
     );
-  }, [values.model.existing.modelInstanceName, modelInstanceOptions]);
+  }, [values.model.existing.modelInstanceTag, modelInstanceOptions]);
 
   // ###################################################################
   // #                                                                 #
@@ -83,16 +83,16 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
   // ###################################################################
 
   const canUseExistingModel = useMemo(() => {
-    if (!values.model.existing.modelInstanceName) {
+    if (!values.model.existing.modelInstanceTag) {
       return false;
     }
 
     return true;
-  }, [values.model.existing.modelInstanceName]);
+  }, [values.model.existing.modelInstanceTag]);
 
   const handleUseModel = useCallback(() => {
     if (
-      !values.model.existing.modelInstanceName ||
+      !values.model.existing.modelInstanceTag ||
       !modelInstances.isSuccess ||
       !modelInstances.data
     ) {
@@ -100,7 +100,7 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
     }
 
     const targetModelInstance = modelInstances.data.find(
-      (e) => e.name === values.model.existing.modelInstanceName
+      (e) => e.name === values.model.existing.modelInstanceTag
     );
 
     if (!targetModelInstance) return;
@@ -119,7 +119,7 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
 
     setStepNumber(stepNumber + 1);
   }, [
-    values.model.existing.modelInstanceName,
+    values.model.existing.modelInstanceTag,
     modelInstances.isSuccess,
     modelInstances.data,
     setFieldValue,
@@ -134,12 +134,12 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
         Select an existing online model instance
       </h3>
       <SingleSelect
-        id="existingModelInstanceName"
-        name="model.existing.modelInstanceName"
+        id="existingModelInstanceTag"
+        name="model.existing.modelInstanceTag"
         label="Online model instances"
         options={modelInstanceOptions ? modelInstanceOptions : []}
         value={selectedModelInstanceOption}
-        error={errors.model?.existing?.modelInstanceName || null}
+        error={errors.model?.existing?.modelInstanceTag || null}
         disabled={modelCreated ? true : false}
         required={true}
       />
