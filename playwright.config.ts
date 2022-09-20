@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
   testDir: "./integration-test",
   globalSetup: require.resolve("./integration-test/helper/global-setup"),
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
