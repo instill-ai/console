@@ -6,7 +6,7 @@ import {
   expectToDeletePipeline,
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
-import { addInstillCookie, delay } from "./helper";
+import { delay } from "./helper";
 
 test.describe
   .serial("Sync pipeline with new source, destination and local model", () => {
@@ -33,8 +33,7 @@ test.describe
     }
   });
 
-  test("should create sync pipeline", async ({ page, context }) => {
-    await addInstillCookie(context);
+  test("should create sync pipeline", async ({ page }) => {
     await page.goto("/pipelines/create", { waitUntil: "networkidle" });
 
     // Should select sync mode
@@ -48,14 +47,12 @@ test.describe
     await page
       .locator("#react-select-existingSourceId-input")
       .click({ force: true });
-    await Promise.all([
-      goToModelStepButton.isEnabled(),
-      page
-        .locator("data-testid=existingSourceId-selected-option", {
-          hasText: sourceType,
-        })
-        .click(),
-    ]);
+    await page
+      .locator("data-testid=existingSourceId-selected-option", {
+        hasText: sourceType,
+      })
+      .click();
+    expect(await goToModelStepButton.isEnabled()).toBeTruthy();
 
     // Should go to next step
     const setupModelStepTitle = page.locator("h2", {
@@ -63,8 +60,8 @@ test.describe
     });
 
     await Promise.all([
+      setupModelStepTitle.waitFor({ state: "visible" }),
       goToModelStepButton.click(),
-      setupModelStepTitle.isVisible(),
     ]);
 
     // Should input model id
@@ -75,7 +72,7 @@ test.describe
     const modelDefinitinoOption = page.locator(
       "#react-select-modelDefinition-input"
     );
-    const fileField = page.locator("input#modelFile");
+    const fileField = page.locator("input#file");
     await modelDefinitinoOption.click({ force: true });
     const selectedModelDefinition = page.locator(
       "data-testid=modelDefinition-selected-option",
@@ -83,21 +80,25 @@ test.describe
         hasText: modelSource,
       }
     );
-    await Promise.all([selectedModelDefinition.click(), fileField.isVisible()]);
+    await Promise.all([
+      fileField.waitFor({ state: "visible" }),
+      selectedModelDefinition.click(),
+    ]);
 
     // Should input local model file and enable set up model button
     const setupButton = page.locator("button", { hasText: "Set up" });
-    await Promise.all([
-      setupButton.isEnabled(),
-      fileField.setInputFiles("./integration-test/data/dummy-cls-model.zip"),
-    ]);
+    await fileField.setInputFiles(
+      "./integration-test/data/dummy-cls-model.zip"
+    );
+    expect(await setupButton.isEnabled()).toBeTruthy();
 
     // Should set up model and display model instance section
-    const modelInstanceTitle = page.locator("h3", {
-      hasText: "Deploy a model instance",
-    });
+    const succeedMessage = page.locator("h3", { hasText: "Succeed" });
 
-    await Promise.all([setupButton.click(), modelInstanceTitle.isVisible()]);
+    await Promise.all([
+      succeedMessage.waitFor({ state: "visible" }),
+      setupButton.click(),
+    ]);
 
     // Should disable deploy button
     const deployButton = page.locator("button", { hasText: "Deploy" });
@@ -105,24 +106,22 @@ test.describe
 
     // Should select model instance tag - latest and enable deploy button
     await page
-      .locator("#react-select-modelInstanceName-input")
+      .locator("#react-select-modelInstanceTag-input")
       .click({ force: true });
-    await Promise.all([
-      deployButton.isEnabled(),
-      page
-        .locator("data-testid=modelInstanceName-selected-option", {
-          hasText: modelInstanceTag,
-        })
-        .click(),
-    ]);
+    await page
+      .locator("data-testid=modelInstanceTag-selected-option", {
+        hasText: modelInstanceTag,
+      })
+      .click();
+    expect(await deployButton.isEnabled()).toBeTruthy();
 
     // Should deploy model and go to next step
     const setupDestinationTitle = page.locator("h2", {
       hasText: "Set up Destination",
     });
     await Promise.all([
+      setupDestinationTitle.waitFor({ state: "visible" }),
       deployButton.click(),
-      setupDestinationTitle.isVisible(),
     ]);
 
     // Should disable destination selection field
@@ -144,8 +143,8 @@ test.describe
     const piplineIdField = page.locator("input#pipelineId");
 
     await Promise.all([
-      await goToPipelineStepButton.click(),
-      await piplineIdField.isVisible(),
+      piplineIdField.waitFor({ state: "visible" }),
+      goToPipelineStepButton.click(),
     ]);
 
     // Should input pipeline id
@@ -168,17 +167,11 @@ test.describe
 
   test("should have proper pipline list and navigate to pipline details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectPipelineList(page, pipelineId);
   });
 
-  test("should display proper pipeline details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper pipeline details page", async ({ page }) => {
     await expectCorrectPipelineDetails({
       page,
       id: pipelineId,
@@ -188,16 +181,13 @@ test.describe
     });
   });
 
-  test("should update pipeline description", async ({ page, context }) => {
-    await addInstillCookie(context);
+  test("should update pipeline description", async ({ page }) => {
     await expectToUpdatePipelineDescription(page, pipelineId, "");
   });
 
   test("should have proper delete pipeline modal and delete this pipeline", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeletePipeline(page, pipelineId);
   });
 });
@@ -283,7 +273,7 @@ test.describe
     const modelDefinitinoOption = page.locator(
       "#react-select-modelDefinition-input"
     );
-    const fileField = page.locator("input#modelFile");
+    const fileField = page.locator("input#file");
     await modelDefinitinoOption.click({ force: true });
     const selectedModelDefinition = page.locator(
       "data-testid=modelDefinition-selected-option",
@@ -313,12 +303,12 @@ test.describe
 
     // Should select model instance tag - latest and enable deploy button
     await page
-      .locator("#react-select-modelInstanceName-input")
+      .locator("#react-select-modelInstanceTag-input")
       .click({ force: true });
     await Promise.all([
       deployButton.isEnabled(),
       page
-        .locator("data-testid=modelInstanceName-selected-option", {
+        .locator("data-testid=modelInstanceTag-selected-option", {
           hasText: modelInstanceTag,
         })
         .click(),
@@ -397,17 +387,11 @@ test.describe
 
   test("should have proper pipline list and navigate to pipline details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectPipelineList(page, pipelineId);
   });
 
-  test("should display proper pipeline details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper pipeline details page", async ({ page }) => {
     await expectCorrectPipelineDetails({
       page,
       id: pipelineId,
@@ -417,16 +401,13 @@ test.describe
     });
   });
 
-  test("should update pipeline description", async ({ page, context }) => {
-    await addInstillCookie(context);
+  test("should update pipeline description", async ({ page }) => {
     await expectToUpdatePipelineDescription(page, pipelineId, "");
   });
 
   test("should have proper delete pipeline modal and delete this pipeline", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeletePipeline(page, pipelineId);
   });
 });
