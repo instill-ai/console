@@ -63,7 +63,7 @@ const SetupPipelineDetailsStep: FC = () => {
     if (
       values.model.new.modelDefinition === "github" &&
       values.model.new.id &&
-      values.model.new.modelInstanceName
+      values.model.new.modelInstanceTag
     ) {
       validator.modelIsValid = true;
     }
@@ -132,22 +132,22 @@ const SetupPipelineDetailsStep: FC = () => {
       sourceName = `source-connectors/${values.source.existing.id}`;
     }
 
-    let modelInstanceName: string;
+    let modelInstanceTag: string;
 
     if (values.model.type === "new") {
-      if (!values.model.new.modelInstanceName || !values.model.new.id) {
+      if (!values.model.new.modelInstanceTag || !values.model.new.id) {
         return;
       }
-      modelInstanceName = values.model.new.modelInstanceName;
+      modelInstanceTag = values.model.new.modelInstanceTag;
     } else {
       if (
         !values.model.existing.id ||
-        !values.model.existing.modelInstanceName
+        !values.model.existing.modelInstanceTag
       ) {
         return;
       }
 
-      modelInstanceName = values.model.existing.modelInstanceName;
+      modelInstanceTag = values.model.existing.modelInstanceTag;
     }
 
     let destinationName: string;
@@ -164,7 +164,7 @@ const SetupPipelineDetailsStep: FC = () => {
       id: values.pipeline.id,
       recipe: {
         source: sourceName,
-        model_instances: [modelInstanceName],
+        model_instances: [modelInstanceTag],
         destination: destinationName,
       },
     };
