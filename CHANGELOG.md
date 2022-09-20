@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.12.0-alpha](https://github.com/instill-ai/console/compare/v0.11.0-alpha...v0.12.0-alpha) (2022-09-18)
+
+
+### Features
+
+* add model integration test - huggingface, github, local ([#276](https://github.com/instill-ai/console/issues/276)) ([32ea70a](https://github.com/instill-ai/console/commit/32ea70a847f47e30e5bf88c5cc6263efaf5431a0))
+* add the destination integration test ([#279](https://github.com/instill-ai/console/issues/279)) ([c218201](https://github.com/instill-ai/console/commit/c218201124cb60107557d3b2bbab169ac4ffb49a))
+* Implement pipeline e2e test ([#280](https://github.com/instill-ai/console/issues/280)) ([e1833a3](https://github.com/instill-ai/console/commit/e1833a332fcd6abbd52b04c07235f91ec47fae6f))
+
+
+### Bug Fixes
+
+* fix instance cell not refresh issue ([#278](https://github.com/instill-ai/console/issues/278)) ([7c1a291](https://github.com/instill-ai/console/commit/7c1a291a2828193b273e886d29e5539bb0a55eeb))
+
 ## [0.11.0-alpha](https://github.com/instill-ai/console/compare/v0.10.3-alpha...v0.11.0-alpha) (2022-09-07)
 
 
