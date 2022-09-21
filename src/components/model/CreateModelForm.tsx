@@ -41,7 +41,7 @@ import { AxiosError } from "axios";
 export type CreateModelFormValue = {
   id: Nullable<string>;
   modelDefinition: Nullable<string>;
-  modelInstanceId: Nullable<string>;
+  modelInstanceTag: Nullable<string>;
   file: Nullable<File>;
   repo: Nullable<string>;
   description: Nullable<string>;
@@ -53,14 +53,10 @@ export type CreateModelFormValue = {
 const CreateModelForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  // ###################################################################
-  // #                                                                 #
-  // # 1 - Initialize the model definition                             #
-  // #                                                                 #
-  // ###################################################################
-
+  // #########################################################################
+  // # 1 - Initialize the model definition                                   #
+  // #########################################################################
   const modelDefinitions = useModelDefinitions();
-
   const modelDefinitionOptions = useMemo(() => {
     if (!modelDefinitions.isSuccess) return [];
 
@@ -91,12 +87,9 @@ const CreateModelForm = () => {
     []
   );
 
-  // ###################################################################
-  // #                                                                 #
-  // # 2 - Create github/local/artivc model                            #
-  // #                                                                 #
-  // ###################################################################
-
+  // #########################################################################
+  // # 2 - Create github/local/artivc/huggingface model                      #
+  // #########################################################################
   const [modelCreated, setModelCreated] = useState(false);
   const [newModel, setNewModel] = useState<Nullable<Model>>(null);
 
@@ -110,24 +103,24 @@ const CreateModelForm = () => {
 
   const validateCreateModelValue = useCallback(
     (values: CreateModelFormValue) => {
-      if (!values.modelDefinition || modelCreated) return false;
+      if (!values.modelDefinition || modelCreated || !values.id) return false;
 
       if (values.modelDefinition === "github") {
-        if (!values.repo || !values.id) {
+        if (!values.repo) {
           return false;
         }
         return true;
       }
 
       if (values.modelDefinition === "local") {
-        if (!values.file || !values.id) {
+        if (!values.file) {
           return false;
         }
         return true;
       }
 
       if (values.modelDefinition === "artivc") {
-        if (!values.gcsBucketPath || !values.id) {
+        if (!values.gcsBucketPath) {
           return false;
         }
 
@@ -377,11 +370,9 @@ const CreateModelForm = () => {
     ]
   );
 
-  // ###################################################################
-  // #                                                                 #
-  // #  3 - Initialize model instances                                 #
-  // #                                                                 #
-  // ###################################################################
+  // #########################################################################
+  // #  3 - Initialize model instances                                       #
+  // #########################################################################
 
   const modelInstances = useModelInstances(newModel ? newModel.name : null);
   const modelInstanceOptions = useMemo(() => {
@@ -411,11 +402,9 @@ const CreateModelForm = () => {
     setSelectedModelInstanceOption(option);
   }, []);
 
-  // ###################################################################
-  // #                                                                 #
-  // #  4 - Deploy model instances                                     #
-  // #                                                                 #
-  // ###################################################################
+  // #########################################################################
+  // #  4 - Deploy model instances                                           #
+  // #########################################################################
 
   const router = useRouter();
 
@@ -439,7 +428,7 @@ const CreateModelForm = () => {
   const deployModelInstance = useDeployModelInstance();
 
   const handleDeployModelInstance = async (values: CreateModelFormValue) => {
-    if (!values.modelInstanceId || !values.id) return;
+    if (!values.modelInstanceTag || !values.id) return;
 
     setDeployModelInstanceMessageBoxState(() => ({
       activate: true,
@@ -449,7 +438,7 @@ const CreateModelForm = () => {
     }));
 
     deployModelInstance.mutate(
-      `models/${values.id}/instances/${values.modelInstanceId}`,
+      `models/${values.id}/instances/${values.modelInstanceTag}`,
       {
         onSuccess: () => {
           setDeployModelInstanceMessageBoxState(() => ({
@@ -503,7 +492,7 @@ const CreateModelForm = () => {
         {
           id: null,
           modelDefinition: null,
-          modelInstanceId: null,
+          modelInstanceTag: null,
           file: null,
           repo: null,
           description: null,
@@ -535,7 +524,13 @@ const CreateModelForm = () => {
               }
               value={values.id}
               error={errors.id || null}
-              disabled={modelCreated ? true : false}
+              disabled={
+                modelDefinitions.isSuccess
+                  ? modelCreated
+                    ? true
+                    : false
+                  : false
+              }
               required={true}
             />
             <TextArea
@@ -545,7 +540,13 @@ const CreateModelForm = () => {
               description="Fill with a short description."
               value={values.description}
               error={errors.description || null}
-              disabled={modelCreated ? true : false}
+              disabled={
+                modelDefinitions.isSuccess
+                  ? modelCreated
+                    ? true
+                    : false
+                  : false
+              }
               enableCounter={true}
               counterWordLimit={1023}
             />
@@ -560,7 +561,13 @@ const CreateModelForm = () => {
               options={modelDefinitionOptions ? modelDefinitionOptions : []}
               error={errors.modelDefinition || null}
               additionalOnChangeCb={modelDefinitionOnChangeCb}
-              disabled={modelCreated ? true : false}
+              disabled={
+                modelDefinitions.isSuccess
+                  ? modelCreated
+                    ? true
+                    : false
+                  : false
+              }
               required={true}
             />
             {values.modelDefinition === "github" ? (
@@ -642,6 +649,7 @@ const CreateModelForm = () => {
                 onClickHandler={() => handelCreateModel(values)}
                 position="ml-auto my-auto"
                 type="button"
+                data-testid="set-up-model-button"
                 color="primary"
               >
                 Set up
@@ -653,12 +661,12 @@ const CreateModelForm = () => {
                   Deploy a model instance
                 </h3>
                 <SingleSelect
-                  id="modelInstanceId"
-                  name="modelInstanceId"
+                  id="modelInstanceTag"
+                  name="modelInstanceTag"
                   label="Model Instances"
                   options={modelInstanceOptions ? modelInstanceOptions : []}
                   value={selectedModelInstanceOption}
-                  error={errors.modelInstanceId || null}
+                  error={errors.modelInstanceTag || null}
                   additionalOnChangeCb={modelInstanceOnChangeCb}
                   required={true}
                   description={
@@ -673,7 +681,7 @@ const CreateModelForm = () => {
                     closable={true}
                   />
                   <SolidButton
-                    disabled={values.modelInstanceId ? false : true}
+                    disabled={values.modelInstanceTag ? false : true}
                     onClickHandler={() => handleDeployModelInstance(values)}
                     position="ml-auto my-auto"
                     type="button"

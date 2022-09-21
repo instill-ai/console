@@ -412,26 +412,26 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   }, [modelCreated, newModel, modelInstances.isSuccess]);
 
   const canDeployModel = useMemo(() => {
-    if (!values.model.new.modelInstanceName) return false;
+    if (!values.model.new.modelInstanceTag) return false;
     return true;
-  }, [values.model.new.modelInstanceName]);
+  }, [values.model.new.modelInstanceTag]);
 
   const selectedModelInstanceOption = useMemo(() => {
-    if (!values.model.new.modelInstanceName || !modelInstanceOptions) {
+    if (!values.model.new.modelInstanceTag || !modelInstanceOptions) {
       return null;
     }
 
     return (
       modelInstanceOptions.find(
-        (e) => e.value === values.model.new.modelInstanceName
+        (e) => e.value === values.model.new.modelInstanceTag
       ) || null
     );
-  }, [modelInstanceOptions, values.model.new.modelInstanceName]);
+  }, [modelInstanceOptions, values.model.new.modelInstanceTag]);
 
   const deployModelInstance = useDeployModelInstance();
 
   const handleDeployModel = async () => {
-    if (!values.model.new.modelInstanceName || !values.model.new.id) return;
+    if (!values.model.new.modelInstanceTag || !values.model.new.id) return;
 
     setDeployModelInstanceMessageBoxState(() => ({
       activate: true,
@@ -440,7 +440,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       message: "Deploying...",
     }));
 
-    deployModelInstance.mutate(values.model.new.modelInstanceName, {
+    deployModelInstance.mutate(values.model.new.modelInstanceTag, {
       onSuccess: () => {
         setDeployModelInstanceMessageBoxState(() => ({
           activate: true,
@@ -549,7 +549,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       {values.model.new.modelDefinition === "local" ? (
         <>
           <UploadFileField
-            id="modelFile"
+            id="file"
             name="model.new.file"
             label="Upload a file"
             additionalMessageOnLabel={null}
@@ -623,12 +623,12 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
             Deploy a model instance
           </h3>
           <SingleSelect
-            id="modelInstanceName"
-            name="model.new.modelInstanceName"
+            id="modelInstanceTag"
+            name="model.new.modelInstanceTag"
             label="Model instances"
             options={modelInstanceOptions ? modelInstanceOptions : []}
             value={selectedModelInstanceOption}
-            error={errors.model?.new?.modelInstanceName || null}
+            error={errors.model?.new?.modelInstanceTag || null}
             required={true}
             description={
               "<a href='https://www.instill.tech/docs/core-concepts/model#model-instance'>Setup Guide</a>"

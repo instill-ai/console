@@ -6,7 +6,16 @@ import {
   expectToDeployModel,
   expectToUpdateModelDescription,
 } from "./common/model";
-import { addInstillCookie, delay } from "./helper";
+
+// This set of test are easily failed due to the timeout, latency issue of
+// model pulling and converting. Not only that, Firefox seems particularly fragile
+// to face this kind of issue.
+
+test.use({
+  launchOptions: {
+    slowMo: 50,
+  },
+});
 
 test.describe.serial("Local model", () => {
   const modelId = `local-model-${Math.floor(Math.random() * 10000)}`;
@@ -14,12 +23,7 @@ test.describe.serial("Local model", () => {
   const modelInstanceTag = "latest";
   const modelSource = "Local";
 
-  test.afterAll(async () => {
-    await delay(500);
-  });
-
-  test("should create local model", async ({ page, context }) => {
-    await addInstillCookie(context);
+  test("should create local model", async ({ page }) => {
     await page.goto("/models/create", { waitUntil: "networkidle" });
 
     // Should disable set up button
@@ -28,48 +32,52 @@ test.describe.serial("Local model", () => {
 
     // Should input model id
     const idInput = page.locator("input#modelId");
-    await idInput.fill(modelId);
+    await idInput.type(modelId, { delay: 20 });
 
     // Should input model description
     const descriptionInput = page.locator("textarea#description");
-    await descriptionInput.fill(modelDescription);
+    await descriptionInput.type(modelDescription, { delay: 20 });
 
     // Should select model source - local and have according fields
-    const fileInput = page.locator("input#file");
-    await page
-      .locator("#react-select-modelDefinition-input")
-      .click({ force: true });
+    const modelDefinitionOption = page.locator(
+      "#react-select-modelDefinition-input"
+    );
+    const fileField = page.locator("input#file");
+    await modelDefinitionOption.click({ force: true });
+    const selectedModelDefinition = page.locator(
+      "data-testid=modelDefinition-selected-option",
+      {
+        hasText: modelSource,
+      }
+    );
     await Promise.all([
-      page
-        .locator("data-testid=modelDefinition-selected-option", {
-          hasText: modelSource,
-        })
-        .click(),
-      fileInput.isVisible(),
+      fileField.waitFor({ state: "visible" }),
+      selectedModelDefinition.click(),
     ]);
 
-    // Should input local file and enable set up button
+    // Should input local model file and enable set up model button
+    await fileField.setInputFiles(
+      "./integration-test/data/dummy-cls-model.zip"
+    );
+    await expect(setupButton).toBeEnabled();
+    const succeedMessage = page.locator("h3", { hasText: "Succeed" });
+
+    // Should set up the model
     await Promise.all([
-      fileInput.setInputFiles("./integration-test/data/dummy-cls-model.zip"),
-      setupButton.isEnabled(),
+      succeedMessage.waitFor({ state: "visible", timeout: 25 * 1000 }),
+      setupButton.click({ force: true }),
     ]);
 
-    await expectToDeployModel(page, modelInstanceTag, setupButton);
+    await expectToDeployModel(page, modelInstanceTag, null, 25 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper model details page", async ({ page }) => {
     await expectCorrectModelDetails({
       page,
       modelId,
@@ -80,16 +88,13 @@ test.describe.serial("Local model", () => {
     });
   });
 
-  test.skip("should update description", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await expectToUpdateModelDescription(page, modelId, "");
+  test("should update description", async ({ page }) => {
+    await expectToUpdateModelDescription(page, modelId, "new");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeleteModel(page, modelId);
   });
 });
@@ -101,8 +106,7 @@ test.describe.serial("Hugging face model", () => {
   const huggingFaceId = "google/vit-base-patch16-224";
   const modelInstanceTag = "latest";
 
-  test("should create huggingface model", async ({ page, context }) => {
-    await addInstillCookie(context);
+  test("should create huggingface model", async ({ page }) => {
     await page.goto("/models/create", { waitUntil: "networkidle" });
 
     // Should disable setup button
@@ -124,36 +128,37 @@ test.describe.serial("Hugging face model", () => {
       .click({ force: true });
 
     await Promise.all([
+      huggingFaceIdInput.waitFor({ state: "visible" }),
       page
         .locator("data-testid=modelDefinition-selected-option", {
           hasText: modelSource,
         })
         .click(),
-      huggingFaceIdInput.isVisible(),
     ]);
 
     // Should input Huggingface id and enable set up button
+    await huggingFaceIdInput.fill(huggingFaceId);
+    expect(await setupButton.isEnabled()).toBeTruthy();
+
+    // Should set up model
+    const succeedMessage = page.locator("h3", { hasText: "Succeed" });
     await Promise.all([
-      huggingFaceIdInput.fill(huggingFaceId),
-      setupButton.isEnabled(),
+      succeedMessage.waitFor({ state: "visible", timeout: 20 * 1000 }),
+      setupButton.click(),
     ]);
 
-    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
+    // In order to pull and convert hugging face model, it will take a much longer time to
+    // deploy hugging-face model.
+    await expectToDeployModel(page, modelInstanceTag, null, 120 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper model details page", async ({ page }) => {
     await expectCorrectModelDetails({
       page,
       modelId,
@@ -164,16 +169,13 @@ test.describe.serial("Hugging face model", () => {
     });
   });
 
-  test.skip("should update description", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await expectToUpdateModelDescription(page, modelId, "");
+  test("should update description", async ({ page }) => {
+    await expectToUpdateModelDescription(page, modelId, "new");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeleteModel(page, modelId);
   });
 });
@@ -185,9 +187,8 @@ test.describe.serial("GitHub model", () => {
   const modelRepo = "instill-ai/model-mobilenetv2";
   const modelInstanceTag = "v1.0-cpu";
 
-  test("should create github model", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await page.goto("/models/create", { waitUntil: "networkidle" });
+  test("should create github model", async ({ page }) => {
+    await page.goto("/models/create");
 
     // Should disable set up button
     const setupButton = page.locator("button", { hasText: "Set up" });
@@ -208,36 +209,35 @@ test.describe.serial("GitHub model", () => {
       .click({ force: true });
 
     await Promise.all([
+      githubRepoInput.waitFor({ state: "visible" }),
       page
         .locator("data-testid=modelDefinition-selected-option", {
           hasText: modelSource,
         })
         .click(),
-      githubRepoInput.isVisible(),
     ]);
 
     // Should input GitHub repo url
+    await githubRepoInput.fill(modelRepo);
+    await expect(setupButton).toBeEnabled();
+
+    // Should set up model
+    const succeedMessage = page.locator("h3", { hasText: "Succeed" });
     await Promise.all([
-      githubRepoInput.fill(modelRepo),
-      setupButton.isEnabled(),
+      succeedMessage.waitFor({ state: "visible", timeout: 45 * 1000 }),
+      setupButton.click(),
     ]);
 
-    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
+    // await expectToDeployModel(page, modelInstanceTag, null, 60 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper model details page", async ({ page }) => {
     await expectCorrectModelDetails({
       page,
       modelId,
@@ -248,16 +248,13 @@ test.describe.serial("GitHub model", () => {
     });
   });
 
-  test.skip("should update description", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await expectToUpdateModelDescription(page, modelId, "");
+  test("should update description", async ({ page }) => {
+    await expectToUpdateModelDescription(page, modelId, "new");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeleteModel(page, modelId);
   });
 });
@@ -269,9 +266,8 @@ test.describe.serial("Artivc model", () => {
   const modelBucket = "gs://test-20062";
   const modelInstanceTag = "v1.0-cpu";
 
-  test("should create artivc model", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await page.goto("/models/create", { waitUntil: "networkidle" });
+  test("should create artivc model", async ({ page }) => {
+    await page.goto("/models/create");
 
     // Should disable set up button
     const setupButton = page.locator("button", { hasText: "Set up" });
@@ -293,37 +289,35 @@ test.describe.serial("Artivc model", () => {
       .click({ force: true });
 
     await Promise.all([
+      bucketField.waitFor({ state: "visible" }),
+      credentialsField.waitFor({ state: "visible" }),
       page
         .locator("data-testid=modelDefinition-selected-option", {
           hasText: modelSource,
         })
         .click(),
-      bucketField.isVisible(),
-      credentialsField.isVisible(),
     ]);
 
-    // Should input GitHub repo url
+    // Should fill in model's bucket
+    await bucketField.fill(modelBucket);
+    expect(await setupButton.isEnabled()).toBeTruthy();
+
+    const succeedMessage = page.locator("h3", { hasText: "Succeed" });
     await Promise.all([
-      setupButton.isEnabled(),
-      await bucketField.fill(modelBucket),
+      succeedMessage.waitFor({ state: "visible", timeout: 20 * 1000 }),
+      setupButton.click(),
     ]);
 
-    await expectToDeployModel(page, modelInstanceTag, setupButton, 60 * 1000);
+    await expectToDeployModel(page, modelInstanceTag, null, 60 * 1000);
   });
 
   test("should have proper model list and navigate to model details page", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectCorrectModelList(page, modelId);
   });
 
-  test("should display proper model details page", async ({
-    page,
-    context,
-  }) => {
-    await addInstillCookie(context);
+  test("should display proper model details page", async ({ page }) => {
     await expectCorrectModelDetails({
       page,
       modelId,
@@ -343,16 +337,13 @@ test.describe.serial("Artivc model", () => {
     });
   });
 
-  test.skip("should update description", async ({ page, context }) => {
-    await addInstillCookie(context);
-    await expectToUpdateModelDescription(page, modelId, "");
+  test("should update description", async ({ page }) => {
+    await expectToUpdateModelDescription(page, modelId, "new");
   });
 
   test("should have proper delete model modal and delete this model", async ({
     page,
-    context,
   }) => {
-    await addInstillCookie(context);
     await expectToDeleteModel(page, modelId);
   });
 });

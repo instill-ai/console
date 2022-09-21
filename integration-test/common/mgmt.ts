@@ -1,10 +1,31 @@
 import { BrowserContext, Page, expect } from "@playwright/test";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 export const removeRegisteredUser = async () => {
-  await fetch(
-    `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/local-user`,
-    { method: "patch", body: JSON.stringify({ cookie_token: "" }) }
-  );
+  try {
+    await axios.patch(
+      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      {
+        cookie_token: "",
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addRegisteredUser = async () => {
+  try {
+    await axios.patch(
+      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      {
+        cookie_token: uuidv4(),
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const expectToOnboardUser = async (
@@ -25,9 +46,6 @@ export const expectToOnboardUser = async (
   // Shoyld select role
   await page.locator("#role").click({ force: true });
   await page.locator("#react-select-role-option-0").click();
-  await expect(page.locator("data-testid=role-selected-option")).toHaveText(
-    "Manager (who makes decisions)"
-  );
 
   // Should accept newsletter subscription
   await page.locator("#newsletterSubscription").check();

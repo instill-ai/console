@@ -1,20 +1,42 @@
 import { test, expect } from "@playwright/test";
+import axios from "axios";
+import { expectToSelectReactSelectOption } from "./helper";
 
 test.describe.serial("Sync source", () => {
+  const sourceId = "source-grpc";
+
+  // If there has a source-grpc connector, we need to delete it then proceed the test.
+  test.beforeAll(async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+      );
+
+      const targetDestination = (data.source_connectors as any[]).find(
+        (e) => e.id === sourceId
+      );
+
+      if (targetDestination) {
+        await axios.delete(
+          `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/${sourceId}`
+        );
+      }
+      return Promise.resolve(data.destination_connectors);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  });
+
   test("should create source", async ({ page }) => {
     await page.goto("/sources/create", { waitUntil: "networkidle" });
 
     // Should select gRPC source
-    const sourceDefinitionOption = page.locator("#sourceDefinition");
-    await sourceDefinitionOption.click({ force: true });
-    await page
-      .locator("data-testid=sourceDefinition-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#sourceDefinition"),
+      page.locator("data-testid=sourceDefinition-selected-option", {
         hasText: "gRPC",
       })
-      .click();
-    await expect(
-      page.locator("data-testid=sourceDefinition-selected-option")
-    ).toHaveText("gRPC");
+    );
 
     // Should enable set up button
     const setupButton = page.locator("button:has-text('Set up')");
@@ -31,21 +53,21 @@ test.describe.serial("Sync source", () => {
     await page.goto("/sources", { waitUntil: "networkidle" });
 
     // Should have crrrect table item
-    const sourceItemTitle = page.locator("h3", { hasText: "source-grpc" });
+    const sourceItemTitle = page.locator("h3", { hasText: sourceId });
     await expect(sourceItemTitle).toHaveCount(1);
 
     // Should navigate to source details page
     await Promise.all([page.waitForNavigation(), sourceItemTitle.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/sources/source-grpc`
+      `${process.env.NEXT_PUBLIC_MAIN_URL}/sources/${sourceId}`
     );
   });
 
   test("should have proper source details page", async ({ page }) => {
-    await page.goto("/sources/source-grpc", { waitUntil: "networkidle" });
+    await page.goto(`/sources/${sourceId}`, { waitUntil: "networkidle" });
 
     // Should have correct title
-    const pageTitle = page.locator("h2", { hasText: "source-grpc" });
+    const pageTitle = page.locator("h2", { hasText: sourceId });
     await expect(pageTitle).toHaveCount(1);
 
     // Should have correct state
@@ -62,7 +84,7 @@ test.describe.serial("Sync source", () => {
   test("should have proper delete source modal and delete source", async ({
     page,
   }) => {
-    await page.goto("/sources/source-grpc", { waitUntil: "networkidle" });
+    await page.goto(`/sources/${sourceId}`, { waitUntil: "networkidle" });
 
     // Should enable open delete source modal button
     const openDeleteSourceModalButton = page.locator("button", {
@@ -87,7 +109,7 @@ test.describe.serial("Sync source", () => {
 
     // Should have correct confirmation code hint
     const confirmationCodeHint = deleteResourceModal.locator("label", {
-      hasText: `Please type "source-grpc" to confirm.`,
+      hasText: `Please type "${sourceId}" to confirm.`,
     });
     await expect(confirmationCodeHint).toHaveCount(1);
 
@@ -108,7 +130,7 @@ test.describe.serial("Sync source", () => {
       deleteResourceModal.locator("#confirmationCode");
 
     await Promise.all([
-      confirmationCodeInput.fill("source-grpc"),
+      confirmationCodeInput.fill(sourceId),
       deleteSourceButton.isEnabled(),
     ]);
 
@@ -117,7 +139,7 @@ test.describe.serial("Sync source", () => {
     expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/sources`);
 
     // Check whether the list item not exist
-    const sourceItemTitle = page.locator("h3", { hasText: "source-grpc" });
+    const sourceItemTitle = page.locator("h3", { hasText: sourceId });
     await expect(sourceItemTitle).toHaveCount(0);
   });
 });

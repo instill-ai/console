@@ -1,3 +1,4 @@
+//import { Nullable } from "@/types/general";
 import { Page, expect, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
@@ -177,46 +178,42 @@ export const expectCorrectModelDetails = async ({
 export const expectToDeployModel = async (
   page: Page,
   modelInstanceTag: string,
-  setupButton: Locator,
-  timeout?: number
+  waitForElement: Locator | null,
+  timeout: number | null
 ) => {
-  // Should create model and display model instance section
-  const modelInstanceTitle = page.locator("h3", {
-    hasText: "Deploy a model instance",
-  });
+  // Should select target model instance tag
   const modelInstanceIdOption = page.locator(
-    "#react-select-modelInstanceId-input"
+    "#react-select-modelInstanceTag-input"
   );
-  const deployButton = page.locator("button", { hasText: "Deploy" });
-
-  await Promise.all([
-    modelInstanceTitle.isVisible(),
-    modelInstanceIdOption.isVisible(),
-    deployButton.isVisible(),
-    setupButton.click(),
-  ]);
-
-  // Should disable deploy button
-  expect(await deployButton.isDisabled()).toBeTruthy();
-
-  // Should select latest model instance
   await modelInstanceIdOption.click({ force: true });
   await page
-    .locator("data-testid=modelInstanceId-selected-option", {
+    .locator("data-testid=modelInstanceTag-selected-option", {
       hasText: modelInstanceTag,
     })
     .click();
-  await expect(
-    page.locator("data-testid=modelInstanceId-selected-option")
-  ).toHaveText(modelInstanceTag);
 
   // Should enable deploy button
+  const deployButton = page.locator("button", { hasText: "Deploy" });
   expect(await deployButton.isEnabled()).toBeTruthy();
 
   // Should deploy model
   await Promise.all([
-    page.waitForNavigation({ timeout }),
+    waitForElement
+      ? waitForElement.waitFor({
+          state: "visible",
+          timeout: timeout ? timeout : undefined,
+        })
+      : page.waitForNavigation({ timeout: timeout ? timeout : undefined }),
     deployButton.click(),
   ]);
+
   expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+};
+
+export type ExpectToSetupLocalModel = {
+  page: Page;
+  modelId: string;
+  modelDescription: string;
+  modelInstanceTag: string;
+  waitForElement?: Locator;
 };

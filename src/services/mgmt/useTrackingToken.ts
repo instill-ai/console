@@ -52,7 +52,6 @@ const useTrackingToken = () => {
       await updateLocalUserMutation({
         cookie_token: instillAiUserCookie.data.cookie_token,
       });
-
       setTrackingToken(instillAiUserCookie.data.cookie_token);
     };
 

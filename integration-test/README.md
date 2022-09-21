@@ -37,10 +37,10 @@
 ### About the flaky test
 
 - If the test behavior is related to backend, remember that backend can only handle a request at a time. So if the test run in sequence and the time between requests is too short, the request will fail.
-- We have to limit the test worker to one, because the test suite might run to quick to make backend panic.
+- We have to limit the test worker to one, because the test suite might run too quick to make backend panic.
 - Remember to `make down` backend every time you want have another round of test.
-- use `expect().to` after every behavior to make sure the behavior succeeded.
-- `page.waitForResponse` is not particularly reliable. If you are facing some flaky test, try to rewrite the whole part with some visual hint, like.
+- use `expect().to` after every behavior to make sure the behavior succeeded. But you don't need to use `expect(field).toHaveValue()` after you fill in some text, because it had already beem tested by playwright.
+- `page.waitForResponse` is not particularly reliable. If you are facing some flaky test, try to rewrite the whole part with some visual hint, like below.
 
 ```js
 
@@ -48,7 +48,6 @@
 
 const saveButton = page.locator("button", { hasText: "Save" });
 expect(await saveButton.isEnabled()).toBeTruthy();
-const succeedMessage = page.locator("h3", { hasText: "Succeed" });
 await Promise.all([saveButton.click(), page.waitForResponse("your url"));
 
 // Rewrite with visual hint
