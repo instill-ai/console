@@ -46,9 +46,6 @@ export const expectToOnboardUser = async (
   // Shoyld select role
   await page.locator("#role").click({ force: true });
   await page.locator("#react-select-role-option-0").click();
-  await expect(page.locator("data-testid=role-selected-option")).toHaveText(
-    "Manager (who makes decisions)"
-  );
 
   // Should accept newsletter subscription
   await page.locator("#newsletterSubscription").check();

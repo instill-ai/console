@@ -143,7 +143,6 @@ const CreateModelForm = () => {
 
   const handelCreateModel = useCallback(
     async (values: CreateModelFormValue) => {
-      console.log(values.id, values.file);
       if (!values.id) return;
 
       setCreateModelMessageBoxState(() => ({
@@ -210,8 +209,6 @@ const CreateModelForm = () => {
         if (!values.id || !values.file) {
           return;
         }
-
-        console.log("sent");
 
         const payload: CreateLocalModelPayload = {
           id: values.id,
@@ -652,6 +649,7 @@ const CreateModelForm = () => {
                 onClickHandler={() => handelCreateModel(values)}
                 position="ml-auto my-auto"
                 type="button"
+                data-testid="set-up-model-button"
                 color="primary"
               >
                 Set up

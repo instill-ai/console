@@ -6,7 +6,7 @@ import {
   expectToDeletePipeline,
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
-import { delay } from "./helper";
+import { delay, expectToSelectReactSelectOption } from "./helper";
 
 test.describe
   .serial("Sync pipeline with new source, destination and local model", () => {
@@ -18,10 +18,6 @@ test.describe
   const modelId = `local-model-${Math.floor(Math.random() * 10000)}`;
   const modelInstanceTag = "latest";
   const destinationType = "HTTP";
-
-  test.afterEach(async () => {
-    await delay(500);
-  });
 
   test.afterAll(async () => {
     try {
@@ -44,14 +40,12 @@ test.describe
 
     // Should select source type - http
     const goToModelStepButton = page.locator("button", { hasText: "Next" });
-    await page
-      .locator("#react-select-existingSourceId-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=existingSourceId-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-existingSourceId-input"),
+      page.locator("data-testid=existingSourceId-selected-option", {
         hasText: sourceType,
       })
-      .click();
+    );
     expect(await goToModelStepButton.isEnabled()).toBeTruthy();
 
     // Should go to next step
@@ -69,21 +63,14 @@ test.describe
     await modelIdField.fill(modelId);
 
     // Should select model source - local and display file field
-    const modelDefinitinoOption = page.locator(
-      "#react-select-modelDefinition-input"
-    );
     const fileField = page.locator("input#file");
-    await modelDefinitinoOption.click({ force: true });
-    const selectedModelDefinition = page.locator(
-      "data-testid=modelDefinition-selected-option",
-      {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-modelDefinition-input"),
+      page.locator("data-testid=modelDefinition-selected-option", {
         hasText: modelSource,
-      }
+      }),
+      fileField
     );
-    await Promise.all([
-      fileField.waitFor({ state: "visible" }),
-      selectedModelDefinition.click(),
-    ]);
 
     // Should input local model file and enable set up model button
     const setupButton = page.locator("button", { hasText: "Set up" });
@@ -105,14 +92,12 @@ test.describe
     expect(await deployButton.isDisabled()).toBeTruthy();
 
     // Should select model instance tag - latest and enable deploy button
-    await page
-      .locator("#react-select-modelInstanceTag-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=modelInstanceTag-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-modelInstanceTag-input"),
+      page.locator("data-testid=modelInstanceTag-selected-option", {
         hasText: modelInstanceTag,
       })
-      .click();
+    );
     expect(await deployButton.isEnabled()).toBeTruthy();
 
     // Should deploy model and go to next step
@@ -212,44 +197,34 @@ test.describe
     await delay(500);
   });
 
-  // test.afterAll(async () => {
-  //   try {
-  //     await axios.post(
-  //       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}:undeploy`
-  //     );
-  //   } catch (err) {
-  //     return Promise.reject(err);
-  //   }
-  // });
+  test.afterAll(async () => {
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}:undeploy`
+      );
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  });
 
   test("should create async pipeline", async ({ page }) => {
     await page.goto("/pipelines/create", { waitUntil: "networkidle" });
-    const pipelineModeOption = page.locator("#react-select-pipelineMode-input");
-    await pipelineModeOption.isVisible();
 
     // Should select async mode
-    await pipelineModeOption.click({ force: true });
-    await page
-      .locator("data-testid=pipelineMode-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-pipelineMode-input"),
+      page.locator("data-testid=pipelineMode-selected-option", {
         hasText: pipelineMode,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=pipelineMode-selected-option")
-    ).toHaveText(pipelineMode);
+    );
 
     // Should select source type - http
-    await page
-      .locator("#react-select-existingSourceId-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=existingSourceId-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-existingSourceId-input"),
+      page.locator("data-testid=existingSourceId-selected-option", {
         hasText: sourceType,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=existingSourceId-selected-option")
-    ).toHaveText(sourceType);
+    );
 
     // Should enable next button
     const goToModelStepButton = page.locator("button", { hasText: "Next" });
@@ -270,18 +245,14 @@ test.describe
     await modelIdField.fill(modelId);
 
     // Should select model source - local and display file field
-    const modelDefinitinoOption = page.locator(
-      "#react-select-modelDefinition-input"
-    );
     const fileField = page.locator("input#file");
-    await modelDefinitinoOption.click({ force: true });
-    const selectedModelDefinition = page.locator(
-      "data-testid=modelDefinition-selected-option",
-      {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-modelDefinition-input"),
+      page.locator("data-testid=modelDefinition-selected-option", {
         hasText: modelSource,
-      }
+      }),
+      fileField
     );
-    await Promise.all([selectedModelDefinition.click(), fileField.isVisible()]);
 
     // Should input local model file and enable set up model button
     const setupButton = page.locator("button", { hasText: "Set up" });
@@ -302,17 +273,12 @@ test.describe
     expect(await deployButton.isDisabled()).toBeTruthy();
 
     // Should select model instance tag - latest and enable deploy button
-    await page
-      .locator("#react-select-modelInstanceTag-input")
-      .click({ force: true });
-    await Promise.all([
-      deployButton.isEnabled(),
-      page
-        .locator("data-testid=modelInstanceTag-selected-option", {
-          hasText: modelInstanceTag,
-        })
-        .click(),
-    ]);
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-modelInstanceTag-input"),
+      page.locator("data-testid=modelInstanceTag-selected-option", {
+        hasText: modelInstanceTag,
+      })
+    );
 
     // Should deploy model and go to next step
     const destinationIdField = page.locator("input#id");
@@ -322,22 +288,14 @@ test.describe
     await destinationIdField.fill(destinationId);
 
     // Should select destination type - Scylla
-    const destinationDefinitionOption = page.locator(
-      "#react-select-definition-input"
-    );
     const keyspaceField = page.locator("input#keyspace");
-    await destinationDefinitionOption.click({ force: true });
-    const selectedDestinationDefinition = page.locator(
-      "data-testid=definition-selected-option",
-      {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-definition-input"),
+      page.locator("data-testid=definition-selected-option", {
         hasText: destinationType,
-      }
+      }),
+      keyspaceField
     );
-
-    await Promise.all([
-      selectedDestinationDefinition.click(),
-      keyspaceField.isVisible(),
-    ]);
 
     // Should input Scylla keyspace
     await keyspaceField.fill(keyspace);

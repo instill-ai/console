@@ -1,23 +1,46 @@
 import { test, expect } from "@playwright/test";
+import axios from "axios";
+import { expectToDeleteConnector } from "./common/connector";
+import { expectToSelectReactSelectOption } from "./helper";
 
 test.describe.serial("Sync destination", () => {
   const destinationId = "destination-http";
   const destinationType = "HTTP";
+
+  // If there has a destination-http connector, we need to delete it then proceed the test.
+  test.beforeAll(async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+      );
+
+      const targetDestination = (data.destination_connectors as any[]).find(
+        (e) => e.id === destinationId
+      );
+
+      if (targetDestination) {
+        await axios.delete(
+          `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${destinationId}`
+        );
+      }
+      return Promise.resolve(data.destination_connectors);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  });
+
   test("should create sync http destination", async ({ page }) => {
     await page.goto("/destinations/create");
 
-    // Select destination type - HTTP
-    await page.locator("#react-select-definition-input").click({ force: true });
-    await page
-      .locator("data-testid=definition-selected-option", {
+    // Should select destination type - HTTP
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-definition-input"),
+      page.locator("data-testid=definition-selected-option", {
         hasText: destinationType,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=definition-selected-option")
-    ).toHaveText(destinationType);
+    );
 
-    // Set up destination
+    // Should set up destination
     const setupButton = page.locator("button", { hasText: "Set up" });
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(
@@ -67,61 +90,7 @@ test.describe.serial("Sync destination", () => {
   test("should have delete destination modal and correctly delete destination", async ({
     page,
   }) => {
-    await page.goto(`/destinations/${destinationId}`);
-
-    // Should enable open delete model modal button
-    const openDeleteDestinationModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteDestinationModalButton.isEnabled()).toBeTruthy();
-
-    // Should open delete destination modal
-    await openDeleteDestinationModalButton.click();
-    const deleteResourceModal = page.locator(
-      "data-testid=delete-resource-modal"
-    );
-    await expect(deleteResourceModal).toHaveCount(1);
-
-    // Should have proper modal title
-    const modalTitle = deleteResourceModal.locator("h2", {
-      hasText: "Delete This Destination",
-    });
-    await expect(modalTitle).toHaveCount(1);
-
-    // Should have proper confirmation code hint
-    const confirmationCodeHint = deleteResourceModal.locator("label", {
-      hasText: `Please type "${destinationId}" to confirm.`,
-    });
-    await expect(confirmationCodeHint).toHaveCount(1);
-
-    // Should disable delete button
-    const deleteButton = deleteResourceModal.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
-
-    // Should enable cancel button
-    const cancelButton = deleteResourceModal.locator("button", {
-      hasText: "Cancel",
-    });
-    expect(await cancelButton.isEnabled()).toBeTruthy();
-
-    // Should input correcy confirmation code
-    const confirmationCodeField =
-      deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeField.type(destinationId);
-    await expect(confirmationCodeField).toHaveValue(destinationId);
-    expect(await deleteButton.isEnabled()).toBeTruthy();
-
-    // Should delete destination and navigate to destinations page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations`
-    );
-
-    // Should remove the destination from destination list
-    const modelItemTitle = page.locator("h3", { hasText: destinationId });
-    await expect(modelItemTitle).toHaveCount(0);
+    await expectToDeleteConnector(page, "destination", destinationId);
   });
 });
 
@@ -145,87 +114,67 @@ test.describe.serial("Async destination", () => {
 
     // Should input destination id
     const idField = page.locator("input#id");
-    await idField.type(destinationId);
-    await expect(idField).toHaveValue(destinationId);
+    await idField.fill(destinationId);
 
     // Should select destination source - S3
-    await page.locator("#react-select-definition-input").click({ force: true });
-    await page
-      .locator("data-testid=definition-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-definition-input"),
+      page.locator("data-testid=definition-selected-option", {
         hasText: destinationType,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=definition-selected-option")
-    ).toHaveText(destinationType);
+    );
 
     // Should input destination description
     const descriptionField = page.locator("textarea#description");
-    await descriptionField.type(destinationDescription);
-    await expect(descriptionField).toHaveValue(destinationDescription);
+    await descriptionField.fill(destinationDescription);
 
     // Should input S3 key
     const s3KeyField = page.locator("input#access_key_id");
-    await s3KeyField.type(s3Key);
-    await expect(s3KeyField).toHaveValue(s3Key);
+    await s3KeyField.fill(s3Key);
 
     // Should input S3 secret key
     const s3SecretField = page.locator("input#secret_access_key");
-    await s3SecretField.type(s3SecretKey);
-    await expect(s3SecretField).toHaveValue(s3SecretKey);
+    await s3SecretField.fill(s3SecretKey);
 
     // Should input S3 bucket name
     const s3BucketField = page.locator("input#s3_bucket_name");
-    await s3BucketField.type(s3BucketName);
-    await expect(s3BucketField).toHaveValue(s3BucketName);
+    await s3BucketField.fill(s3BucketName);
 
     // Should input S3 bucket path
     const s3BucketPathField = page.locator("input#s3_bucket_path");
-    await s3BucketPathField.type(s3BucketPath);
-    await expect(s3BucketPathField).toHaveValue(s3BucketPath);
+    await s3BucketPathField.fill(s3BucketPath);
 
     // Should Select S3 bucket region
-    await page
-      .locator("#react-select-s3_bucket_region-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=s3_bucket_region-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-s3_bucket_region-input"),
+      page.locator("data-testid=s3_bucket_region-selected-option", {
         hasText: s3BucketRegion,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=s3_bucket_region-selected-option")
-    ).toHaveText(s3BucketRegion);
+    );
 
     // Should select output format
-    await page.locator("#react-select-format-input").click({ force: true });
-    await page
-      .locator("data-testid=format-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-format-input"),
+      page.locator("data-testid=format-selected-option", {
         hasText: s3OutputFormat,
       })
-      .click();
-    await expect(page.locator("data-testid=format-selected-option")).toHaveText(
-      s3OutputFormat
     );
+
     const compressionCodecOptionTitle = page.locator("h3", {
       hasText: "Compression Codec *",
     });
     await expect(compressionCodecOptionTitle).toHaveCount(1);
 
     // Should select compression codec
-    await page
-      .locator("input[id='react-select-format.compression_codec-input']")
-      .click({ force: true });
-    await page
-      .locator("div[data-testid='format.compression_codec-selected-option']", {
-        hasText: s3OutputCompression,
-      })
-      .click();
-    await expect(
+    await expectToSelectReactSelectOption(
+      page.locator("input[id='react-select-format.compression_codec-input']"),
       page.locator(
-        "div[data-testid='format.compression_codec-selected-option']"
+        "div[data-testid='format.compression_codec-selected-option']",
+        {
+          hasText: s3OutputCompression,
+        }
       )
-    ).toHaveText(s3OutputCompression);
+    );
 
     // Should set up destination
     const setupButton = page.locator("button", { hasText: "Set up" });
@@ -363,45 +312,33 @@ test.describe.serial("Async destination", () => {
     await expect(s3BucketPathField).toHaveValue(newS3BucketPath);
 
     // Should update S3 bucket region
-    await page
-      .locator("#react-select-s3_bucket_region-input")
-      .click({ force: true });
-    await page
-      .locator("data-testid=s3_bucket_region-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-s3_bucket_region-input"),
+      page.locator("data-testid=s3_bucket_region-selected-option", {
         hasText: newS3BucketRegion,
       })
-      .click();
-    await expect(
-      page.locator("data-testid=s3_bucket_region-selected-option")
-    ).toHaveText(newS3BucketRegion);
+    );
 
     // Should update output format
-    await page.locator("#react-select-format-input").click({ force: true });
-    await page
-      .locator("data-testid=format-selected-option", {
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-format-input"),
+      page.locator("data-testid=format-selected-option", {
         hasText: newS3OutputFormat,
       })
-      .click();
-    await expect(page.locator("data-testid=format-selected-option")).toHaveText(
-      newS3OutputFormat
     );
+
     const compressionOptionTitle = page.locator("h3", {
       hasText: "Compression",
     });
     await expect(compressionOptionTitle).toHaveCount(1);
 
     // Should select compression option
-    await page
-      .locator("input[id='react-select-format.compression-input']")
-      .click({ force: true });
-    await page
-      .locator("div[data-testid='format.compression-selected-option']", {
+    await expectToSelectReactSelectOption(
+      page.locator("input[id='react-select-format.compression-input']"),
+      page.locator("div[data-testid='format.compression-selected-option']", {
         hasText: newS3OutputCompression,
       })
-      .click();
-    await expect(
-      page.locator("div[data-testid='format.compression-selected-option']")
-    ).toHaveText(newS3OutputCompression);
+    );
 
     // Save new value
     const saveButton = page.locator("button", { hasText: "Save" });
@@ -453,60 +390,6 @@ test.describe.serial("Async destination", () => {
   test("should have delete destination modal and correctly delete destination", async ({
     page,
   }) => {
-    await page.goto(`/destinations/${destinationId}`);
-
-    // Should enable open delete model modal button
-    const openDeleteDestinationModalButton = page.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await openDeleteDestinationModalButton.isEnabled()).toBeTruthy();
-
-    // Should open delete destination modal
-    await openDeleteDestinationModalButton.click();
-    const deleteResourceModal = page.locator(
-      "data-testid=delete-resource-modal"
-    );
-    await expect(deleteResourceModal).toHaveCount(1);
-
-    // Should have proper modal title
-    const modalTitle = deleteResourceModal.locator("h2", {
-      hasText: "Delete This Destination",
-    });
-    await expect(modalTitle).toHaveCount(1);
-
-    // Should have proper confirmation code hint
-    const confirmationCodeHint = deleteResourceModal.locator("label", {
-      hasText: `Please type "${destinationId}" to confirm.`,
-    });
-    await expect(confirmationCodeHint).toHaveCount(1);
-
-    // Should disable delete button
-    const deleteButton = deleteResourceModal.locator("button", {
-      hasText: "Delete",
-    });
-    expect(await deleteButton.isDisabled()).toBeTruthy();
-
-    // Should enable cancel button
-    const cancelButton = deleteResourceModal.locator("button", {
-      hasText: "Cancel",
-    });
-    expect(await cancelButton.isEnabled()).toBeTruthy();
-
-    // Should input correcy confirmation code
-    const confirmationCodeField =
-      deleteResourceModal.locator("#confirmationCode");
-    await confirmationCodeField.type(destinationId);
-    await expect(confirmationCodeField).toHaveValue(destinationId);
-    expect(await deleteButton.isEnabled()).toBeTruthy();
-
-    // Should delete destination and navigate to destinations page
-    await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-    expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations`
-    );
-
-    // Should remove the destination from destination list
-    const modelItemTitle = page.locator("h3", { hasText: destinationId });
-    await expect(modelItemTitle).toHaveCount(0);
+    await expectToDeleteConnector(page, "destination", destinationId);
   });
 });
