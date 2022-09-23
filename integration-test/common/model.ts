@@ -45,11 +45,7 @@ export const expectToDeleteModel = async (page: Page, modelId: string) => {
   // Should input confirmation code
   const confirmationCodeInput =
     deleteResourceModal.locator("#confirmationCode");
-
-  await Promise.all([
-    confirmationCodeInput.fill(modelId),
-    deleteButton.isEnabled(),
-  ]);
+  await confirmationCodeInput.fill(modelId);
 
   // Should delete model and navigate to models page
   await Promise.all([page.waitForNavigation(), deleteButton.click()]);
@@ -74,9 +70,7 @@ export const expectToUpdateModelDescription = async (
   // Should disable description field
   const modelDescriptionField = page.locator("#description");
   expect(await modelDescriptionField.isDisabled()).toBeTruthy();
-
-  // Should enable description field
-  await Promise.all([editButton.click(), modelDescriptionField.isEnabled()]);
+  await editButton.click();
 
   // Should display save button
   const saveButton = page.locator("button", { hasText: "Save" });

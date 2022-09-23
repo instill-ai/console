@@ -59,11 +59,7 @@ export const expectToDeletePipeline = async (
   // Should input confirmation code and enable delete button
   const confirmationCodeInput =
     deleteResourceModal.locator("#confirmationCode");
-
-  await Promise.all([
-    confirmationCodeInput.fill(pipelineId),
-    deleteButton.isEnabled(),
-  ]);
+  await confirmationCodeInput.fill(pipelineId);
   expect(await deleteButton.isEnabled()).toBeTruthy();
 
   // Should delete pipeline and navigate to pipelines page
@@ -88,10 +84,7 @@ export const expectToUpdatePipelineDescription = async (
 
   // Should have editable description field
   const pipelineDescriptionField = page.locator("textarea#pipelineDescription");
-  await Promise.all([
-    editButton.click(),
-    pipelineDescriptionField.isEditable(),
-  ]);
+  await editButton.click();
 
   // Should input new description
   await pipelineDescriptionField.fill(newDescription);

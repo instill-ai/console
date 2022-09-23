@@ -8,6 +8,12 @@ import {
 } from "./common/pipeline";
 import { delay, expectToSelectReactSelectOption } from "./helper";
 
+test.use({
+  launchOptions: {
+    slowMo: 50,
+  },
+});
+
 test.describe
   .serial("Sync pipeline with new source, destination and local model", () => {
   const pipelineId = `sync-pipeline-${Math.floor(Math.random() * 10000)}`;
@@ -256,10 +262,9 @@ test.describe
 
     // Should input local model file and enable set up model button
     const setupButton = page.locator("button", { hasText: "Set up" });
-    await Promise.all([
-      setupButton.isEnabled(),
-      fileField.setInputFiles("./integration-test/data/dummy-cls-model.zip"),
-    ]);
+    await fileField.setInputFiles(
+      "./integration-test/data/dummy-cls-model.zip"
+    );
 
     // Should set up model and display model instance section
     const modelInstanceTitle = page.locator("h3", {

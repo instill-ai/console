@@ -128,11 +128,7 @@ test.describe.serial("Sync source", () => {
     // Should Input confirmation code
     const confirmationCodeInput =
       deleteResourceModal.locator("#confirmationCode");
-
-    await Promise.all([
-      confirmationCodeInput.fill(sourceId),
-      deleteSourceButton.isEnabled(),
-    ]);
+    await confirmationCodeInput.fill(sourceId);
 
     // Delete source and navigate to sources page
     await Promise.all([page.waitForNavigation(), deleteSourceButton.click()]);
