@@ -11,7 +11,7 @@ test("should navigate first time user to the onboarding page", async ({
   );
 });
 
-test("should enable email subscription by defautl", async ({ page }) => {
+test("should enable email subscription by default", async ({ page }) => {
   await page.goto("/onboarding", { waitUntil: "networkidle" });
 
   // Should check email subscription
