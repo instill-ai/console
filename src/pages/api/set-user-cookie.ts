@@ -18,14 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const hostname = req.headers.host?.split(":")[0];
     const payload: SetCookiePayload = {
       res: res,
       key: "instill-ai-user",
       value: JSON.stringify({
         cookie_token: body.token,
       }),
-      hostname: hostname ?? null,
+      domain: req.headers.origin ? new URL(req.headers.origin).hostname : null,
       maxAge: 60 * 60 * 24 * 2,
       httpOnly: process.env.NODE_ENV === "production" ? true : false,
     };

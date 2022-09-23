@@ -6,7 +6,7 @@ export type SetCookiePayload = {
   res: NextApiResponse;
   value: string;
   key: string;
-  hostname: Nullable<string>;
+  domain: Nullable<string>;
   maxAge: number;
   httpOnly: boolean;
 };
@@ -15,7 +15,7 @@ export const setCookie = ({
   res,
   value,
   key,
-  hostname,
+  domain,
   maxAge,
   httpOnly,
 }: SetCookiePayload) => {
@@ -26,7 +26,7 @@ export const setCookie = ({
     secure: process.env.NODE_ENV === "production" ? true : false,
     path: "/",
     sameSite: "lax",
-    domain: hostname ? hostname : undefined,
+    domain: domain ? domain : undefined,
   });
 
   res.setHeader("Set-Cookie", cookie);
