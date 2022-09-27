@@ -28,7 +28,7 @@ test.describe
   test.afterAll(async () => {
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}:undeploy`
+        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
     } catch (err) {
       return Promise.reject(err);
@@ -206,7 +206,7 @@ test.describe
   test.afterAll(async () => {
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}:undeploy`
+        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
     } catch (err) {
       return Promise.reject(err);
