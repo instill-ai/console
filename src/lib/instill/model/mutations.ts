@@ -67,7 +67,7 @@ export const createLocalModelMutation = async (
     }
 
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models:multipart`,
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/multipart`,
       formData,
       {
         headers: {
