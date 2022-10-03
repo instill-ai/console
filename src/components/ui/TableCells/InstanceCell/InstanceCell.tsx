@@ -83,9 +83,9 @@ const InstanceCell: FC<InstanceCellProps> = ({
               "gap-y-3": instances.length > 0,
             })}
           >
-            <div className="flex flex-row gap-x-3">
+            <div className="flex flex-row gap-x-[5px]">
               {icon}
-              <p className="text-instillGrey90 text-instill-body">
+              <p className="my-auto text-instillGrey90 text-instill-body">
                 {instances ? instances.length : 0}
               </p>
             </div>

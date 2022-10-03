@@ -82,7 +82,7 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
 
   return (
     <CellBase padding={padding}>
-      <div className={cn("flex flex-row gap-x-2", width)}>
+      <div className={cn("flex flex-row gap-x-[5px]", width)}>
         {definitionIcon}
         <p className="my-auto flex text-instillGrey90 text-instill-body">
           {definitionLabel}
