@@ -23,7 +23,7 @@ const ConnectionTypeCell = ({
     return (
       <CellBase padding={padding}>
         <div className={cn("py-2.5", width)}>
-          <div className="flex flex-row gap-x-2.5">
+          <div className="flex flex-row gap-x-[5px]">
             <Image
               className="my-auto"
               src={
@@ -33,8 +33,8 @@ const ConnectionTypeCell = ({
                   ? `/icons/airbyte/${connectorDefinition.connector_definition.icon}`
                   : `/icons/instill/${connectorDefinition.connector_definition.icon}`
               }
-              width={32}
-              height={32}
+              width={30}
+              height={30}
               layout="fixed"
             />
             <p

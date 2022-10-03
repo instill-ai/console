@@ -41,8 +41,8 @@ const ModelsCell: FC<ModelsCellProps> = ({
           <div key={key} className="flex flex-col gap-y-2">
             <div className="flex flex-row gap-x-1">
               <ModelInstanceIcon
-                width="w-5"
-                height="h-5"
+                width="w-[30px]"
+                height="h-[30px]"
                 color="fill-black"
                 position="my-auto"
               />
