@@ -13,7 +13,7 @@ type ReplaceRule = {
   replaceValue: string;
 };
 
-export type getCodeHikeTemplateSourceProps = {
+export type GetCodeHikeTemplateSourceProps = {
   templateName: string;
   replaceRules: ReplaceRule[];
   showCopyButton: boolean;
@@ -23,7 +23,7 @@ export const getCodeHikeTemplateSource = async ({
   templateName,
   replaceRules,
   showCopyButton,
-}: getCodeHikeTemplateSourceProps) => {
+}: GetCodeHikeTemplateSourceProps) => {
   try {
     const templatePath = join(
       process.cwd(),

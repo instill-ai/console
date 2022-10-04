@@ -5,14 +5,14 @@ import {
   ProgressMessageBoxState,
 } from "@instill-ai/design-system";
 import cn from "clsx";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { CH } from "@code-hike/mdx/components";
 
-import { getCodeSourceQuery, ModelInstance } from "@/lib/instill";
+import { getCodeHikeTemplateSourceQuery, ModelInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useTestModelInstance } from "@/services/model";
-import { CodeBlock } from "@/components/ui";
-import { highlightAll } from "prismjs";
 
 export type TestModelInstanceSectionProps = {
   modelInstance: Nullable<ModelInstance>;
@@ -25,14 +25,12 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  // ###################################################################
-  // #                                                                 #
-  // # Handle testing the model                                        #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # Handle testing the model                                               #
+  // ##########################################################################
 
-  const [testResult, setTestResult] =
-    useState<Nullable<{ source: string; code: string }>>(null);
+  const [testResultCodeSource, setTestResultCodeSource] =
+    useState<Nullable<MDXRemoteSerializeResult>>(null);
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -55,7 +53,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
       message: "Testing...",
     }));
 
-    setTestResult(null);
+    setTestResultCodeSource(null);
 
     testModelInstance.mutate(
       {
@@ -72,21 +70,19 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           }));
 
           try {
-            const source = await getCodeSourceQuery(
-              "test-result-template.mdx",
-              "instilltestresult",
-              JSON.stringify(result, null, "\t")
-            );
-
-            setTestResult({
-              source,
-              code: JSON.stringify(result, null, "\t"),
+            const source = await getCodeHikeTemplateSourceQuery({
+              templateName: "test-result-template.mdx",
+              replaceRules: [
+                {
+                  match: "instillTestResult",
+                  replaceValue: JSON.stringify(result, null, "\t"),
+                },
+              ],
+              showCopyButton: true,
             });
-
-            highlightAll();
+            setTestResultCodeSource(source);
           } catch (err) {
-            console.log(err);
-            setTestResult(null);
+            setTestResultCodeSource(null);
           }
 
           if (amplitudeIsInit) {
@@ -97,7 +93,7 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           }
         },
         onError: (error) => {
-          setTestResult(null);
+          setTestResultCodeSource(null);
           if (error instanceof Error) {
             setMessageBoxState(() => ({
               activate: true,
@@ -140,7 +136,9 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
           disabled={modelInstance?.state === "STATE_ONLINE" ? false : true}
         />
       </div>
-      {testResult ? <CodeBlock marginBottom="mb-10" {...testResult} /> : null}
+      {testResultCodeSource ? (
+        <MDXRemote {...testResultCodeSource} components={{ CH }} />
+      ) : null}
       <BasicProgressMessageBox
         state={messageBoxState}
         setState={setMessageBoxState}
