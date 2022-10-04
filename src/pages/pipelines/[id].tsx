@@ -1,9 +1,7 @@
-import { FC, ReactElement, useEffect } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { highlightAll } from "prismjs";
 import { GetServerSideProps } from "next";
-import { join } from "path";
-import fs from "fs";
+import { CH } from "@code-hike/mdx/components";
 
 import {
   useActivatePipeline,
@@ -16,7 +14,6 @@ import {
   PipelineModeLabel,
   PageTitle,
   ChangeResourceStateButton,
-  CodeBlock,
   PageBase,
   PageContentContainer,
   PageHead,
@@ -25,38 +22,30 @@ import { ConfigurePipelineForm } from "@/components/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import { Pipeline } from "@/lib/instill";
+import { getCodeHikeTemplateSource } from "@/lib/markdown";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const templatePath = join(
-    process.cwd(),
-    "src",
-    "lib",
-    "markdown",
-    "template",
-    "pipeline-snippet-simple.mdx"
-  );
-
-  const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
-  const codeStr = template.replaceAll(
-    "instill-pipeline-id",
-    `${context.params?.id}`
-  );
-
-  const snippet = `curl -X POST ${process.env.PIPELINE_BACKEND_BASE_URL}/v1alpha/pipelines/${context.params?.id}:trigger -d '{
-    "inputs": [
+export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
+  context
+) => {
+  const codeMdxSource = await getCodeHikeTemplateSource({
+    templateName: "pipeline-code-template.mdx",
+    replaceRules: [
       {
-        "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+        match: "instillServerHostName",
+        replaceValue: process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL ?? "",
       },
       {
-        "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
-      }
-    ]
-  }'`;
+        match: "instillPipelineId",
+        replaceValue: context.params?.id?.toString() ?? "",
+      },
+    ],
+    showCopyButton: true,
+  });
 
   return {
     props: {
-      snippetSource: codeStr,
-      snippetCode: snippet,
+      codeMdxSource,
     },
   };
 };
@@ -66,50 +55,21 @@ type GetLayOutProps = {
 };
 
 type PipelinePageProps = {
-  snippetSource: string;
-  snippetCode: string;
+  codeMdxSource: MDXRemoteSerializeResult;
 };
 
 const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ snippetSource, snippetCode }) => {
+} = ({ codeMdxSource }) => {
   const router = useRouter();
   const { id } = router.query;
-
   const pipeline = usePipeline(id ? `pipelines/${id.toString()}` : null);
-
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
 
-  // ###################################################################
-  // #                                                                 #
-  // # Setup code block                                                #
-  // #                                                                 #
-  // ###################################################################
-
-  // const [snippet, setSnippet] =
-  //   useState<Nullable<MDXRemoteSerializeResult>>(null);
-
-  // useEffect(() => {
-  //   setSnippet({
-  //     compiledSource: snippetSource.compiledSource.replaceAll(
-  //       "instill-pipeline-id",
-  //       `${id}`
-  //     ),
-  //     scope: snippetSource.scope,
-  //     frontmatter: snippetSource.frontmatter,
-  //   });
-  // }, []);
-
-  useEffect(() => {
-    highlightAll();
-  }, []);
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
+  // #########################################################################
+  // # Send page loaded data to Amplitude                                    #
+  // #########################################################################
 
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -176,7 +136,9 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             You can now trigger the pipeline via sending REST requests.
           </p>
         </div>
-        <CodeBlock source={snippetSource} code={snippetCode} />
+        <div>
+          <MDXRemote {...codeMdxSource} components={{ CH }} />
+        </div>
       </PageContentContainer>
     </>
   );
@@ -184,6 +146,10 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
 
 PipelineDetailsPage.getLayout = (page) => {
   return <PageBase>{page}</PageBase>;
+};
+
+export const config = {
+  unstable_includeFiles: ["node_modules/.pnpm/**/shiki/**/*.json"],
 };
 
 export default PipelineDetailsPage;

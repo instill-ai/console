@@ -8,11 +8,22 @@ import { remarkCodeHike } from "@code-hike/mdx";
  * with code-hike and rose-pine-moon theme
  */
 
-export const getTemplateCodeBlockMdx = async (
-  templateName: string,
-  match: string,
-  value: string
-) => {
+type ReplaceRule = {
+  match: string | RegExp;
+  replaceValue: string;
+};
+
+export type getCodeHikeTemplateSourceProps = {
+  templateName: string;
+  replaceRules: ReplaceRule[];
+  showCopyButton: boolean;
+};
+
+export const getCodeHikeTemplateSource = async ({
+  templateName,
+  replaceRules,
+  showCopyButton,
+}: getCodeHikeTemplateSourceProps) => {
   try {
     const templatePath = join(
       process.cwd(),
@@ -30,12 +41,17 @@ export const getTemplateCodeBlockMdx = async (
       )
     );
 
-    const template = fs.readFileSync(templatePath, { encoding: "utf-8" });
-    const codeStr = template.replaceAll(match, value);
+    let template = fs.readFileSync(templatePath, { encoding: "utf-8" });
 
-    const templateSource = await serialize(codeStr, {
+    replaceRules.forEach((e) => {
+      template = template.replace(new RegExp(e.match, "g"), e.replaceValue);
+    });
+
+    const templateSource = await serialize(template, {
       mdxOptions: {
-        remarkPlugins: [[remarkCodeHike, { autoImport: false, theme }]],
+        remarkPlugins: [
+          [remarkCodeHike, { autoImport: false, theme, showCopyButton }],
+        ],
         useDynamicImport: true,
       },
     });
