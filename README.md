@@ -38,8 +38,8 @@ To setup the local dev environment with this repo, you need follow the below ste
 3. In the VDP folder you just clone, use `make build PROFILE=all` to build the full images of vdp, this step will take some time if this is your first time setting up the VDP.
 4. In the same VDP folder, use `make dev PROFILE=all` This will bring up the full working VDP backend, except the console you comment out at the second step.
 5. Clone the [console repo](https://github.com/instill-ai/console)
-6. Install yarn if you don’t have it, use `npm install` or `brew install yarn` if you have homebrew.
-7. Install all the dependencies, use `yarn install`.
+6. Install pnpm if you don’t have it, use `npm install -g pnpm` or `brew install pnpm` if you have homebrew.
+7. Install all the dependencies, use `pnpm install`.
 8. Make sure the environment variables in the `.env` file are correct. They should map one-to-one to the config of the VDP. By default they are
 
 ```
@@ -51,18 +51,18 @@ To setup the local dev environment with this repo, you need follow the below ste
 - NEXT_PUBLIC_API_VERSION=v1alpha
 ```
 
-9. You can now use `yarn dev` to run the local Next.js server if your VDP has been set up correctly, it should not have any error at the browser inspection window.
-10. If you want to build a docker container you could use `yarn docker:app:develop`.
+9. You can now use `pnpm dev` to run the local Next.js server if your VDP has been set up correctly, it should not have any error at the browser inspection window.
+10. If you want to build a docker container you could use `pnpm docker-compose-up`.
 
 # Available scripts
 
-- `yarn dev`: Set up the dev server for the Next.js app.
-- `yarn build`: Build a standalone server of Next.js app.
-- `yarn server`: Start a standalone server of the Next.js app you just built.
-- `yarn docker:app:develop`: Build the docker image of the Next.js app.
-- `yarn docker:prune-cache`: Prune all the cache you have (Be careful of this).
-- `yarn lint`: Lint the codebase.
-- `yarn storybook`: Bring up the storybook server.
+- `pnpm dev`: Set up the dev server for the Next.js app.
+- `pnpm build`: Build a standalone server of Next.js app.
+- `pnpm server`: Start a standalone server of the Next.js app you just built.
+- `pnpm docker-compose-up`: Build the docker image of the Next.js app.
+- `pnpm docker:prune-cache`: Prune all the cache you have (Be careful of this).
+- `pnpm lint`: Lint the codebase.
+- `pnpm storybook`: Bring up the storybook server.
 
 # Caveats
 
