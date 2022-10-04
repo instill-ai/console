@@ -1,8 +1,5 @@
 ## About lib/markdown
 
-!!! We had encountered some serious issue when using this method.
-https://github.com/EiffelFly/code-hike-remote-docker
-
 We will store stuff related to markdown, remark, mdx here.
 
 ### About how we utilize mdx, next-mdx-remote and code-hike.
@@ -71,3 +68,10 @@ const templateSource = await serialize(codeStr, {
 ## Caveat
 
 - Because mdx compiler can only run in server side, if client side need to dynamic change the value of code-block, you need to request `/api/get-code-hike-template-source` api route to generate the mdx source.
+- Because Shiki import languages and themes by fs, Next.js will tree-shake both languages and themes. We need to specific Next.js don't tree-shake these files by using unstable_includeFiles
+
+```js
+export const config = {
+  unstable_includeFiles: ["node_modules/.pnpm/**/shiki/**/*.json"],
+};
+```
