@@ -53,11 +53,9 @@ const ModelDetailsPage: FC & {
   const router = useRouter();
   const { id } = router.query;
 
-  // ###################################################################
-  // #                                                                 #
-  // # 1 - Initialize Model and related modelInstances                 #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # 1 - Initialize Model and related modelInstances                        #
+  // ##########################################################################
 
   const model = useModel(id ? `models/${id}` : null);
 
@@ -121,11 +119,9 @@ const ModelDetailsPage: FC & {
     []
   );
 
-  // ###################################################################
-  // #                                                                 #
-  // # 2 - Initialize pipelines that use related modelInstane          #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # 2 - Initialize pipelines that use related modelInstane                 #
+  // ##########################################################################
 
   const pipelines = usePipelines(true);
 
@@ -160,11 +156,9 @@ const ModelDetailsPage: FC & {
     return pipelinesGroupByModelInstance[selectedModelInstances.id];
   }, [pipelinesGroupByModelInstance, selectedModelInstances]);
 
-  // ###################################################################
-  // #                                                                 #
-  // # Get model instance's readme                                     #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # Get model instance's readme                                            #
+  // ##########################################################################
 
   const modelInstanceReadme = useModelInstanceReadme(
     modelInstances.data?.find(
@@ -172,20 +166,16 @@ const ModelDetailsPage: FC & {
     )?.name ?? null
   );
 
-  // ###################################################################
-  // #                                                                 #
-  // # Toggle the model instance state                                 #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # Toggle the model instance state                                        #
+  // ##########################################################################
 
   const deployModelInstance = useDeployModelInstance();
   const unDeployModelInstance = useUnDeployModelInstance();
 
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # Send page loaded data to Amplitude                                     #
+  // ##########################################################################
 
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -308,6 +298,12 @@ const ModelDetailsPage: FC & {
 
 ModelDetailsPage.getLayout = (page) => {
   return <PageBase>{page}</PageBase>;
+};
+
+// We need this line to make our code-hike snippet work under Next.js standalone server
+// https://github.com/code-hike/codehike/issues/283
+export const config = {
+  unstable_includeFiles: ["node_modules/.pnpm/**/shiki/**/*.json"],
 };
 
 export default ModelDetailsPage;

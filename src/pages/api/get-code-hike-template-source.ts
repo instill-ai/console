@@ -1,4 +1,4 @@
-import { getTemplateCodeBlockMdx } from "@/lib/markdown";
+import { getCodeHikeTemplateSource } from "@/lib/markdown";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,18 +13,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).end(`templateName not provided`);
   }
 
-  if (!body.match) {
+  if (!body.replaceRules) {
     res.status(500).end(`match not provided`);
   }
 
-  if (!body.value) {
-    res.status(500).end(`value not provided`);
+  if (!body.showCopyButton) {
+    res.status(500).end(`match not provided`);
   }
 
-  const { templateName, match, value } = body;
+  const { templateName, replaceRules, showCopyButton } = body;
 
   try {
-    const source = await getTemplateCodeBlockMdx(templateName, match, value);
+    const source = await getCodeHikeTemplateSource({
+      templateName,
+      replaceRules,
+      showCopyButton,
+    });
     return res.status(200).json(source);
   } catch (err) {
     return res.status(500).json(err);

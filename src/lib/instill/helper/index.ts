@@ -1,5 +1,7 @@
+import { GetCodeHikeTemplateSourceProps } from "@/lib/markdown";
 import { Nullable } from "@/types/general";
 import axios from "axios";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 export const getQueryString = (
   baseUrl: string,
@@ -24,18 +26,21 @@ export const getShikiSourceQuery = async (source: string) => {
   }
 };
 
-export const getCodeSourceQuery = async (
-  templateName: string,
-  match: string,
-  value: string
-) => {
+export type GetCodeHikeTemplateSourceQueryPayload =
+  GetCodeHikeTemplateSourceProps;
+
+export const getCodeHikeTemplateSourceQuery = async ({
+  templateName,
+  replaceRules,
+  showCopyButton,
+}: GetCodeHikeTemplateSourceQueryPayload) => {
   try {
-    const response = await axios.post("/api/get-code-source", {
+    const response = await axios.post("/api/get-code-hike-template-source", {
       templateName,
-      match,
-      value,
+      replaceRules,
+      showCopyButton,
     });
-    return Promise.resolve(response.data as string);
+    return Promise.resolve(response.data as MDXRemoteSerializeResult);
   } catch (err) {
     return Promise.reject(err);
   }
