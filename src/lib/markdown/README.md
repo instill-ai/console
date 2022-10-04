@@ -70,4 +70,4 @@ const templateSource = await serialize(codeStr, {
 
 ## Caveat
 
-- Because mdx compiler can only run in server side, if client side need to dynamic change the value of code-block, you need to request `/api/get-template-code-block-mdx` api route to generate the mdx source.
+- Because mdx compiler can only run in server side, if client side need to dynamic change the value of code-block, you need to request `/api/get-code-hike-template-source` api route to generate the mdx source.
