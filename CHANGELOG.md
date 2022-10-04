@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.13.0-alpha](https://github.com/instill-ai/console/compare/v0.12.0-alpha...v0.13.0-alpha) (2022-10-04)
+
+
+### Features
+
+* extend the time span of our user cookie ([#289](https://github.com/instill-ai/console/issues/289)) ([76a6f99](https://github.com/instill-ai/console/commit/76a6f99b89e6a10517149167432c0b70a7906e1f))
+* Finish integration test and make it stable ([#281](https://github.com/instill-ai/console/issues/281)) ([3fd8d21](https://github.com/instill-ai/console/commit/3fd8d217eab93909c7be74c02f2d75d42c7c385f))
+* replace prism.js with code-hike ([#292](https://github.com/instill-ai/console/issues/292)) ([cb61708](https://github.com/instill-ai/console/commit/cb61708ac5734efcf676d8f067d88212abbc732f))
+* unify the gap between elements in every table ([#291](https://github.com/instill-ai/console/issues/291)) ([e743820](https://github.com/instill-ai/console/commit/e743820d23a8a9aaddd9594769cd02c50f8ceae9))
+* update console request URL according to new protobuf ([#287](https://github.com/instill-ai/console/issues/287)) ([fa7ecc3](https://github.com/instill-ai/console/commit/fa7ecc33a2a6aa9dfe74d427d5c184c9fc51ae69))
+
+
+### Bug Fixes
+
+* fix pipeline e2e not stable ([#285](https://github.com/instill-ai/console/issues/285)) ([a26e599](https://github.com/instill-ai/console/commit/a26e5994f192446c0ca5405a4f2425d7e13f3176))
+* fix set-cookie api route issue due to wrong domain name ([#284](https://github.com/instill-ai/console/issues/284)) ([c3efcdd](https://github.com/instill-ai/console/commit/c3efcdd7e546da3ed88571668a1195102dc3415b))
+
 ## [0.12.0-alpha](https://github.com/instill-ai/console/compare/v0.11.0-alpha...v0.12.0-alpha) (2022-09-18)
 
 
