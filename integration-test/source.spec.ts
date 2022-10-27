@@ -1,24 +1,23 @@
 import { test, expect } from "@playwright/test";
-import axios from "axios";
 import { cleanUpSource, expectToSelectReactSelectOption } from "./helper";
 
-test.describe.serial("Sync source", () => {
-  const sourceId = "source-grpc";
+const sourceId = "source-grpc";
 
-  // If there has a source-grpc connector, we need to delete it then proceed the test.
-  test.beforeAll(async () => {
-    try {
-      await cleanUpSource(sourceId);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  });
-
-  // We need to clean up source after the test too.
-  test.afterAll(async () => {
+// If there has a source-grpc connector, we need to delete it then proceed the test.
+test.beforeAll(async () => {
+  try {
     await cleanUpSource(sourceId);
-  });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+});
 
+// We need to clean up source after the test too.
+test.afterAll(async () => {
+  await cleanUpSource(sourceId);
+});
+
+test.describe.serial("Sync source", () => {
   test("should create source", async ({ page }) => {
     await page.goto("/sources/create", { waitUntil: "networkidle" });
 
