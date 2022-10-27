@@ -1,4 +1,5 @@
 import { BrowserContext, expect, Locator, Page } from "@playwright/test";
+import axios from "axios";
 
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,5 +34,45 @@ export const expectToSelectReactSelectOption = async (
     ]);
   } else {
     await selectElement.click();
+  }
+};
+
+export const cleanUpDestination = async (id: string): Promise<void> => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+    );
+
+    const targetDestination = (data.destination_connectors as any[]).find(
+      (e) => e.id === id
+    );
+
+    if (targetDestination) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${id}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const cleanUpSource = async (id: string): Promise<void> => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+    );
+
+    const targetSource = (data.source_connectors as any[]).find(
+      (e) => e.id === id
+    );
+
+    if (targetSource) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/${id}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
