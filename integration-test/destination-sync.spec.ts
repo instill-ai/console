@@ -1,22 +1,22 @@
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
-import { cleanUpDestination, expectToSelectReactSelectOption } from "./helper";
+import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
+
+const destinationId = "destination-http";
+const destinationType = "HTTP";
+
+// If there has a destination-http connector, we need to delete it then proceed the test.
+test.beforeAll(async () => {
+  await deleteDestination(destinationId);
+});
+
+// Delete used sync destination connector to avoid conflict or casuing other
+// test to fall.
+test.afterAll(async () => {
+  await deleteDestination(destinationId);
+});
 
 test.describe.serial("Sync destination", () => {
-  const destinationId = "destination-http";
-  const destinationType = "HTTP";
-
-  // If there has a destination-http connector, we need to delete it then proceed the test.
-  test.beforeAll(async () => {
-    await cleanUpDestination(destinationId);
-  });
-
-  // Delete used sync destination connector to avoid conflict or casuing other
-  // test to fall.
-  test.afterAll(async () => {
-    await cleanUpDestination(destinationId);
-  });
-
   test("should create sync http destination", async ({ page }) => {
     await page.goto("/destinations/create");
 

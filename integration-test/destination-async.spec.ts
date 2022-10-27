@@ -1,6 +1,17 @@
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
-import { expectToSelectReactSelectOption } from "./helper";
+import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
+
+const destinationId = `destination-async-${Math.floor(Math.random() * 10000)}`;
+const destinationDescription = "Hi, I am";
+const destinationType = "S3";
+const s3Key = "key_123";
+const s3SecretKey = "key_secret_123";
+const s3BucketName = "bucket_123";
+const s3BucketPath = "bucket_path_123";
+const s3BucketRegion = "us-east-1";
+const s3OutputFormat = "Avro: Apache Avro";
+const s3OutputCompression = "No Compression";
 
 test.use({
   launchOptions: {
@@ -8,21 +19,11 @@ test.use({
   },
 });
 
+test.afterAll(async () => {
+  await deleteDestination(destinationId);
+});
+
 test.describe.serial("Async destination", () => {
-  const destinationId = `destination-async-${Math.floor(
-    Math.random() * 10000
-  )}`;
-
-  const destinationDescription = "Hi, I am";
-  const destinationType = "S3";
-  const s3Key = "key_123";
-  const s3SecretKey = "key_secret_123";
-  const s3BucketName = "bucket_123";
-  const s3BucketPath = "bucket_path_123";
-  const s3BucketRegion = "us-east-1";
-  const s3OutputFormat = "Avro: Apache Avro";
-  const s3OutputCompression = "No Compression";
-
   test("should create async destination", async ({ page }) => {
     await page.goto("/destinations/create");
 
