@@ -7,9 +7,9 @@ import {
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
 import {
-  cleanUpDestination,
-  cleanUpModel,
-  cleanUpSource,
+  deleteDestination,
+  deleteModel,
+  deleteSource,
   expectToSelectReactSelectOption,
 } from "./helper";
 
@@ -40,9 +40,9 @@ test.afterAll(async () => {
     );
 
     // We need to clean up destination and source too
-    await cleanUpDestination("destination-http");
-    await cleanUpSource("source-http");
-    await cleanUpModel(modelId);
+    await deleteDestination("destination-http");
+    await deleteSource("source-http");
+    await deleteModel(modelId);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -55,8 +55,8 @@ test.describe
       await axios.post(
         `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
-      await cleanUpDestination(destinationId);
-      await cleanUpSource("source-http");
+      await deleteDestination(destinationId);
+      await deleteSource("source-http");
     } catch (err) {
       return Promise.reject(err);
     }

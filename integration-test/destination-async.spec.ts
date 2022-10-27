@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
-import { cleanUpDestination, expectToSelectReactSelectOption } from "./helper";
+import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
 
 const destinationId = `destination-async-${Math.floor(Math.random() * 10000)}`;
 const destinationDescription = "Hi, I am";
@@ -20,7 +20,7 @@ test.use({
 });
 
 test.afterAll(async () => {
-  await cleanUpDestination(destinationId);
+  await deleteDestination(destinationId);
 });
 
 test.describe.serial("Async destination", () => {

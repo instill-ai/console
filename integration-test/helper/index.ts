@@ -37,7 +37,7 @@ export const expectToSelectReactSelectOption = async (
   }
 };
 
-export const cleanUpDestination = async (
+export const deleteDestination = async (
   destinationId: string
 ): Promise<void> => {
   try {
@@ -59,7 +59,7 @@ export const cleanUpDestination = async (
   }
 };
 
-export const cleanUpSource = async (sourceId: string): Promise<void> => {
+export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
     const { data } = await axios.get(
       `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
@@ -79,7 +79,7 @@ export const cleanUpSource = async (sourceId: string): Promise<void> => {
   }
 };
 
-export const cleanUpModel = async (modelId: string) => {
+export const deleteModel = async (modelId: string) => {
   try {
     const { data } = await axios.get(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models?view=VIEW_FULL`

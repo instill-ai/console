@@ -6,7 +6,6 @@ import {
   expectToDeployModel,
   expectToUpdateModelDescription,
 } from "./common/model";
-import { cleanUpModel } from "./helper";
 
 const modelId = `github-model-${Math.floor(Math.random() * 10000)}`;
 const modelSource = "GitHub";
