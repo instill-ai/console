@@ -63,7 +63,7 @@ export const cleanUpSource = async (id: string): Promise<void> => {
       `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
     );
 
-    const targetSource = (data.destination_connectors as any[]).find(
+    const targetSource = (data.source_connectors as any[]).find(
       (e) => e.id === id
     );
 

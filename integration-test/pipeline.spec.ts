@@ -6,7 +6,11 @@ import {
   expectToDeletePipeline,
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
-import { delay, expectToSelectReactSelectOption } from "./helper";
+import {
+  cleanUpDestination,
+  cleanUpSource,
+  expectToSelectReactSelectOption,
+} from "./helper";
 
 test.use({
   launchOptions: {
@@ -30,6 +34,10 @@ test.describe
       await axios.post(
         `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
+
+      // We need to clean up destination and source too
+      await cleanUpDestination("destination-http");
+      await cleanUpSource("source-http");
     } catch (err) {
       return Promise.reject(err);
     }
@@ -199,15 +207,13 @@ test.describe
   const password = "scylla-password";
   const address = "scylla-address";
 
-  test.afterEach(async () => {
-    await delay(500);
-  });
-
   test.afterAll(async () => {
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
+      await cleanUpDestination("destination-http");
+      await cleanUpSource("source-http");
     } catch (err) {
       return Promise.reject(err);
     }
