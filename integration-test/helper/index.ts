@@ -59,6 +59,22 @@ export const deleteDestination = async (
   }
 };
 
+export const deleteAllDestinations = async () => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+    );
+
+    for (const destination of data.destination_connectors) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${destination.id}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
     const { data } = await axios.get(
@@ -79,6 +95,22 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
   }
 };
 
+export const deleteAllSources = async () => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+    );
+
+    for (const source of data.source_connectors) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/${source.id}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
 export const deleteModel = async (modelId: string) => {
   try {
     const { data } = await axios.get(
@@ -90,6 +122,38 @@ export const deleteModel = async (modelId: string) => {
     if (targetModel) {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const deleteAllModels = async () => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models?view=VIEW_FULL`
+    );
+
+    for (const model of data.models) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${model.id}`
+      );
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const deleteAllPipelines = async () => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
+    );
+
+    for (const pipeline of data.pipelines) {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines/${pipeline.id}`
       );
     }
   } catch (err) {

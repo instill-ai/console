@@ -15,6 +15,7 @@ if (!process.env.NEXT_PUBLIC_MAIN_URL) {
 const config: PlaywrightTestConfig = {
   testDir: "./integration-test",
   globalSetup: require.resolve("./integration-test/helper/global-setup"),
+  globalTeardown: require.resolve("./integration-test/helper/global-teardown"),
   /* Maximum time one test can run for. */
   timeout: 60 * 1000,
   expect: {
