@@ -74,7 +74,7 @@ const ConfigureModelInstanceForm = ({
         {modelInstance.model_definition === "model-definitions/huggingface" ? (
           <>
             <BasicTextField
-              id="huggingface-id"
+              id="huggingface-model-id"
               label="HuggingFace model ID"
               description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
               value={modelInstance.configuration.repo_id}
