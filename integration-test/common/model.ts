@@ -117,7 +117,7 @@ export type ExpectCorrectModelDetailsProps = {
     | "STATE_UNSPECIFIED"
     | "STATE_ERROR";
   modelTask: string;
-  additionalRule?: () => Promise<void>;
+  additionalRules?: () => Promise<void>;
 };
 
 export const expectCorrectModelDetails = async ({
@@ -127,7 +127,7 @@ export const expectCorrectModelDetails = async ({
   modelInstanceTag,
   modelState,
   modelTask,
-  additionalRule,
+  additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
@@ -166,7 +166,7 @@ export const expectCorrectModelDetails = async ({
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   }
 
-  if (additionalRule) await additionalRule();
+  if (additionalRules) await additionalRules();
 };
 
 export const expectToDeployModel = async (

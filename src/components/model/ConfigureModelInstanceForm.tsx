@@ -26,6 +26,8 @@ const ConfigureModelInstanceForm = ({
       status: null,
     });
 
+  console.log(modelInstance);
+
   return (
     <FormBase
       padding={null}
@@ -64,6 +66,18 @@ const ConfigureModelInstanceForm = ({
               label="Cloud storage url"
               description="the cloud storage url, e.g. `gs://public-europe-west2-c-artifacts/vdp/public-models/yolov4`."
               value={modelInstance.configuration.url}
+              disabled={true}
+              required={true}
+            />
+          </>
+        ) : null}
+        {modelInstance.model_definition === "model-definitions/huggingface" ? (
+          <>
+            <BasicTextField
+              id="huggingface-model-id"
+              label="HuggingFace model ID"
+              description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
+              value={modelInstance.configuration.repo_id}
               disabled={true}
               required={true}
             />

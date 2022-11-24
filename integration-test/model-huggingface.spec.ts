@@ -84,6 +84,13 @@ test.describe.serial("Hugging face model", () => {
       modelInstanceTag,
       modelState: "STATE_ONLINE",
       modelTask: "CLASSIFICATION",
+      additionalRules: async () => {
+        const huggingFaceModelIdField = page.locator(
+          "input#huggingface-model-id"
+        );
+        expect(await huggingFaceModelIdField.isEditable()).toBeFalsy();
+        await expect(huggingFaceModelIdField).toHaveValue(huggingFaceId);
+      },
     });
   });
 
