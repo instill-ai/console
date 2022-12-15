@@ -167,10 +167,10 @@ const ConfigureSourceForm = ({
   return (
     <>
       <FormBase
-        padding={null}
         marginBottom={marginBottom}
         noValidate={true}
         flex1={false}
+        padding={null}
       >
         <div className="mb-10 flex flex-col">
           <BasicSingleSelect

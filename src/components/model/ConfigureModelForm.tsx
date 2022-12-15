@@ -193,9 +193,9 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     <>
       <FormBase
         marginBottom={marginBottom}
-        padding={null}
         flex1={false}
         noValidate={true}
+        padding={null}
       >
         <div className="mb-10 flex flex-col">
           <BasicTextArea

@@ -188,23 +188,25 @@ const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
       noValidate={true}
       flex1={false}
     >
-      <BasicSingleSelect
-        id="sourceDefinition"
-        label="Source type"
-        instanceId="sourceDefinition"
-        options={sourceDefinitionOptions}
-        value={selectedSourceDefinitionOption}
-        error={fieldErrors.definition || null}
-        onChange={handleDefinitionChange}
-        required={true}
-        description={`<a href=${
-          fieldValues.definition === null
-            ? "https://www.instill.tech/docs/source-connectors/overview"
-            : fieldValues.definition === "source-http"
-            ? "https://www.instill.tech/docs/source-connectors/http"
-            : "https://www.instill.tech/docs/source-connectors/grpc"
-        }>Setup Guide</a>`}
-      />
+      <div className="flex flex-col">
+        <BasicSingleSelect
+          id="sourceDefinition"
+          label="Source type"
+          instanceId="sourceDefinition"
+          options={sourceDefinitionOptions}
+          value={selectedSourceDefinitionOption}
+          error={fieldErrors.definition || null}
+          onChange={handleDefinitionChange}
+          required={true}
+          description={`<a href=${
+            fieldValues.definition === null
+              ? "https://www.instill.tech/docs/source-connectors/overview"
+              : fieldValues.definition === "source-http"
+              ? "https://www.instill.tech/docs/source-connectors/http"
+              : "https://www.instill.tech/docs/source-connectors/grpc"
+          }>Setup Guide</a>`}
+        />
+      </div>
       <div className="flex flex-row">
         <BasicProgressMessageBox
           state={messageBoxState}

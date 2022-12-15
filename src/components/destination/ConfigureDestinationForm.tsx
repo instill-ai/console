@@ -355,7 +355,12 @@ const ConfigureDestinationForm = ({
 
   return (
     <>
-      <FormBase padding="" noValidate={true} flex1={false} marginBottom={null}>
+      <FormBase
+        noValidate={true}
+        flex1={false}
+        padding={null}
+        marginBottom={null}
+      >
         <div className="flex flex-col mb-8 gap-y-5">
           <BasicSingleSelect
             id="definition"

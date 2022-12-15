@@ -520,147 +520,148 @@ const CreateModelForm = () => {
       noValidate={true}
       flex1={false}
       marginBottom={null}
-      gapY="gap-y-5"
     >
-      <BasicTextField
-        id="modelId"
-        label="ID"
-        key="id"
-        description="Pick a name to help you identify this resource. 
+      <div className="flex flex-col gap-y-5 mb-10">
+        <BasicTextField
+          id="modelId"
+          label="ID"
+          key="id"
+          description="Pick a name to help you identify this resource. 
                   The ID conforms to RFC-1034, which restricts to letters, 
                   numbers, and hyphen, with the first character a letter, 
                   the last a letter or a number, and a 63 character maximum."
-        required={true}
-        disabled={
-          modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
-        }
-        value={fieldValues.id}
-        error={fieldErrors.id}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          updateFieldValues("id", event.target.value.trim())
-        }
-      />
-      <BasicTextArea
-        id="description"
-        label="Description"
-        key="description"
-        description="Fill with a short description."
-        required={false}
-        disabled={
-          modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
-        }
-        error={fieldErrors.description}
-        value={fieldValues.description}
-        enableCounter={true}
-        counterWordLimit={1023}
-        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-          updateFieldValues("description", event.target.value)
-        }
-      />
-      <BasicSingleSelect
-        id="modelDefinition"
-        key="modelDefinition"
-        instanceId="modelDefinition"
-        menuPlacement="auto"
-        label="Model source"
-        value={selectedModelDefinitionOption}
-        options={modelDefinitionOptions ? modelDefinitionOptions : []}
-        error={fieldErrors.modelDefinition || null}
-        onChange={(option) => {
-          updateFieldValues(
-            "modelDefinition",
-            (option?.value as string) || null
-          );
-          setSelectedModelDefinitionOption(option);
-        }}
-        disabled={
-          modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
-        }
-        required={true}
-        description={`<a href="${getModelSetupGuide(
-          fieldValues
-        )}">Setup Guide</a>`}
-      />
-      {selectedModelDefinitionOption?.value === "github" ? (
-        <>
-          <BasicTextField
-            id="modelRepo"
-            label="GitHub repository"
-            description="The name of a public GitHub repository, e.g.
+          required={true}
+          disabled={
+            modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
+          }
+          value={fieldValues.id}
+          error={fieldErrors.id}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            updateFieldValues("id", event.target.value.trim())
+          }
+        />
+        <BasicTextArea
+          id="description"
+          label="Description"
+          key="description"
+          description="Fill with a short description."
+          required={false}
+          disabled={
+            modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
+          }
+          error={fieldErrors.description}
+          value={fieldValues.description}
+          enableCounter={true}
+          counterWordLimit={1023}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            updateFieldValues("description", event.target.value)
+          }
+        />
+        <BasicSingleSelect
+          id="modelDefinition"
+          key="modelDefinition"
+          instanceId="modelDefinition"
+          menuPlacement="auto"
+          label="Model source"
+          value={selectedModelDefinitionOption}
+          options={modelDefinitionOptions ? modelDefinitionOptions : []}
+          error={fieldErrors.modelDefinition || null}
+          onChange={(option) => {
+            updateFieldValues(
+              "modelDefinition",
+              (option?.value as string) || null
+            );
+            setSelectedModelDefinitionOption(option);
+          }}
+          disabled={
+            modelDefinitions.isSuccess ? (modelCreated ? true : false) : false
+          }
+          required={true}
+          description={`<a href="${getModelSetupGuide(
+            fieldValues
+          )}">Setup Guide</a>`}
+        />
+        {selectedModelDefinitionOption?.value === "github" ? (
+          <>
+            <BasicTextField
+              id="modelRepo"
+              label="GitHub repository"
+              description="The name of a public GitHub repository, e.g.
                       `instill-ai/model-mobilenetv2`."
-            required={true}
-            value={fieldValues.repo}
-            error={fieldErrors.repo}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              updateFieldValues("repo", event.target.value)
-            }
-            disabled={modelCreated ? true : false}
-          />
-        </>
-      ) : null}
-      {selectedModelDefinitionOption?.value === "local" ? (
-        <>
-          <BasicUploadFileField
-            id="file"
-            name="file"
-            label="Upload a file"
-            description="Create and upload a zip file that contains all the model files from your computer"
-            error={fieldErrors.file || null}
-            placeholder=""
-            uploadButtonText="Upload"
-            required={true}
-            readOnly={false}
-            disabled={modelCreated ? true : false}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              updateFieldValues(
-                "file",
-                event.target.files ? event.target.files[0] : null
-              )
-            }
-          />
-        </>
-      ) : null}
-      {selectedModelDefinitionOption?.value === "artivc" ? (
-        <>
-          <BasicTextField
-            id="gcsBucketPath"
-            label="GCS Bucket Path"
-            description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
-            required={true}
-            value={fieldValues.gcsBucketPath}
-            error={fieldErrors.gcsBucketPath}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              updateFieldValues("gcsBucketPath", event.target.value)
-            }
-          />
-          <BasicTextArea
-            id="credentials"
-            label="Credentials JSON"
-            key="credentials"
-            description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
-            error={fieldErrors.credentials}
-            value={fieldValues.credentials}
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-              updateFieldValues("credentials", event.target.value)
-            }
-          />
-        </>
-      ) : null}
-      {selectedModelDefinitionOption?.value === "huggingface" ? (
-        <>
-          <BasicTextField
-            id="huggingFaceRepo"
-            label="HuggingFace model ID"
-            description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
-            required={true}
-            value={fieldValues.huggingFaceRepo}
-            error={fieldErrors.huggingFaceRepo}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              updateFieldValues("huggingFaceRepo", event.target.value)
-            }
-          />
-        </>
-      ) : null}
+              required={true}
+              value={fieldValues.repo}
+              error={fieldErrors.repo}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                updateFieldValues("repo", event.target.value)
+              }
+              disabled={modelCreated ? true : false}
+            />
+          </>
+        ) : null}
+        {selectedModelDefinitionOption?.value === "local" ? (
+          <>
+            <BasicUploadFileField
+              id="file"
+              name="file"
+              label="Upload a file"
+              description="Create and upload a zip file that contains all the model files from your computer"
+              error={fieldErrors.file || null}
+              placeholder=""
+              uploadButtonText="Upload"
+              required={true}
+              readOnly={false}
+              disabled={modelCreated ? true : false}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                updateFieldValues(
+                  "file",
+                  event.target.files ? event.target.files[0] : null
+                )
+              }
+            />
+          </>
+        ) : null}
+        {selectedModelDefinitionOption?.value === "artivc" ? (
+          <>
+            <BasicTextField
+              id="gcsBucketPath"
+              label="GCS Bucket Path"
+              description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
+              required={true}
+              value={fieldValues.gcsBucketPath}
+              error={fieldErrors.gcsBucketPath}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                updateFieldValues("gcsBucketPath", event.target.value)
+              }
+            />
+            <BasicTextArea
+              id="credentials"
+              label="Credentials JSON"
+              key="credentials"
+              description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
+              error={fieldErrors.credentials}
+              value={fieldValues.credentials}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                updateFieldValues("credentials", event.target.value)
+              }
+            />
+          </>
+        ) : null}
+        {selectedModelDefinitionOption?.value === "huggingface" ? (
+          <>
+            <BasicTextField
+              id="huggingFaceRepo"
+              label="HuggingFace model ID"
+              description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
+              required={true}
+              value={fieldValues.huggingFaceRepo}
+              error={fieldErrors.huggingFaceRepo}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                updateFieldValues("huggingFaceRepo", event.target.value)
+              }
+            />
+          </>
+        ) : null}
+      </div>
       <div className="flex flex-row">
         <BasicProgressMessageBox
           state={createModelMessageBoxState}

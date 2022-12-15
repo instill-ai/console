@@ -202,10 +202,10 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
   return (
     <FormBase
-      padding={null}
       noValidate={true}
       flex1={false}
       marginBottom={null}
+      padding={null}
     >
       <div className="mb-10 flex flex-col gap-y-5">
         <BasicTextField
