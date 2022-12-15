@@ -28,6 +28,7 @@ import {
   CreateHuggingFaceModelPayload,
   CreateLocalModelPayload,
   Model,
+  validateResourceId,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
@@ -91,7 +92,9 @@ const CreateModelForm = () => {
     huggingFaceRepo: null,
   });
 
-  const [fieldErrors] = useState<Record<string, Nullable<string>>>({
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, Nullable<string>>
+  >({
     id: null,
     modelDefinition: null,
     modelInstanceTag: null,
@@ -130,7 +133,6 @@ const CreateModelForm = () => {
     });
 
   const validateCreateModelValue = useCallback(() => {
-    console.log(fieldValues);
     if (!fieldValues.modelDefinition || modelCreated || !fieldValues.id) {
       return false;
     }
@@ -171,6 +173,15 @@ const CreateModelForm = () => {
 
   const handelCreateModel = useCallback(async () => {
     if (!fieldValues.id) return;
+
+    // We don't validate the rest of the field if the ID is incorrect
+    if (!validateResourceId(fieldValues.id as string)) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        id: "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
+      }));
+      return;
+    }
 
     setCreateModelMessageBoxState(() => ({
       activate: true,
@@ -668,7 +679,7 @@ const CreateModelForm = () => {
           </>
         ) : null}
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row mb-10">
         <BasicProgressMessageBox
           state={createModelMessageBoxState}
           setState={setCreateModelMessageBoxState}
@@ -693,27 +704,29 @@ const CreateModelForm = () => {
 
       {canDisplayDeployModelInstanceSection ? (
         <>
-          <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
-            Deploy a model instance
-          </h3>
-          <BasicSingleSelect
-            id="modelInstanceTag"
-            key="modelInstanceTag"
-            instanceId="modelInstanceTag"
-            menuPlacement="auto"
-            label="Model Instances"
-            value={selectedModelInstanceOption}
-            options={modelInstanceOptions ? modelInstanceOptions : []}
-            error={fieldErrors.modelInstanceTag || null}
-            onChange={(option) => {
-              setSelectedModelInstanceOption(option);
-              updateFieldValues("modelInstanceTag", option?.value as string);
-            }}
-            required={true}
-            description={
-              "<a href='https://www.instill.tech/docs/core-concepts/model#model-instance'>Setup Guide</a>"
-            }
-          />
+          <div className="flex flex-col mb-10">
+            <h3 className="mt-[60px] mb-5 text-black text-instill-h3">
+              Deploy a model instance
+            </h3>
+            <BasicSingleSelect
+              id="modelInstanceTag"
+              key="modelInstanceTag"
+              instanceId="modelInstanceTag"
+              menuPlacement="auto"
+              label="Model Instances"
+              value={selectedModelInstanceOption}
+              options={modelInstanceOptions ? modelInstanceOptions : []}
+              error={fieldErrors.modelInstanceTag || null}
+              onChange={(option) => {
+                setSelectedModelInstanceOption(option);
+                updateFieldValues("modelInstanceTag", option?.value as string);
+              }}
+              required={true}
+              description={
+                "<a href='https://www.instill.tech/docs/core-concepts/model#model-instance'>Setup Guide</a>"
+              }
+            />
+          </div>
           <div className="flex flex-row">
             <BasicProgressMessageBox
               state={deployModelInstanceMessageBoxState}
@@ -730,7 +743,7 @@ const CreateModelForm = () => {
                   : true
               }
               onClickHandler={() => handleDeployModelInstance(fieldValues)}
-              position="ml-auto my-auto"
+              position="ml-auto mb-auto"
               type="button"
               color="primary"
             >

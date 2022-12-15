@@ -134,7 +134,7 @@ export type ExpectCorrectPipelineDetailsProps = {
     | "STATE_UNSPECIFIED"
     | "STATE_ERROR";
   description: string;
-  additionalRule?: () => Promise<void>;
+  additionalRules?: () => Promise<void>;
 };
 
 export const expectCorrectPipelineDetails = async ({
@@ -143,7 +143,7 @@ export const expectCorrectPipelineDetails = async ({
   mode,
   state,
   description,
-  additionalRule,
+  additionalRules,
 }: ExpectCorrectPipelineDetailsProps) => {
   await page.goto(`/pipelines/${id}`);
 
@@ -176,5 +176,5 @@ export const expectCorrectPipelineDetails = async ({
   const descriptionField = page.locator("textarea#pipelineDescription");
   await expect(descriptionField).toHaveValue(description);
 
-  if (additionalRule) await additionalRule();
+  if (additionalRules) await additionalRules();
 };

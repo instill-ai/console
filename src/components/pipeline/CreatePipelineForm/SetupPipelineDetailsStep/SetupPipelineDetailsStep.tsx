@@ -9,13 +9,14 @@ import {
 import { CreatePipelineFormValues } from "../CreatePipelineForm";
 import { TextArea, TextField, FormikStep } from "@/components/formik";
 import { useCreatePipeline, useUpdatePipeline } from "@/services/pipeline";
-import { CreatePipelinePayload } from "@/lib/instill";
+import { CreatePipelinePayload, validateResourceId } from "@/lib/instill";
 import { useRouter } from "next/router";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
 const SetupPipelineDetailsStep: FC = () => {
-  const { values, errors } = useFormikContext<CreatePipelineFormValues>();
+  const { values, errors, setFieldError } =
+    useFormikContext<CreatePipelineFormValues>();
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -122,6 +123,16 @@ const SetupPipelineDetailsStep: FC = () => {
     if (!canSetupNewPipeline || !router.isReady || !values.pipeline.id) {
       return;
     }
+
+    // We don't validate the rest of the field if the ID is incorrect
+    if (!validateResourceId(values.pipeline.id as string)) {
+      setFieldError(
+        "pipeline.id",
+        "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+      );
+      return;
+    }
+
     let sourceName: string;
 
     if (values.source.type === "new") {

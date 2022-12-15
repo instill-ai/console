@@ -24,6 +24,32 @@ test.afterAll(async () => {
 });
 
 test.describe.serial("Async destination", () => {
+  test("should warn wrong resource ID", async ({ page }) => {
+    await page.goto("/destinations/create");
+
+    // Should input destination id
+    const idField = page.locator("input#id");
+    await idField.fill("Wrong-id");
+
+    // Should select destination source - S3
+    await expectToSelectReactSelectOption(
+      page.locator("#react-select-definition-input"),
+      page.locator("data-testid=definition-selected-option", {
+        hasText: destinationType,
+      })
+    );
+
+    // Should click set up button
+    const setupButton = page.locator("button", { hasText: "Set up" });
+    await setupButton.click();
+
+    // Should have warning label
+    const warningLabel = page.locator("label[for='id']");
+    await expect(warningLabel).toHaveText(
+      "ID * - Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+    );
+  });
+
   test("should create async destination", async ({ page }) => {
     await page.goto("/destinations/create");
 
