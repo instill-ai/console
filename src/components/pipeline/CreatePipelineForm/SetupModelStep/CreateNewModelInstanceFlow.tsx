@@ -42,6 +42,7 @@ import {
   CreateHuggingFaceModelPayload,
   CreateLocalModelPayload,
   Model,
+  validateResourceId,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
@@ -61,7 +62,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   setModelCreated,
   modelCreated,
 }) => {
-  const { values, setFieldValue, errors } =
+  const { values, setFieldValue, errors, setFieldError } =
     useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -173,6 +174,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
 
   const handelCreateModel = async () => {
     if (!values.model.new.id) return;
+
+    // We don't validate the rest of the field if the ID is incorrect
+    if (!validateResourceId(values.model.new.id as string)) {
+      setFieldError(
+        "model.new.id",
+        "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+      );
+      return;
+    }
 
     setCreateModelMessageBoxState(() => ({
       activate: true,

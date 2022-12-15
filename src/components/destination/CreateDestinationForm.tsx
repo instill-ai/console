@@ -261,11 +261,10 @@ const CreateDestinationForm = ({
     let stripValues = {} as { configuration: AirbyteFieldValues };
 
     // We don't validate the rest of the field if the ID is incorrect
-
     if (!validateResourceId(fieldValues.id as string)) {
       setFieldErrors((prev) => ({
         ...prev,
-        id: "Resource ID restricts to letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
+        id: "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
       }));
       return;
     }
@@ -529,7 +528,7 @@ const CreateDestinationForm = ({
         <SolidButton
           type="button"
           color="primary"
-          disabled={false}
+          disabled={selectedDestinationDefinition ? false : true}
           position="ml-auto my-auto"
           onClickHandler={() => submitHandler()}
         >
