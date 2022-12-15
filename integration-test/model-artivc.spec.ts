@@ -83,7 +83,7 @@ test.describe.serial("Artivc model", () => {
       modelInstanceTag: "v1.0-cpu",
       modelState: "STATE_ONLINE",
       modelTask: "CLASSIFICATION",
-      additionalRule: async () => {
+      additionalRules: async () => {
         // Should have correct artivc version/model instance tag
         const artivcVersionField = page.locator("input#tag");
         await expect(artivcVersionField).toHaveValue(modelInstanceTag);

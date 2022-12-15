@@ -148,7 +148,20 @@ test.describe
       goToPipelineStepButton.click(),
     ]);
 
-    // Should input pipeline id
+    // Should input wrong id
+    await piplineIdField.fill("Wrong-id");
+    const setupPipelineButton = page.locator("button", { hasText: "Set up" });
+    expect(await setupPipelineButton.isEnabled()).toBeTruthy();
+    await setupPipelineButton.click();
+
+    // Should have warning label
+    const warningLabel = page.locator("label[for='pipelineId']");
+    await expect(warningLabel).toHaveText(
+      "ID * - Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+    );
+
+    // Should input correct id
+    await piplineIdField.fill("");
     await piplineIdField.fill(pipelineId);
 
     // Should input pipeline description
@@ -156,10 +169,6 @@ test.describe
       "textarea#pipelineDescription"
     );
     await pipelineDescriptionField.fill(pipelineDescription);
-
-    // Should enable set up button
-    const setupPipelineButton = page.locator("button", { hasText: "Set up" });
-    expect(await setupPipelineButton.isEnabled()).toBeTruthy();
 
     // Should set up pipeline
     await Promise.all([page.waitForNavigation(), setupPipelineButton.click()]);
