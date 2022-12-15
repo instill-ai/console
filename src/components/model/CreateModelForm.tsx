@@ -91,9 +91,7 @@ const CreateModelForm = () => {
     huggingFaceRepo: null,
   });
 
-  const [fieldErrors, setFieldErrors] = useState<
-    Record<string, Nullable<string>>
-  >({
+  const [fieldErrors] = useState<Record<string, Nullable<string>>>({
     id: null,
     modelDefinition: null,
     modelInstanceTag: null,
@@ -396,6 +394,14 @@ const CreateModelForm = () => {
     createGithubModel,
     createLocalModel,
     createHuggingFaceModel,
+    fieldValues.credentials,
+    fieldValues.description,
+    fieldValues.file,
+    fieldValues.gcsBucketPath,
+    fieldValues.huggingFaceRepo,
+    fieldValues.id,
+    fieldValues.modelDefinition,
+    fieldValues.repo,
   ]);
 
   // #########################################################################

@@ -1,15 +1,14 @@
-import { FC, useCallback, useState } from "react";
-import { Formik } from "formik";
+import { ChangeEvent, FC, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BasicProgressMessageBox,
   ProgressMessageBoxState,
   OutlineButton,
   SolidButton,
+  BasicTextArea,
 } from "@instill-ai/design-system";
 
-import { FormikFormBase, TextArea } from "@/components/formik";
-import { DeleteResourceModal } from "@/components/ui";
+import { DeleteResourceModal, FormBase } from "@/components/ui";
 import { Pipeline, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
@@ -31,14 +30,38 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   pipeline,
   marginBottom,
 }) => {
+  // ##########################################################################
+  // # Initialize necessary state and function                                #
+  // ##########################################################################
+
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  // ###################################################################
-  // #                                                                 #
-  // # Handle update pipeline                                          #
-  // #                                                                 #
-  // ###################################################################
+  const [fieldValues, setFieldValues] = useState({
+    description: pipeline ? pipeline.description : null,
+    state: pipeline ? pipeline.state : null,
+  });
+
+  const [fieldErrors, _] = useState({
+    description: null,
+    state: null,
+  });
+
+  const updateFieldValues = useCallback(
+    (field: string, value: Nullable<string | File>) => {
+      setFieldValues((prev) => {
+        return {
+          ...prev,
+          [field]: value,
+        };
+      });
+    },
+    [setFieldValues]
+  );
+
+  // ##########################################################################
+  // # Handle update pipeline                                                 #
+  // ##########################################################################
 
   const [canEdit, setCanEdit] = useState(false);
 
@@ -52,86 +75,65 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   const updatePipeline = useUpdatePipeline();
 
-  const validateForm = useCallback(() => {
-    const errors: Partial<ConfigurePipelineFormValue> = {};
-
-    return errors;
-  }, []);
-
-  const handleEditButton = (
-    values: ConfigurePipelineFormValue,
-    submitForm: () => Promise<void>
-  ) => {
+  const handleSubmit = useCallback(() => {
     if (!canEdit) {
       setCanEdit(true);
       return;
     }
 
-    submitForm();
-  };
+    if (!pipeline) return;
 
-  const handleUpdatePipeline = useCallback(
-    (values: ConfigurePipelineFormValue) => {
-      if (!pipeline) return;
+    if (pipeline.description === fieldValues.description) {
+      setCanEdit(false);
+      return;
+    }
 
-      if (
-        pipeline.description === values.description &&
-        pipeline.state === values.state
-      ) {
-        setCanEdit(false);
-        return;
-      }
+    setMessageBoxState(() => ({
+      activate: true,
+      status: "progressing",
+      description: null,
+      message: "Updating...",
+    }));
 
-      setMessageBoxState(() => ({
-        activate: true,
-        status: "progressing",
-        description: null,
-        message: "Updating...",
-      }));
-
-      updatePipeline.mutate(
-        {
-          name: pipeline.name,
-          description: values.description ?? null,
+    updatePipeline.mutate(
+      {
+        name: pipeline.name,
+        description: fieldValues.description ?? null,
+      },
+      {
+        onSuccess: () => {
+          setCanEdit(false);
+          setMessageBoxState(() => ({
+            activate: true,
+            status: "success",
+            description: null,
+            message: "Succeed.",
+          }));
         },
-        {
-          onSuccess: () => {
-            setCanEdit(false);
+        onError: (error) => {
+          if (error instanceof Error) {
             setMessageBoxState(() => ({
               activate: true,
-              status: "success",
+              status: "error",
               description: null,
-              message: "Succeed.",
+              message: error.message,
             }));
-          },
-          onError: (error) => {
-            if (error instanceof Error) {
-              setMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: error.message,
-              }));
-            } else {
-              setMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: "Something went wrong when update the pipeline",
-              }));
-            }
-          },
-        }
-      );
-    },
-    [updatePipeline, pipeline]
-  );
+          } else {
+            setMessageBoxState(() => ({
+              activate: true,
+              status: "error",
+              description: null,
+              message: "Something went wrong when update the pipeline",
+            }));
+          }
+        },
+      }
+    );
+  }, [canEdit, fieldValues, updatePipeline, pipeline]);
 
-  // ###################################################################
-  // #                                                                 #
-  // # Handle delete pipeline                                          #
-  // #                                                                 #
-  // ###################################################################
+  // ##########################################################################
+  // # Handle delete pipeline                                                 #
+  // ##########################################################################
 
   const { disableResourceDeletion } = useDeleteResourceGuard();
 
@@ -189,69 +191,56 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
 
   return (
     <>
-      <Formik
-        initialValues={
-          {
-            description: pipeline ? pipeline.description : null,
-            state: pipeline ? pipeline.state : null,
-          } as ConfigurePipelineFormValue
-        }
-        enableReinitialize={true}
-        onSubmit={handleUpdatePipeline}
-        validate={validateForm}
+      <FormBase
+        flex1={false}
+        noValidate={true}
+        marginBottom={marginBottom}
+        padding={null}
       >
-        {({ values, errors, submitForm }) => {
-          return (
-            <FormikFormBase
-              marginBottom={marginBottom}
-              gapY={null}
-              padding={null}
-              minWidth={null}
-            >
-              <div className="mb-10 flex flex-col">
-                <TextArea
-                  id="pipelineDescription"
-                  name="description"
-                  label="Description"
-                  description="Fill with a short description."
-                  value={values.description}
-                  error={errors.description || null}
-                  disabled={canEdit ? false : true}
-                  required={false}
-                />
-              </div>
-              <div className="mb-10 flex flex-row">
-                <OutlineButton
-                  disabled={disableResourceDeletion}
-                  onClickHandler={() => setDeletePipelineModalIsOpen(true)}
-                  position="mr-auto my-auto"
-                  type="button"
-                  color="danger"
-                >
-                  Delete
-                </OutlineButton>
-                <SolidButton
-                  disabled={false}
-                  onClickHandler={() => handleEditButton(values, submitForm)}
-                  position="ml-auto my-auto"
-                  type="button"
-                  color="primary"
-                >
-                  {canEdit ? "Save" : "Edit"}
-                </SolidButton>
-              </div>
-              <div className="flex">
-                <BasicProgressMessageBox
-                  state={messageBoxState}
-                  setState={setMessageBoxState}
-                  width="w-[25vw]"
-                  closable={true}
-                />
-              </div>
-            </FormikFormBase>
-          );
-        }}
-      </Formik>
+        <div className="flex flex-col mb-10">
+          <BasicTextArea
+            id="pipelineDescription"
+            label="Description"
+            key="pipelineDescription"
+            description="Fill with a short description."
+            required={false}
+            disabled={canEdit ? false : true}
+            error={fieldErrors.description}
+            value={fieldValues.description}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+              updateFieldValues("description", event.target.value);
+            }}
+          />
+        </div>
+        <div className="mb-10 flex flex-row">
+          <OutlineButton
+            disabled={disableResourceDeletion}
+            onClickHandler={() => setDeletePipelineModalIsOpen(true)}
+            position="mr-auto my-auto"
+            type="button"
+            color="danger"
+          >
+            Delete
+          </OutlineButton>
+          <SolidButton
+            disabled={false}
+            onClickHandler={() => handleSubmit()}
+            position="ml-auto my-auto"
+            type="button"
+            color="primary"
+          >
+            {canEdit ? "Save" : "Edit"}
+          </SolidButton>
+        </div>
+        <div className="flex">
+          <BasicProgressMessageBox
+            state={messageBoxState}
+            setState={setMessageBoxState}
+            width="w-[25vw]"
+            closable={true}
+          />
+        </div>
+      </FormBase>
       <DeleteResourceModal
         resource={pipeline}
         modalIsOpen={deletePipelineModalIsOpen}
