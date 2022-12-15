@@ -26,7 +26,7 @@ const useUpdatePipeline = () => {
     {
       onSuccess: (newPipeline) => {
         queryClient.setQueryData<Pipeline>(
-          ["pipelines", newPipeline.id],
+          ["pipelines", newPipeline.name],
           newPipeline
         );
         queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) => {

@@ -209,10 +209,9 @@ const ModelDetailsPage: FC & {
           marginBottom="mb-5"
           position="mr-auto"
         />
-        <ConfigureModelForm
-          model={model.isSuccess ? model.data : null}
-          marginBottom="mb-[60px]"
-        />
+        {model.isSuccess && model.data ? (
+          <ConfigureModelForm model={model.data} marginBottom="mb-[60px]" />
+        ) : null}
         <HorizontalDivider
           borderColor="border-instillGrey30"
           marginBottom="mb-10"
