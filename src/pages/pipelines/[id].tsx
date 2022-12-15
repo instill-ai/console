@@ -126,10 +126,12 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        <ConfigurePipelineForm
-          pipeline={pipeline.isSuccess ? pipeline.data : null}
-          marginBottom={null}
-        />
+        {pipeline.isSuccess && pipeline.data ? (
+          <ConfigurePipelineForm
+            pipeline={pipeline.data}
+            marginBottom="mb-10"
+          />
+        ) : null}
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
           <p className="text-black text-instill-body">

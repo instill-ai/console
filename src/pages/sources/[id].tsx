@@ -86,12 +86,12 @@ const SourceDetailsPage: FC & {
           enablePlaceholderCreateButton={false}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        <div>
+        {sourceWithPipelines.isSuccess && sourceWithPipelines.data ? (
           <ConfigureSourceForm
-            source={sourceWithPipelines.data ? sourceWithPipelines.data : null}
+            source={sourceWithPipelines.data}
             marginBottom={null}
           />
-        </div>
+        ) : null}
       </PageContentContainer>
     </>
   );
