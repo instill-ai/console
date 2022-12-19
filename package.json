@@ -120,5 +120,8 @@
       "eslint --cache --fix"
     ]
   },
+  "engines": {
+    "node": ">=14.6.0"
+  },
   "packageManager": "pnpm@7.5.0"
 }
