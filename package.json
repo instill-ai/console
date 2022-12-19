@@ -25,7 +25,7 @@
   "dependencies": {
     "@amplitude/analytics-browser": "^0.4.1",
     "@code-hike/mdx": "^0.7.3",
-    "@instill-ai/design-system": "^0.0.114",
+    "@instill-ai/design-system": "^0.0.132",
     "@playwright/test": "^1.25.2",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
