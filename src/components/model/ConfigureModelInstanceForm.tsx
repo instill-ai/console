@@ -18,6 +18,8 @@ const ConfigureModelInstanceForm = ({
   modelInstance,
   marginBottom,
 }: ConfigureModelInstanceFormProps) => {
+  console.log(modelInstance);
+
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
       activate: false,
@@ -25,8 +27,6 @@ const ConfigureModelInstanceForm = ({
       description: null,
       status: null,
     });
-
-  console.log(modelInstance);
 
   return (
     <FormBase

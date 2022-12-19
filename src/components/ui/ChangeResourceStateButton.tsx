@@ -5,17 +5,18 @@ import { FC, useState, useEffect, useCallback } from "react";
 import { UseMutationResult } from "react-query";
 import cn from "clsx";
 import { AxiosError } from "axios";
+import { Operation } from "@/lib/instill/types";
 
 export type ChangeResourceStateButtonProps = {
   resource: Nullable<ModelInstance | Pipeline>;
   switchOff: UseMutationResult<
-    ModelInstance | Pipeline,
+    { modelInstance: ModelInstance; operation: Operation } | Pipeline,
     unknown,
     string,
     unknown
   >;
   switchOn: UseMutationResult<
-    ModelInstance | Pipeline,
+    { modelInstance: ModelInstance; operation: Operation } | Pipeline,
     unknown,
     string,
     unknown
@@ -29,7 +30,6 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   switchOff,
   marginBottom,
 }) => {
-  const [isChanging, setIsChanging] = useState(false);
   const [error, setError] = useState<Nullable<string>>(null);
 
   useEffect(() => {
@@ -37,20 +37,14 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   }, [resource]);
 
   const changeResourceStateHandler = useCallback(() => {
-    if (!resource) return;
-
-    setIsChanging(true);
+    if (!resource || resource.state === "STATE_UNSPECIFIED") return;
 
     if (
       resource.state === "STATE_ONLINE" ||
       resource.state === "STATE_ACTIVE"
     ) {
       switchOff.mutate(resource.name, {
-        onSuccess: () => {
-          setIsChanging(false);
-        },
         onError: (error) => {
-          setIsChanging(false);
           if (error instanceof AxiosError) {
             setError(
               error.response?.data.message ??
@@ -63,11 +57,7 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
       });
     } else {
       switchOn.mutate(resource.name, {
-        onSuccess: () => {
-          setIsChanging(false);
-        },
         onError: (error) => {
-          setIsChanging(false);
           if (error instanceof AxiosError) {
             setError(
               error.response?.data.message ??
@@ -82,7 +72,7 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   }, [switchOn, switchOff, resource]);
 
   return (
-    <div className={cn(marginBottom)}>
+    <div className={cn("flex flex-row", marginBottom)}>
       <StatefulToggleField
         id="pipelineStateToggleButton"
         value={
@@ -93,11 +83,14 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
         }
         onChange={changeResourceStateHandler}
         label="State"
-        additionalMessageOnLabel={null}
         error={error}
         state={
-          isChanging ? "STATE_LOADING" : resource?.state || "STATE_UNSPECIFIED"
+          resource?.state === "STATE_UNSPECIFIED"
+            ? "STATE_LOADING"
+            : resource?.state || "STATE_UNSPECIFIED"
         }
+        disabled={resource?.state === "STATE_UNSPECIFIED"}
+        loadingLabelText="Model instance is in the long running operation, please refresh this page to get the new status"
       />
     </div>
   );

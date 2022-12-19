@@ -1,6 +1,7 @@
 import { BrowserContext, Page, expect } from "@playwright/test";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { expectToSelectReactSelectOption } from "../helper";
 
 export const removeRegisteredUser = async () => {
   try {
@@ -44,8 +45,12 @@ export const expectToOnboardUser = async (
   await companyField.fill("instill-ai");
 
   // Shoyld select role
-  await page.locator("#role").click({ force: true });
-  await page.locator("#react-select-role-option-0").click();
+  await expectToSelectReactSelectOption(
+    page.locator("#react-select-role-input"),
+    page.locator("data-testid=role-selected-option", {
+      hasText: "Manager (who makes decisions)",
+    })
+  );
 
   // Should accept newsletter subscription
   await page.locator("#newsletterSubscription").check();

@@ -221,6 +221,7 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
             position="mr-auto my-auto"
             type="button"
             color="danger"
+            hoveredShadow={null}
           >
             Delete
           </OutlineButton>

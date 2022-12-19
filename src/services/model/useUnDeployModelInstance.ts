@@ -1,34 +1,39 @@
 import { useMutation, useQueryClient } from "react-query";
-import { ModelInstance, unDeployModelInstanceAction } from "@/lib/instill";
+import {
+  getModelInstanceQuery,
+  ModelInstance,
+  unDeployModelInstanceAction,
+} from "@/lib/instill";
 
 const useUnDeployModelInstance = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (modelInstanceName: string) => {
-      const modelInstance = await unDeployModelInstanceAction(
-        modelInstanceName
-      );
-      return Promise.resolve(modelInstance);
+      const operation = await unDeployModelInstanceAction(modelInstanceName);
+
+      // Get the current model instance staus
+      const modelInstance = await getModelInstanceQuery(modelInstanceName);
+      return Promise.resolve({ modelInstance, operation });
     },
     {
-      onSuccess: (newModelInstance) => {
-        const modelId = newModelInstance.name.split("/")[1];
+      onSuccess: ({ modelInstance }) => {
+        const modelId = modelInstance.name.split("/")[1];
 
         queryClient.setQueryData<ModelInstance>(
-          ["models", modelId, "modelInstances", newModelInstance.id],
-          newModelInstance
+          ["models", modelId, "modelInstances", modelInstance.id],
+          modelInstance
         );
 
         queryClient.setQueryData<ModelInstance[]>(
           ["models", modelId, "modelInstances"],
           (old) => {
             if (!old) {
-              return [newModelInstance];
+              return [modelInstance];
             }
 
             return [
-              ...old.filter((e) => e.id !== newModelInstance.id),
-              newModelInstance,
+              ...old.filter((e) => e.id !== modelInstance.id),
+              modelInstance,
             ];
           }
         );

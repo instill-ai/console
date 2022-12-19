@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
+import { expectToSelectReactSelectOption } from "./helper";
 
 test("should navigate first time user to the onboarding page", async ({
   page,
@@ -33,8 +34,12 @@ test("should disable start button, if email input format is not correct", async 
   await companyField.fill("instill-ai");
 
   // Should select role
-  await page.locator("#role").click({ force: true });
-  await page.locator("#react-select-role-option-0").click();
+  await expectToSelectReactSelectOption(
+    page.locator("#react-select-role-input"),
+    page.locator("data-testid=role-selected-option", {
+      hasText: "Manager (who makes decisions)",
+    })
+  );
 
   // Should disable start button
   const startButton = page.locator("button", { hasText: "Start" });
