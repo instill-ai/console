@@ -504,6 +504,7 @@ const CreateModelForm = () => {
               message: error.response?.data.message ?? error.message,
             }));
           } else {
+            console.log(error);
             setDeployModelInstanceMessageBoxState(() => ({
               activate: true,
               status: "error",

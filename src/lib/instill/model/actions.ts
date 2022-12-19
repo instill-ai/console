@@ -1,8 +1,8 @@
 import axios from "axios";
-import { ModelInstance } from "./types";
+import { Operation } from "../types";
 
 export type DeployModelResponse = {
-  instance: ModelInstance;
+  operation: Operation;
 };
 
 export const deployModelInstanceAction = async (modelInstanceName: string) => {
@@ -10,14 +10,14 @@ export const deployModelInstanceAction = async (modelInstanceName: string) => {
     const { data } = await axios.post<DeployModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}/deploy`
     );
-    return Promise.resolve(data.instance);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
 export type UnDeployModelResponse = {
-  instance: ModelInstance;
+  operation: Operation;
 };
 
 export const unDeployModelInstanceAction = async (
@@ -27,7 +27,7 @@ export const unDeployModelInstanceAction = async (
     const { data } = await axios.post<UnDeployModelResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}/undeploy`
     );
-    return Promise.resolve(data.instance);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
