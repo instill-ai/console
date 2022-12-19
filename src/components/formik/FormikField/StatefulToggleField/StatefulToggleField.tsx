@@ -35,6 +35,7 @@ const StatefulToggleFieldWrapper: FC<ToggleFieldProps & FieldProps> = ({
       error={error}
       onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
+      loadingLabelText="Loading..."
     />
   );
 };

@@ -152,6 +152,7 @@ const DeleteResourceModal = ({
             disabled={false}
             onClickHandler={() => setModalIsOpen(false)}
             color="secondary"
+            hoveredShadow={null}
           >
             <p className="mx-auto">Cancel</p>
           </OutlineButton>
@@ -160,6 +161,7 @@ const DeleteResourceModal = ({
             onClickHandler={handleDeleteResource}
             color="danger"
             disabled={canDeleteResource ? false : true}
+            hoveredShadow={null}
           >
             <p className="mx-auto">Delete</p>
           </OutlineButton>
