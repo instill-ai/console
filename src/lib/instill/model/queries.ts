@@ -102,7 +102,7 @@ export const getModelInstanceQuery = async (
 ): Promise<ModelInstance> => {
   try {
     const { data } = await axios.get<GetModelInstanceResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}`
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.instance);

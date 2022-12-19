@@ -1,7 +1,7 @@
 import { ModelInstance, Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { StatefulToggleField } from "@instill-ai/design-system";
-import { FC, useState, useEffect, useCallback, useRef } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import { UseMutationResult } from "react-query";
 import cn from "clsx";
 import { AxiosError } from "axios";
@@ -31,26 +31,13 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   marginBottom,
 }) => {
   const [error, setError] = useState<Nullable<string>>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const initialResourceState = useRef(resource?.state);
 
   useEffect(() => {
     setError(null);
   }, [resource]);
 
-  useEffect(() => {
-    if (initialResourceState.current !== null && resource) {
-      if (initialResourceState.current !== resource.state) {
-        setIsProcessing(false);
-        initialResourceState.current = resource.state;
-      }
-    }
-  }, [resource?.state]);
-
   const changeResourceStateHandler = useCallback(() => {
-    if (!resource || isProcessing) return;
-
-    setIsProcessing(true);
+    if (!resource || resource.state === "STATE_UNSPECIFIED") return;
 
     if (
       resource.state === "STATE_ONLINE" ||
@@ -82,7 +69,7 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
         },
       });
     }
-  }, [switchOn, switchOff, resource, isProcessing]);
+  }, [switchOn, switchOff, resource]);
 
   return (
     <div className={cn("flex flex-row", marginBottom)}>
@@ -98,7 +85,7 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
         label="State"
         error={error}
         state={
-          isProcessing
+          resource?.state === "STATE_UNSPECIFIED"
             ? "STATE_LOADING"
             : resource?.state || "STATE_UNSPECIFIED"
         }
