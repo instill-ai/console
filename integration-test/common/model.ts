@@ -1,5 +1,6 @@
 //import { Nullable } from "@/types/general";
 import { Page, expect, Locator } from "@playwright/test";
+import { delay, expectToSelectReactSelectOption } from "../helper";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
@@ -111,6 +112,7 @@ export type ExpectCorrectModelDetailsProps = {
   modelId: string;
   modelDescription: string;
   modelInstanceTag: string;
+  modelInstanceTagOptionLocator: Locator;
   modelState:
     | "STATE_ONLINE"
     | "STATE_OFFLINE"
@@ -125,10 +127,14 @@ export const expectCorrectModelDetails = async ({
   modelId,
   modelDescription,
   modelInstanceTag,
+  modelInstanceTagOptionLocator,
   modelState,
   modelTask,
   additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
+  // Mimic the behavior of long running operation
+  await delay(2000);
+
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
   // Should have proper title
@@ -139,15 +145,25 @@ export const expectCorrectModelDetails = async ({
   const modelDescriptionField = page.locator("#description");
   await expect(modelDescriptionField).toHaveValue(modelDescription);
 
-  // Should have correct model instance tag
-  const modelInstanceTagOption = page.locator(
-    "data-testid=modelInstanceTag-selected-option"
-  );
-  await expect(modelInstanceTagOption).toHaveText(modelInstanceTag);
-
   // Should display task fill classification
   const modelTaskLabel = page.locator("data-testid=model-task-label");
   await expect(modelTaskLabel).toHaveText(modelTask);
+
+  const modelInstanceTagOptionInput = page.locator(
+    "#react-select-modelInstanceTag-input"
+  );
+
+  // Should choose the right model instance
+  await expectToSelectReactSelectOption(
+    modelInstanceTagOptionInput,
+    modelInstanceTagOptionLocator
+  );
+
+  // Should have the target model instance tag
+  const selectedModelInstanceTag = page.locator(
+    "data-testid=modelInstanceTag-selected-option"
+  );
+  await expect(selectedModelInstanceTag).toHaveText(modelInstanceTag);
 
   // Should display online and have correct toggle button state
   const modelStateLabel = page.locator("data-testid=state-label");

@@ -79,8 +79,11 @@ test.describe.serial("GitHub model", () => {
       page,
       modelId,
       modelDescription,
-      modelInstanceTag: "v1.0-gpu", // Because we don't have a way to indicate which instance just created.
-      modelState: "STATE_OFFLINE",
+      modelInstanceTag: "v1.0-cpu",
+      modelInstanceTagOptionLocator: page.locator(
+        "#react-select-modelInstanceTag-option-1"
+      ),
+      modelState: "STATE_ONLINE",
       modelTask: "CLASSIFICATION",
     });
   });
