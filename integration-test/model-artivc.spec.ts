@@ -81,6 +81,9 @@ test.describe.serial("Artivc model", () => {
       modelId,
       modelDescription,
       modelInstanceTag: "v1.0-cpu",
+      modelInstanceTagOptionLocator: page.locator(
+        "#react-select-modelInstanceTag-option-0"
+      ),
       modelState: "STATE_ONLINE",
       modelTask: "CLASSIFICATION",
       additionalRules: async () => {

@@ -82,6 +82,9 @@ test.describe.serial("Hugging face model", () => {
       modelId,
       modelDescription,
       modelInstanceTag,
+      modelInstanceTagOptionLocator: page.locator(
+        "#react-select-modelInstanceTag-option-0"
+      ),
       modelState: "STATE_ONLINE",
       modelTask: "CLASSIFICATION",
       additionalRules: async () => {
