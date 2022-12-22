@@ -30,7 +30,7 @@ export const mockMgmtRoles: SingleSelectOption[] = [
     value: "Analytics Engineer",
   },
   {
-    label: "Hobbyist (I love Vision AI!)",
+    label: "Hobbyist (I love AI!)",
     value: "Hobbyist",
   },
 ];
