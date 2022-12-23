@@ -6,10 +6,14 @@ import {
 } from ".";
 
 async function globalTeardown() {
-  await deleteAllModels();
-  await deleteAllDestinations();
-  await deleteAllPipelines();
-  await deleteAllSources();
+  try {
+    await deleteAllModels();
+    await deleteAllDestinations();
+    await deleteAllPipelines();
+    await deleteAllSources();
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export default globalTeardown;
