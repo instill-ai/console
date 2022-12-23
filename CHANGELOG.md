@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.14.0-alpha](https://github.com/instill-ai/console/compare/v0.13.0-alpha...v0.14.0-alpha) (2022-12-23)
+
+
+### Features
+
+* add hg model id field at model_instance page ([#300](https://github.com/instill-ai/console/issues/300)) ([31a6eab](https://github.com/instill-ai/console/commit/31a6eab6670d3e317e6bc293690eb07a75f8fffb))
+* cleanup connector after test ([#295](https://github.com/instill-ai/console/issues/295)) ([f9c8e4c](https://github.com/instill-ai/console/commit/f9c8e4c78cdc9f772778d57edb9491b560c90081))
+* disable html report ([#297](https://github.com/instill-ai/console/issues/297)) ([689f50d](https://github.com/instill-ai/console/commit/689f50d3407f501563507a43bc26206cb8ee3c6f))
+* enhance the warning of the resource id field ([#303](https://github.com/instill-ai/console/issues/303)) ([6c4aa4f](https://github.com/instill-ai/console/commit/6c4aa4fd5e88591d8225e6432f14c6874ee2ae65))
+* make playwright output dot on CI ([#293](https://github.com/instill-ai/console/issues/293)) ([e5c2958](https://github.com/instill-ai/console/commit/e5c2958461134578c8a461fce85e058938a83eeb))
+* support model-backend async long run operation ([#309](https://github.com/instill-ai/console/issues/309)) ([f795ce8](https://github.com/instill-ai/console/commit/f795ce87da03ab8bcb331604ad2ddd4cbf4c0304))
+* update e2e test ([#313](https://github.com/instill-ai/console/issues/313)) ([88bf0cd](https://github.com/instill-ai/console/commit/88bf0cdab1c8b003c38a070fc8939bdc1289d90b))
+* update how we test model detail page ([#310](https://github.com/instill-ai/console/issues/310)) ([04c83a1](https://github.com/instill-ai/console/commit/04c83a1b18b8c9bcf64d640458cfe04cf4b18a8a))
+* Wipeout all data after test ([#296](https://github.com/instill-ai/console/issues/296)) ([e4085dd](https://github.com/instill-ai/console/commit/e4085ddf45ff3ecd429a4747fcab0673ed4574c2))
+
 ## [0.13.0-alpha](https://github.com/instill-ai/console/compare/v0.12.0-alpha...v0.13.0-alpha) (2022-10-04)
 
 
