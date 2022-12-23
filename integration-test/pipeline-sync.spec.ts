@@ -30,16 +30,12 @@ test.use({
 
 test.afterAll(async () => {
   try {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
-    );
-
     // We need to clean up destination and source too
     await deleteDestination("destination-http");
     await deleteSource("source-http");
     await deleteModel(modelId);
   } catch (err) {
-    return Promise.reject(err);
+    console.log(err);
   }
 });
 
