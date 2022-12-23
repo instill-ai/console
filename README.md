@@ -1,8 +1,8 @@
-Visual Data Preparation (VDP) console
+Versatile Data Pipeline (VDP) console
 
 # About VDP Console
 
-The VDP console is written in Nextjs, Typescript, TailwindCSS and it runs a docker container with the VDP backend. (You could try the full setup with our [VDP repo](https://github.com/instill-ai/vdp))
+The VDP console is written in Nextjs, Typescript, TailwindCSS and it runs a docker container with the VDP backend. Interested in trying it out? Check out [here](https://github.com/instill-ai/vdp) to run it locally.
 
 The mission of the console is simple, to provide an unified, clean, and intuitive user experience of VDP, you could set up the full pipeline just by using the browser and investigate every information of your pipelines or connectors on it.
 
