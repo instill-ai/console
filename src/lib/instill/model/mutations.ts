@@ -141,7 +141,7 @@ export type CreateHuggingFaceModelPayload = {
 };
 
 export type CreateHuggingFaceModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createHuggingFaceModelMutation = async (
@@ -161,7 +161,7 @@ export const createHuggingFaceModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
