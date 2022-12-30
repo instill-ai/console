@@ -27,9 +27,10 @@ import {
   CreateGithubModelPayload,
   CreateHuggingFaceModelPayload,
   CreateLocalModelPayload,
+  getModelQuery,
   Model,
   validateResourceId,
-} from "@/lib/instill";
+ checkCreateModelOperationUntilDone } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -203,23 +204,16 @@ const CreateModelForm = () => {
       };
 
       createGithubModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_github_model", {
-              type: "critical_action",
-              process: "model",
-            });
-          }
+        onSuccess: async ({ operation }) => {
+          if (!fieldValues.id) return;
+          await checkCreateModelOperationUntilDone(
+            operation.name,
+            `models/${fieldValues.id.trim()}`,
+            setModelCreated,
+            setNewModel,
+            setCreateModelMessageBoxState,
+            amplitudeIsInit
+          );
         },
         onError: (error) => {
           if (error instanceof AxiosError) {

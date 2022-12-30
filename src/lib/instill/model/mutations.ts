@@ -1,6 +1,7 @@
 import { Nullable } from "@/types/general";
 import { env } from "@/utils/config";
 import { createInstillAxiosClient } from "../helper";
+import { Operation } from "../types";
 import { Model } from "./types";
 
 export type CreateGithubModelConfiguration = {
@@ -15,12 +16,12 @@ export type CreateGithubModelPayload = {
 };
 
 export type CreateGithubModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createGithubModelMutation = async (
   payload: CreateGithubModelPayload
-): Promise<Model> => {
+) => {
   try {
     const client = createInstillAxiosClient();
 
@@ -35,7 +36,7 @@ export const createGithubModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
