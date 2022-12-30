@@ -36,6 +36,7 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
+import { useQueryClient } from "react-query";
 
 export type CreateModelFormValue = {
   id: Nullable<string>;
@@ -51,6 +52,7 @@ export type CreateModelFormValue = {
 
 const CreateModelForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const queryClient = useQueryClient();
 
   // #########################################################################
   // # 1 - Initialize the model definition                                   #
@@ -173,6 +175,34 @@ const CreateModelForm = () => {
   const createArtivcModel = useCreateArtivcModel();
   const createHuggingFaceModel = useCreateHuggingFaceModel();
 
+  const prepareNewModel = useCallback(
+    async (modelName: string) => {
+      const model = await getModelQuery(modelName);
+      setModelCreated(true);
+      setNewModel(model);
+
+      queryClient.setQueryData<Model>(["models", model.id], model);
+      queryClient.setQueryData<Model[]>(["models"], (old) =>
+        old ? [...old, model] : [model]
+      );
+
+      setCreateModelMessageBoxState({
+        activate: true,
+        status: "success",
+        description: null,
+        message: "Succeed.",
+      });
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("create_github_model", {
+          type: "critical_action",
+          process: "model",
+        });
+      }
+    },
+    [amplitudeIsInit, sendAmplitudeData]
+  );
+
   const handelCreateModel = useCallback(async () => {
     if (!fieldValues.id) return;
 
@@ -207,14 +237,13 @@ const CreateModelForm = () => {
       createGithubModel.mutate(payload, {
         onSuccess: async ({ operation }) => {
           if (!fieldValues.id) return;
-          await checkCreateModelOperationUntilDone(
-            operation.name,
-            `models/${fieldValues.id.trim()}`,
-            setModelCreated,
-            setNewModel,
-            setCreateModelMessageBoxState,
-            amplitudeIsInit
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
           );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${fieldValues.id.trim()}`);
+          }
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -255,14 +284,13 @@ const CreateModelForm = () => {
       createLocalModel.mutate(payload, {
         onSuccess: async ({ operation }) => {
           if (!fieldValues.id) return;
-          await checkCreateModelOperationUntilDone(
-            operation.name,
-            `models/${fieldValues.id.trim()}`,
-            setModelCreated,
-            setNewModel,
-            setCreateModelMessageBoxState,
-            amplitudeIsInit
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
           );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${fieldValues.id.trim()}`);
+          }
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -304,14 +332,13 @@ const CreateModelForm = () => {
       createArtivcModel.mutate(payload, {
         onSuccess: async ({ operation }) => {
           if (!fieldValues.id) return;
-          await checkCreateModelOperationUntilDone(
-            operation.name,
-            `models/${fieldValues.id.trim()}`,
-            setModelCreated,
-            setNewModel,
-            setCreateModelMessageBoxState,
-            amplitudeIsInit
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
           );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${fieldValues.id.trim()}`);
+          }
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -348,19 +375,14 @@ const CreateModelForm = () => {
       };
 
       createHuggingFaceModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_artivc_model", {
-              type: "critical_action",
-            });
+        onSuccess: async ({ operation }) => {
+          if (!fieldValues.id) return;
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
+          );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${fieldValues.id.trim()}`);
           }
         },
         onError: (error) => {
