@@ -54,7 +54,7 @@ export type CreateLocalModelPayload = {
 };
 
 export type CreateLocalModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createLocalModelMutation = async (
@@ -81,7 +81,7 @@ export const createLocalModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }

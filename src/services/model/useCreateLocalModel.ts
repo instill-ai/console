@@ -9,15 +9,12 @@ const useCreateLocalModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateLocalModelPayload) => {
-      const model = await createLocalModelMutation(payload);
-      return Promise.resolve(model);
+      const operation = await createLocalModelMutation(payload);
+      return Promise.resolve({ operation });
     },
     {
-      onSuccess: (newModel) => {
-        queryClient.setQueryData<Model>(["models", newModel.id], newModel);
-        queryClient.setQueryData<Model[]>(["models"], (old) =>
-          old ? [...old, newModel] : [newModel]
-        );
+      onSuccess: () => {
+        queryClient.invalidateQueries(["models"]);
       },
     }
   );

@@ -30,7 +30,8 @@ import {
   getModelQuery,
   Model,
   validateResourceId,
- checkCreateModelOperationUntilDone } from "@/lib/instill";
+  checkCreateModelOperationUntilDone,
+} from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
@@ -252,20 +253,16 @@ const CreateModelForm = () => {
       };
 
       createLocalModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_local_model", {
-              type: "critical_action",
-            });
-          }
+        onSuccess: async ({ operation }) => {
+          if (!fieldValues.id) return;
+          await checkCreateModelOperationUntilDone(
+            operation.name,
+            `models/${fieldValues.id.trim()}`,
+            setModelCreated,
+            setNewModel,
+            setCreateModelMessageBoxState,
+            amplitudeIsInit
+          );
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
