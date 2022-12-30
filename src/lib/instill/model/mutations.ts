@@ -100,7 +100,7 @@ export type CreateArtivcModelPayload = {
 };
 
 export type CreateArtivcModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createArtivcModelMutation = async (
@@ -123,7 +123,7 @@ export const createArtivcModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }

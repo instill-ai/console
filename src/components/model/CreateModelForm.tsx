@@ -302,20 +302,16 @@ const CreateModelForm = () => {
       };
 
       createArtivcModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_artivc_model", {
-              type: "critical_action",
-            });
-          }
+        onSuccess: async ({ operation }) => {
+          if (!fieldValues.id) return;
+          await checkCreateModelOperationUntilDone(
+            operation.name,
+            `models/${fieldValues.id.trim()}`,
+            setModelCreated,
+            setNewModel,
+            setCreateModelMessageBoxState,
+            amplitudeIsInit
+          );
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
