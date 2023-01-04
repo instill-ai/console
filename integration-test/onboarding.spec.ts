@@ -8,7 +8,7 @@ test("should navigate first time user to the onboarding page", async ({
   await removeRegisteredUser();
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page).toHaveURL(
-    `${process.env.NEXT_PUBLIC_MAIN_URL}/onboarding`
+    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/onboarding`
   );
 });
 

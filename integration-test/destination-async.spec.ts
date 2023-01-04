@@ -121,7 +121,7 @@ test.describe.serial("Async destination", () => {
     const setupButton = page.locator("button", { hasText: "Set up" });
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations`
+      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/destinations`
     );
   });
 
@@ -140,7 +140,7 @@ test.describe.serial("Async destination", () => {
       page.locator("h3", { hasText: destinationId }).click(),
     ]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations/${destinationId}`
+      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/destinations/${destinationId}`
     );
   });
 

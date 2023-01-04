@@ -61,7 +61,9 @@ export const expectToOnboardUser = async (
   // Should submit the onboarding form
   await Promise.all([page.waitForNavigation(), startButton.click()]);
 
-  expect(page.url()).toBe(`${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines`);
+  expect(page.url()).toBe(
+    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
+  );
 
   // Should have cookie
   // Safari have issue when setting up cookies.

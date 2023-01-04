@@ -43,7 +43,7 @@ To setup the local dev environment with this repo, you need follow the below ste
 8. Make sure the environment variables in the `.env` file are correct. They should map one-to-one to the config of the VDP. By default they are
 
 ```
-- NEXT_PUBLIC_MAIN_URL=http://localhost:3000
+- NEXT_PUBLIC_CONSOLE_BASE_URL=http://localhost:3000
 - NEXT_PUBLIC_MGMT_BACKEND_BASE_URL=http://localhost:8084
 - NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL=http://localhost:8081
 - NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL=http://localhost:8082

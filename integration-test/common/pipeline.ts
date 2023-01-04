@@ -64,7 +64,9 @@ export const expectToDeletePipeline = async (
 
   // Should delete pipeline and navigate to pipelines page
   await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-  expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines`);
+  expect(page.url()).toEqual(
+    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
+  );
 
   // Should not display deleted pipeline
   const modelItemTitle = page.locator("h3", { hasText: pipelineId });
@@ -120,7 +122,7 @@ export const expectCorrectPipelineList = async (
     page.locator("h3", { hasText: pipelineId }).click(),
   ]);
   expect(page.url()).toEqual(
-    `${process.env.NEXT_PUBLIC_MAIN_URL}/pipelines/${pipelineId}`
+    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines/${pipelineId}`
   );
 };
 

@@ -50,7 +50,9 @@ export const expectToDeleteConnector = async (
 
   // Should delete destination and navigate to destinations page
   await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-  expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/${type}s`);
+  expect(page.url()).toEqual(
+    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${type}s`
+  );
 
   // Should remove the destination from destination/source list
   const itemTitle = page.locator("h3", { hasText: id });
