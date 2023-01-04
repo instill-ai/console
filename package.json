@@ -7,9 +7,9 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "docker-compose-up": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose_app.yml up --build --remove-orphans --force-recreate",
+    "docker-compose-up": "cross-env DOCKER_BUILDKIT=1 docker compose rm -f && docker compose -f ./docker-compose_app.yml up --build --remove-orphans --force-recreate",
     "docker:prune-cache": "docker buildx prune",
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "bash env.sh && next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest",

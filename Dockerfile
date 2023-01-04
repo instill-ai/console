@@ -61,7 +61,6 @@ RUN adduser --system --uid 1001 nextjs
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/package.json ./package.json
-# COPY --from=builder /app/.env.production ./.env.production
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size 
@@ -80,6 +79,7 @@ ENV PORT 3000
 
 # Permisions to execute script
 RUN ["chmod", "+x", "./entrypoint.sh"]
-ENTRYPOINT ["/app/entrypoint.sh"]
+
+ENTRYPOINT ["./entrypoint.sh"]
 
 CMD ["node", "server.js"]
