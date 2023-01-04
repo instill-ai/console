@@ -5,7 +5,7 @@ import {
   ModelWithInstance,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import determineModelState from "@/utils/determineModelState";
+import { determineModelState } from "@/utils/determineModelState";
 
 const useModelWithInstances = (model: Nullable<Model>) => {
   return useQuery(

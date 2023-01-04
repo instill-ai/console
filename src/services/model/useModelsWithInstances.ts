@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { listModelInstancesQuery, ModelWithInstance } from "@/lib/instill";
-import determineModelState from "@/utils/determineModelState";
+import { determineModelState } from "@/utils/determineModelState";
 import useModels from "./useModels";
 
 const useModelsWithInstances = () => {
