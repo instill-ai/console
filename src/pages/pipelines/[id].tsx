@@ -24,6 +24,7 @@ import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
 import { Pipeline } from "@/lib/instill";
 import { getCodeHikeTemplateSource } from "@/lib/markdown";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { env } from "@/utils/config";
 
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context
@@ -33,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
     replaceRules: [
       {
         match: "instillServerHostName",
-        replaceValue: process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL ?? "",
+        replaceValue: env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL") ?? "",
       },
       {
         match: "instillPipelineId",

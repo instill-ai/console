@@ -12,6 +12,7 @@ import {
 import { GetUserResponse, User } from "@/lib/instill/mgmt";
 import { OnboardingForm } from "@/components/onboarding";
 import { Nullable } from "@/types/general";
+import { env } from "../utils";
 
 export const getServerSideProps: GetServerSideProps<
   OnBoardingPageProps
@@ -50,7 +51,9 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
     const fetchUser = async () => {
       try {
         const res = await axios.get<GetUserResponse>(
-          `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
+          `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+            "NEXT_PUBLIC_API_VERSION"
+          )}/users/local-user`
         );
         setFetched(true);
         setUser(res.data.user);

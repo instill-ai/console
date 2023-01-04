@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import axios from "axios";
 import { User } from "./types";
 
@@ -10,7 +11,9 @@ export const updateLocalUserMutation = async (
 ): Promise<User> => {
   try {
     const { data } = await axios.patch(
-      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/users/local-user`,
       payload
     );
 

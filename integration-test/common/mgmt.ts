@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { BrowserContext, Page, expect } from "@playwright/test";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -6,7 +7,9 @@ import { expectToSelectReactSelectOption } from "../helper";
 export const removeRegisteredUser = async () => {
   try {
     await axios.patch(
-      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/users/local-user`,
       {
         cookie_token: "",
       }
@@ -19,7 +22,9 @@ export const removeRegisteredUser = async () => {
 export const addRegisteredUser = async () => {
   try {
     await axios.patch(
-      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`,
+      `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/users/local-user`,
       {
         cookie_token: uuidv4(),
       }
@@ -61,16 +66,14 @@ export const expectToOnboardUser = async (
   // Should submit the onboarding form
   await Promise.all([page.waitForNavigation(), startButton.click()]);
 
-  expect(page.url()).toBe(
-    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
-  );
+  expect(page.url()).toBe(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`);
 
   // Should have cookie
   // Safari have issue when setting up cookies.
   if (browserName !== "webkit") {
     const cookies = await context.cookies();
     const instillCookies = cookies.find(
-      (e) => e.name === process.env.NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME
+      (e) => e.name === env("NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME")
     );
     expect(instillCookies).toBeDefined();
   }

@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 import axios from "axios";
 import { PipelineWithRawRecipe } from "./types";
 
@@ -20,7 +21,9 @@ export const createPipelineMutation = async (
 ): Promise<PipelineWithRawRecipe> => {
   try {
     const { data } = await axios.post<CreatePipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines`,
+      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/pipelines`,
       payload
     );
     return Promise.resolve(data.pipeline);
@@ -43,7 +46,9 @@ export const updatePipelineMutation = async (
 ) => {
   try {
     const { data } = await axios.patch<UpdatePipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${payload.name}`,
       {
         ...payload,
         description: payload.description ?? undefined,
@@ -58,7 +63,9 @@ export const updatePipelineMutation = async (
 export const deletePipelineMutation = async (pipelineName: string) => {
   try {
     await axios.delete(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}`
+      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${pipelineName}`
     );
   } catch (err) {
     return Promise.reject(err);

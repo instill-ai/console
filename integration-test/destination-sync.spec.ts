@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
@@ -32,7 +33,7 @@ test.describe.serial("Sync destination", () => {
     const setupButton = page.locator("button", { hasText: "Set up" });
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/destinations`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`
     );
   });
 
@@ -51,7 +52,7 @@ test.describe.serial("Sync destination", () => {
       page.locator("h3", { hasText: destinationId }).click(),
     ]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/destinations/${destinationId}`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
     );
   });
 

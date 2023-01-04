@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
 import axios from "axios";
 import {
@@ -49,7 +50,9 @@ test.describe
   test.afterAll(async () => {
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
+        `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+          "NEXT_PUBLIC_API_VERSION"
+        )}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );
       await deleteDestination(destinationId);
       await deleteSource("source-http");
@@ -191,7 +194,7 @@ test.describe
     // Should set up pipeline
     await Promise.all([page.waitForNavigation(), setupPipelineButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`
     );
   });
 

@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 import axios from "axios";
 import { getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
@@ -28,7 +29,9 @@ export const listDestinationDefinitionsQuery = async (
   try {
     const definitions: ConnectorDefinition[] = [];
     const queryString = getQueryString(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`,
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/destination-connector-definitions?view=VIEW_FULL`,
       pageSize,
       nextPageToken
     );
@@ -63,7 +66,9 @@ export const getDestinationDefinitionQuery = async (
 ) => {
   try {
     const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}?view=VIEW_FULL`
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${destinationDefinitionName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector_definition);
@@ -87,7 +92,9 @@ export const getDestinationQuery = async (
 ): Promise<Destination> => {
   try {
     const { data } = await axios.get<GetDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}?view=VIEW_FULL`
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${destinationName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector);
@@ -105,7 +112,9 @@ export type ListDestinationsResponse = {
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
     const { data } = await axios.get<ListDestinationsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/destination-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connectors);

@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import axios from "axios";
 import { PipelineWithRawRecipe } from "./types";
 
@@ -12,7 +13,9 @@ export const listPipelinesQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListPipelinesResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
+      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/pipelines?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipelines);
@@ -30,7 +33,9 @@ export const getPipelineQuery = async (
 ): Promise<PipelineWithRawRecipe> => {
   try {
     const { data } = await axios.get<GetPipelineResponse>(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${pipelineName}?view=VIEW_FULL`
+      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${pipelineName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipeline);

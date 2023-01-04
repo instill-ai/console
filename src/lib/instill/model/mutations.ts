@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 import axios from "axios";
 import { Model } from "./types";
 
@@ -22,7 +23,9 @@ export const createGithubModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.post<CreateGithubModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -67,7 +70,9 @@ export const createLocalModelMutation = async (
     }
 
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/multipart`,
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/models/multipart`,
       formData,
       {
         headers: {
@@ -102,7 +107,9 @@ export const createArtivcModelMutation = async (
 ) => {
   try {
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -141,7 +148,9 @@ export const createHuggingFaceModelMutation = async (
 ) => {
   try {
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -170,7 +179,9 @@ export const updateModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.patch<UpdateModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${payload.name}`,
       payload
     );
     return Promise.resolve(data.model);
@@ -182,7 +193,9 @@ export const updateModelMutation = async (
 export const deleteModelMutation = async (modelName: string) => {
   try {
     await axios.delete(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}`
+      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${modelName}`
     );
   } catch (err) {
     return Promise.reject(err);

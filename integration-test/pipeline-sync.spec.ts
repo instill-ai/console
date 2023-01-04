@@ -1,5 +1,5 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
-import axios from "axios";
 import {
   expectCorrectPipelineDetails,
   expectCorrectPipelineList,
@@ -169,7 +169,7 @@ test.describe
     // Should set up pipeline
     await Promise.all([page.waitForNavigation(), setupPipelineButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`
     );
   });
 

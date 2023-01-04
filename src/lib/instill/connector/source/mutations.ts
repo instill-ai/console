@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import axios from "axios";
 import { Source } from "./types";
 
@@ -10,6 +11,7 @@ export type CreateSourcePayload = {
   source_connector_definition: string;
   connector: {
     description?: string;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     configuration: Record<string, any> | Record<string, never>;
   };
 };
@@ -19,7 +21,9 @@ export const createSourceMutation = async (
 ): Promise<Source> => {
   try {
     const { data } = await axios.post<CreateSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors`,
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/source-connectors`,
       payload
     );
     return Promise.resolve(data.source_connector);
@@ -31,7 +35,9 @@ export const createSourceMutation = async (
 export const deleteSourceMutation = async (sourceName: string) => {
   try {
     await axios.delete(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceName}`
+      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${sourceName}`
     );
   } catch (err) {
     return Promise.reject(err);

@@ -1,4 +1,5 @@
 import { GetSourceResponse } from "@/lib/instill";
+import { env } from "@/utils/config";
 import { rest } from "msw";
 
 type GetSourceParam = {
@@ -31,7 +32,9 @@ const getSourceHandler = rest.get<
   GetSourceParam,
   GetSourceResponse
 >(
-  `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/:sourceId`,
+  `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+    "NEXT_PUBLIC_API_VERSION"
+  )}/source-connectors/:sourceId`,
   (req, res, ctx) => {
     const { sourceId } = req.params;
     return res(ctx.json(getPredefindedSource(sourceId)));

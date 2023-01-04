@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { Page, expect } from "@playwright/test";
 
 export const openPipelinesPage = async (page: Page) => {
@@ -65,7 +66,7 @@ export const expectToDeletePipeline = async (
   // Should delete pipeline and navigate to pipelines page
   await Promise.all([page.waitForNavigation(), deleteButton.click()]);
   expect(page.url()).toEqual(
-    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines`
+    `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`
   );
 
   // Should not display deleted pipeline
@@ -122,7 +123,7 @@ export const expectCorrectPipelineList = async (
     page.locator("h3", { hasText: pipelineId }).click(),
   ]);
   expect(page.url()).toEqual(
-    `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/pipelines/${pipelineId}`
+    `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines/${pipelineId}`
   );
 };
 

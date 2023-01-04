@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
 import { deleteSource, expectToSelectReactSelectOption } from "./helper";
 
@@ -36,7 +37,7 @@ test.describe.serial("Sync source", () => {
     // Should set up source
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/sources`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`
     );
   });
 
@@ -52,7 +53,7 @@ test.describe.serial("Sync source", () => {
     // Should navigate to source details page
     await Promise.all([page.waitForNavigation(), sourceItemTitle.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/sources/${sourceId}`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources/${sourceId}`
     );
   });
 
@@ -126,7 +127,7 @@ test.describe.serial("Sync source", () => {
     // Delete source and navigate to sources page
     await Promise.all([page.waitForNavigation(), deleteSourceButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/sources`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`
     );
 
     // Check whether the list item not exist
