@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "DISABLE_USAGE_COLLECTION=$DISABLE_USAGE_COLLECTION"
 test -n "$DISABLE_USAGE_COLLECTION"
@@ -17,15 +17,4 @@ test -n "$API_VERSION"
 echo "CONSOLE_EDITION=$CONSOLE_EDITION"
 test -n "$CONSOLE_EDITION"
 
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_DISABLE_USAGE_COLLECTION#$DISABLE_USAGE_COLLECTION#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_MGMT_BACKEND_BASE_URL#$MGMT_BACKEND_BASE_URL#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL#$PIPELINE_BACKEND_BASE_URL#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL#$CONNECTOR_BACKEND_BASE_URL#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_MODEL_BACKEND_BASE_URL#$MODEL_BACKEND_BASE_URL#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_API_VERSION#$API_VERSION#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONSOLE_BASE_URL#$CONSOLE_BASE_URL#g"
-find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#NEXT_PUBLIC_CONSOLE_EDITION#$CONSOLE_EDITION#g"
-
 NEXT_PUBLIC_DISABLE_USAGE_COLLECTION=$DISABLE_USAGE_COLLECTION NEXT_PUBLIC_MGMT_BACKEND_BASE_URL=$MGMT_BACKEND_BASE_URL NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL=$PIPELINE_BACKEND_BASE_URL NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL=$CONNECTOR_BACKEND_BASE_URL NEXT_PUBLIC_MODEL_BACKEND_BASE_URL=$MODEL_BACKEND_BASE_URL NEXT_PUBLIC_API_VERSION=$API_VERSION NEXT_PUBLIC_CONSOLE_BASE_URL=$CONSOLE_BASE_URL NEXT_PUBLIC_CONSOLE_EDITION=$CONSOLE_EDITION ./env.sh
-
-exec "$@"
