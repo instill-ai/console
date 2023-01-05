@@ -37,8 +37,6 @@
 # Debug:
 # NEXT_PUBLIC_OB_ENV=123_from_fish NEXT_BAD_ENV=zzz NEXT_PUBLIC_OB_TESTNEW=testenv NEXT_PUBLIC_CODE_UPLOAD_SIZE_LIMIT=6666 ./env.sh
 
-echo -e "env.sh loaded\n"
-
 # Config
 ENVSH_ENV="${ENVSH_ENV:-"./.env"}"
 ENVSH_PREFIX="${ENVSH_PREFIX:-"NEXT_PUBLIC_"}"
@@ -73,6 +71,8 @@ __debug() {
   fi
 }
 
+__info "$(__green "\nenv.sh loaded\n")"
+
 ENVSH_SED="sed"
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "macOS detected, switching to gsed"
@@ -102,7 +102,9 @@ touch "$ENVSH_OUTPUT"
 # Create an array from inline variables
 matched_envs=$(env | grep "${ENVSH_PREFIX}")
 IFS=$'\n' read -r -d '' -a matched_envs_arr <<<"$matched_envs"
-echo -e "\nMatched inline env:\n"
+
+__info "$(__green "\nMatched inline env:\n")"
+
 for matched_env in "${matched_envs_arr[@]}"; do
   echo $matched_env
 done
@@ -117,7 +119,8 @@ echo "$ENVSH_PREPEND" >>"$ENVSH_OUTPUT"
 }
 
 # Process .env for runtime client use
-__info "$(__green "Parsing ${ENVSH_ENV}...\n")"
+__info "$(__green "\nParsing ${ENVSH_ENV}...\n")"
+
 while IFS= read -r line; do
   # Check if this line is a valid environment variable and matches our prefix
   if printf '%s' "$line" | grep -e "=" | grep -e "$ENVSH_PREFIX"; then
