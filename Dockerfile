@@ -79,6 +79,7 @@ RUN chmod +x ./env.sh
 
 # We need this permission for env.sh to create the __env.js in /public folder
 RUN chmod +wx ./public
+RUN chmod +rwx ./.env
 
 EXPOSE 3000
 

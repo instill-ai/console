@@ -138,6 +138,7 @@ echo "$ENVSH_APPEND" >>"$ENVSH_OUTPUT"
 # Strip prefix if needed
 $ENVSH_PREFIX_STRIP && $ENVSH_SED -i'' -e "s~$ENVSH_PREFIX~~g" "$ENVSH_OUTPUT"
 
+# Replace environment variables in .env file
 for i in "${!matched_envs_arr[@]}"; do
   IFS='=' read -ra key_arr <<<"${matched_envs_arr[$i]}"
   key=${key_arr[0]}
