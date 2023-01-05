@@ -107,7 +107,7 @@ for matched_env in "${matched_envs_arr[@]}"; do
   echo $matched_env
 done
 
-# Add assignment
+# Add prepend
 echo "$ENVSH_PREPEND" >>"$ENVSH_OUTPUT"
 
 # Check if file exists
@@ -128,18 +128,12 @@ while IFS= read -r line; do
       <<<"$line" >>"$ENVSH_OUTPUT"
   fi
 done <"$ENVSH_ENV"
+
+# Add append
 echo "$ENVSH_APPEND" >>"$ENVSH_OUTPUT"
 
 # Strip prefix if needed
 $ENVSH_PREFIX_STRIP && $ENVSH_SED -i'' -e "s~$ENVSH_PREFIX~~g" "$ENVSH_OUTPUT"
-
-# Update .env file itself
-# NOTE: This step is not necessary because variables on pages inside the
-# Next.js prod server won't be changed. They're already inlined during the
-# build time.
-for matched_env in "${matched_envs_arr[@]}"; do
-  echo $matched_env
-done
 
 for i in "${!matched_envs_arr[@]}"; do
   IFS='=' read -ra key_arr <<<"${matched_envs_arr[$i]}"
@@ -147,8 +141,8 @@ for i in "${!matched_envs_arr[@]}"; do
 
   if [[ "${matched_envs_arr[$i]}" = *"${key}"* ]]; then
     index="$i"
-    echo -e "Got index from inline env: ${index}, replacing ${key}"
-    find "$ENVSH_ENV" -type f -exec $ENVSH_SED -i'' \
+    __info "Got index ${index} from inline env: ${key}"
+    find "$ENVSH_ENV" -type f -exec sudo $ENVSH_SED -i'' \
       -e "s~$key=.*~${matched_envs_arr[$index]}~g" {} \;
   fi
 done
