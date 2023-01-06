@@ -124,7 +124,6 @@ __info "$(__green "\nParsing ${ENVSH_ENV}...\n")"
 while IFS= read -r line; do
   # Check if this line is a valid environment variable and matches our prefix
   if printf '%s' "$line" | grep -e "=" | grep -e "$ENVSH_PREFIX"; then
-
     # Read and apply environment variable if exists
     # NOTE: <<< here operator not working with `sh`
     awk -F '=' '{print $1 ": \"" (ENVIRON[$1] ? ENVIRON[$1] : $2) "\","}' \
@@ -138,6 +137,8 @@ echo "$ENVSH_APPEND" >>"$ENVSH_OUTPUT"
 # Strip prefix if needed
 $ENVSH_PREFIX_STRIP && $ENVSH_SED -i'' -e "s~$ENVSH_PREFIX~~g" "$ENVSH_OUTPUT"
 
+__info "$(__green "\nReplacing env variable in ${ENVSH_ENV}...\n")"
+
 # Replace environment variables in .env file
 for i in "${!matched_envs_arr[@]}"; do
   IFS='=' read -ra key_arr <<<"${matched_envs_arr[$i]}"
@@ -145,9 +146,19 @@ for i in "${!matched_envs_arr[@]}"; do
 
   if [[ "${matched_envs_arr[$i]}" = *"${key}"* ]]; then
     index="$i"
-    __info "Got index ${index} from inline env: ${key}"
-    find "$ENVSH_ENV" -type f -exec sudo $ENVSH_SED -i'' \
-      -e "s~$key=.*~${matched_envs_arr[$index]}~g" {} \;
+
+    # Use temp file to avoid sed permission issue
+    rm -f .env.tmp
+    TFILE=$(mktemp)
+
+    echo -e "Got index from inline env: ${index}, replacing ${key}"
+
+    # Replace the value and then store into temp file
+    $ENVSH_SED -e "s~$key=.*~${matched_envs_arr[$index]}~g" "$ENVSH_ENV" >"$TFILE"
+
+    # cover .env file then delete the temp file
+    cat "$TFILE" >"$ENVSH_ENV"
+    rm -f .env.tmp
   fi
 done
 

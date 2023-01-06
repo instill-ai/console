@@ -92,6 +92,10 @@ For server-side code, because we will alter the ./.env file in the image. It can
 - When in development, please change the variables in the .env file.
 - When in production, please change the `docker run -e` argument or change the environment config in the docker-compose file.
 
+### Caveats
+
+- Be careful of env prefix. For example, if you have a inlined env CONSOLE_BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the env.sh will not find this env in .env file and alter it. We recommend you add `NEXT_PUBLIC_` prefix in all the env related to Next.js
+
 ## Caveats
 
 If you want to set up new path aliases using typescript, remember to add them in the `.storybook/main.js` to make sure storybook will correctly access the file.

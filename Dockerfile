@@ -81,6 +81,8 @@ RUN chmod +x ./env.sh
 RUN chmod +wx ./public
 RUN chmod +rwx ./.env
 
+
+
 EXPOSE 3000
 
 ENV PORT 3000
