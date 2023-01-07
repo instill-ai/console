@@ -43,7 +43,7 @@ export const deleteDestination = async (
 ): Promise<void> => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connectors?view=VIEW_FULL`
     );
@@ -55,7 +55,7 @@ export const deleteDestination = async (
 
     if (targetDestination) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/destination-connectors/${destinationId}`
       );
@@ -68,14 +68,14 @@ export const deleteDestination = async (
 export const deleteAllDestinations = async () => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connectors?view=VIEW_FULL`
     );
 
     for (const destination of data.destination_connectors) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/destination-connectors/${destination.id}`
       );
@@ -88,7 +88,7 @@ export const deleteAllDestinations = async () => {
 export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/source-connectors?view=VIEW_FULL`
     );
@@ -100,7 +100,7 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
 
     if (targetSource) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/source-connectors/${sourceId}`
       );
@@ -113,14 +113,14 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
 export const deleteAllSources = async () => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/source-connectors?view=VIEW_FULL`
     );
 
     for (const source of data.source_connectors) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/source-connectors/${source.id}`
       );
@@ -133,7 +133,7 @@ export const deleteAllSources = async () => {
 export const deleteModel = async (modelId: string) => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models?view=VIEW_FULL`
     );
@@ -143,7 +143,7 @@ export const deleteModel = async (modelId: string) => {
 
     if (targetModel) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/models/${modelId}`
       );
@@ -156,14 +156,14 @@ export const deleteModel = async (modelId: string) => {
 export const deleteAllModels = async () => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models?view=VIEW_FULL`
     );
 
     for (const model of data.models) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/models/${model.id}`
       );
@@ -176,14 +176,14 @@ export const deleteAllModels = async () => {
 export const deleteAllPipelines = async () => {
   try {
     const { data } = await axios.get(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/pipelines?view=VIEW_FULL`
     );
 
     for (const pipeline of data.pipelines) {
       await axios.delete(
-        `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/pipelines/${pipeline.id}`
       );

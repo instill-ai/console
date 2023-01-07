@@ -23,7 +23,7 @@ export const createGithubModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.post<CreateGithubModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models`,
       {
@@ -70,7 +70,7 @@ export const createLocalModelMutation = async (
     }
 
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models/multipart`,
       formData,
@@ -107,7 +107,7 @@ export const createArtivcModelMutation = async (
 ) => {
   try {
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models`,
       {
@@ -148,7 +148,7 @@ export const createHuggingFaceModelMutation = async (
 ) => {
   try {
     const { data } = await axios.post<CreateLocalModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models`,
       {
@@ -179,7 +179,7 @@ export const updateModelMutation = async (
 ): Promise<Model> => {
   try {
     const { data } = await axios.patch<UpdateModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${payload.name}`,
       payload
@@ -193,7 +193,7 @@ export const updateModelMutation = async (
 export const deleteModelMutation = async (modelName: string) => {
   try {
     await axios.delete(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelName}`
     );

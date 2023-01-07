@@ -13,7 +13,7 @@ export const listPipelinesQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListPipelinesResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/pipelines?view=VIEW_FULL`
     );
@@ -33,7 +33,7 @@ export const getPipelineQuery = async (
 ): Promise<PipelineWithRawRecipe> => {
   try {
     const { data } = await axios.get<GetPipelineResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${pipelineName}?view=VIEW_FULL`
     );

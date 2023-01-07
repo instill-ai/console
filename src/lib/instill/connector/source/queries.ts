@@ -20,7 +20,7 @@ export const listSourceDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListSourceDefinitionsResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/source-connector-definitions?view=VIEW_FULL`
     );
@@ -39,7 +39,7 @@ export const getSourceDefinitionQuery = async (
 ): Promise<ConnectorDefinition> => {
   try {
     const { data } = await axios.get<GetSourceDefinitionResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${sourceDefinitionName}`
     );
@@ -63,7 +63,7 @@ export type GetSourceResponse = {
 export const getSourceQuery = async (sourceName: string): Promise<Source> => {
   try {
     const { data } = await axios.get<GetSourceResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${sourceName}?view=VIEW_FULL`
     );
@@ -83,7 +83,7 @@ export type ListSourcesResponse = {
 export const listSourcesQuery = async (): Promise<Source[]> => {
   try {
     const { data } = await axios.get<ListSourcesResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/source-connectors?view=VIEW_FULL`
     );

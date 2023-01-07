@@ -290,7 +290,7 @@ test.describe.serial("Async destination", () => {
           `/${env(
             "NEXT_PUBLIC_API_VERSION"
           )}/destination-connectors/${destinationId}`,
-          `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}`
+          `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}`
         ).toString(),
         { timeout: 50000 }
       ),

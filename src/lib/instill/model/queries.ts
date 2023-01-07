@@ -20,7 +20,7 @@ export type GetModelDefinitionResponse = {
 export const getModelDefinitionQuery = async (modelDefinitionName: string) => {
   try {
     const { data } = await axios.get<GetModelDefinitionResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelDefinitionName}`
     );
@@ -42,7 +42,7 @@ export const listModelDefinitionsQuery = async (): Promise<
 > => {
   try {
     const { data } = await axios.get<ListModelDefinitionsResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/model-definitions`
     );
@@ -66,7 +66,7 @@ export type GetModelResponse = {
 export const getModelQuery = async (modelName: string): Promise<Model> => {
   try {
     const { data } = await axios.get<GetModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelName}?view=VIEW_FULL`
     );
@@ -85,7 +85,7 @@ export type ListModelsResponse = {
 export const listModelsQuery = async (): Promise<Model[]> => {
   try {
     const { data } = await axios.get<ListModelsResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/models?view=VIEW_FULL`
     );
@@ -111,7 +111,7 @@ export const getModelInstanceQuery = async (
 ): Promise<ModelInstance> => {
   try {
     const { data } = await axios.get<GetModelInstanceResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelInstanceName}?view=VIEW_FULL`
     );
@@ -133,7 +133,7 @@ export const listModelInstancesQuery = async (
 ): Promise<ModelInstance[]> => {
   try {
     const { data } = await axios.get<ListModelInstancesResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelName}/instances?view=VIEW_FULL`
     );
@@ -150,7 +150,7 @@ export type GetModelInstanceReadmeQuery = {
 export const getModelInstanceReadme = async (modelInstanceName: string) => {
   try {
     const { data } = await axios.get<GetModelInstanceReadmeQuery>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelInstanceName}/readme`
     );

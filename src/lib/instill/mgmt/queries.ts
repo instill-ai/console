@@ -9,7 +9,7 @@ export type GetUserResponse = {
 export const getUserQuery = async (userName: string): Promise<User> => {
   try {
     const { data } = await axios.get<GetUserResponse>(
-      `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${userName}`
     );

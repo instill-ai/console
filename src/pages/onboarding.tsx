@@ -51,7 +51,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
     const fetchUser = async () => {
       try {
         const res = await axios.get<GetUserResponse>(
-          `${env("NEXT_PUBLIC_MGMT_BACKEND_BASE_URL")}/${env(
+          `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
             "NEXT_PUBLIC_API_VERSION"
           )}/users/local-user`
         );

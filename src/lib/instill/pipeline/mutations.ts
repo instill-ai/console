@@ -21,7 +21,7 @@ export const createPipelineMutation = async (
 ): Promise<PipelineWithRawRecipe> => {
   try {
     const { data } = await axios.post<CreatePipelineResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/pipelines`,
       payload
@@ -46,7 +46,7 @@ export const updatePipelineMutation = async (
 ) => {
   try {
     const { data } = await axios.patch<UpdatePipelineResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${payload.name}`,
       {
@@ -63,7 +63,7 @@ export const updatePipelineMutation = async (
 export const deletePipelineMutation = async (pipelineName: string) => {
   try {
     await axios.delete(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${pipelineName}`
     );

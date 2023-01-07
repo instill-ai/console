@@ -9,7 +9,7 @@ export type ActivatePipelineResponse = {
 export const activatePipelineMutation = async (pipelineName: string) => {
   try {
     const { data } = await axios.post<ActivatePipelineResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${pipelineName}/activate`
     );
@@ -26,7 +26,7 @@ export type DeActivatePipelineResponse = {
 export const deActivatePipelineMutation = async (pipelineName: string) => {
   try {
     const { data } = await axios.post<DeActivatePipelineResponse>(
-      `${env("NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${pipelineName}/deactivate`
     );

@@ -50,7 +50,7 @@ test.describe
   test.afterAll(async () => {
     try {
       await axios.post(
-        `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );

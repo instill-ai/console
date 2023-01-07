@@ -22,7 +22,7 @@ export const createDestinationMutation = async (
 ): Promise<Destination> => {
   try {
     const { data } = await axios.post<CreateDestinationResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connectors`,
       payload
@@ -36,7 +36,7 @@ export const createDestinationMutation = async (
 export const deleteDestinationMutation = async (destinationName: string) => {
   try {
     await axios.delete(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${destinationName}`
     );
@@ -64,7 +64,7 @@ export const updateDestinationMutation = async (
   try {
     const { name, ...data } = payload;
     const res = await axios.patch<UpdateDestinationResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${name}`,
       data

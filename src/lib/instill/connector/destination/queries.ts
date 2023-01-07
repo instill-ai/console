@@ -29,7 +29,7 @@ export const listDestinationDefinitionsQuery = async (
   try {
     const definitions: ConnectorDefinition[] = [];
     const queryString = getQueryString(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connector-definitions?view=VIEW_FULL`,
       pageSize,
@@ -66,7 +66,7 @@ export const getDestinationDefinitionQuery = async (
 ) => {
   try {
     const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${destinationDefinitionName}?view=VIEW_FULL`
     );
@@ -92,7 +92,7 @@ export const getDestinationQuery = async (
 ): Promise<Destination> => {
   try {
     const { data } = await axios.get<GetDestinationResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${destinationName}?view=VIEW_FULL`
     );
@@ -112,7 +112,7 @@ export type ListDestinationsResponse = {
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
     const { data } = await axios.get<ListDestinationsResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connectors?view=VIEW_FULL`
     );

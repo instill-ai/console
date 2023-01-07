@@ -32,7 +32,7 @@ const getSourceHandler = rest.get<
   GetSourceParam,
   GetSourceResponse
 >(
-  `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+  `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
     "NEXT_PUBLIC_API_VERSION"
   )}/source-connectors/:sourceId`,
   (req, res, ctx) => {

@@ -21,7 +21,7 @@ export const createSourceMutation = async (
 ): Promise<Source> => {
   try {
     const { data } = await axios.post<CreateSourceResponse>(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/source-connectors`,
       payload
@@ -35,7 +35,7 @@ export const createSourceMutation = async (
 export const deleteSourceMutation = async (sourceName: string) => {
   try {
     await axios.delete(
-      `${env("NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${sourceName}`
     );

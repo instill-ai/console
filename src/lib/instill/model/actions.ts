@@ -9,7 +9,7 @@ export type DeployModelResponse = {
 export const deployModelInstanceAction = async (modelInstanceName: string) => {
   try {
     const { data } = await axios.post<DeployModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelInstanceName}/deploy`
     );
@@ -28,7 +28,7 @@ export const unDeployModelInstanceAction = async (
 ) => {
   try {
     const { data } = await axios.post<UnDeployModelResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${modelInstanceName}/undeploy`
     );
@@ -58,7 +58,7 @@ export const testModelInstance = async (payload: TestModelInstancePayload) => {
     formData.append("file", payload.content);
 
     const { data } = await axios.post<TestModelInstanceResponse>(
-      `${env("NEXT_PUBLIC_MODEL_BACKEND_BASE_URL")}/${env(
+      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${payload.modelInstanceName}/test-multipart`,
       formData,
