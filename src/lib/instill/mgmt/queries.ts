@@ -1,5 +1,4 @@
 import { env } from "@/utils/config";
-import axios from "axios";
 import { createInstillAxiosClient } from "../helper";
 import { User } from "./types";
 
