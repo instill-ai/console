@@ -1,5 +1,5 @@
 import { env } from "@/utils/config";
-import axios from "axios";
+import { createInstillAxiosClient } from "../helper";
 import {
   Model,
   ModelDefinition,
@@ -7,11 +7,9 @@ import {
   ModelInstanceReadme,
 } from "./types";
 
-// ###################################################################
-// #                                                                 #
-// # Model Definition                                                #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Model Definition                                                         #
+// ############################################################################
 
 export type GetModelDefinitionResponse = {
   model_definition: ModelDefinition;
@@ -19,10 +17,10 @@ export type GetModelDefinitionResponse = {
 
 export const getModelDefinitionQuery = async (modelDefinitionName: string) => {
   try {
-    const { data } = await axios.get<GetModelDefinitionResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${modelDefinitionName}`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelDefinitionResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelDefinitionName}`
     );
 
     return Promise.resolve(data.model_definition);
@@ -41,10 +39,10 @@ export const listModelDefinitionsQuery = async (): Promise<
   ModelDefinition[]
 > => {
   try {
-    const { data } = await axios.get<ListModelDefinitionsResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/model-definitions`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListModelDefinitionsResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/model-definitions`
     );
 
     return Promise.resolve(data.model_definitions);
@@ -53,11 +51,9 @@ export const listModelDefinitionsQuery = async (): Promise<
   }
 };
 
-// ###################################################################
-// #                                                                 #
-// # Model                                                           #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Model                                                                    #
+// ############################################################################
 
 export type GetModelResponse = {
   model: Model;
@@ -65,10 +61,10 @@ export type GetModelResponse = {
 
 export const getModelQuery = async (modelName: string): Promise<Model> => {
   try {
-    const { data } = await axios.get<GetModelResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${modelName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelName}?view=VIEW_FULL`
     );
     return Promise.resolve(data.model);
   } catch (err) {
@@ -84,10 +80,10 @@ export type ListModelsResponse = {
 
 export const listModelsQuery = async (): Promise<Model[]> => {
   try {
-    const { data } = await axios.get<ListModelsResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/models?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListModelsResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.models);
@@ -96,11 +92,9 @@ export const listModelsQuery = async (): Promise<Model[]> => {
   }
 };
 
-// ###################################################################
-// #                                                                 #
-// # Model Instance                                                  #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Model Instance                                                           #
+// ############################################################################
 
 export type GetModelInstanceResponse = {
   instance: ModelInstance;
@@ -110,10 +104,10 @@ export const getModelInstanceQuery = async (
   modelInstanceName: string
 ): Promise<ModelInstance> => {
   try {
-    const { data } = await axios.get<GetModelInstanceResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${modelInstanceName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelInstanceResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelInstanceName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.instance);
@@ -132,10 +126,10 @@ export const listModelInstancesQuery = async (
   modelName: string
 ): Promise<ModelInstance[]> => {
   try {
-    const { data } = await axios.get<ListModelInstancesResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${modelName}/instances?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListModelInstancesResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelName}/instances?view=VIEW_FULL`
     );
     return Promise.resolve(data.instances);
   } catch (err) {
@@ -149,10 +143,10 @@ export type GetModelInstanceReadmeQuery = {
 
 export const getModelInstanceReadme = async (modelInstanceName: string) => {
   try {
-    const { data } = await axios.get<GetModelInstanceReadmeQuery>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${modelInstanceName}/readme`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelInstanceReadmeQuery>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelInstanceName}/readme`
     );
     return Promise.resolve(data.readme);
   } catch (err) {
