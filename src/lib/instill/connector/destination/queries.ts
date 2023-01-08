@@ -1,15 +1,12 @@
 import { Nullable } from "@/types/general";
 import { env } from "@/utils/config";
-import axios from "axios";
-import { getQueryString } from "../../helper";
+import { createInstillAxiosClient, getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Destination } from "./types";
 
-// ###################################################################
-// #                                                                 #
-// # Destination definition                                          #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Destination definition                                                   #
+// ############################################################################
 
 export type ListDestinationDefinitionsResponse = {
   destination_connector_definitions: ConnectorDefinition[];
@@ -27,16 +24,17 @@ export const listDestinationDefinitionsQuery = async (
   nextPageToken: Nullable<string>
 ): Promise<ConnectorDefinition[]> => {
   try {
+    const client = createInstillAxiosClient();
     const definitions: ConnectorDefinition[] = [];
     const queryString = getQueryString(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
+      `${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/destination-connector-definitions?view=VIEW_FULL`,
       pageSize,
       nextPageToken
     );
 
-    const { data } = await axios.get<ListDestinationDefinitionsResponse>(
+    const { data } = await client.get<ListDestinationDefinitionsResponse>(
       queryString
     );
 
@@ -65,8 +63,10 @@ export const getDestinationDefinitionQuery = async (
   destinationDefinitionName: string
 ) => {
   try {
-    const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetDestinationDefinitionResponse>(
+      `${env(
         "NEXT_PUBLIC_API_VERSION"
       )}/${destinationDefinitionName}?view=VIEW_FULL`
     );
@@ -77,11 +77,9 @@ export const getDestinationDefinitionQuery = async (
   }
 };
 
-// ###################################################################
-// #                                                                 #
-// # Destination                                                     #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Destination                                                              #
+// ############################################################################
 
 export type GetDestinationResponse = {
   destination_connector: Destination;
@@ -91,10 +89,10 @@ export const getDestinationQuery = async (
   destinationName: string
 ): Promise<Destination> => {
   try {
-    const { data } = await axios.get<GetDestinationResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${destinationName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetDestinationResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${destinationName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector);
@@ -111,10 +109,10 @@ export type ListDestinationsResponse = {
 
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
-    const { data } = await axios.get<ListDestinationsResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/destination-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListDestinationsResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connectors);

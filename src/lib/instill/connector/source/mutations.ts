@@ -1,5 +1,5 @@
 import { env } from "@/utils/config";
-import axios from "axios";
+import { createInstillAxiosClient } from "../../helper";
 import { Source } from "./types";
 
 export type CreateSourceResponse = {
@@ -20,10 +20,10 @@ export const createSourceMutation = async (
   payload: CreateSourcePayload
 ): Promise<Source> => {
   try {
-    const { data } = await axios.post<CreateSourceResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/source-connectors`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<CreateSourceResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors`,
       payload
     );
     return Promise.resolve(data.source_connector);
@@ -34,11 +34,9 @@ export const createSourceMutation = async (
 
 export const deleteSourceMutation = async (sourceName: string) => {
   try {
-    await axios.delete(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${sourceName}`
-    );
+    const client = createInstillAxiosClient();
+
+    await client.delete(`${env("NEXT_PUBLIC_API_VERSION")}/${sourceName}`);
   } catch (err) {
     return Promise.reject(err);
   }
