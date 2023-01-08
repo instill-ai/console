@@ -1,12 +1,11 @@
-import axios from "axios";
+import { env } from "@/utils/config";
+import { createInstillAxiosClient } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Source } from "./types";
 
-// ###################################################################
-// #                                                                 #
-// # Source definition                                               #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Source definition                                                        #
+// ############################################################################
 
 export type ListSourceDefinitionsResponse = {
   source_connector_definitions: ConnectorDefinition[];
@@ -18,8 +17,12 @@ export const listSourceDefinitionsQuery = async (): Promise<
   ConnectorDefinition[]
 > => {
   try {
-    const { data } = await axios.get<ListSourceDefinitionsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connector-definitions?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListSourceDefinitionsResponse>(
+      `${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/source-connector-definitions?view=VIEW_FULL`
     );
     return Promise.resolve(data.source_connector_definitions);
   } catch (err) {
@@ -35,8 +38,10 @@ export const getSourceDefinitionQuery = async (
   sourceDefinitionName: string
 ): Promise<ConnectorDefinition> => {
   try {
-    const { data } = await axios.get<GetSourceDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceDefinitionName}`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetSourceDefinitionResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${sourceDefinitionName}`
     );
 
     return Promise.resolve(data.source_connector_definition);
@@ -45,11 +50,9 @@ export const getSourceDefinitionQuery = async (
   }
 };
 
-// ###################################################################
-// #                                                                 #
-// # Source                                                          #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Source                                                                   #
+// ############################################################################
 
 export type GetSourceResponse = {
   source_connector: Source;
@@ -57,8 +60,10 @@ export type GetSourceResponse = {
 
 export const getSourceQuery = async (sourceName: string): Promise<Source> => {
   try {
-    const { data } = await axios.get<GetSourceResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${sourceName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetSourceResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${sourceName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connector);
@@ -75,8 +80,10 @@ export type ListSourcesResponse = {
 
 export const listSourcesQuery = async (): Promise<Source[]> => {
   try {
-    const { data } = await axios.get<ListSourcesResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListSourcesResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.source_connectors);

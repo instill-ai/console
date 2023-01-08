@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
 import { expectToSelectReactSelectOption } from "./helper";
@@ -8,7 +9,7 @@ test("should navigate first time user to the onboarding page", async ({
   await removeRegisteredUser();
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page).toHaveURL(
-    `${process.env.NEXT_PUBLIC_MAIN_URL}/onboarding`
+    `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/onboarding`
   );
 });
 

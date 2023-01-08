@@ -1,5 +1,6 @@
 import { Nullable } from "@/types/general";
-import axios from "axios";
+import { env } from "@/utils/config";
+import { createInstillAxiosClient } from "../helper";
 import { Model } from "./types";
 
 export type CreateGithubModelConfiguration = {
@@ -21,8 +22,10 @@ export const createGithubModelMutation = async (
   payload: CreateGithubModelPayload
 ): Promise<Model> => {
   try {
-    const { data } = await axios.post<CreateGithubModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<CreateGithubModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -57,6 +60,8 @@ export const createLocalModelMutation = async (
   payload: CreateLocalModelPayload
 ) => {
   try {
+    const client = createInstillAxiosClient();
+
     const formData = new FormData();
     formData.append("id", payload.id);
     formData.append("model_definition", payload.model_definition);
@@ -66,8 +71,8 @@ export const createLocalModelMutation = async (
       formData.append("description", payload.description);
     }
 
-    const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/multipart`,
+    const { data } = await client.post<CreateLocalModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models/multipart`,
       formData,
       {
         headers: {
@@ -101,8 +106,10 @@ export const createArtivcModelMutation = async (
   payload: CreateArtivcModelPayload
 ) => {
   try {
-    const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<CreateLocalModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -140,8 +147,10 @@ export const createHuggingFaceModelMutation = async (
   payload: CreateHuggingFaceModelPayload
 ) => {
   try {
-    const { data } = await axios.post<CreateLocalModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<CreateLocalModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models`,
       {
         id: payload.id,
         model_definition: payload.model_definition,
@@ -169,8 +178,10 @@ export const updateModelMutation = async (
   payload: UpdateModelPayload
 ): Promise<Model> => {
   try {
-    const { data } = await axios.patch<UpdateModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.name}`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.patch<UpdateModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${payload.name}`,
       payload
     );
     return Promise.resolve(data.model);
@@ -181,9 +192,9 @@ export const updateModelMutation = async (
 
 export const deleteModelMutation = async (modelName: string) => {
   try {
-    await axios.delete(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelName}`
-    );
+    const client = createInstillAxiosClient();
+
+    await client.delete(`${env("NEXT_PUBLIC_API_VERSION")}/${modelName}`);
   } catch (err) {
     return Promise.reject(err);
   }

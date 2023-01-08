@@ -1,4 +1,5 @@
-import axios from "axios";
+import { env } from "@/utils/config";
+import { createInstillAxiosClient } from "../helper";
 import { User } from "./types";
 
 export type GetUserResponse = {
@@ -7,8 +8,10 @@ export type GetUserResponse = {
 
 export const getUserQuery = async (userName: string): Promise<User> => {
   try {
-    const { data } = await axios.get<GetUserResponse>(
-      `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${userName}`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetUserResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${userName}`
     );
 
     return Promise.resolve(data.user);

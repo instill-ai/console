@@ -1,4 +1,5 @@
 import { setCookie, SetCookiePayload } from "@/lib/cookie";
+import { env } from "@/utils/config";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).end("Token not provided");
   }
 
-  if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
+  if (!env("NEXT_PUBLIC_CONSOLE_BASE_URL")) {
     return res.status(500).end("Env CONSOLE_BASE_URL is not provided");
   }
 

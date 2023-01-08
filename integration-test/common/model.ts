@@ -1,4 +1,5 @@
 //import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 import { Page, expect, Locator } from "@playwright/test";
 import { delay, expectToSelectReactSelectOption } from "../helper";
 
@@ -50,7 +51,7 @@ export const expectToDeleteModel = async (page: Page, modelId: string) => {
 
   // Should delete model and navigate to models page
   await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-  expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+  expect(page.url()).toEqual(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`);
 
   // Should not list model item
   const modelItemTitle = page.locator("h3", { hasText: modelId });
@@ -103,7 +104,7 @@ export const expectCorrectModelList = async (page: Page, modelId: string) => {
     page.waitForNavigation(),
   ]);
   expect(page.url()).toEqual(
-    `${process.env.NEXT_PUBLIC_MAIN_URL}/models/${modelId}`
+    `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models/${modelId}`
   );
 };
 
@@ -217,7 +218,7 @@ export const expectToDeployModel = async (
     deployButton.click(),
   ]);
 
-  expect(page.url()).toEqual(`${process.env.NEXT_PUBLIC_MAIN_URL}/models`);
+  expect(page.url()).toEqual(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`);
 };
 
 export type ExpectToSetupLocalModel = {

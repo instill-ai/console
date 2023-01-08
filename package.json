@@ -7,9 +7,10 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "docker-compose-up": "cross-env DOCKER_BUILDKIT=1 docker-compose -f ./docker-compose_app.yml up --build --remove-orphans --force-recreate",
+    "docker-build": "docker build -f Dockerfile -t instill-console .",
+    "docker-run": "docker run --rm -t --entrypoint ./entrypoint.sh -p 3000:3000 -e MGMT_BACKEND_BASE_URL='http://localhost:8084' -e CONSOLE_BASE_URL='http://localhost:3000' -e PIPELINE_BACKEND_BASE_URL='http://localhost:8081' -e CONNECTOR_BACKEND_BASE_URL='http://localhost:8082' -e MODEL_BACKEND_BASE_URL='http://localhost:8083' -e API_VERSION='v1alpha' -e INSTILL_AI_USER_COOKIE_NAME='instill-ai-user' instill-console",
     "docker:prune-cache": "docker buildx prune",
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "bash env.sh && next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest",

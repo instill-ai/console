@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 
 export type PageHeadProps = {
   title: Nullable<string>;
@@ -19,8 +20,8 @@ const PageHead = ({ title }: PageHeadProps) => {
 
   const canonicalURL =
     router.asPath === "/"
-      ? `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}${router.asPath}`
-      : `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}${router.asPath}` + "/";
+      ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}`
+      : `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${router.asPath}`;
 
   const [hostName, setHostName] = useState<Nullable<string>>(null);
 

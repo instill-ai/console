@@ -1,5 +1,6 @@
-import axios from "axios";
 import { Operation } from "../types";
+import { env } from "@/utils/config";
+import { createInstillAxiosClient } from "../helper";
 
 export type DeployModelResponse = {
   operation: Operation;
@@ -7,8 +8,10 @@ export type DeployModelResponse = {
 
 export const deployModelInstanceAction = async (modelInstanceName: string) => {
   try {
-    const { data } = await axios.post<DeployModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}/deploy`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<DeployModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelInstanceName}/deploy`
     );
     return Promise.resolve(data.operation);
   } catch (err) {
@@ -24,8 +27,10 @@ export const unDeployModelInstanceAction = async (
   modelInstanceName: string
 ) => {
   try {
-    const { data } = await axios.post<UnDeployModelResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${modelInstanceName}/undeploy`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<UnDeployModelResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelInstanceName}/undeploy`
     );
     return Promise.resolve(data.operation);
   } catch (err) {
@@ -52,8 +57,12 @@ export const testModelInstance = async (payload: TestModelInstancePayload) => {
     const formData = new FormData();
     formData.append("file", payload.content);
 
-    const { data } = await axios.post<TestModelInstanceResponse>(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${payload.modelInstanceName}/test-multipart`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<TestModelInstanceResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${
+        payload.modelInstanceName
+      }/test-multipart`,
       formData,
       {
         headers: {

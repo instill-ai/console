@@ -5,8 +5,8 @@ import dotenv from "dotenv";
 // import .env environment variables
 dotenv.config();
 
-if (!process.env.NEXT_PUBLIC_MAIN_URL) {
-  throw new Error("NEXT_PUBLIC_MAIN_URL env not set");
+if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
+  throw new Error("NEXT_PUBLIC_CONSOLE_BASE_URL env not set");
 }
 
 /**
@@ -45,7 +45,10 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    baseURL: process.env.NEXT_PUBLIC_MAIN_URL,
+    baseURL: process.env.NEXT_PUBLIC_CONSOLE_BASE_URL,
+
+    // Because our backend is served with self-signed certification, we have to ignore HTTPS error.
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */

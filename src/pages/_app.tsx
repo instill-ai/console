@@ -14,6 +14,7 @@ import { initAmplitude } from "@/lib/amplitude";
 import { useTrackingToken } from "@/services/mgmt";
 import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { ErrorBoundary } from "@/components/ui";
+import { env } from "../utils";
 
 export const queryCache = new QueryCache();
 
@@ -46,7 +47,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     }
 
     if (process.env.NODE_ENV === "production" && !amplitudeIsInit) {
-      if (process.env.NEXT_PUBLIC_DISABLE_USAGE_COLLECTION === "true") {
+      if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION") === "true") {
         setAmplitudeIsInit(false);
       } else {
         initAmplitude(trackingToken.data);

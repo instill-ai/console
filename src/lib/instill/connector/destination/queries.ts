@@ -1,14 +1,12 @@
 import { Nullable } from "@/types/general";
-import axios from "axios";
-import { getQueryString } from "../../helper";
+import { env } from "@/utils/config";
+import { createInstillAxiosClient, getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Destination } from "./types";
 
-// ###################################################################
-// #                                                                 #
-// # Destination definition                                          #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Destination definition                                                   #
+// ############################################################################
 
 export type ListDestinationDefinitionsResponse = {
   destination_connector_definitions: ConnectorDefinition[];
@@ -26,14 +24,17 @@ export const listDestinationDefinitionsQuery = async (
   nextPageToken: Nullable<string>
 ): Promise<ConnectorDefinition[]> => {
   try {
+    const client = createInstillAxiosClient();
     const definitions: ConnectorDefinition[] = [];
     const queryString = getQueryString(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connector-definitions?view=VIEW_FULL`,
+      `${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/destination-connector-definitions?view=VIEW_FULL`,
       pageSize,
       nextPageToken
     );
 
-    const { data } = await axios.get<ListDestinationDefinitionsResponse>(
+    const { data } = await client.get<ListDestinationDefinitionsResponse>(
       queryString
     );
 
@@ -62,8 +63,12 @@ export const getDestinationDefinitionQuery = async (
   destinationDefinitionName: string
 ) => {
   try {
-    const { data } = await axios.get<GetDestinationDefinitionResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationDefinitionName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetDestinationDefinitionResponse>(
+      `${env(
+        "NEXT_PUBLIC_API_VERSION"
+      )}/${destinationDefinitionName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector_definition);
@@ -72,11 +77,9 @@ export const getDestinationDefinitionQuery = async (
   }
 };
 
-// ###################################################################
-// #                                                                 #
-// # Destination                                                     #
-// #                                                                 #
-// ###################################################################
+// ############################################################################
+// # Destination                                                              #
+// ############################################################################
 
 export type GetDestinationResponse = {
   destination_connector: Destination;
@@ -86,8 +89,10 @@ export const getDestinationQuery = async (
   destinationName: string
 ): Promise<Destination> => {
   try {
-    const { data } = await axios.get<GetDestinationResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${destinationName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetDestinationResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${destinationName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connector);
@@ -104,8 +109,10 @@ export type ListDestinationsResponse = {
 
 export const listDestinationsQuery = async (): Promise<Destination[]> => {
   try {
-    const { data } = await axios.get<ListDestinationsResponse>(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListDestinationsResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.destination_connectors);

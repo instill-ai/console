@@ -1,6 +1,8 @@
 import { ModelInstance, ModelState } from "@/lib/instill";
 
-const determineModelState = (modelInstances: ModelInstance[]): ModelState => {
+export const determineModelState = (
+  modelInstances: ModelInstance[]
+): ModelState => {
   if (modelInstances.some((e) => e.state === "STATE_ERROR")) {
     return "STATE_ERROR";
   } else if (modelInstances.some((e) => e.state === "STATE_ONLINE")) {
@@ -9,5 +11,3 @@ const determineModelState = (modelInstances: ModelInstance[]): ModelState => {
     return "STATE_OFFLINE";
   }
 };
-
-export default determineModelState;

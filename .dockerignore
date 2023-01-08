@@ -53,3 +53,7 @@ tmp
 
 .idea
 .vscode
+
+# Generated env file
+
+**/public/__env.js

@@ -1,6 +1,8 @@
 import { GetCodeHikeTemplateSourceProps } from "@/lib/markdown";
 import { Nullable } from "@/types/general";
+import { env } from "@/utils/config";
 import axios from "axios";
+import * as https from "https";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 export const getQueryString = (
@@ -44,4 +46,16 @@ export const getCodeHikeTemplateSourceQuery = async ({
   } catch (err) {
     return Promise.reject(err);
   }
+};
+
+export const createInstillAxiosClient = () => {
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized:
+      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true" ? false : true,
+  });
+
+  return axios.create({
+    baseURL: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
+    httpsAgent,
+  });
 };

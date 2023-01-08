@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
@@ -121,7 +122,7 @@ test.describe.serial("Async destination", () => {
     const setupButton = page.locator("button", { hasText: "Set up" });
     await Promise.all([page.waitForNavigation(), setupButton.click()]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`
     );
   });
 
@@ -140,7 +141,7 @@ test.describe.serial("Async destination", () => {
       page.locator("h3", { hasText: destinationId }).click(),
     ]);
     expect(page.url()).toEqual(
-      `${process.env.NEXT_PUBLIC_MAIN_URL}/destinations/${destinationId}`
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
     );
   });
 
@@ -286,8 +287,10 @@ test.describe.serial("Async destination", () => {
     await Promise.all([
       page.waitForResponse(
         new URL(
-          `/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${destinationId}`,
-          `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}`
+          `/${env(
+            "NEXT_PUBLIC_API_VERSION"
+          )}/destination-connectors/${destinationId}`,
+          `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}`
         ).toString(),
         { timeout: 50000 }
       ),

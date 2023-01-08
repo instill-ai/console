@@ -1,7 +1,6 @@
 import { FC, ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
-import axios from "axios";
 
 import {
   PageTitle,
@@ -9,7 +8,7 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { GetUserResponse, User } from "@/lib/instill/mgmt";
+import { getUserQuery, User } from "@/lib/instill/mgmt";
 import { OnboardingForm } from "@/components/onboarding";
 import { Nullable } from "@/types/general";
 
@@ -49,11 +48,9 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get<GetUserResponse>(
-          `${process.env.NEXT_PUBLIC_MGMT_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/users/local-user`
-        );
+        const user = await getUserQuery("users/local-user");
         setFetched(true);
-        setUser(res.data.user);
+        setUser(user);
       } catch (err) {
         console.error(err);
       }

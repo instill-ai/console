@@ -1,5 +1,6 @@
 import { Nullable } from "@/types/general";
 import { init, setUserId, track } from "@amplitude/analytics-browser";
+import { env } from "../utils";
 
 export type AmplitudeEventProperties = {
   type: "navigation" | "critical_action";
@@ -46,8 +47,8 @@ export type AmplitudeEvent =
   | "use_existing_source";
 
 export const initAmplitude = (userId: Nullable<string>) => {
-  if (process.env.NEXT_PUBLIC_AMPLITUDE_KEY) {
-    init(process.env.NEXT_PUBLIC_AMPLITUDE_KEY, userId ? userId : undefined);
+  if (env("NEXT_PUBLIC_AMPLITUDE_KEY")) {
+    init(env("NEXT_PUBLIC_AMPLITUDE_KEY"), userId ? userId : undefined);
   }
 };
 
@@ -61,6 +62,6 @@ export const sendAmplitudeData = (
 ) => {
   track(eventType, {
     ...eventProperties,
-    edition: process.env.NEXT_PUBLIC_CONSOLE_EDITION,
+    edition: env("NEXT_PUBLIC_CONSOLE_EDITION"),
   });
 };

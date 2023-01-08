@@ -44,3 +44,7 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Generated env file
+
+/public/__env.js

@@ -1,5 +1,7 @@
+import { env } from "@/utils/config";
 import { BrowserContext, expect, Locator } from "@playwright/test";
 import axios from "axios";
+import * as https from "https";
 
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -8,7 +10,7 @@ export const addUserCookie = async (context: BrowserContext) => {
   await context.addCookies([
     {
       name: "instill-ai-user",
-      domain: process.env.NEXT_PUBLIC_MAIN_URL?.split(":")[0],
+      domain: env("NEXT_PUBLIC_CONSOLE_BASE_URL")?.split(":")[0],
       path: "/",
       value: JSON.stringify({ cookie_token: "instill-token" }),
       httpOnly: process.env.NODE_ENV === "production" ? true : false,
@@ -41,17 +43,22 @@ export const deleteDestination = async (
   destinationId: string
 ): Promise<void> => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
     );
 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetDestination = (data.destination_connectors as any[]).find(
       (e) => e.id === destinationId
     );
 
     if (targetDestination) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${destinationId}`
+      await client.delete(
+        `${env(
+          "NEXT_PUBLIC_API_VERSION"
+        )}/destination-connectors/${destinationId}`
       );
     }
   } catch (err) {
@@ -61,13 +68,17 @@ export const deleteDestination = async (
 
 export const deleteAllDestinations = async () => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
     );
 
     for (const destination of data.destination_connectors) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/destination-connectors/${destination.id}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors/${
+          destination.id
+        }`
       );
     }
   } catch (err) {
@@ -77,17 +88,20 @@ export const deleteAllDestinations = async () => {
 
 export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
     );
 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetSource = (data.source_connectors as any[]).find(
       (e) => e.id === sourceId
     );
 
     if (targetSource) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/${sourceId}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${sourceId}`
       );
     }
   } catch (err) {
@@ -97,13 +111,15 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
 
 export const deleteAllSources = async () => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
     );
 
     for (const source of data.source_connectors) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_CONNECTOR_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/source-connectors/${source.id}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${source.id}`
       );
     }
   } catch (err) {
@@ -113,15 +129,18 @@ export const deleteAllSources = async () => {
 
 export const deleteModel = async (modelId: string) => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
     );
 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetModel = (data.models as any[]).find((e) => e.id === modelId);
 
     if (targetModel) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${modelId}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/models/${modelId}`
       );
     }
   } catch (err) {
@@ -131,13 +150,15 @@ export const deleteModel = async (modelId: string) => {
 
 export const deleteAllModels = async () => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
     );
 
     for (const model of data.models) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/models/${model.id}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/models/${model.id}`
       );
     }
   } catch (err) {
@@ -147,16 +168,29 @@ export const deleteAllModels = async () => {
 
 export const deleteAllPipelines = async () => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines?view=VIEW_FULL`
+    const client = createInstillAxiosTestClient();
+
+    const { data } = await client.get(
+      `${env("NEXT_PUBLIC_API_VERSION")}/pipelines?view=VIEW_FULL`
     );
 
     for (const pipeline of data.pipelines) {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_PIPELINE_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/pipelines/${pipeline.id}`
+      await client.delete(
+        `${env("NEXT_PUBLIC_API_VERSION")}/pipelines/${pipeline.id}`
       );
     }
   } catch (err) {
     return Promise.reject(err);
   }
+};
+
+export const createInstillAxiosTestClient = () => {
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+
+  return axios.create({
+    baseURL: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
+    httpsAgent,
+  });
 };
