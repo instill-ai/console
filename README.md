@@ -96,6 +96,14 @@ For server-side code, because we will alter the ./.env file in the image. It can
 
 - Be careful of env prefix. For example, if you have a inlined env CONSOLE_BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the env.sh will not find this env in .env file and alter it. We recommend you add `NEXT_PUBLIC_` prefix in all the env related to Next.js
 
-## Caveats
+## Security
 
-If you want to set up new path aliases using typescript, remember to add them in the `.storybook/main.js` to make sure storybook will correctly access the file.
+- We currently use self-signed certification in all our backend so the default of env variable `NEXT_PUBLIC_INTEGRATION_TEST_ENABLED` will be true. Which means that the Axios won't complaint the `Unauthorized` request. Please do not set this env variable to true on production. 
+
+## Other Caveats
+
+- If you want to set up new path aliases using typescript, remember to add them in the `.storybook/main.js` to make sure storybook will correctly access the file.
+
+###  net::ERR_CERT_AUTHORITY_INVALID
+
+During the local development, because our whole backends use self signed certification. The browser will complain this with `net::ERR_CERT_AUTHORITY_INVALID` error. Please proceed to the api-gateway url (default: https://localhost:8080) and tell your browser that you want to proceed the request under this url.
