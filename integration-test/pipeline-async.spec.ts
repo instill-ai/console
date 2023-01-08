@@ -1,6 +1,5 @@
 import { env } from "@/utils/config";
 import { test, expect } from "@playwright/test";
-import axios from "axios";
 import {
   expectCorrectPipelineDetails,
   expectCorrectPipelineList,
@@ -8,6 +7,7 @@ import {
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
 import {
+  createInstillAxiosTestClient,
   deleteDestination,
   deleteModel,
   deleteSource,
@@ -49,8 +49,10 @@ test.describe
   .serial("Async pipeline with new source, destination and local model", () => {
   test.afterAll(async () => {
     try {
-      await axios.post(
-        `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
+      const client = createInstillAxiosTestClient();
+
+      await client.post(
+        `${env(
           "NEXT_PUBLIC_API_VERSION"
         )}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
       );

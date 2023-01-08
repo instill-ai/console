@@ -1,19 +1,18 @@
 import { env } from "@/utils/config";
 import { BrowserContext, Page, expect } from "@playwright/test";
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { expectToSelectReactSelectOption } from "../helper";
+import {
+  createInstillAxiosTestClient,
+  expectToSelectReactSelectOption,
+} from "../helper";
 
 export const removeRegisteredUser = async () => {
   try {
-    await axios.patch(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/users/local-user`,
-      {
-        cookie_token: "",
-      }
-    );
+    const client = createInstillAxiosTestClient();
+
+    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/local-user`, {
+      cookie_token: "",
+    });
   } catch (err) {
     console.log(err);
   }
@@ -21,14 +20,11 @@ export const removeRegisteredUser = async () => {
 
 export const addRegisteredUser = async () => {
   try {
-    await axios.patch(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/users/local-user`,
-      {
-        cookie_token: uuidv4(),
-      }
-    );
+    const client = createInstillAxiosTestClient();
+
+    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/local-user`, {
+      cookie_token: uuidv4(),
+    });
   } catch (err) {
     console.log(err);
   }
