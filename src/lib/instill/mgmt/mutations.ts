@@ -1,5 +1,6 @@
 import { env } from "@/utils/config";
 import axios from "axios";
+import { createInstillAxiosClient } from "../helper";
 import { User } from "./types";
 
 export type UpdateUserResponse = {
@@ -10,10 +11,10 @@ export const updateLocalUserMutation = async (
   payload: Partial<User>
 ): Promise<User> => {
   try {
-    const { data } = await axios.patch(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/users/local-user`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.patch(
+      `${env("NEXT_PUBLIC_API_VERSION")}/users/local-user`,
       payload
     );
 
