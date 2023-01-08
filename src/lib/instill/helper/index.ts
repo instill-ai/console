@@ -49,10 +49,9 @@ export const getCodeHikeTemplateSourceQuery = async ({
 };
 
 export const createInstillAxiosClient = () => {
-  console.log(env("NEXT_PUBLIC_INTEGRATION_TEST_ENABLED"));
   const httpsAgent = new https.Agent({
     rejectUnauthorized:
-      env("NEXT_PUBLIC_INTEGRATION_TEST_ENABLED") === "true" ? false : true,
+      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true" ? false : true,
   });
 
   return axios.create({
