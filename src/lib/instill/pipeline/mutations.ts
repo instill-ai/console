@@ -1,6 +1,6 @@
 import { Nullable } from "@/types/general";
 import { env } from "@/utils/config";
-import axios from "axios";
+import { createInstillAxiosClient } from "../helper";
 import { PipelineWithRawRecipe } from "./types";
 
 export type CreatePipelinePayload = {
@@ -20,10 +20,10 @@ export const createPipelineMutation = async (
   payload: CreatePipelinePayload
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const { data } = await axios.post<CreatePipelineResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/pipelines`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.post<CreatePipelineResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/pipelines`,
       payload
     );
     return Promise.resolve(data.pipeline);
@@ -45,10 +45,10 @@ export const updatePipelineMutation = async (
   payload: UpdatePipelinePayload
 ) => {
   try {
-    const { data } = await axios.patch<UpdatePipelineResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${payload.name}`,
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.patch<UpdatePipelineResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${payload.name}`,
       {
         ...payload,
         description: payload.description ?? undefined,
@@ -62,11 +62,9 @@ export const updatePipelineMutation = async (
 
 export const deletePipelineMutation = async (pipelineName: string) => {
   try {
-    await axios.delete(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${pipelineName}`
-    );
+    const client = createInstillAxiosClient();
+
+    await client.delete(`${env("NEXT_PUBLIC_API_VERSION")}/${pipelineName}`);
   } catch (err) {
     return Promise.reject(err);
   }

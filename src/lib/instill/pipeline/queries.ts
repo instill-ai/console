@@ -1,5 +1,5 @@
 import { env } from "@/utils/config";
-import axios from "axios";
+import { createInstillAxiosClient } from "../helper";
 import { PipelineWithRawRecipe } from "./types";
 
 export type ListPipelinesResponse = {
@@ -12,10 +12,10 @@ export const listPipelinesQuery = async (): Promise<
   PipelineWithRawRecipe[]
 > => {
   try {
-    const { data } = await axios.get<ListPipelinesResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/pipelines?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<ListPipelinesResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/pipelines?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipelines);
@@ -32,10 +32,10 @@ export const getPipelineQuery = async (
   pipelineName: string
 ): Promise<PipelineWithRawRecipe> => {
   try {
-    const { data } = await axios.get<GetPipelineResponse>(
-      `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}/${env(
-        "NEXT_PUBLIC_API_VERSION"
-      )}/${pipelineName}?view=VIEW_FULL`
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetPipelineResponse>(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${pipelineName}?view=VIEW_FULL`
     );
 
     return Promise.resolve(data.pipeline);
