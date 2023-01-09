@@ -47,7 +47,8 @@ const config: PlaywrightTestConfig = {
     trace: "on-first-retry",
     baseURL: process.env.NEXT_PUBLIC_CONSOLE_BASE_URL,
 
-    // Because our backend is served with self-signed certification, we have to ignore HTTPS error.
+    // Because our backend is served with self-signed certification, we have to
+    // ignore HTTPS error when operate the e2e test.
     ignoreHTTPSErrors: true,
   },
 
