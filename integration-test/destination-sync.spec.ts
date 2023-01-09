@@ -1,7 +1,6 @@
-import { env } from "@/utils/config";
+import { env , deleteDestination, expectToSelectReactSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
-import { deleteDestination, expectToSelectReactSelectOption } from "./helper";
 
 const destinationId = "destination-http";
 const destinationType = "HTTP";

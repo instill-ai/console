@@ -7,7 +7,6 @@ node_modules
 
 # testing
 /coverage
-playwright-state.json
 
 # Build directories (next.js...)
 .next/

@@ -1,7 +1,6 @@
-import { env } from "@/utils/config";
+import { env , expectToSelectReactSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
-import { expectToSelectReactSelectOption } from "./helper";
 
 test("should navigate first time user to the onboarding page", async ({
   page,

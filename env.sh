@@ -41,6 +41,7 @@
 ENVSH_ENV="${ENVSH_ENV:-"./.env"}"
 ENVSH_PREFIX="${ENVSH_PREFIX:-"NEXT_PUBLIC_"}"
 ENVSH_PREFIX_STRIP="${ENVSH_PREFIX_STRIP:-false}"
+ENVSH_CREATE_ENVJS="${ENVSH_CREATE_ENVJS:-true}"
 
 # Can be `window.__env = {` or `const ENV = {` or whatever you want
 ENVSH_PREPEND="${ENVSH_PREPEND:-"window.__env = {"}"
@@ -96,8 +97,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # Recreate config file
-rm -f "$ENVSH_OUTPUT"
-touch "$ENVSH_OUTPUT"
+$ENVSH_CREATE_ENVJS && rm -f "$ENVSH_OUTPUT"
+$ENVSH_CREATE_ENVJS && touch "$ENVSH_OUTPUT"
 
 # Create an array from inline variables
 matched_envs=$(env | grep "${ENVSH_PREFIX}")
@@ -110,7 +111,7 @@ for matched_env in "${matched_envs_arr[@]}"; do
 done
 
 # Add prepend
-echo "$ENVSH_PREPEND" >>"$ENVSH_OUTPUT"
+$ENVSH_CREATE_ENVJS && echo "$ENVSH_PREPEND" >>"$ENVSH_OUTPUT"
 
 # Check if file exists
 [[ -f "$ENVSH_ENV" ]] || {
@@ -126,16 +127,16 @@ while IFS= read -r line; do
   if printf '%s' "$line" | grep -e "=" | grep -e "$ENVSH_PREFIX"; then
     # Read and apply environment variable if exists
     # NOTE: <<< here operator not working with `sh`
-    awk -F '=' '{print $1 ": \"" (ENVIRON[$1] ? ENVIRON[$1] : $2) "\","}' \
+    $ENVSH_CREATE_ENVJS && awk -F '=' '{print $1 ": \"" (ENVIRON[$1] ? ENVIRON[$1] : $2) "\","}' \
       <<<"$line" >>"$ENVSH_OUTPUT"
   fi
 done <"$ENVSH_ENV"
 
 # Add append
-echo "$ENVSH_APPEND" >>"$ENVSH_OUTPUT"
+$ENVSH_CREATE_ENVJS && echo "$ENVSH_APPEND" >>"$ENVSH_OUTPUT"
 
 # Strip prefix if needed
-$ENVSH_PREFIX_STRIP && $ENVSH_SED -i'' -e "s~$ENVSH_PREFIX~~g" "$ENVSH_OUTPUT"
+$ENVSH_CREATE_ENVJS && $ENVSH_PREFIX_STRIP && $ENVSH_SED -i'' -e "s~$ENVSH_PREFIX~~g" "$ENVSH_OUTPUT"
 
 __info "$(__green "\nReplacing env variable in ${ENVSH_ENV}...\n")"
 
@@ -164,7 +165,7 @@ done
 
 # Print result
 __debug "$(__green "\nDone! Final result in ${ENVSH_OUTPUT}:\n")"
-__debug "$(cat "$ENVSH_OUTPUT")"
+$ENVSH_CREATE_ENVJS && __debug "$(cat "$ENVSH_OUTPUT")"
 
 __debug "$(__green "\nDone! Modified ${ENVSH_ENV}:\n")"
 __debug "$(cat "$ENVSH_ENV")"
