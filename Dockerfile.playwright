@@ -1,5 +1,5 @@
 # pull playwright docker image
-FROM mcr.microsoft.com/playwright:v1.29.0-focal
+FROM mcr.microsoft.com/playwright:v1.25.2-focal
 WORKDIR /app
 
 RUN npm install -g pnpm@7.5.0
@@ -16,6 +16,7 @@ COPY --chown=playwright:nodejs ./playwright.config.ts ./
 COPY --chown=playwright:nodejs ./.env ./
 COPY --chown=playwright:nodejs ./env.sh ./
 COPY --chown=playwright:nodejs ./entrypoint-playwright.sh ./
+COPY --chown=playwright:nodejs ./playwright-state.json ./
 
 RUN mkdir public
 
@@ -27,3 +28,6 @@ RUN chmod +x ./env.sh
 
 # We need this permission for env.sh to create the __env.js in /public folder
 RUN chmod +rwx ./.env
+
+# Although this image has the full deps playwright needs, this is for pre-caution
+# RUN npx playwright install
