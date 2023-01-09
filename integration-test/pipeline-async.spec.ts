@@ -1,4 +1,10 @@
-import { env } from "@/utils/config";
+import { env ,
+  createInstillAxiosTestClient,
+  deleteDestination,
+  deleteModel,
+  deleteSource,
+  expectToSelectReactSelectOption,
+} from "./helper";
 import { test, expect } from "@playwright/test";
 import {
   expectCorrectPipelineDetails,
@@ -6,13 +12,6 @@ import {
   expectToDeletePipeline,
   expectToUpdatePipelineDescription,
 } from "./common/pipeline";
-import {
-  createInstillAxiosTestClient,
-  deleteDestination,
-  deleteModel,
-  deleteSource,
-  expectToSelectReactSelectOption,
-} from "./helper";
 
 const pipelineId = `async-pipeline-${Math.floor(Math.random() * 10000)}`;
 const pipelineDescription = "Hi i am a async pipeline";

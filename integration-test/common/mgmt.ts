@@ -1,10 +1,9 @@
-import { env } from "@/utils/config";
-import { BrowserContext, Page, expect } from "@playwright/test";
-import { v4 as uuidv4 } from "uuid";
-import {
+import { env ,
   createInstillAxiosTestClient,
   expectToSelectReactSelectOption,
 } from "../helper";
+import { BrowserContext, Page, expect } from "@playwright/test";
+import { v4 as uuidv4 } from "uuid";
 
 export const removeRegisteredUser = async () => {
   try {

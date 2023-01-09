@@ -1,6 +1,5 @@
-import { env } from "@/utils/config";
+import { env , deleteSource, expectToSelectReactSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
-import { deleteSource, expectToSelectReactSelectOption } from "./helper";
 
 const sourceId = "source-grpc";
 
