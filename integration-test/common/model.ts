@@ -1,4 +1,4 @@
-import { env , delay, expectToSelectReactSelectOption } from "../helper";
+import { env, delay, expectToSelectReactSelectOption } from "../helper";
 import { Page, expect, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
@@ -132,7 +132,7 @@ export const expectCorrectModelDetails = async ({
   additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
   // Mimic the behavior of long running operation
-  await delay(5000);
+  await delay(2000);
 
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
