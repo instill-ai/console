@@ -2,6 +2,8 @@
 FROM mcr.microsoft.com/playwright:v1.25.2-focal
 WORKDIR /app
 
+ARG TEST_USER="playwright"
+
 RUN npm install -g pnpm@7.5.0
 
 COPY .npmrc package.json pnpm-lock.yaml ./
@@ -20,7 +22,9 @@ COPY --chown=playwright:nodejs ./playwright-state.json ./
 
 RUN mkdir public
 
-USER playwright
+USER ${TEST_USER}
+
+RUN echo "test user: $TEST_USER"
 
 # Permisions to execute script
 RUN chmod +x ./entrypoint-playwright.sh

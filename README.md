@@ -100,6 +100,13 @@ For server-side code, because we will alter the ./.env file in the image. It can
 
 - We currently use self-signed certification in all our backend so the default of env variable `NEXT_PUBLIC_INTEGRATION_TEST_ENABLED` will be true. Which means that the Axios won't complaint the `Unauthorized` request. Please do not set this env variable to true on production. 
 
+## About the test container
+
+We maintain another container `Dockerfile.playwright` specifically for test usage. This container has some caveats that maintainers of this repo should notice
+
+- The playwright version should align with the pulled playwright image version. Two should be the same.
+- If you want to debug in the test container, you should grant this container the root user permission. (default is specific user: playwright) with `--build-args TEST_USER='root'` in you `docker build` command
+
 ## Other Caveats
 
 - If you want to set up new path aliases using typescript, remember to add them in the `.storybook/main.js` to make sure storybook will correctly access the file.
