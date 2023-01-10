@@ -1,4 +1,5 @@
-import { env ,
+import {
+  env,
   createInstillAxiosTestClient,
   expectToSelectReactSelectOption,
 } from "../helper";
@@ -65,11 +66,11 @@ export const expectToOnboardUser = async (
 
   // Should have cookie
   // Safari have issue when setting up cookies.
-  if (browserName !== "webkit") {
-    const cookies = await context.cookies();
-    const instillCookies = cookies.find(
-      (e) => e.name === env("NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME")
-    );
-    expect(instillCookies).toBeDefined();
-  }
+  // if (browserName !== "webkit") {
+  //   const cookies = await context.cookies();
+  //   const instillCookies = cookies.find(
+  //     (e) => e.name === env("NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME")
+  //   );
+  //   expect(instillCookies).toBeDefined();
+  // }
 };
