@@ -14,6 +14,7 @@ import type {
   ListModelInstancesResponse,
   GetModelInstanceResponse,
   GetModelInstanceReadmeQuery,
+  GetModelOperationResponse,
 } from "./queries";
 
 import {
@@ -24,6 +25,7 @@ import {
   listModelInstancesQuery,
   getModelInstanceQuery,
   getModelInstanceReadme,
+  getModelOperationQuery,
 } from "./queries";
 
 import type {
@@ -54,6 +56,8 @@ import {
   unDeployModelInstanceAction,
 } from "./actions";
 
+import { checkCreateModelOperationUntilDone } from "./helper";
+
 export type {
   ModelDefinition,
   Model,
@@ -79,6 +83,7 @@ export type {
   GetModelInstanceReadmeQuery,
   CreateHuggingFaceModelPayload,
   CreateHuggingFaceModelResponse,
+  GetModelOperationResponse,
 };
 
 export {
@@ -88,6 +93,7 @@ export {
   getModelQuery,
   listModelInstancesQuery,
   getModelInstanceQuery,
+  getModelOperationQuery,
   createGithubModelMutation,
   createLocalModelMutation,
   updateModelMutation,
@@ -97,4 +103,5 @@ export {
   createArtivcModelMutation,
   getModelInstanceReadme,
   createHuggingFaceModelMutation,
+  checkCreateModelOperationUntilDone,
 };

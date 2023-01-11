@@ -1,5 +1,6 @@
 import { env } from "@/utils/config";
 import { createInstillAxiosClient } from "../helper";
+import { Operation } from "../types";
 import {
   Model,
   ModelDefinition,
@@ -149,6 +150,29 @@ export const getModelInstanceReadme = async (modelInstanceName: string) => {
       `${env("NEXT_PUBLIC_API_VERSION")}/${modelInstanceName}/readme`
     );
     return Promise.resolve(data.readme);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// ############################################################################
+// # Model Operation                                                          #
+// ############################################################################
+
+export type GetModelOperationResponse = {
+  operation: Operation;
+};
+
+export const getModelOperationQuery = async (
+  operationName: string
+): Promise<Operation> => {
+  try {
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelOperationResponse>(
+      `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${operationName}`
+    );
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }

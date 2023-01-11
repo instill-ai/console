@@ -107,6 +107,20 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 - The playwright version should align with the pulled playwright image version. Two should be the same.
 - If you want to debug in the test container, you should grant this container the root user permission. (default is specific user: playwright) with `--build-arg TEST_USER='root'` in you `docker build` command
 
+### How to test at local
+
+- In VDP folder: `git pull --rebase` to pull the up-to-date code.
+- In VDP folder: `make build PROFILE=console` 
+- In console folder: `pnpm dev` to setup local dev server
+- If you want to test in your host 
+  - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=localhost CONSOLE_BASE_API_GATEWAY_URL_HOST=localhost`
+  - In console folder: `pnpm integration-test`
+- If you want to test in the docker-container
+  - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=console CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway`
+  - In console folder: `pnpm docker-build-test`
+  - In console folder: `pnpm docker-run-test`
+
+
 ## Other Caveats
 
 - If you want to set up new path aliases using typescript, remember to add them in the `.storybook/main.js` to make sure storybook will correctly access the file.

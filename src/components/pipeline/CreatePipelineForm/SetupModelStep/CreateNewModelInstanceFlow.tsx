@@ -37,10 +37,12 @@ import {
 } from "@/services/model";
 import { ModelDefinitionIcon } from "@/components/ui";
 import {
+  checkCreateModelOperationUntilDone,
   CreateArtivcModelPayload,
   CreateGithubModelPayload,
   CreateHuggingFaceModelPayload,
   CreateLocalModelPayload,
+  getModelQuery,
   Model,
   validateResourceId,
 } from "@/lib/instill";
@@ -48,6 +50,7 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
+import { useQueryClient } from "react-query";
 
 // We need to pass modelCreated state to UseExistingModelInstanceFlow
 
@@ -65,6 +68,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   const { values, setFieldValue, errors, setFieldError } =
     useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const queryClient = useQueryClient();
 
   // ###################################################################
   // #                                                                 #
@@ -172,6 +176,34 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
   const createArtivcModel = useCreateArtivcModel();
   const createHuggingFaceModel = useCreateHuggingFaceModel();
 
+  const prepareNewModel = useCallback(
+    async (modelName: string) => {
+      const model = await getModelQuery(modelName);
+      setModelCreated(true);
+      setNewModel(model);
+
+      queryClient.setQueryData<Model>(["models", model.id], model);
+      queryClient.setQueryData<Model[]>(["models"], (old) =>
+        old ? [...old, model] : [model]
+      );
+
+      setCreateModelMessageBoxState({
+        activate: true,
+        status: "success",
+        description: null,
+        message: "Succeed.",
+      });
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("create_github_model", {
+          type: "critical_action",
+          process: "model",
+        });
+      }
+    },
+    [amplitudeIsInit, sendAmplitudeData]
+  );
+
   const handelCreateModel = async () => {
     if (!values.model.new.id) return;
 
@@ -195,29 +227,23 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       if (!values.model.new.repo) return;
 
       const payload: CreateGithubModelPayload = {
-        id: values.model.new.id,
+        id: values.model.new.id.trim(),
         model_definition: "model-definitions/github",
         description: values.model.new.description ?? null,
         configuration: {
-          repository: values.model.new.repo,
+          repository: values.model.new.repo.trim(),
         },
       };
 
       createGithubModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_github_model", {
-              type: "critical_action",
-              process: "pipeline",
-            });
+        onSuccess: async ({ operation }) => {
+          if (!values.model.new.id) return;
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
+          );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${values.model.new.id.trim()}`);
           }
         },
         onError: (error) => {
@@ -244,7 +270,7 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       }
 
       const payload: CreateLocalModelPayload = {
-        id: values.model.new.id,
+        id: values.model.new.id.trim(),
         description: values.model.new.description ?? null,
         model_definition: "model-definitions/local",
         configuration: {
@@ -253,15 +279,15 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       };
 
       createLocalModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
+        onSuccess: async ({ operation }) => {
+          if (!values.model.new.id) return;
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
+          );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${values.model.new.id.trim()}`);
+          }
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -285,29 +311,26 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       if (!values.model.new.gcsBucketPath) return;
 
       const payload: CreateArtivcModelPayload = {
-        id: values.model.new.id,
+        id: values.model.new.id.trim(),
         model_definition: "model-definitions/artivc",
         description: values.model.new.description ?? null,
         configuration: {
-          url: values.model.new.gcsBucketPath,
-          credential: values.model.new.credentials,
+          url: values.model.new.gcsBucketPath.trim(),
+          credential: values.model.new.credentials
+            ? values.model.new.credentials.trim()
+            : null,
         },
       };
 
       createArtivcModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_artivc_model", {
-              type: "critical_action",
-            });
+        onSuccess: async ({ operation }) => {
+          if (!values.model.new.id) return;
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
+          );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${values.model.new.id.trim()}`);
           }
         },
         onError: (error) => {
@@ -332,28 +355,23 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
       if (!values.model.new.huggingFaceRepo) return;
 
       const payload: CreateHuggingFaceModelPayload = {
-        id: values.model.new.id,
+        id: values.model.new.id.trim(),
         model_definition: "model-definitions/huggingface",
         description: values.model.new.description ?? null,
         configuration: {
-          repo_id: values.model.new.huggingFaceRepo,
+          repo_id: values.model.new.huggingFaceRepo.trim(),
         },
       };
 
       createHuggingFaceModel.mutate(payload, {
-        onSuccess: (newModel) => {
-          setModelCreated(true);
-          setNewModel(newModel);
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          if (amplitudeIsInit) {
-            sendAmplitudeData("create_artivc_model", {
-              type: "critical_action",
-            });
+        onSuccess: async ({ operation }) => {
+          if (!values.model.new.id) return;
+          const operationIsDone = await checkCreateModelOperationUntilDone(
+            operation.name
+          );
+
+          if (operationIsDone) {
+            await prepareNewModel(`models/${values.model.new.id.trim()}`);
           }
         },
         onError: (error) => {

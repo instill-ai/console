@@ -9,15 +9,12 @@ const useCreateHuggingFaceModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateHuggingFaceModelPayload) => {
-      const model = await createHuggingFaceModelMutation(payload);
-      return Promise.resolve(model);
+      const operation = await createHuggingFaceModelMutation(payload);
+      return Promise.resolve({ operation });
     },
     {
-      onSuccess: (newModel) => {
-        queryClient.setQueryData<Model>(["models", newModel.id], newModel);
-        queryClient.setQueryData<Model[]>(["models"], (old) =>
-          old ? [...old, newModel] : [newModel]
-        );
+      onSuccess: () => {
+        queryClient.invalidateQueries(["models"]);
       },
     }
   );

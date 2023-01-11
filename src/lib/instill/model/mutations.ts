@@ -1,6 +1,7 @@
 import { Nullable } from "@/types/general";
 import { env } from "@/utils/config";
 import { createInstillAxiosClient } from "../helper";
+import { Operation } from "../types";
 import { Model } from "./types";
 
 export type CreateGithubModelConfiguration = {
@@ -15,12 +16,12 @@ export type CreateGithubModelPayload = {
 };
 
 export type CreateGithubModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createGithubModelMutation = async (
   payload: CreateGithubModelPayload
-): Promise<Model> => {
+) => {
   try {
     const client = createInstillAxiosClient();
 
@@ -35,7 +36,7 @@ export const createGithubModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -53,7 +54,7 @@ export type CreateLocalModelPayload = {
 };
 
 export type CreateLocalModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createLocalModelMutation = async (
@@ -80,7 +81,7 @@ export const createLocalModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -99,7 +100,7 @@ export type CreateArtivcModelPayload = {
 };
 
 export type CreateArtivcModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createArtivcModelMutation = async (
@@ -122,7 +123,7 @@ export const createArtivcModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -140,7 +141,7 @@ export type CreateHuggingFaceModelPayload = {
 };
 
 export type CreateHuggingFaceModelResponse = {
-  model: Model;
+  operation: Operation;
 };
 
 export const createHuggingFaceModelMutation = async (
@@ -160,7 +161,7 @@ export const createHuggingFaceModelMutation = async (
         },
       }
     );
-    return Promise.resolve(data.model);
+    return Promise.resolve(data.operation);
   } catch (err) {
     return Promise.reject(err);
   }
