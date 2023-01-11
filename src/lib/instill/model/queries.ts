@@ -167,7 +167,9 @@ export const getModelOperationQuery = async (
   operationName: string
 ): Promise<Operation> => {
   try {
-    const { data } = await axios.get<GetModelOperationResponse>(
+    const client = createInstillAxiosClient();
+
+    const { data } = await client.get<GetModelOperationResponse>(
       `${process.env.NEXT_PUBLIC_MODEL_BACKEND_BASE_URL}/${process.env.NEXT_PUBLIC_API_VERSION}/${operationName}`
     );
     return Promise.resolve(data.operation);
