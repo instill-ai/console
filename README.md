@@ -105,7 +105,7 @@ For server-side code, because we will alter the ./.env file in the image. It can
 We maintain another container `Dockerfile.playwright` specifically for test usage. This container has some caveats that maintainers of this repo should notice
 
 - The playwright version should align with the pulled playwright image version. Two should be the same.
-- If you want to debug in the test container, you should grant this container the root user permission. (default is specific user: playwright) with `--build-args TEST_USER='root'` in you `docker build` command
+- If you want to debug in the test container, you should grant this container the root user permission. (default is specific user: playwright) with `--build-arg TEST_USER='root'` in you `docker build` command
 
 ## Other Caveats
 
