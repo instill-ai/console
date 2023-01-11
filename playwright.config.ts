@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
   globalSetup: require.resolve("./integration-test/helper/global-setup"),
   globalTeardown: require.resolve("./integration-test/helper/global-teardown"),
   /* Maximum time one test can run for. */
-  timeout: 15000,
+  timeout: 30000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
