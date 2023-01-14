@@ -8,6 +8,7 @@ import {
   KeypointDetectionIcon,
   ObjectDetectionIcon,
   OpticalCharacterRecognitionIcon,
+  SemanticSegmentationIcon,
 } from "@instill-ai/design-system";
 
 export type ModelInstanceTaskLabelProps = {
@@ -53,6 +54,10 @@ const ModelInstanceTaskLabel = ({
 
     case "TASK_INSTANCE_SEGMENTATION":
       modelInstanceTaskIcon = <InstanceSegmentationIcon {...iconStyle} />;
+      break;
+
+    case "TASK_SEMANTIC_SEGMENTATION":
+      modelInstanceTaskIcon = <SemanticSegmentationIcon {...iconStyle} />;
       break;
 
     default:
