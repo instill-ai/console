@@ -112,13 +112,19 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 - In VDP folder: `git pull --rebase` to pull the up-to-date code.
 - In VDP folder: `make build PROFILE=console` 
 - In console folder: `pnpm dev` to setup local dev server
-- If you want to test in your host 
+- If you want to test in your host (Run the app with pnpm dev in the console folder) 
   - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=localhost CONSOLE_BASE_API_GATEWAY_URL_HOST=localhost`
   - In console folder: `pnpm integration-test`
-- If you want to test in the docker-container
-  - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=console CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway`
+- If you want to test in the docker-container (Run the app with VDP) 
+  - In VDP folder: `make dev PROFILE=all ITMODE=true`
   - In console folder: `pnpm docker-build-test`
   - In console folder: `pnpm docker-run-test`
+
+### How to debug the test in the docker
+
+- when build the text container, please alter `pnpm docker-build-test` to `docker build -f Dockerfile.playwright --build-arg TEST_USER='root' -t instill-console-integration .`
+- Then the user of this container will have the permission to write test-result into container.
+- you could look up the container's id by `docker cp` then copy the test-results into host folder by `docker cp <container_id>:/app/test-results .`
 
 
 ## Other Caveats
