@@ -187,12 +187,16 @@ export const deleteAllPipelines = async () => {
 
 export const createInstillAxiosTestClient = () => {
   const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
+    rejectUnauthorized:
+      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true" ? false : true,
   });
 
   return axios.create({
     baseURL: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
-    httpsAgent,
+    httpsAgent:
+      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true"
+        ? httpsAgent
+        : undefined,
   });
 };
 
