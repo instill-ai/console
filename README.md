@@ -110,7 +110,7 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 ### How to test at local
 
 - In VDP folder: `git pull --rebase` to pull the up-to-date code.
-- In VDP folder: `make build PROFILE=console` 
+- In VDP folder: `make build PROFILE=all` 
 - In console folder: `pnpm dev` to setup local dev server
 - If you want to test in your host (Run the app with pnpm dev in the console folder) 
   - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=localhost CONSOLE_BASE_API_GATEWAY_URL_HOST=localhost`
