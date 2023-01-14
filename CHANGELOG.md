@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.15.0-alpha](https://github.com/instill-ai/console/compare/v0.14.0-alpha...v0.15.0-alpha) (2023-01-14)
+
+
+### Features
+
+* add InstanceSegmentationIcon into label ([#327](https://github.com/instill-ai/console/issues/327)) ([fabb36a](https://github.com/instill-ai/console/commit/fabb36ab8e8b8df7e4eecdacb711b7976dd14ca1))
+* add SemanticSegmentationIcon icon ([#329](https://github.com/instill-ai/console/issues/329)) ([76cdb20](https://github.com/instill-ai/console/commit/76cdb20f4620ac8256c52ff3f25619200d62909d))
+* fix operation query issue ([#328](https://github.com/instill-ai/console/issues/328)) ([54d7aef](https://github.com/instill-ai/console/commit/54d7aef53cff5c8fce8015cf8c653fe1f517edbc))
+* Impl running playwright inside docker ([#318](https://github.com/instill-ai/console/issues/318)) ([4da12aa](https://github.com/instill-ai/console/commit/4da12aa92b8f222a4caec62d63206728b601fa7e))
+* let maintainer switch playwright container user ([#320](https://github.com/instill-ai/console/issues/320)) ([f9c15e5](https://github.com/instill-ai/console/commit/f9c15e525d3672863972a889e65862ac84a6e441))
+* prolong test timeout ([#323](https://github.com/instill-ai/console/issues/323)) ([59f93e1](https://github.com/instill-ai/console/commit/59f93e17b3bbcc745d39d91ee5da7b516a768742))
+* reduce the test time from 60000 ms to 15000 ms ([#319](https://github.com/instill-ai/console/issues/319)) ([3d4b024](https://github.com/instill-ai/console/commit/3d4b024d3499edb5e374d7c3c972a8bb97290ef8))
+* stablize async model deploying test ([#314](https://github.com/instill-ai/console/issues/314)) ([94e867f](https://github.com/instill-ai/console/commit/94e867f6272b2453fab8ac26a30b5c4213d1288c))
+* support async model creation ([#324](https://github.com/instill-ai/console/issues/324)) ([dedcd82](https://github.com/instill-ai/console/commit/dedcd82c8239d7a16c32cd66ec484b1a161c08eb))
+* suspend the test related to cookie ([#322](https://github.com/instill-ai/console/issues/322)) ([bd54f71](https://github.com/instill-ai/console/commit/bd54f7195228a384afb374faa403f7efcf8e929b))
+
+
+### Bug Fixes
+
+* fix https issue ([#326](https://github.com/instill-ai/console/issues/326)) ([933afcc](https://github.com/instill-ai/console/commit/933afcc110bc565abd857c2ed86e5a5bad95ff6b))
+* fix wrong config in .env file ([#317](https://github.com/instill-ai/console/issues/317)) ([dd739d3](https://github.com/instill-ai/console/commit/dd739d38c366227bf2eb9d8c52b5005cb4f6a4bd))
+
 ## [0.14.0-alpha](https://github.com/instill-ai/console/compare/v0.13.0-alpha...v0.14.0-alpha) (2022-12-23)
 
 
