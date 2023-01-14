@@ -4,6 +4,7 @@ import cn from "clsx";
 import { Nullable } from "@/types/general";
 import {
   ImageClassificationIcon,
+  InstanceSegmentationIcon,
   KeypointDetectionIcon,
   ObjectDetectionIcon,
   OpticalCharacterRecognitionIcon,
@@ -48,6 +49,10 @@ const ModelInstanceTaskLabel = ({
       modelInstanceTaskIcon = (
         <OpticalCharacterRecognitionIcon {...iconStyle} />
       );
+      break;
+
+    case "TASK_INSTANCE_SEGMENTATION":
+      modelInstanceTaskIcon = <InstanceSegmentationIcon {...iconStyle} />;
       break;
 
     default:
