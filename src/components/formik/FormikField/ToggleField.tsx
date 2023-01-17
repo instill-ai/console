@@ -1,20 +1,17 @@
-import { Nullable } from "@/types/general";
-import {
-  BasicUploadFileField,
-  BasicUploadFileFieldProps,
-} from "@instill-ai/design-system";
-import { Field, FieldProps } from "formik";
 import { ChangeEvent, FC } from "react";
+import { Field, FieldProps } from "formik";
+import {
+  BasicToggleField,
+  BasicToggleFieldProps,
+} from "@instill-ai/design-system";
+import { Nullable } from "@/types/general";
 
-export type UploadFileFieldProps = Omit<
-  BasicUploadFileFieldProps,
-  "onChange"
-> & {
+export type ToggleFieldProps = Omit<BasicToggleFieldProps, "onChange"> & {
   name: string;
-  additionalOnChangeCb: Nullable<(value: string) => void>;
+  additionalOnChangeCb: Nullable<(value: boolean) => void>;
 };
 
-const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
+const ToggleFieldWrapper: FC<ToggleFieldProps & FieldProps> = ({
   field,
   form,
   id,
@@ -24,17 +21,14 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   ...props
 }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    form.setFieldValue(
-      field.name,
-      event.target.files ? event.target.files[0] : null
-    );
+    form.setFieldValue(field.name, event.target.checked);
     if (additionalOnChangeCb) {
-      additionalOnChangeCb(event.target.value);
+      additionalOnChangeCb(event.target.checked);
     }
   };
 
   return (
-    <BasicUploadFileField
+    <BasicToggleField
       {...props}
       id={id}
       error={error}
@@ -44,7 +38,7 @@ const UploadFileField: FC<UploadFileFieldProps & FieldProps> = ({
   );
 };
 
-const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
+const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   id,
   name,
   disabled,
@@ -54,15 +48,14 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   label,
   additionalOnChangeCb,
   additionalMessageOnLabel,
-  placeholder,
-  uploadButtonText,
   error,
+  value,
 }) => {
   return (
     <Field
       id={id}
       name={name}
-      component={UploadFileField}
+      component={ToggleFieldWrapper}
       disabled={disabled}
       readOnly={readOnly}
       required={required}
@@ -70,11 +63,10 @@ const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
       additionalOnChangeCb={additionalOnChangeCb}
       label={label}
       additionalMessageOnLabel={additionalMessageOnLabel}
-      placeholder={placeholder}
-      uploadButtonText={uploadButtonText}
       error={error}
+      value={value}
     />
   );
 };
 
-export default UploadFileFieldFormikWrapper;
+export { ToggleFieldFormikWrapper as ToggleField };

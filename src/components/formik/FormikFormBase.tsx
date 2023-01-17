@@ -10,7 +10,7 @@ export type FormikFormBaseProps = {
   minWidth: Nullable<string>;
 };
 
-const FormikFormBase: FC<FormikFormBaseProps> = ({
+export const FormikFormBase: FC<FormikFormBaseProps> = ({
   children,
   padding,
   gapY,
@@ -31,5 +31,3 @@ const FormikFormBase: FC<FormikFormBaseProps> = ({
     </Form>
   );
 };
-
-export default FormikFormBase;

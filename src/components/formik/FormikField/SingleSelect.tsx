@@ -15,7 +15,7 @@ export type SingleSelectProps = Omit<
   additionalOnChangeCb?: Nullable<(option: SingleSelectOption) => void>;
 };
 
-const SingleSelect: FC<SingleSelectProps & FieldProps> = ({
+const SingleSelectWrapper: FC<SingleSelectProps & FieldProps> = ({
   field,
   form,
   options,
@@ -69,7 +69,7 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
     <Field
       name={name}
       id={id}
-      component={SingleSelect}
+      component={SingleSelectWrapper}
       options={options}
       disabled={disabled}
       readOnly={readOnly}
@@ -85,4 +85,4 @@ const SingleSelectFieldFormikWrapper: FC<SingleSelectProps> = ({
   );
 };
 
-export default SingleSelectFieldFormikWrapper;
+export { SingleSelectFieldFormikWrapper as SingleSelect };

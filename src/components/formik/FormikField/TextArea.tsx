@@ -8,7 +8,7 @@ export type TextAreaProps = Omit<BasicTextAreaProps, "onChange"> & {
   additionalOnChangeCb?: Nullable<(value: string) => void>;
 };
 
-const TextArea: FC<TextAreaProps & FieldProps> = ({
+const TextAreaWrapper: FC<TextAreaProps & FieldProps> = ({
   field,
   form,
   id,
@@ -56,7 +56,7 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
     <Field
       id={id}
       name={name}
-      component={TextArea}
+      component={TextAreaWrapper}
       disabled={disabled}
       readOnly={readOnly}
       required={required}
@@ -74,4 +74,4 @@ const TextAreaFormikWrapper: FC<TextAreaProps> = ({
   );
 };
 
-export default TextAreaFormikWrapper;
+export { TextAreaFormikWrapper as TextArea };

@@ -1,17 +1,21 @@
 import { ChangeEvent, FC } from "react";
 import { Field, FieldProps } from "formik";
 import {
-  BasicToggleField,
   BasicToggleFieldProps,
+  StatefulToggleField,
 } from "@instill-ai/design-system";
-import { Nullable } from "@/types/general";
+import { Nullable, State } from "@/types/general";
 
-export type ToggleFieldProps = Omit<BasicToggleFieldProps, "onChange"> & {
+export type StatefulToggleFieldProps = Omit<
+  BasicToggleFieldProps,
+  "onChange"
+> & {
   name: string;
   additionalOnChangeCb: Nullable<(value: boolean) => void>;
+  state: State;
 };
 
-const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
+const StatefulToggleFieldWrapper: FC<StatefulToggleFieldProps & FieldProps> = ({
   field,
   form,
   id,
@@ -28,17 +32,18 @@ const ToggleField: FC<ToggleFieldProps & FieldProps> = ({
   };
 
   return (
-    <BasicToggleField
+    <StatefulToggleField
       {...props}
       id={id}
       error={error}
       onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
+      loadingLabelText="Loading..."
     />
   );
 };
 
-const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
+const StatefulToggleFieldFormikWrapper: FC<StatefulToggleFieldProps> = ({
   id,
   name,
   disabled,
@@ -49,13 +54,13 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
   additionalOnChangeCb,
   additionalMessageOnLabel,
   error,
-  value,
+  state,
 }) => {
   return (
     <Field
       id={id}
       name={name}
-      component={ToggleField}
+      component={StatefulToggleFieldWrapper}
       disabled={disabled}
       readOnly={readOnly}
       required={required}
@@ -64,9 +69,9 @@ const ToggleFieldFormikWrapper: FC<ToggleFieldProps> = ({
       label={label}
       additionalMessageOnLabel={additionalMessageOnLabel}
       error={error}
-      value={value}
+      state={state}
     />
   );
 };
 
-export default ToggleFieldFormikWrapper;
+export { StatefulToggleFieldFormikWrapper as StatefulToggleField };

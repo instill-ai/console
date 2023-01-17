@@ -1,31 +1,40 @@
 import { Nullable } from "@/types/general";
-import { BasicTextField, BasicTextFieldProps } from "@instill-ai/design-system";
+import {
+  BasicUploadFileField,
+  BasicUploadFileFieldProps,
+} from "@instill-ai/design-system";
 import { Field, FieldProps } from "formik";
 import { ChangeEvent, FC } from "react";
 
-export type TextFieldProps = Omit<BasicTextFieldProps, "onChange"> & {
+export type UploadFileFieldProps = Omit<
+  BasicUploadFileFieldProps,
+  "onChange"
+> & {
   name: string;
-  additionalOnChangeCb?: Nullable<(value: string) => void>;
+  additionalOnChangeCb: Nullable<(value: string) => void>;
 };
 
-const TextField: FC<TextFieldProps & FieldProps> = ({
+const UploadFileFieldWrapper: FC<UploadFileFieldProps & FieldProps> = ({
   field,
   form,
   id,
-  additionalMessageOnLabel,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   error,
   ...props
 }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    form.setFieldValue(field.name, event.target.value);
+    form.setFieldValue(
+      field.name,
+      event.target.files ? event.target.files[0] : null
+    );
     if (additionalOnChangeCb) {
       additionalOnChangeCb(event.target.value);
     }
   };
 
   return (
-    <BasicTextField
+    <BasicUploadFileField
       {...props}
       id={id}
       error={error}
@@ -35,7 +44,7 @@ const TextField: FC<TextFieldProps & FieldProps> = ({
   );
 };
 
-const TextFieldFormikWrapper: FC<TextFieldProps> = ({
+const UploadFileFieldFormikWrapper: FC<UploadFileFieldProps> = ({
   id,
   name,
   disabled,
@@ -43,19 +52,17 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
   required,
   description,
   label,
-  additionalMessageOnLabel,
   additionalOnChangeCb,
+  additionalMessageOnLabel,
   placeholder,
-  type,
-  autoComplete,
-  value,
+  uploadButtonText,
   error,
 }) => {
   return (
     <Field
       id={id}
       name={name}
-      component={TextField}
+      component={UploadFileFieldWrapper}
       disabled={disabled}
       readOnly={readOnly}
       required={required}
@@ -64,12 +71,10 @@ const TextFieldFormikWrapper: FC<TextFieldProps> = ({
       label={label}
       additionalMessageOnLabel={additionalMessageOnLabel}
       placeholder={placeholder}
-      type={type}
-      autoComplete={autoComplete}
-      value={value}
+      uploadButtonText={uploadButtonText}
       error={error}
     />
   );
 };
 
-export default TextFieldFormikWrapper;
+export { UploadFileFieldFormikWrapper as UploadFileField };
