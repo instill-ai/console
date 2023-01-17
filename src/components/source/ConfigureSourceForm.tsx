@@ -28,7 +28,7 @@ export type ConfigureSourceFormValue = {
   sourceDefinition: Nullable<string>;
 };
 
-const ConfigureSourceForm = ({
+export const ConfigureSourceForm = ({
   source,
   marginBottom,
 }: ConfigureSourceFormProps) => {
@@ -222,5 +222,3 @@ const ConfigureSourceForm = ({
     </>
   );
 };
-
-export default ConfigureSourceForm;
