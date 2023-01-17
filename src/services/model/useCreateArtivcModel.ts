@@ -2,10 +2,9 @@ import { useMutation, useQueryClient } from "react-query";
 import {
   createArtivcModelMutation,
   CreateArtivcModelPayload,
-  Model,
 } from "@/lib/instill";
 
-const useCreateArtivcModel = () => {
+export const useCreateArtivcModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateArtivcModelPayload) => {
@@ -19,5 +18,3 @@ const useCreateArtivcModel = () => {
     }
   );
 };
-
-export default useCreateArtivcModel;

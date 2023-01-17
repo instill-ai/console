@@ -12,7 +12,8 @@
       "@/utils/*": ["utils/*"],
       "@/style": ["styles"],
       "@/style/*": ["styles/*"],
-      "@/services": ["services"],
+
+      // We didn't support import directly from "@/services"
       "@/services/*": ["services/*"],
       "@/lib": ["lib"],
       "@/lib/*": ["lib/*"],

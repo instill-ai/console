@@ -4,7 +4,7 @@ import {
   CreateGithubModelPayload,
 } from "@/lib/instill";
 
-const useCreateGithubModel = () => {
+export const useCreateGithubModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateGithubModelPayload) => {
@@ -18,5 +18,3 @@ const useCreateGithubModel = () => {
     }
   );
 };
-
-export default useCreateGithubModel;

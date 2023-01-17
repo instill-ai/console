@@ -1,9 +1,9 @@
 import { useQuery } from "react-query";
 import { listModelInstancesQuery, ModelWithInstance } from "@/lib/instill";
 import { determineModelState } from "@/utils";
-import useModels from "./useModels";
+import { useModels } from "./useModels";
 
-const useModelsWithInstances = () => {
+export const useModelsWithInstances = () => {
   const models = useModels();
   return useQuery(
     ["models", "with-instances"],
@@ -42,5 +42,3 @@ const useModelsWithInstances = () => {
     }
   );
 };
-
-export default useModelsWithInstances;

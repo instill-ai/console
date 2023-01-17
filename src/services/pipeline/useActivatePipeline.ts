@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { activatePipelineMutation, Pipeline } from "@/lib/instill";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
-const useActivatePipeline = () => {
+export const useActivatePipeline = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (pipelineName: string) => {
@@ -35,5 +35,3 @@ const useActivatePipeline = () => {
     }
   );
 };
-
-export default useActivatePipeline;

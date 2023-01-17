@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
 import { Model, updateModelMutation, UpdateModelPayload } from "@/lib/instill";
 
-const useUpdateModel = () => {
+export const useUpdateModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: UpdateModelPayload) => {
@@ -22,5 +22,3 @@ const useUpdateModel = () => {
     }
   );
 };
-
-export default useUpdateModel;

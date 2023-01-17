@@ -2,9 +2,9 @@ import { useQuery } from "react-query";
 
 import { DestinationWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
-import { useDestinations } from "../queries";
+import { useDestinations } from "./useDestinations";
 
-const useDestinationsWithPipelines = () => {
+export const useDestinationsWithPipelines = () => {
   const destinations = useDestinations();
   const pipelines = usePipelines(true);
   return useQuery(
@@ -36,5 +36,3 @@ const useDestinationsWithPipelines = () => {
     }
   );
 };
-
-export default useDestinationsWithPipelines;

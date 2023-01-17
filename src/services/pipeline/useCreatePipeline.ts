@@ -6,7 +6,7 @@ import {
 } from "@/lib/instill";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
-const useCreatePipeline = () => {
+export const useCreatePipeline = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -39,5 +39,3 @@ const useCreatePipeline = () => {
     }
   );
 };
-
-export default useCreatePipeline;

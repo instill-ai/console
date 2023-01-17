@@ -2,9 +2,9 @@ import { useQuery } from "react-query";
 
 import { SourceWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
-import useSources from "./useSources";
+import { useSources } from "./useSources";
 
-const useSourcesWithPipelines = () => {
+export const useSourcesWithPipelines = () => {
   const sources = useSources();
   const pipelines = usePipelines(true);
   return useQuery(
@@ -32,5 +32,3 @@ const useSourcesWithPipelines = () => {
     }
   );
 };
-
-export default useSourcesWithPipelines;

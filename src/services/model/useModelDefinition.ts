@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { getModelDefinitionQuery } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
-const useModelDefinition = (modelDefinitionName: Nullable<string>) => {
+export const useModelDefinition = (modelDefinitionName: Nullable<string>) => {
   return useQuery(
     ["models", "definition", modelDefinitionName],
     async () => {
@@ -16,5 +16,3 @@ const useModelDefinition = (modelDefinitionName: Nullable<string>) => {
     { enabled: modelDefinitionName ? true : false, retry: 3 }
   );
 };
-
-export default useModelDefinition;

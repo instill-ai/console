@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from "react-query";
 import {
-  createDestinationMutation,
-  CreateDestinationPayload,
   DestinationWithDefinition,
   getDestinationDefinitionQuery,
+  updateDestinationMutation,
+  UpdateDestinationPayload,
 } from "@/lib/instill";
 
-const useCreateDestination = () => {
+export const useUpdateDestination = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async (payload: CreateDestinationPayload) => {
-      const res = await createDestinationMutation(payload);
+    async (payload: UpdateDestinationPayload) => {
+      const res = await updateDestinationMutation(payload);
       return Promise.resolve(res);
     },
     {
@@ -43,5 +43,3 @@ const useCreateDestination = () => {
     }
   );
 };
-
-export default useCreateDestination;

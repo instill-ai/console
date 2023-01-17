@@ -6,7 +6,7 @@ import {
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
-const useDestination = (destinationName: Nullable<string>) => {
+export const useDestination = (destinationName: Nullable<string>) => {
   return useQuery(
     ["destinations", destinationName],
     async () => {
@@ -31,5 +31,3 @@ const useDestination = (destinationName: Nullable<string>) => {
     }
   );
 };
-
-export default useDestination;

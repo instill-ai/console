@@ -6,7 +6,7 @@ import {
   SourceWithDefinition,
 } from "@/lib/instill";
 
-const useCreateSource = () => {
+export const useCreateSource = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateSourcePayload) => {
@@ -36,5 +36,3 @@ const useCreateSource = () => {
     }
   );
 };
-
-export default useCreateSource;

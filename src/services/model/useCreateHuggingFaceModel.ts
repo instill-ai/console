@@ -2,10 +2,9 @@ import { useMutation, useQueryClient } from "react-query";
 import {
   createHuggingFaceModelMutation,
   CreateHuggingFaceModelPayload,
-  Model,
 } from "@/lib/instill";
 
-const useCreateHuggingFaceModel = () => {
+export const useCreateHuggingFaceModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateHuggingFaceModelPayload) => {
@@ -19,5 +18,3 @@ const useCreateHuggingFaceModel = () => {
     }
   );
 };
-
-export default useCreateHuggingFaceModel;

@@ -1,7 +1,7 @@
 import { deleteModelMutation, Model } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeleteModel = () => {
+export const useDeleteModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (modelName: string) => {
@@ -26,5 +26,3 @@ const useDeleteModel = () => {
     }
   );
 };
-
-export default useDeleteModel;

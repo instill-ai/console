@@ -5,7 +5,7 @@ import {
   listDestinationsQuery,
 } from "@/lib/instill";
 
-const useDestinations = () => {
+export const useDestinations = () => {
   return useQuery(
     ["destinations"],
     async () => {
@@ -29,5 +29,3 @@ const useDestinations = () => {
     }
   );
 };
-
-export default useDestinations;

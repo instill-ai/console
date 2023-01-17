@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { listModelInstancesQuery } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
-const useModelInstances = (modelName: Nullable<string>) => {
+export const useModelInstances = (modelName: Nullable<string>) => {
   return useQuery(
     ["models", modelName?.split("/")[1], "modelInstances"],
     async () => {
@@ -19,5 +19,3 @@ const useModelInstances = (modelName: Nullable<string>) => {
     }
   );
 };
-
-export default useModelInstances;

@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { listModelDefinitionsQuery } from "@/lib/instill";
 
-const useModelDefinitions = () => {
+export const useModelDefinitions = () => {
   return useQuery(
     ["models", "definition"],
     async () => {
@@ -13,5 +13,3 @@ const useModelDefinitions = () => {
     }
   );
 };
-
-export default useModelDefinitions;

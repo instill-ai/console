@@ -6,7 +6,7 @@ import {
 } from "@/lib/instill";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
-const useUpdatePipeline = () => {
+export const useUpdatePipeline = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: UpdatePipelinePayload) => {
@@ -40,5 +40,3 @@ const useUpdatePipeline = () => {
     }
   );
 };
-
-export default useUpdatePipeline;

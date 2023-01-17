@@ -3,9 +3,11 @@ import { useQuery } from "react-query";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
 import { Nullable } from "@/types/general";
-import { useDestination } from "../queries";
+import { useDestination } from "./useDestination";
 
-const useDestinationWithPipelines = (destinationName: Nullable<string>) => {
+export const useDestinationWithPipelines = (
+  destinationName: Nullable<string>
+) => {
   const pipelines = usePipelines(true);
   const destination = useDestination(destinationName);
   return useQuery(
@@ -46,5 +48,3 @@ const useDestinationWithPipelines = (destinationName: Nullable<string>) => {
     }
   );
 };
-
-export default useDestinationWithPipelines;

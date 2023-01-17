@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
 import { updateLocalUserMutation, User } from "@/lib/instill";
 
-const useUpdateUser = () => {
+export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: Partial<User>) => {
@@ -15,5 +15,3 @@ const useUpdateUser = () => {
     }
   );
 };
-
-export default useUpdateUser;

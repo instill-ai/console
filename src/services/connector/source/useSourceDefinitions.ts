@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { listSourceDefinitionsQuery } from "@/lib/instill";
 
-const useSourceDefinitions = () => {
+export const useSourceDefinitions = () => {
   return useQuery(
     ["sources", "definition"],
     async () => {
@@ -13,5 +13,3 @@ const useSourceDefinitions = () => {
     }
   );
 };
-
-export default useSourceDefinitions;

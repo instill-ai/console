@@ -2,7 +2,7 @@ import { getModelInstanceQuery } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useQuery } from "react-query";
 
-const useModelInstance = (modelInstanceName: Nullable<string>) => {
+export const useModelInstance = (modelInstanceName: Nullable<string>) => {
   return useQuery(
     [
       "models",
@@ -23,5 +23,3 @@ const useModelInstance = (modelInstanceName: Nullable<string>) => {
     }
   );
 };
-
-export default useModelInstance;

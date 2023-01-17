@@ -3,9 +3,9 @@ import { useQuery } from "react-query";
 import { SourceWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";
 import { Nullable } from "@/types/general";
-import useSource from "./useSource";
+import { useSource } from "./useSource";
 
-const useSourceWithPipelines = (sourceName: Nullable<string>) => {
+export const useSourceWithPipelines = (sourceName: Nullable<string>) => {
   const pipelines = usePipelines(true);
   const source = useSource(sourceName);
   return useQuery(
@@ -46,5 +46,3 @@ const useSourceWithPipelines = (sourceName: Nullable<string>) => {
     }
   );
 };
-
-export default useSourceWithPipelines;

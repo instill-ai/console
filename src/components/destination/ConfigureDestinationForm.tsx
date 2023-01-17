@@ -30,7 +30,7 @@ import { DeleteResourceModal, FormBase } from "@/components/ui";
 import {
   useDeleteDestination,
   useUpdateDestination,
-} from "@/services/connector/destination/mutations";
+} from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useDeleteResourceGuard } from "@/hooks";

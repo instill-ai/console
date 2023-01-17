@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient } from "react-query";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import usePipelines from "./usePipelines";
+import { usePipelines } from "./usePipelines";
 
-const usePipelinesHaveTargetSource = (sourceId: Nullable<string>) => {
+export const usePipelinesHaveTargetSource = (sourceId: Nullable<string>) => {
   const pipelines = usePipelines(true);
   const queryClient = useQueryClient();
 
@@ -45,5 +45,3 @@ const usePipelinesHaveTargetSource = (sourceId: Nullable<string>) => {
     }
   );
 };
-
-export default usePipelinesHaveTargetSource;

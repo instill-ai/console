@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { getUserQuery, User } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
-const useUser = (userName: Nullable<string>) => {
+export const useUser = (userName: Nullable<string>) => {
   const queryClient = useQueryClient();
   return useQuery<User>(
     ["user", userName],
@@ -22,5 +22,3 @@ const useUser = (userName: Nullable<string>) => {
     }
   );
 };
-
-export default useUser;

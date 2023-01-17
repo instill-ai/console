@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { listDestinationDefinitionsQuery } from "@/lib/instill";
 
-const useDestinationDefinitions = () => {
+export const useDestinationDefinitions = () => {
   return useQuery(
     ["destinations", "definition"],
     async () => {
@@ -16,5 +16,3 @@ const useDestinationDefinitions = () => {
     }
   );
 };
-
-export default useDestinationDefinitions;
