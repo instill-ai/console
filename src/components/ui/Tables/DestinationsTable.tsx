@@ -1,38 +1,38 @@
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
+  DestinationTablePlaceholder,
   InstanceCell,
   NameCell,
-  SourceTablePlaceholder,
   TableBody,
   TableContainer,
   TableLoadingProgress,
   TableRow,
   TableHeadItem,
   TableHead,
-  SourceTablePlaceholderProps,
 } from "@/components/ui";
-import { SourceWithPipelines } from "@/lib/instill";
+import type { DestinationTablePlaceholderProps } from "@/components/ui";
+import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
-import StateOverview from "../../StateOverview";
+import StateOverview from "../StateOverview";
 
-export type SourcesTableProps = {
-  sources: SourceWithPipelines[];
-  isLoadingSources: boolean;
+export type DestinationsTableProps = {
+  destinations: DestinationWithPipelines[];
+  isLoading: boolean;
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
+  enablePlaceholderCreateButton: DestinationTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const SourcesTable = ({
-  sources,
-  isLoadingSources,
+export const DestinationsTable: FC<DestinationsTableProps> = ({
+  destinations,
+  isLoading,
   marginBottom,
   enablePlaceholderCreateButton,
-}: SourcesTableProps) => {
+}) => {
   const stateOverviewCounts = useStateOverviewCounts(
-    isLoadingSources ? null : sources
+    isLoading ? null : destinations
   );
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
@@ -49,7 +49,7 @@ const SourcesTable = ({
       },
       {
         key: "connector-type-head",
-        item: "Source",
+        item: "Destination",
       },
       {
         key: "connector-pipelines-head",
@@ -58,13 +58,13 @@ const SourcesTable = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (isLoadingSources) {
+  if (isLoading) {
     return <TableLoadingProgress marginBottom={marginBottom} />;
   }
 
-  if (sources.length === 0) {
+  if (destinations.length === 0) {
     return (
-      <SourceTablePlaceholder
+      <DestinationTablePlaceholder
         enablePlaceholderCreateButton={enablePlaceholderCreateButton}
         marginBottom={marginBottom}
       />
@@ -83,26 +83,26 @@ const SourcesTable = ({
         items={tableHeadItems}
       />
       <TableBody>
-        {sources.map((source) => (
+        {destinations.map((destination) => (
           <TableRow
             bgColor="bg-white"
             borderColor="border-instillGrey20"
-            key={source.name}
+            key={destination.name}
           >
             <NameCell
-              name={source.id}
+              name={destination.id}
               width="w-[234px]"
-              state="STATE_ONLINE"
-              updatedAt={source.connector.update_time}
-              padding="py-5 pl-5"
-              link={`/sources/${source.id}`}
+              state={destination.connector.state}
+              updatedAt={destination.connector.update_time}
+              padding="pl-5 py-5"
+              link={`/destinations/${destination.id}`}
               lineClamp="line-clamp-1"
               displayUpdateTime={true}
               displayStateIndicator={true}
             />
             <ConnectionTypeCell
-              connectorDefinition={source.source_connector_definition}
-              connectorName={source.id}
+              connectorDefinition={destination.destination_connector_definition}
+              connectorName={destination.id}
               cellType="shrink"
               width="w-[234px]"
               padding="py-5"
@@ -112,7 +112,7 @@ const SourcesTable = ({
               width="w-80"
               type="pipeline"
               padding="py-5 pr-[15px]"
-              instances={source.pipelines.map((e) => {
+              instances={destination.pipelines.map((e) => {
                 return {
                   name: e.id,
                   state: e.state,
@@ -125,5 +125,3 @@ const SourcesTable = ({
     </TableContainer>
   );
 };
-
-export default SourcesTable;

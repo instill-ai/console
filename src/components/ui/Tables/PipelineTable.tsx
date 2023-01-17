@@ -7,8 +7,8 @@ import {
   TableRow,
   TableHeadItem,
   TableHead,
+  ModelsCell,
 } from "@/components/ui";
-import ModelsCell from "@/components/ui/TableCells/ModelsCell";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
@@ -18,7 +18,7 @@ export type PipelineTableProps = {
   marginBottom: Nullable<string>;
 };
 
-const PipelineTable = ({
+export const PipelineTable = ({
   pipeline,
   isLoading,
   marginBottom,
@@ -99,5 +99,3 @@ const PipelineTable = ({
     </TableContainer>
   );
 };
-
-export default PipelineTable;

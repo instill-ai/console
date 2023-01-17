@@ -14,7 +14,6 @@ import {
   TableHeadItem,
   StateOverview,
 } from "@/components/ui";
-
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
@@ -27,7 +26,7 @@ export type PipelinesTableProps = {
   enablePlaceholderCreateButton: PipelineTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const PipelinesTable: FC<PipelinesTableProps> = ({
+export const PipelinesTable: FC<PipelinesTableProps> = ({
   isLoadingPipeline,
   pipelines,
   marginBottom,
@@ -153,5 +152,3 @@ const PipelinesTable: FC<PipelinesTableProps> = ({
     </TableContainer>
   );
 };
-
-export default memo(PipelinesTable);

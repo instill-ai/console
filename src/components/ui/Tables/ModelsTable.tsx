@@ -10,9 +10,8 @@ import {
   TableRow,
   TableHead,
   TableHeadItem,
-} from "@/components/ui";
+ ModelDefinitionCell } from "@/components/ui";
 import type { ModelTablePlaceholderProps } from "@/components/ui";
-import ModelDefinitionCell from "@/components/ui/TableCells/ModelDefinitionCell";
 import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
@@ -23,7 +22,7 @@ export type ModelsTableProps = {
   enablePlaceholderCreateButton: ModelTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-const ModelsTable: FC<ModelsTableProps> = ({
+export const ModelsTable: FC<ModelsTableProps> = ({
   models,
   isLoading,
   marginBottom,
@@ -109,5 +108,3 @@ const ModelsTable: FC<ModelsTableProps> = ({
     </TableContainer>
   );
 };
-
-export default ModelsTable;
