@@ -1,6 +1,6 @@
 import { FC } from "react";
 import cn from "clsx";
-import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
+import { getHumanReadableStringFromTime } from "@/utils";
 import { Nullable, State } from "@/types/general";
 import { CellBaseProps, CellBase } from "./CellBase";
 import Link from "next/link";

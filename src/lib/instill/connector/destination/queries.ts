@@ -1,5 +1,5 @@
 import { Nullable } from "@/types/general";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import { createInstillAxiosClient, getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Destination } from "./types";

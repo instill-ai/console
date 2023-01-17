@@ -14,7 +14,7 @@ import { initAmplitude } from "@/lib/amplitude";
 import { useTrackingToken } from "@/services/mgmt";
 import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { ErrorBoundary } from "@/components/ui";
-import { env } from "../utils";
+import { env } from "@/utils";
 
 export const queryCache = new QueryCache();
 

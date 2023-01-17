@@ -1,4 +1,4 @@
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import { createInstillAxiosClient } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Source } from "./types";

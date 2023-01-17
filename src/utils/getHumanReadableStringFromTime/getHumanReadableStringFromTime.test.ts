@@ -1,4 +1,4 @@
-import { getHumanReadableStringFromTime } from "./timeUtils";
+import { getHumanReadableStringFromTime } from "./getHumanReadableStringFromTime";
 
 describe("test getTimeAgo", () => {
   test("should return 1 second ago", () => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Nullable } from "@/types/general";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 
 export type PageHeadProps = {
   title: Nullable<string>;

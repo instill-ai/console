@@ -1,6 +1,6 @@
 import { GetCodeHikeTemplateSourceProps } from "@/lib/markdown";
 import { Nullable } from "@/types/general";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import axios from "axios";
 import * as https from "https";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";

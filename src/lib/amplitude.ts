@@ -1,6 +1,6 @@
 import { Nullable } from "@/types/general";
 import { init, setUserId, track } from "@amplitude/analytics-browser";
-import { env } from "../utils";
+import { env } from "@/utils";
 
 export type AmplitudeEventProperties = {
   type: "navigation" | "critical_action";

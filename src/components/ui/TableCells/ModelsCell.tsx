@@ -1,7 +1,7 @@
-import { FC, memo } from "react";
+import { FC } from "react";
 import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
-import { groupBy } from "@/utils/arrayUtils";
+import { groupBy } from "@/utils";
 import { CellBaseProps, CellBase } from "./CellBase";
 import { ModelInstance, ModelState } from "@/lib/instill";
 

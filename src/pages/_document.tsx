@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import { FC } from "react";
-import { env } from "../utils";
+import { env } from "@/utils";
 
 export const Document: FC = () => {
   return (
