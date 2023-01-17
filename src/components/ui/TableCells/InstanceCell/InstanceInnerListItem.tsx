@@ -1,8 +1,8 @@
-import { memo } from "react";
-import { Instance } from "./InstanceCell";
 import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
-import StateIcon from "../../StateIcon";
+
+import { Instance } from "./InstanceCell";
+import { StateIcon } from "@/components/ui";
 
 export type InstanceInnerListItemProps = {
   item: Instance;

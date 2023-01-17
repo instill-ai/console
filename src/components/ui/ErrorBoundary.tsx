@@ -11,7 +11,10 @@ type ErrorBoundaryState = {
   errorInfo: Nullable<ErrorInfo>;
 };
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   public state: ErrorBoundaryState = {
     hasError: false,
     error: null,
@@ -45,5 +48,3 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;

@@ -14,7 +14,7 @@ export type PipelineModeLabelProps = {
   paddingY: string;
 };
 
-const PipelineModeLabel = ({
+export const PipelineModeLabel = ({
   mode,
   enableBgColor,
   enableIcon,
@@ -83,5 +83,3 @@ const PipelineModeLabel = ({
     </div>
   );
 };
-
-export default PipelineModeLabel;

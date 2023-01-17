@@ -14,7 +14,7 @@ export type ModelDefinitionIconProps = {
   iconColor: string;
 };
 
-const ModelDefinitionIcon = ({
+export const ModelDefinitionIcon = ({
   iconName,
   iconColor,
   iconHeight,
@@ -66,5 +66,3 @@ const ModelDefinitionIcon = ({
     }
   }
 };
-
-export default ModelDefinitionIcon;

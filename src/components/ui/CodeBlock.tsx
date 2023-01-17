@@ -10,7 +10,7 @@ export type CodeBlockProps = {
   marginBottom?: string;
 };
 
-const CodeBlock = ({ source, code, marginBottom }: CodeBlockProps) => {
+export const CodeBlock = ({ source, code, marginBottom }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -40,5 +40,3 @@ const CodeBlock = ({ source, code, marginBottom }: CodeBlockProps) => {
     </div>
   );
 };
-
-export default CodeBlock;

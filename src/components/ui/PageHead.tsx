@@ -8,7 +8,7 @@ export type PageHeadProps = {
   title: Nullable<string>;
 };
 
-const PageHead = ({ title }: PageHeadProps) => {
+export const PageHead = ({ title }: PageHeadProps) => {
   const router = useRouter();
   const meta = {
     type: "website",
@@ -83,5 +83,3 @@ const PageHead = ({ title }: PageHeadProps) => {
     </>
   );
 };
-
-export default PageHead;

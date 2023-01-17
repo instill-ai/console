@@ -14,7 +14,7 @@ export type ModelDefinitionLabelProps = {
   position: Nullable<string>;
 };
 
-const ModelDefinitionLabel = ({
+export const ModelDefinitionLabel = ({
   modelDefinition,
   marginBottom,
   position,
@@ -93,5 +93,3 @@ const ModelDefinitionLabel = ({
     </div>
   );
 };
-
-export default ModelDefinitionLabel;

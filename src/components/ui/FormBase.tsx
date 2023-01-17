@@ -9,7 +9,7 @@ export type FormBaseProps = {
   noValidate: boolean;
 };
 
-const FormBase: FC<FormBaseProps> = ({
+export const FormBase: FC<FormBaseProps> = ({
   children,
   padding,
   marginBottom,
@@ -32,5 +32,3 @@ const FormBase: FC<FormBaseProps> = ({
     </form>
   );
 };
-
-export default FormBase;

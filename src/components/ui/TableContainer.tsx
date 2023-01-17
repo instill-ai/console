@@ -23,7 +23,7 @@ export type TableProps = {
   marginBottom: Nullable<string>;
 };
 
-const TableContainer: FC<TableProps> = ({
+export const TableContainer: FC<TableProps> = ({
   children,
   tableLayout,
   borderCollapse,
@@ -35,5 +35,3 @@ const TableContainer: FC<TableProps> = ({
     </table>
   );
 };
-
-export default TableContainer;

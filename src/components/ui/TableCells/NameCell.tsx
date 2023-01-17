@@ -4,7 +4,7 @@ import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
 import { Nullable, State } from "@/types/general";
 import { CellBaseProps, CellBase } from "./CellBase";
 import Link from "next/link";
-import StateIcon from "../StateIcon";
+import { StateIcon } from "../StateIcon";
 
 export type NameCellProps = {
   state: State;

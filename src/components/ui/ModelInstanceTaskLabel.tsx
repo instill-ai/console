@@ -17,7 +17,7 @@ export type ModelInstanceTaskLabelProps = {
   position: Nullable<string>;
 };
 
-const ModelInstanceTaskLabel = ({
+export const ModelInstanceTaskLabel = ({
   task,
   marginBottom,
   position,
@@ -83,5 +83,3 @@ const ModelInstanceTaskLabel = ({
     </div>
   );
 };
-
-export default ModelInstanceTaskLabel;

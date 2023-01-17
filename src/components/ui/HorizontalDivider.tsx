@@ -5,7 +5,7 @@ export type HorizontalDividerProps = {
   borderColor: string;
 };
 
-const HorizontalDivider = ({
+export const HorizontalDivider = ({
   marginBottom,
   borderColor,
 }: HorizontalDividerProps) => {
@@ -13,5 +13,3 @@ const HorizontalDivider = ({
     <div className={cn("flex w-full border-b", marginBottom, borderColor)} />
   );
 };
-
-export default HorizontalDivider;

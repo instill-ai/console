@@ -16,7 +16,7 @@ import type { DestinationTablePlaceholderProps } from "@/components/ui";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
-import StateOverview from "../StateOverview";
+import { StateOverview } from "../StateOverview";
 
 export type DestinationsTableProps = {
   destinations: DestinationWithPipelines[];

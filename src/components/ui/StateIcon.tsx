@@ -3,7 +3,7 @@ import {
   StatusOffIcon,
   StatusOnIcon,
 } from "@instill-ai/design-system";
-import { memo, ReactElement } from "react";
+import { ReactElement } from "react";
 import { Nullable, State } from "types/general";
 
 export type StateIconProps = {
@@ -13,7 +13,12 @@ export type StateIconProps = {
   position: Nullable<string>;
 };
 
-const StateIcon = ({ state, width, height, position }: StateIconProps) => {
+export const StateIcon = ({
+  state,
+  width,
+  height,
+  position,
+}: StateIconProps) => {
   let icon: ReactElement;
 
   switch (state) {
@@ -64,5 +69,3 @@ const StateIcon = ({ state, width, height, position }: StateIconProps) => {
 
   return icon;
 };
-
-export default memo(StateIcon);
