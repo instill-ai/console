@@ -2,7 +2,7 @@ import { FC, memo } from "react";
 import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
 import { groupBy } from "@/utils/arrayUtils";
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "./CellBase";
 import { ModelInstance, ModelState } from "@/lib/instill";
 
 export type ModelsCellProps = CellBaseProps & {
@@ -10,7 +10,7 @@ export type ModelsCellProps = CellBaseProps & {
   width: string;
 };
 
-const ModelsCell: FC<ModelsCellProps> = ({
+export const ModelsCell: FC<ModelsCellProps> = ({
   padding,
   width,
   modelInstances,
@@ -67,5 +67,3 @@ const ModelsCell: FC<ModelsCellProps> = ({
     </CellBase>
   );
 };
-
-export default memo(ModelsCell);

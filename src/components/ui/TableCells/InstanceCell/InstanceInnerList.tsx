@@ -3,8 +3,9 @@ import cn from "clsx";
 
 import { getTextWidth } from "../../../../utils";
 import { Instance } from "./InstanceCell";
-import InstanceInnerListItem, {
+import {
   InstanceInnerListItemProps,
+  InstanceInnerListItem,
 } from "./InstanceInnerListItem";
 import { useRouter } from "next/router";
 
@@ -16,7 +17,7 @@ export type InstanceInnerListProps = {
   items: Instance[];
 };
 
-const InstanceInnerList: FC<InstanceInnerListProps> = ({
+export const InstanceInnerList: FC<InstanceInnerListProps> = ({
   listItemsContainerWidth,
   items,
   enableItemBgColor,
@@ -135,5 +136,3 @@ const InstanceInnerList: FC<InstanceInnerListProps> = ({
     </div>
   );
 };
-
-export default InstanceInnerList;

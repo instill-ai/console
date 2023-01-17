@@ -11,7 +11,7 @@ export type InstanceInnerListItemProps = {
   textStyle: string;
 };
 
-const InstanceInnerListItem = ({
+export const InstanceInnerListItem = ({
   item,
   enableItemBgColor,
   indicator,
@@ -67,5 +67,3 @@ const InstanceInnerListItem = ({
     </div>
   );
 };
-
-export default memo(InstanceInnerListItem);

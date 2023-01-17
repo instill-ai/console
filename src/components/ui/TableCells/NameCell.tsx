@@ -2,9 +2,9 @@ import { FC } from "react";
 import cn from "clsx";
 import { getHumanReadableStringFromTime } from "@/utils/timeUtils";
 import { Nullable, State } from "@/types/general";
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "./CellBase";
 import Link from "next/link";
-import StateIcon from "../../StateIcon";
+import StateIcon from "../StateIcon";
 
 export type NameCellProps = {
   state: State;
@@ -17,7 +17,7 @@ export type NameCellProps = {
   displayStateIndicator: boolean;
 } & CellBaseProps;
 
-const NameCell: FC<NameCellProps> = ({
+export const NameCell: FC<NameCellProps> = ({
   state,
   width,
   updatedAt,
@@ -75,5 +75,3 @@ const NameCell: FC<NameCellProps> = ({
     </CellBase>
   );
 };
-
-export default NameCell;

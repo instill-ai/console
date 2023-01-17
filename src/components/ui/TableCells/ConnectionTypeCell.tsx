@@ -1,6 +1,6 @@
 import cn from "clsx";
 import Image from "next/image";
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "./CellBase";
 import { ConnectorDefinition } from "@/lib/instill";
 
 export type ConnectionTypeCellProps = CellBaseProps & {
@@ -11,7 +11,7 @@ export type ConnectionTypeCellProps = CellBaseProps & {
   connectorDefinition: ConnectorDefinition;
 };
 
-const ConnectionTypeCell = ({
+export const ConnectionTypeCell = ({
   connectorDefinition,
   connectorName,
   width,
@@ -86,5 +86,3 @@ const ConnectionTypeCell = ({
     );
   }
 };
-
-export default ConnectionTypeCell;

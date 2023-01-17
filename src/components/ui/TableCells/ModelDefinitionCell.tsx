@@ -1,6 +1,6 @@
 import { FC, ReactElement } from "react";
 import cn from "clsx";
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "./CellBase";
 import {
   ArtiVcIcon,
   GitHubIcon,
@@ -8,12 +8,12 @@ import {
   LocalUploadIcon,
 } from "@instill-ai/design-system";
 
-export type ModelDefintionCellProps = {
+export type ModelDefinitionCellProps = {
   width: string;
   modelDefinition: string;
 } & CellBaseProps;
 
-const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
+export const ModelDefinitionCell: FC<ModelDefinitionCellProps> = ({
   padding,
   modelDefinition,
   width,
@@ -91,5 +91,3 @@ const ModelDefintionCell: FC<ModelDefintionCellProps> = ({
     </CellBase>
   );
 };
-
-export default ModelDefintionCell;

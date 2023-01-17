@@ -1,7 +1,7 @@
 import Breadcrumb from "./Breadcrumb";
 import type { BreadcrumbProps } from "./Breadcrumb";
 
-import Sidebar from "./Sidebar";
+export { Sidebar } from "./Sidebar";
 import StateIcon from "./StateIcon";
 import type { StateIconProps } from "./StateIcon";
 import FormBase from "./FormBase";
@@ -37,8 +37,8 @@ import PageHead from "./PageHead";
 import type { PageHeadProps } from "./PageHead";
 import PageTitle from "./PageTitle";
 import type { PageTitleProps } from "./PageTitle";
-import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
-import type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
+export { ModelInstanceReadmeCard } from "./ModelInstanceReadmeCard";
+export type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";
 import ChangeResourceStateButton from "./ChangeResourceStateButton";
 import type { ChangeResourceStateButtonProps } from "./ChangeResourceStateButton";
 import ErrorBoundary from "./ErrorBoundary";
@@ -48,7 +48,6 @@ import TableHead from "./TableHead";
 import type { TableHeadProps, TableHeadItem } from "./TableHead";
 
 export {
-  Sidebar,
   StateIcon,
   FormBase,
   FormVerticalDivider,
@@ -68,7 +67,6 @@ export {
   PageContentContainer,
   PageHead,
   PageTitle,
-  ModelInstanceReadmeCard,
   ChangeResourceStateButton,
   ErrorBoundary,
   Breadcrumb,
@@ -90,7 +88,6 @@ export type {
   PageContentContainerProps,
   PageHeadProps,
   PageTitleProps,
-  ModelInstanceReadmeCardProps,
   ChangeResourceStateButtonProps,
   BreadcrumbProps,
   ModelDefinitionLabelProps,

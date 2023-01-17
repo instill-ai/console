@@ -6,8 +6,6 @@ export type CellBaseProps = {
   children?: ReactNode;
 };
 
-const CellBase = ({ children, padding }: CellBaseProps) => {
+export const CellBase = ({ children, padding }: CellBaseProps) => {
   return <td className={padding ? padding : undefined}>{children}</td>;
 };
-
-export default CellBase;

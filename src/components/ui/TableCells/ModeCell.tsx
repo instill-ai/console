@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 import cn from "clsx";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
 
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "./CellBase";
 import { PipelineMode } from "@/lib/instill";
 
 export type ModeCellProps = CellBaseProps & {
@@ -10,7 +10,7 @@ export type ModeCellProps = CellBaseProps & {
   mode: PipelineMode;
 };
 
-const ModeCell: FC<ModeCellProps> = ({ width, mode, padding }) => {
+export const ModeCell: FC<ModeCellProps> = ({ width, mode, padding }) => {
   let modeIcon: ReactElement;
   const iconWidth = "w-5";
   const iconHeight = "h-5";
@@ -55,5 +55,3 @@ const ModeCell: FC<ModeCellProps> = ({ width, mode, padding }) => {
     </CellBase>
   );
 };
-
-export default ModeCell;

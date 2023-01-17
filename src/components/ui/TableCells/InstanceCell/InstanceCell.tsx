@@ -5,9 +5,9 @@ import {
   ModelInstanceIcon,
   PipelineIcon,
 } from "@instill-ai/design-system";
-import InstanceInnerList from "./InstanceInnerList";
+import { InstanceInnerList } from "./InstanceInnerList";
 import { State } from "@/types/general";
-import CellBase, { CellBaseProps } from "../CellBase";
+import { CellBaseProps, CellBase } from "../CellBase";
 
 export type Instance = {
   name: string;
@@ -21,7 +21,7 @@ export type InstanceCellProps = CellBaseProps & {
   cellType: "shrink" | "expand";
 };
 
-const InstanceCell: FC<InstanceCellProps> = ({
+export const InstanceCell: FC<InstanceCellProps> = ({
   width,
   cellType,
   instances,
@@ -102,5 +102,3 @@ const InstanceCell: FC<InstanceCellProps> = ({
     </>
   );
 };
-
-export default InstanceCell;
