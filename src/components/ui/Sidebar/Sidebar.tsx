@@ -13,8 +13,8 @@ import {
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
-import LinkTab from "./LinkTab";
-import ButtonTab from "./ButtonTab";
+import { LinkTab } from "./LinkTab";
+import { ButtonTab } from "./ButtonTab";
 
 type Tab =
   | {
@@ -36,14 +36,14 @@ type Tab =
       getTextColor?: () => string;
     };
 
-const iconWidth = "w-[30px]";
-const iconHeight = "h-[30px]";
-const iconPosition = "my-auto";
-
-const Sidebar: FC = () => {
+export const Sidebar: FC = () => {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   // const [resourceTabIsOpen, setResourceTabIsOpen] = useState(false);
+
+  const iconWidth = "w-[30px]";
+  const iconHeight = "h-[30px]";
+  const iconPosition = "my-auto";
 
   const currentTab = useMemo(() => {
     return "/" + router.asPath.split("/")[1];
@@ -239,7 +239,6 @@ const Sidebar: FC = () => {
   // }, []);
 
   const handleCollapseSidebar = useCallback(() => {
-    //setResourceTabIsOpen(false);
     setIsCollapsed((prev) => !prev);
   }, []);
 
@@ -356,5 +355,3 @@ const Sidebar: FC = () => {
     </div>
   );
 };
-
-export default Sidebar;

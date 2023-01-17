@@ -11,7 +11,7 @@ export type ModelInstanceReadmeCardProps = {
   isLoading: boolean;
 };
 
-const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
+export const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
   markdown,
   isLoading,
   marginBottom,
@@ -51,5 +51,3 @@ const ModelInstanceReadmeCard: FC<ModelInstanceReadmeCardProps> = ({
     </div>
   );
 };
-
-export default ModelInstanceReadmeCard;

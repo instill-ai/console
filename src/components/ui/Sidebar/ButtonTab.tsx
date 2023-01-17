@@ -10,7 +10,7 @@ export type ButtonTabProps = {
   getTextColor?: () => string;
 };
 
-const ButtonTab: FC<ButtonTabProps> = ({
+export const ButtonTab: FC<ButtonTabProps> = ({
   tabName,
   isCollapsed,
   startIcon,
@@ -43,5 +43,3 @@ const ButtonTab: FC<ButtonTabProps> = ({
     </button>
   );
 };
-
-export default ButtonTab;
