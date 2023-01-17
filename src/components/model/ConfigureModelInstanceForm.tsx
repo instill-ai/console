@@ -14,7 +14,7 @@ export type ConfigureModelInstanceFormProps = {
   marginBottom: Nullable<string>;
 };
 
-const ConfigureModelInstanceForm = ({
+export const ConfigureModelInstanceForm = ({
   modelInstance,
   marginBottom,
 }: ConfigureModelInstanceFormProps) => {
@@ -95,5 +95,3 @@ const ConfigureModelInstanceForm = ({
     </FormBase>
   );
 };
-
-export default ConfigureModelInstanceForm;

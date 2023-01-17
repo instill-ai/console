@@ -50,7 +50,7 @@ export type CreateModelFormValue = {
   huggingFaceRepo: Nullable<string>;
 };
 
-const CreateModelForm = () => {
+export const CreateModelForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const queryClient = useQueryClient();
 
@@ -765,5 +765,3 @@ const CreateModelForm = () => {
     </FormBase>
   );
 };
-
-export default CreateModelForm;

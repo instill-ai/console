@@ -31,7 +31,7 @@ export type ConfigureModelFormErrors = {
   description: Nullable<string>;
 };
 
-const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
+export const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   model,
   marginBottom,
 }) => {
@@ -253,5 +253,3 @@ const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
     </>
   );
 };
-
-export default ConfigureModelForm;

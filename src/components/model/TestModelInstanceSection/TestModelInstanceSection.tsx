@@ -19,7 +19,7 @@ export type TestModelInstanceSectionProps = {
   marginBottom: Nullable<string>;
 };
 
-const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
+export const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
   modelInstance,
   marginBottom,
 }) => {
@@ -148,5 +148,3 @@ const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
     </div>
   );
 };
-
-export default TestModelInstanceSection;
