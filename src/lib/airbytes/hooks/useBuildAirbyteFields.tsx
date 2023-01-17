@@ -1,4 +1,4 @@
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,

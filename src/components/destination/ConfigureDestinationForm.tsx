@@ -20,7 +20,7 @@ import {
   useAirbyteSelectedConditionMap,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import {
   DestinationWithDefinition,
   UpdateDestinationPayload,

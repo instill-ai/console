@@ -75,7 +75,7 @@ const toDot = (obj: any, parentKey?: string, result: any = {}) => {
   return result;
 };
 
-export default {
+export const dot = {
   getter,
   setter,
   toDot,

@@ -1,4 +1,4 @@
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import { Nullable } from "@/types/general";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AirbyteFieldValues, AirbyteFormTree } from "../types";
