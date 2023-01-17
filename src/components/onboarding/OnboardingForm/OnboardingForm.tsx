@@ -37,7 +37,7 @@ type OnboardingFormErrors = {
   role: Nullable<string>;
 };
 
-const OnboardingForm = ({ user }: OnboardingFormProps) => {
+export const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -268,5 +268,3 @@ const OnboardingForm = ({ user }: OnboardingFormProps) => {
     </FormBase>
   );
 };
-
-export default OnboardingForm;
