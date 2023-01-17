@@ -1,2 +1,2 @@
-export { default } from "./SetupModelStep";
-export * from "./SetupModelStep";
+export { SetupModelStep } from "./SetupModelStep";
+export type { SetupModelStepProps } from "./SetupModelStep";

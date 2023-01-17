@@ -59,12 +59,9 @@ export type CreateNewModelInstanceFlowProps = StepNumberState & {
   modelCreated: boolean;
 };
 
-const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
-  setStepNumber,
-  stepNumber,
-  setModelCreated,
-  modelCreated,
-}) => {
+export const CreateNewModelInstanceFlow: FC<
+  CreateNewModelInstanceFlowProps
+> = ({ setStepNumber, stepNumber, setModelCreated, modelCreated }) => {
   const { values, setFieldValue, errors, setFieldError } =
     useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -684,5 +681,3 @@ const CreateNewModelInstanceFlow: FC<CreateNewModelInstanceFlowProps> = ({
     </div>
   );
 };
-
-export default CreateNewModelInstanceFlow;

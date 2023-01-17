@@ -15,7 +15,7 @@ import { sendAmplitudeData } from "@/lib/amplitude";
 
 export type UseExistingSourceFlowProps = StepNumberState;
 
-const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
+export const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
   setStepNumber,
   stepNumber,
 }) => {
@@ -126,5 +126,3 @@ const UseExistingSourceFlow: FC<UseExistingSourceFlowProps> = ({
     </div>
   );
 };
-
-export default UseExistingSourceFlow;

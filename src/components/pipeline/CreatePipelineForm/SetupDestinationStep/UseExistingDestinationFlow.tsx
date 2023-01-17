@@ -14,10 +14,9 @@ import Image from "next/image";
 
 export type UseExistingDestinationFlowProps = StepNumberState;
 
-const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
-  setStepNumber,
-  stepNumber,
-}) => {
+export const UseExistingDestinationFlow: FC<
+  UseExistingDestinationFlowProps
+> = ({ setStepNumber, stepNumber }) => {
   const { values, errors } = useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -138,5 +137,3 @@ const UseExistingDestinationFlow: FC<UseExistingDestinationFlowProps> = ({
     </div>
   );
 };
-
-export default UseExistingDestinationFlow;

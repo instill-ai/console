@@ -18,9 +18,9 @@ import { CreateSourcePayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-export type SetupSourceStepProps = StepNumberState;
+export type SetupPipelineModeStepProps = StepNumberState;
 
-const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
+export const SetupPipelineModeStep: FC<SetupPipelineModeStepProps> = ({
   stepNumber,
   setStepNumber,
 }) => {
@@ -222,5 +222,3 @@ const SetupPipelineModeStep: FC<SetupSourceStepProps> = ({
     </FormikStep>
   );
 };
-
-export default SetupPipelineModeStep;

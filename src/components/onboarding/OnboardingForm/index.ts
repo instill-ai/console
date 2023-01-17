@@ -1,2 +1,5 @@
-export { default } from "./OnboardingForm";
-export * from "./OnboardingForm";
+export { OnboardingForm } from "./OnboardingForm";
+export type {
+  OnboardingFormProps,
+  OnboardingFormValues,
+} from "./OnboardingForm";

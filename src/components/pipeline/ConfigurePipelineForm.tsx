@@ -26,7 +26,7 @@ export type ConfigurePipelineFormValue = {
   state: Nullable<PipelineState>;
 };
 
-const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
+export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   pipeline,
   marginBottom,
 }) => {
@@ -251,5 +251,3 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     </>
   );
 };
-
-export default ConfigurePipelineForm;

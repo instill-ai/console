@@ -2,11 +2,11 @@ import { Dispatch, FC, SetStateAction } from "react";
 
 import CreatePipelineProgress from "@/components/ui/CreatePipelineProgress";
 import { FormikMultiStep } from "../../formik";
-import SetupDestinationStep from "./SetupDestinationStep/SetupDestinationStep";
-import SetupModelStep from "./SetupModelStep";
-import SetupPipelineDetailsStep from "./SetupPipelineDetailsStep";
-import SetupPipelineModeStep from "./SetupPipelineModeStep";
-import SetupSourceStep from "./SetupSourceStep/SetupSourceStep";
+import { SetupDestinationStep } from "./SetupDestinationStep/SetupDestinationStep";
+import { SetupModelStep } from "./SetupModelStep";
+import { SetupPipelineDetailsStep } from "./SetupPipelineDetailsStep";
+import { SetupPipelineModeStep } from "./SetupPipelineModeStep";
+import { SetupSourceStep } from "./SetupSourceStep/SetupSourceStep";
 import { PipelineMode, PipelineState } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
@@ -85,7 +85,9 @@ export type CreatePipelineFormValues = {
   pipeline: Pipeline;
 };
 
-const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
+export type CreatePipelineFormProps = StepNumberState;
+
+export const CreatePipelineForm: FC<CreatePipelineFormProps> = (props) => {
   return (
     <FormikMultiStep
       stepNumber={props.stepNumber}
@@ -145,5 +147,3 @@ const CreatePipelineDataSourceForm: FC<StepNumberState> = (props) => {
     </FormikMultiStep>
   );
 };
-
-export default CreatePipelineDataSourceForm;
