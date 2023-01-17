@@ -1,7 +1,8 @@
 import { FC } from "react";
-import TablePlaceholderBase, {
+import {
+  TablePlaceholderBase,
   TablePlaceholderBaseProps,
-} from "../TablePlaceholderBase";
+} from "./TablePlaceholderBase";
 import cn from "clsx";
 
 export type PipelineTablePlaceholderProps = {
@@ -9,7 +10,7 @@ export type PipelineTablePlaceholderProps = {
   enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
-const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
+export const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
@@ -277,5 +278,3 @@ const PipelineTablePlaceholder: FC<PipelineTablePlaceholderProps> = ({
     />
   );
 };
-
-export default PipelineTablePlaceholder;

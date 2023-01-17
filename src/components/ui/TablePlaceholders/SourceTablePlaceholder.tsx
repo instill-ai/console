@@ -6,16 +6,17 @@ import {
   MongoDbAtalasIcon,
 } from "@instill-ai/design-system";
 import { FC } from "react";
-import TablePlaceholderBase, {
+import {
+  TablePlaceholderBase,
   TablePlaceholderBaseProps,
-} from "../TablePlaceholderBase";
+} from "./TablePlaceholderBase";
 
 export type SourceTablePlaceholderProps = {
   marginBottom: TablePlaceholderBaseProps["marginBottom"];
   enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
-const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
+export const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
@@ -64,5 +65,3 @@ const SourceTablePlaceholder: FC<SourceTablePlaceholderProps> = ({
     />
   );
 };
-
-export default SourceTablePlaceholder;

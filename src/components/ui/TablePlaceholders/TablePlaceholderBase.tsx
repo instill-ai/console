@@ -17,7 +17,7 @@ export type TablePlaceholderBaseProps = {
   enableCreateButton: boolean;
 };
 
-const TablePlaceholderBase = ({
+export const TablePlaceholderBase = ({
   placeholderItems,
   placeholderTitle,
   createButtonTitle,
@@ -60,5 +60,3 @@ const TablePlaceholderBase = ({
     </div>
   );
 };
-
-export default TablePlaceholderBase;

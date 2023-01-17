@@ -7,16 +7,17 @@ import {
   SemanticSegmentationIcon,
 } from "@instill-ai/design-system";
 import { FC } from "react";
-import TablePlaceholderBase, {
+import {
+  TablePlaceholderBase,
   TablePlaceholderBaseProps,
-} from "../TablePlaceholderBase";
+} from "./TablePlaceholderBase";
 
 export type ModelTablePlaceholderProps = {
   marginBottom: TablePlaceholderBaseProps["marginBottom"];
   enablePlaceholderCreateButton: TablePlaceholderBaseProps["enableCreateButton"];
 };
 
-const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
+export const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
   marginBottom,
   enablePlaceholderCreateButton,
 }) => {
@@ -93,5 +94,3 @@ const ModelTablePlaceholder: FC<ModelTablePlaceholderProps> = ({
     />
   );
 };
-
-export default ModelTablePlaceholder;
