@@ -55,7 +55,7 @@ export type CreateDestinationFormProps = {
   pipelineMode: Nullable<PipelineMode>;
 };
 
-const CreateDestinationForm = ({
+export const CreateDestinationForm = ({
   setResult,
   flex1,
   title,
@@ -538,5 +538,3 @@ const CreateDestinationForm = ({
     </FormBase>
   );
 };
-
-export default CreateDestinationForm;

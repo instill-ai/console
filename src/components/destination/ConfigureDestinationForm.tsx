@@ -40,7 +40,7 @@ export type ConfigureDestinationFormProps = {
   destination: DestinationWithDefinition;
 };
 
-const ConfigureDestinationForm = ({
+export const ConfigureDestinationForm = ({
   destination,
 }: ConfigureDestinationFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -442,5 +442,3 @@ const ConfigureDestinationForm = ({
     </>
   );
 };
-
-export default ConfigureDestinationForm;
