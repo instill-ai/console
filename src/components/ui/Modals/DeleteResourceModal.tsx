@@ -2,7 +2,6 @@ import { BasicTextField, OutlineButton } from "@instill-ai/design-system";
 import {
   ChangeEvent,
   Dispatch,
-  memo,
   SetStateAction,
   useCallback,
   useMemo,
@@ -16,7 +15,7 @@ import {
   Pipeline,
   SourceWithDefinition,
 } from "@/lib/instill";
-import ModalBase from "../ModalBase";
+import { ModalBase } from "./ModalBase";
 import { Nullable } from "@/types/general";
 
 export type DeleteResourceModalProps = {
@@ -32,7 +31,7 @@ export type DeleteResourceModalProps = {
   handleDeleteResource: () => void;
 };
 
-const DeleteResourceModal = ({
+export const DeleteResourceModal = ({
   modalIsOpen,
   setModalIsOpen,
   resource,
@@ -170,5 +169,3 @@ const DeleteResourceModal = ({
     </ModalBase>
   );
 };
-
-export default memo(DeleteResourceModal);

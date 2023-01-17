@@ -11,7 +11,7 @@ export type ModalBaseProps = {
   dataTestId?: string;
 };
 
-const ModalBase = ({
+export const ModalBase = ({
   children,
   modalIsOpen,
   modalBgColor,
@@ -66,5 +66,3 @@ const ModalBase = ({
       : null
     : null;
 };
-
-export default ModalBase;
