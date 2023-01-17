@@ -1,6 +1,6 @@
-import { AirbyteFormTree } from "./types";
+import { AirbyteFormTree } from "../../types";
 
-const getFieldPaths = (
+export const getFieldPaths = (
   formTree: AirbyteFormTree | AirbyteFormTree[],
   forceUnique: boolean
 ): string[] => {
@@ -57,5 +57,3 @@ const pickPath = (
   const newPaths = [formTree.path, ...paths];
   return newPaths;
 };
-
-export default getFieldPaths;

@@ -7,9 +7,9 @@ import type {
   AirbyteJsonSchema,
   AirbyteJsonSchemaDefinition,
   AirbyteFormTree,
-} from "./types";
+} from "../../types";
 
-export const airbyteSchemaToAirbyteFormTree = (
+export const transformAirbyteSchemaToAirbyteFormTree = (
   jsonSchema: AirbyteJsonSchemaDefinition,
   key = "",
   path: string = key,
@@ -36,7 +36,7 @@ export const airbyteSchemaToAirbyteFormTree = (
         }
         return [
           condition.title,
-          airbyteSchemaToAirbyteFormTree(
+          transformAirbyteSchemaToAirbyteFormTree(
             { ...condition, type: jsonSchema.type },
             key,
             path
@@ -66,7 +66,11 @@ export const airbyteSchemaToAirbyteFormTree = (
       _type: "objectArray",
       path: path || key,
       fieldKey: key,
-      properties: airbyteSchemaToAirbyteFormTree(jsonSchema.items, key, path),
+      properties: transformAirbyteSchemaToAirbyteFormTree(
+        jsonSchema.items,
+        key,
+        path
+      ),
       isRequired,
     };
   }
@@ -77,7 +81,7 @@ export const airbyteSchemaToAirbyteFormTree = (
 
     const properties = Object.entries(jsonSchema.properties || [])
       .map(([k, schema]) =>
-        airbyteSchemaToAirbyteFormTree(
+        transformAirbyteSchemaToAirbyteFormTree(
           schema,
           k,
           path ? `${path}.${k}` : k,

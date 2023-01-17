@@ -1,8 +1,8 @@
-import { AirbyteJsonSchema, SelectedItemMap } from "./types";
+import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 import * as yup from "yup";
 import { Nullable } from "@/types/general";
 
-const airbyteSchemaToYup = (
+export const transformAirbyteSchemaToYup = (
   jsonSchema: AirbyteJsonSchema,
   selectedItemMap: Nullable<SelectedItemMap>,
   parentSchema?: AirbyteJsonSchema,
@@ -29,7 +29,7 @@ const airbyteSchemaToYup = (
         : jsonSchema.oneOf[0];
 
     if (selectedSchema && typeof selectedSchema !== "boolean") {
-      return airbyteSchemaToYup(
+      return transformAirbyteSchemaToYup(
         { type: jsonSchema.type, ...selectedSchema },
         selectedItemMap,
         jsonSchema,
@@ -48,7 +48,7 @@ const airbyteSchemaToYup = (
         schema = yup
           .array()
           .of(
-            airbyteSchemaToYup(
+            transformAirbyteSchemaToYup(
               jsonSchema.items,
               selectedItemMap,
               jsonSchema,
@@ -66,7 +66,7 @@ const airbyteSchemaToYup = (
         ([propertyKey, condition]) => [
           propertyKey,
           typeof condition !== "boolean"
-            ? airbyteSchemaToYup(
+            ? transformAirbyteSchemaToYup(
                 condition,
                 selectedItemMap,
                 jsonSchema,
@@ -126,5 +126,3 @@ const airbyteSchemaToYup = (
 
   return schema || yup.mixed();
 };
-
-export default airbyteSchemaToYup;

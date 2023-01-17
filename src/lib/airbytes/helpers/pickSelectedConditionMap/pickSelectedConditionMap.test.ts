@@ -1,5 +1,5 @@
-import pickSelectedConditionMap from "./pickSelectedConditionMap";
-import { AirbyteFormTree } from "./types";
+import { pickSelectedConditionMap } from "./pickSelectedConditionMap";
+import { AirbyteFormTree } from "../../types";
 
 test("should find one selected condition map", () => {
   const formTree: AirbyteFormTree = {

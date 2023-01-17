@@ -1,17 +1,20 @@
 import { Nullable } from "@/types/general";
 import { useMemo } from "react";
 import { AnySchema } from "yup";
-import airbyteSchemaToYup from "../airbyteSchemaToYup";
+import { transformAirbyteSchemaToYup } from "../helpers";
 import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 
-const useBuildAirbyteYup = (
+export const useBuildAirbyteYup = (
   jsonSchema: Nullable<AirbyteJsonSchema>,
   selectedItemMap: Nullable<SelectedItemMap>,
   additionalSchema: Nullable<AnySchema>
 ): Nullable<AnySchema> => {
   const yup = useMemo(() => {
     if (!jsonSchema) return null;
-    const airbyteSchema = airbyteSchemaToYup(jsonSchema, selectedItemMap);
+    const airbyteSchema = transformAirbyteSchemaToYup(
+      jsonSchema,
+      selectedItemMap
+    );
     return additionalSchema
       ? airbyteSchema.concat(additionalSchema)
       : airbyteSchema;
@@ -19,5 +22,3 @@ const useBuildAirbyteYup = (
 
   return yup;
 };
-
-export default useBuildAirbyteYup;

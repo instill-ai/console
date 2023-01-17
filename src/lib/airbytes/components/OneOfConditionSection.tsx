@@ -13,14 +13,14 @@ import {
   useState,
   useEffect,
 } from "react";
-import getConditionFormPath from "../../getConditionFormPath";
+import { getConditionFormPath } from "../helpers";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFormItem,
   AirbyteFieldValues,
   SelectedItemMap,
   AirbyteFieldErrors,
-} from "../../types";
+} from "../types";
 
 export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;
@@ -33,7 +33,7 @@ export type OneOfConditionSectionProps = {
   setFormIsDirty: Dispatch<SetStateAction<boolean>>;
 };
 
-const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
+export const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
   formTree,
   errors,
   setValues,
@@ -240,5 +240,3 @@ const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
     </div>
   );
 };
-
-export default OneOfConditionSection;

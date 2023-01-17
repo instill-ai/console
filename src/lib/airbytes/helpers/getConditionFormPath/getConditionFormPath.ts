@@ -1,7 +1,7 @@
 import { Nullable } from "@/types/general";
-import { AirbyteFormConditionItem, AirbyteFormItem } from "./types";
+import { AirbyteFormConditionItem, AirbyteFormItem } from "../../types";
 
-const getConditionFormPath = (
+export const getConditionFormPath = (
   item: AirbyteFormConditionItem
 ): Nullable<string> => {
   // Try to find a workaround of Typescript limitation
@@ -27,5 +27,3 @@ const getConditionFormPath = (
     return null;
   }
 };
-
-export default getConditionFormPath;

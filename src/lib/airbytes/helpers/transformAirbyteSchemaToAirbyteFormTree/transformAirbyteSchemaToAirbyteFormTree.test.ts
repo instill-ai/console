@@ -3,8 +3,8 @@
  * ref: https://github.com/airbytehq/airbyte/blob/29ce34f1cee4878a6e9368890d87820c0d379844/airbyte-webapp/src/core/jsonSchema/schemaToUiWidget.test.ts
  */
 
-import { airbyteSchemaToAirbyteFormTree } from "./airbyteSchemaToAirbyteFormTree";
-import { AirbyteJsonSchemaDefinition } from "./types";
+import { transformAirbyteSchemaToAirbyteFormTree } from "./transformAirbyteSchemaToAirbyteFormTree";
+import { AirbyteJsonSchemaDefinition } from "../../types";
 
 test("should reformat jsonSchema to formTree representation", () => {
   const schema: AirbyteJsonSchemaDefinition = {
@@ -29,7 +29,7 @@ test("should reformat jsonSchema to formTree representation", () => {
     },
   };
 
-  const formTree = airbyteSchemaToAirbyteFormTree(schema, "key");
+  const formTree = transformAirbyteSchemaToAirbyteFormTree(schema, "key");
 
   const expected = {
     _type: "formGroup",
@@ -130,9 +130,14 @@ test("should reformat jsonSchema to formTree representation with parent schema",
     },
   };
 
-  const formTree = airbyteSchemaToAirbyteFormTree(schema, "key", undefined, {
-    required: ["key"],
-  });
+  const formTree = transformAirbyteSchemaToAirbyteFormTree(
+    schema,
+    "key",
+    undefined,
+    {
+      required: ["key"],
+    }
+  );
 
   const expected = {
     _type: "formGroup",
@@ -206,9 +211,14 @@ test("should reformat jsonSchema to formTree representation when has oneOf", () 
     },
   };
 
-  const formTree = airbyteSchemaToAirbyteFormTree(schema, "key", undefined, {
-    required: ["key"],
-  });
+  const formTree = transformAirbyteSchemaToAirbyteFormTree(
+    schema,
+    "key",
+    undefined,
+    {
+      required: ["key"],
+    }
+  );
 
   const expected = {
     _type: "formGroup",

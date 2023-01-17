@@ -1,12 +1,12 @@
-import getConditionFormPath from "./getConditionFormPath";
+import { getConditionFormPath } from "../getConditionFormPath";
 import {
   AirbyteFieldValues,
   AirbyteFormItem,
   AirbyteFormTree,
   SelectedItemMap,
-} from "./types";
+} from "../../types";
 
-const pickSelectedConditionMap = (
+export const pickSelectedConditionMap = (
   formTree: AirbyteFormTree,
   initialValue: AirbyteFieldValues,
   parentMap: SelectedItemMap = {}
@@ -79,5 +79,3 @@ const pickSelectedConditionMap = (
 
   return parentMap;
 };
-
-export default pickSelectedConditionMap;

@@ -1,5 +1,5 @@
-import getConditionFormPath from "./getConditionFormPath";
-import { AirbyteFormConditionItem } from "./types";
+import { getConditionFormPath } from "./getConditionFormPath";
+import { AirbyteFormConditionItem } from "../../types";
 
 test("should find path from a simple condition form", () => {
   const form: AirbyteFormConditionItem = {

@@ -4,8 +4,8 @@ import {
   AirbyteFieldValues,
   AirbyteFormTree,
   SelectedItemMap,
-} from "../../types";
-import useBuildAirbyteFields from "../../hooks/useBuildAirbyteFields";
+} from "../types";
+import { useBuildAirbyteFields } from "../hooks";
 import { Nullable } from "@/types/general";
 
 export type AirbyteDestinationFieldsProps = {
@@ -20,7 +20,7 @@ export type AirbyteDestinationFieldsProps = {
   setFormIsDirty: Dispatch<SetStateAction<boolean>>;
 };
 
-const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
+export const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
   fieldValues,
   setFieldValues,
   fieldErrors,
@@ -45,5 +45,3 @@ const AirbyteDestinationFields: FC<AirbyteDestinationFieldsProps> = ({
 
   return <Fragment>{fields}</Fragment>;
 };
-
-export default AirbyteDestinationFields;

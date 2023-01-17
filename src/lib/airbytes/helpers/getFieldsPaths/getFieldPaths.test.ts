@@ -1,5 +1,5 @@
-import getFieldPaths from "./getFieldsPaths";
-import { AirbyteFormTree } from "./types";
+import { getFieldPaths } from "./getFieldPaths";
+import { AirbyteFormTree } from "../../types";
 
 test("should get paths from single formItem", () => {
   const formTree: AirbyteFormTree = {
