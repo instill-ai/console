@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useDeleteResourceModalState = () => {
+export const useDeleteResourceModalState = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return {
@@ -8,5 +8,3 @@ const useDeleteResourceModalState = () => {
     setModalIsOpen,
   };
 };
-
-export default useDeleteResourceModalState;

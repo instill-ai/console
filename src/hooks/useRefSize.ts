@@ -6,7 +6,7 @@ export type RefSize = {
   height: number;
 };
 
-const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
+export const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
   const [refSize, setRefSize] = useState<Nullable<RefSize>>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
 
@@ -31,5 +31,3 @@ const useRefSize = (ref: RefObject<HTMLElement>): Nullable<RefSize> => {
 
   return refSize;
 };
-
-export default useRefSize;

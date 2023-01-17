@@ -5,7 +5,7 @@
 
 import { useEffect, useState, useRef, RefObject } from "react";
 
-const useOnScreen = (ref: RefObject<HTMLElement>) => {
+export const useOnScreen = (ref: RefObject<HTMLElement>) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [isOnScreen, setIsOnScreen] = useState(false);
 
@@ -28,5 +28,3 @@ const useOnScreen = (ref: RefObject<HTMLElement>) => {
 
   return isOnScreen;
 };
-
-export default useOnScreen;

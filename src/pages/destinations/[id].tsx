@@ -13,7 +13,7 @@ import { ConfigureDestinationForm } from "@/components/destination";
 import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -6,7 +6,7 @@ export type WindowSize = {
   height: number;
 };
 
-const useWindowSize = (): Nullable<WindowSize> => {
+export const useWindowSize = (): Nullable<WindowSize> => {
   const [windowSize, setWindowSize] = useState<Nullable<WindowSize>>(null);
 
   const getWindowSize = (): { width: number; height: number } => {
@@ -42,5 +42,3 @@ const useWindowSize = (): Nullable<WindowSize> => {
 
   return windowSize;
 };
-
-export default useWindowSize;

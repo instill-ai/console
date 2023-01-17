@@ -15,7 +15,7 @@ import {
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import { useStateOverviewCounts } from "@/hooks";
 import { StateOverview } from "../StateOverview";
 
 export type SourcesTableProps = {

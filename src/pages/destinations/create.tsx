@@ -9,7 +9,7 @@ import {
   PageHead,
 } from "@/components/ui";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;

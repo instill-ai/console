@@ -33,7 +33,7 @@ import {
 } from "@/services/connector/destination/mutations";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard } from "@/hooks";
 import { useRouter } from "next/router";
 
 export type ConfigureDestinationFormProps = {

@@ -17,7 +17,7 @@ import {
 import type { PipelineTablePlaceholderProps } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import { useStateOverviewCounts } from "@/hooks";
 
 export type PipelinesTableProps = {
   isLoadingPipeline: boolean;

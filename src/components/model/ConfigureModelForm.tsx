@@ -15,8 +15,7 @@ import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import useDeleteResourceModalState from "@/hooks/useDeleteResourceModalState";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard, useDeleteResourceModalState } from "@/hooks";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;

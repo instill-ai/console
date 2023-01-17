@@ -14,7 +14,7 @@ import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard } from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;

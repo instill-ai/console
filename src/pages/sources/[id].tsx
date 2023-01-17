@@ -11,9 +11,8 @@ import {
 } from "@/components/ui";
 import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/source";
-import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
