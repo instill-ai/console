@@ -9,7 +9,7 @@ specifiers:
   '@code-hike/mdx': ^0.7.3
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
-  '@instill-ai/design-system': ^0.0.132
+  '@instill-ai/design-system': ^0.0.136
   '@next/env': ^12.2.3
   '@playwright/test': ^1.25.2
   '@storybook/addon-actions': ^7.0.0-beta.29
@@ -91,8 +91,7 @@ specifiers:
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
   '@code-hike/mdx': 0.7.3_react@18.2.0
-  '@instill-ai/design-system': 0.0.132_wdcfz36owfh4ppmouisvbq7nym
-  '@playwright/test': 1.25.2
+  '@instill-ai/design-system': 0.0.136_wdcfz36owfh4ppmouisvbq7nym
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
@@ -122,6 +121,7 @@ devDependencies:
   '@commitlint/cli': 16.3.0
   '@commitlint/config-conventional': 16.2.4
   '@next/env': 12.2.3
+  '@playwright/test': 1.25.2
   '@storybook/addon-actions': 7.0.0-beta.29_biqbaboplfbrettd7655fr4n2y
   '@storybook/addon-docs': 7.0.0-beta.29_biqbaboplfbrettd7655fr4n2y
   '@storybook/addon-essentials': 7.0.0-beta.29_biqbaboplfbrettd7655fr4n2y
@@ -3203,12 +3203,13 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system/0.0.132_wdcfz36owfh4ppmouisvbq7nym:
-    resolution: {integrity: sha512-ctH98g/th5/1O9TbAS3KF6t/f/3noG3EaTpVL3w7xMup+Km1znwreEjSN2448wnxxu82FBL+JHBPCeX5HcnUIw==}
+  /@instill-ai/design-system/0.0.136_wdcfz36owfh4ppmouisvbq7nym:
+    resolution: {integrity: sha512-vD8edWdMJcTTcel60r2e7AwLCjjng3nPL76u4f/nVgbp8oE/tDimHdATNsausqC1oanf6klIfPMLUsXz5uOjrA==}
+    engines: {node: '>=14.6.0'}
     peerDependencies:
       clsx: ^1.1.1
-      react: ^17.0.2
-      react-dom: ^17.0.2
+      react: ^18.2.0
+      react-dom: ^18.2.0
       react-select: ^5.3.2
     dependencies:
       clsx: 1.2.1
@@ -3736,7 +3737,7 @@ packages:
     dependencies:
       '@types/node': 17.0.45
       playwright-core: 1.25.2
-    dev: false
+    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin/0.5.10_metx475lqcp4j5c75za4zf7xbi:
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -5215,6 +5216,7 @@ packages:
 
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -12354,7 +12356,7 @@ packages:
     resolution: {integrity: sha512-0yTbUE9lIddkEpLHL3u8PoCL+pWiZtj5A/j3U7YoNjcmKKDGBnCrgHJMzwd2J5vy6l28q4ki3JIuz7McLHhl1A==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: false
+    dev: true
 
   /polished/4.2.2:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}
