@@ -21,6 +21,10 @@ The repo mainly follows the guideline of Next.js and has some personal touch on 
 - utils: utilities about common functions, such as time, javascript primitives and unit-function that don't suit other folders.
 - lib: Store all the interface that can be used standalone, such as instill-ai backend's query functions, airbyte’s form builder and schema transformer.
 
+### About configuration
+
+- babel.config.js: For storybook to work correctly. (We use experimental.forceSwcTransforms in next.config.js to force nextjs use SWC)
+
 ## About the UI components
 
 We are following the principles of Instill-ai's design system, you could find the detailed description [here](https://github.com/instill-ai/design-system).
@@ -113,10 +117,11 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 - In VDP folder: `make build PROFILE=all` 
 - In console folder: `pnpm dev` to setup local dev server
 - If you want to test in your host (Run the app with pnpm dev in the console folder) 
-  - In VDP folder: `make dev PROFILE=console ITMODE=true CONSOLE_BASE_URL_HOST=localhost CONSOLE_BASE_API_GATEWAY_URL_HOST=localhost`
+  - In VDP folder: `make dev PROFILE=console ITMODE=true`
+  - In console folder: `pnpm dev`
   - In console folder: `pnpm integration-test`
 - If you want to test in the docker-container (Run the app with VDP) 
-  - In VDP folder: `make dev PROFILE=all ITMODE=true`
+  - In VDP folder: `ake dev PROFILE=all ITMODE=true CONSOLE_BASE_URL_HOST=console CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway`
   - In console folder: `pnpm docker-build-test`
   - In console folder: `pnpm docker-run-test`
 

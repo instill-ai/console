@@ -80,7 +80,7 @@ export const ConfigureDestinationForm = ({
           }
           width={24}
           height={24}
-          layout="fixed"
+          alt={`${destination.destination_connector_definition.connector_definition.title}-icon`}
         />
       ),
     };

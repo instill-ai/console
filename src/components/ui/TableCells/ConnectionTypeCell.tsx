@@ -35,7 +35,7 @@ export const ConnectionTypeCell = ({
               }
               width={30}
               height={30}
-              layout="fixed"
+              alt={`${connectorName}-icon`}
             />
             <p
               className={cn(
@@ -66,7 +66,7 @@ export const ConnectionTypeCell = ({
                 }
                 width={32}
                 height={32}
-                layout="fixed"
+                alt={`${connectorName}-icon`}
               />
               <p className="my-auto text-instillGrey90 text-instill-small">
                 {connectorDefinition.connector_definition.title}

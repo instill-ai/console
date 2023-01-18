@@ -19,6 +19,7 @@ export function createMockRouter(router: Partial<NextRouter>): NextRouter {
     query: {},
     asPath: "/",
     back: jest.fn(),
+    forward: jest.fn(),
     beforePopState: jest.fn(),
 
     // This one fixed Error: Uncaught [TypeError: Cannot read property 'catch' of undefined]

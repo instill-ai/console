@@ -58,7 +58,7 @@ export const UseExistingDestinationFlow: FC<
                   }
                   width={24}
                   height={24}
-                  layout="fixed"
+                  alt={`${e.id}-icon`}
                 />
               ),
             };

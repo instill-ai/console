@@ -1,10 +1,12 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ModelInstanceReadmeCard } from "./ModelInstanceReadmeCard";
 
-export default {
+const meta: Meta<typeof ModelInstanceReadmeCard> = {
   title: "Components/ModelInstanceReadmeCard",
   component: ModelInstanceReadmeCard,
-} as ComponentMeta<typeof ModelInstanceReadmeCard>;
+};
+
+export default meta;
 
 const markdown = `# Hi
 
@@ -13,11 +15,11 @@ I am the test string of the markdown
 > Feel free to change it
 `;
 
-const Template: ComponentStory<typeof ModelInstanceReadmeCard> = (args) => (
+const Template: StoryFn<typeof ModelInstanceReadmeCard> = (args) => (
   <ModelInstanceReadmeCard {...args} markdown={markdown} />
 );
 
-export const Playground: ComponentStory<typeof ModelInstanceReadmeCard> =
+export const Playground: StoryFn<typeof ModelInstanceReadmeCard> =
   Template.bind({});
 
 Playground.args = {

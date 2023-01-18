@@ -1,16 +1,19 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { CreatePipelineProgress } from "./CreatePipelineProgress";
 
-export default {
+const meta: Meta<typeof CreatePipelineProgress> = {
   title: "Components/Ui/CreatePipelineProgress",
   component: CreatePipelineProgress,
-} as ComponentMeta<typeof CreatePipelineProgress>;
+};
 
-const Template: ComponentStory<typeof CreatePipelineProgress> = (args) => (
+export default meta;
+
+const Template: StoryFn<typeof CreatePipelineProgress> = (args) => (
   <CreatePipelineProgress {...args} />
 );
 
-export const Playground: ComponentStory<typeof CreatePipelineProgress> =
-  Template.bind({});
+export const Playground: StoryFn<typeof CreatePipelineProgress> = Template.bind(
+  {}
+);
 
 Playground.args = {};

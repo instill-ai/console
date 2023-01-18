@@ -96,7 +96,7 @@ export const CreateDestinationForm = ({
               }
               width={24}
               height={24}
-              layout="fixed"
+              alt={`${e.connector_definition.title}-icon`}
             />
           ),
         }));
@@ -115,7 +115,7 @@ export const CreateDestinationForm = ({
           }
           width={24}
           height={24}
-          layout="fixed"
+          alt={`${e.connector_definition.title}-icon`}
         />
       ),
     }));
