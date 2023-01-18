@@ -23,7 +23,7 @@ export const LinkTab: FC<LinkTabProps> = ({
 
   return isInternalLink ? (
     <Link href={link}>
-      <a
+      <div
         className={cn(
           "group flex flex-row py-[15px] px-5 hover:bg-instillBlue50",
           {
@@ -43,7 +43,7 @@ export const LinkTab: FC<LinkTabProps> = ({
           </p>
         )}
         {endIcon ? <div className="ml-auto">{endIcon}</div> : null}
-      </a>
+      </div>
     </Link>
   ) : (
     <a

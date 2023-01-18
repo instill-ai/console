@@ -65,9 +65,9 @@ export const NameCell: FC<NameCellProps> = ({
     <CellBase padding={padding}>
       {link ? (
         <Link href={link}>
-          <a>
+          <div>
             <CellItem />
-          </a>
+          </div>
         </Link>
       ) : (
         <CellItem />
