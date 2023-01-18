@@ -1,13 +1,15 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Instance } from "./InstanceCell";
 import { InstanceInnerList } from "./InstanceInnerList";
 
-export default {
+const meta: Meta<typeof InstanceInnerList> = {
   title: "Components/Ui/InstanceInnerList",
   component: InstanceInnerList,
-} as ComponentMeta<typeof InstanceInnerList>;
+};
 
-const Template: ComponentStory<typeof InstanceInnerList> = (args) => {
+export default meta;
+
+const Template: StoryFn<typeof InstanceInnerList> = (args) => {
   const mockItems: Instance[] = [
     {
       state: "STATE_ONLINE",
@@ -40,7 +42,6 @@ const Template: ComponentStory<typeof InstanceInnerList> = (args) => {
   );
 };
 
-export const Playground: ComponentStory<typeof InstanceInnerList> =
-  Template.bind({});
+export const Playground: StoryFn<typeof InstanceInnerList> = Template.bind({});
 
 Playground.args = {};

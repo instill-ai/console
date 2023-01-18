@@ -1,5 +1,4 @@
 const path = require("path");
-
 module.exports = {
   webpackFinal: async (config) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "../src");
@@ -34,8 +33,11 @@ module.exports = {
       },
     },
   ],
-  framework: "@storybook/react",
-  core: {
-    builder: "webpack5",
+  framework: {
+    name: "@storybook/react-webpack5",
+    options: {},
+  },
+  docs: {
+    autodocs: true,
   },
 };

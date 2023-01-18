@@ -21,6 +21,10 @@ The repo mainly follows the guideline of Next.js and has some personal touch on 
 - utils: utilities about common functions, such as time, javascript primitives and unit-function that don't suit other folders.
 - lib: Store all the interface that can be used standalone, such as instill-ai backend's query functions, airbyte’s form builder and schema transformer.
 
+### About configuration
+
+- babel.config.js: For storybook to work correctly.
+
 ## About the UI components
 
 We are following the principles of Instill-ai's design system, you could find the detailed description [here](https://github.com/instill-ai/design-system).
