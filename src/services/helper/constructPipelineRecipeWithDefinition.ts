@@ -9,7 +9,7 @@ import {
   RawPipelineRecipe,
 } from "@/lib/instill";
 
-const constructPipelineRecipeWithDefinition = async (
+export const constructPipelineRecipeWithDefinition = async (
   rawRecipe: RawPipelineRecipe
 ): Promise<PipelineRecipe> => {
   try {
@@ -42,5 +42,3 @@ const constructPipelineRecipeWithDefinition = async (
     return Promise.reject(err);
   }
 };
-
-export default constructPipelineRecipeWithDefinition;

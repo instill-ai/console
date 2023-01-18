@@ -41,7 +41,7 @@ import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;

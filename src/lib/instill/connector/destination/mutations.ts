@@ -1,5 +1,5 @@
 import { AirbyteFieldValues } from "@/lib/airbytes";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import { createInstillAxiosClient } from "../../helper";
 import { Destination } from "./types";
 

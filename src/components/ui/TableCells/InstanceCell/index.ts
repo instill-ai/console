@@ -1,2 +1,2 @@
-export { default } from "./InstanceCell";
-export * from "./InstanceCell";
+export { InstanceCell } from "./InstanceCell";
+export type { InstanceCellProps } from "./InstanceCell";

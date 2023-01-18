@@ -10,7 +10,7 @@ import {
 } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -1,6 +1,6 @@
 import { Nullable } from "@/types/general";
-import { memo, ReactNode } from "react";
-import StateIcon from "./StateIcon";
+import { ReactNode } from "react";
+import { StateIcon } from "./StateIcon";
 
 export type StateOverviewProps = {
   errorCounts: number;
@@ -8,7 +8,7 @@ export type StateOverviewProps = {
   offlineCounts: number;
 };
 
-const StateOverview = ({
+export const StateOverview = ({
   errorCounts,
   onlineCounts,
   offlineCounts,
@@ -54,5 +54,3 @@ const StateOverview = ({
     </div>
   );
 };
-
-export default memo(StateOverview);

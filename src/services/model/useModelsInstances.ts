@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { listModelInstancesQuery } from "@/lib/instill";
-import useModels from "./useModels";
+import { useModels } from "./useModels";
 
-const useModelsInstances = (enable: boolean) => {
+export const useModelsInstances = (enable: boolean) => {
   const models = useModels();
   return useQuery(
     ["models", "all", "modelInstances"],
@@ -25,5 +25,3 @@ const useModelsInstances = (enable: boolean) => {
     }
   );
 };
-
-export default useModelsInstances;

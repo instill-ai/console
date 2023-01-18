@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { listRepoFileContent } from "@/lib/github";
 
-const useMgmtDefinition = () => {
+export const useMgmtDefinition = () => {
   return useQuery(
     ["mgmt", "encoded-definition"],
     async (): Promise<string> => {
@@ -19,5 +19,3 @@ const useMgmtDefinition = () => {
     }
   );
 };
-
-export default useMgmtDefinition;

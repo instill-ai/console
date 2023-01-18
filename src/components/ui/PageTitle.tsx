@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 import cn from "clsx";
 
-import Breadcrumb, { BreadcrumbProps } from "./Breadcrumb";
+import { BreadcrumbProps, Breadcrumb } from "./Breadcrumb";
 import { SolidButton } from "@instill-ai/design-system";
 
 export type PageTitleProps = {
@@ -14,7 +14,7 @@ export type PageTitleProps = {
   marginBottom: string;
 };
 
-const PageTitle = ({
+export const PageTitle = ({
   title,
   enableButton,
   buttonName,
@@ -48,5 +48,3 @@ const PageTitle = ({
     </div>
   );
 };
-
-export default PageTitle;

@@ -1,11 +1,11 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { getElementPosition } from "@instill-ai/design-system";
 
-import useOnScreen from "@/hooks/useOnScreen";
-import ProgressStep from "./ProgressStep";
+import { useOnScreen } from "@/hooks";
+import { ProgressStep } from "./ProgressStep";
 
 /**
- * We make current number 0 & 1 stay at the first step
+ * We make number 0 & 1 stay at the first step
  * - 0: Choose pipeline mode
  * - 1: if user choose async -> choose source
  * - 2: choose model
@@ -17,7 +17,7 @@ export type CreatePipelineProgressProps = {
   currentProgress: number;
 };
 
-const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
+export const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
   currentProgress,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -174,5 +174,3 @@ const CreatePipelineProgress: FC<CreatePipelineProgressProps> = ({
     </div>
   );
 };
-
-export default CreatePipelineProgress;

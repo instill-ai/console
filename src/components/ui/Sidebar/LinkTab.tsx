@@ -11,7 +11,7 @@ export type LinkTabProps = {
   endIcon?: ReactElement;
 };
 
-const LinkTab: FC<LinkTabProps> = ({
+export const LinkTab: FC<LinkTabProps> = ({
   tabName,
   link,
   isCollapsed,
@@ -72,5 +72,3 @@ const LinkTab: FC<LinkTabProps> = ({
     </a>
   );
 };
-
-export default LinkTab;

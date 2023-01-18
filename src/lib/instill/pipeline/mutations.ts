@@ -1,5 +1,5 @@
 import { Nullable } from "@/types/general";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import { createInstillAxiosClient } from "../helper";
 import { PipelineWithRawRecipe } from "./types";
 

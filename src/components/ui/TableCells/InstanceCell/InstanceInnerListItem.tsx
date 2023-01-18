@@ -1,8 +1,8 @@
-import { memo } from "react";
-import { Instance } from "./InstanceCell";
 import cn from "clsx";
 import { ModelInstanceIcon } from "@instill-ai/design-system";
-import StateIcon from "../../StateIcon";
+
+import { Instance } from "./InstanceCell";
+import { StateIcon } from "@/components/ui";
 
 export type InstanceInnerListItemProps = {
   item: Instance;
@@ -11,7 +11,7 @@ export type InstanceInnerListItemProps = {
   textStyle: string;
 };
 
-const InstanceInnerListItem = ({
+export const InstanceInnerListItem = ({
   item,
   enableItemBgColor,
   indicator,
@@ -67,5 +67,3 @@ const InstanceInnerListItem = ({
     </div>
   );
 };
-
-export default memo(InstanceInnerListItem);

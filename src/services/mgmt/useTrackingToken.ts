@@ -5,7 +5,7 @@ import { InstillAiUserCookie, Nullable } from "@/types/general";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const useTrackingToken = () => {
+export const useTrackingToken = () => {
   const [trackingToken, setTrackingToken] = useState<Nullable<string>>(null);
   const router = useRouter();
 
@@ -60,5 +60,3 @@ const useTrackingToken = () => {
 
   return { data: trackingToken, setData: setTrackingToken };
 };
-
-export default useTrackingToken;

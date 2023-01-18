@@ -5,7 +5,7 @@ import {
   unDeployModelInstanceAction,
 } from "@/lib/instill";
 
-const useUnDeployModelInstance = () => {
+export const useUnDeployModelInstance = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (modelInstanceName: string) => {
@@ -41,5 +41,3 @@ const useUnDeployModelInstance = () => {
     }
   );
 };
-
-export default useUnDeployModelInstance;

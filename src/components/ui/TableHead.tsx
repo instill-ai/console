@@ -12,7 +12,7 @@ export type TableHeadProps = {
   borderColor: string;
 };
 
-const TableHead = ({ items, bgColor, borderColor }: TableHeadProps) => {
+export const TableHead = ({ items, bgColor, borderColor }: TableHeadProps) => {
   return (
     <thead className={cn("border", borderColor, bgColor)}>
       <tr>
@@ -52,5 +52,3 @@ const TableHead = ({ items, bgColor, borderColor }: TableHeadProps) => {
     </thead>
   );
 };
-
-export default TableHead;

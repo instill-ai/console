@@ -2,7 +2,7 @@ import { listPipelinesQuery, Pipeline } from "@/lib/instill";
 import { useQuery } from "react-query";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
-const usePipelines = (enable: boolean) => {
+export const usePipelines = (enable: boolean) => {
   return useQuery(
     ["pipelines"],
     async () => {
@@ -25,5 +25,3 @@ const usePipelines = (enable: boolean) => {
     }
   );
 };
-
-export default usePipelines;

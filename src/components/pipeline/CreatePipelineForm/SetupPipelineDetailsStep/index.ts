@@ -1,1 +1,1 @@
-export { default } from "./SetupPipelineDetailsStep";
+export { SetupPipelineDetailsStep } from "./SetupPipelineDetailsStep";

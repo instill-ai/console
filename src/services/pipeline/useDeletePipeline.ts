@@ -1,7 +1,7 @@
 import { deletePipelineMutation, Pipeline } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeletePipeline = () => {
+export const useDeletePipeline = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (pipelineName: string) => {
@@ -26,5 +26,3 @@ const useDeletePipeline = () => {
     }
   );
 };
-
-export default useDeletePipeline;

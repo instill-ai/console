@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { getModelQuery } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
-const useModel = (modelName: Nullable<string>) => {
+export const useModel = (modelName: Nullable<string>) => {
   return useQuery(
     ["models", modelName],
     async () => {
@@ -20,5 +20,3 @@ const useModel = (modelName: Nullable<string>) => {
     }
   );
 };
-
-export default useModel;

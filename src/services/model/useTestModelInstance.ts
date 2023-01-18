@@ -4,11 +4,9 @@ import {
 } from "@/lib/instill/model/actions";
 import { useMutation } from "react-query";
 
-const useTestModelInstance = () => {
+export const useTestModelInstance = () => {
   return useMutation(async (payload: TestModelInstancePayload) => {
     const result = await testModelInstance(payload);
     return result;
   });
 };
-
-export default useTestModelInstance;

@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 
-const SetupPipelineDetailsStep: FC = () => {
+export const SetupPipelineDetailsStep: FC = () => {
   const { values, errors, setFieldError } =
     useFormikContext<CreatePipelineFormValues>();
   const router = useRouter();
@@ -300,5 +300,3 @@ const SetupPipelineDetailsStep: FC = () => {
     </FormikStep>
   );
 };
-
-export default SetupPipelineDetailsStep;

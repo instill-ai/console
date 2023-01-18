@@ -27,7 +27,7 @@ export type CreateSourceFormProps = {
   marginBottom: Nullable<string>;
 };
 
-const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
+export const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -227,5 +227,3 @@ const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
     </FormBase>
   );
 };
-
-export default CreateSourceForm;

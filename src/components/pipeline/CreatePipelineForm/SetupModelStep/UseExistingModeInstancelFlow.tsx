@@ -25,11 +25,9 @@ export type UseExistingModeInstancelFlowProps = StepNumberState & {
   modelCreated: boolean;
 };
 
-const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
-  modelCreated,
-  setStepNumber,
-  stepNumber,
-}) => {
+export const UseExistingModeInstancelFlow: FC<
+  UseExistingModeInstancelFlowProps
+> = ({ modelCreated, setStepNumber, stepNumber }) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -155,5 +153,3 @@ const UseExistingModeInstancelFlow: FC<UseExistingModeInstancelFlowProps> = ({
     </div>
   );
 };
-
-export default UseExistingModeInstancelFlow;

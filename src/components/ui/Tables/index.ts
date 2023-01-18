@@ -1,26 +1,10 @@
-import type { DestinationsTableProps } from "./DestinationsTable";
-import DestinationsTable from "./DestinationsTable";
-import type { SourcesTableProps } from "./SourcesTable";
-import SourcesTable from "./SourcesTable";
-import type { ModelsTableProps } from "./ModelsTable";
-import ModelsTable from "./ModelsTable";
-import type { PipelinesTableProps } from "./PipelinesTable";
-import PipelinesTable from "./PipelinesTable";
-import type { PipelineTableProps } from "./PipelineTable";
-import PipelineTable from "./PipelineTable";
-
-export type {
-  DestinationsTableProps,
-  SourcesTableProps,
-  ModelsTableProps,
-  PipelinesTableProps,
-  PipelineTableProps,
-};
-
-export {
-  DestinationsTable,
-  SourcesTable,
-  ModelsTable,
-  PipelinesTable,
-  PipelineTable,
-};
+export { DestinationsTable } from "./DestinationsTable";
+export type { DestinationsTableProps } from "./DestinationsTable";
+export { SourcesTable } from "./SourcesTable";
+export type { SourcesTableProps } from "./SourcesTable";
+export { ModelsTable } from "./ModelsTable";
+export type { ModelsTableProps } from "./ModelsTable";
+export { PipelinesTable } from "./PipelinesTable";
+export type { PipelinesTableProps } from "./PipelinesTable";
+export { PipelineTable } from "./PipelineTable";
+export type { PipelineTableProps } from "./PipelineTable";

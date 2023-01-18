@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Nullable, UseCustomHookResult } from "@/types/general";
-import pickSelectedConditionMap from "../pickSelectedConditionMap";
+import { pickSelectedConditionMap } from "../helpers";
 import { AirbyteFieldValues, AirbyteFormTree, SelectedItemMap } from "../types";
 
 export type UseAirbyteSelectedConditionMapResult = UseCustomHookResult<
   Nullable<SelectedItemMap>
 >;
 
-const useAirbyteSelectedConditionMap = (
+export const useAirbyteSelectedConditionMap = (
   formTree: Nullable<AirbyteFormTree>,
   initialValue: Nullable<AirbyteFieldValues>
 ): UseAirbyteSelectedConditionMapResult => {
@@ -24,5 +24,3 @@ const useAirbyteSelectedConditionMap = (
 
   return [selectedConditionMap, setSelectedConditionMap];
 };
-
-export default useAirbyteSelectedConditionMap;

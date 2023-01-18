@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import CreatePipelineProgress from "./CreatePipelineProgress";
+import { CreatePipelineProgress } from "./CreatePipelineProgress";
 
 export default {
   title: "Components/Ui/CreatePipelineProgress",

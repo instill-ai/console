@@ -8,7 +8,7 @@ export type ConnectorIconProps = {
   iconColor: string;
 };
 
-const ConnectorIcon = ({
+export const ConnectorIcon = ({
   iconName,
   iconHeight,
   iconWidth,
@@ -42,5 +42,3 @@ const ConnectorIcon = ({
     }
   }
 };
-
-export default ConnectorIcon;

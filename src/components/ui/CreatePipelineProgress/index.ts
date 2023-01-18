@@ -1,2 +1,2 @@
-export { default } from "./CreatePipelineProgress";
-export * from "./CreatePipelineProgress";
+export { CreatePipelineProgress } from "./CreatePipelineProgress";
+export type { CreatePipelineProgressProps } from "./CreatePipelineProgress";

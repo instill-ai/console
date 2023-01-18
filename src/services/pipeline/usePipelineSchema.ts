@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { listRepoFileContent } from "@/lib/github";
 
-const usePipelineSchema = () => {
+export const usePipelineSchema = () => {
   const fetchPipelineSchema = async (): Promise<string> => {
     const data = await listRepoFileContent(
       "instill-ai",
@@ -26,5 +26,3 @@ const usePipelineSchema = () => {
     }, [queryInfo.data]),
   };
 };
-
-export default usePipelineSchema;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useDeleteResourceGuard = () => {
+export const useDeleteResourceGuard = () => {
   const [disableResourceDeletion, setDisableResourceDeletion] = useState(false);
 
   useEffect(() => {
@@ -16,5 +16,3 @@ const useDeleteResourceGuard = () => {
 
   return { disableResourceDeletion };
 };
-
-export default useDeleteResourceGuard;

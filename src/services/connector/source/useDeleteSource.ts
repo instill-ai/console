@@ -1,7 +1,7 @@
 import { deleteSourceMutation, SourceWithDefinition } from "@/lib/instill";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDeleteSource = () => {
+export const useDeleteSource = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (sourceName: string) => {
@@ -28,5 +28,3 @@ const useDeleteSource = () => {
     }
   );
 };
-
-export default useDeleteSource;

@@ -1,9 +1,9 @@
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import { Nullable } from "@/types/general";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AirbyteFieldValues, AirbyteFormTree } from "../types";
 
-const useAirbyteFieldValues = (
+export const useAirbyteFieldValues = (
   formTree: Nullable<AirbyteFormTree>,
   initialValue: Nullable<AirbyteFieldValues>
 ) => {
@@ -19,8 +19,6 @@ const useAirbyteFieldValues = (
 
   return { fieldValues, setFieldValues };
 };
-
-export default useAirbyteFieldValues;
 
 export const pickInitialValues = (
   formTree: AirbyteFormTree,

@@ -8,7 +8,7 @@ export type ProgressStepProps = {
   isPassed: boolean;
 };
 
-const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
+export const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
   ({ stepNum, stepName, isCurrent, isPassed }, cubeRef) => {
     return (
       <div className="flex flex-col gap-y-3">
@@ -54,5 +54,3 @@ const ProgressStep = forwardRef<HTMLDivElement, ProgressStepProps>(
 );
 
 ProgressStep.displayName = "ProgressStep";
-
-export default ProgressStep;

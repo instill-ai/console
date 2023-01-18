@@ -5,9 +5,9 @@ import {
   ModelWithInstance,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { determineModelState } from "@/utils/determineModelState";
+import { determineModelState } from "@/utils";
 
-const useModelWithInstances = (model: Nullable<Model>) => {
+export const useModelWithInstances = (model: Nullable<Model>) => {
   return useQuery(
     ["models", "with-instances", model?.name],
     async () => {
@@ -28,5 +28,3 @@ const useModelWithInstances = (model: Nullable<Model>) => {
     { enabled: model ? true : false, retry: 3 }
   );
 };
-
-export default useModelWithInstances;

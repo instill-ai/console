@@ -4,7 +4,7 @@ export type BreadcrumbProps = {
   breadcrumbs: string[];
 };
 
-const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
+export const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
   return (
     <div className="flex flex-row">
       {breadcrumbs.map((e, index) => {
@@ -32,5 +32,3 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
     </div>
   );
 };
-
-export default Breadcrumb;

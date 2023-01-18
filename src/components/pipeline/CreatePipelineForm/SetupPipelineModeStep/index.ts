@@ -1,2 +1,2 @@
-export { default } from "./SetupPipelineModeStep";
-export * from "./SetupPipelineModeStep";
+export { SetupPipelineModeStep } from "./SetupPipelineModeStep";
+export type { SetupPipelineModeStepProps } from "./SetupPipelineModeStep";

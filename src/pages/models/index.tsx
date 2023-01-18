@@ -9,9 +9,8 @@ import {
   PageHead,
 } from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model";
-import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
 
 interface GetLayOutProps {
   page: ReactElement;

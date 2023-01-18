@@ -5,7 +5,7 @@ import {
   SourceWithDefinition,
 } from "@/lib/instill";
 
-const useSources = () => {
+export const useSources = () => {
   return useQuery(
     ["sources"],
     async () => {
@@ -29,5 +29,3 @@ const useSources = () => {
     }
   );
 };
-
-export default useSources;

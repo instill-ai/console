@@ -1,15 +1,17 @@
 import { ConnectorDefinition } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useMemo } from "react";
-import { airbyteSchemaToAirbyteFormTree } from "../airbyteSchemaToAirbyteFormTree";
+import { transformAirbyteSchemaToAirbyteFormTree } from "../helpers/transformAirbyteSchemaToAirbyteFormTree";
 
-const useAirbyteFormTree = (definition: Nullable<ConnectorDefinition>) => {
+export const useAirbyteFormTree = (
+  definition: Nullable<ConnectorDefinition>
+) => {
   const formTree = useMemo(() => {
     if (!definition) {
       return null;
     }
 
-    const formTree = airbyteSchemaToAirbyteFormTree(
+    const formTree = transformAirbyteSchemaToAirbyteFormTree(
       definition.connector_definition.spec.connection_specification
     );
 
@@ -18,5 +20,3 @@ const useAirbyteFormTree = (definition: Nullable<ConnectorDefinition>) => {
 
   return formTree;
 };
-
-export default useAirbyteFormTree;

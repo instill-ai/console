@@ -1,3 +1,1 @@
-import constructPipelineRecipeWithDefinition from "./constructPipelineRecipeWithDefinition";
-
-export { constructPipelineRecipeWithDefinition };
+export { constructPipelineRecipeWithDefinition } from "./constructPipelineRecipeWithDefinition";

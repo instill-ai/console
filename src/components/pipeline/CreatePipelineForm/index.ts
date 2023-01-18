@@ -1,2 +1,6 @@
-export { default } from "./CreatePipelineForm";
-export * from "./CreatePipelineForm";
+export { CreatePipelineForm } from "./CreatePipelineForm";
+export type {
+  CreatePipelineFormProps,
+  CreatePipelineFormValues,
+  StepNumberState,
+} from "./CreatePipelineForm";

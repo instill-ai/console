@@ -17,7 +17,7 @@ import { useDeleteSource } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { ErrorDetails, Violation } from "@/lib/instill/types";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard } from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -28,7 +28,7 @@ export type ConfigureSourceFormValue = {
   sourceDefinition: Nullable<string>;
 };
 
-const ConfigureSourceForm = ({
+export const ConfigureSourceForm = ({
   source,
   marginBottom,
 }: ConfigureSourceFormProps) => {
@@ -222,5 +222,3 @@ const ConfigureSourceForm = ({
     </>
   );
 };
-
-export default ConfigureSourceForm;

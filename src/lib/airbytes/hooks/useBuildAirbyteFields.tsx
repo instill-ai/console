@@ -1,4 +1,4 @@
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import { Nullable } from "@/types/general";
 import {
   BasicSingleSelect,
@@ -8,7 +8,7 @@ import {
   ProtectedBasicTextField,
 } from "@instill-ai/design-system";
 import { Dispatch, ReactNode, SetStateAction, useMemo, Fragment } from "react";
-import OneOfConditionSection from "../components/OneOfConditionSection";
+import { OneOfConditionSection } from "../components";
 import {
   AirbyteFormConditionItemWithUiFields,
   AirbyteFieldErrors,
@@ -19,7 +19,7 @@ import {
   SelectedItemMap,
 } from "../types";
 
-const useBuildAirbyteFields = (
+export const useBuildAirbyteFields = (
   formTree: Nullable<AirbyteFormTree>,
   disabledAll: boolean,
   values: Nullable<AirbyteFieldValues>,
@@ -57,8 +57,6 @@ const useBuildAirbyteFields = (
 
   return fields;
 };
-
-export default useBuildAirbyteFields;
 
 export const pickComponent = (
   formTree: AirbyteFormTree,

@@ -1,7 +1,4 @@
-import ConfigureDestinationForm from "./ConfigureDestinationForm";
-import type { ConfigureDestinationFormProps } from "./ConfigureDestinationForm";
-import CreateDestinationForm from "./CreateDestinationForm";
-import type { CreateDestinationFormProps } from "./CreateDestinationForm";
-
-export { ConfigureDestinationForm, CreateDestinationForm };
-export type { ConfigureDestinationFormProps, CreateDestinationFormProps };
+export { ConfigureDestinationForm } from "./ConfigureDestinationForm";
+export type { ConfigureDestinationFormProps } from "./ConfigureDestinationForm";
+export { CreateDestinationForm } from "./CreateDestinationForm";
+export type { CreateDestinationFormProps } from "./CreateDestinationForm";

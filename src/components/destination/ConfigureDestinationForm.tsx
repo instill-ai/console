@@ -20,7 +20,7 @@ import {
   useAirbyteSelectedConditionMap,
 } from "@/lib/airbytes";
 import { AirbyteDestinationFields } from "@/lib/airbytes/components";
-import dot from "@/lib/dot";
+import { dot } from "@/lib/dot";
 import {
   DestinationWithDefinition,
   UpdateDestinationPayload,
@@ -30,17 +30,17 @@ import { DeleteResourceModal, FormBase } from "@/components/ui";
 import {
   useDeleteDestination,
   useUpdateDestination,
-} from "@/services/connector/destination/mutations";
+} from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard } from "@/hooks";
 import { useRouter } from "next/router";
 
 export type ConfigureDestinationFormProps = {
   destination: DestinationWithDefinition;
 };
 
-const ConfigureDestinationForm = ({
+export const ConfigureDestinationForm = ({
   destination,
 }: ConfigureDestinationFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -442,5 +442,3 @@ const ConfigureDestinationForm = ({
     </>
   );
 };
-
-export default ConfigureDestinationForm;

@@ -7,7 +7,9 @@ export type TableLoadingProgressProps = {
   marginBottom: Nullable<string>;
 };
 
-const TableLoadingProgress = ({ marginBottom }: TableLoadingProgressProps) => {
+export const TableLoadingProgress = ({
+  marginBottom,
+}: TableLoadingProgressProps) => {
   return (
     <div className={cn("flex min-h-[300px] w-full bg-white", marginBottom)}>
       <div className="m-auto flex flex-col gap-y-2.5">
@@ -25,5 +27,3 @@ const TableLoadingProgress = ({ marginBottom }: TableLoadingProgressProps) => {
     </div>
   );
 };
-
-export default TableLoadingProgress;

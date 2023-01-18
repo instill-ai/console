@@ -1,2 +1,2 @@
-export { default } from "./ModelInstanceReadmeCard";
-export * from "./ModelInstanceReadmeCard";
+export { ModelInstanceReadmeCard } from "./ModelInstanceReadmeCard";
+export type { ModelInstanceReadmeCardProps } from "./ModelInstanceReadmeCard";

@@ -5,7 +5,7 @@ import {
   getModelInstanceQuery,
 } from "@/lib/instill";
 
-const useDeployModelInstance = () => {
+export const useDeployModelInstance = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (modelInstanceName: string) => {
@@ -45,5 +45,3 @@ const useDeployModelInstance = () => {
     }
   );
 };
-
-export default useDeployModelInstance;

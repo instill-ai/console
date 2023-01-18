@@ -2,7 +2,7 @@ import { getModelInstanceReadme } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { useQuery } from "react-query";
 
-const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
+export const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
   return useQuery(
     [
       "models",
@@ -27,5 +27,3 @@ const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
     }
   );
 };
-
-export default useModelInstanceReadme;

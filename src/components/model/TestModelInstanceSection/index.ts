@@ -1,2 +1,2 @@
-export { default } from "./TestModelInstanceSection";
-export * from "./TestModelInstanceSection";
+export { TestModelInstanceSection } from "./TestModelInstanceSection";
+export type { TestModelInstanceSectionProps } from "./TestModelInstanceSection";

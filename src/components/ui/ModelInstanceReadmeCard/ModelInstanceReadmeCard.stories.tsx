@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ModelInstanceReadmeCard from "./ModelInstanceReadmeCard";
+import { ModelInstanceReadmeCard } from "./ModelInstanceReadmeCard";
 
 export default {
   title: "Components/ModelInstanceReadmeCard",

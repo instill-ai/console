@@ -1,5 +1,5 @@
 import { Operation } from "../types";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 import { createInstillAxiosClient } from "../helper";
 
 export type DeployModelResponse = {

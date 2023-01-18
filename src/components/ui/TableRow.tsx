@@ -7,8 +7,6 @@ export type TableRowProps = {
   children: ReactNode;
 };
 
-const TableRow = ({ children, borderColor, bgColor }: TableRowProps) => {
+export const TableRow = ({ children, borderColor, bgColor }: TableRowProps) => {
   return <tr className={cn("border", borderColor, bgColor)}>{children}</tr>;
 };
-
-export default TableRow;

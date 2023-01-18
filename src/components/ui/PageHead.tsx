@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Nullable } from "@/types/general";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 
 export type PageHeadProps = {
   title: Nullable<string>;
 };
 
-const PageHead = ({ title }: PageHeadProps) => {
+export const PageHead = ({ title }: PageHeadProps) => {
   const router = useRouter();
   const meta = {
     type: "website",
@@ -83,5 +83,3 @@ const PageHead = ({ title }: PageHeadProps) => {
     </>
   );
 };
-
-export default PageHead;

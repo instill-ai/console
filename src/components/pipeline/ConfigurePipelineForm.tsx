@@ -14,7 +14,7 @@ import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import useDeleteResourceGuard from "@/hooks/useDeleteResourceGuard";
+import { useDeleteResourceGuard } from "@/hooks/useDeleteResourceGuard";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -26,7 +26,7 @@ export type ConfigurePipelineFormValue = {
   state: Nullable<PipelineState>;
 };
 
-const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
+export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   pipeline,
   marginBottom,
 }) => {
@@ -251,5 +251,3 @@ const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
     </>
   );
 };
-
-export default ConfigurePipelineForm;

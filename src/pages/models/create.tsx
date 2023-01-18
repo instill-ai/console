@@ -9,7 +9,7 @@ import {
 } from "@/components/ui";
 import { CreateModelForm } from "@/components/model";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -14,7 +14,7 @@
 
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { Dispatch, RefObject, SetStateAction, Children, useState } from "react";
-import FormikFormBase, { FormikFormBaseProps } from "../FormikFormBase";
+import { FormikFormBaseProps, FormikFormBase } from "../FormikFormBase";
 
 type FormValue = Record<string, any>;
 

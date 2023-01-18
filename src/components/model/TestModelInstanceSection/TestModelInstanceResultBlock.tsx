@@ -9,12 +9,9 @@ export type TestModelInstanceResultBlockProps = {
   setBlockIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const TestModelInstanceResultBlock: FC<TestModelInstanceResultBlockProps> = ({
-  result,
-  width,
-  blockIsOpen,
-  setBlockIsOpen,
-}) => {
+export const TestModelInstanceResultBlock: FC<
+  TestModelInstanceResultBlockProps
+> = ({ result, width, blockIsOpen, setBlockIsOpen }) => {
   return (
     <div className={cn("flex flex-col bg-white", width)}>
       <div className="flex flex-row p-2.5">
@@ -49,5 +46,3 @@ const TestModelInstanceResultBlock: FC<TestModelInstanceResultBlockProps> = ({
     </div>
   );
 };
-
-export default TestModelInstanceResultBlock;

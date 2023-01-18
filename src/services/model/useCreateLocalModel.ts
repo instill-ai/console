@@ -2,10 +2,9 @@ import { useMutation, useQueryClient } from "react-query";
 import {
   createLocalModelMutation,
   CreateLocalModelPayload,
-  Model,
 } from "@/lib/instill";
 
-const useCreateLocalModel = () => {
+export const useCreateLocalModel = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async (payload: CreateLocalModelPayload) => {
@@ -19,5 +18,3 @@ const useCreateLocalModel = () => {
     }
   );
 };
-
-export default useCreateLocalModel;

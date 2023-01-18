@@ -3,7 +3,7 @@ import { getPipelineQuery, Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
-const usePipeline = (pipelineName: Nullable<string>) => {
+export const usePipeline = (pipelineName: Nullable<string>) => {
   const queryClient = useQueryClient();
   return useQuery(
     ["pipelines", pipelineName],
@@ -33,5 +33,3 @@ const usePipeline = (pipelineName: Nullable<string>) => {
     }
   );
 };
-
-export default usePipeline;

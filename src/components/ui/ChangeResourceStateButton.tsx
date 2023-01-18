@@ -24,7 +24,7 @@ export type ChangeResourceStateButtonProps = {
   marginBottom?: string;
 };
 
-const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
+export const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   resource,
   switchOn,
   switchOff,
@@ -95,5 +95,3 @@ const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
     </div>
   );
 };
-
-export default ChangeResourceStateButton;

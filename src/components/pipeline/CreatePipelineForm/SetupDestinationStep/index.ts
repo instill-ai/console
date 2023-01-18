@@ -1,2 +1,2 @@
-export { default } from "./SetupDestinationStep";
-export * from "./SetupDestinationStep";
+export { SetupDestinationStep } from "./SetupDestinationStep";
+export type { SetupDestinationStepProps } from "./SetupDestinationStep";

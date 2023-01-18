@@ -20,11 +20,11 @@ import {
 } from "@/components/ui";
 import { ConfigurePipelineForm } from "@/components/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks/useSendAmplitudeData";
+import { useSendAmplitudeData } from "@/hooks";
 import { Pipeline } from "@/lib/instill";
 import { getCodeHikeTemplateSource } from "@/lib/markdown";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { env } from "@/utils/config";
+import { env } from "@/utils";
 
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context

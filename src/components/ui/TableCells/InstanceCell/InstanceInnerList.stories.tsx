@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Instance } from "./InstanceCell";
-import InstanceInnerList from "./InstanceInnerList";
+import { InstanceInnerList } from "./InstanceInnerList";
 
 export default {
   title: "Components/Ui/InstanceInnerList",

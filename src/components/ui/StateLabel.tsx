@@ -1,8 +1,7 @@
-import { memo } from "react";
 import cn from "clsx";
 
 import { Nullable, State } from "@/types/general";
-import StateIcon from "./StateIcon";
+import { StateIcon } from "./StateIcon";
 
 export type StateLabelProps = {
   state: State;
@@ -15,7 +14,7 @@ export type StateLabelProps = {
   paddingY: string;
 };
 
-const StateLabel = ({
+export const StateLabel = ({
   enableIcon,
   enableBgColor,
   iconHeight,
@@ -95,5 +94,3 @@ const StateLabel = ({
     </div>
   );
 };
-
-export default memo(StateLabel);

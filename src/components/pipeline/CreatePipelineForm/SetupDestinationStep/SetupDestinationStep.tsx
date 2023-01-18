@@ -8,7 +8,7 @@ import {
   StepNumberState,
   CreatePipelineFormValues,
 } from "../CreatePipelineForm";
-import UseExistingDestinationFlow from "./UseExistingDestinationFlow";
+import { UseExistingDestinationFlow } from "./UseExistingDestinationFlow";
 import { useCreateDestination, useDestinations } from "@/services/connector";
 import { CreateDestinationPayload } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
@@ -17,7 +17,7 @@ import { CreateDestinationForm } from "@/components/destination";
 
 export type SetupDestinationStepProps = StepNumberState;
 
-const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
+export const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
   const { values, setFieldValue, errors } =
     useFormikContext<CreatePipelineFormValues>();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -206,5 +206,3 @@ const SetupDestinationStep: FC<SetupDestinationStepProps> = (props) => {
     </FormikStep>
   );
 };
-
-export default SetupDestinationStep;

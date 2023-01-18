@@ -2,15 +2,26 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@/components": ["components"],
       "@/components/*": ["components/*"],
+      "@/types": ["types"],
       "@/types/*": ["types/*"],
+      "@/hooks": ["hooks"],
       "@/hooks/*": ["hooks/*"],
+      "@/utils": ["utils"],
       "@/utils/*": ["utils/*"],
+      "@/style": ["styles"],
       "@/style/*": ["styles/*"],
+
+      // We didn't support import directly from "@/services"
       "@/services/*": ["services/*"],
+      "@/lib": ["lib"],
       "@/lib/*": ["lib/*"],
+      "@/pages": ["pages"],
       "@/pages/*": ["pages/*"],
+      "@/mocks": ["mocks"],
       "@/mocks/*": ["mocks/*"],
+      "@/contexts": ["contexts"],
       "@/contexts/*": ["contexts/*"]
     },
     "target": "es5",
