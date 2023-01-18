@@ -47,5 +47,3 @@ export const usePipelinesHaveTargetDestination = (
     }
   );
 };
-
-export default usePipelinesHaveTargetDestination;
