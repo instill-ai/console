@@ -132,7 +132,7 @@ export const expectCorrectModelDetails = async ({
   additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
   // Mimic the behavior of long running operation
-  await delay(5000);
+  await delay(10000);
 
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
