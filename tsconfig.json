@@ -10,8 +10,8 @@
       "@/hooks/*": ["hooks/*"],
       "@/utils": ["utils"],
       "@/utils/*": ["utils/*"],
-      "@/style": ["styles"],
-      "@/style/*": ["styles/*"],
+      "@/styles": ["styles"],
+      "@/styles/*": ["styles/*"],
 
       // We didn't support import directly from "@/services"
       "@/services/*": ["services/*"],
