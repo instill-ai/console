@@ -15,7 +15,7 @@ export const useTrackingToken = () => {
         "/api/get-user-cookie"
       );
 
-      const user = await getUserQuery("users/local-user");
+      const user = await getUserQuery();
 
       // Both backend and cookie have user tracking token that means backend haven't been made down during the session.
 
@@ -50,6 +50,7 @@ export const useTrackingToken = () => {
 
       // We only have tracking token inside the cookie that means our backend had been made down.
       await updateLocalUserMutation({
+        name: "users/local-user",
         cookie_token: instillAiUserCookie.data.cookie_token,
       });
       setTrackingToken(instillAiUserCookie.data.cookie_token);

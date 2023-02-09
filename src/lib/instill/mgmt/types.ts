@@ -3,7 +3,7 @@ export type User = {
   uid: string;
   email: string;
   id: string;
-  company_name: string;
+  org_name: string;
   role: string;
   usage_data_collection: boolean;
   newsletter_subscription: boolean;

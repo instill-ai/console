@@ -26,14 +26,14 @@ export type OnboardingFormProps = {
 
 export type OnboardingFormValues = {
   email: Nullable<string>;
-  companyName: Nullable<string>;
+  orgName: Nullable<string>;
   role: Nullable<string>;
   newsletterSubscription: Nullable<boolean>;
 };
 
 type OnboardingFormErrors = {
   email: Nullable<string>;
-  companyName: Nullable<string>;
+  orgName: Nullable<string>;
   role: Nullable<string>;
 };
 
@@ -44,7 +44,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
-    companyName: null,
+    orgName: null,
     role: null,
     newsletterSubscription: true,
   });
@@ -95,7 +95,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
   const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({
     email: null,
-    companyName: null,
+    orgName: null,
     role: null,
   });
   const [formIsValid, setFormIsValid] = useState(false);
@@ -114,8 +114,8 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
       }
     }
 
-    if (!fieldValues.companyName) {
-      errors["companyName"] = "Company name is required";
+    if (!fieldValues.orgName) {
+      errors["orgName"] = "Company name is required";
     }
 
     if (!fieldValues.role) {
@@ -130,8 +130,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
   }, [fieldValues, formIsDirty]);
 
   const handleSubmit = useCallback(() => {
-    if (!fieldValues.email || !fieldValues.companyName || !fieldValues.role)
-      return;
+    if (!fieldValues.email || !fieldValues.orgName || !fieldValues.role) return;
 
     let token: string | undefined = undefined;
 
@@ -143,8 +142,9 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
     const payload: Partial<User> = {
       id: "local-user",
+      name: "users/local-user",
       email: fieldValues.email,
-      company_name: fieldValues.companyName ?? undefined,
+      org_name: fieldValues.orgName ?? undefined,
       role: fieldValues.role as string,
       newsletter_subscription: fieldValues.newsletterSubscription
         ? fieldValues.newsletterSubscription
@@ -222,9 +222,9 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
           label="Your company"
           required={true}
           description="Fill your company name"
-          value={fieldValues.companyName}
-          onChange={(event) => handleFieldChange("companyName", event)}
-          error={fieldErrors.companyName}
+          value={fieldValues.orgName}
+          onChange={(event) => handleFieldChange("orgName", event)}
+          error={fieldErrors.orgName}
         />
         <BasicSingleSelect
           id="role"
