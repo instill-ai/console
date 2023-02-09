@@ -10,7 +10,7 @@ export const removeRegisteredUser = async () => {
   try {
     const client = createInstillAxiosTestClient();
 
-    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/local-user`, {
+    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/user`, {
       cookie_token: "",
     });
   } catch (err) {
@@ -22,7 +22,7 @@ export const addRegisteredUser = async () => {
   try {
     const client = createInstillAxiosTestClient();
 
-    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/local-user`, {
+    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/user`, {
       cookie_token: uuidv4(),
     });
   } catch (err) {

@@ -48,7 +48,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user = await getUserQuery("users/local-user");
+        const user = await getUserQuery();
         setFetched(true);
         setUser(user);
       } catch (err) {
