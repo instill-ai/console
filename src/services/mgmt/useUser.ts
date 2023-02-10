@@ -1,23 +1,17 @@
 import { useQuery, useQueryClient } from "react-query";
 import { getUserQuery, User } from "@/lib/instill";
-import { Nullable } from "@/types/general";
 
-export const useUser = (userName: Nullable<string>) => {
+export const useUser = () => {
   const queryClient = useQueryClient();
   return useQuery<User>(
-    ["user", userName],
+    ["user", "local-user"],
     async () => {
-      if (!userName) {
-        return Promise.reject(new Error("invalid user name"));
-      }
-
-      const user = await getUserQuery(userName);
-
+      const user = await getUserQuery();
       return Promise.resolve(user);
     },
     {
-      enabled: !!userName,
-      initialData: queryClient.getQueryData(["user", userName]),
+      enabled: true,
+      initialData: queryClient.getQueryData(["user", "local-user"]),
       retry: 3,
     }
   );
