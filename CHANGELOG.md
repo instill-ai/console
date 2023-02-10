@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.16.0-alpha](https://github.com/instill-ai/console/compare/v0.15.0-alpha...v0.16.0-alpha) (2023-02-10)
+
+
+### Features
+
+* adapt new mgmt backend and protobuf ([#337](https://github.com/instill-ai/console/issues/337)) ([8f6f698](https://github.com/instill-ai/console/commit/8f6f69811dcc8a0df2527c80d8861448c1144fcc))
+* add pr-semantic workflow ([#331](https://github.com/instill-ai/console/issues/331)) ([e6084c0](https://github.com/instill-ai/console/commit/e6084c00b03730ff2baadd0eea05363940a42361))
+* extend the delay when test model details page ([#336](https://github.com/instill-ai/console/issues/336)) ([6b68a71](https://github.com/instill-ai/console/commit/6b68a719b9da3ad99104fe005dd43f215569a206))
+* run build when test in the workflow ([#339](https://github.com/instill-ai/console/issues/339)) ([2b87fa1](https://github.com/instill-ai/console/commit/2b87fa10da45267a6b09605cc7bc08ff848f8159))
+* upgrade nextjs13 ([#334](https://github.com/instill-ai/console/issues/334)) ([a488408](https://github.com/instill-ai/console/commit/a4884088b0ca9e9a67b7f3f980c8eb20db31bf61))
+
+
+### Bug Fixes
+
+* fix ts config typo ([#335](https://github.com/instill-ai/console/issues/335)) ([17990ae](https://github.com/instill-ai/console/commit/17990ae2954d32d7494ccb88722ab0f57172c8ef))
+* fix update user bug ([#338](https://github.com/instill-ai/console/issues/338)) ([024cd1c](https://github.com/instill-ai/console/commit/024cd1cf7396cb813bf44b683d8d5bf23cb56b59))
+
 ## [0.15.0-alpha](https://github.com/instill-ai/console/compare/v0.14.0-alpha...v0.15.0-alpha) (2023-01-14)
 
 
