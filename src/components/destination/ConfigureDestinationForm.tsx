@@ -367,6 +367,7 @@ export const ConfigureDestinationForm = ({
             key="definition"
             instanceId="definition"
             label="Destination type"
+            inputLabelType="inset"
             disabled={true}
             value={destinationDefinitionOption}
             options={[]}
@@ -376,6 +377,7 @@ export const ConfigureDestinationForm = ({
             <BasicTextArea
               id="description"
               label="Description"
+              inputLabelType="inset"
               key="description"
               description="Fill with a short description."
               required={false}

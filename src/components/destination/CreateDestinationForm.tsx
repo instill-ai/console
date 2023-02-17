@@ -437,6 +437,7 @@ export const CreateDestinationForm = ({
           id="id"
           label="ID"
           key="id"
+          inputLabelType="inset"
           description={
             "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
             "which restricts to letters, numbers, and hyphen, with the first character a letter," +
@@ -465,6 +466,7 @@ export const CreateDestinationForm = ({
         <BasicTextArea
           id="description"
           label="Description"
+          inputLabelType="inset"
           key="description"
           description="Fill with a short description."
           required={false}
@@ -484,6 +486,7 @@ export const CreateDestinationForm = ({
           instanceId="definition"
           menuPlacement="auto"
           label="Destination type"
+          inputLabelType="inset"
           error={
             fieldErrors ? (fieldErrors.definition as string) ?? null : null
           }

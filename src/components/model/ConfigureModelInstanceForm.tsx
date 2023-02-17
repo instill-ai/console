@@ -44,6 +44,7 @@ export const ConfigureModelInstanceForm = ({
             <BasicTextField
               id="modelRepo"
               label="GitHub repository"
+              inputLabelType="inset"
               description="The name of a public GitHub repository, e.g. `instill-ai/model-mobilenetv2`."
               value={modelInstance.configuration.repository}
               disabled={true}
@@ -56,6 +57,7 @@ export const ConfigureModelInstanceForm = ({
             <BasicTextField
               id="tag"
               label="ArtiVC version"
+              inputLabelType="inset"
               description="Tag of the ArtiVC, e.g. `v0.1.0`."
               value={modelInstance.configuration.tag}
               disabled={true}
@@ -64,6 +66,7 @@ export const ConfigureModelInstanceForm = ({
             <BasicTextField
               id="url"
               label="Cloud storage url"
+              inputLabelType="inset"
               description="the cloud storage url, e.g. `gs://public-europe-west2-c-artifacts/vdp/public-models/yolov4`."
               value={modelInstance.configuration.url}
               disabled={true}
@@ -76,6 +79,7 @@ export const ConfigureModelInstanceForm = ({
             <BasicTextField
               id="huggingface-model-id"
               label="HuggingFace model ID"
+              inputLabelType="inset"
               description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
               value={modelInstance.configuration.repo_id}
               disabled={true}

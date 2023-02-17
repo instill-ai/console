@@ -201,6 +201,7 @@ export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
           <BasicTextArea
             id="pipelineDescription"
             label="Description"
+            inputLabelType="inset"
             key="pipelineDescription"
             description="Fill with a short description."
             required={false}

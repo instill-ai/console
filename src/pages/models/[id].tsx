@@ -35,7 +35,6 @@ import {
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
-  TestModelInstanceSection,
 } from "@/components/model";
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
@@ -225,6 +224,7 @@ const ModelDetailsPage: FC & {
             instanceId="modelInstanceTag"
             menuPlacement="auto"
             label={null}
+            inputLabelType="inset"
             additionalMessageOnLabel={null}
             description=""
             disabled={false}

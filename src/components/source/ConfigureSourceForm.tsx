@@ -177,6 +177,7 @@ export const ConfigureSourceForm = ({
             id="sourceDefinition"
             instanceId="sourceDefinition"
             label="Source"
+            inputLabelType="inset"
             disabled={canEdit ? false : true}
             options={sourceDefinitionOptions || []}
             required={true}

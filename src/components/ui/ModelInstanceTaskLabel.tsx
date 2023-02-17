@@ -9,6 +9,7 @@ import {
   ObjectDetectionIcon,
   OpticalCharacterRecognitionIcon,
   SemanticSegmentationIcon,
+  getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 
 export type ModelInstanceTaskLabelProps = {
@@ -29,43 +30,25 @@ export const ModelInstanceTaskLabel = ({
     color: "fill-instillGrey95",
   };
 
-  let modelInstanceTaskIcon: ReactElement;
-  const taskNameList = task?.split("_");
-  const taskName = taskNameList?.slice(1, taskNameList.length);
-
-  switch (task) {
-    case "TASK_CLASSIFICATION":
-      modelInstanceTaskIcon = <ImageClassificationIcon {...iconStyle} />;
-      break;
-
-    case "TASK_DETECTION":
-      modelInstanceTaskIcon = <ObjectDetectionIcon {...iconStyle} />;
-      break;
-
-    case "TASK_KEYPOINT":
-      modelInstanceTaskIcon = <KeypointDetectionIcon {...iconStyle} />;
-      break;
-
-    case "TASK_OCR":
-      modelInstanceTaskIcon = (
-        <OpticalCharacterRecognitionIcon {...iconStyle} />
-      );
-      break;
-
-    case "TASK_INSTANCE_SEGMENTATION":
-      modelInstanceTaskIcon = <InstanceSegmentationIcon {...iconStyle} />;
-      break;
-
-    case "TASK_SEMANTIC_SEGMENTATION":
-      modelInstanceTaskIcon = <SemanticSegmentationIcon {...iconStyle} />;
-      break;
-
-    default:
-      modelInstanceTaskIcon = (
+  if (!task) {
+    return (
+      <div
+        className={cn(
+          "flex gap-x-2 bg-white px-2 py-[7px]",
+          marginBottom,
+          position
+        )}
+        data-testid="model-task-label"
+      >
         <div className={cn(iconStyle.width, iconStyle.height)} />
-      );
-      break;
+        <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
+          Unspecified
+        </p>
+      </div>
+    );
   }
+
+  const toolkit = getModelInstanceTaskToolkit(task);
 
   return (
     <div
@@ -76,9 +59,9 @@ export const ModelInstanceTaskLabel = ({
       )}
       data-testid="model-task-label"
     >
-      {modelInstanceTaskIcon}
+      {toolkit.getIcon(iconStyle)}
       <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
-        {taskName?.join(" ") || "Task not found"}
+        {toolkit.label}
       </p>
     </div>
   );

@@ -45,6 +45,7 @@ const SingleSelectWrapper: FC<SingleSelectProps & FieldProps> = ({
       onChange={onChange}
       menuPlacement={menuPlacement}
       value={value}
+      inputLabelType="inset"
       additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );

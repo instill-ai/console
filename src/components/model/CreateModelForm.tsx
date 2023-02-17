@@ -552,6 +552,7 @@ export const CreateModelForm = () => {
         <BasicTextField
           id="modelId"
           label="ID"
+          inputLabelType="inset"
           key="id"
           description="Pick a name to help you identify this resource. 
                   The ID conforms to RFC-1034, which restricts to letters, 
@@ -570,6 +571,7 @@ export const CreateModelForm = () => {
         <BasicTextArea
           id="description"
           label="Description"
+          inputLabelType="inset"
           key="description"
           description="Fill with a short description."
           required={false}
@@ -590,6 +592,7 @@ export const CreateModelForm = () => {
           instanceId="modelDefinition"
           menuPlacement="auto"
           label="Model source"
+          inputLabelType="inset"
           value={selectedModelDefinitionOption}
           options={modelDefinitionOptions ? modelDefinitionOptions : []}
           error={fieldErrors.modelDefinition || null}
@@ -613,6 +616,7 @@ export const CreateModelForm = () => {
             <BasicTextField
               id="modelRepo"
               label="GitHub repository"
+              inputLabelType="inset"
               description="The name of a public GitHub repository, e.g.
                       `instill-ai/model-mobilenetv2`."
               required={true}
@@ -652,6 +656,7 @@ export const CreateModelForm = () => {
             <BasicTextField
               id="gcsBucketPath"
               label="GCS Bucket Path"
+              inputLabelType="inset"
               description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
               required={true}
               value={fieldValues.gcsBucketPath}
@@ -663,6 +668,7 @@ export const CreateModelForm = () => {
             <BasicTextArea
               id="credentials"
               label="Credentials JSON"
+              inputLabelType="inset"
               key="credentials"
               description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
               error={fieldErrors.credentials}
@@ -678,6 +684,7 @@ export const CreateModelForm = () => {
             <BasicTextField
               id="huggingFaceRepo"
               label="HuggingFace model ID"
+              inputLabelType="inset"
               description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
               required={true}
               value={fieldValues.huggingFaceRepo}
