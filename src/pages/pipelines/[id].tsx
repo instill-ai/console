@@ -39,7 +39,10 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   );
 
   if (rawPipelineError || !rawPipeline) {
-    console.error("Something went wrong when fetch the raw pipeline");
+    console.error(
+      "Something went wrong when fetch the raw pipeline",
+      rawPipelineError
+    );
     return {
       notFound: true,
     };
@@ -114,7 +117,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
     replaceRules: [
       {
         match: "serverApiBaseUrlPlaceholder",
-        replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL") ?? "",
+        replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL_FOR_CLIENT") ?? "",
       },
       {
         match: "pipelineIdPlaceholder",

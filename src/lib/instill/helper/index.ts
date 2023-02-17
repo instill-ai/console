@@ -56,8 +56,8 @@ export const createInstillAxiosClient = () => {
 
   return axios.create({
     baseURL:
-      process.env.API_GATEWAY_BASE_URL ||
-      env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
+      process.env.API_GATEWAY_BASE_URL_FOR_SERVER ||
+      env("NEXT_PUBLIC_API_GATEWAY_BASE_URL_FOR_CLIENT"),
     httpsAgent:
       env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true"
         ? httpsAgent
