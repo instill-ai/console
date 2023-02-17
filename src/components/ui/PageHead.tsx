@@ -21,7 +21,7 @@ export const PageHead = ({ title }: PageHeadProps) => {
   const canonicalURL =
     router.asPath === "/"
       ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}`
-      : `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${router.asPath}`;
+      : `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}${router.asPath}`;
 
   const [hostName, setHostName] = useState<Nullable<string>>(null);
 
