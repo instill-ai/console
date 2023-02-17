@@ -635,6 +635,7 @@ export const CreateModelForm = () => {
               id="file"
               name="file"
               label="Upload a file"
+              inputLabelType="inset"
               description="Create and upload a zip file that contains all the model files from your computer"
               error={fieldErrors.file || null}
               placeholder=""

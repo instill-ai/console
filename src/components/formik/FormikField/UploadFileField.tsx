@@ -40,6 +40,7 @@ const UploadFileFieldWrapper: FC<UploadFileFieldProps & FieldProps> = ({
       error={error}
       onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
+      inputLabelType="inset"
     />
   );
 };
