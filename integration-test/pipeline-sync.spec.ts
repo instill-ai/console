@@ -1,4 +1,5 @@
-import { env ,
+import {
+  env,
   deleteDestination,
   deleteModel,
   deleteSource,
@@ -152,7 +153,7 @@ test.describe
     // Should have warning label
     const warningLabel = page.locator("label[for='pipelineId']");
     await expect(warningLabel).toHaveText(
-      "ID * - Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+      "ID *Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
     );
 
     // Should input correct id
