@@ -43,9 +43,12 @@ RUN pnpm run build
 FROM node:16-alpine
 WORKDIR /app
 
-ENV NODE_ENV production
+# You should carefully set this NODE_ENV, we set it to production by default
+ARG NODE_ENV="production"
+ENV NODE_ENV ${NODE_ENV}
+
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 # We need bash to run our entrypoint.sh and env.sh
 RUN apk add --no-cache bash
