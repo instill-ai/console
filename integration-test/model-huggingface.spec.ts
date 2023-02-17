@@ -86,7 +86,7 @@ test.describe.serial("Hugging face model", () => {
         "#react-select-modelInstanceTag-option-0"
       ),
       modelState: "STATE_ONLINE",
-      modelTask: "CLASSIFICATION",
+      modelTask: "Classification",
       additionalRules: async () => {
         const huggingFaceModelIdField = page.locator(
           "input#huggingface-model-id"

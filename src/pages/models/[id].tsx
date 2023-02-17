@@ -35,7 +35,6 @@ import {
 import {
   ConfigureModelForm,
   ConfigureModelInstanceForm,
-  TestModelInstanceSection,
 } from "@/components/model";
 import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";

@@ -85,7 +85,7 @@ test.describe.serial("Artivc model", () => {
         "#react-select-modelInstanceTag-option-0"
       ),
       modelState: "STATE_ONLINE",
-      modelTask: "CLASSIFICATION",
+      modelTask: "Classification",
       additionalRules: async () => {
         // Should have correct artivc version/model instance tag
         const artivcVersionField = page.locator("input#tag");

@@ -34,7 +34,7 @@ test.describe.serial("Create model", () => {
     // Should have warning label
     const warningLabel = page.locator("label[for='modelId']");
     await expect(warningLabel).toHaveText(
-      "ID * - Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+      "ID *Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
     );
   });
 });

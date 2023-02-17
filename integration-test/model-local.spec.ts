@@ -87,7 +87,7 @@ test.describe.serial("Local model", () => {
         "#react-select-modelInstanceTag-option-0"
       ),
       modelState: "STATE_ONLINE",
-      modelTask: "CLASSIFICATION",
+      modelTask: "Classification",
     });
   });
 

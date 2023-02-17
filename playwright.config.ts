@@ -44,7 +44,7 @@ const config: PlaywrightTestConfig = {
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: process.env.CI ? "off" : "on-first-retry",
     baseURL: process.env.NEXT_PUBLIC_CONSOLE_BASE_URL,
 
     // Because our backend is served with self-signed certification, we have to

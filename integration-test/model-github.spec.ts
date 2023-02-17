@@ -84,7 +84,7 @@ test.describe.serial("GitHub model", () => {
         "#react-select-modelInstanceTag-option-1"
       ),
       modelState: "STATE_ONLINE",
-      modelTask: "CLASSIFICATION",
+      modelTask: "Classification",
     });
   });
 
