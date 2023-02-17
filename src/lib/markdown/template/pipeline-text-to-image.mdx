@@ -16,19 +16,13 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 }'
 ```
 
-```sh cURL(base64)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
-  "task_inputs": [
-    {
-      "text_generation": {
-        "prompt": "he was worried",
-        "output_len": 97,
-        "topk": 5,
-        "seed": 0
-      }
-    }
-  ]
-}'
+```sh cURL(multipart)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
+--form 'prompt="a photo of an astronaut riding a horse on mars"' \
+--form 'steps="5"' \
+--form 'cfg_scale="7.5"' \
+--form 'seed="0"' \
+--form 'samples="1"'
 ```
 
 </CH.Code>

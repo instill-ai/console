@@ -6,7 +6,6 @@ import { CH } from "@code-hike/mdx/components";
 import {
   useActivatePipeline,
   useDeActivatePipeline,
-  usePipeline,
 } from "@/services/pipeline";
 import {
   PipelineTable,
@@ -91,6 +90,10 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
     }
     case "TASK_TEXT_TO_IMAGE": {
       templateName = "pipeline-text-to-image.mdx";
+      break;
+    }
+    case "TASK_TEXT_GENERATION": {
+      templateName = "pipeline-text-generation.mdx";
       break;
     }
     case "TASK_UNSPECIFIED": {
