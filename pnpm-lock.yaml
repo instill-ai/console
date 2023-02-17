@@ -9,7 +9,7 @@ specifiers:
   '@code-hike/mdx': ^0.7.3
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
-  '@instill-ai/design-system': ^0.0.144
+  '@instill-ai/design-system': ^0.0.146
   '@next/env': ^12.2.3
   '@playwright/test': ^1.25.2
   '@storybook/addon-actions': ^7.0.0-beta.29
@@ -91,7 +91,7 @@ specifiers:
 dependencies:
   '@amplitude/analytics-browser': 0.4.1
   '@code-hike/mdx': 0.7.3_react@18.2.0
-  '@instill-ai/design-system': 0.0.144_wdcfz36owfh4ppmouisvbq7nym
+  '@instill-ai/design-system': 0.0.146_wdcfz36owfh4ppmouisvbq7nym
   axios: 0.27.2
   clsx: 1.2.1
   cookie: 0.5.0
@@ -3203,8 +3203,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system/0.0.144_wdcfz36owfh4ppmouisvbq7nym:
-    resolution: {integrity: sha512-nWXTT2+bZwuZdFhwtW/sn8RqSVVoVX3qbO68l+tnHdLVp1aLhthVNr5fFK8XAhAYCFCBMtXsQIfhtXocGFtT/A==}
+  /@instill-ai/design-system/0.0.146_wdcfz36owfh4ppmouisvbq7nym:
+    resolution: {integrity: sha512-/3MFgxRPCsImza7U4nSDZOy4Cl5XBN6+V2CGXHVy1AJABL8BAovN00OnnZIRGEjR1fEW8sYKqyhBi4vnCWKeyg==}
     engines: {node: '>=14.6.0'}
     peerDependencies:
       clsx: ^1.1.1
@@ -6600,7 +6600,7 @@ packages:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
     dependencies:
       function-bind: 1.1.1
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
     dev: true
 
   /callsites/3.1.0:
@@ -7792,7 +7792,7 @@ packages:
       es-to-primitive: 1.2.1
       function-bind: 1.1.1
       function.prototype.name: 1.1.5
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
       get-symbol-description: 1.0.0
       has: 1.0.3
       has-property-descriptors: 1.0.0
@@ -8911,7 +8911,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
     dev: true
 
   /get-value/2.0.6:
@@ -9072,7 +9072,7 @@ packages:
   /has-property-descriptors/1.0.0:
     resolution: {integrity: sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==}
     dependencies:
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
     dev: true
 
   /has-symbols/1.0.3:
@@ -9428,7 +9428,7 @@ packages:
     resolution: {integrity: sha512-O0DB1JC/sPyZl7cIo78n5dR7eUSwwpYPiXRhTzNxZVAMUuB8vlnRFyLxdrVToks6XPLVnFfbzaVd5WLjhgg+vA==}
     engines: {node: '>= 0.4'}
     dependencies:
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
       has: 1.0.3
       side-channel: 1.0.4
     dev: true
@@ -13716,7 +13716,7 @@ packages:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
       object-inspect: 1.12.2
     dev: true
 
