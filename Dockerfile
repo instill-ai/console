@@ -43,9 +43,9 @@ RUN pnpm run build
 FROM node:16-alpine
 WORKDIR /app
 
-# You should carefully set this NODE_ENV, we set it to production by default
-ARG NODE_ENV="production"
-ENV NODE_ENV ${NODE_ENV}
+# You should carefully set this NODE_ENV, set it when use docker-compose or docker-run
+# ARG NODE_ENV="production"
+# ENV NODE_ENV ${NODE_ENV}
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
