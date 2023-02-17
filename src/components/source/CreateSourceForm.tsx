@@ -192,7 +192,6 @@ export const CreateSourceForm = ({ marginBottom }: CreateSourceFormProps) => {
         <BasicSingleSelect
           id="sourceDefinition"
           label="Source type"
-          inputLabelType="inset"
           instanceId="sourceDefinition"
           options={sourceDefinitionOptions}
           value={selectedSourceDefinitionOption}

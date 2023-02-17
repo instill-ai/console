@@ -31,7 +31,6 @@ const TextFieldWrapper: FC<TextFieldProps & FieldProps> = ({
       error={error}
       onChange={onChange}
       additionalMessageOnLabel={additionalMessageOnLabel}
-      inputLabelType="inset"
     />
   );
 };

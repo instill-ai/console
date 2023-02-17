@@ -201,7 +201,6 @@ export const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
             id="description"
             name="description"
             label="Description"
-            inputLabelType="inset"
             description="Fill with a short description."
             value={fieldValues.description}
             disabled={canEdit ? false : true}

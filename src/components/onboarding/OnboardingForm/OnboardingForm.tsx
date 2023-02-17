@@ -211,7 +211,6 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
         <BasicTextField
           id="email"
           label="Your email"
-          inputLabelType="inset"
           description="Fill your email address"
           required={true}
           value={fieldValues.email}
@@ -221,7 +220,6 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
         <BasicTextField
           id="companyName"
           label="Your company"
-          inputLabelType="inset"
           required={true}
           description="Fill your company name"
           value={fieldValues.orgName}
@@ -232,7 +230,6 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
           id="role"
           instanceId="role"
           label="Your role"
-          inputLabelType="inset"
           required={true}
           options={mockMgmtRoles}
           value={selectedRoleOption}

@@ -121,7 +121,6 @@ export const TestModelInstanceSection: FC<TestModelInstanceSectionProps> = ({
         <BasicUploadFileField
           id="file"
           label="Upload a file"
-          inputLabelType="inset"
           additionalMessageOnLabel={
             modelInstance?.state === "STATE_ONLINE"
               ? null

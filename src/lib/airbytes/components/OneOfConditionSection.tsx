@@ -225,7 +225,6 @@ export const OneOfConditionSection: FC<OneOfConditionSectionProps> = ({
             disabled={disableAll}
             menuPlacement="auto"
             label={formTree.title ?? null}
-            inputLabelType="inset"
             error={
               errors ? (conditionPath ? errors[conditionPath] : null) : null
             }

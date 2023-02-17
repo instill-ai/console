@@ -142,7 +142,6 @@ export const DeleteResourceModal = ({
           id="confirmationCode"
           type="text"
           label={`Please type "${resource ? resource.id : ""}" to confirm.`}
-          inputLabelType="inset"
           onChange={handleCodeChange}
           value={confirmationCode}
         />

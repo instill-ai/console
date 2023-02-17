@@ -30,7 +30,6 @@ const TextAreaWrapper: FC<TextAreaProps & FieldProps> = ({
       id={id}
       error={error}
       onChange={onChange}
-      inputLabelType="inset"
       additionalMessageOnLabel={additionalMessageOnLabel}
     />
   );

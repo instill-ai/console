@@ -577,7 +577,6 @@ export const CreateNewModelInstanceFlow: FC<
             id="file"
             name="model.new.file"
             label="Upload a file"
-            inputLabelType="inset"
             additionalMessageOnLabel={null}
             description="Create and upload a zip file that contains all the model files from your computer"
             error={errors.model?.new?.file || null}

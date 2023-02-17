@@ -224,7 +224,6 @@ const ModelDetailsPage: FC & {
             instanceId="modelInstanceTag"
             menuPlacement="auto"
             label={null}
-            inputLabelType="inset"
             additionalMessageOnLabel={null}
             description=""
             disabled={false}
