@@ -284,10 +284,6 @@ const ModelDetailsPage: FC & {
               modelInstance={selectedModelInstances}
               marginBottom="mb-10"
             />
-            <TestModelInstanceSection
-              modelInstance={selectedModelInstances}
-              marginBottom="mb-10"
-            />
           </>
         ) : null}
       </PageContentContainer>

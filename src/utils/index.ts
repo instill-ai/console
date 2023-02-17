@@ -2,5 +2,6 @@ export { getTextWidth } from "./dimensionUtils";
 export { groupBy } from "./arrayUtils";
 export { determineModelState } from "./determineModelState";
 export { env } from "./config";
+export { handle } from "./handle";
 
 export * from "./getHumanReadableStringFromTime";
