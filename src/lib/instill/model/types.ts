@@ -66,7 +66,7 @@ export type ModelInstance = {
   uid: string;
   id: string;
   state: ModelState;
-  task: string;
+  task: ModelInstanceTask;
   model_definition: string;
   configuration: Record<string, any>;
   create_time: string;
@@ -80,3 +80,16 @@ export type ModelInstanceReadme = {
   content: string;
   encoding: string;
 };
+
+export type ModelInstanceTask =
+  | "TASK_CLASSIFICATION"
+  | "TASK_DETECTION"
+  | "TASK_KEYPOINT"
+  | "TASK_OCR"
+  | "TASK_INSTANCE_SEGMENTATION"
+  | "TASK_SEMANTIC_SEGMENTATION"
+  | "TASK_TEXT_GENERATION"
+  | "TASK_TEXT_TO_IMAGE"
+  | "TASK_IMAGE_TO_IMAGE"
+  | "TASK_IMAGE_TO_TEXT"
+  | "TASK_UNSPECIFIED";

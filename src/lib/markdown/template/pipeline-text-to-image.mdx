@@ -1,0 +1,34 @@
+<CH.Code>
+
+```sh cURL(url)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+  "task_inputs": [
+    {
+      "text_to_image": {
+        "prompt": "a photo of an astronaut riding a horse on mars",
+        "steps": 5,
+        "cfg_scale": 7.5,
+        "seed": 0,
+        "samples": 1
+      }
+    }
+  ]
+}'
+```
+
+```sh cURL(base64)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+  "task_inputs": [
+    {
+      "text_generation": {
+        "prompt": "he was worried",
+        "output_len": 97,
+        "topk": 5,
+        "seed": 0
+      }
+    }
+  ]
+}'
+```
+
+</CH.Code>

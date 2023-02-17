@@ -1,0 +1,38 @@
+<CH.Code>
+
+```sh cURL(url)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+  "task_inputs": [
+    {
+      "classification": {
+        "image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+      }
+    },
+    {
+      "classification": {
+        "image_url": "https://artifacts.instill.tech/imgs/polar-bear.jpg"
+      }
+    }
+  ]
+}'
+```
+
+```sh cURL(base64)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+  "task_inputs": [
+    {
+      "classification": {
+        "image_base64": "/9j/4AAQSk...D/2Q=="
+      }
+    }
+  ]
+}'
+```
+
+```sh cURL(multipart)
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
+--form 'file=@"dog.jpg"' \
+--form 'file=@"polar-bear.jpg"'
+```
+
+</CH.Code>

@@ -21,23 +21,100 @@ import {
 import { ConfigurePipelineForm } from "@/components/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks";
-import { Pipeline } from "@/lib/instill";
+import { getPipelineQuery, Pipeline } from "@/lib/instill";
 import { getCodeHikeTemplateSource } from "@/lib/markdown";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { env } from "@/utils";
+import { env, handle } from "@/utils";
+import { constructPipelineRecipeWithDefinition } from "@/services/helper";
+import { Nullable } from "@/types/general";
+
+// This page didn't utilize react-query client side cache due to we already
+// need the codeMdxSource on server side. We will refactor this whole page
+// with Nextjs native app folder and router cache in the next iteration.
 
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context
 ) => {
+  const [rawPipelineError, rawPipeline] = await handle(
+    getPipelineQuery(`pipelines/${context.params?.id}`)
+  );
+
+  if (rawPipelineError || !rawPipeline) {
+    console.error("Something went wrong when fetch the raw pipeline");
+    return {
+      notFound: true,
+    };
+  }
+
+  const [recipeError, recipe] = await handle(
+    constructPipelineRecipeWithDefinition(rawPipeline.recipe)
+  );
+
+  if (recipeError || !recipe) {
+    console.error("Something went wrong when fetch the pipeline's recipe");
+    return {
+      notFound: true,
+    };
+  }
+
+  const pipeline: Pipeline = {
+    ...rawPipeline,
+    recipe: recipe,
+  };
+
+  let templateName: Nullable<string> = null;
+
+  switch (pipeline.recipe.models[0].task) {
+    case "TASK_CLASSIFICATION": {
+      templateName = "pipeline-image-classification.mdx";
+      break;
+    }
+    case "TASK_DETECTION": {
+      templateName = "pipeline-object-detection.mdx";
+      break;
+    }
+    case "TASK_INSTANCE_SEGMENTATION": {
+      templateName = "pipeline-instance-segmentation.mdx";
+      break;
+    }
+    case "TASK_KEYPOINT": {
+      templateName = "pipeline-keypoint-detection.mdx";
+      break;
+    }
+    case "TASK_OCR": {
+      templateName = "pipeline-ocr.mdx";
+      break;
+    }
+    case "TASK_SEMANTIC_SEGMENTATION": {
+      templateName = "pipeline-semantic-segmentation.mdx";
+      break;
+    }
+    case "TASK_TEXT_TO_IMAGE": {
+      templateName = "pipeline-text-to-image.mdx";
+      break;
+    }
+    case "TASK_UNSPECIFIED": {
+      templateName = "pipeline-unspecified.mdx";
+      break;
+    }
+  }
+
+  if (!templateName) {
+    console.error("Something went wrong when match correct task template");
+    return {
+      notFound: true,
+    };
+  }
+
   const codeMdxSource = await getCodeHikeTemplateSource({
-    templateName: "pipeline-code-template.mdx",
+    templateName,
     replaceRules: [
       {
-        match: "instillServerHostName",
+        match: "serverApiBaseUrlPlaceholder",
         replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL") ?? "",
       },
       {
-        match: "instillPipelineId",
+        match: "pipelineIdPlaceholder",
         replaceValue: context.params?.id?.toString() ?? "",
       },
     ],
@@ -47,6 +124,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   return {
     props: {
       codeMdxSource,
+      pipeline,
     },
   };
 };
@@ -57,14 +135,13 @@ type GetLayOutProps = {
 
 type PipelinePageProps = {
   codeMdxSource: MDXRemoteSerializeResult;
+  pipeline: Pipeline;
 };
 
 const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ codeMdxSource }) => {
+} = ({ codeMdxSource, pipeline }) => {
   const router = useRouter();
-  const { id } = router.query;
-  const pipeline = usePipeline(id ? `pipelines/${id.toString()}` : null);
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
 
@@ -83,13 +160,11 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
 
   return (
     <>
-      <PageHead
-        title={pipeline.isLoading ? "" : (pipeline.data?.name as string)}
-      />
+      <PageHead title={pipeline ? (pipeline.name as string) : ""} />
       <PageContentContainer>
         <PageTitle
-          title={id ? id.toString() : ""}
-          breadcrumbs={id ? ["Pipeline", id.toString()] : ["Pipeline"]}
+          title={pipeline.id}
+          breadcrumbs={["Pipeline", pipeline.id]}
           enableButton={false}
           marginBottom="mb-5"
         />
@@ -102,7 +177,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             iconPosition="my-auto"
             paddingX="px-[5px]"
             paddingY="py-1.5"
-            mode={pipeline.data?.mode || "MODE_UNSPECIFIED"}
+            mode={pipeline.mode || "MODE_UNSPECIFIED"}
           />
           <StateLabel
             enableBgColor={true}
@@ -112,26 +187,23 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             iconPosition="my-auto"
             paddingX="px-[5px]"
             paddingY="py-1.5"
-            state={pipeline.data?.state || "STATE_UNSPECIFIED"}
+            state={pipeline.state || "STATE_UNSPECIFIED"}
           />
         </div>
         <PipelineTable
-          pipeline={pipeline.isSuccess ? pipeline.data : null}
+          pipeline={pipeline || null}
           isLoading={false}
           marginBottom="mb-10"
         />
         <ChangeResourceStateButton
-          resource={pipeline.isLoading ? null : (pipeline.data as Pipeline)}
+          resource={pipeline || null}
           switchOn={activatePipeline}
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {pipeline.isSuccess && pipeline.data ? (
-          <ConfigurePipelineForm
-            pipeline={pipeline.data}
-            marginBottom="mb-10"
-          />
+        {pipeline ? (
+          <ConfigurePipelineForm pipeline={pipeline} marginBottom="mb-10" />
         ) : null}
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
