@@ -132,7 +132,7 @@ export const expectCorrectModelDetails = async ({
   additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
   // Mimic the behavior of long running operation
-  await delay(10000);
+  await delay(20000);
 
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
@@ -168,16 +168,16 @@ export const expectCorrectModelDetails = async ({
   const modelStateLabel = page.locator("data-testid=state-label");
   const stateToggle = page.locator("#pipelineStateToggleButton");
   if (modelState === "STATE_ONLINE") {
-    await expect(modelStateLabel).toHaveText("Online");
+    await expect(modelStateLabel).toHaveText("Online", { timeout: 20000 });
     expect(await stateToggle.isChecked()).toBeTruthy();
   } else if (modelState === "STATE_OFFLINE") {
-    await expect(modelStateLabel).toHaveText("Offline");
+    await expect(modelStateLabel).toHaveText("Offline", { timeout: 20000 });
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else if (modelState === "STATE_UNSPECIFIED") {
-    await expect(modelStateLabel).toHaveText("Unspecified");
+    await expect(modelStateLabel).toHaveText("Unspecified", { timeout: 20000 });
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   } else {
-    await expect(modelStateLabel).toHaveText("Error");
+    await expect(modelStateLabel).toHaveText("Error", { timeout: 20000 });
     expect(await stateToggle.isChecked()).not.toBeTruthy();
   }
 

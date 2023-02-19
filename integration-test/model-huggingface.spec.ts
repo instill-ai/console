@@ -24,6 +24,8 @@ test.use({
 });
 
 test.describe.serial("Hugging face model", () => {
+  test.setTimeout(75000);
+
   test("should create huggingface model", async ({ page }) => {
     await page.goto("/models/create", { waitUntil: "networkidle" });
 

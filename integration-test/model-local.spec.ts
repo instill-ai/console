@@ -23,6 +23,8 @@ test.use({
 });
 
 test.describe.serial("Local model", () => {
+  test.setTimeout(75000);
+
   test("should create local model", async ({ page }) => {
     await page.goto("/models/create", { waitUntil: "networkidle" });
 

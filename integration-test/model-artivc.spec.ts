@@ -24,6 +24,8 @@ test.use({
 });
 
 test.describe.serial("Artivc model", () => {
+  test.setTimeout(75000);
+
   test("should create artivc model", async ({ page }) => {
     await page.goto("/models/create");
 

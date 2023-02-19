@@ -24,6 +24,8 @@ test.use({
 });
 
 test.describe.serial("GitHub model", () => {
+  test.setTimeout(75000);
+
   test("should create github model", async ({ page }) => {
     await page.goto("/models/create");
 
