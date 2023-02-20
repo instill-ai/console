@@ -2,7 +2,7 @@ import { ModelInstance, Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { StatefulToggleField } from "@instill-ai/design-system";
 import { FC, useState, useEffect, useCallback } from "react";
-import { UseMutationResult } from "react-query";
+import { UseMutationResult } from "@tanstack/react-query";
 import cn from "clsx";
 import { AxiosError } from "axios";
 import { Operation } from "@/lib/instill/types";

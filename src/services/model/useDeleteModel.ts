@@ -1,5 +1,5 @@
 import { deleteModelMutation, Model } from "@/lib/instill";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeleteModel = () => {
   const queryClient = useQueryClient();

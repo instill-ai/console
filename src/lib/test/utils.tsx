@@ -1,7 +1,7 @@
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { render } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
 
 /**
