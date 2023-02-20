@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { listModelsQuery } from "@/lib/instill";
 
 export const useModels = () => {

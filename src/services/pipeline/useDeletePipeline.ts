@@ -1,5 +1,5 @@
 import { deletePipelineMutation, Pipeline } from "@/lib/instill";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeletePipeline = () => {
   const queryClient = useQueryClient();

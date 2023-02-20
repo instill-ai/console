@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
-import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query/devtools";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@code-hike/mdx/dist/index.css";

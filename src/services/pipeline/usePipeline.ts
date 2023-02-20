@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPipelineQuery, Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { constructPipelineRecipeWithDefinition } from "../helper";

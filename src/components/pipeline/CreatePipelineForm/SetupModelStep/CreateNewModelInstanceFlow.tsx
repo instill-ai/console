@@ -50,7 +50,7 @@ import { Nullable } from "@/types/general";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { AxiosError } from "axios";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 // We need to pass modelCreated state to UseExistingModelInstanceFlow
 

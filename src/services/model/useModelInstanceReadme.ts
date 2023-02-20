@@ -1,6 +1,6 @@
 import { getModelInstanceReadme } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const useModelInstanceReadme = (modelInstanceName: Nullable<string>) => {
   return useQuery(
