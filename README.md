@@ -121,7 +121,7 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
   - In console folder: `pnpm dev`
   - In console folder: `pnpm integration-test`
 - If you want to test in the docker-container (Run the app with VDP) 
-  - In VDP folder: `make dev PROFILE=all ITMODE=true`
+  - In VDP folder: `make dev PROFILE=all ITMODE=true CONSOLE_BASE_URL_HOST=console CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway`
   - In console folder: `pnpm docker-build-test`
   - In console folder: `pnpm docker-run-test`
 
