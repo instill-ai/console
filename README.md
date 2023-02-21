@@ -131,6 +131,21 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 - Then the user of this container will have the permission to write test-result into container.
 - you could look up the container's id by `docker cp` then copy the test-results into host folder by `docker cp <container_id>:/app/test-results .`
 
+### About the manual test 
+
+Currently we have several steps that require manually testing.
+
+- Please follow the step above to setup the VDP backend
+- Please create all the model list [here](https://github.com/instill-ai/vdp#model-hub)
+- In the `/models` page, please make sure all the created models are correctly listed
+- Please click every listed model to go to the model details page `/models/:model_id`
+- Please check the model state on the `/models/:model_id` page, you should select the model_instance_tag in the dropdown to the one you just deployed. The model state should be `Online`
+- Please switch the state toggle button, the model_state should be `Unspecified` and after a while it should be Offline. Please do it again to check whether it can switch back to the Online state.
+- Please use the model you just created to create a sync pipeline.
+- Go to the `pipelines/:pipeline_id` page you just created.
+- If you switch the state toggle button, it should warn you `Pipeline pipeline-hehe is in the SYNC mode, which is always active`
+- Please create a async pipeline with local json destination
+- Please go to `pipeline/:pipeline_id` page to check it has correctly displayed data
 
 ## Other Caveats
 
