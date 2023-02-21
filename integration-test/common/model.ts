@@ -2,6 +2,8 @@ import { env, delay, expectToSelectReactSelectOption } from "../helper";
 import { Page, expect, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
+  delay(20000);
+
   await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
   // Should enable open delete model modal button

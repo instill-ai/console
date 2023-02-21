@@ -1,4 +1,4 @@
-import { env } from "../helper";
+import { delay, env } from "../helper";
 import { Page, expect } from "@playwright/test";
 
 export const openPipelinesPage = async (page: Page) => {

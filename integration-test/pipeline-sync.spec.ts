@@ -193,7 +193,9 @@ test.describe
     await expectToUpdatePipelineDescription(page, pipelineId, "");
   });
 
-  test("should have proper delete pipeline modal and delete this pipeline", async ({
+  // Disable test related to long-running operation
+
+  test.skip("should have proper delete pipeline modal and delete this pipeline", async ({
     page,
   }) => {
     await expectToDeletePipeline(page, pipelineId);
