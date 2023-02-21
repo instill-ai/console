@@ -1,4 +1,4 @@
-import { env , deleteSource, expectToSelectReactSelectOption } from "./helper";
+import { env, deleteSource, expectToSelectReactSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 
 const sourceId = "source-grpc";
@@ -10,11 +10,6 @@ test.beforeAll(async () => {
   } catch (err) {
     return Promise.reject(err);
   }
-});
-
-// We need to clean up source after the test too.
-test.afterAll(async () => {
-  await deleteSource(sourceId);
 });
 
 test.describe.serial("Sync source", () => {

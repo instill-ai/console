@@ -105,9 +105,9 @@ test.describe.serial("Hugging face model", () => {
 
   // Disable test related to long-running operation
 
-  test.skip("should have proper delete model modal and delete this model", async ({
-    page,
-  }) => {
-    await expectToDeleteModel(page, modelId);
-  });
+  // test.skip("should have proper delete model modal and delete this model", async ({
+  //   page,
+  // }) => {
+  //   await expectToDeleteModel(page, modelId);
+  // });
 });

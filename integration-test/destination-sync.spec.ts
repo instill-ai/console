@@ -11,13 +11,11 @@ const destinationType = "HTTP";
 
 // If there has a destination-http connector, we need to delete it then proceed the test.
 test.beforeAll(async () => {
-  await deleteDestination(destinationId);
-});
-
-// Delete used sync destination connector to avoid conflict or casuing other
-// test to fall.
-test.afterAll(async () => {
-  await deleteDestination(destinationId);
+  try {
+    await deleteDestination(destinationId);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 });
 
 test.describe.serial("Sync destination", () => {
