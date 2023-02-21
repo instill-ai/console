@@ -1,4 +1,8 @@
-import { env , deleteDestination, expectToSelectReactSelectOption } from "./helper";
+import {
+  env,
+  deleteDestination,
+  expectToSelectReactSelectOption,
+} from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
