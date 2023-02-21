@@ -23,10 +23,6 @@ test.use({
   },
 });
 
-test.afterAll(async () => {
-  await deleteDestination(destinationId);
-});
-
 test.describe.serial("Async destination", () => {
   test("should warn wrong resource ID", async ({ page }) => {
     await page.goto("/destinations/create");
