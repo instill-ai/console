@@ -1,7 +1,7 @@
 import { getCodeHikeTemplateSource } from "@/lib/markdown";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, body } = req;
 
   if (method !== "POST") {
@@ -34,5 +34,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).json(err);
   }
 };
-
-export default handler;

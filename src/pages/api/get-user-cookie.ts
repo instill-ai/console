@@ -1,7 +1,7 @@
 import { InstillAiUserCookie } from "@/types/general";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, cookies } = req;
 
   if (method !== "GET") {
@@ -15,5 +15,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(200).json(instillAiUserCookie);
 };
-
-export default handler;

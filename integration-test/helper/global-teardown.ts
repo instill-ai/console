@@ -5,7 +5,7 @@ import {
   deleteAllSources,
 } from ".";
 
-async function globalTeardown() {
+export async function globalTeardown() {
   try {
     await deleteAllModels();
     await deleteAllDestinations();
@@ -15,5 +15,3 @@ async function globalTeardown() {
     console.log(err);
   }
 }
-
-export default globalTeardown;
