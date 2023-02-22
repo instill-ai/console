@@ -2,7 +2,7 @@ import { setCookie, SetCookiePayload } from "@/lib/cookie";
 import { env } from "@/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, body } = req;
 
   if (method !== "POST") {
@@ -40,3 +40,5 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).end(String(err));
   }
 };
+
+export default handler
