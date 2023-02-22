@@ -117,7 +117,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
     replaceRules: [
       {
         match: "serverApiBaseUrlPlaceholder",
-        replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL_FOR_CLIENT") ?? "",
+        replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL") ?? "",
       },
       {
         match: "pipelineIdPlaceholder",
