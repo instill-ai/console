@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { listRepoFileContent } from "@/lib/github";
 
 export const usePipelineSchema = () => {

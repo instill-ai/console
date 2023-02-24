@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activatePipelineMutation, Pipeline } from "@/lib/instill";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 

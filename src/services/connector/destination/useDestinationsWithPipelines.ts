@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { DestinationWithPipelines } from "@/lib/instill";
 import { usePipelines } from "@/services/pipeline";

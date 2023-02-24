@@ -1,5 +1,5 @@
 import { listPipelinesQuery, Pipeline } from "@/lib/instill";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { constructPipelineRecipeWithDefinition } from "../helper";
 
 export const usePipelines = (enable: boolean) => {

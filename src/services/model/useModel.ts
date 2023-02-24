@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getModelQuery } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 
