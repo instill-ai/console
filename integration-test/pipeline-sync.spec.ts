@@ -28,17 +28,6 @@ test.use({
   },
 });
 
-test.afterAll(async () => {
-  try {
-    // We need to clean up destination and source too
-    await deleteDestination("destination-http");
-    await deleteSource("source-http");
-    await deleteModel(modelId);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 test.describe
   .serial("Sync pipeline with new source, destination and local model", () => {
   test("should create sync pipeline", async ({ page }) => {

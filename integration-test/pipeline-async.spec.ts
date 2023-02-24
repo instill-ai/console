@@ -1,4 +1,5 @@
-import { env ,
+import {
+  env,
   createInstillAxiosTestClient,
   deleteDestination,
   deleteModel,
@@ -33,35 +34,8 @@ test.use({
   },
 });
 
-test.afterAll(async () => {
-  try {
-    // We need to clean up destination and source too
-    await deleteDestination("destination-http");
-    await deleteSource("source-http");
-    await deleteModel(modelId);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 test.describe
   .serial("Async pipeline with new source, destination and local model", () => {
-  test.afterAll(async () => {
-    try {
-      const client = createInstillAxiosTestClient();
-
-      await client.post(
-        `${env(
-          "NEXT_PUBLIC_API_VERSION"
-        )}/models/${modelId}/instances/${modelInstanceTag}/undeploy`
-      );
-      await deleteDestination(destinationId);
-      await deleteSource("source-http");
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  });
-
   test("should create async pipeline", async ({ page }) => {
     await page.goto("/pipelines/create", { waitUntil: "networkidle" });
 
