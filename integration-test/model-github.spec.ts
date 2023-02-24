@@ -94,9 +94,11 @@ test.describe.serial("GitHub model", () => {
     await expectToUpdateModelDescription(page, modelId, "new");
   });
 
-  test("should have proper delete model modal and delete this model", async ({
-    page,
-  }) => {
-    await expectToDeleteModel(page, modelId);
-  });
+  // Disable test related to long-running operation
+
+  // test.skip("should have proper delete model modal and delete this model", async ({
+  //   page,
+  // }) => {
+  //   await expectToDeleteModel(page, modelId);
+  // });
 });

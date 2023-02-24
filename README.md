@@ -104,33 +104,9 @@ For server-side code, because we will alter the ./.env file in the image. It can
 
 - We currently use self-signed certification in all our backend so the default of env variable `NEXT_PUBLIC_INTEGRATION_TEST_ENABLED` will be true. Which means that the Axios won't complaint the `Unauthorized` request. Please do not set this env variable to true on production. 
 
-## About the test container
+## About how to test the console
 
-We maintain another container `Dockerfile.playwright` specifically for test usage. This container has some caveats that maintainers of this repo should notice
-
-- The playwright version should align with the pulled playwright image version. Two should be the same.
-- If you want to debug in the test container, you should grant this container the root user permission. (default is specific user: playwright) with `--build-arg TEST_USER='root'` in you `docker build` command
-
-### How to test at local
-
-- In VDP folder: `git pull --rebase` to pull the up-to-date code.
-- In VDP folder: `make build PROFILE=all` 
-- In console folder: `pnpm dev` to setup local dev server
-- If you want to test in your host (Run the app with pnpm dev in the console folder) 
-  - In VDP folder: `make dev PROFILE=console ITMODE=true`
-  - In console folder: `pnpm dev`
-  - In console folder: `pnpm integration-test`
-- If you want to test in the docker-container (Run the app with VDP) 
-  - In VDP folder: `make dev PROFILE=all ITMODE=true`
-  - In console folder: `pnpm docker-build-test`
-  - In console folder: `pnpm docker-run-test`
-
-### How to debug the test in the docker
-
-- when build the text container, please alter `pnpm docker-build-test` to `docker build -f Dockerfile.playwright --build-arg TEST_USER='root' -t instill-console-integration .`
-- Then the user of this container will have the permission to write test-result into container.
-- you could look up the container's id by `docker cp` then copy the test-results into host folder by `docker cp <container_id>:/app/test-results .`
-
+Please refer to the console integration test's [document](/integration-test/README.md)
 
 ## Other Caveats
 
