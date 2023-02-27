@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.18.0-alpha](https://github.com/instill-ai/console/compare/v0.17.0-alpha...v0.18.0-alpha) (2023-02-27)
+
+
+### Features
+
+* migrate react-query to version 4 ([#352](https://github.com/instill-ai/console/issues/352)) ([d72196a](https://github.com/instill-ai/console/commit/d72196acfbc299880ebf460ed823d6fb22fb32ab))
+
+
+### Bug Fixes
+
+* refactor the trigger codes ([#361](https://github.com/instill-ai/console/issues/361)) ([400e54b](https://github.com/instill-ai/console/commit/400e54b62cc3e569a8c8ae0801a7ab67822a4462))
+* reset error object create model form ([#357](https://github.com/instill-ai/console/issues/357)) ([e664c05](https://github.com/instill-ai/console/commit/e664c057f2e397f9caa812832d82408f637b7760))
+
 ## [0.17.0-alpha](https://github.com/instill-ai/console/compare/v0.16.0-alpha...v0.17.0-alpha) (2023-02-22)
 
 
