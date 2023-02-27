@@ -213,6 +213,11 @@ export const CreateModelForm = () => {
         id: "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
       }));
       return;
+    } else if (fieldErrors.id) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        id: null,
+      }));
     }
 
     setCreateModelMessageBoxState(() => ({
