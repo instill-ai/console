@@ -5,8 +5,8 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
   "task_inputs": [
     {
       "text_generation": {
-        "prompt": "he was worried",
-        "output_len": 97,
+        "prompt": "once upon a time,",
+        "output_len": 50,
         "topk": 5,
         "seed": 0
       }
@@ -17,10 +17,9 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 
 ```sh cURL(multipart)
 curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
---form '"a photo of an astronaut riding a horse on mars"' \
---form 'prompt="he was worried"' \
---form 'output_len="97"' \
---form 'top_k="5"' \
+--form 'prompt="once upon a time,"' \
+--form 'output_len="50"' \
+--form 'topk="5"' \
 --form 'seed="0"'
 ```
 
