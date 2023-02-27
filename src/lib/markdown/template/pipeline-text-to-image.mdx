@@ -5,9 +5,9 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
   "task_inputs": [
     {
       "text_to_image": {
-        "prompt": "a photo of an astronaut riding a horse on mars",
-        "steps": 5,
-        "cfg_scale": 7.5,
+        "prompt": "alone in the amusement park by Edward Hopper",
+        "steps": 40,
+        "cfg_scale": 8.5,
         "seed": 0,
         "samples": 1
       }
@@ -18,9 +18,9 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 
 ```sh cURL(multipart)
 curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
---form 'prompt="a photo of an astronaut riding a horse on mars"' \
---form 'steps="5"' \
---form 'cfg_scale="7.5"' \
+--form 'prompt="alone in the amusement park by Edward Hopper"' \
+--form 'steps="40"' \
+--form 'cfg_scale="8.5"' \
 --form 'seed="0"' \
 --form 'samples="1"'
 ```
