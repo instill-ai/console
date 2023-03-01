@@ -14,7 +14,7 @@ import { Nullable } from "@/types/general";
 import { useDeletePipeline, useUpdatePipeline } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { useDeleteResourceGuard } from "@/hooks/useDeleteResourceGuard";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type ConfigurePipelineFormProps = {
   pipeline: Nullable<Pipeline>;
@@ -135,7 +135,7 @@ export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
   // # Handle delete pipeline                                                 #
   // ##########################################################################
 
-  const { disableResourceDeletion } = useDeleteResourceGuard();
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const [deletePipelineModalIsOpen, setDeletePipelineModalIsOpen] =
     useState(false);
@@ -214,7 +214,7 @@ export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
         </div>
         <div className="mb-10 flex flex-row">
           <OutlineButton
-            disabled={disableResourceDeletion}
+            disabled={enableGuard}
             onClickHandler={() => setDeletePipelineModalIsOpen(true)}
             position="mr-auto my-auto"
             type="button"

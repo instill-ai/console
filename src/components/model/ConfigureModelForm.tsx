@@ -15,7 +15,10 @@ import { useDeleteModel, useUpdateModel } from "@/services/model";
 import { Nullable } from "@/types/general";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useDeleteResourceGuard, useDeleteResourceModalState } from "@/hooks";
+import {
+  useCreateUpdateDeleteResourceGuard,
+  useDeleteResourceModalState,
+} from "@/hooks";
 
 export type ConfigureModelFormProps = {
   model: Nullable<Model>;
@@ -133,7 +136,8 @@ export const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
   // # 2 - Handle delete model                                         #
   // ###################################################################
 
-  const { disableResourceDeletion } = useDeleteResourceGuard();
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   const modalState = useDeleteResourceModalState();
   const deleteModel = useDeleteModel();
 
@@ -215,7 +219,7 @@ export const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
         </div>
         <div className="flex flex-row mb-8">
           <OutlineButton
-            disabled={disableResourceDeletion}
+            disabled={enableGuard}
             onClickHandler={() => modalState.setModalIsOpen(true)}
             position="mr-auto my-auto"
             type="button"
