@@ -4,6 +4,7 @@ import cn from "clsx";
 import { SolidButton } from "@instill-ai/design-system";
 
 import { Nullable } from "@/types/general";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type TablePlaceholderBaseProps = {
   placeholderItems: {
@@ -29,6 +30,7 @@ export const TablePlaceholderBase = ({
   const handleOnClick = () => {
     router.push(createButtonLink);
   };
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
   return (
     <div
       className={cn(
@@ -49,7 +51,7 @@ export const TablePlaceholderBase = ({
           <SolidButton
             type="button"
             color="primary"
-            disabled={false}
+            disabled={enableGuard}
             onClickHandler={handleOnClick}
             position={null}
           >

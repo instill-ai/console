@@ -1,4 +1,3 @@
-export { useDeleteResourceGuard } from "./useDeleteResourceGuard";
 export { useDeleteResourceModalState } from "./useDeleteResourceModalState";
 export { useMultiStageQueryLoadingState } from "./useMultiStageQueryLoadingState";
 export type { UseMultiStageQueryLoadingStatePayload } from "./useMultiStageQueryLoadingState";
@@ -7,3 +6,4 @@ export { useRefSize } from "./useRefSize";
 export { useSendAmplitudeData } from "./useSendAmplitudeData";
 export { useStateOverviewCounts } from "./useStateOverviewCounts";
 export { useWindowSize } from "./useWindowSize";
+export { useCreateUpdateDeleteResourceGuard } from "./useCreateUpdateDeleteResourceGuard";

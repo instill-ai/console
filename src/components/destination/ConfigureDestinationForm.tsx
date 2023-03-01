@@ -33,8 +33,9 @@ import {
 } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
-import { useDeleteResourceGuard } from "@/hooks";
 import { useRouter } from "next/router";
+import { env } from "@/utils";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type ConfigureDestinationFormProps = {
   destination: DestinationWithDefinition;
@@ -95,6 +96,8 @@ export const ConfigureDestinationForm = ({
   // ##########################################################################
   // # 2 - Create interior state for managing the form                        #
   // ##########################################################################
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const [formIsDirty, setFormIsDirty] = useState(false);
 
@@ -294,8 +297,6 @@ export const ConfigureDestinationForm = ({
   // # 3 - Handle delete destination                                          #
   // ##########################################################################
 
-  const { disableResourceDeletion } = useDeleteResourceGuard();
-
   const [deleteDestinationModalIsOpen, setDeleteDestinationModalIsOpen] =
     useState(false);
 
@@ -405,7 +406,7 @@ export const ConfigureDestinationForm = ({
         </div>
         <div className="flex flex-row mb-10">
           <OutlineButton
-            disabled={disableResourceDeletion}
+            disabled={enableGuard}
             onClickHandler={() => setDeleteDestinationModalIsOpen(true)}
             position="mr-auto my-auto"
             type="button"
@@ -417,7 +418,7 @@ export const ConfigureDestinationForm = ({
           <SolidButton
             type="button"
             color="primary"
-            disabled={isSyncDestination}
+            disabled={enableGuard ? true : isSyncDestination}
             position="ml-auto my-auto"
             onClickHandler={() => handleSubmit()}
           >

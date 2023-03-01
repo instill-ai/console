@@ -17,7 +17,7 @@ import { useDeleteSource } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { sendAmplitudeData } from "@/lib/amplitude";
 import { ErrorDetails, Violation } from "@/lib/instill/types";
-import { useDeleteResourceGuard } from "@/hooks/useDeleteResourceGuard";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type ConfigureSourceFormProps = {
   source: Nullable<SourceWithPipelines>;
@@ -99,10 +99,8 @@ export const ConfigureSourceForm = ({
   // # Handle delete source                                            #
   // ###################################################################
 
-  const { disableResourceDeletion } = useDeleteResourceGuard();
-
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
   const [deleteSourceModalIsOpen, setDeleteSourceModalIsOpen] = useState(false);
-
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
       activate: false,
@@ -185,7 +183,7 @@ export const ConfigureSourceForm = ({
         </div>
         <div className="mb-10 flex flex-row">
           <OutlineButton
-            disabled={disableResourceDeletion}
+            disabled={enableGuard}
             onClickHandler={() => setDeleteSourceModalIsOpen(true)}
             position="mr-auto my-auto"
             type="button"

@@ -1,5 +1,6 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
 import {
   PageTitle,
@@ -10,6 +11,22 @@ import {
 import { CreateModelForm } from "@/components/model";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks";
+import { env } from "@/utils";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+    return {
+      redirect: {
+        destination: "/models",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 type GetLayOutProps = {
   page: ReactElement;
