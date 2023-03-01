@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0-alpha](https://github.com/instill-ai/console/compare/v0.18.0-alpha...v0.19.0-alpha) (2023-03-01)
+
+
+### Features
+
+* expose a env that can disable all create, update, delete action ([#363](https://github.com/instill-ai/console/issues/363)) ([acdc412](https://github.com/instill-ai/console/commit/acdc4125ae8342b0b6ffde0b726e3670e31e1591))
+
 ## [0.18.0-alpha](https://github.com/instill-ai/console/compare/v0.17.0-alpha...v0.18.0-alpha) (2023-02-27)
 
 
