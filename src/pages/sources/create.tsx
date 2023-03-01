@@ -11,11 +11,10 @@ import {
 } from "@/components/ui";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks";
+import { env } from "@/utils";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (
-    process.env.NEXT_PUBLIC_DISABLE_CREATE_DELETE_UPDATE_RESOURCE === "true"
-  ) {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_DELETE_UPDATE_RESOURCE") === "true") {
     return {
       redirect: {
         destination: "/sources",
