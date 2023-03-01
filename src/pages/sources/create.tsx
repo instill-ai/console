@@ -14,7 +14,7 @@ import { useSendAmplitudeData } from "@/hooks";
 import { env } from "@/utils";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_DELETE_UPDATE_RESOURCE") === "true") {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
     return {
       redirect: {
         destination: "/sources",
