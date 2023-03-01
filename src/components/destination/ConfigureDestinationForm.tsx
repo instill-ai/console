@@ -418,7 +418,7 @@ export const ConfigureDestinationForm = ({
           <SolidButton
             type="button"
             color="primary"
-            disabled={isSyncDestination}
+            disabled={enableGuard ? true : isSyncDestination}
             position="ml-auto my-auto"
             onClickHandler={() => handleSubmit()}
           >

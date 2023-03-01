@@ -229,7 +229,7 @@ export const ConfigureModelForm: FC<ConfigureModelFormProps> = ({
             Delete
           </OutlineButton>
           <SolidButton
-            disabled={false}
+            disabled={enableGuard}
             onClickHandler={handleSubmit}
             position="ml-auto my-auto"
             type="button"

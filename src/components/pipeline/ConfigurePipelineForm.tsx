@@ -224,7 +224,7 @@ export const ConfigurePipelineForm: FC<ConfigurePipelineFormProps> = ({
             Delete
           </OutlineButton>
           <SolidButton
-            disabled={false}
+            disabled={enableGuard}
             onClickHandler={() => handleSubmit()}
             position="ml-auto my-auto"
             type="button"

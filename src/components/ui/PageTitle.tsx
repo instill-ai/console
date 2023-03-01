@@ -4,6 +4,7 @@ import cn from "clsx";
 
 import { BreadcrumbProps, Breadcrumb } from "./Breadcrumb";
 import { SolidButton } from "@instill-ai/design-system";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type PageTitleProps = {
   title: string;
@@ -28,6 +29,9 @@ export const PageTitle = ({
       router.push(buttonLink);
     }
   }, [router, buttonLink, enableButton]);
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   return (
     <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
@@ -37,7 +41,7 @@ export const PageTitle = ({
           <SolidButton
             type="button"
             color="primary"
-            disabled={false}
+            disabled={enableGuard}
             onClickHandler={onClickHandler}
             position={null}
           >
