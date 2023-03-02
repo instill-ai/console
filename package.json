@@ -37,6 +37,7 @@
     "copy-to-clipboard": "^3.3.2",
     "cross-env": "^7.0.3",
     "formik": "^2.2.9",
+    "fuse.js": "^6.6.2",
     "next": "^13.1.2",
     "next-mdx-remote": "^4.1.0",
     "react": "^18.2.0",
