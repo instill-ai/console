@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -7,10 +7,14 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
+  TableLoadingProgress,
 } from "@/components/ui";
 import { useSourcesWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
+import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
+import { Nullable } from "@/types/general";
+import { useResourcePages } from "@/hooks/useResourcePages";
+import { PaginationListContainer } from "@/components/ui/PaginationListContainer";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -20,21 +24,20 @@ const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const sources = useSourcesWithPipelines();
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
 
-  const isLoading = useMultiStageQueryLoadingState({
-    data: sources.data,
-    isError: sources.isError,
-    isSuccess: sources.isSuccess,
-    isLoading: sources.isLoading,
+  const sourcePages = useResourcePages({
+    resources: sources.data || null,
+    searchTerm,
+    pageSize: 1,
   });
 
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
+  const stateOverviewCounts = useStateOverviewCounts(
+    sources.isSuccess ? sources.data : []
+  );
 
-  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
@@ -58,12 +61,26 @@ const SourcePage: FC & {
           buttonLink="/sources/create"
           marginBottom="mb-10"
         />
-        <SourcesTable
-          sources={sources.data ? sources.data : []}
-          isLoadingSources={isLoading}
-          marginBottom={null}
-          enablePlaceholderCreateButton={true}
-        />
+        <PaginationListContainer
+          title="Source"
+          description="These are the sources you can select"
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          totalPage={sourcePages.length}
+        >
+          {sources.isSuccess ? (
+            <SourcesTable
+              sourcePages={sourcePages}
+              marginBottom={null}
+              currentPage={currentPage}
+              stateOverviewCounts={stateOverviewCounts}
+            />
+          ) : (
+            <TableLoadingProgress marginBottom={null} />
+          )}
+        </PaginationListContainer>
       </PageContentContainer>
     </>
   );

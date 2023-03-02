@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -7,10 +7,14 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
+  TableLoadingProgress,
 } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
+import { Nullable } from "@/types/general";
+import { useResourcePages } from "@/hooks/useResourcePages";
+import { PaginationListContainer } from "@/components/ui/PaginationListContainer";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,15 +23,21 @@ type GetLayOutProps = {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const pipelines = usePipelines(true);
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
+  const pipelines = usePipelines(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
+
+  const pipelinePages = useResourcePages({
+    resources: pipelines.data || null,
+    searchTerm,
+    pageSize: 2,
+  });
+
+  const stateOverviewCounts = useStateOverviewCounts(
+    pipelines.isSuccess ? pipelines.data : []
+  );
+
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
@@ -55,12 +65,26 @@ const PipelinePage: FC & {
           buttonLink="/pipelines/create"
           marginBottom="mb-10"
         />
-        <PipelinesTable
-          pipelines={pipelines.data ? pipelines.data : []}
-          isLoadingPipeline={pipelines.isLoading}
-          marginBottom={null}
-          enablePlaceholderCreateButton={true}
-        />
+        <PaginationListContainer
+          title="Pipeline"
+          description="These are the pipelines you can select"
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          totalPage={pipelinePages.length}
+        >
+          {pipelines.isSuccess ? (
+            <PipelinesTable
+              pipelinePages={pipelinePages}
+              currentPage={currentPage}
+              marginBottom={null}
+              stateOverviewCounts={stateOverviewCounts}
+            />
+          ) : (
+            <TableLoadingProgress marginBottom={null} />
+          )}
+        </PaginationListContainer>
       </PageContentContainer>
     </>
   );

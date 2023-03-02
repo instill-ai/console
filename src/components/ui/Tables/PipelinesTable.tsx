@@ -1,41 +1,34 @@
-import { FC, memo, useMemo } from "react";
+import { FC, useMemo } from "react";
 
 import {
   ConnectionTypeCell,
   InstanceCell,
   ModeCell,
   NameCell,
-  PipelineTablePlaceholder,
   TableBody,
   TableContainer,
   TableRow,
-  TableLoadingProgress,
   TableHead,
   TableHeadItem,
   StateOverview,
 } from "@/components/ui";
-import type { PipelineTablePlaceholderProps } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks";
+import { StateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type PipelinesTableProps = {
-  isLoadingPipeline: boolean;
-  pipelines: Pipeline[];
+  pipelinePages: Pipeline[][];
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: PipelineTablePlaceholderProps["enablePlaceholderCreateButton"];
+  currentPage: number;
+  stateOverviewCounts: Nullable<StateOverviewCounts>;
 };
 
 export const PipelinesTable: FC<PipelinesTableProps> = ({
-  isLoadingPipeline,
-  pipelines,
   marginBottom,
-  enablePlaceholderCreateButton,
+  pipelinePages,
+  currentPage,
+  stateOverviewCounts,
 }) => {
-  const stateOverviewCounts = useStateOverviewCounts(
-    isLoadingPipeline ? null : pipelines
-  );
-
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
       {
@@ -67,17 +60,8 @@ export const PipelinesTable: FC<PipelinesTableProps> = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (isLoadingPipeline) {
-    return <TableLoadingProgress marginBottom={marginBottom} />;
-  }
-
-  if (pipelines.length === 0) {
-    return (
-      <PipelineTablePlaceholder
-        marginBottom={marginBottom}
-        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
-      />
-    );
+  if (pipelinePages.length === 0) {
+    return <></>;
   }
 
   return (
@@ -92,7 +76,7 @@ export const PipelinesTable: FC<PipelinesTableProps> = ({
         items={tableHeadItems}
       />
       <TableBody>
-        {pipelines.map((pipeline) => (
+        {pipelinePages[currentPage].map((pipeline) => (
           <TableRow
             borderColor="border-instillGrey20"
             bgColor="bg-white"

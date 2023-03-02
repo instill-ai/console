@@ -4,37 +4,30 @@ import {
   ConnectionTypeCell,
   InstanceCell,
   NameCell,
-  SourceTablePlaceholder,
   TableBody,
   TableContainer,
-  TableLoadingProgress,
   TableRow,
   TableHeadItem,
   TableHead,
-  SourceTablePlaceholderProps,
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks";
 import { StateOverview } from "../StateOverview";
+import { StateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type SourcesTableProps = {
-  sources: SourceWithPipelines[];
-  isLoadingSources: boolean;
+  sourcePages: SourceWithPipelines[][];
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: SourceTablePlaceholderProps["enablePlaceholderCreateButton"];
+  currentPage: number;
+  stateOverviewCounts: Nullable<StateOverviewCounts>;
 };
 
 export const SourcesTable = ({
-  sources,
-  isLoadingSources,
+  sourcePages,
+  currentPage,
   marginBottom,
-  enablePlaceholderCreateButton,
+  stateOverviewCounts,
 }: SourcesTableProps) => {
-  const stateOverviewCounts = useStateOverviewCounts(
-    isLoadingSources ? null : sources
-  );
-
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
       {
@@ -58,17 +51,8 @@ export const SourcesTable = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (isLoadingSources) {
-    return <TableLoadingProgress marginBottom={marginBottom} />;
-  }
-
-  if (sources.length === 0) {
-    return (
-      <SourceTablePlaceholder
-        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
-        marginBottom={marginBottom}
-      />
-    );
+  if (sourcePages.length === 0) {
+    return <></>;
   }
 
   return (
@@ -83,7 +67,7 @@ export const SourcesTable = ({
         items={tableHeadItems}
       />
       <TableBody>
-        {sources.map((source) => (
+        {sourcePages[currentPage].map((source) => (
           <TableRow
             bgColor="bg-white"
             borderColor="border-instillGrey20"

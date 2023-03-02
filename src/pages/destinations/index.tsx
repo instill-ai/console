@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -7,10 +7,14 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
+  TableLoadingProgress,
 } from "@/components/ui";
 import { useDestinationsWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
+import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
+import { PaginationListContainer } from "@/components/ui/PaginationListContainer";
+import { Nullable } from "@/types/general";
+import { useResourcePages } from "@/hooks/useResourcePages";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,23 +23,23 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const destinations = useDestinationsWithPipelines();
-
-  const isLoading = useMultiStageQueryLoadingState({
-    data: destinations.data,
-    isError: destinations.isError,
-    isLoading: destinations.isLoading,
-    isSuccess: destinations.isSuccess,
-  });
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const destinations = useDestinationsWithPipelines();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
+
+  const pageSize = 10;
+
+  const destinationPages = useResourcePages({
+    resources: destinations.data || null,
+    searchTerm,
+    pageSize,
+  });
+
+  const stateOverviewCounts = useStateOverviewCounts(
+    destinations.isSuccess ? destinations.data : []
+  );
 
   useSendAmplitudeData(
     "hit_destinations_page",
@@ -49,8 +53,8 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
-          title="Destination"
-          breadcrumbs={["Destination"]}
+          title=""
+          breadcrumbs={[]}
           enableButton={
             destinations.data
               ? destinations.data.length === 0
@@ -62,12 +66,26 @@ const DestinationPage: FC & {
           buttonLink="/destinations/create"
           marginBottom="mb-10"
         />
-        <DestinationsTable
-          destinations={destinations.data ? destinations.data : []}
-          isLoading={isLoading}
-          enablePlaceholderCreateButton={true}
-          marginBottom={null}
-        />
+        <PaginationListContainer
+          title="Destination"
+          description="These are the destinations you can select"
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          totalPage={destinationPages.length}
+        >
+          {destinations.isSuccess ? (
+            <DestinationsTable
+              marginBottom={null}
+              currentPage={currentPage}
+              destinationPages={destinationPages}
+              stateOverviewCounts={stateOverviewCounts}
+            />
+          ) : (
+            <TableLoadingProgress marginBottom={null} />
+          )}
+        </PaginationListContainer>
       </PageContentContainer>
     </>
   );

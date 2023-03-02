@@ -2,31 +2,30 @@ import { FC, useMemo } from "react";
 
 import {
   InstanceCell,
-  ModelTablePlaceholder,
   NameCell,
   TableBody,
   TableContainer,
-  TableLoadingProgress,
   TableRow,
   TableHead,
   TableHeadItem,
- ModelDefinitionCell } from "@/components/ui";
-import type { ModelTablePlaceholderProps } from "@/components/ui";
+  ModelDefinitionCell,
+} from "@/components/ui";
 import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
+import { StateOverviewCounts } from "@/hooks/useStateOverviewCounts";
 
 export type ModelsTableProps = {
-  models: ModelWithInstance[];
-  isLoading: boolean;
+  modelPages: ModelWithInstance[][];
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: ModelTablePlaceholderProps["enablePlaceholderCreateButton"];
+  currentPage: number;
+  stateOverviewCounts: Nullable<StateOverviewCounts>;
 };
 
 export const ModelsTable: FC<ModelsTableProps> = ({
-  models,
-  isLoading,
+  modelPages,
+  currentPage,
   marginBottom,
-  enablePlaceholderCreateButton,
+  stateOverviewCounts,
 }) => {
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
@@ -45,17 +44,8 @@ export const ModelsTable: FC<ModelsTableProps> = ({
     ];
   }, []);
 
-  if (isLoading) {
-    return <TableLoadingProgress marginBottom={marginBottom} />;
-  }
-
-  if (models.length === 0) {
-    return (
-      <ModelTablePlaceholder
-        marginBottom={marginBottom}
-        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
-      />
-    );
+  if (modelPages.length === 0) {
+    return <></>;
   }
 
   return (
@@ -70,7 +60,7 @@ export const ModelsTable: FC<ModelsTableProps> = ({
         items={tableHeadItems}
       />
       <TableBody>
-        {models.map((model) => (
+        {modelPages[currentPage].map((model) => (
           <TableRow
             bgColor="bg-white"
             borderColor="border-instillGrey20"
