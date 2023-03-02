@@ -6,6 +6,7 @@ import {
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { determineModelState } from "@/utils";
+import { defaultQueryParam } from "../helper";
 
 export const useModelWithInstances = (model: Nullable<Model>) => {
   return useQuery(
@@ -15,7 +16,11 @@ export const useModelWithInstances = (model: Nullable<Model>) => {
         return Promise.reject(new Error("Model data not provided"));
       }
 
-      const modelInstances = await listModelInstancesQuery(model.name);
+      const modelInstances = await listModelInstancesQuery(
+        model.name,
+        defaultQueryParam.pageSize,
+        defaultQueryParam.nextPageToken
+      );
 
       const modelWithInstances: ModelWithInstance = {
         ...model,

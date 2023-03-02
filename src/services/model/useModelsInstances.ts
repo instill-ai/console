@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { listModelInstancesQuery } from "@/lib/instill";
 import { useModels } from "./useModels";
+import { defaultQueryParam } from "../helper";
 
 export const useModelsInstances = (enable: boolean) => {
   const models = useModels();
@@ -13,7 +14,11 @@ export const useModelsInstances = (enable: boolean) => {
       }
 
       for (const model of models.data) {
-        const instances = await listModelInstancesQuery(model.name);
+        const instances = await listModelInstancesQuery(
+          model.name,
+          defaultQueryParam.pageSize,
+          defaultQueryParam.nextPageToken
+        );
         modelInstances.push(...instances);
       }
 

@@ -107,15 +107,31 @@ export type ListDestinationsResponse = {
   total_size: string;
 };
 
-export const listDestinationsQuery = async (): Promise<Destination[]> => {
+export const listDestinationsQuery = async (
+  pageSize: Nullable<number>,
+  nextPageToken: Nullable<string>
+): Promise<Destination[]> => {
   try {
     const client = createInstillAxiosClient();
+    const destinations: Destination[] = [];
 
-    const { data } = await client.get<ListDestinationsResponse>(
-      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
+    const queryString = getQueryString(
+      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken
     );
 
-    return Promise.resolve(data.destination_connectors);
+    const { data } = await client.get<ListDestinationsResponse>(queryString);
+
+    destinations.push(...data.destination_connectors);
+
+    if (data.next_page_token) {
+      destinations.push(
+        ...(await listDestinationsQuery(pageSize, data.next_page_token))
+      );
+    }
+
+    return Promise.resolve(destinations);
   } catch (err) {
     return Promise.reject(err);
   }

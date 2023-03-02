@@ -4,12 +4,16 @@ import {
   getDestinationDefinitionQuery,
   listDestinationsQuery,
 } from "@/lib/instill";
+import { defaultQueryParam } from "@/services/helper";
 
 export const useDestinations = () => {
   return useQuery(
     ["destinations"],
     async () => {
-      const destinations = await listDestinationsQuery();
+      const destinations = await listDestinationsQuery(
+        defaultQueryParam.pageSize,
+        defaultQueryParam.nextPageToken
+      );
       const destinationsWithDefinition: DestinationWithDefinition[] = [];
 
       for (const destination of destinations) {

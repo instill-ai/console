@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listModelInstancesQuery, ModelWithInstance } from "@/lib/instill";
 import { determineModelState } from "@/utils";
 import { useModels } from "./useModels";
+import { defaultQueryParam } from "../helper";
 
 export const useModelsWithInstances = () => {
   const models = useModels();
@@ -26,7 +27,11 @@ export const useModelsWithInstances = () => {
       // - Model state will be error if there exist a error model_insance
 
       for (const model of models.data) {
-        const modelInstances = await listModelInstancesQuery(model.name);
+        const modelInstances = await listModelInstancesQuery(
+          model.name,
+          defaultQueryParam.pageSize,
+          defaultQueryParam.nextPageToken
+        );
         modelsWithInstances.push({
           ...model,
           instances: modelInstances,
