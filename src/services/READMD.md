@@ -16,3 +16,4 @@ Currently, there have two long-running operation in the instill backend.
 - The service will invalidate the whole data query. For example, once a model creation occur, we will invalidate the whole ["model"] key set immediately.
 - When you catch the onSuccess singal of react-query service and begin to periodically check operation endpoint for status. You should update the whole react-query cache once you get the new resouce.
 - Operation data is volatile, we don't persist it in react-query cache.
+- We will not do the fine-grained cache update right now, we will just invalidate the cache.

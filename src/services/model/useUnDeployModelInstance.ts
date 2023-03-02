@@ -24,6 +24,10 @@ export const useUnDeployModelInstance = () => {
           modelInstance
         );
 
+        queryClient.invalidateQueries({
+          queryKey: ["models", "with-instances"],
+        });
+
         queryClient.setQueryData<ModelInstance[]>(
           ["models", modelId, "modelInstances"],
           (old) => {

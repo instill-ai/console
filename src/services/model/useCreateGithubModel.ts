@@ -13,7 +13,10 @@ export const useCreateGithubModel = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["models"]);
+        queryClient.invalidateQueries({ queryKey: ["models"] });
+        queryClient.invalidateQueries({
+          queryKey: ["models", "with-instances"],
+        });
       },
     }
   );

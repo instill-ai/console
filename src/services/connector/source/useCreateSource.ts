@@ -24,6 +24,10 @@ export const useCreateSource = () => {
           source_connector_definition: sourceDefinition,
         };
 
+        queryClient.invalidateQueries({
+          queryKey: ["sources", "with-pipelines"],
+        });
+
         queryClient.setQueryData<SourceWithDefinition>(
           ["sources", newSource.id],
           newSourceWithDefinition

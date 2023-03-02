@@ -29,6 +29,10 @@ export const useUpdateDestination = () => {
           newDestinationWithDefinition
         );
 
+        queryClient.invalidateQueries({
+          queryKey: ["destinations", "with-pipelines"],
+        });
+
         queryClient.setQueryData<DestinationWithDefinition[]>(
           ["destinations"],
           (old) =>

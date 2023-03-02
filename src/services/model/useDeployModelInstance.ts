@@ -41,6 +41,10 @@ export const useDeployModelInstance = () => {
             ];
           }
         );
+
+        queryClient.invalidateQueries({
+          queryKey: ["models", "with-instances"],
+        });
       },
     }
   );

@@ -3,6 +3,7 @@ import {
   createDestinationMutation,
   CreateDestinationPayload,
   DestinationWithDefinition,
+  DestinationWithPipelines,
   getDestinationDefinitionQuery,
 } from "@/lib/instill";
 
@@ -28,6 +29,10 @@ export const useCreateDestination = () => {
           ["destinations", newDestination.id],
           newDestinationWithDefinition
         );
+
+        queryClient.invalidateQueries({
+          queryKey: ["destinations", "with-pipelines"],
+        });
 
         queryClient.setQueryData<DestinationWithDefinition[]>(
           ["destinations"],

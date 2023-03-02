@@ -1,4 +1,8 @@
-import { deleteSourceMutation, SourceWithDefinition } from "@/lib/instill";
+import {
+  deleteSourceMutation,
+  SourceWithDefinition,
+  SourceWithPipelines,
+} from "@/lib/instill";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeleteSource = () => {
@@ -24,6 +28,19 @@ export const useDeleteSource = () => {
             sources.filter((e) => e.name !== sourceName)
           );
         }
+
+        queryClient.setQueryData<SourceWithDefinition[]>(["sources"], (old) => {
+          if (!old) return;
+          return old.filter((e) => e.name !== sourceName);
+        });
+
+        queryClient.setQueryData<SourceWithPipelines[]>(
+          ["sources", "with-pipelines"],
+          (old) => {
+            if (!old) return;
+            return old.filter((e) => e.name !== sourceName);
+          }
+        );
       },
     }
   );
