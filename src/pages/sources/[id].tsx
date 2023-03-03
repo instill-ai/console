@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -12,7 +12,7 @@ import {
 import { useSourceWithPipelines } from "@/services/connector";
 import { ConfigureSourceForm } from "@/components/source";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -28,19 +28,6 @@ const SourceDetailsPage: FC & {
     id ? `source-connectors/${id.toString()}` : null
   );
 
-  const isLoading = useMultiStageQueryLoadingState({
-    data: sourceWithPipelines.data,
-    isError: sourceWithPipelines.isError,
-    isSuccess: sourceWithPipelines.isSuccess,
-    isLoading: sourceWithPipelines.isLoading,
-  });
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
@@ -53,13 +40,17 @@ const SourceDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={isLoading ? "" : (sourceWithPipelines.data?.name as string)}
+        title={
+          sourceWithPipelines.isSuccess
+            ? ""
+            : (sourceWithPipelines.data?.name as string)
+        }
       />
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
-          enableButton={false}
+          displayButton={false}
           marginBottom="mb-[50px]"
         />
         <div className="mb-10 flex flex-row gap-x-5">
@@ -77,12 +68,8 @@ const SourceDetailsPage: FC & {
         </div>
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
-          pipelines={
-            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
-          }
-          isLoadingPipeline={isLoading}
+          pipelines={sourceWithPipelines.data?.pipelines || null}
           marginBottom="mb-10"
-          enablePlaceholderCreateButton={false}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {sourceWithPipelines.isSuccess && sourceWithPipelines.data ? (

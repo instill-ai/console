@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo } from "react";
+import { FC, ReactElement, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -10,7 +10,6 @@ import {
   PageHead,
 } from "@/components/ui";
 import { ConfigureDestinationForm } from "@/components/destination";
-import { useMultiStageQueryLoadingState } from "@/hooks/useMultiStageQueryLoadingState";
 import { useDestinationWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData } from "@/hooks";
@@ -35,17 +34,6 @@ const DestinationDetailsPage: FC & {
     return destination;
   }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
 
-  const isLoading = useMultiStageQueryLoadingState({
-    data: destinationWithPipelines.data,
-    isError: destinationWithPipelines.isError,
-    isSuccess: destinationWithPipelines.isSuccess,
-    isLoading: destinationWithPipelines.isLoading,
-  });
-
-  // ###################################################################
-  // # Send page loaded data to Amplitude                              #
-  // ###################################################################
-
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
@@ -58,13 +46,17 @@ const DestinationDetailsPage: FC & {
   return (
     <>
       <PageHead
-        title={isLoading ? "" : (destinationWithPipelines.data?.name as string)}
+        title={
+          destinationWithPipelines.isSuccess
+            ? ""
+            : (destinationWithPipelines.data?.name as string)
+        }
       />
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Destination", id.toString()] : ["Destination"]}
-          enableButton={false}
+          displayButton={false}
           marginBottom="mb-[50px]"
         />
         <div className="mb-10 flex flex-row gap-x-5">
@@ -86,13 +78,11 @@ const DestinationDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={
-            destinationWithPipelines.data
+            destinationWithPipelines.isSuccess
               ? destinationWithPipelines.data.pipelines
-              : []
+              : null
           }
-          isLoadingPipeline={isLoading}
           marginBottom="mb-10"
-          enablePlaceholderCreateButton={false}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>

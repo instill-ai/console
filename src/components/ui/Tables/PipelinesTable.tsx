@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   ConnectionTypeCell,
@@ -11,24 +11,38 @@ import {
   TableHead,
   TableHeadItem,
   StateOverview,
+  PipelineTablePlaceholder,
+  TableLoadingProgress,
 } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { StateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import { useResourcePages } from "@/hooks/useResourcePages";
+import { PaginationListContainer } from "../PaginationListContainer";
+import { useStateOverviewCounts } from "@/hooks";
+import { env } from "@/utils";
 
 export type PipelinesTableProps = {
-  pipelinePages: Pipeline[][];
+  pipelines: Nullable<Pipeline[]>;
   marginBottom: Nullable<string>;
-  currentPage: number;
-  stateOverviewCounts: Nullable<StateOverviewCounts>;
 };
 
-export const PipelinesTable: FC<PipelinesTableProps> = ({
+export const PipelinesTable = ({
+  pipelines,
   marginBottom,
-  pipelinePages,
-  currentPage,
-  stateOverviewCounts,
-}) => {
+}: PipelinesTableProps) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
+
+  const pipelinePages = useResourcePages({
+    resources: pipelines || null,
+    searchTerm,
+    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
+  });
+
+  const stateOverviewCounts = useStateOverviewCounts(
+    pipelines ? pipelines : []
+  );
+
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
       {
@@ -60,79 +74,105 @@ export const PipelinesTable: FC<PipelinesTableProps> = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (pipelinePages.length === 0) {
-    return <></>;
-  }
-
   return (
-    <TableContainer
+    <PaginationListContainer
+      title="Pipeline"
+      description="These are the pipelines you can select"
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+      totalPage={pipelinePages.length}
+      displaySearchField={pipelines?.length !== 0 ? true : false}
       marginBottom={marginBottom}
-      tableLayout="table-auto"
-      borderCollapse="border-collapse"
     >
-      <TableHead
-        borderColor="border-instillGrey20"
-        bgColor="bg-instillGrey05"
-        items={tableHeadItems}
-      />
-      <TableBody>
-        {pipelinePages[currentPage].map((pipeline) => (
-          <TableRow
-            borderColor="border-instillGrey20"
-            bgColor="bg-white"
-            key={pipeline.id}
+      {pipelines ? (
+        pipelines.length === 0 ? (
+          <PipelineTablePlaceholder
+            enablePlaceholderCreateButton={false}
+            marginBottom={null}
+          />
+        ) : (
+          <TableContainer
+            marginBottom={marginBottom}
+            tableLayout="table-auto"
+            borderCollapse="border-collapse"
           >
-            <NameCell
-              name={pipeline.id}
-              width="w-[191px]"
-              updatedAt={pipeline.update_time}
-              state={pipeline.state}
-              padding="py-5 pl-[15px]"
-              link={`/pipelines/${pipeline.id}`}
-              lineClamp="line-clamp-2"
-              displayUpdateTime={true}
-              displayStateIndicator={true}
+            <TableHead
+              borderColor="border-instillGrey20"
+              bgColor="bg-instillGrey05"
+              items={tableHeadItems}
             />
-            <ModeCell width="w-[100px]" mode={pipeline.mode} padding="py-5" />
-            <ConnectionTypeCell
-              width="w-[125px]"
-              connectorDefinition={
-                pipeline.recipe.source.source_connector_definition
-              }
-              connectorName={pipeline.recipe.source.id}
-              cellType="shrink"
-              padding="py-5"
-              lineClamp="line-clamp-2"
-            />
-            <InstanceCell
-              type="model"
-              cellType="shrink"
-              width="w-[240px]"
-              instances={pipeline.recipe.models.map((model) => {
-                const nameList = model.name.split("/");
-                const modelId = nameList[1];
-                const instanceId = nameList[3];
+            <TableBody>
+              {pipelinePages[currentPage]
+                ? pipelinePages[currentPage].map((pipeline) => (
+                    <TableRow
+                      borderColor="border-instillGrey20"
+                      bgColor="bg-white"
+                      key={pipeline.id}
+                    >
+                      <NameCell
+                        name={pipeline.id}
+                        width="w-[191px]"
+                        updatedAt={pipeline.update_time}
+                        state={pipeline.state}
+                        padding="py-5 pl-[15px]"
+                        link={`/pipelines/${pipeline.id}`}
+                        lineClamp="line-clamp-2"
+                        displayUpdateTime={true}
+                        displayStateIndicator={true}
+                      />
+                      <ModeCell
+                        width="w-[100px]"
+                        mode={pipeline.mode}
+                        padding="py-5"
+                      />
+                      <ConnectionTypeCell
+                        width="w-[125px]"
+                        connectorDefinition={
+                          pipeline.recipe.source.source_connector_definition
+                        }
+                        connectorName={pipeline.recipe.source.id}
+                        cellType="shrink"
+                        padding="py-5"
+                        lineClamp="line-clamp-2"
+                      />
+                      <InstanceCell
+                        type="model"
+                        cellType="shrink"
+                        width="w-[240px]"
+                        instances={pipeline.recipe.models.map((model) => {
+                          const nameList = model.name.split("/");
+                          const modelId = nameList[1];
+                          const instanceId = nameList[3];
 
-                return {
-                  name: `${modelId}/${instanceId}`,
-                  state: model.state,
-                };
-              })}
-              padding="py-5"
-            />
-            <ConnectionTypeCell
-              width="w-[125px]"
-              cellType="shrink"
-              connectorDefinition={
-                pipeline.recipe.destination.destination_connector_definition
-              }
-              connectorName={pipeline.recipe.destination.id}
-              padding="py-5 pr-5"
-              lineClamp="line-clamp-2"
-            />
-          </TableRow>
-        ))}
-      </TableBody>
-    </TableContainer>
+                          return {
+                            name: `${modelId}/${instanceId}`,
+                            state: model.state,
+                          };
+                        })}
+                        padding="py-5"
+                      />
+                      <ConnectionTypeCell
+                        width="w-[125px]"
+                        cellType="shrink"
+                        connectorDefinition={
+                          pipeline.recipe.destination
+                            .destination_connector_definition
+                        }
+                        connectorName={pipeline.recipe.destination.id}
+                        padding="py-5 pr-5"
+                        lineClamp="line-clamp-2"
+                      />
+                    </TableRow>
+                  ))
+                : null}
+            </TableBody>
+          </TableContainer>
+        )
+      ) : (
+        <TableLoadingProgress marginBottom={null} />
+      )}
+    </PaginationListContainer>
   );
 };

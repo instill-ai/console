@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   ConnectionTypeCell,
@@ -9,25 +9,34 @@ import {
   TableRow,
   TableHeadItem,
   TableHead,
+  TableLoadingProgress,
+  SourceTablePlaceholder,
 } from "@/components/ui";
 import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { StateOverview } from "../StateOverview";
-import { StateOverviewCounts } from "@/hooks/useStateOverviewCounts";
+import { PaginationListContainer } from "../PaginationListContainer";
+import { useResourcePages } from "@/hooks/useResourcePages";
+import { useStateOverviewCounts } from "@/hooks";
+import { env } from "@/utils";
 
 export type SourcesTableProps = {
-  sourcePages: SourceWithPipelines[][];
+  sources: Nullable<SourceWithPipelines[]>;
   marginBottom: Nullable<string>;
-  currentPage: number;
-  stateOverviewCounts: Nullable<StateOverviewCounts>;
 };
 
-export const SourcesTable = ({
-  sourcePages,
-  currentPage,
-  marginBottom,
-  stateOverviewCounts,
-}: SourcesTableProps) => {
+export const SourcesTable = ({ sources, marginBottom }: SourcesTableProps) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
+
+  const sourcePages = useResourcePages({
+    resources: sources || null,
+    searchTerm,
+    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
+  });
+
+  const stateOverviewCounts = useStateOverviewCounts(sources ? sources : []);
+
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
       {
@@ -51,61 +60,82 @@ export const SourcesTable = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (sourcePages.length === 0) {
-    return <></>;
-  }
-
   return (
-    <TableContainer
+    <PaginationListContainer
+      title="Source"
+      description="These are the sources you can select"
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+      totalPage={sourcePages.length}
+      displaySearchField={sources?.length !== 0 ? true : false}
       marginBottom={marginBottom}
-      tableLayout="table-auto"
-      borderCollapse="border-collapse"
     >
-      <TableHead
-        borderColor="border-instillGrey20"
-        bgColor="bg-instillGrey05"
-        items={tableHeadItems}
-      />
-      <TableBody>
-        {sourcePages[currentPage].map((source) => (
-          <TableRow
-            bgColor="bg-white"
-            borderColor="border-instillGrey20"
-            key={source.name}
+      {sources ? (
+        sources.length === 0 ? (
+          <SourceTablePlaceholder
+            enablePlaceholderCreateButton={false}
+            marginBottom={null}
+          />
+        ) : (
+          <TableContainer
+            marginBottom={marginBottom}
+            tableLayout="table-auto"
+            borderCollapse="border-collapse"
           >
-            <NameCell
-              name={source.id}
-              width="w-[234px]"
-              state="STATE_ONLINE"
-              updatedAt={source.connector.update_time}
-              padding="py-5 pl-5"
-              link={`/sources/${source.id}`}
-              lineClamp="line-clamp-1"
-              displayUpdateTime={true}
-              displayStateIndicator={true}
+            <TableHead
+              borderColor="border-instillGrey20"
+              bgColor="bg-instillGrey05"
+              items={tableHeadItems}
             />
-            <ConnectionTypeCell
-              connectorDefinition={source.source_connector_definition}
-              connectorName={source.id}
-              cellType="shrink"
-              width="w-[234px]"
-              padding="py-5"
-            />
-            <InstanceCell
-              cellType="expand"
-              width="w-80"
-              type="pipeline"
-              padding="py-5 pr-[15px]"
-              instances={source.pipelines.map((e) => {
-                return {
-                  name: e.id,
-                  state: e.state,
-                };
-              })}
-            />
-          </TableRow>
-        ))}
-      </TableBody>
-    </TableContainer>
+            <TableBody>
+              {sourcePages[currentPage]
+                ? sourcePages[currentPage].map((source) => (
+                    <TableRow
+                      bgColor="bg-white"
+                      borderColor="border-instillGrey20"
+                      key={source.name}
+                    >
+                      <NameCell
+                        name={source.id}
+                        width="w-[234px]"
+                        state="STATE_ONLINE"
+                        updatedAt={source.connector.update_time}
+                        padding="py-5 pl-5"
+                        link={`/sources/${source.id}`}
+                        lineClamp="line-clamp-1"
+                        displayUpdateTime={true}
+                        displayStateIndicator={true}
+                      />
+                      <ConnectionTypeCell
+                        connectorDefinition={source.source_connector_definition}
+                        connectorName={source.id}
+                        cellType="shrink"
+                        width="w-[234px]"
+                        padding="py-5"
+                      />
+                      <InstanceCell
+                        cellType="expand"
+                        width="w-80"
+                        type="pipeline"
+                        padding="py-5 pr-[15px]"
+                        instances={source.pipelines.map((e) => {
+                          return {
+                            name: e.id,
+                            state: e.state,
+                          };
+                        })}
+                      />
+                    </TableRow>
+                  ))
+                : null}
+            </TableBody>
+          </TableContainer>
+        )
+      ) : (
+        <TableLoadingProgress marginBottom={null} />
+      )}
+    </PaginationListContainer>
   );
 };
