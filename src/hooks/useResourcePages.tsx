@@ -41,6 +41,7 @@ export function useResourcePages<T extends Resources>({
       const Fuse = (await import("fuse.js")).default;
       const fuse = new Fuse(resources, {
         keys: ["id", "instances.id"],
+        threshold: 0.5,
       });
 
       setResourcePages(

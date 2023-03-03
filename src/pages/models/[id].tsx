@@ -203,7 +203,7 @@ const ModelDetailsPage: FC & {
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
-          displayButton={true}
+          displayButton={false}
           marginBottom="mb-5"
         />
         <ModelDefinitionLabel

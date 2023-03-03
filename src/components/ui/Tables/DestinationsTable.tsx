@@ -85,7 +85,7 @@ export const DestinationsTable = ({
           />
         ) : (
           <TableContainer
-            marginBottom={marginBottom}
+            marginBottom={null}
             tableLayout="table-auto"
             borderCollapse="border-collapse"
           >
