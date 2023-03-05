@@ -14,10 +14,9 @@ import {
 } from "@/components/ui";
 import { ModelWithInstance } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useResourcePages } from "@/hooks/useResourcePages";
+import { useSearchedResources } from "@/hooks/useSearchedResources";
 import { PaginationListContainer } from "../PaginationListContainer";
-import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
-import { env } from "@/utils";
+import { env, chunk } from "@/utils";
 
 export type ModelsTableProps = {
   models: Nullable<ModelWithInstance[]>;
@@ -28,11 +27,14 @@ export const ModelsTable = ({ models, marginBottom }: ModelsTableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
 
-  const modelPages = useResourcePages({
+  const searchedModels = useSearchedResources({
     resources: models || null,
     searchTerm,
-    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
   });
+
+  const searchedModelPages = useMemo(() => {
+    return chunk(searchedModels, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [searchedModels]);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
@@ -59,7 +61,7 @@ export const ModelsTable = ({ models, marginBottom }: ModelsTableProps) => {
       setCurrentPage={setCurrentPage}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      totalPage={modelPages.length}
+      totalPage={searchedModelPages.length}
       displaySearchField={models?.length !== 0 ? true : false}
       marginBottom={marginBottom}
     >
@@ -81,8 +83,8 @@ export const ModelsTable = ({ models, marginBottom }: ModelsTableProps) => {
               items={tableHeadItems}
             />
             <TableBody>
-              {modelPages[currentPage]
-                ? modelPages[currentPage].map((model) => (
+              {searchedModelPages[currentPage]
+                ? searchedModelPages[currentPage].map((model) => (
                     <TableRow
                       bgColor="bg-white"
                       borderColor="border-instillGrey20"

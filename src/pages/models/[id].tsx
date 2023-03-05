@@ -42,8 +42,6 @@ import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
 import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
-import { useResourcePages } from "@/hooks/useResourcePages";
-import { PaginationListContainer } from "@/components/ui/PaginationListContainer";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -25,7 +25,7 @@ export type StateOverviewCounts = {
   error: number;
 };
 
-export const useStateOverviewCounts = (items: Item[] | null) => {
+export const useStateOverviewCounts = (items: Item[] | Item[] | null) => {
   const [stateOverviewCount, setStateOverviewCount] =
     useState<Nullable<StateOverviewCounts>>(null);
 

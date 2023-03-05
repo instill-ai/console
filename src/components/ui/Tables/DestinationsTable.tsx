@@ -16,9 +16,8 @@ import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { StateOverview } from "../StateOverview";
 import { PaginationListContainer } from "../PaginationListContainer";
-import { useResourcePages } from "@/hooks/useResourcePages";
-import { useStateOverviewCounts } from "@/hooks";
-import { env } from "@/utils";
+import { useSearchedResources , useStateOverviewCounts } from "@/hooks";
+import { chunk, env } from "@/utils";
 
 export type DestinationsTableProps = {
   destinations: Nullable<DestinationWithPipelines[]>;
@@ -32,15 +31,16 @@ export const DestinationsTable = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
 
-  const destinationPages = useResourcePages({
+  const searchedDestinations = useSearchedResources({
     resources: destinations || null,
     searchTerm,
-    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
   });
 
-  const stateOverviewCounts = useStateOverviewCounts(
-    destinations ? destinations : []
-  );
+  const searchedDestinationPages = useMemo(() => {
+    return chunk(searchedDestinations, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [searchedDestinations]);
+
+  const stateOverviewCounts = useStateOverviewCounts(searchedDestinations);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
@@ -73,7 +73,7 @@ export const DestinationsTable = ({
       setCurrentPage={setCurrentPage}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      totalPage={destinationPages.length}
+      totalPage={searchedDestinationPages.length}
       displaySearchField={destinations?.length === 0 ? false : true}
       marginBottom={marginBottom}
     >
@@ -94,9 +94,9 @@ export const DestinationsTable = ({
               bgColor="bg-instillGrey05"
               items={tableHeadItems}
             />
-            {destinationPages.length !== 0 ? (
+            {searchedDestinationPages.length !== 0 ? (
               <TableBody>
-                {destinationPages[currentPage].map((destination) => (
+                {searchedDestinationPages[currentPage].map((destination) => (
                   <TableRow
                     bgColor="bg-white"
                     borderColor="border-instillGrey20"

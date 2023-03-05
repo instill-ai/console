@@ -16,10 +16,10 @@ import {
 } from "@/components/ui";
 import { Pipeline } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useResourcePages } from "@/hooks/useResourcePages";
+import { useSearchedResources } from "@/hooks/useSearchedResources";
 import { PaginationListContainer } from "../PaginationListContainer";
 import { useStateOverviewCounts } from "@/hooks";
-import { env } from "@/utils";
+import { chunk, env } from "@/utils";
 
 export type PipelinesTableProps = {
   pipelines: Nullable<Pipeline[]>;
@@ -33,17 +33,19 @@ export const PipelinesTable = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
 
-  const pipelinePages = useResourcePages({
+  const searchedPipelines = useSearchedResources({
     resources: pipelines || null,
     searchTerm,
-    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
   });
 
-  const stateOverviewCounts = useStateOverviewCounts(
-    pipelines ? pipelines : []
-  );
+  const searchedPipelinePages = useMemo(() => {
+    return chunk(searchedPipelines, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [searchedPipelines]);
+
+  const stateOverviewCounts = useStateOverviewCounts(searchedPipelines);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
+    console.log(stateOverviewCounts);
     return [
       {
         key: "pipeline-state-overview-head",
@@ -82,7 +84,7 @@ export const PipelinesTable = ({
       setCurrentPage={setCurrentPage}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      totalPage={pipelinePages.length}
+      totalPage={searchedPipelinePages.length}
       displaySearchField={pipelines?.length !== 0 ? true : false}
       marginBottom={marginBottom}
     >
@@ -94,7 +96,7 @@ export const PipelinesTable = ({
           />
         ) : (
           <TableContainer
-            marginBottom={null}
+            marginBottom={marginBottom}
             tableLayout="table-auto"
             borderCollapse="border-collapse"
           >
@@ -104,8 +106,8 @@ export const PipelinesTable = ({
               items={tableHeadItems}
             />
             <TableBody>
-              {pipelinePages[currentPage]
-                ? pipelinePages[currentPage].map((pipeline) => (
+              {searchedPipelinePages[currentPage]
+                ? searchedPipelinePages[currentPage].map((pipeline) => (
                     <TableRow
                       borderColor="border-instillGrey20"
                       bgColor="bg-white"

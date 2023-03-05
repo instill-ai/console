@@ -5,7 +5,6 @@ import {
   SourceWithPipelines,
 } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { chunk } from "@/utils/chunk";
 import { useEffect, useState } from "react";
 
 type Resources =
@@ -14,16 +13,14 @@ type Resources =
   | Pipeline
   | SourceWithPipelines;
 
-export function useResourcePages<T extends Resources>({
+export function useSearchedResources<T extends Resources>({
   resources,
   searchTerm,
-  pageSize,
 }: {
   resources: Nullable<T[]>;
   searchTerm: Nullable<string>;
-  pageSize: number;
 }) {
-  const [resourcePages, setResourcePages] = useState<T[][]>([]);
+  const [searchedResources, setSearchedResources] = useState<T[]>([]);
 
   useEffect(() => {
     if (!resources) {
@@ -31,7 +28,7 @@ export function useResourcePages<T extends Resources>({
     }
 
     if (!searchTerm) {
-      setResourcePages(chunk(resources, pageSize));
+      setSearchedResources(resources);
       return;
     }
 
@@ -44,16 +41,11 @@ export function useResourcePages<T extends Resources>({
         threshold: 0.5,
       });
 
-      setResourcePages(
-        chunk(
-          fuse.search(searchTerm).map((e) => e.item),
-          pageSize
-        )
-      );
+      setSearchedResources(fuse.search(searchTerm).map((e) => e.item));
     };
 
     searchResources(resources, searchTerm);
-  }, [resources, searchTerm, pageSize]);
+  }, [resources, searchTerm]);
 
-  return resourcePages;
+  return searchedResources;
 }

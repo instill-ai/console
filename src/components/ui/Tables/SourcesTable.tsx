@@ -16,9 +16,9 @@ import { SourceWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
 import { StateOverview } from "../StateOverview";
 import { PaginationListContainer } from "../PaginationListContainer";
-import { useResourcePages } from "@/hooks/useResourcePages";
+import { useSearchedResources } from "@/hooks/useSearchedResources";
 import { useStateOverviewCounts } from "@/hooks";
-import { env } from "@/utils";
+import { chunk, env } from "@/utils";
 
 export type SourcesTableProps = {
   sources: Nullable<SourceWithPipelines[]>;
@@ -29,13 +29,16 @@ export const SourcesTable = ({ sources, marginBottom }: SourcesTableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
 
-  const sourcePages = useResourcePages({
+  const searchedSources = useSearchedResources({
     resources: sources || null,
     searchTerm,
-    pageSize: env("NEXT_PUBLIC_LIST_PAGE_SIZE"),
   });
 
-  const stateOverviewCounts = useStateOverviewCounts(sources ? sources : []);
+  const searchedPipelinePages = useMemo(() => {
+    return chunk(searchedSources, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [searchedSources]);
+
+  const stateOverviewCounts = useStateOverviewCounts(searchedSources);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
@@ -68,7 +71,7 @@ export const SourcesTable = ({ sources, marginBottom }: SourcesTableProps) => {
       setCurrentPage={setCurrentPage}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      totalPage={sourcePages.length}
+      totalPage={searchedPipelinePages.length}
       displaySearchField={sources?.length !== 0 ? true : false}
       marginBottom={marginBottom}
     >
@@ -90,8 +93,8 @@ export const SourcesTable = ({ sources, marginBottom }: SourcesTableProps) => {
               items={tableHeadItems}
             />
             <TableBody>
-              {sourcePages[currentPage]
-                ? sourcePages[currentPage].map((source) => (
+              {searchedPipelinePages[currentPage]
+                ? searchedPipelinePages[currentPage].map((source) => (
                     <TableRow
                       bgColor="bg-white"
                       borderColor="border-instillGrey20"
