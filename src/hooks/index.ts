@@ -7,3 +7,4 @@ export { useSendAmplitudeData } from "./useSendAmplitudeData";
 export { useStateOverviewCounts } from "./useStateOverviewCounts";
 export { useWindowSize } from "./useWindowSize";
 export { useCreateUpdateDeleteResourceGuard } from "./useCreateUpdateDeleteResourceGuard";
+export { useSearchedResources } from "./useSearchedResources";

@@ -1,39 +1,46 @@
-import { FC, useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   ConnectionTypeCell,
-  DestinationTablePlaceholder,
   InstanceCell,
   NameCell,
   TableBody,
   TableContainer,
-  TableLoadingProgress,
   TableRow,
   TableHeadItem,
   TableHead,
+  TableLoadingProgress,
+  DestinationTablePlaceholder,
 } from "@/components/ui";
-import type { DestinationTablePlaceholderProps } from "@/components/ui";
 import { DestinationWithPipelines } from "@/lib/instill";
 import { Nullable } from "@/types/general";
-import { useStateOverviewCounts } from "@/hooks";
 import { StateOverview } from "../StateOverview";
+import { PaginationListContainer } from "../PaginationListContainer";
+import { useSearchedResources , useStateOverviewCounts } from "@/hooks";
+import { chunk, env } from "@/utils";
 
 export type DestinationsTableProps = {
-  destinations: DestinationWithPipelines[];
-  isLoading: boolean;
+  destinations: Nullable<DestinationWithPipelines[]>;
   marginBottom: Nullable<string>;
-  enablePlaceholderCreateButton: DestinationTablePlaceholderProps["enablePlaceholderCreateButton"];
 };
 
-export const DestinationsTable: FC<DestinationsTableProps> = ({
+export const DestinationsTable = ({
   destinations,
-  isLoading,
   marginBottom,
-  enablePlaceholderCreateButton,
-}) => {
-  const stateOverviewCounts = useStateOverviewCounts(
-    isLoading ? null : destinations
-  );
+}: DestinationsTableProps) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<Nullable<string>>(null);
+
+  const searchedDestinations = useSearchedResources({
+    resources: destinations || null,
+    searchTerm,
+  });
+
+  const searchedDestinationPages = useMemo(() => {
+    return chunk(searchedDestinations, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [searchedDestinations]);
+
+  const stateOverviewCounts = useStateOverviewCounts(searchedDestinations);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
     return [
@@ -58,70 +65,84 @@ export const DestinationsTable: FC<DestinationsTableProps> = ({
     ];
   }, [stateOverviewCounts]);
 
-  if (isLoading) {
-    return <TableLoadingProgress marginBottom={marginBottom} />;
-  }
-
-  if (destinations.length === 0) {
-    return (
-      <DestinationTablePlaceholder
-        enablePlaceholderCreateButton={enablePlaceholderCreateButton}
-        marginBottom={marginBottom}
-      />
-    );
-  }
-
   return (
-    <TableContainer
+    <PaginationListContainer
+      title="Destination"
+      description="These are the destinations you can select"
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+      totalPage={searchedDestinationPages.length}
+      displaySearchField={destinations?.length === 0 ? false : true}
       marginBottom={marginBottom}
-      tableLayout="table-auto"
-      borderCollapse="border-collapse"
     >
-      <TableHead
-        borderColor="border-instillGrey20"
-        bgColor="bg-instillGrey05"
-        items={tableHeadItems}
-      />
-      <TableBody>
-        {destinations.map((destination) => (
-          <TableRow
-            bgColor="bg-white"
-            borderColor="border-instillGrey20"
-            key={destination.name}
+      {destinations ? (
+        destinations.length === 0 ? (
+          <DestinationTablePlaceholder
+            enablePlaceholderCreateButton={false}
+            marginBottom={null}
+          />
+        ) : (
+          <TableContainer
+            marginBottom={null}
+            tableLayout="table-auto"
+            borderCollapse="border-collapse"
           >
-            <NameCell
-              name={destination.id}
-              width="w-[234px]"
-              state={destination.connector.state}
-              updatedAt={destination.connector.update_time}
-              padding="pl-5 py-5"
-              link={`/destinations/${destination.id}`}
-              lineClamp="line-clamp-1"
-              displayUpdateTime={true}
-              displayStateIndicator={true}
+            <TableHead
+              borderColor="border-instillGrey20"
+              bgColor="bg-instillGrey05"
+              items={tableHeadItems}
             />
-            <ConnectionTypeCell
-              connectorDefinition={destination.destination_connector_definition}
-              connectorName={destination.id}
-              cellType="shrink"
-              width="w-[234px]"
-              padding="py-5"
-            />
-            <InstanceCell
-              cellType="expand"
-              width="w-80"
-              type="pipeline"
-              padding="py-5 pr-[15px]"
-              instances={destination.pipelines.map((e) => {
-                return {
-                  name: e.id,
-                  state: e.state,
-                };
-              })}
-            />
-          </TableRow>
-        ))}
-      </TableBody>
-    </TableContainer>
+            {searchedDestinationPages.length !== 0 ? (
+              <TableBody>
+                {searchedDestinationPages[currentPage].map((destination) => (
+                  <TableRow
+                    bgColor="bg-white"
+                    borderColor="border-instillGrey20"
+                    key={destination.name}
+                  >
+                    <NameCell
+                      name={destination.id}
+                      width="w-[234px]"
+                      state={destination.connector.state}
+                      updatedAt={destination.connector.update_time}
+                      padding="pl-5 py-5"
+                      link={`/destinations/${destination.id}`}
+                      lineClamp="line-clamp-1"
+                      displayUpdateTime={true}
+                      displayStateIndicator={true}
+                    />
+                    <ConnectionTypeCell
+                      connectorDefinition={
+                        destination.destination_connector_definition
+                      }
+                      connectorName={destination.id}
+                      cellType="shrink"
+                      width="w-[234px]"
+                      padding="py-5"
+                    />
+                    <InstanceCell
+                      cellType="expand"
+                      width="w-80"
+                      type="pipeline"
+                      padding="py-5 pr-[15px]"
+                      instances={destination.pipelines.map((e) => {
+                        return {
+                          name: e.id,
+                          state: e.state,
+                        };
+                      })}
+                    />
+                  </TableRow>
+                ))}
+              </TableBody>
+            ) : null}
+          </TableContainer>
+        )
+      ) : (
+        <TableLoadingProgress marginBottom={null} />
+      )}
+    </PaginationListContainer>
   );
 };

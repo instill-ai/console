@@ -10,7 +10,7 @@ import {
 } from "@/components/ui";
 import { useDestinationsWithPipelines } from "@/services/connector";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
+import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,24 +19,10 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   const destinations = useDestinationsWithPipelines();
 
-  const isLoading = useMultiStageQueryLoadingState({
-    data: destinations.data,
-    isError: destinations.isError,
-    isLoading: destinations.isLoading,
-    isSuccess: destinations.isSuccess,
-  });
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
-  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-
   useSendAmplitudeData(
     "hit_destinations_page",
     { type: "navigation" },
@@ -49,23 +35,15 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
-          title="Destination"
-          breadcrumbs={["Destination"]}
-          enableButton={
-            destinations.data
-              ? destinations.data.length === 0
-                ? false
-                : true
-              : false
-          }
+          title=""
+          breadcrumbs={[]}
+          displayButton={true}
           buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"
         />
         <DestinationsTable
-          destinations={destinations.data ? destinations.data : []}
-          isLoading={isLoading}
-          enablePlaceholderCreateButton={true}
+          destinations={destinations.isSuccess ? destinations.data : null}
           marginBottom={null}
         />
       </PageContentContainer>

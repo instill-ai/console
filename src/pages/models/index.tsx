@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/";
 import { useModelsWithInstances } from "@/services/model";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useMultiStageQueryLoadingState } from "@/hooks";
+import { useSendAmplitudeData } from "@/hooks";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -19,22 +19,8 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const modelsWithInstances = useModelsWithInstances();
-
-  const isLoading = useMultiStageQueryLoadingState({
-    data: modelsWithInstances.data,
-    isError: modelsWithInstances.isError,
-    isSuccess: modelsWithInstances.isSuccess,
-    isLoading: modelsWithInstances.isLoading,
-  });
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
+  const modelsWithInstances = useModelsWithInstances();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
@@ -49,24 +35,18 @@ const ModelPage: FC & {
       <PageHead title="models" />
       <PageContentContainer>
         <PageTitle
-          title="Model"
-          breadcrumbs={["Model"]}
-          enableButton={
-            modelsWithInstances.isSuccess
-              ? modelsWithInstances.data.length === 0
-                ? false
-                : true
-              : false
-          }
+          title={null}
+          breadcrumbs={[]}
+          displayButton={true}
           buttonName="Add new model"
           buttonLink="/models/create"
           marginBottom="mb-10"
         />
         <ModelsTable
-          models={modelsWithInstances.isSuccess ? modelsWithInstances.data : []}
-          isLoading={isLoading}
+          models={
+            modelsWithInstances.isSuccess ? modelsWithInstances.data : null
+          }
           marginBottom={null}
-          enablePlaceholderCreateButton={true}
         />
       </PageContentContainer>
     </>

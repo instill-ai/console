@@ -1,6 +1,7 @@
 import {
   deleteDestinationMutation,
   DestinationWithDefinition,
+  DestinationWithPipelines,
 } from "@/lib/instill";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -19,16 +20,21 @@ export const useDeleteDestination = () => {
           exact: true,
         });
 
-        const destinations = queryClient.getQueryData<
-          DestinationWithDefinition[]
-        >(["destinations"]);
+        queryClient.setQueryData<DestinationWithDefinition[]>(
+          ["destinations"],
+          (old) => {
+            if (!old) return;
+            return old.filter((e) => e.name !== destinationName);
+          }
+        );
 
-        if (destinations) {
-          queryClient.setQueryData<DestinationWithDefinition[]>(
-            ["destinations"],
-            destinations.filter((e) => e.name !== destinationName)
-          );
-        }
+        queryClient.setQueryData<DestinationWithPipelines[]>(
+          ["destinations", "with-pipelines"],
+          (old) => {
+            if (!old) return;
+            return old.filter((e) => e.name !== destinationName);
+          }
+        );
       },
     }
   );

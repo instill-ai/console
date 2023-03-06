@@ -57,12 +57,12 @@ Currently we have several steps that require manually testing.
 
 ### Use `locator.fill()` instead of `locator.type()`
 
-`locator.type()` may act different among browser and cause troubles, if you don't need to test typing feature, we encourage you to use `locator.fill()`.
+`locator.type()` may act differently among browsers and cause trouble, if you don't need to test typing feature, we encourage you to use `locator.fill()`.
 
 ### About the usage of `click({force: true})`
 
-- Our SingleSelect have multiple clickable item, including the label and the select itself. Sometimes the label will intercept
-  the click event, so we recommend to bypass the [actionaility](https://playwright.dev/docs/actionability) check on these elements.
+- Our SingleSelect has multiple clickable items, including the label and the select itself. Sometimes the label will intercept
+  the click event, so we recommend bypassing the [actionaility](https://playwright.dev/docs/actionability) check on these elements.
 - related issues
   - [subtree intercepts pointer events, Unable to click](https://github.com/microsoft/playwright/issues/13576)
   - [Chromium: Cannot click, element intercepts pointer events](https://github.com/microsoft/playwright/issues/12821)
@@ -75,9 +75,9 @@ Currently we have several steps that require manually testing.
 
 ### About the flaky test
 
-- If the test behavior is related to backend, remember that backend can only handle a request at a time. So if the test run in sequence and the time between requests is too short, the request will fail.
-- We have to limit the test worker to one, because the test suite might run too quick to make backend panic.
-- Remember to `make down` backend every time you want have another round of test.
+- If the test behavior is related to the backends, remember that backend can only handle one request at a time. So if the test run in sequence and the time between requests is too short, the request will fail.
+- We have to limit the test worker to one, because the test suite might run too quickly to make the backends panic.
+- Remember to `make down` backend every time you want to have another round of tests.
 - use `expect().to` after every behavior to make sure the behavior succeeded. But you don't need to use `expect(field).toHaveValue()` after you fill in some text, because it had already beem tested by playwright.
 - `page.waitForResponse` is not particularly reliable. If you are facing some flaky test, try to rewrite the whole part with some visual hint, like below.
 

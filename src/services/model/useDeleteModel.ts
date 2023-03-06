@@ -11,17 +11,14 @@ export const useDeleteModel = () => {
     {
       onSuccess: (modelName) => {
         const modelId = modelName.split("/")[1];
-
         queryClient.removeQueries(["models", modelId], { exact: true });
-
-        const models = queryClient.getQueryData<Model[]>(["models"]);
-
-        if (models) {
-          queryClient.setQueryData<Model[]>(
-            ["models"],
-            models.filter((e) => e.name !== modelName)
-          );
-        }
+        queryClient.setQueryData<Model[]>(["models"], (old) => {
+          if (!old) return;
+          return old.filter((e) => e.name !== modelName);
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["models", "with-instances"],
+        });
       },
     }
   );

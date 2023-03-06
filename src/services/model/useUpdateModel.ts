@@ -18,6 +18,9 @@ export const useUpdateModel = () => {
 
           return [...old.filter((e) => e.id !== newModel.id), newModel];
         });
+        queryClient.invalidateQueries({
+          queryKey: ["models", "with-instances"],
+        });
       },
     }
   );

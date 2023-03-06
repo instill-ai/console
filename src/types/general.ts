@@ -1,4 +1,9 @@
-import { ModelState, PipelineState } from "@/lib/instill";
+import {
+  ModelInstance,
+  ModelState,
+  Pipeline,
+  PipelineState,
+} from "@/lib/instill";
 import { ConnectorState } from "@/lib/instill/connector";
 import { Dispatch, SetStateAction } from "react";
 

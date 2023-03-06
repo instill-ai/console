@@ -1,5 +1,6 @@
+import { Nullable } from "@/types/general";
 import { env } from "@/utils";
-import { createInstillAxiosClient } from "../helper";
+import { createInstillAxiosClient, getQueryString } from "../helper";
 import { Operation } from "../types";
 import {
   Model,
@@ -79,15 +80,30 @@ export type ListModelsResponse = {
   total_size: string;
 };
 
-export const listModelsQuery = async (): Promise<Model[]> => {
+export const listModelsQuery = async (
+  pageSize: Nullable<number>,
+  nextPageToken: Nullable<string>
+): Promise<Model[]> => {
   try {
     const client = createInstillAxiosClient();
 
-    const { data } = await client.get<ListModelsResponse>(
-      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
+    const models: Model[] = [];
+
+    const queryString = getQueryString(
+      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken
     );
 
-    return Promise.resolve(data.models);
+    const { data } = await client.get<ListModelsResponse>(queryString);
+
+    models.push(...data.models);
+
+    if (data.next_page_token) {
+      models.push(...(await listModelsQuery(pageSize, data.next_page_token)));
+    }
+
+    return Promise.resolve(models);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -124,15 +140,35 @@ export type ListModelInstancesResponse = {
 };
 
 export const listModelInstancesQuery = async (
-  modelName: string
+  modelName: string,
+  pageSize: Nullable<number>,
+  nextPageToken: Nullable<string>
 ): Promise<ModelInstance[]> => {
   try {
     const client = createInstillAxiosClient();
+    const modelInstances: ModelInstance[] = [];
 
-    const { data } = await client.get<ListModelInstancesResponse>(
-      `${env("NEXT_PUBLIC_API_VERSION")}/${modelName}/instances?view=VIEW_FULL`
+    const queryString = getQueryString(
+      `${env("NEXT_PUBLIC_API_VERSION")}/${modelName}/instances?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken
     );
-    return Promise.resolve(data.instances);
+
+    const { data } = await client.get<ListModelInstancesResponse>(queryString);
+
+    modelInstances.push(...data.instances);
+
+    if (data.next_page_token) {
+      modelInstances.push(
+        ...(await listModelInstancesQuery(
+          modelName,
+          pageSize,
+          data.next_page_token
+        ))
+      );
+    }
+
+    return Promise.resolve(modelInstances);
   } catch (err) {
     return Promise.reject(err);
   }

@@ -70,7 +70,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
         <PageTitle
           title="Welcome to VDP console"
           breadcrumbs={["Onboarding"]}
-          enableButton={false}
+          displayButton={false}
           marginBottom="mb-10"
         />
         {fetched ? <OnboardingForm user={user} /> : null}

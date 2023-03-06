@@ -1,5 +1,6 @@
+import { Nullable } from "@/types/general";
 import { env } from "@/utils";
-import { createInstillAxiosClient } from "../../helper";
+import { createInstillAxiosClient, getQueryString } from "../../helper";
 import { ConnectorDefinition } from "../types";
 import { Source } from "./types";
 
@@ -78,15 +79,29 @@ export type ListSourcesResponse = {
   total_size: string;
 };
 
-export const listSourcesQuery = async (): Promise<Source[]> => {
+export const listSourcesQuery = async (
+  pageSize: Nullable<number>,
+  nextPageToken: Nullable<string>
+): Promise<Source[]> => {
   try {
     const client = createInstillAxiosClient();
+    const sources: Source[] = [];
 
-    const { data } = await client.get<ListSourcesResponse>(
-      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
+    const queryString = getQueryString(
+      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken
     );
 
-    return Promise.resolve(data.source_connectors);
+    const { data } = await client.get<ListSourcesResponse>(queryString);
+
+    sources.push(...data.source_connectors);
+
+    if (data.next_page_token) {
+      sources.push(...(await listSourcesQuery(pageSize, data.next_page_token)));
+    }
+
+    return Promise.resolve(sources);
   } catch (err) {
     return Promise.reject(err);
   }

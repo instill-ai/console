@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -10,7 +10,10 @@ import {
 } from "@/components/ui";
 import { usePipelines } from "@/services/pipeline";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+import {
+  useCreateUpdateDeleteResourceGuard,
+  useSendAmplitudeData,
+} from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,17 +22,9 @@ type GetLayOutProps = {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const pipelines = usePipelines(true);
-
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
+  const pipelines = usePipelines(true);
   const { amplitudeIsInit } = useAmplitudeCtx();
-
   useSendAmplitudeData(
     "hit_pipelines_page",
     { type: "navigation" },
@@ -37,29 +32,23 @@ const PipelinePage: FC & {
     amplitudeIsInit
   );
 
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   return (
     <>
       <PageHead title="pipelines" />
       <PageContentContainer>
         <PageTitle
-          title="Pipeline"
-          breadcrumbs={["Pipeline"]}
-          enableButton={
-            pipelines.data
-              ? pipelines.data.length === 0
-                ? false
-                : true
-              : false
-          }
+          title={null}
+          breadcrumbs={[]}
+          displayButton={true}
           buttonName="Add new pipeline"
           buttonLink="/pipelines/create"
           marginBottom="mb-10"
         />
         <PipelinesTable
-          pipelines={pipelines.data ? pipelines.data : []}
-          isLoadingPipeline={pipelines.isLoading}
+          pipelines={pipelines.isSuccess ? pipelines.data : null}
           marginBottom={null}
-          enablePlaceholderCreateButton={true}
         />
       </PageContentContainer>
     </>

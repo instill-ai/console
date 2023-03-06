@@ -1,12 +1,18 @@
 import { listPipelinesQuery, Pipeline } from "@/lib/instill";
 import { useQuery } from "@tanstack/react-query";
-import { constructPipelineRecipeWithDefinition } from "../helper";
+import {
+  constructPipelineRecipeWithDefinition,
+  defaultQueryParam,
+} from "../helper";
 
 export const usePipelines = (enable: boolean) => {
   return useQuery(
     ["pipelines"],
     async () => {
-      const pipelinesWithRawRecipe = await listPipelinesQuery();
+      const pipelinesWithRawRecipe = await listPipelinesQuery(
+        defaultQueryParam.pageSize,
+        defaultQueryParam.nextPageToken
+      );
 
       const pipelines: Pipeline[] = [];
 

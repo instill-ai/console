@@ -31,6 +31,7 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
+  TableLoadingProgress,
 } from "@/components/ui";
 import {
   ConfigureModelForm,
@@ -40,7 +41,7 @@ import { Nullable } from "@/types/general";
 import { usePipelines } from "@/services/pipeline";
 import { Pipeline } from "@/lib/instill";
 import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -200,7 +201,7 @@ const ModelDetailsPage: FC & {
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
-          enableButton={false}
+          displayButton={false}
           marginBottom="mb-5"
         />
         <ModelDefinitionLabel
@@ -265,9 +266,7 @@ const ModelDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={selectedModelInstancePipelines}
-          isLoadingPipeline={pipelines.isLoading}
           marginBottom="mb-10"
-          enablePlaceholderCreateButton={false}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {modelInstances.isLoading ? null : selectedModelInstances ? (
