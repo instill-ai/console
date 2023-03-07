@@ -6,6 +6,7 @@ import { UseMutationResult } from "@tanstack/react-query";
 import cn from "clsx";
 import { AxiosError } from "axios";
 import { Operation } from "@/lib/instill/types";
+import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type ChangeResourceStateButtonProps = {
   resource: Nullable<ModelInstance | Pipeline>;
@@ -35,6 +36,8 @@ export const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
   useEffect(() => {
     setError(null);
   }, [resource]);
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const changeResourceStateHandler = useCallback(() => {
     if (!resource || resource.state === "STATE_UNSPECIFIED") return;
@@ -89,7 +92,7 @@ export const ChangeResourceStateButton: FC<ChangeResourceStateButtonProps> = ({
             ? "STATE_LOADING"
             : resource?.state || "STATE_UNSPECIFIED"
         }
-        disabled={resource?.state === "STATE_UNSPECIFIED"}
+        disabled={enableGuard ? true : resource?.state === "STATE_UNSPECIFIED"}
         loadingLabelText="Model instance is in the long running operation, please refresh this page to get the new status"
       />
     </div>
