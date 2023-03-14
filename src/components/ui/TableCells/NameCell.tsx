@@ -17,6 +17,10 @@ export type NameCellProps = {
   displayStateIndicator: boolean;
 } & CellBaseProps;
 
+export type CellItemProps = {
+  link: Nullable<string>;
+};
+
 export const NameCell: FC<NameCellProps> = ({
   state,
   width,
@@ -33,7 +37,7 @@ export const NameCell: FC<NameCellProps> = ({
     new Date(Date.now()).toUTCString()
   );
 
-  const CellItem = () => (
+  const CellItem = ({ link }: CellItemProps) => (
     <div className={cn("flex flex-row gap-x-2.5", width)}>
       <div
         className={cn(
@@ -51,7 +55,15 @@ export const NameCell: FC<NameCellProps> = ({
         ) : null}
       </div>
       <div className="flex flex-col gap-y-2">
-        <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>
+        <div className="flex">
+          {link ? (
+            <Link href={link} className={cn("text-instill-h3", lineClamp)}>
+              {name}
+            </Link>
+          ) : (
+            <h3 className={cn("text-instill-h3", lineClamp)}>{name}</h3>
+          )}
+        </div>
         {displayUpdateTime ? (
           <p className="text-instillGrey50 text-instill-small">
             {`last updated at ${time}`}
@@ -63,15 +75,7 @@ export const NameCell: FC<NameCellProps> = ({
 
   return (
     <CellBase padding={padding}>
-      {link ? (
-        <Link href={link}>
-          <div>
-            <CellItem />
-          </div>
-        </Link>
-      ) : (
-        <CellItem />
-      )}
+      <CellItem link={link} />
     </CellBase>
   );
 };
