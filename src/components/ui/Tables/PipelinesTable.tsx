@@ -45,7 +45,6 @@ export const PipelinesTable = ({
   const stateOverviewCounts = useStateOverviewCounts(searchedPipelines);
 
   const tableHeadItems = useMemo<TableHeadItem[]>(() => {
-    console.log(stateOverviewCounts);
     return [
       {
         key: "pipeline-state-overview-head",

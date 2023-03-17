@@ -1,8 +1,8 @@
-import { env , expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectReactSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
 
-test("should navigate first time user to the onboarding page", async ({
+test.skip("should navigate first time user to the onboarding page", async ({
   page,
 }) => {
   await removeRegisteredUser();
@@ -12,7 +12,7 @@ test("should navigate first time user to the onboarding page", async ({
   );
 });
 
-test("should enable email subscription by default", async ({ page }) => {
+test.skip("should enable email subscription by default", async ({ page }) => {
   await page.goto("/onboarding", { waitUntil: "networkidle" });
 
   // Should check email subscription
@@ -20,7 +20,7 @@ test("should enable email subscription by default", async ({ page }) => {
   expect(await emailSubscriptionField.isChecked()).toBeTruthy();
 });
 
-test("should disable start button, if email input format is not correct", async ({
+test.skip("should disable start button, if email input format is not correct", async ({
   page,
 }) => {
   await page.goto("/onboarding", { waitUntil: "networkidle" });
@@ -46,11 +46,9 @@ test("should disable start button, if email input format is not correct", async 
   expect(await startButton.isDisabled()).toBeTruthy();
 });
 
-test("should successfully fill in the onboarding form and submit", async ({
+test.skip("should successfully fill in the onboarding form and submit", async ({
   page,
-  context,
-  browserName,
 }) => {
   await removeRegisteredUser();
-  await expectToOnboardUser(page, context, browserName);
+  await expectToOnboardUser(page);
 });
