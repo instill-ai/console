@@ -30,11 +30,7 @@ export const addRegisteredUser = async () => {
   }
 };
 
-export const expectToOnboardUser = async (
-  page: Page,
-  context: BrowserContext,
-  browserName: string
-) => {
+export const expectToOnboardUser = async (page: Page) => {
   await page.goto("/onboarding", { waitUntil: "networkidle" });
 
   // Should input email
