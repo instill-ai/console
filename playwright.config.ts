@@ -13,6 +13,7 @@ if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
+  testMatch: "integration-test.list.ts",
   testDir: "./integration-test",
   // globalSetup: require.resolve("./integration-test/helper/global-setup"),
   /* Maximum time one test can run for. */
