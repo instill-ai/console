@@ -15,7 +15,6 @@ if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
 const config: PlaywrightTestConfig = {
   testMatch: "integration-test.list.ts",
   testDir: "./integration-test",
-  // globalSetup: require.resolve("./integration-test/helper/global-setup"),
   /* Maximum time one test can run for. */
   timeout: 30000,
   expect: {
@@ -50,12 +49,20 @@ const config: PlaywrightTestConfig = {
     // Because our backend is served with self-signed certification, we have to
     // ignore HTTPS error when operate the e2e test.
     ignoreHTTPSErrors: true,
+    launchOptions: {
+      slowMo: 50,
+    },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "setup",
+      testMatch: "**/*.setup.ts",
+    },
+    {
       name: "chromium",
+      dependencies: ["setup"],
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -63,6 +70,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "firefox",
+      dependencies: ["setup"],
       use: {
         ...devices["Desktop Firefox"],
       },
@@ -70,6 +78,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "webkit",
+      dependencies: ["setup"],
       use: {
         ...devices["Desktop Safari"],
       },
