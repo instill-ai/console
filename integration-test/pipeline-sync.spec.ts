@@ -17,12 +17,6 @@ export function handleSyncPipelineTest() {
   const modelInstanceTag = "latest";
   const destinationType = "HTTP";
 
-  test.use({
-    launchOptions: {
-      slowMo: 50,
-    },
-  });
-
   test.describe
     .serial("Sync pipeline with new source, destination and local model", () => {
     test("should create sync pipeline", async ({ page }) => {
@@ -152,12 +146,9 @@ export function handleSyncPipelineTest() {
 
       // Should set up pipeline
       await Promise.all([
-        page.waitForNavigation(),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`),
         setupPipelineButton.click(),
       ]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`
-      );
     });
 
     test("should have proper pipline list and navigate to pipline details page", async ({

@@ -50,8 +50,10 @@ export const expectToDeleteModel = async (page: Page, modelId: string) => {
   await confirmationCodeInput.fill(modelId);
 
   // Should delete model and navigate to models page
-  await Promise.all([page.waitForNavigation(), deleteButton.click()]);
-  expect(page.url()).toEqual(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`);
+  await Promise.all([
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+    deleteButton.click(),
+  ]);
 
   // Should not list model item
   const modelItemTitle = page.locator("h3", { hasText: modelId });
@@ -101,11 +103,8 @@ export const expectCorrectModelList = async (page: Page, modelId: string) => {
   // Should navigate to model details page
   await Promise.all([
     page.locator("h3", { hasText: modelId }).click(),
-    page.waitForNavigation(),
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models/${modelId}`),
   ]);
-  expect(page.url()).toEqual(
-    `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models/${modelId}`
-  );
 };
 
 export type ExpectCorrectModelDetailsProps = {
@@ -214,11 +213,11 @@ export const expectToDeployModel = async (
           state: "visible",
           timeout: timeout ? timeout : undefined,
         })
-      : page.waitForNavigation({ timeout: timeout ? timeout : undefined }),
+      : page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`, {
+          timeout: timeout ? timeout : undefined,
+        }),
     deployButton.click(),
   ]);
-
-  expect(page.url()).toEqual(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`);
 };
 
 export type ExpectToSetupLocalModel = {

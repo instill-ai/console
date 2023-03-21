@@ -16,12 +16,6 @@ export function handleLocalModelTest() {
   // model pulling and converting. Not only that, Firefox seems particularly fragile
   // to face this kind of issue.
 
-  test.use({
-    launchOptions: {
-      slowMo: 50,
-    },
-  });
-
   test.describe.serial("Local model", () => {
     test.setTimeout(75000);
 

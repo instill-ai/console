@@ -33,10 +33,10 @@ export function handleSyncDestinationTest() {
 
       // Should set up destination
       const setupButton = page.locator("button", { hasText: "Set up" });
-      await Promise.all([page.waitForNavigation(), setupButton.click()]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`
-      );
+      await Promise.all([
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`),
+        setupButton.click(),
+      ]);
     });
 
     test("should have destination list and navigate to destination details page", async ({
@@ -52,12 +52,11 @@ export function handleSyncDestinationTest() {
 
       // Should navigate to destination details page
       await Promise.all([
-        page.waitForNavigation(),
+        page.waitForURL(
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
+        ),
         page.locator("h3", { hasText: destinationId }).click(),
       ]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
-      );
     });
 
     test("should have proper destination details page", async ({ page }) => {

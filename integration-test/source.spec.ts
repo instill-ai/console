@@ -30,10 +30,10 @@ export function handleSourceTest() {
       expect(await setupButton.isEnabled()).toBeTruthy();
 
       // Should set up source
-      await Promise.all([page.waitForNavigation(), setupButton.click()]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`
-      );
+      await Promise.all([
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`),
+        setupButton.click(),
+      ]);
     });
 
     test("should have proper sources list and navigate to source details page", async ({
@@ -46,10 +46,12 @@ export function handleSourceTest() {
       await expect(sourceItemTitle).toHaveCount(1);
 
       // Should navigate to source details page
-      await Promise.all([page.waitForNavigation(), sourceItemTitle.click()]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources/${sourceId}`
-      );
+      await Promise.all([
+        page.waitForURL(
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources/${sourceId}`
+        ),
+        sourceItemTitle.click(),
+      ]);
     });
 
     test("should have proper source details page", async ({ page }) => {
@@ -120,10 +122,10 @@ export function handleSourceTest() {
       await confirmationCodeInput.fill(sourceId);
 
       // Delete source and navigate to sources page
-      await Promise.all([page.waitForNavigation(), deleteSourceButton.click()]);
-      expect(page.url()).toEqual(
-        `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`
-      );
+      await Promise.all([
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`),
+        deleteSourceButton.click(),
+      ]);
 
       // Check whether the list item not exist
       const sourceItemTitle = page.locator("h3", { hasText: sourceId });

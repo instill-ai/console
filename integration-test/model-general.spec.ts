@@ -2,12 +2,6 @@ import { test, expect } from "@playwright/test";
 import { expectToSelectReactSelectOption } from "./helper";
 
 export function handleGeneralModelTest() {
-  test.use({
-    launchOptions: {
-      slowMo: 50,
-    },
-  });
-
   test.describe.serial("Create model", () => {
     test("should warn wrong resource ID", async ({ page }) => {
       await page.goto("/models/create");
