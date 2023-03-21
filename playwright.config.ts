@@ -36,7 +36,6 @@ const config: PlaywrightTestConfig = {
   reporter: "dot",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    storageState: "playwright-state.json",
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -65,6 +64,7 @@ const config: PlaywrightTestConfig = {
       dependencies: ["setup"],
       use: {
         ...devices["Desktop Chrome"],
+        storageState: "integration-test/.auth/user.json",
       },
     },
 
@@ -73,6 +73,7 @@ const config: PlaywrightTestConfig = {
       dependencies: ["setup"],
       use: {
         ...devices["Desktop Firefox"],
+        storageState: "integration-test/.auth/user.json",
       },
     },
 
@@ -81,6 +82,7 @@ const config: PlaywrightTestConfig = {
       dependencies: ["setup"],
       use: {
         ...devices["Desktop Safari"],
+        storageState: "integration-test/.auth/user.json",
       },
     },
 
