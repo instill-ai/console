@@ -13,7 +13,7 @@ export const updateLocalUserMutation = async (
     const client = createInstillAxiosClient();
 
     const { data } = await client.patch(
-      `${env("NEXT_PUBLIC_API_VERSION")}/user`,
+      `${env("NEXT_PUBLIC_API_VERSION")}/users/me`,
       payload
     );
 

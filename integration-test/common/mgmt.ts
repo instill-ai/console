@@ -3,7 +3,7 @@ import {
   createInstillAxiosTestClient,
   expectToSelectReactSelectOption,
 } from "../helper";
-import { BrowserContext, Page, expect } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
 
 export const removeRegisteredUser = async () => {
@@ -56,9 +56,10 @@ export const expectToOnboardUser = async (page: Page) => {
   expect(await startButton.isEnabled()).toBeTruthy();
 
   // Should submit the onboarding form
-  await Promise.all([page.waitForNavigation(), startButton.click()]);
-
-  expect(page.url()).toBe(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`);
+  await Promise.all([
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`),
+    startButton.click(),
+  ]);
 
   // Should have cookie
   // Safari have issue when setting up cookies.
