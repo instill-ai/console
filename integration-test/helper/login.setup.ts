@@ -5,5 +5,7 @@ test("should successfully fill in the onboarding form and submit", async ({
   page,
 }) => {
   await expectToOnboardUser(page);
-  await page.context().storageState({ path: "playwright-state.json" });
+  await page
+    .context()
+    .storageState({ path: "integration-test/.auth/user.json" });
 });

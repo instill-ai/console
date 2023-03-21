@@ -18,7 +18,6 @@ COPY --chown=playwright:nodejs ./playwright.config.ts ./
 COPY --chown=playwright:nodejs ./.env ./
 COPY --chown=playwright:nodejs ./env.sh ./
 COPY --chown=playwright:nodejs ./entrypoint-playwright.sh ./
-COPY --chown=playwright:nodejs ./playwright-state.json ./
 
 RUN mkdir public
 
