@@ -1,4 +1,4 @@
-import { env } from "@/utils";
+import { env } from "./index";
 import { test } from "@playwright/test";
 
 test("mock onboarded cookie", async ({ page }) => {
