@@ -8,6 +8,10 @@ RUN npm install -g pnpm@7.5.0
 
 COPY .npmrc package.json pnpm-lock.yaml ./
 
+# Install vim for debugging
+RUN apt-get update
+RUN apt-get install vim -y
+
 RUN pnpm install --frozen-lockfile
 
 RUN addgroup --system --gid 1001 nodejs
