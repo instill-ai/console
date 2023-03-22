@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       value: JSON.stringify({
         cookie_token: body.token,
       }),
-      domain: req.headers.origin ? new URL(req.headers.origin).hostname : null,
+      domain: null,
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: process.env.NODE_ENV === "production" ? true : false,
     };
