@@ -1,0 +1,52 @@
+name: Integration Test
+
+on:
+  push:
+    branches:
+      - rc
+  pull_request:
+    branches:
+      - rc
+
+jobs:
+  build-image:
+    uses: instill-ai/console/.github/workflows/images.yml@main
+    secrets: inherit
+  backend-latest:
+    needs: build-image
+    if: github.event_name == 'pull_request'
+    name: Backends (latest)
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [pipeline, connector, model, mgmt]
+    uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: latest
+  console-latest:
+    needs: build-image
+    if: github.event_name == 'pull_request'
+    name: Console (latest)
+    uses: instill-ai/vdp/.github/workflows/integration-test-console.yml@main
+    with:
+      target: latest
+  backend-rc:
+    needs: build-image
+    if: github.ref == 'refs/heads/rc'
+    name: Backends (rc)
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [pipeline, connector, model, mgmt]
+    uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: rc
+  console-rc:
+    needs: build-image
+    if: github.ref == 'refs/heads/rc'
+    name: Console (rc)
+    uses: instill-ai/vdp/.github/workflows/integration-test-console.yml@main
+    with:
+      target: rc

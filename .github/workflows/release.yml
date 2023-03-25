@@ -25,7 +25,7 @@ jobs:
         with:
           token: ${{ secrets.botGitHubToken }}
       - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v4
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.botGPGPrivateKey }}
           passphrase: ${{ secrets.botGPGPassphrase }}
@@ -44,3 +44,7 @@ jobs:
           git tag -a v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} pointing to tag ${{ steps.release.outputs.tag_name }}"
           git push origin v${{ steps.release.outputs.major }}
           git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
+      - name: Force push to rc branch
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          git push -f origin main:rc
