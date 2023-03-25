@@ -1,0 +1,115 @@
+name: Integration Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-push-image:
+    if: github.ref == 'refs/heads/main'
+    name: Build and push image
+    uses: instill-ai/console/.github/workflows/images.yml@main
+    secrets: inherit
+  backends:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: Backends
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [pipeline, connector, model, mgmt]
+    uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+  console:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: Console
+    uses: instill-ai/vdp/.github/workflows/integration-test-console.yml@main
+
+  pr-head:
+    if: github.event_name == 'pull_request'
+    name: PR head branch
+    runs-on: ubuntu-latest
+    steps:
+
+      # mono occupies port 8084 which conflicts with mgmt-backend
+      - name: Stop mono service
+        run: |
+          sudo kill -9 `sudo lsof -t -i:8084`
+          sudo lsof -i -P -n | grep LISTEN
+
+      - name: Free disk space
+        run: |
+          df --human-readable
+          sudo apt clean
+          docker rmi $(docker image ls --all --quiet)
+          rm --recursive --force "$AGENT_TOOLSDIRECTORY"
+          df --human-readable
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Load .env file
+        uses: cardinalby/export-env-action@v2
+        with:
+          envFile: .env
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: dropletbot
+          password: ${{ secrets.botDockerHubPassword }}
+
+      - name: Build image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          tags: instill/console:latest
+
+      - name: Checkout (vdp)
+        uses: actions/checkout@v3
+        with:
+          repository: instill-ai/vdp
+
+      - name: Launch VDP
+        run: |
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          ITMODE=true \
+          TRITON_CONDA_ENV_PLATFORM=cpu \
+          CONSOLE_BASE_URL_HOST=console \
+          CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Run integration-test
+        run: |        
+          docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright .
+          docker run -t --rm \
+            -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
+            -e NEXT_PUBLIC_API_GATEWAY_BASE_URL=http://api-gateway:8080 \
+            -e NEXT_SERVER_API_GATEWAY_BASE_URL=http://api-gateway:8080 \
+            -e NEXT_PUBLIC_API_VERSION=v1alpha \
+            -e NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION=false \
+            -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME=instill-ai-user \
+            --network instill-network \
+            --entrypoint ./entrypoint-playwright.sh \
+            --name console-integration-test console-playwright
