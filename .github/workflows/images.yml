@@ -1,9 +1,7 @@
 name: Build and Push Images
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
   release:
     types: [published]
 
@@ -21,9 +19,10 @@ jobs:
           password: ${{ secrets.botDockerHubPassword }}
 
       - name: Build and push (latest)
+        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64          
           push: true
           tags: instill/console:latest
           cache-from: type=registry,ref=instill/console:buildcache
@@ -85,7 +84,7 @@ jobs:
         if: github.event_name == 'release'
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64          
           push: true
           tags: instill/console:${{steps.set_version.outputs.no_v_tag}}
           cache-from: type=registry,ref=instill/console:buildcache

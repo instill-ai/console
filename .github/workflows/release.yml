@@ -22,10 +22,12 @@ jobs:
           config-file: release-please/config.json
           manifest-file: release-please/manifest.json
       - uses: actions/checkout@v2
+        if: ${{ steps.release.outputs.release_created }}
         with:
           token: ${{ secrets.botGitHubToken }}
       - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v4
+        if: ${{ steps.release.outputs.release_created }}
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.botGPGPrivateKey }}
           passphrase: ${{ secrets.botGPGPassphrase }}
