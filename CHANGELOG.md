@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.20.0-alpha](https://github.com/instill-ai/console/compare/v0.19.0-alpha...v0.20.0-alpha) (2023-03-25)
+
+
+### Features
+
+* [INS-250] update the logic of tracking cookie ([#372](https://github.com/instill-ai/console/issues/372)) ([4a828e9](https://github.com/instill-ai/console/commit/4a828e96a33a8fc92ed2d4ebf5895192b0f132c1))
+* [INS-267] mock onboarded cookie ([#378](https://github.com/instill-ai/console/issues/378)) ([bbf8322](https://github.com/instill-ai/console/commit/bbf8322a3751541306b776708e79d4766b2a7fa3))
+* add playwright state ([#373](https://github.com/instill-ai/console/issues/373)) ([b1ff209](https://github.com/instill-ai/console/commit/b1ff209209c5456054c2450b7e61129c2b7e7d1d))
+* Impl pagination ([#365](https://github.com/instill-ai/console/issues/365)) ([6db8461](https://github.com/instill-ai/console/commit/6db84611fd1b91bd649b2041ad66b61526c6f100))
+* make test operate in order and bump playwright version ([#374](https://github.com/instill-ai/console/issues/374)) ([ddfcd5a](https://github.com/instill-ai/console/commit/ddfcd5a45c9a6146a23c3978db5f1172107a4716))
+* update how we store playwright state ([#376](https://github.com/instill-ai/console/issues/376)) ([9bf8de5](https://github.com/instill-ai/console/commit/9bf8de5823388883c0b4942f82c7c106576e737c))
+
+
+### Bug Fixes
+
+* don't specific domain when set cookie ([#377](https://github.com/instill-ai/console/issues/377)) ([109a5f9](https://github.com/instill-ai/console/commit/109a5f994f4001d3af875969cdb446515b3900c0))
+* fix change resource button is not disabled when we need to ([#369](https://github.com/instill-ai/console/issues/369)) ([53f5472](https://github.com/instill-ai/console/commit/53f547285c847523c74f53560aa113929cc73556))
+* fix import path in test ([#379](https://github.com/instill-ai/console/issues/379)) ([7463895](https://github.com/instill-ai/console/commit/7463895dfc6b316a304af12b38eaf197bf2e95ab))
+* fix pipelines table margin bottom issue ([#367](https://github.com/instill-ai/console/issues/367)) ([99776bd](https://github.com/instill-ai/console/commit/99776bd7cc5ae6368980b164cd973d5bde0949f1))
+* fix playwright container version ([#375](https://github.com/instill-ai/console/issues/375)) ([bf4924c](https://github.com/instill-ai/console/commit/bf4924cc1318fd84de8125beb2ea682bf79cbdce))
+
 ## [0.19.0-alpha](https://github.com/instill-ai/console/compare/v0.18.0-alpha...v0.19.0-alpha) (2023-03-01)
 
 
