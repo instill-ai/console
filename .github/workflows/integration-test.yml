@@ -25,11 +25,14 @@ jobs:
     uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
     with:
       component: ${{ matrix.component }}
+      target: latest
   console:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
     name: Console
     uses: instill-ai/vdp/.github/workflows/integration-test-console.yml@main
+    with:
+      target: latest
 
   pr-head:
     if: github.event_name == 'pull_request'
