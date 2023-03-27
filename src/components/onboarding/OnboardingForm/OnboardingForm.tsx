@@ -173,11 +173,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
           description: null,
           message: "Succeed.",
         }));
-
-        if (!user) {
-          await axios.post("/api/set-user-cookie", { token });
-        }
-
+        await axios.post("/api/set-user-cookie", { token });
         router.push("/pipelines");
       },
       onError: (error) => {
