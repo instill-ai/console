@@ -55,8 +55,8 @@ export const ModelsTable = ({ models, marginBottom }: ModelsTableProps) => {
 
   return (
     <PaginationListContainer
-      title="Pipeline"
-      description="These are the pipelines you can select"
+      title="Model"
+      description="These are the models you can select"
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       searchTerm={searchTerm}
