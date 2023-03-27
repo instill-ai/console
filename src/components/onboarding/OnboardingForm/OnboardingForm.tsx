@@ -134,11 +134,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
 
     let token: string | undefined = undefined;
 
-    if (user && user.cookie_token && user.cookie_token !== "") {
-      token = user.cookie_token;
-    } else {
-      token = uuidv4();
-    }
+    token = uuidv4();
 
     const payload: Partial<User> = {
       id: "local-user",
