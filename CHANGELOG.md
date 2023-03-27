@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.20.1-alpha](https://github.com/instill-ai/console/compare/v0.20.0-alpha...v0.20.1-alpha) (2023-03-27)
+
+
+### Bug Fixes
+
+* fix onboarding issue when vdp had user in db ([#384](https://github.com/instill-ai/console/issues/384)) ([6e0f3b5](https://github.com/instill-ai/console/commit/6e0f3b53b35a3c81332174808291183bff9ff9bc))
+* update token no matter db had user or not ([#386](https://github.com/instill-ai/console/issues/386)) ([2c59339](https://github.com/instill-ai/console/commit/2c5933928985c6ed915f2ce22f010bb5ec6240d5))
+
 ## [0.20.0-alpha](https://github.com/instill-ai/console/compare/v0.19.0-alpha...v0.20.0-alpha) (2023-03-26)
 
 
