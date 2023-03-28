@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.2-alpha](https://github.com/instill-ai/console/compare/v0.20.1-alpha...v0.20.2-alpha) (2023-03-28)
+
+
+### Bug Fixes
+
+* add `NEXT_PUBLIC_SET_SECURE_COOKIE` to control the behavior ([#387](https://github.com/instill-ai/console/issues/387)) ([8b11b1c](https://github.com/instill-ai/console/commit/8b11b1c2597e790c83ce30837d91f2d63294e200))
+
 ## [0.20.1-alpha](https://github.com/instill-ai/console/compare/v0.20.0-alpha...v0.20.1-alpha) (2023-03-27)
 
 
