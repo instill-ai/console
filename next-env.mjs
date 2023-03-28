@@ -4,7 +4,7 @@ const inlineEnvPrefixes = ["NEXT_PUBLIC", "NEXT_SERVER"];
 
 function main() {
   const updateEnvFile =
-    process.env.NEXT_ENV_UPDATE_ENV_FILE === "true" ? true : false;
+    process.env.NEXT_ENV_UPDATE_ENV_FILE === "false" ? false : true;
 
   // 1. Get the key-value pairs from process.env with key starting with NEXT_PUBLIC
   const inlineEnvKeys = Object.keys(process.env).filter((key) =>
