@@ -1,7 +1,11 @@
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
-import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -46,7 +50,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       return;
     }
 
-    if (process.env.NODE_ENV === "production" && !amplitudeIsInit) {
+    if (
+      env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local:ce-dev" &&
+      !amplitudeIsInit
+    ) {
       if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION") === "true") {
         setAmplitudeIsInit(false);
       } else {

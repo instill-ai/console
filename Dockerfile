@@ -50,7 +50,7 @@ WORKDIR /app
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# We need bash to run our entrypoint.sh and env.sh
+# We need bash to run our entrypoint.sh
 RUN apk add --no-cache bash
 
 RUN addgroup --system --gid 1001 nodejs
@@ -61,9 +61,9 @@ COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/package.json ./package.json
 
 # We need to grant nextjs user to have the permission to alter the /public folder to
-# make env.sh work correctly. (env.sh will create __env.js under public folder)
+# make next-env.mjs work correctly. (next-env.mjs will create __env.js under public folder)
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/env.sh ./
+COPY --from=builder --chown=nextjs:nodejs /app/next-env.mjs ./
 COPY --from=builder --chown=nextjs:nodejs /app/.env ./
 
 # Automatically leverage output traces to reduce image size 
@@ -78,11 +78,11 @@ USER nextjs
 
 # Permisions to execute script
 RUN chmod +x ./entrypoint.sh
-RUN chmod +x ./env.sh
+RUN chmod +x ./next-env.mjs
 
-# We need this permission for env.sh to create the __env.js in /public folder
+# We need this permission for next-env.mjs to create the __env.js in /public folder
 RUN chmod +wx ./public
-RUN chmod +rwx ./.env
+RUN chmod +rwx ./next-env.mjs
 
 EXPOSE 3000
 

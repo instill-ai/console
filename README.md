@@ -25,7 +25,7 @@ The repo mainly follows the guideline of Next.js and has some personal touch on 
 
 ### About configuration
 
-- babel.config.js: For the storybook to work correctly. (We use experimental.forceSwcTransforms in next.config.js to force Nextjs use SWC)
+- babel.config.js: For the storybook to work correctly. (We use experimental.forceSwcTransforms in next.config.js to force Nextjs to use SWC)
 
 ## About the UI components
 
@@ -33,7 +33,7 @@ We are following the principles of Instill-ai's design system, you could find th
 
 ## Code quality tools.
 
-We are using eslint with custom config for code style, commitlint to ensure commit messages follow instill-ai’s rules. Later we will refactor the codebase to adapt full end-to-end tests.
+We are using eslint with custom config for code style, commitlint to ensure commit messages to follow instill-ai’s rules. Later we will refactor the codebase to adapt full end-to-end tests.
 
 ## How to contribute
 
@@ -41,11 +41,11 @@ To set up the local dev environment with this repo, you need to follow the below
 
 1. Clone the [VDP repo](https://github.com/instill-ai/vdp)
 2. Comment out the console part in the [docker-compose-dev.yml](https://github.com/instill-ai/vdp/blob/f563393dca62fc1961e1a370f5a38fb9bc51c5a3/docker-compose-dev.yml#L510) of the vdp folder. This is because we don’t want the latest image to interrupt our development.
-3. In the VDP folder you just clone, use `make build PROFILE=all` to build the full images of vdp, this step will take some time if this is your first time setting up the VDP.
-4. In the same VDP folder, use `make dev PROFILE=all` This will bring up the full working VDP backend, except the console you comment out at the second step.
+3. In the VDP folder you just clone, use `make build PROFILE=all` to build the full images of VDP, this step will take some time if this is your first time setting up the VDP.
+4. In the same VDP folder, use `make dev PROFILE=all` This will bring up the full working VDP backend, except the console you comment out in the second step.
 5. Clone the [console repo](https://github.com/instill-ai/console)
 6. Install pnpm if you don’t have it, use `npm install -g pnpm` or `brew install pnpm` if you have homebrew.
-7. Install all the dependencies, use `pnpm install`.
+7. Install all the dependencies, and use `pnpm install`.
 8. Make sure the environment variables in the `.env` file are correct. They should map one-to-one to the config of the VDP. Please check [.env](/.env) file
 9. You can now use `pnpm dev` to run the local Next.js server if your VDP has been set up correctly, it should not have any error at the browser inspection window.
 10. If you want to build a docker container you could use `pnpm docker-compose-up`.
@@ -66,7 +66,8 @@ To set up the local dev environment with this repo, you need to follow the below
 
 ### TLDR
 
-- We introduce `./env.sh` that will generate a `__env.js` file.
+- We introduce `./next-env.mjs` which digests the inline env variables and `.env` file then generate an `__env.js` file.
+- It will digest the environment variables from the `.env` file and the `process.env` object. (You can specify that only the variable with the prefix `NEXT_PUBLIC_` in the `process.env` will be digested, but it will digest all the variables in the `.env` file.)
 - We digest the `__env.js` file into HTML, it will inject additional variables into the window object.
 - We use a helper function in `/src/utils/config.ts` to access the window object and get the variables.
 - We can still use `process.env` to access the variables in the server-side code.
@@ -75,13 +76,13 @@ To set up the local dev environment with this repo, you need to follow the below
 
 In order to empower users to dynamically set up environment variables (They can take down all VDP services, change the console environment variables in the docker-compose then make dev again to update the environment variable in the container.) We need Next.js runtime environment variables instead of normal variables that passed with process.env.
 
-We introduce the shell script `./env.sh`. This script will read through the ./.env file and override it if you pass the new environment variable through docker-compose or `docker run -e` (Just as how we did it in `pnpm docker-run` command.)
+We introduce the shell script `./next-env.mjs`. This script will read through the ./.env file and override it if you pass the new environment variable through docker-compose or `docker run -e` (Just as how we did it in `pnpm docker-run` command.)
 
 This script will then generate a `__env.js` under `/public` folder. Then we include this script into our HTML in the `/src/pages/_document.tsx` file. 
 
-After embedding this script into the root, this `__env.js` will inject the environment variables into the window object so we can access it in the client-side code. We have a helper function lie in the `/src/utils/config.ts` that can help us simplify the process of retrieving the variables.
+After embedding this script into the root, this `__env.js` will inject the environment variables into the window object so we can access it in the client-side code. We have a helper function lying in the `/src/utils/config.ts` that can help us simplify the process of retrieving the variables.
 
-For server-side code, we will alter the ./.env file in the image. It can also access the new assigned variables by simply using `process.env`
+For server-side code, we will alter the ./.env file in the image. It can also access the newly assigned variables by simply using `process.env`
 
 ### How to use
 
@@ -90,7 +91,7 @@ For server-side code, we will alter the ./.env file in the image. It can also ac
 
 ### Caveats
 
-- Be careful of env prefix. For example, if you have inlined env CONSOLE_BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the `env.sh` will not find this env in `.env` file and alter it. We recommend you add `NEXT_PUBLIC_` prefix in all the env related to Next.js
+- Be careful of the env prefix. For example, if you have inlined env CONSOLE_BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the `next-env.mjs` will not find this env in `.env` file and alter it. We recommend you add `NEXT_PUBLIC_` prefix in all the env related to Next.js
 
 ## Security
 

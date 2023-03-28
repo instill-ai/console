@@ -1,6 +1,7 @@
 import { NextApiResponse } from "next";
 import { serialize } from "cookie";
 import { Nullable } from "@/types/general";
+import { env } from "@/utils";
 
 export type SetCookiePayload = {
   res: NextApiResponse;
@@ -19,11 +20,18 @@ export const setCookie = ({
   maxAge,
   httpOnly,
 }: SetCookiePayload) => {
+  console.log(
+    "setCookie",
+    env("NEXT_PUBLIC_SET_SECURE_COOKIE"),
+    env("NEXT_PUBLIC_SET_SECURE_COOKIE") === "true" ? true : false,
+    env("NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME")
+  );
+
   const cookie = serialize(key, value, {
     maxAge: maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
     httpOnly: httpOnly,
-    secure: process.env.NODE_ENV === "production" ? true : false,
+    secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") === "true" ? true : false,
     path: "/",
     sameSite: "lax",
     domain: domain ? domain : undefined,

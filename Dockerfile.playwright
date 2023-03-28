@@ -20,7 +20,7 @@ RUN adduser --system --uid 1001 playwright
 COPY --chown=playwright:nodejs ./integration-test ./integration-test
 COPY --chown=playwright:nodejs ./playwright.config.ts ./
 COPY --chown=playwright:nodejs ./.env ./
-COPY --chown=playwright:nodejs ./env.sh ./
+COPY --chown=playwright:nodejs ./next-env.mjs ./
 COPY --chown=playwright:nodejs ./entrypoint-playwright.sh ./
 
 RUN mkdir public
@@ -31,10 +31,7 @@ RUN echo "test user: $TEST_USER"
 
 # Permisions to execute script
 RUN chmod +x ./entrypoint-playwright.sh
-RUN chmod +x ./env.sh
+RUN chmod +x ./next-env.mjs
 
 # We need this permission for env.sh to create the __env.js in /public folder
 RUN chmod +rwx ./.env
-
-# Although this image has the full deps playwright needs, this is for pre-caution
-# RUN npx playwright install
