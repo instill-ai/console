@@ -2,7 +2,6 @@ import { env } from "./index";
 import { test } from "@playwright/test";
 
 test("mock onboarded cookie", async ({ page }) => {
-  console.log(env("NEXT_PUBLIC_CONSOLE_BASE_URL"));
   await page.context().addCookies([
     {
       name: env("NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME") as string,

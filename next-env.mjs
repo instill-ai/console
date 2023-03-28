@@ -101,29 +101,17 @@ function consoleLogMessageTitleWithColor(type, title) {
   switch (type) {
     case "warn":
       console.log("\n");
-      console.log(
-        "\x1b[33m\x1b[43m%s\x1b[0m",
-        "GET_MARKDOWN_VIDEO_META_WARN: ",
-        title
-      );
+      console.log("\x1b[33m\x1b[43m%s\x1b[0m", "NEXT_ENV: ", title);
       break;
 
     case "error":
       console.log("\n");
-      console.log(
-        "\x1b[37m\x1b[41m%s\x1b[0m",
-        "GET_MARKDOWN_VIDEO_META_ERROR:",
-        title
-      );
+      console.log("\x1b[37m\x1b[41m%s\x1b[0m", "NEXT_ENV:", title);
       break;
 
     case "info":
       console.log("\n");
-      console.log(
-        "\x1b[34m\x1b[100m%s\x1b[0m",
-        "GET_MARKDOWN_VIDEO_META_INFO:",
-        title
-      );
+      console.log("\x1b[34m\x1b[100m%s\x1b[0m", "NEXT_ENV:", title);
       break;
 
     default:

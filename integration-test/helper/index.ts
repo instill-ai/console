@@ -14,7 +14,7 @@ export const addUserCookie = async (context: BrowserContext) => {
       domain: env("NEXT_PUBLIC_CONSOLE_BASE_URL")?.split(":")[0],
       path: "/",
       value: JSON.stringify({ cookie_token: "instill-token" }),
-      httpOnly: process.env.NODE_ENV === "production" ? true : false,
+      httpOnly: true,
     },
   ]);
 

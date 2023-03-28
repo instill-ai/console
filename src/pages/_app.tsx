@@ -50,7 +50,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       return;
     }
 
-    if (process.env.NODE_ENV === "production" && !amplitudeIsInit) {
+    if (
+      env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local:ce-dev" &&
+      !amplitudeIsInit
+    ) {
       if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION") === "true") {
         setAmplitudeIsInit(false);
       } else {
