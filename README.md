@@ -66,7 +66,8 @@ To set up the local dev environment with this repo, you need to follow the below
 
 ### TLDR
 
-- We introduce `./env.sh` that will generate a `__env.js` file.
+- We introduce `./next-env.mjs` which digests the inline env variables and `.env` file then generate a `__env.js` file.
+- It will digest the environment variables from the `.env` file and the `process.env` object. (You can specify that only the variable with prefix `NEXT_PUBLIC_` in the `process.env` will be digested, but it will digest all the variables in the `.env` file.)
 - We digest the `__env.js` file into HTML, it will inject additional variables into the window object.
 - We use a helper function in `/src/utils/config.ts` to access the window object and get the variables.
 - We can still use `process.env` to access the variables in the server-side code.
@@ -75,13 +76,13 @@ To set up the local dev environment with this repo, you need to follow the below
 
 In order to empower users to dynamically set up environment variables (They can take down all VDP services, change the console environment variables in the docker-compose then make dev again to update the environment variable in the container.) We need Next.js runtime environment variables instead of normal variables that passed with process.env.
 
-We introduce the shell script `./env.sh`. This script will read through the ./.env file and override it if you pass the new environment variable through docker-compose or `docker run -e` (Just as how we did it in `pnpm docker-run` command.)
+We introduce the shell script `./next-env.mjs`. This script will read through the ./.env file and override it if you pass the new environment variable through docker-compose or `docker run -e` (Just as how we did it in `pnpm docker-run` command.)
 
 This script will then generate a `__env.js` under `/public` folder. Then we include this script into our HTML in the `/src/pages/_document.tsx` file. 
 
-After embedding this script into the root, this `__env.js` will inject the environment variables into the window object so we can access it in the client-side code. We have a helper function lie in the `/src/utils/config.ts` that can help us simplify the process of retrieving the variables.
+After embedding this script into the root, this `__env.js` will inject the environment variables into the window object so we can access it in the client-side code. We have a helper function lying in the `/src/utils/config.ts` that can help us simplify the process of retrieving the variables.
 
-For server-side code, we will alter the ./.env file in the image. It can also access the new assigned variables by simply using `process.env`
+For server-side code, we will alter the ./.env file in the image. It can also access the newly assigned variables by simply using `process.env`
 
 ### How to use
 
