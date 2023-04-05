@@ -1,16 +1,17 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import {
+  useSendAmplitudeData,
+  useDestinationsWithPipelines,
+  DestinationsTable,
+} from "@instill-ai/toolkit";
 
 import {
   PageTitle,
-  DestinationsTable,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { useDestinationsWithPipelines } from "@/services/connector";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,15 +20,17 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const router = useRouter();
-  const destinations = useDestinationsWithPipelines();
+  const destinations = useDestinationsWithPipelines({
+    accessToken: null,
+    enable: true,
+  });
 
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const router = useRouter();
+
   useSendAmplitudeData(
     "hit_destinations_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -43,7 +46,7 @@ const DestinationPage: FC & {
           marginBottom="mb-10"
         />
         <DestinationsTable
-          destinations={destinations.isSuccess ? destinations.data : null}
+          destinations={destinations.data ? destinations.data : []}
           marginBottom={null}
         />
       </PageContentContainer>

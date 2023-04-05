@@ -1,18 +1,21 @@
-import { FC, ReactElement, useMemo, useState } from "react";
+import { FC, ReactElement, useMemo } from "react";
 import { useRouter } from "next/router";
+import {
+  useDestinationWithPipelines,
+  useSendAmplitudeData,
+  useWarnUnsavedChanges,
+  ConfigureDestinationForm,
+  useCreateResourceFormStore,
+  PipelinesTable,
+  StateLabel,
+} from "@instill-ai/toolkit";
 
 import {
-  StateLabel,
-  PipelinesTable,
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { ConfigureDestinationForm } from "@/components/destination";
-import { useDestinationWithPipelines } from "@/services/connector";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -23,10 +26,21 @@ const DestinationDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
+  const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
 
-  const destinationWithPipelines = useDestinationWithPipelines(
-    id ? `destination-connectors/${id.toString()}` : null
-  );
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
+
+  const destinationWithPipelines = useDestinationWithPipelines({
+    destinationName: id ? `destination-connectors/${id.toString()}` : null,
+    accessToken: null,
+    enable: true,
+  });
 
   const destination = useMemo(() => {
     if (!destinationWithPipelines.isSuccess) return null;
@@ -34,20 +48,17 @@ const DestinationDetailsPage: FC & {
     return destination;
   }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
 
-  const { amplitudeIsInit } = useAmplitudeCtx();
-
   useSendAmplitudeData(
     "hit_destination_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
     <>
       <PageHead
         title={
-          destinationWithPipelines.isSuccess
+          destinationWithPipelines.isLoading
             ? ""
             : (destinationWithPipelines.data?.name as string)
         }
@@ -78,16 +89,23 @@ const DestinationDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={
-            destinationWithPipelines.isSuccess
+            destinationWithPipelines.data
               ? destinationWithPipelines.data.pipelines
-              : null
+              : []
           }
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>
           {destination ? (
-            <ConfigureDestinationForm destination={destination} />
+            <ConfigureDestinationForm
+              destination={destination}
+              onDelete={() => router.push("/destinations")}
+              onConfigure={null}
+              initStoreOnConfigure={true}
+              width="w-full"
+              accessToken={null}
+            />
           ) : null}
         </div>
       </PageContentContainer>

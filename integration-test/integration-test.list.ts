@@ -12,8 +12,8 @@ import { handleSyncPipelineTest } from "./pipeline-sync.spec";
 import { handleSourceTest } from "./source.spec";
 
 // test.describe(handleOnboardingTest);
-test.describe(handleSourceTest);
-// test.describe(handleSyncDestinationTest);
+// test.describe(handleSourceTest);
+test.describe(handleSyncDestinationTest);
 // test.describe(handleAsyncDestinationTest);
 // test.describe(handleGeneralModelTest);
 // test.describe(handleArtivcModelTest);

@@ -1,8 +1,4 @@
-import {
-  env,
-  deleteDestination,
-  expectToSelectReactSelectOption,
-} from "./helper";
+import { env, deleteDestination, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
@@ -24,11 +20,11 @@ export function handleSyncDestinationTest() {
       await page.goto("/destinations/create");
 
       // Should select destination type - HTTP
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-definition-input"),
-        page.locator("data-testid=definition-selected-option", {
-          hasText: destinationType,
-        })
+      await expectToSelectOption(
+        page.locator("#destination-definition"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(destinationType)
       );
 
       // Should set up destination
@@ -67,9 +63,7 @@ export function handleSyncDestinationTest() {
       await expect(destinationTitle).toHaveCount(1);
 
       // Should have correct destination type
-      const destinationTypeOption = page.locator(
-        "data-testid=definition-selected-option"
-      );
+      const destinationTypeOption = page.locator("#destination-definition");
       await expect(destinationTypeOption).toHaveText(destinationType);
 
       // Should disable edit button
