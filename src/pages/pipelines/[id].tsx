@@ -171,7 +171,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
         <PageTitle
           title={pipeline.id}
           breadcrumbs={["Pipeline", pipeline.id]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-5"
         />
         <div className="mb-10 flex flex-row gap-x-2.5">

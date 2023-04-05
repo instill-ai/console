@@ -35,9 +35,9 @@ const ModelPage: FC & {
       <PageHead title="models" />
       <PageContentContainer>
         <PageTitle
-          title={null}
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Model"
+          breadcrumbs={["Model"]}
+          enableButton={true}
           buttonName="Add new model"
           buttonLink="/models/create"
           marginBottom="mb-10"

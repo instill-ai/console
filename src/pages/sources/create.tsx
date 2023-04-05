@@ -58,7 +58,7 @@ const CreateSourcePage: FC & {
         <PageTitle
           title="Set Up New Source"
           breadcrumbs={["Source", "Source Settings"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
         <CreateSourceForm marginBottom={null} />

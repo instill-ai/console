@@ -35,9 +35,9 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
-          title=""
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Destination"
+          breadcrumbs={["Destination"]}
+          enableButton={true}
           buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"

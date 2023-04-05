@@ -39,9 +39,9 @@ const PipelinePage: FC & {
       <PageHead title="pipelines" />
       <PageContentContainer>
         <PageTitle
-          title={null}
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Pipeline"
+          breadcrumbs={["Pipeline"]}
+          enableButton={true}
           buttonName="Add new pipeline"
           buttonLink="/pipelines/create"
           marginBottom="mb-10"

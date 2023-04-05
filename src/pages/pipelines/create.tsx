@@ -90,7 +90,7 @@ const CreatePipelinePage: FC & {
         <PageTitle
           title={currentPage ? currentPage.title : ""}
           breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
         <CreatePipelineForm
