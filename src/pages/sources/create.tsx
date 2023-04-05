@@ -17,6 +17,7 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
+import { BasicSingleSelect } from "@instill-ai/design-system";
 
 type GetLayOutProps = {
   page: ReactElement;

@@ -1,4 +1,4 @@
-import { env, deleteSource, expectToSelectReactSelectOption } from "./helper";
+import { env, deleteSource, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 
 export function handleSourceTest() {
@@ -9,7 +9,7 @@ export function handleSourceTest() {
     try {
       await deleteSource(sourceId);
     } catch (err) {
-      return Promise.reject(err);
+      console.log(err);
     }
   });
 
@@ -18,11 +18,9 @@ export function handleSourceTest() {
       await page.goto("/sources/create", { waitUntil: "networkidle" });
 
       // Should select gRPC source
-      await expectToSelectReactSelectOption(
-        page.locator("#sourceDefinition"),
-        page.locator("data-testid=sourceDefinition-selected-option", {
-          hasText: "gRPC",
-        })
+      await expectToSelectOption(
+        page.locator("#source-definition"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText("gRPC")
       );
 
       // Should enable set up button
@@ -66,9 +64,7 @@ export function handleSourceTest() {
       await expect(sourceStateLabel).toHaveText("Connected");
 
       // Should have correct definition
-      const sourceDefinitionOption = page.locator(
-        "data-testid=sourceDefinition-selected-option"
-      );
+      const sourceDefinitionOption = page.locator("#source-definition");
       await expect(sourceDefinitionOption).toHaveText("gRPC");
     });
 

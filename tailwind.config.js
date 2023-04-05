@@ -4,8 +4,8 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/services/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@instill-ai/design-system/dist/*.js",
-    "./node_modules/@instill-ai/toolkit/dist/*.js",
+    "./node_modules/@instill-ai/design-system/dist/*.{js,mjs}",
+    "./node_modules/@instill-ai/toolkit/dist/*.{js,mjs}",
   ],
   theme: {
     extend: {
@@ -72,8 +72,6 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/line-clamp"),
-
     // We have to use plugin to let intelligence pick up our custom classname's style
     // ref: https://github.com/tailwindlabs/tailwindcss-intellisense/issues/227
     ({ addUtilities }) => {

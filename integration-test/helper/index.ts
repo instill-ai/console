@@ -23,7 +23,7 @@ export const addUserCookie = async (context: BrowserContext) => {
   expect(instillAiUser).toBeDefined();
 };
 
-export const expectToSelectReactSelectOption = async (
+export const expectToSelectOption = async (
   clickElement: Locator,
   selectElement: Locator,
   waitForElement?: Locator
@@ -186,17 +186,8 @@ export const deleteAllPipelines = async () => {
 };
 
 export const createInstillAxiosTestClient = () => {
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized:
-      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true" ? false : true,
-  });
-
   return axios.create({
     baseURL: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
-    httpsAgent:
-      env("NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION") === "true"
-        ? httpsAgent
-        : undefined,
   });
 };
 
