@@ -1,54 +1,58 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
+import { shallow } from "zustand/shallow";
 
-import { CreateSourceForm } from "@/components/source";
+import {
+  useSendAmplitudeData,
+  useWarnUnsavedChanges,
+  CreateSourceForm,
+  useSources,
+  useCreateResourceFormStore,
+  CreateResourceFormStore,
+} from "@instill-ai/toolkit";
+
 import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
-import { env } from "@/utils";
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
-    return {
-      redirect: {
-        destination: "/sources",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
 
 type GetLayOutProps = {
   page: ReactElement;
 };
 
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  createNewResourceIsComplete: state.createNewResourceIsComplete,
+  init: state.init,
+});
+
 const CreateSourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  const { formIsDirty, createNewResourceIsComplete, init } =
+    useCreateResourceFormStore(selector, shallow);
+
+  const sources = useSources({
+    accessToken: null,
+    enable: true,
+  });
+
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
 
   useSendAmplitudeData(
     "hit_create_source_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -61,7 +65,17 @@ const CreateSourcePage: FC & {
           enableButton={false}
           marginBottom="mb-10"
         />
-        <CreateSourceForm marginBottom={null} />
+        <CreateSourceForm
+          sources={sources.data || null}
+          marginBottom={null}
+          onCreate={() => {
+            init();
+            router.push("/sources");
+          }}
+          initStoreOnCreate={true}
+          accessToken={null}
+          width="w-full"
+        />
       </PageContentContainer>
     </>
   );
