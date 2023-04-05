@@ -4,7 +4,8 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/services/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@instill-ai/design-system/build/*.js",
+    "./node_modules/@instill-ai/design-system/dist/*.js",
+    "./node_modules/@instill-ai/toolkit/dist/*.js",
   ],
   theme: {
     extend: {

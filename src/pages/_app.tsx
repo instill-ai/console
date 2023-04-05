@@ -5,14 +5,13 @@ import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
-} from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+} from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@code-hike/mdx/dist/index.css";
 import "../styles/shiki.css";
+import "@instill-ai/design-system/dist/index.css";
 
-import "@instill-ai/design-system/build/index.cjs.css";
 import { useRouter } from "next/router";
 import { initAmplitude } from "@/lib/amplitude";
 import { useTrackingToken } from "@/services/mgmt";
@@ -68,7 +67,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AmplitudeCtx.Provider>
   );

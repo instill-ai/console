@@ -4,12 +4,10 @@ import { useRouter } from "next/router";
 
 import { BreadcrumbProps, Breadcrumb } from "./Breadcrumb";
 import { SolidButton } from "@instill-ai/design-system";
-import { Nullable } from "@/types/general";
-import { useCreateUpdateDeleteResourceGuard } from "@/hooks";
 
 export type PageTitleProps = {
-  title: Nullable<string>;
-  displayButton: boolean;
+  title: string;
+  enableButton: boolean;
   buttonName?: string;
   buttonLink?: string;
   breadcrumbs: BreadcrumbProps["breadcrumbs"];
@@ -18,7 +16,7 @@ export type PageTitleProps = {
 
 export const PageTitle = ({
   title,
-  displayButton,
+  enableButton,
   buttonName,
   buttonLink,
   breadcrumbs,
@@ -26,27 +24,20 @@ export const PageTitle = ({
 }: PageTitleProps) => {
   const router = useRouter();
   const onClickHandler = useCallback(() => {
-    if (displayButton && buttonLink) {
+    if (enableButton && buttonLink) {
       router.push(buttonLink);
     }
-  }, [router, buttonLink, displayButton]);
-
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
-
+  }, [router, buttonLink, enableButton]);
   return (
     <div className={cn("flex w-full flex-col", marginBottom)}>
-      <div className="flex w-full flex-row">
-        <div className="my-auto mr-auto flex flex-col gap-y-2">
-          <Breadcrumb breadcrumbs={breadcrumbs} />
-          {title ? (
-            <h2 className="text-black text-instill-h2">{title}</h2>
-          ) : null}
-        </div>
-        {displayButton ? (
+      <Breadcrumb breadcrumbs={breadcrumbs} />
+      <div className="flex min-h-[44px] w-full flex-row">
+        <h2 className="mt-auto mr-auto text-black text-instill-h2">{title}</h2>
+        {enableButton ? (
           <SolidButton
             type="button"
             color="primary"
-            disabled={enableGuard}
+            disabled={false}
             onClickHandler={onClickHandler}
             position={null}
           >
