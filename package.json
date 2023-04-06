@@ -15,7 +15,7 @@
     "dev": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "node -e \"if (process.env.NODE_ENV === 'production'){process.exit(1)} \" || husky install",
