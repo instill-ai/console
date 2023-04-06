@@ -247,10 +247,4 @@ PipelineDetailsPage.getLayout = (page) => {
   return <PageBase>{page}</PageBase>;
 };
 
-// We need this line to make our code-hike snippet work under Next.js standalone server
-// https://github.com/code-hike/codehike/issues/283
-export const config = {
-  unstable_includeFiles: ["node_modules/.pnpm/**/shiki/**/*.json"],
-};
-
 export default PipelineDetailsPage;

@@ -23,10 +23,6 @@ import {
 } from "@instill-ai/toolkit";
 import { mgmtRoleOptions } from "@/lib";
 
-export type OnboardingFormProps = {
-  user: Nullable<Partial<User>>;
-};
-
 export type OnboardingFormValues = {
   email: Nullable<string>;
   orgName: Nullable<string>;
@@ -40,16 +36,16 @@ type OnboardingFormErrors = {
   role: Nullable<string>;
 };
 
-export const OnboardingForm = ({ user }: OnboardingFormProps) => {
+export const OnboardingForm = () => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
-    email: user?.email || null,
-    orgName: user?.org_name || null,
-    role: user?.role || null,
-    newsletterSubscription: user?.newsletter_subscription || false,
+    email: null,
+    orgName: null,
+    role: null,
+    newsletterSubscription: true,
   });
 
   const [selectedRoleOption, setSelectedRoleOption] = useState<
