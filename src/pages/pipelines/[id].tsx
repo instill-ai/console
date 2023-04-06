@@ -166,7 +166,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
 
   return (
     <>
-      <PageHead title={pipeline ? (pipeline.name as string) : ""} />
+      <PageHead title={pipeline.name} />
       <PageContentContainer>
         <PageTitle
           title={pipeline.id}

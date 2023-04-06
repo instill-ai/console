@@ -13,9 +13,9 @@ import { handleSourceTest } from "./source.spec";
 
 // test.describe(handleOnboardingTest);
 // test.describe(handleSourceTest);
-test.describe(handleSyncDestinationTest);
+// test.describe(handleSyncDestinationTest);
 // test.describe(handleAsyncDestinationTest);
-// test.describe(handleGeneralModelTest);
+test.describe(handleGeneralModelTest);
 // test.describe(handleArtivcModelTest);
 // test.describe(handleGithubModelTest);
 // test.describe(handleHuggingFaceModelTest);

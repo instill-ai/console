@@ -24,8 +24,6 @@ export { HorizontalDivider } from "./HorizontalDivider";
 export type { HorizontalDividerProps } from "./HorizontalDivider";
 export { TableLoadingProgress } from "./TableLoadingProgress";
 export type { TableLoadingProgressProps } from "./TableLoadingProgress";
-export { ModelInstanceTaskLabel } from "./ModelInstanceTaskLabel";
-export type { ModelInstanceTaskLabelProps } from "./ModelInstanceTaskLabel";
 export { PageBase } from "./PageBase";
 export type { PageBaseProps } from "./PageBase";
 export { PageContentContainer } from "./PageContentContainer";
@@ -49,3 +47,5 @@ export * from "./Sidebar";
 export * from "./TableCells";
 export * from "./TablePlaceholders";
 export * from "./Tables";
+
+export * from "./ModelReadmeMarkdown";

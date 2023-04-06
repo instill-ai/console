@@ -2,9 +2,9 @@ import { test, expect } from "@playwright/test";
 import {
   expectCorrectModelDetails,
   expectCorrectModelList,
-  expectToDeployModel,
   expectToUpdateModelDescription,
 } from "./common/model";
+import { env, expectToSelectOption } from "./helper";
 
 export function handleLocalModelTest() {
   const modelId = `local-model-${Math.floor(Math.random() * 10000)}`;
@@ -27,44 +27,30 @@ export function handleLocalModelTest() {
       expect(await setupButton.isDisabled()).toBeTruthy();
 
       // Should input model id
-      const idInput = page.locator("input#modelId");
-      await idInput.type(modelId, { delay: 20 });
+      await page.locator("input#model-id").fill(modelId);
 
       // Should input model description
-      const descriptionInput = page.locator("textarea#description");
-      await descriptionInput.type(modelDescription, { delay: 20 });
+      await page.locator("textarea#model-description").fill(modelDescription);
 
       // Should select model source - local and have according fields
-      const modelDefinitionOption = page.locator(
-        "#react-select-modelDefinition-input"
+      const fileField = page.locator("input#model-local-file");
+      await expectToSelectOption(
+        page.locator("#model-definition"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(modelSource),
+        fileField
       );
-      const fileField = page.locator("input#file");
-      await modelDefinitionOption.click({ force: true });
-      const selectedModelDefinition = page.locator(
-        "data-testid=modelDefinition-selected-option",
-        {
-          hasText: modelSource,
-        }
-      );
-      await Promise.all([
-        fileField.waitFor({ state: "visible" }),
-        selectedModelDefinition.click(),
-      ]);
 
       // Should input local model file and enable set up model button
       await fileField.setInputFiles(
         "./integration-test/data/dummy-cls-model.zip"
       );
       await expect(setupButton).toBeEnabled();
-      const succeedMessage = page.locator("h3", { hasText: "Succeed" });
 
       // Should set up the model
       await Promise.all([
-        succeedMessage.waitFor({ state: "visible", timeout: 25 * 1000 }),
-        setupButton.click({ force: true }),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+        setupButton.click(),
       ]);
-
-      await expectToDeployModel(page, modelInstanceTag, null, 25 * 1000);
     });
 
     test("should have proper model list and navigate to model details page", async ({
@@ -78,10 +64,6 @@ export function handleLocalModelTest() {
         page,
         modelId,
         modelDescription,
-        modelInstanceTag,
-        modelInstanceTagOptionLocator: page.locator(
-          "#react-select-modelInstanceTag-option-0"
-        ),
         modelState: "STATE_ONLINE",
         modelTask: "Classification",
       });

@@ -2,15 +2,17 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import {
-  ModelsTable,
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components/ui/";
-import { useModelsWithInstances } from "@/services/model";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+
+import {
+  useSendAmplitudeData,
+  ModelsTable,
+  useModels,
+} from "@instill-ai/toolkit";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -19,15 +21,17 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const models = useModels({
+    accessToken: null,
+    enable: true,
+  });
+
   const router = useRouter();
-  const modelsWithInstances = useModelsWithInstances();
-  const { amplitudeIsInit } = useAmplitudeCtx();
 
   useSendAmplitudeData(
     "hit_models_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -43,10 +47,8 @@ const ModelPage: FC & {
           marginBottom="mb-10"
         />
         <ModelsTable
-          models={
-            modelsWithInstances.isSuccess ? modelsWithInstances.data : null
-          }
-          marginBottom={null}
+          models={models.isSuccess ? models.data : []}
+          marginBottom="mb-5"
         />
       </PageContentContainer>
     </>
