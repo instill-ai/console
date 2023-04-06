@@ -4,7 +4,7 @@ WORKDIR /app
 
 ARG TEST_USER="playwright"
 
-RUN npm install -g pnpm@7.5.0
+RUN npm install -g pnpm@8.1.1
 
 COPY .npmrc package.json pnpm-lock.yaml ./
 
