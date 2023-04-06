@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:16-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN npm install -g pnpm@7.5.0
+RUN npm install -g pnpm@8.1.1
 
 COPY .npmrc package.json pnpm-lock.yaml ./
 
@@ -19,7 +19,7 @@ FROM --platform=$BUILDPLATFORM node:16-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 
-RUN npm install -g pnpm@7.5.0
+RUN npm install -g pnpm@8.1.1
 
 # You need to make sure the .env doesn't have senesitive data. Please store sensitive data at .env.local.
 # Pay attention about the duplicated env variables, nextjs will always prioritize the .env file. Store the env variables
