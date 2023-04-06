@@ -68,14 +68,17 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    {
-      name: "firefox",
-      dependencies: ["setup"],
-      use: {
-        ...devices["Desktop Firefox"],
-        storageState: "integration-test/.auth/user.json",
-      },
-    },
+    // Temp disable due to the viewport issue
+    // https://github.com/microsoft/playwright/issues/22082
+
+    // {
+    //   name: "firefox",
+    //   dependencies: ["setup"],
+    //   use: {
+    //     ...devices["Desktop Firefox"],
+    //     storageState: "integration-test/.auth/user.json",
+    //   },
+    // },
 
     {
       name: "webkit",

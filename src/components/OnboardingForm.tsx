@@ -46,14 +46,15 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
-    email: null,
-    orgName: null,
-    role: null,
-    newsletterSubscription: true,
+    email: user?.email || null,
+    orgName: user?.org_name || null,
+    role: user?.role || null,
+    newsletterSubscription: user?.newsletter_subscription || false,
   });
 
-  const [selectedRoleOption, setSelectedRoleOption] =
-    useState<Nullable<SingleSelectOption>>(null);
+  const [selectedRoleOption, setSelectedRoleOption] = useState<
+    Nullable<SingleSelectOption>
+  >(mgmtRoleOptions.find((e) => e.value === fieldValues.role) || null);
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -84,7 +85,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
   const handleRoleChange = useCallback(
     (option: Nullable<SingleSelectOption>) => {
       if (!option) return;
-
+      setFormIsDirty(true);
       setSelectedRoleOption(option);
       setFieldValues((prev) => ({
         ...prev,
@@ -101,6 +102,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
     orgName: null,
     role: null,
   });
+
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
@@ -196,7 +198,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
         },
       }
     );
-  }, [user, fieldValues, amplitudeIsInit, router, updateUser]);
+  }, [fieldValues, amplitudeIsInit, router, updateUser]);
 
   return (
     <FormRoot marginBottom={null} formLess={false} width={null}>
@@ -211,7 +213,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
           error={fieldErrors.email}
         />
         <BasicTextField
-          id="companyName"
+          id="org-name"
           label="Your company"
           required={true}
           description="Fill your company name"
@@ -230,7 +232,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
           error={fieldErrors.role}
         />
         <BasicToggleField
-          id="newsletterSubscription"
+          id="newsletter-subscription"
           label="Newsletter subscription"
           value={fieldValues.newsletterSubscription || false}
           required={true}

@@ -17,9 +17,9 @@ import {
   ModelTaskLabel,
   ModelDefinitionLabel,
   useModelReadme,
+  ModelConfigurationFields,
   type Pipeline,
   type ConfigureModelFormStore,
-  ModelConfigurationFields,
 } from "@instill-ai/toolkit";
 
 import {
@@ -80,7 +80,7 @@ const ModelDetailsPage: FC & {
     return pipelines.data.filter((pipeline: Pipeline) => {
       return pipeline.recipe.models.some((e) => e.name === `models/${id}`);
     });
-  }, [pipelines.isSuccess, pipelines.data]);
+  }, [pipelines.isSuccess, pipelines.data, id]);
 
   /* -------------------------------------------------------------------------
    * Get model card

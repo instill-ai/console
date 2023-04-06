@@ -5,7 +5,6 @@ import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import {
   useActivatePipeline,
   useDeActivatePipeline,
-  usePipeline,
   env,
   useWarnUnsavedChanges,
   ConfigurePipelineForm,
@@ -14,6 +13,10 @@ import {
   useCreateResourceFormStore,
   StateLabel,
   PipelineTable,
+  handle,
+  getPipelineQuery,
+  constructPipelineRecipeWithDefinition,
+  type Nullable,
   type Pipeline,
 } from "@instill-ai/toolkit";
 
@@ -32,15 +35,99 @@ import { getCodeHikeTemplateSource } from "@/lib/markdown/ssr-getCodeHikeTemplat
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context
 ) => {
+  const [rawPipelineError, rawPipeline] = await handle(
+    getPipelineQuery({
+      pipelineName: `pipelines/${context.params?.id}`,
+      accessToken: null,
+    })
+  );
+
+  if (rawPipelineError || !rawPipeline) {
+    console.error(
+      "Something went wrong when fetch the raw pipeline",
+      rawPipelineError
+    );
+    return {
+      notFound: true,
+    };
+  }
+
+  const [recipeError, recipe] = await handle(
+    constructPipelineRecipeWithDefinition({
+      rawRecipe: rawPipeline.recipe,
+      accessToken: null,
+    })
+  );
+
+  if (recipeError || !recipe) {
+    console.error("Something went wrong when fetch the pipeline's recipe");
+    return {
+      notFound: true,
+    };
+  }
+
+  const pipeline: Pipeline = {
+    ...rawPipeline,
+    recipe: recipe,
+  };
+
+  let templateName: Nullable<string> = null;
+
+  switch (pipeline.recipe.models[0].task) {
+    case "TASK_CLASSIFICATION": {
+      templateName = "pipeline-image-classification.mdx";
+      break;
+    }
+    case "TASK_DETECTION": {
+      templateName = "pipeline-object-detection.mdx";
+      break;
+    }
+    case "TASK_INSTANCE_SEGMENTATION": {
+      templateName = "pipeline-instance-segmentation.mdx";
+      break;
+    }
+    case "TASK_KEYPOINT": {
+      templateName = "pipeline-keypoint-detection.mdx";
+      break;
+    }
+    case "TASK_OCR": {
+      templateName = "pipeline-ocr.mdx";
+      break;
+    }
+    case "TASK_SEMANTIC_SEGMENTATION": {
+      templateName = "pipeline-semantic-segmentation.mdx";
+      break;
+    }
+    case "TASK_TEXT_TO_IMAGE": {
+      templateName = "pipeline-text-to-image.mdx";
+      break;
+    }
+    case "TASK_TEXT_GENERATION": {
+      templateName = "pipeline-text-generation.mdx";
+      break;
+    }
+    case "TASK_UNSPECIFIED": {
+      templateName = "pipeline-unspecified.mdx";
+      break;
+    }
+  }
+
+  if (!templateName) {
+    console.error("Something went wrong when match correct task template");
+    return {
+      notFound: true,
+    };
+  }
+
   const codeMdxSource = await getCodeHikeTemplateSource({
-    templateName: "pipeline-code-template.mdx",
+    templateName,
     replaceRules: [
       {
-        match: "instillServerHostName",
+        match: "serverApiBaseUrlPlaceholder",
         replaceValue: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL") ?? "",
       },
       {
-        match: "instillPipelineId",
+        match: "pipelineIdPlaceholder",
         replaceValue: context.params?.id?.toString() ?? "",
       },
     ],
@@ -50,6 +137,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   return {
     props: {
       codeMdxSource,
+      pipeline,
     },
   };
 };
@@ -60,18 +148,15 @@ type GetLayOutProps = {
 
 type PipelinePageProps = {
   codeMdxSource: MDXRemoteSerializeResult;
+  pipeline: Pipeline;
 };
 
 const PipelineDetailsPage: FC<PipelinePageProps> & {
   getLayout?: FC<GetLayOutProps>;
-} = ({ codeMdxSource }) => {
+} = ({ codeMdxSource, pipeline }) => {
   const router = useRouter();
   const { id } = router.query;
-  const pipeline = usePipeline({
-    pipelineName: id ? `pipelines/${id.toString()}` : null,
-    accessToken: null,
-    enable: true,
-  });
+
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
   const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
@@ -92,9 +177,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
 
   return (
     <>
-      <PageHead
-        title={pipeline.isLoading ? "" : (pipeline.data?.name as string)}
-      />
+      <PageHead title={pipeline.name} />
       <PageContentContainer>
         <PageTitle
           title={id ? id.toString() : ""}
@@ -111,7 +194,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             iconPosition="my-auto"
             paddingX="px-[5px]"
             paddingY="py-1.5"
-            mode={pipeline.data?.mode || "MODE_UNSPECIFIED"}
+            mode={pipeline.mode || "MODE_UNSPECIFIED"}
           />
           <StateLabel
             enableBgColor={true}
@@ -119,33 +202,28 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             iconWidth="w-[18px]"
             iconHeight="h-[18px]"
             iconPosition="my-auto"
-            state={pipeline.data?.state || "STATE_UNSPECIFIED"}
+            state={pipeline.state || "STATE_UNSPECIFIED"}
           />
         </div>
-        <PipelineTable
-          pipeline={pipeline.isSuccess ? pipeline.data || null : null}
-          marginBottom="mb-10"
-        />
+        <PipelineTable pipeline={pipeline} marginBottom="mb-10" />
         <ChangePipelineStateToggle
-          pipeline={pipeline.isLoading ? null : (pipeline.data as Pipeline)}
+          pipeline={pipeline}
           switchOn={activatePipeline}
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
           accessToken={null}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {pipeline.isSuccess && pipeline.data ? (
-          <ConfigurePipelineForm
-            pipeline={pipeline.data}
-            marginBottom="mb-10"
-            width={null}
-            accessToken={null}
-            onDelete={() => {
-              router.push("/pipelines");
-            }}
-            onConfigure={null}
-          />
-        ) : null}
+        <ConfigurePipelineForm
+          pipeline={pipeline}
+          marginBottom="mb-10"
+          width={null}
+          accessToken={null}
+          onDelete={() => {
+            router.push("/pipelines");
+          }}
+          onConfigure={null}
+        />
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>
           <p className="text-black text-instill-body">

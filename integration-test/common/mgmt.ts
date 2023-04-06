@@ -10,7 +10,7 @@ export const removeRegisteredUser = async () => {
   try {
     const client = createInstillAxiosTestClient();
 
-    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/user`, {
+    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/me`, {
       cookie_token: "",
     });
   } catch (err) {
@@ -34,23 +34,19 @@ export const expectToOnboardUser = async (page: Page) => {
   await page.goto("/onboarding", { waitUntil: "networkidle" });
 
   // Should input email
-  const emailField = page.locator("input#email");
-  await emailField.fill("droplet@instill.tech");
+  await page.locator("input#email").fill("droplet@instill.tech");
 
   // Should input company name
-  const companyField = page.locator("input#companyName");
-  await companyField.fill("instill-ai");
+  await page.locator("input#org-name").fill("instill-ai");
 
   // Shoyld select role
   await expectToSelectOption(
-    page.locator("#react-select-role-input"),
-    page.locator("data-testid=role-selected-option", {
-      hasText: "Manager (who makes decisions)",
-    })
+    page.locator("#role"),
+    page.locator(`[data-radix-select-viewport=""]`).getByText("Manager")
   );
 
   // Should accept newsletter subscription
-  await page.locator("#newsletterSubscription").check();
+  await page.locator("#newsletter-subscription").check();
 
   const startButton = page.locator("button", { hasText: "Start" });
   expect(await startButton.isEnabled()).toBeTruthy();

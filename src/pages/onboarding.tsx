@@ -1,21 +1,15 @@
 import { FC, ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
-import { useRouter } from "next/router";
 
 import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
+  OnboardingForm,
 } from "@/components";
-import {
-  ConfigureProfileForm,
-  getUserQuery,
-  type User,
-  type Nullable,
-} from "@instill-ai/toolkit";
-import { mgmtRoleOptions } from "@/lib";
+import { getUserQuery, type User, type Nullable } from "@instill-ai/toolkit";
 
 export const getServerSideProps: GetServerSideProps<
   OnBoardingPageProps
@@ -47,7 +41,6 @@ type GetLayOutProps = {
 const OnBoardingPage: FC<OnBoardingPageProps> & {
   getLayout?: FC<GetLayOutProps>;
 } = ({ cookies }) => {
-  const router = useRouter();
   const [user, setUser] = useState<Nullable<User>>(null);
   const [fetched, setFetched] = useState(false);
 
@@ -79,16 +72,7 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
           enableButton={false}
           marginBottom="mb-10"
         />
-        {fetched ? (
-          <ConfigureProfileForm
-            user={user}
-            roles={mgmtRoleOptions}
-            onConfigure={() => router.push("pipelines")}
-            marginBottom={null}
-            width={null}
-            accessToken={null}
-          />
-        ) : null}
+        {fetched ? <OnboardingForm user={user} /> : null}
       </PageContentContainer>
     </>
   );

@@ -1,5 +1,6 @@
 import { FC, ReactElement, useMemo } from "react";
 import { useRouter } from "next/router";
+import { shallow } from "zustand/shallow";
 import {
   useDestinationWithPipelines,
   useSendAmplitudeData,
@@ -8,6 +9,9 @@ import {
   useCreateResourceFormStore,
   PipelinesTable,
   StateLabel,
+  CreateResourceFormStore,
+  type DestinationWithDefinition,
+  type Nullable,
 } from "@instill-ai/toolkit";
 
 import {
@@ -16,6 +20,11 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components";
+
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  init: state.init,
+});
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -26,7 +35,7 @@ const DestinationDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
+  const { formIsDirty, init } = useCreateResourceFormStore(selector, shallow);
 
   useWarnUnsavedChanges({
     router,
@@ -42,10 +51,16 @@ const DestinationDetailsPage: FC & {
     enable: true,
   });
 
-  const destination = useMemo(() => {
+  const destination = useMemo<Nullable<DestinationWithDefinition>>(() => {
     if (!destinationWithPipelines.isSuccess) return null;
-    const { pipelines, ...destination } = destinationWithPipelines.data;
-    return destination;
+    return {
+      name: destinationWithPipelines.data.name,
+      uid: destinationWithPipelines.data.uid,
+      id: destinationWithPipelines.data.id,
+      destination_connector_definition:
+        destinationWithPipelines.data.destination_connector_definition,
+      connector: destinationWithPipelines.data.connector,
+    };
   }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
 
   useSendAmplitudeData(
@@ -98,7 +113,10 @@ const DestinationDetailsPage: FC & {
           {destination ? (
             <ConfigureDestinationForm
               destination={destination}
-              onDelete={() => router.push("/destinations")}
+              onDelete={() => {
+                init();
+                router.push("/destinations");
+              }}
               onConfigure={null}
               initStoreOnConfigure={true}
               width="w-full"

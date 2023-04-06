@@ -86,7 +86,9 @@ export const expectToUpdatePipelineDescription = async (
   expect(await editButton.isEnabled()).toBeTruthy();
 
   // Should have editable description field
-  const pipelineDescriptionField = page.locator("textarea#pipelineDescription");
+  const pipelineDescriptionField = page.locator(
+    "textarea#pipeline-description"
+  );
   await editButton.click();
 
   // Should input new description
@@ -177,7 +179,7 @@ export const expectCorrectPipelineDetails = async ({
   // }
 
   // Should have correct description
-  const descriptionField = page.locator("textarea#pipelineDescription");
+  const descriptionField = page.locator("textarea#pipeline-description");
   await expect(descriptionField).toHaveValue(description);
 
   if (additionalRules) await additionalRules();
