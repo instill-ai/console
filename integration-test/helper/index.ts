@@ -2,7 +2,6 @@
 
 import { BrowserContext, expect, Locator } from "@playwright/test";
 import axios from "axios";
-import * as https from "https";
 
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));

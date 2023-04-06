@@ -1,4 +1,4 @@
-import { env, expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
 

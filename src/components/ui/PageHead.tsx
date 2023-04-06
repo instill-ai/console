@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Nullable } from "@/types/general";
-import { env } from "@/utils";
+import { env, type Nullable } from "@instill-ai/toolkit";
 
 export type PageHeadProps = {
   title: Nullable<string>;

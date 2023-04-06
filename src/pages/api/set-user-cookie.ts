@@ -1,5 +1,4 @@
-import { setCookie, SetCookiePayload } from "@/lib/cookie";
-import { env } from "@/utils";
+import { setCookie, env, type SetCookiePayload } from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

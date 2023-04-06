@@ -5,6 +5,9 @@ import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
+  initAmplitude,
+  AmplitudeCtx,
+  env,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -13,11 +16,8 @@ import "../styles/shiki.css";
 import "@instill-ai/design-system/dist/index.css";
 
 import { useRouter } from "next/router";
-import { initAmplitude } from "@/lib/amplitude";
-import { useTrackingToken } from "@/services/mgmt";
-import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
+import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components/ui";
-import { env } from "@/utils";
 
 export const queryCache = new QueryCache();
 

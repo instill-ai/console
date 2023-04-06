@@ -1,6 +1,7 @@
 import { FC, ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
+import { useRouter } from "next/router";
 
 import {
   PageTitle,
@@ -8,9 +9,13 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { getUserQuery, User } from "@/lib/instill/mgmt";
-import { OnboardingForm } from "@/components/onboarding";
-import { Nullable } from "@/types/general";
+import {
+  ConfigureProfileForm,
+  getUserQuery,
+  type User,
+  type Nullable,
+} from "@instill-ai/toolkit";
+import { mgmtRoleOptions } from "@/lib";
 
 export const getServerSideProps: GetServerSideProps<
   OnBoardingPageProps
@@ -42,13 +47,14 @@ type GetLayOutProps = {
 const OnBoardingPage: FC<OnBoardingPageProps> & {
   getLayout?: FC<GetLayOutProps>;
 } = ({ cookies }) => {
+  const router = useRouter();
   const [user, setUser] = useState<Nullable<User>>(null);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user = await getUserQuery();
+        const user = await getUserQuery({ accessToken: null });
         setFetched(true);
         setUser(user);
       } catch (err) {
@@ -70,10 +76,19 @@ const OnBoardingPage: FC<OnBoardingPageProps> & {
         <PageTitle
           title="Welcome to VDP console"
           breadcrumbs={["Onboarding"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
-        {fetched ? <OnboardingForm user={user} /> : null}
+        {fetched ? (
+          <ConfigureProfileForm
+            user={user}
+            roles={mgmtRoleOptions}
+            onConfigure={() => router.push("pipelines")}
+            marginBottom={null}
+            width={null}
+            accessToken={null}
+          />
+        ) : null}
       </PageContentContainer>
     </>
   );

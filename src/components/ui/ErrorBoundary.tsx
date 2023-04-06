@@ -1,4 +1,4 @@
-import { Nullable } from "@/types/general";
+import { Nullable } from "@instill-ai/toolkit";
 import { Component, ErrorInfo, ReactNode } from "react";
 
 type ErrorBoundaryProps = {

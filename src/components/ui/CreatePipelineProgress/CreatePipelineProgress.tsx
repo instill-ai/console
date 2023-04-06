@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { getElementPosition } from "@instill-ai/design-system";
+import { useOnScreen } from "@instill-ai/toolkit";
 
-import { useOnScreen } from "@/hooks";
 import { ProgressStep } from "./ProgressStep";
 
 /**

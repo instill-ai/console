@@ -6,6 +6,7 @@ import {
   CreateResourceFormStore,
   useCreateResourceFormStore,
   CreateModelForm,
+  env,
 } from "@instill-ai/toolkit";
 
 import {
@@ -15,6 +16,22 @@ import {
   PageContentContainer,
 } from "@/components/ui";
 import { shallow } from "zustand/shallow";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+    return {
+      redirect: {
+        destination: "/models",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -61,6 +78,7 @@ const CreateModelPage: FC & {
           accessToken={null}
           marginBottom={null}
           initStoreOnCreate={true}
+          width={null}
         />
       </PageContentContainer>
     </>

@@ -1,7 +1,7 @@
 import {
   env,
   createInstillAxiosTestClient,
-  expectToSelectReactSelectOption,
+  expectToSelectOption,
 } from "../helper";
 import { Page, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
@@ -42,7 +42,7 @@ export const expectToOnboardUser = async (page: Page) => {
   await companyField.fill("instill-ai");
 
   // Shoyld select role
-  await expectToSelectReactSelectOption(
+  await expectToSelectOption(
     page.locator("#react-select-role-input"),
     page.locator("data-testid=role-selected-option", {
       hasText: "Manager (who makes decisions)",

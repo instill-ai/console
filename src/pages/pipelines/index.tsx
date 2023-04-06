@@ -1,19 +1,17 @@
-import { FC, ReactElement, useState } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import {
+  usePipelines,
+  useSendAmplitudeData,
+  PipelinesTable,
+} from "@instill-ai/toolkit";
 
 import {
-  PipelinesTable,
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { usePipelines } from "@/services/pipeline";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import {
-  useCreateUpdateDeleteResourceGuard,
-  useSendAmplitudeData,
-} from "@/hooks";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -23,16 +21,16 @@ const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
-  const pipelines = usePipelines(true);
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const pipelines = usePipelines({
+    accessToken: null,
+    enable: true,
+  });
+
   useSendAmplitudeData(
     "hit_pipelines_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
-
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   return (
     <>
@@ -47,8 +45,8 @@ const PipelinePage: FC & {
           marginBottom="mb-10"
         />
         <PipelinesTable
-          pipelines={pipelines.isSuccess ? pipelines.data : null}
-          marginBottom={null}
+          pipelines={pipelines.data ? pipelines.data : []}
+          marginBottom="mb-5"
         />
       </PageContentContainer>
     </>

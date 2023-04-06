@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
 import cn from "clsx";
+import { ReactElement } from "react";
 import { AsyncIcon, SyncIcon } from "@instill-ai/design-system";
-import { PipelineMode } from "@/lib/instill";
+import { PipelineMode } from "@instill-ai/toolkit";
 
 export type PipelineModeLabelProps = {
   mode: PipelineMode;

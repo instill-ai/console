@@ -9,6 +9,7 @@ import {
   useSources,
   useCreateResourceFormStore,
   CreateResourceFormStore,
+  env,
 } from "@instill-ai/toolkit";
 
 import {
@@ -17,7 +18,22 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components/ui";
-import { BasicSingleSelect } from "@instill-ai/design-system";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+    return {
+      redirect: {
+        destination: "/sources",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 type GetLayOutProps = {
   page: ReactElement;

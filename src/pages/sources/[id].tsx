@@ -62,8 +62,6 @@ const SourceDetailsPage: FC & {
             iconHeight="h-[18px]"
             iconWidth="w-[18px]"
             iconPosition="my-auto"
-            paddingY="py-2"
-            paddingX="px-2"
           />
         </div>
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
