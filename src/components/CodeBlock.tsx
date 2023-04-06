@@ -29,7 +29,7 @@ export const CodeBlock = ({ source, code, marginBottom }: CodeBlockProps) => {
       <button
         onClick={handleCopy}
         type="button"
-        className="absolute top-3 right-3"
+        className="absolute right-3 top-3"
       >
         {copied ? (
           <CheckIcon color="fill-instillGrey05" width="w-4" height="h-4" />

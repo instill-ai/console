@@ -25,7 +25,7 @@ import {
   PageContentContainer,
   PageHead,
   PipelineModeLabel,
-} from "@/components/ui";
+} from "@/components";
 
 import { getCodeHikeTemplateSource } from "@/lib/markdown/ssr-getCodeHikeTemplateSource";
 

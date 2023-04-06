@@ -32,7 +32,7 @@ export const PageTitle = ({
     <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <div className="flex min-h-[44px] w-full flex-row">
-        <h2 className="mt-auto mr-auto text-black text-instill-h2">{title}</h2>
+        <h2 className="mr-auto mt-auto text-black text-instill-h2">{title}</h2>
         {enableButton ? (
           <SolidButton
             type="button"

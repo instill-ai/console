@@ -15,7 +15,7 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;

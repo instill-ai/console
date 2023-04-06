@@ -15,7 +15,7 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
+} from "@/components";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {

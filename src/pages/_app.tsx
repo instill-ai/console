@@ -17,7 +17,7 @@ import "@instill-ai/design-system/dist/index.css";
 
 import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
-import { ErrorBoundary } from "@/components/ui";
+import { ErrorBoundary } from "@/components";
 
 export const queryCache = new QueryCache();
 

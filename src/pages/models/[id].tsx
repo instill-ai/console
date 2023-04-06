@@ -23,13 +23,12 @@ import {
 } from "@instill-ai/toolkit";
 
 import {
-  HorizontalDivider,
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
   ModelReadmeMarkdown,
-} from "@/components/ui";
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;

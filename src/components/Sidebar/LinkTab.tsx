@@ -25,7 +25,7 @@ export const LinkTab: FC<LinkTabProps> = ({
     <Link href={link}>
       <div
         className={cn(
-          "group flex flex-row py-[15px] px-5 hover:bg-instillBlue50",
+          "group flex flex-row px-5 py-[15px] hover:bg-instillBlue50",
           {
             "gap-x-5": !isCollapsed,
           }
@@ -48,7 +48,7 @@ export const LinkTab: FC<LinkTabProps> = ({
   ) : (
     <a
       className={cn(
-        "group flex flex-row py-[15px] px-5 hover:bg-instillBlue50",
+        "group flex flex-row px-5 py-[15px] hover:bg-instillBlue50",
         {
           "gap-x-5": !isCollapsed,
         }

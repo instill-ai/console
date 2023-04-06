@@ -252,7 +252,7 @@ export const Sidebar: FC = () => {
           />
         </div>
 
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
           <CollapseSidebarButton
             disabled={false}
             isCollapse={isCollapsed}

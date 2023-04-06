@@ -6,7 +6,7 @@ import {
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui/";
+} from "@/components";
 
 import {
   useSendAmplitudeData,

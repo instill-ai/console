@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import { FC, ReactElement, useMemo } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
@@ -16,8 +17,7 @@ import {
   PageHead,
   PageBase,
   PageContentContainer,
-} from "@/components/ui";
-import { GetServerSideProps } from "next";
+} from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
