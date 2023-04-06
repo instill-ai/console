@@ -24,6 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       value: JSON.stringify({
         cookie_token: body.token,
       }),
+      secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? true,
       domain: null,
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
