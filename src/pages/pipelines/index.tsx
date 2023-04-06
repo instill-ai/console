@@ -4,6 +4,7 @@ import {
   usePipelines,
   useSendAmplitudeData,
   PipelinesTable,
+  useCreateUpdateDeleteResourceGuard,
 } from "@instill-ai/toolkit";
 
 import {
@@ -26,6 +27,8 @@ const PipelinePage: FC & {
     enable: true,
   });
 
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   useSendAmplitudeData(
     "hit_pipelines_page",
     { type: "navigation" },
@@ -39,7 +42,7 @@ const PipelinePage: FC & {
         <PageTitle
           title="Pipeline"
           breadcrumbs={["Pipeline"]}
-          enableButton={true}
+          enableButton={enableGuard ? false : true}
           buttonName="Add new pipeline"
           buttonLink="/pipelines/create"
           marginBottom="mb-10"

@@ -4,6 +4,7 @@ import {
   useSendAmplitudeData,
   useDestinationsWithPipelines,
   DestinationsTable,
+  useCreateUpdateDeleteResourceGuard,
 } from "@instill-ai/toolkit";
 
 import {
@@ -27,6 +28,8 @@ const DestinationPage: FC & {
 
   const router = useRouter();
 
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   useSendAmplitudeData(
     "hit_destinations_page",
     { type: "navigation" },
@@ -40,7 +43,7 @@ const DestinationPage: FC & {
         <PageTitle
           title="Destination"
           breadcrumbs={["Destination"]}
-          enableButton={true}
+          enableButton={enableGuard ? false : true}
           buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"

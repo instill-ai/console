@@ -6,6 +6,7 @@ import {
   ConfigureSourceForm,
   StateLabel,
   PipelinesTable,
+  useCreateUpdateDeleteResourceGuard,
 } from "@instill-ai/toolkit";
 
 import {
@@ -24,6 +25,8 @@ const SourceDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const sourceWithPipelines = useSourceWithPipelines({
     sourceName: id ? `source-connectors/${id.toString()}` : null,
@@ -80,7 +83,9 @@ const SourceDetailsPage: FC & {
             onDelete={() => {
               router.push("/sources");
             }}
+            disableDelete={enableGuard}
             accessToken={null}
+            disableConfigure={true}
           />
         ) : null}
       </PageContentContainer>

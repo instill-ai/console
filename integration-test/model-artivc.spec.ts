@@ -65,8 +65,8 @@ export function handleArtivcModelTest() {
         modelTask: "Classification",
         additionalRules: async () => {
           // Should have correct artivc version/model instance tag
-          // const artivcVersionField = page.locator("input#model-artivc-tag");
-          // await expect(artivcVersionField).toHaveValue(modelTag);
+          const artivcVersionField = page.locator("input#model-artivc-tag");
+          await expect(artivcVersionField).toHaveValue(modelTag);
 
           // Should have correct cloud storage url/model bucket
           const cloudStorageUrl = page.locator(

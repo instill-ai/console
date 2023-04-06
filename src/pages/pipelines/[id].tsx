@@ -16,6 +16,7 @@ import {
   handle,
   getPipelineQuery,
   constructPipelineRecipeWithDefinition,
+  useCreateUpdateDeleteResourceGuard,
   type Nullable,
   type Pipeline,
 } from "@instill-ai/toolkit";
@@ -157,6 +158,8 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   const router = useRouter();
   const { id } = router.query;
 
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
   const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
@@ -222,7 +225,9 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           onDelete={() => {
             router.push("/pipelines");
           }}
+          disableDelete={enableGuard}
           onConfigure={null}
+          disableConfigure={enableGuard}
         />
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>

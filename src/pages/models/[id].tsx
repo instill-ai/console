@@ -18,6 +18,7 @@ import {
   ModelDefinitionLabel,
   useModelReadme,
   ModelConfigurationFields,
+  useCreateUpdateDeleteResourceGuard,
   type Pipeline,
   type ConfigureModelFormStore,
 } from "@instill-ai/toolkit";
@@ -46,6 +47,8 @@ const ModelDetailsPage: FC & {
   const { id } = router.query;
   const { formIsDirty, init } = useConfigureModelFormStore(selector, shallow);
 
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   useWarnUnsavedChanges({
     router,
     haveUnsavedChanges: formIsDirty,
@@ -63,8 +66,6 @@ const ModelDetailsPage: FC & {
     accessToken: null,
     enable: true,
   });
-
-  console.log(model.data);
 
   /* -------------------------------------------------------------------------
    * Initialize pipelines that use this model
@@ -147,7 +148,9 @@ const ModelDetailsPage: FC & {
             model={model.data}
             marginBottom="mb-[60px]"
             onConfigure={null}
+            disableConfigure={enableGuard}
             onDelete={() => router.push("/models")}
+            disableDelete={enableGuard}
           />
         ) : null}
 

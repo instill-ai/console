@@ -19,7 +19,7 @@ import {
 } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
         destination: "/models",

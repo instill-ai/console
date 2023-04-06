@@ -10,6 +10,7 @@ import {
   PipelinesTable,
   StateLabel,
   CreateResourceFormStore,
+  useCreateUpdateDeleteResourceGuard,
   type DestinationWithDefinition,
   type Nullable,
 } from "@instill-ai/toolkit";
@@ -36,6 +37,8 @@ const DestinationDetailsPage: FC & {
   const router = useRouter();
   const { id } = router.query;
   const { formIsDirty, init } = useCreateResourceFormStore(selector, shallow);
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   useWarnUnsavedChanges({
     router,
@@ -117,7 +120,9 @@ const DestinationDetailsPage: FC & {
                 init();
                 router.push("/destinations");
               }}
+              disableDelete={enableGuard}
               onConfigure={null}
+              disableConfigure={enableGuard}
               initStoreOnConfigure={true}
               width="w-full"
               accessToken={null}

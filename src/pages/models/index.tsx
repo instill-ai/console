@@ -2,17 +2,18 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import {
+  useSendAmplitudeData,
+  ModelsTable,
+  useModels,
+  useCreateUpdateDeleteResourceGuard,
+} from "@instill-ai/toolkit";
+
+import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
 } from "@/components";
-
-import {
-  useSendAmplitudeData,
-  ModelsTable,
-  useModels,
-} from "@instill-ai/toolkit";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -21,12 +22,14 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
+
   const models = useModels({
     accessToken: null,
     enable: true,
   });
 
-  const router = useRouter();
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   useSendAmplitudeData(
     "hit_models_page",
@@ -41,7 +44,7 @@ const ModelPage: FC & {
         <PageTitle
           title="Model"
           breadcrumbs={["Model"]}
-          enableButton={true}
+          enableButton={enableGuard ? false : true}
           buttonName="Add new model"
           buttonLink="/models/create"
           marginBottom="mb-10"

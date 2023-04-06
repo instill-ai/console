@@ -4,6 +4,7 @@ import {
   useSendAmplitudeData,
   useSourcesWithPipelines,
   SourcesTable,
+  useCreateUpdateDeleteResourceGuard,
 } from "@instill-ai/toolkit";
 
 import {
@@ -21,6 +22,8 @@ const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const sources = useSourcesWithPipelines({
     accessToken: null,
@@ -40,7 +43,7 @@ const SourcePage: FC & {
         <PageTitle
           title="Source"
           breadcrumbs={["Source"]}
-          enableButton={true}
+          enableButton={enableGuard ? false : true}
           buttonName="Set up new source"
           buttonLink="/sources/create"
           marginBottom="mb-10"
