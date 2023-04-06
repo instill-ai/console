@@ -5,20 +5,19 @@ import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
-} from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+  initAmplitude,
+  AmplitudeCtx,
+  env,
+} from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@code-hike/mdx/dist/index.css";
 import "../styles/shiki.css";
+import "@instill-ai/design-system/dist/index.css";
 
-import "@instill-ai/design-system/build/index.cjs.css";
 import { useRouter } from "next/router";
-import { initAmplitude } from "@/lib/amplitude";
-import { useTrackingToken } from "@/services/mgmt";
-import { AmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { ErrorBoundary } from "@/components/ui";
-import { env } from "@/utils";
+import { useTrackingToken } from "@/lib";
+import { ErrorBoundary } from "@/components";
 
 export const queryCache = new QueryCache();
 
@@ -54,7 +53,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local:ce-dev" &&
       !amplitudeIsInit
     ) {
-      if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION") === "true") {
+      if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION")) {
         setAmplitudeIsInit(false);
       } else {
         initAmplitude(trackingToken.data);
@@ -68,7 +67,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AmplitudeCtx.Provider>
   );

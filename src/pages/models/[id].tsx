@@ -1,289 +1,174 @@
-import {
-  FC,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FC, ReactElement, useMemo } from "react";
 import { useRouter } from "next/router";
-import {
-  BasicSingleSelect,
-  SingleSelectOption,
-} from "@instill-ai/design-system";
+import { shallow } from "zustand/shallow";
 
 import {
-  useDeployModelInstance,
+  useDeployModel,
   useModel,
-  useModelInstanceReadme,
-  useModelInstances,
-  useUnDeployModelInstance,
-} from "@/services/model";
-import {
-  HorizontalDivider,
-  ModelDefinitionLabel,
-  StateLabel,
-  ModelInstanceTaskLabel,
+  useUnDeployModel,
+  usePipelines,
+  ChangeModelStateToggle,
+  useSendAmplitudeData,
+  useWarnUnsavedChanges,
+  useConfigureModelFormStore,
+  ConfigureModelForm,
   PipelinesTable,
+  StateLabel,
+  ModelTaskLabel,
+  ModelDefinitionLabel,
+  useModelReadme,
+  ModelConfigurationFields,
+  useCreateUpdateDeleteResourceGuard,
+  type Pipeline,
+  type ConfigureModelFormStore,
+} from "@instill-ai/toolkit";
+
+import {
   PageTitle,
-  ModelInstanceReadmeCard,
-  ChangeResourceStateButton,
   PageBase,
   PageContentContainer,
   PageHead,
-  TableLoadingProgress,
-} from "@/components/ui";
-import {
-  ConfigureModelForm,
-  ConfigureModelInstanceForm,
-} from "@/components/model";
-import { Nullable } from "@/types/general";
-import { usePipelines } from "@/services/pipeline";
-import { Pipeline } from "@/lib/instill";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData, useStateOverviewCounts } from "@/hooks";
+  ModelReadmeMarkdown,
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
 };
+
+const selector = (state: ConfigureModelFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  init: state.init,
+});
 
 const ModelDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { formIsDirty, init } = useConfigureModelFormStore(selector, shallow);
 
-  // ##########################################################################
-  // # 1 - Initialize Model and related modelInstances                        #
-  // ##########################################################################
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const model = useModel(id ? `models/${id}` : null);
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: () => init(),
+  });
 
-  const modelInstances = useModelInstances(
-    model.isSuccess ? model.data.name : null
-  );
+  /* -------------------------------------------------------------------------
+   * Initialize model and modelInstances state
+   * -----------------------------------------------------------------------*/
 
-  const modelInstanceOptions = useMemo<SingleSelectOption[]>(() => {
-    if (!modelInstances.isSuccess || !router.isReady) return [];
+  const model = useModel({
+    modelName: id ? `models/${id}` : null,
+    accessToken: null,
+    enable: true,
+  });
 
-    return modelInstances.data.map((modelInstance) => {
-      return {
-        label: modelInstance.id,
-        value: modelInstance.id,
-      };
+  /* -------------------------------------------------------------------------
+   * Initialize pipelines that use this model
+   * -----------------------------------------------------------------------*/
+
+  const pipelines = usePipelines({ enable: true, accessToken: null });
+
+  const pipelinesUseThisModel = useMemo(() => {
+    if (!pipelines.isSuccess || !pipelines.data) {
+      return [];
+    }
+
+    return pipelines.data.filter((pipeline: Pipeline) => {
+      return pipeline.recipe.models.some((e) => e.name === `models/${id}`);
     });
-  }, [router.isReady, modelInstances.isSuccess, modelInstances.data]);
+  }, [pipelines.isSuccess, pipelines.data, id]);
 
-  const [selectedModelInstanceOption, setSelectedModelInstanceOption] =
-    useState<Nullable<SingleSelectOption>>(null);
+  /* -------------------------------------------------------------------------
+   * Get model card
+   * -----------------------------------------------------------------------*/
 
-  useEffect(() => {
-    if (!modelInstances.isSuccess) return;
+  const modelReadme = useModelReadme({
+    modelName: `models/${id}`,
+    accessToken: null,
+    enable: true,
+  });
 
-    if (!selectedModelInstanceOption) {
-      setSelectedModelInstanceOption(
-        modelInstances.isSuccess
-          ? {
-              value: modelInstances.data[0].id,
-              label: modelInstances.data[0].id,
-            }
-          : null
-      );
-    }
-  }, [
-    modelInstances.isSuccess,
-    modelInstances.data,
-    selectedModelInstanceOption,
-  ]);
+  /* -------------------------------------------------------------------------
+   * Toggle model state
+   * -----------------------------------------------------------------------*/
 
-  const selectedModelInstances = useMemo(() => {
-    if (!selectedModelInstanceOption || !modelInstances.isSuccess) return null;
-
-    return (
-      modelInstances.data.find(
-        (e) => e.id === selectedModelInstanceOption.value
-      ) || null
-    );
-  }, [
-    selectedModelInstanceOption,
-    modelInstances.isSuccess,
-    modelInstances.data,
-  ]);
-
-  const modelInstanceOnChangeCb = useCallback(
-    (option: Nullable<SingleSelectOption>) => {
-      if (!option) return;
-
-      setSelectedModelInstanceOption(option);
-    },
-    []
-  );
-
-  // ##########################################################################
-  // # 2 - Initialize pipelines that use related modelInstane                 #
-  // ##########################################################################
-
-  const pipelines = usePipelines(true);
-
-  const pipelinesGroupByModelInstance = useMemo(() => {
-    if (!pipelines.isSuccess || !modelInstances.isSuccess || !pipelines.data) {
-      return {};
-    }
-
-    const pipelinesGroup: Record<string, Pipeline[]> = {};
-
-    for (const modelInstance of modelInstances.data) {
-      const targetPipelines = pipelines.data.filter((e) => {
-        if (e.recipe.models.find((e) => e.name === modelInstance.name)) {
-          return true;
-        } else {
-          false;
-        }
-      });
-      pipelinesGroup[modelInstance.id] = targetPipelines;
-    }
-    return pipelinesGroup;
-  }, [
-    pipelines.isSuccess,
-    pipelines.data,
-    modelInstances.isSuccess,
-    modelInstances.data,
-  ]);
-
-  const selectedModelInstancePipelines = useMemo(() => {
-    if (!selectedModelInstances || !pipelinesGroupByModelInstance) return [];
-
-    return pipelinesGroupByModelInstance[selectedModelInstances.id];
-  }, [pipelinesGroupByModelInstance, selectedModelInstances]);
-
-  // ##########################################################################
-  // # Get model instance's readme                                            #
-  // ##########################################################################
-
-  const modelInstanceReadme = useModelInstanceReadme(
-    modelInstances.data?.find(
-      (e) => e.id === selectedModelInstanceOption?.value
-    )?.name ?? null
-  );
-
-  // ##########################################################################
-  // # Toggle the model instance state                                        #
-  // ##########################################################################
-
-  const deployModelInstance = useDeployModelInstance();
-  const unDeployModelInstance = useUnDeployModelInstance();
-
-  // ##########################################################################
-  // # Send page loaded data to Amplitude                                     #
-  // ##########################################################################
-
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const deployModel = useDeployModel();
+  const unDeployModel = useUnDeployModel();
 
   useSendAmplitudeData(
     "hit_model_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
-
-  const pageTitle = useMemo(() => {
-    if (!selectedModelInstances) return null;
-
-    const nameList = selectedModelInstances.name.split("/");
-
-    return `${nameList[1]}/${nameList[3]}`;
-  }, [selectedModelInstances]);
 
   return (
     <>
-      <PageHead title={pageTitle ? pageTitle : ""} />
+      <PageHead title={`models/${id}`} />
       <PageContentContainer>
         <PageTitle
-          title={id ? id.toString() : ""}
+          title={`models/${id?.toString()}`}
           breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-5"
         />
-        <ModelDefinitionLabel
-          modelDefinition={model.data ? model.data.model_definition : null}
-          marginBottom="mb-5"
-          position="mr-auto"
-        />
-        {model.isSuccess && model.data ? (
-          <ConfigureModelForm model={model.data} marginBottom="mb-[60px]" />
-        ) : null}
-        <HorizontalDivider
-          borderColor="border-instillGrey30"
-          marginBottom="mb-10"
-        />
-        <div className="mb-5 flex flex-row gap-x-2.5">
-          <h2 className="my-auto text-black text-instill-h2 ">{`${
-            model.isSuccess ? model.data.id : ""
-          }`}</h2>
-          <BasicSingleSelect
-            id="modelInstanceTag"
-            instanceId="modelInstanceTag"
-            menuPlacement="auto"
-            label={null}
-            additionalMessageOnLabel={null}
-            description=""
-            disabled={false}
-            readOnly={false}
-            required={false}
-            error={null}
-            value={selectedModelInstanceOption}
-            options={modelInstanceOptions}
-            onChange={modelInstanceOnChangeCb}
-          />
-        </div>
         <div className="mb-10 flex flex-row gap-x-2.5">
-          <ModelInstanceTaskLabel
-            task={selectedModelInstances ? selectedModelInstances.task : null}
+          <ModelDefinitionLabel
+            modelDefinition={model.data ? model.data.model_definition : null}
+            marginBottom={null}
+            position={null}
+          />
+          <ModelTaskLabel
+            task={model.isSuccess ? model.data.task : null}
             marginBottom={null}
             position={null}
           />
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
-            state={
-              selectedModelInstances
-                ? selectedModelInstances.state
-                : "STATE_UNSPECIFIED"
-            }
-            paddingX="px-[5px]"
-            paddingY="py-[5px]"
+            state={model.isSuccess ? model.data.state : "STATE_UNSPECIFIED"}
             iconHeight="h-3"
             iconWidth="w-3"
             iconPosition="my-auto"
           />
         </div>
-        <ChangeResourceStateButton
-          resource={selectedModelInstances}
-          switchOn={deployModelInstance}
-          switchOff={unDeployModelInstance}
+        <ChangeModelStateToggle
+          model={model.data ? model.data : null}
+          switchOn={deployModel}
+          switchOff={unDeployModel}
           marginBottom="mb-10"
+          accessToken={null}
         />
+        {model.isSuccess && model.data ? (
+          <ConfigureModelForm
+            model={model.data}
+            marginBottom="mb-[60px]"
+            onConfigure={null}
+            disableConfigure={enableGuard}
+            onDelete={() => router.push("/models")}
+            disableDelete={enableGuard}
+          />
+        ) : null}
+
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
-          pipelines={selectedModelInstancePipelines}
+          pipelines={pipelinesUseThisModel}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {modelInstances.isLoading ? null : selectedModelInstances ? (
-          <>
-            <ModelInstanceReadmeCard
-              isLoading={modelInstanceReadme.isLoading}
-              markdown={
-                modelInstanceReadme.isSuccess ? modelInstanceReadme.data : null
-              }
-              marginBottom="mb-5"
-            />
-            <ConfigureModelInstanceForm
-              modelInstance={selectedModelInstances}
-              marginBottom="mb-10"
-            />
-          </>
-        ) : null}
+        <ModelReadmeMarkdown
+          isLoading={modelReadme.isLoading}
+          markdown={modelReadme.isSuccess ? modelReadme.data : null}
+          marginBottom="mb-5"
+        />
+        <ModelConfigurationFields
+          model={model.isSuccess ? model.data : null}
+          marginBottom="mb-10"
+        />
       </PageContentContainer>
     </>
   );

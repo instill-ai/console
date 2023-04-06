@@ -1,4 +1,4 @@
-import { env, expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import {
   expectCorrectPipelineDetails,
@@ -23,18 +23,14 @@ export function handleSyncPipelineTest() {
       await page.goto("/pipelines/create", { waitUntil: "networkidle" });
 
       // Should select sync mode
-      const pipelineModeField = page.locator(
-        "data-testid=pipelineMode-selected-option"
-      );
+      const pipelineModeField = page.locator("#pipeline-mode");
       await expect(pipelineModeField).toHaveText(pipelineMode);
 
       // Should select source type - http
       const goToModelStepButton = page.locator("button", { hasText: "Next" });
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-existingSourceId-input"),
-        page.locator("data-testid=existingSourceId-selected-option", {
-          hasText: sourceType,
-        })
+      await expectToSelectOption(
+        page.locator("#existing-source-id"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(sourceType)
       );
       expect(await goToModelStepButton.isEnabled()).toBeTruthy();
 
@@ -49,16 +45,13 @@ export function handleSyncPipelineTest() {
       ]);
 
       // Should input model id
-      const modelIdField = page.locator("input#modelId");
-      await modelIdField.fill(modelId);
+      await page.locator("input#model-id").fill(modelId);
 
       // Should select model source - local and display file field
-      const fileField = page.locator("input#file");
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-modelDefinition-input"),
-        page.locator("data-testid=modelDefinition-selected-option", {
-          hasText: modelSource,
-        }),
+      const fileField = page.locator("input#model-local-file");
+      await expectToSelectOption(
+        page.locator("#model-definition"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(modelSource),
         fileField
       );
 
@@ -69,44 +62,19 @@ export function handleSyncPipelineTest() {
       );
       expect(await setupButton.isEnabled()).toBeTruthy();
 
-      // Should set up model and display model instance section
-      const succeedMessage = page.locator("h3", { hasText: "Succeed" });
-
-      await Promise.all([
-        succeedMessage.waitFor({ state: "visible" }),
-        setupButton.click(),
-      ]);
-
-      // Should disable deploy button
-      const deployButton = page.locator("button", { hasText: "Deploy" });
-      expect(await deployButton.isDisabled()).toBeTruthy();
-
-      // Should select model instance tag - latest and enable deploy button
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-modelInstanceTag-input"),
-        page.locator("data-testid=modelInstanceTag-selected-option", {
-          hasText: modelInstanceTag,
-        })
-      );
-      expect(await deployButton.isEnabled()).toBeTruthy();
-
-      // Should deploy model and go to next step
+      // Should set up model and got to next step
       const setupDestinationTitle = page.locator("h2", {
         hasText: "Set up Destination",
       });
       await Promise.all([
         setupDestinationTitle.waitFor({ state: "visible" }),
-        deployButton.click(),
+        setupButton.click(),
       ]);
 
       // Should disable destination selection field
-      const destinationFieldOption = page.locator(
-        "#react-select-existingDestinationId-input"
-      );
+      const destinationFieldOption = page.locator("#existing-destination-id");
       expect(await destinationFieldOption.isDisabled()).toBeTruthy();
-      await expect(
-        page.locator("data-testid=existingDestinationId-selected-option")
-      ).toHaveText(destinationType);
+      await expect(destinationFieldOption).toHaveText(destinationType);
 
       // Should enable next button
       const goToPipelineStepButton = page.locator("button", {
@@ -115,7 +83,7 @@ export function handleSyncPipelineTest() {
       expect(await goToPipelineStepButton.isEnabled()).toBeTruthy();
 
       // Should go to next step
-      const piplineIdField = page.locator("input#pipelineId");
+      const piplineIdField = page.locator("input#pipeline-id");
 
       await Promise.all([
         piplineIdField.waitFor({ state: "visible" }),
@@ -129,9 +97,9 @@ export function handleSyncPipelineTest() {
       await setupPipelineButton.click();
 
       // Should have warning label
-      const warningLabel = page.locator("label[for='pipelineId']");
+      const warningLabel = page.locator("data-testid=pipeline-id-label-error");
       await expect(warningLabel).toHaveText(
-        "ID *Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+        "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
       );
 
       // Should input correct id
@@ -140,7 +108,7 @@ export function handleSyncPipelineTest() {
 
       // Should input pipeline description
       const pipelineDescriptionField = page.locator(
-        "textarea#pipelineDescription"
+        "textarea#pipeline-description"
       );
       await pipelineDescriptionField.fill(pipelineDescription);
 

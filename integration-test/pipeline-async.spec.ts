@@ -1,4 +1,4 @@
-import { env, expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import {
   expectCorrectPipelineDetails,
@@ -14,7 +14,6 @@ export function handleAsyncPipelineTest() {
   const sourceType = "HTTP";
   const modelSource = "Local";
   const modelId = `github-local-${Math.floor(Math.random() * 10000)}`;
-  const modelInstanceTag = "latest";
   const destinationType = "Scylla";
   const destinationId = `test-scylla-${Math.floor(Math.random() * 10000)}`;
   const keyspace = "scylla-key";
@@ -28,19 +27,15 @@ export function handleAsyncPipelineTest() {
       await page.goto("/pipelines/create", { waitUntil: "networkidle" });
 
       // Should select async mode
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-pipelineMode-input"),
-        page.locator("data-testid=pipelineMode-selected-option", {
-          hasText: pipelineMode,
-        })
+      await expectToSelectOption(
+        page.locator("#pipeline-mode"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(pipelineMode)
       );
 
       // Should select source type - http
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-existingSourceId-input"),
-        page.locator("data-testid=existingSourceId-selected-option", {
-          hasText: sourceType,
-        })
+      await expectToSelectOption(
+        page.locator("#existing-source-id"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(sourceType)
       );
 
       // Should enable next button
@@ -58,16 +53,13 @@ export function handleAsyncPipelineTest() {
       ]);
 
       // Should input model id
-      const modelIdField = page.locator("input#modelId");
-      await modelIdField.fill(modelId);
+      await page.locator("input#model-id").fill(modelId);
 
       // Should select model source - local and display file field
-      const fileField = page.locator("input#file");
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-modelDefinition-input"),
-        page.locator("data-testid=modelDefinition-selected-option", {
-          hasText: modelSource,
-        }),
+      const fileField = page.locator("input#model-local-file");
+      await expectToSelectOption(
+        page.locator("#model-definition"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(modelSource),
         fileField
       );
 
@@ -76,40 +68,27 @@ export function handleAsyncPipelineTest() {
       await fileField.setInputFiles(
         "./integration-test/data/dummy-cls-model.zip"
       );
+      expect(await setupButton.isEnabled()).toBeTruthy();
 
-      // Should set up model and display model instance section
-      const modelInstanceTitle = page.locator("h3", {
-        hasText: "Deploy a model instance",
+      // Should set up model and got to next step
+      const setupDestinationTitle = page.locator("h2", {
+        hasText: "Set up Destination",
       });
-
-      await Promise.all([setupButton.click(), modelInstanceTitle.isVisible()]);
-
-      // Should disable deploy button
-      const deployButton = page.locator("button", { hasText: "Deploy" });
-      expect(await deployButton.isDisabled()).toBeTruthy();
-
-      // Should select model instance tag - latest and enable deploy button
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-modelInstanceTag-input"),
-        page.locator("data-testid=modelInstanceTag-selected-option", {
-          hasText: modelInstanceTag,
-        })
-      );
-
-      // Should deploy model and go to next step
-      const destinationIdField = page.locator("input#id");
-      await Promise.all([deployButton.click(), destinationIdField.isVisible()]);
+      await Promise.all([
+        setupDestinationTitle.waitFor({ state: "visible" }),
+        setupButton.click(),
+      ]);
 
       // Should input destination id
-      await destinationIdField.fill(destinationId);
+      await page.locator("input#destination-id").fill(destinationId);
 
       // Should select destination type - Scylla
       const keyspaceField = page.locator("input#keyspace");
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-definition-input"),
-        page.locator("data-testid=definition-selected-option", {
-          hasText: destinationType,
-        }),
+      await expectToSelectOption(
+        page.locator("#destination-definition"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(destinationType),
         keyspaceField
       );
 
@@ -117,16 +96,13 @@ export function handleAsyncPipelineTest() {
       await keyspaceField.fill(keyspace);
 
       // Should input Scylla username
-      const usernameField = page.locator("input#username");
-      await usernameField.fill(username);
+      await page.locator("input#username").fill(username);
 
       // Should input Scylla password
-      const passwordField = page.locator("input#password");
-      await passwordField.fill(password);
+      await page.locator("input#password").fill(password);
 
       // Should input Scylla address
-      const addressField = page.locator("input#address");
-      await addressField.fill(address);
+      await page.locator("input#address").fill(address);
 
       // Should enable set up destination button
       const setupDestinationButton = page.locator("button", {
@@ -135,7 +111,7 @@ export function handleAsyncPipelineTest() {
       expect(await setupDestinationButton.isEnabled()).toBeTruthy();
 
       // Should set up destination and go to pipeline step
-      const piplineIdField = page.locator("input#pipelineId");
+      const piplineIdField = page.locator("input#pipeline-id");
       await Promise.all([
         setupDestinationButton.click(),
         piplineIdField.isVisible(),
@@ -145,10 +121,9 @@ export function handleAsyncPipelineTest() {
       await piplineIdField.fill(pipelineId);
 
       // Should input pipeline description
-      const pipelineDescriptionField = page.locator(
-        "textarea#pipelineDescription"
-      );
-      await pipelineDescriptionField.fill(pipelineDescription);
+      await page
+        .locator("textarea#pipeline-description")
+        .fill(pipelineDescription);
 
       // Should enable set up button
       const setupPipelineButton = page.locator("button", { hasText: "Set up" });

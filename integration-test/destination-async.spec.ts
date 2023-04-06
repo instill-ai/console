@@ -1,4 +1,4 @@
-import { env, expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
@@ -21,15 +21,15 @@ export function handleAsyncDestinationTest() {
       await page.goto("/destinations/create");
 
       // Should input destination id
-      const idField = page.locator("input#id");
+      const idField = page.locator("input#destination-id");
       await idField.fill("Wrong-id");
 
       // Should select destination source - S3
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-definition-input"),
-        page.locator("data-testid=definition-selected-option", {
-          hasText: destinationType,
-        })
+      await expectToSelectOption(
+        page.locator("#destination-definition"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(destinationType)
       );
 
       // Should click set up button
@@ -37,9 +37,11 @@ export function handleAsyncDestinationTest() {
       await setupButton.click();
 
       // Should have warning label
-      const warningLabel = page.locator("label[for='id']");
+      const warningLabel = page.locator(
+        "data-testid=destination-id-label-error"
+      );
       await expect(warningLabel).toHaveText(
-        "ID *Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+        "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
       );
     });
 
@@ -47,19 +49,19 @@ export function handleAsyncDestinationTest() {
       await page.goto("/destinations/create");
 
       // Should input destination id
-      const idField = page.locator("input#id");
+      const idField = page.locator("input#destination-id");
       await idField.fill(destinationId);
 
       // Should select destination source - S3
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-definition-input"),
-        page.locator("data-testid=definition-selected-option", {
-          hasText: destinationType,
-        })
+      await expectToSelectOption(
+        page.locator("#destination-definition"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(destinationType)
       );
 
       // Should input destination description
-      const descriptionField = page.locator("textarea#description");
+      const descriptionField = page.locator("textarea#destination-description");
       await descriptionField.fill(destinationDescription);
 
       // Should input S3 key
@@ -79,19 +81,19 @@ export function handleAsyncDestinationTest() {
       await s3BucketPathField.fill(s3BucketPath);
 
       // Should Select S3 bucket region
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-s3_bucket_region-input"),
-        page.locator("data-testid=s3_bucket_region-selected-option", {
-          hasText: s3BucketRegion,
-        })
+      await expectToSelectOption(
+        page.locator("#s3_bucket_region"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(s3BucketRegion)
       );
 
       // Should select output format
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-format-input"),
-        page.locator("data-testid=format-selected-option", {
-          hasText: s3OutputFormat,
-        })
+      await expectToSelectOption(
+        page.locator("#format"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(s3OutputFormat)
       );
 
       const compressionCodecOptionTitle = page.locator("h3", {
@@ -100,14 +102,11 @@ export function handleAsyncDestinationTest() {
       await expect(compressionCodecOptionTitle).toHaveCount(1);
 
       // Should select compression codec
-      await expectToSelectReactSelectOption(
-        page.locator("input[id='react-select-format.compression_codec-input']"),
-        page.locator(
-          "div[data-testid='format.compression_codec-selected-option']",
-          {
-            hasText: s3OutputCompression,
-          }
-        )
+      await expectToSelectOption(
+        page.locator("#format\\.compression_codec"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(s3OutputCompression)
       );
 
       // Should set up destination
@@ -146,9 +145,7 @@ export function handleAsyncDestinationTest() {
       await expect(destinationTitle).toHaveCount(1);
 
       // Should have correct destination type
-      const destinationTypeOption = page.locator(
-        "data-testid=definition-selected-option"
-      );
+      const destinationTypeOption = page.locator("#destination-definition");
       await expect(destinationTypeOption).toHaveText(destinationType);
 
       // Should enable edit button
@@ -158,7 +155,7 @@ export function handleAsyncDestinationTest() {
       expect(await editButton.isEnabled()).toBeTruthy();
 
       // Should have correct description
-      const descriptionField = page.locator("textarea#description");
+      const descriptionField = page.locator("textarea#destination-description");
       await expect(descriptionField).toHaveValue(destinationDescription);
 
       // Should have correct S3 Key
@@ -174,25 +171,21 @@ export function handleAsyncDestinationTest() {
       await expect(s3BucketField).toHaveValue(s3BucketName);
 
       // Should have correct S3 bucket path
-      const s3BucketPathField = page.locator("input#s3_bucket_path");
+      const s3BucketPathField = page.locator("#s3_bucket_path");
       await expect(s3BucketPathField).toHaveValue(s3BucketPath);
 
       // Should have correct S3 bucket region
-      await expect(
-        page.locator("data-testid=s3_bucket_region-selected-option")
-      ).toHaveText(s3BucketRegion);
+      await expect(page.locator("#s3_bucket_region")).toHaveText(
+        s3BucketRegion
+      );
 
       // Should have correct output format
-      await expect(
-        page.locator("data-testid=format-selected-option")
-      ).toHaveText(s3OutputFormat);
+      await expect(page.locator("#format")).toHaveText(s3OutputFormat);
 
       // Should have correct compression codec
-      await expect(
-        page.locator(
-          "div[data-testid='format.compression_codec-selected-option']"
-        )
-      ).toHaveText(s3OutputCompression);
+      await expect(page.locator("#format\\.compression_codec")).toHaveText(
+        s3OutputCompression
+      );
     });
 
     test("should update destination configuration", async ({ page }) => {
@@ -212,7 +205,7 @@ export function handleAsyncDestinationTest() {
       await editButton.click();
 
       // Should update destination description
-      const descriptionField = page.locator("textarea#description");
+      const descriptionField = page.locator("textarea#destination-description");
       expect(await descriptionField.isEditable()).toBeTruthy();
       await descriptionField.fill("");
       await descriptionField.type(newDestinationDescription);
@@ -247,19 +240,20 @@ export function handleAsyncDestinationTest() {
       await expect(s3BucketPathField).toHaveValue(newS3BucketPath);
 
       // Should update S3 bucket region
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-s3_bucket_region-input"),
-        page.locator("data-testid=s3_bucket_region-selected-option", {
-          hasText: newS3BucketRegion,
-        })
+      await expectToSelectOption(
+        page.locator("#s3_bucket_region"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(newS3BucketRegion)
       );
 
       // Should update output format
-      await expectToSelectReactSelectOption(
-        page.locator("#react-select-format-input"),
-        page.locator("data-testid=format-selected-option", {
-          hasText: newS3OutputFormat,
-        })
+      // Should select output format
+      await expectToSelectOption(
+        page.locator("#format"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(newS3OutputFormat)
       );
 
       const compressionOptionTitle = page.locator("h3", {
@@ -267,12 +261,11 @@ export function handleAsyncDestinationTest() {
       });
       await expect(compressionOptionTitle).toHaveCount(1);
 
-      // Should select compression option
-      await expectToSelectReactSelectOption(
-        page.locator("input[id='react-select-format.compression-input']"),
-        page.locator("div[data-testid='format.compression-selected-option']", {
-          hasText: newS3OutputCompression,
-        })
+      await expectToSelectOption(
+        page.locator("#format\\.compression"),
+        page
+          .locator(`[data-radix-select-viewport=""]`)
+          .getByText(newS3OutputCompression)
       );
 
       // Save new value
@@ -309,19 +302,17 @@ export function handleAsyncDestinationTest() {
       await expect(s3BucketPathField).toHaveValue(newS3BucketPath);
 
       // Should have updated S3 bucket region
-      await expect(
-        page.locator("data-testid=s3_bucket_region-selected-option")
-      ).toHaveText(newS3BucketRegion);
+      await expect(page.locator("#s3_bucket_region")).toHaveText(
+        newS3BucketRegion
+      );
 
       // Should have updated output format
-      await expect(
-        page.locator("data-testid=format-selected-option")
-      ).toHaveText(newS3OutputFormat);
+      await expect(page.locator("#format")).toHaveText(newS3OutputFormat);
 
       // Should have updated compression codec
-      await expect(
-        page.locator("div[data-testid='format.compression-selected-option']")
-      ).toHaveText(newS3OutputCompression);
+      await expect(page.locator("#format\\.compression")).toHaveText(
+        newS3OutputCompression
+      );
     });
 
     test("should have delete destination modal and correctly delete destination", async ({

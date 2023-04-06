@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
   testMatch: "integration-test.list.ts",
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 30000,
+  timeout: 20000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -68,14 +68,17 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    {
-      name: "firefox",
-      dependencies: ["setup"],
-      use: {
-        ...devices["Desktop Firefox"],
-        storageState: "integration-test/.auth/user.json",
-      },
-    },
+    // Temp disable due to the viewport issue
+    // https://github.com/microsoft/playwright/issues/22082
+
+    // {
+    //   name: "firefox",
+    //   dependencies: ["setup"],
+    //   use: {
+    //     ...devices["Desktop Firefox"],
+    //     storageState: "integration-test/.auth/user.json",
+    //   },
+    // },
 
     {
       name: "webkit",

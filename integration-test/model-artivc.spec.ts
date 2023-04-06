@@ -2,24 +2,22 @@ import { test, expect } from "@playwright/test";
 import {
   expectCorrectModelDetails,
   expectCorrectModelList,
-  expectToDeployModel,
   expectToUpdateModelDescription,
 } from "./common/model";
+import { env, expectToSelectOption } from "./helper";
 
 export function handleArtivcModelTest() {
   const modelId = `artivc-model-${Math.floor(Math.random() * 10000)}`;
   const modelDescription = "ArtiVC test model";
   const modelSource = "ArtiVC";
   const modelBucket = "gs://test-20062";
-  const modelInstanceTag = "v1.0-cpu";
+  const modelTag = "v1.0-cpu";
 
   // This set of test are easily failed due to the timeout, latency issue of
   // model pulling and converting. Not only that, Firefox seems particularly fragile
   // to face this kind of issue.
 
   test.describe.serial("Artivc model", () => {
-    test.setTimeout(75000);
-
     test("should create artivc model", async ({ page }) => {
       await page.goto("/models/create");
 
@@ -28,41 +26,28 @@ export function handleArtivcModelTest() {
       expect(await setupButton.isDisabled()).toBeTruthy();
 
       // Should input model id
-      const idInput = page.locator("input#modelId");
-      await idInput.fill(modelId);
+      await page.locator("input#model-id").fill(modelId);
 
       // Should input model description
-      const descriptionInput = page.locator("textarea#description");
-      await descriptionInput.fill(modelDescription);
+      await page.locator("textarea#model-description").fill(modelDescription);
 
       // Should select model source - GitHub and display according fields
-      const bucketField = page.locator("input#gcsBucketPath");
-      const credentialsField = page.locator("textarea#credentials");
-      await page
-        .locator("#react-select-modelDefinition-input")
-        .click({ force: true });
+      const bucketField = page.locator("input#model-artivc-gcs-bucket-path");
+      await expectToSelectOption(
+        page.locator("#model-definition"),
+        page.locator(`[data-radix-select-viewport=""]`).getByText(modelSource),
+        bucketField
+      );
 
-      await Promise.all([
-        bucketField.waitFor({ state: "visible" }),
-        credentialsField.waitFor({ state: "visible" }),
-        page
-          .locator("data-testid=modelDefinition-selected-option", {
-            hasText: modelSource,
-          })
-          .click(),
-      ]);
-
-      // Should fill in model's bucket
+      // Should fill in model's bucket and tag
       await bucketField.fill(modelBucket);
+      await page.locator("input#model-artivc-tag").fill(modelTag);
       expect(await setupButton.isEnabled()).toBeTruthy();
 
-      const succeedMessage = page.locator("h3", { hasText: "Succeed" });
       await Promise.all([
-        succeedMessage.waitFor({ state: "visible", timeout: 20 * 1000 }),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
         setupButton.click(),
       ]);
-
-      await expectToDeployModel(page, modelInstanceTag, null, 60 * 1000);
     });
 
     test("should have proper model list and navigate to model details page", async ({
@@ -76,19 +61,17 @@ export function handleArtivcModelTest() {
         page,
         modelId,
         modelDescription,
-        modelInstanceTag: "v1.0-cpu",
-        modelInstanceTagOptionLocator: page.locator(
-          "#react-select-modelInstanceTag-option-0"
-        ),
         modelState: "STATE_ONLINE",
         modelTask: "Classification",
         additionalRules: async () => {
           // Should have correct artivc version/model instance tag
-          const artivcVersionField = page.locator("input#tag");
-          await expect(artivcVersionField).toHaveValue(modelInstanceTag);
+          const artivcVersionField = page.locator("input#model-artivc-tag");
+          await expect(artivcVersionField).toHaveValue(modelTag);
 
           // Should have correct cloud storage url/model bucket
-          const cloudStorageUrl = page.locator("input#url");
+          const cloudStorageUrl = page.locator(
+            "input#model-artivc-gcs-bucket-path"
+          );
           await expect(cloudStorageUrl).toHaveValue(modelBucket);
         },
       });

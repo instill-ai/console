@@ -1,20 +1,25 @@
+import { shallow } from "zustand/shallow";
+import { GetServerSideProps } from "next";
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
+import {
+  useSendAmplitudeData,
+  useWarnUnsavedChanges,
+  CreateResourceFormStore,
+  useCreateResourceFormStore,
+  CreateModelForm,
+  env,
+} from "@instill-ai/toolkit";
 
 import {
   PageTitle,
   PageHead,
   PageBase,
   PageContentContainer,
-} from "@/components/ui";
-import { CreateModelForm } from "@/components/model";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
-import { env } from "@/utils";
+} from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
         destination: "/models",
@@ -32,17 +37,30 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  createNewResourceIsComplete: state.createNewResourceIsComplete,
+});
+
 const CreateModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const { formIsDirty, createNewResourceIsComplete } =
+    useCreateResourceFormStore(selector, shallow);
+
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
 
   useSendAmplitudeData(
     "hit_create_model_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -52,10 +70,16 @@ const CreateModelPage: FC & {
         <PageTitle
           title="Set Up New Model"
           breadcrumbs={["Model", "Settings"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
-        <CreateModelForm />
+        <CreateModelForm
+          onCreate={() => router.push("/models")}
+          accessToken={null}
+          marginBottom={null}
+          initStoreOnCreate={true}
+          width={null}
+        />
       </PageContentContainer>
     </>
   );

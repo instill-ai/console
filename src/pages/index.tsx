@@ -1,8 +1,8 @@
-import { PageBase, PageContentContainer } from "@/components/ui";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { FC, ReactElement, useEffect } from "react";
 import { parse } from "cookie";
+import { PageBase, PageContentContainer } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;

@@ -2,15 +2,18 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import {
+  useSendAmplitudeData,
   ModelsTable,
+  useModels,
+  useCreateUpdateDeleteResourceGuard,
+} from "@instill-ai/toolkit";
+
+import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui/";
-import { useModelsWithInstances } from "@/services/model";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+} from "@/components";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -20,14 +23,18 @@ const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
-  const modelsWithInstances = useModelsWithInstances();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  const models = useModels({
+    accessToken: null,
+    enable: true,
+  });
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   useSendAmplitudeData(
     "hit_models_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -35,18 +42,16 @@ const ModelPage: FC & {
       <PageHead title="models" />
       <PageContentContainer>
         <PageTitle
-          title={null}
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Model"
+          breadcrumbs={["Model"]}
+          enableButton={enableGuard ? false : true}
           buttonName="Add new model"
           buttonLink="/models/create"
           marginBottom="mb-10"
         />
         <ModelsTable
-          models={
-            modelsWithInstances.isSuccess ? modelsWithInstances.data : null
-          }
-          marginBottom={null}
+          models={models.isSuccess ? models.data : []}
+          marginBottom="mb-5"
         />
       </PageContentContainer>
     </>

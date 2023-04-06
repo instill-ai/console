@@ -1,4 +1,4 @@
-import { env, delay, expectToSelectReactSelectOption } from "../helper";
+import { env, delay } from "../helper";
 import { Page, expect, Locator } from "@playwright/test";
 
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
@@ -72,7 +72,7 @@ export const expectToUpdateModelDescription = async (
   expect(await editButton.isEnabled()).toBeTruthy();
 
   // Should disable description field
-  const modelDescriptionField = page.locator("#description");
+  const modelDescriptionField = page.locator("#model-description");
   expect(await modelDescriptionField.isDisabled()).toBeTruthy();
   await editButton.click();
 
@@ -111,8 +111,6 @@ export type ExpectCorrectModelDetailsProps = {
   page: Page;
   modelId: string;
   modelDescription: string;
-  modelInstanceTag: string;
-  modelInstanceTagOptionLocator: Locator;
   modelState:
     | "STATE_ONLINE"
     | "STATE_OFFLINE"
@@ -126,8 +124,6 @@ export const expectCorrectModelDetails = async ({
   page,
   modelId,
   modelDescription,
-  modelInstanceTag,
-  modelInstanceTagOptionLocator,
   modelState,
   modelTask,
   additionalRules,
@@ -137,31 +133,15 @@ export const expectCorrectModelDetails = async ({
 
   // Should have proper title
   const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
-  await expect(modelDetailsPageTitle).toHaveCount(2);
+  await expect(modelDetailsPageTitle).toHaveCount(1);
 
   // Should have proper model description
-  const modelDescriptionField = page.locator("#description");
+  const modelDescriptionField = page.locator("#model-description");
   await expect(modelDescriptionField).toHaveValue(modelDescription);
 
-  // Should display task fill classification
+  // Should display task classification
   const modelTaskLabel = page.locator("data-testid=model-task-label");
   await expect(modelTaskLabel).toHaveText(modelTask);
-
-  const modelInstanceTagOptionInput = page.locator(
-    "#react-select-modelInstanceTag-input"
-  );
-
-  // Should choose the right model instance
-  await expectToSelectReactSelectOption(
-    modelInstanceTagOptionInput,
-    modelInstanceTagOptionLocator
-  );
-
-  // Should have the target model instance tag
-  const selectedModelInstanceTag = page.locator(
-    "data-testid=modelInstanceTag-selected-option"
-  );
-  await expect(selectedModelInstanceTag).toHaveText(modelInstanceTag);
 
   // Temporaily disable test related to long run operation
 

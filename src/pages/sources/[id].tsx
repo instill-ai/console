@@ -1,18 +1,20 @@
-import { FC, ReactElement, useState } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-
 import {
+  useSourceWithPipelines,
+  useSendAmplitudeData,
+  ConfigureSourceForm,
   StateLabel,
   PipelinesTable,
+  useCreateUpdateDeleteResourceGuard,
+} from "@instill-ai/toolkit";
+
+import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
-import { useSourceWithPipelines } from "@/services/connector";
-import { ConfigureSourceForm } from "@/components/source";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -24,24 +26,25 @@ const SourceDetailsPage: FC & {
   const router = useRouter();
   const { id } = router.query;
 
-  const sourceWithPipelines = useSourceWithPipelines(
-    id ? `source-connectors/${id.toString()}` : null
-  );
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const sourceWithPipelines = useSourceWithPipelines({
+    sourceName: id ? `source-connectors/${id.toString()}` : null,
+    accessToken: null,
+    enable: true,
+  });
 
   useSendAmplitudeData(
     "hit_source_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
     <>
       <PageHead
         title={
-          sourceWithPipelines.isSuccess
+          sourceWithPipelines.isLoading
             ? ""
             : (sourceWithPipelines.data?.name as string)
         }
@@ -50,7 +53,7 @@ const SourceDetailsPage: FC & {
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-[50px]"
         />
         <div className="mb-10 flex flex-row gap-x-5">
@@ -62,20 +65,27 @@ const SourceDetailsPage: FC & {
             iconHeight="h-[18px]"
             iconWidth="w-[18px]"
             iconPosition="my-auto"
-            paddingY="py-2"
-            paddingX="px-2"
           />
         </div>
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
-          pipelines={sourceWithPipelines.data?.pipelines || null}
+          pipelines={
+            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+          }
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {sourceWithPipelines.isSuccess && sourceWithPipelines.data ? (
           <ConfigureSourceForm
+            width="w-full"
             source={sourceWithPipelines.data}
             marginBottom={null}
+            onDelete={() => {
+              router.push("/sources");
+            }}
+            disableDelete={enableGuard}
+            accessToken={null}
+            disableConfigure={true}
           />
         ) : null}
       </PageContentContainer>

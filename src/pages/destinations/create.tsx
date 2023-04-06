@@ -1,20 +1,25 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
+import { shallow } from "zustand/shallow";
+import {
+  useSendAmplitudeData,
+  useWarnUnsavedChanges,
+  CreateDestinationForm,
+  useCreateResourceFormStore,
+  type CreateResourceFormStore,
+  env,
+} from "@instill-ai/toolkit";
 
-import { CreateDestinationForm } from "@/components/destination";
 import {
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
-import { env } from "@/utils";
+} from "@/components";
+import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
         destination: "/destinations",
@@ -32,23 +37,30 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  createNewResourceIsComplete: state.createNewResourceIsComplete,
+});
+
 const CreateDestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
   const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const { formIsDirty, createNewResourceIsComplete } =
+    useCreateResourceFormStore(selector, shallow);
+
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
 
   useSendAmplitudeData(
     "hit_create_destination_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -58,17 +70,16 @@ const CreateDestinationPage: FC & {
         <PageTitle
           title="Set Up New Destination"
           breadcrumbs={["Destination", "Destination Settings"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
         <CreateDestinationForm
-          flex1={false}
-          onSuccessCb={() => router.push("/destinations")}
-          setResult={null}
           title={null}
-          padding={null}
+          formLess={false}
           marginBottom={null}
-          pipelineMode={null}
+          onCreate={() => router.push("/destinations")}
+          initStoreOnCreate={true}
+          accessToken={null}
         />
       </PageContentContainer>
     </>

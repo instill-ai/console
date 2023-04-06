@@ -1,23 +1,29 @@
-import { FC, ReactElement, useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { FC, ReactElement, useMemo } from "react";
+import { useRouter } from "next/router";
+import { shallow } from "zustand/shallow";
 
-import { CreatePipelineForm } from "@/components/pipeline";
+import {
+  useWarnUnsavedChanges,
+  useSendAmplitudeData,
+  CreatePipelineForm,
+  useCreateResourceFormStore,
+  CreateResourceFormStore,
+  env,
+} from "@instill-ai/toolkit";
+
 import {
   PageTitle,
   PageHead,
   PageBase,
   PageContentContainer,
-} from "@/components/ui";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
-import { env } from "@/utils";
+} from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE") === "true") {
+  if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/pipelines",
+        destination: "/sources",
         permanent: false,
       },
     };
@@ -32,13 +38,22 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+  createNewResourceIsComplete: state.createNewResourceIsComplete,
+  pipelineFormStep: state.pipelineFormStep,
+});
+
 const CreatePipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const [stepNumber, setStepNumber] = useState(0);
+  const router = useRouter();
+
+  const { formIsDirty, createNewResourceIsComplete, pipelineFormStep } =
+    useCreateResourceFormStore(selector, shallow);
 
   const currentPage = useMemo(() => {
-    switch (stepNumber) {
+    switch (pipelineFormStep) {
       case 0:
         return {
           title: "Set up source",
@@ -65,22 +80,20 @@ const CreatePipelinePage: FC & {
           breadcrumbs: ["Pipeline", "Pipeline setting"],
         };
     }
-  }, [stepNumber]);
+  }, [pipelineFormStep]);
 
-  // ###################################################################
-  // #                                                                 #
-  // # Send page loaded data to Amplitude                              #
-  // #                                                                 #
-  // ###################################################################
-
-  const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
 
   useSendAmplitudeData(
     "hit_create_pipeline_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -90,13 +103,16 @@ const CreatePipelinePage: FC & {
         <PageTitle
           title={currentPage ? currentPage.title : ""}
           breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
-          displayButton={false}
+          enableButton={false}
           marginBottom="mb-10"
         />
         <CreatePipelineForm
-          stepNumber={stepNumber}
-          setStepNumber={setStepNumber}
-          maximumStepNumber={4}
+          onCreate={() => {
+            router.push("/pipelines");
+          }}
+          accessToken={null}
+          syncModelOnly={false}
+          withModelPreset={false}
         />
       </PageContentContainer>
     </>

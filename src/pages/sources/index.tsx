@@ -1,16 +1,18 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import {
+  useSendAmplitudeData,
+  useSourcesWithPipelines,
+  SourcesTable,
+  useCreateUpdateDeleteResourceGuard,
+} from "@instill-ai/toolkit";
 
 import {
-  SourcesTable,
   PageTitle,
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
-import { useSourcesWithPipelines } from "@/services/connector";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,14 +21,19 @@ type GetLayOutProps = {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const sources = useSourcesWithPipelines();
   const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
+  const sources = useSourcesWithPipelines({
+    accessToken: null,
+    enable: true,
+  });
+
   useSendAmplitudeData(
     "hit_sources_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -34,15 +41,15 @@ const SourcePage: FC & {
       <PageHead title="source-connectors" />
       <PageContentContainer>
         <PageTitle
-          title={null}
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Source"
+          breadcrumbs={["Source"]}
+          enableButton={enableGuard ? false : true}
           buttonName="Set up new source"
           buttonLink="/sources/create"
           marginBottom="mb-10"
         />
         <SourcesTable
-          sources={sources.isSuccess ? sources.data : null}
+          sources={sources.data ? sources.data : []}
           marginBottom={null}
         />
       </PageContentContainer>
@@ -50,8 +57,8 @@ const SourcePage: FC & {
   );
 };
 
+export default SourcePage;
+
 SourcePage.getLayout = (page) => {
   return <PageBase>{page}</PageBase>;
 };
-
-export default SourcePage;

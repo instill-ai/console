@@ -1,4 +1,4 @@
-import { env, expectToSelectReactSelectOption } from "./helper";
+import { env, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 import { expectToOnboardUser, removeRegisteredUser } from "./common/mgmt";
 
@@ -13,33 +13,31 @@ export function handleOnboardingTest() {
     );
   });
 
-  test.skip("should enable email subscription by default", async ({ page }) => {
+  test("should enable email subscription by default", async ({ page }) => {
     await page.goto("/onboarding", { waitUntil: "networkidle" });
 
     // Should check email subscription
-    const emailSubscriptionField = page.locator("input#newsletterSubscription");
+    const emailSubscriptionField = page.locator(
+      "input#newsletter-subscription"
+    );
     expect(await emailSubscriptionField.isChecked()).toBeTruthy();
   });
 
-  test.skip("should disable start button, if email input format is not correct", async ({
+  test("should disable start button, if email input format is not correct", async ({
     page,
   }) => {
     await page.goto("/onboarding", { waitUntil: "networkidle" });
 
     // Should input email
-    const emailField = page.locator("input#email");
-    await emailField.fill("instill");
+    await page.locator("input#email").fill("instill");
 
     // Should input company name
-    const companyField = page.locator("input#companyName");
-    await companyField.fill("instill-ai");
+    await page.locator("input#org-name").fill("instill-ai");
 
     // Should select role
-    await expectToSelectReactSelectOption(
-      page.locator("#react-select-role-input"),
-      page.locator("data-testid=role-selected-option", {
-        hasText: "Manager (who makes decisions)",
-      })
+    await expectToSelectOption(
+      page.locator("#role"),
+      page.locator(`[data-radix-select-viewport=""]`).getByText("Manager")
     );
 
     // Should disable start button
@@ -47,7 +45,7 @@ export function handleOnboardingTest() {
     expect(await startButton.isDisabled()).toBeTruthy();
   });
 
-  test.skip("should successfully fill in the onboarding form and submit", async ({
+  test("should successfully fill in the onboarding form and submit", async ({
     page,
   }) => {
     await removeRegisteredUser();

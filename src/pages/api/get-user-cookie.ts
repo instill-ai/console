@@ -1,4 +1,4 @@
-import { InstillAiUserCookie } from "@/types/general";
+import { InstillAiUserCookie } from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

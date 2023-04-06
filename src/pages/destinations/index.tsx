@@ -1,16 +1,18 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import {
+  useSendAmplitudeData,
+  useDestinationsWithPipelines,
+  DestinationsTable,
+  useCreateUpdateDeleteResourceGuard,
+} from "@instill-ai/toolkit";
 
 import {
   PageTitle,
-  DestinationsTable,
   PageBase,
   PageContentContainer,
   PageHead,
-} from "@/components/ui";
-import { useDestinationsWithPipelines } from "@/services/connector";
-import { useAmplitudeCtx } from "@/contexts/AmplitudeContext";
-import { useSendAmplitudeData } from "@/hooks";
+} from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -19,15 +21,19 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const router = useRouter();
-  const destinations = useDestinationsWithPipelines();
+  const destinations = useDestinationsWithPipelines({
+    accessToken: null,
+    enable: true,
+  });
 
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const router = useRouter();
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   useSendAmplitudeData(
     "hit_destinations_page",
     { type: "navigation" },
-    router.isReady,
-    amplitudeIsInit
+    router.isReady
   );
 
   return (
@@ -35,15 +41,15 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <PageContentContainer>
         <PageTitle
-          title=""
-          breadcrumbs={[]}
-          displayButton={true}
+          title="Destination"
+          breadcrumbs={["Destination"]}
+          enableButton={enableGuard ? false : true}
           buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"
         />
         <DestinationsTable
-          destinations={destinations.isSuccess ? destinations.data : null}
+          destinations={destinations.data ? destinations.data : []}
           marginBottom={null}
         />
       </PageContentContainer>
