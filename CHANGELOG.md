@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.21.0-alpha](https://github.com/instill-ai/console/compare/v0.20.2-alpha...v0.21.0-alpha) (2023-04-07)
+
+
+### Features
+
+* adapt controller state ([#391](https://github.com/instill-ai/console/issues/391)) ([2f86635](https://github.com/instill-ai/console/commit/2f866358386008382c88295f690bf64ed997e73e))
+* adapt cortex ([#389](https://github.com/instill-ai/console/issues/389)) ([5634c2c](https://github.com/instill-ai/console/commit/5634c2c0d9858acda9e50368308fa30e7c8aebf5))
+
 ## [0.20.2-alpha](https://github.com/instill-ai/console/compare/v0.20.1-alpha...v0.20.2-alpha) (2023-03-28)
 
 
