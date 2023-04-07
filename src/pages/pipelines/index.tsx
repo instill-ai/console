@@ -5,6 +5,7 @@ import {
   useSendAmplitudeData,
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
+  useWatchPipelines,
 } from "@instill-ai/toolkit";
 
 import {
@@ -25,6 +26,12 @@ const PipelinePage: FC & {
   const pipelines = usePipelines({
     accessToken: null,
     enable: true,
+  });
+
+  const pipelinesWatchState = useWatchPipelines({
+    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
+    accessToken: null,
+    enable: pipelines.isSuccess,
   });
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
@@ -49,6 +56,9 @@ const PipelinePage: FC & {
         />
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}
+          pipelinesWatchState={
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+          }
           marginBottom="mb-5"
         />
       </PageContentContainer>

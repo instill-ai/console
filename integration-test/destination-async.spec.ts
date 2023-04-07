@@ -208,35 +208,35 @@ export function handleAsyncDestinationTest() {
       const descriptionField = page.locator("textarea#destination-description");
       expect(await descriptionField.isEditable()).toBeTruthy();
       await descriptionField.fill("");
-      await descriptionField.type(newDestinationDescription);
+      await descriptionField.fill(newDestinationDescription);
       await expect(descriptionField).toHaveValue(newDestinationDescription);
 
       // Should update S3 key
       const s3KeyField = page.locator("input#access_key_id");
       expect(await s3KeyField.isEditable()).toBeTruthy();
       await s3KeyField.fill("");
-      await s3KeyField.type(newS3Key);
+      await s3KeyField.fill(newS3Key);
       await expect(s3KeyField).toHaveValue(newS3Key);
 
       // Should update S3 secret key
       const s3SecretField = page.locator("input#secret_access_key");
       expect(await s3SecretField.isEditable()).toBeTruthy();
       await s3SecretField.fill("");
-      await s3SecretField.type(newS3SecretKey);
+      await s3SecretField.fill(newS3SecretKey);
       await expect(s3SecretField).toHaveValue(newS3SecretKey);
 
       // Should update S3 bucket name
       const s3BucketField = page.locator("input#s3_bucket_name");
       expect(await s3BucketField.isEditable()).toBeTruthy();
       await s3BucketField.fill("");
-      await s3BucketField.type(newS3BucketName);
+      await s3BucketField.fill(newS3BucketName);
       await expect(s3BucketField).toHaveValue(newS3BucketName);
 
       // Should update S3 bucket path
       const s3BucketPathField = page.locator("input#s3_bucket_path");
       expect(await s3BucketPathField.isEditable()).toBeTruthy();
       await s3BucketPathField.fill("");
-      await s3BucketPathField.type(newS3BucketPath);
+      await s3BucketPathField.fill(newS3BucketPath);
       await expect(s3BucketPathField).toHaveValue(newS3BucketPath);
 
       // Should update S3 bucket region

@@ -5,6 +5,7 @@ import {
   useDestinationsWithPipelines,
   DestinationsTable,
   useCreateUpdateDeleteResourceGuard,
+  useWatchDestinations,
 } from "@instill-ai/toolkit";
 
 import {
@@ -24,6 +25,14 @@ const DestinationPage: FC & {
   const destinations = useDestinationsWithPipelines({
     accessToken: null,
     enable: true,
+  });
+
+  const destinationsWatchState = useWatchDestinations({
+    enable: destinations.isSuccess,
+    destinationNames: destinations.isSuccess
+      ? destinations.data.map((destination) => destination.name)
+      : [],
+    accessToken: null,
   });
 
   const router = useRouter();
@@ -50,6 +59,11 @@ const DestinationPage: FC & {
         />
         <DestinationsTable
           destinations={destinations.data ? destinations.data : []}
+          destinationsWatchState={
+            destinationsWatchState.isSuccess
+              ? destinationsWatchState.data
+              : null
+          }
           marginBottom={null}
         />
       </PageContentContainer>

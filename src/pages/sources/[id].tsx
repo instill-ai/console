@@ -7,6 +7,8 @@ import {
   StateLabel,
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
+  useWatchPipelines,
+  useWatchSource,
 } from "@instill-ai/toolkit";
 
 import {
@@ -32,6 +34,22 @@ const SourceDetailsPage: FC & {
     sourceName: id ? `source-connectors/${id.toString()}` : null,
     accessToken: null,
     enable: true,
+  });
+
+  const sourceWatchState = useWatchSource({
+    sourceName: sourceWithPipelines.isSuccess
+      ? sourceWithPipelines.data.name
+      : null,
+    accessToken: null,
+    enable: sourceWithPipelines.isSuccess,
+  });
+
+  const pipelinesWatchState = useWatchPipelines({
+    pipelineNames: sourceWithPipelines.isSuccess
+      ? sourceWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
+      : [],
+    accessToken: null,
+    enable: sourceWithPipelines.isSuccess,
   });
 
   useSendAmplitudeData(
@@ -61,7 +79,11 @@ const SourceDetailsPage: FC & {
           <StateLabel
             enableIcon={true}
             enableBgColor={true}
-            state="STATE_CONNECTED"
+            state={
+              sourceWatchState.isSuccess
+                ? sourceWatchState.data.state
+                : "STATE_UNSPECIFIED"
+            }
             iconHeight="h-[18px]"
             iconWidth="w-[18px]"
             iconPosition="my-auto"
@@ -71,6 +93,9 @@ const SourceDetailsPage: FC & {
         <PipelinesTable
           pipelines={
             sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+          }
+          pipelinesWatchState={
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
           }
           marginBottom="mb-10"
         />

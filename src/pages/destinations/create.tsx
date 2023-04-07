@@ -40,13 +40,14 @@ type GetLayOutProps = {
 const selector = (state: CreateResourceFormStore) => ({
   formIsDirty: state.formIsDirty,
   createNewResourceIsComplete: state.createNewResourceIsComplete,
+  init: state.init,
 });
 
 const CreateDestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
-  const { formIsDirty, createNewResourceIsComplete } =
+  const { formIsDirty, createNewResourceIsComplete, init } =
     useCreateResourceFormStore(selector, shallow);
 
   useWarnUnsavedChanges({
@@ -54,7 +55,9 @@ const CreateDestinationPage: FC & {
     haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
     confirmation:
       "You have unsaved changes, are you sure you want to leave this page?",
-    callbackWhenLeave: null,
+    callbackWhenLeave: () => {
+      init();
+    },
   });
 
   useSendAmplitudeData(

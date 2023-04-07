@@ -17,6 +17,7 @@ import {
   getPipelineQuery,
   constructPipelineRecipeWithDefinition,
   useCreateUpdateDeleteResourceGuard,
+  useWatchPipeline,
   type Nullable,
   type Pipeline,
 } from "@instill-ai/toolkit";
@@ -158,6 +159,14 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   const router = useRouter();
   const { id } = router.query;
 
+  const watchPipelineState = useWatchPipeline({
+    pipelineName: pipeline.name,
+    accessToken: null,
+    enable: true,
+  });
+
+  console.log(watchPipelineState.data);
+
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const deActivatePipeline = useDeActivatePipeline();
@@ -205,12 +214,19 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             iconWidth="w-[18px]"
             iconHeight="h-[18px]"
             iconPosition="my-auto"
-            state={pipeline.state || "STATE_UNSPECIFIED"}
+            state={
+              watchPipelineState.isSuccess
+                ? watchPipelineState.data.state
+                : "STATE_UNSPECIFIED"
+            }
           />
         </div>
         <PipelineTable pipeline={pipeline} marginBottom="mb-10" />
         <ChangePipelineStateToggle
           pipeline={pipeline}
+          pipelineWatchState={
+            watchPipelineState.isSuccess ? watchPipelineState.data.state : null
+          }
           switchOn={activatePipeline}
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
