@@ -21,7 +21,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [pipeline, connector, model, mgmt]
+        component:
+          [
+            pipeline-backend,
+            connector-backend,
+            model-backend,
+            mgmt-backend,
+            controller,
+          ]
     uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
     with:
       component: ${{ matrix.component }}
@@ -39,7 +46,6 @@ jobs:
     name: PR head branch
     runs-on: ubuntu-latest
     steps:
-
       # mono occupies port 8084 which conflicts with mgmt-backend
       - name: Stop mono service
         run: |
@@ -104,7 +110,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run integration-test
-        run: |        
+        run: |
           docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright .
           docker run -t --rm \
             -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
