@@ -6,6 +6,7 @@ import {
   ModelsTable,
   useModels,
   useCreateUpdateDeleteResourceGuard,
+  useWatchModels,
 } from "@instill-ai/toolkit";
 
 import {
@@ -27,6 +28,12 @@ const ModelPage: FC & {
   const models = useModels({
     accessToken: null,
     enable: true,
+  });
+
+  const modelsWatchState = useWatchModels({
+    modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
+    accessToken: null,
+    enable: models.isSuccess,
   });
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
@@ -51,6 +58,9 @@ const ModelPage: FC & {
         />
         <ModelsTable
           models={models.isSuccess ? models.data : []}
+          modelsWatchState={
+            modelsWatchState.isSuccess ? modelsWatchState.data : null
+          }
           marginBottom="mb-5"
         />
       </PageContentContainer>

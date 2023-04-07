@@ -11,8 +11,10 @@ import {
   StateLabel,
   CreateResourceFormStore,
   useCreateUpdateDeleteResourceGuard,
+  useWatchPipelines,
   type DestinationWithDefinition,
   type Nullable,
+  useWatchDestination,
 } from "@instill-ai/toolkit";
 
 import {
@@ -54,6 +56,14 @@ const DestinationDetailsPage: FC & {
     enable: true,
   });
 
+  const destinationWatchState = useWatchDestination({
+    destinationName: destinationWithPipelines.isSuccess
+      ? destinationWithPipelines.data.name
+      : null,
+    accessToken: null,
+    enable: destinationWithPipelines.isSuccess,
+  });
+
   const destination = useMemo<Nullable<DestinationWithDefinition>>(() => {
     if (!destinationWithPipelines.isSuccess) return null;
     return {
@@ -65,6 +75,14 @@ const DestinationDetailsPage: FC & {
       connector: destinationWithPipelines.data.connector,
     };
   }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
+
+  const pipelinesWatchState = useWatchPipelines({
+    pipelineNames: destinationWithPipelines.isSuccess
+      ? destinationWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
+      : [],
+    accessToken: null,
+    enable: destinationWithPipelines.isSuccess,
+  });
 
   useSendAmplitudeData(
     "hit_destination_page",
@@ -94,8 +112,9 @@ const DestinationDetailsPage: FC & {
             enableIcon={true}
             enableBgColor={true}
             state={
-              destinationWithPipelines.data?.connector.state ??
-              "STATE_UNSPECIFIED"
+              destinationWatchState.isSuccess
+                ? destinationWatchState.data.state
+                : "STATE_UNSPECIFIED"
             }
             iconHeight="h-[18px]"
             iconWidth="w-[18px]"
@@ -108,6 +127,9 @@ const DestinationDetailsPage: FC & {
             destinationWithPipelines.data
               ? destinationWithPipelines.data.pipelines
               : []
+          }
+          pipelinesWatchState={
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
           }
           marginBottom="mb-10"
         />

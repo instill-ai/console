@@ -19,6 +19,8 @@ import {
   useModelReadme,
   ModelConfigurationFields,
   useCreateUpdateDeleteResourceGuard,
+  useWatchModel,
+  useWatchPipelines,
   type Pipeline,
   type ConfigureModelFormStore,
 } from "@instill-ai/toolkit";
@@ -67,6 +69,12 @@ const ModelDetailsPage: FC & {
     enable: true,
   });
 
+  const modelWatchState = useWatchModel({
+    modelName: id ? `models/${id}` : null,
+    accessToken: null,
+    enable: true,
+  });
+
   /* -------------------------------------------------------------------------
    * Initialize pipelines that use this model
    * -----------------------------------------------------------------------*/
@@ -83,6 +91,15 @@ const ModelDetailsPage: FC & {
     });
   }, [pipelines.isSuccess, pipelines.data, id]);
 
+  const pipelinesWatchState = useWatchPipelines({
+    enable: pipelinesUseThisModel.length > 0,
+    accessToken: null,
+    pipelineNames:
+      pipelinesUseThisModel.length > 0
+        ? pipelinesUseThisModel.map((e) => e.name)
+        : null,
+  });
+
   /* -------------------------------------------------------------------------
    * Get model card
    * -----------------------------------------------------------------------*/
@@ -90,7 +107,7 @@ const ModelDetailsPage: FC & {
   const modelReadme = useModelReadme({
     modelName: `models/${id}`,
     accessToken: null,
-    enable: true,
+    enable: id ? true : false,
   });
 
   /* -------------------------------------------------------------------------
@@ -111,7 +128,7 @@ const ModelDetailsPage: FC & {
       <PageHead title={`models/${id}`} />
       <PageContentContainer>
         <PageTitle
-          title={`models/${id?.toString()}`}
+          title={`${id?.toString()}`}
           breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
           enableButton={false}
           marginBottom="mb-5"
@@ -130,7 +147,11 @@ const ModelDetailsPage: FC & {
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
-            state={model.isSuccess ? model.data.state : "STATE_UNSPECIFIED"}
+            state={
+              modelWatchState.isSuccess
+                ? modelWatchState.data.state
+                : "STATE_UNSPECIFIED"
+            }
             iconHeight="h-3"
             iconWidth="w-3"
             iconPosition="my-auto"
@@ -138,6 +159,9 @@ const ModelDetailsPage: FC & {
         </div>
         <ChangeModelStateToggle
           model={model.data ? model.data : null}
+          modelWatchState={
+            modelWatchState.isSuccess ? modelWatchState.data.state : null
+          }
           switchOn={deployModel}
           switchOff={unDeployModel}
           marginBottom="mb-10"
@@ -157,6 +181,9 @@ const ModelDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={pipelinesUseThisModel}
+          pipelinesWatchState={
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+          }
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

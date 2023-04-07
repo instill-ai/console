@@ -5,6 +5,7 @@ import {
   useSourcesWithPipelines,
   SourcesTable,
   useCreateUpdateDeleteResourceGuard,
+  useWatchSources,
 } from "@instill-ai/toolkit";
 
 import {
@@ -30,6 +31,14 @@ const SourcePage: FC & {
     enable: true,
   });
 
+  const sourcesWatchState = useWatchSources({
+    enable: sources.isSuccess,
+    sourceNames: sources.isSuccess
+      ? sources.data.map((source) => source.name)
+      : [],
+    accessToken: null,
+  });
+
   useSendAmplitudeData(
     "hit_sources_page",
     { type: "navigation" },
@@ -50,6 +59,9 @@ const SourcePage: FC & {
         />
         <SourcesTable
           sources={sources.data ? sources.data : []}
+          sourcesWatchState={
+            sourcesWatchState.isSuccess ? sourcesWatchState.data : null
+          }
           marginBottom={null}
         />
       </PageContentContainer>

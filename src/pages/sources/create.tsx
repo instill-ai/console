@@ -8,8 +8,8 @@ import {
   CreateSourceForm,
   useSources,
   useCreateResourceFormStore,
-  CreateResourceFormStore,
   env,
+  type CreateResourceFormStore,
 } from "@instill-ai/toolkit";
 
 import {
@@ -63,7 +63,9 @@ const CreateSourcePage: FC & {
     haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
     confirmation:
       "You have unsaved changes, are you sure you want to leave this page?",
-    callbackWhenLeave: null,
+    callbackWhenLeave: () => {
+      init();
+    },
   });
 
   useSendAmplitudeData(

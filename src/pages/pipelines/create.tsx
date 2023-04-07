@@ -42,6 +42,7 @@ const selector = (state: CreateResourceFormStore) => ({
   formIsDirty: state.formIsDirty,
   createNewResourceIsComplete: state.createNewResourceIsComplete,
   pipelineFormStep: state.pipelineFormStep,
+  init: state.init,
 });
 
 const CreatePipelinePage: FC & {
@@ -49,7 +50,7 @@ const CreatePipelinePage: FC & {
 } = () => {
   const router = useRouter();
 
-  const { formIsDirty, createNewResourceIsComplete, pipelineFormStep } =
+  const { formIsDirty, createNewResourceIsComplete, pipelineFormStep, init } =
     useCreateResourceFormStore(selector, shallow);
 
   const currentPage = useMemo(() => {
@@ -87,7 +88,9 @@ const CreatePipelinePage: FC & {
     haveUnsavedChanges: createNewResourceIsComplete ? false : formIsDirty,
     confirmation:
       "You have unsaved changes, are you sure you want to leave this page?",
-    callbackWhenLeave: null,
+    callbackWhenLeave: () => {
+      init();
+    },
   });
 
   useSendAmplitudeData(
