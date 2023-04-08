@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1-alpha](https://github.com/instill-ai/console/compare/v0.21.0-alpha...v0.21.1-alpha) (2023-04-08)
+
+
+### Bug Fixes
+
+* fix PipelinesTable typo ([#393](https://github.com/instill-ai/console/issues/393)) ([56ccd46](https://github.com/instill-ai/console/commit/56ccd46a9e85538970b3e1b95e7b80ae758a1cbc))
+
 ## [0.21.0-alpha](https://github.com/instill-ai/console/compare/v0.20.2-alpha...v0.21.0-alpha) (2023-04-07)
 
 
