@@ -231,6 +231,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           switchOff={deActivatePipeline}
           marginBottom="mb-10"
           accessToken={null}
+          disabled={enableGuard}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <ConfigurePipelineForm

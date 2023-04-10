@@ -166,6 +166,7 @@ const ModelDetailsPage: FC & {
           switchOff={unDeployModel}
           marginBottom="mb-10"
           accessToken={null}
+          disabled={enableGuard}
         />
         {model.isSuccess && model.data ? (
           <ConfigureModelForm
