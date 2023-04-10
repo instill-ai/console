@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.2-alpha](https://github.com/instill-ai/console/compare/v0.21.1-alpha...v0.21.2-alpha) (2023-04-10)
+
+
+### Bug Fixes
+
+* fix toggle resource button is not disabled ([#395](https://github.com/instill-ai/console/issues/395)) ([cb80d3e](https://github.com/instill-ai/console/commit/cb80d3ef0d9b0a0fc22611cc98af0f8c0c4f7410))
+
 ## [0.21.1-alpha](https://github.com/instill-ai/console/compare/v0.21.0-alpha...v0.21.1-alpha) (2023-04-08)
 
 
