@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.21.3-alpha](https://github.com/instill-ai/console/compare/v0.21.2-alpha...v0.21.3-alpha) (2023-04-11)
+
+
+### Bug Fixes
+
+* [INS-415] fix table column width ([#398](https://github.com/instill-ai/console/issues/398)) ([410fa2d](https://github.com/instill-ai/console/commit/410fa2d88a7e3f928473f6ed67fcb87a62882804))
+* fix release-please-config ([410fa2d](https://github.com/instill-ai/console/commit/410fa2d88a7e3f928473f6ed67fcb87a62882804))
+
 ## [0.21.2-alpha](https://github.com/instill-ai/console/compare/v0.21.1-alpha...v0.21.2-alpha) (2023-04-10)
 
 
