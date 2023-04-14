@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.4-alpha](https://github.com/instill-ai/console/compare/v0.21.3-alpha...v0.21.4-alpha) (2023-04-14)
+
+
+### Bug Fixes
+
+* fix default user id ([#402](https://github.com/instill-ai/console/issues/402)) ([91713a4](https://github.com/instill-ai/console/commit/91713a418fc0ff10e3b8bc690f36bc723bd4adf5))
+
 ## [0.21.3-alpha](https://github.com/instill-ai/console/compare/v0.21.2-alpha...v0.21.3-alpha) (2023-04-11)
 
 
