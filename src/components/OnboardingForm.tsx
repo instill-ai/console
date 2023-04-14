@@ -138,8 +138,6 @@ export const OnboardingForm = () => {
     token = uuidv4();
 
     const payload: Partial<User> = {
-      id: "instill-ai",
-      name: "users/instill-ai",
       email: fieldValues.email,
       org_name: fieldValues.orgName ?? undefined,
       role: fieldValues.role as string,
