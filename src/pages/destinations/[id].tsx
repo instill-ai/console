@@ -131,6 +131,9 @@ const DestinationDetailsPage: FC & {
           pipelinesWatchState={
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
           }
+          isError={
+            destinationWithPipelines.isError || pipelinesWatchState.isError
+          }
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
