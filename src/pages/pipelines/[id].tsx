@@ -165,10 +165,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
     enable: true,
   });
 
-  console.log(watchPipelineState.data);
-
   const enableGuard = useCreateUpdateDeleteResourceGuard();
-
   const deActivatePipeline = useDeActivatePipeline();
   const activatePipeline = useActivatePipeline();
   const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
@@ -221,7 +218,11 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
             }
           />
         </div>
-        <PipelineTable pipeline={pipeline} marginBottom="mb-10" />
+        <PipelineTable
+          pipeline={pipeline}
+          marginBottom="mb-10"
+          isError={watchPipelineState.isError}
+        />
         <ChangePipelineStateToggle
           pipeline={pipeline}
           pipelineWatchState={

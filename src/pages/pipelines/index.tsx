@@ -59,6 +59,7 @@ const PipelinePage: FC & {
           pipelinesWatchState={
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
           }
+          isError={pipelines.isError || pipelinesWatchState.isError}
           marginBottom="mb-5"
         />
       </PageContentContainer>

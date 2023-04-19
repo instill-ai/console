@@ -61,6 +61,7 @@ const ModelPage: FC & {
           modelsWatchState={
             modelsWatchState.isSuccess ? modelsWatchState.data : null
           }
+          isError={models.isError || modelsWatchState.isError}
           marginBottom="mb-5"
         />
       </PageContentContainer>

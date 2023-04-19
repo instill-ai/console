@@ -62,6 +62,7 @@ const SourcePage: FC & {
           sourcesWatchState={
             sourcesWatchState.isSuccess ? sourcesWatchState.data : null
           }
+          isError={sources.isError || sourcesWatchState.isError}
           marginBottom={null}
         />
       </PageContentContainer>

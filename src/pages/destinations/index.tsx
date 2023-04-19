@@ -64,6 +64,7 @@ const DestinationPage: FC & {
               ? destinationsWatchState.data
               : null
           }
+          isError={destinations.isError || destinationsWatchState.isError}
           marginBottom={null}
         />
       </PageContentContainer>
