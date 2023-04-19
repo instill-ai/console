@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     }
 
     if (
-      env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local:ce-dev" &&
+      env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local-ce:dev" &&
       !amplitudeIsInit
     ) {
       if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION")) {
