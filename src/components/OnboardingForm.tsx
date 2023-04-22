@@ -66,7 +66,6 @@ export const OnboardingForm = () => {
 
   const handleFieldChange = useCallback(
     (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
-      setFormIsDirty(true);
       setFieldValues((prev) => ({
         ...prev,
         [key]:
@@ -81,7 +80,6 @@ export const OnboardingForm = () => {
   const handleRoleChange = useCallback(
     (option: Nullable<SingleSelectOption>) => {
       if (!option) return;
-      setFormIsDirty(true);
       setSelectedRoleOption(option);
       setFieldValues((prev) => ({
         ...prev,
@@ -99,10 +97,8 @@ export const OnboardingForm = () => {
     role: null,
   });
 
-  const [formIsValid, setFormIsValid] = useState(false);
-
-  useEffect(() => {
-    if (!formIsDirty) return;
+  const validateForm = (isFromSubmitted: Boolean = false) => {
+    if (!formIsDirty && !isFromSubmitted) return;
     const errors = {} as OnboardingFormErrors;
 
     if (!fieldValues.email) {
@@ -126,12 +122,37 @@ export const OnboardingForm = () => {
     setFieldErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      setFormIsValid(true);
+      return true;
     }
+
+    if (isFromSubmitted) {
+      if (errors.email) {
+        var email: HTMLElement | void = document
+          .getElementById("email")
+          ?.focus();
+        return false;
+      }
+      if (errors.orgName) {
+        var orgName: HTMLElement | void = document
+          .getElementById("org-name")
+          ?.focus();
+        return false;
+      }
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    validateForm();
   }, [fieldValues, formIsDirty]);
 
   const handleSubmit = useCallback(() => {
-    if (!fieldValues.email || !fieldValues.orgName || !fieldValues.role) return;
+    const isFromSubmitted = true;
+    // enable validation
+    if (!validateForm(isFromSubmitted)) {
+      setFormIsDirty(true);
+      return;
+    }
 
     let token: string | undefined = undefined;
 
@@ -249,7 +270,6 @@ export const OnboardingForm = () => {
           closable={true}
         />
         <SolidButton
-          disabled={!formIsValid}
           type="button"
           position="ml-auto my-auto"
           color="primary"
