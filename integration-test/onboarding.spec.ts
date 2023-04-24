@@ -42,7 +42,13 @@ export function handleOnboardingTest() {
 
     // Should disable start button
     const startButton = page.locator("button", { hasText: "Start" });
-    expect(await startButton.isDisabled()).toBeTruthy();
+    const emailErrorLabel = page.locator("[data-testid='email-label-error']", {
+      hasText: "Invalid email address",
+    });
+
+    await startButton.click();
+
+    expect(emailErrorLabel).toHaveCount(1);
   });
 
   test("should successfully fill in the onboarding form and submit", async ({
