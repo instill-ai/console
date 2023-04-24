@@ -60,13 +60,46 @@ export const OnboardingForm = () => {
       status: null,
     });
 
-  const [formIsDirty, setFormIsDirty] = useState(false);
-
-  // Handle fields change
+  // Handle fields change and per-field validation here
 
   const handleFieldChange = useCallback(
     (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
-      setFormIsDirty(true);
+      const value =
+        key === "newsletterSubscription"
+          ? event.target.checked
+          : event.target.value;
+
+      if (key === "email") {
+        let error: Nullable<string> = null;
+
+        if (!value) {
+          error = "Email is required";
+        } else {
+          if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
+              event.target.value
+            )
+          ) {
+            error = "Invalid email address";
+          }
+        }
+        setFieldErrors((prev) => ({
+          ...prev,
+          email: error,
+        }));
+      }
+
+      if (key === "orgName") {
+        let error: Nullable<string> = null;
+        if (!value) {
+          error = "Company name is required";
+        }
+        setFieldErrors((prev) => ({
+          ...prev,
+          orgName: error,
+        }));
+      }
+
       setFieldValues((prev) => ({
         ...prev,
         [key]:
@@ -81,8 +114,19 @@ export const OnboardingForm = () => {
   const handleRoleChange = useCallback(
     (option: Nullable<SingleSelectOption>) => {
       if (!option) return;
-      setFormIsDirty(true);
       setSelectedRoleOption(option);
+
+      let error: Nullable<string> = null;
+
+      if (!option.value) {
+        error = "Role is required";
+      }
+
+      setFieldErrors((prev) => ({
+        ...prev,
+        role: error,
+      }));
+
       setFieldValues((prev) => ({
         ...prev,
         role: option.value as string,
@@ -99,10 +143,7 @@ export const OnboardingForm = () => {
     role: null,
   });
 
-  const [formIsValid, setFormIsValid] = useState(false);
-
-  useEffect(() => {
-    if (!formIsDirty) return;
+  const handleSubmit = useCallback(() => {
     const errors = {} as OnboardingFormErrors;
 
     if (!fieldValues.email) {
@@ -125,21 +166,17 @@ export const OnboardingForm = () => {
 
     setFieldErrors(errors);
 
-    if (Object.keys(errors).length === 0) {
-      setFormIsValid(true);
+    if (Object.keys(errors).length !== 0) {
+      return;
     }
-  }, [fieldValues, formIsDirty]);
-
-  const handleSubmit = useCallback(() => {
-    if (!fieldValues.email || !fieldValues.orgName || !fieldValues.role) return;
 
     let token: string | undefined = undefined;
 
     token = uuidv4();
 
     const payload: Partial<User> = {
-      email: fieldValues.email,
-      org_name: fieldValues.orgName ?? undefined,
+      email: fieldValues.email as string,
+      org_name: fieldValues.orgName as string,
       role: fieldValues.role as string,
       newsletter_subscription: fieldValues.newsletterSubscription
         ? fieldValues.newsletterSubscription
@@ -249,7 +286,7 @@ export const OnboardingForm = () => {
           closable={true}
         />
         <SolidButton
-          disabled={!formIsValid}
+          disabled={false}
           type="button"
           position="ml-auto my-auto"
           color="primary"
