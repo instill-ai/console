@@ -60,14 +60,10 @@ export const OnboardingForm = () => {
       status: null,
     });
 
-  const [formIsDirty, setFormIsDirty] = useState(false);
-
   // Handle fields change and per-field validation here
 
   const handleFieldChange = useCallback(
     (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
-      setFormIsDirty(true);
-
       const value =
         key === "newsletterSubscription"
           ? event.target.checked
@@ -118,7 +114,6 @@ export const OnboardingForm = () => {
   const handleRoleChange = useCallback(
     (option: Nullable<SingleSelectOption>) => {
       if (!option) return;
-      setFormIsDirty(true);
       setSelectedRoleOption(option);
 
       let error: Nullable<string> = null;
