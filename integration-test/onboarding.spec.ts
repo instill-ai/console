@@ -46,6 +46,7 @@ export function handleOnboardingTest() {
       hasText: "Invalid email address",
     });
 
+    // Wait until the error label is visible
     await Promise.all([emailErrorLabel.isVisible(), await startButton.click()]);
   });
 
