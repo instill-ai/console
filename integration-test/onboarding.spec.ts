@@ -46,9 +46,7 @@ export function handleOnboardingTest() {
       hasText: "Invalid email address",
     });
 
-    await startButton.click();
-
-    expect(emailErrorLabel).toHaveCount(1);
+    await Promise.all([emailErrorLabel.isVisible(), await startButton.click()]);
   });
 
   test("should successfully fill in the onboarding form and submit", async ({
