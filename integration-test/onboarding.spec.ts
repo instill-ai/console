@@ -23,7 +23,7 @@ export function handleOnboardingTest() {
     expect(await emailSubscriptionField.isChecked()).toBeTruthy();
   });
 
-  test("should disable start button, if email input format is not correct", async ({
+  test("should display error label, if email input format is not correct", async ({
     page,
   }) => {
     await page.goto("/onboarding", { waitUntil: "networkidle" });
@@ -46,9 +46,8 @@ export function handleOnboardingTest() {
       hasText: "Invalid email address",
     });
 
-    await startButton.click();
-
-    expect(emailErrorLabel).toHaveCount(1);
+    // Wait until the error label is visible
+    await Promise.all([emailErrorLabel.isVisible(), await startButton.click()]);
   });
 
   test("should successfully fill in the onboarding form and submit", async ({

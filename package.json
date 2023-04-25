@@ -124,12 +124,12 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "yarn prettier:fix",
+      "pnpm prettier:fix",
       "eslint --cache --fix",
       "jest --bail --findRelatedTests"
     ],
     "*.stories.{ts,tsx}": [
-      "yarn prettier:fix",
+      "pnpm prettier:fix",
       "eslint --cache --fix"
     ]
   },
