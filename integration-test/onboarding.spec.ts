@@ -23,7 +23,7 @@ export function handleOnboardingTest() {
     expect(await emailSubscriptionField.isChecked()).toBeTruthy();
   });
 
-  test("should disable start button, if email input format is not correct", async ({
+  test("should display error label, if email input format is not correct", async ({
     page,
   }) => {
     await page.goto("/onboarding", { waitUntil: "networkidle" });
