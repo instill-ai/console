@@ -19,7 +19,7 @@ export function handleGithubModelTest() {
 
   test.describe.serial("GitHub model", () => {
     test("should create github model", async ({ page }) => {
-      await page.goto("/models/create");
+      await page.goto("/models/create", { waitUntil: "networkidle" });
 
       // Should disable set up button
       const setupButton = page.locator("button", { hasText: "Set up" });

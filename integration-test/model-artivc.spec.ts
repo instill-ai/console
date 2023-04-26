@@ -19,7 +19,7 @@ export function handleArtivcModelTest() {
 
   test.describe.serial("Artivc model", () => {
     test("should create artivc model", async ({ page }) => {
-      await page.goto("/models/create");
+      await page.goto("/models/create", { waitUntil: "networkidle" });
 
       // Should disable set up button
       const setupButton = page.locator("button", { hasText: "Set up" });

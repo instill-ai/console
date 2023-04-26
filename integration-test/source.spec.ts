@@ -86,7 +86,7 @@ export function handleSourceTest() {
       );
       await Promise.all([
         openDeleteSourceModalButton.click(),
-        deleteResourceModal.isVisible(),
+        deleteResourceModal.waitFor(),
       ]);
 
       // Should have correct modal title

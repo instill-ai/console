@@ -47,13 +47,12 @@ export function handleOnboardingTest() {
     });
 
     // Wait until the error label is visible
-    await Promise.all([emailErrorLabel.isVisible(), await startButton.click()]);
+    await Promise.all([emailErrorLabel.waitFor(), await startButton.click()]);
   });
 
   test("should successfully fill in the onboarding form and submit", async ({
     page,
   }) => {
-    await removeRegisteredUser();
     await expectToOnboardUser(page);
   });
 }

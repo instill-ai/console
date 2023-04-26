@@ -18,7 +18,7 @@ export function handleAsyncDestinationTest() {
 
   test.describe.serial("Async destination", () => {
     test("should warn wrong resource ID", async ({ page }) => {
-      await page.goto("/destinations/create");
+      await page.goto("/destinations/create", { waitUntil: "networkidle" });
 
       // Should input destination id
       const idField = page.locator("input#destination-id");
@@ -46,7 +46,7 @@ export function handleAsyncDestinationTest() {
     });
 
     test("should create async destination", async ({ page }) => {
-      await page.goto("/destinations/create");
+      await page.goto("/destinations/create", { waitUntil: "networkidle" });
 
       // Should input destination id
       const idField = page.locator("input#destination-id");
@@ -120,7 +120,7 @@ export function handleAsyncDestinationTest() {
     test("should have destination list and navigate to destination details page", async ({
       page,
     }) => {
-      await page.goto("/destinations");
+      await page.goto("/destinations", { waitUntil: "networkidle" });
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
@@ -138,7 +138,9 @@ export function handleAsyncDestinationTest() {
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/destinations/${destinationId}`);
+      await page.goto(`/destinations/${destinationId}`, {
+        waitUntil: "networkidle",
+      });
 
       // Should have correct title
       const destinationTitle = page.locator("h2", { hasText: destinationId });
@@ -198,7 +200,9 @@ export function handleAsyncDestinationTest() {
       const newS3OutputFormat = "JSON Lines: Newline-delimited JSON";
       const newS3OutputCompression = "GZIP";
 
-      await page.goto(`/destinations/${destinationId}`);
+      await page.goto(`/destinations/${destinationId}`, {
+        waitUntil: "networkidle",
+      });
 
       // Should have enabled edit button
       const editButton = page.locator("button", { hasText: "Edit" });
@@ -284,7 +288,9 @@ export function handleAsyncDestinationTest() {
       ]);
 
       // Reload page
-      await page.goto(`/destinations/${destinationId}`);
+      await page.goto(`/destinations/${destinationId}`, {
+        waitUntil: "networkidle",
+      });
 
       // Should have updated destination description
       await expect(descriptionField).toHaveValue(newDestinationDescription);
