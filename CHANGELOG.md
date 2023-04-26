@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.22.0-alpha](https://github.com/instill-ai/console/compare/v0.21.4-alpha...v0.22.0-alpha) (2023-04-26)
+
+
+### Features
+
+* update logic related to create model ([#406](https://github.com/instill-ai/console/issues/406)) ([c2ed456](https://github.com/instill-ai/console/commit/c2ed456eafcc7efe89e7a34c99b26e7f927148a3))
+* use waitFor to stabilize tests ([#411](https://github.com/instill-ai/console/issues/411)) ([5744f73](https://github.com/instill-ai/console/commit/5744f73fd43847bbc87798107080652aade1606d))
+
+
+### Bug Fixes
+
+* [INS-463] fix console edition ([#404](https://github.com/instill-ai/console/issues/404)) ([90fb623](https://github.com/instill-ai/console/commit/90fb6236b94a68ae33159546afc41bd87876ba8a))
+* fix bad user experience at Onboarding page ([#409](https://github.com/instill-ai/console/issues/409)) ([d1063a5](https://github.com/instill-ai/console/commit/d1063a57d03f3b4acaf2ce2c56277c4650a16900))
+* stabilize the onboarding test ([#410](https://github.com/instill-ai/console/issues/410)) ([58c5fb6](https://github.com/instill-ai/console/commit/58c5fb694003f88fbc64c11a1b26ba6ecfb82d05))
+
 ## [0.21.4-alpha](https://github.com/instill-ai/console/compare/v0.21.3-alpha...v0.21.4-alpha) (2023-04-14)
 
 
