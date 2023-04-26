@@ -53,7 +53,6 @@ export function handleOnboardingTest() {
   test("should successfully fill in the onboarding form and submit", async ({
     page,
   }) => {
-    await removeRegisteredUser();
     await expectToOnboardUser(page);
   });
 }

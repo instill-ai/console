@@ -6,18 +6,18 @@ export const openPipelinesPage = async (page: Page) => {
 };
 
 export const openPipelinePage = async (page: Page, pipelineId: string) => {
-  await page.goto(`/pipelines/${pipelineId}`);
+  await page.goto(`/pipelines/${pipelineId}`, { waitUntil: "networkidle" });
 };
 
 export const openCreatePipelinePage = async (page: Page) => {
-  await page.goto("/pipelines/create");
+  await page.goto("/pipelines/create", { waitUntil: "networkidle" });
 };
 
 export const expectToDeletePipeline = async (
   page: Page,
   pipelineId: string
 ) => {
-  await page.goto(`/pipelines/${pipelineId}`);
+  await page.goto(`/pipelines/${pipelineId}`, { waitUntil: "networkidle" });
 
   // Should enable open delete pipeline modal button
   const openDeleteModelModalButton = page.locator("button", {
@@ -79,7 +79,7 @@ export const expectToUpdatePipelineDescription = async (
   pipelineId: string,
   newDescription: string
 ) => {
-  await page.goto(`/pipelines/${pipelineId}`);
+  await page.goto(`/pipelines/${pipelineId}`, { waitUntil: "networkidle" });
 
   // Should enable edit button
   const editButton = page.locator("button", { hasText: "Edit" });
@@ -103,7 +103,7 @@ export const expectToUpdatePipelineDescription = async (
   await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 
   // Reload page
-  await page.goto(`/pipelines/${pipelineId}`);
+  await page.goto(`/pipelines/${pipelineId}`, { waitUntil: "networkidle" });
 
   // Should have new description
   await expect(pipelineDescriptionField).toHaveValue(newDescription);
@@ -113,7 +113,7 @@ export const expectCorrectPipelineList = async (
   page: Page,
   pipelineId: string
 ) => {
-  await page.goto("/pipelines");
+  await page.goto("/pipelines", { waitUntil: "networkidle" });
 
   // Should have pipeline item in list
   const pipelineItemTitle = page.locator("h3", { hasText: pipelineId });
@@ -149,7 +149,7 @@ export const expectCorrectPipelineDetails = async ({
   description,
   additionalRules,
 }: ExpectCorrectPipelineDetailsProps) => {
-  await page.goto(`/pipelines/${id}`);
+  await page.goto(`/pipelines/${id}`, { waitUntil: "networkidle" });
 
   // Should have correct title
   const titleField = page.locator("h2", { hasText: id });

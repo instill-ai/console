@@ -17,7 +17,7 @@ export function handleSyncDestinationTest() {
 
   test.describe.serial("Sync destination", () => {
     test("should create sync http destination", async ({ page }) => {
-      await page.goto("/destinations/create");
+      await page.goto("/destinations/create", { waitUntil: "networkidle" });
 
       // Should select destination type - HTTP
       await expectToSelectOption(
@@ -38,7 +38,7 @@ export function handleSyncDestinationTest() {
     test("should have destination list and navigate to destination details page", async ({
       page,
     }) => {
-      await page.goto("/destinations");
+      await page.goto("/destinations", { waitUntil: "networkidle" });
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
@@ -56,7 +56,9 @@ export function handleSyncDestinationTest() {
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/destinations/${destinationId}`);
+      await page.goto(`/destinations/${destinationId}`, {
+        waitUntil: "networkidle",
+      });
 
       // Should have correct title
       const destinationTitle = page.locator("h2", { hasText: destinationId });

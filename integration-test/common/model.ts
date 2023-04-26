@@ -86,7 +86,7 @@ export const expectToUpdateModelDescription = async (
   await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 
   // Reload page
-  await page.goto(`/models/${modelId}`);
+  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
 
   // Should have updated model description
   await modelDescriptionField.waitFor();
