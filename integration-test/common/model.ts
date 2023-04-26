@@ -17,7 +17,7 @@ export const expectToDeleteModel = async (page: Page, modelId: string) => {
 
   await Promise.all([
     openDeleteModelModalButton.click(),
-    deleteResourceModal.isVisible(),
+    deleteResourceModal.waitFor(),
   ]);
 
   // Should have proper modal title
@@ -83,13 +83,13 @@ export const expectToUpdateModelDescription = async (
   // Should update model description
   const succeedMessage = page.locator("h3", { hasText: "Succeed" });
   await modelDescriptionField.fill(modelDescription);
-  await Promise.all([saveButton.click(), succeedMessage.isVisible()]);
+  await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 
   // Reload page
   await page.goto(`/models/${modelId}`);
 
   // Should have updated model description
-  await modelDescriptionField.isVisible();
+  await modelDescriptionField.waitFor();
   await expect(modelDescriptionField).toHaveValue(modelDescription);
 };
 
@@ -190,7 +190,6 @@ export const expectToDeployModel = async (
   await Promise.all([
     waitForElement
       ? waitForElement.waitFor({
-          state: "visible",
           timeout: timeout ? timeout : undefined,
         })
       : page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`, {

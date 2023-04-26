@@ -94,6 +94,6 @@ await Promise.all([saveButton.click(), page.waitForResponse("your url"));
 const saveButton = page.locator("button", { hasText: "Save" });
 expect(await saveButton.isEnabled()).toBeTruthy();
 const succeedMessage = page.locator("h3", { hasText: "Succeed" });
-await Promise.all([saveButton.click(), succeedMessage.isVisible()]);
+await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 ```
 

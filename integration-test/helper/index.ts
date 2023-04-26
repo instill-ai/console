@@ -30,10 +30,7 @@ export const expectToSelectOption = async (
   await clickElement.click({ force: true });
 
   if (waitForElement) {
-    await Promise.all([
-      waitForElement.waitFor({ state: "visible" }),
-      selectElement.click(),
-    ]);
+    await Promise.all([waitForElement.waitFor(), selectElement.click()]);
   } else {
     await selectElement.click();
   }

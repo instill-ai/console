@@ -40,7 +40,7 @@ export function handleSyncPipelineTest() {
       });
 
       await Promise.all([
-        setupModelStepTitle.waitFor({ state: "visible" }),
+        setupModelStepTitle.waitFor(),
         goToModelStepButton.click(),
       ]);
 
@@ -66,10 +66,7 @@ export function handleSyncPipelineTest() {
       const setupDestinationTitle = page.locator("h2", {
         hasText: "Set up Destination",
       });
-      await Promise.all([
-        setupDestinationTitle.waitFor({ state: "visible" }),
-        setupButton.click(),
-      ]);
+      await Promise.all([setupDestinationTitle.waitFor(), setupButton.click()]);
 
       // Should disable destination selection field
       const destinationFieldOption = page.locator("#existing-destination-id");
@@ -86,7 +83,7 @@ export function handleSyncPipelineTest() {
       const piplineIdField = page.locator("input#pipeline-id");
 
       await Promise.all([
-        piplineIdField.waitFor({ state: "visible" }),
+        piplineIdField.waitFor(),
         goToPipelineStepButton.click(),
       ]);
 

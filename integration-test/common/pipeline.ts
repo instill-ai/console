@@ -30,7 +30,7 @@ export const expectToDeletePipeline = async (
 
   await Promise.all([
     openDeleteModelModalButton.click(),
-    deleteResourceModal.isVisible(),
+    deleteResourceModal.waitFor(),
   ]);
 
   // Should have proper delete pipeline modal titme
@@ -100,7 +100,7 @@ export const expectToUpdatePipelineDescription = async (
 
   // Should wait for update
   const succeedMessage = page.locator("h3", { hasText: "Succeed" });
-  await Promise.all([saveButton.click(), succeedMessage.isVisible()]);
+  await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 
   // Reload page
   await page.goto(`/pipelines/${pipelineId}`);

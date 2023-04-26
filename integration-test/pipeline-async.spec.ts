@@ -49,7 +49,7 @@ export function handleAsyncPipelineTest() {
 
       await Promise.all([
         goToModelStepButton.click(),
-        setupModelStepTitle.isVisible(),
+        setupModelStepTitle.waitFor(),
       ]);
 
       // Should input model id
@@ -74,10 +74,7 @@ export function handleAsyncPipelineTest() {
       const setupDestinationTitle = page.locator("h2", {
         hasText: "Set up Destination",
       });
-      await Promise.all([
-        setupDestinationTitle.waitFor({ state: "visible" }),
-        setupButton.click(),
-      ]);
+      await Promise.all([setupDestinationTitle.waitFor(), setupButton.click()]);
 
       // Should input destination id
       await page.locator("input#destination-id").fill(destinationId);
@@ -114,7 +111,7 @@ export function handleAsyncPipelineTest() {
       const piplineIdField = page.locator("input#pipeline-id");
       await Promise.all([
         setupDestinationButton.click(),
-        piplineIdField.isVisible(),
+        piplineIdField.waitFor(),
       ]);
 
       // Should input pipeline id
