@@ -109,6 +109,8 @@ export function handleSyncPipelineTest() {
       );
       await pipelineDescriptionField.fill(pipelineDescription);
 
+      await setupPipelineButton.isEnabled();
+
       // Should set up pipeline
       await Promise.all([
         page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/pipelines`),
