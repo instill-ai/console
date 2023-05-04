@@ -1,6 +1,6 @@
 {
   "name": "instillai-console",
-  "version": "0.22.0-alpha",
+  "version": "0.22.1-alpha",
   "main": "index.js",
   "repository": "https://github.com/instill-ai/console.git",
   "author": "Instill AI",
