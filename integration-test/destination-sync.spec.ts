@@ -29,6 +29,9 @@ export function handleSyncDestinationTest() {
 
       // Should set up destination
       const setupButton = page.locator("button", { hasText: "Set up" });
+
+      await setupButton.isEnabled();
+
       await Promise.all([
         page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`),
         setupButton.click(),

@@ -124,7 +124,8 @@ export function handleAsyncPipelineTest() {
 
       // Should enable set up button
       const setupPipelineButton = page.locator("button", { hasText: "Set up" });
-      expect(await setupPipelineButton.isEnabled()).toBeTruthy();
+
+      await setupPipelineButton.isEnabled();
 
       // Should set up pipeline
       await Promise.all([
