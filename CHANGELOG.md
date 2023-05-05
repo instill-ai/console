@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.1-alpha](https://github.com/instill-ai/console/compare/v0.22.0-alpha...v0.22.1-alpha) (2023-05-04)
+
+
+### Bug Fixes
+
+* further fix test flakiness ([#412](https://github.com/instill-ai/console/issues/412)) ([dcadf61](https://github.com/instill-ai/console/commit/dcadf618bd9cf52e8fed1790e38d63b024b31075))
+
 ## [0.22.0-alpha](https://github.com/instill-ai/console/compare/v0.21.4-alpha...v0.22.0-alpha) (2023-04-26)
 
 
