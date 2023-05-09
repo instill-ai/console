@@ -153,7 +153,7 @@ export const expectCorrectPipelineDetails = async ({
 
   // Should have correct title
   const titleField = page.locator("h2", { hasText: id });
-  await expect(titleField).toHaveCount(1);
+  await titleField.waitFor();
 
   // Should have correct mode label
   const modeLabel = page.locator("data-testid=pipeline-mode-label");
