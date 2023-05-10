@@ -126,7 +126,7 @@ export const Sidebar: FC = () => {
         id: "sidebar-documentation",
         type: "link",
         tabName: "Documentation",
-        link: "https://www.instill.tech/docs/start-here/getting-started",
+        link: "https://www.instill.tech/docs",
         startIcon: (
           <ResourceIcon
             color="group-hover:fill-instillBlue10 fill-instillGrey30"
