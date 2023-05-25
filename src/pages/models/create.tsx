@@ -3,7 +3,6 @@ import { GetServerSideProps } from "next";
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
-  useSendAmplitudeData,
   useWarnUnsavedChanges,
   CreateResourceFormStore,
   useCreateResourceFormStore,
@@ -47,6 +46,11 @@ const CreateModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
+
+  /* -------------------------------------------------------------------------
+   * Prepare form data
+   * -----------------------------------------------------------------------*/
+
   const { formIsDirty, createNewResourceIsComplete, init } =
     useCreateResourceFormStore(selector, shallow);
 
@@ -60,11 +64,9 @@ const CreateModelPage: FC & {
     },
   });
 
-  useSendAmplitudeData(
-    "hit_create_model_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -79,9 +81,8 @@ const CreateModelPage: FC & {
         <CreateModelForm
           onCreate={() => router.push("/models")}
           accessToken={null}
-          marginBottom={null}
           initStoreOnCreate={true}
-          width={null}
+          enabledQuery={true}
         />
       </PageContentContainer>
     </>

@@ -3,10 +3,8 @@ import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 
 import {
-  useSendAmplitudeData,
   useWarnUnsavedChanges,
   CreateSourceForm,
-  useSources,
   useCreateResourceFormStore,
   env,
   type CreateResourceFormStore,
@@ -50,13 +48,12 @@ const CreateSourcePage: FC & {
 } = () => {
   const router = useRouter();
 
+  /* -------------------------------------------------------------------------
+   * Prepare form data
+   * -----------------------------------------------------------------------*/
+
   const { formIsDirty, createNewResourceIsComplete, init } =
     useCreateResourceFormStore(selector, shallow);
-
-  const sources = useSources({
-    accessToken: null,
-    enable: true,
-  });
 
   useWarnUnsavedChanges({
     router,
@@ -68,11 +65,9 @@ const CreateSourcePage: FC & {
     },
   });
 
-  useSendAmplitudeData(
-    "hit_create_source_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -85,8 +80,6 @@ const CreateSourcePage: FC & {
           marginBottom="mb-10"
         />
         <CreateSourceForm
-          sources={sources.data || null}
-          marginBottom={null}
           onCreate={() => {
             init();
             router.push("/sources");
@@ -94,6 +87,7 @@ const CreateSourcePage: FC & {
           initStoreOnCreate={true}
           accessToken={null}
           width="w-full"
+          enabledQuery={true}
         />
       </PageContentContainer>
     </>

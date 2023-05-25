@@ -9,7 +9,6 @@ import {
   useWarnUnsavedChanges,
   ConfigurePipelineForm,
   ChangePipelineStateToggle,
-  useSendAmplitudeData,
   useCreateResourceFormStore,
   StateLabel,
   PipelineTable,
@@ -159,15 +158,6 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   const router = useRouter();
   const { id } = router.query;
 
-  const watchPipelineState = useWatchPipeline({
-    pipelineName: pipeline.name,
-    accessToken: null,
-    enable: true,
-  });
-
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
-  const deActivatePipeline = useDeActivatePipeline();
-  const activatePipeline = useActivatePipeline();
   const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
 
   useWarnUnsavedChanges({
@@ -178,11 +168,24 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
     callbackWhenLeave: null,
   });
 
-  useSendAmplitudeData(
-    "hit_pipeline_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
+  const watchPipelineState = useWatchPipeline({
+    enabled: true,
+    pipelineName: pipeline.name,
+    accessToken: null,
+  });
+
+  const deActivatePipeline = useDeActivatePipeline();
+  const activatePipeline = useActivatePipeline();
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -222,6 +225,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           pipeline={pipeline}
           marginBottom="mb-10"
           isError={watchPipelineState.isError}
+          isLoading={watchPipelineState.isLoading}
         />
         <ChangePipelineStateToggle
           pipeline={pipeline}
@@ -238,14 +242,13 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
         <ConfigurePipelineForm
           pipeline={pipeline}
           marginBottom="mb-10"
-          width={null}
           accessToken={null}
           onDelete={() => {
             router.push("/pipelines");
           }}
-          disableDelete={enableGuard}
+          disabledDelete={enableGuard}
           onConfigure={null}
-          disableConfigure={enableGuard}
+          disabledConfigure={enableGuard}
         />
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>

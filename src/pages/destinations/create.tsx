@@ -1,13 +1,13 @@
 import { FC, ReactElement } from "react";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
-  useSendAmplitudeData,
+  env,
   useWarnUnsavedChanges,
   CreateDestinationForm,
   useCreateResourceFormStore,
   type CreateResourceFormStore,
-  env,
 } from "@instill-ai/toolkit";
 
 import {
@@ -16,7 +16,6 @@ import {
   PageContentContainer,
   PageHead,
 } from "@/components";
-import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -47,6 +46,11 @@ const CreateDestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
+
+  /* -------------------------------------------------------------------------
+   * Prepare form data
+   * -----------------------------------------------------------------------*/
+
   const { formIsDirty, createNewResourceIsComplete, init } =
     useCreateResourceFormStore(selector, shallow);
 
@@ -60,11 +64,9 @@ const CreateDestinationPage: FC & {
     },
   });
 
-  useSendAmplitudeData(
-    "hit_create_destination_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -78,11 +80,10 @@ const CreateDestinationPage: FC & {
         />
         <CreateDestinationForm
           title={null}
-          formLess={false}
-          marginBottom={null}
           onCreate={() => router.push("/destinations")}
           initStoreOnCreate={true}
           accessToken={null}
+          enabledQuery={true}
         />
       </PageContentContainer>
     </>

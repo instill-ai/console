@@ -2,7 +2,6 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
   useSourceWithPipelines,
-  useSendAmplitudeData,
   ConfigureSourceForm,
   StateLabel,
   PipelinesTable,
@@ -27,36 +26,37 @@ const SourceDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
   const sourceWithPipelines = useSourceWithPipelines({
+    enabled: true,
     sourceName: id ? `source-connectors/${id.toString()}` : null,
     accessToken: null,
-    enable: true,
   });
 
   const sourceWatchState = useWatchSource({
+    enabled: sourceWithPipelines.isSuccess,
     sourceName: sourceWithPipelines.isSuccess
       ? sourceWithPipelines.data.name
       : null,
     accessToken: null,
-    enable: sourceWithPipelines.isSuccess,
   });
 
   const pipelinesWatchState = useWatchPipelines({
+    enabled: sourceWithPipelines.isSuccess,
     pipelineNames: sourceWithPipelines.isSuccess
       ? sourceWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
       : [],
     accessToken: null,
-    enable: sourceWithPipelines.isSuccess,
   });
 
-  useSendAmplitudeData(
-    "hit_source_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -95,9 +95,16 @@ const SourceDetailsPage: FC & {
             sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
           }
           pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
           isError={sourceWithPipelines.isError || pipelinesWatchState.isError}
+          isLoading={
+            sourceWithPipelines.isLoading ||
+            (sourceWithPipelines.isSuccess &&
+              sourceWithPipelines.data.pipelines.length > 0)
+              ? pipelinesWatchState.isLoading
+              : false
+          }
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
@@ -105,13 +112,12 @@ const SourceDetailsPage: FC & {
           <ConfigureSourceForm
             width="w-full"
             source={sourceWithPipelines.data}
-            marginBottom={null}
             onDelete={() => {
               router.push("/sources");
             }}
-            disableDelete={enableGuard}
+            disabledDelete={enableGuard}
             accessToken={null}
-            disableConfigure={true}
+            disabledConfigure={true}
           />
         ) : null}
       </PageContentContainer>

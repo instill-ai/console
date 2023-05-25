@@ -1,7 +1,5 @@
 import { FC, ReactElement } from "react";
-import { useRouter } from "next/router";
 import {
-  useSendAmplitudeData,
   useSourcesWithPipelines,
   SourcesTable,
   useCreateUpdateDeleteResourceGuard,
@@ -22,28 +20,33 @@ type GetLayOutProps = {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const router = useRouter();
-
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
   const sources = useSourcesWithPipelines({
+    enabled: true,
     accessToken: null,
-    enable: true,
   });
 
   const sourcesWatchState = useWatchSources({
-    enable: sources.isSuccess,
+    enabled: sources.isSuccess,
     sourceNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
       : [],
     accessToken: null,
   });
 
-  useSendAmplitudeData(
-    "hit_sources_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  const isLoadingResource =
+    sources.isLoading || (sources.isSuccess && sources.data.length > 0)
+      ? sourcesWatchState.isLoading
+      : false;
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -60,10 +63,10 @@ const SourcePage: FC & {
         <SourcesTable
           sources={sources.data ? sources.data : []}
           sourcesWatchState={
-            sourcesWatchState.isSuccess ? sourcesWatchState.data : null
+            sourcesWatchState.isSuccess ? sourcesWatchState.data : {}
           }
           isError={sources.isError || sourcesWatchState.isError}
-          marginBottom={null}
+          isLoading={isLoadingResource}
         />
       </PageContentContainer>
     </>

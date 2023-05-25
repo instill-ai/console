@@ -5,7 +5,6 @@ import { shallow } from "zustand/shallow";
 
 import {
   useWarnUnsavedChanges,
-  useSendAmplitudeData,
   CreatePipelineForm,
   useCreateResourceFormStore,
   CreateResourceFormStore,
@@ -50,6 +49,10 @@ const CreatePipelinePage: FC & {
 } = () => {
   const router = useRouter();
 
+  /* -------------------------------------------------------------------------
+   * Prepare form data
+   * -----------------------------------------------------------------------*/
+
   const { formIsDirty, createNewResourceIsComplete, pipelineFormStep, init } =
     useCreateResourceFormStore(selector, shallow);
 
@@ -93,11 +96,9 @@ const CreatePipelinePage: FC & {
     },
   });
 
-  useSendAmplitudeData(
-    "hit_create_pipeline_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -116,6 +117,7 @@ const CreatePipelinePage: FC & {
           accessToken={null}
           syncModelOnly={false}
           withModelPreset={false}
+          enabledQuery={true}
         />
       </PageContentContainer>
     </>
