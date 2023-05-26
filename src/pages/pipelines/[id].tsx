@@ -122,12 +122,12 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
       {
         match: "triggerEndpoint",
         replaceValue:
-          pipeline.mode === "MODE_ASYNC" ? "triggerSync" : "triggerAsync",
+          pipeline.mode === "MODE_SYNC" ? "triggerSync" : "triggerAsync",
       },
       {
         match: "triggerMultipartEndpoint",
         replaceValue:
-          pipeline.mode === "MODE_ASYNC"
+          pipeline.mode === "MODE_SYNC"
             ? "triggerSyncMultipart"
             : "triggerAsyncMultipart",
       },
