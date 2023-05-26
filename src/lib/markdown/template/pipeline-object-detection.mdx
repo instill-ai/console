@@ -1,7 +1,7 @@
 <CH.Code>
 
 ```sh cURL(url)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/triggerEndpoint -d '{
   "task_inputs": [
     {
       "detection": {
@@ -18,7 +18,7 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 ```
 
 ```sh cURL(base64)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/triggerEndpoint -d '{
   "task_inputs": [
     {
       "detection": {
@@ -30,7 +30,7 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 ```
 
 ```sh cURL(multipart)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/triggerMultipartEndpoint \
 --form 'file=@"dog.jpg"' \
 --form 'file=@"polar-bear.jpg"'
 ```
