@@ -22,6 +22,7 @@ import {
   useWatchPipelines,
   type Pipeline,
   type ConfigureModelFormStore,
+  getComponentFromPipelineRecipe,
 } from "@instill-ai/toolkit";
 
 import {
@@ -86,7 +87,12 @@ const ModelDetailsPage: FC & {
     }
 
     return pipelines.data.filter((pipeline: Pipeline) => {
-      return pipeline.recipe.models.some((e) => e.name === `models/${id}`);
+      const models =
+        getComponentFromPipelineRecipe({
+          recipe: pipeline.recipe,
+          componentName: "model",
+        }) ?? [];
+      return models.some((e) => e.id === id);
     });
   }, [pipelines.isSuccess, pipelines.data, id]);
 
