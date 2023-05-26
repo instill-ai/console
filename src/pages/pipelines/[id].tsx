@@ -14,8 +14,8 @@ import {
   PipelineTable,
   handle,
   getPipelineQuery,
-  constructPipelineRecipeWithDefinition,
   useCreateUpdateDeleteResourceGuard,
+  getComponentFromPipelineRecipe,
   useWatchPipeline,
   type Nullable,
   type Pipeline,
@@ -36,45 +36,33 @@ import { getCodeHikeTemplateSource } from "@/lib/markdown/ssr-getCodeHikeTemplat
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context
 ) => {
-  const [rawPipelineError, rawPipeline] = await handle(
+  const [pipelineError, pipeline] = await handle(
     getPipelineQuery({
       pipelineName: `pipelines/${context.params?.id}`,
       accessToken: null,
     })
   );
 
-  if (rawPipelineError || !rawPipeline) {
+  if (pipelineError || !pipeline) {
     console.error(
       "Something went wrong when fetch the raw pipeline",
-      rawPipelineError
+      pipelineError
     );
     return {
       notFound: true,
     };
   }
 
-  const [recipeError, recipe] = await handle(
-    constructPipelineRecipeWithDefinition({
-      rawRecipe: rawPipeline.recipe,
-      accessToken: null,
-    })
-  );
-
-  if (recipeError || !recipe) {
-    console.error("Something went wrong when fetch the pipeline's recipe");
-    return {
-      notFound: true,
-    };
-  }
-
-  const pipeline: Pipeline = {
-    ...rawPipeline,
-    recipe: recipe,
-  };
-
   let templateName: Nullable<string> = null;
 
-  switch (pipeline.recipe.models[0].task) {
+  const model = getComponentFromPipelineRecipe({
+    recipe: pipeline.recipe,
+    componentName: "model",
+  });
+
+  const modelTask = model ? model[0].resource_detail.task : null;
+
+  switch (modelTask) {
     case "TASK_CLASSIFICATION": {
       templateName = "pipeline-image-classification.mdx";
       break;
@@ -130,6 +118,18 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
       {
         match: "pipelineIdPlaceholder",
         replaceValue: context.params?.id?.toString() ?? "",
+      },
+      {
+        match: "triggerEndpoint",
+        replaceValue:
+          pipeline.mode === "MODE_ASYNC" ? "triggerSync" : "triggerAsync",
+      },
+      {
+        match: "triggerMultipartEndpoint",
+        replaceValue:
+          pipeline.mode === "MODE_ASYNC"
+            ? "triggerSyncMultipart"
+            : "triggerAsyncMultipart",
       },
     ],
     showCopyButton: true,
