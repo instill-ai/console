@@ -8,7 +8,6 @@ import {
   useUnDeployModel,
   usePipelines,
   ChangeModelStateToggle,
-  useSendAmplitudeData,
   useWarnUnsavedChanges,
   useConfigureModelFormStore,
   ConfigureModelForm,
@@ -23,6 +22,7 @@ import {
   useWatchPipelines,
   type Pipeline,
   type ConfigureModelFormStore,
+  getComponentFromPipelineRecipe,
 } from "@instill-ai/toolkit";
 
 import {
@@ -64,22 +64,22 @@ const ModelDetailsPage: FC & {
    * -----------------------------------------------------------------------*/
 
   const model = useModel({
+    enabled: true,
     modelName: id ? `models/${id}` : null,
     accessToken: null,
-    enable: true,
   });
 
   const modelWatchState = useWatchModel({
+    enabled: true,
     modelName: id ? `models/${id}` : null,
     accessToken: null,
-    enable: true,
   });
 
   /* -------------------------------------------------------------------------
    * Initialize pipelines that use this model
    * -----------------------------------------------------------------------*/
 
-  const pipelines = usePipelines({ enable: true, accessToken: null });
+  const pipelines = usePipelines({ enabled: true, accessToken: null });
 
   const pipelinesUseThisModel = useMemo(() => {
     if (!pipelines.isSuccess || !pipelines.data) {
@@ -87,12 +87,17 @@ const ModelDetailsPage: FC & {
     }
 
     return pipelines.data.filter((pipeline: Pipeline) => {
-      return pipeline.recipe.models.some((e) => e.name === `models/${id}`);
+      const models =
+        getComponentFromPipelineRecipe({
+          recipe: pipeline.recipe,
+          componentName: "model",
+        }) ?? [];
+      return models.some((e) => e.id === id);
     });
   }, [pipelines.isSuccess, pipelines.data, id]);
 
   const pipelinesWatchState = useWatchPipelines({
-    enable: pipelinesUseThisModel.length > 0,
+    enabled: pipelinesUseThisModel.length > 0,
     accessToken: null,
     pipelineNames:
       pipelinesUseThisModel.length > 0
@@ -107,7 +112,7 @@ const ModelDetailsPage: FC & {
   const modelReadme = useModelReadme({
     modelName: `models/${id}`,
     accessToken: null,
-    enable: id ? true : false,
+    enabled: id ? true : false,
   });
 
   /* -------------------------------------------------------------------------
@@ -117,11 +122,9 @@ const ModelDetailsPage: FC & {
   const deployModel = useDeployModel();
   const unDeployModel = useUnDeployModel();
 
-  useSendAmplitudeData(
-    "hit_model_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -136,14 +139,8 @@ const ModelDetailsPage: FC & {
         <div className="mb-10 flex flex-row gap-x-2.5">
           <ModelDefinitionLabel
             modelDefinition={model.data ? model.data.model_definition : null}
-            marginBottom={null}
-            position={null}
           />
-          <ModelTaskLabel
-            task={model.isSuccess ? model.data.task : null}
-            marginBottom={null}
-            position={null}
-          />
+          <ModelTaskLabel task={model.isSuccess ? model.data.task : null} />
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
@@ -173,9 +170,9 @@ const ModelDetailsPage: FC & {
             model={model.data}
             marginBottom="mb-[60px]"
             onConfigure={null}
-            disableConfigure={enableGuard}
+            disabledConfigure={enableGuard}
             onDelete={() => router.push("/models")}
-            disableDelete={enableGuard}
+            disabledDelete={enableGuard}
             accessToken={null}
           />
         ) : null}
@@ -184,7 +181,12 @@ const ModelDetailsPage: FC & {
         <PipelinesTable
           pipelines={pipelinesUseThisModel}
           pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
+          }
+          isLoading={
+            pipelines.isLoading || pipelinesUseThisModel.length > 0
+              ? pipelinesWatchState.isLoading
+              : false
           }
           isError={pipelines.isError || pipelinesWatchState.isError}
           marginBottom="mb-10"
@@ -206,12 +208,6 @@ const ModelDetailsPage: FC & {
 
 ModelDetailsPage.getLayout = (page) => {
   return <PageBase>{page}</PageBase>;
-};
-
-// We need this line to make our code-hike snippet work under Next.js standalone server
-// https://github.com/code-hike/codehike/issues/283
-export const config = {
-  unstable_includeFiles: ["node_modules/.pnpm/**/shiki/**/*.json"],
 };
 
 export default ModelDetailsPage;

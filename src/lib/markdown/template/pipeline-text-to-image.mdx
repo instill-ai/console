@@ -1,7 +1,7 @@
 <CH.Code>
 
 ```sh cURL(url)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger -d '{
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/triggerEndpoint -d '{
   "task_inputs": [
     {
       "text_to_image": {
@@ -17,7 +17,7 @@ curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder
 ```
 
 ```sh cURL(multipart)
-curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/trigger-multipart \
+curl -X POST serverApiBaseUrlPlaceholder/v1alpha/pipelines/pipelineIdPlaceholder/triggerMultipartEndpoint \
 --form 'prompt="alone in the amusement park by Edward Hopper"' \
 --form 'steps="40"' \
 --form 'cfg_scale="8.5"' \

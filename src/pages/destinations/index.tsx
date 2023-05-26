@@ -1,7 +1,5 @@
 import { FC, ReactElement } from "react";
-import { useRouter } from "next/router";
 import {
-  useSendAmplitudeData,
   useDestinationsWithPipelines,
   DestinationsTable,
   useCreateUpdateDeleteResourceGuard,
@@ -22,28 +20,34 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   const destinations = useDestinationsWithPipelines({
+    enabled: true,
     accessToken: null,
-    enable: true,
   });
 
   const destinationsWatchState = useWatchDestinations({
-    enable: destinations.isSuccess,
+    enabled: destinations.isSuccess,
     destinationNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
       : [],
     accessToken: null,
   });
 
-  const router = useRouter();
+  const isLoadingResource =
+    destinations.isLoading ||
+    (destinations.isSuccess && destinations.data.length > 0)
+      ? destinationsWatchState.isLoading
+      : false;
 
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
-
-  useSendAmplitudeData(
-    "hit_destinations_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -60,12 +64,10 @@ const DestinationPage: FC & {
         <DestinationsTable
           destinations={destinations.data ? destinations.data : []}
           destinationsWatchState={
-            destinationsWatchState.isSuccess
-              ? destinationsWatchState.data
-              : null
+            destinationsWatchState.isSuccess ? destinationsWatchState.data : {}
           }
           isError={destinations.isError || destinationsWatchState.isError}
-          marginBottom={null}
+          isLoading={isLoadingResource}
         />
       </PageContentContainer>
     </>

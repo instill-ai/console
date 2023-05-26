@@ -1,8 +1,6 @@
 import { FC, ReactElement } from "react";
-import { useRouter } from "next/router";
 import {
   usePipelines,
-  useSendAmplitudeData,
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
@@ -22,25 +20,31 @@ type GetLayOutProps = {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const router = useRouter();
-  const pipelines = usePipelines({
-    accessToken: null,
-    enable: true,
-  });
-
-  const pipelinesWatchState = useWatchPipelines({
-    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
-    accessToken: null,
-    enable: pipelines.isSuccess,
-  });
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  useSendAmplitudeData(
-    "hit_pipelines_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  const pipelines = usePipelines({
+    enabled: true,
+    accessToken: null,
+  });
+
+  const pipelinesWatchState = useWatchPipelines({
+    enabled: pipelines.isSuccess,
+    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
+    accessToken: null,
+  });
+
+  const isLoadingResource =
+    pipelines.isLoading || (pipelines.isSuccess && pipelines.data.length > 0)
+      ? pipelinesWatchState.isLoading
+      : false;
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -57,10 +61,11 @@ const PipelinePage: FC & {
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}
           pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
           isError={pipelines.isError || pipelinesWatchState.isError}
           marginBottom="mb-5"
+          isLoading={isLoadingResource}
         />
       </PageContentContainer>
     </>

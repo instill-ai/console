@@ -1,8 +1,6 @@
 import { FC, ReactElement } from "react";
-import { useRouter } from "next/router";
 
 import {
-  useSendAmplitudeData,
   ModelsTable,
   useModels,
   useCreateUpdateDeleteResourceGuard,
@@ -23,26 +21,31 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
-  const router = useRouter();
-
-  const models = useModels({
-    accessToken: null,
-    enable: true,
-  });
-
-  const modelsWatchState = useWatchModels({
-    modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
-    accessToken: null,
-    enable: models.isSuccess,
-  });
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  useSendAmplitudeData(
-    "hit_models_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  const models = useModels({
+    enabled: true,
+    accessToken: null,
+  });
+
+  const modelsWatchState = useWatchModels({
+    enabled: models.isSuccess,
+    modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
+    accessToken: null,
+  });
+
+  const isLoadingResource =
+    models.isLoading || (models.isSuccess && models.data.length > 0)
+      ? modelsWatchState.isLoading
+      : false;
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -59,9 +62,10 @@ const ModelPage: FC & {
         <ModelsTable
           models={models.isSuccess ? models.data : []}
           modelsWatchState={
-            modelsWatchState.isSuccess ? modelsWatchState.data : null
+            modelsWatchState.isSuccess ? modelsWatchState.data : {}
           }
           isError={models.isError || modelsWatchState.isError}
+          isLoading={isLoadingResource}
           marginBottom="mb-5"
         />
       </PageContentContainer>

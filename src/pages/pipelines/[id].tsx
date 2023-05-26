@@ -9,14 +9,13 @@ import {
   useWarnUnsavedChanges,
   ConfigurePipelineForm,
   ChangePipelineStateToggle,
-  useSendAmplitudeData,
   useCreateResourceFormStore,
   StateLabel,
   PipelineTable,
   handle,
   getPipelineQuery,
-  constructPipelineRecipeWithDefinition,
   useCreateUpdateDeleteResourceGuard,
+  getComponentFromPipelineRecipe,
   useWatchPipeline,
   type Nullable,
   type Pipeline,
@@ -37,45 +36,33 @@ import { getCodeHikeTemplateSource } from "@/lib/markdown/ssr-getCodeHikeTemplat
 export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
   context
 ) => {
-  const [rawPipelineError, rawPipeline] = await handle(
+  const [pipelineError, pipeline] = await handle(
     getPipelineQuery({
       pipelineName: `pipelines/${context.params?.id}`,
       accessToken: null,
     })
   );
 
-  if (rawPipelineError || !rawPipeline) {
+  if (pipelineError || !pipeline) {
     console.error(
       "Something went wrong when fetch the raw pipeline",
-      rawPipelineError
+      pipelineError
     );
     return {
       notFound: true,
     };
   }
 
-  const [recipeError, recipe] = await handle(
-    constructPipelineRecipeWithDefinition({
-      rawRecipe: rawPipeline.recipe,
-      accessToken: null,
-    })
-  );
-
-  if (recipeError || !recipe) {
-    console.error("Something went wrong when fetch the pipeline's recipe");
-    return {
-      notFound: true,
-    };
-  }
-
-  const pipeline: Pipeline = {
-    ...rawPipeline,
-    recipe: recipe,
-  };
-
   let templateName: Nullable<string> = null;
 
-  switch (pipeline.recipe.models[0].task) {
+  const model = getComponentFromPipelineRecipe({
+    recipe: pipeline.recipe,
+    componentName: "model",
+  });
+
+  const modelTask = model ? model[0].resource_detail.task : null;
+
+  switch (modelTask) {
     case "TASK_CLASSIFICATION": {
       templateName = "pipeline-image-classification.mdx";
       break;
@@ -132,6 +119,18 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
         match: "pipelineIdPlaceholder",
         replaceValue: context.params?.id?.toString() ?? "",
       },
+      {
+        match: "triggerEndpoint",
+        replaceValue:
+          pipeline.mode === "MODE_SYNC" ? "triggerSync" : "triggerAsync",
+      },
+      {
+        match: "triggerMultipartEndpoint",
+        replaceValue:
+          pipeline.mode === "MODE_SYNC"
+            ? "triggerSyncMultipart"
+            : "triggerAsyncMultipart",
+      },
     ],
     showCopyButton: true,
   });
@@ -159,15 +158,6 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   const router = useRouter();
   const { id } = router.query;
 
-  const watchPipelineState = useWatchPipeline({
-    pipelineName: pipeline.name,
-    accessToken: null,
-    enable: true,
-  });
-
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
-  const deActivatePipeline = useDeActivatePipeline();
-  const activatePipeline = useActivatePipeline();
   const formIsDirty = useCreateResourceFormStore((state) => state.formIsDirty);
 
   useWarnUnsavedChanges({
@@ -178,11 +168,24 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
     callbackWhenLeave: null,
   });
 
-  useSendAmplitudeData(
-    "hit_pipeline_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
+  const watchPipelineState = useWatchPipeline({
+    enabled: true,
+    pipelineName: pipeline.name,
+    accessToken: null,
+  });
+
+  const deActivatePipeline = useDeActivatePipeline();
+  const activatePipeline = useActivatePipeline();
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -222,6 +225,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           pipeline={pipeline}
           marginBottom="mb-10"
           isError={watchPipelineState.isError}
+          isLoading={watchPipelineState.isLoading}
         />
         <ChangePipelineStateToggle
           pipeline={pipeline}
@@ -238,14 +242,13 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
         <ConfigurePipelineForm
           pipeline={pipeline}
           marginBottom="mb-10"
-          width={null}
           accessToken={null}
           onDelete={() => {
             router.push("/pipelines");
           }}
-          disableDelete={enableGuard}
+          disabledDelete={enableGuard}
           onConfigure={null}
-          disableConfigure={enableGuard}
+          disabledConfigure={enableGuard}
         />
         <div className="mb-5 flex flex-col">
           <h3 className="mb-5 text-black text-instill-h3">Trigger</h3>

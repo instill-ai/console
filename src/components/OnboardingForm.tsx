@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -196,7 +196,7 @@ export const OnboardingForm = () => {
       {
         onSuccess: async () => {
           if (amplitudeIsInit) {
-            sendAmplitudeData("fill_onboarding_form", {
+            sendAmplitudeData("submit_onboarding_form", {
               type: "critical_action",
             });
           }
@@ -232,7 +232,7 @@ export const OnboardingForm = () => {
   }, [fieldValues, amplitudeIsInit, router, updateUser]);
 
   return (
-    <FormRoot marginBottom={null} formLess={false} width={null}>
+    <FormRoot formLess={false}>
       <div className="mb-10 flex flex-col gap-y-5">
         <BasicTextField
           id="email"

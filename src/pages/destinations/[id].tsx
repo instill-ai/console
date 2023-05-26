@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
   useDestinationWithPipelines,
-  useSendAmplitudeData,
   useWarnUnsavedChanges,
   ConfigureDestinationForm,
   useCreateResourceFormStore,
@@ -12,9 +11,9 @@ import {
   CreateResourceFormStore,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
+  useWatchDestination,
   type DestinationWithDefinition,
   type Nullable,
-  useWatchDestination,
 } from "@instill-ai/toolkit";
 
 import {
@@ -40,8 +39,6 @@ const DestinationDetailsPage: FC & {
   const { id } = router.query;
   const { formIsDirty, init } = useCreateResourceFormStore(selector, shallow);
 
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
-
   useWarnUnsavedChanges({
     router,
     haveUnsavedChanges: formIsDirty,
@@ -50,10 +47,16 @@ const DestinationDetailsPage: FC & {
     callbackWhenLeave: null,
   });
 
+  /* -------------------------------------------------------------------------
+   * Query resource data
+   * -----------------------------------------------------------------------*/
+
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
   const destinationWithPipelines = useDestinationWithPipelines({
     destinationName: id ? `destination-connectors/${id.toString()}` : null,
     accessToken: null,
-    enable: true,
+    enabled: true,
   });
 
   const destinationWatchState = useWatchDestination({
@@ -61,7 +64,7 @@ const DestinationDetailsPage: FC & {
       ? destinationWithPipelines.data.name
       : null,
     accessToken: null,
-    enable: destinationWithPipelines.isSuccess,
+    enabled: destinationWithPipelines.isSuccess,
   });
 
   const destination = useMemo<Nullable<DestinationWithDefinition>>(() => {
@@ -81,14 +84,19 @@ const DestinationDetailsPage: FC & {
       ? destinationWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
       : [],
     accessToken: null,
-    enable: destinationWithPipelines.isSuccess,
+    enabled: destinationWithPipelines.isSuccess,
   });
 
-  useSendAmplitudeData(
-    "hit_destination_page",
-    { type: "navigation" },
-    router.isReady
-  );
+  const isLoadingResource =
+    destinationWithPipelines.isLoading ||
+    (destinationWithPipelines.isSuccess &&
+      destinationWithPipelines.data.pipelines.length > 0)
+      ? pipelinesWatchState.isLoading
+      : false;
+
+  /* -------------------------------------------------------------------------
+   * Render
+   * -----------------------------------------------------------------------*/
 
   return (
     <>
@@ -124,16 +132,17 @@ const DestinationDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={
-            destinationWithPipelines.data
+            destinationWithPipelines.isSuccess
               ? destinationWithPipelines.data.pipelines
               : []
           }
           pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : null
+            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
           isError={
             destinationWithPipelines.isError || pipelinesWatchState.isError
           }
+          isLoading={isLoadingResource}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
@@ -145,9 +154,9 @@ const DestinationDetailsPage: FC & {
                 init();
                 router.push("/destinations");
               }}
-              disableDelete={enableGuard}
+              disabledDelete={enableGuard}
               onConfigure={null}
-              disableConfigure={enableGuard}
+              disabledConfigure={enableGuard}
               initStoreOnConfigure={true}
               width="w-full"
               accessToken={null}
