@@ -119,3 +119,7 @@ During the local development, our whole backends use self-signed certification. 
 Once the release PR is merged to the `main` branch, the [release-please-action](https://github.com/google-github-actions/release-please-action) will tag and release a version correspondingly.
 
 The images are pushed to Docker Hub [repository](https://hub.docker.com/r/instill/console).
+
+## License
+
+See the [LICENSE](./LICENSE) file for licensing information.
