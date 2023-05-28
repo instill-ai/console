@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/instill-ai/console.git",
   "author": "Instill AI",
-  "license": "Apache-2.0",
+  "license": "Elastic License 2.0",
   "private": false,
   "scripts": {
     "docker-build": "docker build -f Dockerfile -t instill-console .",

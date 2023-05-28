@@ -10,7 +10,7 @@ export function handleGithubModelTest() {
   const modelId = `github-model-${Math.floor(Math.random() * 10000)}`;
   const modelSource = "GitHub";
   const modelDescription = "Github test model";
-  const modelRepo = "instill-ai/model-mobilenetv2";
+  const modelRepo = "instill-ai/model-mobilenetv2-dvc";
   const modelTag = "v1.0-cpu";
 
   // This set of test are easily failed due to the timeout, latency issue of

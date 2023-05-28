@@ -267,7 +267,7 @@ export const OnboardingForm = () => {
           label="Newsletter subscription"
           value={fieldValues.newsletterSubscription || false}
           required={true}
-          description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
+          description="Receive the latest news from Instill AI for product updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
           onChange={(event) =>
             handleFieldChange("newsletterSubscription", event)
           }
