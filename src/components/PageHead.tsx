@@ -14,7 +14,7 @@ export const PageHead = ({ title }: PageHeadProps) => {
     siteName: "Instill AI - Versatile Data Pipeline (VDP)",
     title: title ? title : "Instill AI - Versatile Data Pipeline (VDP)",
     pageDescription:
-      "Versatile Data Pipeline (VDP) is an open-source unstructured data ETL tool to streamline the end-to-end unstructured data processing pipeline",
+      "Versatile Data Pipeline (VDP) is a data ETL tool to streamline the end-to-end unstructured data processing pipeline",
   };
 
   const canonicalURL =
