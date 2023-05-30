@@ -87,12 +87,12 @@ const DestinationDetailsPage: FC & {
     enabled: destinationWithPipelines.isSuccess,
   });
 
-  const isLoadingResource =
-    destinationWithPipelines.isLoading ||
-    (destinationWithPipelines.isSuccess &&
-      destinationWithPipelines.data.pipelines.length > 0)
-      ? pipelinesWatchState.isLoading
-      : false;
+  const isLoadingResources = destinationWithPipelines.isLoading
+    ? true
+    : destinationWithPipelines.isSuccess &&
+      destinationWithPipelines.data.pipelines.length > 0
+    ? pipelinesWatchState.isLoading
+    : false;
 
   /* -------------------------------------------------------------------------
    * Render
@@ -142,7 +142,7 @@ const DestinationDetailsPage: FC & {
           isError={
             destinationWithPipelines.isError || pipelinesWatchState.isError
           }
-          isLoading={isLoadingResource}
+          isLoading={isLoadingResources}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

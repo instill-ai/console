@@ -4,9 +4,7 @@ import { shallow } from "zustand/shallow";
 
 import {
   useDeployModel,
-  useModel,
   useUnDeployModel,
-  usePipelines,
   ChangeModelStateToggle,
   useWarnUnsavedChanges,
   useConfigureModelFormStore,
@@ -20,9 +18,8 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchModel,
   useWatchPipelines,
-  type Pipeline,
+  useModelWithPipelines,
   type ConfigureModelFormStore,
-  getComponentFromPipelineRecipe,
 } from "@instill-ai/toolkit";
 
 import {
@@ -60,10 +57,10 @@ const ModelDetailsPage: FC & {
   });
 
   /* -------------------------------------------------------------------------
-   * Initialize model and modelInstances state
+   * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const model = useModel({
+  const modelWithPipelines = useModelWithPipelines({
     enabled: true,
     modelName: id ? `models/${id}` : null,
     accessToken: null,
@@ -75,35 +72,22 @@ const ModelDetailsPage: FC & {
     accessToken: null,
   });
 
-  /* -------------------------------------------------------------------------
-   * Initialize pipelines that use this model
-   * -----------------------------------------------------------------------*/
-
-  const pipelines = usePipelines({ enabled: true, accessToken: null });
-
-  const pipelinesUseThisModel = useMemo(() => {
-    if (!pipelines.isSuccess || !pipelines.data) {
-      return [];
-    }
-
-    return pipelines.data.filter((pipeline: Pipeline) => {
-      const models =
-        getComponentFromPipelineRecipe({
-          recipe: pipeline.recipe,
-          componentName: "model",
-        }) ?? [];
-      return models.some((e) => e.id === id);
-    });
-  }, [pipelines.isSuccess, pipelines.data, id]);
-
   const pipelinesWatchState = useWatchPipelines({
-    enabled: pipelinesUseThisModel.length > 0,
+    enabled:
+      modelWithPipelines.isSuccess &&
+      modelWithPipelines.data.pipelines.length > 0,
     accessToken: null,
-    pipelineNames:
-      pipelinesUseThisModel.length > 0
-        ? pipelinesUseThisModel.map((e) => e.name)
-        : null,
+    pipelineNames: modelWithPipelines.isSuccess
+      ? modelWithPipelines.data?.pipelines.map((e) => e.name)
+      : [],
   });
+
+  const isLoadingPipelines = modelWithPipelines.isLoading
+    ? true
+    : modelWithPipelines.isSuccess &&
+      modelWithPipelines.data?.pipelines.length > 0
+    ? pipelinesWatchState.isLoading
+    : false;
 
   /* -------------------------------------------------------------------------
    * Get model card
@@ -138,9 +122,17 @@ const ModelDetailsPage: FC & {
         />
         <div className="mb-10 flex flex-row gap-x-2.5">
           <ModelDefinitionLabel
-            modelDefinition={model.data ? model.data.model_definition : null}
+            modelDefinition={
+              modelWithPipelines.isSuccess
+                ? modelWithPipelines.data.model_definition
+                : null
+            }
           />
-          <ModelTaskLabel task={model.isSuccess ? model.data.task : null} />
+          <ModelTaskLabel
+            task={
+              modelWithPipelines.isSuccess ? modelWithPipelines.data.task : null
+            }
+          />
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
@@ -155,7 +147,7 @@ const ModelDetailsPage: FC & {
           />
         </div>
         <ChangeModelStateToggle
-          model={model.data ? model.data : null}
+          model={modelWithPipelines.isSuccess ? modelWithPipelines.data : null}
           modelWatchState={
             modelWatchState.isSuccess ? modelWatchState.data.state : null
           }
@@ -165,9 +157,9 @@ const ModelDetailsPage: FC & {
           accessToken={null}
           disabled={enableGuard}
         />
-        {model.isSuccess && model.data ? (
+        {modelWithPipelines.isSuccess ? (
           <ConfigureModelForm
-            model={model.data}
+            model={modelWithPipelines.data}
             marginBottom="mb-[60px]"
             onConfigure={null}
             disabledConfigure={enableGuard}
@@ -179,16 +171,16 @@ const ModelDetailsPage: FC & {
 
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
-          pipelines={pipelinesUseThisModel}
+          pipelines={
+            modelWithPipelines.isSuccess
+              ? modelWithPipelines.data.pipelines
+              : []
+          }
           pipelinesWatchState={
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
-          isLoading={
-            pipelines.isLoading || pipelinesUseThisModel.length > 0
-              ? pipelinesWatchState.isLoading
-              : false
-          }
-          isError={pipelines.isError || pipelinesWatchState.isError}
+          isLoading={isLoadingPipelines}
+          isError={modelWithPipelines.isError || pipelinesWatchState.isError}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
@@ -198,7 +190,7 @@ const ModelDetailsPage: FC & {
           marginBottom="mb-5"
         />
         <ModelConfigurationFields
-          model={model.isSuccess ? model.data : null}
+          model={modelWithPipelines.isSuccess ? modelWithPipelines.data : null}
           marginBottom="mb-10"
         />
       </PageContentContainer>

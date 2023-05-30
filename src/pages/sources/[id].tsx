@@ -54,6 +54,13 @@ const SourceDetailsPage: FC & {
     accessToken: null,
   });
 
+  const isLoadingResources = sourceWithPipelines.isLoading
+    ? true
+    : sourceWithPipelines.isSuccess &&
+      sourceWithPipelines.data.pipelines.length > 0
+    ? pipelinesWatchState.isLoading
+    : false;
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -98,13 +105,7 @@ const SourceDetailsPage: FC & {
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
           isError={sourceWithPipelines.isError || pipelinesWatchState.isError}
-          isLoading={
-            sourceWithPipelines.isLoading ||
-            (sourceWithPipelines.isSuccess &&
-              sourceWithPipelines.data.pipelines.length > 0)
-              ? pipelinesWatchState.isLoading
-              : false
-          }
+          isLoading={isLoadingResources}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
