@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.23.0-alpha](https://github.com/instill-ai/console/compare/v0.22.1-alpha...v0.23.0-alpha) (2023-05-30)
+
+
+### Features
+
+* [INS-518] update dummy model for testing ([#419](https://github.com/instill-ai/console/issues/419)) ([b6a3745](https://github.com/instill-ai/console/commit/b6a3745fdcfb1005567234c7679db28aeca9195f))
+* [INS-751] adapt new pipeline recipe and update trigger snippet ([#417](https://github.com/instill-ai/console/issues/417)) ([61809bb](https://github.com/instill-ai/console/commit/61809bb8fcc4e479bfb041e8ac3ea956d016c666))
+* stabilize test related to the pipeline details page ([#414](https://github.com/instill-ai/console/issues/414)) ([9f72427](https://github.com/instill-ai/console/commit/9f72427c3447e08cf5715adc0c59b4ac7c2fa6da))
+* update docs link at sidebar ([#416](https://github.com/instill-ai/console/issues/416)) ([51103f9](https://github.com/instill-ai/console/commit/51103f9ba8f79eae025ef6afdae0b892e4d53e89))
+
+
+### Bug Fixes
+
+* [INS-805] fix not correctly query pipelines that use this resource ([#420](https://github.com/instill-ai/console/issues/420)) ([bdcd7aa](https://github.com/instill-ai/console/commit/bdcd7aa928927dd89008bd28bdf6a7ad8f0d3a0c))
+
 ## [0.22.1-alpha](https://github.com/instill-ai/console/compare/v0.22.0-alpha...v0.22.1-alpha) (2023-05-04)
 
 
