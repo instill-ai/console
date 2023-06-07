@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local-ce:dev" &&
       !amplitudeIsInit
     ) {
-      if (env("NEXT_PUBLIC_DISABLE_USAGE_COLLECTION")) {
+      if (env("NEXT_PUBLIC_USAGE_COLLECTION_ENABLED")) {
         setAmplitudeIsInit(false);
       } else {
         initAmplitude(trackingToken.data);
