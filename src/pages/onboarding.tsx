@@ -2,10 +2,11 @@ import { FC, ReactElement } from "react";
 
 import {
   PageTitle,
-  PageBase,
-  PageContentContainer,
   PageHead,
   OnboardingForm,
+  Topbar,
+  Sidebar,
+  PageBase,
 } from "@/components";
 
 type GetLayOutProps = {
@@ -18,7 +19,7 @@ const OnBoardingPage: FC & {
   return (
     <>
       <PageHead title="Onboarding" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Welcome to VDP console"
           breadcrumbs={["Onboarding"]}
@@ -26,13 +27,21 @@ const OnBoardingPage: FC & {
           marginBottom="mb-10"
         />
         <OnboardingForm />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 OnBoardingPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default OnBoardingPage;

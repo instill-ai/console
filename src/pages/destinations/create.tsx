@@ -10,12 +10,7 @@ import {
   type CreateResourceFormStore,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -71,7 +66,7 @@ const CreateDestinationPage: FC & {
   return (
     <>
       <PageHead title="Create destination-connector" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Set Up New Destination"
           breadcrumbs={["Destination", "Destination Settings"]}
@@ -87,13 +82,21 @@ const CreateDestinationPage: FC & {
           accessToken={null}
           enabledQuery={true}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 CreateDestinationPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default CreateDestinationPage;

@@ -6,12 +6,7 @@ import {
   useWatchSources,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -51,7 +46,7 @@ const SourcePage: FC & {
   return (
     <>
       <PageHead title="source-connectors" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Source"
           breadcrumbs={["Source"]}
@@ -68,7 +63,7 @@ const SourcePage: FC & {
           isError={sources.isError || sourcesWatchState.isError}
           isLoading={isLoadingResource}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
@@ -76,5 +71,13 @@ const SourcePage: FC & {
 export default SourcePage;
 
 SourcePage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };

@@ -6,12 +6,7 @@ import {
   useWatchPipelines,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -49,7 +44,7 @@ const PipelinePage: FC & {
   return (
     <>
       <PageHead title="pipelines" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Pipeline"
           breadcrumbs={["Pipeline"]}
@@ -67,13 +62,21 @@ const PipelinePage: FC & {
           marginBottom="mb-5"
           isLoading={isLoadingResource}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 PipelinePage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default PipelinePage;

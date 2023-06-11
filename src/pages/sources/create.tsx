@@ -10,12 +10,7 @@ import {
   type CreateResourceFormStore,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -72,7 +67,7 @@ const CreateSourcePage: FC & {
   return (
     <>
       <PageHead title="Create source-connector" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Set Up New Source"
           breadcrumbs={["Source", "Source Settings"]}
@@ -88,13 +83,21 @@ const CreateSourcePage: FC & {
           width="w-full"
           enabledQuery={true}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 CreateSourcePage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default CreateSourcePage;

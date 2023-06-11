@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
@@ -12,20 +12,12 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchDestination,
-  type DestinationWithDefinition,
-  type Nullable,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 const selector = (state: CreateResourceFormStore) => ({
   formIsDirty: state.formIsDirty,
-  init: state.init,
 });
 
 type GetLayOutProps = {
@@ -37,7 +29,7 @@ const DestinationDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { formIsDirty, init } = useCreateResourceFormStore(selector, shallow);
+  const { formIsDirty } = useCreateResourceFormStore(selector, shallow);
 
   useWarnUnsavedChanges({
     router,
@@ -95,7 +87,7 @@ const DestinationDetailsPage: FC & {
             : (destinationWithPipelines.data?.name as string)
         }
       />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Destination", id.toString()] : ["Destination"]}
@@ -158,13 +150,21 @@ const DestinationDetailsPage: FC & {
             />
           ) : null}
         </div>
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 DestinationDetailsPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default DestinationDetailsPage;

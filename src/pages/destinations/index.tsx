@@ -6,12 +6,7 @@ import {
   useWatchDestinations,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -52,7 +47,7 @@ const DestinationPage: FC & {
   return (
     <>
       <PageHead title="destination-connectors" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Destination"
           breadcrumbs={["Destination"]}
@@ -69,7 +64,7 @@ const DestinationPage: FC & {
           isError={destinations.isError || destinationsWatchState.isError}
           isLoading={isLoadingResource}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
@@ -77,5 +72,13 @@ const DestinationPage: FC & {
 export default DestinationPage;
 
 DestinationPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };

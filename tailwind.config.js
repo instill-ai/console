@@ -1,5 +1,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
+  presets: [require("@instill-ai/design-tokens/dist/tailwind.config.cjs")],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",

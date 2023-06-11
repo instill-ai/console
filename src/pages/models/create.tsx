@@ -10,12 +10,7 @@ import {
   env,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageHead,
-  PageBase,
-  PageContentContainer,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -71,7 +66,7 @@ const CreateModelPage: FC & {
   return (
     <>
       <PageHead title="Create model" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Set Up New Model"
           breadcrumbs={["Model", "Settings"]}
@@ -86,13 +81,21 @@ const CreateModelPage: FC & {
           accessToken={null}
           enabledQuery={true}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 CreateModelPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default CreateModelPage;

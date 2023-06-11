@@ -7,12 +7,7 @@ import {
   useWatchModels,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -50,7 +45,7 @@ const ModelPage: FC & {
   return (
     <>
       <PageHead title="models" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title="Model"
           breadcrumbs={["Model"]}
@@ -68,7 +63,7 @@ const ModelPage: FC & {
           isLoading={isLoadingResource}
           marginBottom="mb-5"
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
@@ -76,5 +71,13 @@ const ModelPage: FC & {
 export default ModelPage;
 
 ModelPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };

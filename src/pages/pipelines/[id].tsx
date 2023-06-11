@@ -25,10 +25,11 @@ import { CH } from "@code-hike/mdx/components";
 
 import {
   PageTitle,
-  PageBase,
-  PageContentContainer,
   PageHead,
   PipelineModeLabel,
+  Topbar,
+  Sidebar,
+  PageBase,
 } from "@/components";
 
 import { getCodeHikeTemplateSource } from "@/lib/markdown/ssr-getCodeHikeTemplateSource";
@@ -190,7 +191,7 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
   return (
     <>
       <PageHead title={pipeline.name} />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Pipeline", id.toString()] : ["Pipeline"]}
@@ -260,13 +261,21 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
         <div>
           <MDXRemote {...codeMdxSource} components={{ CH }} />
         </div>
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 PipelineDetailsPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default PipelineDetailsPage;
