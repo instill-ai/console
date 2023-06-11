@@ -243,7 +243,8 @@ const PipelineDetailsPage: FC<PipelinePageProps> & {
           pipeline={pipeline}
           marginBottom="mb-10"
           accessToken={null}
-          onDelete={() => {
+          onDelete={(initStore) => {
+            initStore();
             router.push("/pipelines");
           }}
           disabledDelete={enableGuard}

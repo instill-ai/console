@@ -67,18 +67,6 @@ const DestinationDetailsPage: FC & {
     enabled: destinationWithPipelines.isSuccess,
   });
 
-  const destination = useMemo<Nullable<DestinationWithDefinition>>(() => {
-    if (!destinationWithPipelines.isSuccess) return null;
-    return {
-      name: destinationWithPipelines.data.name,
-      uid: destinationWithPipelines.data.uid,
-      id: destinationWithPipelines.data.id,
-      destination_connector_definition:
-        destinationWithPipelines.data.destination_connector_definition,
-      connector: destinationWithPipelines.data.connector,
-    };
-  }, [destinationWithPipelines.isSuccess, destinationWithPipelines.data]);
-
   const pipelinesWatchState = useWatchPipelines({
     pipelineNames: destinationWithPipelines.isSuccess
       ? destinationWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
@@ -147,17 +135,24 @@ const DestinationDetailsPage: FC & {
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <div>
-          {destination ? (
+          {destinationWithPipelines.isSuccess ? (
             <ConfigureDestinationForm
-              destination={destination}
-              onDelete={() => {
-                init();
+              destination={{
+                name: destinationWithPipelines.data.name,
+                uid: destinationWithPipelines.data.uid,
+                id: destinationWithPipelines.data.id,
+                destination_connector_definition:
+                  destinationWithPipelines.data
+                    .destination_connector_definition,
+                connector: destinationWithPipelines.data.connector,
+              }}
+              onDelete={(initStore) => {
+                initStore();
                 router.push("/destinations");
               }}
               disabledDelete={enableGuard}
               onConfigure={null}
               disabledConfigure={enableGuard}
-              initStoreOnConfigure={true}
               width="w-full"
               accessToken={null}
             />
