@@ -1,19 +1,22 @@
-import { Sidebar } from "@/components";
-import { ReactNode } from "react";
+import * as React from "react";
 
-export type PageBaseProps = {
-  children: ReactNode;
+export const PageBase = ({ children }: { children: React.ReactNode }) => {
+  return <div className="min-h-screen w-full">{children}</div>;
 };
 
-export const PageBase = ({ children }: PageBaseProps) => {
+const Container = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex flex-1">{children}</div>;
+};
+
+const Content = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex flex-1 flex-row">
-        <Sidebar />
-        <div className="flex min-h-screen flex-1 flex-col overflow-y-scroll bg-instillGrey05">
-          {children}
-        </div>
+    <div className="flex flex-1 bg-semantic-bg-base-bg">
+      <div className="h-[calc(100vh-var(--topbar-height))] w-full min-w-[927px] overflow-y-scroll p-20">
+        {children}
       </div>
     </div>
   );
 };
+
+PageBase.Container = Container;
+PageBase.Content = Content;

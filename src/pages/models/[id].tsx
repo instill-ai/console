@@ -24,10 +24,11 @@ import {
 
 import {
   PageTitle,
-  PageBase,
-  PageContentContainer,
   PageHead,
   ModelReadmeMarkdown,
+  Topbar,
+  Sidebar,
+  PageBase,
 } from "@/components";
 
 type GetLayOutProps = {
@@ -113,7 +114,7 @@ const ModelDetailsPage: FC & {
   return (
     <>
       <PageHead title={`models/${id}`} />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title={`${id?.toString()}`}
           breadcrumbs={id ? ["Model", id.toString()] : ["Model"]}
@@ -196,13 +197,21 @@ const ModelDetailsPage: FC & {
           model={modelWithPipelines.isSuccess ? modelWithPipelines.data : null}
           marginBottom="mb-10"
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 ModelDetailsPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default ModelDetailsPage;

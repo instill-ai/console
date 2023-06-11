@@ -11,12 +11,7 @@ import {
   env,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageHead,
-  PageBase,
-  PageContentContainer,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -103,7 +98,7 @@ const CreatePipelinePage: FC & {
   return (
     <>
       <PageHead title="Create pipeline" />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title={currentPage ? currentPage.title : ""}
           breadcrumbs={currentPage ? currentPage.breadcrumbs : ["Pipeline"]}
@@ -120,13 +115,21 @@ const CreatePipelinePage: FC & {
           withModelPreset={false}
           enabledQuery={true}
         />
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 CreatePipelinePage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default CreatePipelinePage;

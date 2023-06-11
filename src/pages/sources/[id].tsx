@@ -10,12 +10,7 @@ import {
   useWatchSource,
 } from "@instill-ai/toolkit";
 
-import {
-  PageTitle,
-  PageBase,
-  PageContentContainer,
-  PageHead,
-} from "@/components";
+import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -74,7 +69,7 @@ const SourceDetailsPage: FC & {
             : (sourceWithPipelines.data?.name as string)
         }
       />
-      <PageContentContainer>
+      <div className="flex flex-col">
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
@@ -123,13 +118,21 @@ const SourceDetailsPage: FC & {
             disabledConfigure={true}
           />
         ) : null}
-      </PageContentContainer>
+      </div>
     </>
   );
 };
 
 SourceDetailsPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase>
+      <Topbar />
+      <PageBase.Container>
+        <Sidebar />
+        <PageBase.Content>{page}</PageBase.Content>
+      </PageBase.Container>
+    </PageBase>
+  );
 };
 
 export default SourceDetailsPage;

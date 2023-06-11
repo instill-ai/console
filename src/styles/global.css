@@ -21,3 +21,8 @@
   font-size: 14px;
 }
 
+/* For the topbar */
+
+:root {
+  --topbar-height: 72px;
+}

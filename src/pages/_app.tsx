@@ -14,6 +14,9 @@ import "../styles/github-markdown.css";
 import "@code-hike/mdx/dist/index.css";
 import "../styles/shiki.css";
 import "@instill-ai/design-system/dist/index.css";
+import "@instill-ai/design-tokens/dist/theme/root.css";
+import "@instill-ai/design-tokens/dist/theme/light.css";
+import "@instill-ai/design-tokens/dist/theme/dark.css";
 
 import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
