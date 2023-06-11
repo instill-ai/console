@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.24.0-alpha](https://github.com/instill-ai/console/compare/v0.23.0-alpha...v0.24.0-alpha) (2023-06-11)
+
+
+### Features
+
+* add test connector connection button  ([#422](https://github.com/instill-ai/console/issues/422)) ([409086f](https://github.com/instill-ai/console/commit/409086f2ba94baabd16d5938eee4823ff3b08113))
+* **style:** update console with new sidebar and topbar design ([#425](https://github.com/instill-ai/console/issues/425)) ([64cd846](https://github.com/instill-ai/console/commit/64cd8462b517c0d907b4b19e75d06f917df254d6))
+
+
+### Bug Fixes
+
+* fix create-source page memory leak and other form issues ([#424](https://github.com/instill-ai/console/issues/424)) ([72cc736](https://github.com/instill-ai/console/commit/72cc736698e6cbe156a0a8301476757984da1433))
+
 ## [0.23.0-alpha](https://github.com/instill-ai/console/compare/v0.22.1-alpha...v0.23.0-alpha) (2023-05-30)
 
 
