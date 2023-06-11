@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Icons } from "@instill-ai/design-system";
 import { PipelineCollapsible } from "./PipelineCollapsible";
 

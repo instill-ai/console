@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo } from "react";
+import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
@@ -18,7 +18,6 @@ import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 const selector = (state: CreateResourceFormStore) => ({
   formIsDirty: state.formIsDirty,
-  init: state.init,
 });
 
 type GetLayOutProps = {
@@ -30,7 +29,7 @@ const DestinationDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { formIsDirty, init } = useCreateResourceFormStore(selector, shallow);
+  const { formIsDirty } = useCreateResourceFormStore(selector, shallow);
 
   useWarnUnsavedChanges({
     router,
