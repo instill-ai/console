@@ -79,9 +79,11 @@ const CreateModelPage: FC & {
           marginBottom="mb-10"
         />
         <CreateModelForm
-          onCreate={() => router.push("/models")}
+          onCreate={(initStore) => {
+            initStore();
+            router.push("/models");
+          }}
           accessToken={null}
-          initStoreOnCreate={true}
           enabledQuery={true}
         />
       </PageContentContainer>

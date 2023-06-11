@@ -80,11 +80,10 @@ const CreateSourcePage: FC & {
           marginBottom="mb-10"
         />
         <CreateSourceForm
-          onCreate={() => {
-            init();
+          onCreate={(initStore) => {
+            initStore();
             router.push("/sources");
           }}
-          initStoreOnCreate={true}
           accessToken={null}
           width="w-full"
           enabledQuery={true}

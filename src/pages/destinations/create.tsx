@@ -80,8 +80,10 @@ const CreateDestinationPage: FC & {
         />
         <CreateDestinationForm
           title={null}
-          onCreate={() => router.push("/destinations")}
-          initStoreOnCreate={true}
+          onCreate={(_, initStore) => {
+            initStore();
+            router.push("/destinations");
+          }}
           accessToken={null}
           enabledQuery={true}
         />

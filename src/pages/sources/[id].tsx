@@ -113,9 +113,11 @@ const SourceDetailsPage: FC & {
           <ConfigureSourceForm
             width="w-full"
             source={sourceWithPipelines.data}
-            onDelete={() => {
+            onDelete={(initStore) => {
+              initStore();
               router.push("/sources");
             }}
+            onConfigure={null}
             disabledDelete={enableGuard}
             accessToken={null}
             disabledConfigure={true}

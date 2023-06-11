@@ -163,7 +163,10 @@ const ModelDetailsPage: FC & {
             marginBottom="mb-[60px]"
             onConfigure={null}
             disabledConfigure={enableGuard}
-            onDelete={() => router.push("/models")}
+            onDelete={(initStore) => {
+              initStore();
+              router.push("/models");
+            }}
             disabledDelete={enableGuard}
             accessToken={null}
           />

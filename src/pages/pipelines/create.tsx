@@ -111,7 +111,8 @@ const CreatePipelinePage: FC & {
           marginBottom="mb-10"
         />
         <CreatePipelineForm
-          onCreate={() => {
+          onCreate={(initStore) => {
+            initStore();
             router.push("/pipelines");
           }}
           accessToken={null}
