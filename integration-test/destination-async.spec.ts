@@ -29,7 +29,7 @@ export function handleAsyncDestinationTest() {
         page.locator("#destination-definition"),
         page
           .locator(`[data-radix-select-viewport=""]`)
-          .getByText(destinationType)
+          .getByRole("option", { name: destinationType, exact: true })
       );
 
       // Should click set up button
@@ -57,7 +57,7 @@ export function handleAsyncDestinationTest() {
         page.locator("#destination-definition"),
         page
           .locator(`[data-radix-select-viewport=""]`)
-          .getByText(destinationType)
+          .getByRole("option", { name: destinationType, exact: true })
       );
 
       // Should input destination description
@@ -97,7 +97,7 @@ export function handleAsyncDestinationTest() {
       );
 
       const compressionCodecOptionTitle = page.locator("h3", {
-        hasText: "Compression Codec *",
+        hasText: "Compression Codec",
       });
       await expect(compressionCodecOptionTitle).toHaveCount(1);
 
