@@ -13,7 +13,7 @@
     "docker-run-test": "docker run --rm -t --network instill-network --entrypoint ./entrypoint-playwright.sh -e NEXT_PUBLIC_CONSOLE_BASE_URL='http://console:3000' -e NEXT_PUBLIC_API_GATEWAY_BASE_URL='http://api-gateway:8080' -e NEXT_PUBLIC_API_VERSION='v1alpha' -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME='instill-ai-user' -e NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION=true instill-console-integration",
     "docker:prune-cache": "docker buildx prune",
     "dev": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",
-    "build": "next build",
+    "build": "ANALYZE=true next build",
     "start": "next start",
     "test": "jest --passWithNoTests",
     "sb": "storybook dev -p 6006",
@@ -122,7 +122,8 @@
     "storybook-addon-next-router": "^4.0.2",
     "tailwindcss": "^3.3.1",
     "typescript": "^4.6.2",
-    "webpack": "^5.70.0"
+    "webpack": "^5.70.0",
+    "webpack-bundle-analyzer": "^4.9.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
