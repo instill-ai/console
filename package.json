@@ -28,9 +28,9 @@
   "dependencies": {
     "@amplitude/analytics-browser": "^1.9.1",
     "@code-hike/mdx": "^0.7.3",
-    "@instill-ai/design-system": "^0.15.0",
+    "@instill-ai/design-system": "^0.18.1",
     "@instill-ai/design-tokens": "^0.1.5",
-    "@instill-ai/toolkit": "^0.47.1",
+    "@instill-ai/toolkit": "^0.47.4",
     "@radix-ui/react-collapsible": "^1.0.3",
     "@radix-ui/react-select": "^1.2.1",
     "@tanstack/react-query": "^4.26.1",
@@ -66,7 +66,7 @@
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@next/env": "^12.2.3",
-    "@playwright/test": "^1.32.2",
+    "@playwright/test": "^1.35.1",
     "@storybook/addon-actions": "^7.0.0-beta.29",
     "@storybook/addon-docs": "^7.0.0-beta.29",
     "@storybook/addon-essentials": "^7.0.0-beta.29",
@@ -122,7 +122,8 @@
     "storybook-addon-next-router": "^4.0.2",
     "tailwindcss": "^3.3.1",
     "typescript": "^4.6.2",
-    "webpack": "^5.70.0"
+    "webpack": "^5.70.0",
+    "webpack-bundle-analyzer": "^4.9.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

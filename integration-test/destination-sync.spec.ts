@@ -4,7 +4,7 @@ import { expectToDeleteConnector } from "./common/connector";
 
 export function handleSyncDestinationTest() {
   const destinationId = "destination-http";
-  const destinationType = "HTTP";
+  const destinationType = "http";
 
   // If there has a destination-http connector, we need to delete it then proceed the test.
   test.beforeAll(async () => {

@@ -1,0 +1,139 @@
+name: Bundle Size Difference
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build-pr:
+    name: "Build PR stats"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: rm -rf node_modules && pnpm i --frozen-lockfile
+
+      - name: Build
+        run: ANALYZE=true pnpm build
+        env:
+          NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
+
+      - name: Upload stats.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: .next/stats.json
+
+  build-base:
+    name: "Build base stats"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: rm -rf node_modules && pnpm i --frozen-lockfile
+
+      - name: Build
+        run: ANALYZE=true pnpm build
+        env:
+          NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
+
+      - name: Upload stats.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: base
+          path: .next/stats.json
+
+  compare:
+    name: "Compare base & head bundle sizes"
+    runs-on: ubuntu-latest
+    needs: [build-pr, build-base]
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v3
+
+      - name: Download base artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: base
+          path: base
+
+      - name: Download PR stats
+        uses: actions/download-artifact@v2
+        with:
+          name: pr
+          path: pr
+
+      - name: Get diff
+        id: get-diff
+        uses: NejcZdovc/bundle-size-diff@v1
+        with:
+          base_path: "./base/stats.json"
+          pr_path: "./pr/stats.json"
+
+      - name: Comment
+        uses: NejcZdovc/comment-pr@v1.1.1
+        with:
+          file: "../templates/webpack-diff-comment.md"
+        env:
+          GITHUB_TOKEN: ${{secrets.BOTGITHUBTOKEN}}
+          OLD: ${{steps.get-diff.outputs.base_file_string}}
+          NEW: ${{steps.get-diff.outputs.pr_file_string}}
+          DIFF: ${{steps.get-diff.outputs.diff_file_string}}
+          DIFF_PERCENT: ${{steps.get-diff.outputs.percent}}
