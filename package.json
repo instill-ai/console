@@ -66,7 +66,7 @@
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@next/env": "^12.2.3",
-    "@playwright/test": "^1.32.2",
+    "@playwright/test": "^1.35.1",
     "@storybook/addon-actions": "^7.0.0-beta.29",
     "@storybook/addon-docs": "^7.0.0-beta.29",
     "@storybook/addon-essentials": "^7.0.0-beta.29",
