@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.1-alpha](https://github.com/instill-ai/console/compare/v0.24.0-alpha...v0.24.1-alpha) (2023-06-21)
+
+
+### Miscellaneous
+
+* **connector:** adapt the new connector definition ([#426](https://github.com/instill-ai/console/issues/426)) ([e579d76](https://github.com/instill-ai/console/commit/e579d768465a5962898fd9b65d7ce560cffeedef))
+* fix release-please config ([#427](https://github.com/instill-ai/console/issues/427)) ([1fa8966](https://github.com/instill-ai/console/commit/1fa896626ace2d04229350caa6704092e45acd3c))
+
 ## [0.24.0-alpha](https://github.com/instill-ai/console/compare/v0.23.0-alpha...v0.24.0-alpha) (2023-06-11)
 
 
