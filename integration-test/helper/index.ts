@@ -50,11 +50,7 @@ export const deleteDestination = async (
     );
 
     if (targetDestination) {
-      await client.delete(
-        `${env(
-          "NEXT_PUBLIC_API_VERSION"
-        )}/destination-connectors/${destinationId}`
-      );
+      await client.delete(`/destination-connectors/${destinationId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -68,11 +64,7 @@ export const deleteAllDestinations = async () => {
     const { data } = await client.get(`/destination-connectors?view=VIEW_FULL`);
 
     for (const destination of data.destination_connectors) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors/${
-          destination.id
-        }`
-      );
+      await client.delete(`/destination-connectors/${destination.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -91,9 +83,7 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
     );
 
     if (targetSource) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${sourceId}`
-      );
+      await client.delete(`/source-connectors/${sourceId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -107,9 +97,7 @@ export const deleteAllSources = async () => {
     const { data } = await client.get(`/source-connectors?view=VIEW_FULL`);
 
     for (const source of data.source_connectors) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${source.id}`
-      );
+      await client.delete(`/source-connectors/${source.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -126,9 +114,7 @@ export const deleteModel = async (modelId: string) => {
     const targetModel = (data.models as any[]).find((e) => e.id === modelId);
 
     if (targetModel) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/models/${modelId}`
-      );
+      await client.delete(`/models/${modelId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -169,20 +155,17 @@ export const createInstillAxiosTestClient = (
   let baseURL: string | null = null;
 
   if (apiGatewayType === "base") {
-    baseURL = `${
-      process.env.NEXT_SERVER_BASE_API_GATEWAY_BASE_URL ??
-      env("NEXT_PUBLIC_BASE_API_GATEWAY_BASE_URL")
-    }/${env("NEXT_PUBLIC_API_VERSION")}`;
+    baseURL = `${env("NEXT_PUBLIC_BASE_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
   } else if (apiGatewayType === "model") {
-    baseURL = `${
-      process.env.NEXT_SERVER_MODEL_API_GATEWAY_BASE_URL ??
-      env("NEXT_PUBLIC_MODEL_API_GATEWAY_BASE_URL")
-    }/${env("NEXT_PUBLIC_API_VERSION")}`;
+    baseURL = `${env("NEXT_PUBLIC_MODEL_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
   } else if (apiGatewayType === "vdp") {
-    baseURL = `${
-      process.env.NEXT_SERVER_VDP_API_GATEWAY_BASE_URL ??
-      env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL")
-    }/${env("NEXT_PUBLIC_API_VERSION")}`;
+    baseURL = `${env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
   }
 
   if (!baseURL) {
