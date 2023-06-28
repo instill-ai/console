@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export const removeRegisteredUser = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("base");
 
-    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/users/me`, {
+    await client.patch(`/users/me`, {
       cookie_token: "",
     });
   } catch (err) {
@@ -20,9 +20,9 @@ export const removeRegisteredUser = async () => {
 
 export const addRegisteredUser = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("base");
 
-    await client.patch(`${env("NEXT_PUBLIC_API_VERSION")}/user`, {
+    await client.patch(`/user`, {
       cookie_token: uuidv4(),
     });
   } catch (err) {

@@ -40,11 +40,9 @@ export const deleteDestination = async (
   destinationId: string
 ): Promise<void> => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/destination-connectors?view=VIEW_FULL`);
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetDestination = (data.destination_connectors as any[]).find(
@@ -52,11 +50,7 @@ export const deleteDestination = async (
     );
 
     if (targetDestination) {
-      await client.delete(
-        `${env(
-          "NEXT_PUBLIC_API_VERSION"
-        )}/destination-connectors/${destinationId}`
-      );
+      await client.delete(`/destination-connectors/${destinationId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -65,18 +59,12 @@ export const deleteDestination = async (
 
 export const deleteAllDestinations = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/destination-connectors?view=VIEW_FULL`);
 
     for (const destination of data.destination_connectors) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/destination-connectors/${
-          destination.id
-        }`
-      );
+      await client.delete(`/destination-connectors/${destination.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -85,11 +73,9 @@ export const deleteAllDestinations = async () => {
 
 export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/source-connectors?view=VIEW_FULL`);
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetSource = (data.source_connectors as any[]).find(
@@ -97,9 +83,7 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
     );
 
     if (targetSource) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${sourceId}`
-      );
+      await client.delete(`/source-connectors/${sourceId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -108,16 +92,12 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
 
 export const deleteAllSources = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/source-connectors?view=VIEW_FULL`);
 
     for (const source of data.source_connectors) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/source-connectors/${source.id}`
-      );
+      await client.delete(`/source-connectors/${source.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -126,19 +106,15 @@ export const deleteAllSources = async () => {
 
 export const deleteModel = async (modelId: string) => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("model");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/models?view=VIEW_FULL`);
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetModel = (data.models as any[]).find((e) => e.id === modelId);
 
     if (targetModel) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/models/${modelId}`
-      );
+      await client.delete(`/models/${modelId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -147,16 +123,12 @@ export const deleteModel = async (modelId: string) => {
 
 export const deleteAllModels = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("model");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/models?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/models?view=VIEW_FULL`);
 
     for (const model of data.models) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/models/${model.id}`
-      );
+      await client.delete(`/models/${model.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -165,25 +137,43 @@ export const deleteAllModels = async () => {
 
 export const deleteAllPipelines = async () => {
   try {
-    const client = createInstillAxiosTestClient();
+    const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(
-      `${env("NEXT_PUBLIC_API_VERSION")}/pipelines?view=VIEW_FULL`
-    );
+    const { data } = await client.get(`/pipelines?view=VIEW_FULL`);
 
     for (const pipeline of data.pipelines) {
-      await client.delete(
-        `${env("NEXT_PUBLIC_API_VERSION")}/pipelines/${pipeline.id}`
-      );
+      await client.delete(`/pipelines/${pipeline.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
-export const createInstillAxiosTestClient = () => {
+export const createInstillAxiosTestClient = (
+  apiGatewayType: "base" | "model" | "vdp"
+) => {
+  let baseURL: string | null = null;
+
+  if (apiGatewayType === "base") {
+    baseURL = `${env("NEXT_PUBLIC_BASE_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
+  } else if (apiGatewayType === "model") {
+    baseURL = `${env("NEXT_PUBLIC_MODEL_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
+  } else if (apiGatewayType === "vdp") {
+    baseURL = `${env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL")}/${env(
+      "NEXT_PUBLIC_API_VERSION"
+    )}`;
+  }
+
+  if (!baseURL) {
+    throw new Error("Base URL is not defined");
+  }
+
   return axios.create({
-    baseURL: env("NEXT_PUBLIC_API_GATEWAY_BASE_URL"),
+    baseURL,
   });
 };
 
