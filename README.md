@@ -59,8 +59,13 @@ To set up the local dev environment with this repo, you need to follow the below
 - `pnpm docker:prune-cache`: Prune all the cache you have (Be careful of this).
 - `pnpm lint`: Lint the codebase.
 - `pnpm storybook`: Bring up the storybook server.
+
+Because we store the script within a shell script file, you need to grant permission like `sudo chmod 755 './scripts/docker-build.sh'` at the root.
+
 - `pnpm docker-build`: Build the docker image of the console
 - `pnpm docker-run`: Run the docker image of the console (You could dynamically change the environment variables here)
+- `pnpm docker-build-test`
+- `pnpm docker-run-test`
 
 ## About how we set up environment variables
 

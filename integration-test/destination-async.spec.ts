@@ -283,7 +283,7 @@ export function handleAsyncDestinationTest() {
             `/${env(
               "NEXT_PUBLIC_API_VERSION"
             )}/destination-connectors/${destinationId}`,
-            `${env("NEXT_PUBLIC_API_GATEWAY_BASE_URL")}`
+            `${env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL")}`
           ).toString(),
           { timeout: 50000 }
         ),
