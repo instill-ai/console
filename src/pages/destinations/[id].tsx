@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
-  useDestinationWithPipelines,
+  useConnectorWithPipelines,
   useWarnUnsavedChanges,
   ConfigureDestinationForm,
   useCreateResourceFormStore,
@@ -11,7 +11,7 @@ import {
   CreateResourceFormStore,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
-  useWatchDestination,
+  useWatchConnector,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -45,14 +45,14 @@ const DestinationDetailsPage: FC & {
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const destinationWithPipelines = useDestinationWithPipelines({
-    destinationName: id ? `destination-connectors/${id.toString()}` : null,
+  const destinationWithPipelines = useConnectorWithPipelines({
+    connectorName: id ? `connectors/${id.toString()}` : null,
     accessToken: null,
     enabled: true,
   });
 
-  const destinationWatchState = useWatchDestination({
-    destinationName: destinationWithPipelines.isSuccess
+  const destinationWatchState = useWatchConnector({
+    connectorName: destinationWithPipelines.isSuccess
       ? destinationWithPipelines.data.name
       : null,
     accessToken: null,
@@ -130,13 +130,7 @@ const DestinationDetailsPage: FC & {
           {destinationWithPipelines.isSuccess ? (
             <ConfigureDestinationForm
               destination={{
-                name: destinationWithPipelines.data.name,
-                uid: destinationWithPipelines.data.uid,
-                id: destinationWithPipelines.data.id,
-                destination_connector_definition:
-                  destinationWithPipelines.data
-                    .destination_connector_definition,
-                connector: destinationWithPipelines.data.connector,
+                ...destinationWithPipelines.data,
               }}
               onDelete={(initStore) => {
                 initStore();

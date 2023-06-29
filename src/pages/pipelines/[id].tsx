@@ -15,7 +15,7 @@ import {
   handle,
   getPipelineQuery,
   useCreateUpdateDeleteResourceGuard,
-  getComponentFromPipelineRecipe,
+  getComponentsFromPipelineRecipe,
   useWatchPipeline,
   type Nullable,
   type Pipeline,
@@ -56,12 +56,12 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
 
   let templateName: Nullable<string> = null;
 
-  const model = getComponentFromPipelineRecipe({
+  const components = getComponentsFromPipelineRecipe({
     recipe: pipeline.recipe,
-    componentName: "model",
+    connectorType: "CONNECTOR_TYPE_AI",
   });
 
-  const modelTask = model ? model[0].resource_detail.task : null;
+  const modelTask = components ? components[0].resource_detail.task : null;
 
   switch (modelTask) {
     case "TASK_CLASSIFICATION": {
@@ -114,7 +114,7 @@ export const getServerSideProps: GetServerSideProps<PipelinePageProps> = async (
     replaceRules: [
       {
         match: "serverApiBaseUrlPlaceholder",
-        replaceValue: env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL") ?? "",
+        replaceValue: env("NEXT_PUBLIC_VDP_API_GATEWAY_URL") ?? "",
       },
       {
         match: "pipelineIdPlaceholder",

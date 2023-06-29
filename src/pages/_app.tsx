@@ -8,6 +8,7 @@ import {
   initAmplitude,
   AmplitudeCtx,
   env,
+  ReactQueryDevtools,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -70,6 +71,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AmplitudeCtx.Provider>
   );
