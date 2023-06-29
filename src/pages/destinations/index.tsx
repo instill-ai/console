@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
 import {
-  useDestinationsWithPipelines,
+  useConnectorsWithPipelines,
   DestinationsTable,
   useCreateUpdateDeleteResourceGuard,
-  useWatchDestinations,
+  useWatchConnectors,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -21,14 +21,16 @@ const DestinationPage: FC & {
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const destinations = useDestinationsWithPipelines({
+  const destinations = useConnectorsWithPipelines({
+    connectorType: "CONNECTOR_TYPE_DESTINATION",
     enabled: true,
     accessToken: null,
   });
 
-  const destinationsWatchState = useWatchDestinations({
+  const destinationsWatchState = useWatchConnectors({
+    connectorType: "CONNECTOR_TYPE_DESTINATION",
     enabled: destinations.isSuccess,
-    destinationNames: destinations.isSuccess
+    connectorNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
       : [],
     accessToken: null,

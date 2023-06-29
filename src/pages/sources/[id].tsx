@@ -1,13 +1,13 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
-  useSourceWithPipelines,
+  useConnectorWithPipelines,
   ConfigureSourceForm,
   StateLabel,
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
-  useWatchSource,
+  useWatchConnector,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -27,15 +27,15 @@ const SourceDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const sourceWithPipelines = useSourceWithPipelines({
+  const sourceWithPipelines = useConnectorWithPipelines({
     enabled: true,
-    sourceName: id ? `source-connectors/${id.toString()}` : null,
+    connectorName: id ? `connectors/${id.toString()}` : null,
     accessToken: null,
   });
 
-  const sourceWatchState = useWatchSource({
+  const sourceWatchState = useWatchConnector({
     enabled: sourceWithPipelines.isSuccess,
-    sourceName: sourceWithPipelines.isSuccess
+    connectorName: sourceWithPipelines.isSuccess
       ? sourceWithPipelines.data.name
       : null,
     accessToken: null,

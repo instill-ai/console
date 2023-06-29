@@ -155,15 +155,15 @@ export const createInstillAxiosTestClient = (
   let baseURL: string | null = null;
 
   if (apiGatewayType === "base") {
-    baseURL = `${env("NEXT_PUBLIC_BASE_API_GATEWAY_BASE_URL")}/${env(
+    baseURL = `${env("NEXT_PUBLIC_BASE_API_GATEWAY_URL")}/${env(
       "NEXT_PUBLIC_API_VERSION"
     )}`;
   } else if (apiGatewayType === "model") {
-    baseURL = `${env("NEXT_PUBLIC_MODEL_API_GATEWAY_BASE_URL")}/${env(
+    baseURL = `${env("NEXT_PUBLIC_MODEL_API_GATEWAY_URL")}/${env(
       "NEXT_PUBLIC_API_VERSION"
     )}`;
   } else if (apiGatewayType === "vdp") {
-    baseURL = `${env("NEXT_PUBLIC_VDP_API_GATEWAY_BASE_URL")}/${env(
+    baseURL = `${env("NEXT_PUBLIC_VDP_API_GATEWAY_URL")}/${env(
       "NEXT_PUBLIC_API_VERSION"
     )}`;
   }
