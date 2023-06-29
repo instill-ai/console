@@ -47,11 +47,11 @@ const ModelPage: FC & {
       <PageHead title="models" />
       <div className="flex flex-col">
         <PageTitle
-          title="Model"
-          breadcrumbs={["Model"]}
+          title=""
+          breadcrumbs={[]}
           enableButton={enableGuard ? false : true}
           buttonName="Add new model"
-          buttonLink="/models/create"
+          buttonLink="/model-hub/create"
           marginBottom="mb-10"
         />
         <ModelsTable

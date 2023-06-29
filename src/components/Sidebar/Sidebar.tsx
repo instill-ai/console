@@ -1,11 +1,24 @@
 import { Icons } from "@instill-ai/design-system";
 import { PipelineCollapsible } from "./PipelineCollapsible";
+import { SidebarLink } from "./SidebarLink";
+import { useRouter } from "next/router";
 
 export const Sidebar = () => {
+  const router = useRouter();
+
+  console.log(router.pathname.split("/"));
+
   return (
     <div className="flex w-[312px] flex-col bg-semantic-bg-primary">
       <div className="mb-auto px-4 pt-8">
-        <PipelineCollapsible />
+        <PipelineCollapsible className="mb-4" />
+        <SidebarLink
+          href="/model-hub"
+          icon={<Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />}
+          name="Model Hub"
+          hightlighted={router.pathname.split("/")[1] === "model-hub"}
+          className="px-3"
+        />
       </div>
       <div className="flex flex-col space-y-6 px-4 pb-8">
         <a
