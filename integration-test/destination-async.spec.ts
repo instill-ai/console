@@ -280,9 +280,7 @@ export function handleAsyncDestinationTest() {
       await Promise.all([
         page.waitForResponse(
           new URL(
-            `/${env(
-              "NEXT_PUBLIC_API_VERSION"
-            )}/destination-connectors/${destinationId}`,
+            `/${env("NEXT_PUBLIC_API_VERSION")}/connectors/${destinationId}`,
             `${env("NEXT_PUBLIC_VDP_API_GATEWAY_URL")}`
           ).toString(),
           { timeout: 50000 }

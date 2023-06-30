@@ -42,15 +42,15 @@ export const deleteDestination = async (
   try {
     const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(`/destination-connectors?view=VIEW_FULL`);
+    const { data } = await client.get(`/connectors?view=VIEW_FULL`);
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const targetDestination = (data.destination_connectors as any[]).find(
+    const targetDestination = (data.connectors as any[]).find(
       (e) => e.id === destinationId
     );
 
     if (targetDestination) {
-      await client.delete(`/destination-connectors/${destinationId}`);
+      await client.delete(`/connectors/${destinationId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -61,10 +61,10 @@ export const deleteAllDestinations = async () => {
   try {
     const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(`/destination-connectors?view=VIEW_FULL`);
+    const { data } = await client.get(`/connectors?view=VIEW_FULL`);
 
-    for (const destination of data.destination_connectors) {
-      await client.delete(`/destination-connectors/${destination.id}`);
+    for (const destination of data.connectors) {
+      await client.delete(`/connectors/${destination.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -75,15 +75,15 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
   try {
     const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(`/source-connectors?view=VIEW_FULL`);
+    const { data } = await client.get(`/connectors?view=VIEW_FULL`);
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const targetSource = (data.source_connectors as any[]).find(
+    const targetSource = (data.connectors as any[]).find(
       (e) => e.id === sourceId
     );
 
     if (targetSource) {
-      await client.delete(`/source-connectors/${sourceId}`);
+      await client.delete(`/connectors/${sourceId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -94,10 +94,10 @@ export const deleteAllSources = async () => {
   try {
     const client = createInstillAxiosTestClient("vdp");
 
-    const { data } = await client.get(`/source-connectors?view=VIEW_FULL`);
+    const { data } = await client.get(`/connectors?view=VIEW_FULL`);
 
-    for (const source of data.source_connectors) {
-      await client.delete(`/source-connectors/${source.id}`);
+    for (const source of data.connectors) {
+      await client.delete(`/connectors/${source.id}`);
     }
   } catch (err) {
     return Promise.reject(err);
