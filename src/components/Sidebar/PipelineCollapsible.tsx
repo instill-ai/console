@@ -56,6 +56,15 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
           className="pl-12 pr-3"
         />
         <SidebarLink
+          href="/blockchains"
+          icon={
+            <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
+          }
+          name="Blockchain"
+          hightlighted={router.pathname.split("/")[1] === "blockchains"}
+          className="pl-12 pr-3"
+        />
+        <SidebarLink
           href="/destinations"
           icon={<Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />}
           name="Destinations"

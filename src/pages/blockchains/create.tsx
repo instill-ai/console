@@ -1,15 +1,16 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { z } from "zod";
 
-import { env, CreateAIForm } from "@instill-ai/toolkit";
+import { env, CreateBlockchainForm } from "@instill-ai/toolkit";
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/ais",
+        destination: "/blockchains",
         permanent: false,
       },
     };
@@ -24,7 +25,7 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
-const CreateAIPage: FC & {
+const CreateBlockchainPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
@@ -43,13 +44,16 @@ const CreateAIPage: FC & {
           enableButton={false}
           marginBottom="mb-10"
         />
-        <CreateAIForm accessToken={null} onCreate={() => router.push("/ais")} />
+        <CreateBlockchainForm
+          accessToken={null}
+          onCreate={() => router.push("/blockchains")}
+        />
       </div>
     </>
   );
 };
 
-CreateAIPage.getLayout = (page) => {
+CreateBlockchainPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar />
@@ -61,4 +65,4 @@ CreateAIPage.getLayout = (page) => {
   );
 };
 
-export default CreateAIPage;
+export default CreateBlockchainPage;
