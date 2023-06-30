@@ -126,24 +126,22 @@ const DestinationDetailsPage: FC & {
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        <div>
-          {destinationWithPipelines.isSuccess ? (
-            <ConfigureDestinationForm
-              destination={{
-                ...destinationWithPipelines.data,
-              }}
-              onDelete={(initStore) => {
-                initStore();
-                router.push("/destinations");
-              }}
-              disabledDelete={enableGuard}
-              onConfigure={null}
-              disabledConfigure={enableGuard}
-              width="w-full"
-              accessToken={null}
-            />
-          ) : null}
-        </div>
+        {destinationWithPipelines.isSuccess ? (
+          <ConfigureDestinationForm
+            destination={{
+              ...destinationWithPipelines.data,
+            }}
+            onDelete={(initStore) => {
+              initStore();
+              router.push("/destinations");
+            }}
+            disabledDelete={enableGuard}
+            onConfigure={null}
+            disabledConfigure={enableGuard}
+            width="w-full"
+            accessToken={null}
+          />
+        ) : null}
       </div>
     </>
   );
