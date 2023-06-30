@@ -49,7 +49,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
           className="pl-12 pr-3"
         />
         <SidebarLink
-          href="/ai"
+          href="/ais"
           icon={<Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />}
           name="AI"
           hightlighted={router.pathname.split("/")[1] === "ai"}

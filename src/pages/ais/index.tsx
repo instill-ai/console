@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
 import {
   useConnectorsWithPipelines,
-  SourcesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
+  AIsTable,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -12,7 +12,7 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
-const SourcePage: FC & {
+const AIsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const enableGuard = useCreateUpdateDeleteResourceGuard();
@@ -21,24 +21,22 @@ const SourcePage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const sources = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+  const ais = useConnectorsWithPipelines({
+    connectorType: "CONNECTOR_TYPE_AI",
     enabled: true,
     accessToken: null,
   });
 
-  const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
-    enabled: sources.isSuccess,
-    connectorNames: sources.isSuccess
-      ? sources.data.map((source) => source.name)
-      : [],
+  const aisWatchState = useWatchConnectors({
+    connectorType: "CONNECTOR_TYPE_AI",
+    enabled: ais.isSuccess,
+    connectorNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
     accessToken: null,
   });
 
   const isLoadingResource =
-    sources.isLoading || (sources.isSuccess && sources.data.length > 0)
-      ? sourcesWatchState.isLoading
+    ais.isLoading || (ais.isSuccess && ais.data.length > 0)
+      ? aisWatchState.isLoading
       : false;
 
   /* -------------------------------------------------------------------------
@@ -47,22 +45,20 @@ const SourcePage: FC & {
 
   return (
     <>
-      <PageHead title="source-connectors" />
+      <PageHead title="ai-connectors" />
       <div className="flex flex-col">
         <PageTitle
-          title="Source"
-          breadcrumbs={["Source"]}
+          title=""
+          breadcrumbs={[""]}
           enableButton={enableGuard ? false : true}
-          buttonName="Set up new source"
-          buttonLink="/sources/create"
+          buttonName="Set up new AI"
+          buttonLink="/ais/create"
           marginBottom="mb-10"
         />
-        <SourcesTable
-          sources={sources.data ? sources.data : []}
-          sourcesWatchState={
-            sourcesWatchState.isSuccess ? sourcesWatchState.data : {}
-          }
-          isError={sources.isError || sourcesWatchState.isError}
+        <AIsTable
+          ais={ais.data ? ais.data : []}
+          aisWatchState={aisWatchState.isSuccess ? aisWatchState.data : {}}
+          isError={ais.isError || aisWatchState.isError}
           isLoading={isLoadingResource}
         />
       </div>
@@ -70,9 +66,9 @@ const SourcePage: FC & {
   );
 };
 
-export default SourcePage;
+export default AIsPage;
 
-SourcePage.getLayout = (page) => {
+AIsPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar />

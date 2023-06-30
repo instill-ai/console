@@ -23,7 +23,7 @@ export const Document: FC = () => {
 
         <script src="/__env.js" />
       </Head>
-      <body>
+      <body className="overflow-hidden">
         <Main />
         <NextScript />
       </body>
