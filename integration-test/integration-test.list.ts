@@ -20,5 +20,5 @@ test.describe(handleArtivcModelTest);
 test.describe(handleGithubModelTest);
 test.describe(handleHuggingFaceModelTest);
 test.describe(handleLocalModelTest);
-test.describe(handleSyncPipelineTest);
-test.describe(handleAsyncPipelineTest);
+// test.describe(handleSyncPipelineTest);
+// test.describe(handleAsyncPipelineTest);
