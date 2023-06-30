@@ -7,7 +7,7 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchConnector,
-  ConfigureAIForm,
+  ConfigureBlockchainForm,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -16,7 +16,7 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
-const AIDetailsPage: FC & {
+const BlockchainDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
@@ -27,29 +27,32 @@ const AIDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const aiWithPipelines = useConnectorWithPipelines({
+  const blockchainWithPipelines = useConnectorWithPipelines({
     enabled: true,
     connectorName: id ? `connectors/${id.toString()}` : null,
     accessToken: null,
   });
 
-  const aiWatchState = useWatchConnector({
-    enabled: aiWithPipelines.isSuccess,
-    connectorName: aiWithPipelines.isSuccess ? aiWithPipelines.data.name : null,
+  const blockchainWatchState = useWatchConnector({
+    enabled: blockchainWithPipelines.isSuccess,
+    connectorName: blockchainWithPipelines.isSuccess
+      ? blockchainWithPipelines.data.name
+      : null,
     accessToken: null,
   });
 
   const pipelinesWatchState = useWatchPipelines({
-    enabled: aiWithPipelines.isSuccess,
-    pipelineNames: aiWithPipelines.isSuccess
-      ? aiWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
+    enabled: blockchainWithPipelines.isSuccess,
+    pipelineNames: blockchainWithPipelines.isSuccess
+      ? blockchainWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
       : [],
     accessToken: null,
   });
 
-  const isLoadingResources = aiWithPipelines.isLoading
+  const isLoadingResources = blockchainWithPipelines.isLoading
     ? true
-    : aiWithPipelines.isSuccess && aiWithPipelines.data.pipelines.length > 0
+    : blockchainWithPipelines.isSuccess &&
+      blockchainWithPipelines.data.pipelines.length > 0
     ? pipelinesWatchState.isLoading
     : false;
 
@@ -61,14 +64,14 @@ const AIDetailsPage: FC & {
     <>
       <PageHead
         title={
-          aiWithPipelines.isLoading
+          blockchainWithPipelines.isLoading
             ? ""
-            : (aiWithPipelines.data?.name as string)
+            : (blockchainWithPipelines.data?.name as string)
         }
       />
       <PageTitle
         title={id ? id.toString() : ""}
-        breadcrumbs={id ? ["AI", id.toString()] : ["AI"]}
+        breadcrumbs={id ? ["Blockchain", id.toString()] : ["Blockchain"]}
         enableButton={false}
         marginBottom="mb-[50px]"
       />
@@ -78,8 +81,8 @@ const AIDetailsPage: FC & {
           enableIcon={true}
           enableBgColor={true}
           state={
-            aiWatchState.isSuccess
-              ? aiWatchState.data.state
+            blockchainWatchState.isSuccess
+              ? blockchainWatchState.data.state
               : "STATE_UNSPECIFIED"
           }
           iconHeight="h-[18px]"
@@ -89,20 +92,24 @@ const AIDetailsPage: FC & {
       </div>
       <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
       <PipelinesTable
-        pipelines={aiWithPipelines.data ? aiWithPipelines.data.pipelines : []}
+        pipelines={
+          blockchainWithPipelines.data
+            ? blockchainWithPipelines.data.pipelines
+            : []
+        }
         pipelinesWatchState={
           pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
         }
-        isError={aiWithPipelines.isError || pipelinesWatchState.isError}
+        isError={blockchainWithPipelines.isError || pipelinesWatchState.isError}
         isLoading={isLoadingResources}
         marginBottom="mb-10"
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-      {aiWithPipelines.isSuccess && aiWithPipelines.data ? (
-        <ConfigureAIForm
-          ai={aiWithPipelines.data}
+      {blockchainWithPipelines.isSuccess && blockchainWithPipelines.data ? (
+        <ConfigureBlockchainForm
+          blockchain={blockchainWithPipelines.data}
           accessToken={null}
-          onDelete={() => router.push("/ais")}
+          onDelete={() => router.push("/blockchains")}
           onConfigure={null}
           onTestConnection={null}
         />
@@ -111,7 +118,7 @@ const AIDetailsPage: FC & {
   );
 };
 
-AIDetailsPage.getLayout = (page) => {
+BlockchainDetailsPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar />
@@ -123,4 +130,4 @@ AIDetailsPage.getLayout = (page) => {
   );
 };
 
-export default AIDetailsPage;
+export default BlockchainDetailsPage;
