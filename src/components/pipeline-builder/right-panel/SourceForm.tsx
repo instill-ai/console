@@ -10,13 +10,19 @@ import {
 } from "@instill-ai/design-system";
 import {
   ConnectorWithDefinition,
+  CreateConnectorPayload,
   ImageWithFallback,
   Nullable,
+  getInstillApiErrorMessage,
   testConnectorConnectionAction,
   useConnectorDefinitions,
+  useConnectors,
+  useCreateConnector,
+  useWatchConnectors,
 } from "@instill-ai/toolkit";
 import { useEffect, useState } from "react";
 import { IncompleteConnectorWithWatchState } from "@/types";
+import { isAxiosError } from "axios";
 
 export type SourceFormProps = {
   source: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
@@ -38,9 +44,15 @@ export const SourceForm = (props: SourceFormProps) => {
   });
 
   const sourceDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_SOURCE",
     enabled: true,
     accessToken,
+  });
+
+  const sources = useConnectors({
     connectorType: "CONNECTOR_TYPE_SOURCE",
+    enabled: true,
+    accessToken,
   });
 
   useEffect(() => {
@@ -86,95 +98,166 @@ export const SourceForm = (props: SourceFormProps) => {
     }
   };
 
+  const createConnector = useCreateConnector();
+
+  async function handleCreateSource() {
+    const payload: CreateConnectorPayload = {
+      connectorName: `connectors/${source.id}`,
+      connector_definition_name: source.connector_definition_name,
+      configuration: {},
+    };
+
+    createConnector.mutate(
+      {
+        payload,
+        accessToken: null,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Success",
+            description: "Successfully create source",
+            variant: "alert-success",
+            size: "large",
+          });
+
+          // We don't need to update the node here, at the root of the pipeline-builder,
+          // we have a listener to update the node when the data had changed.
+        },
+        onError: (error) => {
+          if (isAxiosError(error)) {
+            toast({
+              title: "Something went wrong when create the source",
+              description: getInstillApiErrorMessage(error),
+              variant: "alert-error",
+              size: "large",
+            });
+          } else {
+            toast({
+              title: "Something went wrong when create the source",
+              variant: "alert-error",
+              size: "large",
+            });
+          }
+        },
+      }
+    );
+  }
+
   return (
-    <div className="flex w-full flex-col space-y-6">
+    <div className="flex w-full flex-col">
       <Form.Root {...form}>
-        <form className="flex w-full flex-col">
-          <Form.Field
-            control={form.control}
-            name="sourceDefinition"
-            render={({ field }) => {
-              return (
-                <Form.Item>
-                  <Form.Label htmlFor={field.name}>
-                    Source definition
-                  </Form.Label>
-                  <Form.Control>
-                    <Select.Root
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={true}
-                    >
-                      <Select.Trigger>
-                        <Select.Value />
-                      </Select.Trigger>
-                      <Select.Content>
-                        {sourceDefinitions.isSuccess
-                          ? sourceDefinitions.data.map((definition) => (
-                              <Select.Item
-                                key={definition.name}
-                                value={definition.name}
-                              >
-                                <div className="flex w-full flex-row gap-x-2">
-                                  <ImageWithFallback
-                                    src={`/icons/${definition.vendor}/${definition.icon}`}
-                                    width={24}
-                                    height={24}
-                                    alt={`${definition.title}-icon`}
-                                    fallbackImg={
-                                      <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />
-                                    }
-                                  />
-                                  <p className="my-auto text-semantic-fg-primary product-body-text-2-regular">
-                                    {definition.id}
-                                  </p>
-                                </div>
-                              </Select.Item>
-                            ))
-                          : null}
-                      </Select.Content>
-                    </Select.Root>
-                  </Form.Control>
-                </Form.Item>
-              );
-            }}
-          />
+        <form
+          className="flex w-full flex-col"
+          onSubmit={form.handleSubmit(handleCreateSource)}
+        >
+          <div className="mb-10">
+            <Form.Field
+              control={form.control}
+              name="sourceDefinition"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label htmlFor={field.name}>
+                      Source definition
+                    </Form.Label>
+                    <Form.Control>
+                      <Select.Root
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={true}
+                      >
+                        <Select.Trigger>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {sourceDefinitions.isSuccess
+                            ? sourceDefinitions.data.map((definition) => (
+                                <Select.Item
+                                  key={definition.name}
+                                  value={definition.name}
+                                >
+                                  <div className="flex w-full flex-row gap-x-2">
+                                    <ImageWithFallback
+                                      src={`/icons/${definition.vendor}/${definition.icon}`}
+                                      width={24}
+                                      height={24}
+                                      alt={`${definition.title}-icon`}
+                                      fallbackImg={
+                                        <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />
+                                      }
+                                    />
+                                    <p className="my-auto text-semantic-fg-primary product-body-text-2-regular">
+                                      {definition.id}
+                                    </p>
+                                  </div>
+                                </Select.Item>
+                              ))
+                            : null}
+                        </Select.Content>
+                      </Select.Root>
+                    </Form.Control>
+                  </Form.Item>
+                );
+              }}
+            />
+          </div>
+          <div className="flex w-full flex-row-reverse gap-x-4">
+            <Button
+              onClick={handleTestSource}
+              className="gap-x-2"
+              variant="primary"
+              size="lg"
+            >
+              Test
+              {isTesting ? (
+                <svg
+                  className="m-auto h-4 w-4 animate-spin text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+              ) : (
+                <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
+              )}
+            </Button>
+            <Button
+              type="submit"
+              variant="secondaryColour"
+              disabled={
+                sources.isSuccess
+                  ? sources.data.some((e) => e.id === source.id)
+                    ? true
+                    : false
+                  : true
+              }
+              size={form.formState.isDirty ? "lg" : "md"}
+              className="gap-x-2"
+            >
+              {sources.isSuccess
+                ? sources.data.some((e) => e.id === source.id)
+                  ? "Update"
+                  : "Create"
+                : ""}
+              <Icons.Save01 className="h-4 w-4 stroke-semantic-accent-on-bg group-disabled:stroke-semantic-fg-disabled" />
+            </Button>
+          </div>
         </form>
       </Form.Root>
-      <div className="flex w-full flex-row-reverse">
-        <Button
-          onClick={handleTestSource}
-          className="gap-x-2"
-          variant="primary"
-          size="lg"
-        >
-          Test
-          {isTesting ? (
-            <svg
-              className="m-auto h-4 w-4 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              />
-            </svg>
-          ) : (
-            <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
-          )}
-        </Button>
-      </div>
     </div>
   );
 };

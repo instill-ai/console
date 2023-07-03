@@ -1,7 +1,7 @@
 import { Dialog, Icons } from "@instill-ai/design-system";
 import { ConnectorType, Nullable } from "@instill-ai/toolkit";
 import {
-  HTMLAttributes,
+  ButtonHTMLAttributes,
   ReactElement,
   ReactNode,
   createContext,
@@ -103,12 +103,12 @@ export const SelectConnectorDefinitionDialog = (
 };
 
 const SelectConnectorDefinitionDialogItem = (
-  props: { children: ReactNode } & HTMLAttributes<HTMLDivElement>
+  props: { children: ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
   const { children, onClick, ...passThrough } = props;
   const { setOpen } = useDialogContext();
   return (
-    <div
+    <button
       className="flex cursor-pointer flex-row space-x-2 rounded border border-semantic-bg-line p-2 hover:bg-semantic-accent-bg"
       onClick={(e) => {
         if (!setOpen) return;
@@ -123,7 +123,7 @@ const SelectConnectorDefinitionDialogItem = (
       <div className="flex h-8 w-8 items-center justify-center">
         <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
       </div>
-    </div>
+    </button>
   );
 };
 
