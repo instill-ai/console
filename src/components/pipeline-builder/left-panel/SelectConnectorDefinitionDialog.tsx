@@ -119,8 +119,8 @@ const SelectConnectorDefinitionDialogItem = (
       }}
       {...passThrough}
     >
-      <div className="flex flex-1 flex-row space-x-2">{children}</div>
-      <div className="flex h-8 w-8 items-center justify-center">
+      <div className="my-auto flex flex-1 flex-row space-x-2">{children}</div>
+      <div className="my-auto flex h-8 w-8 items-center justify-center">
         <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
       </div>
     </button>

@@ -1,5 +1,5 @@
 import { ConnectorNodeData, ConnectorWithWatchState } from "@/types";
-import { Nullable, Pipeline } from "@instill-ai/toolkit";
+import { Nullable, Pipeline, ConnectorType } from "@instill-ai/toolkit";
 import { Edge, Node } from "reactflow";
 
 export type CreateInitialGraphDataProps = {
@@ -8,6 +8,8 @@ export type CreateInitialGraphDataProps = {
   sources: ConnectorWithWatchState[];
   destinations: ConnectorWithWatchState[];
 };
+
+//"CONNECTOR_TYPE_UNSPECIFIED" | "CONNECTOR_TYPE_SOURCE" | "CONNECTOR_TYPE_DESTINATION" | "CONNECTOR_TYPE_AI" | "CONNECTOR_TYPE_BLOCKCHAIN";
 
 export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   const { pipeline, ais, sources, destinations } = props;
@@ -19,7 +21,7 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   const nodes: Node<ConnectorNodeData>[] = [];
 
   for (const component of pipeline.recipe.components) {
-    if (component.resource_name.includes("source")) {
+    if (component.type === "CONNECTOR_TYPE_SOURCE") {
       const target = sources.find(
         (source) => source.name === component.resource_name
       );
@@ -36,7 +38,8 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
         });
         sourceId = component.id;
       }
-    } else if (component.resource_name.includes("destination")) {
+    } else if (component.type === "CONNECTOR_TYPE_DESTINATION") {
+      console.log("component", component, destinations);
       const target = destinations.find(
         (destination) => destination.name === component.resource_name
       );
@@ -52,7 +55,7 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
         });
         destinationId = component.id;
       }
-    } else {
+    } else if (component.type === "CONNECTOR_TYPE_AI") {
       const target = ais.find((ai) => ai.name === component.resource_name);
 
       if (target) {

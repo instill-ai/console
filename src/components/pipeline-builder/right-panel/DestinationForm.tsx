@@ -1,4 +1,3 @@
-import * as React from "react";
 import * as yup from "yup";
 import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
@@ -10,6 +9,7 @@ import {
   useToast,
   Button,
   Icons,
+  BasicTextField,
   type FormRootProps,
 } from "@instill-ai/design-system";
 import {
@@ -32,8 +32,12 @@ import {
   type UpdateConnectorPayload,
   type Nullable,
   type CreateResourceFormStore,
+  CreateConnectorPayload,
+  useCreateConnector,
 } from "@instill-ai/toolkit";
 import { IncompleteConnectorWithWatchState } from "@/types";
+import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type DestinationFormProps = {
   accessToken: Nullable<string>;
@@ -41,7 +45,6 @@ export type DestinationFormProps = {
 } & Pick<FormRootProps, "marginBottom" | "width">;
 
 const formSelector = (state: CreateResourceFormStore) => ({
-  setFormIsDirty: state.setFormIsDirty,
   init: state.init,
 });
 
@@ -53,16 +56,21 @@ export const DestinationForm = (props: DestinationFormProps) => {
    * Initialize form state
    * -----------------------------------------------------------------------*/
 
-  const { init, setFormIsDirty } = useCreateResourceFormStore(
-    formSelector,
-    shallow
+  const { init } = useCreateResourceFormStore(formSelector, shallow);
+
+  const updateSelectedNode = usePipelineBuilderStore(
+    (state) => state.updateSelectedNode
+  );
+
+  const updateResourceFormIsDirty = usePipelineBuilderStore(
+    (state) => state.updateResourceFormIsDirty
   );
 
   /* -------------------------------------------------------------------------
    * Get the destination definition and static state for fields
    * -----------------------------------------------------------------------*/
 
-  const isSyncDestination = React.useMemo(() => {
+  const isSyncDestination = useMemo(() => {
     if (
       destination.connector_definition.id === "destination-grpc" ||
       destination.connector_definition.id === "destination-http"
@@ -73,7 +81,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
     return false;
   }, [destination]);
 
-  const destinationDefinitionOption = React.useMemo(() => {
+  const destinationDefinitionOption = useMemo(() => {
     return {
       label: destination.connector_definition.title,
       value: destination.connector_definition.id,
@@ -97,23 +105,21 @@ export const DestinationForm = (props: DestinationFormProps) => {
    * Create interior state for managing the form
    * -----------------------------------------------------------------------*/
 
-  const [airbyteFormIsDirty, setAirbyteFormIsDirty] = React.useState(false);
+  const [airbyteFormIsDirty, setAirbyteFormIsDirty] = useState(false);
 
-  // If the airbyte form is dirty we need to inform the parent.
-  React.useEffect(() => {
-    if (airbyteFormIsDirty) {
-      setFormIsDirty(true);
-    }
-  }, [airbyteFormIsDirty, setFormIsDirty]);
+  useEffect(() => {
+    updateResourceFormIsDirty(() => airbyteFormIsDirty);
+  }, [airbyteFormIsDirty]);
 
   const [fieldErrors, setFieldErrors] =
-    React.useState<Nullable<AirbyteFieldErrors>>(null);
+    useState<Nullable<AirbyteFieldErrors>>(null);
 
   const destinationFormTree = useAirbyteFormTree(
     destination.connector_definition
   );
 
   const initialValues: AirbyteFieldValues = {
+    id: destination.id,
     configuration: destination.configuration,
     ...dot.toDot(destination.configuration),
     description:
@@ -134,7 +140,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
     null
   );
 
-  const formYup = React.useMemo(() => {
+  const formYup = useMemo(() => {
     if (!airbyteYup) return null;
 
     return yup.object({
@@ -142,7 +148,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
     });
   }, [airbyteYup]);
 
-  const updateFieldValues = React.useCallback(
+  const updateFieldValues = useCallback(
     (field: string, value: string) => {
       setAirbyteFormIsDirty(true);
       setFieldValues((prev) => {
@@ -160,9 +166,10 @@ export const DestinationForm = (props: DestinationFormProps) => {
    * -----------------------------------------------------------------------*/
 
   const updateDestination = useUpdateConnector();
+  const createDestination = useCreateConnector();
   const { toast } = useToast();
 
-  const handleSubmit = React.useCallback(async () => {
+  const handleSubmit = useCallback(async () => {
     if (
       destination.id === "destination-grpc" ||
       destination.id === "destination-http"
@@ -179,6 +186,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
     if (!airbyteFormIsDirty) {
       return;
     }
+
     try {
       // We use yup to strip not necessary condition value. Please read
       // /lib/airbyte/README.md for more information, especially the section
@@ -212,30 +220,115 @@ export const DestinationForm = (props: DestinationFormProps) => {
 
       return;
     }
-    setFieldErrors(null);
 
-    const payload: UpdateConnectorPayload = {
-      connectorName: destination.name,
-      description: fieldValues.description as string | undefined,
-      ...stripValues,
-    };
+    if ("uid" in destination) {
+      const payload: UpdateConnectorPayload = {
+        connectorName: destination.name,
+        description: fieldValues.description as string | undefined,
+        ...stripValues,
+      };
 
-    updateDestination.mutate(
+      updateDestination.mutate(
+        { payload, accessToken },
+        {
+          onSuccess: () => {
+            setAirbyteFormIsDirty(false);
+
+            toast({
+              title: "Succeed.",
+              description: null,
+              variant: "alert-success",
+              size: "small",
+            });
+
+            if (amplitudeIsInit) {
+              sendAmplitudeData("update_destination", {
+                type: "critical_action",
+                process: "destination",
+              });
+            }
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title: "Error",
+                description: getInstillApiErrorMessage(error),
+                variant: "alert-error",
+                size: "large",
+              });
+            } else {
+              toast({
+                title: "Error",
+                description: "Something went wrong when create the destination",
+                variant: "alert-error",
+                size: "large",
+              });
+            }
+          },
+        }
+      );
+
+      return;
+    }
+
+    let payload = {} as CreateConnectorPayload;
+
+    // destination-grpc and destination-http come from instill-ai and follow
+    // our own payload
+
+    if (destination.id === "destination-grpc") {
+      payload = {
+        connectorName: "connectors/destination-grpc",
+        connector_definition_name: destination.connector_definition_name,
+        description: fieldValues.description as string,
+        configuration: {},
+      };
+    } else if (destination.id === "destination-http") {
+      payload = {
+        connectorName: "connectors/destination-http",
+        connector_definition_name: destination.connector_definition_name,
+        description: fieldValues.description as string,
+        configuration: {},
+      };
+    } else {
+      payload = {
+        connectorName: `connectors/${fieldValues.id}` as string,
+        connector_definition_name: destination.connector_definition_name,
+        description: fieldValues.description as string,
+        configuration: stripValues.configuration,
+      };
+    }
+
+    createDestination.mutate(
       { payload, accessToken },
       {
         onSuccess: () => {
-          setAirbyteFormIsDirty(false);
-          setFormIsDirty(false);
-
           toast({
-            title: "Succeed.",
-            description: null,
+            title: "Successfully update destination",
             variant: "alert-success",
             size: "small",
           });
 
+          updateSelectedNode((prev) => {
+            if (prev === null) return prev;
+
+            return {
+              ...prev,
+              data: {
+                ...prev.data,
+                connector: {
+                  ...prev.data.connector,
+                  configuration: stripValues.configuration,
+                  description: fieldValues.description as string,
+                },
+              },
+            };
+          });
+
+          setAirbyteFormIsDirty(false);
+
           if (amplitudeIsInit) {
-            sendAmplitudeData("update_destination", {
+            sendAmplitudeData("create_destination", {
               type: "critical_action",
               process: "destination",
             });
@@ -244,22 +337,23 @@ export const DestinationForm = (props: DestinationFormProps) => {
         onError: (error) => {
           if (isAxiosError(error)) {
             toast({
-              title: "Error",
-              description: getInstillApiErrorMessage(error),
+              title: "Something went wrong when create the AI",
               variant: "alert-error",
               size: "large",
+              description: getInstillApiErrorMessage(error),
             });
           } else {
             toast({
-              title: "Error",
-              description: "Something went wrong when create the destination",
+              title: "Something went wrong when create the AI",
               variant: "alert-error",
               size: "large",
+              description: "Please try again later",
             });
           }
         },
       }
     );
+    return;
   }, [
     toast,
     destination.id,
@@ -272,10 +366,9 @@ export const DestinationForm = (props: DestinationFormProps) => {
     updateDestination,
     init,
     accessToken,
-    setFormIsDirty,
   ]);
 
-  const [isTesting, setIsTesting] = React.useState(false);
+  const [isTesting, setIsTesting] = useState(false);
 
   const handleTestDestination = async function () {
     if (!destination) return;
@@ -314,6 +407,23 @@ export const DestinationForm = (props: DestinationFormProps) => {
     <>
       <FormRoot marginBottom={marginBottom} width={width}>
         <div className="mb-8 flex flex-col gap-y-5">
+          <BasicTextField
+            id="destination-id"
+            label="ID"
+            key="id"
+            description={
+              "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+              "which restricts to letters, numbers, and hyphen, with the first character a letter," +
+              "the last a letter or a number, and a 63 character maximum."
+            }
+            required={true}
+            disabled={"uid" in destination ? true : false}
+            value={fieldValues ? (fieldValues.id as string) ?? null : null}
+            error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              updateFieldValues("id", event.target.value)
+            }
+          />
           <BasicSingleSelect
             id="destination-definition"
             key="definition"
@@ -354,10 +464,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
             setFormIsDirty={setAirbyteFormIsDirty}
           />
         </div>
-        <div className="flex w-full flex-row-reverse">
-          <Button>
-            <Icons.Save01 />
-          </Button>
+        <div className="flex w-full flex-row-reverse gap-x-4">
           <Button
             onClick={handleTestDestination}
             className="gap-x-2"
@@ -389,6 +496,17 @@ export const DestinationForm = (props: DestinationFormProps) => {
             ) : (
               <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
             )}
+          </Button>
+          <Button
+            variant="secondaryColour"
+            disabled={airbyteFormIsDirty ? false : true}
+            size={airbyteFormIsDirty ? "lg" : "md"}
+            className="gap-x-2"
+            onClick={() => handleSubmit()}
+            type="button"
+          >
+            {"uid" in destination ? "Update" : "Create"}
+            <Icons.Save01 className="h-4 w-4 stroke-semantic-accent-on-bg group-disabled:stroke-semantic-fg-disabled" />
           </Button>
         </div>
       </FormRoot>

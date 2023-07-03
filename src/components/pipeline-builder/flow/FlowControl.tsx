@@ -94,6 +94,8 @@ export const FlowControl = () => {
                 },
               }
             );
+
+            return;
           }
 
           const payload: CreatePipelinePayload = {

@@ -3,11 +3,13 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ConnectorWithDefinition,
+  CreateConnectorPayload,
   ImageWithFallback,
   Nullable,
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
   testConnectorConnectionAction,
+  useCreateConnector,
   useUpdateConnector,
 } from "@instill-ai/toolkit";
 import {
@@ -20,9 +22,11 @@ import {
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IncompleteConnectorWithWatchState } from "@/types";
 import { isAxiosError } from "axios";
+import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
+import { shallow } from "zustand/shallow";
 
 const ConfigureAIFormSchema = z
   .object({
@@ -102,8 +106,16 @@ export type AIFormProps = {
   accessToken: Nullable<string>;
 };
 
+const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  updateResourceFormIsDirty: state.updateResourceFormIsDirty,
+  updateSelectedNode: state.updateSelectedNode,
+});
+
 export const AIForm = (props: AIFormProps) => {
   const { ai, accessToken } = props;
+
+  const { updateResourceFormIsDirty, updateSelectedNode } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof ConfigureAIFormSchema>>({
     resolver: zodResolver(ConfigureAIFormSchema),
@@ -112,7 +124,18 @@ export const AIForm = (props: AIFormProps) => {
     },
   });
 
+  useEffect(() => {
+    updateResourceFormIsDirty(() => form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  useEffect(() => {
+    form.reset({
+      ...ai,
+    });
+  }, [ai]);
+
   const updateConnector = useUpdateConnector();
+  const createConnector = useCreateConnector();
   const { toast } = useToast();
 
   function onSubmit(data: z.infer<typeof ConfigureAIFormSchema>) {
@@ -123,41 +146,128 @@ export const AIForm = (props: AIFormProps) => {
       "id",
     ]);
 
-    const payload: UpdateConnectorPayload = {
-      connectorName: `connectors/${data.id}`,
-      description: data.description,
-      configuration: data.configuration,
-    };
+    if ("uid" in ai) {
+      const payload: UpdateConnectorPayload = {
+        connectorName: `connectors/${data.id}`,
+        description: data.description,
+        configuration: data.configuration,
+      };
 
-    updateConnector.mutate(
-      { payload, accessToken },
-      {
-        onSuccess: () => {
-          toast({
-            title: "Successfully update AI",
-            variant: "alert-success",
-            size: "small",
-          });
-        },
-        onError: (error) => {
-          if (isAxiosError(error)) {
+      updateConnector.mutate(
+        { payload, accessToken },
+        {
+          onSuccess: (result) => {
             toast({
-              title: "Something went wrong when update the AI",
-              variant: "alert-error",
-              size: "large",
-              description: getInstillApiErrorMessage(error),
+              title: "Successfully update AI",
+              variant: "alert-success",
+              size: "small",
             });
-          } else {
-            toast({
-              title: "Something went wrong when update the AI",
-              variant: "alert-error",
-              size: "large",
-              description: "Please try again later",
+
+            // Update the selectedNode
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    configuration: result.connector.configuration,
+                    description: result.connector.description,
+                  },
+                },
+              };
             });
-          }
+
+            // Reset the form with the new configuration
+            form.reset({
+              ...ai,
+              configuration: result.connector.configuration,
+              description: result.connector.description,
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when update the AI",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when update the AI",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+    } else {
+      const payload: CreateConnectorPayload = {
+        connectorName: `connectors/${data.id}`,
+        connector_definition_name: data.connector_definition_name,
+        description: data.description,
+        configuration: data.configuration,
+      };
+
+      createConnector.mutate(
+        {
+          payload,
+          accessToken,
         },
-      }
-    );
+        {
+          onSuccess: (result) => {
+            toast({
+              title: "Successfully create AI",
+              variant: "alert-success",
+              size: "small",
+            });
+
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    configuration: result.connector.configuration,
+                    description: result.connector.description,
+                  },
+                },
+              };
+            });
+
+            form.reset({
+              ...ai,
+              configuration: result.connector.configuration,
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when create the AI",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when create the AI",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+    }
   }
 
   const [isTesting, setIsTesting] = useState(false);
@@ -215,7 +325,7 @@ export const AIForm = (props: AIFormProps) => {
                         placeholder="AI's name"
                         value={field.value ?? ""}
                         autoComplete="off"
-                        disabled={true}
+                        disabled={"uid" in ai ? true : false}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -508,6 +618,7 @@ export const AIForm = (props: AIFormProps) => {
             className="gap-x-2"
             variant="primary"
             size="lg"
+            type="button"
           >
             Test
             {isTesting ? (
@@ -538,11 +649,13 @@ export const AIForm = (props: AIFormProps) => {
           <Button
             type="submit"
             variant="secondaryColour"
-            disabled={form.formState.isDirty ? false : true}
-            size="md"
+            disabled={
+              "uid" in ai ? (form.formState.isDirty ? false : true) : false
+            }
+            size={form.formState.isDirty ? "lg" : "md"}
             className="gap-x-2"
           >
-            {form.formState.isDirty ? "Save" : ""}
+            {"uid" in ai ? "Update" : "Create"}
             <Icons.Save01 className="h-4 w-4 stroke-semantic-accent-on-bg group-disabled:stroke-semantic-fg-disabled" />
           </Button>
         </div>

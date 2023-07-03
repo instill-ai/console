@@ -206,7 +206,16 @@ const PipelineBuilderPage: FC & {
 
   const [graphIsInitialized, setGraphIsInitialized] = useState(false);
   useEffect(() => {
-    if (!pipeline.isSuccess || graphIsInitialized) {
+    if (
+      !pipeline.isSuccess ||
+      !sources.isSuccess ||
+      !sourcesWatchState.isSuccess ||
+      !destinations.isSuccess ||
+      !destinationsWatchState.isSuccess ||
+      !ais.isSuccess ||
+      !aisWatchState.isSuccess ||
+      graphIsInitialized
+    ) {
       return;
     }
     setPipelineUid(pipeline.data.uid);
@@ -248,8 +257,10 @@ const PipelineBuilderPage: FC & {
     updateNodes((prev) => {
       return prev.map((node) => {
         const ai = aisWithWatchState.find(
-          (ai) => ai.id === node.data.connector.name
+          (ai) => ai.name === node.data.connector.name
         );
+
+        console.log("ai", ai);
 
         if (ai) {
           node.data = {
