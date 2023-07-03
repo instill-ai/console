@@ -54,7 +54,7 @@ const BlockchainsPage: FC & {
         <PageTitle
           title=""
           breadcrumbs={[""]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Set up new Blockchain"
           buttonLink="/blockchains/create"
           marginBottom="mb-10"

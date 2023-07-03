@@ -23,7 +23,7 @@ const OnBoardingPage: FC & {
         <PageTitle
           title="Welcome to VDP console"
           breadcrumbs={["Onboarding"]}
-          enableButton={false}
+          disabledButton={true}
           marginBottom="mb-10"
         />
         <OnboardingForm />

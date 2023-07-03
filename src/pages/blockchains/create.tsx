@@ -41,7 +41,7 @@ const CreateBlockchainPage: FC & {
         <PageTitle
           title="Set Up New AI Connector"
           breadcrumbs={["AI", "AI Connector Settings"]}
-          enableButton={false}
+          disabledButton={true}
           marginBottom="mb-10"
         />
         <CreateBlockchainForm
