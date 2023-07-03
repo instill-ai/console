@@ -74,7 +74,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                         connectorType: "CONNECTOR_TYPE_SOURCE",
                         connector: {
                           id: definition.id,
-                          name: `source-connectors/${definition.id}`,
+                          name: `connectors/${definition.id}`,
                           connector_definition_name: definition.name,
                           connector_definition: definition,
                           watchState: "STATE_UNSPECIFIED",
@@ -132,7 +132,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                         connectorType: "CONNECTOR_TYPE_DESTINATION",
                         connector: {
                           id: randomName,
-                          name: `sources/${randomName}`,
+                          name: `connectors/${randomName}`,
                           connector_definition: definition,
                           connector_definition_name: definition.name,
                           configuration: {},
@@ -191,7 +191,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                           connectorType: "CONNECTOR_TYPE_AI",
                           connector: {
                             id: randomName,
-                            name: `sources/${randomName}`,
+                            name: `connectors/${randomName}`,
                             connector_definition: definition,
                             connector_definition_name: definition.name,
                             watchState: "STATE_UNSPECIFIED",
