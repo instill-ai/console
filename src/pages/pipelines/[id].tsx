@@ -47,6 +47,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   addNode: state.addNode,
   rightPanelIsOpen: state.rightPanelIsOpen,
   setNodes: state.setNodes,
+  updateNodes: state.updateNodes,
   setEdges: state.setEdges,
 });
 
@@ -62,6 +63,7 @@ const PipelineBuilderPage: FC & {
     rightPanelIsOpen,
     setNodes,
     setEdges,
+    updateNodes,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -97,23 +99,23 @@ const PipelineBuilderPage: FC & {
     enabled: sources.isSuccess && sources.data.length > 0,
   });
 
-  const sourcesWithWatchState = useMemo<
-    Nullable<ConnectorWithWatchState[]>
-  >(() => {
+  const sourcesWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
     if (
       !sources.isSuccess ||
       !sources.data ||
       !sourcesWatchState.isSuccess ||
       !sourcesWatchState.data
     ) {
-      return null;
+      return [];
     }
 
     return sources.data.map((source) => {
       return {
         ...source,
         watchState:
-          sourcesWatchState.data[source.name].state || "STATE_UNSPECIFIED",
+          `${source.name}` in sourcesWatchState.data
+            ? sourcesWatchState.data[source.name].state
+            : "STATE_UNSPECIFIED",
       };
     });
   }, [
@@ -138,24 +140,23 @@ const PipelineBuilderPage: FC & {
     enabled: destinations.isSuccess && destinations.data.length > 0,
   });
 
-  const destinationsWithWatchState = useMemo<
-    Nullable<ConnectorWithWatchState[]>
-  >(() => {
+  const destinationsWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
     if (
       !destinations.isSuccess ||
       !destinations.data ||
       !destinationsWatchState.isSuccess ||
       !destinationsWatchState.data
     ) {
-      return null;
+      return [];
     }
 
     return destinations.data.map((destination) => {
       return {
         ...destination,
         watchState:
-          destinationsWatchState.data[destination.name].state ||
-          "STATE_UNSPECIFIED",
+          `${destination.name}` in destinationsWatchState.data
+            ? destinationsWatchState.data[destination.name].state
+            : "STATE_UNSPECIFIED",
       };
     });
   }, [
@@ -178,32 +179,42 @@ const PipelineBuilderPage: FC & {
     enabled: ais.isSuccess && ais.data.length > 0,
   });
 
-  const aisWithWatchState = useMemo<Nullable<ConnectorWithWatchState[]>>(() => {
+  const aisWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
     if (
       !ais.isSuccess ||
       !ais.data ||
       !aisWatchState.isSuccess ||
       !aisWatchState.data
     ) {
-      return null;
+      return [];
     }
-
-    console.log(aisWatchState.data);
 
     return ais.data.map((ai) => {
       return {
         ...ai,
-        watchState: aisWatchState.data[ai.name].state || "STATE_UNSPECIFIED",
+        watchState:
+          `${ai.name}` in aisWatchState.data
+            ? aisWatchState.data[ai.name].state
+            : "STATE_UNSPECIFIED",
       };
     });
   }, [ais.isSuccess, ais.data, aisWatchState.isSuccess, aisWatchState.data]);
 
+  /* -------------------------------------------------------------------------
+   * Initialize graph
+   * -----------------------------------------------------------------------*/
+
+  const [graphIsInitialized, setGraphIsInitialized] = useState(false);
   useEffect(() => {
     if (
       !pipeline.isSuccess ||
-      !aisWithWatchState ||
-      !sourcesWithWatchState ||
-      !destinationsWithWatchState
+      !sources.isSuccess ||
+      !sourcesWatchState.isSuccess ||
+      !destinations.isSuccess ||
+      !destinationsWatchState.isSuccess ||
+      !ais.isSuccess ||
+      !aisWatchState.isSuccess ||
+      graphIsInitialized
     ) {
       return;
     }
@@ -223,6 +234,8 @@ const PipelineBuilderPage: FC & {
         setEdges(graphData.edges);
       }
     );
+
+    setGraphIsInitialized(true);
   }, [
     pipeline.isSuccess,
     pipeline.data?.uid,
@@ -234,6 +247,68 @@ const PipelineBuilderPage: FC & {
     pipeline.data,
     setNodes,
     setEdges,
+    ais.isSuccess,
+    aisWatchState.isSuccess,
+    destinations.isSuccess,
+    sources.isSuccess,
+    destinationsWatchState.isSuccess,
+    sourcesWatchState.isSuccess,
+    graphIsInitialized,
+  ]);
+
+  /* -------------------------------------------------------------------------
+   * Update the nodes and edges
+   * -----------------------------------------------------------------------*/
+
+  useEffect(() => {
+    updateNodes((prev) => {
+      return prev.map((node) => {
+        const ai = aisWithWatchState.find(
+          (ai) => ai.name === node.data.connector.name
+        );
+
+        console.log("ai", ai);
+
+        if (ai) {
+          node.data = {
+            connectorType: "CONNECTOR_TYPE_AI",
+            connector: ai,
+          };
+          return node;
+        }
+
+        const source = sourcesWithWatchState.find(
+          (source) => source.name === node.data.connector.name
+        );
+
+        if (source) {
+          node.data = {
+            connectorType: "CONNECTOR_TYPE_SOURCE",
+            connector: source,
+          };
+          return node;
+        }
+
+        const destination = destinationsWithWatchState.find(
+          (destination) => destination.name === node.data.connector.name
+        );
+
+        if (destination) {
+          node.data = {
+            connectorType: "CONNECTOR_TYPE_DESTINATION",
+            connector: destination,
+          };
+          return node;
+        }
+
+        return node;
+      });
+    });
+  }, [
+    aisWithWatchState,
+    sourcesWithWatchState,
+    destinationsWithWatchState,
+    updateNodes,
   ]);
 
   const [draggedItem, setDraggedItem] =
@@ -244,17 +319,11 @@ const PipelineBuilderPage: FC & {
   function handleDragStart({ active }: DragStartEvent) {
     let allConnectors: ConnectorWithWatchState[] = [];
 
-    if (aisWithWatchState) {
-      allConnectors = [...allConnectors, ...aisWithWatchState];
-    }
-
-    if (sourcesWithWatchState) {
-      allConnectors = [...allConnectors, ...sourcesWithWatchState];
-    }
-
-    if (destinationsWithWatchState) {
-      allConnectors = [...allConnectors, ...destinationsWithWatchState];
-    }
+    allConnectors = [
+      ...sourcesWithWatchState,
+      ...destinationsWithWatchState,
+      ...aisWithWatchState,
+    ];
 
     const draggedItem = allConnectors.find((e) => e.name === active.id) || null;
 
@@ -465,23 +534,21 @@ const PipelineBuilderPage: FC & {
                   selectedTab={selectedTab}
                   reactFlowInstance={reactFlowInstance}
                 >
-                  {selectedTab === "CONNECTOR_TYPE_SOURCE" &&
-                  sourcesWithWatchState
+                  {selectedTab === "CONNECTOR_TYPE_SOURCE"
                     ? sourcesWithWatchState.map((e) => (
                         <Draggable key={e.name} id={e.name}>
                           <Item resource={e} />
                         </Draggable>
                       ))
                     : null}
-                  {selectedTab === "CONNECTOR_TYPE_AI" && aisWithWatchState
+                  {selectedTab === "CONNECTOR_TYPE_AI"
                     ? aisWithWatchState.map((ai) => (
                         <Draggable key={ai.name} id={ai.name}>
                           <Item resource={ai} />
                         </Draggable>
                       ))
                     : null}
-                  {selectedTab === "CONNECTOR_TYPE_DESTINATION" &&
-                  destinationsWithWatchState
+                  {selectedTab === "CONNECTOR_TYPE_DESTINATION"
                     ? destinationsWithWatchState.map((e) => (
                         <Draggable key={e.name} id={e.name}>
                           <Item resource={e} />

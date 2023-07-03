@@ -4,7 +4,10 @@ import {
   CreatePipelinePayload,
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
+  useActivatePipeline,
   useCreatePipeline,
+  useDeActivatePipeline,
+  usePipeline,
   useUpdatePipeline,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
@@ -28,27 +31,95 @@ export const FlowControl = () => {
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
   const { toast } = useToast();
 
+  const pipeline = usePipeline({
+    pipelineName: `pipelines/${pipelineId}`,
+    enabled: true,
+    accessToken: null,
+  });
+
   const updatePipeline = useUpdatePipeline();
   const createPipeline = useCreatePipeline();
+  const activatePipeline = useActivatePipeline();
+  const deactivatePipeline = useDeActivatePipeline();
 
   return (
     <div className="absolute bottom-4 right-4 flex flex-row-reverse gap-x-4">
       <Button
         onClick={() => {
-          const createPipelinePayload: CreatePipelinePayload = {
-            id: "test-pipeline",
-            recipe: {
-              version: "v1alpha",
-              components: nodes.map((node) => ({
-                id: node.id,
-                resource_name: node.data.connector.name,
-              })),
-            },
-          };
+          if (!pipeline.isSuccess) return;
+
+          if (pipeline.data?.state === "STATE_ACTIVE") {
+            deactivatePipeline.mutate(
+              {
+                pipelineName: `pipelines/${pipelineId}`,
+                accessToken: null,
+              },
+              {
+                onSuccess: () => {
+                  toast({
+                    title: "Successfully deativated the pipeline",
+                    variant: "alert-success",
+                    size: "small",
+                  });
+                },
+                onError: (error) => {
+                  if (isAxiosError(error)) {
+                    toast({
+                      title:
+                        "Something went wrong when deactivated the pipeline",
+                      description: getInstillApiErrorMessage(error),
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  } else {
+                    toast({
+                      title:
+                        "Something went wrong when deactivated the pipeline",
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  }
+                },
+              }
+            );
+          } else {
+            activatePipeline.mutate(
+              {
+                pipelineName: `pipelines/${pipelineId}`,
+                accessToken: null,
+              },
+              {
+                onSuccess: () => {
+                  toast({
+                    title: "Successfully activated the pipeline",
+                    variant: "alert-success",
+                    size: "small",
+                  });
+                },
+                onError: (error) => {
+                  if (isAxiosError(error)) {
+                    toast({
+                      title: "Something went wrong when activated the pipeline",
+                      description: getInstillApiErrorMessage(error),
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  } else {
+                    toast({
+                      title: "Something went wrong when activated the pipeline",
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  }
+                },
+              }
+            );
+          }
         }}
         className="gap-x-2"
         variant="primary"
         size="lg"
+        disabled={pipeline.isSuccess ? false : true}
       >
         Activate
         <Icons.Play className="h-5 w-5 stroke-semantic-bg-primary" />
@@ -94,6 +165,8 @@ export const FlowControl = () => {
                 },
               }
             );
+
+            return;
           }
 
           const payload: CreatePipelinePayload = {

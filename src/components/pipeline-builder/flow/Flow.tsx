@@ -16,6 +16,7 @@ import { CustomEdge } from "../CustomEdge";
 import { FlowControl } from "./FlowControl";
 import { useDroppable } from "@dnd-kit/core";
 import { DROPPABLE_AREA_ID } from "@/pages/pipelines/[id]";
+import { useToast } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -25,6 +26,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   onConnect: state.onConnect,
   setRightPanelIsOpen: state.setRightPanelIsOpen,
   setSelectedNode: state.setSelectedNode,
+  resourceFormIsDirty: state.resourceFormIsDirty,
 });
 
 export type FlowProps = {
@@ -51,6 +53,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     onConnect,
     setRightPanelIsOpen,
     setSelectedNode,
+    resourceFormIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { setNodeRef } = useDroppable({
@@ -82,6 +85,8 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     [nodes]
   );
 
+  const { toast } = useToast();
+
   return (
     <div className="relative flex-1">
       <button
@@ -104,10 +109,37 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             isValidConnection={isValidConnection}
             selectNodesOnDrag={false}
             onNodeClick={(event, node) => {
-              setSelectedNode(node);
+              if (resourceFormIsDirty) {
+                toast({
+                  title: "You have unsaved changes",
+                  description:
+                    "Please save or discard your changes before editing another resource.",
+                  size: "large",
+                  variant: "alert-warning",
+                });
+              } else {
+                setSelectedNode(node);
+                setRightPanelIsOpen((prev) => {
+                  if (!prev) {
+                    return true;
+                  } else {
+                    return prev;
+                  }
+                });
+              }
             }}
             onPaneClick={() => {
-              setSelectedNode(null);
+              if (resourceFormIsDirty) {
+                toast({
+                  title: "You have unsaved changes",
+                  description:
+                    "Please save or discard your changes before editing another resource.",
+                  size: "large",
+                  variant: "alert-warning",
+                });
+              } else {
+                setSelectedNode(null);
+              }
             }}
 
             // We disable the selection triggered by react-flow due to

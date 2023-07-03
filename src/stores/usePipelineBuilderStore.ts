@@ -25,6 +25,7 @@ export type PipelineBuilderState = {
   selectedEdge: Nullable<Edge>;
   rightPanelIsOpen: boolean;
   isSavingPipeline: boolean;
+  resourceFormIsDirty: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -33,16 +34,27 @@ export type PipelineBuilderAction = {
   setPipelineId: (pipelineId: Nullable<string>) => void;
   setPipelineDescription: (pipelineDescription: Nullable<string>) => void;
   setNodes: (nodes: Node<ConnectorNodeData>[]) => void;
+  updateNodes: (
+    fn: (prev: Node<ConnectorNodeData>[]) => Node<ConnectorNodeData>[]
+  ) => void;
   setEdges: (edges: Edge[]) => void;
+  updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   addNode: (node: Node<ConnectorNodeData>) => void;
   removeNode: (node: Node<ConnectorNodeData>) => void;
   setSelectedNode: (nodes: Nullable<Node<ConnectorNodeData>>) => void;
+  updateSelectedNode: (
+    fn: (
+      prev: Nullable<Node<ConnectorNodeData>>
+    ) => Nullable<Node<ConnectorNodeData>>
+  ) => void;
   setSelectedEdge: (edges: Nullable<Edge>) => void;
+  updateSelectedEdge: (fn: (prev: Nullable<Edge>) => Nullable<Edge>) => void;
   setRightPanelIsOpen: (fn: (prev: boolean) => boolean) => void;
   setIsSavingPipeline: (isSavingPipeline: boolean) => void;
+  updateResourceFormIsDirty: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
@@ -57,6 +69,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineDescription: null,
   isSavingPipeline: false,
   rightPanelIsOpen: false,
+  resourceFormIsDirty: false,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -87,17 +100,39 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
       set((state) => {
         return { ...state, nodes };
       }),
+    updateNodes: (
+      fn: (prev: Node<ConnectorNodeData>[]) => Node<ConnectorNodeData>[]
+    ) =>
+      set((state) => {
+        return { ...state, nodes: fn(state.nodes) };
+      }),
     setEdges: (edges: Edge[]) =>
       set((state) => {
         return { ...state, edges };
+      }),
+    updateEdges: (fn: (prev: Edge[]) => Edge[]) =>
+      set((state) => {
+        return { ...state, edges: fn(state.edges) };
       }),
     setSelectedNode: (node: Nullable<Node<ConnectorNodeData>>) =>
       set((state) => {
         return { ...state, selectedNode: node };
       }),
+    updateSelectedNode: (
+      fn: (
+        prev: Nullable<Node<ConnectorNodeData>>
+      ) => Nullable<Node<ConnectorNodeData>>
+    ) =>
+      set((state) => {
+        return { ...state, selectedNode: fn(state.selectedNode) };
+      }),
     setSelectedEdge: (edge: Nullable<Edge>) =>
       set((state) => {
         return { ...state, selectedEdge: edge };
+      }),
+    updateSelectedEdge: (fn: (prev: Nullable<Edge>) => Nullable<Edge>) =>
+      set((state) => {
+        return { ...state, selectedEdge: fn(state.selectedEdge) };
       }),
     onNodesChange: (changes: NodeChange[]) => {
       set({
@@ -129,5 +164,9 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           (e) => e.data.connector.id === node.data.connector.id
         ),
       })),
+    updateResourceFormIsDirty: (fn: (prev: boolean) => boolean) =>
+      set((state) => {
+        return { ...state, resourceFormIsDirty: fn(state.resourceFormIsDirty) };
+      }),
   })
 );
