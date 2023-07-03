@@ -70,7 +70,7 @@ const CreateModelPage: FC & {
         <PageTitle
           title="Set Up New Model"
           breadcrumbs={["Model", "Settings"]}
-          enableButton={false}
+          disabledButton={true}
           marginBottom="mb-10"
         />
         <CreateModelForm

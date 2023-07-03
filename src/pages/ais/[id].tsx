@@ -4,7 +4,6 @@ import {
   useConnectorWithPipelines,
   StateLabel,
   PipelinesTable,
-  useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchConnector,
   ConfigureAIForm,
@@ -21,7 +20,6 @@ const AIDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -69,7 +67,7 @@ const AIDetailsPage: FC & {
       <PageTitle
         title={id ? id.toString() : ""}
         breadcrumbs={id ? ["AI", id.toString()] : ["AI"]}
-        enableButton={false}
+        disabledButton={true}
         marginBottom="mb-[50px]"
       />
       <div className="mb-10 flex flex-row gap-x-5">

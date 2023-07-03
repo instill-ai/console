@@ -53,7 +53,7 @@ const DestinationPage: FC & {
         <PageTitle
           title="Destination"
           breadcrumbs={["Destination"]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Set up new destination"
           buttonLink="/destinations/create"
           marginBottom="mb-10"

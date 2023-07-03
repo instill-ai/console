@@ -7,33 +7,39 @@ import { SolidButton } from "@instill-ai/design-system";
 
 export type PageTitleProps = {
   title: string;
-  enableButton: boolean;
+  disabledButton: boolean;
   buttonName?: string;
   buttonLink?: string;
   breadcrumbs: BreadcrumbProps["breadcrumbs"];
   marginBottom: string;
+  onClick?: () => void;
 };
 
 export const PageTitle = ({
   title,
-  enableButton,
+  disabledButton,
   buttonName,
   buttonLink,
   breadcrumbs,
   marginBottom,
+  onClick,
 }: PageTitleProps) => {
   const router = useRouter();
   const onClickHandler = useCallback(() => {
-    if (enableButton && buttonLink) {
-      router.push(buttonLink);
+    if (!disabledButton && buttonLink) {
+      if (onClick) {
+        onClick();
+      } else {
+        router.push(buttonLink);
+      }
     }
-  }, [router, buttonLink, enableButton]);
+  }, [router, buttonLink, disabledButton, onClick]);
   return (
     <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <div className="flex min-h-[44px] w-full flex-row">
         <h2 className="mr-auto mt-auto text-black text-instill-h2">{title}</h2>
-        {enableButton ? (
+        {disabledButton ? null : (
           <SolidButton
             type="button"
             color="primary"
@@ -43,7 +49,7 @@ export const PageTitle = ({
           >
             {buttonName}
           </SolidButton>
-        ) : null}
+        )}
       </div>
     </div>
   );

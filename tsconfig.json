@@ -6,23 +6,14 @@
       "@/components/*": ["components/*"],
       "@/types": ["types"],
       "@/types/*": ["types/*"],
-      "@/hooks": ["hooks"],
-      "@/hooks/*": ["hooks/*"],
-      "@/utils": ["utils"],
-      "@/utils/*": ["utils/*"],
       "@/styles": ["styles"],
       "@/styles/*": ["styles/*"],
-
-      // We didn't support import directly from "@/services"
-      "@/services/*": ["services/*"],
       "@/lib": ["lib"],
       "@/lib/*": ["lib/*"],
       "@/pages": ["pages"],
       "@/pages/*": ["pages/*"],
-      "@/mocks": ["mocks"],
-      "@/mocks/*": ["mocks/*"],
-      "@/contexts": ["contexts"],
-      "@/contexts/*": ["contexts/*"]
+      "@/stores": ["stores"],
+      "@/stores/*": ["stores/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

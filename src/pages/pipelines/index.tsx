@@ -7,6 +7,14 @@ import {
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
+import { usePipelineBuilderStore } from "@/stores";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -15,6 +23,7 @@ type GetLayOutProps = {
 const PipelinePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
@@ -37,6 +46,8 @@ const PipelinePage: FC & {
       ? pipelinesWatchState.isLoading
       : false;
 
+  const setPipelineId = usePipelineBuilderStore((state) => state.setPipelineId);
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -48,10 +59,18 @@ const PipelinePage: FC & {
         <PageTitle
           title="Pipeline"
           breadcrumbs={["Pipeline"]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Add new pipeline"
           buttonLink="/pipelines/create"
           marginBottom="mb-10"
+          onClick={() => {
+            const randomName = uniqueNamesGenerator({
+              dictionaries: [adjectives, colors, animals],
+              separator: "-",
+            });
+            setPipelineId(randomName);
+            router.push(`/pipelines/${randomName}`);
+          }}
         />
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}

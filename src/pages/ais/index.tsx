@@ -50,7 +50,7 @@ const AIsPage: FC & {
         <PageTitle
           title=""
           breadcrumbs={[""]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Set up new AI"
           buttonLink="/ais/create"
           marginBottom="mb-10"

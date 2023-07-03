@@ -18,10 +18,12 @@ import "@instill-ai/design-system/dist/index.css";
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
+import "reactflow/dist/style.css";
 
 import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
+import { Toaster } from "@instill-ai/design-system";
 
 export const queryCache = new QueryCache();
 
@@ -71,6 +73,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
+        <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AmplitudeCtx.Provider>

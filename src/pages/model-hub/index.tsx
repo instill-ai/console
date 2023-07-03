@@ -49,7 +49,7 @@ const ModelPage: FC & {
         <PageTitle
           title=""
           breadcrumbs={[]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Add new model"
           buttonLink="/model-hub/create"
           marginBottom="mb-10"

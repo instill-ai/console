@@ -52,7 +52,7 @@ const SourcePage: FC & {
         <PageTitle
           title="Source"
           breadcrumbs={["Source"]}
-          enableButton={enableGuard ? false : true}
+          disabledButton={enableGuard}
           buttonName="Set up new source"
           buttonLink="/sources/create"
           marginBottom="mb-10"

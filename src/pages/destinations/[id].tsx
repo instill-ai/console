@@ -91,7 +91,7 @@ const DestinationDetailsPage: FC & {
         <PageTitle
           title={id ? id.toString() : ""}
           breadcrumbs={id ? ["Destination", id.toString()] : ["Destination"]}
-          enableButton={false}
+          disabledButton={true}
           marginBottom="mb-[50px]"
         />
         <div className="mb-10 flex flex-row gap-x-5">

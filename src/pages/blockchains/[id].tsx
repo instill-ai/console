@@ -4,7 +4,6 @@ import {
   useConnectorWithPipelines,
   StateLabel,
   PipelinesTable,
-  useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchConnector,
   ConfigureBlockchainForm,
@@ -21,7 +20,6 @@ const BlockchainDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -72,7 +70,7 @@ const BlockchainDetailsPage: FC & {
       <PageTitle
         title={id ? id.toString() : ""}
         breadcrumbs={id ? ["Blockchain", id.toString()] : ["Blockchain"]}
-        enableButton={false}
+        disabledButton={true}
         marginBottom="mb-[50px]"
       />
       <div className="mb-10 flex flex-row gap-x-5">
