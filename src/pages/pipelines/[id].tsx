@@ -29,6 +29,7 @@ import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import {
   Flow,
   LeftPanel,
+  LeftSidebar,
   PageBase,
   PageHead,
   PipelineNameForm,
@@ -446,83 +447,10 @@ const PipelineBuilderPage: FC & {
             </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
               <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
-                <div className="mb-auto flex flex-col space-y-2 pt-8">
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_SOURCE"
-                          ? null
-                          : "CONNECTOR_TYPE_SOURCE"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_SOURCE",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Source
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_AI"
-                          ? null
-                          : "CONNECTOR_TYPE_AI"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_AI",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Model
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_DESTINATION"
-                          ? null
-                          : "CONNECTOR_TYPE_DESTINATION"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_DESTINATION",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Destination
-                      </p>
-                    </div>
-                  </button>
-                </div>
+                <LeftSidebar
+                  selectedTab={selectedTab}
+                  setSelectedTab={setSelectedTab}
+                />
               </div>
               <div
                 className={cn(
