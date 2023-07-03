@@ -3,7 +3,6 @@ import {
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
-  AIsTable,
   BlockchainsTable,
 } from "@instill-ai/toolkit";
 

@@ -4,7 +4,6 @@ import {
   useConnectorWithPipelines,
   StateLabel,
   PipelinesTable,
-  useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchConnector,
   ConfigureAIForm,
@@ -21,7 +20,6 @@ const AIDetailsPage: FC & {
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
    * Query resource data

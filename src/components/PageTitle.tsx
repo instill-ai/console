@@ -33,7 +33,7 @@ export const PageTitle = ({
         router.push(buttonLink);
       }
     }
-  }, [router, buttonLink, disabledButton]);
+  }, [router, buttonLink, disabledButton, onClick]);
   return (
     <div className={cn("flex w-full flex-col", marginBottom)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />

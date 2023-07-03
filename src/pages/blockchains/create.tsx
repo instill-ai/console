@@ -1,7 +1,6 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { z } from "zod";
 
 import { env, CreateBlockchainForm } from "@instill-ai/toolkit";
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
