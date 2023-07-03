@@ -99,7 +99,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                       <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
                     }
                   />
-                  <p className="my-auto text-semantic-fg-primary product-headings-heading-5">
+                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                     {definition.id}
                   </p>
                 </SelectConnectorDefinitionDialog.Item>
@@ -157,7 +157,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                       <Icons.Box className="my-auto h-6 w-6 stroke-semantic-fg-primary" />
                     }
                   />
-                  <p className="my-auto text-semantic-fg-primary product-headings-heading-5">
+                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                     {definition.title}
                   </p>
                 </SelectConnectorDefinitionDialog.Item>
@@ -178,6 +178,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
 
                       const randomName: string = uniqueNamesGenerator({
                         dictionaries: [adjectives, colors, animals],
+                        separator: "-",
                       });
 
                       const viewport = reactFlowInstance.getViewport();
@@ -213,7 +214,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                       color: "fill-semantic-fg-primary",
                       position: "my-auto",
                     })}
-                    <p className="my-auto text-semantic-fg-primary product-headings-heading-5">
+                    <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                       {definition.title}
                     </p>
                   </SelectConnectorDefinitionDialog.Item>
