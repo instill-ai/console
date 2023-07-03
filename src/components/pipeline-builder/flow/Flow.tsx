@@ -14,6 +14,8 @@ import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { DestinationNode, ModelNode, SourceNode } from "../nodes";
 import { CustomEdge } from "../CustomEdge";
 import { FlowControl } from "./FlowControl";
+import { useDroppable } from "@dnd-kit/core";
+import { DROPPABLE_AREA_ID } from "@/pages/pipelines/[id]";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -51,6 +53,10 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     setSelectedNode,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
+  const { setNodeRef } = useDroppable({
+    id: DROPPABLE_AREA_ID,
+  });
+
   const isValidConnection: IsValidConnection = useCallback(
     (connection) => {
       const targetNode = nodes.find((node) => node.id === connection.target);
@@ -82,42 +88,44 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
         onClick={() => setRightPanelIsOpen((prev) => !prev)}
         className="absolute right-4 top-4 z-30 h-8 w-8 bg-semantic-accent-bg"
       />
-      <div ref={ref} className="h-full w-full flex-1">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onInit={setReactFlowInstance}
-          onConnect={onConnect}
-          fitView
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          proOptions={{ hideAttribution: true }}
-          isValidConnection={isValidConnection}
-          selectNodesOnDrag={false}
-          onNodeClick={(event, node) => {
-            setSelectedNode(node);
-          }}
-          onPaneClick={() => {
-            setSelectedNode(null);
-          }}
+      <div ref={setNodeRef} className="h-full w-full flex-1">
+        <div ref={ref} className="h-full w-full flex-1">
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onInit={setReactFlowInstance}
+            onConnect={onConnect}
+            fitView
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            proOptions={{ hideAttribution: true }}
+            isValidConnection={isValidConnection}
+            selectNodesOnDrag={false}
+            onNodeClick={(event, node) => {
+              setSelectedNode(node);
+            }}
+            onPaneClick={() => {
+              setSelectedNode(null);
+            }}
 
-          // We disable the selection triggered by react-flow due to
-          // it will redundantly trigger another time when selectNodesOnDrag
-          // is set to false.
-          // https://github.com/wbkd/react-flow/issues/1876
-          // onSelectionChange={(params) => {
-          //   setSelectedNode(params.nodes[0]);
-          // }}
-        >
-          <Controls />
-          <Background
-            variant={BackgroundVariant.Dots}
-            gap={16}
-            color="#d1d5db"
-          />
-        </ReactFlow>
+            // We disable the selection triggered by react-flow due to
+            // it will redundantly trigger another time when selectNodesOnDrag
+            // is set to false.
+            // https://github.com/wbkd/react-flow/issues/1876
+            // onSelectionChange={(params) => {
+            //   setSelectedNode(params.nodes[0]);
+            // }}
+          >
+            <Controls />
+            <Background
+              variant={BackgroundVariant.Dots}
+              gap={16}
+              color="#d1d5db"
+            />
+          </ReactFlow>
+        </div>
       </div>
       <FlowControl />
     </div>

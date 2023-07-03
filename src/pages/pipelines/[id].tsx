@@ -9,12 +9,12 @@ import {
   usePipeline,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
-import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 import { shallow } from "zustand/shallow";
 import { Node, Position, ReactFlowInstance } from "reactflow";
 import {
   DndContext,
+  DragEndEvent,
   DragOverlay,
   DragStartEvent,
   useDraggable,
@@ -49,6 +49,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setNodes: state.setNodes,
   setEdges: state.setEdges,
 });
+
+export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
 
 const PipelineBuilderPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -263,13 +265,17 @@ const PipelineBuilderPage: FC & {
     setDraggedItem(null);
   }
 
-  function handleDragEnd() {
+  function handleDragEnd(event: DragEndEvent) {
     if (
       !reactFlowInstance ||
       !reactFlowWrapper.current ||
       !dropOverlayRef.current ||
       !draggedItem
     ) {
+      return;
+    }
+
+    if (event.over?.id !== "pipeline-builder-droppable") {
       return;
     }
 
@@ -364,14 +370,11 @@ const PipelineBuilderPage: FC & {
             onDragEnd={handleDragEnd}
             autoScroll={false}
           >
-            {createPortal(
-              <DragOverlay dropAnimation={null}>
-                <div ref={dropOverlayRef}>
-                  {draggedItem ? <Item resource={draggedItem} /> : null}
-                </div>
-              </DragOverlay>,
-              document.body
-            )}
+            <DragOverlay dropAnimation={null}>
+              <div ref={dropOverlayRef}>
+                {draggedItem ? <Item resource={draggedItem} /> : null}
+              </div>
+            </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
               <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
                 <div className="mb-auto flex flex-col space-y-2 pt-8">
@@ -462,31 +465,29 @@ const PipelineBuilderPage: FC & {
                   selectedTab={selectedTab}
                   reactFlowInstance={reactFlowInstance}
                 >
-                  <>
-                    {selectedTab === "CONNECTOR_TYPE_SOURCE" &&
-                    sourcesWithWatchState
-                      ? sourcesWithWatchState.map((e) => (
-                          <Draggable key={e.name} id={e.name}>
-                            <Item resource={e} />
-                          </Draggable>
-                        ))
-                      : null}
-                    {selectedTab === "CONNECTOR_TYPE_AI" && aisWithWatchState
-                      ? aisWithWatchState.map((ai) => (
-                          <Draggable key={ai.name} id={ai.name}>
-                            <Item resource={ai} />
-                          </Draggable>
-                        ))
-                      : null}
-                    {selectedTab === "CONNECTOR_TYPE_DESTINATION" &&
-                    destinationsWithWatchState
-                      ? destinationsWithWatchState.map((e) => (
-                          <Draggable key={e.name} id={e.name}>
-                            <Item resource={e} />
-                          </Draggable>
-                        ))
-                      : null}
-                  </>
+                  {selectedTab === "CONNECTOR_TYPE_SOURCE" &&
+                  sourcesWithWatchState
+                    ? sourcesWithWatchState.map((e) => (
+                        <Draggable key={e.name} id={e.name}>
+                          <Item resource={e} />
+                        </Draggable>
+                      ))
+                    : null}
+                  {selectedTab === "CONNECTOR_TYPE_AI" && aisWithWatchState
+                    ? aisWithWatchState.map((ai) => (
+                        <Draggable key={ai.name} id={ai.name}>
+                          <Item resource={ai} />
+                        </Draggable>
+                      ))
+                    : null}
+                  {selectedTab === "CONNECTOR_TYPE_DESTINATION" &&
+                  destinationsWithWatchState
+                    ? destinationsWithWatchState.map((e) => (
+                        <Draggable key={e.name} id={e.name}>
+                          <Item resource={e} />
+                        </Draggable>
+                      ))
+                    : null}
                 </LeftPanel>
               </div>
               <Flow

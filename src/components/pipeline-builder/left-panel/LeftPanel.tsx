@@ -5,7 +5,7 @@ import {
   Nullable,
   useConnectorDefinitions,
 } from "@instill-ai/toolkit";
-import { SelectConnectorDefinitionDialog } from "../SelectConnectorDefinitionDialog";
+import { SelectConnectorDefinitionDialog } from "./SelectConnectorDefinitionDialog";
 import { Icons, getModelDefinitionToolkit } from "@instill-ai/design-system";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { Node, Position, ReactFlowInstance } from "reactflow";
