@@ -33,7 +33,11 @@ export type PipelineBuilderAction = {
   setPipelineId: (pipelineId: Nullable<string>) => void;
   setPipelineDescription: (pipelineDescription: Nullable<string>) => void;
   setNodes: (nodes: Node<ConnectorNodeData>[]) => void;
+  updateNodes: (
+    fn: (prev: Node<ConnectorNodeData>[]) => Node<ConnectorNodeData>[]
+  ) => void;
   setEdges: (edges: Edge[]) => void;
+  updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -87,9 +91,19 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
       set((state) => {
         return { ...state, nodes };
       }),
+    updateNodes: (
+      fn: (prev: Node<ConnectorNodeData>[]) => Node<ConnectorNodeData>[]
+    ) =>
+      set((state) => {
+        return { ...state, nodes: fn(state.nodes) };
+      }),
     setEdges: (edges: Edge[]) =>
       set((state) => {
         return { ...state, edges };
+      }),
+    updateEdges: (fn: (prev: Edge[]) => Edge[]) =>
+      set((state) => {
+        return { ...state, edges: fn(state.edges) };
       }),
     setSelectedNode: (node: Nullable<Node<ConnectorNodeData>>) =>
       set((state) => {
