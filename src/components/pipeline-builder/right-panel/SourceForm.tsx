@@ -18,7 +18,6 @@ import {
   useConnectorDefinitions,
   useConnectors,
   useCreateConnector,
-  useWatchConnectors,
 } from "@instill-ai/toolkit";
 import { useEffect, useState } from "react";
 import { IncompleteConnectorWithWatchState } from "@/types";

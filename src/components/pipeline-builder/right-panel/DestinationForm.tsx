@@ -1,6 +1,5 @@
 import * as yup from "yup";
 import { isAxiosError } from "axios";
-import { shallow } from "zustand/shallow";
 import {
   FormRoot,
   BasicSingleSelect,
@@ -21,7 +20,6 @@ import {
   useUpdateConnector,
   useAmplitudeCtx,
   sendAmplitudeData,
-  useCreateResourceFormStore,
   getInstillApiErrorMessage,
   testConnectorConnectionAction,
   AirbyteDestinationFields,
@@ -31,22 +29,17 @@ import {
   type ConnectorWithDefinition,
   type UpdateConnectorPayload,
   type Nullable,
-  type CreateResourceFormStore,
   CreateConnectorPayload,
   useCreateConnector,
 } from "@instill-ai/toolkit";
 import { IncompleteConnectorWithWatchState } from "@/types";
-import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
+import { usePipelineBuilderStore } from "@/stores";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type DestinationFormProps = {
   accessToken: Nullable<string>;
   destination: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
 } & Pick<FormRootProps, "marginBottom" | "width">;
-
-const formSelector = (state: CreateResourceFormStore) => ({
-  init: state.init,
-});
 
 export const DestinationForm = (props: DestinationFormProps) => {
   const { destination, accessToken, width, marginBottom } = props;
@@ -55,8 +48,6 @@ export const DestinationForm = (props: DestinationFormProps) => {
   /* -------------------------------------------------------------------------
    * Initialize form state
    * -----------------------------------------------------------------------*/
-
-  const { init } = useCreateResourceFormStore(formSelector, shallow);
 
   const updateSelectedNode = usePipelineBuilderStore(
     (state) => state.updateSelectedNode
@@ -109,7 +100,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
 
   useEffect(() => {
     updateResourceFormIsDirty(() => airbyteFormIsDirty);
-  }, [airbyteFormIsDirty]);
+  }, [airbyteFormIsDirty, updateResourceFormIsDirty]);
 
   const [fieldErrors, setFieldErrors] =
     useState<Nullable<AirbyteFieldErrors>>(null);
@@ -356,16 +347,16 @@ export const DestinationForm = (props: DestinationFormProps) => {
     return;
   }, [
     toast,
-    destination.id,
     amplitudeIsInit,
     formYup,
     fieldValues,
     airbyteFormIsDirty,
     setAirbyteFormIsDirty,
-    destination.name,
     updateDestination,
-    init,
     accessToken,
+    createDestination,
+    destination,
+    updateSelectedNode,
   ]);
 
   const [isTesting, setIsTesting] = useState(false);

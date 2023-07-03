@@ -247,6 +247,13 @@ const PipelineBuilderPage: FC & {
     pipeline.data,
     setNodes,
     setEdges,
+    ais.isSuccess,
+    aisWatchState.isSuccess,
+    destinations.isSuccess,
+    sources.isSuccess,
+    destinationsWatchState.isSuccess,
+    sourcesWatchState.isSuccess,
+    graphIsInitialized,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -297,7 +304,12 @@ const PipelineBuilderPage: FC & {
         return node;
       });
     });
-  }, [aisWithWatchState, sourcesWithWatchState, destinationsWithWatchState]);
+  }, [
+    aisWithWatchState,
+    sourcesWithWatchState,
+    destinationsWithWatchState,
+    updateNodes,
+  ]);
 
   const [draggedItem, setDraggedItem] =
     useState<Nullable<ConnectorWithWatchState>>(null);

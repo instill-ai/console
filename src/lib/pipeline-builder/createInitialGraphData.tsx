@@ -1,5 +1,5 @@
 import { ConnectorNodeData, ConnectorWithWatchState } from "@/types";
-import { Nullable, Pipeline, ConnectorType } from "@instill-ai/toolkit";
+import { Nullable, Pipeline } from "@instill-ai/toolkit";
 import { Edge, Node } from "reactflow";
 
 export type CreateInitialGraphDataProps = {
@@ -8,8 +8,6 @@ export type CreateInitialGraphDataProps = {
   sources: ConnectorWithWatchState[];
   destinations: ConnectorWithWatchState[];
 };
-
-//"CONNECTOR_TYPE_UNSPECIFIED" | "CONNECTOR_TYPE_SOURCE" | "CONNECTOR_TYPE_DESTINATION" | "CONNECTOR_TYPE_AI" | "CONNECTOR_TYPE_BLOCKCHAIN";
 
 export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   const { pipeline, ais, sources, destinations } = props;
@@ -39,7 +37,6 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
         sourceId = component.id;
       }
     } else if (component.type === "CONNECTOR_TYPE_DESTINATION") {
-      console.log("component", component, destinations);
       const target = destinations.find(
         (destination) => destination.name === component.resource_name
       );

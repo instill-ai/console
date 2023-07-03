@@ -39,7 +39,6 @@ export const FlowControl = () => {
 
   const updatePipeline = useUpdatePipeline();
   const createPipeline = useCreatePipeline();
-
   const activatePipeline = useActivatePipeline();
   const deactivatePipeline = useDeActivatePipeline();
 

@@ -126,13 +126,13 @@ export const AIForm = (props: AIFormProps) => {
 
   useEffect(() => {
     updateResourceFormIsDirty(() => form.formState.isDirty);
-  }, [form.formState.isDirty]);
+  }, [form.formState.isDirty, updateResourceFormIsDirty]);
 
   useEffect(() => {
     form.reset({
       ...ai,
     });
-  }, [ai]);
+  }, [ai, form]);
 
   const updateConnector = useUpdateConnector();
   const createConnector = useCreateConnector();
