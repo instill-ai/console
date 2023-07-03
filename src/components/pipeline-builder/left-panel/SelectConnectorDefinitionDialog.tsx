@@ -51,19 +51,23 @@ export const SelectConnectorDefinitionDialog = (
   let icon: Nullable<ReactElement> = null;
   let dialogTitle: Nullable<string> = null;
   let dialogDescription: Nullable<string> = null;
+  let connectorTypeName: Nullable<string> = null;
 
   if (type === "CONNECTOR_TYPE_SOURCE") {
     icon = <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />;
     dialogTitle = "Add a new source";
     dialogDescription = "Select a source to add to your pipeline";
+    connectorTypeName = "Source";
   } else if (type === "CONNECTOR_TYPE_AI") {
     icon = <Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />;
-    dialogTitle = "Add a new model";
-    dialogDescription = "Select a model to add to your pipeline";
+    dialogTitle = "Add a new AI";
+    dialogDescription = "Select a AI to add to your pipeline";
+    connectorTypeName = "AI";
   } else {
     icon = <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />;
     dialogTitle = "Add a new destination";
     dialogDescription = "Select a destination to add to your pipeline";
+    connectorTypeName = "Destination";
   }
 
   return (
@@ -71,8 +75,8 @@ export const SelectConnectorDefinitionDialog = (
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Trigger asChild>
           <button className="group mb-6 flex w-full cursor-pointer flex-row justify-between rounded bg-semantic-bg-base-bg px-2 py-2.5">
-            <p className="!capitalize text-semantic-fg-primary product-body-text-1-semibold">
-              {type}
+            <p className="my-auto !capitalize text-semantic-fg-primary product-body-text-1-semibold">
+              {connectorTypeName}
             </p>
             <div className="flex h-8 w-8 items-center justify-center rounded bg-semantic-accent-default group-hover:bg-semantic-accent-hover">
               <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
