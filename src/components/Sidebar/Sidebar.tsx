@@ -18,6 +18,15 @@ export const Sidebar = () => {
           hightlighted={router.pathname.split("/")[1] === "model-hub"}
           className="px-3"
         />
+        <SidebarLink
+          href="/dashboard"
+          icon={
+            <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
+          }
+          name="Dashboard"
+          hightlighted={router.pathname.split("/")[1] === "dashboard"}
+          className="px-3"
+        />
       </div>
       <div className="flex flex-col space-y-6 px-4 pb-8">
         <a
