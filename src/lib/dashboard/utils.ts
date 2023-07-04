@@ -1,5 +1,6 @@
 import { PipelineTrigger, PipelineTriggerCount, Status } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
+import { ResourceState } from "@instill-ai/toolkit";
 
 export function getPipelinesTriggerCount(
   pipelines: PipelineTrigger[]
@@ -161,4 +162,14 @@ export function getPipelinesSeries(pipelines: PipelineTriggerCount[]) {
       data: pipeline.compute_time_duration,
     };
   });
+}
+
+export function getStatus(status: string): ResourceState {
+  if (status === "completed") {
+    return "STATE_ACTIVE";
+  }
+  if (status === "error") {
+    return "STATE_ERROR";
+  }
+  return "STATE_UNSPECIFIED";
 }

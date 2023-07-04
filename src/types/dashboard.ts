@@ -1,4 +1,7 @@
-import { PipelineMode } from "@instill-ai/toolkit";
+import {
+  PaginationListContainerProps,
+  PipelineMode,
+} from "@instill-ai/toolkit";
 
 export type PipelineTriggerCount = {
   pipeline_name: string;
@@ -24,3 +27,10 @@ export interface Status {
   amount: number;
   type: "pipeline" | "model";
 }
+
+export type PipelinesTableProps = {
+  pipelines: PipelineTrigger[];
+  isError: boolean;
+  isLoading: boolean;
+  statusCount: Status[];
+} & Pick<PaginationListContainerProps, "marginBottom">;
