@@ -70,7 +70,7 @@ export const SourceForm = (props: SourceFormProps) => {
     setIsTesting(true);
 
     try {
-      const res = await testConnectorConnectionAction({
+      const state = await testConnectorConnectionAction({
         connectorName: source.name,
         accessToken,
       });
@@ -79,10 +79,10 @@ export const SourceForm = (props: SourceFormProps) => {
 
       toast({
         title: `${props.source.id} is ${
-          res.state === "STATE_ERROR" ? "not connected" : "connected"
+          state === "STATE_ERROR" ? "not connected" : "connected"
         }`,
-        description: `The ${props.source.id} state is ${res.state}`,
-        variant: res.state === "STATE_ERROR" ? "alert-error" : "alert-success",
+        description: `The ${props.source.id} state is ${state}`,
+        variant: state === "STATE_ERROR" ? "alert-error" : "alert-success",
         size: "large",
       });
     } catch (err) {
@@ -207,6 +207,7 @@ export const SourceForm = (props: SourceFormProps) => {
               className="gap-x-2"
               variant="primary"
               size="lg"
+              type="button"
             >
               Test
               {isTesting ? (

@@ -166,8 +166,8 @@ const StateRow = (props: { state: ModelState | ConnectorState }) => {
   const _state =
     state === "STATE_ONLINE" || state === "STATE_CONNECTED"
       ? "connected"
-      : state === "STATE_UNSPECIFIED"
-      ? "idle"
+      : state === "STATE_ERROR"
+      ? "error"
       : "disconnected";
 
   return (
@@ -176,7 +176,7 @@ const StateRow = (props: { state: ModelState | ConnectorState }) => {
         "flex h-[56px] rounded-bl-[12px] rounded-br-[12px] p-4 transition-colors duration-500",
         _state === "connected"
           ? "bg-semantic-success-bg group-hover:bg-[#d1faed]"
-          : _state === "disconnected"
+          : _state === "error"
           ? "bg-semantic-error-bg group-hover:bg-[#fec8cd]"
           : "bg-semantic-bg-secondary group-hover:bg-semantic-bg-line"
       )}
@@ -187,7 +187,7 @@ const StateRow = (props: { state: ModelState | ConnectorState }) => {
             "my-auto h-2 w-2 rounded-full",
             _state === "connected"
               ? "bg-semantic-success-on-bg"
-              : _state === "disconnected"
+              : _state === "error"
               ? "bg-semantic-error-on-bg"
               : "bg-semantic-fg-primary"
           )}
@@ -197,7 +197,7 @@ const StateRow = (props: { state: ModelState | ConnectorState }) => {
             "my-auto mr-auto !uppercase product-label-label-1",
             _state === "connected"
               ? "text-semantic-success-on-bg"
-              : _state === "disconnected"
+              : _state === "error"
               ? "text-semantic-error-on-bg"
               : "text-semantic-fg-primary"
           )}

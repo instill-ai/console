@@ -9,7 +9,9 @@ import {
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
   testConnectorConnectionAction,
+  useConnectConnector,
   useCreateConnector,
+  useDisonnectConnector,
   useUpdateConnector,
 } from "@instill-ai/toolkit";
 import {
@@ -23,7 +25,10 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import { useEffect, useState } from "react";
-import { IncompleteConnectorWithWatchState } from "@/types";
+import {
+  ConnectorWithWatchState,
+  IncompleteConnectorWithWatchState,
+} from "@/types";
 import { isAxiosError } from "axios";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { shallow } from "zustand/shallow";
@@ -102,7 +107,7 @@ const ConfigureAIFormSchema = z
   });
 
 export type AIFormProps = {
-  ai: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
+  ai: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
   accessToken: Nullable<string>;
 };
 
@@ -387,38 +392,148 @@ export const AIForm = (props: AIFormProps) => {
     }
   }
 
-  const [isTesting, setIsTesting] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
-  const handleTestAI = async function () {
+  const connectBlockchain = useConnectConnector();
+  const disconnectBlockchain = useDisonnectConnector();
+
+  const handleConnectAI = async function () {
     if (!ai) return;
 
-    setIsTesting(true);
+    setIsConnecting(true);
 
-    try {
-      const res = await testConnectorConnectionAction({
-        connectorName: ai.name,
-        accessToken,
-      });
+    const oldState = ai.watchState;
 
-      setIsTesting(false);
+    if (ai.watchState === "STATE_CONNECTED") {
+      disconnectBlockchain.mutate(
+        {
+          connectorName: ai.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully disconnect ${ai.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            setIsConnecting(false);
 
-      toast({
-        title: `${props.ai.id} is ${
-          res.state === "STATE_ERROR" ? "not connected" : "connected"
-        }`,
-        description: `The ${props.ai.id} state is ${res.state}`,
-        variant: res.state === "STATE_ERROR" ? "alert-error" : "alert-success",
-        size: "large",
-      });
-    } catch (err) {
-      setIsTesting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
 
-      toast({
-        title: "Error",
-        description: `There is something wrong when test AI`,
-        variant: "alert-error",
-        size: "large",
-      });
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_DISCONNECTED",
+                  },
+                },
+              };
+            });
+          },
+          onError: (error) => {
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when disconnect the AI",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when disconnect the AI",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+    } else {
+      connectBlockchain.mutate(
+        {
+          connectorName: ai.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully connect ${ai.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            setIsConnecting(false);
+
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_CONNECTED",
+                  },
+                },
+              };
+            });
+          },
+          onError: (error) => {
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when connect the AI",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when connect the AI",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
     }
   };
 
@@ -729,16 +844,17 @@ export const AIForm = (props: AIFormProps) => {
           />
         </div>
 
-        <div className="flex w-full flex-row-reverse gap-x-2">
+        <div className="flex w-full flex-row-reverse gap-x-4">
           <Button
-            onClick={handleTestAI}
+            onClick={handleConnectAI}
             className="gap-x-2"
             variant="primary"
             size="lg"
             type="button"
+            disabled={"uid" in ai ? false : true}
           >
-            Test
-            {isTesting ? (
+            {ai.watchState === "STATE_CONNECTED" ? "Disconnect" : "Connect"}
+            {isConnecting ? (
               <svg
                 className="m-auto h-4 w-4 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -759,8 +875,11 @@ export const AIForm = (props: AIFormProps) => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
+            ) : ai.watchState === "STATE_CONNECTED" ||
+              ai.watchState === "STATE_ERROR" ? (
+              <Icons.Stop className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             ) : (
-              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
+              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             )}
           </Button>
           <Button

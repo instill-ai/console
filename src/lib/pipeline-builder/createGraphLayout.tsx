@@ -7,11 +7,6 @@ const CONNECTOR_NODE_DIMENSION = {
   height: 56,
 };
 
-const MODEL_NODE_DIMENSION = {
-  width: 343,
-  height: 276,
-};
-
 const elk = new Elk({
   defaultLayoutOptions: {
     "elk.algorithm": "layered",
@@ -31,18 +26,10 @@ export async function createGraphLayout(
   nodes.forEach((node) => {
     elkNodes.push({
       id: node.id,
-      width:
-        node.data.connectorType === "CONNECTOR_TYPE_AI"
-          ? MODEL_NODE_DIMENSION.width
-          : CONNECTOR_NODE_DIMENSION.width,
-      height:
-        node.data.connectorType === "CONNECTOR_TYPE_AI"
-          ? MODEL_NODE_DIMENSION.height
-          : CONNECTOR_NODE_DIMENSION.height,
+      width: CONNECTOR_NODE_DIMENSION.width,
+      height: CONNECTOR_NODE_DIMENSION.height,
     });
   });
-
-  console.log(nodes, edges);
 
   edges.forEach((edge) => {
     elkEdges.push({
@@ -75,14 +62,8 @@ export async function createGraphLayout(
       // We are shifting the dagre node position (anchor=center center) to the top left
       // so it matches the React Flow node anchor point (top left).
       node.position = {
-        x:
-          node.data.connectorType === "CONNECTOR_TYPE_AI"
-            ? elkNode.x - MODEL_NODE_DIMENSION.width / 2
-            : elkNode.x - CONNECTOR_NODE_DIMENSION.width / 2,
-        y:
-          node.data.connectorType === "CONNECTOR_TYPE_AI"
-            ? elkNode.y - MODEL_NODE_DIMENSION.height / 2
-            : elkNode.y - CONNECTOR_NODE_DIMENSION.height / 2,
+        x: elkNode.x - CONNECTOR_NODE_DIMENSION.width / 2,
+        y: elkNode.y - CONNECTOR_NODE_DIMENSION.height / 2,
       };
       return node;
     }),

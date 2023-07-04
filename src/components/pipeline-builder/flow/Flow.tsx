@@ -26,6 +26,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   onConnect: state.onConnect,
   setRightPanelIsOpen: state.setRightPanelIsOpen,
   setSelectedNode: state.setSelectedNode,
+  selectedNode: state.selectedNode,
   resourceFormIsDirty: state.resourceFormIsDirty,
 });
 
@@ -54,6 +55,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     onConnect,
     setRightPanelIsOpen,
     setSelectedNode,
+    selectedNode,
     resourceFormIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
@@ -95,8 +97,6 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
 
   const { toast } = useToast();
 
-  console.log("nodes", nodes);
-
   return (
     <div className="relative flex-1">
       <button
@@ -108,8 +108,39 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
+            onNodesDelete={(nodes) => {
+              if (nodes.some((node) => node.id === selectedNode?.id)) {
+                setSelectedNode(null);
+              }
+            }}
+            onNodesChange={(event) => {
+              if (resourceFormIsDirty) {
+                toast({
+                  title: "You have unsaved changes",
+                  description:
+                    "Please save or discard your changes before editing another resource.",
+                  size: "large",
+                  variant: "alert-warning",
+                });
+                return;
+              }
+
+              onNodesChange(event);
+            }}
+            onEdgesChange={(event) => {
+              if (resourceFormIsDirty) {
+                toast({
+                  title: "You have unsaved changes",
+                  description:
+                    "Please save or discard your changes before editing another resource.",
+                  size: "large",
+                  variant: "alert-warning",
+                });
+                return;
+              }
+
+              onEdgesChange(event);
+            }}
             onInit={setReactFlowInstance}
             onConnect={onConnect}
             fitView

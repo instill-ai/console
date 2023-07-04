@@ -31,15 +31,20 @@ import {
   type Nullable,
   CreateConnectorPayload,
   useCreateConnector,
+  useConnectConnector,
+  useDisonnectConnector,
 } from "@instill-ai/toolkit";
-import { IncompleteConnectorWithWatchState } from "@/types";
+import {
+  ConnectorWithWatchState,
+  IncompleteConnectorWithWatchState,
+} from "@/types";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { shallow } from "zustand/shallow";
 
 export type DestinationFormProps = {
   accessToken: Nullable<string>;
-  destination: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
+  destination: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
 } & Pick<FormRootProps, "marginBottom" | "width">;
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -475,38 +480,148 @@ export const DestinationForm = (props: DestinationFormProps) => {
     updateNodes,
   ]);
 
-  const [isTesting, setIsTesting] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const connectDestination = useConnectConnector();
+  const disconnectDestination = useDisonnectConnector();
 
-  const handleTestDestination = async function () {
+  const handleConnectDestination = async function () {
     if (!destination) return;
 
-    setIsTesting(true);
+    setIsConnecting(true);
 
-    try {
-      const res = await testConnectorConnectionAction({
-        connectorName: destination.name,
-        accessToken,
-      });
+    const oldState = destination.watchState;
 
-      setIsTesting(false);
+    if (
+      destination.watchState === "STATE_CONNECTED" ||
+      destination.watchState === "STATE_ERROR"
+    ) {
+      disconnectDestination.mutate(
+        {
+          connectorName: destination.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully disconnect ${destination.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            setIsConnecting(false);
 
-      toast({
-        title: `${props.destination.id} is ${
-          res.state === "STATE_ERROR" ? "not connected" : "connected"
-        }`,
-        description: `The ${props.destination.id} state is ${res.state}`,
-        variant: res.state === "STATE_ERROR" ? "alert-error" : "alert-success",
-        size: "large",
-      });
-    } catch (err) {
-      setIsTesting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
 
-      toast({
-        title: "Error",
-        description: `There is something wrong when test connection`,
-        variant: "alert-error",
-        size: "large",
-      });
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_DISCONNECTED",
+                  },
+                },
+              };
+            });
+          },
+          onError: (error) => {
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when disconnect the destination",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when disconnect the destination",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+    } else {
+      connectDestination.mutate(
+        {
+          connectorName: destination.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully connect ${destination.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_CONNECTED",
+                  },
+                },
+              };
+            });
+          },
+          onError: (error) => {
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when connect the destination",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when connect the destination",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
     }
   };
 
@@ -573,13 +688,18 @@ export const DestinationForm = (props: DestinationFormProps) => {
         </div>
         <div className="flex w-full flex-row-reverse gap-x-4">
           <Button
-            onClick={handleTestDestination}
+            onClick={handleConnectDestination}
             className="gap-x-2"
             variant="primary"
             size="lg"
+            type="button"
+            disabled={"uid" in destination ? false : true}
           >
-            Test
-            {isTesting ? (
+            {destination.watchState === "STATE_CONNECTED" ||
+            destination.watchState === "STATE_ERROR"
+              ? "Disconnect"
+              : "Connect"}
+            {isConnecting ? (
               <svg
                 className="m-auto h-4 w-4 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -600,8 +720,11 @@ export const DestinationForm = (props: DestinationFormProps) => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
+            ) : destination.watchState === "STATE_CONNECTED" ||
+              destination.watchState === "STATE_ERROR" ? (
+              <Icons.Stop className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             ) : (
-              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
+              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             )}
           </Button>
           <Button
