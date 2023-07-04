@@ -2,10 +2,9 @@ import cn from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useToast } from "@instill-ai/design-system";
+import { Form } from "@instill-ai/design-system";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { shallow } from "zustand/shallow";
-import { useRenamePipeline } from "@instill-ai/toolkit";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,16 +15,16 @@ const PipelineNameFormSchema = z.object({
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineId: state.pipelineId,
-  pipelineUid: state.pipelineUid,
   setPipelineId: state.setPipelineId,
-  setIsSavingPipeline: state.setIsSavingPipeline,
 });
 
 export const PipelineNameForm = () => {
   const router = useRouter();
 
-  const { pipelineId, pipelineUid, setPipelineId, setIsSavingPipeline } =
-    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const { pipelineId, setPipelineId } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
   const [isFocused, setIsFocused] = useState(false);
 
   const form = useForm<z.infer<typeof PipelineNameFormSchema>>({
@@ -38,58 +37,16 @@ export const PipelineNameForm = () => {
     });
   }, [router.isReady, router.asPath, form]);
 
-  const { toast } = useToast();
-
-  const renamePipeline = useRenamePipeline();
-
-  function onSubmit(data: z.infer<typeof PipelineNameFormSchema>) {
-    setIsSavingPipeline(true);
-
-    if (pipelineUid && pipelineId && data.pipelineId) {
-      renamePipeline.mutate(
-        {
-          payload: {
-            pipelineId,
-            newPipelineId: data.pipelineId,
-          },
-          accessToken: null,
-        },
-        {
-          onSuccess: () => {
-            setIsSavingPipeline(false);
-            setPipelineId(data.pipelineId);
-            form.reset({
-              pipelineId: data.pipelineId,
-            });
-            toast({
-              title: "Pipeline renamed",
-              description: "Your pipeline has been renamed.",
-              variant: "alert-success",
-              size: "large",
-            });
-            router.push(`/pipelines/${data.pipelineId}`, undefined, {
-              shallow: true,
-            });
-          },
-        }
-      );
-      return;
-    }
-
-    setPipelineId(data.pipelineId);
+  useEffect(() => {
+    if (!pipelineId) return;
     form.reset({
-      pipelineId: data.pipelineId,
+      pipelineId,
     });
-
-    setIsSavingPipeline(false);
-    router.push(`/pipelines/${data.pipelineId}`, undefined, {
-      shallow: true,
-    });
-  }
+  }, [pipelineId, form]);
 
   return (
     <Form.Root {...form}>
-      <div className="flex flex-row pl-4">
+      <div className="flex w-full pl-4">
         <Link
           className={cn(
             "mr-2 flex flex-row space-x-2",
@@ -104,28 +61,24 @@ export const PipelineNameForm = () => {
             /
           </p>
         </Link>
-        <form
-          className="my-auto flex flex-row items-center justify-center"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="my-auto flex flex-1 flex-row items-center justify-center">
           <Form.Field
             control={form.control}
             name="pipelineId"
             render={({ field }) => {
               return (
                 <input
-                  className="bg-transparent py-2 text-semantic-bg-primary product-headings-heading-6 focus:outline-none focus:ring-0"
+                  className="w-[360px] bg-transparent py-2 text-semantic-bg-primary product-headings-heading-6 focus:outline-none focus:ring-0"
                   {...field}
                   value={field.value ?? "Untitled Pipeline"}
                   type="text"
                   autoComplete="off"
                   onFocus={() => setIsFocused(true)}
-                  onBlur={() => {
-                    setIsFocused(false);
-                    setTimeout(() => {
-                      form.handleSubmit(onSubmit)();
-                    }, 1000);
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setPipelineId(e.target.value);
                   }}
+                  onBlur={() => setIsFocused(false)}
                 />
               );
             }}

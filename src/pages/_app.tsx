@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
 import { Toaster } from "@instill-ai/design-system";
+import { usePipelineBuilderStore } from "@/stores";
 
 export const queryCache = new QueryCache();
 
@@ -42,6 +43,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
   const router = useRouter();
   const trackingToken = useTrackingToken();
+
+  const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", () => {
+      initPipelineBuilder();
+    });
+  }, [router.events, initPipelineBuilder]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;

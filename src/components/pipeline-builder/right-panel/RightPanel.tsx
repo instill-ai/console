@@ -3,8 +3,15 @@ import { SourceForm } from "./SourceForm";
 import { AIForm } from "./AIForm";
 import { DestinationForm } from "./DestinationForm";
 import { BlockchainForm } from "./BlockchainForm";
+import { PipelineForm } from "./PipelineForm";
+import { Nullable } from "@instill-ai/toolkit";
 
-export const RightPanel = () => {
+export type RightPanelProps = {
+  accessToken: Nullable<string>;
+};
+
+export const RightPanel = (props: RightPanelProps) => {
+  const { accessToken } = props;
   const selectedNode = usePipelineBuilderStore((state) => state.selectedNode);
 
   return (
@@ -43,6 +50,7 @@ export const RightPanel = () => {
             accessToken={null}
           />
         ) : null}
+        {!selectedNode ? <PipelineForm accessToken={accessToken} /> : null}
       </div>
     </div>
   );

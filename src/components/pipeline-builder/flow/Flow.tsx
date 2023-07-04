@@ -32,6 +32,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 
 export type FlowProps = {
   setReactFlowInstance: Dispatch<SetStateAction<Nullable<ReactFlowInstance>>>;
+  accessToken: Nullable<string>;
 };
 
 const nodeTypes = {
@@ -46,7 +47,7 @@ const edgeTypes = {
 };
 
 export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
-  const { setReactFlowInstance } = props;
+  const { setReactFlowInstance, accessToken } = props;
   const {
     nodes,
     edges,
@@ -200,7 +201,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           </ReactFlow>
         </div>
       </div>
-      <FlowControl />
+      <FlowControl accessToken={accessToken} />
     </div>
   );
 });
