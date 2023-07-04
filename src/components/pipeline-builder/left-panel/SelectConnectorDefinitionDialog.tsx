@@ -53,23 +53,36 @@ export const SelectConnectorDefinitionDialog = (
   let dialogDescription: Nullable<string> = null;
   let connectorTypeName: Nullable<string> = null;
 
-  if (type === "CONNECTOR_TYPE_SOURCE") {
-    icon = <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />;
-    dialogTitle = "Add a new source";
-    dialogDescription = "Select a source to add to your pipeline";
-    connectorTypeName = "Source";
-  } else if (type === "CONNECTOR_TYPE_AI") {
-    icon = <Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />;
-    dialogTitle = "Add a new AI";
-    dialogDescription = "Select a AI to add to your pipeline";
-    connectorTypeName = "AI";
-  } else {
-    icon = <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />;
-    dialogTitle = "Add a new destination";
-    dialogDescription = "Select a destination to add to your pipeline";
-    connectorTypeName = "Destination";
+  switch (type) {
+    case "CONNECTOR_TYPE_SOURCE":
+      icon = (
+        <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
+      );
+      dialogTitle = "Add a new source";
+      dialogDescription = "Select a source to add to your pipeline";
+      connectorTypeName = "Source";
+      break;
+    case "CONNECTOR_TYPE_AI":
+      icon = <Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />;
+      dialogTitle = "Add a new AI";
+      dialogDescription = "Select an AI to add to your pipeline";
+      connectorTypeName = "AI";
+      break;
+    case "CONNECTOR_TYPE_BLOCKCHAIN":
+      icon = (
+        <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
+      );
+      dialogTitle = "Add a new blockchain";
+      dialogDescription = "Select a blockchain to add to your pipeline";
+      connectorTypeName = "Blockchain";
+      break;
+    case "CONNECTOR_TYPE_DESTINATION":
+      icon = <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />;
+      dialogTitle = "Add a new destination";
+      dialogDescription = "Select a destination to add to your pipeline";
+      connectorTypeName = "Destination";
+      break;
   }
-
   return (
     <DialogContext.Provider value={context}>
       <Dialog.Root open={open} onOpenChange={setOpen}>
