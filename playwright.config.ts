@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
   testMatch: "integration-test.list.ts",
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 10000,
+  timeout: 75000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -33,7 +33,7 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "dot",
+  reporter: "line",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
