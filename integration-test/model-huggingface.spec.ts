@@ -18,7 +18,7 @@ export function handleHuggingFaceModelTest() {
 
   test.describe.serial("Hugging face model", () => {
     test("should create huggingface model", async ({ page }) => {
-      await page.goto("/models/create", { waitUntil: "networkidle" });
+      await page.goto("/model-hub/create", { waitUntil: "networkidle" });
 
       // Should disable setup button
       const setupButton = page.locator("button", { hasText: "Set up" });
@@ -46,7 +46,7 @@ export function handleHuggingFaceModelTest() {
 
       // Should set up model
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`),
         setupButton.click(),
       ]);
     });

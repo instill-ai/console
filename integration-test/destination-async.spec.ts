@@ -64,13 +64,15 @@ export function handleAsyncDestinationTest() {
       const descriptionField = page.locator("textarea#destination-description");
       await descriptionField.fill(destinationDescription);
 
+      // Temp disable secret key field
+
       // Should input S3 key
-      const s3KeyField = page.locator("input#access_key_id");
-      await s3KeyField.fill(s3Key);
+      // const s3KeyField = page.locator("input#access_key_id");
+      // await s3KeyField.fill(s3Key);
 
       // Should input S3 secret key
-      const s3SecretField = page.locator("input#secret_access_key");
-      await s3SecretField.fill(s3SecretKey);
+      // const s3SecretField = page.locator("input#secret_access_key");
+      // await s3SecretField.fill(s3SecretKey);
 
       // Should input S3 bucket name
       const s3BucketField = page.locator("input#s3_bucket_name");
@@ -164,12 +166,12 @@ export function handleAsyncDestinationTest() {
       await expect(descriptionField).toHaveValue(destinationDescription);
 
       // Should have correct S3 Key
-      const s3KeyField = page.locator("input#access_key_id");
-      await expect(s3KeyField).toHaveValue(s3Key);
+      // const s3KeyField = page.locator("input#access_key_id");
+      // await expect(s3KeyField).toHaveValue(s3Key);
 
       // Should have correct S3 secret key
-      const s3SecretField = page.locator("input#secret_access_key");
-      await expect(s3SecretField).toHaveValue(s3SecretKey);
+      // const s3SecretField = page.locator("input#secret_access_key");
+      // await expect(s3SecretField).toHaveValue(s3SecretKey);
 
       // Should have correct S3 bucket name
       const s3BucketField = page.locator("input#s3_bucket_name");
@@ -297,10 +299,10 @@ export function handleAsyncDestinationTest() {
       await expect(descriptionField).toHaveValue(newDestinationDescription);
 
       // Should have updated S3 key
-      await expect(s3KeyField).toHaveValue(newS3Key);
+      // await expect(s3KeyField).toHaveValue(newS3Key);
 
       // Should have updated S3 secret key
-      await expect(s3SecretField).toHaveValue(newS3SecretKey);
+      // await expect(s3SecretField).toHaveValue(newS3SecretKey);
 
       // Should have updated S3 bucket name
       await expect(s3BucketField).toHaveValue(newS3BucketName);

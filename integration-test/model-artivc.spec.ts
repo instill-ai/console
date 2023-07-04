@@ -19,7 +19,7 @@ export function handleArtivcModelTest() {
 
   test.describe.serial("Artivc model", () => {
     test("should create artivc model", async ({ page }) => {
-      await page.goto("/models/create", { waitUntil: "networkidle" });
+      await page.goto("/model-hub/create", { waitUntil: "networkidle" });
 
       // Should disable set up button
       const setupButton = page.locator("button", { hasText: "Set up" });
@@ -45,7 +45,7 @@ export function handleArtivcModelTest() {
       expect(await setupButton.isEnabled()).toBeTruthy();
 
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`),
         setupButton.click(),
       ]);
     });

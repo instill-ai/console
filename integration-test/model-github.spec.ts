@@ -19,7 +19,7 @@ export function handleGithubModelTest() {
 
   test.describe.serial("GitHub model", () => {
     test("should create github model", async ({ page }) => {
-      await page.goto("/models/create", { waitUntil: "networkidle" });
+      await page.goto("/model-hub/create", { waitUntil: "networkidle" });
 
       // Should disable set up button
       const setupButton = page.locator("button", { hasText: "Set up" });
@@ -46,7 +46,7 @@ export function handleGithubModelTest() {
 
       // Should set up model
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`),
         setupButton.click(),
       ]);
     });

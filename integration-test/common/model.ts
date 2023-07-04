@@ -4,7 +4,7 @@ import { Page, expect, Locator } from "@playwright/test";
 export const expectToDeleteModel = async (page: Page, modelId: string) => {
   delay(20000);
 
-  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+  await page.goto(`/model-hub/${modelId}`, { waitUntil: "networkidle" });
 
   // Should enable open delete model modal button
   const openDeleteModelModalButton = page.locator("button", {
@@ -49,9 +49,9 @@ export const expectToDeleteModel = async (page: Page, modelId: string) => {
     deleteResourceModal.locator("#confirmationCode");
   await confirmationCodeInput.fill(modelId);
 
-  // Should delete model and navigate to models page
+  // Should delete model and navigate to model-hub page
   await Promise.all([
-    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`),
     deleteButton.click(),
   ]);
 
@@ -65,7 +65,7 @@ export const expectToUpdateModelDescription = async (
   modelId: string,
   modelDescription: string
 ) => {
-  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+  await page.goto(`/model-hub/${modelId}`, { waitUntil: "networkidle" });
 
   // Should enable edit button
   const editButton = page.locator("button", { hasText: "Edit" });
@@ -86,7 +86,7 @@ export const expectToUpdateModelDescription = async (
   await Promise.all([saveButton.click(), succeedMessage.waitFor()]);
 
   // Reload page
-  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+  await page.goto(`/model-hub/${modelId}`, { waitUntil: "networkidle" });
 
   // Should have updated model description
   await modelDescriptionField.waitFor();
@@ -94,7 +94,7 @@ export const expectToUpdateModelDescription = async (
 };
 
 export const expectCorrectModelList = async (page: Page, modelId: string) => {
-  await page.goto("/models", { waitUntil: "networkidle" });
+  await page.goto("/model-hub", { waitUntil: "networkidle" });
 
   // Should list model item
   const modelItemTitle = page.locator("h3", { hasText: modelId });
@@ -103,7 +103,9 @@ export const expectCorrectModelList = async (page: Page, modelId: string) => {
   // Should navigate to model details page
   await Promise.all([
     page.locator("h3", { hasText: modelId }).click(),
-    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models/${modelId}`),
+    page.waitForURL(
+      `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub/${modelId}`
+    ),
   ]);
 };
 
@@ -129,7 +131,7 @@ export const expectCorrectModelDetails = async ({
   additionalRules,
 }: ExpectCorrectModelDetailsProps) => {
   // Mimic the behavior of long running operation
-  await page.goto(`/models/${modelId}`, { waitUntil: "networkidle" });
+  await page.goto(`/model-hub/${modelId}`, { waitUntil: "networkidle" });
 
   // Should have proper title
   const modelDetailsPageTitle = page.locator("h2", { hasText: modelId });
@@ -192,7 +194,7 @@ export const expectToDeployModel = async (
       ? waitForElement.waitFor({
           timeout: timeout ? timeout : undefined,
         })
-      : page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`, {
+      : page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`, {
           timeout: timeout ? timeout : undefined,
         }),
     deployButton.click(),

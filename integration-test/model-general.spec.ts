@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 export function handleGeneralModelTest() {
   test.describe.serial("Create model", () => {
     test("should warn wrong resource ID", async ({ page }) => {
-      await page.goto("/models/create", { waitUntil: "networkidle" });
+      await page.goto("/model-hub/create", { waitUntil: "networkidle" });
 
       // Should input model id
       const idInput = page.locator("input#model-id");

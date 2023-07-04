@@ -20,7 +20,7 @@ export function handleLocalModelTest() {
     test.setTimeout(75000);
 
     test("should create local model", async ({ page }) => {
-      await page.goto("/models/create", { waitUntil: "networkidle" });
+      await page.goto("/model-hub/create", { waitUntil: "networkidle" });
 
       // Should disable set up button
       const setupButton = page.locator("button", { hasText: "Set up" });
@@ -48,7 +48,7 @@ export function handleLocalModelTest() {
 
       // Should set up the model
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/models`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/model-hub`),
         setupButton.click(),
       ]);
     });

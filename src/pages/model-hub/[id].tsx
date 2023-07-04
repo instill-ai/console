@@ -166,7 +166,7 @@ const ModelDetailsPage: FC & {
             disabledConfigure={enableGuard}
             onDelete={(initStore) => {
               initStore();
-              router.push("/models");
+              router.push("/model-hub");
             }}
             disabledDelete={enableGuard}
             accessToken={null}
