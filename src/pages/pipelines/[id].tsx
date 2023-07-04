@@ -49,6 +49,7 @@ import {
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
   setPipelineUid: state.setPipelineUid,
+  setPipelineDescription: state.setPipelineDescription,
   addNode: state.addNode,
   rightPanelIsOpen: state.rightPanelIsOpen,
   setNodes: state.setNodes,
@@ -66,6 +67,7 @@ const PipelineBuilderPage: FC & {
   const {
     setPipelineId,
     setPipelineUid,
+    setPipelineDescription,
     addNode,
     rightPanelIsOpen,
     setNodes,
@@ -253,25 +255,58 @@ const PipelineBuilderPage: FC & {
   ]);
 
   /* -------------------------------------------------------------------------
+   * Initialize pipeline id
+   * -----------------------------------------------------------------------*/
+
+  useEffect(() => {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+    setPipelineUid(pipeline.data.uid);
+    setPipelineId(pipeline.data.id);
+    setPipelineDescription(pipeline.data.description);
+  }, [
+    pipeline.data,
+    pipeline.isSuccess,
+    setPipelineDescription,
+    setPipelineId,
+    setPipelineUid,
+  ]);
+
+  /* -------------------------------------------------------------------------
    * Initialize graph
    * -----------------------------------------------------------------------*/
 
   const [graphIsInitialized, setGraphIsInitialized] = useState(false);
+
   useEffect(() => {
     if (
       !pipeline.isSuccess ||
       !sources.isSuccess ||
-      !sourcesWatchState.isSuccess ||
       !destinations.isSuccess ||
-      !destinationsWatchState.isSuccess ||
       !ais.isSuccess ||
-      !aisWatchState.isSuccess ||
       !blockchains.isSuccess ||
-      !blockchainsWatchState.isSuccess ||
       graphIsInitialized
     ) {
       return;
     }
+
+    if (sources.data.length > 0 && !sourcesWatchState.isSuccess) {
+      return;
+    }
+
+    if (destinations.data.length > 0 && !destinationsWatchState.isSuccess) {
+      return;
+    }
+
+    if (ais.data.length > 0 && !aisWatchState.isSuccess) {
+      return;
+    }
+
+    if (blockchains.data.length > 0 && !blockchainsWatchState.isSuccess) {
+      return;
+    }
+
     setPipelineUid(pipeline.data.uid);
     setPipelineId(pipeline.data.id);
 
@@ -301,15 +336,19 @@ const PipelineBuilderPage: FC & {
     setNodes,
     setEdges,
     ais.isSuccess,
+    ais.data?.length,
     aisWatchState.isSuccess,
     aisWithWatchState,
     sources.isSuccess,
+    sources.data?.length,
     sourcesWatchState.isSuccess,
     sourcesWithWatchState,
     destinations.isSuccess,
+    destinations.data?.length,
     destinationsWatchState.isSuccess,
     destinationsWithWatchState,
     blockchains.isSuccess,
+    blockchains.data?.length,
     blockchainsWatchState.isSuccess,
     blockchainsWithWatchState,
   ]);
@@ -406,6 +445,7 @@ const PipelineBuilderPage: FC & {
     sourcesWithWatchState,
     destinationsWithWatchState,
     blockchainsWithWatchState,
+    updateSelectedNode,
     updateNodes,
   ]);
 
@@ -624,6 +664,7 @@ const PipelineBuilderPage: FC & {
               <Flow
                 ref={reactFlowWrapper}
                 setReactFlowInstance={setReactFlowInstance}
+                accessToken={null}
               />
               <div
                 className={cn(
@@ -631,7 +672,7 @@ const PipelineBuilderPage: FC & {
                   rightPanelIsOpen ? "mr-0" : "-mr-[var(--right-panel-width)]"
                 )}
               >
-                <RightPanel />
+                <RightPanel accessToken={null} />
               </div>
             </div>
           </DndContext>
