@@ -33,13 +33,20 @@ import {
   useCreateConnector,
 } from "@instill-ai/toolkit";
 import { IncompleteConnectorWithWatchState } from "@/types";
-import { usePipelineBuilderStore } from "@/stores";
+import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { shallow } from "zustand/shallow";
 
 export type DestinationFormProps = {
   accessToken: Nullable<string>;
   destination: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
 } & Pick<FormRootProps, "marginBottom" | "width">;
+
+const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  updateResourceFormIsDirty: state.updateResourceFormIsDirty,
+  updateSelectedNode: state.updateSelectedNode,
+  updateNodes: state.updateNodes,
+});
 
 export const DestinationForm = (props: DestinationFormProps) => {
   const { destination, accessToken, width, marginBottom } = props;
@@ -49,13 +56,8 @@ export const DestinationForm = (props: DestinationFormProps) => {
    * Initialize form state
    * -----------------------------------------------------------------------*/
 
-  const updateSelectedNode = usePipelineBuilderStore(
-    (state) => state.updateSelectedNode
-  );
-
-  const updateResourceFormIsDirty = usePipelineBuilderStore(
-    (state) => state.updateResourceFormIsDirty
-  );
+  const { updateResourceFormIsDirty, updateSelectedNode, updateNodes } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   /* -------------------------------------------------------------------------
    * Get the destination definition and static state for fields
@@ -178,11 +180,11 @@ export const DestinationForm = (props: DestinationFormProps) => {
       return;
     }
 
-    try {
-      // We use yup to strip not necessary condition value. Please read
-      // /lib/airbyte/README.md for more information, especially the section
-      // How to remove old condition configuration when user select new one?
+    // We use yup to strip not necessary condition value. Please read
+    // /lib/airbyte/README.md for more information, especially the section
+    // How to remove old condition configuration when user select new one?
 
+    try {
       stripValues = formYup.validateSync(fieldValues, {
         abortEarly: false,
         strict: false,
@@ -212,6 +214,49 @@ export const DestinationForm = (props: DestinationFormProps) => {
       return;
     }
 
+    // Optimistically update the selectedNode'id, because if the user change the pre-defined id
+    // and the previous nodes and selectedNodes stay unchanged, we will have a problem to update
+    // it once new data is coming in.
+
+    const oldId = destination.id;
+    const newId = fieldValues.id as string;
+
+    updateSelectedNode((prev) => {
+      if (prev === null) return prev;
+
+      return {
+        ...prev,
+        data: {
+          ...prev.data,
+          connector: {
+            ...prev.data.connector,
+            id: newId,
+            name: `connectors/${newId}`,
+          },
+        },
+      };
+    });
+
+    updateNodes((prev) => {
+      return prev.map((node) => {
+        if (node.data.connector.id === oldId) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              connector: {
+                ...node.data.connector,
+                id: newId,
+                name: `connectors/${newId}`,
+              },
+            },
+          };
+        }
+
+        return node;
+      });
+    });
+
     if ("uid" in destination) {
       const payload: UpdateConnectorPayload = {
         connectorName: destination.name,
@@ -240,6 +285,41 @@ export const DestinationForm = (props: DestinationFormProps) => {
             }
           },
           onError: (error) => {
+            // Rollback the selectedNode'id
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  id: oldId,
+                  name: `connectors/${oldId}`,
+                },
+              };
+            });
+
+            // Rollback the nodes'id
+            updateNodes((prev) => {
+              return prev.map((node) => {
+                if (node.data.connector.id === newId) {
+                  return {
+                    ...node,
+                    data: {
+                      ...node.data,
+                      connector: {
+                        ...node.data.connector,
+                        id: oldId,
+                        name: `connectors/${oldId}`,
+                      },
+                    },
+                  };
+                }
+
+                return node;
+              });
+            });
+
             if (isAxiosError(error)) {
               toast({
                 title: "Error",
@@ -326,6 +406,41 @@ export const DestinationForm = (props: DestinationFormProps) => {
           }
         },
         onError: (error) => {
+          // Rollback the selectedNode'id
+          updateSelectedNode((prev) => {
+            if (prev === null) return prev;
+
+            return {
+              ...prev,
+              data: {
+                ...prev.data,
+                id: oldId,
+                name: `connectors/${oldId}`,
+              },
+            };
+          });
+
+          // Rollback the nodes'id
+          updateNodes((prev) => {
+            return prev.map((node) => {
+              if (node.data.connector.id === newId) {
+                return {
+                  ...node,
+                  data: {
+                    ...node.data,
+                    connector: {
+                      ...node.data.connector,
+                      id: oldId,
+                      name: `connectors/${oldId}`,
+                    },
+                  },
+                };
+              }
+
+              return node;
+            });
+          });
+
           if (isAxiosError(error)) {
             toast({
               title: "Something went wrong when create the AI",
@@ -357,6 +472,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
     createDestination,
     destination,
     updateSelectedNode,
+    updateNodes,
   ]);
 
   const [isTesting, setIsTesting] = useState(false);

@@ -11,7 +11,7 @@ import {
 import { shallow } from "zustand/shallow";
 
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
-import { DestinationNode, ModelNode, SourceNode } from "../nodes";
+import { DestinationNode, AINode, SourceNode, BlockchainNode } from "../nodes";
 import { CustomEdge } from "../CustomEdge";
 import { FlowControl } from "./FlowControl";
 import { useDroppable } from "@dnd-kit/core";
@@ -35,8 +35,9 @@ export type FlowProps = {
 
 const nodeTypes = {
   sourceNode: SourceNode,
-  modelNode: ModelNode,
+  aiNode: AINode,
   destinationNode: DestinationNode,
+  blockchainNode: BlockchainNode,
 };
 
 const edgeTypes = {
@@ -69,12 +70,19 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
         return false;
       }
 
-      if (sourceNode.type === "sourceNode" && targetNode.type === "modelNode") {
+      if (sourceNode.type === "sourceNode" && targetNode.type === "aiNode") {
         return true;
       }
 
       if (
-        sourceNode.type === "modelNode" &&
+        sourceNode.type === "aiNode" &&
+        targetNode.type === "blockchainNode"
+      ) {
+        return true;
+      }
+
+      if (
+        sourceNode.type === "blockchainNode" &&
         targetNode.type === "destinationNode"
       ) {
         return true;
@@ -86,6 +94,8 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
   );
 
   const { toast } = useToast();
+
+  console.log("nodes", nodes);
 
   return (
     <div className="relative flex-1">

@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, getModelInstanceTaskToolkit } from "@instill-ai/design-system";
 import {
   ConnectorType,
   ImageWithFallback,
@@ -29,6 +29,7 @@ import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import {
   Flow,
   LeftPanel,
+  LeftSidebar,
   PageBase,
   PageHead,
   PipelineNameForm,
@@ -200,6 +201,47 @@ const PipelineBuilderPage: FC & {
     });
   }, [ais.isSuccess, ais.data, aisWatchState.isSuccess, aisWatchState.data]);
 
+  const blockchains = useConnectors({
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    accessToken: null,
+    enabled: true,
+  });
+
+  const blockchainsWatchState = useWatchConnectors({
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    connectorNames: blockchains.isSuccess
+      ? blockchains.data.map((ai) => ai.name)
+      : [],
+    accessToken: null,
+    enabled: blockchains.isSuccess && blockchains.data.length > 0,
+  });
+
+  const blockchainsWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
+    if (
+      !blockchains.isSuccess ||
+      !blockchains.data ||
+      !blockchainsWatchState.isSuccess ||
+      !blockchainsWatchState.data
+    ) {
+      return [];
+    }
+
+    return blockchains.data.map((blockchain) => {
+      return {
+        ...blockchain,
+        watchState:
+          `${blockchain.name}` in blockchainsWatchState.data
+            ? blockchainsWatchState.data[blockchain.name].state
+            : "STATE_UNSPECIFIED",
+      };
+    });
+  }, [
+    blockchains.isSuccess,
+    blockchains.data,
+    blockchainsWatchState.isSuccess,
+    blockchainsWatchState.data,
+  ]);
+
   /* -------------------------------------------------------------------------
    * Initialize graph
    * -----------------------------------------------------------------------*/
@@ -214,6 +256,8 @@ const PipelineBuilderPage: FC & {
       !destinationsWatchState.isSuccess ||
       !ais.isSuccess ||
       !aisWatchState.isSuccess ||
+      !blockchains.isSuccess ||
+      !blockchainsWatchState.isSuccess ||
       graphIsInitialized
     ) {
       return;
@@ -226,6 +270,7 @@ const PipelineBuilderPage: FC & {
       ais: aisWithWatchState,
       sources: sourcesWithWatchState,
       destinations: destinationsWithWatchState,
+      blockchains: blockchainsWithWatchState,
     });
 
     createGraphLayout(initialData.nodes, initialData.edges).then(
@@ -241,19 +286,22 @@ const PipelineBuilderPage: FC & {
     pipeline.data?.uid,
     setPipelineId,
     setPipelineUid,
-    aisWithWatchState,
-    sourcesWithWatchState,
-    destinationsWithWatchState,
+    graphIsInitialized,
     pipeline.data,
     setNodes,
     setEdges,
     ais.isSuccess,
     aisWatchState.isSuccess,
-    destinations.isSuccess,
+    aisWithWatchState,
     sources.isSuccess,
-    destinationsWatchState.isSuccess,
     sourcesWatchState.isSuccess,
-    graphIsInitialized,
+    sourcesWithWatchState,
+    destinations.isSuccess,
+    destinationsWatchState.isSuccess,
+    destinationsWithWatchState,
+    blockchains.isSuccess,
+    blockchainsWatchState.isSuccess,
+    blockchainsWithWatchState,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -266,8 +314,6 @@ const PipelineBuilderPage: FC & {
         const ai = aisWithWatchState.find(
           (ai) => ai.name === node.data.connector.name
         );
-
-        console.log("ai", ai);
 
         if (ai) {
           node.data = {
@@ -301,6 +347,18 @@ const PipelineBuilderPage: FC & {
           return node;
         }
 
+        const blockchain = blockchainsWithWatchState.find(
+          (blockchain) => blockchain.name === node.data.connector.name
+        );
+
+        if (blockchain) {
+          node.data = {
+            connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+            connector: blockchain,
+          };
+          return node;
+        }
+
         return node;
       });
     });
@@ -308,6 +366,7 @@ const PipelineBuilderPage: FC & {
     aisWithWatchState,
     sourcesWithWatchState,
     destinationsWithWatchState,
+    blockchainsWithWatchState,
     updateNodes,
   ]);
 
@@ -323,6 +382,7 @@ const PipelineBuilderPage: FC & {
       ...sourcesWithWatchState,
       ...destinationsWithWatchState,
       ...aisWithWatchState,
+      ...blockchainsWithWatchState,
     ];
 
     const draggedItem = allConnectors.find((e) => e.name === active.id) || null;
@@ -357,7 +417,7 @@ const PipelineBuilderPage: FC & {
       case "CONNECTOR_TYPE_AI": {
         newNode = {
           id: uuidv4(),
-          type: "modelNode",
+          type: "aiNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
@@ -403,7 +463,27 @@ const PipelineBuilderPage: FC & {
             y: overlayPosition.top - reactFlowPosition.top,
           }),
         };
+        break;
       }
+      case "CONNECTOR_TYPE_BLOCKCHAIN": {
+        newNode = {
+          id: uuidv4(),
+          type: "blockchainNode",
+          sourcePosition: Position.Left,
+          targetPosition: Position.Right,
+          data: {
+            connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+            connector: draggedItem,
+          },
+          position: reactFlowInstance.project({
+            x: overlayPosition.left - reactFlowPosition.left,
+            y: overlayPosition.top - reactFlowPosition.top,
+          }),
+        };
+        break;
+      }
+      default:
+        console.error(`Unknown component type: ${draggedItem.connector_type}`);
     }
 
     if (!newNode) {
@@ -446,83 +526,10 @@ const PipelineBuilderPage: FC & {
             </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
               <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
-                <div className="mb-auto flex flex-col space-y-2 pt-8">
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_SOURCE"
-                          ? null
-                          : "CONNECTOR_TYPE_SOURCE"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_SOURCE",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Source
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_AI"
-                          ? null
-                          : "CONNECTOR_TYPE_AI"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_AI",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Model
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSelectedTab((prev) =>
-                        prev === "CONNECTOR_TYPE_DESTINATION"
-                          ? null
-                          : "CONNECTOR_TYPE_DESTINATION"
-                      )
-                    }
-                    className={cn(
-                      "mx-auto flex flex-col rounded-xs border border-transparent p-1 hover:bg-semantic-bg-base-bg",
-                      {
-                        "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg hover:bg-semantic-accent-bg":
-                          selectedTab === "CONNECTOR_TYPE_DESTINATION",
-                      }
-                    )}
-                  >
-                    <div className="flex flex-col items-center px-1">
-                      <div className="flex h-10 w-10 items-center justify-center">
-                        <Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />
-                      </div>
-                      <p className="font-sans text-semantic-fg-primary product-label-label-2">
-                        Destination
-                      </p>
-                    </div>
-                  </button>
-                </div>
+                <LeftSidebar
+                  selectedTab={selectedTab}
+                  setSelectedTab={setSelectedTab}
+                />
               </div>
               <div
                 className={cn(
@@ -550,6 +557,13 @@ const PipelineBuilderPage: FC & {
                     : null}
                   {selectedTab === "CONNECTOR_TYPE_DESTINATION"
                     ? destinationsWithWatchState.map((e) => (
+                        <Draggable key={e.name} id={e.name}>
+                          <Item resource={e} />
+                        </Draggable>
+                      ))
+                    : null}
+                  {selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN"
+                    ? blockchainsWithWatchState.map((e) => (
                         <Draggable key={e.name} id={e.name}>
                           <Item resource={e} />
                         </Draggable>
@@ -599,6 +613,8 @@ const Item = (props: { resource: ConnectorWithWatchState }) => {
   const { resource } = props;
 
   if (resource.connector_type === "CONNECTOR_TYPE_AI") {
+    const { label } = getModelInstanceTaskToolkit(resource.task);
+
     return (
       <div className="flex w-full cursor-grab flex-col space-y-4 rounded border border-semantic-bg-line p-2 hover:bg-semantic-accent-bg">
         <div className="flex h-8 w-full flex-row">
@@ -614,14 +630,14 @@ const Item = (props: { resource: ConnectorWithWatchState }) => {
                 }
               />
             </div>
-            <h5 className="my-auto text-semantic-fg-primary product-headings-heading-5">
+            <h5 className="my-auto w-[160px] truncate text-semantic-fg-primary product-headings-heading-5">
               {resource.name.split("/")[1]}
             </h5>
           </div>
         </div>
         <div className="flex">
-          <p className="rounded-full bg-semantic-accent-bg px-2 py-0.5 pl-2 text-semantic-accent-on-bg">
-            text to image
+          <p className="rounded-full bg-semantic-accent-bg px-2 py-0.5 pl-2 text-semantic-accent-on-bg product-label-label-1">
+            {label === "" ? "unspecified" : label}
           </p>
         </div>
       </div>
@@ -643,7 +659,7 @@ const Item = (props: { resource: ConnectorWithWatchState }) => {
               }
             />
           </div>
-          <h5 className="my-auto text-semantic-fg-primary product-headings-heading-5">
+          <h5 className="my-auto w-[160px] truncate text-semantic-fg-primary product-headings-heading-5">
             {resource.name.split("/")[1]}
           </h5>
         </div>

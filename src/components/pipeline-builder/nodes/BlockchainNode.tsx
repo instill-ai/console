@@ -4,8 +4,9 @@ import { Icons } from "@instill-ai/design-system";
 import { usePipelineBuilderStore } from "@/stores";
 import { ConnectorNodeData } from "@/types";
 
-export const AINode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
+export const BlockchainNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const selectedNode = usePipelineBuilderStore((state) => state.selectedNode);
+
   return (
     <CustomNode.Root
       className={
@@ -17,7 +18,7 @@ export const AINode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       <CustomNode.NameRow
         name={data.connector.name.split("/")[1]}
         icon={
-          <Icons.Model className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+          <Icons.Database01 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
         }
       />
       <CustomNode.ConnectorDefinitionRow

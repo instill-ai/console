@@ -52,6 +52,12 @@ export const LeftPanel = (props: LeftPanelProps) => {
     accessToken: null,
   });
 
+  const blockchainDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    enabled: selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN",
+    accessToken: null,
+  });
+
   return (
     <div className="flex w-full flex-col">
       {selectedTab === "CONNECTOR_TYPE_SOURCE" ? (
@@ -185,7 +191,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
 
                       const newNode: Node<ConnectorNodeData> = {
                         id: uuidv4(),
-                        type: "modelNode",
+                        type: "aiNode",
                         sourcePosition: Position.Left,
                         targetPosition: Position.Right,
                         data: {
@@ -214,6 +220,66 @@ export const LeftPanel = (props: LeftPanelProps) => {
                       color: "fill-semantic-fg-primary",
                       position: "my-auto",
                     })}
+                    <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                      {definition.title}
+                    </p>
+                  </SelectConnectorDefinitionDialog.Item>
+                );
+              })
+            : null}
+        </SelectConnectorDefinitionDialog>
+      ) : null}
+      {selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
+        <SelectConnectorDefinitionDialog type={selectedTab}>
+          {blockchainDefinitions.isSuccess
+            ? blockchainDefinitions.data.map((definition) => {
+                return (
+                  <SelectConnectorDefinitionDialog.Item
+                    key={definition.id}
+                    onClick={() => {
+                      if (!reactFlowInstance) return;
+
+                      const randomName: string = uniqueNamesGenerator({
+                        dictionaries: [adjectives, colors, animals],
+                        separator: "-",
+                      });
+
+                      const viewport = reactFlowInstance.getViewport();
+
+                      const newNode: Node<ConnectorNodeData> = {
+                        id: uuidv4(),
+                        type: "blockchainNode",
+                        sourcePosition: Position.Left,
+                        targetPosition: Position.Right,
+                        data: {
+                          connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+                          connector: {
+                            id: randomName,
+                            name: `connectors/${randomName}`,
+                            connector_definition: definition,
+                            connector_definition_name: definition.name,
+                            watchState: "STATE_UNSPECIFIED",
+                            configuration: {},
+                          },
+                        },
+                        position: reactFlowInstance.project({
+                          x: viewport.x,
+                          y: viewport.y,
+                        }),
+                      };
+
+                      addNode(newNode);
+                    }}
+                  >
+                    <ImageWithFallback
+                      src={`/icons/${definition.vendor}/${definition.icon}`}
+                      width={24}
+                      height={24}
+                      alt={`${definition.title}-icon`}
+                      fallbackImg={
+                        <Icons.CubeOutline className="my-auto h-6 w-6 stroke-semantic-fg-primary" />
+                      }
+                    />
                     <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                       {definition.title}
                     </p>

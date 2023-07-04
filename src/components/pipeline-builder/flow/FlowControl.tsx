@@ -33,7 +33,7 @@ export const FlowControl = () => {
 
   const pipeline = usePipeline({
     pipelineName: `pipelines/${pipelineId}`,
-    enabled: true,
+    enabled: !!pipelineUid,
     accessToken: null,
   });
 
