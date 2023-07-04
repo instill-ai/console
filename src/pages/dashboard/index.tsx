@@ -1,13 +1,13 @@
 import React, { FC, ReactElement } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { StatusCardsGroup } from "@/components/cards";
-import { pipelines } from "@/lib/mocks";
 import { Status } from "@/types";
 import {
   defaultSelectOption,
   getPipeLineOptions,
   getPipelinesTriggerCount,
   getStatusCount,
+  getTimeInRFC3339NanoFormat,
   modeOptions,
   statusOptions,
 } from "@/lib/dashboard";
@@ -15,6 +15,7 @@ import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
+import { usePipelineFilter } from "../api/pipeline/queries";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -39,18 +40,42 @@ const PipelinePage: FC & {
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [selectedStatusOption, setSelectedStatusOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
+  const [queryString, setQueryString] = React.useState<Nullable<string>>("");
 
-  const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
-    return getPipeLineOptions(pipelines);
-  }, [pipelines]);
+  React.useEffect(() => {
+    const queryParams = "";
 
-  const statusCount = React.useMemo<Status[]>(() => {
-    return getStatusCount(pipelines);
-  }, [pipelines]);
+    setQueryString(queryParams);
+  }, [
+    selectedTimeOption,
+    selectedModeOption,
+    selectedPinelineOption,
+    selectedStatusOption,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data
    * -----------------------------------------------------------------------*/
+
+  const pipelines = usePipelineFilter({
+    enabled: true,
+    accessToken: null,
+    filter: queryString,
+  });
+
+  const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
+    if (pipelines.data) {
+      return getPipeLineOptions(pipelines.data);
+    }
+    return [];
+  }, [pipelines.data]);
+
+  const statusCount = React.useMemo<Status[]>(() => {
+    if (pipelines.data) {
+      return getStatusCount(pipelines.data);
+    }
+    return [];
+  }, [pipelines.data]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -71,13 +96,22 @@ const PipelinePage: FC & {
 
         {/* Status */}
 
-        <StatusCardsGroup type="pipeline" statusStats={statusCount} />
+        <StatusCardsGroup
+          type="pipeline"
+          statusStats={statusCount}
+          isLoading={pipelines.isLoading}
+        />
 
         {/* Pipeline Chart */}
 
-        <div className="my-8">
-          <LineChart pipelines={pipelines} />
-        </div>
+        {!pipelines.isLoading && (
+          <div className="my-8">
+            <LineChart
+              pipelines={pipelines?.data ? pipelines?.data : []}
+              isLoading={pipelines.isLoading}
+            />
+          </div>
+        )}
         {/* Filter for graph */}
 
         <div className="my-4 flex flex-row space-x-8">
@@ -165,9 +199,11 @@ const PipelinePage: FC & {
 
         <div className="my-4">
           <DashboardPipelinesTable
-            pipelines={getPipelinesTriggerCount(pipelines)}
-            isError={false}
-            isLoading={false}
+            pipelines={
+              pipelines?.data ? getPipelinesTriggerCount(pipelines.data) : []
+            }
+            isError={pipelines.isError}
+            isLoading={pipelines.isLoading}
           />
         </div>
       </div>
