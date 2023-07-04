@@ -11,12 +11,14 @@ import {
 import { Icons, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 import cn from "clsx";
+import { Skeleton } from "../skeleton";
 
 type LineChartProps = {
   pipelines: PipelineTrigger[];
+  isLoading: boolean;
 };
 
-export const LineChart = ({ pipelines }: LineChartProps) => {
+export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   const [selectedTimeOption, setSelectedTimeOption] = React.useState<
@@ -37,7 +39,7 @@ export const LineChart = ({ pipelines }: LineChartProps) => {
   });
 
   useEffect(() => {
-    if (chartRef.current) {
+    if (chartRef.current && !isLoading) {
       const myChart = echarts.init(chartRef.current); // eslint-disable-line
       const option = {
         tooltip: {
@@ -47,8 +49,8 @@ export const LineChart = ({ pipelines }: LineChartProps) => {
             console.log("params", params);
 
             const trigger_time = params[0].axisValue;
-            const pipeline_name = params[0].data.name;
-            const compute_time_duration = params[0].data.value;
+            const pipeline_name = params[0].seriesName;
+            const compute_time_duration = params[0].value;
             return `Time: ${trigger_time}<br /> Pipeline: ${pipeline_name}<br />Compute Time: ${compute_time_duration} Sec<br />`;
           },
         },
@@ -63,7 +65,7 @@ export const LineChart = ({ pipelines }: LineChartProps) => {
       };
       myChart.setOption(option);
     }
-  }, []);
+  }, [isLoading]);
 
   return (
     <div className="TriggersChart inline-flex w-full flex-col items-start justify-start rounded-sm bg-white shadow">
@@ -104,11 +106,20 @@ export const LineChart = ({ pipelines }: LineChartProps) => {
           </div>
         </div>
         <div className="Chart relative self-stretch">
-          <div
-            id="main"
-            ref={chartRef}
-            style={{ width: "100%", height: "400px" }}
-          />
+          {isLoading ? (
+            <Skeleton
+              width="w-full"
+              hight="h-96"
+              classname="p-8"
+              animationHeight="h-80"
+            />
+          ) : (
+            <div
+              id="main"
+              ref={chartRef}
+              style={{ width: "100%", height: "400px" }}
+            />
+          )}
         </div>
       </div>
     </div>
