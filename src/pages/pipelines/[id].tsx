@@ -1,6 +1,10 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Icons, getModelInstanceTaskToolkit } from "@instill-ai/design-system";
+import {
+  Icons,
+  getModelInstanceTaskToolkit,
+  useToast,
+} from "@instill-ai/design-system";
 import {
   ConnectorType,
   ImageWithFallback,
@@ -50,6 +54,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setNodes: state.setNodes,
   updateNodes: state.updateNodes,
   setEdges: state.setEdges,
+  resourceFormIsDirty: state.resourceFormIsDirty,
+  updateSelectedNode: state.updateSelectedNode,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -65,6 +71,8 @@ const PipelineBuilderPage: FC & {
     setNodes,
     setEdges,
     updateNodes,
+    resourceFormIsDirty,
+    updateSelectedNode,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -76,6 +84,8 @@ const PipelineBuilderPage: FC & {
     accessToken: null,
     retry: false,
   });
+
+  const { toast } = useToast();
 
   const [selectedTab, setSelectedTab] = useState<Nullable<ConnectorType>>(
     "CONNECTOR_TYPE_SOURCE"
@@ -362,6 +372,35 @@ const PipelineBuilderPage: FC & {
         return node;
       });
     });
+
+    let allConnectors: ConnectorWithWatchState[] = [];
+
+    allConnectors = [
+      ...sourcesWithWatchState,
+      ...destinationsWithWatchState,
+      ...aisWithWatchState,
+      ...blockchainsWithWatchState,
+    ];
+
+    updateSelectedNode((prev) => {
+      if (!prev) return prev;
+
+      const selectedConnector = allConnectors.find((connector) => {
+        return connector.name === prev?.data.connector.name;
+      });
+
+      if (selectedConnector) {
+        return {
+          ...prev,
+          data: {
+            ...prev?.data,
+            connector: selectedConnector,
+          },
+        };
+      }
+
+      return prev;
+    });
   }, [
     aisWithWatchState,
     sourcesWithWatchState,
@@ -395,6 +434,17 @@ const PipelineBuilderPage: FC & {
   }
 
   function handleDragEnd(event: DragEndEvent) {
+    if (resourceFormIsDirty) {
+      toast({
+        title: "You have unsaved changes",
+        description:
+          "Please save or discard your changes before editing another resource.",
+        size: "large",
+        variant: "alert-warning",
+      });
+      return;
+    }
+
     if (
       !reactFlowInstance ||
       !reactFlowWrapper.current ||
@@ -612,6 +662,34 @@ const Draggable = (props: { id: string; children: ReactElement }) => {
 const Item = (props: { resource: ConnectorWithWatchState }) => {
   const { resource } = props;
 
+  let fallbackImg: Nullable<ReactElement> = null;
+
+  switch (resource.connector_type) {
+    case "CONNECTOR_TYPE_AI":
+      fallbackImg = (
+        <Icons.Model className="h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      break;
+    case "CONNECTOR_TYPE_BLOCKCHAIN":
+      fallbackImg = (
+        <Icons.CubeOutline className="h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      break;
+    case "CONNECTOR_TYPE_DESTINATION":
+      fallbackImg = (
+        <Icons.Box className="h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      break;
+    case "CONNECTOR_TYPE_SOURCE":
+      fallbackImg = (
+        <Icons.Database01 className="h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      break;
+
+    default:
+      break;
+  }
+
   if (resource.connector_type === "CONNECTOR_TYPE_AI") {
     const { label } = getModelInstanceTaskToolkit(resource.task);
 
@@ -626,7 +704,7 @@ const Item = (props: { resource: ConnectorWithWatchState }) => {
                 height={24}
                 alt={`${resource.connector_definition.title}-icon`}
                 fallbackImg={
-                  <Icons.Database01 className="h-4 w-4 stroke-semantic-fg-primary" />
+                  <Icons.Model className="h-4 w-4 stroke-semantic-fg-primary" />
                 }
               />
             </div>
@@ -655,7 +733,9 @@ const Item = (props: { resource: ConnectorWithWatchState }) => {
               height={24}
               alt={`${resource.connector_definition.title}-icon`}
               fallbackImg={
-                <Icons.Database01 className="h-4 w-4 stroke-semantic-fg-primary" />
+                fallbackImg ?? (
+                  <Icons.Cube01 className="h-4 w-4 stroke-semantic-fg-primary" />
+                )
               }
             />
           </div>

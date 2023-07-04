@@ -12,6 +12,8 @@ import {
   useCreateConnector,
   useUpdateConnector,
   ConfigureBlockchainFormSchema,
+  useConnectConnector,
+  useDisonnectConnector,
 } from "@instill-ai/toolkit";
 import {
   Button,
@@ -24,34 +26,30 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import { useEffect, useState } from "react";
-import { IncompleteConnectorWithWatchState } from "@/types";
+import {
+  ConnectorWithWatchState,
+  IncompleteConnectorWithWatchState,
+} from "@/types";
 import { isAxiosError } from "axios";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { shallow } from "zustand/shallow";
 
 export type BlockchainFormProps = {
-  blockchain: ConnectorWithDefinition | IncompleteConnectorWithWatchState;
+  blockchain: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
   accessToken: Nullable<string>;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateResourceFormIsDirty: state.updateResourceFormIsDirty,
   updateSelectedNode: state.updateSelectedNode,
-  selectedNode: state.selectedNode,
   updateNodes: state.updateNodes,
 });
 
 export const BlockchainForm = (props: BlockchainFormProps) => {
   const { blockchain, accessToken } = props;
 
-  const {
-    updateResourceFormIsDirty,
-    updateSelectedNode,
-    selectedNode,
-    updateNodes,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
-
-  console.log(selectedNode);
+  const { updateResourceFormIsDirty, updateSelectedNode, updateNodes } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof ConfigureBlockchainFormSchema>>({
     resolver: zodResolver(ConfigureBlockchainFormSchema),
@@ -321,38 +319,146 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
     }
   }
 
-  const [isTesting, setIsTesting] = useState(false);
-
-  const handleTestBlockchain = async function () {
+  const [isConnecting, setIsConnecting] = useState(false);
+  const connectBlockchain = useConnectConnector();
+  const disconnectBlockchain = useDisonnectConnector();
+  const handleConnectBlockchain = async function () {
     if (!blockchain) return;
 
-    setIsTesting(true);
+    setIsConnecting(true);
 
-    try {
-      const res = await testConnectorConnectionAction({
-        connectorName: blockchain.name,
-        accessToken,
-      });
+    const oldState = blockchain.watchState;
 
-      setIsTesting(false);
+    if (
+      blockchain.watchState === "STATE_CONNECTED" ||
+      blockchain.watchState === "STATE_ERROR"
+    ) {
+      disconnectBlockchain.mutate(
+        {
+          connectorName: blockchain.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully disconnect ${blockchain.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
 
-      toast({
-        title: `${props.blockchain.id} is ${
-          res.state === "STATE_ERROR" ? "not connected" : "connected"
-        }`,
-        description: `The ${props.blockchain.id} state is ${res.state}`,
-        variant: res.state === "STATE_ERROR" ? "alert-error" : "alert-success",
-        size: "large",
-      });
-    } catch (err) {
-      setIsTesting(false);
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_DISCONNECTED",
+                  },
+                },
+              };
+            });
+            setIsConnecting(false);
+          },
+          onError: (error) => {
+            setIsConnecting(false);
 
-      toast({
-        title: "Error",
-        description: `There is something wrong when test AI`,
-        variant: "alert-error",
-        size: "large",
-      });
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when disconnect the blockchain",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when disconnect the blockchain",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+    } else {
+      connectBlockchain.mutate(
+        {
+          connectorName: blockchain.name,
+          accessToken,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Successfully connect ${blockchain.id}`,
+              variant: "alert-success",
+              size: "small",
+            });
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: "STATE_CONNECTED",
+                  },
+                },
+              };
+            });
+          },
+          onError: (error) => {
+            setIsConnecting(false);
+            updateSelectedNode((prev) => {
+              if (prev === null) return prev;
+              return {
+                ...prev,
+                data: {
+                  ...prev.data,
+                  connector: {
+                    ...prev.data.connector,
+                    watchState: oldState,
+                  },
+                },
+              };
+            });
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when connect the blockchain",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when connect the blockchain",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
     }
   };
 
@@ -691,16 +797,20 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
           />
         </div>
 
-        <div className="flex w-full flex-row-reverse gap-x-2">
+        <div className="flex w-full flex-row-reverse gap-x-4">
           <Button
-            onClick={handleTestBlockchain}
+            onClick={handleConnectBlockchain}
             className="gap-x-2"
             variant="primary"
             size="lg"
             type="button"
+            disabled={"uid" in blockchain ? false : true}
           >
-            Test
-            {isTesting ? (
+            {blockchain.watchState === "STATE_CONNECTED" ||
+            blockchain.watchState === "STATE_ERROR"
+              ? "Disconnect"
+              : "Connect"}
+            {isConnecting ? (
               <svg
                 className="m-auto h-4 w-4 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -721,8 +831,11 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
+            ) : blockchain.watchState === "STATE_CONNECTED" ||
+              blockchain.watchState === "STATE_ERROR" ? (
+              <Icons.Stop className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             ) : (
-              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default" />
+              <Icons.Play className="h-4 w-4 stroke-semantic-fg-on-default group-disabled:stroke-semantic-fg-disabled" />
             )}
           </Button>
           <Button
