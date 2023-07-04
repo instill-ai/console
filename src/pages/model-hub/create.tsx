@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/models",
+        destination: "/model-hub",
         permanent: false,
       },
     };
@@ -76,7 +76,7 @@ const CreateModelPage: FC & {
         <CreateModelForm
           onCreate={(initStore) => {
             initStore();
-            router.push("/models");
+            router.push("/model-hub");
           }}
           accessToken={null}
           enabledQuery={true}
