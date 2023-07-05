@@ -596,12 +596,14 @@ export const AIForm = (props: AIFormProps) => {
             control={form.control}
             name="connector_definition_name"
             render={({ field }) => {
+              console.log(field);
               return (
                 <Form.Item>
                   <Form.Label>AI Connector Type</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                     disabled={true}
                   >
                     <Form.Control>
