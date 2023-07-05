@@ -66,32 +66,9 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
 
   const isValidConnection: IsValidConnection = useCallback(
     (connection) => {
-      const targetNode = nodes.find((node) => node.id === connection.target);
-      const sourceNode = nodes.find((node) => node.id === connection.source);
-
-      if (!targetNode || !sourceNode) {
-        return false;
-      }
-
-      if (sourceNode.type === "sourceNode" && targetNode.type === "aiNode") {
-        return true;
-      }
-
-      if (
-        sourceNode.type === "aiNode" &&
-        targetNode.type === "blockchainNode"
-      ) {
-        return true;
-      }
-
-      if (
-        sourceNode.type === "blockchainNode" &&
-        targetNode.type === "destinationNode"
-      ) {
-        return true;
-      }
-
-      return false;
+      // Currently, we don't have limittation about which node can connect
+      // to which node
+      return true;
     },
     [nodes]
   );

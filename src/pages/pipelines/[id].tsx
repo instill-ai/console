@@ -323,12 +323,16 @@ const PipelineBuilderPage: FC & {
       blockchains: blockchainsWithWatchState,
     });
 
-    createGraphLayout(initialData.nodes, initialData.edges).then(
-      (graphData) => {
+    console.log(initialData);
+
+    createGraphLayout(initialData.nodes, initialData.edges)
+      .then((graphData) => {
         setNodes(graphData.nodes);
         setEdges(graphData.edges);
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     setGraphIsInitialized(true);
   }, [
