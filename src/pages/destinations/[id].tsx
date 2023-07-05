@@ -128,9 +128,7 @@ const DestinationDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {destinationWithPipelines.isSuccess ? (
           <ConfigureDestinationForm
-            destination={{
-              ...destinationWithPipelines.data,
-            }}
+            destination={destinationWithPipelines.data}
             onDelete={(initStore) => {
               initStore();
               router.push("/destinations");

@@ -545,12 +545,11 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                  <Form.Label>ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="AI's name"
                         value={field.value ?? ""}
@@ -576,11 +575,10 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control>
                     <Textarea
                       {...field}
-                      id={field.name}
                       placeholder="Description"
                       value={field.value ?? ""}
                       className="!rounded-none"
@@ -600,9 +598,7 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>
-                    AI Connector Type
-                  </Form.Label>
+                  <Form.Label>AI Connector Type</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -658,16 +654,28 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>API Key *</Form.Label>
+                  <Form.Label>API Key *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="API Key"
                         value={field.value ?? ""}
                         autoComplete="off"
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            ai.configuration.api_key === "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -693,7 +701,7 @@ export const AIForm = (props: AIFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Task *</Form.Label>
+                  <Form.Label>Task *</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value ?? undefined}
@@ -734,7 +742,7 @@ export const AIForm = (props: AIFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Engine</Form.Label>
+                  <Form.Label>Engine</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value ?? undefined}
@@ -787,12 +795,11 @@ export const AIForm = (props: AIFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Server URL *</Form.Label>
+                  <Form.Label>Server URL *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="URL"
                         value={field.value ?? ""}
@@ -821,12 +828,11 @@ export const AIForm = (props: AIFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Model ID *</Form.Label>
+                  <Form.Label>Model ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="ID"
                         value={field.value ?? ""}

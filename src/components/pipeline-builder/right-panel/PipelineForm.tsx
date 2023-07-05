@@ -137,12 +137,11 @@ export const PipelineForm = (props: PipelineForm) => {
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                    <Form.Label>ID *</Form.Label>
                     <Form.Control>
                       <Input.Root className="!rounded-none">
                         <Input.Core
                           {...field}
-                          id={field.name}
                           type="text"
                           placeholder="Pipeline's name"
                           value={field.value ?? ""}
@@ -166,7 +165,7 @@ export const PipelineForm = (props: PipelineForm) => {
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label htmlFor={field.name}>Description</Form.Label>
+                    <Form.Label>Description</Form.Label>
                     <Form.Control>
                       <Textarea
                         {...field}
