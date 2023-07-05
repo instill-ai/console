@@ -134,9 +134,9 @@ export const FlowControl = (props: FlowControlProps) => {
         onClick={async () => {
           if (!pipelineId) {
             toast({
-              title: "Pipeline ID not update",
+              title: "Pipeline ID not set",
               description:
-                "You are still using the placeholder pipeline ID. Please update the pipeline ID.",
+                "The pipeline ID should be set before saving the pipeline.",
               variant: "alert-error",
               size: "large",
             });
@@ -206,6 +206,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
             return;
           }
+
           const payload: CreatePipelinePayload = {
             id: pipelineId,
             recipe: {
@@ -225,6 +226,10 @@ export const FlowControl = (props: FlowControlProps) => {
             {
               onSuccess: async (res) => {
                 setPipelineUid(res.pipeline.uid);
+
+                router.push(`/pipelines/${pipelineId}`, undefined, {
+                  shallow: true,
+                });
 
                 if (!pipelineDescription) {
                   toast({

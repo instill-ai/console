@@ -80,6 +80,8 @@ const PipelineBuilderPage: FC & {
   const router = useRouter();
   const { id } = router.query;
 
+  // We need to warn user of unsave changes when they try to leave the page
+
   const pipeline = usePipeline({
     enabled: !!id,
     pipelineName: id ? `pipelines/${id}` : null,
@@ -260,8 +262,13 @@ const PipelineBuilderPage: FC & {
 
   useEffect(() => {
     if (!pipeline.isSuccess) {
+      console.log(id);
+      if (id) {
+        setPipelineId(id.toString());
+      }
       return;
     }
+
     setPipelineUid(pipeline.data.uid);
     setPipelineId(pipeline.data.id);
     setPipelineDescription(pipeline.data.description);
@@ -271,6 +278,7 @@ const PipelineBuilderPage: FC & {
     setPipelineDescription,
     setPipelineId,
     setPipelineUid,
+    id,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -306,9 +314,6 @@ const PipelineBuilderPage: FC & {
     if (blockchains.data.length > 0 && !blockchainsWatchState.isSuccess) {
       return;
     }
-
-    setPipelineUid(pipeline.data.uid);
-    setPipelineId(pipeline.data.id);
 
     const initialData = createInitialGraphData({
       pipeline: pipeline.data,

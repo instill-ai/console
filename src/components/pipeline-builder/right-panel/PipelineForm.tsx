@@ -17,7 +17,7 @@ import {
   useDeletePipeline,
   usePipeline,
 } from "@instill-ai/toolkit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
@@ -90,18 +90,22 @@ export const PipelineForm = (props: PipelineForm) => {
 
   const deletePipeline = useDeletePipeline();
   const { toast } = useToast();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   function handleDeletePipeline() {
-    console.log("hi");
     if (!pipeline.isSuccess) return;
+
+    setIsDeleting(true);
 
     deletePipeline.mutate(
       { pipelineName: pipeline.data.name, accessToken },
       {
         onSuccess: () => {
+          setIsDeleting(false);
           router.push("/pipelines");
         },
         onError: (error) => {
+          setIsDeleting(false);
           if (isAxiosError(error)) {
             toast({
               title: "Something went wrong when delete the pipeline",
@@ -146,6 +150,7 @@ export const PipelineForm = (props: PipelineForm) => {
                           disabled={false}
                           onChange={(e) => {
                             field.onChange(e);
+                            console.log("input", e.target.value);
                             setPipelineId(e.target.value);
                           }}
                         />
@@ -187,7 +192,11 @@ export const PipelineForm = (props: PipelineForm) => {
       </Form.Root>
       <Dialog.Root>
         <Dialog.Trigger className="mb-10" asChild>
-          <Button variant="danger" size="lg">
+          <Button
+            disabled={pipeline.isSuccess ? false : true}
+            variant="danger"
+            size="lg"
+          >
             Delete
           </Button>
         </Dialog.Trigger>
@@ -203,7 +212,12 @@ export const PipelineForm = (props: PipelineForm) => {
           </Dialog.Header>
           <div className="flex flex-col space-y-2">
             <Form.Root {...deletePipelineForm}>
-              <form className="flex w-full flex-col">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+                className="flex w-full flex-col"
+              >
                 <div className="mb-5 flex flex-col space-y-5">
                   <Form.Field
                     control={deletePipelineForm.control}
@@ -234,9 +248,13 @@ export const PipelineForm = (props: PipelineForm) => {
                 </div>
                 <Button
                   disabled={
-                    deletePipelineForm.watch("confirmationCode") ===
-                    pipeline.data?.id
-                      ? false
+                    pipeline.isSuccess
+                      ? deletePipelineForm.watch("confirmationCode") ===
+                        pipeline.data?.id
+                        ? isDeleting
+                          ? true
+                          : false
+                        : true
                       : true
                   }
                   variant="danger"
@@ -244,7 +262,30 @@ export const PipelineForm = (props: PipelineForm) => {
                   type="button"
                   onClick={() => handleDeletePipeline()}
                 >
-                  Delete
+                  {isDeleting ? (
+                    <svg
+                      className="m-auto h-4 w-4 animate-spin text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                  ) : (
+                    "Delete"
+                  )}
                 </Button>
               </form>
             </Form.Root>
