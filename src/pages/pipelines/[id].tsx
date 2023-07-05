@@ -57,7 +57,6 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setEdges: state.setEdges,
   resourceFormIsDirty: state.resourceFormIsDirty,
   updateSelectedNode: state.updateSelectedNode,
-  initPipelineBuilder: state.init,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -76,7 +75,6 @@ const PipelineBuilderPage: FC & {
     updateNodes,
     resourceFormIsDirty,
     updateSelectedNode,
-    initPipelineBuilder,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
