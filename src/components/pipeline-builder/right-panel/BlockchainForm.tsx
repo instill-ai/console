@@ -470,12 +470,11 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                  <Form.Label>ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         value={field.value ?? ""}
                         disabled={"uid" in blockchain ? true : false}
@@ -500,11 +499,10 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control>
                     <Textarea
                       {...field}
-                      id={field.name}
                       value={field.value ?? ""}
                       className="!rounded-none"
                     />
@@ -523,9 +521,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>
-                    AI Connector Type
-                  </Form.Label>
+                  <Form.Label>AI Connector Type</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -567,15 +563,28 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Capture token *</Form.Label>
+                  <Form.Label>Capture token *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="password"
                         value={field.value ?? ""}
                         autoComplete="off"
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            blockchain.configuration.capture_token ===
+                              "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -600,12 +609,11 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>License *</Form.Label>
+                  <Form.Label>License *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
@@ -633,12 +641,11 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Creator Name *</Form.Label>
+                  <Form.Label>Creator Name *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
@@ -666,7 +673,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Asset type *</Form.Label>
+                  <Form.Label>Asset type *</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
