@@ -47,9 +47,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
 
   useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      initPipelineBuilder();
-    });
+    if (typeof window === "undefined") return;
+    let previousURL = window.history.state.url;
+
+    function onRouteChange() {
+      // We will only init the pipeline builder when user is previously on the
+      // pipeline builder page
+      if (previousURL === "/pipelines/[id]") {
+        initPipelineBuilder();
+      }
+
+      previousURL = window.history.state.url;
+    }
+
+    router.events.on("routeChangeComplete", onRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", onRouteChange);
+    };
   }, [router.events, initPipelineBuilder]);
 
   useEffect(() => {
