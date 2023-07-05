@@ -1,3 +1,4 @@
+import { constructPipelineRecipe } from "@/lib/pipeline-builder/constructPipelineRecipe";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
@@ -18,6 +19,7 @@ import { shallow } from "zustand/shallow";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
+  edges: state.edges,
   pipelineId: state.pipelineId,
   pipelineDescription: state.pipelineDescription,
   setPipelineUid: state.setPipelineUid,
@@ -30,7 +32,7 @@ export type FlowControlProps = {
 export const FlowControl = (props: FlowControlProps) => {
   const { accessToken } = props;
   const router = useRouter();
-  const { nodes, pipelineId, pipelineDescription, setPipelineUid } =
+  const { nodes, pipelineId, pipelineDescription, setPipelineUid, edges } =
     usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -179,13 +181,7 @@ export const FlowControl = (props: FlowControlProps) => {
             const payload: UpdatePipelinePayload = {
               name: `pipelines/${pipelineId}`,
               description: pipelineDescription ?? undefined,
-              recipe: {
-                version: "v1alpha",
-                components: nodes.map((node) => ({
-                  id: node.id,
-                  resource_name: node.data.connector.name,
-                })),
-              },
+              recipe: constructPipelineRecipe(nodes, edges),
             };
 
             updatePipeline.mutate(
@@ -209,13 +205,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
           const payload: CreatePipelinePayload = {
             id: pipelineId,
-            recipe: {
-              version: "v1alpha",
-              components: nodes.map((node) => ({
-                id: node.id,
-                resource_name: node.data.connector.name,
-              })),
-            },
+            recipe: constructPipelineRecipe(nodes, edges),
           };
 
           createPipeline.mutate(
