@@ -8,6 +8,7 @@ import { shallow } from "zustand/shallow";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useWatchPipeline } from "@instill-ai/toolkit";
 
 const PipelineNameFormSchema = z.object({
   pipelineId: z.string().nullable(),
@@ -21,6 +22,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 export const PipelineNameForm = () => {
   const router = useRouter();
 
+  const { id } = router.query;
+
   const { pipelineId, setPipelineId } = usePipelineBuilderStore(
     pipelineBuilderSelector,
     shallow
@@ -29,6 +32,12 @@ export const PipelineNameForm = () => {
 
   const form = useForm<z.infer<typeof PipelineNameFormSchema>>({
     resolver: zodResolver(PipelineNameFormSchema),
+  });
+
+  const pipelineWatchState = useWatchPipeline({
+    pipelineName: `pipelines/${id}`,
+    enabled: !!id,
+    accessToken: null,
   });
 
   useEffect(() => {
@@ -46,7 +55,21 @@ export const PipelineNameForm = () => {
 
   return (
     <Form.Root {...form}>
-      <div className="flex w-full pl-4">
+      <div className="flex w-full flex-row space-x-2 pl-4">
+        {pipelineWatchState.isSuccess ? (
+          <div className="my-auto flex h-4 w-4 items-center justify-center">
+            <div
+              className={cn(
+                "h-2 w-2 rounded-full",
+                pipelineWatchState.data.state === "STATE_ERROR"
+                  ? "bg-semantic-error-default"
+                  : pipelineWatchState.data.state === "STATE_ACTIVE"
+                  ? "bg-semantic-success-default"
+                  : "bg-semantic-bg-secondary"
+              )}
+            />
+          </div>
+        ) : null}
         <Link
           className={cn(
             "mr-2 flex flex-row space-x-2",

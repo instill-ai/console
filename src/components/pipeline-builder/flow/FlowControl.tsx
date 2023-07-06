@@ -12,6 +12,7 @@ import {
   usePipeline,
   useRenamePipeline,
   useUpdatePipeline,
+  useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -44,6 +45,12 @@ export const FlowControl = (props: FlowControlProps) => {
     accessToken: null,
   });
 
+  const pipelineWatchState = useWatchPipeline({
+    pipelineName: `pipelines/${id}`,
+    accessToken: null,
+    enabled: !!id,
+  });
+
   const updatePipeline = useUpdatePipeline();
   const createPipeline = useCreatePipeline();
   const activatePipeline = useActivatePipeline();
@@ -54,9 +61,12 @@ export const FlowControl = (props: FlowControlProps) => {
     <div className="absolute bottom-4 right-4 flex flex-row-reverse gap-x-4">
       <Button
         onClick={() => {
-          if (!pipeline.isSuccess) return;
+          if (!pipeline.isSuccess || !pipelineWatchState.isSuccess) return;
 
-          if (pipeline.data?.state === "STATE_ACTIVE") {
+          if (
+            pipelineWatchState.data.state === "STATE_ACTIVE" ||
+            pipelineWatchState.data.state === "STATE_ERROR"
+          ) {
             deactivatePipeline.mutate(
               {
                 pipelineName: `pipelines/${pipelineId}`,
@@ -127,10 +137,26 @@ export const FlowControl = (props: FlowControlProps) => {
         className="gap-x-2"
         variant="primary"
         size="lg"
-        disabled={pipeline.isSuccess ? false : true}
+        disabled={
+          pipeline.isSuccess && pipelineWatchState.isSuccess ? false : true
+        }
       >
-        Activate
-        <Icons.Play className="h-5 w-5 stroke-semantic-bg-primary group-disabled:stroke-semantic-fg-disabled" />
+        {pipelineWatchState.isSuccess ? (
+          pipelineWatchState.data.state === "STATE_ACTIVE" ||
+          pipelineWatchState.data.state === "STATE_ERROR" ? (
+            <>
+              <span>Deactivate</span>
+              <Icons.Stop className="h-5 w-5 stroke-semantic-bg-primary group-disabled:stroke-semantic-fg-disabled" />
+            </>
+          ) : (
+            <>
+              <span>Activate</span>
+              <Icons.Play className="h-5 w-5 stroke-semantic-bg-primary group-disabled:stroke-semantic-fg-disabled" />
+            </>
+          )
+        ) : (
+          "Disabled"
+        )}
       </Button>
       <Button
         onClick={async () => {
@@ -196,6 +222,22 @@ export const FlowControl = (props: FlowControlProps) => {
                     variant: "alert-success",
                     size: "small",
                   });
+                },
+                onError: (error) => {
+                  if (isAxiosError(error)) {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      description: getInstillApiErrorMessage(error),
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  } else {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  }
                 },
               }
             );

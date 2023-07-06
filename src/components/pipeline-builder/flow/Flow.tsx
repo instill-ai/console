@@ -78,7 +78,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     <div className="relative flex-1">
       <button
         onClick={() => setRightPanelIsOpen((prev) => !prev)}
-        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center bg-semantic-accent-bg"
+        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center bg-semantic-bg-primary"
       >
         {rightPanelIsOpen ? (
           <Icons.ChevronRightDouble className="h-6 w-6 stroke-semantic-accent-default" />
