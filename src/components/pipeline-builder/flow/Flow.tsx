@@ -16,7 +16,7 @@ import { CustomEdge } from "../CustomEdge";
 import { FlowControl } from "./FlowControl";
 import { useDroppable } from "@dnd-kit/core";
 import { DROPPABLE_AREA_ID } from "@/pages/pipelines/[id]";
-import { useToast } from "@instill-ai/design-system";
+import { Icons, useToast } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -28,6 +28,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setSelectedNode: state.setSelectedNode,
   selectedNode: state.selectedNode,
   resourceFormIsDirty: state.resourceFormIsDirty,
+  rightPanelIsOpen: state.rightPanelIsOpen,
 });
 
 export type FlowProps = {
@@ -58,6 +59,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     setSelectedNode,
     selectedNode,
     resourceFormIsDirty,
+    rightPanelIsOpen,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { setNodeRef } = useDroppable({
@@ -76,8 +78,14 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     <div className="relative flex-1">
       <button
         onClick={() => setRightPanelIsOpen((prev) => !prev)}
-        className="absolute right-4 top-4 z-30 h-8 w-8 bg-semantic-accent-bg"
-      />
+        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center bg-semantic-bg-primary"
+      >
+        {rightPanelIsOpen ? (
+          <Icons.ChevronRightDouble className="h-6 w-6 stroke-semantic-accent-default" />
+        ) : (
+          <Icons.ChevronLeftDouble className="h-6 w-6 stroke-semantic-accent-default" />
+        )}
+      </button>
       <div ref={setNodeRef} className="h-full w-full flex-1">
         <div ref={ref} className="h-full w-full flex-1">
           <ReactFlow
