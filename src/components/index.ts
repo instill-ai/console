@@ -1,4 +1,3 @@
-export * from "./pipeline-builder";
 export * from "./Sidebar";
 export * from "./Breadcrumb";
 export * from "./ErrorBoundary";
