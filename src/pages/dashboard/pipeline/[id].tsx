@@ -6,13 +6,10 @@ import { StatusCardsGroup } from "@/components/cards";
 import { Status } from "@/types";
 import { usePipelineFilter } from "@/pages/api/pipeline/queries";
 import { useRouter } from "next/router";
-import {
-  getStatusCount,
-  getTimeInRFC3339Format,
-  timeLineOptions,
-} from "@/lib/dashboard";
+import { getStatusCount, getTimeInRFC3339Format } from "@/lib/dashboard";
 import { PipelineTriggerTable } from "@/components/PipelineTriggerTable";
 import cn from "clsx";
+import { FilterByDay } from "@/components/filter/FilterByDay";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -28,14 +25,14 @@ const PipelinePage: FC & {
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
 
-  const [selectedTimeOption, setSelectedTimeOption] = React.useState<
-    Nullable<SingleSelectOption>
-  >({
-    label: "24h",
-    value: "24h",
-  });
+  const [selectedTimeOption, setSelectedTimeOption] =
+    React.useState<SingleSelectOption>({
+      label: "24h",
+      value: "24h",
+    });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
+  const [currentPage, setCurrentPage] = React.useState(0);
 
   React.useEffect(() => {
     let queryParams = ``;
@@ -47,6 +44,7 @@ const PipelinePage: FC & {
     }
 
     setQueryString(queryParams);
+    setCurrentPage(0);
   }, [id, selectedTimeOption]);
 
   /* -------------------------------------------------------------------------
@@ -96,33 +94,11 @@ const PipelinePage: FC & {
         <div className="CardHeader inline-flex items-center justify-start gap-2.5 self-stretch p-8">
           <div className="LeftContent flex items-center justify-start gap-2.5"></div>
           <div className="RightContent shrink grow basis-0 px-2.5" />
-          <div
-            className="IconButton flex cursor-pointer items-center justify-center rounded border border-slate-200 bg-white p-2"
-            onClick={() => pipelines.refetch()}
-          >
-            <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
-          </div>
-          <div className="ButtonGroup flex items-start justify-start gap-[1px] border border-slate-200 bg-slate-200">
-            {timeLineOptions.map((timeLineOption) => (
-              <div
-                key={timeLineOption.value}
-                className={cn(
-                  `Button flex w-[66px] cursor-pointer items-center justify-center gap-1 self-stretch ${
-                    timeLineOption.value === selectedTimeOption?.value
-                      ? "bg-slate-200"
-                      : "bg-white"
-                  } px-4 py-1`
-                )}
-                onClick={() => {
-                  setSelectedTimeOption(timeLineOption);
-                }}
-              >
-                <div className="Label text-center text-[12px] font-semibold leading-none text-gray-800">
-                  {timeLineOption.label}
-                </div>
-              </div>
-            ))}
-          </div>
+          <FilterByDay
+            refetch={pipelines.refetch}
+            selectedTimeOption={selectedTimeOption}
+            setSelectedTimeOption={setSelectedTimeOption}
+          />
         </div>
 
         {/* Pipeline Table */}
@@ -133,6 +109,8 @@ const PipelinePage: FC & {
             isError={pipelines.isError}
             isLoading={pipelines.isLoading}
             statusCount={statusCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>

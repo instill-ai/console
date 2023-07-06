@@ -6,27 +6,24 @@ import {
   getPipelinesSeries,
   getPipelinesTriggerCount,
   getPipelinesTriggerTime,
-  timeLineOptions,
 } from "@/lib/dashboard";
-import { Icons, SingleSelectOption } from "@instill-ai/design-system";
-import { Nullable } from "@instill-ai/toolkit";
-import cn from "clsx";
+import { Icons } from "@instill-ai/design-system";
 import { Skeleton } from "../skeleton";
+import { FilterByDay, FilterProps } from "../filter/FilterByDay";
 
 type LineChartProps = {
   pipelines: PipelineTrigger[];
   isLoading: boolean;
-};
+} & FilterProps;
 
-export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
+export const LineChart = ({
+  pipelines,
+  isLoading,
+  selectedTimeOption,
+  setSelectedTimeOption,
+  refetch,
+}: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-
-  const [selectedTimeOption, setSelectedTimeOption] = React.useState<
-    Nullable<SingleSelectOption>
-  >({
-    label: "Today",
-    value: "24h",
-  });
 
   const xAxisData = pipelines?.map((pipeline) =>
     formatDateTime(pipeline.trigger_time)
@@ -78,30 +75,12 @@ export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
             </div>
           </div>
           <div className="RightContent shrink grow basis-0 px-2.5" />
-          <div className="IconButton flex cursor-pointer items-center justify-center rounded border border-slate-200 bg-white p-2">
-            <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
-          </div>
-          <div className="ButtonGroup flex items-start justify-start gap-[1px] border border-slate-200 bg-slate-200">
-            {timeLineOptions.map((timeLineOption) => (
-              <div
-                key={timeLineOption.value}
-                className={cn(
-                  `Button flex w-[66px] cursor-pointer items-center justify-center gap-1 self-stretch ${
-                    timeLineOption.value === selectedTimeOption?.value
-                      ? "bg-slate-200"
-                      : "bg-white"
-                  } px-4 py-1`
-                )}
-                onClick={() => {
-                  setSelectedTimeOption(timeLineOption);
-                }}
-              >
-                <div className="Label text-center text-[12px] font-semibold leading-none text-gray-800">
-                  {timeLineOption.label}
-                </div>
-              </div>
-            ))}
-          </div>
+
+          <FilterByDay
+            refetch={refetch}
+            selectedTimeOption={selectedTimeOption}
+            setSelectedTimeOption={setSelectedTimeOption}
+          />
         </div>
         <div className="Chart relative self-stretch">
           {isLoading ? (

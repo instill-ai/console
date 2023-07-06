@@ -44,7 +44,7 @@ export function getPipeLineOptions(
     (pipeline) => {
       return {
         label: pipeline.pipeline_id,
-        value: pipeline.pipeline_uid,
+        value: pipeline.pipeline_id,
       };
     }
   );
