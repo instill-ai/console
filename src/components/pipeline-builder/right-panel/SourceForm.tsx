@@ -143,6 +143,16 @@ export const SourceForm = (props: SourceFormProps) => {
     );
   }
 
+  let disabledSubmit = false;
+
+  if (sources.isSuccess) {
+    if (sources.data.some((e) => e.name === source.name)) {
+      disabledSubmit = true;
+    }
+  } else {
+    disabledSubmit = true;
+  }
+
   return (
     <div className="flex w-full flex-col">
       <Form.Root {...form}>
@@ -236,13 +246,7 @@ export const SourceForm = (props: SourceFormProps) => {
             <Button
               type="submit"
               variant="secondaryColour"
-              disabled={
-                sources.isSuccess
-                  ? sources.data.some((e) => e.id === source.id)
-                    ? true
-                    : false
-                  : true
-              }
+              disabled={disabledSubmit}
               size={form.formState.isDirty ? "lg" : "md"}
               className="gap-x-2"
             >

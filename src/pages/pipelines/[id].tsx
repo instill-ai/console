@@ -294,7 +294,6 @@ const PipelineBuilderPage: FC & {
 
   useEffect(() => {
     if (!pipeline.isSuccess) {
-      console.log(id);
       if (id) {
         setPipelineId(id.toString());
       }
@@ -509,8 +508,6 @@ const PipelineBuilderPage: FC & {
       ...aiDefinitions.data,
       ...blockchainDefinitions.data,
     ]);
-
-    console.log(active.data.current?.isPreset, active.id);
 
     if (active.data.current?.isPreset) {
       const draggedItem =

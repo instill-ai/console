@@ -149,7 +149,6 @@ export const PipelineForm = (props: PipelineForm) => {
                           disabled={false}
                           onChange={(e) => {
                             field.onChange(e);
-                            console.log("input", e.target.value);
                             setPipelineId(e.target.value);
                           }}
                         />
