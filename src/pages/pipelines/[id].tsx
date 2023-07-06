@@ -4,10 +4,26 @@ import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorType,
   Nullable,
+  PipelineBuilderStore,
   useConnectorDefinitions,
   useConnectors,
   usePipeline,
   useWatchConnectors,
+  ConnectorWithWatchState,
+  ConnectorNodeData,
+  IncompleteConnectorWithWatchState,
+  usePipelineBuilderStore,
+  createInitialGraphData,
+  createGraphLayout,
+  getAllConnectorPresets,
+  PipelineNameForm,
+  Draggable,
+  LeftSidebar,
+  LeftPanel,
+  getConnectorPresets,
+  Flow,
+  RightPanel,
+  PIPELINE_BUILDER_DROPPABLE_AREA_ID,
 } from "@instill-ai/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { shallow } from "zustand/shallow";
@@ -29,30 +45,8 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
-import {
-  ConnectorWithWatchState,
-  ConnectorNodeData,
-  IncompleteConnectorWithWatchState,
-} from "@/types";
-import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
-import {
-  Draggable,
-  Flow,
-  LeftPanel,
-  LeftSidebar,
-  PageBase,
-  PageHead,
-  PipelineNameForm,
-  RightPanel,
-  Topbar,
-} from "@/components";
+import { PageBase, PageHead, Topbar } from "@/components";
 import { useRouter } from "next/router";
-import {
-  createGraphLayout,
-  createInitialGraphData,
-  getAllConnectorPresets,
-  getConnectorPresets,
-} from "@/lib/pipeline-builder";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -354,6 +348,8 @@ const PipelineBuilderPage: FC & {
       blockchains: blockchainsWithWatchState,
     });
 
+    console.log(initialData);
+
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
         setNodes(graphData.nodes);
@@ -553,7 +549,7 @@ const PipelineBuilderPage: FC & {
       return;
     }
 
-    if (event.over?.id !== DROPPABLE_AREA_ID) {
+    if (event.over?.id !== PIPELINE_BUILDER_DROPPABLE_AREA_ID) {
       return;
     }
 
@@ -690,7 +686,7 @@ const PipelineBuilderPage: FC & {
       <PageBase>
         <Topbar>
           <div className="flex px-3 py-2">
-            <PipelineNameForm />
+            <PipelineNameForm accessToken={null} />
           </div>
         </Topbar>
         <PageBase.Container>

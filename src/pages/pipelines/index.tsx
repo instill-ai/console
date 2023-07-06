@@ -4,6 +4,7 @@ import {
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
+  usePipelineBuilderStore,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -13,7 +14,6 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
-import { usePipelineBuilderStore } from "@/stores";
 import { useRouter } from "next/router";
 
 type GetLayOutProps = {
