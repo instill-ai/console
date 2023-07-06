@@ -7,6 +7,7 @@ import {
   getPipeLineOptions,
   getPipelinesTriggerCount,
   getStatusCount,
+  getTimeInRFC3339Format,
   modeOptions,
   statusOptions,
 } from "@/lib/dashboard";
@@ -27,22 +28,53 @@ const PipelinePage: FC & {
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
 
-  const [selectedTimeOption, setSelectedTimeOption] = React.useState<
-    Nullable<SingleSelectOption>
-  >({
-    label: "24h",
-    value: "24h",
-  });
+  const [selectedTimeOption, setSelectedTimeOption] =
+    React.useState<SingleSelectOption>({
+      label: "Today",
+      value: "24h",
+    });
   const [selectedPinelineOption, setSelectedPinelineOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [selectedModeOption, setSelectedModeOption] =
-    React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
+    React.useState<SingleSelectOption>(defaultSelectOption);
   const [selectedStatusOption, setSelectedStatusOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
 
   React.useEffect(() => {
-    const queryParams = "";
+    let queryParams = "";
+
+    if (selectedTimeOption) {
+      const start = getTimeInRFC3339Format(selectedTimeOption.value);
+      const stop = getTimeInRFC3339Format("now");
+
+      if (queryParams) {
+        queryParams += ` AND start='${start}' AND stop='${stop}'`;
+      } else {
+        queryParams += `start='${start}' AND stop='${stop}'`;
+      }
+    }
+    if (selectedModeOption && selectedModeOption.value !== "all") {
+      if (queryParams) {
+        queryParams += ` AND pipeline_mode=${selectedModeOption.value}`;
+      } else {
+        queryParams += `pipeline_mode=${selectedModeOption.value}`;
+      }
+    }
+    if (selectedPinelineOption && selectedPinelineOption.value !== "all") {
+      if (queryParams) {
+        queryParams += ` AND pipeline_id='${selectedPinelineOption.label}'`;
+      } else {
+        queryParams += `pipeline_id='${selectedPinelineOption.label}'`;
+      }
+    }
+    if (selectedStatusOption && selectedStatusOption.value !== "all") {
+      if (queryParams) {
+        queryParams += ` AND status=${selectedStatusOption.value}`;
+      } else {
+        queryParams += `status=${selectedStatusOption.value}`;
+      }
+    }
 
     setQueryString(queryParams);
   }, [
@@ -52,6 +84,8 @@ const PipelinePage: FC & {
     selectedStatusOption,
   ]);
 
+  console.log("queryParams", queryString);
+
   /* -------------------------------------------------------------------------
    * Query pipeline data
    * -----------------------------------------------------------------------*/
@@ -59,7 +93,7 @@ const PipelinePage: FC & {
   const pipelines = usePipelineFilter({
     enabled: true,
     accessToken: null,
-    filter: queryString,
+    filter: queryString ? queryString : null,
   });
 
   const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
@@ -103,14 +137,16 @@ const PipelinePage: FC & {
 
         {/* Pipeline Chart */}
 
-        {!pipelines.isLoading && (
-          <div className="my-8">
-            <LineChart
-              pipelines={pipelines?.data ? pipelines?.data : []}
-              isLoading={pipelines.isLoading}
-            />
-          </div>
-        )}
+        <div className="my-8">
+          <LineChart
+            pipelines={pipelines?.data ? pipelines?.data : []}
+            isLoading={pipelines.isLoading}
+            selectedTimeOption={selectedTimeOption}
+            setSelectedTimeOption={setSelectedTimeOption}
+            refetch={pipelines.refetch}
+          />
+        </div>
+
         {/* Filter for graph */}
 
         <div className="my-4 flex flex-row space-x-8">
@@ -120,7 +156,15 @@ const PipelinePage: FC & {
           </div>
 
           <div className="my-4 flex w-2/5 flex-row space-x-8">
-            <Select.Root>
+            {/* <Select.Root
+              defaultValue={"all"}
+              onValueChange={(statusOption) => {
+                setSelectedStatusOption({
+                  label: statusOption,
+                  value: statusOption,
+                });
+              }}
+            >
               <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
                 <Select.Value
                   placeholder="Status: All"
@@ -133,18 +177,23 @@ const PipelinePage: FC & {
                     <Select.Item
                       value={statusOption.value}
                       key={statusOption.value}
-                      onChange={() => {
-                        setSelectedStatusOption(statusOption);
-                      }}
                     >
                       {statusOption.label}
                     </Select.Item>
                   ))}
                 </Select.Group>
               </Select.Content>
-            </Select.Root>
+            </Select.Root> */}
 
-            <Select.Root>
+            <Select.Root
+              defaultValue={"all"}
+              onValueChange={(pipelineOption) => {
+                setSelectedPinelineOption({
+                  label: pipelineOption,
+                  value: pipelineOption,
+                });
+              }}
+            >
               <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
                 <Select.Value
                   placeholder="ID: All"
@@ -157,9 +206,6 @@ const PipelinePage: FC & {
                     <Select.Item
                       value={pipelineOption.value}
                       key={pipelineOption.value}
-                      onChange={() => {
-                        setSelectedPinelineOption(pipelineOption);
-                      }}
                     >
                       {pipelineOption.label}
                     </Select.Item>
@@ -168,7 +214,12 @@ const PipelinePage: FC & {
               </Select.Content>
             </Select.Root>
 
-            <Select.Root>
+            <Select.Root
+              defaultValue={modeOptions[0].value}
+              onValueChange={(modeOption) => {
+                setSelectedModeOption({ label: modeOption, value: modeOption });
+              }}
+            >
               <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
                 <Select.Value
                   placeholder="Mode: All"
@@ -181,9 +232,6 @@ const PipelinePage: FC & {
                     <Select.Item
                       value={modeOption.value}
                       key={modeOption.value}
-                      onChange={() => {
-                        setSelectedModeOption(modeOption);
-                      }}
                     >
                       {modeOption.label}
                     </Select.Item>
