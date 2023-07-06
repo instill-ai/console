@@ -1,6 +1,7 @@
 import { ConnectorNodeData, ConnectorWithWatchState } from "@/types";
-import { Nullable, Pipeline } from "@instill-ai/toolkit";
+import { Pipeline } from "@instill-ai/toolkit";
 import { Edge, Node } from "reactflow";
+import { parseDependencyComponents } from "./parseDependencyComponents";
 
 export type CreateInitialGraphDataProps = {
   pipeline: Pipeline;
@@ -13,12 +14,8 @@ export type CreateInitialGraphDataProps = {
 export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   const { pipeline, ais, sources, destinations, blockchains } = props;
 
-  let sourceId: Nullable<string> = null;
-  let destinationId: Nullable<string> = null;
-  let modelId: Nullable<string> = null;
-  let blockchainId: Nullable<string> = null;
-
   const nodes: Node<ConnectorNodeData>[] = [];
+  const edges: Edge[] = [];
 
   for (const component of pipeline.recipe.components) {
     switch (component.type) {
@@ -37,8 +34,25 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
             },
             position: { x: 0, y: 0 },
           });
-          sourceId = component.id;
         }
+
+        // There are 4 type of dependencies: images, texts, structured_data, metadata
+        // Because we are only support single handler right now, we only need to have read
+        // metadata dependency
+        const dependentComponents = parseDependencyComponents(
+          component.dependencies.metadata
+        );
+
+        for (const dependentComponent of dependentComponents) {
+          edges.push({
+            id: `${dependentComponent}-${component.id}`,
+            type: "customEdge",
+            source: dependentComponent,
+            target: component.id,
+            animated: true,
+          });
+        }
+
         break;
       }
       case "CONNECTOR_TYPE_DESTINATION": {
@@ -55,7 +69,23 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
             },
             position: { x: 0, y: 0 },
           });
-          destinationId = component.id;
+        }
+
+        // There are 4 type of dependencies: images, texts, structured_data, metadata
+        // Because we are only support single handler right now, we only need to have read
+        // metadata dependency
+        const dependentComponents = parseDependencyComponents(
+          component.dependencies.metadata
+        );
+
+        for (const dependentComponent of dependentComponents) {
+          edges.push({
+            id: `${dependentComponent}-${component.id}`,
+            type: "customEdge",
+            source: dependentComponent,
+            target: component.id,
+            animated: true,
+          });
         }
         break;
       }
@@ -74,7 +104,23 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
             },
             position: { x: 0, y: 0 },
           });
-          blockchainId = component.id;
+        }
+
+        // There are 4 type of dependencies: images, texts, structured_data, metadata
+        // Because we are only support single handler right now, we only need to have read
+        // metadata dependency
+        const dependentComponents = parseDependencyComponents(
+          component.dependencies.metadata
+        );
+
+        for (const dependentComponent of dependentComponents) {
+          edges.push({
+            id: `${dependentComponent}-${component.id}`,
+            type: "customEdge",
+            source: dependentComponent,
+            target: component.id,
+            animated: true,
+          });
         }
         break;
       }
@@ -91,45 +137,30 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
             },
             position: { x: 0, y: 0 },
           });
-          modelId = component.id;
+        }
+
+        // There are 4 type of dependencies: images, texts, structured_data, metadata
+        // Because we are only support single handler right now, we only need to have read
+        // metadata dependency
+
+        const dependentComponents = parseDependencyComponents(
+          component.dependencies.metadata
+        );
+
+        for (const dependentComponent of dependentComponents) {
+          edges.push({
+            id: `${dependentComponent}-${component.id}`,
+            type: "customEdge",
+            source: dependentComponent,
+            target: component.id,
+            animated: true,
+          });
         }
         break;
       }
       default:
         console.error(`Unknown component type: ${component.type}`);
     }
-  }
-
-  const edges: Edge[] = [];
-
-  if (sourceId && modelId) {
-    edges.push({
-      id: "source-to-model",
-      type: "customEdge",
-      source: sourceId,
-      target: modelId,
-      animated: true,
-    });
-  }
-
-  if (modelId && blockchainId) {
-    edges.push({
-      id: "model-to-blockchain",
-      type: "customEdge",
-      source: modelId,
-      target: blockchainId,
-      animated: true,
-    });
-  }
-
-  if (blockchainId && destinationId) {
-    edges.push({
-      id: "blockchain-to-destination",
-      type: "customEdge",
-      source: blockchainId,
-      target: destinationId,
-      animated: true,
-    });
   }
 
   return {

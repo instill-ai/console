@@ -2,13 +2,11 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ConnectorWithDefinition,
   CreateConnectorPayload,
   ImageWithFallback,
   Nullable,
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
-  testConnectorConnectionAction,
   useConnectConnector,
   useCreateConnector,
   useDisonnectConnector,
@@ -49,7 +47,7 @@ const ConfigureAIFormSchema = z
   .superRefine((state, ctx) => {
     if (
       state.connector_definition_name ===
-      "connector-definitions/stability-ai-model"
+      "connector-definitions/ai-stability-ai"
     ) {
       if (!state.configuration.api_key) {
         ctx.addIssue({
@@ -78,7 +76,7 @@ const ConfigureAIFormSchema = z
 
     if (
       state.connector_definition_name ===
-      "connector-definitions/instill-ai-model"
+      "connector-definitions/ai-instill-model"
     ) {
       if (!state.configuration.api_key) {
         ctx.addIssue({
@@ -547,12 +545,11 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                  <Form.Label>ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="AI's name"
                         value={field.value ?? ""}
@@ -578,11 +575,10 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control>
                     <Textarea
                       {...field}
-                      id={field.name}
                       placeholder="Description"
                       value={field.value ?? ""}
                       className="!rounded-none"
@@ -602,12 +598,11 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>
-                    AI Connector Type
-                  </Form.Label>
+                  <Form.Label>AI Connector Type</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                     disabled={true}
                   >
                     <Form.Control>
@@ -617,8 +612,8 @@ export const AIForm = (props: AIFormProps) => {
                     </Form.Control>
                     <Select.Content>
                       <Select.Item
-                        key="connector-definitions/instill-ai-model"
-                        value="connector-definitions/instill-ai-model"
+                        key="connector-definitions/ai-instill-model"
+                        value="connector-definitions/ai-instill-model"
                         className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
                       >
                         <div className="flex flex-row space-x-2">
@@ -627,8 +622,8 @@ export const AIForm = (props: AIFormProps) => {
                         </div>
                       </Select.Item>
                       <Select.Item
-                        key="connector-definitions/stability-ai-model"
-                        value="connector-definitions/stability-ai-model"
+                        key="connector-definitions/ai-stability-ai"
+                        value="connector-definitions/ai-stability-ai"
                         className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
                       >
                         <div className="flex flex-row space-x-2">
@@ -660,16 +655,28 @@ export const AIForm = (props: AIFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>API Key *</Form.Label>
+                  <Form.Label>API Key *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="API Key"
                         value={field.value ?? ""}
                         autoComplete="off"
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            ai.configuration.api_key === "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -690,12 +697,12 @@ export const AIForm = (props: AIFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/stability-ai-model"
+                    "connector-definitions/ai-stability-ai"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Task *</Form.Label>
+                  <Form.Label>Task *</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value ?? undefined}
@@ -731,12 +738,12 @@ export const AIForm = (props: AIFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/stability-ai-model"
+                    "connector-definitions/ai-stability-ai"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Engine</Form.Label>
+                  <Form.Label>Engine</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value ?? undefined}
@@ -784,17 +791,16 @@ export const AIForm = (props: AIFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/instill-ai-model"
+                    "connector-definitions/ai-instill-model"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Server URL *</Form.Label>
+                  <Form.Label>Server URL *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="URL"
                         value={field.value ?? ""}
@@ -818,17 +824,16 @@ export const AIForm = (props: AIFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/instill-ai-model"
+                    "connector-definitions/ai-instill-model"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Model ID *</Form.Label>
+                  <Form.Label>Model ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         placeholder="ID"
                         value={field.value ?? ""}

@@ -29,6 +29,24 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   addNode: state.addNode,
 });
 
+export type LeftPanelSectionProps = {
+  title: string;
+  children: ReactNode;
+};
+
+const LeftPanelSection = (props: LeftPanelSectionProps) => {
+  const { title, children } = props;
+
+  return (
+    <div className="mb-4 flex flex-col">
+      <h5 className="mb-4 text-semantic-fg-secondary product-body-text-4-medium">
+        {title}
+      </h5>
+      <div className="flex flex-col space-y-4">{children}</div>
+    </div>
+  );
+};
+
 export const LeftPanel = (props: LeftPanelProps) => {
   const { children, selectedTab, reactFlowInstance } = props;
 
@@ -84,6 +102,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                           connector_definition_name: definition.name,
                           connector_definition: definition,
                           watchState: "STATE_UNSPECIFIED",
+                          connector_type: selectedTab,
                           configuration: {},
                         },
                       },
@@ -143,6 +162,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                           connector_definition_name: definition.name,
                           configuration: {},
                           watchState: "STATE_UNSPECIFIED",
+                          connector_type: selectedTab,
                         },
                       },
                       position: reactFlowInstance.project({
@@ -203,6 +223,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                             connector_definition_name: definition.name,
                             watchState: "STATE_UNSPECIFIED",
                             configuration: {},
+                            connector_type: selectedTab,
                           },
                         },
                         position: reactFlowInstance.project({
@@ -260,6 +281,7 @@ export const LeftPanel = (props: LeftPanelProps) => {
                             connector_definition_name: definition.name,
                             watchState: "STATE_UNSPECIFIED",
                             configuration: {},
+                            connector_type: selectedTab,
                           },
                         },
                         position: reactFlowInstance.project({
@@ -289,7 +311,8 @@ export const LeftPanel = (props: LeftPanelProps) => {
             : null}
         </SelectConnectorDefinitionDialog>
       ) : null}
-      <div className="flex flex-1 flex-col space-y-4">{children}</div>
+      <div className="flex flex-1 flex-col">{children}</div>
     </div>
   );
 };
+LeftPanel.Section = LeftPanelSection;

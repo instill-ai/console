@@ -157,9 +157,7 @@ export const SourceForm = (props: SourceFormProps) => {
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label htmlFor={field.name}>
-                      Source definition
-                    </Form.Label>
+                    <Form.Label>Source definition</Form.Label>
                     <Form.Control>
                       <Select.Root
                         onValueChange={field.onChange}
