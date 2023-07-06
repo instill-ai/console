@@ -35,8 +35,6 @@ export async function filterPipelinesQuery({
       filter
     );
 
-    console.log("queryString", queryString, filter);
-
     const { data } = await client.get<ListPipelinesTriggerResponse>(
       queryString
     );
