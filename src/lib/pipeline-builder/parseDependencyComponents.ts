@@ -7,6 +7,8 @@ export function parseDependencyComponents(string: string) {
   const dependencies = string
     .replaceAll("[", "")
     .replaceAll("]", "")
+    .replaceAll("{", "")
+    .replaceAll("}", "")
     .replaceAll("**", "")
     .replaceAll("*", "")
     .split(",")
