@@ -33,7 +33,7 @@ export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
   );
   const seriesData = pipelines?.map((pipeline) => {
     return {
-      name: pipeline.pipeline_name,
+      name: pipeline.pipeline_id,
       value: pipeline.compute_time_duration,
     };
   });
@@ -46,12 +46,10 @@ export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
           trigger: "axis",
           // triggerOn: "click",
           formatter: (params: any) => {
-            console.log("params", params);
-
             const trigger_time = params[0].axisValue;
-            const pipeline_name = params[0].seriesName;
+            const pipeline_id = params[0].seriesName;
             const compute_time_duration = params[0].value;
-            return `Time: ${trigger_time}<br /> Pipeline: ${pipeline_name}<br />Compute Time: ${compute_time_duration} Sec<br />`;
+            return `Time: ${trigger_time}<br /> Pipeline: ${pipeline_id}<br />Compute Time: ${compute_time_duration} Sec<br />`;
           },
         },
         xAxis: {
@@ -80,8 +78,8 @@ export const LineChart = ({ pipelines, isLoading }: LineChartProps) => {
             </div>
           </div>
           <div className="RightContent shrink grow basis-0 px-2.5" />
-          <div className="IconButton flex items-center justify-center rounded border border-slate-200 bg-white p-2">
-            <Icons.Plus className="h-4 w-4 stroke-semantic-fg-primary" />
+          <div className="IconButton flex cursor-pointer items-center justify-center rounded border border-slate-200 bg-white p-2">
+            <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
           </div>
           <div className="ButtonGroup flex items-start justify-start gap-[1px] border border-slate-200 bg-slate-200">
             {timeLineOptions.map((timeLineOption) => (

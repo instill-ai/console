@@ -8,7 +8,7 @@ import {
 } from "@instill-ai/toolkit";
 
 export type ListPipelinesTriggerResponse = {
-  pipeline_trigger_record: PipelineTrigger[];
+  pipeline_trigger_records: PipelineTrigger[];
   next_page_token: string;
   total_size: string;
 };
@@ -35,13 +35,11 @@ export async function filterPipelinesQuery({
       filter
     );
 
-    console.log("queryString", queryString, filter);
-
     const { data } = await client.get<ListPipelinesTriggerResponse>(
       queryString
     );
 
-    triggers.push(...data.pipeline_trigger_record);
+    triggers.push(...data.pipeline_trigger_records);
 
     if (data.next_page_token) {
       triggers.push(
@@ -97,7 +95,7 @@ export const usePipelineFilter = ({
   retry?: false | number;
 }) => {
   return useQuery(
-    ["metrics"],
+    ["metrics", filter],
     async () => {
       const triggers = await fetchPipelines(accessToken, filter);
       return Promise.resolve(triggers);
