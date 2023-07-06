@@ -20,12 +20,12 @@ export function constructPipelineRecipe(
           images: `[${connections
             .map((edge) => `*${edge.source}.images`)
             .join(",")}]`,
-          structured_data: `[${connections
+          structured_data: `{${connections
             .map((edge) => `**${edge.source}.structured_data`)
-            .join(",")}]`,
-          metadata: `[${connections
+            .join(",")}}`,
+          metadata: `{${connections
             .map((edge) => `**${edge.source}.metadata`)
-            .join(",")}]`,
+            .join(",")}}`,
         },
       };
     }),
