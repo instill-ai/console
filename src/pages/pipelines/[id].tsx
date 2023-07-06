@@ -4,10 +4,26 @@ import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorType,
   Nullable,
+  PipelineBuilderStore,
   useConnectorDefinitions,
   useConnectors,
   usePipeline,
   useWatchConnectors,
+  ConnectorWithWatchState,
+  ConnectorNodeData,
+  IncompleteConnectorWithWatchState,
+  usePipelineBuilderStore,
+  createInitialGraphData,
+  createGraphLayout,
+  getAllConnectorPresets,
+  PipelineNameForm,
+  Draggable,
+  LeftSidebar,
+  LeftPanel,
+  getConnectorPresets,
+  Flow,
+  RightPanel,
+  PIPELINE_BUILDER_DROPPABLE_AREA_ID,
 } from "@instill-ai/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { shallow } from "zustand/shallow";
@@ -29,30 +45,8 @@ type GetLayOutProps = {
   page: ReactElement;
 };
 
-import {
-  ConnectorWithWatchState,
-  ConnectorNodeData,
-  IncompleteConnectorWithWatchState,
-} from "@/types";
-import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
-import {
-  Draggable,
-  Flow,
-  LeftPanel,
-  LeftSidebar,
-  PageBase,
-  PageHead,
-  PipelineNameForm,
-  RightPanel,
-  Topbar,
-} from "@/components";
+import { PageBase, PageHead, Topbar } from "@/components";
 import { useRouter } from "next/router";
-import {
-  createGraphLayout,
-  createInitialGraphData,
-  getAllConnectorPresets,
-  getConnectorPresets,
-} from "@/lib/pipeline-builder";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -294,7 +288,6 @@ const PipelineBuilderPage: FC & {
 
   useEffect(() => {
     if (!pipeline.isSuccess) {
-      console.log(id);
       if (id) {
         setPipelineId(id.toString());
       }
@@ -354,6 +347,8 @@ const PipelineBuilderPage: FC & {
       destinations: destinationsWithWatchState,
       blockchains: blockchainsWithWatchState,
     });
+
+    console.log(initialData);
 
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
@@ -510,8 +505,6 @@ const PipelineBuilderPage: FC & {
       ...blockchainDefinitions.data,
     ]);
 
-    console.log(active.data.current?.isPreset, active.id);
-
     if (active.data.current?.isPreset) {
       const draggedItem =
         allPresets.find((e) => `${e.name}-preset` === active.id) || null;
@@ -556,7 +549,7 @@ const PipelineBuilderPage: FC & {
       return;
     }
 
-    if (event.over?.id !== DROPPABLE_AREA_ID) {
+    if (event.over?.id !== PIPELINE_BUILDER_DROPPABLE_AREA_ID) {
       return;
     }
 
@@ -693,7 +686,7 @@ const PipelineBuilderPage: FC & {
       <PageBase>
         <Topbar>
           <div className="flex px-3 py-2">
-            <PipelineNameForm />
+            <PipelineNameForm accessToken={null} />
           </div>
         </Topbar>
         <PageBase.Container>
