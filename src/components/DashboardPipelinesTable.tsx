@@ -139,16 +139,16 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
             : pipelinePages[currentPage]
             ? pipelinePages[currentPage].map((pipeline) => (
                 <tr
-                  key={pipeline.pipeline_name}
+                  key={pipeline.pipeline_uid}
                   className="border border-instillGrey20 bg-white"
                 >
                   <DeafultCell name={""} width={null} padding="py-2 pl-6" />
 
                   <DeafultCell
-                    name={pipeline.pipeline_name}
+                    name={pipeline.pipeline_id}
                     width={null}
                     padding="py-2 pl-6"
-                    link={`/dashboard/pipeline/${pipeline.pipeline_name}`}
+                    link={`/dashboard/pipeline/${pipeline.pipeline_id}`}
                   />
 
                   <StateCell

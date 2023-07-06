@@ -5,15 +5,13 @@ import {
   PaginationListContainer,
   TableError,
   SkeletonCell,
-  PaginationListContainerProps,
-  ResourceState,
   PipelineTablePlaceholder,
   StateOverview,
   chunk,
   env,
 } from "@instill-ai/toolkit";
 import { type Nullable } from "@instill-ai/toolkit";
-import { PipelineTrigger, PipelinesTableProps, Status } from "@/types";
+import { PipelinesTableProps } from "@/types";
 import { DeafultCell } from "./cells/DefaultCell";
 import { StateCell } from "./cells/StateCell";
 import { getStatus } from "@/lib/dashboard";
@@ -28,8 +26,6 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
   const pipelinePages = React.useMemo(() => {
     return chunk(pipelines, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
   }, [pipelines]);
-
-  console.log("pipelinePages", pipelinePages, statusCount);
 
   const tableHeadItems = React.useMemo<TableHeadItem[]>(() => {
     return [
@@ -132,7 +128,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
             : pipelinePages[currentPage]
             ? pipelinePages[currentPage].map((pipeline) => (
                 <tr
-                  key={pipeline.pipeline_name}
+                  key={pipeline.pipeline_trigger_id}
                   className="border border-instillGrey20 bg-white"
                 >
                   <DeafultCell
