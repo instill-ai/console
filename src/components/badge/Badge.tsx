@@ -15,7 +15,7 @@ const getColor = (statusname: string) => {
         color: "text-teal-700",
       };
 
-    case "error":
+    case "errored":
       return {
         bgColor: "bg-red-50",
         color: "text-rose-700",

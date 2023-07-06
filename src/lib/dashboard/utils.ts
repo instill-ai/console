@@ -1,5 +1,6 @@
 import { PipelineTrigger, PipelineTriggerCount, Status } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
+import { ResourceState } from "@instill-ai/toolkit";
 
 export function getPipelinesTriggerCount(
   pipelines: PipelineTrigger[]
@@ -9,11 +10,11 @@ export function getPipelinesTriggerCount(
   pipelines.forEach((pipeline) => {
     const triggerCountIndex = pipelinesTriggerCount.findIndex(
       (pipelineTriggerCount) =>
-        pipelineTriggerCount.pipeline_permalink === pipeline.pipeline_permalink
+        pipelineTriggerCount.pipeline_uid === pipeline.pipeline_uid
     );
 
     if (triggerCountIndex !== -1) {
-      if (pipeline.status === "error") {
+      if (pipeline.status === "errored") {
         pipelinesTriggerCount[triggerCountIndex].pipeline_error += 1;
       }
       if (pipeline.status === "completed") {
@@ -24,8 +25,8 @@ export function getPipelinesTriggerCount(
       );
     } else {
       pipelinesTriggerCount.push({
-        pipeline_name: pipeline.pipeline_name,
-        pipeline_permalink: pipeline.pipeline_permalink,
+        pipeline_id: pipeline.pipeline_id,
+        pipeline_uid: pipeline.pipeline_uid,
         pipeline_completed: pipeline.status === "completed" ? 1 : 0,
         pipeline_error: pipeline.status === "error" ? 1 : 0,
         compute_time_duration: [pipeline.compute_time_duration],
@@ -42,8 +43,8 @@ export function getPipeLineOptions(
   const formattedPinelineOptions = getPipelinesTriggerCount(pipelines).map(
     (pipeline) => {
       return {
-        label: pipeline.pipeline_name,
-        value: pipeline.pipeline_permalink,
+        label: pipeline.pipeline_id,
+        value: pipeline.pipeline_uid,
       };
     }
   );
@@ -72,14 +73,14 @@ export function getStatusCount(pipelines: PipelineTrigger[]): Status[] {
       type: "pipeline",
     },
     {
-      statusname: "error",
+      statusname: "errored",
       amount: STATE_INACTIVE,
       type: "pipeline",
     },
   ];
 }
 
-export function getTimeInRFC3339NanoFormat(interval: string): string {
+export function getTimeInRFC3339Format(interval: string): string {
   const timeUnits: { [key: string]: string } = {
     h: "hour",
     d: "day",
@@ -89,7 +90,7 @@ export function getTimeInRFC3339NanoFormat(interval: string): string {
   const match = interval.match(regex);
 
   if (interval === "now") {
-    return new Date().toISOString().replace("Z", ".000Z");
+    return new Date().toISOString().split(".")[0] + "Z";
   }
 
   if (!match) {
@@ -120,10 +121,7 @@ export function getTimeInRFC3339NanoFormat(interval: string): string {
     targetTime.setDate(currentTime.getDate() - value);
   }
 
-  const isoString = targetTime.toISOString();
-  const rfc3339NanoString = isoString.replace("Z", ".000Z");
-
-  return rfc3339NanoString;
+  return targetTime.toISOString().split(".")[0] + "Z";
 }
 
 export function formatDateTime(dateTimeString: string): string {
@@ -155,10 +153,20 @@ export function getPipelinesTriggerTime(pipelines: PipelineTrigger[]) {
 export function getPipelinesSeries(pipelines: PipelineTriggerCount[]) {
   return pipelines.map((pipeline) => {
     return {
-      name: pipeline.pipeline_name,
+      name: pipeline.pipeline_id,
       type: "line",
       smooth: true,
       data: pipeline.compute_time_duration,
     };
   });
+}
+
+export function getStatus(status: string): ResourceState {
+  if (status === "completed") {
+    return "STATE_ACTIVE";
+  }
+  if (status === "error") {
+    return "STATE_ERROR";
+  }
+  return "STATE_UNSPECIFIED";
 }

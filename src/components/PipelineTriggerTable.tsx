@@ -1,40 +1,23 @@
 import * as React from "react";
 import {
-  NameCell,
   TableHead,
   TableHeadItem,
   PaginationListContainer,
   TableError,
   SkeletonCell,
-  PaginationListContainerProps,
-  ResourceState,
   PipelineTablePlaceholder,
+  StateOverview,
   chunk,
   env,
 } from "@instill-ai/toolkit";
 import { type Nullable } from "@instill-ai/toolkit";
+import { PipelinesTableProps } from "@/types";
 import { DeafultCell } from "./cells/DefaultCell";
-import { PipelineTriggerCount } from "@/types";
 import { StateCell } from "./cells/StateCell";
+import { getStatus } from "@/lib/dashboard";
 
-export type PipelinesTableProps = {
-  pipelines: PipelineTriggerCount[];
-  isError: boolean;
-  isLoading: boolean;
-} & Pick<PaginationListContainerProps, "marginBottom">;
-
-const getStatus = (status: string): ResourceState => {
-  if (status === "completed") {
-    return "STATE_ACTIVE";
-  }
-  if (status === "error") {
-    return "STATE_ERROR";
-  }
-  return "STATE_UNSPECIFIED";
-};
-
-export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
-  const { pipelines, marginBottom, isError, isLoading } = props;
+export const PipelineTriggerTable = (props: PipelinesTableProps) => {
+  const { pipelines, marginBottom, isError, isLoading, statusCount } = props;
   const [currentPage, setCurrentPage] = React.useState(0);
   const [searchTerm, setSearchTerm] = React.useState<Nullable<string>>(null);
 
@@ -48,23 +31,29 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
     return [
       {
         key: "pipeline-state-overview-head",
-        item: "Status",
-        width: "w-auto",
+        item: "Timestamp",
+        width: "w-[360px]",
       },
       {
         key: "pipeline-mode-head",
-        item: "Pipeline ID",
+        item: (
+          <StateOverview
+            errorCounts={statusCount[1]?.amount || 0}
+            offlineCounts={0}
+            onlineCounts={statusCount[0]?.amount || 0}
+          />
+        ),
         width: "w-[160px]",
       },
       {
         key: "pipeline-source-head",
-        item: "Completed triggers",
+        item: "Trigger time",
         width: "w-[160px]",
       },
       {
         key: "pipeline-models-head",
-        item: "Errorred triggers",
-        width: "w-[160px]",
+        item: "Trigger ID",
+        width: "w-auto",
       },
     ];
   }, []);
@@ -72,7 +61,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
   if (isError) {
     return (
       <PaginationListContainer
-        title=""
+        title="Pipeline Trigger"
         description=""
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -90,7 +79,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
   if (pipelines.length === 0 && !isLoading) {
     return (
       <PaginationListContainer
-        title=""
+        title="Pipeline Triggers"
         description=""
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -107,14 +96,14 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
 
   return (
     <PaginationListContainer
-      title=""
+      title="Pipeline Triggers"
       description=""
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
-      searchTerm={null}
+      searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       totalPage={pipelinePages.length}
-      disabledSearchField={true}
+      disabledSearchField={isLoading ? true : false}
       marginBottom={marginBottom}
     >
       <table className="table-auto border-collapse">
@@ -139,29 +128,31 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
             : pipelinePages[currentPage]
             ? pipelinePages[currentPage].map((pipeline) => (
                 <tr
-                  key={pipeline.pipeline_uid}
+                  key={pipeline.pipeline_trigger_id}
                   className="border border-instillGrey20 bg-white"
                 >
-                  <DeafultCell name={""} width={null} padding="py-2 pl-6" />
+                  <DeafultCell
+                    name={pipeline.trigger_time}
+                    width={null}
+                    padding="py-2 pl-6"
+                  />
+
+                  <StateCell
+                    name={pipeline.status}
+                    width={null}
+                    state={getStatus(pipeline.status)}
+                    padding="py-2 pl-6"
+                  />
 
                   <DeafultCell
-                    name={pipeline.pipeline_id}
+                    name={pipeline.compute_time_duration}
                     width={null}
-                    padding="py-2 pl-6"
-                    link={`/dashboard/pipeline/${pipeline.pipeline_id}`}
-                  />
-
-                  <StateCell
-                    name={pipeline.pipeline_completed}
-                    width={null}
-                    state={getStatus("completed")}
                     padding="py-2 pl-6"
                   />
 
-                  <StateCell
-                    name={pipeline.pipeline_error}
+                  <DeafultCell
+                    name={String(pipeline.pipeline_trigger_id)}
                     width={null}
-                    state={getStatus("error")}
                     padding="py-2 pl-6"
                   />
                 </tr>
