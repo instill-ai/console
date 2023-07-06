@@ -64,14 +64,11 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     id: DROPPABLE_AREA_ID,
   });
 
-  const isValidConnection: IsValidConnection = useCallback(
-    (connection) => {
-      // Currently, we don't have limittation about which node can connect
-      // to which node
-      return true;
-    },
-    [nodes]
-  );
+  const isValidConnection: IsValidConnection = useCallback(() => {
+    // Currently, we don't have limittation about which node can connect
+    // to which node
+    return true;
+  }, []);
 
   const { toast } = useToast();
 

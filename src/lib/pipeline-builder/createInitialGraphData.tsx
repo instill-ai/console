@@ -1,5 +1,5 @@
 import { ConnectorNodeData, ConnectorWithWatchState } from "@/types";
-import { Nullable, Pipeline } from "@instill-ai/toolkit";
+import { Pipeline } from "@instill-ai/toolkit";
 import { Edge, Node } from "reactflow";
 import { parseDependencyComponents } from "./parseDependencyComponents";
 

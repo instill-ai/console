@@ -1,14 +1,10 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import {
-  Icons,
-  getModelInstanceTaskToolkit,
-  useToast,
-} from "@instill-ai/design-system";
+import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorType,
-  ImageWithFallback,
   Nullable,
+  useConnectorDefinitions,
   useConnectors,
   usePipeline,
   useWatchConnectors,
@@ -21,16 +17,26 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  useDraggable,
 } from "@dnd-kit/core";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 
 type GetLayOutProps = {
   page: ReactElement;
 };
 
-import { ConnectorWithWatchState, ConnectorNodeData } from "@/types";
+import {
+  ConnectorWithWatchState,
+  ConnectorNodeData,
+  IncompleteConnectorWithWatchState,
+} from "@/types";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import {
+  Draggable,
   Flow,
   LeftPanel,
   LeftSidebar,
@@ -44,6 +50,8 @@ import { useRouter } from "next/router";
 import {
   createGraphLayout,
   createInitialGraphData,
+  getAllConnectorPresets,
+  getConnectorPresets,
 } from "@/lib/pipeline-builder";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -105,6 +113,12 @@ const PipelineBuilderPage: FC & {
     enabled: true,
   });
 
+  const sourceDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_SOURCE",
+    accessToken: null,
+    enabled: true,
+  });
+
   const sourcesWatchState = useWatchConnectors({
     connectorType: "CONNECTOR_TYPE_SOURCE",
     connectorNames: sources.isSuccess
@@ -141,6 +155,12 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const destinations = useConnectors({
+    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    accessToken: null,
+    enabled: true,
+  });
+
+  const destinationDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_DESTINATION",
     accessToken: null,
     enabled: true,
@@ -187,6 +207,12 @@ const PipelineBuilderPage: FC & {
     enabled: true,
   });
 
+  const aiDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_AI",
+    accessToken: null,
+    enabled: true,
+  });
+
   const aisWatchState = useWatchConnectors({
     connectorType: "CONNECTOR_TYPE_AI",
     connectorNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
@@ -216,6 +242,12 @@ const PipelineBuilderPage: FC & {
   }, [ais.isSuccess, ais.data, aisWatchState.isSuccess, aisWatchState.data]);
 
   const blockchains = useConnectors({
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    accessToken: null,
+    enabled: true,
+  });
+
+  const blockchainDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
     accessToken: null,
     enabled: true,
@@ -323,8 +355,6 @@ const PipelineBuilderPage: FC & {
       blockchains: blockchainsWithWatchState,
     });
 
-    console.log(initialData);
-
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
         setNodes(graphData.nodes);
@@ -421,9 +451,7 @@ const PipelineBuilderPage: FC & {
       });
     });
 
-    let allConnectors: ConnectorWithWatchState[] = [];
-
-    allConnectors = [
+    const allConnectors = [
       ...sourcesWithWatchState,
       ...destinationsWithWatchState,
       ...aisWithWatchState,
@@ -459,14 +487,39 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const [draggedItem, setDraggedItem] =
-    useState<Nullable<ConnectorWithWatchState>>(null);
+    useState<
+      Nullable<ConnectorWithWatchState | IncompleteConnectorWithWatchState>
+    >(null);
 
   const dropOverlayRef = useRef<HTMLDivElement>(null);
 
   function handleDragStart({ active }: DragStartEvent) {
-    let allConnectors: ConnectorWithWatchState[] = [];
+    if (
+      !sourceDefinitions.isSuccess ||
+      !destinationDefinitions.isSuccess ||
+      !aiDefinitions.isSuccess ||
+      !blockchainDefinitions.isSuccess
+    ) {
+      return;
+    }
 
-    allConnectors = [
+    const allPresets = getAllConnectorPresets([
+      ...sourceDefinitions.data,
+      ...destinationDefinitions.data,
+      ...aiDefinitions.data,
+      ...blockchainDefinitions.data,
+    ]);
+
+    console.log(active.data.current?.isPreset, active.id);
+
+    if (active.data.current?.isPreset) {
+      const draggedItem =
+        allPresets.find((e) => `${e.name}-preset` === active.id) || null;
+      setDraggedItem(draggedItem);
+      return;
+    }
+
+    const allConnectors = [
       ...sourcesWithWatchState,
       ...destinationsWithWatchState,
       ...aisWithWatchState,
@@ -503,7 +556,7 @@ const PipelineBuilderPage: FC & {
       return;
     }
 
-    if (event.over?.id !== "pipeline-builder-droppable") {
+    if (event.over?.id !== DROPPABLE_AREA_ID) {
       return;
     }
 
@@ -511,6 +564,32 @@ const PipelineBuilderPage: FC & {
     const reactFlowPosition = reactFlowWrapper.current.getBoundingClientRect();
 
     let newNode: Nullable<Node<ConnectorNodeData>> = null;
+
+    let id: Nullable<string> = null;
+    let name: Nullable<string> = null;
+
+    if (event.active.data.current?.isPreset) {
+      if (
+        draggedItem.name === "connectors/source-grpc" ||
+        draggedItem.name === "connectors/source-http" ||
+        draggedItem.name === "connectors/destination-http" ||
+        draggedItem.name === "connectors/destination-grpc"
+      ) {
+        id = draggedItem.id;
+        name = draggedItem.name;
+      } else {
+        const randomId = uniqueNamesGenerator({
+          dictionaries: [adjectives, colors, animals],
+          separator: "-",
+        });
+
+        id = randomId;
+        name = `connectors/${randomId}`;
+      }
+    } else {
+      id = draggedItem.id;
+      name = draggedItem.name;
+    }
 
     switch (draggedItem.connector_type) {
       case "CONNECTOR_TYPE_AI": {
@@ -521,7 +600,11 @@ const PipelineBuilderPage: FC & {
           targetPosition: Position.Right,
           data: {
             connectorType: "CONNECTOR_TYPE_AI",
-            connector: draggedItem,
+            connector: {
+              ...draggedItem,
+              id,
+              name,
+            },
           },
           position: reactFlowInstance.project({
             x: overlayPosition.left - reactFlowPosition.left,
@@ -538,7 +621,11 @@ const PipelineBuilderPage: FC & {
           targetPosition: Position.Right,
           data: {
             connectorType: "CONNECTOR_TYPE_SOURCE",
-            connector: draggedItem,
+            connector: {
+              ...draggedItem,
+              id,
+              name,
+            },
           },
           position: reactFlowInstance.project({
             x: overlayPosition.left - reactFlowPosition.left,
@@ -555,7 +642,11 @@ const PipelineBuilderPage: FC & {
           targetPosition: Position.Right,
           data: {
             connectorType: "CONNECTOR_TYPE_DESTINATION",
-            connector: draggedItem,
+            connector: {
+              ...draggedItem,
+              id,
+              name,
+            },
           },
           position: reactFlowInstance.project({
             x: overlayPosition.left - reactFlowPosition.left,
@@ -572,7 +663,11 @@ const PipelineBuilderPage: FC & {
           targetPosition: Position.Right,
           data: {
             connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
-            connector: draggedItem,
+            connector: {
+              ...draggedItem,
+              id,
+              name,
+            },
           },
           position: reactFlowInstance.project({
             x: overlayPosition.left - reactFlowPosition.left,
@@ -620,7 +715,7 @@ const PipelineBuilderPage: FC & {
           >
             <DragOverlay dropAnimation={null}>
               <div ref={dropOverlayRef}>
-                {draggedItem ? <Item resource={draggedItem} /> : null}
+                {draggedItem ? <Draggable.Item resource={draggedItem} /> : null}
               </div>
             </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
@@ -640,34 +735,206 @@ const PipelineBuilderPage: FC & {
                   selectedTab={selectedTab}
                   reactFlowInstance={reactFlowInstance}
                 >
-                  {selectedTab === "CONNECTOR_TYPE_SOURCE"
-                    ? sourcesWithWatchState.map((e) => (
-                        <Draggable key={e.name} id={e.name}>
-                          <Item resource={e} />
-                        </Draggable>
-                      ))
-                    : null}
-                  {selectedTab === "CONNECTOR_TYPE_AI"
-                    ? aisWithWatchState.map((ai) => (
-                        <Draggable key={ai.name} id={ai.name}>
-                          <Item resource={ai} />
-                        </Draggable>
-                      ))
-                    : null}
-                  {selectedTab === "CONNECTOR_TYPE_DESTINATION"
-                    ? destinationsWithWatchState.map((e) => (
-                        <Draggable key={e.name} id={e.name}>
-                          <Item resource={e} />
-                        </Draggable>
-                      ))
-                    : null}
-                  {selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN"
-                    ? blockchainsWithWatchState.map((e) => (
-                        <Draggable key={e.name} id={e.name}>
-                          <Item resource={e} />
-                        </Draggable>
-                      ))
-                    : null}
+                  {selectedTab === "CONNECTOR_TYPE_SOURCE" ? (
+                    <>
+                      <LeftPanel.Section title="My Sources">
+                        {sourcesWithWatchState
+                          .filter(
+                            (e) =>
+                              e.visibility === "VISIBILITY_PRIVATE" ||
+                              e.visibility === "VISIBILITY_UNSPECIFIED"
+                          )
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Others' Sources">
+                        {sourcesWithWatchState
+                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {sourceDefinitions.isSuccess
+                          ? getConnectorPresets(
+                              "CONNECTOR_TYPE_SOURCE",
+                              sourceDefinitions.data
+                            ).map((e) => (
+                              <Draggable.Root
+                                isPreset={true}
+                                key={`${e.name}-preset`}
+                                id={`${e.name}-preset`}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                          : null}
+                      </LeftPanel.Section>
+                    </>
+                  ) : null}
+                  {selectedTab === "CONNECTOR_TYPE_AI" ? (
+                    <>
+                      <LeftPanel.Section title="My AIs">
+                        {aisWithWatchState
+                          .filter(
+                            (e) =>
+                              e.visibility === "VISIBILITY_PRIVATE" ||
+                              e.visibility === "VISIBILITY_UNSPECIFIED"
+                          )
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Others' AIs">
+                        {aisWithWatchState
+                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {aiDefinitions.isSuccess
+                          ? getConnectorPresets(
+                              "CONNECTOR_TYPE_AI",
+                              aiDefinitions.data
+                            ).map((e) => (
+                              <Draggable.Root
+                                isPreset={true}
+                                key={`${e.name}-preset`}
+                                id={`${e.name}-preset`}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                          : null}
+                      </LeftPanel.Section>
+                    </>
+                  ) : null}
+                  {selectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
+                    <>
+                      <LeftPanel.Section title="My Destinations">
+                        {destinationsWithWatchState
+                          .filter(
+                            (e) =>
+                              e.visibility === "VISIBILITY_PRIVATE" ||
+                              e.visibility === "VISIBILITY_UNSPECIFIED"
+                          )
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Others' Destinations">
+                        {destinationsWithWatchState
+                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {destinationDefinitions.isSuccess
+                          ? getConnectorPresets(
+                              "CONNECTOR_TYPE_DESTINATION",
+                              destinationDefinitions.data
+                            ).map((e) => (
+                              <Draggable.Root
+                                isPreset={true}
+                                key={`${e.name}-preset`}
+                                id={`${e.name}-preset`}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                          : null}
+                      </LeftPanel.Section>
+                    </>
+                  ) : null}
+                  {selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
+                    <>
+                      <LeftPanel.Section title="My Blockchains">
+                        {blockchainsWithWatchState
+                          .filter(
+                            (e) =>
+                              e.visibility === "VISIBILITY_PRIVATE" ||
+                              e.visibility === "VISIBILITY_UNSPECIFIED"
+                          )
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Others' Blockchains">
+                        {blockchainsWithWatchState
+                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                          .map((e) => (
+                            <Draggable.Root
+                              isPreset={false}
+                              key={e.name}
+                              id={e.name}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {blockchainDefinitions.isSuccess
+                          ? getConnectorPresets(
+                              "CONNECTOR_TYPE_BLOCKCHAIN",
+                              blockchainDefinitions.data
+                            ).map((e) => (
+                              <Draggable.Root
+                                isPreset={true}
+                                key={`${e.name}-preset`}
+                                id={`${e.name}-preset`}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                          : null}
+                      </LeftPanel.Section>
+                    </>
+                  ) : null}
                 </LeftPanel>
               </div>
               <Flow
@@ -688,113 +955,6 @@ const PipelineBuilderPage: FC & {
         </PageBase.Container>
       </PageBase>
     </>
-  );
-};
-
-const Draggable = (props: { id: string; children: ReactElement }) => {
-  const { id, children } = props;
-  const { setNodeRef, attributes, listeners, isDragging } = useDraggable({
-    id,
-  });
-
-  return (
-    <div
-      className={isDragging ? "opacity-40" : ""}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-    >
-      {children}
-    </div>
-  );
-};
-
-const Item = (props: { resource: ConnectorWithWatchState }) => {
-  const { resource } = props;
-
-  let fallbackImg: Nullable<ReactElement> = null;
-
-  switch (resource.connector_type) {
-    case "CONNECTOR_TYPE_AI":
-      fallbackImg = (
-        <Icons.Model className="h-4 w-4 stroke-semantic-fg-primary" />
-      );
-      break;
-    case "CONNECTOR_TYPE_BLOCKCHAIN":
-      fallbackImg = (
-        <Icons.CubeOutline className="h-4 w-4 stroke-semantic-fg-primary" />
-      );
-      break;
-    case "CONNECTOR_TYPE_DESTINATION":
-      fallbackImg = (
-        <Icons.Box className="h-4 w-4 stroke-semantic-fg-primary" />
-      );
-      break;
-    case "CONNECTOR_TYPE_SOURCE":
-      fallbackImg = (
-        <Icons.Database01 className="h-4 w-4 stroke-semantic-fg-primary" />
-      );
-      break;
-
-    default:
-      break;
-  }
-
-  if (resource.connector_type === "CONNECTOR_TYPE_AI") {
-    const { label } = getModelInstanceTaskToolkit(resource.task);
-
-    return (
-      <div className="flex w-full cursor-grab flex-col space-y-4 rounded border border-semantic-bg-line p-2 hover:bg-semantic-accent-bg">
-        <div className="flex h-8 w-full flex-row">
-          <div className="flex flex-row">
-            <div className="flex h-8 w-8 items-center justify-center">
-              <ImageWithFallback
-                src={`/icons/${resource.connector_definition.vendor}/${resource.connector_definition.icon}`}
-                width={24}
-                height={24}
-                alt={`${resource.connector_definition.title}-icon`}
-                fallbackImg={
-                  <Icons.Model className="h-4 w-4 stroke-semantic-fg-primary" />
-                }
-              />
-            </div>
-            <h5 className="my-auto w-[160px] truncate text-semantic-fg-primary product-headings-heading-5">
-              {resource.name.split("/")[1]}
-            </h5>
-          </div>
-        </div>
-        <div className="flex">
-          <p className="rounded-full bg-semantic-accent-bg px-2 py-0.5 pl-2 text-semantic-accent-on-bg product-label-label-1">
-            {label === "" ? "unspecified" : label}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex w-full cursor-grab rounded border border-semantic-bg-line p-2 hover:bg-semantic-accent-bg">
-      <div className="flex h-8 w-full flex-row">
-        <div className="flex flex-row">
-          <div className="flex h-8 w-8 items-center justify-center">
-            <ImageWithFallback
-              src={`/icons/${resource.connector_definition.vendor}/${resource.connector_definition.icon}`}
-              width={24}
-              height={24}
-              alt={`${resource.connector_definition.title}-icon`}
-              fallbackImg={
-                fallbackImg ?? (
-                  <Icons.Cube01 className="h-4 w-4 stroke-semantic-fg-primary" />
-                )
-              }
-            />
-          </div>
-          <h5 className="my-auto w-[160px] truncate text-semantic-fg-primary product-headings-heading-5">
-            {resource.name.split("/")[1]}
-          </h5>
-        </div>
-      </div>
-    </div>
   );
 };
 
