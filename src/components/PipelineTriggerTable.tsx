@@ -17,8 +17,16 @@ import { StateCell } from "./cells/StateCell";
 import { getStatus } from "@/lib/dashboard";
 
 export const PipelineTriggerTable = (props: PipelinesTableProps) => {
-  const { pipelines, marginBottom, isError, isLoading, statusCount } = props;
-  const [currentPage, setCurrentPage] = React.useState(0);
+  const {
+    pipelines,
+    marginBottom,
+    isError,
+    isLoading,
+    statusCount,
+    currentPage,
+    setCurrentPage,
+  } = props;
+
   const [searchTerm, setSearchTerm] = React.useState<Nullable<string>>(null);
 
   // We will only use searched resource when user input search term

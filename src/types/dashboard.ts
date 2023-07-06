@@ -33,4 +33,7 @@ export type PipelinesTableProps = {
   isError: boolean;
   isLoading: boolean;
   statusCount: Status[];
-} & Pick<PaginationListContainerProps, "marginBottom">;
+} & Pick<
+  PaginationListContainerProps,
+  "marginBottom" | "currentPage" | "setCurrentPage"
+>;

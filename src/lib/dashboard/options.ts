@@ -6,7 +6,7 @@ export const timeLineOptions: SingleSelectOption[] = [
     value: "24h",
   },
   {
-    label: "1 day",
+    label: "Last day",
     value: "1d",
   },
   {
