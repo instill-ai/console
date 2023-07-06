@@ -12,7 +12,6 @@ import {
   type FormRootProps,
 } from "@instill-ai/design-system";
 import {
-  useAirbyteFieldValues,
   useAirbyteFormTree,
   useBuildAirbyteYup,
   dot,
@@ -31,7 +30,9 @@ import {
   useCreateConnector,
   useConnectConnector,
   useDisonnectConnector,
+  useConnectors,
 } from "@instill-ai/toolkit";
+import { useAirbyteFieldValues } from "./useAirbyteFieldValues";
 import {
   ConnectorWithWatchState,
   IncompleteConnectorWithWatchState,
@@ -158,6 +159,16 @@ export const DestinationForm = (props: DestinationFormProps) => {
   );
 
   /* -------------------------------------------------------------------------
+   * get destinations
+   * -----------------------------------------------------------------------*/
+
+  const destinations = useConnectors({
+    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    accessToken,
+    enabled: true,
+  });
+
+  /* -------------------------------------------------------------------------
    * Configure destination
    * -----------------------------------------------------------------------*/
 
@@ -166,13 +177,6 @@ export const DestinationForm = (props: DestinationFormProps) => {
   const { toast } = useToast();
 
   const handleSubmit = useCallback(async () => {
-    if (
-      destination.id === "destination-grpc" ||
-      destination.id === "destination-http"
-    ) {
-      return;
-    }
-
     if (!fieldValues || !formYup) {
       return;
     }
@@ -180,7 +184,12 @@ export const DestinationForm = (props: DestinationFormProps) => {
     let stripValues = {} as { configuration: AirbyteFieldValues };
 
     if (!airbyteFormIsDirty) {
-      return;
+      if (
+        destination.name !== "connectors/destination-http" &&
+        destination.name !== "connectors/destination-grpc"
+      ) {
+        return;
+      }
     }
 
     // We use yup to strip not necessary condition value. Please read
@@ -623,6 +632,47 @@ export const DestinationForm = (props: DestinationFormProps) => {
     }
   };
 
+  let disabledSubmit = false;
+
+  // uid not in the connector means it havent't stored in the backend
+  if ("uid" in destination) {
+    // The connector can not be updated if the form is clean
+    if (!airbyteFormIsDirty) {
+      disabledSubmit = true;
+    }
+
+    // The connectors/destination-http and connectors/destination-grpc
+    // can not be updated
+
+    if (
+      destination.name === "connectors/destination-http" ||
+      destination.name === "connectors/destination-grpc"
+    ) {
+      disabledSubmit = true;
+    }
+  } else {
+    // This is for new connector
+    // The connector can not be created if the form is clean
+    // But the connectors/destination-http and connectors/destination-grpc
+    // can be created even the form is clean
+
+    if (
+      destination.name !== "connectors/destination-http" &&
+      destination.name !== "connectors/destination-grpc" &&
+      !airbyteFormIsDirty
+    ) {
+      disabledSubmit = true;
+    }
+
+    if (!destinations.isSuccess) {
+      disabledSubmit = true;
+    } else {
+      if (destinations.data.some((d) => d.name === destination.name)) {
+        disabledSubmit = true;
+      }
+    }
+  }
+
   return (
     <>
       <FormRoot marginBottom={marginBottom} width={width}>
@@ -727,7 +777,7 @@ export const DestinationForm = (props: DestinationFormProps) => {
           </Button>
           <Button
             variant="secondaryColour"
-            disabled={airbyteFormIsDirty ? false : true}
+            disabled={disabledSubmit}
             size={airbyteFormIsDirty ? "lg" : "md"}
             className="gap-x-2"
             onClick={() => handleSubmit()}
