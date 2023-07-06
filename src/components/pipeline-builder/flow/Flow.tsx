@@ -16,7 +16,7 @@ import { CustomEdge } from "../CustomEdge";
 import { FlowControl } from "./FlowControl";
 import { useDroppable } from "@dnd-kit/core";
 import { DROPPABLE_AREA_ID } from "@/pages/pipelines/[id]";
-import { useToast } from "@instill-ai/design-system";
+import { Icons, useToast } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -28,10 +28,12 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setSelectedNode: state.setSelectedNode,
   selectedNode: state.selectedNode,
   resourceFormIsDirty: state.resourceFormIsDirty,
+  rightPanelIsOpen: state.rightPanelIsOpen,
 });
 
 export type FlowProps = {
   setReactFlowInstance: Dispatch<SetStateAction<Nullable<ReactFlowInstance>>>;
+  accessToken: Nullable<string>;
 };
 
 const nodeTypes = {
@@ -46,7 +48,7 @@ const edgeTypes = {
 };
 
 export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
-  const { setReactFlowInstance } = props;
+  const { setReactFlowInstance, accessToken } = props;
   const {
     nodes,
     edges,
@@ -57,43 +59,18 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     setSelectedNode,
     selectedNode,
     resourceFormIsDirty,
+    rightPanelIsOpen,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { setNodeRef } = useDroppable({
     id: DROPPABLE_AREA_ID,
   });
 
-  const isValidConnection: IsValidConnection = useCallback(
-    (connection) => {
-      const targetNode = nodes.find((node) => node.id === connection.target);
-      const sourceNode = nodes.find((node) => node.id === connection.source);
-
-      if (!targetNode || !sourceNode) {
-        return false;
-      }
-
-      if (sourceNode.type === "sourceNode" && targetNode.type === "aiNode") {
-        return true;
-      }
-
-      if (
-        sourceNode.type === "aiNode" &&
-        targetNode.type === "blockchainNode"
-      ) {
-        return true;
-      }
-
-      if (
-        sourceNode.type === "blockchainNode" &&
-        targetNode.type === "destinationNode"
-      ) {
-        return true;
-      }
-
-      return false;
-    },
-    [nodes]
-  );
+  const isValidConnection: IsValidConnection = useCallback(() => {
+    // Currently, we don't have limittation about which node can connect
+    // to which node
+    return true;
+  }, []);
 
   const { toast } = useToast();
 
@@ -101,8 +78,14 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     <div className="relative flex-1">
       <button
         onClick={() => setRightPanelIsOpen((prev) => !prev)}
-        className="absolute right-4 top-4 z-30 h-8 w-8 bg-semantic-accent-bg"
-      />
+        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center bg-semantic-bg-primary"
+      >
+        {rightPanelIsOpen ? (
+          <Icons.ChevronRightDouble className="h-6 w-6 stroke-semantic-accent-default" />
+        ) : (
+          <Icons.ChevronLeftDouble className="h-6 w-6 stroke-semantic-accent-default" />
+        )}
+      </button>
       <div ref={setNodeRef} className="h-full w-full flex-1">
         <div ref={ref} className="h-full w-full flex-1">
           <ReactFlow
@@ -200,7 +183,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           </ReactFlow>
         </div>
       </div>
-      <FlowControl />
+      <FlowControl accessToken={accessToken} />
     </div>
   );
 });

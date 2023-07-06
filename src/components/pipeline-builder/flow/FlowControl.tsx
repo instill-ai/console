@@ -1,54 +1,72 @@
+import { constructPipelineRecipe } from "@/lib/pipeline-builder/constructPipelineRecipe";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
   CreatePipelinePayload,
+  Nullable,
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
   useActivatePipeline,
   useCreatePipeline,
   useDeActivatePipeline,
   usePipeline,
+  useRenamePipeline,
   useUpdatePipeline,
+  useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
+import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
+  edges: state.edges,
   pipelineId: state.pipelineId,
   pipelineDescription: state.pipelineDescription,
-  pipelineUid: state.pipelineUid,
   setPipelineUid: state.setPipelineUid,
 });
 
-export const FlowControl = () => {
-  const {
-    nodes,
-    pipelineId,
-    pipelineDescription,
-    pipelineUid,
-    setPipelineUid,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+export type FlowControlProps = {
+  accessToken: Nullable<string>;
+};
+
+export const FlowControl = (props: FlowControlProps) => {
+  const { accessToken } = props;
+  const router = useRouter();
+  const { nodes, pipelineId, pipelineDescription, setPipelineUid, edges } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+
   const { toast } = useToast();
+  const { id } = router.query;
 
   const pipeline = usePipeline({
-    pipelineName: `pipelines/${pipelineId}`,
-    enabled: !!pipelineUid,
+    pipelineName: `pipelines/${id}`,
+    enabled: !!id,
     accessToken: null,
+  });
+
+  const pipelineWatchState = useWatchPipeline({
+    pipelineName: `pipelines/${id}`,
+    accessToken: null,
+    enabled: !!id,
   });
 
   const updatePipeline = useUpdatePipeline();
   const createPipeline = useCreatePipeline();
   const activatePipeline = useActivatePipeline();
   const deactivatePipeline = useDeActivatePipeline();
+  const renamePipeline = useRenamePipeline();
 
   return (
     <div className="absolute bottom-4 right-4 flex flex-row-reverse gap-x-4">
       <Button
         onClick={() => {
-          if (!pipeline.isSuccess) return;
+          if (!pipeline.isSuccess || !pipelineWatchState.isSuccess) return;
 
-          if (pipeline.data?.state === "STATE_ACTIVE") {
+          if (
+            pipelineWatchState.data.state === "STATE_ACTIVE" ||
+            pipelineWatchState.data.state === "STATE_ERROR"
+          ) {
             deactivatePipeline.mutate(
               {
                 pipelineName: `pipelines/${pipelineId}`,
@@ -119,35 +137,77 @@ export const FlowControl = () => {
         className="gap-x-2"
         variant="primary"
         size="lg"
-        disabled={pipeline.isSuccess ? false : true}
+        disabled={
+          pipeline.isSuccess && pipelineWatchState.isSuccess ? false : true
+        }
       >
-        Activate
-        <Icons.Play className="h-5 w-5 stroke-semantic-bg-primary" />
+        {pipelineWatchState.isSuccess ? (
+          pipelineWatchState.data.state === "STATE_ACTIVE" ||
+          pipelineWatchState.data.state === "STATE_ERROR" ? (
+            <>
+              <span>Deactivate</span>
+              <Icons.Stop className="h-5 w-5 stroke-semantic-bg-primary group-disabled:stroke-semantic-fg-disabled" />
+            </>
+          ) : (
+            <>
+              <span>Activate</span>
+              <Icons.Play className="h-5 w-5 stroke-semantic-bg-primary group-disabled:stroke-semantic-fg-disabled" />
+            </>
+          )
+        ) : (
+          "Disabled"
+        )}
       </Button>
       <Button
-        onClick={() => {
+        onClick={async () => {
           if (!pipelineId) {
             toast({
-              title: "Pipeline ID is not set",
+              title: "Pipeline ID not set",
               description:
-                "Pipeline ID is not set, please set it at the top navbar",
+                "The pipeline ID should be set before saving the pipeline.",
               variant: "alert-error",
               size: "large",
             });
             return;
           }
 
-          if (pipelineUid) {
+          if (pipeline.isSuccess) {
+            if (pipelineId !== pipeline.data.id) {
+              try {
+                await renamePipeline.mutateAsync({
+                  payload: {
+                    pipelineId: pipeline.data.id,
+                    newPipelineId: pipelineId,
+                  },
+                  accessToken,
+                });
+
+                router.push(`/pipelines/${pipelineId}`, undefined, {
+                  shallow: true,
+                });
+              } catch (error) {
+                if (isAxiosError(error)) {
+                  toast({
+                    title: "Something went wrong when rename the pipeline",
+                    description: getInstillApiErrorMessage(error),
+                    variant: "alert-error",
+                    size: "large",
+                  });
+                } else {
+                  toast({
+                    title: "Something went wrong when rename the pipeline",
+                    variant: "alert-error",
+                    description: "Please try again later",
+                    size: "large",
+                  });
+                }
+              }
+            }
+
             const payload: UpdatePipelinePayload = {
               name: `pipelines/${pipelineId}`,
               description: pipelineDescription ?? undefined,
-              recipe: {
-                version: "v1alpha",
-                components: nodes.map((node) => ({
-                  id: node.id,
-                  resource_name: node.data.connector.name,
-                })),
-              },
+              recipe: constructPipelineRecipe(nodes, edges),
             };
 
             updatePipeline.mutate(
@@ -163,6 +223,22 @@ export const FlowControl = () => {
                     size: "small",
                   });
                 },
+                onError: (error) => {
+                  if (isAxiosError(error)) {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      description: getInstillApiErrorMessage(error),
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  } else {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  }
+                },
               }
             );
 
@@ -171,13 +247,7 @@ export const FlowControl = () => {
 
           const payload: CreatePipelinePayload = {
             id: pipelineId,
-            recipe: {
-              version: "v1alpha",
-              components: nodes.map((node) => ({
-                id: node.id,
-                resource_name: node.data.connector.name,
-              })),
-            },
+            recipe: constructPipelineRecipe(nodes, edges),
           };
 
           createPipeline.mutate(
@@ -188,6 +258,11 @@ export const FlowControl = () => {
             {
               onSuccess: async (res) => {
                 setPipelineUid(res.pipeline.uid);
+
+                router.push(`/pipelines/${pipelineId}`, undefined, {
+                  shallow: true,
+                });
+
                 if (!pipelineDescription) {
                   toast({
                     title: "Pipeline is saved",
@@ -201,6 +276,10 @@ export const FlowControl = () => {
                     payload: {
                       name: res.pipeline.name,
                       description: pipelineDescription,
+                      recipe: {
+                        version: "v1alpha",
+                        components: [],
+                      },
                     },
                     accessToken: null,
                   },

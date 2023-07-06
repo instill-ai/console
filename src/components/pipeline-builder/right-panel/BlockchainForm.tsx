@@ -3,12 +3,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ConnectorWithDefinition,
   CreateConnectorPayload,
   Nullable,
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
-  testConnectorConnectionAction,
   useCreateConnector,
   useUpdateConnector,
   ConfigureBlockchainFormSchema,
@@ -472,12 +470,11 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                  <Form.Label>ID *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="text"
                         value={field.value ?? ""}
                         disabled={"uid" in blockchain ? true : false}
@@ -502,11 +499,10 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control>
                     <Textarea
                       {...field}
-                      id={field.name}
                       value={field.value ?? ""}
                       className="!rounded-none"
                     />
@@ -525,9 +521,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label htmlFor={field.name}>
-                    AI Connector Type
-                  </Form.Label>
+                  <Form.Label>AI Connector Type</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -540,8 +534,8 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                     </Form.Control>
                     <Select.Content>
                       <Select.Item
-                        key="connector-definitions/numbers-blockchain-nit"
-                        value="connector-definitions/numbers-blockchain-nit"
+                        key="connector-definitions/blockchain-numbers"
+                        value="connector-definitions/blockchain-numbers"
                         className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
                       >
                         <p className="my-auto">NumbersProtocol NIT</p>
@@ -564,91 +558,38 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/numbers-blockchain-nit"
+                    "connector-definitions/blockchain-numbers"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Capture token *</Form.Label>
+                  <Form.Label>Capture token *</Form.Label>
                   <Form.Control>
                     <Input.Root className="!rounded-none">
                       <Input.Core
                         {...field}
-                        id={field.name}
                         type="password"
                         value={field.value ?? ""}
                         autoComplete="off"
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            blockchain.configuration.capture_token ===
+                              "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
                   <Form.Description>
                     Capture token from NumbersProtocol.
-                  </Form.Description>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.license"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={
-                    form.getValues("connector_definition_name") ===
-                    "connector-definitions/numbers-blockchain-nit"
-                      ? ""
-                      : "hidden"
-                  }
-                >
-                  <Form.Label htmlFor={field.name}>License *</Form.Label>
-                  <Form.Control>
-                    <Input.Root className="!rounded-none">
-                      <Input.Core
-                        {...field}
-                        id={field.name}
-                        type="text"
-                        value={field.value ?? ""}
-                        autoComplete="off"
-                      />
-                    </Input.Root>
-                  </Form.Control>
-                  <Form.Description>
-                    License of the Web3 asset.
-                  </Form.Description>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.creator_name"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={
-                    form.getValues("connector_definition_name") ===
-                    "connector-definitions/numbers-blockchain-nit"
-                      ? ""
-                      : "hidden"
-                  }
-                >
-                  <Form.Label htmlFor={field.name}>Creator Name *</Form.Label>
-                  <Form.Control>
-                    <Input.Root className="!rounded-none">
-                      <Input.Core
-                        {...field}
-                        id={field.name}
-                        type="text"
-                        value={field.value ?? ""}
-                        autoComplete="off"
-                      />
-                    </Input.Root>
-                  </Form.Control>
-                  <Form.Description>
-                    Name of the creator who owns the Web3 asset.
                   </Form.Description>
                   <Form.Message />
                 </Form.Item>
@@ -663,12 +604,12 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                 <Form.Item
                   className={
                     form.getValues("connector_definition_name") ===
-                    "connector-definitions/numbers-blockchain-nit"
+                    "connector-definitions/blockchain-numbers"
                       ? ""
                       : "hidden"
                   }
                 >
-                  <Form.Label htmlFor={field.name}>Asset type *</Form.Label>
+                  <Form.Label>Asset type *</Form.Label>
                   <Select.Root
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -707,7 +648,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   className={cn(
                     "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
                     form.getValues("connector_definition_name") ===
-                      "connector-definitions/numbers-blockchain-nit"
+                      "connector-definitions/blockchain-numbers"
                       ? ""
                       : "hidden"
                   )}
@@ -739,7 +680,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   className={cn(
                     "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
                     form.getValues("connector_definition_name") ===
-                      "connector-definitions/numbers-blockchain-nit"
+                      "connector-definitions/blockchain-numbers"
                       ? ""
                       : "hidden"
                   )}
@@ -772,7 +713,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   className={cn(
                     "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
                     form.getValues("connector_definition_name") ===
-                      "connector-definitions/numbers-blockchain-nit"
+                      "connector-definitions/blockchain-numbers"
                       ? ""
                       : "hidden"
                   )}

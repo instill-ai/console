@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
 import { Toaster } from "@instill-ai/design-system";
+import { usePipelineBuilderStore } from "@/stores";
 
 export const queryCache = new QueryCache();
 
@@ -42,6 +43,29 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
   const router = useRouter();
   const trackingToken = useTrackingToken();
+
+  const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let previousURL = window.history.state.url;
+
+    function onRouteChange() {
+      // We will only init the pipeline builder when user is previously on the
+      // pipeline builder page
+      if (previousURL === "/pipelines/[id]") {
+        initPipelineBuilder();
+      }
+
+      previousURL = window.history.state.url;
+    }
+
+    router.events.on("routeChangeComplete", onRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", onRouteChange);
+    };
+  }, [router.events, initPipelineBuilder]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;

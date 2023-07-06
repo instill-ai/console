@@ -2,13 +2,13 @@ import cn from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useToast } from "@instill-ai/design-system";
+import { Form } from "@instill-ai/design-system";
 import { PipelineBuilderStore, usePipelineBuilderStore } from "@/stores";
 import { shallow } from "zustand/shallow";
-import { useRenamePipeline } from "@instill-ai/toolkit";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useWatchPipeline } from "@instill-ai/toolkit";
 
 const PipelineNameFormSchema = z.object({
   pipelineId: z.string().nullable(),
@@ -16,20 +16,28 @@ const PipelineNameFormSchema = z.object({
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineId: state.pipelineId,
-  pipelineUid: state.pipelineUid,
   setPipelineId: state.setPipelineId,
-  setIsSavingPipeline: state.setIsSavingPipeline,
 });
 
 export const PipelineNameForm = () => {
   const router = useRouter();
 
-  const { pipelineId, pipelineUid, setPipelineId, setIsSavingPipeline } =
-    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const { id } = router.query;
+
+  const { pipelineId, setPipelineId } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
   const [isFocused, setIsFocused] = useState(false);
 
   const form = useForm<z.infer<typeof PipelineNameFormSchema>>({
     resolver: zodResolver(PipelineNameFormSchema),
+  });
+
+  const pipelineWatchState = useWatchPipeline({
+    pipelineName: `pipelines/${id}`,
+    enabled: !!id,
+    accessToken: null,
   });
 
   useEffect(() => {
@@ -38,58 +46,30 @@ export const PipelineNameForm = () => {
     });
   }, [router.isReady, router.asPath, form]);
 
-  const { toast } = useToast();
-
-  const renamePipeline = useRenamePipeline();
-
-  function onSubmit(data: z.infer<typeof PipelineNameFormSchema>) {
-    setIsSavingPipeline(true);
-
-    if (pipelineUid && pipelineId && data.pipelineId) {
-      renamePipeline.mutate(
-        {
-          payload: {
-            pipelineId,
-            newPipelineId: data.pipelineId,
-          },
-          accessToken: null,
-        },
-        {
-          onSuccess: () => {
-            setIsSavingPipeline(false);
-            setPipelineId(data.pipelineId);
-            form.reset({
-              pipelineId: data.pipelineId,
-            });
-            toast({
-              title: "Pipeline renamed",
-              description: "Your pipeline has been renamed.",
-              variant: "alert-success",
-              size: "large",
-            });
-            router.push(`/pipelines/${data.pipelineId}`, undefined, {
-              shallow: true,
-            });
-          },
-        }
-      );
-      return;
-    }
-
-    setPipelineId(data.pipelineId);
+  useEffect(() => {
+    if (!pipelineId) return;
     form.reset({
-      pipelineId: data.pipelineId,
+      pipelineId,
     });
-
-    setIsSavingPipeline(false);
-    router.push(`/pipelines/${data.pipelineId}`, undefined, {
-      shallow: true,
-    });
-  }
+  }, [pipelineId, form]);
 
   return (
     <Form.Root {...form}>
-      <div className="flex flex-row pl-4">
+      <div className="flex w-full flex-row space-x-2 pl-4">
+        {pipelineWatchState.isSuccess ? (
+          <div className="my-auto flex h-4 w-4 items-center justify-center">
+            <div
+              className={cn(
+                "h-2 w-2 rounded-full",
+                pipelineWatchState.data.state === "STATE_ERROR"
+                  ? "bg-semantic-error-default"
+                  : pipelineWatchState.data.state === "STATE_ACTIVE"
+                  ? "bg-semantic-success-default"
+                  : "bg-semantic-bg-secondary"
+              )}
+            />
+          </div>
+        ) : null}
         <Link
           className={cn(
             "mr-2 flex flex-row space-x-2",
@@ -104,28 +84,24 @@ export const PipelineNameForm = () => {
             /
           </p>
         </Link>
-        <form
-          className="my-auto flex flex-row items-center justify-center"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="my-auto flex flex-1 flex-row items-center justify-center">
           <Form.Field
             control={form.control}
             name="pipelineId"
             render={({ field }) => {
               return (
                 <input
-                  className="bg-transparent py-2 text-semantic-bg-primary product-headings-heading-6 focus:outline-none focus:ring-0"
+                  className="w-[360px] bg-transparent py-2 text-semantic-bg-primary product-headings-heading-6 focus:outline-none focus:ring-0"
                   {...field}
                   value={field.value ?? "Untitled Pipeline"}
                   type="text"
                   autoComplete="off"
                   onFocus={() => setIsFocused(true)}
-                  onBlur={() => {
-                    setIsFocused(false);
-                    setTimeout(() => {
-                      form.handleSubmit(onSubmit)();
-                    }, 1000);
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setPipelineId(e.target.value);
                   }}
+                  onBlur={() => setIsFocused(false)}
                 />
               );
             }}

@@ -3,6 +3,7 @@ import {
   ConnectorDefinition,
   ConnectorType,
   ConnectorWithDefinition,
+  Connector,
 } from "@instill-ai/toolkit";
 
 export type IncompleteConnectorWithWatchState = {
@@ -11,7 +12,7 @@ export type IncompleteConnectorWithWatchState = {
   connector_definition: ConnectorDefinition;
   connector_definition_name: string;
   watchState: ConnectorState;
-} & Pick<ConnectorWithDefinition, "configuration">;
+} & Pick<ConnectorWithDefinition, "configuration" | "connector_type">;
 
 export type ConnectorWithWatchState = {
   watchState: ConnectorState;
@@ -21,3 +22,9 @@ export type ConnectorNodeData = {
   connectorType: ConnectorType;
   connector: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
 };
+
+export type ConnectorPreset = {
+  connector_definition_name: string;
+  id: string;
+  name: string;
+} & Pick<Connector, "configuration">;
