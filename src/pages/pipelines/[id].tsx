@@ -280,6 +280,12 @@ const PipelineBuilderPage: FC & {
     blockchainsWatchState.data,
   ]);
 
+  const isLoadingImportantResources =
+    !sources.isSuccess ||
+    !destinations.isSuccess ||
+    !ais.isSuccess ||
+    !blockchains.isSuccess;
+
   /* -------------------------------------------------------------------------
    * Initialize pipeline id
    * -----------------------------------------------------------------------*/
@@ -675,6 +681,14 @@ const PipelineBuilderPage: FC & {
       return setDraggedItem(null);
     }
 
+    updateSelectedNode((prev) => {
+      if (!prev) {
+        return newNode;
+      }
+
+      return prev;
+    });
+
     addNode(newNode);
     setDraggedItem(null);
   }
@@ -729,200 +743,292 @@ const PipelineBuilderPage: FC & {
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_SOURCE" ? (
                     <>
                       <LeftPanel.Section title="My Sources">
-                        {sourcesWithWatchState
-                          .filter(
-                            (e) =>
-                              e.visibility === "VISIBILITY_PRIVATE" ||
-                              e.visibility === "VISIBILITY_UNSPECIFIED"
-                          )
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Others' Sources">
-                        {sourcesWithWatchState
-                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Popular Presets">
-                        {sourceDefinitions.isSuccess
-                          ? getConnectorPresets(
-                              "CONNECTOR_TYPE_SOURCE",
-                              sourceDefinitions.data
-                            ).map((e) => (
+                        {sources.isSuccess && sourcesWatchState.isSuccess ? (
+                          sourcesWithWatchState
+                            .filter(
+                              (e) =>
+                                e.visibility === "VISIBILITY_PRIVATE" ||
+                                e.visibility === "VISIBILITY_UNSPECIFIED"
+                            )
+                            .map((e) => (
                               <Draggable.Root
-                                isPreset={true}
-                                key={`${e.name}-preset`}
-                                id={`${e.name}-preset`}
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
                               >
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                          : null}
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {sources.isSuccess && sourcesWatchState.isSuccess ? (
+                          sourcesWithWatchState
+                            .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                            .map((e) => (
+                              <Draggable.Root
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {sourceDefinitions.isSuccess ? (
+                          getConnectorPresets(
+                            "CONNECTOR_TYPE_SOURCE",
+                            sourceDefinitions.data
+                          ).map((e) => (
+                            <Draggable.Root
+                              isPreset={true}
+                              key={`${e.name}-preset`}
+                              id={`${e.name}-preset`}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
                       </LeftPanel.Section>
                     </>
                   ) : null}
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_AI" ? (
                     <>
                       <LeftPanel.Section title="My AIs">
-                        {aisWithWatchState
-                          .filter(
-                            (e) =>
-                              e.visibility === "VISIBILITY_PRIVATE" ||
-                              e.visibility === "VISIBILITY_UNSPECIFIED"
-                          )
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Others' AIs">
-                        {aisWithWatchState
-                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Popular Presets">
-                        {aiDefinitions.isSuccess
-                          ? getConnectorPresets(
-                              "CONNECTOR_TYPE_AI",
-                              aiDefinitions.data
-                            ).map((e) => (
+                        {ais.isSuccess && aisWatchState.isSuccess ? (
+                          aisWithWatchState
+                            .filter(
+                              (e) =>
+                                e.visibility === "VISIBILITY_PRIVATE" ||
+                                e.visibility === "VISIBILITY_UNSPECIFIED"
+                            )
+                            .map((e) => (
                               <Draggable.Root
-                                isPreset={true}
-                                key={`${e.name}-preset`}
-                                id={`${e.name}-preset`}
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
                               >
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                          : null}
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {ais.isSuccess && aisWatchState.isSuccess ? (
+                          aisWithWatchState
+                            .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                            .map((e) => (
+                              <Draggable.Root
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {aiDefinitions.isSuccess ? (
+                          getConnectorPresets(
+                            "CONNECTOR_TYPE_AI",
+                            aiDefinitions.data
+                          ).map((e) => (
+                            <Draggable.Root
+                              isPreset={true}
+                              key={`${e.name}-preset`}
+                              id={`${e.name}-preset`}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
                       </LeftPanel.Section>
                     </>
                   ) : null}
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
                     <>
                       <LeftPanel.Section title="My Destinations">
-                        {destinationsWithWatchState
-                          .filter(
-                            (e) =>
-                              e.visibility === "VISIBILITY_PRIVATE" ||
-                              e.visibility === "VISIBILITY_UNSPECIFIED"
-                          )
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Others' Destinations">
-                        {destinationsWithWatchState
-                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Popular Presets">
-                        {destinationDefinitions.isSuccess
-                          ? getConnectorPresets(
-                              "CONNECTOR_TYPE_DESTINATION",
-                              destinationDefinitions.data
-                            ).map((e) => (
+                        {destinations.isSuccess &&
+                        destinationsWatchState.isSuccess ? (
+                          destinationsWithWatchState
+                            .filter(
+                              (e) =>
+                                e.visibility === "VISIBILITY_PRIVATE" ||
+                                e.visibility === "VISIBILITY_UNSPECIFIED"
+                            )
+                            .map((e) => (
                               <Draggable.Root
-                                isPreset={true}
-                                key={`${e.name}-preset`}
-                                id={`${e.name}-preset`}
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
                               >
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                          : null}
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {destinations.isSuccess &&
+                        destinationsWatchState.isSuccess ? (
+                          destinationsWithWatchState
+                            .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                            .map((e) => (
+                              <Draggable.Root
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {destinationDefinitions.isSuccess ? (
+                          getConnectorPresets(
+                            "CONNECTOR_TYPE_DESTINATION",
+                            destinationDefinitions.data
+                          ).map((e) => (
+                            <Draggable.Root
+                              isPreset={true}
+                              key={`${e.name}-preset`}
+                              id={`${e.name}-preset`}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
                       </LeftPanel.Section>
                     </>
                   ) : null}
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
                     <>
                       <LeftPanel.Section title="My Blockchains">
-                        {blockchainsWithWatchState
-                          .filter(
-                            (e) =>
-                              e.visibility === "VISIBILITY_PRIVATE" ||
-                              e.visibility === "VISIBILITY_UNSPECIFIED"
-                          )
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Others' Blockchains">
-                        {blockchainsWithWatchState
-                          .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
-                          .map((e) => (
-                            <Draggable.Root
-                              isPreset={false}
-                              key={e.name}
-                              id={e.name}
-                            >
-                              <Draggable.Item resource={e} />
-                            </Draggable.Root>
-                          ))}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Popular Presets">
-                        {blockchainDefinitions.isSuccess
-                          ? getConnectorPresets(
-                              "CONNECTOR_TYPE_BLOCKCHAIN",
-                              blockchainDefinitions.data
-                            ).map((e) => (
+                        {blockchains.isSuccess &&
+                        blockchainsWatchState.isSuccess ? (
+                          blockchainsWithWatchState
+                            .filter(
+                              (e) =>
+                                e.visibility === "VISIBILITY_PRIVATE" ||
+                                e.visibility === "VISIBILITY_UNSPECIFIED"
+                            )
+                            .map((e) => (
                               <Draggable.Root
-                                isPreset={true}
-                                key={`${e.name}-preset`}
-                                id={`${e.name}-preset`}
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
                               >
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                          : null}
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {blockchains.isSuccess &&
+                        blockchainsWatchState.isSuccess ? (
+                          blockchainsWithWatchState
+                            .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
+                            .map((e) => (
+                              <Draggable.Root
+                                isPreset={false}
+                                key={e.name}
+                                id={e.name}
+                              >
+                                <Draggable.Item resource={e} />
+                              </Draggable.Root>
+                            ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Popular Presets">
+                        {blockchainDefinitions.isSuccess ? (
+                          getConnectorPresets(
+                            "CONNECTOR_TYPE_BLOCKCHAIN",
+                            blockchainDefinitions.data
+                          ).map((e) => (
+                            <Draggable.Root
+                              isPreset={true}
+                              key={`${e.name}-preset`}
+                              id={`${e.name}-preset`}
+                            >
+                              <Draggable.Item resource={e} />
+                            </Draggable.Root>
+                          ))
+                        ) : (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        )}
                       </LeftPanel.Section>
                     </>
                   ) : null}
@@ -933,6 +1039,7 @@ const PipelineBuilderPage: FC & {
                 setReactFlowInstance={setReactFlowInstance}
                 accessToken={null}
                 enableQuery={true}
+                isLoading={isLoadingImportantResources}
               />
               <div
                 className={cn(
