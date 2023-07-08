@@ -14,14 +14,14 @@ dependencies:
     specifier: ^3.1.1
     version: 3.1.1(react-hook-form@7.45.0)
   '@instill-ai/design-system':
-    specifier: ^0.29.0
-    version: 0.29.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+    specifier: ^0.30.0
+    version: 0.30.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
   '@instill-ai/design-tokens':
     specifier: ^0.3.0
     version: 0.3.0(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.56.1-rc.1
-    version: 0.56.1-rc.1(@instill-ai/design-system@0.29.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.58.0
+    version: 0.58.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -198,9 +198,6 @@ devDependencies:
   '@storybook/testing-library':
     specifier: ^0.0.14-next.1
     version: 0.0.14-next.1
-  '@tailwindcss/line-clamp':
-    specifier: ^0.4.0
-    version: 0.4.0(tailwindcss@3.3.1)
   '@testing-library/dom':
     specifier: ^8.16.0
     version: 8.16.0
@@ -3475,8 +3472,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system@0.29.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
-    resolution: {integrity: sha512-zUZxL+EWnmduInyUXcKJH3SIgZbay91zy/lakkVBpNCx04/Ze5m2SmlnLKCiemVRq136/ICD/Kmv7i0Vf0mTLg==}
+  /@instill-ai/design-system@0.30.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
+    resolution: {integrity: sha512-h+E0n9CYj7P1emxgmvlaL7o20e+eYeEtgdvCeYIFTovvS4lNOzzwjGaZSlcRUKvc5EW+HqOFAcEUmQC56rQH0A==}
     engines: {node: '>=14.6.0'}
     peerDependencies:
       react: ^18.2.0
@@ -3516,10 +3513,10 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.14)
     dev: false
 
-  /@instill-ai/toolkit@0.56.1-rc.1(@instill-ai/design-system@0.29.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-dwd/W4OnSLOp9kuSggcawVmgxGA4vM8G+/KxbSHC+ljdY6Bjs73r0ipeDh3QsFYCaR7V37Xn2/x6QXV/MypLCA==}
+  /@instill-ai/toolkit@0.58.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-17D0DJl6awT/F/deummTqGOfW1s18XrmZH93DvaR8KYg1h660hpqXjo2Jf2YAjs7UwhVoQG9f6OvnQzjvtuLDw==}
     peerDependencies:
-      '@instill-ai/design-system': 0.29.0
+      '@instill-ai/design-system': 0.30.0
       '@instill-ai/design-tokens': 0.3.0
       next: ^13.2.4
       react: ^18.2.0
@@ -3528,7 +3525,7 @@ packages:
       '@amplitude/analytics-browser': 1.12.0
       '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.0)
-      '@instill-ai/design-system': 0.29.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+      '@instill-ai/design-system': 0.30.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
       '@instill-ai/design-tokens': 0.3.0(tailwindcss@3.3.1)
       '@radix-ui/react-label': 2.0.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot': 1.0.2(@types/react@17.0.48)(react@18.2.0)
@@ -6275,14 +6272,6 @@ packages:
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
     dependencies:
       tslib: 2.5.0
-
-  /@tailwindcss/line-clamp@0.4.0(tailwindcss@3.3.1):
-    resolution: {integrity: sha512-HQZo6gfx1D0+DU3nWlNLD5iA6Ef4JAXh0LeD8lOGrJwEDBwwJNKQza6WoXhhY1uQrxOuU8ROxV7CqiQV4CoiLw==}
-    peerDependencies:
-      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
-    dependencies:
-      tailwindcss: 3.3.1(postcss@8.4.14)
-    dev: true
 
   /@tanstack/match-sorter-utils@8.7.6:
     resolution: {integrity: sha512-2AMpRiA6QivHOUiBpQAVxjiHAA68Ei23ZUMNaRJrN6omWiSFLoYrxGcT6BXtuzp0Jw4h6HZCmGGIM/gbwebO2A==}

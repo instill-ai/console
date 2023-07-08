@@ -20,11 +20,6 @@ export const Topbar = (props: TopbarProps) => {
         <Logo variant="ColourLogomarkWhiteType" width={180} />
       </Link>
       <div className="flex flex-1 flex-row">{children}</div>
-      <div className="flex">
-        <Link className="my-auto flex h-[48px] w-[48px]" href="/settings">
-          <Icons.Gear01 className="m-auto h-6 w-6 stroke-semantic-fg-primary-on-bg-secondary" />
-        </Link>
-      </div>
     </div>
   );
 };
