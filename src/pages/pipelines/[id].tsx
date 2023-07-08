@@ -59,6 +59,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setEdges: state.setEdges,
   resourceFormIsDirty: state.resourceFormIsDirty,
   updateSelectedNode: state.updateSelectedNode,
+  leftSidebarSelectedTab: state.leftSidebarSelectedTab,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -77,6 +78,7 @@ const PipelineBuilderPage: FC & {
     updateNodes,
     resourceFormIsDirty,
     updateSelectedNode,
+    leftSidebarSelectedTab,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -92,10 +94,6 @@ const PipelineBuilderPage: FC & {
   });
 
   const { toast } = useToast();
-
-  const [selectedTab, setSelectedTab] = useState<Nullable<ConnectorType>>(
-    "CONNECTOR_TYPE_SOURCE"
-  );
 
   const [reactFlowInstance, setReactFlowInstance] =
     useState<Nullable<ReactFlowInstance>>(null);
@@ -686,7 +684,7 @@ const PipelineBuilderPage: FC & {
       <PageBase>
         <Topbar>
           <div className="flex px-3 py-2">
-            <PipelineNameForm accessToken={null} />
+            <PipelineNameForm accessToken={null} enableQuery={true} />
           </div>
         </Topbar>
         <PageBase.Container>
@@ -713,22 +711,22 @@ const PipelineBuilderPage: FC & {
             </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
               <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
-                <LeftSidebar
-                  selectedTab={selectedTab}
-                  setSelectedTab={setSelectedTab}
-                />
+                <LeftSidebar />
               </div>
               <div
                 className={cn(
                   "flex w-[var(--left-panel-width)] transform flex-col bg-semantic-bg-primary px-4 pt-9 duration-500",
-                  selectedTab === null ? "-ml-[var(--left-panel-width)]" : ""
+                  leftSidebarSelectedTab === null
+                    ? "-ml-[var(--left-panel-width)]"
+                    : ""
                 )}
               >
                 <LeftPanel
-                  selectedTab={selectedTab}
                   reactFlowInstance={reactFlowInstance}
+                  accessToken={null}
+                  enableQuery={true}
                 >
-                  {selectedTab === "CONNECTOR_TYPE_SOURCE" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_SOURCE" ? (
                     <>
                       <LeftPanel.Section title="My Sources">
                         {sourcesWithWatchState
@@ -778,7 +776,7 @@ const PipelineBuilderPage: FC & {
                       </LeftPanel.Section>
                     </>
                   ) : null}
-                  {selectedTab === "CONNECTOR_TYPE_AI" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_AI" ? (
                     <>
                       <LeftPanel.Section title="My AIs">
                         {aisWithWatchState
@@ -828,7 +826,7 @@ const PipelineBuilderPage: FC & {
                       </LeftPanel.Section>
                     </>
                   ) : null}
-                  {selectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
                     <>
                       <LeftPanel.Section title="My Destinations">
                         {destinationsWithWatchState
@@ -878,7 +876,7 @@ const PipelineBuilderPage: FC & {
                       </LeftPanel.Section>
                     </>
                   ) : null}
-                  {selectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
                     <>
                       <LeftPanel.Section title="My Blockchains">
                         {blockchainsWithWatchState
@@ -934,6 +932,7 @@ const PipelineBuilderPage: FC & {
                 ref={reactFlowWrapper}
                 setReactFlowInstance={setReactFlowInstance}
                 accessToken={null}
+                enableQuery={true}
               />
               <div
                 className={cn(
@@ -941,7 +940,7 @@ const PipelineBuilderPage: FC & {
                   rightPanelIsOpen ? "mr-0" : "-mr-[var(--right-panel-width)]"
                 )}
               >
-                <RightPanel accessToken={null} />
+                <RightPanel accessToken={null} enableQuery={true} />
               </div>
             </div>
           </DndContext>

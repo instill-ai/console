@@ -1,4 +1,4 @@
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Logos } from "@instill-ai/design-system";
 import { PipelineCollapsible } from "./PipelineCollapsible";
 import { SidebarLink } from "./SidebarLink";
 import { useRouter } from "next/router";
@@ -8,7 +8,9 @@ export const Sidebar = () => {
   return (
     <div className="flex w-[312px] flex-col bg-semantic-bg-primary">
       <div className="mb-auto px-4 pt-8">
+        <Logos.VDPExpand className="mb-1 w-[75px]" />
         <PipelineCollapsible className="mb-4" />
+        <Logos.MDLExpand className="mb-4 w-[75px]" />
         <SidebarLink
           href="/model-hub"
           icon={<Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />}

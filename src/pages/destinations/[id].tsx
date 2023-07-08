@@ -126,9 +126,13 @@ const DestinationDetailsPage: FC & {
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {destinationWithPipelines.isSuccess ? (
+        {destinationWithPipelines.isSuccess &&
+        destinationWatchState.isSuccess ? (
           <ConfigureDestinationForm
-            destination={destinationWithPipelines.data}
+            destination={{
+              ...destinationWithPipelines.data,
+              watchState: destinationWatchState.data.state,
+            }}
             onDelete={(initStore) => {
               initStore();
               router.push("/destinations");

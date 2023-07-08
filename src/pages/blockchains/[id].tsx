@@ -103,9 +103,12 @@ const BlockchainDetailsPage: FC & {
         marginBottom="mb-10"
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-      {blockchainWithPipelines.isSuccess && blockchainWithPipelines.data ? (
+      {blockchainWithPipelines.isSuccess && blockchainWatchState.data ? (
         <ConfigureBlockchainForm
-          blockchain={blockchainWithPipelines.data}
+          blockchain={{
+            ...blockchainWithPipelines.data,
+            watchState: blockchainWatchState.data.state,
+          }}
           accessToken={null}
           onDelete={() => router.push("/blockchains")}
           onConfigure={null}
