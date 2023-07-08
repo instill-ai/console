@@ -104,10 +104,13 @@ const SourceDetailsPage: FC & {
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {sourceWithPipelines.isSuccess && sourceWithPipelines.data ? (
+        {sourceWithPipelines.isSuccess && sourceWatchState.isSuccess ? (
           <ConfigureSourceForm
             width="w-full"
-            source={sourceWithPipelines.data}
+            source={{
+              ...sourceWithPipelines.data,
+              watchState: sourceWatchState.data.state,
+            }}
             onDelete={(initStore) => {
               initStore();
               router.push("/sources");

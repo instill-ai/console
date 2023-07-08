@@ -20,7 +20,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
       onOpenChange={setIsOpen}
       className={cn("w-full", className)}
     >
-      <div className="relative">
+      <div className="relative py-4">
         <SidebarLink
           href="/pipelines"
           icon={
