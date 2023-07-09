@@ -20,8 +20,8 @@ dependencies:
     specifier: ^0.3.0
     version: 0.3.0(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.58.0
-    version: 0.58.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.59.0
+    version: 0.59.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -3513,8 +3513,8 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.14)
     dev: false
 
-  /@instill-ai/toolkit@0.58.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-17D0DJl6awT/F/deummTqGOfW1s18XrmZH93DvaR8KYg1h660hpqXjo2Jf2YAjs7UwhVoQG9f6OvnQzjvtuLDw==}
+  /@instill-ai/toolkit@0.59.0(@instill-ai/design-system@0.30.0)(@instill-ai/design-tokens@0.3.0)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-iakM7V4w1NbzJIGIBbqjrGcn/ql8vxZ9mlWcpL/TCSYZhO8yW+DvRLctU+TenLPza4wySFh0x+S4jt2rkEeL5w==}
     peerDependencies:
       '@instill-ai/design-system': 0.30.0
       '@instill-ai/design-tokens': 0.3.0
