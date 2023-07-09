@@ -4,7 +4,7 @@ import { Icons } from "@instill-ai/design-system";
 
 type BadgeProps = {
   statusname: string;
-  changes?: number;
+  change?: number;
 };
 
 const getColor = (statusname: string) => {
@@ -29,7 +29,7 @@ const getColor = (statusname: string) => {
 };
 
 export const Badge = (props: BadgeProps) => {
-  const { statusname, changes } = props;
+  const { statusname, change } = props;
   const badgeColor = getColor(statusname);
   return (
     <div className="BadgeWrap inline-flex flex-col items-start justify-start pb-2">
@@ -44,7 +44,7 @@ export const Badge = (props: BadgeProps) => {
             `Label text-[12px] font-medium leading-none ${badgeColor.color}`
           )}
         >
-          {changes}%
+          {change}%
         </div>
       </div>
     </div>

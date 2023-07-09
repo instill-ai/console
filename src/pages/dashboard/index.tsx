@@ -6,6 +6,7 @@ import {
   defaultSelectOption,
   getPipeLineOptions,
   getPipelinesTriggerCount,
+  getPreviousTime,
   getStatusCount,
   getTimeInRFC3339Format,
   modeOptions,
@@ -40,51 +41,64 @@ const PipelinePage: FC & {
   const [selectedStatusOption, setSelectedStatusOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
+  const [queryStringPrevious, setQueryStringPrevious] =
+    React.useState<Nullable<string>>("");
 
   React.useEffect(() => {
     let queryParams = "";
+    let queryParamsPrevious = "";
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(selectedTimeOption.value);
       const stop = getTimeInRFC3339Format("now");
+      const previousTime = getTimeInRFC3339Format(
+        getPreviousTime(selectedTimeOption.value)
+      );
 
       if (queryParams) {
         queryParams += ` AND start='${start}' AND stop='${stop}'`;
+        queryParamsPrevious += ` AND start='${stop}' AND stop='${start}'`;
       } else {
         queryParams += `start='${start}' AND stop='${stop}'`;
+        queryParamsPrevious += `start='${previousTime}' AND stop='${start}'`;
       }
     }
     if (selectedModeOption && selectedModeOption.value !== "all") {
       if (queryParams) {
         queryParams += ` AND pipeline_mode=${selectedModeOption.value}`;
+        queryParamsPrevious += ` AND pipeline_mode=${selectedModeOption.value}`;
       } else {
         queryParams += `pipeline_mode=${selectedModeOption.value}`;
+        queryParamsPrevious += `pipeline_mode=${selectedModeOption.value}`;
       }
     }
     if (selectedPinelineOption && selectedPinelineOption.value !== "all") {
       if (queryParams) {
         queryParams += ` AND pipeline_id='${selectedPinelineOption.label}'`;
+        queryParamsPrevious += ` AND pipeline_id='${selectedPinelineOption.label}'`;
       } else {
         queryParams += `pipeline_id='${selectedPinelineOption.label}'`;
+        queryParamsPrevious += `pipeline_id='${selectedPinelineOption.label}'`;
       }
     }
     if (selectedStatusOption && selectedStatusOption.value !== "all") {
       if (queryParams) {
         queryParams += ` AND status=${selectedStatusOption.value}`;
+        queryParamsPrevious += ` AND status=${selectedStatusOption.value}`;
       } else {
         queryParams += `status=${selectedStatusOption.value}`;
+        queryParamsPrevious += `status=${selectedStatusOption.value}`;
       }
     }
 
     setQueryString(queryParams);
+    setQueryStringPrevious(queryParamsPrevious);
   }, [
     selectedTimeOption,
     selectedModeOption,
     selectedPinelineOption,
     selectedStatusOption,
   ]);
-
-  console.log("queryParams", queryString);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data
@@ -95,20 +109,31 @@ const PipelinePage: FC & {
     accessToken: null,
     filter: queryString ? queryString : null,
   });
+  const pipelinesPrevious = usePipelineFilter({
+    enabled: true,
+    accessToken: null,
+    filter: queryStringPrevious ? queryStringPrevious : null,
+  });
 
   const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
     if (pipelines.data) {
+      if (!pipelines.data.length) {
+        setSelectedPinelineOption({
+          label: "All",
+          value: "all",
+        });
+      }
       return getPipeLineOptions(pipelines.data);
     }
     return [];
   }, [pipelines.data]);
 
   const statusCount = React.useMemo<Status[]>(() => {
-    if (pipelines.data) {
-      return getStatusCount(pipelines.data);
+    if (pipelines.data && pipelinesPrevious.data) {
+      return getStatusCount(pipelines.data, pipelinesPrevious.data);
     }
     return [];
-  }, [pipelines.data]);
+  }, [pipelines.data, pipelinesPrevious.data]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -132,7 +157,7 @@ const PipelinePage: FC & {
         <StatusCardsGroup
           type="pipeline"
           statusStats={statusCount}
-          isLoading={pipelines.isLoading}
+          isLoading={pipelines.isLoading || pipelinesPrevious.isLoading}
         />
 
         {/* Pipeline Chart */}
@@ -156,37 +181,9 @@ const PipelinePage: FC & {
           </div>
 
           <div className="my-4 flex w-2/5 flex-row space-x-8">
-            {/* <Select.Root
-              defaultValue={"all"}
-              onValueChange={(statusOption) => {
-                setSelectedStatusOption({
-                  label: statusOption,
-                  value: statusOption,
-                });
-              }}
-            >
-              <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
-                <Select.Value
-                  placeholder="Status: All"
-                  className="z-10 flex w-full flex-row gap-x-2"
-                />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Group>
-                  {statusOptions.map((statusOption) => (
-                    <Select.Item
-                      value={statusOption.value}
-                      key={statusOption.value}
-                    >
-                      {statusOption.label}
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Content>
-            </Select.Root> */}
-
             <Select.Root
               defaultValue={"all"}
+              value={selectedPinelineOption?.value}
               onValueChange={(pipelineOption) => {
                 setSelectedPinelineOption({
                   label: pipelineOption,

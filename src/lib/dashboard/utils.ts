@@ -57,13 +57,23 @@ export function getPipeLineOptions(
   ];
 }
 
-export function getStatusCount(pipelines: PipelineTrigger[]): Status[] {
+export function getStatusCount(
+  pipelines: PipelineTrigger[],
+  pipelinesPrevious: PipelineTrigger[]
+): Status[] {
   let STATE_ACTIVE = 0;
+  let STATE_ACTIVE_PREVIOUS = 0;
   let STATE_INACTIVE = 0;
+  let STATE_INACTIVE_PREVIOUS = 0;
 
   getPipelinesTriggerCount(pipelines).forEach((pipeline) => {
     STATE_ACTIVE += pipeline.pipeline_completed;
     STATE_INACTIVE += pipeline.pipeline_error;
+  });
+
+  getPipelinesTriggerCount(pipelinesPrevious).forEach((pipeline) => {
+    STATE_ACTIVE_PREVIOUS += pipeline.pipeline_completed;
+    STATE_INACTIVE_PREVIOUS += pipeline.pipeline_error;
   });
 
   return [
@@ -71,11 +81,16 @@ export function getStatusCount(pipelines: PipelineTrigger[]): Status[] {
       statusname: "completed",
       amount: STATE_ACTIVE,
       type: "pipeline",
+      change: calculatePercentageChange(STATE_ACTIVE_PREVIOUS, STATE_ACTIVE),
     },
     {
       statusname: "errored",
       amount: STATE_INACTIVE,
       type: "pipeline",
+      change: calculatePercentageChange(
+        STATE_INACTIVE_PREVIOUS,
+        STATE_INACTIVE
+      ),
     },
   ];
 }
@@ -169,4 +184,43 @@ export function getStatus(status: string): ResourceState {
     return "STATE_ERROR";
   }
   return "STATE_UNSPECIFIED";
+}
+
+export function calculatePercentageChange(
+  previousCount: number,
+  currentCount: number
+): number {
+  if (previousCount === 0 && currentCount === 0) {
+    return 0; // Both counts are zero, return 0 as percentage change
+  }
+
+  if (previousCount === 0) {
+    return currentCount; // Previous count is zero, change is currentCount
+  }
+
+  const change = currentCount - previousCount;
+  const percentageChange = (change / previousCount) * 100;
+  return Math.round(percentageChange);
+}
+
+export function getPreviousTime(time: string): string {
+  if (time === "24h" || time === "1d") {
+    return "2d";
+  }
+  if (time === "2d") {
+    return "4d";
+  }
+  if (time === "3d") {
+    return "6d";
+  }
+  if (time === "4d") {
+    return "8d";
+  }
+  if (time === "7d") {
+    return "14d";
+  }
+  if (time === "30d") {
+    return "60d";
+  }
+  return "";
 }

@@ -46,6 +46,7 @@ export const StatusCardsGroup = (props: StatusCardsGroupProps) => {
                 type={type}
                 statusname={data.statusname}
                 amount={data.amount}
+                change={data.change}
               />
             ))}
           </>
