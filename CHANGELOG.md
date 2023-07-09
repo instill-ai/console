@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.25.0-alpha](https://github.com/instill-ai/console/compare/v0.24.1-alpha...v0.25.0-alpha) (2023-07-09)
+
+
+### Features
+
+* adapt input_only field for AI and Blockchain related form ([#444](https://github.com/instill-ai/console/issues/444)) ([8dbc3cc](https://github.com/instill-ai/console/commit/8dbc3cc16a437e4d05b91e1910b274c4053de8cc))
+* adapt instill-ai new product structure ([#429](https://github.com/instill-ai/console/issues/429)) ([b5507d6](https://github.com/instill-ai/console/commit/b5507d6a9e3cc2823a6b95df46bcf7f9720184e1))
+* adapt most-up-to-date cortex ([#457](https://github.com/instill-ai/console/issues/457)) ([854d1fb](https://github.com/instill-ai/console/commit/854d1fbb4f8c4805aa8c2581807df6d9b1da0d41))
+* adapt new trigger snippet and pipeline-builder in cortex ([#452](https://github.com/instill-ai/console/issues/452)) ([717fc48](https://github.com/instill-ai/console/commit/717fc481fa07131ae0dc4f318a4359192a5fc9c8))
+* adapt up-to-date pipeline-builder ([#454](https://github.com/instill-ai/console/issues/454)) ([8333e3b](https://github.com/instill-ai/console/commit/8333e3b2971568dd865d60f90141512a38746bfb))
+* add different structure backend workflow ([#458](https://github.com/instill-ai/console/issues/458)) ([af417d8](https://github.com/instill-ai/console/commit/af417d8f5fb45ca235ce3fe37d29f4425fc4bb06))
+* **connector:** implement pages related to blockchain  ([#434](https://github.com/instill-ai/console/issues/434)) ([bd795a0](https://github.com/instill-ai/console/commit/bd795a0d8206bd9d2fd67a6e244f4e7a1f79a401))
+* **core:** adapt the singular connector endpoint design ([#431](https://github.com/instill-ai/console/issues/431)) ([a4e7f84](https://github.com/instill-ai/console/commit/a4e7f84c5e872a619da87656521d3cc93171eaf4))
+* **core:** implement the ai-connector related pages ([#433](https://github.com/instill-ai/console/issues/433)) ([86d130b](https://github.com/instill-ai/console/commit/86d130bd69f486106f9545f7bbccf03fa1ae2f33))
+* **model-hub:** add model-hub page ([#432](https://github.com/instill-ai/console/issues/432)) ([ea7eaf1](https://github.com/instill-ai/console/commit/ea7eaf1ece54f1d843dc6581040c93986d8ed870))
+* **pipeline-builder:** add pipeline-builder and adapt the new connector endpoint ([#436](https://github.com/instill-ai/console/issues/436)) ([127c59f](https://github.com/instill-ai/console/commit/127c59f7bc672f6bf828647f50c34f47cc2de699))
+* **pipeline-builder:** implement disconnect/connect action in the pipeline-builder ([#439](https://github.com/instill-ai/console/issues/439)) ([7fa5542](https://github.com/instill-ai/console/commit/7fa554261284c834fafd7c32ce84f60ec0173ceb))
+* **pipeline-builder:** implement the nested left panel in the pipeline builder ([#447](https://github.com/instill-ai/console/issues/447)) ([2cef341](https://github.com/instill-ai/console/commit/2cef34119456497f05212145fb9187e3615c594c))
+* **pipeline-builder:** implement the resource configuration at the pipeline-builder right panel ([#437](https://github.com/instill-ai/console/issues/437)) ([8b349e3](https://github.com/instill-ai/console/commit/8b349e3eda07f350cff07be62362adb3bd1ee052))
+* **pipeline-builder:** support blockchain in pipeline-builder ([#438](https://github.com/instill-ai/console/issues/438)) ([4605209](https://github.com/instill-ai/console/commit/46052097badf6fe03e2a56da9442da8de03f61bc))
+* **pipeline-builder:** support complex DAG in pipeline-builder ([#445](https://github.com/instill-ai/console/issues/445)) ([bbc6b57](https://github.com/instill-ai/console/commit/bbc6b57094ac1dafae603658e154cf8149dacaac))
+* sync pipeline-builder and form with cortex ([#455](https://github.com/instill-ai/console/issues/455)) ([63bea00](https://github.com/instill-ai/console/commit/63bea00f4710f90111f3a09c889cc4ca2102d3ab))
+* update the control of the pipeline ([#442](https://github.com/instill-ai/console/issues/442)) ([a0b5a55](https://github.com/instill-ai/console/commit/a0b5a55838d0e3498384b24a861d3e63a5faa86c))
+
+
+### Bug Fixes
+
+* **e2e:** fix console e2e test related to model-hub ([#440](https://github.com/instill-ai/console/issues/440)) ([a344297](https://github.com/instill-ai/console/commit/a344297606f6f9d6bd9aa4477f92f9950d4b14c4))
+* fix pipeline deps wrong syntax  ([#448](https://github.com/instill-ai/console/issues/448)) ([ad09733](https://github.com/instill-ai/console/commit/ad097337ab2219a57559e11aac0a698e54a1e720))
+* fix pipeline-builder bugs ([#456](https://github.com/instill-ai/console/issues/456)) ([b4a3d02](https://github.com/instill-ai/console/commit/b4a3d028cd6e5ccb4625708b59601003e4ba216d))
+* fix wrong connector endpoint ([#435](https://github.com/instill-ai/console/issues/435)) ([ed6eb8c](https://github.com/instill-ai/console/commit/ed6eb8c3388bb6ff4662d7ac8df95a78725d85cb))
+* **pipeline-builder:** fix activate pipeline button will always show activate ([#449](https://github.com/instill-ai/console/issues/449)) ([3bc62fc](https://github.com/instill-ai/console/commit/3bc62fc2ef01ab14970a162fc5c1bc57aef0d55c))
+* **pipeline-builder:** fix multiple pipeline-builder flow issues related to rename ([#443](https://github.com/instill-ai/console/issues/443)) ([df02617](https://github.com/instill-ai/console/commit/df0261721ae36e7e5f5b922f9e11e3f70571ae22))
+* **toolkit:** fix destination logic issue related to http and grpc ([#451](https://github.com/instill-ai/console/issues/451)) ([925d5b8](https://github.com/instill-ai/console/commit/925d5b8d56bbc182503686911857fec6bed82e72))
+
+
+### Miscellaneous
+
+* update the backend minor change ([#446](https://github.com/instill-ai/console/issues/446)) ([f635bbf](https://github.com/instill-ai/console/commit/f635bbf6348350e83c6f198308346b0ab3cf0e68))
+
 ## [0.24.1-alpha](https://github.com/instill-ai/console/compare/v0.24.0-alpha...v0.24.1-alpha) (2023-06-21)
 
 
