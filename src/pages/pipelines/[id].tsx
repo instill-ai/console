@@ -2,7 +2,6 @@ import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useToast } from "@instill-ai/design-system";
 import {
-  ConnectorType,
   Nullable,
   PipelineBuilderStore,
   useConnectorDefinitions,

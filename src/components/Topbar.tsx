@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Logo, Icons } from "@instill-ai/design-system";
+import { Logo } from "@instill-ai/design-system";
 import Link from "next/link";
 
 export type TopbarProps = {
