@@ -14,22 +14,39 @@ jobs:
     name: Build and push image
     uses: instill-ai/console/.github/workflows/images.yml@main
     secrets: inherit
-  backends:
+ base:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
-    name: Backends
+    name: Base Backends
     strategy:
       fail-fast: false
       matrix:
-        component:
-          [
-            pipeline-backend,
-            connector-backend,
-            model-backend,
-            mgmt-backend,
-            controller,
-          ]
+        component: [mgmt-backend]
     uses: instill-ai/base/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: latest
+  vdp:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: VDP Backends
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [pipeline-backend, connector-backend, controller-vdp]
+    uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: latest
+  model:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: Model Backends
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [model-backend, controller-model]
+    uses: instill-ai/model/.github/workflows/integration-test-backend.yml@main
     with:
       component: ${{ matrix.component }}
       target: latest
