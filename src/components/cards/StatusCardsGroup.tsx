@@ -22,7 +22,7 @@ export const StatusCardsGroup = (props: StatusCardsGroupProps) => {
         )}
       >
         {isLoading ? (
-          [...Array(2).keys()].map((e) => (
+          [Array(2).keys()].map((e) => (
             <div
               key={`cards-skeleton-${e}`}
               className="MetricItem inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
