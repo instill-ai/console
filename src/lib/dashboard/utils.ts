@@ -1,4 +1,9 @@
-import { PipelineTrigger, PipelineTriggerCount, Status } from "@/types";
+import {
+  PipelineTrigger,
+  PipelineTriggerCount,
+  Status,
+  TriggerCount,
+} from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Pipeline, ResourceState } from "@instill-ai/toolkit";
 
@@ -167,26 +172,29 @@ export function formatDateTime(dateString: string): string {
 }
 
 export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
-  const triggerTime: string[] = [];
+  const triggerDates = triggers.map((trigger) => trigger.trigger_time);
 
-  triggers.forEach((trigger) => {
-    if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
-      triggerTime.push(formatDateTime(trigger.trigger_time));
-    }
-  });
+  // triggers.forEach((trigger) => {
+  //   if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
+  //     triggerTime.push(formatDateTime(trigger.trigger_time));
+  //   }
+  // });
 
-  console.log("triggerTime", triggerTime);
+  const uniqueDates = Array.from(new Set(triggerDates)); // Convert Set to an array
+  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Sort dates in ascending order
+  const formattedDates = uniqueDates.map((date) => formatDateTime(date));
+  return formattedDates;
 
-  return triggerTime;
+  return formattedDates;
 }
 
-export function getPipelinesSeries(triggers: PipelineTriggerCount[]) {
+export function getPipelinesSeries(triggers: TriggerCount[]) {
   return triggers.map((trigger) => {
     return {
       name: trigger.pipeline_id,
       type: "line",
       smooth: true,
-      data: trigger.compute_time_duration,
+      data: trigger.counts.map((trigger) => trigger.count),
     };
   });
 }
@@ -300,4 +308,55 @@ export function getPreviousTime(time: string): string {
     return "60d";
   }
   return "";
+}
+
+export function formatTriggerCount(
+  triggers: PipelineTrigger[]
+): TriggerCount[] {
+  const countByTimeAndPipeline: TriggerCount[] = [];
+
+  triggers.forEach((trigger) => {
+    const triggerTime = formatDateTime(trigger.trigger_time);
+    const pipelineId = trigger.pipeline_id;
+
+    const existingPipeline = countByTimeAndPipeline.find(
+      (entry) => entry.pipeline_id === pipelineId
+    );
+
+    if (existingPipeline) {
+      const existingCount = existingPipeline.counts.find(
+        (countEntry) => countEntry.trigger_time === triggerTime
+      );
+      if (existingCount) {
+        existingCount.count++;
+      } else {
+        existingPipeline.counts.push({ trigger_time: triggerTime, count: 1 });
+      }
+    } else {
+      const pipelineObj = {
+        pipeline_id: pipelineId,
+        counts: [{ trigger_time: triggerTime, count: 1 }],
+      };
+      countByTimeAndPipeline.push(pipelineObj);
+    }
+  });
+
+  // Add missing trigger times with count 0 for each pipeline
+  const allTriggerTimes = triggers.map((trigger) =>
+    formatDateTime(trigger.trigger_time)
+  );
+  const uniqueTriggerTimes = [...new Set(allTriggerTimes)];
+
+  countByTimeAndPipeline.forEach((pipeline) => {
+    uniqueTriggerTimes.forEach((triggerTime) => {
+      const existingCount = pipeline.counts.find(
+        (countEntry) => countEntry.trigger_time === triggerTime
+      );
+      if (!existingCount) {
+        pipeline.counts.push({ trigger_time: triggerTime, count: 0 });
+      }
+    });
+  });
+
+  return countByTimeAndPipeline;
 }

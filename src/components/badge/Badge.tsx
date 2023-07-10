@@ -30,10 +30,10 @@ export const Badge = (props: BadgeProps) => {
           >
             <path
               d="M12 19V5M12 5L5 12M12 5L19 12"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              stroke="red"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         ) : (
@@ -46,10 +46,10 @@ export const Badge = (props: BadgeProps) => {
           >
             <path
               d="M12 5V19M12 19L19 12M12 19L5 12"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              stroke="green"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         )}

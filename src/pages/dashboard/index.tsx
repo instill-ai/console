@@ -4,6 +4,7 @@ import { StatusCardsGroup } from "@/components/cards";
 import { Status } from "@/types";
 import {
   defaultSelectOption,
+  formatTriggerCount,
   getPipeLineOptions,
   getPipelinesTriggerCount,
   getPreviousTime,
@@ -127,6 +128,8 @@ const PipelinePage: FC & {
     }
     return [];
   }, [triggers.data]);
+
+  console.log("formatTriggerCount", formatTriggerCount(triggers.data || []));
 
   const statusCount = React.useMemo<Status[]>(() => {
     if (triggers.data && triggersPrevious.data) {

@@ -13,6 +13,16 @@ export type PipelineTriggerCount = {
   compute_time_duration: number[];
 };
 
+export type Count = {
+  trigger_time: string;
+  count: number;
+};
+
+export type TriggerCount = {
+  pipeline_id: string;
+  counts: Count[];
+};
+
 export type PipelineTrigger = {
   trigger_time: string;
   pipeline_trigger_id: string;
