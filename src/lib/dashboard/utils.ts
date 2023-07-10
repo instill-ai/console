@@ -1,53 +1,60 @@
 import { PipelineTrigger, PipelineTriggerCount, Status } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
-import { ResourceState } from "@instill-ai/toolkit";
+import { Pipeline, ResourceState } from "@instill-ai/toolkit";
 
 export function getPipelinesTriggerCount(
-  pipelines: PipelineTrigger[]
+  triggers: PipelineTrigger[],
+  pipelines: Pipeline[] = []
 ): PipelineTriggerCount[] {
   const pipelinesTriggerCount: PipelineTriggerCount[] = [];
 
-  pipelines.forEach((pipeline) => {
+  triggers.forEach((trigger) => {
     const triggerCountIndex = pipelinesTriggerCount.findIndex(
       (pipelineTriggerCount) =>
-        pipelineTriggerCount.pipeline_uid === pipeline.pipeline_uid
+        pipelineTriggerCount.pipeline_uid === trigger.pipeline_uid
     );
 
     if (triggerCountIndex !== -1) {
-      if (pipeline.status === "errored") {
+      if (trigger.status === "errored") {
         pipelinesTriggerCount[triggerCountIndex].pipeline_error += 1;
       }
-      if (pipeline.status === "completed") {
+      if (trigger.status === "completed") {
         pipelinesTriggerCount[triggerCountIndex].pipeline_completed += 1;
       }
       pipelinesTriggerCount[triggerCountIndex].compute_time_duration.push(
-        pipeline.compute_time_duration
+        trigger.compute_time_duration
       );
     } else {
       pipelinesTriggerCount.push({
-        pipeline_id: pipeline.pipeline_id,
-        pipeline_uid: pipeline.pipeline_uid,
-        pipeline_completed: pipeline.status === "completed" ? 1 : 0,
-        pipeline_error: pipeline.status === "error" ? 1 : 0,
-        compute_time_duration: [pipeline.compute_time_duration],
+        pipeline_id: trigger.pipeline_id,
+        pipeline_uid: trigger.pipeline_uid,
+        pipeline_completed: trigger.status === "completed" ? 1 : 0,
+        pipeline_error: trigger.status === "error" ? 1 : 0,
+        compute_time_duration: [trigger.compute_time_duration],
       });
     }
   });
 
-  return pipelinesTriggerCount;
+  return pipelinesTriggerCount.map((pipelineTrigger) => {
+    return {
+      ...pipelineTrigger,
+      status: pipelines.find(
+        (pipeline) => pipeline.uid === pipelineTrigger.pipeline_uid
+      )?.state,
+    };
+  });
 }
 
 export function getPipeLineOptions(
-  pipelines: PipelineTrigger[]
+  pipelines: Pipeline[]
 ): SingleSelectOption[] {
-  const formattedPinelineOptions = getPipelinesTriggerCount(pipelines).map(
-    (pipeline) => {
-      return {
-        label: pipeline.pipeline_id,
-        value: pipeline.pipeline_id,
-      };
-    }
-  );
+  const formattedPinelineOptions = pipelines?.map((pipeline) => {
+    return {
+      label: pipeline.id,
+      value: pipeline.id,
+    };
+  });
+
   return [
     {
       label: "ALL",
@@ -58,22 +65,22 @@ export function getPipeLineOptions(
 }
 
 export function getStatusCount(
-  pipelines: PipelineTrigger[],
-  pipelinesPrevious: PipelineTrigger[]
+  triggers: PipelineTrigger[],
+  triggersPrevious: PipelineTrigger[]
 ): Status[] {
   let STATE_ACTIVE = 0;
   let STATE_ACTIVE_PREVIOUS = 0;
   let STATE_INACTIVE = 0;
   let STATE_INACTIVE_PREVIOUS = 0;
 
-  getPipelinesTriggerCount(pipelines).forEach((pipeline) => {
-    STATE_ACTIVE += pipeline.pipeline_completed;
-    STATE_INACTIVE += pipeline.pipeline_error;
+  getPipelinesTriggerCount(triggers).forEach((trigger) => {
+    STATE_ACTIVE += trigger.pipeline_completed;
+    STATE_INACTIVE += trigger.pipeline_error;
   });
 
-  getPipelinesTriggerCount(pipelinesPrevious).forEach((pipeline) => {
-    STATE_ACTIVE_PREVIOUS += pipeline.pipeline_completed;
-    STATE_INACTIVE_PREVIOUS += pipeline.pipeline_error;
+  getPipelinesTriggerCount(triggersPrevious).forEach((trigger) => {
+    STATE_ACTIVE_PREVIOUS += trigger.pipeline_completed;
+    STATE_INACTIVE_PREVIOUS += trigger.pipeline_error;
   });
 
   return [
@@ -153,25 +160,25 @@ export function formatDateTime(dateTimeString: string): string {
   return dateTime.toLocaleDateString("en-US", options);
 }
 
-export function getPipelinesTriggerTime(pipelines: PipelineTrigger[]) {
+export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
   const triggerTime: string[] = [];
 
-  pipelines.forEach((pipeline) => {
-    if (!triggerTime.includes(formatDateTime(pipeline.trigger_time))) {
-      triggerTime.push(formatDateTime(pipeline.trigger_time));
+  triggers.forEach((trigger) => {
+    if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
+      triggerTime.push(formatDateTime(trigger.trigger_time));
     }
   });
 
   return triggerTime;
 }
 
-export function getPipelinesSeries(pipelines: PipelineTriggerCount[]) {
-  return pipelines.map((pipeline) => {
+export function getPipelinesSeries(triggers: PipelineTriggerCount[]) {
+  return triggers.map((trigger) => {
     return {
-      name: pipeline.pipeline_id,
+      name: trigger.pipeline_id,
       type: "line",
       smooth: true,
-      data: pipeline.compute_time_duration,
+      data: trigger.compute_time_duration,
     };
   });
 }
@@ -180,7 +187,7 @@ export function getStatus(status: string): ResourceState {
   if (status === "completed") {
     return "STATE_ACTIVE";
   }
-  if (status === "error") {
+  if (status === "errored") {
     return "STATE_ERROR";
   }
   return "STATE_UNSPECIFIED";
