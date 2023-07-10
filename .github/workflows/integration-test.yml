@@ -14,22 +14,39 @@ jobs:
     name: Build and push image
     uses: instill-ai/console/.github/workflows/images.yml@main
     secrets: inherit
-  backends:
+  base:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
-    name: Backends
+    name: Base Backends
     strategy:
       fail-fast: false
       matrix:
-        component:
-          [
-            pipeline-backend,
-            connector-backend,
-            model-backend,
-            mgmt-backend,
-            controller,
-          ]
+        component: [mgmt-backend]
+    uses: instill-ai/base/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: latest
+  vdp:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: VDP Backends
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [pipeline-backend, connector-backend, controller-vdp]
     uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
+    with:
+      component: ${{ matrix.component }}
+      target: latest
+  model:
+    needs: build-push-image
+    if: github.ref == 'refs/heads/main'
+    name: Model Backends
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [model-backend, controller-model]
+    uses: instill-ai/model/.github/workflows/integration-test-backend.yml@main
     with:
       component: ${{ matrix.component }}
       target: latest
@@ -37,7 +54,7 @@ jobs:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
     name: Console
-    uses: instill-ai/vdp/.github/workflows/integration-test-console.yml@main
+    uses: instill-ai/base/.github/workflows/integration-test-console.yml@main
     with:
       target: latest
 
@@ -60,85 +77,87 @@ jobs:
           rm --recursive --force "$AGENT_TOOLSDIRECTORY"
           df --human-readable
 
-      - name: Checkout
+      - name: Checkout repo (base)
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          repository: instill-ai/base
 
-      - name: Load .env file
+      - name: Load .env file (base)
         uses: cardinalby/export-env-action@v2
         with:
           envFile: .env
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: dropletbot
-          password: ${{ secrets.botDockerHubPassword }}
-
-      - name: Build image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          load: true
-          tags: instill/console:latest
-
-      - name: Checkout (vdp)
-        uses: actions/checkout@v3
-        with:
-          repository: instill-ai/vdp
-
-      - name: Launch VDP
+      - name: Launch Instill Base (latest)
         run: |
+          CONSOLE_PUBLIC_API_GATEWAY_BASE_HOST=api-gateway-base \
+          CONSOLE_PUBLIC_API_GATEWAY_VDP_HOST=api-gateway-vdp \
+          CONSOLE_PUBLIC_API_GATEWAY_MODEL_HOST=api-gateway-model \
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
-          ITMODE_ENABLED=true \
-          TRITON_CONDA_ENV_PLATFORM=cpu \
-          CONSOLE_BASE_URL_HOST=console \
-          CONSOLE_BASE_API_GATEWAY_URL_HOST=api-gateway \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
 
-      - name: Checkout
+      - name: Checkout repo (vdp)
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          repository: instill-ai/vdp
 
-      - name: Run integration-test
+      - name: Load .env file (vdp)
+        uses: cardinalby/export-env-action@v2
+        with:
+          envFile: .env
+
+      - name: Launch Instill VDP (latest)
         run: |
-          docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright .
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
+
+      - name: Checkout repo (model)
+        uses: actions/checkout@v3
+        with:
+          repository: instill-ai/model
+
+      - name: Load .env file (model)
+        uses: cardinalby/export-env-action@v2
+        with:
+          envFile: .env
+
+      - name: Launch Instill Model (latest)
+        run: |
+          ITMODE_ENABLED=true \
+          TRITON_CONDA_ENV_PLATFORM=cpu \
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
+          ITMODE_ENABLED=true \
+          TRITON_CONDA_ENV_PLATFORM=cpu \
+          COMPOSE_PROFILES=all \
+          EDITION=local-ce:test \
+          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
+
+      - name: Run console integration test (latest)
+        run: |
+          git clone https://github.com/instill-ai/console.git
+          cd console && docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
           docker run -t --rm \
-            -v ${PWD}/playwright-report:/app/playwright-report \
-            -v ${PWD}/playwright-report:/app/test-results \
-            -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
-            -e NEXT_PUBLIC_BASE_API_GATEWAY_URL=http://api-gateway-base:7070 \
-            -e NEXT_SERVER_BASE_API_GATEWAY_URL=http://api-gateway-base:7070 \
-            -e NEXT_PUBLIC_VDP_API_GATEWAY_URL=http://api-gateway-vdp:8070 \
-            -e NEXT_SERVER_VDP_API_GATEWAY_URL=http://api-gateway-vdp:8070 \
-            -e NEXT_PUBLIC_MODEL_API_GATEWAY_URL=http://api-gateway-vdp:9070 \
-            -e NEXT_SERVER_MODEL_API_GATEWAY_URL=http://api-gateway-vdp:9070 \
             -e NEXT_PUBLIC_API_VERSION=v1alpha \
+            -e NEXT_PUBLIC_CONSOLE_EDITION=local-ce:test \
+            -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
+            -e NEXT_PUBLIC_BASE_API_GATEWAY_URL=http://${API_GATEWAY_BASE_HOST}:${API_GATEWAY_BASE_PORT}  \
+            -e NEXT_SERVER_BASE_API_GATEWAY_URL=http://${API_GATEWAY_BASE_HOST}:${API_GATEWAY_BASE_PORT}  \
+            -e NEXT_PUBLIC_VDP_API_GATEWAY_URL=http://${API_GATEWAY_VDP_HOST}:${API_GATEWAY_VDP_PORT}  \
+            -e NEXT_SERVER_VDP_API_GATEWAY_URL=http://${API_GATEWAY_VDP_HOST}:${API_GATEWAY_VDP_PORT}  \
+            -e NEXT_PUBLIC_MODEL_API_GATEWAY_URL=http://${API_GATEWAY_MODEL_HOST}:${API_GATEWAY_MODEL_PORT}  \
+            -e NEXT_SERVER_MODEL_API_GATEWAY_URL=http://${API_GATEWAY_MODEL_HOST}:${API_GATEWAY_MODEL_PORT}  \
             -e NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION=false \
             -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME=instill-ai-user \
             --network instill-network \
             --entrypoint ./entrypoint-playwright.sh \
-            --name console-integration-test console-playwright
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 1
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: test-results
-          path: test-results/
-          retention-days: 1
+            --name console-integration-test \
+            console-playwright:latest

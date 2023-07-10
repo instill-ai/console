@@ -20,7 +20,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
       onOpenChange={setIsOpen}
       className={cn("w-full", className)}
     >
-      <div className="relative">
+      <div className="relative py-4">
         <SidebarLink
           href="/pipelines"
           icon={
@@ -52,7 +52,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
           href="/ais"
           icon={<Icons.Model className="h-6 w-6 stroke-semantic-fg-primary" />}
           name="AI"
-          hightlighted={router.pathname.split("/")[1] === "ai"}
+          hightlighted={router.pathname.split("/")[1] === "ais"}
           className="pl-12 pr-3"
         />
         <SidebarLink
