@@ -25,6 +25,8 @@ export const LineChart = ({
 }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
+  const pipelinesTriggerCount = getPipelinesTriggerCount(triggers);
+
   const xAxisData = triggers?.map((trigger) =>
     formatDateTime(trigger.trigger_time)
   );
@@ -40,14 +42,36 @@ export const LineChart = ({
       const myChart = echarts.init(chartRef.current); // eslint-disable-line
       const option = {
         tooltip: {
-          trigger: "axis",
-          // triggerOn: "click",
-          formatter: (params: any) => {
-            const trigger_time = params[0].axisValue;
-            const pipeline_id = params[0].seriesName;
-            const compute_time_duration = params[0].value;
-            return `Time: ${trigger_time}<br /> Pipeline: ${pipeline_id}<br />Compute Time: ${compute_time_duration} Sec<br />`;
+          trigger: "item",
+          tiggerOn: "click",
+          formatter: function (params: any) {
+            console.log("params", params);
+            const trigger_time = params.name;
+            const pipeline_id = params.seriesName;
+            const compute_time_duration = params.value;
+            return `
+              <div class="Content" style="padding: 5px; background: white; border-radius: 4px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                <div class="TextAndSupportingText" style="border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; display: flex">
+                  <div class="Date" style="color: rgba(29, 36, 51, 0.65); font-size: 12px; font-family: IBM Plex Sans; font-weight: 500; line-height: 16px; word-wrap: break-word">${trigger_time}</div>
+                  <div class="Data1" style="justify-content: flex-start; align-items: center; gap: 4px; display: inline-flex">
+                    <div class="Dot" style="width: 10px; height: 10px; position: relative">
+                      <div class="Dot" style="width: 8px; height: 8px; left: 1px; top: 1px; position: absolute; background: ${params.color}; border-radius: 9999px"></div>
+                    </div>
+                    <div class="PipelineId" style="height: 22px; color: rgba(29, 36, 51, 0.80); font-size: 14px; font-family: IBM Plex Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; overflow-wrap: break-word;">
+                      ${pipeline_id}
+                    </div>
+                  </div>
+                  <div class="Data2" style="justify-content: flex-start; align-items: flex-start; gap: 4px; display: inline-flex">
+                    <div class="TriggerNumber" style="color: rgba(29, 36, 51, 0.80); font-size: 14px; font-family: IBM Plex Sans; font-weight: 400; line-height: 20px; word-wrap: break-word">Triggers</div>
+                    <div class="Number" style="color: #1D2433; font-size: 14px; font-family: IBM Plex Sans; font-weight: 600; line-height: 20px; word-wrap: break-word">${compute_time_duration}</div>
+                  </div>
+                </div>
+              </div>
+            `;
           },
+        },
+        legend: {
+          data: pipelinesTriggerCount.map((pipeline) => pipeline.pipeline_id),
         },
         xAxis: {
           type: "category",
@@ -56,7 +80,7 @@ export const LineChart = ({
         yAxis: {
           type: "value",
         },
-        series: getPipelinesSeries(getPipelinesTriggerCount(triggers)),
+        series: getPipelinesSeries(pipelinesTriggerCount),
       };
       myChart.setOption(option);
     }

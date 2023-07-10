@@ -125,7 +125,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
         />
         <tbody>
           {isLoading
-            ? [...Array(4).keys()].map((e) => (
+            ? [Array(4).keys()].map((e) => (
                 <tr
                   key={`pipelines-table-skeleton-${e}`}
                   className="border border-instillGrey20 bg-white"
