@@ -96,9 +96,9 @@ const AIDetailsPage: FC & {
         marginBottom="mb-10"
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-      {aiWithPipelines.isSuccess && aiWithPipelines.data ? (
+      {aiWithPipelines.isSuccess && aiWatchState.isSuccess ? (
         <ConfigureAIForm
-          ai={aiWithPipelines.data}
+          ai={{ ...aiWithPipelines.data, watchState: aiWatchState.data.state }}
           accessToken={null}
           onDelete={() => router.push("/ais")}
           onConfigure={null}

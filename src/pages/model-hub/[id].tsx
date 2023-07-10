@@ -9,7 +9,6 @@ import {
   useWarnUnsavedChanges,
   useConfigureModelFormStore,
   ConfigureModelForm,
-  PipelinesTable,
   StateLabel,
   ModelTaskLabel,
   ModelDefinitionLabel,
@@ -17,7 +16,6 @@ import {
   ModelConfigurationFields,
   useCreateUpdateDeleteResourceGuard,
   useWatchModel,
-  useWatchPipelines,
   useModelWithPipelines,
   type ConfigureModelFormStore,
 } from "@instill-ai/toolkit";
@@ -72,23 +70,6 @@ const ModelDetailsPage: FC & {
     modelName: id ? `models/${id}` : null,
     accessToken: null,
   });
-
-  const pipelinesWatchState = useWatchPipelines({
-    enabled:
-      modelWithPipelines.isSuccess &&
-      modelWithPipelines.data.pipelines.length > 0,
-    accessToken: null,
-    pipelineNames: modelWithPipelines.isSuccess
-      ? modelWithPipelines.data?.pipelines.map((e) => e.name)
-      : [],
-  });
-
-  const isLoadingPipelines = modelWithPipelines.isLoading
-    ? true
-    : modelWithPipelines.isSuccess &&
-      modelWithPipelines.data?.pipelines.length > 0
-    ? pipelinesWatchState.isLoading
-    : false;
 
   /* -------------------------------------------------------------------------
    * Get model card
@@ -172,21 +153,6 @@ const ModelDetailsPage: FC & {
             accessToken={null}
           />
         ) : null}
-
-        <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
-        <PipelinesTable
-          pipelines={
-            modelWithPipelines.isSuccess
-              ? modelWithPipelines.data.pipelines
-              : []
-          }
-          pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
-          }
-          isLoading={isLoadingPipelines}
-          isError={modelWithPipelines.isError || pipelinesWatchState.isError}
-          marginBottom="mb-10"
-        />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         <ModelReadmeMarkdown
           isLoading={modelReadme.isLoading}
