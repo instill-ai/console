@@ -73,7 +73,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
         description=""
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        searchTerm={searchTerm}
+        searchTerm={null}
         setSearchTerm={setSearchTerm}
         totalPage={pipelinePages.length}
         disabledSearchField={true}
@@ -91,7 +91,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
         description=""
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        searchTerm={searchTerm}
+        searchTerm={null}
         setSearchTerm={setSearchTerm}
         totalPage={pipelinePages.length}
         disabledSearchField={true}
@@ -108,10 +108,10 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
       description=""
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
-      searchTerm={searchTerm}
+      searchTerm={null}
       setSearchTerm={setSearchTerm}
       totalPage={pipelinePages.length}
-      disabledSearchField={isLoading ? true : false}
+      disabledSearchField={true}
       marginBottom={marginBottom}
     >
       <table className="table-auto border-collapse">

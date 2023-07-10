@@ -6,7 +6,11 @@ import { StatusCardsGroup } from "@/components/cards";
 import { Status } from "@/types";
 import { usePipelineFilter } from "@/pages/api/pipeline/queries";
 import { useRouter } from "next/router";
-import { getStatusCount, getTimeInRFC3339Format } from "@/lib/dashboard";
+import {
+  getPreviousTime,
+  getStatusCount,
+  getTimeInRFC3339Format,
+} from "@/lib/dashboard";
 import { PipelineTriggerTable } from "@/components/PipelineTriggerTable";
 import cn from "clsx";
 import { FilterByDay } from "@/components/filter/FilterByDay";
@@ -32,18 +36,26 @@ const PipelinePage: FC & {
     });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
+  const [queryStringPrevious, setQueryStringPrevious] =
+    React.useState<Nullable<string>>("");
   const [currentPage, setCurrentPage] = React.useState(0);
 
   React.useEffect(() => {
     let queryParams = ``;
+    let queryParamsPrevious = "";
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(selectedTimeOption.value);
       const stop = getTimeInRFC3339Format("now");
+      const previousTime = getTimeInRFC3339Format(
+        getPreviousTime(selectedTimeOption.value)
+      );
       queryParams += `start='${start}' AND stop='${stop}' AND pipeline_id='${id?.toString()}'`;
+      queryParamsPrevious += `start='${previousTime}' AND stop='${start}' AND pipeline_id='${id?.toString()}'`;
     }
 
     setQueryString(queryParams);
+    setQueryStringPrevious(queryParamsPrevious);
     setCurrentPage(0);
   }, [id, selectedTimeOption]);
 
@@ -57,12 +69,25 @@ const PipelinePage: FC & {
     filter: queryString ? queryString : `pipeline_id='${id?.toString()}'`,
   });
 
+  const pipelinesPrevious = usePipelineFilter({
+    enabled: true,
+    accessToken: null,
+    filter: queryStringPrevious
+      ? queryStringPrevious
+      : `pipeline_id='${id?.toString()}'`,
+  });
+
   const statusCount = React.useMemo<Status[]>(() => {
-    if (pipelines.data) {
-      return getStatusCount(pipelines.data);
+    console.log(
+      "pipelines.data && pipelinesPrevious.data",
+      pipelines.data && pipelinesPrevious.data
+    );
+
+    if (pipelines.data && pipelinesPrevious.data) {
+      return getStatusCount(pipelines.data, pipelinesPrevious.data);
     }
     return [];
-  }, [pipelines.data]);
+  }, [pipelines.data, pipelinesPrevious.data]);
 
   /* -------------------------------------------------------------------------
    * Render

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export type DeafultCellProps = {
   width: Nullable<string>;
-  name: string | number;
+  name: string | number | undefined;
   padding: string;
   link?: string;
 };

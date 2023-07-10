@@ -15,7 +15,7 @@ import {
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
-import { Nullable } from "@instill-ai/toolkit";
+import { Nullable, usePipelines } from "@instill-ai/toolkit";
 import { usePipelineFilter } from "../api/pipeline/queries";
 
 type GetLayOutProps = {
@@ -101,15 +101,21 @@ const PipelinePage: FC & {
   ]);
 
   /* -------------------------------------------------------------------------
-   * Query pipeline data
+   * Query pipeline and triggers data
    * -----------------------------------------------------------------------*/
 
-  const pipelines = usePipelineFilter({
+  const pipelines = usePipelines({
+    enabled: true,
+    accessToken: null,
+  });
+
+  const triggers = usePipelineFilter({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : null,
   });
-  const pipelinesPrevious = usePipelineFilter({
+
+  const triggersPrevious = usePipelineFilter({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious ? queryStringPrevious : null,
@@ -117,23 +123,17 @@ const PipelinePage: FC & {
 
   const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
     if (pipelines.data) {
-      if (!pipelines.data.length) {
-        setSelectedPinelineOption({
-          label: "All",
-          value: "all",
-        });
-      }
       return getPipeLineOptions(pipelines.data);
     }
     return [];
-  }, [pipelines.data]);
+  }, [triggers.data]);
 
   const statusCount = React.useMemo<Status[]>(() => {
-    if (pipelines.data && pipelinesPrevious.data) {
-      return getStatusCount(pipelines.data, pipelinesPrevious.data);
+    if (triggers.data && triggersPrevious.data) {
+      return getStatusCount(triggers.data, triggersPrevious.data);
     }
     return [];
-  }, [pipelines.data, pipelinesPrevious.data]);
+  }, [triggers.data, triggersPrevious.data]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -157,18 +157,18 @@ const PipelinePage: FC & {
         <StatusCardsGroup
           type="pipeline"
           statusStats={statusCount}
-          isLoading={pipelines.isLoading || pipelinesPrevious.isLoading}
+          isLoading={triggers.isLoading || triggersPrevious.isLoading}
         />
 
         {/* Pipeline Chart */}
 
         <div className="my-8">
           <LineChart
-            pipelines={pipelines?.data ? pipelines?.data : []}
-            isLoading={pipelines.isLoading}
+            triggers={triggers?.data ? triggers?.data : []}
+            isLoading={triggers.isLoading}
             selectedTimeOption={selectedTimeOption}
             setSelectedTimeOption={setSelectedTimeOption}
-            refetch={pipelines.refetch}
+            refetch={triggers.refetch}
           />
         </div>
 
@@ -244,10 +244,12 @@ const PipelinePage: FC & {
         <div className="my-4">
           <DashboardPipelinesTable
             pipelines={
-              pipelines?.data ? getPipelinesTriggerCount(pipelines.data) : []
+              triggers.data && pipelines.data
+                ? getPipelinesTriggerCount(triggers.data, pipelines.data)
+                : []
             }
-            isError={pipelines.isError}
-            isLoading={pipelines.isLoading}
+            isError={triggers.isError || pipelines.isError}
+            isLoading={triggers.isLoading || pipelines.isLoading}
           />
         </div>
       </div>

@@ -1,6 +1,7 @@
 import {
   PaginationListContainerProps,
   PipelineMode,
+  ResourceState,
 } from "@instill-ai/toolkit";
 
 export type PipelineTriggerCount = {
@@ -8,7 +9,7 @@ export type PipelineTriggerCount = {
   pipeline_uid: string;
   pipeline_completed: number;
   pipeline_error: number;
-  status?: string;
+  status?: ResourceState;
   compute_time_duration: number[];
 };
 

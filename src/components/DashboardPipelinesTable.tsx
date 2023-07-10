@@ -47,24 +47,24 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
   const tableHeadItems = React.useMemo<TableHeadItem[]>(() => {
     return [
       {
-        key: "pipeline-state-overview-head",
-        item: "Status",
+        key: "pipeline-mode-head",
+        item: "Pipeline ID",
         width: "w-auto",
       },
       {
-        key: "pipeline-mode-head",
-        item: "Pipeline ID",
-        width: "w-[160px]",
+        key: "pipeline-state-overview-head",
+        item: "Status",
+        width: "w-[280px]",
       },
       {
         key: "pipeline-source-head",
         item: "Completed triggers",
-        width: "w-[160px]",
+        width: "w-[180px]",
       },
       {
         key: "pipeline-models-head",
         item: "Errorred triggers",
-        width: "w-[160px]",
+        width: "w-[180px]",
       },
     ];
   }, []);
@@ -137,18 +137,27 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
                 </tr>
               ))
             : pipelinePages[currentPage]
-            ? pipelinePages[currentPage].map((pipeline) => (
+            ? pipelinePages[currentPage]?.map((pipeline) => (
                 <tr
                   key={pipeline.pipeline_uid}
                   className="border border-instillGrey20 bg-white"
                 >
-                  <DeafultCell name={""} width={null} padding="py-2 pl-6" />
-
                   <DeafultCell
                     name={pipeline.pipeline_id}
                     width={null}
                     padding="py-2 pl-6"
                     link={`/dashboard/pipeline/${pipeline.pipeline_id}`}
+                  />
+
+                  <StateCell
+                    name={
+                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
+                    }
+                    width={null}
+                    state={
+                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
+                    }
+                    padding="py-2 pl-6"
                   />
 
                   <StateCell
