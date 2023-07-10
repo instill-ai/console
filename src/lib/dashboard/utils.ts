@@ -146,18 +146,24 @@ export function getTimeInRFC3339Format(interval: string): string {
   return targetTime.toISOString().split(".")[0] + "Z";
 }
 
-export function formatDateTime(dateTimeString: string): string {
-  const dateTime = new Date(dateTimeString);
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    fractionalSecondDigits: dateTime.getMilliseconds() > 0 ? 3 : undefined,
-  };
-  return dateTime.toLocaleDateString("en-US", options);
+export function formatDateTime(dateString: string): string {
+  const date = new Date(dateString);
+
+  const day = date.getDate();
+  const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+    date
+  );
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  const formattedDate = `${day} ${month}, ${year}`;
+  const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+  return `${formattedDate} - ${formattedTime}`;
 }
 
 export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
@@ -168,6 +174,8 @@ export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
       triggerTime.push(formatDateTime(trigger.trigger_time));
     }
   });
+
+  console.log("triggerTime", triggerTime);
 
   return triggerTime;
 }
