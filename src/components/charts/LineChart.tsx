@@ -12,12 +12,12 @@ import { Skeleton } from "../skeleton";
 import { FilterByDay, FilterProps } from "../filter/FilterByDay";
 
 type LineChartProps = {
-  pipelines: PipelineTrigger[];
+  triggers: PipelineTrigger[];
   isLoading: boolean;
 } & FilterProps;
 
 export const LineChart = ({
-  pipelines,
+  triggers,
   isLoading,
   selectedTimeOption,
   setSelectedTimeOption,
@@ -25,13 +25,13 @@ export const LineChart = ({
 }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
-  const xAxisData = pipelines?.map((pipeline) =>
-    formatDateTime(pipeline.trigger_time)
+  const xAxisData = triggers?.map((trigger) =>
+    formatDateTime(trigger.trigger_time)
   );
-  const seriesData = pipelines?.map((pipeline) => {
+  const seriesData = triggers?.map((trigger) => {
     return {
-      name: pipeline.pipeline_id,
-      value: pipeline.compute_time_duration,
+      name: trigger.pipeline_id,
+      value: trigger.compute_time_duration,
     };
   });
 
@@ -51,12 +51,12 @@ export const LineChart = ({
         },
         xAxis: {
           type: "category",
-          data: getPipelinesTriggerTime(pipelines),
+          data: getPipelinesTriggerTime(triggers),
         },
         yAxis: {
           type: "value",
         },
-        series: getPipelinesSeries(getPipelinesTriggerCount(pipelines)),
+        series: getPipelinesSeries(getPipelinesTriggerCount(triggers)),
       };
       myChart.setOption(option);
     }
@@ -92,7 +92,7 @@ export const LineChart = ({
             />
           ) : (
             <>
-              {pipelines.length ? (
+              {triggers.length ? (
                 <div
                   id="main"
                   ref={chartRef}
