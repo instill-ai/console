@@ -122,14 +122,8 @@ const PipelinePage: FC & {
   });
 
   const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
-    if (triggers.data) {
-      if (!triggers.data.length) {
-        setSelectedPinelineOption({
-          label: "All",
-          value: "all",
-        });
-      }
-      return getPipeLineOptions(triggers.data);
+    if (pipelines.data) {
+      return getPipeLineOptions(pipelines.data);
     }
     return [];
   }, [triggers.data]);

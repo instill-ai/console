@@ -37,11 +37,7 @@ export function getPipelinesTriggerCount(
 
   return pipelinesTriggerCount.map((pipelineTrigger) => {
     return {
-      pipeline_id: pipelineTrigger.pipeline_id,
-      pipeline_uid: pipelineTrigger.pipeline_uid,
-      pipeline_completed: pipelineTrigger.pipeline_completed,
-      pipeline_error: pipelineTrigger.pipeline_error,
-      compute_time_duration: pipelineTrigger.compute_time_duration,
+      ...pipelineTrigger,
       status: pipelines.find(
         (pipeline) => pipeline.uid === pipelineTrigger.pipeline_uid
       )?.state,
@@ -50,16 +46,15 @@ export function getPipelinesTriggerCount(
 }
 
 export function getPipeLineOptions(
-  triggers: PipelineTrigger[]
+  pipelines: Pipeline[]
 ): SingleSelectOption[] {
-  const formattedPinelineOptions = getPipelinesTriggerCount(triggers).map(
-    (trigger) => {
-      return {
-        label: trigger.pipeline_id,
-        value: trigger.pipeline_id,
-      };
-    }
-  );
+  const formattedPinelineOptions = pipelines?.map((pipeline) => {
+    return {
+      label: pipeline.id,
+      value: pipeline.id,
+    };
+  });
+
   return [
     {
       label: "ALL",
@@ -192,7 +187,7 @@ export function getStatus(status: string): ResourceState {
   if (status === "completed") {
     return "STATE_ACTIVE";
   }
-  if (status === "error") {
+  if (status === "errored") {
     return "STATE_ERROR";
   }
   return "STATE_UNSPECIFIED";

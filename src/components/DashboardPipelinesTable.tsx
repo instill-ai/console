@@ -54,7 +54,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
       {
         key: "pipeline-state-overview-head",
         item: "Status",
-        width: "w-[180px]",
+        width: "w-[280px]",
       },
       {
         key: "pipeline-source-head",
@@ -137,7 +137,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
                 </tr>
               ))
             : pipelinePages[currentPage]
-            ? pipelinePages[currentPage].map((pipeline) => (
+            ? pipelinePages[currentPage]?.map((pipeline) => (
                 <tr
                   key={pipeline.pipeline_uid}
                   className="border border-instillGrey20 bg-white"
@@ -149,9 +149,14 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
                     link={`/dashboard/pipeline/${pipeline.pipeline_id}`}
                   />
 
-                  <DeafultCell
-                    name={pipeline.status}
+                  <StateCell
+                    name={
+                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
+                    }
                     width={null}
+                    state={
+                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
+                    }
                     padding="py-2 pl-6"
                   />
 
