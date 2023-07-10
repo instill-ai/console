@@ -91,11 +91,21 @@ export const LineChart = ({
               animationHeight="h-80"
             />
           ) : (
-            <div
-              id="main"
-              ref={chartRef}
-              style={{ width: "100%", height: "400px" }}
-            />
+            <>
+              {pipelines.length ? (
+                <div
+                  id="main"
+                  ref={chartRef}
+                  style={{ width: "100%", height: "400px" }}
+                />
+              ) : (
+                <div className="flex h-80 items-center justify-center p-8">
+                  <h3 className="text-instillGrey80 text-instill-h3">
+                    No Pipelines Found
+                  </h3>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

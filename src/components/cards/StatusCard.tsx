@@ -5,7 +5,7 @@ import { Badge } from "../badge/Badge";
 export type StatusProps = Status;
 
 export const StatusCard = (props: StatusProps) => {
-  const { statusname, amount } = props;
+  const { statusname, amount, change } = props;
   return (
     <div className="MetricItem inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow">
       <div className="Heading self-stretch text-[14px] font-medium leading-tight text-gray-800 text-opacity-80">
@@ -15,7 +15,7 @@ export const StatusCard = (props: StatusProps) => {
         <div className="Number shrink grow basis-0 text-[28px] font-bold leading-loose text-gray-800">
           {amount}
         </div>
-        <Badge statusname={statusname} changes={amount} />
+        <Badge statusname={statusname} change={change} />
       </div>
     </div>
   );
