@@ -27,7 +27,7 @@ export interface Status {
   statusname: "completed" | "errored";
   amount: number;
   type: "pipeline" | "model";
-  change?: number;
+  change: number;
 }
 
 export type PipelinesTableProps = {

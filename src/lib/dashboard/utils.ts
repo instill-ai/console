@@ -201,6 +201,68 @@ export function getStatus(status: string): ResourceState {
   return "STATE_UNSPECIFIED";
 }
 
+export function getColor(statusname: string) {
+  switch (statusname) {
+    case "STATE_ERROR":
+    case "errored":
+      return {
+        textColor: "text-instillRed",
+        bgColor: "bg-instillRed10",
+        stateLabelName: "Error",
+      };
+
+    case "STATE_ACTIVE":
+    case "completed":
+      return {
+        textColor: "text-instillGreen50",
+        bgColor: "bg-instillGreen10",
+        stateLabelName: "Active",
+      };
+
+    case "STATE_ONLINE":
+      return {
+        textColor: "text-instillGreen50",
+        bgColor: "bg-instillGreen10",
+        stateLabelName: "Online",
+      };
+
+    case "STATE_CONNECTED":
+      return {
+        textColor: "text-instillGreen50",
+        bgColor: "bg-instillGreen10",
+        stateLabelName: "Connected",
+      };
+
+    case "STATE_OFFLINE":
+      return {
+        textColor: "text-instillGrey70",
+        bgColor: "bg-instillGrey05",
+        stateLabelName: "Offline",
+      };
+
+    case "STATE_INACTIVE":
+      return {
+        textColor: "text-instillGrey70",
+        bgColor: "bg-instillGrey05",
+        stateLabelName: "Inactive",
+      };
+
+    case "STATE_DISCONNECTED":
+      return {
+        textColor: "text-instillGrey70",
+        bgColor: "bg-instillGrey05",
+        stateLabelName: "Disconnected",
+      };
+
+    default:
+      return {
+        textColor: "text-instillGrey70",
+        bgColor: "bg-instillGrey05",
+        stateLabelName: "Unspecified",
+      };
+  }
+}
+
 export function calculatePercentageChange(
   previousCount: number,
   currentCount: number
