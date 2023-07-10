@@ -10,6 +10,18 @@ export const timeLineOptions: SingleSelectOption[] = [
     value: "1d",
   },
   {
+    label: "2 days",
+    value: "2d",
+  },
+  {
+    label: "3 days",
+    value: "3d",
+  },
+  {
+    label: "4 days",
+    value: "4d",
+  },
+  {
     label: "7 days",
     value: "7d",
   },
