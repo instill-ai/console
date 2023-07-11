@@ -10,17 +10,12 @@ export type PipelineTriggerCount = {
   pipeline_completed: number;
   pipeline_error: number;
   status?: ResourceState;
-  compute_time_duration: number[];
+  counts: Count[];
 };
 
 export type Count = {
   trigger_time: string;
   count: number;
-};
-
-export type TriggerCount = {
-  pipeline_id: string;
-  counts: Count[];
 };
 
 export type PipelineTrigger = {

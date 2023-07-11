@@ -1,34 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { PipelineTrigger } from "@/types";
-import {
-  formatDateTime,
-  formatTriggerCount,
-  getPipelinesSeries,
-  getPipelinesTriggerCount,
-  getPipelinesTriggerTime,
-} from "@/lib/dashboard";
+import { PipelineTrigger, PipelineTriggerCount } from "@/types";
+import { getPipelinesSeries, getPipelinesTriggerTime } from "@/lib/dashboard";
 import { Icons } from "@instill-ai/design-system";
 import { Skeleton } from "../skeleton";
-import { FilterByDay, FilterProps } from "../filter/FilterByDay";
 
 type LineChartProps = {
-  triggers: PipelineTrigger[];
+  pipelines: PipelineTriggerCount[];
   isLoading: boolean;
-} & FilterProps;
+};
 
-export const LineChart = ({
-  triggers,
-  isLoading,
-  selectedTimeOption,
-  setSelectedTimeOption,
-  refetch,
-}: LineChartProps) => {
+export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
+  const xAxisData = getPipelinesTriggerTime(pipelines);
+  const seriesData = getPipelinesSeries(pipelines);
 
-  const pipelinesTriggerCount = formatTriggerCount(triggers);
-  const xAxisData = getPipelinesTriggerTime(triggers);
-  const seriesData = getPipelinesSeries(pipelinesTriggerCount);
+  console.log({ xAxisData, seriesData });
 
   useEffect(() => {
     if (chartRef.current && !isLoading) {
@@ -64,7 +51,7 @@ export const LineChart = ({
           },
         },
         legend: {
-          data: pipelinesTriggerCount.map((pipeline) => pipeline.pipeline_id),
+          data: pipelines.map((pipeline) => pipeline.pipeline_id),
         },
         xAxis: {
           type: "category",
@@ -77,7 +64,7 @@ export const LineChart = ({
       };
       myChart.setOption(option);
     }
-  }, [isLoading]);
+  }, [isLoading, xAxisData, seriesData, pipelines]);
 
   return (
     <div className="TriggersChart inline-flex w-full flex-col items-start justify-start rounded-sm bg-white shadow">
@@ -91,13 +78,6 @@ export const LineChart = ({
               <Icons.HelpCircle className="h-6 w-6 stroke-semantic-fg-primary" />
             </div>
           </div>
-          <div className="RightContent shrink grow basis-0 px-2.5" />
-
-          <FilterByDay
-            refetch={refetch}
-            selectedTimeOption={selectedTimeOption}
-            setSelectedTimeOption={setSelectedTimeOption}
-          />
         </div>
         <div className="Chart relative self-stretch">
           {isLoading ? (
@@ -109,7 +89,7 @@ export const LineChart = ({
             />
           ) : (
             <>
-              {triggers.length ? (
+              {pipelines.length ? (
                 <div
                   id="main"
                   ref={chartRef}

@@ -18,7 +18,7 @@ export const StatusCardsGroup = (props: StatusCardsGroupProps) => {
     <Fragment>
       <div
         className={cn(
-          "grid grid-cols-1 gap-y-[20px] md:grid-cols-3 md:gap-x-[20px]"
+          "grid grid-cols-2 gap-y-[20px] md:grid-cols-2 md:gap-x-[20px]"
         )}
       >
         {isLoading ? (
