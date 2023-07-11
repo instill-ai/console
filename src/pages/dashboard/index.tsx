@@ -4,6 +4,7 @@ import { StatusCardsGroup } from "@/components/cards";
 import { Status } from "@/types";
 import {
   defaultSelectOption,
+  formatTriggerCount,
   getPipeLineOptions,
   getPipelinesTriggerCount,
   getPreviousTime,
@@ -11,12 +12,12 @@ import {
   getTimeInRFC3339Format,
   modeOptions,
   statusOptions,
+  usePipelineFilter,
 } from "@/lib/dashboard";
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable, usePipelines } from "@instill-ai/toolkit";
-import { usePipelineFilter } from "../api/pipeline/queries";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -127,6 +128,8 @@ const PipelinePage: FC & {
     }
     return [];
   }, [triggers.data]);
+
+  console.log("formatTriggerCount", formatTriggerCount(triggers.data || []));
 
   const statusCount = React.useMemo<Status[]>(() => {
     if (triggers.data && triggersPrevious.data) {

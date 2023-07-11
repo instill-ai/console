@@ -54,17 +54,17 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
       {
         key: "pipeline-state-overview-head",
         item: "Status",
-        width: "w-[280px]",
+        width: "w-[160px]",
       },
       {
         key: "pipeline-source-head",
         item: "Completed triggers",
-        width: "w-[180px]",
+        width: "w-[160px]",
       },
       {
         key: "pipeline-models-head",
         item: "Errorred triggers",
-        width: "w-[180px]",
+        width: "w-[160px]",
       },
     ];
   }, []);
@@ -160,17 +160,15 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
                     padding="py-2 pl-6"
                   />
 
-                  <StateCell
+                  <DeafultCell
                     name={pipeline.pipeline_completed}
                     width={null}
-                    state={getStatus("completed")}
                     padding="py-2 pl-6"
                   />
 
-                  <StateCell
+                  <DeafultCell
                     name={pipeline.pipeline_error}
                     width={null}
-                    state={getStatus("error")}
                     padding="py-2 pl-6"
                   />
                 </tr>
