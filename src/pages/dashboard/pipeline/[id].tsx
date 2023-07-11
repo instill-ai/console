@@ -4,15 +4,14 @@ import { Icons, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 import { StatusCardsGroup } from "@/components/cards";
 import { Status } from "@/types";
-import { usePipelineFilter } from "@/pages/api/pipeline/queries";
 import { useRouter } from "next/router";
 import {
   getPreviousTime,
   getStatusCount,
   getTimeInRFC3339Format,
+  usePipelineFilter,
 } from "@/lib/dashboard";
 import { PipelineTriggerTable } from "@/components/PipelineTriggerTable";
-import cn from "clsx";
 import { FilterByDay } from "@/components/filter/FilterByDay";
 
 type GetLayOutProps = {
