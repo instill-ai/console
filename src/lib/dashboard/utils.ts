@@ -1,4 +1,9 @@
-import { PipelineTrigger, PipelineTriggerCount, Status } from "@/types";
+import {
+  PipelineTrigger,
+  PipelineTriggerCount,
+  Status,
+  TriggerCount,
+} from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Pipeline, ResourceState } from "@instill-ai/toolkit";
 
@@ -148,7 +153,7 @@ export function getPipelinesTriggerTime(
   return uniqueDates;
 }
 
-export function getPipelinesSeries(triggers: PipelineTriggerCount[]) {
+export function getPipelinesSeries(triggers: TriggerCount[]) {
   return triggers.map((trigger) => {
     return {
       name: trigger.pipeline_id,

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { PipelineTrigger, PipelineTriggerCount } from "@/types";
+import { PipelineTriggerCount } from "@/types";
 import { getPipelinesSeries, getPipelinesTriggerTime } from "@/lib/dashboard";
 import { Icons } from "@instill-ai/design-system";
 import { Skeleton } from "../skeleton";
@@ -14,8 +14,6 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const xAxisData = getPipelinesTriggerTime(pipelines);
   const seriesData = getPipelinesSeries(pipelines);
-
-  console.log({ xAxisData, seriesData });
 
   useEffect(() => {
     if (chartRef.current && !isLoading) {
