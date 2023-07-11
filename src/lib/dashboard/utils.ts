@@ -217,6 +217,7 @@ export function getColor(statusname: string) {
         textColor: "text-instillRed",
         bgColor: "bg-instillRed10",
         stateLabelName: "Error",
+        icon: "instill_red",
       };
 
     case "STATE_ACTIVE":
@@ -225,6 +226,7 @@ export function getColor(statusname: string) {
         textColor: "text-instillGreen50",
         bgColor: "bg-instillGreen10",
         stateLabelName: "Active",
+        icon: "instillGreen50",
       };
 
     case "STATE_ONLINE":

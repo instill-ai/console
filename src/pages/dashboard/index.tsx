@@ -12,12 +12,12 @@ import {
   getTimeInRFC3339Format,
   modeOptions,
   statusOptions,
+  usePipelineFilter,
 } from "@/lib/dashboard";
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable, usePipelines } from "@instill-ai/toolkit";
-import { usePipelineFilter } from "../api/pipeline/queries";
 
 type GetLayOutProps = {
   page: ReactElement;
