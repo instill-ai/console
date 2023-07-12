@@ -48,6 +48,10 @@ const PipelinePage: FC & {
 
   const setPipelineId = usePipelineBuilderStore((state) => state.setPipelineId);
 
+  const updatePipelineIsNew = usePipelineBuilderStore(
+    (state) => state.updatePipelineIsNew
+  );
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -70,6 +74,7 @@ const PipelinePage: FC & {
             });
             setPipelineId(randomName);
             router.push(`/pipelines/${randomName}`);
+            updatePipelineIsNew(() => true);
           }}
         />
         <PipelinesTable

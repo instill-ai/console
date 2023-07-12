@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useToast } from "@instill-ai/design-system";
+import { useToast, Icons } from "@instill-ai/design-system";
 import {
   Nullable,
   PipelineBuilderStore,
@@ -23,6 +23,7 @@ import {
   Flow,
   RightPanel,
   PIPELINE_BUILDER_DROPPABLE_AREA_ID,
+  useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { shallow } from "zustand/shallow";
@@ -59,6 +60,9 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   resourceFormIsDirty: state.resourceFormIsDirty,
   updateSelectedNode: state.updateSelectedNode,
   leftSidebarSelectedTab: state.leftSidebarSelectedTab,
+  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
+  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+  pipelineIsNew: state.pipelineIsNew,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -78,6 +82,9 @@ const PipelineBuilderPage: FC & {
     resourceFormIsDirty,
     updateSelectedNode,
     leftSidebarSelectedTab,
+    pipelineRecipeIsDirty,
+    updatePipelineRecipeIsDirty,
+    pipelineIsNew,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -86,11 +93,21 @@ const PipelineBuilderPage: FC & {
   // We need to warn user of unsave changes when they try to leave the page
 
   const pipeline = usePipeline({
-    enabled: !!id,
+    enabled: !!id && !pipelineIsNew,
     pipelineName: id ? `pipelines/${id}` : null,
     accessToken: null,
     retry: false,
   });
+
+  const pipelineWatchState = useWatchPipeline({
+    pipelineName: id ? `pipelines/${id}` : null,
+    enabled: !!id && pipeline.isSuccess,
+    accessToken: null,
+  });
+
+  const isLoadingPipelineWithWatchState = useMemo(() => {
+    return pipeline.isLoading || pipelineWatchState.isLoading;
+  }, [pipeline.isLoading, pipelineWatchState.isLoading]);
 
   const { toast } = useToast();
 
@@ -145,6 +162,16 @@ const PipelineBuilderPage: FC & {
     sourcesWatchState.data,
   ]);
 
+  const isLoadingSourcesWithState = useMemo(() => {
+    if (sources.isSuccess && sources.data.length === 0) return false;
+    return sources.isLoading || sourcesWatchState.isLoading;
+  }, [
+    sources.isLoading,
+    sourcesWatchState.isLoading,
+    sources.isSuccess,
+    sources.data,
+  ]);
+
   const destinations = useConnectors({
     connectorType: "CONNECTOR_TYPE_DESTINATION",
     accessToken: null,
@@ -192,6 +219,16 @@ const PipelineBuilderPage: FC & {
     destinationsWatchState.data,
   ]);
 
+  const isLoadingDestinationsWithState = useMemo(() => {
+    if (destinations.isSuccess && destinations.data.length === 0) return false;
+    return destinations.isLoading || destinationsWatchState.isLoading;
+  }, [
+    destinations.isLoading,
+    destinationsWatchState.isLoading,
+    destinations.isSuccess,
+    destinations.data,
+  ]);
+
   const ais = useConnectors({
     connectorType: "CONNECTOR_TYPE_AI",
     accessToken: null,
@@ -231,6 +268,11 @@ const PipelineBuilderPage: FC & {
       };
     });
   }, [ais.isSuccess, ais.data, aisWatchState.isSuccess, aisWatchState.data]);
+
+  const isLoadingAIsWithState = useMemo(() => {
+    if (ais.isSuccess && ais.data.length === 0) return false;
+    return ais.isLoading || aisWatchState.isLoading;
+  }, [ais.isLoading, aisWatchState.isLoading, ais.isSuccess, ais.data]);
 
   const blockchains = useConnectors({
     connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
@@ -279,11 +321,15 @@ const PipelineBuilderPage: FC & {
     blockchainsWatchState.data,
   ]);
 
-  const isLoadingImportantResources =
-    !sources.isSuccess ||
-    !destinations.isSuccess ||
-    !ais.isSuccess ||
-    !blockchains.isSuccess;
+  const isLoadingBlockchainsWithState = useMemo(() => {
+    if (blockchains.isSuccess && blockchains.data.length === 0) return false;
+    return blockchains.isLoading || blockchainsWatchState.isLoading;
+  }, [
+    blockchains.isLoading,
+    blockchainsWatchState.isLoading,
+    blockchains.isSuccess,
+    blockchains.data,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Initialize pipeline id
@@ -318,6 +364,7 @@ const PipelineBuilderPage: FC & {
   useEffect(() => {
     if (
       !pipeline.isSuccess ||
+      !pipelineWatchState.isSuccess ||
       !sources.isSuccess ||
       !destinations.isSuccess ||
       !ais.isSuccess ||
@@ -344,28 +391,24 @@ const PipelineBuilderPage: FC & {
     }
 
     const initialData = createInitialGraphData({
-      pipeline: pipeline.data,
+      pipeline: { ...pipeline.data, watchState: pipelineWatchState.data.state },
       ais: aisWithWatchState,
       sources: sourcesWithWatchState,
       destinations: destinationsWithWatchState,
       blockchains: blockchainsWithWatchState,
     });
 
-    console.log(initialData);
-
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
         setNodes(graphData.nodes);
         setEdges(graphData.edges);
+        setGraphIsInitialized(true);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    setGraphIsInitialized(true);
   }, [
     pipeline.isSuccess,
-    pipeline.data?.uid,
     setPipelineId,
     setPipelineUid,
     graphIsInitialized,
@@ -388,6 +431,30 @@ const PipelineBuilderPage: FC & {
     blockchains.data?.length,
     blockchainsWatchState.isSuccess,
     blockchainsWithWatchState,
+  ]);
+
+  const isLoadingGraphFirstPaint = useMemo(() => {
+    if (pipelineIsNew) return false;
+
+    if (
+      isLoadingPipelineWithWatchState ||
+      isLoadingAIsWithState ||
+      isLoadingBlockchainsWithState ||
+      isLoadingDestinationsWithState ||
+      isLoadingSourcesWithState
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [
+    pipelineIsNew,
+    isLoadingPipelineWithWatchState,
+    isLoadingAIsWithState,
+    isLoadingBlockchainsWithState,
+    isLoadingDestinationsWithState,
+    isLoadingSourcesWithState,
+    graphIsInitialized,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -688,6 +755,11 @@ const PipelineBuilderPage: FC & {
       return prev;
     });
 
+    updatePipelineRecipeIsDirty((prev) => {
+      if (prev) return prev;
+      return true;
+    });
+
     addNode(newNode);
     setDraggedItem(null);
   }
@@ -711,6 +783,12 @@ const PipelineBuilderPage: FC & {
             `}
           </style>
           <PageHead title="pipeline-builder" />
+
+          {/* 
+            Below section cover from left-pantl - flow - right-panel, they are 
+            all under the DnD context
+          */}
+
           <DndContext
             onDragStart={handleDragStart}
             onDragCancel={handleDragCancel}
@@ -726,6 +804,11 @@ const PipelineBuilderPage: FC & {
               <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
                 <LeftSidebar />
               </div>
+
+              {/* 
+                Left Sidebar
+              */}
+
               <div
                 className={cn(
                   "flex w-[var(--left-panel-width)] transform flex-col bg-semantic-bg-primary px-4 pt-9 duration-500",
@@ -742,7 +825,13 @@ const PipelineBuilderPage: FC & {
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_SOURCE" ? (
                     <>
                       <LeftPanel.Section title="My Sources">
-                        {sources.isSuccess && sourcesWatchState.isSuccess ? (
+                        {isLoadingSourcesWithState ? (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        ) : (
                           sourcesWithWatchState
                             .filter(
                               (e) =>
@@ -758,16 +847,16 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {isLoadingSourcesWithState ? (
                           <>
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                           </>
-                        )}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Instill connectors">
-                        {sources.isSuccess && sourcesWatchState.isSuccess ? (
+                        ) : (
                           sourcesWithWatchState
                             .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
                             .map((e) => (
@@ -779,12 +868,6 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
-                          <>
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                          </>
                         )}
                       </LeftPanel.Section>
                       <LeftPanel.Section title="Popular Presets">
@@ -814,7 +897,13 @@ const PipelineBuilderPage: FC & {
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_AI" ? (
                     <>
                       <LeftPanel.Section title="My AIs">
-                        {ais.isSuccess && aisWatchState.isSuccess ? (
+                        {isLoadingAIsWithState ? (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        ) : (
                           aisWithWatchState
                             .filter(
                               (e) =>
@@ -830,16 +919,16 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {isLoadingAIsWithState ? (
                           <>
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                           </>
-                        )}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Instill connectors">
-                        {ais.isSuccess && aisWatchState.isSuccess ? (
+                        ) : (
                           aisWithWatchState
                             .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
                             .map((e) => (
@@ -851,12 +940,6 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
-                          <>
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                          </>
                         )}
                       </LeftPanel.Section>
                       <LeftPanel.Section title="Popular Presets">
@@ -886,8 +969,13 @@ const PipelineBuilderPage: FC & {
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
                     <>
                       <LeftPanel.Section title="My Destinations">
-                        {destinations.isSuccess &&
-                        destinationsWatchState.isSuccess ? (
+                        {isLoadingDestinationsWithState ? (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        ) : (
                           destinationsWithWatchState
                             .filter(
                               (e) =>
@@ -903,17 +991,16 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {isLoadingDestinationsWithState ? (
                           <>
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                           </>
-                        )}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Instill connectors">
-                        {destinations.isSuccess &&
-                        destinationsWatchState.isSuccess ? (
+                        ) : (
                           destinationsWithWatchState
                             .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
                             .map((e) => (
@@ -925,12 +1012,6 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
-                          <>
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                          </>
                         )}
                       </LeftPanel.Section>
                       <LeftPanel.Section title="Popular Presets">
@@ -960,8 +1041,13 @@ const PipelineBuilderPage: FC & {
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
                     <>
                       <LeftPanel.Section title="My Blockchains">
-                        {blockchains.isSuccess &&
-                        blockchainsWatchState.isSuccess ? (
+                        {isLoadingBlockchainsWithState ? (
+                          <>
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                            <Draggable.Skeleton />
+                          </>
+                        ) : (
                           blockchainsWithWatchState
                             .filter(
                               (e) =>
@@ -977,17 +1063,16 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
+                        )}
+                      </LeftPanel.Section>
+                      <LeftPanel.Section title="Instill connectors">
+                        {isLoadingBlockchainsWithState ? (
                           <>
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                             <Draggable.Skeleton />
                           </>
-                        )}
-                      </LeftPanel.Section>
-                      <LeftPanel.Section title="Instill connectors">
-                        {blockchains.isSuccess &&
-                        blockchainsWatchState.isSuccess ? (
+                        ) : (
                           blockchainsWithWatchState
                             .filter((e) => e.visibility === "VISIBILITY_PUBLIC")
                             .map((e) => (
@@ -999,12 +1084,6 @@ const PipelineBuilderPage: FC & {
                                 <Draggable.Item resource={e} />
                               </Draggable.Root>
                             ))
-                        ) : (
-                          <>
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                            <Draggable.Skeleton />
-                          </>
                         )}
                       </LeftPanel.Section>
                       <LeftPanel.Section title="Popular Presets">
@@ -1038,7 +1117,7 @@ const PipelineBuilderPage: FC & {
                 setReactFlowInstance={setReactFlowInstance}
                 accessToken={null}
                 enableQuery={true}
-                isLoading={isLoadingImportantResources}
+                isLoading={isLoadingGraphFirstPaint}
               />
               <div
                 className={cn(
