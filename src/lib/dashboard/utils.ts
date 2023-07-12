@@ -7,49 +7,6 @@ import {
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Pipeline, ResourceState } from "@instill-ai/toolkit";
 
-export function getPipelinesTriggerCount(
-  triggers: PipelineTrigger[],
-  pipelines: Pipeline[] = []
-): PipelineTriggerCount[] {
-  const pipelinesTriggerCount: PipelineTriggerCount[] = [];
-
-  triggers.forEach((trigger) => {
-    const triggerCountIndex = pipelinesTriggerCount.findIndex(
-      (pipelineTriggerCount) =>
-        pipelineTriggerCount.pipeline_uid === trigger.pipeline_uid
-    );
-
-    if (triggerCountIndex !== -1) {
-      if (trigger.status === "errored") {
-        pipelinesTriggerCount[triggerCountIndex].pipeline_error += 1;
-      }
-      if (trigger.status === "completed") {
-        pipelinesTriggerCount[triggerCountIndex].pipeline_completed += 1;
-      }
-      pipelinesTriggerCount[triggerCountIndex].compute_time_duration.push(
-        trigger.compute_time_duration
-      );
-    } else {
-      pipelinesTriggerCount.push({
-        pipeline_id: trigger.pipeline_id,
-        pipeline_uid: trigger.pipeline_uid,
-        pipeline_completed: trigger.status === "completed" ? 1 : 0,
-        pipeline_error: trigger.status === "error" ? 1 : 0,
-        compute_time_duration: [trigger.compute_time_duration],
-      });
-    }
-  });
-
-  return pipelinesTriggerCount.map((pipelineTrigger) => {
-    return {
-      ...pipelineTrigger,
-      status: pipelines.find(
-        (pipeline) => pipeline.uid === pipelineTrigger.pipeline_uid
-      )?.state,
-    };
-  });
-}
-
 export function getPipeLineOptions(
   pipelines: Pipeline[]
 ): SingleSelectOption[] {
@@ -171,8 +128,16 @@ export function formatDateTime(dateString: string): string {
   return `${formattedDate} - ${formattedTime}`;
 }
 
-export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
-  const triggerDates = triggers.map((trigger) => trigger.trigger_time);
+export function getPipelinesTriggerTime(
+  pipelines: PipelineTriggerCount[]
+): string[] {
+  const triggerDates: string[] = [];
+
+  pipelines.forEach((pipeline) => {
+    pipeline.counts.forEach((count) => {
+      triggerDates.push(count.trigger_time);
+    });
+  });
 
   // triggers.forEach((trigger) => {
   //   if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
@@ -182,10 +147,10 @@ export function getPipelinesTriggerTime(triggers: PipelineTrigger[]) {
 
   const uniqueDates = Array.from(new Set(triggerDates)); // Convert Set to an array
   uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Sort dates in ascending order
-  const formattedDates = uniqueDates.map((date) => formatDateTime(date));
-  return formattedDates;
+  // const formattedDates = uniqueDates.map((date) => formatDateTime(date));
+  // return formattedDates;
 
-  return formattedDates;
+  return uniqueDates;
 }
 
 export function getPipelinesSeries(triggers: TriggerCount[]) {
@@ -312,10 +277,11 @@ export function getPreviousTime(time: string): string {
   return "";
 }
 
-export function formatTriggerCount(
-  triggers: PipelineTrigger[]
-): TriggerCount[] {
-  const countByTimeAndPipeline: TriggerCount[] = [];
+export function getPipelinesTriggerCount(
+  triggers: PipelineTrigger[],
+  pipelines: Pipeline[] = []
+): PipelineTriggerCount[] {
+  const countByTimeAndPipeline: PipelineTriggerCount[] = [];
 
   triggers.forEach((trigger) => {
     const triggerTime = formatDateTime(trigger.trigger_time);
@@ -330,13 +296,22 @@ export function formatTriggerCount(
         (countEntry) => countEntry.trigger_time === triggerTime
       );
       if (existingCount) {
-        existingCount.count++;
+        existingCount.count += 1;
       } else {
         existingPipeline.counts.push({ trigger_time: triggerTime, count: 1 });
       }
+      if (trigger.status === "errored") {
+        existingPipeline.pipeline_error += 1;
+      }
+      if (trigger.status === "completed") {
+        existingPipeline.pipeline_completed += 1;
+      }
     } else {
-      const pipelineObj = {
+      const pipelineObj: PipelineTriggerCount = {
         pipeline_id: pipelineId,
+        pipeline_completed: trigger.status === "completed" ? 1 : 0,
+        pipeline_error: trigger.status === "errored" ? 1 : 0,
+        pipeline_uid: trigger.pipeline_uid,
         counts: [{ trigger_time: triggerTime, count: 1 }],
       };
       countByTimeAndPipeline.push(pipelineObj);
@@ -360,5 +335,12 @@ export function formatTriggerCount(
     });
   });
 
-  return countByTimeAndPipeline;
+  return countByTimeAndPipeline.map((pipelineTrigger) => {
+    return {
+      ...pipelineTrigger,
+      status: pipelines.find(
+        (pipeline) => pipeline.uid === pipelineTrigger.pipeline_uid
+      )?.state,
+    };
+  });
 }
