@@ -1,3 +1,4 @@
+import { Status } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 export const timeLineOptions: SingleSelectOption[] = [
@@ -52,12 +53,16 @@ export const statusOptions: SingleSelectOption[] = [
     value: "all",
   },
   {
-    label: "Completed",
-    value: "completed",
+    label: "Active",
+    value: "STATE_ACTIVE",
   },
   {
-    label: "Errored",
-    value: "errored",
+    label: "Inactive",
+    value: "STATE_INACTIVE",
+  },
+  {
+    label: "Deleted",
+    value: "STATE_ERROR",
   },
 ];
 
@@ -65,3 +70,18 @@ export const defaultSelectOption: SingleSelectOption = {
   label: "ALL",
   value: "all",
 };
+
+export const defaultStatusCount: Status[] = [
+  {
+    statusname: "completed",
+    amount: 0,
+    type: "pipeline",
+    change: 0,
+  },
+  {
+    statusname: "errored",
+    amount: 0,
+    type: "pipeline",
+    change: 0,
+  },
+];

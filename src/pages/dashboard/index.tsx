@@ -1,16 +1,14 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useRef } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { StatusCardsGroup } from "@/components/cards";
-import { Status } from "@/types";
+import { PipelineTriggerCount, Status } from "@/types";
 import {
   defaultSelectOption,
-  formatTriggerCount,
-  getPipeLineOptions,
+  defaultStatusCount,
   getPipelinesTriggerCount,
   getPreviousTime,
   getStatusCount,
   getTimeInRFC3339Format,
-  modeOptions,
   statusOptions,
   usePipelineFilter,
 } from "@/lib/dashboard";
@@ -18,6 +16,7 @@ import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable, usePipelines } from "@instill-ai/toolkit";
+import { FilterByDay } from "@/components/filter/FilterByDay";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -29,16 +28,11 @@ const PipelinePage: FC & {
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
-
   const [selectedTimeOption, setSelectedTimeOption] =
     React.useState<SingleSelectOption>({
       label: "Today",
       value: "24h",
     });
-  const [selectedPinelineOption, setSelectedPinelineOption] =
-    React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
-  const [selectedModeOption, setSelectedModeOption] =
-    React.useState<SingleSelectOption>(defaultSelectOption);
   const [selectedStatusOption, setSelectedStatusOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
@@ -64,42 +58,10 @@ const PipelinePage: FC & {
         queryParamsPrevious += `start='${previousTime}' AND stop='${start}'`;
       }
     }
-    if (selectedModeOption && selectedModeOption.value !== "all") {
-      if (queryParams) {
-        queryParams += ` AND pipeline_mode=${selectedModeOption.value}`;
-        queryParamsPrevious += ` AND pipeline_mode=${selectedModeOption.value}`;
-      } else {
-        queryParams += `pipeline_mode=${selectedModeOption.value}`;
-        queryParamsPrevious += `pipeline_mode=${selectedModeOption.value}`;
-      }
-    }
-    if (selectedPinelineOption && selectedPinelineOption.value !== "all") {
-      if (queryParams) {
-        queryParams += ` AND pipeline_id='${selectedPinelineOption.label}'`;
-        queryParamsPrevious += ` AND pipeline_id='${selectedPinelineOption.label}'`;
-      } else {
-        queryParams += `pipeline_id='${selectedPinelineOption.label}'`;
-        queryParamsPrevious += `pipeline_id='${selectedPinelineOption.label}'`;
-      }
-    }
-    if (selectedStatusOption && selectedStatusOption.value !== "all") {
-      if (queryParams) {
-        queryParams += ` AND status=${selectedStatusOption.value}`;
-        queryParamsPrevious += ` AND status=${selectedStatusOption.value}`;
-      } else {
-        queryParams += `status=${selectedStatusOption.value}`;
-        queryParamsPrevious += `status=${selectedStatusOption.value}`;
-      }
-    }
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [
-    selectedTimeOption,
-    selectedModeOption,
-    selectedPinelineOption,
-    selectedStatusOption,
-  ]);
+  }, [selectedTimeOption, selectedStatusOption]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data
@@ -122,21 +84,37 @@ const PipelinePage: FC & {
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
-  const pipelineOptions = React.useMemo<SingleSelectOption[]>(() => {
-    if (pipelines.data) {
-      return getPipeLineOptions(pipelines.data);
+  const pipeliesResult = React.useMemo<PipelineTriggerCount[]>(() => {
+    if (triggers.data && pipelines.data) {
+      const formattedPipelines = getPipelinesTriggerCount(
+        triggers.data,
+        pipelines.data
+      );
+      if (selectedStatusOption && selectedStatusOption.value !== "all") {
+        return formattedPipelines.filter(
+          (pipelies) => pipelies.status === selectedStatusOption.value
+        );
+      }
+      return formattedPipelines;
     }
     return [];
-  }, [triggers.data]);
-
-  console.log("formatTriggerCount", formatTriggerCount(triggers.data || []));
+  }, [selectedStatusOption, triggers.data, pipelines.data]);
 
   const statusCount = React.useMemo<Status[]>(() => {
-    if (triggers.data && triggersPrevious.data) {
-      return getStatusCount(triggers.data, triggersPrevious.data);
+    if ((triggers.data && triggersPrevious.data, pipeliesResult.length)) {
+      const pipeliesList = pipeliesResult.map(
+        (pipelies) => pipelies.pipeline_id
+      );
+      const triggersData = triggers.data?.filter((trigger) =>
+        pipeliesList.includes(trigger.pipeline_id)
+      );
+      const triggersPreviousData = triggersPrevious.data?.filter((trigger) =>
+        pipeliesList.includes(trigger.pipeline_id)
+      );
+      return getStatusCount(triggersData || [], triggersPreviousData || []);
     }
-    return [];
-  }, [triggers.data, triggersPrevious.data]);
+    return defaultStatusCount;
+  }, [pipeliesResult, triggers.data, triggersPrevious.data]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -157,100 +135,80 @@ const PipelinePage: FC & {
 
         {/* Status */}
 
-        <StatusCardsGroup
-          type="pipeline"
-          statusStats={statusCount}
-          isLoading={triggers.isLoading || triggersPrevious.isLoading}
-        />
+        <div className="flex items-stretch space-x-4">
+          <div className="w-1/2">
+            <StatusCardsGroup
+              type="pipeline"
+              statusStats={statusCount}
+              isLoading={triggers.isLoading || triggersPrevious.isLoading}
+            />
+          </div>
+          {/* Filter for graph */}
+          <div className="w-1/2 self-end">
+            <div className="flex flex-col space-y-8">
+              <div className="flex flex-row-reverse">
+                <div className="w-1/3">
+                  <Select.Root
+                    defaultValue={statusOptions[0].value}
+                    onValueChange={(statusOption) => {
+                      setSelectedStatusOption({
+                        label: statusOption,
+                        value: statusOption,
+                      });
+                    }}
+                  >
+                    <Select.Trigger className="z-10 flex w-1/2 flex-row gap-x-2 !rounded-none bg-white">
+                      <Select.Value
+                        placeholder="Status: All"
+                        className="z-10 flex w-1/2 flex-row gap-x-2"
+                      />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Group>
+                        {statusOptions.map((statusOption) => (
+                          <Select.Item
+                            value={statusOption.value}
+                            key={statusOption.value}
+                          >
+                            {statusOption.label}
+                          </Select.Item>
+                        ))}
+                      </Select.Group>
+                    </Select.Content>
+                  </Select.Root>
+                </div>
+              </div>
+              <div className="my-1">
+                <FilterByDay
+                  refetch={triggers.refetch}
+                  selectedTimeOption={selectedTimeOption}
+                  setSelectedTimeOption={setSelectedTimeOption}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Pipeline Chart */}
 
         <div className="my-8">
           <LineChart
-            triggers={triggers?.data ? triggers?.data : []}
             isLoading={triggers.isLoading}
-            selectedTimeOption={selectedTimeOption}
-            setSelectedTimeOption={setSelectedTimeOption}
-            refetch={triggers.refetch}
+            pipelines={pipeliesResult}
           />
         </div>
 
-        {/* Filter for graph */}
-
+        {/* Pipeline Table */}
         <div className="my-4 flex flex-row space-x-8">
           <div className="my-auto mr-auto flex w-3/5 flex-col">
             <h2 className="text-[#101828] text-instill-h2">Pipelines</h2>
             <p>Select pipelines to show triggers</p>
           </div>
-
-          <div className="my-4 flex w-2/5 flex-row space-x-8">
-            <Select.Root
-              defaultValue={"all"}
-              value={selectedPinelineOption?.value}
-              onValueChange={(pipelineOption) => {
-                setSelectedPinelineOption({
-                  label: pipelineOption,
-                  value: pipelineOption,
-                });
-              }}
-            >
-              <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
-                <Select.Value
-                  placeholder="ID: All"
-                  className="z-10 flex w-full flex-row gap-x-2"
-                />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Group>
-                  {pipelineOptions.map((pipelineOption) => (
-                    <Select.Item
-                      value={pipelineOption.value}
-                      key={pipelineOption.value}
-                    >
-                      {pipelineOption.label}
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
-
-            <Select.Root
-              defaultValue={modeOptions[0].value}
-              onValueChange={(modeOption) => {
-                setSelectedModeOption({ label: modeOption, value: modeOption });
-              }}
-            >
-              <Select.Trigger className="z-10 flex w-full flex-row gap-x-2 !rounded-none bg-white">
-                <Select.Value
-                  placeholder="Mode: All"
-                  className="z-10 flex w-full flex-row gap-x-2"
-                />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Group>
-                  {modeOptions.map((modeOption) => (
-                    <Select.Item
-                      value={modeOption.value}
-                      key={modeOption.value}
-                    >
-                      {modeOption.label}
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
-          </div>
         </div>
-
-        {/* Pipeline Table */}
 
         <div className="my-4">
           <DashboardPipelinesTable
-            pipelines={
-              triggers.data && pipelines.data
-                ? getPipelinesTriggerCount(triggers.data, pipelines.data)
-                : []
-            }
+            pipelines={pipeliesResult}
             isError={triggers.isError || pipelines.isError}
             isLoading={triggers.isLoading || pipelines.isLoading}
           />

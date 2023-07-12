@@ -107,22 +107,24 @@ const PipelinePage: FC & {
 
         {/* Status */}
 
-        <StatusCardsGroup
-          type="pipeline"
-          statusStats={statusCount}
-          isLoading={pipelines.isLoading}
-        />
-
-        {/*Pipeline filters */}
-
-        <div className="CardHeader inline-flex items-center justify-start gap-2.5 self-stretch p-8">
-          <div className="LeftContent flex items-center justify-start gap-2.5"></div>
-          <div className="RightContent shrink grow basis-0 px-2.5" />
-          <FilterByDay
-            refetch={pipelines.refetch}
-            selectedTimeOption={selectedTimeOption}
-            setSelectedTimeOption={setSelectedTimeOption}
-          />
+        <div className="flex items-stretch space-x-4">
+          <div className="w-1/2">
+            <StatusCardsGroup
+              type="pipeline"
+              statusStats={statusCount}
+              isLoading={pipelines.isLoading || pipelines.isLoading}
+            />
+          </div>
+          {/* Filter for graph */}
+          <div className="w-1/2 self-end">
+            <div className="my-1">
+              <FilterByDay
+                refetch={pipelines.refetch}
+                selectedTimeOption={selectedTimeOption}
+                setSelectedTimeOption={setSelectedTimeOption}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Pipeline Table */}
