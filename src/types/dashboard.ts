@@ -30,22 +30,29 @@ export type PipelineTrigger = {
   pipeline_uid: string;
   pipeline_mode: PipelineMode;
   compute_time_duration: number;
-  status: string;
+  status: State;
 };
 
-export interface Status {
-  statusname: "completed" | "errored";
+export type State = ResourceState | "completed" | "errored";
+
+export type Status = {
+  state: State;
   amount: number;
   type: "pipeline" | "model";
   change: number;
-}
+};
 
 export type PipelinesTableProps = {
   pipelines: PipelineTrigger[];
   isError: boolean;
   isLoading: boolean;
-  statusCount: Status[];
+  statusCount: StatusCount;
 } & Pick<
   PaginationListContainerProps,
   "marginBottom" | "currentPage" | "setCurrentPage"
 >;
+
+export type StatusCount = {
+  completed: Status;
+  errored: Status;
+};

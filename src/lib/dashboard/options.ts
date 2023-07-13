@@ -1,4 +1,4 @@
-import { Status } from "@/types";
+import { Status, StatusCount } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 export const timeLineOptions: SingleSelectOption[] = [
@@ -71,17 +71,17 @@ export const defaultSelectOption: SingleSelectOption = {
   value: "all",
 };
 
-export const defaultStatusCount: Status[] = [
-  {
-    statusname: "completed",
+export const defaultStatusCount: StatusCount = {
+  completed: {
+    state: "completed",
     amount: 0,
     type: "pipeline",
     change: 0,
   },
-  {
-    statusname: "errored",
+  errored: {
+    state: "errored",
     amount: 0,
     type: "pipeline",
     change: 0,
   },
-];
+};

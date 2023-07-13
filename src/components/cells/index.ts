@@ -1,2 +1,2 @@
-export * from "./DefaultCell";
+export * from "./Cell";
 export * from "./StateCell";

@@ -12,7 +12,7 @@ import {
 } from "@instill-ai/toolkit";
 import { type Nullable } from "@instill-ai/toolkit";
 import { PipelinesTableProps } from "@/types";
-import { DeafultCell } from "./cells/DefaultCell";
+import { DeafultCell } from "./cells/Cell";
 import { StateCell } from "./cells/StateCell";
 
 export const PipelineTriggerTable = (props: PipelinesTableProps) => {
@@ -45,9 +45,9 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
         key: "pipeline-mode-head",
         item: (
           <StateOverview
-            errorCounts={statusCount[1]?.amount || 0}
+            errorCounts={statusCount.errored.amount || 0}
             offlineCounts={0}
-            onlineCounts={statusCount[0]?.amount || 0}
+            onlineCounts={statusCount.completed.amount || 0}
           />
         ),
         width: "w-[160px]",

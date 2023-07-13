@@ -1,7 +1,7 @@
-import React, { FC, ReactElement, useRef } from "react";
+import React, { FC, ReactElement } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { StatusCardsGroup } from "@/components/cards";
-import { PipelineTriggerCount, Status } from "@/types";
+import { PipelineTriggerCount, Status, StatusCount } from "@/types";
 import {
   defaultSelectOption,
   defaultStatusCount,
@@ -100,7 +100,7 @@ const PipelinePage: FC & {
     return [];
   }, [selectedStatusOption, triggers.data, pipelines.data]);
 
-  const statusCount = React.useMemo<Status[]>(() => {
+  const statusCount = React.useMemo<StatusCount>(() => {
     if ((triggers.data && triggersPrevious.data, pipeliesResult.length)) {
       const pipeliesList = pipeliesResult.map(
         (pipelies) => pipelies.pipeline_id

@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { PipelineTriggerCount } from "@/types";
 import { getPipelinesSeries, getPipelinesTriggerTime } from "@/lib/dashboard";
-import { Icons, Tooltip } from "@instill-ai/design-system";
-import { Skeleton } from "../skeleton";
+import { Icons, Skeleton, Tooltip } from "@instill-ai/design-system";
 
 type LineChartProps = {
   pipelines: PipelineTriggerCount[];
@@ -65,33 +64,33 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
   }, [isLoading, xAxisData, seriesData, pipelines]);
 
   return (
-    <div className="TriggersChart inline-flex w-full flex-col items-start justify-start rounded-sm bg-white shadow">
-      <div className="Frame7 flex flex-col items-start justify-start gap-[30px] self-stretch">
-        <div className="CardHeader inline-flex items-center justify-start gap-2.5 self-stretch p-8">
-          <div className="LeftContent flex items-center justify-start gap-2.5">
-            <div className="NumberOfTriggers text-[22px] font-semibold leading-7 text-gray-800">
+    <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-white shadow">
+      <div className="flex flex-col items-start justify-start gap-[30px] self-stretch">
+        <div className="inline-flex items-center justify-start gap-2.5 self-stretch p-8">
+          <div className="flex items-center justify-start gap-2.5">
+            <div className="text-[22px] font-semibold leading-7 text-gray-800">
               Number of triggers
             </div>
             {/* Tooltip about the chart */}
             <Tooltip.Provider>
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
-                  <div className="AlertCircle relative h-6 w-6">
+                  <div className="relative h-6 w-6">
                     <Icons.HelpCircle className="h-6 w-6 stroke-semantic-fg-primary" />
                   </div>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                   <Tooltip.Content
-                    className="TooltipContent rounded-sm"
+                    className="rounded-sm"
                     sideOffset={5}
                     side={"right"}
                   >
-                    <div className="Content inline-flex w-80 flex-col items-start justify-start rounded-sm bg-white p-3">
-                      <div className="TextAndSupportingText flex flex-col items-start justify-start gap-1 self-stretch">
-                        <div className="Text self-stretch text-sm font-semibold leading-none text-gray-800">
+                    <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-white p-3">
+                      <div className="flex flex-col items-start justify-start gap-1 self-stretch">
+                        <div className=" elf-stretch text-sm font-semibold leading-none text-gray-800">
                           Number of triggers tooltip
                         </div>
-                        <div className="SupportingText self-stretch text-sm font-medium leading-none text-gray-800 text-opacity-80">
+                        <div className="self-stretch text-sm font-medium leading-none text-gray-800 text-opacity-80">
                           Select any pipeline from the table below to view the
                           number of pipeline triggers within the last 7 days.
                         </div>
@@ -109,14 +108,11 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
             </Tooltip.Provider>
           </div>
         </div>
-        <div className="Chart relative self-stretch">
+        <div className="relative self-stretch">
           {isLoading ? (
-            <Skeleton
-              width="w-full"
-              hight="h-96"
-              classname="p-8"
-              animationHeight="h-80 rounded"
-            />
+            <div className="p-8">
+              <Skeleton className="h-80 w-full rounded p-8" />
+            </div>
           ) : (
             <>
               {pipelines.length ? (

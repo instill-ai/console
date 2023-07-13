@@ -1,12 +1,11 @@
 import cn from "clsx";
 import { StatusCard } from "./StatusCard";
-import { Status } from "@/types";
+import { StatusCount } from "@/types";
 import { Fragment } from "react";
-import { SkeletonCell } from "@instill-ai/toolkit";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "@instill-ai/design-system";
 
 export type StatusCardsGroupProps = {
-  statusStats: Status[];
+  statusStats: StatusCount;
   type: "pipeline" | "model";
   isLoading: boolean;
 };
@@ -28,32 +27,29 @@ export const StatusCardsGroup = (props: StatusCardsGroupProps) => {
               className="inline-flex h-32 flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
             >
               <div className="self-stretch">
-                <Skeleton
-                  width="w-full"
-                  hight="h-8"
-                  animationClassname="rounded"
-                />
+                <Skeleton className="h-8 w-full rounded" />
               </div>
               <div className="my-1 self-stretch">
-                <Skeleton
-                  width="w-full"
-                  hight="h-8"
-                  animationClassname="rounded"
-                />
+                <Skeleton className="h-8 w-full rounded" />
               </div>
             </div>
           ))
         ) : (
           <>
-            {statusStats.map((data) => (
-              <StatusCard
-                key={`${data.type}-${data.statusname}`}
-                type={type}
-                statusname={data.statusname}
-                amount={data.amount}
-                change={data.change}
-              />
-            ))}
+            <StatusCard
+              key={`${statusStats.completed.type}-${statusStats.completed.state}`}
+              type={type}
+              state={statusStats.completed.state}
+              amount={statusStats.completed.amount}
+              change={statusStats.completed.change}
+            />
+            <StatusCard
+              key={`${statusStats.errored.type}-${statusStats.errored.state}`}
+              type={type}
+              state={statusStats.errored.state}
+              amount={statusStats.errored.amount}
+              change={statusStats.errored.change}
+            />
           </>
         )}
       </div>

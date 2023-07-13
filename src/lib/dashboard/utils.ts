@@ -2,6 +2,7 @@ import {
   PipelineTrigger,
   PipelineTriggerCount,
   Status,
+  StatusCount,
   TriggerCount,
 } from "@/types";
 import { SingleSelectOption, TagProps } from "@instill-ai/design-system";
@@ -29,7 +30,7 @@ export function getPipeLineOptions(
 export function getStatusCount(
   triggers: PipelineTrigger[],
   triggersPrevious: PipelineTrigger[]
-): Status[] {
+): StatusCount {
   let pipelineCompleteAmount = 0;
   let pipelineCompleteAmountPrevious = 0;
   let pipelineErroredAmount = 0;
@@ -45,9 +46,9 @@ export function getStatusCount(
     pipelineErroredAmountPrevious += trigger.pipeline_error;
   });
 
-  return [
-    {
-      statusname: "completed",
+  return {
+    completed: {
+      state: "completed",
       amount: pipelineCompleteAmount,
       type: "pipeline",
       change: calculatePercentageChange(
@@ -55,8 +56,8 @@ export function getStatusCount(
         pipelineCompleteAmount
       ),
     },
-    {
-      statusname: "errored",
+    errored: {
+      state: "errored",
       amount: pipelineErroredAmount,
       type: "pipeline",
       change: calculatePercentageChange(
@@ -64,7 +65,7 @@ export function getStatusCount(
         pipelineErroredAmount
       ),
     },
-  ];
+  };
 }
 
 export function getTimeInRFC3339Format(interval: string): string {
@@ -142,6 +143,8 @@ export function getPipelinesTriggerTime(
     });
   });
 
+  // may be using this for futher parsing for the chart.
+
   // triggers.forEach((trigger) => {
   //   if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
   //     triggerTime.push(formatDateTime(trigger.trigger_time));
@@ -150,6 +153,9 @@ export function getPipelinesTriggerTime(
 
   const uniqueDates = Array.from(new Set(triggerDates)); // Convert Set to an array
   uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Sort dates in ascending order
+
+  // may be using this for futher parsing for the chart.
+
   // const formattedDates = uniqueDates.map((date) => formatDateTime(date));
   // return formattedDates;
 

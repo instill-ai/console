@@ -1,17 +1,18 @@
 import React, { ReactElement } from "react";
 import { Tag } from "@instill-ai/design-system";
+import { State } from "@/types";
 
 type BadgeProps = {
-  statusname: string;
+  state: State;
   label?: string;
   iconElement?: ReactElement;
   className?: string;
 };
 
 export const Badge = (props: BadgeProps) => {
-  const { statusname, label, iconElement, className } = props;
+  const { state, label, iconElement, className } = props;
 
-  switch (statusname) {
+  switch (state) {
     case "STATE_ERROR":
     case "errored":
       return (

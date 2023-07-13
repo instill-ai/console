@@ -1,11 +1,12 @@
 import React, { FC, ReactElement } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
-import { Icons, SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 import { StatusCardsGroup } from "@/components/cards";
-import { Status } from "@/types";
+import { Status, StatusCount } from "@/types";
 import { useRouter } from "next/router";
 import {
+  defaultStatusCount,
   getPreviousTime,
   getStatusCount,
   getTimeInRFC3339Format,
@@ -76,16 +77,11 @@ const PipelinePage: FC & {
       : `pipeline_id='${id?.toString()}'`,
   });
 
-  const statusCount = React.useMemo<Status[]>(() => {
-    console.log(
-      "pipelines.data && pipelinesPrevious.data",
-      pipelines.data && pipelinesPrevious.data
-    );
-
+  const statusCount = React.useMemo<StatusCount>(() => {
     if (pipelines.data && pipelinesPrevious.data) {
       return getStatusCount(pipelines.data, pipelinesPrevious.data);
     }
-    return [];
+    return defaultStatusCount;
   }, [pipelines.data, pipelinesPrevious.data]);
 
   /* -------------------------------------------------------------------------

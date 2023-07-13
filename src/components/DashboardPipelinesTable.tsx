@@ -12,7 +12,7 @@ import {
   env,
 } from "@instill-ai/toolkit";
 import { type Nullable } from "@instill-ai/toolkit";
-import { DeafultCell } from "./cells/DefaultCell";
+import { DeafultCell } from "./cells/Cell";
 import { PipelineTriggerCount } from "@/types";
 import { StateCell } from "./cells/StateCell";
 
