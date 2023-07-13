@@ -167,50 +167,6 @@ export function getPipelinesSeries(triggers: TriggerCount[]) {
   });
 }
 
-export function getStatus(status: string): ResourceState {
-  if (status === "completed") {
-    return "STATE_ACTIVE";
-  }
-  if (status === "errored") {
-    return "STATE_ERROR";
-  }
-  return "STATE_UNSPECIFIED";
-}
-
-export function getColor(
-  statusname: string
-): TagProps & { iconColor?: string; label?: string } {
-  switch (statusname) {
-    case "STATE_ERROR":
-    case "errored":
-      return {
-        variant: "lightRed",
-        iconColor: "semantic-error-default",
-        label: "Error",
-      };
-
-    case "STATE_ACTIVE":
-    case "completed":
-      return {
-        variant: "lightGreen",
-        iconColor: "semantic-success-default",
-        label: "Active",
-      };
-
-    case "STATE_INACTIVE":
-      return {
-        variant: "default",
-        label: "Inactive",
-      };
-
-    default:
-      return {
-        variant: "default",
-        label: "Unknown",
-      };
-  }
-}
-
 export function calculatePercentageChange(
   previousCount: number,
   currentCount: number

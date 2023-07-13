@@ -7,7 +7,6 @@ import {
   TableError,
   SkeletonCell,
   PaginationListContainerProps,
-  ResourceState,
   PipelineTablePlaceholder,
   chunk,
   env,
@@ -22,16 +21,6 @@ export type PipelinesTableProps = {
   isError: boolean;
   isLoading: boolean;
 } & Pick<PaginationListContainerProps, "marginBottom">;
-
-const getStatus = (status: string): ResourceState => {
-  if (status === "completed") {
-    return "STATE_ACTIVE";
-  }
-  if (status === "error") {
-    return "STATE_ERROR";
-  }
-  return "STATE_UNSPECIFIED";
-};
 
 export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
   const { pipelines, marginBottom, isError, isLoading } = props;

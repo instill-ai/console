@@ -15,7 +15,7 @@
       "@/stores": ["stores"],
       "@/stores/*": ["stores/*"]
     },
-    "target": "es2015",
+    "target": "es5",
     "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",

@@ -1,9 +1,22 @@
+import cn from "clsx";
 import React from "react";
 import { Status } from "@/types";
 import { Badge } from "../badge/Badge";
-import { Icons, Tag } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 
 export type StatusProps = Status;
+
+const getIcon = (change: number, statusname: string) => {
+  const iconClassName =
+    statusname === "completed"
+      ? "stroke-semantic-success-default"
+      : "stroke-semantic-error-default";
+
+  if (change >= 0) {
+    return <Icons.ArrowUp className={cn("h-4 w-4", iconClassName)} />;
+  }
+  return <Icons.ArrowUp className={cn("h-4 w-4", iconClassName)} />;
+};
 
 export const StatusCard = (props: StatusProps) => {
   const { statusname, amount, change } = props;
@@ -16,7 +29,12 @@ export const StatusCard = (props: StatusProps) => {
         <div className="Number shrink grow basis-0 text-[28px] font-bold leading-loose text-gray-800">
           {amount}
         </div>
-        <Badge statusname={statusname} change={change} />
+        <Badge
+          statusname={statusname}
+          iconElement={getIcon(change, statusname)}
+          label={`${change} %`}
+          className="gap-x-2 border-0"
+        />
       </div>
     </div>
   );

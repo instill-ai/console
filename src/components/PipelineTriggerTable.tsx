@@ -14,7 +14,6 @@ import { type Nullable } from "@instill-ai/toolkit";
 import { PipelinesTableProps } from "@/types";
 import { DeafultCell } from "./cells/DefaultCell";
 import { StateCell } from "./cells/StateCell";
-import { getStatus } from "@/lib/dashboard";
 
 export const PipelineTriggerTable = (props: PipelinesTableProps) => {
   const {
@@ -148,7 +147,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
                   <StateCell
                     name={pipeline.status}
                     width={null}
-                    state={getStatus(pipeline.status)}
+                    state={pipeline.status}
                     padding="py-2 pl-6"
                   />
 

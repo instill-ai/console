@@ -1,22 +1,17 @@
-import { getColor } from "@/lib/dashboard";
-import { Tag } from "@instill-ai/design-system";
 import { Nullable, ResourceState, StateIcon } from "@instill-ai/toolkit";
-import cn from "clsx";
+import { Badge } from "../badge/Badge";
 
 export type StateCellProps = {
-  state: ResourceState;
+  state: string;
   width: Nullable<string>;
   name: string | number;
   padding: string;
 };
 
 export const StateCell = ({ state, width, name, padding }: StateCellProps) => {
-  const badgeColor = getColor(state);
   return (
     <td>
-      <Tag variant={badgeColor.variant} size={"sm"}>
-        {badgeColor.label}
-      </Tag>
+      <Badge statusname={state} className="border-0" />
     </td>
   );
 };
