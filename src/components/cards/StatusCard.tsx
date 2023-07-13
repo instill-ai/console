@@ -1,6 +1,7 @@
 import React from "react";
 import { Status } from "@/types";
 import { Badge } from "../badge/Badge";
+import { Icons, Tag } from "@instill-ai/design-system";
 
 export type StatusProps = Status;
 

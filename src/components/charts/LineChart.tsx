@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { PipelineTriggerCount } from "@/types";
 import { getPipelinesSeries, getPipelinesTriggerTime } from "@/lib/dashboard";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Tooltip } from "@instill-ai/design-system";
 import { Skeleton } from "../skeleton";
 
 type LineChartProps = {
@@ -72,9 +72,41 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
             <div className="NumberOfTriggers text-[22px] font-semibold leading-7 text-gray-800">
               Number of triggers
             </div>
-            <div className="AlertCircle relative h-6 w-6">
-              <Icons.HelpCircle className="h-6 w-6 stroke-semantic-fg-primary" />
-            </div>
+            {/* Tooltip about the chart */}
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <div className="AlertCircle relative h-6 w-6">
+                    <Icons.HelpCircle className="h-6 w-6 stroke-semantic-fg-primary" />
+                  </div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content
+                    className="TooltipContent"
+                    sideOffset={5}
+                    side={"right"}
+                  >
+                    <div className="Content inline-flex w-80 flex-col items-start justify-start bg-white p-3">
+                      <div className="TextAndSupportingText flex flex-col items-start justify-start gap-1 self-stretch">
+                        <div className="Text self-stretch text-sm font-semibold leading-none text-gray-800">
+                          Number of triggers tooltip
+                        </div>
+                        <div className="SupportingText self-stretch text-sm font-medium leading-none text-gray-800 text-opacity-80">
+                          Select any pipeline from the table below to view the
+                          number of pipeline triggers within the last 7 days.
+                        </div>
+                      </div>
+                    </div>
+                    <Tooltip.Arrow
+                      className="fill-white"
+                      offset={10}
+                      width={18}
+                      height={12}
+                    />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
           </div>
         </div>
         <div className="Chart relative self-stretch">

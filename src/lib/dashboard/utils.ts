@@ -4,7 +4,7 @@ import {
   Status,
   TriggerCount,
 } from "@/types";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SingleSelectOption, TagProps } from "@instill-ai/design-system";
 import { Pipeline, ResourceState } from "@instill-ai/toolkit";
 
 export function getPipeLineOptions(
@@ -174,66 +174,36 @@ export function getStatus(status: string): ResourceState {
   return "STATE_UNSPECIFIED";
 }
 
-export function getColor(statusname: string) {
+export function getColor(
+  statusname: string
+): TagProps & { iconColor?: string; label?: string } {
   switch (statusname) {
     case "STATE_ERROR":
     case "errored":
       return {
-        textColor: "text-instillRed",
-        bgColor: "bg-instillRed10",
-        stateLabelName: "Error",
-        icon: "instill_red",
+        variant: "lightRed",
+        iconColor: "semantic-error-default",
+        label: "Error",
       };
 
     case "STATE_ACTIVE":
     case "completed":
       return {
-        textColor: "text-instillGreen50",
-        bgColor: "bg-instillGreen10",
-        stateLabelName: "Active",
-        icon: "instillGreen50",
-      };
-
-    case "STATE_ONLINE":
-      return {
-        textColor: "text-instillGreen50",
-        bgColor: "bg-instillGreen10",
-        stateLabelName: "Online",
-      };
-
-    case "STATE_CONNECTED":
-      return {
-        textColor: "text-instillGreen50",
-        bgColor: "bg-instillGreen10",
-        stateLabelName: "Connected",
-      };
-
-    case "STATE_OFFLINE":
-      return {
-        textColor: "text-instillGrey70",
-        bgColor: "bg-instillGrey05",
-        stateLabelName: "Offline",
+        variant: "lightGreen",
+        iconColor: "semantic-success-default",
+        label: "Active",
       };
 
     case "STATE_INACTIVE":
       return {
-        textColor: "text-instillGrey70",
-        bgColor: "bg-instillGrey05",
-        stateLabelName: "Inactive",
-      };
-
-    case "STATE_DISCONNECTED":
-      return {
-        textColor: "text-instillGrey70",
-        bgColor: "bg-instillGrey05",
-        stateLabelName: "Disconnected",
+        variant: "default",
+        label: "Inactive",
       };
 
     default:
       return {
-        textColor: "text-instillGrey70",
-        bgColor: "bg-instillGrey05",
-        stateLabelName: "Unspecified",
+        variant: "default",
+        label: "Unknown",
       };
   }
 }

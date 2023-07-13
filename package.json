@@ -30,7 +30,7 @@
     "@code-hike/mdx": "^0.7.3",
     "@dnd-kit/core": "^6.0.8",
     "@hookform/resolvers": "^3.1.1",
-    "@instill-ai/design-system": "^0.31.0",
+    "@instill-ai/design-system": "^0.32.0",
     "@instill-ai/design-tokens": "^0.3.1",
     "@instill-ai/toolkit": "^0.60.5",
     "@radix-ui/react-checkbox": "^1.0.3",
