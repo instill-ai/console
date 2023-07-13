@@ -82,11 +82,11 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                   <Tooltip.Content
-                    className="TooltipContent"
+                    className="TooltipContent rounded-sm"
                     sideOffset={5}
                     side={"right"}
                   >
-                    <div className="Content inline-flex w-80 flex-col items-start justify-start bg-white p-3">
+                    <div className="Content inline-flex w-80 flex-col items-start justify-start rounded-sm bg-white p-3">
                       <div className="TextAndSupportingText flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="Text self-stretch text-sm font-semibold leading-none text-gray-800">
                           Number of triggers tooltip
