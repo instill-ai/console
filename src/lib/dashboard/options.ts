@@ -10,18 +10,6 @@ export const timeLineOptions: SingleSelectOption[] = [
     label: "Last day",
     value: "1d",
   },
-  // {
-  //   label: "2 days",
-  //   value: "2d",
-  // },
-  // {
-  //   label: "3 days",
-  //   value: "3d",
-  // },
-  // {
-  //   label: "4 days",
-  //   value: "4d",
-  // },
   {
     label: "7 days",
     value: "7d",
@@ -69,6 +57,11 @@ export const statusOptions: SingleSelectOption[] = [
 export const defaultSelectOption: SingleSelectOption = {
   label: "ALL",
   value: "all",
+};
+
+export const defaultTimeOption: SingleSelectOption = {
+  label: "Today",
+  value: "24h",
 };
 
 export const defaultStatusCount: StatusCount = {

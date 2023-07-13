@@ -14,7 +14,7 @@ export type PipelineTriggerCount = {
 };
 
 export type Count = {
-  trigger_time: string;
+  trigger_time: string | Date;
   count: number;
 };
 

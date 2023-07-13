@@ -1,12 +1,13 @@
 import {
+  Count,
   PipelineTrigger,
   PipelineTriggerCount,
-  Status,
   StatusCount,
   TriggerCount,
 } from "@/types";
-import { SingleSelectOption, TagProps } from "@instill-ai/design-system";
-import { Pipeline, ResourceState } from "@instill-ai/toolkit";
+import { SingleSelectOption } from "@instill-ai/design-system";
+import { Pipeline } from "@instill-ai/toolkit";
+import { defaultTimeOption } from "./options";
 
 export function getPipeLineOptions(
   pipelines: Pipeline[]
@@ -112,54 +113,23 @@ export function getTimeInRFC3339Format(interval: string): string {
   return targetTime.toISOString().split(".")[0] + "Z";
 }
 
-export function formatDateTime(dateString: string): string {
-  const date = new Date(dateString);
+export function formatDateTime(timeStr: string, format: string): string {
+  const dt = new Date(timeStr);
+  const month = new Intl.DateTimeFormat("en", { month: "short" }).format(dt);
+  const day = dt.getDate();
 
-  const day = date.getDate();
-  const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
-    date
-  );
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
+  if (format === "1d" || format === "24h") {
+    const hours = dt.getHours();
+    const minutes = dt.getMinutes();
+    const period = format === "1d" ? (hours >= 12 ? "PM" : "AM") : "";
+    const formattedHours = format === "1d" ? hours % 12 || 12 : hours;
 
-  const formattedDate = `${day} ${month}, ${year}`;
-  const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-  return `${formattedDate} - ${formattedTime}`;
-}
-
-export function getPipelinesTriggerTime(
-  pipelines: PipelineTriggerCount[]
-): string[] {
-  const triggerDates: string[] = [];
-
-  pipelines.forEach((pipeline) => {
-    pipeline.counts.forEach((count) => {
-      triggerDates.push(count.trigger_time);
-    });
-  });
-
-  // may be using this for futher parsing for the chart.
-
-  // triggers.forEach((trigger) => {
-  //   if (!triggerTime.includes(formatDateTime(trigger.trigger_time))) {
-  //     triggerTime.push(formatDateTime(trigger.trigger_time));
-  //   }
-  // });
-
-  const uniqueDates = Array.from(new Set(triggerDates)); // Convert Set to an array
-  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Sort dates in ascending order
-
-  // may be using this for futher parsing for the chart.
-
-  // const formattedDates = uniqueDates.map((date) => formatDateTime(date));
-  // return formattedDates;
-
-  return uniqueDates;
+    return `${month} ${day}, ${formattedHours}:${String(minutes).padStart(
+      2,
+      "0"
+    )} ${period}`;
+  }
+  return `${month} ${day}`;
 }
 
 export function getPipelinesSeries(triggers: TriggerCount[]) {
@@ -168,7 +138,9 @@ export function getPipelinesSeries(triggers: TriggerCount[]) {
       name: trigger.pipeline_id,
       type: "line",
       smooth: true,
-      data: trigger.counts.map((trigger) => trigger.count),
+      data: orderEventsByTriggerTime(trigger.counts).map(
+        (trigger) => trigger.count
+      ),
     };
   });
 }
@@ -180,11 +152,9 @@ export function calculatePercentageChange(
   if (previousCount === 0 && currentCount === 0) {
     return 0; // Both counts are zero, return 0 as percentage change
   }
-
   if (previousCount === 0) {
     return currentCount; // Previous count is zero, change is currentCount
   }
-
   const change = currentCount - previousCount;
   const percentageChange = (change / previousCount) * 100;
   return Math.round(percentageChange);
@@ -214,12 +184,17 @@ export function getPreviousTime(time: string): string {
 
 export function getPipelinesTriggerCount(
   triggers: PipelineTrigger[],
-  pipelines: Pipeline[] = []
+  pipelines: Pipeline[] = [],
+  selectedTimeOption: SingleSelectOption = defaultTimeOption
 ): PipelineTriggerCount[] {
   const countByTimeAndPipeline: PipelineTriggerCount[] = [];
 
   triggers.forEach((trigger) => {
-    const triggerTime = formatDateTime(trigger.trigger_time);
+    const triggerTime = formatDateTime(
+      trigger.trigger_time,
+      selectedTimeOption.value
+    );
+
     const pipelineId = trigger.pipeline_id;
 
     const existingPipeline = countByTimeAndPipeline.find(
@@ -254,9 +229,8 @@ export function getPipelinesTriggerCount(
   });
 
   // Add missing trigger times with count 0 for each pipeline
-  const allTriggerTimes = triggers.map((trigger) =>
-    formatDateTime(trigger.trigger_time)
-  );
+  const allTriggerTimes = getDateRange(selectedTimeOption.value);
+
   const uniqueTriggerTimes = [...new Set(allTriggerTimes)];
 
   countByTimeAndPipeline.forEach((pipeline) => {
@@ -278,4 +252,100 @@ export function getPipelinesTriggerCount(
       )?.state,
     };
   });
+}
+
+export function getDateRange(range: string): string[] {
+  const today = new Date();
+  const dates: string[] = [];
+
+  if (range === "1d") {
+    const startDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 1,
+      0,
+      0,
+      0
+    );
+    const endDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      0,
+      0,
+      0
+    );
+
+    for (
+      let date = startDate;
+      date < endDate;
+      date.setHours(date.getHours() + 1)
+    ) {
+      dates.push(
+        date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        })
+      );
+    }
+  } else if (range === "24h") {
+    const startDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      0,
+      0,
+      0
+    );
+
+    for (
+      let date = startDate;
+      date <= today;
+      date.setHours(date.getHours() + 1)
+    ) {
+      dates.push(
+        date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        })
+      );
+    }
+  } else if (range.endsWith("d")) {
+    const days = parseInt(range.slice(0, -1));
+    const startDate = new Date(today.getTime() - days * 24 * 60 * 60 * 1000);
+
+    for (
+      let date = startDate;
+      date <= today;
+      date.setDate(date.getDate() + 1)
+    ) {
+      dates.push(
+        date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      );
+    }
+  } else {
+    throw new Error(
+      "Invalid range format. Please use the format <number>d, 24h, or 1d."
+    );
+  }
+
+  return dates;
+}
+
+export function orderEventsByTriggerTime(events: Count[]): Count[] {
+  const formattedEvents: Count[] = events.map((event) => {
+    const triggerTime = new Date(event.trigger_time);
+    return { ...event, trigger_time: triggerTime };
+  });
+
+  const sortedEvents = formattedEvents.sort(
+    (a, b) =>
+      new Date(a.trigger_time).getTime() - new Date(b.trigger_time).getTime()
+  );
+
+  return sortedEvents;
 }

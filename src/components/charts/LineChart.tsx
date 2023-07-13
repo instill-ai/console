@@ -1,17 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { PipelineTriggerCount } from "@/types";
-import { getPipelinesSeries, getPipelinesTriggerTime } from "@/lib/dashboard";
-import { Icons, Skeleton, Tooltip } from "@instill-ai/design-system";
+import { getDateRange, getPipelinesSeries } from "@/lib/dashboard";
+import {
+  Icons,
+  SingleSelectOption,
+  Skeleton,
+  Tooltip,
+} from "@instill-ai/design-system";
 
 type LineChartProps = {
   pipelines: PipelineTriggerCount[];
   isLoading: boolean;
+  selectedTimeOption: SingleSelectOption;
 };
 
-export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
+export const LineChart = ({
+  isLoading,
+  pipelines,
+  selectedTimeOption,
+}: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const xAxisData = getPipelinesTriggerTime(pipelines);
+  const xAxisData = getDateRange(selectedTimeOption.value);
   const seriesData = getPipelinesSeries(pipelines);
 
   useEffect(() => {

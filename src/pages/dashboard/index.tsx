@@ -5,6 +5,7 @@ import { PipelineTriggerCount, Status, StatusCount } from "@/types";
 import {
   defaultSelectOption,
   defaultStatusCount,
+  defaultTimeOption,
   getPipelinesTriggerCount,
   getPreviousTime,
   getStatusCount,
@@ -29,10 +30,7 @@ const PipelinePage: FC & {
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SingleSelectOption>({
-      label: "Today",
-      value: "24h",
-    });
+    React.useState<SingleSelectOption>(defaultTimeOption);
   const [selectedStatusOption, setSelectedStatusOption] =
     React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
   const [queryString, setQueryString] = React.useState<Nullable<string>>("");
@@ -88,7 +86,8 @@ const PipelinePage: FC & {
     if (triggers.data && pipelines.data) {
       const formattedPipelines = getPipelinesTriggerCount(
         triggers.data,
-        pipelines.data
+        pipelines.data,
+        selectedTimeOption
       );
       if (selectedStatusOption && selectedStatusOption.value !== "all") {
         return formattedPipelines.filter(
@@ -115,6 +114,8 @@ const PipelinePage: FC & {
     }
     return defaultStatusCount;
   }, [pipeliesResult, triggers.data, triggersPrevious.data]);
+
+  console.log("pipeliesResult", pipeliesResult);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -195,6 +196,7 @@ const PipelinePage: FC & {
           <LineChart
             isLoading={triggers.isLoading}
             pipelines={pipeliesResult}
+            selectedTimeOption={selectedTimeOption}
           />
         </div>
 
