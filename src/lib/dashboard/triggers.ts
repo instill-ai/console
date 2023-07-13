@@ -7,13 +7,13 @@ import {
   useQuery,
 } from "@instill-ai/toolkit";
 
-export type ListPipelinesTriggerResponse = {
+export type ListPipelineTriggersMetricResponse = {
   pipeline_trigger_records: PipelineTrigger[];
   next_page_token: string;
   total_size: string;
 };
 
-export async function filterPipelinesQuery({
+export async function listPipelineTriggersMetricQuery({
   pageSize,
   nextPageToken,
   accessToken,
@@ -35,7 +35,7 @@ export async function filterPipelinesQuery({
       filter
     );
 
-    const { data } = await client.get<ListPipelinesTriggerResponse>(
+    const { data } = await client.get<ListPipelineTriggersMetricResponse>(
       queryString
     );
 
@@ -43,7 +43,7 @@ export async function filterPipelinesQuery({
 
     if (data.next_page_token) {
       triggers.push(
-        ...(await filterPipelinesQuery({
+        ...(await listPipelineTriggersMetricQuery({
           pageSize,
           accessToken,
           nextPageToken: data.next_page_token,
@@ -58,28 +58,7 @@ export async function filterPipelinesQuery({
   }
 }
 
-export type GetPipelineTriggerResponse = {
-  pipeline: PipelineTrigger;
-};
-
-export async function fetchPipelines(
-  accessToken: Nullable<string>,
-  filter: Nullable<string>
-) {
-  try {
-    const triggers = await filterPipelinesQuery({
-      pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-      nextPageToken: null,
-      accessToken,
-      filter,
-    });
-    return Promise.resolve(triggers);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-export const usePipelineFilter = ({
+export const usePipelineTriggersMetric = ({
   enabled,
   accessToken,
   filter,
@@ -95,9 +74,14 @@ export const usePipelineFilter = ({
   retry?: false | number;
 }) => {
   return useQuery(
-    ["metrics", filter],
+    ["metrics", "pipelines", "trigger", filter],
     async () => {
-      const triggers = await fetchPipelines(accessToken, filter);
+      const triggers = await listPipelineTriggersMetricQuery({
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+        nextPageToken: null,
+        accessToken,
+        filter,
+      });
       return Promise.resolve(triggers);
     },
     {

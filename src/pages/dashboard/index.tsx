@@ -10,7 +10,7 @@ import {
   getStatusCount,
   getTimeInRFC3339Format,
   statusOptions,
-  usePipelineFilter,
+  usePipelineTriggersMetric,
 } from "@/lib/dashboard";
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
@@ -72,13 +72,13 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const triggers = usePipelineFilter({
+  const triggers = usePipelineTriggersMetric({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : null,
   });
 
-  const triggersPrevious = usePipelineFilter({
+  const triggersPrevious = usePipelineTriggersMetric({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious ? queryStringPrevious : null,

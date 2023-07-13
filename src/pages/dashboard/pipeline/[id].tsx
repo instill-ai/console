@@ -9,7 +9,7 @@ import {
   getPreviousTime,
   getStatusCount,
   getTimeInRFC3339Format,
-  usePipelineFilter,
+  usePipelineTriggersMetric,
 } from "@/lib/dashboard";
 import { PipelineTriggerTable } from "@/components/PipelineTriggerTable";
 import { FilterByDay } from "@/components/filter/FilterByDay";
@@ -62,13 +62,13 @@ const PipelinePage: FC & {
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
-  const pipelines = usePipelineFilter({
+  const pipelines = usePipelineTriggersMetric({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : `pipeline_id='${id?.toString()}'`,
   });
 
-  const pipelinesPrevious = usePipelineFilter({
+  const pipelinesPrevious = usePipelineTriggersMetric({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious

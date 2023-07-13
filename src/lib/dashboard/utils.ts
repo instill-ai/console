@@ -30,35 +30,38 @@ export function getStatusCount(
   triggers: PipelineTrigger[],
   triggersPrevious: PipelineTrigger[]
 ): Status[] {
-  let STATE_ACTIVE = 0;
-  let STATE_ACTIVE_PREVIOUS = 0;
-  let STATE_INACTIVE = 0;
-  let STATE_INACTIVE_PREVIOUS = 0;
+  let pipelineCompleteAmount = 0;
+  let pipelineCompleteAmountPrevious = 0;
+  let pipelineErroredAmount = 0;
+  let pipelineErroredAmountPrevious = 0;
 
   getPipelinesTriggerCount(triggers).forEach((trigger) => {
-    STATE_ACTIVE += trigger.pipeline_completed;
-    STATE_INACTIVE += trigger.pipeline_error;
+    pipelineCompleteAmount += trigger.pipeline_completed;
+    pipelineErroredAmount += trigger.pipeline_error;
   });
 
   getPipelinesTriggerCount(triggersPrevious).forEach((trigger) => {
-    STATE_ACTIVE_PREVIOUS += trigger.pipeline_completed;
-    STATE_INACTIVE_PREVIOUS += trigger.pipeline_error;
+    pipelineCompleteAmountPrevious += trigger.pipeline_completed;
+    pipelineErroredAmountPrevious += trigger.pipeline_error;
   });
 
   return [
     {
       statusname: "completed",
-      amount: STATE_ACTIVE,
+      amount: pipelineCompleteAmount,
       type: "pipeline",
-      change: calculatePercentageChange(STATE_ACTIVE_PREVIOUS, STATE_ACTIVE),
+      change: calculatePercentageChange(
+        pipelineCompleteAmountPrevious,
+        pipelineCompleteAmount
+      ),
     },
     {
       statusname: "errored",
-      amount: STATE_INACTIVE,
+      amount: pipelineErroredAmount,
       type: "pipeline",
       change: calculatePercentageChange(
-        STATE_INACTIVE_PREVIOUS,
-        STATE_INACTIVE
+        pipelineErroredAmountPrevious,
+        pipelineErroredAmount
       ),
     },
   ];
