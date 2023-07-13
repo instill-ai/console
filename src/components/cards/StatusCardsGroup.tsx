@@ -22,19 +22,24 @@ export const StatusCardsGroup = (props: StatusCardsGroupProps) => {
         )}
       >
         {isLoading ? (
-          [Array(2).keys()].map((e) => (
+          [...Array(2).keys()].map((e) => (
             <div
               key={`cards-skeleton-${e}`}
-              className="MetricItem inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
+              className="inline-flex h-32 flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
             >
-              <div className="Heading self-stretch text-[14px] font-medium leading-tight text-gray-800 text-opacity-80">
-                <Skeleton width="w-35" hight="h-5" />
+              <div className="self-stretch">
+                <Skeleton
+                  width="w-full"
+                  hight="h-8"
+                  animationClassname="rounded"
+                />
               </div>
-              <div className="NumberAndBadge inline-flex items-end justify-start gap-4 self-stretch">
-                <div className="Number shrink grow basis-0 text-[28px] font-bold leading-loose text-gray-800">
-                  <Skeleton width="w-16" hight="h-11" />
-                </div>
-                <Skeleton width="w-8" hight="h-5" />
+              <div className="my-1 self-stretch">
+                <Skeleton
+                  width="w-full"
+                  hight="h-8"
+                  animationClassname="rounded"
+                />
               </div>
             </div>
           ))

@@ -28,7 +28,7 @@ export const FilterByDay = ({
                 timeLineOption.value === selectedTimeOption?.value
                   ? "bg-slate-200"
                   : "bg-white"
-              } px-4 py-1`
+              } px-2 py-1`
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);

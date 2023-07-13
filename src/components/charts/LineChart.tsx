@@ -115,7 +115,7 @@ export const LineChart = ({ isLoading, pipelines }: LineChartProps) => {
               width="w-full"
               hight="h-96"
               classname="p-8"
-              animationHeight="h-80"
+              animationHeight="h-80 rounded"
             />
           ) : (
             <>
