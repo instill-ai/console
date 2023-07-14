@@ -28,6 +28,17 @@ export const LineChart = ({
     if (chartRef.current && !isLoading) {
       const myChart = echarts.init(chartRef.current); // eslint-disable-line
       const option = {
+        title: {
+          show: pipelines.length === 0,
+          textStyle: {
+            color: "rgb(31, 41, 55)",
+            fontSize: 22,
+            fontWeight: 500,
+          },
+          text: "No Piplelines",
+          left: "center",
+          top: 100,
+        },
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
@@ -69,7 +80,7 @@ export const LineChart = ({
         },
         series: seriesData,
       };
-      myChart.setOption(option);
+      myChart.setOption(option, true);
     }
   }, [isLoading, xAxisData, seriesData, pipelines]);
 
@@ -125,19 +136,11 @@ export const LineChart = ({
             </div>
           ) : (
             <>
-              {pipelines.length ? (
-                <div
-                  id="main"
-                  ref={chartRef}
-                  style={{ width: "100%", height: "400px" }}
-                />
-              ) : (
-                <div className="flex h-80 items-center justify-center p-8">
-                  <h3 className="text-instillGrey80 text-instill-h3">
-                    No Pipelines Found
-                  </h3>
-                </div>
-              )}
+              <div
+                id="main"
+                ref={chartRef}
+                style={{ width: "100%", height: "400px" }}
+              />
             </>
           )}
         </div>

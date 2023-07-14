@@ -42,8 +42,14 @@ const PipelinePage: FC & {
     let queryParamsPrevious = "";
 
     if (selectedTimeOption) {
-      const start = getTimeInRFC3339Format(selectedTimeOption.value);
-      const stop = getTimeInRFC3339Format("now");
+      const start = getTimeInRFC3339Format(
+        selectedTimeOption.value === "24h"
+          ? "todayStart"
+          : selectedTimeOption.value
+      );
+      const stop = getTimeInRFC3339Format(
+        selectedStatusOption?.value === "1d" ? "todayStart" : "now"
+      );
       const previousTime = getTimeInRFC3339Format(
         getPreviousTime(selectedTimeOption.value)
       );
@@ -59,7 +65,7 @@ const PipelinePage: FC & {
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, selectedStatusOption]);
+  }, [selectedTimeOption]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data
@@ -97,7 +103,7 @@ const PipelinePage: FC & {
       return formattedPipelines;
     }
     return [];
-  }, [selectedStatusOption, triggers.data, pipelines.data]);
+  }, [selectedStatusOption, selectedTimeOption, triggers.data, pipelines.data]);
 
   const statusCount = React.useMemo<StatusCount>(() => {
     if ((triggers.data && triggersPrevious.data, pipeliesResult.length)) {
@@ -114,8 +120,6 @@ const PipelinePage: FC & {
     }
     return defaultStatusCount;
   }, [pipeliesResult, triggers.data, triggersPrevious.data]);
-
-  console.log("pipeliesResult", pipeliesResult);
 
   /* -------------------------------------------------------------------------
    * Render

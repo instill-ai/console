@@ -82,9 +82,15 @@ export function getTimeInRFC3339Format(interval: string): string {
     return new Date().toISOString().split(".")[0] + "Z";
   }
 
+  if (interval === "todayStart") {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to 12:00 AM
+    return today.toISOString().split(".")[0] + "Z";
+  }
+
   if (!match) {
     throw new Error(
-      "Invalid time interval format. Supported formats are: now, 1h, 3h, 6h, 24h, 1d, 7d"
+      "Invalid time interval format. Supported formats are: now, todayStart, 1h, 3h, 6h, 24h, 1d, 7d"
     );
   }
 
