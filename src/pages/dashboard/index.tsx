@@ -48,7 +48,7 @@ const PipelinePage: FC & {
           : selectedTimeOption.value
       );
       const stop = getTimeInRFC3339Format(
-        selectedStatusOption?.value === "1d" ? "todayStart" : "now"
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
       );
       const previousTime = getTimeInRFC3339Format(
         getPreviousTime(selectedTimeOption.value)

@@ -45,8 +45,14 @@ const PipelinePage: FC & {
     let queryParamsPrevious = "";
 
     if (selectedTimeOption) {
-      const start = getTimeInRFC3339Format(selectedTimeOption.value);
-      const stop = getTimeInRFC3339Format("now");
+      const start = getTimeInRFC3339Format(
+        selectedTimeOption.value === "24h"
+          ? "todayStart"
+          : selectedTimeOption.value
+      );
+      const stop = getTimeInRFC3339Format(
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
+      );
       const previousTime = getTimeInRFC3339Format(
         getPreviousTime(selectedTimeOption.value)
       );
