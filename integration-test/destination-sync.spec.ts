@@ -15,8 +15,8 @@ export function handleSyncDestinationTest() {
     }
   });
 
-  test.describe.serial("Sync destination", () => {
-    test("should create sync http destination", async ({ page }) => {
+  test.describe.serial("Destination", () => {
+    test("should create response destination", async ({ page }) => {
       await page.goto("/destinations/create", { waitUntil: "networkidle" });
 
       // Should select destination type - Response
