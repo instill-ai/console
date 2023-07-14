@@ -141,10 +141,14 @@ jobs:
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
 
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
       - name: Run console integration test (latest)
         run: |
-          git clone https://github.com/instill-ai/console.git
-          cd console && docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
+          docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
           docker run -t --rm \
             -e NEXT_PUBLIC_API_VERSION=v1alpha \
             -e NEXT_PUBLIC_CONSOLE_EDITION=local-ce:test \

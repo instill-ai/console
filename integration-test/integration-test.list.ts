@@ -7,8 +7,6 @@ import { handleGithubModelTest } from "./model-github.spec";
 import { handleHuggingFaceModelTest } from "./model-huggingface.spec";
 import { handleLocalModelTest } from "./model-local.spec";
 import { handleOnboardingTest } from "./onboarding.spec";
-import { handleAsyncPipelineTest } from "./pipeline-async.spec";
-import { handleSyncPipelineTest } from "./pipeline-sync.spec";
 import { handleSourceTest } from "./source.spec";
 
 test.describe(handleOnboardingTest);
@@ -20,5 +18,5 @@ test.describe(handleArtivcModelTest);
 test.describe(handleGithubModelTest);
 test.describe(handleHuggingFaceModelTest);
 test.describe(handleLocalModelTest);
-// test.describe(handleSyncPipelineTest);
-// test.describe(handleAsyncPipelineTest);
+
+// We need to add back tests for pipeline builder

@@ -3,10 +3,10 @@ import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
 export function handleSyncDestinationTest() {
-  const destinationId = "destination-http";
-  const destinationType = "http";
+  const destinationId = "response";
+  const destinationType = "Response";
 
-  // If there has a destination-http connector, we need to delete it then proceed the test.
+  // If there has a response operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
     try {
       await deleteDestination(destinationId);
@@ -15,11 +15,11 @@ export function handleSyncDestinationTest() {
     }
   });
 
-  test.describe.serial("Sync destination", () => {
-    test("should create sync http destination", async ({ page }) => {
+  test.describe.serial("Destination", () => {
+    test("should create response destination", async ({ page }) => {
       await page.goto("/destinations/create", { waitUntil: "networkidle" });
 
-      // Should select destination type - HTTP
+      // Should select destination type - Response
       await expectToSelectOption(
         page.locator("#destination-definition"),
         page
