@@ -11,7 +11,7 @@ export function handleAsyncPipelineTest() {
   const pipelineId = `async-pipeline-${Math.floor(Math.random() * 10000)}`;
   const pipelineDescription = "Hi i am a async pipeline";
   const pipelineMode = "Async";
-  const sourceType = "HTTP";
+  const sourceType = "Response";
   const modelSource = "Local";
   const modelId = `github-local-${Math.floor(Math.random() * 10000)}`;
   const destinationType = "Scylla";

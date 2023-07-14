@@ -11,11 +11,11 @@ export function handleSyncPipelineTest() {
   const pipelineId = `sync-pipeline-${Math.floor(Math.random() * 10000)}`;
   const pipelineDescription = "Hi i am a sync pipeline";
   const pipelineMode = "Sync";
-  const sourceType = "HTTP";
+  const sourceType = "Response";
   const modelSource = "Local";
   const modelId = `local-model-${Math.floor(Math.random() * 10000)}`;
   const modelInstanceTag = "latest";
-  const destinationType = "HTTP";
+  const destinationType = "Response";
 
   test.describe
     .serial("Sync pipeline with new source, destination and local model", () => {

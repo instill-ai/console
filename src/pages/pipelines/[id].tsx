@@ -633,10 +633,8 @@ const PipelineBuilderPage: FC & {
 
     if (event.active.data.current?.isPreset) {
       if (
-        draggedItem.name === "connectors/source-grpc" ||
-        draggedItem.name === "connectors/source-http" ||
-        draggedItem.name === "connectors/destination-http" ||
-        draggedItem.name === "connectors/destination-grpc"
+        draggedItem.name === "connectors/trigger" ||
+        draggedItem.name === "connectors/response"
       ) {
         id = draggedItem.id;
         name = draggedItem.name;

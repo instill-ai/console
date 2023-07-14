@@ -2,9 +2,9 @@ import { env, deleteSource, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 
 export function handleSourceTest() {
-  const sourceId = "source-grpc";
+  const sourceId = "trigger";
 
-  // If there has a source-grpc connector, we need to delete it then proceed the test.
+  // If there has a trigger operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
     try {
       await deleteSource(sourceId);
@@ -17,10 +17,10 @@ export function handleSourceTest() {
     test("should create source", async ({ page }) => {
       await page.goto("/sources/create", { waitUntil: "networkidle" });
 
-      // Should select gRPC source
+      // Should select Trigger
       await expectToSelectOption(
         page.locator("#source-definition"),
-        page.locator(`[data-radix-select-viewport=""]`).getByText("gRPC")
+        page.locator(`[data-radix-select-viewport=""]`).getByText("Trigger")
       );
 
       // Should enable set up button
@@ -66,7 +66,7 @@ export function handleSourceTest() {
 
       // Should have correct definition
       const sourceDefinitionOption = page.locator("#source-definition");
-      await expect(sourceDefinitionOption).toHaveText("gRPC");
+      await expect(sourceDefinitionOption).toHaveText("Trigger");
     });
 
     test("should have proper delete source modal and delete source", async ({
