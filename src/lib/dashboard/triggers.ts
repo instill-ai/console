@@ -7,13 +7,13 @@ import {
   useQuery,
 } from "@instill-ai/toolkit";
 
-export type ListPipelineTriggersMetricResponse = {
+export type ListPipelineTriggerRecordsResponse = {
   pipeline_trigger_records: PipelineTrigger[];
   next_page_token: string;
   total_size: string;
 };
 
-export async function listPipelineTriggersMetricQuery({
+export async function listPipelineTriggerRecordsQuery({
   pageSize,
   nextPageToken,
   accessToken,
@@ -35,7 +35,7 @@ export async function listPipelineTriggersMetricQuery({
       filter
     );
 
-    const { data } = await client.get<ListPipelineTriggersMetricResponse>(
+    const { data } = await client.get<ListPipelineTriggerRecordsResponse>(
       queryString
     );
 
@@ -43,7 +43,7 @@ export async function listPipelineTriggersMetricQuery({
 
     if (data.next_page_token) {
       triggers.push(
-        ...(await listPipelineTriggersMetricQuery({
+        ...(await listPipelineTriggerRecordsQuery({
           pageSize,
           accessToken,
           nextPageToken: data.next_page_token,
@@ -58,7 +58,7 @@ export async function listPipelineTriggersMetricQuery({
   }
 }
 
-export const usePipelineTriggersMetric = ({
+export const usePipelineTriggerRecords = ({
   enabled,
   accessToken,
   filter,
@@ -74,9 +74,9 @@ export const usePipelineTriggersMetric = ({
   retry?: false | number;
 }) => {
   return useQuery(
-    ["metrics", "pipelines", "trigger", filter],
+    ["metrics", "pipelines", "triggers", filter],
     async () => {
-      const triggers = await listPipelineTriggersMetricQuery({
+      const triggers = await listPipelineTriggerRecordsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,
         accessToken,

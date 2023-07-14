@@ -1,4 +1,4 @@
-import { Status, StatusCount } from "@/types";
+import { StatusCount } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 export const timeLineOptions: SingleSelectOption[] = [
