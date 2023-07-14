@@ -20,3 +20,5 @@ test.describe(handleArtivcModelTest);
 test.describe(handleGithubModelTest);
 test.describe(handleHuggingFaceModelTest);
 test.describe(handleLocalModelTest);
+
+// We need to add back tests for pipeline builder
