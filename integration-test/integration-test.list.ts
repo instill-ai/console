@@ -7,8 +7,6 @@ import { handleGithubModelTest } from "./model-github.spec";
 import { handleHuggingFaceModelTest } from "./model-huggingface.spec";
 import { handleLocalModelTest } from "./model-local.spec";
 import { handleOnboardingTest } from "./onboarding.spec";
-import { handleAsyncPipelineTest } from "./pipeline-async.spec";
-import { handleSyncPipelineTest } from "./pipeline-sync.spec";
 import { handleSourceTest } from "./source.spec";
 
 test.describe(handleOnboardingTest);
