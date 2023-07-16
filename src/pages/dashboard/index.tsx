@@ -175,14 +175,9 @@ const PipelinePage: FC & {
     <>
       <PageHead title="dashboard" />
       <div className="flex flex-col">
-        <PageTitle
-          title="Pipeline Triggers"
-          breadcrumbs={[""]}
-          disabledButton={true}
-          buttonName=""
-          buttonLink=""
-          marginBottom="mb-10"
-        />
+        <h2 className="mb-10 w-full text-3xl font-semibold leading-[38px] text-semantic-fg-primary">
+          Pipeline Triggers
+        </h2>
 
         {/* Status */}
 
@@ -262,11 +257,14 @@ const PipelinePage: FC & {
         </div>
 
         {/* Pipeline Table */}
-        <div className="my-4 flex flex-row space-x-8">
-          <div className="my-auto mr-auto flex w-3/5 flex-col">
-            <h2 className="text-[#101828] text-instill-h2">Pipelines</h2>
-            <p>Select pipelines to show triggers</p>
-          </div>
+        <div className="my-4 flex flex-col space-y-2">
+          <h4 className="w-full text-lg font-semibold leading-7 text-semantic-fg-primary">
+            Pipelines
+          </h4>
+          <p className="w-full text-sm font-normal leading-tight text-semantic-fg-disabled">
+            Select pipelines from the table below to view the number of pipeline
+            triggers
+          </p>
         </div>
 
         <div className="my-4">

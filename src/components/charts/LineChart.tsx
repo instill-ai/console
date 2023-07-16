@@ -25,7 +25,7 @@ export const LineChart = ({
   const seriesData = getPipelinesSeries(pipelines);
 
   useEffect(() => {
-    if (chartRef.current && !isLoading) {
+    if (chartRef.current) {
       const myChart = echarts.init(chartRef.current); // eslint-disable-line
       const option = {
         title: {
@@ -35,7 +35,7 @@ export const LineChart = ({
             fontSize: 22,
             fontWeight: 500,
           },
-          text: "No Piplelines",
+          text: isLoading ? "Loading..." : "No Piplelines",
           left: "center",
           top: 100,
         },
@@ -80,6 +80,7 @@ export const LineChart = ({
         },
         series: seriesData,
       };
+
       myChart.setOption(option, true);
     }
   }, [isLoading, xAxisData, seriesData, pipelines]);
@@ -129,21 +130,11 @@ export const LineChart = ({
             </Tooltip.Provider>
           </div>
         </div>
-        <div className="relative self-stretch">
-          {isLoading ? (
-            <div className="p-8">
-              <Skeleton className="h-80 w-full rounded p-8" />
-            </div>
-          ) : (
-            <>
-              <div
-                id="main"
-                ref={chartRef}
-                style={{ width: "100%", height: "400px" }}
-              />
-            </>
-          )}
-        </div>
+        <div
+          id="main"
+          ref={chartRef}
+          style={{ width: "100%", height: "400px" }}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { PipelineTriggersStatusSummaryItem } from "@/types";
-import { Icons, Tag } from "@instill-ai/design-system";
+import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 import { Fragment, ReactNode } from "react";
 
@@ -7,7 +7,19 @@ const PipelineTriggersSummaryCard = (props: {
   summary: Nullable<PipelineTriggersStatusSummaryItem>;
 }) => {
   if (!props.summary) {
-    return <></>;
+    return (
+      <div
+        key={`cards-skeleton`}
+        className="inline-flex h-32 w-64 flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
+      >
+        <div className="self-stretch">
+          <Skeleton className="h-8 w-full rounded" />
+        </div>
+        <div className="my-2 self-stretch">
+          <Skeleton className="h-8 w-full rounded" />
+        </div>
+      </div>
+    );
   }
 
   const {
@@ -31,26 +43,28 @@ const PipelineTriggersSummaryCard = (props: {
   }
 
   return (
-    <div className="inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow">
-      <div className="self-stretch text-[14px] font-medium leading-tight text-gray-800 text-opacity-80">
+    <div className="inline-flex h-32 w-64 flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow">
+      <div className="self-stretch text-[14px] font-medium leading-tight text-semantic-fg-secondary text-opacity-80">
         {summaryName}
       </div>
       <div className="inline-flex items-end justify-start gap-4 self-stretch">
-        <div className="shrink grow basis-0 text-[28px] font-bold leading-loose text-gray-800">
+        <div className="shrink grow basis-0 text-[28px] font-bold leading-loose text-semantic-fg-secondary">
           {amount}
         </div>
-        {statusType === "STATUS_ERRORED" ? (
-          <Tag variant="lightRed" size="sm" className="gap-x-2">
-            <Icons.ArrowDown className="h-4 w-4 stroke-semantic-error-default" />
-            {`${delta} %`}
-          </Tag>
-        ) : null}
-        {statusType === "STATUS_COMPLETED" ? (
-          <Tag variant="lightGreen" size="sm" className="gap-x-2">
-            <Icons.ArrowUp className="h-4 w-4 stroke-semantic-success-default" />
-            {`${delta} %`}
-          </Tag>
-        ) : null}
+        <div className="pb-3">
+          {statusType === "STATUS_ERRORED" ? (
+            <Tag variant="lightRed" size="sm" className="gap-x-2 border-0">
+              <Icons.ArrowDown className="h-4 w-4 stroke-semantic-error-default" />
+              {`${delta} %`}
+            </Tag>
+          ) : null}
+          {statusType === "STATUS_COMPLETED" ? (
+            <Tag variant="lightGreen" size="sm" className="gap-x-2 border-0">
+              <Icons.ArrowUp className="h-4 w-4 stroke-semantic-success-default" />
+              {`${delta} %`}
+            </Tag>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -67,9 +81,7 @@ export const PipelineTriggersSummary = (
 
   return (
     <Fragment>
-      <div className="grid grid-cols-2 gap-y-[20px] md:grid-cols-2 md:gap-x-[20px]">
-        {children}
-      </div>
+      <div className="flex flex-row gap-x-4">{children}</div>
     </Fragment>
   );
 };
