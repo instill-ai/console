@@ -1,4 +1,4 @@
-import { StatusCount } from "@/types";
+import { PipelineTriggersStatusSummary } from "@/types";
 import { SingleSelectOption } from "@instill-ai/design-system";
 
 export const timeLineOptions: SingleSelectOption[] = [
@@ -64,17 +64,18 @@ export const defaultTimeOption: SingleSelectOption = {
   value: "24h",
 };
 
-export const defaultStatusCount: StatusCount = {
-  completed: {
-    state: "completed",
-    amount: 0,
-    type: "pipeline",
-    change: 0,
-  },
-  errored: {
-    state: "errored",
-    amount: 0,
-    type: "pipeline",
-    change: 0,
-  },
-};
+export const defaultPipelineTriggersStatusSummary: PipelineTriggersStatusSummary =
+  {
+    completed: {
+      statusType: "STATUS_COMPLETED",
+      amount: 0,
+      type: "pipeline",
+      delta: 0,
+    },
+    errored: {
+      statusType: "STATUS_ERRORED",
+      amount: 0,
+      type: "pipeline",
+      delta: 0,
+    },
+  };

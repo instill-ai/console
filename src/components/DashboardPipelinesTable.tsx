@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  NameCell,
   TableHead,
   TableHeadItem,
   PaginationListContainer,
@@ -10,28 +9,27 @@ import {
   PipelineTablePlaceholder,
   chunk,
   env,
+  type Nullable,
 } from "@instill-ai/toolkit";
-import { type Nullable } from "@instill-ai/toolkit";
-import { DeafultCell } from "./cells/Cell";
 import { PipelineTriggerCount } from "@/types";
-import { StateCell } from "./cells/StateCell";
+import { Cell, GeneralStateCell } from "./cells";
 
 export type PipelinesTableProps = {
-  pipelines: PipelineTriggerCount[];
+  pipelineTriggerCounts: PipelineTriggerCount[];
   isError: boolean;
   isLoading: boolean;
 } & Pick<PaginationListContainerProps, "marginBottom">;
 
 export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
-  const { pipelines, marginBottom, isError, isLoading } = props;
+  const { pipelineTriggerCounts, marginBottom, isError, isLoading } = props;
   const [currentPage, setCurrentPage] = React.useState(0);
   const [searchTerm, setSearchTerm] = React.useState<Nullable<string>>(null);
 
   // We will only use searched resource when user input search term
 
-  const pipelinePages = React.useMemo(() => {
-    return chunk(pipelines, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
-  }, [pipelines]);
+  const pipelineTriggerPages = React.useMemo(() => {
+    return chunk(pipelineTriggerCounts, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [pipelineTriggerCounts]);
 
   const tableHeadItems = React.useMemo<TableHeadItem[]>(() => {
     return [
@@ -67,7 +65,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
         setCurrentPage={setCurrentPage}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        totalPage={pipelinePages.length}
+        totalPage={pipelineTriggerPages.length}
         disabledSearchField={true}
         marginBottom={marginBottom}
       >
@@ -76,7 +74,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
     );
   }
 
-  if (pipelines.length === 0 && !isLoading) {
+  if (pipelineTriggerCounts.length === 0 && !isLoading) {
     return (
       <PaginationListContainer
         title=""
@@ -85,7 +83,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
         setCurrentPage={setCurrentPage}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        totalPage={pipelinePages.length}
+        totalPage={pipelineTriggerPages.length}
         disabledSearchField={true}
         marginBottom={marginBottom}
       >
@@ -102,7 +100,7 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
       setCurrentPage={setCurrentPage}
       searchTerm={null}
       setSearchTerm={setSearchTerm}
-      totalPage={pipelinePages.length}
+      totalPage={pipelineTriggerPages.length}
       disabledSearchField={true}
       marginBottom={marginBottom}
     >
@@ -125,40 +123,35 @@ export const DashboardPipelinesTable = (props: PipelinesTableProps) => {
                   <SkeletonCell width={null} padding="py-2 pr-6" />
                 </tr>
               ))
-            : pipelinePages[currentPage]
-            ? pipelinePages[currentPage]?.map((pipeline) => (
+            : pipelineTriggerPages[currentPage]
+            ? pipelineTriggerPages[currentPage]?.map((pipelineTriggerCount) => (
                 <tr
-                  key={pipeline.pipeline_uid}
+                  key={pipelineTriggerCount.pipeline_uid}
                   className="border border-instillGrey20 bg-white"
                 >
-                  <DeafultCell
-                    name={pipeline.pipeline_id}
+                  <Cell
+                    name={pipelineTriggerCount.pipeline_id}
                     width={null}
                     padding="py-2 pl-6"
-                    link={`/dashboard/pipeline/${pipeline.pipeline_id}`}
+                    link={`/dashboard/pipeline/${pipelineTriggerCount.pipeline_id}`}
                   />
 
-                  <StateCell
-                    name={
-                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
-                    }
+                  <GeneralStateCell
                     width={null}
-                    state={
-                      pipeline.status ? pipeline.status : "STATE_UNSPECIFIED"
-                    }
-                    padding="py-2 pl-6"
+                    state={pipelineTriggerCount.watchState}
+                    padding="py-2"
                   />
 
-                  <DeafultCell
-                    name={pipeline.pipeline_completed}
+                  <Cell
+                    name={pipelineTriggerCount.pipeline_completed}
                     width={null}
-                    padding="py-2 pl-6"
+                    padding="py-2"
                   />
 
-                  <DeafultCell
-                    name={pipeline.pipeline_error}
+                  <Cell
+                    name={pipelineTriggerCount.pipeline_errored}
                     width={null}
-                    padding="py-2 pl-6"
+                    padding="py-2 pr-6"
                   />
                 </tr>
               ))

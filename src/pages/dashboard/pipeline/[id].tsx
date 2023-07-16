@@ -1,19 +1,17 @@
-import React, { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
-import { StatusCardsGroup } from "@/components/cards";
-import { Status, StatusCount } from "@/types";
 import { useRouter } from "next/router";
 import {
-  defaultStatusCount,
+  getPipelineTriggersSummary,
   getPreviousTime,
-  getStatusCount,
   getTimeInRFC3339Format,
-  usePipelineTriggersMetric,
+  usePipelineTriggerRecords,
 } from "@/lib/dashboard";
-import { PipelineTriggerTable } from "@/components/PipelineTriggerTable";
 import { FilterByDay } from "@/components/filter/FilterByDay";
+import { PipelineTriggersSummary } from "@/components/PipelineTriggersSummary";
+import { PipelineTriggersTable } from "@/components/PipelineTriggersTable";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -30,17 +28,17 @@ const PipelinePage: FC & {
    * -----------------------------------------------------------------------*/
 
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SingleSelectOption>({
+    useState<SingleSelectOption>({
       label: "24h",
       value: "24h",
     });
 
-  const [queryString, setQueryString] = React.useState<Nullable<string>>("");
+  const [queryString, setQueryString] = useState<Nullable<string>>("");
   const [queryStringPrevious, setQueryStringPrevious] =
-    React.useState<Nullable<string>>("");
-  const [currentPage, setCurrentPage] = React.useState(0);
+    useState<Nullable<string>>("");
+  const [currentPage, setCurrentPage] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let queryParams = ``;
     let queryParamsPrevious = "";
 
@@ -69,13 +67,13 @@ const PipelinePage: FC & {
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
-  const pipelines = usePipelineTriggersMetric({
+  const pipelineTriggerRecords = usePipelineTriggerRecords({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : `pipeline_id='${id?.toString()}'`,
   });
 
-  const pipelinesPrevious = usePipelineTriggersMetric({
+  const previousPipelineTriggerRecords = usePipelineTriggerRecords({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious
@@ -83,12 +81,24 @@ const PipelinePage: FC & {
       : `pipeline_id='${id?.toString()}'`,
   });
 
-  const statusCount = React.useMemo<StatusCount>(() => {
-    if (pipelines.data && pipelinesPrevious.data) {
-      return getStatusCount(pipelines.data, pipelinesPrevious.data);
+  const pipelineTriggersSummary = useMemo(() => {
+    if (
+      !pipelineTriggerRecords.isSuccess ||
+      !previousPipelineTriggerRecords.isSuccess
+    ) {
+      return null;
     }
-    return defaultStatusCount;
-  }, [pipelines.data, pipelinesPrevious.data]);
+
+    return getPipelineTriggersSummary(
+      pipelineTriggerRecords.data,
+      previousPipelineTriggerRecords.data
+    );
+  }, [
+    pipelineTriggerRecords.isSuccess,
+    pipelineTriggerRecords.data,
+    previousPipelineTriggerRecords.isSuccess,
+    previousPipelineTriggerRecords.data,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -111,17 +121,28 @@ const PipelinePage: FC & {
 
         <div className="flex items-stretch space-x-4">
           <div className="w-1/2">
-            <StatusCardsGroup
-              type="pipeline"
-              statusStats={statusCount}
-              isLoading={pipelines.isLoading || pipelines.isLoading}
-            />
+            <PipelineTriggersSummary>
+              <PipelineTriggersSummary.Card
+                summary={
+                  pipelineTriggersSummary
+                    ? pipelineTriggersSummary.completed
+                    : null
+                }
+              />
+              <PipelineTriggersSummary.Card
+                summary={
+                  pipelineTriggersSummary
+                    ? pipelineTriggersSummary.errored
+                    : null
+                }
+              />
+            </PipelineTriggersSummary>
           </div>
           {/* Filter for graph */}
           <div className="w-1/2 self-end">
             <div className="my-1">
               <FilterByDay
-                refetch={pipelines.refetch}
+                refetch={pipelineTriggerRecords.refetch}
                 selectedTimeOption={selectedTimeOption}
                 setSelectedTimeOption={setSelectedTimeOption}
               />
@@ -132,11 +153,14 @@ const PipelinePage: FC & {
         {/* Pipeline Table */}
 
         <div className="my-8">
-          <PipelineTriggerTable
-            pipelines={pipelines?.data ? pipelines.data : []}
-            isError={pipelines.isError}
-            isLoading={pipelines.isLoading}
-            statusCount={statusCount}
+          <PipelineTriggersTable
+            pipelineTriggers={
+              pipelineTriggerRecords.isSuccess
+                ? pipelineTriggerRecords.data
+                : []
+            }
+            isError={pipelineTriggerRecords.isError}
+            isLoading={pipelineTriggerRecords.isLoading}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />

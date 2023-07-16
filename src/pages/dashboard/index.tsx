@@ -1,23 +1,27 @@
-import React, { FC, ReactElement } from "react";
+import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
-import { StatusCardsGroup } from "@/components/cards";
-import { PipelineTriggerCount, Status, StatusCount } from "@/types";
+import { PipelineTriggerCount } from "@/types";
 import {
   defaultSelectOption,
-  defaultStatusCount,
   defaultTimeOption,
-  getPipelinesTriggerCount,
+  getPipelineTriggerCounts,
+  getPipelineTriggersSummary,
   getPreviousTime,
-  getStatusCount,
   getTimeInRFC3339Format,
   statusOptions,
-  usePipelineTriggersMetric,
+  usePipelineTriggerRecords,
 } from "@/lib/dashboard";
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { LineChart } from "@/components/charts";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
-import { Nullable, usePipelines } from "@instill-ai/toolkit";
+import {
+  Nullable,
+  PipelineWithWatchState,
+  usePipelines,
+  useWatchPipelines,
+} from "@instill-ai/toolkit";
 import { FilterByDay } from "@/components/filter/FilterByDay";
+import { PipelineTriggersSummary } from "@/components/PipelineTriggersSummary";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -30,14 +34,14 @@ const PipelinePage: FC & {
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SingleSelectOption>(defaultTimeOption);
+    useState<SingleSelectOption>(defaultTimeOption);
   const [selectedStatusOption, setSelectedStatusOption] =
-    React.useState<Nullable<SingleSelectOption>>(defaultSelectOption);
-  const [queryString, setQueryString] = React.useState<Nullable<string>>("");
+    useState<Nullable<SingleSelectOption>>(defaultSelectOption);
+  const [queryString, setQueryString] = useState<Nullable<string>>("");
   const [queryStringPrevious, setQueryStringPrevious] =
-    React.useState<Nullable<string>>("");
+    useState<Nullable<string>>("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     let queryParams = "";
     let queryParamsPrevious = "";
 
@@ -76,50 +80,92 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const triggers = usePipelineTriggersMetric({
+  const pipelinesWatchState = useWatchPipelines({
+    enabled: pipelines.isSuccess,
+    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
+    accessToken: null,
+  });
+
+  const pipelineTriggerRecords = usePipelineTriggerRecords({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : null,
   });
 
-  const triggersPrevious = usePipelineTriggersMetric({
+  const previousPipelineTriggerRecords = usePipelineTriggerRecords({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
-  const pipeliesResult = React.useMemo<PipelineTriggerCount[]>(() => {
-    if (triggers.data && pipelines.data) {
-      const formattedPipelines = getPipelinesTriggerCount(
-        triggers.data,
-        pipelines.data,
-        selectedTimeOption
-      );
-      if (selectedStatusOption && selectedStatusOption.value !== "all") {
-        return formattedPipelines.filter(
-          (pipelies) => pipelies.status === selectedStatusOption.value
-        );
-      }
-      return formattedPipelines;
+  const pipelineTriggerCounts = useMemo<PipelineTriggerCount[]>(() => {
+    if (
+      !pipelineTriggerRecords.isSuccess ||
+      !pipelines.isSuccess ||
+      !pipelinesWatchState.isSuccess
+    ) {
+      return [];
     }
-    return [];
-  }, [selectedStatusOption, selectedTimeOption, triggers.data, pipelines.data]);
 
-  const statusCount = React.useMemo<StatusCount>(() => {
-    if ((triggers.data && triggersPrevious.data, pipeliesResult.length)) {
-      const pipeliesList = pipeliesResult.map(
-        (pipelies) => pipelies.pipeline_id
+    const pipelinesWithWatchState: PipelineWithWatchState[] =
+      pipelines.data.map((pipeline) => ({
+        ...pipeline,
+        watchState:
+          pipelinesWatchState.data[pipeline.name].state ?? "STATE_UNSPECIFIED",
+      }));
+
+    const pipelineTriggerCounts = getPipelineTriggerCounts(
+      pipelineTriggerRecords.data,
+      pipelinesWithWatchState,
+      selectedTimeOption
+    );
+
+    if (selectedStatusOption && selectedStatusOption.value !== "all") {
+      return pipelineTriggerCounts.filter(
+        (pipelies) => pipelies.watchState === selectedStatusOption.value
       );
-      const triggersData = triggers.data?.filter((trigger) =>
-        pipeliesList.includes(trigger.pipeline_id)
-      );
-      const triggersPreviousData = triggersPrevious.data?.filter((trigger) =>
-        pipeliesList.includes(trigger.pipeline_id)
-      );
-      return getStatusCount(triggersData || [], triggersPreviousData || []);
     }
-    return defaultStatusCount;
-  }, [pipeliesResult, triggers.data, triggersPrevious.data]);
+
+    return pipelineTriggerCounts;
+  }, [
+    selectedStatusOption,
+    selectedTimeOption,
+    pipelineTriggerRecords.isSuccess,
+    pipelineTriggerRecords.data,
+    pipelines.isSuccess,
+    pipelines.data,
+    pipelinesWatchState.isSuccess,
+    pipelinesWatchState.data,
+  ]);
+
+  const pipelineTriggersSummary = useMemo(() => {
+    if (
+      !pipelineTriggerRecords.isSuccess ||
+      !previousPipelineTriggerRecords.isSuccess ||
+      pipelineTriggerCounts.length === 0
+    ) {
+      return null;
+    }
+
+    const triggeredPipelineIdList = pipelineTriggerCounts.map(
+      (e) => e.pipeline_id
+    );
+
+    return getPipelineTriggersSummary(
+      pipelineTriggerRecords.data.filter((trigger) =>
+        triggeredPipelineIdList.includes(trigger.pipeline_id)
+      ),
+      previousPipelineTriggerRecords.data.filter((trigger) =>
+        triggeredPipelineIdList.includes(trigger.pipeline_id)
+      )
+    );
+  }, [
+    pipelineTriggerRecords.isSuccess,
+    pipelineTriggerRecords.data,
+    previousPipelineTriggerRecords.isSuccess,
+    previousPipelineTriggerRecords.data,
+    pipelineTriggerCounts,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -142,11 +188,22 @@ const PipelinePage: FC & {
 
         <div className="flex items-stretch space-x-4">
           <div className="w-1/2">
-            <StatusCardsGroup
-              type="pipeline"
-              statusStats={statusCount}
-              isLoading={triggers.isLoading || triggersPrevious.isLoading}
-            />
+            <PipelineTriggersSummary>
+              <PipelineTriggersSummary.Card
+                summary={
+                  pipelineTriggersSummary
+                    ? pipelineTriggersSummary.completed
+                    : null
+                }
+              />
+              <PipelineTriggersSummary.Card
+                summary={
+                  pipelineTriggersSummary
+                    ? pipelineTriggersSummary.errored
+                    : null
+                }
+              />
+            </PipelineTriggersSummary>
           </div>
           {/* Filter for graph */}
           <div className="w-1/2 self-end">
@@ -185,7 +242,7 @@ const PipelinePage: FC & {
               </div>
               <div className="my-1">
                 <FilterByDay
-                  refetch={triggers.refetch}
+                  refetch={pipelineTriggerRecords.refetch}
                   selectedTimeOption={selectedTimeOption}
                   setSelectedTimeOption={setSelectedTimeOption}
                 />
@@ -198,8 +255,8 @@ const PipelinePage: FC & {
 
         <div className="my-8">
           <LineChart
-            isLoading={triggers.isLoading}
-            pipelines={pipeliesResult}
+            isLoading={pipelineTriggerRecords.isLoading}
+            pipelines={pipelineTriggerCounts}
             selectedTimeOption={selectedTimeOption}
           />
         </div>
@@ -214,9 +271,9 @@ const PipelinePage: FC & {
 
         <div className="my-4">
           <DashboardPipelinesTable
-            pipelines={pipeliesResult}
-            isError={triggers.isError || pipelines.isError}
-            isLoading={triggers.isLoading || pipelines.isLoading}
+            pipelineTriggerCounts={pipelineTriggerCounts}
+            isError={pipelineTriggerRecords.isError || pipelines.isError}
+            isLoading={pipelineTriggerRecords.isLoading || pipelines.isLoading}
           />
         </div>
       </div>

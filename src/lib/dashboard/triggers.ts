@@ -1,4 +1,4 @@
-import { PipelineTrigger } from "@/types";
+import { PipelineTriggerRecord } from "@/types";
 import {
   Nullable,
   createInstillAxiosClient,
@@ -8,7 +8,7 @@ import {
 } from "@instill-ai/toolkit";
 
 export type ListPipelineTriggerRecordsResponse = {
-  pipeline_trigger_records: PipelineTrigger[];
+  pipeline_trigger_records: PipelineTriggerRecord[];
   next_page_token: string;
   total_size: string;
 };
@@ -26,7 +26,7 @@ export async function listPipelineTriggerRecordsQuery({
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "base");
-    const triggers: PipelineTrigger[] = [];
+    const triggers: PipelineTriggerRecord[] = [];
 
     const queryString = getQueryString(
       `/metrics/vdp/pipeline/triggers`,

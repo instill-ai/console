@@ -1,21 +1,15 @@
 import { Nullable } from "@instill-ai/toolkit";
 import cn from "clsx";
-import { link } from "fs";
 import Link from "next/link";
 
-export type DeafultCellProps = {
+export type CellProps = {
   width: Nullable<string>;
   name: string | number | undefined;
   padding: string;
   link?: string;
 };
 
-export const DeafultCell = ({
-  width,
-  name,
-  padding,
-  link,
-}: DeafultCellProps) => {
+export const Cell = ({ width, name, padding, link }: CellProps) => {
   return (
     <td>
       <div className={cn("flex flex-row gap-x-2", width, padding)}>

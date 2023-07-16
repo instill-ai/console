@@ -6,22 +6,29 @@ import {
   TableError,
   SkeletonCell,
   PipelineTablePlaceholder,
-  StateOverview,
   chunk,
   env,
+  PaginationListContainerProps,
+  type Nullable,
 } from "@instill-ai/toolkit";
-import { type Nullable } from "@instill-ai/toolkit";
-import { PipelinesTableProps } from "@/types";
-import { DeafultCell } from "./cells/Cell";
-import { StateCell } from "./cells/StateCell";
+import { PipelineTriggerRecord } from "@/types";
+import { Cell, GeneralStateCell } from "./cells";
 
-export const PipelineTriggerTable = (props: PipelinesTableProps) => {
+export type PipelineTriggersTableProps = {
+  pipelineTriggers: PipelineTriggerRecord[];
+  isError: boolean;
+  isLoading: boolean;
+} & Pick<
+  PaginationListContainerProps,
+  "marginBottom" | "currentPage" | "setCurrentPage"
+>;
+
+export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
   const {
-    pipelines,
+    pipelineTriggers,
     marginBottom,
     isError,
     isLoading,
-    statusCount,
     currentPage,
     setCurrentPage,
   } = props;
@@ -30,35 +37,29 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
 
   // We will only use searched resource when user input search term
 
-  const pipelinePages = React.useMemo(() => {
-    return chunk(pipelines, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
-  }, [pipelines]);
+  const pipelineTriggerPages = React.useMemo(() => {
+    return chunk(pipelineTriggers, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
+  }, [pipelineTriggers]);
 
   const tableHeadItems = React.useMemo<TableHeadItem[]>(() => {
     return [
       {
-        key: "pipeline-state-overview-head",
+        key: "pipeline-triggers-timestamp",
         item: "Timestamp",
         width: "w-[360px]",
       },
       {
-        key: "pipeline-mode-head",
-        item: (
-          <StateOverview
-            errorCounts={statusCount.errored.amount || 0}
-            offlineCounts={0}
-            onlineCounts={statusCount.completed.amount || 0}
-          />
-        ),
+        key: "pipeline-triggers-mode-head",
+        item: "State",
         width: "w-[160px]",
       },
       {
-        key: "pipeline-source-head",
+        key: "pipeline-triggers-trigger-time-head",
         item: "Trigger time",
         width: "w-[160px]",
       },
       {
-        key: "pipeline-models-head",
+        key: "pipeline-triggers-trigger-id-head",
         item: "Trigger ID",
         width: "w-auto",
       },
@@ -74,7 +75,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
         setCurrentPage={setCurrentPage}
         searchTerm={null}
         setSearchTerm={setSearchTerm}
-        totalPage={pipelinePages.length}
+        totalPage={pipelineTriggerPages.length}
         disabledSearchField={true}
         marginBottom={marginBottom}
       >
@@ -83,7 +84,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
     );
   }
 
-  if (pipelines.length === 0 && !isLoading) {
+  if (pipelineTriggers.length === 0 && !isLoading) {
     return (
       <PaginationListContainer
         title="Pipeline Triggers"
@@ -92,7 +93,7 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
         setCurrentPage={setCurrentPage}
         searchTerm={null}
         setSearchTerm={setSearchTerm}
-        totalPage={pipelinePages.length}
+        totalPage={pipelineTriggerPages.length}
         disabledSearchField={true}
         marginBottom={marginBottom}
       >
@@ -107,9 +108,9 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
       description=""
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
-      searchTerm={null}
+      searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      totalPage={pipelinePages.length}
+      totalPage={pipelineTriggerPages.length}
       disabledSearchField={true}
       marginBottom={marginBottom}
     >
@@ -132,35 +133,34 @@ export const PipelineTriggerTable = (props: PipelinesTableProps) => {
                   <SkeletonCell width={null} padding="py-2 pr-6" />
                 </tr>
               ))
-            : pipelinePages[currentPage]
-            ? pipelinePages[currentPage].map((pipeline) => (
+            : pipelineTriggerPages[currentPage]
+            ? pipelineTriggerPages[currentPage].map((pipelineTrigger) => (
                 <tr
-                  key={pipeline.pipeline_trigger_id}
+                  key={pipelineTrigger.pipeline_trigger_id}
                   className="border border-instillGrey20 bg-white"
                 >
-                  <DeafultCell
-                    name={pipeline.trigger_time}
+                  <Cell
+                    name={pipelineTrigger.trigger_time}
                     width={null}
                     padding="py-2 pl-6"
                   />
 
-                  <StateCell
-                    name={pipeline.status}
+                  <GeneralStateCell
                     width={null}
-                    state={pipeline.status}
-                    padding="py-2 pl-6"
+                    state={pipelineTrigger.status}
+                    padding="py-2"
                   />
 
-                  <DeafultCell
-                    name={pipeline.compute_time_duration}
+                  <Cell
+                    name={pipelineTrigger.compute_time_duration}
                     width={null}
-                    padding="py-2 pl-6"
+                    padding="py-2"
                   />
 
-                  <DeafultCell
-                    name={String(pipeline.pipeline_trigger_id)}
+                  <Cell
+                    name={String(pipelineTrigger.pipeline_trigger_id)}
                     width={null}
-                    padding="py-2 pl-6"
+                    padding="py-2 pr-6"
                   />
                 </tr>
               ))
