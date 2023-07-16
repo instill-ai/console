@@ -142,7 +142,7 @@ const PipelinePage: FC & {
     if (
       !pipelineTriggerRecords.isSuccess ||
       !previousPipelineTriggerRecords.isSuccess ||
-      pipelineTriggerCounts.length === 0
+      !pipelineTriggerCounts
     ) {
       return null;
     }
