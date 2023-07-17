@@ -37,7 +37,6 @@ export function getPipelineTriggersSummary(
   let pipelineErroredAmountPrevious = 0;
 
   getPipelineTriggerCounts(triggers).forEach((trigger) => {
-    console.log(trigger);
     pipelineCompleteAmount += trigger.pipeline_completed;
     pipelineErroredAmount += trigger.pipeline_errored;
   });
