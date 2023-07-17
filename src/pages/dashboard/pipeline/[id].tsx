@@ -176,7 +176,7 @@ PipelinePage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="py-8 px-16">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );

@@ -10,7 +10,7 @@ const PipelineTriggersSummaryCard = (props: {
     return (
       <div
         key={`cards-skeleton`}
-        className="inline-flex h-32 w-64 flex-col items-start justify-start gap-2 rounded-sm border border-slate-200 bg-white p-6 shadow"
+        className="inline-flex h-32 w-64 flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-white p-6 shadow"
       >
         <div className="self-stretch">
           <Skeleton className="h-8 w-full rounded" />
@@ -43,15 +43,15 @@ const PipelineTriggersSummaryCard = (props: {
   }
 
   return (
-    <div className="inline-flex h-32 w-64 flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow">
-      <div className="self-stretch text-[14px] font-medium leading-tight text-semantic-fg-secondary text-opacity-80">
+    <div className="inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow">
+      <div className="self-stretch text-semantic-fg-secondary product-body-text-3-medium">
         {summaryName}
       </div>
       <div className="inline-flex items-end justify-start gap-4 self-stretch">
-        <div className="shrink grow basis-0 text-[28px] font-bold leading-loose text-semantic-fg-secondary">
+        <div className="mr-auto text-semantic-fg-primary product-headings-heading-1">
           {amount}
         </div>
-        <div className="pb-3">
+        <div className="my-auto flex items-center justify-center">
           {statusType === "STATUS_ERRORED" ? (
             <Tag variant="lightRed" size="sm" className="gap-x-2 border-0">
               <Icons.ArrowDown className="h-4 w-4 stroke-semantic-error-default" />
@@ -81,7 +81,7 @@ export const PipelineTriggersSummary = (
 
   return (
     <Fragment>
-      <div className="flex flex-row gap-x-4">{children}</div>
+      <div className="grid w-[516px] grid-cols-2 gap-x-6">{children}</div>
     </Fragment>
   );
 };

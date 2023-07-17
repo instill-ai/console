@@ -19,28 +19,48 @@ export const FilterByDay = ({
 }: FilterProps) => {
   return (
     <div className="flex flex-row-reverse space-x-4 space-x-reverse">
-      <div className="flex items-start justify-start gap-[1px] border border-slate-200 bg-slate-200">
+      <div className="border-semantic flex items-start justify-start">
         {timeLineOptions.map((timeLineOption) => (
           <div
             key={timeLineOption.value}
             className={cn(
-              `flex w-[75px] cursor-pointer items-center justify-center gap-1 self-stretch ${
-                timeLineOption.value === selectedTimeOption?.value
-                  ? "bg-slate-200"
-                  : "bg-white"
-              } px-2 py-1`
+              "flex cursor-pointer items-center justify-center self-stretch px-4 py-3 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
+              timeLineOption.value === selectedTimeOption?.value
+                ? "bg-semantic-bg-line"
+                : "bg-white"
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);
             }}
           >
-            <div className="Label text-center text-[12px] font-semibold leading-none text-gray-800">
+            <div className="text-semantic-fg-primary product-body-text-4-semibold">
               {timeLineOption.label}
             </div>
           </div>
         ))}
       </div>
-      <Button variant="secondaryGrey" size="sm" onClick={() => refetch()}>
+      {/* <div className="table border-collapse">
+        <div className="table-row">
+          {timeLineOptions.map((timeLineOption) => (
+            <Button
+              className="!box-border !rounded-none !border-none outline outline-1 outline-semantic-bg-line hover:!outline-semantic-fg-secondary"
+              variant="secondaryGrey"
+              size="sm"
+              onClick={() => refetch()}
+            >
+              <div className="text-semantic-fg-primary product-body-text-4-semibold">
+                {timeLineOption.label}
+              </div>
+            </Button>
+          ))}
+        </div>
+      </div> */}
+      <Button
+        className=""
+        variant="secondaryGrey"
+        size="sm"
+        onClick={() => refetch()}
+      >
         <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
       </Button>
     </div>
