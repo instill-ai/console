@@ -27,7 +27,7 @@ export const LineChart = ({
   useEffect(() => {
     if (chartRef.current) {
       // Dispose the previous chart instance
-      echarts.dispose(chartRef.current);
+      echarts.dispose(chartRef.current); // eslint-disable-line
       const myChart = echarts.init(chartRef.current); // eslint-disable-line
       const option = {
         title: {
