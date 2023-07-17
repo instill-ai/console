@@ -1,5 +1,5 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
-import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
+import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { PipelineTriggerCount } from "@/types";
 import {
   defaultSelectOption,

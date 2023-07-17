@@ -2,12 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { PipelineTriggerCount } from "@/types";
 import { getDateRange, getPipelinesSeries } from "@/lib/dashboard";
-import {
-  Icons,
-  SingleSelectOption,
-  Skeleton,
-  Tooltip,
-} from "@instill-ai/design-system";
+import { Icons, SingleSelectOption, Tooltip } from "@instill-ai/design-system";
 
 type LineChartProps = {
   pipelines: PipelineTriggerCount[];
