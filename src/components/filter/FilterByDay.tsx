@@ -56,7 +56,7 @@ export const FilterByDay = ({
         </div>
       </div> */}
       <Button
-        className=""
+        className="my-auto !p-2"
         variant="secondaryGrey"
         size="sm"
         onClick={() => refetch()}
