@@ -1,27 +1,27 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { PipelineTriggerCount } from "@/types";
+
+import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
+  DashboardAvailableTimeframe,
+  DashboardPipelinesTable,
+  FilterByDay,
+  Nullable,
+  PipelineTriggerCountsLineChart,
+  PipelineTriggersSummary,
+  PipelineWithWatchState,
   defaultSelectOption,
   defaultTimeOption,
   getPipelineTriggerCounts,
   getPipelineTriggersSummary,
-  getPreviousTime,
+  getPreviousTimeframe,
   getTimeInRFC3339Format,
   statusOptions,
   usePipelineTriggerRecords,
-} from "@/lib/dashboard";
-import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
-import { LineChart } from "@/components/charts";
-import { Select, SingleSelectOption } from "@instill-ai/design-system";
-import {
-  Nullable,
-  PipelineWithWatchState,
   usePipelines,
   useWatchPipelines,
 } from "@instill-ai/toolkit";
-import { FilterByDay } from "@/components/filter/FilterByDay";
-import { PipelineTriggersSummary } from "@/components/PipelineTriggersSummary";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -55,7 +55,9 @@ const PipelinePage: FC & {
         selectedTimeOption?.value === "1d" ? "todayStart" : "now"
       );
       const previousTime = getTimeInRFC3339Format(
-        getPreviousTime(selectedTimeOption.value)
+        getPreviousTimeframe(
+          selectedTimeOption.value as DashboardAvailableTimeframe
+        )
       );
 
       if (queryParams) {
@@ -249,7 +251,7 @@ const PipelinePage: FC & {
         {/* Pipeline Chart */}
 
         <div className="my-8">
-          <LineChart
+          <PipelineTriggerCountsLineChart
             isLoading={pipelineTriggerRecords.isLoading}
             pipelines={pipelineTriggerCounts}
             selectedTimeOption={selectedTimeOption}

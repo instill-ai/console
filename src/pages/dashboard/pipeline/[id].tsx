@@ -1,17 +1,18 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { SingleSelectOption } from "@instill-ai/design-system";
-import { Nullable } from "@instill-ai/toolkit";
-import { useRouter } from "next/router";
 import {
   getPipelineTriggersSummary,
-  getPreviousTime,
+  getPreviousTimeframe,
   getTimeInRFC3339Format,
   usePipelineTriggerRecords,
-} from "@/lib/dashboard";
-import { FilterByDay } from "@/components/filter/FilterByDay";
-import { PipelineTriggersSummary } from "@/components/PipelineTriggersSummary";
-import { PipelineTriggersTable } from "@/components/PipelineTriggersTable";
+  PipelineTriggersTable,
+  PipelineTriggersSummary,
+  FilterByDay,
+  type Nullable,
+  DashboardAvailableTimeframe,
+} from "@instill-ai/toolkit";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -52,7 +53,9 @@ const PipelinePage: FC & {
         selectedTimeOption?.value === "1d" ? "todayStart" : "now"
       );
       const previousTime = getTimeInRFC3339Format(
-        getPreviousTime(selectedTimeOption.value)
+        getPreviousTimeframe(
+          selectedTimeOption.value as DashboardAvailableTimeframe
+        )
       );
       queryParams += `start='${start}' AND stop='${stop}' AND pipeline_id='${id?.toString()}'`;
       queryParamsPrevious += `start='${previousTime}' AND stop='${start}' AND pipeline_id='${id?.toString()}'`;
