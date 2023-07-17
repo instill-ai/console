@@ -1,5 +1,5 @@
 import { timeLineOptions } from "@/lib/dashboard";
-import { Icons, SingleSelectOption } from "@instill-ai/design-system";
+import { Button, Icons, SingleSelectOption } from "@instill-ai/design-system";
 import { QueryObserverResult } from "@tanstack/react-query";
 import React from "react";
 import cn from "clsx";
@@ -40,13 +40,9 @@ export const FilterByDay = ({
           </div>
         ))}
       </div>
-
-      <div
-        className="flex cursor-pointer items-center justify-center rounded border border-slate-200 bg-white p-2"
-        onClick={() => refetch()}
-      >
+      <Button variant="secondaryGrey" size="sm" onClick={() => refetch()}>
         <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
-      </div>
+      </Button>
     </div>
   );
 };
