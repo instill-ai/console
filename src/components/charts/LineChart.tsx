@@ -33,7 +33,7 @@ export const LineChart = ({
         title: {
           show: pipelines.length === 0,
           textStyle: {
-            color: "rgb(31, 41, 55)",
+            color: "#1D2433",
             fontSize: 22,
             fontWeight: 500,
           },
@@ -88,11 +88,11 @@ export const LineChart = ({
   }, [isLoading, xAxisData, seriesData, pipelines]);
 
   return (
-    <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-white shadow">
+    <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
       <div className="flex flex-col items-start justify-start gap-[30px] self-stretch">
         <div className="inline-flex items-center justify-start gap-2.5 self-stretch p-8">
           <div className="flex items-center justify-start gap-2.5">
-            <div className="text-[22px] font-semibold leading-7 text-gray-800">
+            <div className="text-semantic-fg-primary product-headings-heading-2">
               Number of triggers
             </div>
             {/* Tooltip about the chart */}
@@ -109,19 +109,19 @@ export const LineChart = ({
                     sideOffset={5}
                     side={"right"}
                   >
-                    <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-white p-3">
+                    <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
-                        <div className=" elf-stretch text-sm font-semibold leading-none text-gray-800">
+                        <div className="self-stretch text-semantic-fg-primary product-body-text-4-semibold">
                           Number of triggers tooltip
                         </div>
-                        <div className="self-stretch text-sm font-medium leading-none text-gray-800 text-opacity-80">
+                        <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
                           number of pipeline triggers within the last 7 days.
                         </div>
                       </div>
                     </div>
                     <Tooltip.Arrow
-                      className="fill-white"
+                      className="fill-semantic-bg-primary"
                       offset={10}
                       width={18}
                       height={12}
