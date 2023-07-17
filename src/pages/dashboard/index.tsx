@@ -1,6 +1,5 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
-import { PipelineTriggerCount } from "@/types";
 
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
@@ -21,6 +20,7 @@ import {
   usePipelineTriggerRecords,
   usePipelines,
   useWatchPipelines,
+  PipelineTriggerCount,
 } from "@instill-ai/toolkit";
 
 type GetLayOutProps = {

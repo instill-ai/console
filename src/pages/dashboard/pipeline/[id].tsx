@@ -9,8 +9,8 @@ import {
   PipelineTriggersTable,
   PipelineTriggersSummary,
   FilterByDay,
-  type Nullable,
   DashboardAvailableTimeframe,
+  type Nullable,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
 
