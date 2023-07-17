@@ -39,22 +39,6 @@ export const FilterByDay = ({
           </div>
         ))}
       </div>
-      {/* <div className="table border-collapse">
-        <div className="table-row">
-          {timeLineOptions.map((timeLineOption) => (
-            <Button
-              className="!box-border !rounded-none !border-none outline outline-1 outline-semantic-bg-line hover:!outline-semantic-fg-secondary"
-              variant="secondaryGrey"
-              size="sm"
-              onClick={() => refetch()}
-            >
-              <div className="text-semantic-fg-primary product-body-text-4-semibold">
-                {timeLineOption.label}
-              </div>
-            </Button>
-          ))}
-        </div>
-      </div> */}
       <Button
         className="my-auto !p-2"
         variant="secondaryGrey"
