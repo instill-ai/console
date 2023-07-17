@@ -16,6 +16,15 @@ export const Sidebar = () => {
           icon={<Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />}
           name="Model Hub"
           hightlighted={router.pathname.split("/")[1] === "model-hub"}
+          className="mb-4 px-3"
+        />
+        <SidebarLink
+          href="/dashboard"
+          icon={
+            <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
+          }
+          name="Dashboard"
+          hightlighted={router.pathname.split("/")[1] === "dashboard"}
           className="px-3"
         />
       </div>

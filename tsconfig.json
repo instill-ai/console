@@ -16,6 +16,7 @@
       "@/stores/*": ["stores/*"]
     },
     "target": "es5",
+    "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "jsx": "preserve",

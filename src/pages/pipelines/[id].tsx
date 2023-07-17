@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useToast, Icons } from "@instill-ai/design-system";
+import { useToast } from "@instill-ai/design-system";
 import {
   Nullable,
   PipelineBuilderStore,
@@ -60,7 +60,6 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   resourceFormIsDirty: state.resourceFormIsDirty,
   updateSelectedNode: state.updateSelectedNode,
   leftSidebarSelectedTab: state.leftSidebarSelectedTab,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
   pipelineIsNew: state.pipelineIsNew,
 });
@@ -82,7 +81,6 @@ const PipelineBuilderPage: FC & {
     resourceFormIsDirty,
     updateSelectedNode,
     leftSidebarSelectedTab,
-    pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
     pipelineIsNew,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
@@ -431,6 +429,8 @@ const PipelineBuilderPage: FC & {
     blockchains.data?.length,
     blockchainsWatchState.isSuccess,
     blockchainsWithWatchState,
+    pipelineWatchState.data?.state,
+    pipelineWatchState.isSuccess,
   ]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
@@ -454,7 +454,6 @@ const PipelineBuilderPage: FC & {
     isLoadingBlockchainsWithState,
     isLoadingDestinationsWithState,
     isLoadingSourcesWithState,
-    graphIsInitialized,
   ]);
 
   /* -------------------------------------------------------------------------
