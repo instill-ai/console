@@ -798,12 +798,16 @@ const PipelineBuilderPage: FC & {
               </div>
             </DragOverlay>
             <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
-              <div className="z-30 flex w-[var(--sidebar-width)] flex-col bg-semantic-bg-primary">
+              {/* 
+                Left Panel
+              */}
+
+              <div className="z-30 flex w-[var(--sidebar-width)] flex-col border-r border-semantic-bg-line bg-semantic-bg-primary">
                 <LeftSidebar />
               </div>
 
               {/* 
-                Left Sidebar
+                Left Panel
               */}
 
               <div
