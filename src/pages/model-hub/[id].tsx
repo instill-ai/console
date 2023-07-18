@@ -18,6 +18,7 @@ import {
   useWatchModel,
   useModelWithPipelines,
   type ConfigureModelFormStore,
+  useModel,
 } from "@instill-ai/toolkit";
 
 import {
@@ -59,7 +60,7 @@ const ModelDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const modelWithPipelines = useModelWithPipelines({
+  const model = useModel({
     enabled: true,
     modelName: id ? `models/${id}` : null,
     accessToken: null,
@@ -105,16 +106,10 @@ const ModelDetailsPage: FC & {
         <div className="mb-10 flex flex-row gap-x-2.5">
           <ModelDefinitionLabel
             modelDefinition={
-              modelWithPipelines.isSuccess
-                ? modelWithPipelines.data.model_definition
-                : null
+              model.isSuccess ? model.data.model_definition : null
             }
           />
-          <ModelTaskLabel
-            task={
-              modelWithPipelines.isSuccess ? modelWithPipelines.data.task : null
-            }
-          />
+          <ModelTaskLabel task={model.isSuccess ? model.data.task : null} />
           <StateLabel
             enableBgColor={true}
             enableIcon={true}
@@ -129,7 +124,7 @@ const ModelDetailsPage: FC & {
           />
         </div>
         <ChangeModelStateToggle
-          model={modelWithPipelines.isSuccess ? modelWithPipelines.data : null}
+          model={model.isSuccess ? model.data : null}
           modelWatchState={
             modelWatchState.isSuccess ? modelWatchState.data.state : null
           }
@@ -139,9 +134,9 @@ const ModelDetailsPage: FC & {
           accessToken={null}
           disabled={enableGuard}
         />
-        {modelWithPipelines.isSuccess ? (
+        {model.isSuccess ? (
           <ConfigureModelForm
-            model={modelWithPipelines.data}
+            model={model.data}
             marginBottom="mb-[60px]"
             onConfigure={null}
             disabledConfigure={enableGuard}
@@ -160,7 +155,7 @@ const ModelDetailsPage: FC & {
           marginBottom="mb-5"
         />
         <ModelConfigurationFields
-          model={modelWithPipelines.isSuccess ? modelWithPipelines.data : null}
+          model={model.isSuccess ? model.data : null}
           marginBottom="mb-10"
         />
       </div>
