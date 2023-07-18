@@ -802,7 +802,7 @@ const PipelineBuilderPage: FC & {
                 Left Panel
               */}
 
-              <div className="z-30 flex w-[var(--sidebar-width)] flex-col border-r border-semantic-bg-line bg-semantic-bg-primary">
+              <div className="z-30 flex w-[var(--sidebar-width)] flex-col  bg-semantic-bg-primary">
                 <LeftSidebar />
               </div>
 
