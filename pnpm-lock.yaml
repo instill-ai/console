@@ -14,14 +14,14 @@ dependencies:
     specifier: ^3.1.1
     version: 3.1.1(react-hook-form@7.45.0)
   '@instill-ai/design-system':
-    specifier: ^0.32.0
-    version: 0.32.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+    specifier: ^0.33.0-rc.2
+    version: 0.33.0-rc.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
   '@instill-ai/design-tokens':
     specifier: ^0.3.1
     version: 0.3.1(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.61.0-rc.48
-    version: 0.61.0-rc.48(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.61.0-rc.50
+    version: 0.61.0-rc.50(@instill-ai/design-system@0.33.0-rc.2)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -3496,8 +3496,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system@0.32.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
-    resolution: {integrity: sha512-hMjfVduB2nXesR1OW0a0YI1JCsnP5IoFiP4KJXm667bsfp5z4j6yTGuUzdMfpYmeMb5a7V82p4fiTrQOsLIOSw==}
+  /@instill-ai/design-system@0.33.0-rc.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
+    resolution: {integrity: sha512-np6dBlUAsWHRHgIRaMGy1TlLSrR/38Dg9ZFQshCtMuIeCGjsbK6kbODPUtti6dP+BCa0zTQTLt/CPgKUsOzzvQ==}
     engines: {node: '>=14.6.0'}
     peerDependencies:
       react: ^18.2.0
@@ -3505,6 +3505,7 @@ packages:
     dependencies:
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.0)
       '@instill-ai/design-tokens': 0.3.1(tailwindcss@3.3.1)
+      '@radix-ui/react-checkbox': 1.0.4(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-dialog': 1.0.4(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-label': 2.0.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-scroll-area': 1.0.4(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
@@ -3514,6 +3515,7 @@ packages:
       '@radix-ui/react-switch': 1.0.3(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toast': 1.1.4(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-tooltip': 1.0.6(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-table': 8.9.3(react-dom@18.2.0)(react@18.2.0)
       class-variance-authority: 0.6.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3538,8 +3540,8 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.14)
     dev: false
 
-  /@instill-ai/toolkit@0.61.0-rc.48(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Xa/agoWC3f1VTe/ToDX+oIAfTkcdd6HgcJ9nPkkQQN5Qabr3J2ReBfHuoshCk2Ko7Yt2Vg8AhKXYOJTmz9XFLA==}
+  /@instill-ai/toolkit@0.61.0-rc.50(@instill-ai/design-system@0.33.0-rc.2)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-fGrkmFW1OaThRiMzb1vymAjfvvqwCHpZz5hUQZGHCEUvjegbXJkI/DGTYKYM+pz+FqawRHf9qybzEGP7QzZ5PA==}
     peerDependencies:
       '@instill-ai/design-system': 0.32.0
       '@instill-ai/design-tokens': 0.3.1
@@ -3550,7 +3552,7 @@ packages:
       '@amplitude/analytics-browser': 1.12.0
       '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.0)
-      '@instill-ai/design-system': 0.32.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+      '@instill-ai/design-system': 0.33.0-rc.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
       '@instill-ai/design-tokens': 0.3.1(tailwindcss@3.3.1)
       '@radix-ui/react-label': 2.0.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot': 1.0.2(@types/react@17.0.48)(react@18.2.0)
@@ -4202,6 +4204,34 @@ packages:
       '@radix-ui/react-use-controllable-state': 1.0.0(react@18.2.0)
       '@radix-ui/react-use-previous': 1.0.0(react@18.2.0)
       '@radix-ui/react-use-size': 1.0.0(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@radix-ui/react-checkbox@1.0.4(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-CBuGQa52aAYnADZVt/KBQzXrwx6TqnlwtcIPGtVt5JkkzQwMOLJjPukimhfKEr4GQNd43C+djUh5Ikopj8pSLg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@17.0.48)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@17.0.48)(react@18.2.0)
+      '@radix-ui/react-presence': 1.0.1(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@17.0.48)(react@18.2.0)
+      '@radix-ui/react-use-previous': 1.0.1(@types/react@17.0.48)(react@18.2.0)
+      '@radix-ui/react-use-size': 1.0.1(@types/react@17.0.48)(react@18.2.0)
+      '@types/react': 17.0.48
+      '@types/react-dom': 17.0.17
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -6446,6 +6476,23 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/react-table@8.9.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Ng9rdm3JPoSCi6cVZvANsYnF+UoGVRxflMb270tVj0+LjeT/ZtZ9ckxF6oLPLcKesza6VKBqtdF9mQ+vaz24Aw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.9.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/table-core@8.9.3:
+    resolution: {integrity: sha512-NpHZBoHTfqyJk0m/s/+CSuAiwtebhYK90mDuf5eylTvgViNOujiaOaxNDxJkQQAsVvHWZftUGAx1EfO1rkKtLg==}
+    engines: {node: '>=12'}
     dev: false
 
   /@testing-library/dom@8.16.0:
