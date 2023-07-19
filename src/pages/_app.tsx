@@ -23,7 +23,7 @@ import "reactflow/dist/style.css";
 import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
-import { Toaster } from "@instill-ai/design-system";
+import { Toaster, useToast } from "@instill-ai/design-system";
 
 export const queryCache = new QueryCache();
 
@@ -45,6 +45,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
 
+  const { dismiss: dismissToast } = useToast();
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     let previousURL = window.history.state.url;
@@ -59,6 +61,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         initPipelineBuilder();
       }
 
+      dismissToast();
       previousURL = window.history.state.url;
     }
 
@@ -67,7 +70,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return () => {
       router.events.off("routeChangeComplete", onRouteChange);
     };
-  }, [router.events, initPipelineBuilder]);
+  }, [router.events, initPipelineBuilder, dismissToast]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;

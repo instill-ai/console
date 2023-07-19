@@ -32,7 +32,7 @@
     "@hookform/resolvers": "^3.1.1",
     "@instill-ai/design-system": "^0.32.0",
     "@instill-ai/design-tokens": "^0.3.1",
-    "@instill-ai/toolkit": "^0.61.0-rc.38",
+    "@instill-ai/toolkit": "^0.61.0-rc.48",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-collapsible": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.3",
