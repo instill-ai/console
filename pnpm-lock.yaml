@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@amplitude/analytics-browser':
     specifier: ^1.9.1
@@ -20,8 +24,8 @@ dependencies:
     specifier: ^0.3.1
     version: 0.3.1(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.61.0-rc.31
-    version: 0.61.0-rc.31(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.61.0-rc.46
+    version: 0.61.0-rc.46(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -3538,8 +3542,8 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.14)
     dev: false
 
-  /@instill-ai/toolkit@0.61.0-rc.31(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ZGuO6kHrOoXSDnLavHSGcOCSek5b9jtNPFZ0DqPWHfKDH3BNwbGKLkMZ4all7vs3g3berkAwUf0Ekfy/lhZj3w==}
+  /@instill-ai/toolkit@0.61.0-rc.46(@instill-ai/design-system@0.32.0)(@instill-ai/design-tokens@0.3.1)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-FbSNUT0xgW0ZdEdf6/CzO+oLPrb4o2KhK+FuKnE4DwrGeGQHW16iWFdm3PJ5Njb53E0rZQTF9E0oHao+5i1+lA==}
     peerDependencies:
       '@instill-ai/design-system': 0.32.0
       '@instill-ai/design-tokens': 0.3.1
