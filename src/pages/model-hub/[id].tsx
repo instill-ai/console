@@ -16,7 +16,6 @@ import {
   ModelConfigurationFields,
   useCreateUpdateDeleteResourceGuard,
   useWatchModel,
-  useModelWithPipelines,
   type ConfigureModelFormStore,
   useModel,
 } from "@instill-ai/toolkit";
