@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.26.0-alpha](https://github.com/instill-ai/console/compare/v0.25.0-alpha...v0.26.0-alpha) (2023-07-19)
+
+
+### Features
+
+* console metric dashboard INS-1004 ([#468](https://github.com/instill-ai/console/issues/468)) ([7b518ee](https://github.com/instill-ai/console/commit/7b518ee2c215acbe3332e9de7056592a28d3715a))
+* support Stability AI SDXL model ([#469](https://github.com/instill-ai/console/issues/469)) ([aab3ca4](https://github.com/instill-ai/console/commit/aab3ca4f8bcac1bf14f9486ed88d0f81ec73ec59))
+
+
+### Bug Fixes
+
+* add multiple QoL and fixes ([#464](https://github.com/instill-ai/console/issues/464)) ([08dd8af](https://github.com/instill-ai/console/commit/08dd8af9b3b57918b8975a724958808c5d7d391b))
+* fix accidentally query pipeline in MDL ([#471](https://github.com/instill-ai/console/issues/471)) ([b9486e3](https://github.com/instill-ai/console/commit/b9486e34d7fbb8eb20e40f6ffc36f1b0243d2382))
+* fix pipeline builder form connect issue ([#466](https://github.com/instill-ai/console/issues/466)) ([bf94a5c](https://github.com/instill-ai/console/commit/bf94a5cbc943ad286bff7c5d477c84ca96165661))
+
+
+### Miscellaneous
+
+* build console image before pull on CI ([#474](https://github.com/instill-ai/console/issues/474)) ([7bdf860](https://github.com/instill-ai/console/commit/7bdf860fbd510173fc4436a994064b2ddbc71c70))
+* prepare for release 0.26.0 ([#473](https://github.com/instill-ai/console/issues/473)) ([3793b2e](https://github.com/instill-ai/console/commit/3793b2e3ce1871d179dda5b5eb38cba99a20c22e))
+* unify trigger at source and response at destination ([#470](https://github.com/instill-ai/console/issues/470)) ([8854496](https://github.com/instill-ai/console/commit/8854496568c5797da8efb1873e6ed3a67692b2e4))
+
 ## [0.25.0-alpha](https://github.com/instill-ai/console/compare/v0.24.1-alpha...v0.25.0-alpha) (2023-07-09)
 
 
