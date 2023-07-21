@@ -73,7 +73,7 @@ const PipelinePage: FC & {
               separator: "-",
             });
             setPipelineId(randomName);
-            window.location.href = `/pipelines/${randomName}`;
+            router.push(`/pipelines/${randomName}`);
             updatePipelineIsNew(() => true);
           }}
         />

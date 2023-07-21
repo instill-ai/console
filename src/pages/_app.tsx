@@ -40,6 +40,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
+  const [previousURL, setPreviousUrl] = useState("");
   const router = useRouter();
   const trackingToken = useTrackingToken();
 
@@ -49,7 +50,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    let previousURL = window.history.state.url;
 
     function onRouteChange() {
       // We will only init the pipeline builder when user is previously on the
@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       }
 
       dismissToast();
-      previousURL = window.history.state.url;
+      setPreviousUrl(window.history.state.url);
     }
 
     router.events.on("routeChangeComplete", onRouteChange);
