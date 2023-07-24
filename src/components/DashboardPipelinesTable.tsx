@@ -1,12 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import {
-  Nullable,
-  PipelineTriggerCount,
-  chunk,
-  env,
-  PaginationListContainerProps,
-} from "@instill-ai/toolkit";
+import { PipelineTriggerCount, GeneralStateCell } from "@instill-ai/toolkit";
 import {
   Button,
   Checkbox,
@@ -17,15 +11,9 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { PipelineTablePlaceholder } from "./table/PipelineTablePlaceholder";
 import { TableError } from "./table/TableError";
+import { Sort } from "@/lib/table";
 
-export type DashboardPipelinesTableProps = {
-  pipelineTriggerCounts: PipelineTriggerCount[];
-  isError: boolean;
-  isLoading: boolean;
-} & Pick<PaginationListContainerProps, "marginBottom">;
-
-type Sort = "asc" | "desc" | false;
-const getIcon = (type: Sort) => {
+export const getIcon = (type: Sort) => {
   if (type === "asc") {
     return <Icons.ArrowDown className="h-4 w-4 stroke-semantic-fg-secondary" />;
   }
@@ -37,18 +25,16 @@ const getIcon = (type: Sort) => {
   );
 };
 
+export type DashboardPipelinesTableProps = {
+  pipelineTriggerCounts: PipelineTriggerCount[];
+  isError: boolean;
+  isLoading: boolean;
+};
+
 export const DashboardPipelinesTable = (
   props: DashboardPipelinesTableProps
 ) => {
-  const { pipelineTriggerCounts, marginBottom, isError, isLoading } = props;
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const [searchTerm, setSearchTerm] = React.useState<Nullable<string>>(null);
-
-  // We will only use searched resource when user input search term
-
-  const pipelineTriggerPages = React.useMemo(() => {
-    return chunk(pipelineTriggerCounts, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
-  }, [pipelineTriggerCounts]);
+  const { pipelineTriggerCounts, isError, isLoading } = props;
 
   const columns: ColumnDef<PipelineTriggerCount>[] = [
     {
@@ -81,17 +67,11 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="text-center">
-            <Tag
-              variant={
-                row.getValue("watchState") === "STATE_ACTIVE"
-                  ? "lightGreen"
-                  : "lightRed"
-              }
-              className="border-0"
-              size={"sm"}
-            >
-              Active
-            </Tag>
+            <GeneralStateCell
+              width={null}
+              state={row.getValue("watchState")}
+              padding="py-2"
+            />
           </div>
         );
       },

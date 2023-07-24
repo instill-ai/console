@@ -6,13 +6,13 @@ import {
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   usePipelineTriggerRecords,
-  PipelineTriggersTable,
   PipelineTriggersSummary,
   FilterByDay,
   DashboardAvailableTimeframe,
   type Nullable,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
+import { PipelineTriggersTable } from "@/components/PipelineTriggersTable";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -155,7 +155,13 @@ const PipelinePage: FC & {
 
         {/* Pipeline Table */}
 
-        <div className="my-8">
+        <div className="mt-8 flex flex-col">
+          <h4 className="w-full text-semantic-fg-secondary product-body-text-3-regular">
+            Pipeline triggers
+          </h4>
+        </div>
+
+        <div>
           <PipelineTriggersTable
             pipelineTriggers={
               pipelineTriggerRecords.isSuccess
