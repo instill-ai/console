@@ -13,7 +13,7 @@ import { PipelineTablePlaceholder } from "./table/PipelineTablePlaceholder";
 import { TableError } from "./table/TableError";
 import { Sort } from "@/lib/table";
 
-export const getIcon = (type: Sort) => {
+export const getIcon = (type: Sort): React.ReactElement => {
   if (type === "asc") {
     return <Icons.ArrowDown className="h-4 w-4 stroke-semantic-fg-secondary" />;
   }

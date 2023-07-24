@@ -1,4 +1,4 @@
-import { DataTable } from "@instill-ai/design-system";
+import { Button, DataTable } from "@instill-ai/design-system";
 import {
   GeneralStateCell,
   PipelineTriggerRecord,
@@ -10,6 +10,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
 import { TriggersTablePlaceholder } from "./table/TriggersTablePlaceholder";
+import { getIcon } from "./DashboardPipelinesTable";
 
 export type PipelineTriggersTableProps = {
   pipelineTriggers: PipelineTriggerRecord[];
@@ -26,7 +27,7 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
       header: () => <div className="min-w-[400px] text-left">Pipeline Id</div>,
       cell: ({ row }) => {
         return (
-          <div className="flex flex-row gap-x-2">
+          <div className="text-left">
             {convertTimestamp(row.getValue("trigger_time"))}
           </div>
         );
@@ -50,19 +51,29 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
     },
     {
       accessorKey: "compute_time_duration",
-      header: () => {
+      header: ({ column }) => {
         return (
-          <div className="min-w-[150px] text-center">Trigger Duration</div>
+          <div className="min-w-[150px] text-center">
+            <Button
+              className="gap-x-2 py-0"
+              variant="tertiaryGrey"
+              size="sm"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              <span className="min-w-[130px]">Trigger Duration</span>
+              {getIcon(column.getIsSorted())}
+            </Button>
+          </div>
         );
       },
       cell: ({ row }) => {
         return (
-          <div className="text-center">
-            <p className="truncate text-semantic-fg-secondary product-body-text-3-regular">
-              {convertToSecondsAndMilliseconds(
-                row.getValue("compute_time_duration")
-              )}
-            </p>
+          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {convertToSecondsAndMilliseconds(
+              row.getValue("compute_time_duration")
+            )}
           </div>
         );
       },
@@ -72,10 +83,8 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
       header: () => <div className="min-w-[350px] text-center">Trigger ID</div>,
       cell: ({ row }) => {
         return (
-          <div className="text-center">
-            <p className="truncate text-semantic-fg-secondary product-body-text-3-regular">
-              {row.getValue("pipeline_trigger_id")}
-            </p>
+          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {row.getValue("pipeline_trigger_id")}
           </div>
         );
       },
