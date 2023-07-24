@@ -1,4 +1,4 @@
-import { Icons, Logos } from "@instill-ai/design-system";
+import { Icons, Logos, Separator } from "@instill-ai/design-system";
 import { PipelineCollapsible } from "./PipelineCollapsible";
 import { SidebarLink } from "./SidebarLink";
 import { useRouter } from "next/router";
@@ -16,8 +16,9 @@ export const Sidebar = () => {
           icon={<Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />}
           name="Model Hub"
           hightlighted={router.pathname.split("/")[1] === "model-hub"}
-          className="mb-4 px-3"
+          className="px-3"
         />
+        <Separator orientation="horizontal" className="my-3" />
         <SidebarLink
           href="/dashboard"
           icon={
