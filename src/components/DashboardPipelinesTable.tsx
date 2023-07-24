@@ -1,7 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
 import {
-  PipelineTablePlaceholder,
   Nullable,
   PipelineTriggerCount,
   chunk,
@@ -11,7 +10,6 @@ import {
   PaginationListContainer,
   PaginationListContainerProps,
   SkeletonCell,
-  TableError,
   TableHead,
   TableHeadItem,
 } from "@instill-ai/toolkit";
@@ -23,6 +21,8 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
+import { PipelineTablePlaceholder } from "./table/PipelineTablePlaceholder";
+import { TableError } from "./table/TableError";
 
 export type DashboardPipelinesTableProps = {
   pipelineTriggerCounts: PipelineTriggerCount[];
@@ -71,8 +71,8 @@ export const DashboardPipelinesTable = (
             />
 
             <Link
-              className="truncate text-semantic-fg-secondary product-body-text-3-regular hover:underline"
               href={`/dashboard/pipeline/${row.getValue("pipeline_id")}`}
+              className="hover:underline"
             >
               {row.getValue("pipeline_id")}
             </Link>
@@ -157,37 +157,33 @@ export const DashboardPipelinesTable = (
 
   if (isError) {
     return (
-      <PaginationListContainer
-        title=""
-        description=""
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        totalPage={pipelineTriggerPages.length}
-        disabledSearchField={true}
-        marginBottom={marginBottom}
+      <DataTable
+        columns={columns}
+        data={pipelineTriggerCounts}
+        pageSize={6}
+        searchPlaceholder={null}
+        searchKey={null}
+        isLoading={isLoading}
+        loadingRows={6}
       >
         <TableError />
-      </PaginationListContainer>
+      </DataTable>
     );
   }
 
   if (pipelineTriggerCounts.length === 0 && !isLoading) {
     return (
-      <PaginationListContainer
-        title=""
-        description=""
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        totalPage={pipelineTriggerPages.length}
-        disabledSearchField={true}
-        marginBottom={marginBottom}
+      <DataTable
+        columns={columns}
+        data={pipelineTriggerCounts}
+        pageSize={6}
+        searchPlaceholder={null}
+        searchKey={null}
+        isLoading={isLoading}
+        loadingRows={6}
       >
         <PipelineTablePlaceholder enableCreateButton={false} />
-      </PaginationListContainer>
+      </DataTable>
     );
   }
 
@@ -198,8 +194,8 @@ export const DashboardPipelinesTable = (
       pageSize={6}
       searchPlaceholder={null}
       searchKey={null}
-      // isLoading={isLoading}
-      // loadingRows={6}
+      isLoading={isLoading}
+      loadingRows={6}
     />
   );
 };
