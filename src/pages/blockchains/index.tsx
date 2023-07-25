@@ -3,10 +3,12 @@ import {
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
-  BlockchainsTable,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { BlockchainsTable } from "@/components/BlockchainsTable";
+import { Button, Icons } from "@instill-ai/design-system";
+import Router from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -50,14 +52,27 @@ const BlockchainsPage: FC & {
     <>
       <PageHead title="ai-connectors" />
       <div className="flex flex-col">
-        <PageTitle
-          title=""
-          breadcrumbs={[""]}
-          disabledButton={enableGuard}
-          buttonName="Set up new Blockchain"
-          buttonLink="/blockchains/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-4">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => Router.push("/blockchains/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add Blockchain
+          </Button>
+        </div>
+
+        <div className="my-4 flex flex-col space-y-2">
+          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
+            Blockchain
+          </h4>
+          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
+            These are the blockchains you can select
+          </p>
+        </div>
+
         <BlockchainsTable
           blockchains={blockchains.data ? blockchains.data : []}
           blockchainsWatchState={
@@ -79,7 +94,7 @@ BlockchainsPage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
