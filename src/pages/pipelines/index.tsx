@@ -1,13 +1,12 @@
 import { FC, ReactElement } from "react";
 import {
   usePipelines,
-  PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   usePipelineBuilderStore,
 } from "@instill-ai/toolkit";
 
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -16,6 +15,7 @@ import {
 } from "unique-names-generator";
 import Router, { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
+import { PipelinesTable } from "@/components/PipelinesTable";
 
 type GetLayOutProps = {
   page: ReactElement;
