@@ -1,14 +1,21 @@
 import {
   ConnectorWithPipelines,
   ConnectorsWatchState,
+  DestinationTablePlaceholder,
   GeneralStateCell,
   ImageWithFallback,
+  Nullable,
   PaginationListContainerProps,
+  TableError,
+  chunk,
+  env,
   parseTriggerStatusLabel,
+  useSearchedResources,
+  useStateOverviewCounts,
 } from "@instill-ai/toolkit";
-import * as React from "react";
-import { AITablePlaceholder } from "./table/AITablePlaceholder";
 import { ColumnDef } from "@tanstack/react-table";
+import * as React from "react";
+import { TableCell } from "./table/TableCell";
 import {
   Button,
   DataDestinationIcon,
@@ -16,24 +23,28 @@ import {
   DataTable,
 } from "@instill-ai/design-system";
 import { getIcon } from "./DashboardPipelinesTable";
-import { TableError } from "./table/TableError";
-import { TableCell } from "./table/TableCell";
 import { formatDate } from "@/lib/table";
 
-export type AIsTableProps = {
-  ais: ConnectorWithPipelines[];
-  aisWatchState: ConnectorsWatchState;
+export type DestinationsTableProps = {
+  destinations: ConnectorWithPipelines[];
+  destinationsWatchState: ConnectorsWatchState;
   isError: boolean;
   isLoading: boolean;
 } & Pick<PaginationListContainerProps, "marginBottom">;
 
-export const AIsTable = (props: AIsTableProps) => {
-  const { ais, aisWatchState, marginBottom, isError, isLoading } = props;
+export const DestinationsTable = (props: DestinationsTableProps) => {
+  const {
+    destinations,
+    destinationsWatchState,
+    isError,
+    isLoading,
+    marginBottom,
+  } = props;
 
   const columns: ColumnDef<ConnectorWithPipelines>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[300px] text-left">Model Name</div>,
+      header: () => <div className="min-w-[300px] text-left">Output Name</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -76,7 +87,7 @@ export const AIsTable = (props: AIsTableProps) => {
     },
     {
       accessorKey: "task",
-      header: () => <div className="text-center">Task</div>,
+      header: () => <div className="text-center">Data type</div>,
       cell: ({ row }) => {
         return (
           <div className="text-center text-semantic-fg-secondary product-body-text-3-regular">
@@ -145,7 +156,7 @@ export const AIsTable = (props: AIsTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={ais}
+        data={destinations}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
@@ -157,18 +168,18 @@ export const AIsTable = (props: AIsTableProps) => {
     );
   }
 
-  if (ais.length === 1 && !isLoading) {
+  if (destinations.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
-        data={ais}
+        data={destinations}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <AITablePlaceholder enableCreateButton={false} />
+        <DestinationTablePlaceholder enableCreateButton={false} />
       </DataTable>
     );
   }
@@ -176,7 +187,7 @@ export const AIsTable = (props: AIsTableProps) => {
   return (
     <DataTable
       columns={columns}
-      data={ais}
+      data={destinations}
       pageSize={6}
       searchPlaceholder={null}
       searchKey={null}
