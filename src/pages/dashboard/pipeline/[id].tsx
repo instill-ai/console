@@ -170,8 +170,6 @@ const PipelinePage: FC & {
             }
             isError={pipelineTriggerRecords.isError}
             isLoading={pipelineTriggerRecords.isLoading}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>
