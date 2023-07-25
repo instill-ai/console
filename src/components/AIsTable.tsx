@@ -2,6 +2,8 @@ import {
   ConnectionTypeCell,
   ConnectorWithPipelines,
   ConnectorsWatchState,
+  GeneralStateCell,
+  ImageWithFallback,
   NameCell,
   Nullable,
   PaginationListContainer,
@@ -14,15 +16,23 @@ import {
   VisibilityCell,
   chunk,
   env,
+  parseTriggerStatusLabel,
   useSearchedResources,
   useStateOverviewCounts,
 } from "@instill-ai/toolkit";
 import * as React from "react";
 import { AITablePlaceholder } from "./table/AITablePlaceholder";
 import { ColumnDef } from "@tanstack/react-table";
-import { Button, DataTable } from "@instill-ai/design-system";
+import {
+  Button,
+  DataDestinationIcon,
+  DataSourceIcon,
+  DataTable,
+} from "@instill-ai/design-system";
 import { getIcon } from "./DashboardPipelinesTable";
 import { TableError } from "./table/TableError";
+import { TableCell } from "./table/TableCell";
+import { formatDate } from "@/lib/table";
 
 export type AIsTableProps = {
   ais: ConnectorWithPipelines[];
@@ -34,41 +44,59 @@ export type AIsTableProps = {
 export const AIsTable = (props: AIsTableProps) => {
   const { ais, aisWatchState, marginBottom, isError, isLoading } = props;
 
-  const [searchTerm, setSearchTerm] = React.useState<Nullable<string>>(null);
-
-  // We will only use searched resource when user input search term
-
-  const searchedAIs = useSearchedResources({
-    resources: ais,
-    searchTerm,
-  });
-
-  const aiPages = React.useMemo(() => {
-    if (!searchTerm) {
-      return chunk(ais, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
-    }
-    return chunk(searchedAIs, env("NEXT_PUBLIC_LIST_PAGE_SIZE"));
-  }, [searchedAIs, ais, searchTerm]);
-
-  const stateOverviewCounts = useStateOverviewCounts(
-    searchTerm ? searchedAIs : ais,
-    aisWatchState,
-    isLoading
-  );
-
   const columns: ColumnDef<ConnectorWithPipelines>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="text-left">Model Name</div>,
+      header: () => <div className="min-w-[300px] text-left">Model Name</div>,
       cell: ({ row }) => {
-        return <div className="text-left">{row.getValue("id")}</div>;
+        return (
+          <div className="text-left">
+            <TableCell
+              primaryLink={`/ais/${row.getValue("id")}`}
+              primaryText={row.getValue("id")}
+              secondaryLink={null}
+              secondaryText={row.original.connector_definition.title}
+              iconElement={
+                <ImageWithFallback
+                  src={`/icons/${row.original.connector_definition.vendor}/${row.original.connector_definition.icon}`}
+                  width={24}
+                  height={24}
+                  alt={`${row.original.id}-icon`}
+                  fallbackImg={
+                    row.original.connector_definition.name
+                      .split("/")[0]
+                      .split("-")[0] === "source" ? (
+                      <DataSourceIcon
+                        width="w-6"
+                        height="h-6"
+                        color="fill-instillGrey90"
+                        position="my-auto"
+                      />
+                    ) : (
+                      <DataDestinationIcon
+                        width="w-6"
+                        height="h-6"
+                        color="fill-instillGrey90"
+                        position="my-auto"
+                      />
+                    )
+                  }
+                />
+              }
+            />
+          </div>
+        );
       },
     },
     {
       accessorKey: "task",
-      header: () => <div className="max-w-[100px] text-center">Task</div>,
+      header: () => <div className="text-center">Task</div>,
       cell: ({ row }) => {
-        return <div className="text-center">{row.getValue("task")}</div>;
+        return (
+          <div className="text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {row.getValue("task")}
+          </div>
+        );
       },
     },
     {
@@ -93,7 +121,7 @@ export const AIsTable = (props: AIsTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("create_time")}
+            {formatDate(row.getValue("create_time"))}
           </div>
         );
       },
@@ -103,8 +131,13 @@ export const AIsTable = (props: AIsTableProps) => {
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
         return (
-          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("state")}
+          <div className="grid justify-items-center">
+            <GeneralStateCell
+              width={null}
+              state={row.getValue("state")}
+              padding="py-2"
+              label={parseTriggerStatusLabel(row.getValue("state"))}
+            />
           </div>
         );
       },
@@ -114,8 +147,8 @@ export const AIsTable = (props: AIsTableProps) => {
       header: () => <div className="text-center"></div>,
       cell: ({ row }) => {
         return (
-          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("uid")}
+          <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
+            Delete
           </div>
         );
       },
@@ -138,7 +171,7 @@ export const AIsTable = (props: AIsTableProps) => {
     );
   }
 
-  if (ais.length === 0 && !isLoading) {
+  if (ais.length === 1 && !isLoading) {
     return (
       <DataTable
         columns={columns}
