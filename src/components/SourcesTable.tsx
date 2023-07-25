@@ -1,40 +1,35 @@
 import {
-  ConnectorWithPipelines,
-  ConnectorsWatchState,
-  DestinationTablePlaceholder,
-  GeneralStateCell,
-  ImageWithFallback,
-  PaginationListContainerProps,
-  TableError,
-  parseTriggerStatusLabel,
-} from "@instill-ai/toolkit";
-import { ColumnDef } from "@tanstack/react-table";
-import * as React from "react";
-import { TableCell } from "./table/TableCell";
-import {
   Button,
   DataDestinationIcon,
   DataSourceIcon,
   DataTable,
 } from "@instill-ai/design-system";
+import {
+  ConnectorWithPipelines,
+  ConnectorsWatchState,
+  GeneralStateCell,
+  ImageWithFallback,
+  PaginationListContainerProps,
+  SourceTablePlaceholder,
+  TableError,
+  parseTriggerStatusLabel,
+} from "@instill-ai/toolkit";
+import { ColumnDef } from "@tanstack/react-table";
+import * as React from "react";
 import { getIcon } from "./DashboardPipelinesTable";
 import { formatDate } from "@/lib/table";
+import { TableCell } from "./table/TableCell";
 
-export type DestinationsTableProps = {
-  destinations: ConnectorWithPipelines[];
-  destinationsWatchState: ConnectorsWatchState;
+export type SourcesTableProps = {
+  sources: ConnectorWithPipelines[];
+  sourcesWatchState: ConnectorsWatchState;
   isError: boolean;
   isLoading: boolean;
 } & Pick<PaginationListContainerProps, "marginBottom">;
 
-export const DestinationsTable = (props: DestinationsTableProps) => {
-  const {
-    destinations,
-    destinationsWatchState,
-    isError,
-    isLoading,
-    marginBottom,
-  } = props;
+export const SourcesTable = (props: SourcesTableProps) => {
+  const { sources, sourcesWatchState, marginBottom, isError, isLoading } =
+    props;
 
   const columns: ColumnDef<ConnectorWithPipelines>[] = [
     {
@@ -151,7 +146,7 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={destinations}
+        data={sources}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
@@ -163,18 +158,18 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
     );
   }
 
-  if (destinations.length === 0 && !isLoading) {
+  if (sources.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
-        data={destinations}
+        data={sources}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <DestinationTablePlaceholder enableCreateButton={false} />
+        <SourceTablePlaceholder enableCreateButton={false} />
       </DataTable>
     );
   }
@@ -182,7 +177,7 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
   return (
     <DataTable
       columns={columns}
-      data={destinations}
+      data={sources}
       pageSize={6}
       searchPlaceholder={null}
       searchKey={null}
