@@ -1,84 +1,58 @@
+import * as React from "react";
+
 import {
-  ConnectorWithPipelines,
-  ConnectorsWatchState,
-  ImageWithFallback,
+  Button,
+  DataTable,
+  getModelDefinitionToolkit,
+  getModelInstanceTaskToolkit,
+} from "@instill-ai/design-system";
+import { useRouter } from "next/router";
+import {
+  Model,
+  ModelTablePlaceholder,
+  ModelsWatchState,
   PaginationListContainerProps,
   TableError,
 } from "@instill-ai/toolkit";
-import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  Button,
-  DataDestinationIcon,
-  DataSourceIcon,
-  DataTable,
-} from "@instill-ai/design-system";
-import { getIcon } from "./DashboardPipelinesTable";
 import { TableCell } from "./table/TableCell";
+import { getIcon } from "./DashboardPipelinesTable";
 import { formatDate, parseStatusLabel } from "@/lib/table";
 import { GeneralStateCell } from "./cell/GeneralStateCell";
 
-export type AIsTableProps = {
-  ais: ConnectorWithPipelines[];
-  aisWatchState: ConnectorsWatchState;
+export type ModelsTableProps = {
+  models: Model[];
+  modelsWatchState: ModelsWatchState;
   isError: boolean;
   isLoading: boolean;
 } & Pick<PaginationListContainerProps, "marginBottom">;
 
-export const AIsTable = (props: AIsTableProps) => {
-  const { ais, aisWatchState, marginBottom, isError, isLoading } = props;
+export const ModelsTable = (props: ModelsTableProps) => {
+  const router = useRouter();
+  const { models, modelsWatchState, marginBottom, isError, isLoading } = props;
 
-  const columns: ColumnDef<ConnectorWithPipelines>[] = [
+  const columns: ColumnDef<Model>[] = [
     {
       accessorKey: "id",
       header: () => <div className="min-w-[300px] text-left">Model Name</div>,
       cell: ({ row }) => {
+        const { getIcon } = getModelDefinitionToolkit(
+          row.original.model_definition
+        );
         return (
           <div className="text-left">
             <TableCell
-              primaryLink={`/ais/${row.getValue("id")}`}
+              primaryLink={`/model-hub/${row.getValue("id")}`}
               primaryText={row.getValue("id")}
               secondaryLink={null}
-              secondaryText={row.original.connector_definition.title}
-              iconElement={
-                <ImageWithFallback
-                  src={`/icons/${row.original.connector_definition.vendor}/${row.original.connector_definition.icon}`}
-                  width={16}
-                  height={16}
-                  alt={`${row.original.id}-icon`}
-                  fallbackImg={
-                    row.original.connector_definition.name
-                      .split("/")[0]
-                      .split("-")[0] === "source" ? (
-                      <DataSourceIcon
-                        width="w-4"
-                        height="h-4"
-                        color="fill-instillGrey90"
-                        position="my-auto"
-                      />
-                    ) : (
-                      <DataDestinationIcon
-                        width="w-4"
-                        height="h-4"
-                        color="fill-instillGrey90"
-                        position="my-auto"
-                      />
-                    )
-                  }
-                />
-              }
+              secondaryText={row.original.model_definition}
+              iconElement={getIcon({
+                width: "w-4",
+                height: "h-4",
+                position: "my-auto",
+                color: "fill-instillGrey90",
+              })}
             />
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "task",
-      header: () => <div className="text-center">Task</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("task")}
           </div>
         );
       },
@@ -127,6 +101,39 @@ export const AIsTable = (props: AIsTableProps) => {
       },
     },
     {
+      accessorKey: "task",
+      header: () => <div className="text-center">Task</div>,
+      cell: ({ row }) => {
+        const { label, getIcon } = getModelInstanceTaskToolkit(
+          row.getValue("task")
+        );
+        return (
+          <div className={"flex flex-row justify-center gap-x-2 py-2 pr-6"}>
+            {getIcon({
+              width: "w-4",
+              height: "h-4",
+              position: "my-auto",
+              color: "fill-instillGrey90",
+            })}
+            <p className="my-auto text-semantic-fg-secondary product-body-text-3-regular">
+              {label}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "uid",
+      header: () => <div className="text-center">Plan</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-semantic-fg-secondary product-body-text-3-regular">
+            Basic
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "uid",
       header: () => <div className="text-center"></div>,
       cell: ({ row }) => {
@@ -155,7 +162,7 @@ export const AIsTable = (props: AIsTableProps) => {
     );
   }
 
-  if (ais.length === 0 && !isLoading) {
+  if (models.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
@@ -166,10 +173,10 @@ export const AIsTable = (props: AIsTableProps) => {
         isLoading={isLoading}
         loadingRows={6}
       >
-        {/* <AITablePlaceholder
+        <ModelTablePlaceholder
           enableCreateButton={false}
           marginBottom="!border-0"
-        /> */}
+        />
       </DataTable>
     );
   }
@@ -177,7 +184,7 @@ export const AIsTable = (props: AIsTableProps) => {
   return (
     <DataTable
       columns={columns}
-      data={ais}
+      data={models}
       pageSize={6}
       searchPlaceholder={null}
       searchKey={null}
