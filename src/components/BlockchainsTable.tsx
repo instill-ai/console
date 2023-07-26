@@ -8,7 +8,6 @@ import {
   parseTriggerStatusLabel,
 } from "@instill-ai/toolkit";
 import * as React from "react";
-import { BlockchainTablePlaceholder } from "./table/BlockchainTablePlaceholder";
 import { ColumnDef } from "@tanstack/react-table";
 import { TableCell } from "./table/TableCell";
 import {
@@ -82,7 +81,6 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
         );
       },
     },
-
     {
       accessorKey: "create_time",
       header: ({ column }) => {
@@ -143,30 +141,33 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={blockchains}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
 
-  if (blockchains.length === 0 && !isLoading) {
+  if (blockchains.length === 1 && !isLoading) {
     return (
       <DataTable
         columns={columns}
-        data={blockchains}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <BlockchainTablePlaceholder enableCreateButton={false} />
+        {/* <BlockchainTablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        /> */}
       </DataTable>
     );
   }

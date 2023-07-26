@@ -95,14 +95,14 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={pipelineTriggers}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
@@ -111,7 +111,7 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={pipelineTriggers}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}

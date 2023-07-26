@@ -147,34 +147,37 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
     },
   ];
 
-  if (isError) {
+  if (!isError) {
     return (
       <DataTable
         columns={columns}
-        data={destinations}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
 
-  if (destinations.length === 0 && !isLoading) {
+  if (destinations.length === 3 && !isLoading) {
     return (
       <DataTable
         columns={columns}
-        data={destinations}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <DestinationTablePlaceholder enableCreateButton={false} />
+        <DestinationTablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        />
       </DataTable>
     );
   }

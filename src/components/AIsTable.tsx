@@ -4,10 +4,10 @@ import {
   GeneralStateCell,
   ImageWithFallback,
   PaginationListContainerProps,
+  TableError,
   parseTriggerStatusLabel,
 } from "@instill-ai/toolkit";
 import * as React from "react";
-import { AITablePlaceholder } from "./table/AITablePlaceholder";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   Button,
@@ -16,7 +16,6 @@ import {
   DataTable,
 } from "@instill-ai/design-system";
 import { getIcon } from "./DashboardPipelinesTable";
-import { TableError } from "./table/TableError";
 import { TableCell } from "./table/TableCell";
 import { formatDate } from "@/lib/table";
 
@@ -145,30 +144,33 @@ export const AIsTable = (props: AIsTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={ais}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
 
-  if (ais.length === 1 && !isLoading) {
+  if (ais.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
-        data={ais}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <AITablePlaceholder enableCreateButton={false} />
+        {/* <AITablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        /> */}
       </DataTable>
     );
   }

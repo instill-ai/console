@@ -146,14 +146,14 @@ export const SourcesTable = (props: SourcesTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={sources}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
@@ -162,14 +162,17 @@ export const SourcesTable = (props: SourcesTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={sources}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <SourceTablePlaceholder enableCreateButton={false} />
+        <SourceTablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        />
       </DataTable>
     );
   }

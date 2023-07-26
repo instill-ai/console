@@ -1,15 +1,10 @@
 import {
   GeneralStateCell,
-  Nullable,
   PaginationListContainerProps,
   Pipeline,
   PipelineTablePlaceholder,
   PipelinesWatchState,
   TableError,
-  chunk,
-  env,
-  useSearchedResources,
-  useStateOverviewCounts,
 } from "@instill-ai/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
@@ -99,10 +94,9 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
         );
       },
     },
-
     {
       accessorKey: "uid",
-      header: () => <div className="text-center"></div>,
+      header: () => <div className="min-w-[100px] text-center"></div>,
       cell: ({ row }) => {
         return (
           <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
@@ -117,14 +111,14 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={pipelines}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
@@ -133,14 +127,17 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
     return (
       <DataTable
         columns={columns}
-        data={pipelines}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <PipelineTablePlaceholder enableCreateButton={false} />
+        <PipelineTablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        />
       </DataTable>
     );
   }

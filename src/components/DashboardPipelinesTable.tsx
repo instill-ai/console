@@ -1,6 +1,11 @@
 import * as React from "react";
 import Link from "next/link";
-import { PipelineTriggerCount, GeneralStateCell } from "@instill-ai/toolkit";
+import {
+  PipelineTriggerCount,
+  GeneralStateCell,
+  PipelineTablePlaceholder,
+  TableError,
+} from "@instill-ai/toolkit";
 import {
   Button,
   Checkbox,
@@ -9,8 +14,6 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
-import { PipelineTablePlaceholder } from "./table/PipelineTablePlaceholder";
-import { TableError } from "./table/TableError";
 import { Sort } from "@/lib/table";
 
 export const getIcon = (type: Sort): React.ReactElement => {
@@ -133,14 +136,14 @@ export const DashboardPipelinesTable = (
     return (
       <DataTable
         columns={columns}
-        data={pipelineTriggerCounts}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <TableError />
+        <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
@@ -149,14 +152,17 @@ export const DashboardPipelinesTable = (
     return (
       <DataTable
         columns={columns}
-        data={pipelineTriggerCounts}
+        data={[]}
         pageSize={6}
         searchPlaceholder={null}
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
       >
-        <PipelineTablePlaceholder enableCreateButton={false} />
+        <PipelineTablePlaceholder
+          enableCreateButton={false}
+          marginBottom="!border-0"
+        />
       </DataTable>
     );
   }

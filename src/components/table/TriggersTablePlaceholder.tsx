@@ -1,8 +1,8 @@
-import cn from "clsx";
 import {
   TablePlaceholderBase,
   TablePlaceholderBaseProps,
-} from "./TablePlaceholderBase";
+} from "@instill-ai/toolkit";
+import cn from "clsx";
 
 export type TriggersTablePlaceholderProps = Pick<
   TablePlaceholderBaseProps,
