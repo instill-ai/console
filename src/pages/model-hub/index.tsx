@@ -5,10 +5,11 @@ import {
   useWatchModels,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { data } from "./mock";
+
 import { ModelsTable } from "@/components/ModelsTable";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { data } from "@/lib/table";
 
 interface GetLayOutProps {
   page: ReactElement;
