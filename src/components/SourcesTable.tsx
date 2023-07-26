@@ -46,23 +46,23 @@ export const SourcesTable = (props: SourcesTableProps) => {
               iconElement={
                 <ImageWithFallback
                   src={`/icons/${row.original.connector_definition.vendor}/${row.original.connector_definition.icon}`}
-                  width={24}
-                  height={24}
+                  width={16}
+                  height={16}
                   alt={`${row.original.id}-icon`}
                   fallbackImg={
                     row.original.connector_definition.name
                       .split("/")[0]
                       .split("-")[0] === "source" ? (
                       <DataSourceIcon
-                        width="w-6"
-                        height="h-6"
+                        width="w-4"
+                        height="h-4"
                         color="fill-instillGrey90"
                         position="my-auto"
                       />
                     ) : (
                       <DataDestinationIcon
-                        width="w-6"
-                        height="h-6"
+                        width="w-4"
+                        height="h-4"
                         color="fill-instillGrey90"
                         position="my-auto"
                       />
