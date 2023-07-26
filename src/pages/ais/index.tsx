@@ -5,10 +5,10 @@ import {
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { AIsTable } from "@/components/AIsTable";
 import { Button, Icons } from "@instill-ai/design-system";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -17,6 +17,7 @@ type GetLayOutProps = {
 const AIsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
@@ -54,7 +55,7 @@ const AIsPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => Router.push("/ais/create")}
+            onClick={() => router.push("/ais/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add AI Connector

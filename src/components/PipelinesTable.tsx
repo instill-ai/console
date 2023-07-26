@@ -37,7 +37,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
         return (
           <div className="text-left">
             <TableCell
-              primaryLink={`/ais/${row.getValue("id")}`}
+              primaryLink={`/pipelines/${row.getValue("id")}`}
               primaryText={row.getValue("id")}
               secondaryLink={null}
               secondaryText={null}

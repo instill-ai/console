@@ -8,7 +8,7 @@ import {
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { SourcesTable } from "@/components/SourcesTable";
 import { Button, Icons } from "@instill-ai/design-system";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -17,6 +17,7 @@ type GetLayOutProps = {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
@@ -56,7 +57,7 @@ const SourcePage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => Router.push("/sources/create")}
+            onClick={() => router.push("/sources/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Source

@@ -5,10 +5,10 @@ import {
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { BlockchainsTable } from "@/components/BlockchainsTable";
 import { Button, Icons } from "@instill-ai/design-system";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -17,6 +17,7 @@ type GetLayOutProps = {
 const BlockchainsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const routes = useRouter();
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
@@ -57,7 +58,7 @@ const BlockchainsPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => Router.push("/blockchains/create")}
+            onClick={() => routes.push("/blockchains/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Blockchain

@@ -8,7 +8,7 @@ import {
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { DestinationsTable } from "@/components/DestinationsTable";
 import { Button, Icons } from "@instill-ai/design-system";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -17,6 +17,7 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
@@ -57,7 +58,7 @@ const DestinationPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => Router.push("/destinations/create")}
+            onClick={() => router.push("/destinations/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Destination

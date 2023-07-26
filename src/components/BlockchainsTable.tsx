@@ -46,7 +46,7 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
         return (
           <div className="text-left">
             <TableCell
-              primaryLink={`/ais/${row.getValue("id")}`}
+              primaryLink={`/blockchains/${row.getValue("id")}`}
               primaryText={row.getValue("id")}
               secondaryLink={null}
               secondaryText={row.original.connector_definition.title}
