@@ -7,18 +7,17 @@ import {
 import {
   ConnectorWithPipelines,
   ConnectorsWatchState,
-  GeneralStateCell,
   ImageWithFallback,
   PaginationListContainerProps,
   SourceTablePlaceholder,
   TableError,
-  parseTriggerStatusLabel,
 } from "@instill-ai/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
 import { getIcon } from "./DashboardPipelinesTable";
-import { formatDate } from "@/lib/table";
+import { formatDate, parseStatusLabel } from "@/lib/table";
 import { TableCell } from "./table/TableCell";
+import { GeneralStateCell } from "./cell/GeneralStateCell";
 
 export type SourcesTableProps = {
   sources: ConnectorWithPipelines[];
@@ -117,13 +116,15 @@ export const SourcesTable = (props: SourcesTableProps) => {
       accessorKey: "state",
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
+        console.log("STATE_CONNECTED", parseStatusLabel(row.getValue("state")));
+
         return (
           <div className="grid justify-items-center">
             <GeneralStateCell
               width={null}
               state={row.getValue("state")}
               padding="py-2"
-              label={parseTriggerStatusLabel(row.getValue("state"))}
+              label={parseStatusLabel(row.getValue("state"))}
             />
           </div>
         );

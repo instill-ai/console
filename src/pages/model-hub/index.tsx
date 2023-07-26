@@ -1,13 +1,14 @@
 import { FC, ReactElement } from "react";
-
 import {
-  ModelsTable,
   useModels,
   useCreateUpdateDeleteResourceGuard,
   useWatchModels,
 } from "@instill-ai/toolkit";
-
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { data } from "./mock";
+import { ModelsTable } from "@/components/ModelsTable";
+import { Button, Icons } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -16,6 +17,7 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
@@ -46,21 +48,33 @@ const ModelPage: FC & {
     <>
       <PageHead title="models" />
       <div className="flex flex-col">
-        <PageTitle
-          title=""
-          breadcrumbs={[]}
-          disabledButton={enableGuard}
-          buttonName="Add new model"
-          buttonLink="/model-hub/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-5">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/model-hub/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add Model
+          </Button>
+        </div>
+
+        <div className="my-5 flex flex-col space-y-2">
+          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
+            Models
+          </h4>
+          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
+            Check and organise your imported Models
+          </p>
+        </div>
         <ModelsTable
-          models={models.isSuccess ? models.data : []}
+          models={!models.isSuccess ? data : []}
           modelsWatchState={
             modelsWatchState.isSuccess ? modelsWatchState.data : {}
           }
-          isError={models.isError || modelsWatchState.isError}
-          isLoading={isLoadingResource}
+          isError={false}
+          isLoading={false}
           marginBottom="mb-5"
         />
       </div>
@@ -76,7 +90,7 @@ ModelPage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );

@@ -2,11 +2,9 @@ import {
   ConnectorWithPipelines,
   ConnectorsWatchState,
   DestinationTablePlaceholder,
-  GeneralStateCell,
   ImageWithFallback,
   PaginationListContainerProps,
   TableError,
-  parseTriggerStatusLabel,
 } from "@instill-ai/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
@@ -18,7 +16,8 @@ import {
   DataTable,
 } from "@instill-ai/design-system";
 import { getIcon } from "./DashboardPipelinesTable";
-import { formatDate } from "@/lib/table";
+import { formatDate, parseStatusLabel } from "@/lib/table";
+import { GeneralStateCell } from "./cell/GeneralStateCell";
 
 export type DestinationsTableProps = {
   destinations: ConnectorWithPipelines[];
@@ -128,7 +127,7 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
               width={null}
               state={row.getValue("state")}
               padding="py-2"
-              label={parseTriggerStatusLabel(row.getValue("state"))}
+              label={parseStatusLabel(row.getValue("state"))}
             />
           </div>
         );

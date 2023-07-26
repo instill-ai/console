@@ -1,3 +1,5 @@
+import { PipelineTriggerStatus, ResourceState } from "@instill-ai/toolkit";
+
 export function formatDate(inputDate: string): string {
   const months = [
     "Jan",
@@ -23,4 +25,16 @@ export function formatDate(inputDate: string): string {
   const formattedDate = `${month} ${day}, ${year}`;
 
   return formattedDate;
+}
+
+export function parseStatusLabel(
+  status: PipelineTriggerStatus | ResourceState
+): string {
+  const convertedStatus = status
+    .split("_")
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    )[1];
+
+  return convertedStatus;
 }
