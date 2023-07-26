@@ -19,6 +19,7 @@ import { TableCell } from "./table/TableCell";
 import { getIcon } from "./DashboardPipelinesTable";
 import { formatDate, parseStatusLabel } from "@/lib/table";
 import { GeneralStateCell } from "./cell/GeneralStateCell";
+import { GeneralTaskCell } from "./cell";
 
 export type ModelsTableProps = {
   models: Model[];
@@ -104,21 +105,8 @@ export const ModelsTable = (props: ModelsTableProps) => {
       accessorKey: "task",
       header: () => <div className="text-center">Task</div>,
       cell: ({ row }) => {
-        const { label, getIcon } = getModelInstanceTaskToolkit(
-          row.getValue("task")
-        );
         return (
-          <div className={"flex flex-row justify-center gap-x-2 py-2 pr-6"}>
-            {getIcon({
-              width: "w-4",
-              height: "h-4",
-              position: "my-auto",
-              color: "fill-instillGrey90",
-            })}
-            <p className="my-auto text-semantic-fg-secondary product-body-text-3-regular">
-              {label}
-            </p>
-          </div>
+          <GeneralTaskCell modelTask={row.getValue("task")} className={null} />
         );
       },
     },

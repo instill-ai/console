@@ -18,6 +18,7 @@ import {
 import { getIcon } from "./DashboardPipelinesTable";
 import { formatDate, parseStatusLabel } from "@/lib/table";
 import { GeneralStateCell } from "./cell/GeneralStateCell";
+import { GeneralTaskCell } from "./cell";
 
 export type DestinationsTableProps = {
   destinations: ConnectorWithPipelines[];
@@ -84,9 +85,7 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
       header: () => <div className="text-center">Data type</div>,
       cell: ({ row }) => {
         return (
-          <div className="text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("task")}
-          </div>
+          <GeneralTaskCell modelTask={row.getValue("task")} className={null} />
         );
       },
     },
