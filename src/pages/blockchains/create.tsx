@@ -35,11 +35,11 @@ const CreateBlockchainPage: FC & {
 
   return (
     <>
-      <PageHead title="Set up AI connector" />
+      <PageHead title="Set up Blockchain connector" />
       <div className="flex flex-col">
         <PageTitle
-          title="Set Up New AI Connector"
-          breadcrumbs={["AI", "AI Connector Settings"]}
+          title="Set Up New Blockchain Connector"
+          breadcrumbs={["Blockchain", "Blockchain Connector Settings"]}
           disabledButton={true}
           marginBottom="mb-10"
         />
