@@ -155,6 +155,8 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Destination"
+        secondaryText="Add and organise your Destination"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -171,6 +173,8 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Destination"
+        secondaryText="Add and organise your Destination"
       >
         <DestinationTablePlaceholder
           enableCreateButton={false}
@@ -185,10 +189,12 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
       columns={columns}
       data={destinations}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Destination"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Destination"
+      secondaryText="Add and organise your Destination"
     />
   );
 };

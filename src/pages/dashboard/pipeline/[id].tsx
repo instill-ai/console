@@ -112,12 +112,12 @@ const PipelinePage: FC & {
       <PageHead title="pineline name" />
       <div className="flex flex-col">
         <PageTitle
-          title="Pipeline Name"
-          breadcrumbs={[""]}
+          title=""
+          breadcrumbs={id ? ["Pipeline", id.toString()] : ["Pipeline"]}
           disabledButton={true}
           buttonName=""
           buttonLink=""
-          marginBottom="mb-10"
+          marginBottom="mb-1"
         />
 
         {/* Status */}
@@ -155,13 +155,7 @@ const PipelinePage: FC & {
 
         {/* Pipeline Table */}
 
-        <div className="mt-8 flex flex-col">
-          <h4 className="w-full text-semantic-fg-secondary product-body-text-3-regular">
-            Pipeline triggers
-          </h4>
-        </div>
-
-        <div>
+        <div className="mt-8">
           <PipelineTriggersTable
             pipelineTriggers={
               pipelineTriggerRecords.isSuccess

@@ -4,7 +4,6 @@ import {
   Button,
   DataTable,
   getModelDefinitionToolkit,
-  getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 import {
@@ -144,6 +143,8 @@ export const ModelsTable = (props: ModelsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Models"
+        secondaryText="Check and organise your imported Models"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -160,6 +161,8 @@ export const ModelsTable = (props: ModelsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Models"
+        secondaryText="Check and organise your imported Models"
       >
         <ModelTablePlaceholder
           enableCreateButton={false}
@@ -174,10 +177,12 @@ export const ModelsTable = (props: ModelsTableProps) => {
       columns={columns}
       data={models}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Models"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Models"
+      secondaryText="Check and organise your imported Models"
     />
   );
 };

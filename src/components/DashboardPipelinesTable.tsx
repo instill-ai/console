@@ -142,6 +142,8 @@ export const DashboardPipelinesTable = (
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Pipelines"
+        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -158,6 +160,8 @@ export const DashboardPipelinesTable = (
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Pipelines"
+        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
       >
         <PipelineTablePlaceholder
           enableCreateButton={false}
@@ -172,10 +176,12 @@ export const DashboardPipelinesTable = (
       columns={columns}
       data={pipelineTriggerCounts}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Pipelines"}
+      searchKey={"pipeline_id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Pipelines"
+      secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
     />
   );
 };

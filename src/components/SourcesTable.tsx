@@ -152,6 +152,8 @@ export const SourcesTable = (props: SourcesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Sources"
+        secondaryText="Add and organise your Sources"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -168,6 +170,8 @@ export const SourcesTable = (props: SourcesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Sources"
+        secondaryText="Add and organise your Sources"
       >
         <SourceTablePlaceholder
           enableCreateButton={false}
@@ -182,10 +186,12 @@ export const SourcesTable = (props: SourcesTableProps) => {
       columns={columns}
       data={sources}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Sources"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Sources"
+      secondaryText="Add and organise your Sources"
     />
   );
 };

@@ -61,7 +61,7 @@ const PipelinePage: FC & {
     <>
       <PageHead title="pipelines" />
       <div className="flex flex-col">
-        <div className="mb-5">
+        <div className="mb-14">
           <Button
             className="gap-x-2"
             variant="primary"
@@ -79,15 +79,6 @@ const PipelinePage: FC & {
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             New Pipeline
           </Button>
-        </div>
-
-        <div className="my-5 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            Pipelines
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            Check your pipelines
-          </p>
         </div>
 
         <PipelinesTable
