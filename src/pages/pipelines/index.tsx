@@ -13,7 +13,7 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelinesTable } from "@/components/PipelinesTable";
 

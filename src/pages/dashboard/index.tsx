@@ -113,7 +113,7 @@ const PipelinePage: FC & {
       pipelines.data.map((pipeline) => ({
         ...pipeline,
         watchState:
-          pipelinesWatchState.data[pipeline.name].state ?? "STATE_UNSPECIFIED",
+          pipelinesWatchState.data[pipeline.name].state ?? "STATE_DELETED",
       }));
 
     const pipelineTriggerCounts = getPipelineTriggerCounts(

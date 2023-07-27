@@ -2,7 +2,6 @@ import * as React from "react";
 import Link from "next/link";
 import {
   PipelineTriggerCount,
-  GeneralStateCell,
   PipelineTablePlaceholder,
   TableError,
 } from "@instill-ai/toolkit";
@@ -14,7 +13,8 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
-import { Sort } from "@/lib/table";
+import { Sort, parseStatusLabel } from "@/lib/table";
+import { GeneralStateCell } from "./cell";
 
 export const getIcon = (type: Sort): React.ReactElement => {
   if (type === "asc") {
@@ -74,6 +74,7 @@ export const DashboardPipelinesTable = (
               width={null}
               state={row.getValue("watchState")}
               padding="py-2"
+              label={parseStatusLabel(row.getValue("watchState"))}
             />
           </div>
         );

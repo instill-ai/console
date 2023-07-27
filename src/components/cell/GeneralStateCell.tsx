@@ -23,6 +23,7 @@ export const GeneralStateCell = ({
   let element: Nullable<ReactElement> = null;
 
   switch (state) {
+    case "STATE_DELETED":
     case "STATE_ERROR":
     case "STATUS_ERRORED":
       element = (
