@@ -216,7 +216,7 @@ const PipelinePage: FC & {
                       });
                     }}
                   >
-                    <Select.Trigger className="z-10 flex w-1/2 flex-row gap-x-2 !rounded-none bg-white">
+                    <Select.Trigger className="z-10 flex w-1/2 flex-row gap-x-2 !rounded-sm bg-white">
                       <Select.Value
                         placeholder="Status: All"
                         className="z-10 flex w-1/2 flex-row gap-x-2"
