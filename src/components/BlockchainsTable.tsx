@@ -112,11 +112,18 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
       accessorKey: "state",
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
+        const name: string = row.original.name;
         return (
           <div className="grid justify-items-center">
             <GeneralStateCell
               width={null}
-              state={row.getValue("state")}
+              state={
+                blockchainsWatchState
+                  ? blockchainsWatchState[name]
+                    ? blockchainsWatchState[name].state
+                    : "STATE_UNSPECIFIED"
+                  : "STATE_UNSPECIFIED"
+              }
               padding="py-2"
               label={parseStatusLabel(row.getValue("state"))}
             />

@@ -114,11 +114,18 @@ export const AIsTable = (props: AIsTableProps) => {
       accessorKey: "state",
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
+        const name: string = row.original.name;
         return (
           <div className="grid justify-items-center">
             <GeneralStateCell
               width={null}
-              state={row.getValue("state")}
+              state={
+                aisWatchState
+                  ? aisWatchState[name]
+                    ? aisWatchState[name].state
+                    : "STATE_UNSPECIFIED"
+                  : "STATE_UNSPECIFIED"
+              }
               padding="py-2"
               label={parseStatusLabel(row.getValue("state"))}
             />

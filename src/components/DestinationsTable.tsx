@@ -111,11 +111,18 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
       accessorKey: "state",
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
+        const name: string = row.original.name;
         return (
           <div className="grid justify-items-center">
             <GeneralStateCell
               width={null}
-              state={row.getValue("state")}
+              state={
+                destinationsWatchState
+                  ? destinationsWatchState[name]
+                    ? destinationsWatchState[name].state
+                    : "STATE_UNSPECIFIED"
+                  : "STATE_UNSPECIFIED"
+              }
               padding="py-2"
               label={parseStatusLabel(row.getValue("state"))}
             />
