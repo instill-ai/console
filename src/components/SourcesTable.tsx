@@ -76,15 +76,6 @@ export const SourcesTable = (props: SourcesTableProps) => {
       },
     },
     {
-      accessorKey: "task",
-      header: () => <div className="text-center">Data type</div>,
-      cell: ({ row }) => {
-        return (
-          <GeneralTaskCell modelTask={row.getValue("task")} className={null} />
-        );
-      },
-    },
-    {
       accessorKey: "create_time",
       header: ({ column }) => {
         return (

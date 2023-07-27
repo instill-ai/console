@@ -43,31 +43,6 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
       },
     },
     {
-      accessorKey: "state",
-      header: () => <div className="min-w-[300px] text-center"></div>,
-      cell: ({ row }) => {
-        return (
-          <div className="flex flex-row gap-x-3">
-            <GeneralStateCell
-              width={null}
-              state={"STATE_ACTIVE"}
-              padding="py-2"
-            />
-            <GeneralStateCell
-              width={null}
-              state={"STATE_ERROR"}
-              padding="py-2"
-            />
-            <GeneralStateCell
-              width={null}
-              state={"STATE_UNSPECIFIED"}
-              padding="py-2"
-            />
-          </div>
-        );
-      },
-    },
-    {
       accessorKey: "create_time",
       header: ({ column }) => {
         return (

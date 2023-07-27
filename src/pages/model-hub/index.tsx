@@ -5,11 +5,9 @@ import {
   useWatchModels,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-
 import { ModelsTable } from "@/components/ModelsTable";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
-import { data } from "@/lib/table";
 
 interface GetLayOutProps {
   page: ReactElement;
@@ -62,7 +60,7 @@ const ModelPage: FC & {
         </div>
 
         <ModelsTable
-          models={!models.isSuccess ? data : []}
+          models={models.isSuccess ? models.data : []}
           modelsWatchState={
             modelsWatchState.isSuccess ? modelsWatchState.data : {}
           }
