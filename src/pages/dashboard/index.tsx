@@ -259,15 +259,6 @@ const PipelinePage: FC & {
         </div>
 
         {/* Pipeline Table */}
-        <div className="my-4 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            Pipelines
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            Select pipelines from the table below to view the number of pipeline
-            triggers
-          </p>
-        </div>
 
         <div className="my-4">
           <DashboardPipelinesTable

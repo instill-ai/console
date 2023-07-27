@@ -117,6 +117,8 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Pipelines"
+        secondaryText="Check your pipelines"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -133,6 +135,8 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Pipelines"
+        secondaryText="Check your pipelines"
       >
         <PipelineTablePlaceholder
           enableCreateButton={false}
@@ -147,10 +151,12 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
       columns={columns}
       data={pipelines}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Pipelines"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Pipelines"
+      secondaryText="Check your pipelines"
     />
   );
 };

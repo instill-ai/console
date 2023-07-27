@@ -49,7 +49,7 @@ const ModelPage: FC & {
     <>
       <PageHead title="models" />
       <div className="flex flex-col">
-        <div className="mb-5">
+        <div className="mb-14">
           <Button
             className="gap-x-2"
             variant="primary"
@@ -61,14 +61,6 @@ const ModelPage: FC & {
           </Button>
         </div>
 
-        <div className="my-5 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            Models
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            Check and organise your imported Models
-          </p>
-        </div>
         <ModelsTable
           models={!models.isSuccess ? data : []}
           modelsWatchState={

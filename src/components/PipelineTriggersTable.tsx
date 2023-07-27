@@ -24,7 +24,7 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
   const columns: ColumnDef<PipelineTriggerRecord>[] = [
     {
       accessorKey: "trigger_time",
-      header: () => <div className="min-w-[400px] text-left">Pipeline Id</div>,
+      header: () => <div className="min-w-[400px] text-left">Timestamp</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -101,6 +101,8 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText={null}
+        secondaryText="Pipeline triggers"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -117,8 +119,10 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText={null}
+        secondaryText="Pipeline triggers"
       >
-        <TriggersTablePlaceholder enableCreateButton={false} />
+        <TriggersTablePlaceholder enableCreateButton={false} marginBottom="!border-0"/>
       </DataTable>
     );
   }
@@ -128,10 +132,12 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
       columns={columns}
       data={pipelineTriggers}
       pageSize={6}
-      searchPlaceholder={null}
+      searchPlaceholder={"Search Triggers"}
       searchKey={null}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText={null}
+      secondaryText="Pipeline triggers"
     />
   );
 };

@@ -53,7 +53,7 @@ const BlockchainsPage: FC & {
     <>
       <PageHead title="ai-connectors" />
       <div className="flex flex-col">
-        <div className="mb-4">
+        <div className="mb-14">
           <Button
             className="gap-x-2"
             variant="primary"
@@ -63,15 +63,6 @@ const BlockchainsPage: FC & {
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Blockchain
           </Button>
-        </div>
-
-        <div className="my-4 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            Blockchain
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            These are the blockchains you can select
-          </p>
         </div>
 
         <BlockchainsTable

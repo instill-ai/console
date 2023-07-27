@@ -1,4 +1,5 @@
 import {
+  AITablePlaceholder,
   ConnectorWithPipelines,
   ConnectorsWatchState,
   ImageWithFallback,
@@ -148,6 +149,8 @@ export const AIsTable = (props: AIsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="AI"
+        secondaryText="Check and organise your AI connectors"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -164,11 +167,13 @@ export const AIsTable = (props: AIsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="AI"
+        secondaryText="Check and organise your AI connectors"
       >
-        {/* <AITablePlaceholder
+        <AITablePlaceholder
           enableCreateButton={false}
           marginBottom="!border-0"
-        /> */}
+        />
       </DataTable>
     );
   }
@@ -178,10 +183,12 @@ export const AIsTable = (props: AIsTableProps) => {
       columns={columns}
       data={ais}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search AI"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="AI"
+      secondaryText="Check and organise your AI connectors"
     />
   );
 };

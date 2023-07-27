@@ -50,7 +50,7 @@ const AIsPage: FC & {
     <>
       <PageHead title="ai-connectors" />
       <div className="flex flex-col">
-        <div className="mb-4">
+        <div className="mb-14">
           <Button
             className="gap-x-2"
             variant="primary"
@@ -62,14 +62,6 @@ const AIsPage: FC & {
           </Button>
         </div>
 
-        <div className="my-4 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            AI
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            Check and organise your AI connectors
-          </p>
-        </div>
         <AIsTable
           ais={ais.data ? ais.data : []}
           aisWatchState={aisWatchState.isSuccess ? aisWatchState.data : {}}

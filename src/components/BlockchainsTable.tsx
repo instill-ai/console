@@ -1,4 +1,5 @@
 import {
+  BlockchainTablePlaceholder,
   ConnectorWithPipelines,
   ConnectorsWatchState,
   ImageWithFallback,
@@ -146,6 +147,8 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Blockchain"
+        secondaryText="These are the blockchains you can select"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -162,11 +165,13 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
+        primaryText="Blockchain"
+        secondaryText="These are the blockchains you can select"
       >
-        {/* <BlockchainTablePlaceholder
+        <BlockchainTablePlaceholder
           enableCreateButton={false}
           marginBottom="!border-0"
-        /> */}
+        />
       </DataTable>
     );
   }
@@ -176,10 +181,12 @@ export const BlockchainsTable = (props: BlockchainsTableProps) => {
       columns={columns}
       data={blockchains}
       pageSize={6}
-      searchPlaceholder={null}
-      searchKey={null}
+      searchPlaceholder={"Search Blockchain"}
+      searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
+      primaryText="Blockchain"
+      secondaryText="These are the blockchains you can select"
     />
   );
 };
