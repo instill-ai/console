@@ -50,7 +50,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
                 width: "w-4",
                 height: "h-4",
                 position: "my-auto",
-                color: "fill-instillGrey90",
+                color: "fill-semantic-bg-secondary-base-bg",
               })}
             />
           </div>

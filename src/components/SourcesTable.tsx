@@ -56,14 +56,14 @@ export const SourcesTable = (props: SourcesTableProps) => {
                       <DataSourceIcon
                         width="w-4"
                         height="h-4"
-                        color="fill-instillGrey90"
+                        color="fill-semantic-bg-secondary-base-bg"
                         position="my-auto"
                       />
                     ) : (
                       <DataDestinationIcon
                         width="w-4"
                         height="h-4"
-                        color="fill-instillGrey90"
+                        color="fill-semantic-bg-secondary-base-bg"
                         position="my-auto"
                       />
                     )

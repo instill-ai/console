@@ -7,12 +7,15 @@ export type GeneralTaskCellProps = {
   modelTask: string;
 };
 
-export const GeneralTaskCell = ({ modelTask, className }: GeneralTaskCellProps) => {
+export const GeneralTaskCell = ({
+  modelTask,
+  className,
+}: GeneralTaskCellProps) => {
   const iconStyle = {
     width: "w-5",
     height: "h-5",
     position: "my-auto",
-    color: "fill-instillGrey90",
+    color: "fill-semantic-bg-secondary-base-bg",
   };
 
   const { label, getIcon } = getModelInstanceTaskToolkit(modelTask);
@@ -25,7 +28,7 @@ export const GeneralTaskCell = ({ modelTask, className }: GeneralTaskCellProps) 
       )}
     >
       {getIcon(iconStyle)}
-      <p className="my-auto flex text-instillGrey90 text-instill-body">
+      <p className="text-product-body-text-3-regular my-auto flex text-semantic-bg-secondary-base-bg">
         {label}
       </p>
     </div>
