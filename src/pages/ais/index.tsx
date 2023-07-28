@@ -1,12 +1,12 @@
 import { FC, ReactElement } from "react";
 import {
+  AIsTable,
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { AIsTable } from "@/components/AIsTable";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 

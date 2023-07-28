@@ -1,12 +1,12 @@
 import { FC, ReactElement } from "react";
 import {
+  BlockchainsTable,
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { BlockchainsTable } from "@/components/BlockchainsTable";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
