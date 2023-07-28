@@ -10,9 +10,9 @@ import {
   FilterByDay,
   DashboardAvailableTimeframe,
   type Nullable,
+  PipelineTriggersTable,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
-import { PipelineTriggersTable } from "@/components/PipelineTriggersTable";
 
 type GetLayOutProps = {
   page: ReactElement;

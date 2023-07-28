@@ -1,6 +1,5 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
-
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
@@ -20,8 +19,8 @@ import {
   usePipelines,
   useWatchPipelines,
   PipelineTriggerCount,
+  DashboardPipelinesTable,
 } from "@instill-ai/toolkit";
-import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 
 type GetLayOutProps = {
   page: ReactElement;
