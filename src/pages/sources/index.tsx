@@ -1,14 +1,13 @@
 import { FC, ReactElement } from "react";
 import {
+  SourcesTable,
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
-
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { SourcesTable } from "@/components/SourcesTable";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { Button, Icons } from "@instill-ai/design-system";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
