@@ -40,7 +40,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
       </div>
       <Collapsible.Content className="flex flex-col">
         <SidebarLink
-          href="//operators"
+          href="/operators"
           icon={
             <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
           }

@@ -37,7 +37,7 @@ export const expectToSelectOption = async (
 };
 
 export const deleteDestination = async (
-  destinationId: string
+  dataId: string
 ): Promise<void> => {
   try {
     const client = createInstillAxiosTestClient("vdp");
@@ -46,11 +46,11 @@ export const deleteDestination = async (
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetDestination = (data.connectors as any[]).find(
-      (e) => e.id === destinationId
+      (e) => e.id === dataId
     );
 
     if (targetDestination) {
-      await client.delete(`/connectors/${destinationId}`);
+      await client.delete(`/connectors/${dataId}`);
     }
   } catch (err) {
     return Promise.reject(err);
@@ -71,7 +71,7 @@ export const deleteAllDestinations = async () => {
   }
 };
 
-export const deleteSource = async (sourceId: string): Promise<void> => {
+export const deleteSource = async (operatorId: string): Promise<void> => {
   try {
     const client = createInstillAxiosTestClient("vdp");
 
@@ -79,11 +79,11 @@ export const deleteSource = async (sourceId: string): Promise<void> => {
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const targetSource = (data.connectors as any[]).find(
-      (e) => e.id === sourceId
+      (e) => e.id === operatorId
     );
 
     if (targetSource) {
-      await client.delete(`/connectors/${sourceId}`);
+      await client.delete(`/connectors/${operatorId}`);
     }
   } catch (err) {
     return Promise.reject(err);

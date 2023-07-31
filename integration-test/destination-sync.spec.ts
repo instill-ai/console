@@ -3,13 +3,13 @@ import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
 export function handleSyncDestinationTest() {
-  const destinationId = "response";
+  const dataId = "response";
   const destinationType = "Response";
 
   // If there has a response operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
     try {
-      await deleteDestination(destinationId);
+      await deleteDestination(dataId);
     } catch (err) {
       return Promise.reject(err);
     }
@@ -45,26 +45,26 @@ export function handleSyncDestinationTest() {
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
-        hasText: destinationId,
+        hasText: dataId,
       });
       await expect(destinationItemTitle).toHaveCount(1);
 
       // Should navigate to destination details page
       await Promise.all([
         page.waitForURL(
-          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data/${destinationId}`
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data/${dataId}`
         ),
-        page.locator("h3", { hasText: destinationId }).click(),
+        page.locator("h3", { hasText: dataId }).click(),
       ]);
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/data/${destinationId}`, {
+      await page.goto(`/data/${dataId}`, {
         waitUntil: "networkidle",
       });
 
       // Should have correct title
-      const destinationTitle = page.locator("h2", { hasText: destinationId });
+      const destinationTitle = page.locator("h2", { hasText: dataId });
       await expect(destinationTitle).toHaveCount(1);
 
       // Should have correct destination type
@@ -81,7 +81,7 @@ export function handleSyncDestinationTest() {
     test("should have delete destination modal and correctly delete destination", async ({
       page,
     }) => {
-      await expectToDeleteConnector(page, "destination", destinationId);
+      await expectToDeleteConnector(page, "destination", dataId);
     });
   });
 }
