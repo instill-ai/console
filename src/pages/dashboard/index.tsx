@@ -218,7 +218,7 @@ const PipelinePage: FC & {
                   >
                     <Select.Trigger className="z-10 flex w-1/2 flex-row gap-x-2 !rounded-sm bg-white">
                       <Select.Value
-                        placeholder="Status: All"
+                        placeholder="Status: ALL"
                         className="z-10 flex w-1/2 flex-row gap-x-2"
                       />
                     </Select.Trigger>
