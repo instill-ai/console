@@ -63,8 +63,8 @@ const ModelPage: FC & {
           modelsWatchState={
             modelsWatchState.isSuccess ? modelsWatchState.data : {}
           }
-          isError={models.isError || modelsWatchState.isError}
-          isLoading={isLoadingResource}
+          isError={false}
+          isLoading={false}
           marginBottom="mb-5"
         />
       </div>
