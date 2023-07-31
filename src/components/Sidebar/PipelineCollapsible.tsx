@@ -40,12 +40,12 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
       </div>
       <Collapsible.Content className="flex flex-col">
         <SidebarLink
-          href="/sources"
+          href="//operators"
           icon={
             <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
           }
-          name="Sources"
-          hightlighted={router.pathname.split("/")[1] === "sources"}
+          name="Operator"
+          hightlighted={router.pathname.split("/")[1] === "operator"}
           className="pl-12 pr-3"
         />
         <SidebarLink
@@ -65,10 +65,10 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
           className="pl-12 pr-3"
         />
         <SidebarLink
-          href="/destinations"
+          href="/data"
           icon={<Icons.Box className="h-6 w-6 stroke-semantic-fg-primary" />}
-          name="Destinations"
-          hightlighted={router.pathname.split("/")[1] === "destinations"}
+          name="Data"
+          hightlighted={router.pathname.split("/")[1] === "data"}
           className="pl-12 pr-3"
         />
       </Collapsible.Content>

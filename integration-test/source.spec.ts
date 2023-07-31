@@ -15,7 +15,7 @@ export function handleSourceTest() {
 
   test.describe.serial("Sync source", () => {
     test("should create source", async ({ page }) => {
-      await page.goto("/sources/create", { waitUntil: "networkidle" });
+      await page.goto("/operators/create", { waitUntil: "networkidle" });
 
       // Should select Trigger
       await expectToSelectOption(
@@ -29,7 +29,7 @@ export function handleSourceTest() {
 
       // Should set up source
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/operators`),
         setupButton.click(),
       ]);
     });
@@ -37,7 +37,7 @@ export function handleSourceTest() {
     test("should have proper sources list and navigate to source details page", async ({
       page,
     }) => {
-      await page.goto("/sources", { waitUntil: "networkidle" });
+      await page.goto("/operators", { waitUntil: "networkidle" });
 
       // Should have crrrect table item
       const sourceItemTitle = page.locator("h3", { hasText: sourceId });
@@ -46,14 +46,14 @@ export function handleSourceTest() {
       // Should navigate to source details page
       await Promise.all([
         page.waitForURL(
-          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources/${sourceId}`
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/operators/${sourceId}`
         ),
         sourceItemTitle.click(),
       ]);
     });
 
     test("should have proper source details page", async ({ page }) => {
-      await page.goto(`/sources/${sourceId}`, { waitUntil: "networkidle" });
+      await page.goto(`/operators/${sourceId}`, { waitUntil: "networkidle" });
 
       // Should have correct title
       const pageTitle = page.locator("h2", { hasText: sourceId });
@@ -72,7 +72,7 @@ export function handleSourceTest() {
     test("should have proper delete source modal and delete source", async ({
       page,
     }) => {
-      await page.goto(`/sources/${sourceId}`, { waitUntil: "networkidle" });
+      await page.goto(`/operators/${sourceId}`, { waitUntil: "networkidle" });
 
       // Should enable open delete source modal button
       const openDeleteSourceModalButton = page.locator("button", {
@@ -120,7 +120,7 @@ export function handleSourceTest() {
 
       // Delete source and navigate to sources page
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/sources`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/operators`),
         deleteSourceButton.click(),
       ]);
 

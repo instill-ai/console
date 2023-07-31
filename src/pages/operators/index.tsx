@@ -54,7 +54,7 @@ const SourcePage: FC & {
           breadcrumbs={["Source"]}
           disabledButton={enableGuard}
           buttonName="Set up new source"
-          buttonLink="/sources/create"
+          buttonLink="/operators/create"
           marginBottom="mb-10"
         />
         <SourcesTable

@@ -1,10 +1,14 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
+import { shallow } from "zustand/shallow";
 import {
   useConnectorWithPipelines,
-  ConfigureSourceForm,
-  StateLabel,
+  useWarnUnsavedChanges,
+  ConfigureDestinationForm,
+  useCreateResourceFormStore,
   PipelinesTable,
+  StateLabel,
+  CreateResourceFormStore,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   useWatchConnector,
@@ -12,47 +16,61 @@ import {
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
+const selector = (state: CreateResourceFormStore) => ({
+  formIsDirty: state.formIsDirty,
+});
+
 type GetLayOutProps = {
   page: ReactElement;
 };
 
-const SourceDetailsPage: FC & {
+const DestinationDetailsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
   const { id } = router.query;
-  const enableGuard = useCreateUpdateDeleteResourceGuard();
+  const { formIsDirty } = useCreateResourceFormStore(selector, shallow);
+
+  useWarnUnsavedChanges({
+    router,
+    haveUnsavedChanges: formIsDirty,
+    confirmation:
+      "You have unsaved changes, are you sure you want to leave this page?",
+    callbackWhenLeave: null,
+  });
 
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const sourceWithPipelines = useConnectorWithPipelines({
-    enabled: true,
+  const enableGuard = useCreateUpdateDeleteResourceGuard();
+
+  const destinationWithPipelines = useConnectorWithPipelines({
     connectorName: id ? `connectors/${id.toString()}` : null,
     accessToken: null,
+    enabled: true,
   });
 
-  const sourceWatchState = useWatchConnector({
-    enabled: sourceWithPipelines.isSuccess,
-    connectorName: sourceWithPipelines.isSuccess
-      ? sourceWithPipelines.data.name
+  const destinationWatchState = useWatchConnector({
+    connectorName: destinationWithPipelines.isSuccess
+      ? destinationWithPipelines.data.name
       : null,
     accessToken: null,
+    enabled: destinationWithPipelines.isSuccess,
   });
 
   const pipelinesWatchState = useWatchPipelines({
-    enabled: sourceWithPipelines.isSuccess,
-    pipelineNames: sourceWithPipelines.isSuccess
-      ? sourceWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
+    pipelineNames: destinationWithPipelines.isSuccess
+      ? destinationWithPipelines.data.pipelines.map((pipeline) => pipeline.name)
       : [],
     accessToken: null,
+    enabled: destinationWithPipelines.isSuccess,
   });
 
-  const isLoadingResources = sourceWithPipelines.isLoading
+  const isLoadingResources = destinationWithPipelines.isLoading
     ? true
-    : sourceWithPipelines.isSuccess &&
-      sourceWithPipelines.data.pipelines.length > 0
+    : destinationWithPipelines.isSuccess &&
+      destinationWithPipelines.data.pipelines.length > 0
     ? pipelinesWatchState.isLoading
     : false;
 
@@ -64,15 +82,15 @@ const SourceDetailsPage: FC & {
     <>
       <PageHead
         title={
-          sourceWithPipelines.isLoading
+          destinationWithPipelines.isLoading
             ? ""
-            : (sourceWithPipelines.data?.name as string)
+            : (destinationWithPipelines.data?.name as string)
         }
       />
       <div className="flex flex-col">
         <PageTitle
           title={id ? id.toString() : ""}
-          breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
+          breadcrumbs={id ? ["Destination", id.toString()] : ["Destination"]}
           disabledButton={true}
           marginBottom="mb-[50px]"
         />
@@ -82,8 +100,8 @@ const SourceDetailsPage: FC & {
             enableIcon={true}
             enableBgColor={true}
             state={
-              sourceWatchState.isSuccess
-                ? sourceWatchState.data.state
+              destinationWatchState.isSuccess
+                ? destinationWatchState.data.state
                 : "STATE_UNSPECIFIED"
             }
             iconHeight="h-[18px]"
@@ -94,31 +112,36 @@ const SourceDetailsPage: FC & {
         <h3 className="mb-5 text-black text-instill-h3">In use by pipelines</h3>
         <PipelinesTable
           pipelines={
-            sourceWithPipelines.data ? sourceWithPipelines.data.pipelines : []
+            destinationWithPipelines.isSuccess
+              ? destinationWithPipelines.data.pipelines
+              : []
           }
           pipelinesWatchState={
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
-          isError={sourceWithPipelines.isError || pipelinesWatchState.isError}
+          isError={
+            destinationWithPipelines.isError || pipelinesWatchState.isError
+          }
           isLoading={isLoadingResources}
           marginBottom="mb-10"
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
-        {sourceWithPipelines.isSuccess && sourceWatchState.isSuccess ? (
-          <ConfigureSourceForm
-            width="w-full"
-            source={{
-              ...sourceWithPipelines.data,
-              watchState: sourceWatchState.data.state,
+        {destinationWithPipelines.isSuccess &&
+        destinationWatchState.isSuccess ? (
+          <ConfigureDestinationForm
+            destination={{
+              ...destinationWithPipelines.data,
+              watchState: destinationWatchState.data.state,
             }}
             onDelete={(initStore) => {
               initStore();
-              router.push("/sources");
+              router.push("/data");
             }}
-            onConfigure={null}
             disabledDelete={enableGuard}
+            onConfigure={null}
+            disabledConfigure={enableGuard}
+            width="w-full"
             accessToken={null}
-            disabledConfigure={true}
           />
         ) : null}
       </div>
@@ -126,7 +149,7 @@ const SourceDetailsPage: FC & {
   );
 };
 
-SourceDetailsPage.getLayout = (page) => {
+DestinationDetailsPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar />
@@ -138,4 +161,4 @@ SourceDetailsPage.getLayout = (page) => {
   );
 };
 
-export default SourceDetailsPage;
+export default DestinationDetailsPage;

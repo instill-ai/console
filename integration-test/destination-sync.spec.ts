@@ -17,7 +17,7 @@ export function handleSyncDestinationTest() {
 
   test.describe.serial("Destination", () => {
     test("should create response destination", async ({ page }) => {
-      await page.goto("/destinations/create", { waitUntil: "networkidle" });
+      await page.goto("/data/create", { waitUntil: "networkidle" });
 
       // Should select destination type - Response
       await expectToSelectOption(
@@ -33,7 +33,7 @@ export function handleSyncDestinationTest() {
       await setupButton.isEnabled();
 
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data`),
         setupButton.click(),
       ]);
     });
@@ -41,7 +41,7 @@ export function handleSyncDestinationTest() {
     test("should have destination list and navigate to destination details page", async ({
       page,
     }) => {
-      await page.goto("/destinations", { waitUntil: "networkidle" });
+      await page.goto("/data", { waitUntil: "networkidle" });
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
@@ -52,14 +52,14 @@ export function handleSyncDestinationTest() {
       // Should navigate to destination details page
       await Promise.all([
         page.waitForURL(
-          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data/${destinationId}`
         ),
         page.locator("h3", { hasText: destinationId }).click(),
       ]);
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/destinations/${destinationId}`, {
+      await page.goto(`/data/${destinationId}`, {
         waitUntil: "networkidle",
       });
 

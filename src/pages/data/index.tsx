@@ -55,7 +55,7 @@ const DestinationPage: FC & {
           breadcrumbs={["Destination"]}
           disabledButton={enableGuard}
           buttonName="Set up new destination"
-          buttonLink="/destinations/create"
+          buttonLink="/data/create"
           marginBottom="mb-10"
         />
         <DestinationsTable
