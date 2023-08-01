@@ -4,6 +4,7 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   usePipelineBuilderStore,
+  PipelinesTable,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import {
@@ -14,7 +15,6 @@ import {
 } from "unique-names-generator";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
-import { PipelinesTable } from "@/components/PipelinesTable";
 
 type GetLayOutProps = {
   page: ReactElement;
