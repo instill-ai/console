@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
 export function handleAsyncDestinationTest() {
-  const destinationId = `destination-async-${Math.floor(
+  const dataId = `destination-async-${Math.floor(
     Math.random() * 10000
   )}`;
   const destinationDescription = "Hi, I am";
@@ -18,7 +18,7 @@ export function handleAsyncDestinationTest() {
 
   test.describe.serial("Async destination", () => {
     test("should warn wrong resource ID", async ({ page }) => {
-      await page.goto("/destinations/create", { waitUntil: "networkidle" });
+      await page.goto("/data/create", { waitUntil: "networkidle" });
 
       // Should input destination id
       const idField = page.locator("input#destination-id");
@@ -46,11 +46,11 @@ export function handleAsyncDestinationTest() {
     });
 
     test("should create async destination", async ({ page }) => {
-      await page.goto("/destinations/create", { waitUntil: "networkidle" });
+      await page.goto("/data/create", { waitUntil: "networkidle" });
 
       // Should input destination id
       const idField = page.locator("input#destination-id");
-      await idField.fill(destinationId);
+      await idField.fill(dataId);
 
       // Should select destination source - S3
       await expectToSelectOption(
@@ -117,7 +117,7 @@ export function handleAsyncDestinationTest() {
       await setupButton.isEnabled();
 
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data`),
         setupButton.click(),
       ]);
     });
@@ -125,30 +125,30 @@ export function handleAsyncDestinationTest() {
     test("should have destination list and navigate to destination details page", async ({
       page,
     }) => {
-      await page.goto("/destinations", { waitUntil: "networkidle" });
+      await page.goto("/data", { waitUntil: "networkidle" });
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
-        hasText: destinationId,
+        hasText: dataId,
       });
       await expect(destinationItemTitle).toHaveCount(1);
 
       // Should navigate to destination details page
       await Promise.all([
         page.waitForURL(
-          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data/${dataId}`
         ),
-        page.locator("h3", { hasText: destinationId }).click(),
+        page.locator("h3", { hasText: dataId }).click(),
       ]);
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/destinations/${destinationId}`, {
+      await page.goto(`/data/${dataId}`, {
         waitUntil: "networkidle",
       });
 
       // Should have correct title
-      const destinationTitle = page.locator("h2", { hasText: destinationId });
+      const destinationTitle = page.locator("h2", { hasText: dataId });
       await expect(destinationTitle).toHaveCount(1);
 
       // Should have correct destination type
@@ -205,7 +205,7 @@ export function handleAsyncDestinationTest() {
       const newS3OutputFormat = "JSON Lines: Newline-delimited JSON";
       const newS3OutputCompression = "GZIP";
 
-      await page.goto(`/destinations/${destinationId}`, {
+      await page.goto(`/data/${dataId}`, {
         waitUntil: "networkidle",
       });
 
@@ -282,7 +282,7 @@ export function handleAsyncDestinationTest() {
       await Promise.all([
         page.waitForResponse(
           new URL(
-            `/${env("NEXT_PUBLIC_API_VERSION")}/connectors/${destinationId}`,
+            `/${env("NEXT_PUBLIC_API_VERSION")}/connectors/${dataId}`,
             `${env("NEXT_PUBLIC_VDP_API_GATEWAY_URL")}`
           ).toString(),
           { timeout: 50000 }
@@ -291,7 +291,7 @@ export function handleAsyncDestinationTest() {
       ]);
 
       // Reload page
-      await page.goto(`/destinations/${destinationId}`, {
+      await page.goto(`/data/${dataId}`, {
         waitUntil: "networkidle",
       });
 
@@ -327,7 +327,7 @@ export function handleAsyncDestinationTest() {
     test("should have delete destination modal and correctly delete destination", async ({
       page,
     }) => {
-      await expectToDeleteConnector(page, "destination", destinationId);
+      await expectToDeleteConnector(page, "destination", dataId);
     });
   });
 }

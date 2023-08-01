@@ -1,22 +1,23 @@
 import { FC, ReactElement } from "react";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
+
 import {
-  env,
   useWarnUnsavedChanges,
-  CreateDestinationForm,
+  CreateSourceForm,
   useCreateResourceFormStore,
+  env,
   type CreateResourceFormStore,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/destinations",
+        destination: "/operators",
         permanent: false,
       },
     };
@@ -37,7 +38,7 @@ const selector = (state: CreateResourceFormStore) => ({
   init: state.init,
 });
 
-const CreateDestinationPage: FC & {
+const CreateSourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
   const router = useRouter();
@@ -65,21 +66,21 @@ const CreateDestinationPage: FC & {
 
   return (
     <>
-      <PageHead title="Create destination-connector" />
+      <PageHead title="Create source-connector" />
       <div className="flex flex-col">
         <PageTitle
-          title="Set Up New Destination"
-          breadcrumbs={["Destination", "Destination Settings"]}
+          title="Set Up New Source"
+          breadcrumbs={["Source", "Source Settings"]}
           disabledButton={true}
           marginBottom="mb-10"
         />
-        <CreateDestinationForm
-          title={null}
-          onCreate={(_, initStore) => {
+        <CreateSourceForm
+          onCreate={(initStore) => {
             initStore();
-            router.push("/destinations");
+            router.push("/operators");
           }}
           accessToken={null}
+          width="w-full"
           enabledQuery={true}
         />
       </div>
@@ -87,7 +88,7 @@ const CreateDestinationPage: FC & {
   );
 };
 
-CreateDestinationPage.getLayout = (page) => {
+CreateSourcePage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar />
@@ -99,4 +100,4 @@ CreateDestinationPage.getLayout = (page) => {
   );
 };
 
-export default CreateDestinationPage;
+export default CreateSourcePage;
