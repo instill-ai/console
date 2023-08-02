@@ -7,11 +7,10 @@ import {
   useCreateResourceFormStore,
   env,
   type CreateResourceFormStore,
+  CreateSourceForm,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { GetServerSideProps } from "next";
-import { CreateSourceForm } from "@/components/CreateSourceForm";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {

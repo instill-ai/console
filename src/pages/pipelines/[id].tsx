@@ -114,19 +114,19 @@ const PipelineBuilderPage: FC & {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
   const sources = useConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     accessToken: null,
     enabled: true,
   });
 
   const sourceDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     accessToken: null,
     enabled: true,
   });
 
   const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     connectorNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
       : [],
@@ -481,7 +481,7 @@ const PipelineBuilderPage: FC & {
 
         if (source) {
           node.data = {
-            connectorType: "CONNECTOR_TYPE_SOURCE",
+            connectorType: "CONNECTOR_TYPE_OPERATOR",
             connector: source,
           };
           return node;
@@ -673,14 +673,14 @@ const PipelineBuilderPage: FC & {
         };
         break;
       }
-      case "CONNECTOR_TYPE_SOURCE": {
+      case "CONNECTOR_TYPE_OPERATOR": {
         newNode = {
           id: uuidv4(),
           type: "sourceNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
-            connectorType: "CONNECTOR_TYPE_SOURCE",
+            connectorType: "CONNECTOR_TYPE_OPERATOR",
             connector: {
               ...draggedItem,
               id,
@@ -823,7 +823,7 @@ const PipelineBuilderPage: FC & {
                   accessToken={null}
                   enableQuery={true}
                 >
-                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_SOURCE" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_OPERATOR" ? (
                     <>
                       <LeftPanel.Section title="My Sources">
                         {isLoadingSourcesWithState ? (
@@ -874,7 +874,7 @@ const PipelineBuilderPage: FC & {
                       <LeftPanel.Section title="Popular Presets">
                         {sourceDefinitions.isSuccess ? (
                           getConnectorPresets(
-                            "CONNECTOR_TYPE_SOURCE",
+                            "CONNECTOR_TYPE_OPERATOR",
                             sourceDefinitions.data
                           ).map((e) => (
                             <Draggable.Root
