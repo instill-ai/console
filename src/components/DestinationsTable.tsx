@@ -4,9 +4,31 @@ import {
   DataDestinationIcon,
   DataSourceIcon,
   DataTable,
+  Dialog,
+  useToast,
 } from "@instill-ai/design-system";
-import { ConnectorWithPipelines, ConnectorsWatchState, DestinationTablePlaceholder, GeneralStateCell, ImageWithFallback, PaginationListContainerProps, SortIcon, TableCell, TableError, formatDate, parseStatusLabel } from "@instill-ai/toolkit";
-
+import {
+  ConnectorWithDefinition,
+  ConnectorWithPipelines,
+  ConnectorsWatchState,
+  DestinationTablePlaceholder,
+  GeneralDeleteResourceModal,
+  GeneralStateCell,
+  ImageWithFallback,
+  Model,
+  Nullable,
+  PaginationListContainerProps,
+  Pipeline,
+  SortIcon,
+  TableCell,
+  TableError,
+  formatDate,
+  getInstillApiErrorMessage,
+  parseStatusLabel,
+  useDeleteConnector,
+} from "@instill-ai/toolkit";
+import * as React from "react";
+import { isAxiosError } from "axios";
 
 export type DestinationsTableProps = {
   destinations: ConnectorWithPipelines[];
@@ -23,6 +45,51 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
     isLoading,
     marginBottom,
   } = props;
+
+  const deleteConnector = useDeleteConnector();
+  const { toast } = useToast();
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
+  const handleDeleteData = (
+    resource: Nullable<ConnectorWithDefinition | Pipeline | Model>
+  ) => {
+    if (!resource) return;
+    setIsDeleting(true);
+    deleteConnector.mutate(
+      {
+        connectorName: resource.name,
+        accessToken: null,
+      },
+      {
+        onSuccess: () => {
+          setIsDeleting(false);
+          toast({
+            title: "Data deleted",
+            variant: "alert-success",
+            size: "large",
+          });
+        },
+        onError: (error) => {
+          setIsDeleting(false);
+          if (isAxiosError(error)) {
+            toast({
+              title: "Something went wrong when delete the Data",
+              description: getInstillApiErrorMessage(error),
+              variant: "alert-error",
+              size: "large",
+            });
+          } else {
+            toast({
+              title: "Something went wrong when delete the Data",
+              variant: "alert-error",
+              description: "Please try again later",
+              size: "large",
+            });
+          }
+        },
+      }
+    );
+  };
 
   const columns: ColumnDef<ConnectorWithPipelines>[] = [
     {
@@ -45,7 +112,7 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
                   fallbackImg={
                     row.original.connector_definition.name
                       .split("/")[0]
-                      .split("-")[0] === "source" ? (
+                      .split("-")[0] === "operator" ? (
                       <DataSourceIcon
                         width="w-4"
                         height="h-4"
@@ -123,9 +190,20 @@ export const DestinationsTable = (props: DestinationsTableProps) => {
       header: () => <div className="text-center"></div>,
       cell: ({ row }) => {
         return (
-          <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
-            Delete
-          </div>
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
+                Delete
+              </div>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <GeneralDeleteResourceModal
+                resource={row.original}
+                handleDeleteResource={handleDeleteData}
+                isDeleting={isDeleting}
+              />
+            </Dialog.Content>
+          </Dialog.Root>
         );
       },
     },
