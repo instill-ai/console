@@ -114,19 +114,19 @@ const PipelineBuilderPage: FC & {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
   const sources = useConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     accessToken: null,
     enabled: true,
   });
 
   const sourceDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     accessToken: null,
     enabled: true,
   });
 
   const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     connectorNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
       : [],
@@ -171,19 +171,19 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const destinations = useConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });
 
   const destinationDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });
 
   const destinationsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     connectorNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
       : [],
@@ -481,7 +481,7 @@ const PipelineBuilderPage: FC & {
 
         if (source) {
           node.data = {
-            connectorType: "CONNECTOR_TYPE_SOURCE",
+            connectorType: "CONNECTOR_TYPE_OPERATOR",
             connector: source,
           };
           return node;
@@ -493,7 +493,7 @@ const PipelineBuilderPage: FC & {
 
         if (destination) {
           node.data = {
-            connectorType: "CONNECTOR_TYPE_DESTINATION",
+            connectorType: "CONNECTOR_TYPE_DATA",
             connector: destination,
           };
           return node;
@@ -673,14 +673,14 @@ const PipelineBuilderPage: FC & {
         };
         break;
       }
-      case "CONNECTOR_TYPE_SOURCE": {
+      case "CONNECTOR_TYPE_OPERATOR": {
         newNode = {
           id: uuidv4(),
           type: "sourceNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
-            connectorType: "CONNECTOR_TYPE_SOURCE",
+            connectorType: "CONNECTOR_TYPE_OPERATOR",
             connector: {
               ...draggedItem,
               id,
@@ -694,14 +694,14 @@ const PipelineBuilderPage: FC & {
         };
         break;
       }
-      case "CONNECTOR_TYPE_DESTINATION": {
+      case "CONNECTOR_TYPE_DATA": {
         newNode = {
           id: uuidv4(),
           type: "destinationNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
-            connectorType: "CONNECTOR_TYPE_DESTINATION",
+            connectorType: "CONNECTOR_TYPE_DATA",
             connector: {
               ...draggedItem,
               id,
@@ -823,9 +823,9 @@ const PipelineBuilderPage: FC & {
                   accessToken={null}
                   enableQuery={true}
                 >
-                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_SOURCE" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_OPERATOR" ? (
                     <>
-                      <LeftPanel.Section title="My Sources">
+                      <LeftPanel.Section title="My Operators">
                         {isLoadingSourcesWithState ? (
                           <>
                             <Draggable.Skeleton />
@@ -874,7 +874,7 @@ const PipelineBuilderPage: FC & {
                       <LeftPanel.Section title="Popular Presets">
                         {sourceDefinitions.isSuccess ? (
                           getConnectorPresets(
-                            "CONNECTOR_TYPE_SOURCE",
+                            "CONNECTOR_TYPE_OPERATOR",
                             sourceDefinitions.data
                           ).map((e) => (
                             <Draggable.Root
@@ -967,7 +967,7 @@ const PipelineBuilderPage: FC & {
                       </LeftPanel.Section>
                     </>
                   ) : null}
-                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_DATA" ? (
                     <>
                       <LeftPanel.Section title="My Destinations">
                         {isLoadingDestinationsWithState ? (
@@ -1018,7 +1018,7 @@ const PipelineBuilderPage: FC & {
                       <LeftPanel.Section title="Popular Presets">
                         {destinationDefinitions.isSuccess ? (
                           getConnectorPresets(
-                            "CONNECTOR_TYPE_DESTINATION",
+                            "CONNECTOR_TYPE_DATA",
                             destinationDefinitions.data
                           ).map((e) => (
                             <Draggable.Root

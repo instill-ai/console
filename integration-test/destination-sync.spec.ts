@@ -3,13 +3,13 @@ import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
 export function handleSyncDestinationTest() {
-  const destinationId = "response";
-  const destinationType = "Response";
+  const dataId = "local-json";
+  const destinationType = "Local JSON";
 
   // If there has a response operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
     try {
-      await deleteDestination(destinationId);
+      await deleteDestination(dataId);
     } catch (err) {
       return Promise.reject(err);
     }
@@ -17,8 +17,8 @@ export function handleSyncDestinationTest() {
 
   test.describe.serial("Destination", () => {
     test("should create response destination", async ({ page }) => {
-      await page.goto("/destinations/create", { waitUntil: "networkidle" });
-
+      await page.goto("/data/create", { waitUntil: "networkidle" });
+      await page.locator("input#destination-id").fill(dataId);
       // Should select destination type - Response
       await expectToSelectOption(
         page.locator("#destination-definition"),
@@ -27,13 +27,15 @@ export function handleSyncDestinationTest() {
           .getByText(destinationType)
       );
 
+      await page.locator("input#destination_path").fill(`/local`);
+
       // Should set up destination
       const setupButton = page.locator("button", { hasText: "Set up" });
 
       await setupButton.isEnabled();
 
       await Promise.all([
-        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations`),
+        page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data`),
         setupButton.click(),
       ]);
     });
@@ -41,30 +43,30 @@ export function handleSyncDestinationTest() {
     test("should have destination list and navigate to destination details page", async ({
       page,
     }) => {
-      await page.goto("/destinations", { waitUntil: "networkidle" });
+      await page.goto("/data", { waitUntil: "networkidle" });
 
       // Should have model item in list
       const destinationItemTitle = page.locator("h3", {
-        hasText: destinationId,
+        hasText: dataId,
       });
       await expect(destinationItemTitle).toHaveCount(1);
 
       // Should navigate to destination details page
       await Promise.all([
         page.waitForURL(
-          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/destinations/${destinationId}`
+          `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/data/${dataId}`
         ),
-        page.locator("h3", { hasText: destinationId }).click(),
+        page.locator("h3", { hasText: dataId }).click(),
       ]);
     });
 
     test("should have proper destination details page", async ({ page }) => {
-      await page.goto(`/destinations/${destinationId}`, {
+      await page.goto(`/data/${dataId}`, {
         waitUntil: "networkidle",
       });
 
       // Should have correct title
-      const destinationTitle = page.locator("h2", { hasText: destinationId });
+      const destinationTitle = page.locator("h2", { hasText: dataId });
       await expect(destinationTitle).toHaveCount(1);
 
       // Should have correct destination type
@@ -75,13 +77,13 @@ export function handleSyncDestinationTest() {
       const editButton = page.locator("button", {
         hasText: "Edit",
       });
-      expect(await editButton.isDisabled()).toBeTruthy();
+      expect(await editButton.isDisabled()).toBeFalsy();
     });
 
     test("should have delete destination modal and correctly delete destination", async ({
       page,
     }) => {
-      await expectToDeleteConnector(page, "destination", destinationId);
+      await expectToDeleteConnector(page, "data", dataId);
     });
   });
 }

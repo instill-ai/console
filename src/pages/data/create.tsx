@@ -5,18 +5,17 @@ import { shallow } from "zustand/shallow";
 import {
   env,
   useWarnUnsavedChanges,
-  CreateDestinationForm,
   useCreateResourceFormStore,
   type CreateResourceFormStore,
+  CreateDestinationForm,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/destinations",
+        destination: "/data",
         permanent: false,
       },
     };
@@ -68,8 +67,8 @@ const CreateDestinationPage: FC & {
       <PageHead title="Create destination-connector" />
       <div className="flex flex-col">
         <PageTitle
-          title="Set Up New Destination"
-          breadcrumbs={["Destination", "Destination Settings"]}
+          title="Set Up New Data"
+          breadcrumbs={["Data", "Data Settings"]}
           disabledButton={true}
           marginBottom="mb-10"
         />
@@ -77,7 +76,7 @@ const CreateDestinationPage: FC & {
           title={null}
           onCreate={(_, initStore) => {
             initStore();
-            router.push("/destinations");
+            router.push("/data");
           }}
           accessToken={null}
           enabledQuery={true}

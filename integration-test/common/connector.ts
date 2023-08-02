@@ -3,10 +3,10 @@ import { Page, expect } from "@playwright/test";
 
 export const expectToDeleteConnector = async (
   page: Page,
-  type: "destination" | "source",
+  type: "data" | "source",
   id: string
 ) => {
-  await page.goto(`/${type}s/${id}`, { waitUntil: "networkidle" });
+  await page.goto(`/${type}/${id}`, { waitUntil: "networkidle" });
 
   // Should enable open delete model modal button
   const openDeleteDestinationModalButton = page.locator("button", {
@@ -21,7 +21,7 @@ export const expectToDeleteConnector = async (
 
   // Should have proper modal title
   const modalTitle = deleteResourceModal.locator("h2", {
-    hasText: `Delete This ${type === "destination" ? "Destination" : "Source"}`,
+    hasText: `Delete This ${type === "data" ? "Data" : "Source"}`,
   });
   await expect(modalTitle).toHaveCount(1);
 
@@ -51,7 +51,7 @@ export const expectToDeleteConnector = async (
 
   // Should delete destination and navigate to destinations page
   await Promise.all([
-    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${type}s`),
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${type}`),
     deleteButton.click(),
   ]);
 

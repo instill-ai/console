@@ -1,15 +1,13 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
-
 import {
   useWarnUnsavedChanges,
-  CreateSourceForm,
   useCreateResourceFormStore,
   env,
   type CreateResourceFormStore,
+  CreateSourceForm,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { GetServerSideProps } from "next";
 
@@ -17,12 +15,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/sources",
+        destination: "/operators",
         permanent: false,
       },
     };
   }
-
   return {
     props: {},
   };
@@ -77,7 +74,7 @@ const CreateSourcePage: FC & {
         <CreateSourceForm
           onCreate={(initStore) => {
             initStore();
-            router.push("/sources");
+            router.push("/operators");
           }}
           accessToken={null}
           width="w-full"

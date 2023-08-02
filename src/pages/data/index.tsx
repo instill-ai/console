@@ -6,8 +6,8 @@ import {
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { Button, Icons } from "@instill-ai/design-system";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -24,13 +24,13 @@ const DestinationPage: FC & {
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const destinations = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: true,
     accessToken: null,
   });
 
   const destinationsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: destinations.isSuccess,
     connectorNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
@@ -57,10 +57,10 @@ const DestinationPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/destinations/create")}
+            onClick={() => router.push("/data/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
-            Add Destination
+            Add Data
           </Button>
         </div>
 
