@@ -27,7 +27,7 @@ export const CreateSourceForm = (props: CreateSourceFormProps) => {
   >([]);
 
   const connectors = useConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     accessToken,
     enabled: enabledQuery,
   });
