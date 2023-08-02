@@ -51,7 +51,7 @@ export const expectToDeleteConnector = async (
 
   // Should delete destination and navigate to destinations page
   await Promise.all([
-    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${type}s`),
+    page.waitForURL(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${type}`),
     deleteButton.click(),
   ]);
 
