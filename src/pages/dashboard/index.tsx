@@ -1,10 +1,8 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
-
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
-  DashboardPipelinesTable,
   FilterByDay,
   Nullable,
   PipelineTriggerCountsLineChart,
@@ -21,6 +19,7 @@ import {
   usePipelines,
   useWatchPipelines,
   PipelineTriggerCount,
+  DashboardPipelinesTable,
 } from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
@@ -113,7 +112,7 @@ const PipelinePage: FC & {
       pipelines.data.map((pipeline) => ({
         ...pipeline,
         watchState:
-          pipelinesWatchState.data[pipeline.name].state ?? "STATE_UNSPECIFIED",
+          pipelinesWatchState.data[pipeline.name].state ?? "STATE_DELETED",
       }));
 
     const pipelineTriggerCounts = getPipelineTriggerCounts(
@@ -259,15 +258,6 @@ const PipelinePage: FC & {
         </div>
 
         {/* Pipeline Table */}
-        <div className="my-4 flex flex-col space-y-2">
-          <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-            Pipelines
-          </h4>
-          <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-            Select pipelines from the table below to view the number of pipeline
-            triggers
-          </p>
-        </div>
 
         <div className="my-4">
           <DashboardPipelinesTable

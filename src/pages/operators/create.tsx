@@ -4,12 +4,11 @@ import { shallow } from "zustand/shallow";
 
 import {
   useWarnUnsavedChanges,
-  CreateSourceForm,
   useCreateResourceFormStore,
   env,
   type CreateResourceFormStore,
+  CreateSourceForm,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { GetServerSideProps } from "next";
 
@@ -22,7 +21,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     };
   }
-
   return {
     props: {},
   };
