@@ -825,7 +825,7 @@ const PipelineBuilderPage: FC & {
                 >
                   {leftSidebarSelectedTab === "CONNECTOR_TYPE_OPERATOR" ? (
                     <>
-                      <LeftPanel.Section title="My Sources">
+                      <LeftPanel.Section title="My Operators">
                         {isLoadingSourcesWithState ? (
                           <>
                             <Draggable.Skeleton />

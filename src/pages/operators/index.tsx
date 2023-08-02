@@ -59,7 +59,7 @@ const SourcePage: FC & {
             onClick={() => router.push("/operators/create")}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
-            Add Source
+            Add Operator
           </Button>
         </div>
 
