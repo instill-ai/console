@@ -1,12 +1,12 @@
 import { FC, ReactElement } from "react";
 import {
   useConnectorsWithPipelines,
-  SourcesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { SourcesTable } from "@/components/SourcesTable";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -22,13 +22,13 @@ const SourcePage: FC & {
    * -----------------------------------------------------------------------*/
 
   const sources = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     enabled: true,
     accessToken: null,
   });
 
   const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_SOURCE",
+    connectorType: "CONNECTOR_TYPE_OPERATOR",
     enabled: sources.isSuccess,
     connectorNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
@@ -50,10 +50,10 @@ const SourcePage: FC & {
       <PageHead title="source-connectors" />
       <div className="flex flex-col">
         <PageTitle
-          title="Source"
-          breadcrumbs={["Source"]}
+          title="Operator"
+          breadcrumbs={["Operator"]}
           disabledButton={enableGuard}
-          buttonName="Set up new source"
+          buttonName="Set up new operator"
           buttonLink="/operators/create"
           marginBottom="mb-10"
         />
