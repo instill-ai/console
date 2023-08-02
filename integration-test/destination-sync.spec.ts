@@ -3,8 +3,8 @@ import { test, expect } from "@playwright/test";
 import { expectToDeleteConnector } from "./common/connector";
 
 export function handleSyncDestinationTest() {
-  const dataId = "response";
-  const destinationType = "Response";
+  const dataId = "local-json";
+  const destinationType = "Local JSON";
 
   // If there has a response operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {

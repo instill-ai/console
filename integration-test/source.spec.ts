@@ -20,7 +20,7 @@ export function handleSourceTest() {
       // Should select Trigger
       await expectToSelectOption(
         page.locator("#source-definition"),
-        page.locator(`[data-radix-select-viewport=""]`).getByText("Trigger")
+        page.locator(`[data-radix-select-viewport=""]`).getByText("Start Operator")
       );
 
       // Should enable set up button
