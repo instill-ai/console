@@ -4,7 +4,7 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { DestinationsTable } from "@/components/DestinationsTable";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
