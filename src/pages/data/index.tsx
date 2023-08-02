@@ -1,12 +1,11 @@
 import { FC, ReactElement } from "react";
 import {
   useConnectorsWithPipelines,
-  DestinationsTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { DestinationsTable } from "@/components/DestinationsTable";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -22,13 +21,13 @@ const DestinationPage: FC & {
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   const destinations = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: true,
     accessToken: null,
   });
 
   const destinationsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: destinations.isSuccess,
     connectorNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
@@ -51,10 +50,10 @@ const DestinationPage: FC & {
       <PageHead title="destination-connectors" />
       <div className="flex flex-col">
         <PageTitle
-          title="Destination"
-          breadcrumbs={["Destination"]}
+          title="Data"
+          breadcrumbs={["Data"]}
           disabledButton={enableGuard}
-          buttonName="Set up new destination"
+          buttonName="Set up new data"
           buttonLink="/data/create"
           marginBottom="mb-10"
         />

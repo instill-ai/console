@@ -5,12 +5,12 @@ import { shallow } from "zustand/shallow";
 import {
   env,
   useWarnUnsavedChanges,
-  CreateDestinationForm,
   useCreateResourceFormStore,
   type CreateResourceFormStore,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { CreateDestinationForm } from "@/components/CreateDestinationForm";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -68,8 +68,8 @@ const CreateDestinationPage: FC & {
       <PageHead title="Create destination-connector" />
       <div className="flex flex-col">
         <PageTitle
-          title="Set Up New Destination"
-          breadcrumbs={["Destination", "Destination Settings"]}
+          title="Set Up New Data"
+          breadcrumbs={["Data", "Data Settings"]}
           disabledButton={true}
           marginBottom="mb-10"
         />
