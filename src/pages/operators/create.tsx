@@ -4,7 +4,6 @@ import { shallow } from "zustand/shallow";
 
 import {
   useWarnUnsavedChanges,
-  CreateSourceForm,
   useCreateResourceFormStore,
   env,
   type CreateResourceFormStore,
@@ -12,6 +11,7 @@ import {
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { GetServerSideProps } from "next";
+import { CreateSourceForm } from "@/components/CreateSourceForm";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -22,7 +22,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     };
   }
-
   return {
     props: {},
   };
