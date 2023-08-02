@@ -1,12 +1,13 @@
 import { FC, ReactElement } from "react";
 import {
-  useConnectorsWithPipelines,
   DestinationsTable,
+  useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
 } from "@instill-ai/toolkit";
-
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Button, Icons } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -15,6 +16,7 @@ type GetLayOutProps = {
 const DestinationPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
@@ -50,14 +52,18 @@ const DestinationPage: FC & {
     <>
       <PageHead title="destination-connectors" />
       <div className="flex flex-col">
-        <PageTitle
-          title="Destination"
-          breadcrumbs={["Destination"]}
-          disabledButton={enableGuard}
-          buttonName="Set up new destination"
-          buttonLink="/destinations/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-14">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/destinations/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add Destination
+          </Button>
+        </div>
+
         <DestinationsTable
           destinations={destinations.data ? destinations.data : []}
           destinationsWatchState={
@@ -79,7 +85,7 @@ DestinationPage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
