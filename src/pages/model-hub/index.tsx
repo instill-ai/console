@@ -1,14 +1,13 @@
 import { FC, ReactElement } from "react";
-
 import {
-  ModelsTable,
   useModels,
   useCreateUpdateDeleteResourceGuard,
   useWatchModels,
+  ModelsTable,
 } from "@instill-ai/toolkit";
-
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
-
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Button, Icons } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 interface GetLayOutProps {
   page: ReactElement;
 }
@@ -16,6 +15,7 @@ interface GetLayOutProps {
 const ModelPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
@@ -46,14 +46,18 @@ const ModelPage: FC & {
     <>
       <PageHead title="models" />
       <div className="flex flex-col">
-        <PageTitle
-          title=""
-          breadcrumbs={[]}
-          disabledButton={enableGuard}
-          buttonName="Add new model"
-          buttonLink="/model-hub/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-14">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/model-hub/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add Model
+          </Button>
+        </div>
+
         <ModelsTable
           models={models.isSuccess ? models.data : []}
           modelsWatchState={
@@ -76,7 +80,7 @@ ModelPage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
