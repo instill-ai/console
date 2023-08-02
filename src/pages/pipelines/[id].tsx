@@ -171,19 +171,19 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const destinations = useConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });
 
   const destinationDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });
 
   const destinationsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_DESTINATION",
+    connectorType: "CONNECTOR_TYPE_DATA",
     connectorNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
       : [],
@@ -493,7 +493,7 @@ const PipelineBuilderPage: FC & {
 
         if (destination) {
           node.data = {
-            connectorType: "CONNECTOR_TYPE_DESTINATION",
+            connectorType: "CONNECTOR_TYPE_DATA",
             connector: destination,
           };
           return node;
@@ -694,14 +694,14 @@ const PipelineBuilderPage: FC & {
         };
         break;
       }
-      case "CONNECTOR_TYPE_DESTINATION": {
+      case "CONNECTOR_TYPE_DATA": {
         newNode = {
           id: uuidv4(),
           type: "destinationNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
-            connectorType: "CONNECTOR_TYPE_DESTINATION",
+            connectorType: "CONNECTOR_TYPE_DATA",
             connector: {
               ...draggedItem,
               id,
@@ -967,7 +967,7 @@ const PipelineBuilderPage: FC & {
                       </LeftPanel.Section>
                     </>
                   ) : null}
-                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_DESTINATION" ? (
+                  {leftSidebarSelectedTab === "CONNECTOR_TYPE_DATA" ? (
                     <>
                       <LeftPanel.Section title="My Destinations">
                         {isLoadingDestinationsWithState ? (
@@ -1018,7 +1018,7 @@ const PipelineBuilderPage: FC & {
                       <LeftPanel.Section title="Popular Presets">
                         {destinationDefinitions.isSuccess ? (
                           getConnectorPresets(
-                            "CONNECTOR_TYPE_DESTINATION",
+                            "CONNECTOR_TYPE_DATA",
                             destinationDefinitions.data
                           ).map((e) => (
                             <Draggable.Root
