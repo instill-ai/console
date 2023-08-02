@@ -7,10 +7,9 @@ import {
   useWarnUnsavedChanges,
   useCreateResourceFormStore,
   type CreateResourceFormStore,
+  CreateDestinationForm,
 } from "@instill-ai/toolkit";
-
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { CreateDestinationForm } from "@/components/CreateDestinationForm";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {

@@ -45,7 +45,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
             <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />
           }
           name="Operator"
-          hightlighted={router.pathname.split("/")[1] === "operator"}
+          hightlighted={router.pathname.split("/")[1] === "operators"}
           className="pl-12 pr-3"
         />
         <SidebarLink
