@@ -21,7 +21,7 @@ export const expectToDeleteConnector = async (
 
   // Should have proper modal title
   const modalTitle = deleteResourceModal.locator("h2", {
-    hasText: `Delete This ${type === "data" ? "Destination" : "Source"}`,
+    hasText: `Delete This ${type === "data" ? "Data" : "Source"}`,
   });
   await expect(modalTitle).toHaveCount(1);
 

@@ -92,7 +92,7 @@ export function handleSourceTest() {
 
       // Should have correct modal title
       const modalTitle = deleteResourceModal.locator("h2", {
-        hasText: "Delete This Source",
+        hasText: "Delete This Operator",
       });
       await expect(modalTitle).toHaveCount(1);
 
