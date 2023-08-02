@@ -7,6 +7,8 @@ import {
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { SourcesTable } from "@/components/SourcesTable";
+import { useRouter } from "next/router";
+import { Button, Icons } from "@instill-ai/design-system";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -15,6 +17,7 @@ type GetLayOutProps = {
 const SourcePage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
@@ -49,14 +52,18 @@ const SourcePage: FC & {
     <>
       <PageHead title="source-connectors" />
       <div className="flex flex-col">
-        <PageTitle
-          title="Operator"
-          breadcrumbs={["Operator"]}
-          disabledButton={enableGuard}
-          buttonName="Set up new operator"
-          buttonLink="/operators/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-14">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/operators/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add Source
+          </Button>
+        </div>
+
         <SourcesTable
           sources={sources.data ? sources.data : []}
           sourcesWatchState={
@@ -78,7 +85,7 @@ SourcePage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );

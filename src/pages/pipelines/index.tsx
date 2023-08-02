@@ -1,13 +1,12 @@
 import { FC, ReactElement } from "react";
 import {
   usePipelines,
-  PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
   usePipelineBuilderStore,
+  PipelinesTable,
 } from "@instill-ai/toolkit";
-
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -15,6 +14,7 @@ import {
   animals,
 } from "unique-names-generator";
 import { useRouter } from "next/router";
+import { Button, Icons } from "@instill-ai/design-system";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -60,23 +60,26 @@ const PipelinePage: FC & {
     <>
       <PageHead title="pipelines" />
       <div className="flex flex-col">
-        <PageTitle
-          title="Pipeline"
-          breadcrumbs={["Pipeline"]}
-          disabledButton={enableGuard}
-          buttonName="Add new pipeline"
-          buttonLink="/pipelines/create"
-          marginBottom="mb-10"
-          onClick={() => {
-            const randomName = uniqueNamesGenerator({
-              dictionaries: [adjectives, colors, animals],
-              separator: "-",
-            });
-            setPipelineId(randomName);
-            router.push(`/pipelines/${randomName}`);
-            updatePipelineIsNew(() => true);
-          }}
-        />
+        <div className="mb-14">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => {
+              const randomName = uniqueNamesGenerator({
+                dictionaries: [adjectives, colors, animals],
+                separator: "-",
+              });
+              setPipelineId(randomName);
+              router.push(`/pipelines/${randomName}`);
+              updatePipelineIsNew(() => true);
+            }}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            New Pipeline
+          </Button>
+        </div>
+
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}
           pipelinesWatchState={
@@ -97,7 +100,7 @@ PipelinePage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );

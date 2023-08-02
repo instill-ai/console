@@ -1,12 +1,14 @@
 import { FC, ReactElement } from "react";
 import {
+  AIsTable,
   useConnectorsWithPipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchConnectors,
-  AIsTable,
 } from "@instill-ai/toolkit";
 
-import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Button, Icons } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -15,6 +17,7 @@ type GetLayOutProps = {
 const AIsPage: FC & {
   getLayout?: FC<GetLayOutProps>;
 } = () => {
+  const router = useRouter();
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
   /* -------------------------------------------------------------------------
@@ -47,14 +50,18 @@ const AIsPage: FC & {
     <>
       <PageHead title="ai-connectors" />
       <div className="flex flex-col">
-        <PageTitle
-          title=""
-          breadcrumbs={[""]}
-          disabledButton={enableGuard}
-          buttonName="Set up new AI"
-          buttonLink="/ais/create"
-          marginBottom="mb-10"
-        />
+        <div className="mb-14">
+          <Button
+            className="gap-x-2"
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/ais/create")}
+          >
+            <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+            Add AI Connector
+          </Button>
+        </div>
+
         <AIsTable
           ais={ais.data ? ais.data : []}
           aisWatchState={aisWatchState.isSuccess ? aisWatchState.data : {}}
@@ -74,7 +81,7 @@ AIsPage.getLayout = (page) => {
       <Topbar />
       <PageBase.Container>
         <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
