@@ -2,7 +2,8 @@ import { env, deleteSource, expectToSelectOption } from "./helper";
 import { test, expect } from "@playwright/test";
 
 export function handleSourceTest() {
-  const operatorId = "trigger";
+  const operatorId = "start-operator";
+  const operator = "Start Operator";
 
   // If there has a trigger operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
@@ -66,7 +67,7 @@ export function handleSourceTest() {
 
       // Should have correct definition
       const sourceDefinitionOption = page.locator("#source-definition");
-      await expect(sourceDefinitionOption).toHaveText("Trigger");
+      await expect(sourceDefinitionOption).toHaveText(operator);
     });
 
     test("should have proper delete source modal and delete source", async ({

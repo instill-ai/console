@@ -18,7 +18,7 @@ export function handleSyncDestinationTest() {
   test.describe.serial("Destination", () => {
     test("should create response destination", async ({ page }) => {
       await page.goto("/data/create", { waitUntil: "networkidle" });
-
+      await page.locator("input#destination-id").fill(dataId);
       // Should select destination type - Response
       await expectToSelectOption(
         page.locator("#destination-definition"),
@@ -26,6 +26,8 @@ export function handleSyncDestinationTest() {
           .locator(`[data-radix-select-viewport=""]`)
           .getByText(destinationType)
       );
+
+      await page.locator("input#destination_path").fill(`/local`);
 
       // Should set up destination
       const setupButton = page.locator("button", { hasText: "Set up" });
@@ -75,7 +77,7 @@ export function handleSyncDestinationTest() {
       const editButton = page.locator("button", {
         hasText: "Edit",
       });
-      expect(await editButton.isDisabled()).toBeTruthy();
+      expect(await editButton.isDisabled()).toBeFalsy();
     });
 
     test("should have delete destination modal and correctly delete destination", async ({

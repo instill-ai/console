@@ -6,7 +6,7 @@ export const expectToDeleteConnector = async (
   type: "data" | "source",
   id: string
 ) => {
-  await page.goto(`/${type}s/${id}`, { waitUntil: "networkidle" });
+  await page.goto(`/${type}/${id}`, { waitUntil: "networkidle" });
 
   // Should enable open delete model modal button
   const openDeleteDestinationModalButton = page.locator("button", {
