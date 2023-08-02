@@ -81,7 +81,7 @@ export function handleSyncDestinationTest() {
     test("should have delete destination modal and correctly delete destination", async ({
       page,
     }) => {
-      await expectToDeleteConnector(page, "destination", dataId);
+      await expectToDeleteConnector(page, "data", dataId);
     });
   });
 }

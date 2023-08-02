@@ -3,7 +3,7 @@ import { Page, expect } from "@playwright/test";
 
 export const expectToDeleteConnector = async (
   page: Page,
-  type: "destination" | "source",
+  type: "data" | "source",
   id: string
 ) => {
   await page.goto(`/${type}s/${id}`, { waitUntil: "networkidle" });
@@ -21,7 +21,7 @@ export const expectToDeleteConnector = async (
 
   // Should have proper modal title
   const modalTitle = deleteResourceModal.locator("h2", {
-    hasText: `Delete This ${type === "destination" ? "Destination" : "Source"}`,
+    hasText: `Delete This ${type === "data" ? "Destination" : "Source"}`,
   });
   await expect(modalTitle).toHaveCount(1);
 
