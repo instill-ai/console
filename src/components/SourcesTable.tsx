@@ -38,7 +38,7 @@ export const SourcesTable = (props: SourcesTableProps) => {
         return (
           <div className="text-left">
             <TableCell
-              primaryLink={`/operator/${row.getValue("id")}`}
+              primaryLink={`/operators/${row.getValue("id")}`}
               primaryText={row.getValue("id")}
               secondaryLink={null}
               secondaryText={row.original.connector_definition.title}
