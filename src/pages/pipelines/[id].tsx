@@ -632,7 +632,8 @@ const PipelineBuilderPage: FC & {
 
     if (event.active.data.current?.isPreset) {
       if (
-        draggedItem.name === "connectors/trigger" ||
+        draggedItem.name === "connectors/start-operator" ||
+        draggedItem.name === "connectors/end-operator" ||
         draggedItem.name === "connectors/response"
       ) {
         id = draggedItem.id;
