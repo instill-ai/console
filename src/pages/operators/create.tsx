@@ -66,8 +66,8 @@ const CreateSourcePage: FC & {
       <PageHead title="Create source-connector" />
       <div className="flex flex-col">
         <PageTitle
-          title="Set Up New Source"
-          breadcrumbs={["Source", "Source Settings"]}
+          title="Set Up New  Operator"
+          breadcrumbs={["Operator", "Operator Settings"]}
           disabledButton={true}
           marginBottom="mb-10"
         />
