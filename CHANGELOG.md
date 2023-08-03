@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.27.0-alpha](https://github.com/instill-ai/console/compare/v0.26.0-alpha...v0.27.0-alpha) (2023-08-03)
+
+
+### Features
+
+* adjust UI for source/destination connector -&gt; data connector ([#509](https://github.com/instill-ai/console/issues/509)) ([b34683e](https://github.com/instill-ai/console/commit/b34683e02c30a2fc18ab310eac86c48955c83296))
+* new table design dev ([#492](https://github.com/instill-ai/console/issues/492)) ([53cf4d6](https://github.com/instill-ai/console/commit/53cf4d6b3ed0d06d791a69cd95feef38185d6efd))
+
+
+### Bug Fixes
+
+* bump cortex version to fix disabled field issue ([#478](https://github.com/instill-ai/console/issues/478)) ([31bc8ed](https://github.com/instill-ai/console/commit/31bc8edc6608a7f6dc2e2dc3169dcf8a1bbe1f9e))
+* create AI form update ([#510](https://github.com/instill-ai/console/issues/510)) ([458c42a](https://github.com/instill-ai/console/commit/458c42ab4b5256eadecde6d22cc1ba9a661d8489))
+* model definition icon ([#477](https://github.com/instill-ai/console/issues/477)) ([c2ca096](https://github.com/instill-ai/console/commit/c2ca0965504a2a68cc280fac77371e62cedb02b3))
+* Namananand/ins 1363 pipeline builder render bug ([#480](https://github.com/instill-ai/console/issues/480)) ([7b927b3](https://github.com/instill-ai/console/commit/7b927b37408123068b2cfcd7b9b05f3ef7c89e25))
+* sidebar css fix ([#475](https://github.com/instill-ai/console/issues/475)) ([ecc6038](https://github.com/instill-ai/console/commit/ecc603889dc13d157f969ad560ccc3ed3f179655))
+
+
+### Miscellaneous
+
+* bump the toolkit and design-system version ([#481](https://github.com/instill-ai/console/issues/481)) ([cea2f28](https://github.com/instill-ai/console/commit/cea2f281b8ac298056e119dd590850b7f5f67080))
+* bump version ([#514](https://github.com/instill-ai/console/issues/514)) ([3f2c990](https://github.com/instill-ai/console/commit/3f2c99013da3c9762dbbf65b7d3c029fac474c47))
+* bump versions ([#493](https://github.com/instill-ai/console/issues/493)) ([0b5a0f8](https://github.com/instill-ai/console/commit/0b5a0f8ad4876a59f496545a4d607384ebe1988d))
+* bump versions ([#513](https://github.com/instill-ai/console/issues/513)) ([d8df2da](https://github.com/instill-ai/console/commit/d8df2da613fd05e907f5b0adcd9be9df48aec1e8))
+* namananand/ins 1467 small issue for the pipeline component dependency ([#512](https://github.com/instill-ai/console/issues/512)) ([dcb7acb](https://github.com/instill-ai/console/commit/dcb7acb2d21b7747f5d460d37a8157c51eb8d94d))
+* support audios node ([#511](https://github.com/instill-ai/console/issues/511)) ([d8005a0](https://github.com/instill-ai/console/commit/d8005a070f20dc5dfda9817917f3e7810a61f3e8))
+* update toolkit and design-system version ([#490](https://github.com/instill-ai/console/issues/490)) ([a4392e7](https://github.com/instill-ai/console/commit/a4392e7723a2fb2cd0f035c10619b30536e21715))
+
 ## [0.26.0-alpha](https://github.com/instill-ai/console/compare/v0.25.0-alpha...v0.26.0-alpha) (2023-07-19)
 
 
