@@ -72,7 +72,7 @@ const SourceDetailsPage: FC & {
       <div className="flex flex-col">
         <PageTitle
           title={id ? id.toString() : ""}
-          breadcrumbs={id ? ["Source", id.toString()] : ["Source"]}
+          breadcrumbs={id ? ["Operator", id.toString()] : ["Operator"]}
           disabledButton={true}
           marginBottom="mb-[50px]"
         />

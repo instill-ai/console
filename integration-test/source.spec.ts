@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 
 export function handleSourceTest() {
   const operatorId = "start-operator";
-  const operator = "Start Operator";
+  const operator = "Start";
 
   // If there has a trigger operator, we need to delete it then proceed the test.
   test.beforeAll(async () => {
@@ -21,7 +21,7 @@ export function handleSourceTest() {
       // Should select Trigger
       await expectToSelectOption(
         page.locator("#source-definition"),
-        page.locator(`[data-radix-select-viewport=""]`).getByText("Start Operator")
+        page.locator(`[data-radix-select-viewport=""]`).getByText("Start")
       );
 
       // Should enable set up button
