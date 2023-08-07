@@ -15,15 +15,26 @@ import {
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   statusOptions,
-  usePipelineTriggerRecords,
   usePipelines,
   useWatchPipelines,
   PipelineTriggerCount,
-  DashboardPipelinesTable,
+  PipelineState,
+  usePipelineTriggerRecords,
 } from "@instill-ai/toolkit";
+
+import { useTriggeredPipelines } from "@/lib/dashboard/triggers";
+import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 
 type GetLayOutProps = {
   page: ReactElement;
+};
+
+export type TriggeredPipeline = {
+  pipeline_id: string;
+  pipeline_uid: string;
+  trigger_count_completed: string;
+  trigger_count_errored: string;
+  watchState: PipelineState;
 };
 
 const PipelinePage: FC & {
@@ -98,6 +109,27 @@ const PipelinePage: FC & {
     accessToken: null,
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
+
+  const triggeredPipelines = useTriggeredPipelines({
+    enabled: true,
+    accessToken: null,
+    filter: null,
+  });
+
+  const triggeredPipelineList = useMemo<TriggeredPipeline[]>(() => {
+    if (!triggeredPipelines.isSuccess || !pipelinesWatchState.isSuccess) {
+      return [];
+    }
+
+    console.log("pipelinesWatchState", pipelinesWatchState);
+
+    return triggeredPipelines.data.map((pipeline) => ({
+      ...pipeline,
+      watchState:
+        pipelinesWatchState.data[`pipelines/${pipeline.pipeline_id}`]?.state ??
+        "STATE_DELETED",
+    }));
+  }, [triggeredPipelines, pipelinesWatchState]);
 
   const pipelineTriggerCounts = useMemo<PipelineTriggerCount[]>(() => {
     if (
@@ -259,9 +291,13 @@ const PipelinePage: FC & {
 
         {/* Pipeline Table */}
 
+        {/* {console.log("triggeredPipelines", triggeredPipelines)} */}
+
         <div className="my-4">
           <DashboardPipelinesTable
-            pipelineTriggerCounts={pipelineTriggerCounts}
+            pipelineTriggerCounts={
+              triggeredPipelines.data ? triggeredPipelineList : []
+            }
             isError={pipelineTriggerRecords.isError || pipelines.isError}
             isLoading={pipelineTriggerRecords.isLoading || pipelines.isLoading}
           />
