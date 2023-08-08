@@ -3,9 +3,9 @@ import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
-  FilterByDay,
+  // FilterByDay,
   Nullable,
-  PipelineTriggerCountsLineChart,
+  // PipelineTriggerCountsLineChart,
   PipelineTriggersSummary,
   PipelineWithWatchState,
   defaultSelectOption,
@@ -19,10 +19,15 @@ import {
   PipelineTriggerCount,
   PipelineState,
   usePipelineTriggerRecords,
+  FilterByDay,
 } from "@instill-ai/toolkit";
-import { useTriggeredPipelines } from "@/lib/dashboard/triggers";
+import {
+  useTriggeredPipelines,
+  useTriggeredPipelinesChart,
+} from "@/lib/dashboard/triggers";
 import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
 import { getPipelineTriggersSummary } from "@/lib/dashboard";
+import { PipelineTriggerCountsLineChart } from "@/components/PipelineTriggerCountsLineChart";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -104,6 +109,12 @@ const PipelinePage: FC & {
   });
 
   const triggeredPipelines = useTriggeredPipelines({
+    enabled: true,
+    accessToken: null,
+    filter: queryString ? queryString : null,
+  });
+
+  const pipelinesChart = useTriggeredPipelinesChart({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : null,
@@ -268,9 +279,10 @@ const PipelinePage: FC & {
 
         {/* Pipeline Chart */}
 
+        {console.log("pipelineTriggerCounts", pipelineTriggerCounts)}
         <div className="my-8">
           <PipelineTriggerCountsLineChart
-            isLoading={pipelineTriggerRecords.isLoading}
+            isLoading={pipelinesChart.isLoading}
             pipelines={pipelineTriggerCounts}
             selectedTimeOption={selectedTimeOption}
           />

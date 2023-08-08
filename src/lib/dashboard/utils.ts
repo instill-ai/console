@@ -27,14 +27,6 @@ export function getPipelineTriggersSummary(
     pipelineErroredAmountPrevious += parseInt(pipeline.trigger_count_errored);
   });
 
-  console.log({ pipelines, pipelinesPrevious });
-  console.log({
-    pipelineCompleteAmount,
-    pipelineCompleteAmountPrevious,
-    pipelineErroredAmount,
-    pipelineErroredAmountPrevious,
-  });
-
   return {
     completed: {
       statusType: "STATUS_COMPLETED",
