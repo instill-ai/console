@@ -1,5 +1,6 @@
 import {
   Nullable,
+  PipelineState,
   createInstillAxiosClient,
   env,
   getQueryString,
@@ -11,6 +12,7 @@ export type TriggeredPipeline = {
   pipeline_uid: string;
   trigger_count_completed: string;
   trigger_count_errored: string;
+  watchState?: PipelineState;
 };
 
 export type ListTriggeredPipelinesResponse = {

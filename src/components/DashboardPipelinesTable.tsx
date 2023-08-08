@@ -67,7 +67,7 @@ export const DashboardPipelinesTable = (
       },
     },
     {
-      accessorKey: "pipeline_completed",
+      accessorKey: "trigger_count_completed",
       header: ({ column }) => {
         return (
           <div className="min-w-[130px] text-center">
@@ -85,17 +85,16 @@ export const DashboardPipelinesTable = (
           </div>
         );
       },
-
       cell: ({ row }) => {
         return (
           <div className="text-center text-semantic-fg-secondary">
-            {row.getValue("pipeline_completed")}
+            {row.getValue("trigger_count_completed")}
           </div>
         );
       },
     },
     {
-      accessorKey: "pipeline_errored",
+      accessorKey: "trigger_count_errored",
       header: ({ column }) => (
         <div className="min-w-[110px] text-center">
           <Button
@@ -112,7 +111,7 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="text-center text-semantic-fg-secondary">
-            {row.getValue("pipeline_errored")}
+            {row.getValue("trigger_count_errored")}
           </div>
         );
       },
