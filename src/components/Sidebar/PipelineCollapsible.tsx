@@ -18,7 +18,7 @@ export const PipelineCollapsible = (props: PipelineCollapsibleProps) => {
     <Collapsible.Root
       open={isOpen}
       onOpenChange={setIsOpen}
-      className={cn("w-full", className)}
+      className={cn("w-full", className, isOpen ? "mb-4" : "")}
     >
       <div className="relative py-4">
         <SidebarLink
