@@ -7,12 +7,12 @@ import {
   getTimeInRFC3339Format,
   usePipelineTriggerRecords,
   PipelineTriggersSummary,
-  FilterByDay,
   DashboardAvailableTimeframe,
   type Nullable,
   PipelineTriggersTable,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
+import { FilterByDay } from "@/components/FilterByDay";
 
 type GetLayOutProps = {
   page: ReactElement;
