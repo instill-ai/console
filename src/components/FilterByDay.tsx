@@ -1,5 +1,4 @@
 import { Button, Icons, SingleSelectOption } from "@instill-ai/design-system";
-import { QueryObserverResult } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import cn from "clsx";
 import { useRouter } from "next/router";
@@ -10,7 +9,7 @@ export type FilterProps = {
     React.SetStateAction<SingleSelectOption>
   >;
   selectedTimeOption: SingleSelectOption;
-  refetch: QueryObserverResult["refetch"];
+  refetch: () => void;
 };
 
 export const FilterByDay = ({

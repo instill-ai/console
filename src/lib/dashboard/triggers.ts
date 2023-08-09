@@ -20,9 +20,10 @@ export type PipelinesChart = {
   pipeline_uid: string;
   trigger_mode: "MODE_SYNC" | "MODE_ASYNC";
   status: PipelineState;
-  time_buckets: number[] | string[];
+  time_buckets: string[];
   trigger_counts: number[] | string[];
   compute_time_duration: number[] | string[];
+  watchState?: PipelineState;
 };
 
 export type ListTriggeredPipelinesResponse = {

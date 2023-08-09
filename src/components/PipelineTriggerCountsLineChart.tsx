@@ -3,15 +3,87 @@ import * as echarts from "echarts";
 import { Icons, SingleSelectOption, Tooltip } from "@instill-ai/design-system";
 import {
   PipelineTriggerCount,
+  formatDateTime,
+  getDateRange,
   getPipelinesSeries,
   xAxisRange,
 } from "@instill-ai/toolkit";
+import { PipelinesChart } from "@/lib/dashboard";
+
+export type yAxisData = {
+  name: string;
+  type: string;
+  smooth: boolean;
+  data: number[] | string[];
+};
 
 type PipelineTriggerCountsLineChartProps = {
-  pipelines: PipelineTriggerCount[];
+  pipelines: PipelinesChart[];
   isLoading: boolean;
   selectedTimeOption: SingleSelectOption;
 };
+
+// Update the path accordingly
+
+export type MyDate = {
+  date: Date;
+  dateString: string;
+};
+
+export function sortByDate(dateArray: string[]) {
+  const parsedArray: MyDate[] = dateArray.map((dateString) => ({
+    date: new Date(dateString),
+    dateString: dateString,
+  }));
+
+  return parsedArray
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .map((date) => date.dateString);
+}
+
+export function generateChartData(
+  apiResponse: PipelinesChart[],
+  range: string
+): { xAxis: string[]; yAxis: number[][] } {
+  const pipelineData = apiResponse;
+
+  // Preprocess and format time bucket dates
+  const formattedTimeBuckets: string[][] = pipelineData.map((pipeline) => {
+    return pipeline.time_buckets.map((bucket) => formatDateTime(bucket, range));
+  });
+
+  const xAxis = sortByDate([
+    ...getDateRange(range),
+    ...formattedTimeBuckets.flat(),
+  ]);
+  const yAxis: any = [];
+
+  // Initialize yAxis arrays for each pipeline
+  for (const pipeline of pipelineData) {
+    const triggerCounts = {
+      name: pipeline.pipeline_id,
+      type: "line",
+      smooth: true,
+      data: new Array(xAxis.length).fill(0),
+    };
+
+    yAxis.push(triggerCounts);
+  }
+
+  pipelineData.forEach((pipeline, pipelineIndex) => {
+    for (const [bucketIndex, formattedBucket] of formattedTimeBuckets[
+      pipelineIndex
+    ].entries()) {
+      const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
+      if (xAxisIndex !== -1) {
+        yAxis[pipelineIndex]["data"][xAxisIndex] =
+          pipeline.trigger_counts[bucketIndex];
+      }
+    }
+  });
+
+  return { xAxis, yAxis };
+}
 
 export const PipelineTriggerCountsLineChart = ({
   isLoading,
@@ -19,8 +91,15 @@ export const PipelineTriggerCountsLineChart = ({
   selectedTimeOption,
 }: PipelineTriggerCountsLineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const xAxisData = xAxisRange(pipelines, selectedTimeOption.value);
-  const seriesData = getPipelinesSeries(pipelines);
+
+  const { xAxis, yAxis } = generateChartData(
+    pipelines,
+    selectedTimeOption.value
+  );
+  // const xAxisData = xAxisRange(pipelines, selectedTimeOption.value);
+  const xAxisData = xAxis;
+  // const seriesData = getPipelinesSeries(pipelines);
+  const seriesData = yAxis;
 
   useEffect(() => {
     if (chartRef.current) {
@@ -77,6 +156,7 @@ export const PipelineTriggerCountsLineChart = ({
         },
         yAxis: {
           type: "value",
+          minInterval: 1,
         },
         series: seriesData,
       };
