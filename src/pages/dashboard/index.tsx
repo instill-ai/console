@@ -12,28 +12,18 @@ import {
   statusOptions,
   usePipelines,
   useWatchPipelines,
-  PipelineState,
-} from "@instill-ai/toolkit";
-import {
-  PipelinesChart,
+  getPipelineTriggersSummary,
+  FilterByDay,
+  PipelineTriggerCountsLineChart,
+  DashboardPipelinesTable,
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
-} from "@/lib/dashboard/triggers";
-import { DashboardPipelinesTable } from "@/components/DashboardPipelinesTable";
-import { getPipelineTriggersSummary } from "@/lib/dashboard";
-import { PipelineTriggerCountsLineChart } from "@/components/PipelineTriggerCountsLineChart";
-import { FilterByDay } from "@/components/FilterByDay";
+  TriggeredPipeline,
+  PipelinesChart,
+} from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
   page: ReactElement;
-};
-
-export type TriggeredPipeline = {
-  pipeline_id: string;
-  pipeline_uid: string;
-  trigger_count_completed: string;
-  trigger_count_errored: string;
-  watchState: PipelineState;
 };
 
 const PipelinePage: FC & {
