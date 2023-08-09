@@ -2,15 +2,15 @@ import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageTitle, PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { SingleSelectOption } from "@instill-ai/design-system";
 import {
-  getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   usePipelineTriggerRecords,
   PipelineTriggersSummary,
-  FilterByDay,
   DashboardAvailableTimeframe,
   type Nullable,
   PipelineTriggersTable,
+  FilterByDay,
+  getTriggersSummary,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
 
@@ -92,7 +92,7 @@ const PipelinePage: FC & {
       return null;
     }
 
-    return getPipelineTriggersSummary(
+    return getTriggersSummary(
       pipelineTriggerRecords.data,
       previousPipelineTriggerRecords.data
     );

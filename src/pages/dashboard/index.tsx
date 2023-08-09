@@ -3,23 +3,23 @@ import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
 import { Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
-  FilterByDay,
   Nullable,
-  PipelineTriggerCountsLineChart,
   PipelineTriggersSummary,
-  PipelineWithWatchState,
   defaultSelectOption,
   defaultTimeOption,
-  getPipelineTriggerCounts,
-  getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   statusOptions,
-  usePipelineTriggerRecords,
   usePipelines,
   useWatchPipelines,
-  PipelineTriggerCount,
+  getPipelineTriggersSummary,
+  FilterByDay,
+  PipelineTriggerCountsLineChart,
   DashboardPipelinesTable,
+  useTriggeredPipelines,
+  useTriggeredPipelinesChart,
+  TriggeredPipeline,
+  PipelinesChart,
 } from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
@@ -87,85 +87,83 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const pipelineTriggerRecords = usePipelineTriggerRecords({
+  const triggeredPipelines = useTriggeredPipelines({
     enabled: true,
     accessToken: null,
     filter: queryString ? queryString : null,
   });
 
-  const previousPipelineTriggerRecords = usePipelineTriggerRecords({
+  const pipelinesChart = useTriggeredPipelinesChart({
+    enabled: true,
+    accessToken: null,
+    filter: queryString ? queryString : null,
+  });
+
+  const previoustriggeredPipelines = useTriggeredPipelines({
     enabled: true,
     accessToken: null,
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
-  const pipelineTriggerCounts = useMemo<PipelineTriggerCount[]>(() => {
-    if (
-      !pipelineTriggerRecords.isSuccess ||
-      !pipelines.isSuccess ||
-      !pipelinesWatchState.isSuccess
-    ) {
+  const pipelinesChartList = useMemo<PipelinesChart[]>(() => {
+    if (!pipelinesChart.isSuccess || !pipelinesWatchState.isSuccess) {
       return [];
     }
 
-    const pipelinesWithWatchState: PipelineWithWatchState[] =
-      pipelines.data.map((pipeline) => ({
-        ...pipeline,
-        watchState:
-          pipelinesWatchState.data[pipeline.name].state ?? "STATE_DELETED",
-      }));
-
-    const pipelineTriggerCounts = getPipelineTriggerCounts(
-      pipelineTriggerRecords.data,
-      pipelinesWithWatchState,
-      selectedTimeOption
-    );
+    const chartList = pipelinesChart.data.map((pipeline) => ({
+      ...pipeline,
+      watchState:
+        pipelinesWatchState.data[`pipelines/${pipeline.pipeline_id}`]?.state ??
+        "STATE_DELETED",
+    }));
 
     if (selectedStatusOption && selectedStatusOption.value !== "all") {
-      return pipelineTriggerCounts.filter(
+      return chartList.filter(
         (pipelies) => pipelies.watchState === selectedStatusOption.value
       );
     }
+    return chartList;
+  }, [triggeredPipelines, pipelinesWatchState]);
 
-    return pipelineTriggerCounts;
-  }, [
-    selectedStatusOption,
-    selectedTimeOption,
-    pipelineTriggerRecords.isSuccess,
-    pipelineTriggerRecords.data,
-    pipelines.isSuccess,
-    pipelines.data,
-    pipelinesWatchState.isSuccess,
-    pipelinesWatchState.data,
-  ]);
+  const triggeredPipelineList = useMemo<TriggeredPipeline[]>(() => {
+    if (!triggeredPipelines.isSuccess || !pipelinesWatchState.isSuccess) {
+      return [];
+    }
+
+    const tableList = triggeredPipelines.data.map((pipeline) => ({
+      ...pipeline,
+      watchState:
+        pipelinesWatchState.data[`pipelines/${pipeline.pipeline_id}`]?.state ??
+        "STATE_DELETED",
+    }));
+
+    if (selectedStatusOption && selectedStatusOption.value !== "all") {
+      return tableList.filter(
+        (pipelies) => pipelies.watchState === selectedStatusOption.value
+      );
+    }
+    return tableList;
+  }, [triggeredPipelines, pipelinesWatchState, selectedStatusOption]);
 
   const pipelineTriggersSummary = useMemo(() => {
-    if (
-      !pipelineTriggerRecords.isSuccess ||
-      !previousPipelineTriggerRecords.isSuccess ||
-      !pipelineTriggerCounts
-    ) {
+    if (!previoustriggeredPipelines.isSuccess) {
       return null;
     }
 
-    const triggeredPipelineIdList = pipelineTriggerCounts.map(
+    const triggeredPipelineIdList = triggeredPipelineList.map(
       (e) => e.pipeline_id
     );
 
     return getPipelineTriggersSummary(
-      pipelineTriggerRecords.data.filter((trigger) =>
-        triggeredPipelineIdList.includes(trigger.pipeline_id)
-      ),
-      previousPipelineTriggerRecords.data.filter((trigger) =>
+      triggeredPipelineList,
+      previoustriggeredPipelines.data.filter((trigger) =>
         triggeredPipelineIdList.includes(trigger.pipeline_id)
       )
     );
   }, [
-    pipelineTriggerRecords.isSuccess,
-    pipelineTriggerRecords.data,
-    previousPipelineTriggerRecords.isSuccess,
-    previousPipelineTriggerRecords.data,
-    pipelineTriggerCounts,
+    previoustriggeredPipelines.isSuccess,
+    previoustriggeredPipelines.data,
+    triggeredPipelineList,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -238,7 +236,10 @@ const PipelinePage: FC & {
               </div>
               <div className="my-1">
                 <FilterByDay
-                  refetch={pipelineTriggerRecords.refetch}
+                  refetch={() => {
+                    pipelinesChart.refetch();
+                    triggeredPipelines.refetch();
+                  }}
                   selectedTimeOption={selectedTimeOption}
                   setSelectedTimeOption={setSelectedTimeOption}
                 />
@@ -251,8 +252,8 @@ const PipelinePage: FC & {
 
         <div className="my-8">
           <PipelineTriggerCountsLineChart
-            isLoading={pipelineTriggerRecords.isLoading}
-            pipelines={pipelineTriggerCounts}
+            isLoading={pipelinesChart.isLoading}
+            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
             selectedTimeOption={selectedTimeOption}
           />
         </div>
@@ -261,9 +262,11 @@ const PipelinePage: FC & {
 
         <div className="my-4">
           <DashboardPipelinesTable
-            pipelineTriggerCounts={pipelineTriggerCounts}
-            isError={pipelineTriggerRecords.isError || pipelines.isError}
-            isLoading={pipelineTriggerRecords.isLoading || pipelines.isLoading}
+            pipelineTriggerCounts={
+              triggeredPipelines.data ? triggeredPipelineList : []
+            }
+            isError={triggeredPipelines.isError}
+            isLoading={triggeredPipelines.isLoading}
           />
         </div>
       </div>
