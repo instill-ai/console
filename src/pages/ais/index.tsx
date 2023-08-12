@@ -55,7 +55,9 @@ const AIsPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/ais/create")}
+            onClick={() => {
+              if (!enableGuard) router.push("/ais/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add AI Connector

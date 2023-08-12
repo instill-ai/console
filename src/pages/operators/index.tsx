@@ -56,7 +56,9 @@ const SourcePage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/operators/create")}
+            onClick={() => {
+              if (!enableGuard) router.push("/operators/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Operator

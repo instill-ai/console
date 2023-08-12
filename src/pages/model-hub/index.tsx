@@ -51,7 +51,9 @@ const ModelPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/model-hub/create")}
+            onClick={() => {
+              if (!enableGuard) router.push("/model-hub/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Model
