@@ -57,7 +57,9 @@ const DestinationPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/data/create")}
+            onClick={() => {
+              if (!enableGuard) router.push("/data/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Data

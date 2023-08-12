@@ -58,7 +58,9 @@ const BlockchainsPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => routes.push("/blockchains/create")}
+            onClick={() => {
+              if (!enableGuard) routes.push("/blockchains/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Blockchain

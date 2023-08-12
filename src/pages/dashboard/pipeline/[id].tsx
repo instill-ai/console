@@ -37,7 +37,7 @@ const PipelinePage: FC & {
   const [queryString, setQueryString] = useState<Nullable<string>>("");
   const [queryStringPrevious, setQueryStringPrevious] =
     useState<Nullable<string>>("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [, setCurrentPage] = useState(0);
 
   useEffect(() => {
     let queryParams = ``;

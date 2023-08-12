@@ -70,7 +70,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return () => {
       router.events.off("routeChangeComplete", onRouteChange);
     };
-  }, [router.events, initPipelineBuilder, dismissToast]);
+  }, [router.events, initPipelineBuilder, dismissToast, previousURL]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;

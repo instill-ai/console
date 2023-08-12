@@ -65,6 +65,7 @@ const PipelinePage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
+            disabled={enableGuard}
             onClick={() => {
               const randomName = uniqueNamesGenerator({
                 dictionaries: [adjectives, colors, animals],
