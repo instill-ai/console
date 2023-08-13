@@ -66,16 +66,6 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
 
   return (
     <div className="relative flex-1">
-      <button
-        onClick={() => updateRightPanelIsOpen((prev) => !prev)}
-        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center bg-semantic-bg-primary"
-      >
-        {rightPanelIsOpen ? (
-          <Icons.ChevronRightDouble className="h-6 w-6 stroke-semantic-accent-default" />
-        ) : (
-          <Icons.ChevronLeftDouble className="h-6 w-6 stroke-semantic-accent-default" />
-        )}
-      </button>
       <div className="relative h-full w-full flex-1">
         <div ref={ref} className={cn("h-full w-full flex-1")}>
           <ReactFlow
@@ -114,14 +104,6 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             edgeTypes={edgeTypes}
             proOptions={{ hideAttribution: true }}
             selectNodesOnDrag={false}
-
-            // We disable the selection triggered by react-flow due to
-            // it will redundantly trigger another time when selectNodesOnDrag
-            // is set to false.
-            // https://github.com/wbkd/react-flow/issues/1876
-            // onSelectionChange={(params) => {
-            //   setSelectedNode(params.nodes[0]);
-            // }}
           >
             <Controls />
             <Background

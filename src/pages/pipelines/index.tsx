@@ -3,7 +3,6 @@ import {
   usePipelines,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
-  usePipelineBuilderStore,
   PipelinesTable,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -15,6 +14,7 @@ import {
 } from "unique-names-generator";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
+import { usePipelineBuilderStore } from "pipeline-builder/usePipelineBuilderStore";
 
 type GetLayOutProps = {
   page: ReactElement;

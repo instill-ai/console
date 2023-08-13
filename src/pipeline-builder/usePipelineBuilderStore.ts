@@ -61,7 +61,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   nodes: [],
   edges: [],
   isSavingPipeline: false,
-  rightPanelIsOpen: true,
+  rightPanelIsOpen: false,
   pipelineRecipeIsDirty: false,
   pipelineIsNew: false,
   selectedConnectorNode: null,

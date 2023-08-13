@@ -10,7 +10,8 @@ import {
   useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
-import { ReactFlowInstance } from "reactflow";
+import { Edge, Node, ReactFlowInstance } from "reactflow";
+import { v4 as uuidv4 } from "uuid";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -26,6 +27,7 @@ import {
 } from "pipeline-builder/usePipelineBuilderStore";
 import { createGraphLayout } from "pipeline-builder/createGraphLayout";
 import { createInitialGraphData } from "pipeline-builder/createInitialGraphData";
+import { NodeData } from "pipeline-builder/type";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -59,6 +61,69 @@ const PipelineBuilderPage: FC & {
 
   // We need to warn user of unsave changes when they try to leave the page
 
+  // We initialize the pipeline with default start, end operator and a empty node.
+
+  useEffect(() => {
+    if (!pipelineIsNew) return;
+
+    const initialEmptyNodeId = uuidv4();
+
+    console.log(initialEmptyNodeId);
+
+    const nodes: Node<NodeData>[] = [
+      {
+        id: "start",
+        type: "startNode",
+        data: {
+          nodeType: "start",
+        },
+        position: { x: 0, y: 0 },
+      },
+      {
+        id: initialEmptyNodeId,
+        type: "emptyNode",
+        data: {
+          nodeType: "empty",
+        },
+        position: { x: 0, y: 0 },
+      },
+      {
+        id: "end",
+        type: "endNode",
+        data: {
+          nodeType: "end",
+        },
+        position: { x: 0, y: 0 },
+      },
+    ];
+
+    const edges: Edge[] = [
+      {
+        id: "start-empty",
+        type: "customEdge",
+        source: "start",
+        target: initialEmptyNodeId,
+      },
+      {
+        id: "empty-end",
+        type: "customEdge",
+        source: initialEmptyNodeId,
+        target: "end",
+      },
+    ];
+
+    createGraphLayout(nodes, edges)
+      .then((graphData) => {
+        updateNodes(() => graphData.nodes);
+        updateEdges(() => graphData.edges);
+        console.log(graphData.edges, graphData.nodes);
+        setGraphIsInitialized(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [pipelineIsNew]);
+
   const pipeline = usePipeline({
     enabled: !!id && !pipelineIsNew,
     pipelineName: id ? `pipelines/${id}` : null,
@@ -68,7 +133,7 @@ const PipelineBuilderPage: FC & {
 
   const pipelineWatchState = useWatchPipeline({
     pipelineName: id ? `pipelines/${id}` : null,
-    enabled: !!id && pipeline.isSuccess,
+    enabled: !!id && !pipelineIsNew && pipeline.isSuccess,
     accessToken: null,
   });
 
@@ -374,6 +439,7 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
+    console.log(pipelineIsNew);
     if (pipelineIsNew) return false;
 
     if (
