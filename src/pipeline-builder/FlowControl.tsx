@@ -76,7 +76,7 @@ export const FlowControl = (props: FlowControlProps) => {
   const pipelineWatchState = useWatchPipeline({
     pipelineName: `pipelines/${id}`,
     accessToken,
-    enabled: !!id && pipeline.isSuccess && enableQuery,
+    enabled: !!id && !pipelineIsNew && pipeline.isSuccess && enableQuery,
   });
 
   const updatePipeline = useUpdatePipeline();
@@ -340,117 +340,123 @@ export const FlowControl = (props: FlowControlProps) => {
   }
 
   return (
-    <div className="absolute bottom-4 right-4 flex flex-row-reverse gap-x-4">
-      <Button
-        onClick={handleTogglePipeline}
-        className="gap-x-2"
-        variant="primary"
-        size="lg"
-        disabled={
-          pipeline.isSuccess && pipelineWatchState.isSuccess ? false : true
-        }
-      >
-        {pipelineWatchState.isSuccess ? (
-          pipelineWatchState.data.state === "STATE_ACTIVE" ||
-          pipelineWatchState.data.state === "STATE_ERROR" ? (
-            <>
-              <span>Deactivate</span>
-              {isHandlingConnection ? (
-                <svg
-                  className="m-auto h-4 w-4 animate-spin text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-              ) : (
-                <Icons.Stop className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-              )}
-            </>
-          ) : (
-            <>
-              <span>Activate</span>
-              {isHandlingConnection ? (
-                <svg
-                  className="m-auto h-4 w-4 animate-spin text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-              ) : (
-                <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-              )}
-            </>
-          )
-        ) : (
-          "Disabled"
-        )}
-      </Button>
-      <Button
-        onClick={handleSavePipeline}
-        className="gap-x-2"
-        variant="secondaryGrey"
-        size="lg"
-      >
-        {pipeline.isSuccess ? (
-          <>
-            Save
-            {isSaving ? (
-              <svg
-                className="m-auto h-4 w-4 animate-spin text-semantic-fg-secondary"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
+    <>
+      <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
+        <Button
+          onClick={handleTogglePipeline}
+          className="gap-x-2"
+          variant="primary"
+          size="lg"
+          disabled={
+            pipeline.isSuccess && pipelineWatchState.isSuccess ? false : true
+          }
+        >
+          {pipelineWatchState.isSuccess ? (
+            pipelineWatchState.data.state === "STATE_ACTIVE" ||
+            pipelineWatchState.data.state === "STATE_ERROR" ? (
+              <>
+                <span>Unpublish</span>
+                {isHandlingConnection ? (
+                  <svg
+                    className="m-auto h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                ) : (
+                  <Icons.Stop className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
+                )}
+              </>
             ) : (
-              <Icons.Save01 className="h-5 w-5 stroke-semantic-fg-primary" />
-            )}
-          </>
-        ) : (
-          "Create"
-        )}
-      </Button>
-    </div>
+              <>
+                <span>Publish</span>
+                {isHandlingConnection ? (
+                  <svg
+                    className="m-auto h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                ) : (
+                  <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
+                )}
+              </>
+            )
+          ) : (
+            "Disabled"
+          )}
+        </Button>
+        <Button
+          onClick={handleSavePipeline}
+          className="gap-x-2"
+          variant="secondaryGrey"
+          size="lg"
+        >
+          Save
+          {isSaving ? (
+            <svg
+              className="m-auto h-4 w-4 animate-spin text-semantic-fg-secondary"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+          ) : (
+            <Icons.Save01 className="h-5 w-5 stroke-semantic-fg-primary" />
+          )}
+        </Button>
+      </div>
+      <div className="absolute left-8 top-8 flex flex-row gap-x-4">
+        <Button size="lg" className="gap-x-2" variant="primary">
+          AI
+          <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+        </Button>
+        <Button size="lg" className="gap-x-2" variant="primary">
+          Data
+          <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+        </Button>
+      </div>
+    </>
   );
 };
