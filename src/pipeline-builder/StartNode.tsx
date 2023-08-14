@@ -36,8 +36,11 @@ export const StartNode = ({ data, id }: NodeProps<NodeData>) => {
                 </Button>
               </div>
             </div>
-            <div className="flex">
+            <div className="flex flex-col">
               <InputType type="text" />
+              <InputType type="number" />
+              <InputType type="image" />
+              <InputType type="audio" />
             </div>
           </div>
         ) : (
