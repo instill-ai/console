@@ -1,11 +1,33 @@
 import { Handle, NodeProps, Position } from "reactflow";
 import { NodeData } from "./type";
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
-import InputType from "@/components/InputType";
+import {
+  StartNodeInputType,
+  StartOperatorInputTypes,
+} from "pipeline-builder/StartNodeInputType";
+import { Nullable } from "@instill-ai/toolkit";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const CreateStartOperatorInputSchema = z.object({
+  displayed_name: z.string(),
+  key: z.string(),
+});
 
 export const StartNode = ({ data, id }: NodeProps<NodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
+  const [selectedType, setSelectedType] =
+    React.useState<Nullable<StartOperatorInputTypes>>(null);
+
+  const form = useForm<z.infer<typeof CreateStartOperatorInputSchema>>({
+    resolver: zodResolver(CreateStartOperatorInputSchema),
+  });
+
+  const onSubmit = (data: z.infer<typeof CreateStartOperatorInputSchema>) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -14,11 +36,13 @@ export const StartNode = ({ data, id }: NodeProps<NodeData>) => {
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             Start
           </p>
-          <Icons.Edit05 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
+          {enableEdit ? null : (
+            <Icons.Edit05 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
+          )}
         </div>
 
         {enableEdit ? (
-          <div className="w-[232px]">
+          <div className="flex flex-col">
             <div className="mb-3 flex flex-row justify-between">
               <div>
                 <Icons.ArrowLeft
@@ -36,11 +60,86 @@ export const StartNode = ({ data, id }: NodeProps<NodeData>) => {
                 </Button>
               </div>
             </div>
-            <div className="flex flex-col">
-              <InputType type="text" />
-              <InputType type="number" />
-              <InputType type="image" />
-              <InputType type="audio" />
+            <div className="mb-3 grid grid-cols-2 gap-x-3 gap-y-3">
+              <StartNodeInputType
+                type="text"
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+              />
+              <StartNodeInputType
+                type="number"
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+              />
+              <StartNodeInputType
+                type="image"
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+              />
+              <StartNodeInputType
+                type="audio"
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+              />
+              <StartNodeInputType
+                type="boolean"
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+              />
+            </div>
+            <div className={selectedType ? "" : "hidden"}>
+              <Form.Root {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="flex flex-col space-y-3">
+                    <Form.Field
+                      control={form.control}
+                      name="displayed_name"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>Display name</Form.Label>
+                            <Form.Control>
+                              <Input.Root>
+                                <Input.Core
+                                  {...field}
+                                  type="text"
+                                  value={field.value ?? ""}
+                                  autoComplete="off"
+                                  className="!h-5"
+                                />
+                              </Input.Root>
+                            </Form.Control>
+                            <Form.Message />
+                          </Form.Item>
+                        );
+                      }}
+                    />
+                    <Form.Field
+                      control={form.control}
+                      name="key"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>Key</Form.Label>
+                            <Form.Control>
+                              <Input.Root>
+                                <Input.Core
+                                  {...field}
+                                  type="text"
+                                  value={field.value ?? ""}
+                                  autoComplete="off"
+                                  className="!h-5"
+                                />
+                              </Input.Root>
+                            </Form.Control>
+                            <Form.Message />
+                          </Form.Item>
+                        );
+                      }}
+                    />
+                  </div>
+                </form>
+              </Form.Root>
             </div>
           </div>
         ) : (
