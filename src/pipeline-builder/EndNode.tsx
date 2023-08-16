@@ -42,7 +42,7 @@ export const EndNode = ({ data, id }: NodeProps<NodeData>) => {
         </div>
 
         {enableEdit ? (
-          <div className="flex flex-col">
+          <div className="flex w-[315px] flex-col">
             <div className="mb-3 flex flex-row justify-between">
               <div>
                 <Icons.ArrowLeft
