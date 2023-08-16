@@ -71,6 +71,7 @@ const DestinationPage: FC & {
           }
           isError={destinations.isError || destinationsWatchState.isError}
           isLoading={isLoadingResource}
+          accessToken={null}
         />
       </div>
     </>

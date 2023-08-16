@@ -72,6 +72,7 @@ const BlockchainsPage: FC & {
           }
           isError={blockchains.isError || blockchainsWatchState.isError}
           isLoading={isLoadingResource}
+          accessToken={null}
         />
       </div>
     </>

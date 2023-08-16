@@ -124,6 +124,7 @@ const DestinationDetailsPage: FC & {
           }
           isLoading={isLoadingResources}
           marginBottom="mb-10"
+          accessToken={null}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
         {destinationWithPipelines.isSuccess &&
