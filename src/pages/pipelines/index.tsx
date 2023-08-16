@@ -88,6 +88,7 @@ const PipelinePage: FC & {
           isError={pipelines.isError || pipelinesWatchState.isError}
           marginBottom="mb-5"
           isLoading={isLoadingResource}
+          accessToken={null}
         />
       </div>
     </>

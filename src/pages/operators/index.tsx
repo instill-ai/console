@@ -70,6 +70,7 @@ const SourcePage: FC & {
           }
           isError={sources.isError || sourcesWatchState.isError}
           isLoading={isLoadingResource}
+          accessToken={null}
         />
       </div>
     </>

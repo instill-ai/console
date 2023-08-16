@@ -94,6 +94,7 @@ const AIDetailsPage: FC & {
         isError={aiWithPipelines.isError || pipelinesWatchState.isError}
         isLoading={isLoadingResources}
         marginBottom="mb-10"
+        accessToken={null}
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
       {aiWithPipelines.isSuccess && aiWatchState.isSuccess ? (

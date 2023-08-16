@@ -67,6 +67,7 @@ const AIsPage: FC & {
           aisWatchState={aisWatchState.isSuccess ? aisWatchState.data : {}}
           isError={ais.isError || aisWatchState.isError}
           isLoading={isLoadingResource}
+          accessToken={null}
         />
       </div>
     </>
