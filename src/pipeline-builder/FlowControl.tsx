@@ -1,14 +1,23 @@
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
-
-import { Button, Icons, useToast } from "@instill-ai/design-system";
+import {
+  Button,
+  Icons,
+  useToast,
+  SingleSelectOption,
+  getModelInstanceTaskToolkit,
+  DataSourceIcon,
+  DataDestinationIcon,
+} from "@instill-ai/design-system";
 import {
   CreatePipelinePayload,
+  ImageWithFallback,
   Nullable,
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
   useActivatePipeline,
+  useConnectors,
   useCreatePipeline,
   useDeActivatePipeline,
   usePipeline,
@@ -22,6 +31,7 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
+import { Combobox } from "@/components";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -66,6 +76,21 @@ export const FlowControl = (props: FlowControlProps) => {
 
   const { toast } = useToast();
   const { id } = router.query;
+
+  const [aiValue, setAIValue] = useState("");
+  const [dataValue, setDataValue] = useState("");
+
+  const ais = useConnectors({
+    connectorType: "CONNECTOR_TYPE_AI",
+    accessToken: null,
+    enabled: true,
+  });
+
+  const destinations = useConnectors({
+    connectorType: "CONNECTOR_TYPE_DATA",
+    accessToken: null,
+    enabled: true,
+  });
 
   const pipeline = usePipeline({
     pipelineName: `pipelines/${id}`,
@@ -339,6 +364,74 @@ export const FlowControl = (props: FlowControlProps) => {
     }
   }
 
+  const aiItems: SingleSelectOption[] =
+    ais?.data?.map((ai) => {
+      return {
+        label: ai.id,
+        value: ai.id,
+        startIcon: (
+          <ImageWithFallback
+            src={`/icons/${ai.connector_definition.vendor}/${ai.connector_definition.icon}`}
+            width={16}
+            height={16}
+            alt={`${ai}-icon`}
+            fallbackImg={
+              ai.connector_definition.name.split("/")[0].split("-")[0] ===
+              "source" ? (
+                <DataSourceIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              ) : (
+                <DataDestinationIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              )
+            }
+          />
+        ),
+      };
+    }) || [];
+
+  const dataItems: SingleSelectOption[] =
+    destinations?.data?.map((data) => {
+      return {
+        label: data.id,
+        value: data.id,
+        startIcon: (
+          <ImageWithFallback
+            src={`/icons/${data.connector_definition.vendor}/${data.connector_definition.icon}`}
+            width={16}
+            height={16}
+            alt={`${data}-icon`}
+            fallbackImg={
+              data.connector_definition.name.split("/")[0].split("-")[0] ===
+              "source" ? (
+                <DataSourceIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              ) : (
+                <DataDestinationIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              )
+            }
+          />
+        ),
+      };
+    }) || [];
+
   return (
     <>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
@@ -448,14 +541,38 @@ export const FlowControl = (props: FlowControlProps) => {
         </Button>
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
-        <Button size="lg" className="gap-x-2" variant="primary">
-          AI
-          <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
-        </Button>
-        <Button size="lg" className="gap-x-2" variant="primary">
-          Data
-          <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
-        </Button>
+        <Combobox
+          items={aiItems}
+          placeholder="Search"
+          notFoundPlaceholder="No Item Found"
+          value={aiValue}
+          setValue={setAIValue}
+          label={
+            <Button size="lg" className="gap-x-2" variant="primary">
+              {aiValue
+                ? aiItems.find((aiItem) => aiItem.value === aiValue)?.label
+                : "AI"}
+              <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+            </Button>
+          }
+        />
+
+        <Combobox
+          items={dataItems}
+          placeholder="Search"
+          notFoundPlaceholder="No Item Found"
+          value={dataValue}
+          setValue={setDataValue}
+          label={
+            <Button size="lg" className="gap-x-2" variant="primary">
+              {dataValue
+                ? dataItems.find((dataItem) => dataItem.value === dataValue)
+                    ?.label
+                : "Data"}
+              <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+            </Button>
+          }
+        />
       </div>
     </>
   );

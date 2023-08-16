@@ -1,5 +1,6 @@
 export * from "./Sidebar";
 export * from "./Breadcrumb";
+export * from "./Combobox";
 export * from "./ErrorBoundary";
 export * from "./ModelReadmeMarkdown";
 export * from "./OnboardingForm";
