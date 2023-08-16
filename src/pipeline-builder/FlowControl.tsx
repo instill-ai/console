@@ -5,7 +5,6 @@ import {
   Button,
   Icons,
   useToast,
-  Combobox,
   SingleSelectOption,
   getModelInstanceTaskToolkit,
   DataSourceIcon,
@@ -32,6 +31,7 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
+import { Combobox } from "@/components";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -369,12 +369,32 @@ export const FlowControl = (props: FlowControlProps) => {
       return {
         label: ai.id,
         value: ai.id,
-        startIcon: getModelInstanceTaskToolkit(ai.task).getIcon({
-          width: "w-5",
-          height: "h-5",
-          position: "my-auto mr-2",
-          color: "stroke-semantic-bg-secondary-base-bg",
-        }),
+        startIcon: (
+          <ImageWithFallback
+            src={`/icons/${ai.connector_definition.vendor}/${ai.connector_definition.icon}`}
+            width={16}
+            height={16}
+            alt={`${ai}-icon`}
+            fallbackImg={
+              ai.connector_definition.name.split("/")[0].split("-")[0] ===
+              "source" ? (
+                <DataSourceIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              ) : (
+                <DataDestinationIcon
+                  width="w-4"
+                  height="h-4"
+                  color="fill-semantic-bg-secondary-base-bg"
+                  position="my-auto"
+                />
+              )
+            }
+          />
+        ),
       };
     }) || [];
 
