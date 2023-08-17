@@ -3,7 +3,6 @@ import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import {
   Nullable,
   useConnectors,
-  usePipeline,
   useWatchConnectors,
   ConnectorWithWatchState,
   PipelineNameForm,
@@ -28,6 +27,7 @@ import {
 import { createGraphLayout } from "pipeline-builder/createGraphLayout";
 import { createInitialGraphData } from "pipeline-builder/createInitialGraphData";
 import { NodeData } from "pipeline-builder/type";
+import { usePipeline } from "pipeline-builder/sdk";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -76,6 +76,15 @@ const PipelineBuilderPage: FC & {
         type: "startNode",
         data: {
           nodeType: "start",
+          component: {
+            id: "start",
+            type: "COMPONENT_TYPE_OPERATOR",
+            configuration: {},
+            resource_name: "",
+            resource_detail: null,
+            definition_name: "operator-definitions/start-operator",
+            definition_detail: {},
+          },
         },
         position: { x: 0, y: 0 },
       },
@@ -84,6 +93,7 @@ const PipelineBuilderPage: FC & {
         type: "emptyNode",
         data: {
           nodeType: "empty",
+          component: null,
         },
         position: { x: 0, y: 0 },
       },
@@ -92,6 +102,15 @@ const PipelineBuilderPage: FC & {
         type: "endNode",
         data: {
           nodeType: "end",
+          component: {
+            id: "end",
+            type: "COMPONENT_TYPE_OPERATOR",
+            configuration: {},
+            resource_name: "",
+            resource_detail: null,
+            definition_name: "operator-definitions/end-operator",
+            definition_detail: {},
+          },
         },
         position: { x: 0, y: 0 },
       },
@@ -396,7 +415,13 @@ const PipelineBuilderPage: FC & {
     }
 
     const initialData = createInitialGraphData({
-      pipeline: { ...pipeline.data, watchState: pipelineWatchState.data.state },
+      pipeline: {
+        ...pipeline.data,
+        recipe: {
+          ...pipeline.data.recipe,
+        },
+        watchState: pipelineWatchState.data.state,
+      },
       ais: aisWithWatchState,
       blockchains: blockchainsWithWatchState,
     });
@@ -466,62 +491,62 @@ const PipelineBuilderPage: FC & {
    * Update the nodes and edges with up-to-date state
    * -----------------------------------------------------------------------*/
 
-  useEffect(() => {
-    updateNodes((prev) => {
-      const newNodes = [];
+  // useEffect(() => {
+  //   updateNodes((prev) => {
+  //     const newNodes = [];
 
-      for (const node of prev) {
-        if (
-          node.data.nodeType === "start" ||
-          node.data.nodeType === "end" ||
-          node.data.nodeType === "empty"
-        ) {
-          newNodes.push(node);
-          continue;
-        }
+  //     for (const node of prev) {
+  //       if (
+  //         node.data.nodeType === "start" ||
+  //         node.data.nodeType === "end" ||
+  //         node.data.nodeType === "empty"
+  //       ) {
+  //         newNodes.push(node);
+  //         continue;
+  //       }
 
-        if (node.data.connector.connector_type === "CONNECTOR_TYPE_AI") {
-          const targetAIName = node.data.connector.name;
-          const ai = aisWithWatchState.find((ai) => ai.name === targetAIName);
-          if (ai) {
-            const newAINode = node;
-            newAINode.data = {
-              nodeType: "connector",
-              connector: ai,
-            };
-            newNodes.push(newAINode);
-          }
-          continue;
-        }
+  //       if (node.data.connector.connector_type === "CONNECTOR_TYPE_AI") {
+  //         const targetAIName = node.data.connector.name;
+  //         const ai = aisWithWatchState.find((ai) => ai.name === targetAIName);
+  //         if (ai) {
+  //           const newAINode = node;
+  //           newAINode.data = {
+  //             nodeType: "connector",
+  //             connector: ai,
+  //           };
+  //           newNodes.push(newAINode);
+  //         }
+  //         continue;
+  //       }
 
-        if (
-          node.data.connector.connector_type === "CONNECTOR_TYPE_BLOCKCHAIN"
-        ) {
-          const targetBlockchainName = node.data.connector.name;
-          const blockchain = blockchainsWithWatchState.find(
-            (ai) => ai.name === targetBlockchainName
-          );
-          if (blockchain) {
-            const newBlockchainNode = node;
-            newBlockchainNode.data = {
-              nodeType: "connector",
-              connector: blockchain,
-            };
-            newNodes.push(newBlockchainNode);
-          }
-          continue;
-        }
-      }
+  //       if (
+  //         node.data.connector.connector_type === "CONNECTOR_TYPE_BLOCKCHAIN"
+  //       ) {
+  //         const targetBlockchainName = node.data.connector.name;
+  //         const blockchain = blockchainsWithWatchState.find(
+  //           (ai) => ai.name === targetBlockchainName
+  //         );
+  //         if (blockchain) {
+  //           const newBlockchainNode = node;
+  //           newBlockchainNode.data = {
+  //             nodeType: "connector",
+  //             connector: blockchain,
+  //           };
+  //           newNodes.push(newBlockchainNode);
+  //         }
+  //         continue;
+  //       }
+  //     }
 
-      return newNodes;
-    });
-  }, [
-    aisWithWatchState,
-    sourcesWithWatchState,
-    destinationsWithWatchState,
-    blockchainsWithWatchState,
-    updateNodes,
-  ]);
+  //     return newNodes;
+  //   });
+  // }, [
+  //   aisWithWatchState,
+  //   sourcesWithWatchState,
+  //   destinationsWithWatchState,
+  //   blockchainsWithWatchState,
+  //   updateNodes,
+  // ]);
 
   return (
     <>

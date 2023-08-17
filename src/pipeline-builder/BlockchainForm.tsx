@@ -15,8 +15,6 @@ import {
   useUpdateConnector,
   useConnectConnector,
   useDisonnectConnector,
-  ConnectorWithWatchState,
-  IncompleteConnectorWithWatchState,
   ConfigureBlockchainFormSchema,
 } from "@instill-ai/toolkit";
 import {
@@ -35,8 +33,44 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 
+export const BlockchainFormSchema = z
+  .object({
+    id: z.string().min(1, { message: "ID is required" }),
+    description: z.string().optional(),
+    connector_definition_name: z.string(),
+    configuration: z.object({
+      capture_token: z.string().optional(),
+      asset_type: z.string().optional(),
+      metadata_texts: z.boolean().optional(),
+      metadata_structured_data: z.boolean().optional(),
+      metadata_metadata: z.boolean().optional(),
+    }),
+  })
+  .superRefine((state, ctx) => {
+    if (
+      state.connector_definition_name ===
+      "connector-definitions/blockchain-numbers"
+    ) {
+      if (!state.configuration.capture_token) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Capture token is required",
+          path: ["configuration", "capture_token"],
+        });
+      }
+
+      if (!state.configuration.asset_type) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Asset type is required",
+          path: ["configuration", "asset_type"],
+        });
+      }
+    }
+  });
+
 export type BlockchainFormProps = {
-  blockchain: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
+  blockchain: z.infer<typeof BlockchainFormSchema>;
   accessToken: Nullable<string>;
 };
 
@@ -113,7 +147,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
         data: {
           ...prev.data,
           connector: {
-            ...prev.data.connector,
+            ...prev.data.component,
             id: newId,
             name: `connectors/${newId}`,
           },
@@ -125,14 +159,14 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
       return prev.map((node) => {
         if (
           node.data.nodeType === "connector" &&
-          node.data.connector.id === oldId
+          node.data.component.id === oldId
         ) {
           return {
             ...node,
             data: {
               ...node.data,
               connector: {
-                ...node.data.connector,
+                ...node.data.component,
                 id: newId,
                 name: `connectors/${newId}`,
               },
@@ -170,7 +204,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                 data: {
                   ...prev.data,
                   connector: {
-                    ...prev.data.connector,
+                    ...prev.data.component,
                     configuration: result.connector.configuration,
                     description: result.connector.description,
                     uid: result.connector.uid,
@@ -206,14 +240,14 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
               return prev.map((node) => {
                 if (
                   node.data.nodeType === "connector" &&
-                  node.data.connector.id === newId
+                  node.data.component.id === newId
                 ) {
                   return {
                     ...node,
                     data: {
                       ...node.data,
                       connector: {
-                        ...node.data.connector,
+                        ...node.data.component,
                         id: oldId,
                         name: `connectors/${oldId}`,
                       },
@@ -272,7 +306,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                 data: {
                   ...prev.data,
                   connector: {
-                    ...prev.data.connector,
+                    ...prev.data.component,
                     configuration: result.connector.configuration,
                     description: result.connector.description,
                     uid: result.connector.uid,
@@ -306,14 +340,14 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
               return prev.map((node) => {
                 if (
                   node.data.nodeType === "connector" &&
-                  node.data.connector.id === data.id
+                  node.data.component.id === data.id
                 ) {
                   return {
                     ...node,
                     data: {
                       ...node.data,
                       connector: {
-                        ...node.data.connector,
+                        ...node.data.component,
                         id: oldId,
                         name: `connectors/${oldId}`,
                       },
@@ -349,145 +383,146 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   const [isConnecting, setIsConnecting] = React.useState(false);
   const connectBlockchain = useConnectConnector();
   const disconnectBlockchain = useDisonnectConnector();
-  const handleConnectBlockchain = async function () {
-    if (!blockchain) return;
 
-    setIsConnecting(true);
+  // const handleConnectBlockchain = async function () {
+  //   if (!blockchain) return;
 
-    const oldState = blockchain.watchState;
+  //   setIsConnecting(true);
 
-    if (
-      blockchain.watchState === "STATE_CONNECTED" ||
-      blockchain.watchState === "STATE_ERROR"
-    ) {
-      disconnectBlockchain.mutate(
-        {
-          connectorName: blockchain.name,
-          accessToken,
-        },
-        {
-          onSuccess: () => {
-            toast({
-              title: `Successfully disconnect ${blockchain.id}`,
-              variant: "alert-success",
-              size: "small",
-            });
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //   const oldState = blockchain.watchState;
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: "STATE_DISCONNECTED",
-                  },
-                },
-              };
-            });
-            setIsConnecting(false);
-          },
-          onError: (error) => {
-            setIsConnecting(false);
+  //   if (
+  //     blockchain.watchState === "STATE_CONNECTED" ||
+  //     blockchain.watchState === "STATE_ERROR"
+  //   ) {
+  //     disconnectBlockchain.mutate(
+  //       {
+  //         connectorName: blockchain.name,
+  //         accessToken,
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           toast({
+  //             title: `Successfully disconnect ${blockchain.id}`,
+  //             variant: "alert-success",
+  //             size: "small",
+  //           });
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: "STATE_DISCONNECTED",
+  //                 },
+  //               },
+  //             };
+  //           });
+  //           setIsConnecting(false);
+  //         },
+  //         onError: (error) => {
+  //           setIsConnecting(false);
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: oldState,
-                  },
-                },
-              };
-            });
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when disconnect the blockchain",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when disconnect the blockchain",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    } else {
-      connectBlockchain.mutate(
-        {
-          connectorName: blockchain.name,
-          accessToken,
-        },
-        {
-          onSuccess: () => {
-            toast({
-              title: `Successfully connect ${blockchain.id}`,
-              variant: "alert-success",
-              size: "small",
-            });
-            setIsConnecting(false);
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: oldState,
+  //                 },
+  //               },
+  //             };
+  //           });
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: "STATE_CONNECTED",
-                  },
-                },
-              };
-            });
-          },
-          onError: (error) => {
-            setIsConnecting(false);
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: oldState,
-                  },
-                },
-              };
-            });
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when connect the blockchain",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when connect the blockchain",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    }
-  };
+  //           if (isAxiosError(error)) {
+  //             toast({
+  //               title: "Something went wrong when disconnect the blockchain",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: getInstillApiErrorMessage(error),
+  //             });
+  //           } else {
+  //             toast({
+  //               title: "Something went wrong when disconnect the blockchain",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: "Please try again later",
+  //             });
+  //           }
+  //         },
+  //       }
+  //     );
+  //   } else {
+  //     connectBlockchain.mutate(
+  //       {
+  //         connectorName: blockchain.name,
+  //         accessToken,
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           toast({
+  //             title: `Successfully connect ${blockchain.id}`,
+  //             variant: "alert-success",
+  //             size: "small",
+  //           });
+  //           setIsConnecting(false);
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
+
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: "STATE_CONNECTED",
+  //                 },
+  //               },
+  //             };
+  //           });
+  //         },
+  //         onError: (error) => {
+  //           setIsConnecting(false);
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: oldState,
+  //                 },
+  //               },
+  //             };
+  //           });
+  //           if (isAxiosError(error)) {
+  //             toast({
+  //               title: "Something went wrong when connect the blockchain",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: getInstillApiErrorMessage(error),
+  //             });
+  //           } else {
+  //             toast({
+  //               title: "Something went wrong when connect the blockchain",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: "Please try again later",
+  //             });
+  //           }
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
 
   return (
     <Form.Root {...form}>
@@ -787,7 +822,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
         </div>
 
         <div className="flex w-full flex-row-reverse gap-x-4">
-          <Button
+          {/* <Button
             onClick={handleConnectBlockchain}
             className="gap-x-2"
             variant="primary"
@@ -828,7 +863,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             ) : (
               <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
             )}
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             variant="secondaryColour"
