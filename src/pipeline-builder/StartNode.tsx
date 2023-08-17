@@ -31,7 +31,7 @@ export const StartNode = ({ data, id }: NodeProps<NodeData>) => {
 
   return (
     <>
-      <div className="flex flex-col rounded-sm bg-semantic-bg-line px-2 py-2.5">
+      <div className="flex flex-col rounded-sm bg-semantic-bg-line px-3 py-2.5">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             Start
