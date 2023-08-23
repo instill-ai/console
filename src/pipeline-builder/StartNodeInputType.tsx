@@ -1,6 +1,6 @@
 import cn from "clsx";
 import React, { Dispatch, ReactElement, SetStateAction } from "react";
-import { Checkbox, ComplicateIcons, Icons } from "@instill-ai/design-system";
+import { ComplicateIcons, Icons } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 
 export type StartOperatorInputTypes =
@@ -73,6 +73,7 @@ export const StartNodeInputType = ({
   return (
     <div
       onClick={() => {
+        // https://github.com/radix-ui/primitives/issues/2291
         if (type === selectedType) {
           setSelectedType(null);
         } else {
@@ -81,23 +82,18 @@ export const StartNodeInputType = ({
       }}
       className="group flex w-[151px] flex-row gap-x-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 hover:border-semantic-accent-default"
     >
-      <Checkbox
-        checked={type === selectedType}
-        onClick={() => {
-          if (type === selectedType) {
-            setSelectedType(null);
-          } else {
-            setSelectedType(type);
-          }
-        }}
-        className={cn("my-auto flex h-4 w-4 rounded-full", {
-          "border-semantic-accent-hover group-hover:bg-semantic-accent-bg":
-            type !== selectedType,
-        })}
-        checkedElement={
-          <div className="m-auto h-2 w-2 shrink-0 rounded-full bg-semantic-bg-primary data-[disabled]:bg-semantic-fg-disabled" />
-        }
-      />
+      <div
+        className={cn(
+          "my-auto flex h-4 w-4 items-center justify-center rounded-full border text-current",
+          type === selectedType
+            ? "border-semantic-accent-default bg-semantic-accent-default"
+            : "border-semantic-fg-primary group-hover:border-semantic-accent-hover group-hover:bg-semantic-accent-bg"
+        )}
+      >
+        {type === selectedType ? (
+          <div className="m-auto h-2 w-2 shrink-0 rounded-full bg-semantic-bg-primary" />
+        ) : null}
+      </div>
       <div className="my-auto flex h-6 w-6 shrink-0">{icon}</div>
       <span className="my-auto inline-block flex-1 align-middle product-body-text-4-semibold">
         {label}
