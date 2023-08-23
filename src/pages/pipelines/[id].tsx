@@ -79,7 +79,7 @@ const PipelineBuilderPage: FC & {
           component: {
             id: "start",
             type: "COMPONENT_TYPE_OPERATOR",
-            configuration: {},
+            configuration: { body: {} },
             resource_name: "",
             resource_detail: null,
             definition_name: "operator-definitions/start-operator",
@@ -105,7 +105,9 @@ const PipelineBuilderPage: FC & {
           component: {
             id: "end",
             type: "COMPONENT_TYPE_OPERATOR",
-            configuration: {},
+            configuration: {
+              body: {},
+            },
             resource_name: "",
             resource_detail: null,
             definition_name: "operator-definitions/end-operator",

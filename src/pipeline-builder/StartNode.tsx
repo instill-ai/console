@@ -21,8 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
 
 export const CreateStartOperatorInputSchema = z.object({
-  display_name: z.string(),
-  key: z.string(),
+  title: z.string().min(1, { message: "Title is required" }),
+  key: z.string().min(1, { message: "Key is required" }),
 });
 
 export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -47,23 +47,25 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
       return prev.map((node) => {
         if (node.data.nodeType === "start") {
           if (prevFieldKey) {
-            delete node.data.component.configuration[prevFieldKey];
+            delete node.data.component.configuration.body[prevFieldKey];
           }
 
-          if (formData.key in node.data.component.configuration) {
-            node.data.component.configuration[formData.key] = {
-              type: selectedType,
-              display_name: formData.display_name,
-            };
-          } else {
-            node.data.component.configuration = {
-              ...node.data.component.configuration,
-              [formData.key]: {
-                type: selectedType,
-                display_name: formData.display_name,
+          node.data = {
+            ...node.data,
+            component: {
+              ...node.data.component,
+              configuration: {
+                ...node.data.component.configuration,
+                body: {
+                  ...node.data.component.configuration.body,
+                  [formData.key]: {
+                    type: selectedType,
+                    title: formData.title,
+                  },
+                },
               },
-            };
-          }
+            },
+          };
         }
         return node;
       });
@@ -72,15 +74,21 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     setEnableEdit(false);
     setSelectedType(null);
     setPrevFieldKey(null);
-    form.reset();
+    form.reset({
+      title: "",
+      key: "",
+    });
   };
 
   const onDeleteField = (key: string) => {
     updateNodes((prev) => {
       return prev.map((node) => {
         if (node.data.nodeType === "start") {
-          const configuration = node.data.component.configuration;
-          delete configuration[key];
+          delete node.data.component.configuration.body[key];
+
+          node.data = {
+            ...node.data,
+          };
         }
         return node;
       });
@@ -89,11 +97,11 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   const onEditField = (key: string) => {
     form.reset({
-      display_name: data.component.configuration[key].display_name,
+      title: data.component.configuration.body[key].title,
       key: key,
     });
     setEnableEdit(true);
-    setSelectedType(data.component.configuration[key].type);
+    setSelectedType(data.component.configuration.body[key].type);
   };
 
   return (
@@ -109,116 +117,114 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
         </div>
 
         {enableEdit ? (
-          <div className="flex flex-col">
-            <Form.Root {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="mb-3 flex flex-row justify-between">
-                  <Icons.ArrowLeft
-                    className="my-auto h-5 w-5 stroke-slate-500"
-                    onClick={() => {
-                      setEnableEdit(!enableEdit);
-                      setSelectedType(null);
-                      form.reset();
-                    }}
-                  />
-                  <div>
-                    <Button variant="primary" type="submit" size="sm">
-                      Save
-                    </Button>
-                  </div>
+          <Form.Root {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="mb-3 flex flex-row justify-between">
+                <Icons.ArrowLeft
+                  className="my-auto h-5 w-5 stroke-slate-500"
+                  onClick={() => {
+                    setEnableEdit(!enableEdit);
+                    setSelectedType(null);
+                    form.reset();
+                  }}
+                />
+                <div>
+                  <Button variant="primary" type="submit" size="sm">
+                    Save
+                  </Button>
                 </div>
-                <div className="mb-3 grid grid-cols-2 gap-x-3 gap-y-3">
-                  <StartNodeInputType
-                    type="text"
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                  <StartNodeInputType
-                    type="number"
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                  <StartNodeInputType
-                    type="image"
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                  <StartNodeInputType
-                    type="audio"
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                  <StartNodeInputType
-                    type="boolean"
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                  />
-                </div>
-                <div
-                  className={cn(
-                    selectedType ? "" : "hidden",
-                    "flex flex-col space-y-3"
-                  )}
-                >
-                  <Form.Field
-                    control={form.control}
-                    name="display_name"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label className="!font-sans !text-base !font-semibold">
-                            Display name
-                          </Form.Label>
-                          <Form.Control className="h-8">
-                            <Input.Root className="!px-[9px] !py-1.5">
-                              <Input.Core
-                                {...field}
-                                type="text"
-                                value={field.value ?? ""}
-                                autoComplete="off"
-                                className="!h-5 !text-sm"
-                                placeholder="My prompt"
-                              />
-                            </Input.Root>
-                          </Form.Control>
-                          <Form.Message />
-                        </Form.Item>
-                      );
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="key"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label className="!font-sans !text-base !font-semibold">
-                            Key
-                          </Form.Label>
-                          <Form.Control className="h-8">
-                            <Input.Root className="!px-[9px] !py-1.5">
-                              <Input.Core
-                                {...field}
-                                type="text"
-                                value={field.value ?? ""}
-                                autoComplete="off"
-                                className="!h-5 !text-sm"
-                                placeholder="text_prompt"
-                              />
-                            </Input.Root>
-                          </Form.Control>
-                          <Form.Message />
-                        </Form.Item>
-                      );
-                    }}
-                  />
-                </div>
-              </form>
-            </Form.Root>
-          </div>
+              </div>
+              <div className="mb-3 grid grid-cols-2 gap-x-3 gap-y-3">
+                <StartNodeInputType
+                  type="text"
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                />
+                <StartNodeInputType
+                  type="number"
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                />
+                <StartNodeInputType
+                  type="image"
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                />
+                <StartNodeInputType
+                  type="audio"
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                />
+                <StartNodeInputType
+                  type="boolean"
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                />
+              </div>
+              <div
+                className={cn(
+                  selectedType ? "" : "hidden",
+                  "flex flex-col space-y-3"
+                )}
+              >
+                <Form.Field
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label className="!font-sans !text-base !font-semibold">
+                          Title
+                        </Form.Label>
+                        <Form.Control className="h-8">
+                          <Input.Root className="!px-[9px] !py-1.5">
+                            <Input.Core
+                              {...field}
+                              type="text"
+                              value={field.value ?? ""}
+                              autoComplete="off"
+                              className="!h-5 !text-sm"
+                              placeholder="My prompt"
+                            />
+                          </Input.Root>
+                        </Form.Control>
+                        <Form.Message />
+                      </Form.Item>
+                    );
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="key"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label className="!font-sans !text-base !font-semibold">
+                          Key
+                        </Form.Label>
+                        <Form.Control className="h-8">
+                          <Input.Root className="!px-[9px] !py-1.5">
+                            <Input.Core
+                              {...field}
+                              type="text"
+                              value={field.value ?? ""}
+                              autoComplete="off"
+                              className="!h-5 !text-sm"
+                              placeholder="text_prompt"
+                            />
+                          </Input.Root>
+                        </Form.Control>
+                        <Form.Message />
+                      </Form.Item>
+                    );
+                  }}
+                />
+              </div>
+            </form>
+          </Form.Root>
         ) : (
           <div className="flex flex-col gap-y-4">
-            {Object.entries(data.component.configuration).map(
+            {Object.entries(data.component.configuration.body).map(
               ([key, value]) => {
                 let icon: Nullable<React.ReactElement> = null;
 
@@ -267,7 +273,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
                   <div key={key} className="flex flex-col">
                     <div className="mb-2 flex flex-row items-center justify-between">
                       <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-                        {value.display_name}
+                        {value.title}
                       </div>
                       <div className="my-auto flex flex-row gap-x-4">
                         <button

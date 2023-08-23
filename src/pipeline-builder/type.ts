@@ -45,10 +45,12 @@ export const PipelineStartComponentSchema = z.object({
     "COMPONENT_TYPE_OPERATOR",
   ]),
   configuration: z.record(
-    z.object({
-      display_name: z.string(),
-      type: z.enum(["text", "image", "number", "audio", "boolean"]),
-    })
+    z.record(
+      z.object({
+        title: z.string(),
+        type: z.enum(["text", "image", "number", "audio", "boolean"]),
+      })
+    )
   ),
 });
 
@@ -69,10 +71,12 @@ export const PipelineEndComponentSchema = z.object({
     "COMPONENT_TYPE_OPERATOR",
   ]),
   configuration: z.record(
-    z.object({
-      display_name: z.string(),
-      type: z.enum(["text", "image", "number", "audio", "boolean"]),
-    })
+    z.record(
+      z.object({
+        title: z.string(),
+        value: z.string(),
+      })
+    )
   ),
 });
 

@@ -44,7 +44,7 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
         const endComponent = PipelineEndComponentSchema.parse(component);
         nodes.push({
           id: component.id,
-          type: "startNode",
+          type: "endNode",
           data: {
             nodeType: "end",
             component: endComponent,
