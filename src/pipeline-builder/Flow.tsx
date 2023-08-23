@@ -66,7 +66,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesDelete={() => {
+            onNodesDelete={(nodes) => {
               updatePipelineRecipeIsDirty((prev) => {
                 if (prev) return prev;
                 return true;
@@ -78,22 +78,27 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
                 return true;
               });
             }}
-            onNodesChange={(event) => {
-              onNodesChange(event);
+            onNodesChange={(changes) => {
+              const nextChanges = changes.filter((change) => {
+                if (change.type === "remove") {
+                  const node = nodes.find((node) => node.id === change.id);
+                  if (
+                    node?.data.nodeType === "start" ||
+                    node?.data.nodeType === "end"
+                  ) {
+                    return false;
+                  }
+                } else {
+                  return true;
+                }
+              });
+
+              onNodesChange(nextChanges);
             }}
-            onEdgesChange={(event) => {
-              onEdgesChange(event);
+            onEdgesChange={(changes) => {
+              onEdgesChange(changes);
             }}
             onInit={setReactFlowInstance}
-            onConnect={(e) => {
-              // When the user set up new connecton, we will update the pipeline recipe
-              // dirtiness.
-              onConnect(e);
-              updatePipelineRecipeIsDirty((prev) => {
-                if (prev) return prev;
-                return true;
-              });
-            }}
             fitView
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
