@@ -72,6 +72,7 @@ export const BlockchainFormSchema = z
 export type BlockchainFormProps = {
   blockchain: z.infer<typeof BlockchainFormSchema>;
   accessToken: Nullable<string>;
+  disabledAll?: boolean;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -81,15 +82,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 });
 
 export const BlockchainForm = (props: BlockchainFormProps) => {
-  const { blockchain, accessToken } = props;
-
-  let disabledAll = false;
-  if (
-    "visibility" in blockchain &&
-    blockchain.visibility === "VISIBILITY_PUBLIC"
-  ) {
-    disabledAll = true;
-  }
+  const { blockchain, accessToken, disabledAll } = props;
 
   const {
     updateSelectedConnectorNode,

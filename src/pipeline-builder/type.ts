@@ -52,7 +52,7 @@ export const PipelineStartComponentSchema = z.object({
   configuration: z.record(
     z.object({
       display_name: z.string(),
-      type: z.string(),
+      type: z.enum(["text", "image", "number", "audio", "boolean"]),
     })
   ),
 });
@@ -76,7 +76,7 @@ export const PipelineEndComponentSchema = z.object({
   configuration: z.record(
     z.object({
       display_name: z.string(),
-      type: z.string(),
+      type: z.enum(["text", "image", "number", "audio", "boolean"]),
     })
   ),
 });

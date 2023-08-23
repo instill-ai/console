@@ -1,6 +1,6 @@
 import cn from "clsx";
 import React, { Dispatch, ReactElement, SetStateAction } from "react";
-import { Checkbox, ComplicateIcons, Icons } from "@instill-ai/design-system";
+import { ComplicateIcons, Icons } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
 
 export type StartOperatorInputTypes =

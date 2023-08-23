@@ -6,9 +6,7 @@ import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
 
 import {
-  ConnectorWithWatchState,
   CreateConnectorPayload,
-  IncompleteConnectorWithWatchState,
   Nullable,
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
@@ -186,6 +184,7 @@ const AIFormSchema = z
 export type AIFormProps = {
   ai: z.infer<typeof AIFormSchema>;
   accessToken: Nullable<string>;
+  disabledAll?: boolean;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -195,14 +194,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 });
 
 export const AIForm = (props: AIFormProps) => {
-  const { ai, accessToken } = props;
-
-  // We will disable all the fields if the connector is public (which mean
-  // it is provided by Instill AI)
-  let disabledAll = false;
-  if ("visibility" in ai && ai.visibility === "VISIBILITY_PUBLIC") {
-    disabledAll = true;
-  }
+  const { ai, accessToken, disabledAll } = props;
 
   const {
     updateConnectorFormIsDirty,
