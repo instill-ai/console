@@ -1,9 +1,4 @@
-import {
-  ConnectorWithWatchState,
-  Nullable,
-  Pipeline,
-  PipelineState,
-} from "@instill-ai/toolkit";
+import { Pipeline, PipelineState } from "@instill-ai/toolkit";
 import * as z from "zod";
 
 export type ConnectorNodeData = {

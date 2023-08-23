@@ -72,7 +72,7 @@ export const StartNodeInputType = ({
 
   return (
     <div
-      onClick={(e) => {
+      onClick={() => {
         // https://github.com/radix-ui/primitives/issues/2291
         if (type === selectedType) {
           setSelectedType(null);

@@ -1,7 +1,3 @@
-import {
-  ConnectorWithWatchState,
-  PipelineWithWatchState,
-} from "@instill-ai/toolkit";
 import { Edge, Node } from "reactflow";
 import {
   NewPipelineWithWatchState,
@@ -13,12 +9,10 @@ import {
 
 export type CreateInitialGraphDataProps = {
   pipeline: NewPipelineWithWatchState;
-  ais: ConnectorWithWatchState[];
-  blockchains: ConnectorWithWatchState[];
 };
 
 export function createInitialGraphData(props: CreateInitialGraphDataProps) {
-  const { pipeline, ais, blockchains } = props;
+  const { pipeline } = props;
 
   const nodes: Node<NodeData>[] = [];
   const edges: Edge[] = [];

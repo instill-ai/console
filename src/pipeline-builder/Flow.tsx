@@ -11,7 +11,6 @@ import { shallow } from "zustand/shallow";
 
 import { CustomEdge } from "./CustomEdge";
 import { FlowControl } from "./FlowControl";
-import { Icons } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
@@ -28,9 +27,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
-  rightPanelIsOpen: state.rightPanelIsOpen,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
-  updateRightPanelIsOpen: state.updateRightPanelIsOpen,
 });
 
 export type FlowProps = {
@@ -59,9 +56,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     onNodesChange,
     onEdgesChange,
     onConnect,
-    rightPanelIsOpen,
     updatePipelineRecipeIsDirty,
-    updateRightPanelIsOpen,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   return (

@@ -135,13 +135,12 @@ const PipelineBuilderPage: FC & {
       .then((graphData) => {
         updateNodes(() => graphData.nodes);
         updateEdges(() => graphData.edges);
-        console.log(graphData.edges, graphData.nodes);
         setGraphIsInitialized(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [pipelineIsNew]);
+  }, [pipelineIsNew, updateEdges, updateNodes]);
 
   const pipeline = usePipeline({
     enabled: !!id && !pipelineIsNew,
@@ -422,8 +421,6 @@ const PipelineBuilderPage: FC & {
         },
         watchState: pipelineWatchState.data.state,
       },
-      ais: aisWithWatchState,
-      blockchains: blockchainsWithWatchState,
     });
 
     createGraphLayout(initialData.nodes, initialData.edges)
