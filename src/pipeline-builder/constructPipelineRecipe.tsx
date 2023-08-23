@@ -31,7 +31,7 @@ export function constructPipelineRecipe(
 
     components.push({
       id: node.id,
-      resource_name: node.data.connector.name,
+      resource_name: node.data.component.resource_name,
     });
   }
 

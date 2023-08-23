@@ -6,9 +6,7 @@ import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
 
 import {
-  ConnectorWithWatchState,
   CreateConnectorPayload,
-  IncompleteConnectorWithWatchState,
   Nullable,
   UpdateConnectorPayload,
   getInstillApiErrorMessage,
@@ -184,8 +182,9 @@ const AIFormSchema = z
   });
 
 export type AIFormProps = {
-  ai: ConnectorWithWatchState | IncompleteConnectorWithWatchState;
+  ai: z.infer<typeof AIFormSchema>;
   accessToken: Nullable<string>;
+  disabledAll?: boolean;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -195,14 +194,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 });
 
 export const AIForm = (props: AIFormProps) => {
-  const { ai, accessToken } = props;
-
-  // We will disable all the fields if the connector is public (which mean
-  // it is provided by Instill AI)
-  let disabledAll = false;
-  if ("visibility" in ai && ai.visibility === "VISIBILITY_PUBLIC") {
-    disabledAll = true;
-  }
+  const { ai, accessToken, disabledAll } = props;
 
   const {
     updateConnectorFormIsDirty,
@@ -260,7 +252,7 @@ export const AIForm = (props: AIFormProps) => {
         data: {
           ...prev.data,
           connector: {
-            ...prev.data.connector,
+            ...prev.data.component,
             id: newId,
             name: `connectors/${newId}`,
           },
@@ -272,14 +264,14 @@ export const AIForm = (props: AIFormProps) => {
       return prev.map((node) => {
         if (
           node.data.nodeType === "connector" &&
-          node.data.connector.id === oldId
+          node.data.component.id === oldId
         ) {
           return {
             ...node,
             data: {
               ...node.data,
               connector: {
-                ...node.data.connector,
+                ...node.data.component,
                 id: newId,
                 name: `connectors/${newId}`,
               },
@@ -317,7 +309,7 @@ export const AIForm = (props: AIFormProps) => {
                 data: {
                   ...prev.data,
                   connector: {
-                    ...prev.data.connector,
+                    ...prev.data.component,
                     configuration: result.connector.configuration,
                     description: result.connector.description,
                     uid: result.connector.uid,
@@ -353,14 +345,14 @@ export const AIForm = (props: AIFormProps) => {
               return prev.map((node) => {
                 if (
                   node.data.nodeType === "connector" &&
-                  node.data.connector.id === newId
+                  node.data.component.id === newId
                 ) {
                   return {
                     ...node,
                     data: {
                       ...node.data,
                       connector: {
-                        ...node.data.connector,
+                        ...node.data.component,
                         id: oldId,
                         name: `connectors/${oldId}`,
                       },
@@ -419,7 +411,7 @@ export const AIForm = (props: AIFormProps) => {
                 data: {
                   ...prev.data,
                   connector: {
-                    ...prev.data.connector,
+                    ...prev.data.component,
                     configuration: result.connector.configuration,
                     description: result.connector.description,
                     uid: result.connector.uid,
@@ -453,14 +445,14 @@ export const AIForm = (props: AIFormProps) => {
               return prev.map((node) => {
                 if (
                   node.data.nodeType === "connector" &&
-                  node.data.connector.id === newId
+                  node.data.component.id === newId
                 ) {
                   return {
                     ...node,
                     data: {
                       ...node.data,
                       connector: {
-                        ...node.data.connector,
+                        ...node.data.component,
                         id: oldId,
                         name: `connectors/${oldId}`,
                       },
@@ -498,145 +490,145 @@ export const AIForm = (props: AIFormProps) => {
   const connectBlockchain = useConnectConnector();
   const disconnectBlockchain = useDisonnectConnector();
 
-  const handleConnectAI = async function () {
-    if (!ai) return;
+  // const handleConnectAI = async function () {
+  //   if (!ai) return;
 
-    setIsConnecting(true);
+  //   setIsConnecting(true);
 
-    const oldState = ai.watchState;
+  //   const oldState = ai.watchState;
 
-    if (ai.watchState === "STATE_CONNECTED") {
-      disconnectBlockchain.mutate(
-        {
-          connectorName: ai.name,
-          accessToken,
-        },
-        {
-          onSuccess: () => {
-            toast({
-              title: `Successfully disconnect ${ai.id}`,
-              variant: "alert-success",
-              size: "small",
-            });
-            setIsConnecting(false);
+  //   if (ai.watchState === "STATE_CONNECTED") {
+  //     disconnectBlockchain.mutate(
+  //       {
+  //         connectorName: ai.name,
+  //         accessToken,
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           toast({
+  //             title: `Successfully disconnect ${ai.id}`,
+  //             variant: "alert-success",
+  //             size: "small",
+  //           });
+  //           setIsConnecting(false);
 
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: "STATE_DISCONNECTED",
-                  },
-                },
-              };
-            });
-          },
-          onError: (error) => {
-            setIsConnecting(false);
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: "STATE_DISCONNECTED",
+  //                 },
+  //               },
+  //             };
+  //           });
+  //         },
+  //         onError: (error) => {
+  //           setIsConnecting(false);
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: oldState,
-                  },
-                },
-              };
-            });
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: oldState,
+  //                 },
+  //               },
+  //             };
+  //           });
 
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when disconnect the AI",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when disconnect the AI",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    } else {
-      connectBlockchain.mutate(
-        {
-          connectorName: ai.name,
-          accessToken,
-        },
-        {
-          onSuccess: () => {
-            toast({
-              title: `Successfully connect ${ai.id}`,
-              variant: "alert-success",
-              size: "small",
-            });
-            setIsConnecting(false);
+  //           if (isAxiosError(error)) {
+  //             toast({
+  //               title: "Something went wrong when disconnect the AI",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: getInstillApiErrorMessage(error),
+  //             });
+  //           } else {
+  //             toast({
+  //               title: "Something went wrong when disconnect the AI",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: "Please try again later",
+  //             });
+  //           }
+  //         },
+  //       }
+  //     );
+  //   } else {
+  //     connectBlockchain.mutate(
+  //       {
+  //         connectorName: ai.name,
+  //         accessToken,
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           toast({
+  //             title: `Successfully connect ${ai.id}`,
+  //             variant: "alert-success",
+  //             size: "small",
+  //           });
+  //           setIsConnecting(false);
 
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: "STATE_CONNECTED",
-                  },
-                },
-              };
-            });
-          },
-          onError: (error) => {
-            setIsConnecting(false);
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: "STATE_CONNECTED",
+  //                 },
+  //               },
+  //             };
+  //           });
+  //         },
+  //         onError: (error) => {
+  //           setIsConnecting(false);
+  //           updateSelectedConnectorNode((prev) => {
+  //             if (prev === null) return prev;
 
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.connector,
-                    watchState: oldState,
-                  },
-                },
-              };
-            });
+  //             return {
+  //               ...prev,
+  //               data: {
+  //                 ...prev.data,
+  //                 connector: {
+  //                   ...prev.data.component,
+  //                   watchState: oldState,
+  //                 },
+  //               },
+  //             };
+  //           });
 
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when connect the AI",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when connect the AI",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    }
-  };
+  //           if (isAxiosError(error)) {
+  //             toast({
+  //               title: "Something went wrong when connect the AI",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: getInstillApiErrorMessage(error),
+  //             });
+  //           } else {
+  //             toast({
+  //               title: "Something went wrong when connect the AI",
+  //               variant: "alert-error",
+  //               size: "large",
+  //               description: "Please try again later",
+  //             });
+  //           }
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
 
   return (
     <Form.Root {...form}>
@@ -1318,7 +1310,7 @@ export const AIForm = (props: AIFormProps) => {
         </div>
 
         <div className="flex w-full flex-row-reverse gap-x-4">
-          <Button
+          {/* <Button
             onClick={handleConnectAI}
             className="gap-x-2"
             variant="primary"
@@ -1354,7 +1346,7 @@ export const AIForm = (props: AIFormProps) => {
             ) : (
               <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
             )}
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             variant="secondaryColour"
