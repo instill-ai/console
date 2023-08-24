@@ -1,14 +1,7 @@
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
-import {
-  Button,
-  Icons,
-  useToast,
-  SingleSelectOption,
-  DataSourceIcon,
-  DataDestinationIcon,
-} from "@instill-ai/design-system";
+import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
   CreatePipelinePayload,
   ImageWithFallback,
@@ -17,7 +10,6 @@ import {
   getInstillApiErrorMessage,
   useActivatePipeline,
   useConnectorDefinitions,
-  useConnectors,
   useCreatePipeline,
   useDeActivatePipeline,
   usePipeline,
