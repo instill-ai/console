@@ -28,6 +28,8 @@ export type PipelineBuilderState = {
   pipelineIsNew: boolean;
   selectedConnectorNode: Nullable<Node<ConnectorNodeData>>;
   connectorFormIsDirty: boolean;
+  aiDialogIsOpen: boolean;
+  dataDialogIsOpen: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -50,6 +52,8 @@ export type PipelineBuilderAction = {
     ) => Nullable<Node<ConnectorNodeData>>
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
+  updateAiDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updateDataDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
@@ -66,6 +70,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineIsNew: false,
   selectedConnectorNode: null,
   connectorFormIsDirty: false,
+  aiDialogIsOpen: false,
+  dataDialogIsOpen: false,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -164,6 +170,20 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
         return {
           ...state,
           connectorFormIsDirty: fn(state.connectorFormIsDirty),
+        };
+      }),
+    updateAiDialogIsOpen: (fn: (prev: boolean) => boolean) =>
+      set((state) => {
+        return {
+          ...state,
+          aiDialogIsOpen: fn(state.aiDialogIsOpen),
+        };
+      }),
+    updateDataDialogIsOpen: (fn: (prev: boolean) => boolean) =>
+      set((state) => {
+        return {
+          ...state,
+          dataDialogIsOpen: fn(state.dataDialogIsOpen),
         };
       }),
   })

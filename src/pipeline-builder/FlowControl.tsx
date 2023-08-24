@@ -16,6 +16,7 @@ import {
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
   useActivatePipeline,
+  useConnectorDefinitions,
   useConnectors,
   useCreatePipeline,
   useDeActivatePipeline,
@@ -30,7 +31,7 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { Combobox } from "@/components";
+import { SelectConnectorDefinitionDialog } from "./SelectConnectorDefinitionDialog";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -43,6 +44,10 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateEdges: state.updateEdges,
   updatePipelineIsNew: state.updatePipelineIsNew,
   pipelineIsNew: state.pipelineIsNew,
+  aiDialogIsOpen: state.aiDialogIsOpen,
+  updateAiDialogIsOpen: state.updateAiDialogIsOpen,
+  dataDialogIsOpen: state.dataDialogIsOpen,
+  updateDataDialogIsOpen: state.updateDataDialogIsOpen,
 });
 
 export type FlowControlProps = {
@@ -71,21 +76,22 @@ export const FlowControl = (props: FlowControlProps) => {
     updatePipelineRecipeIsDirty,
     updatePipelineIsNew,
     pipelineIsNew,
+    aiDialogIsOpen,
+    updateAiDialogIsOpen,
+    dataDialogIsOpen,
+    updateDataDialogIsOpen,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
   const { id } = router.query;
 
-  const [aiValue, setAIValue] = useState("");
-  const [dataValue, setDataValue] = useState("");
-
-  const ais = useConnectors({
+  const aiDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_AI",
     accessToken: null,
     enabled: true,
   });
 
-  const destinations = useConnectors({
+  const dataDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
@@ -363,74 +369,6 @@ export const FlowControl = (props: FlowControlProps) => {
     }
   }
 
-  const aiItems: SingleSelectOption[] =
-    ais?.data?.map((ai) => {
-      return {
-        label: ai.id,
-        value: ai.id,
-        startIcon: (
-          <ImageWithFallback
-            src={`/icons/${ai.connector_definition.vendor}/${ai.connector_definition.icon}`}
-            width={16}
-            height={16}
-            alt={`${ai}-icon`}
-            fallbackImg={
-              ai.connector_definition.name.split("/")[0].split("-")[0] ===
-              "source" ? (
-                <DataSourceIcon
-                  width="w-4"
-                  height="h-4"
-                  color="fill-semantic-bg-secondary-base-bg"
-                  position="my-auto"
-                />
-              ) : (
-                <DataDestinationIcon
-                  width="w-4"
-                  height="h-4"
-                  color="fill-semantic-bg-secondary-base-bg"
-                  position="my-auto"
-                />
-              )
-            }
-          />
-        ),
-      };
-    }) || [];
-
-  const dataItems: SingleSelectOption[] =
-    destinations?.data?.map((data) => {
-      return {
-        label: data.id,
-        value: data.id,
-        startIcon: (
-          <ImageWithFallback
-            src={`/icons/${data.connector_definition.vendor}/${data.connector_definition.icon}`}
-            width={16}
-            height={16}
-            alt={`${data}-icon`}
-            fallbackImg={
-              data.connector_definition.name.split("/")[0].split("-")[0] ===
-              "source" ? (
-                <DataSourceIcon
-                  width="w-4"
-                  height="h-4"
-                  color="fill-semantic-bg-secondary-base-bg"
-                  position="my-auto"
-                />
-              ) : (
-                <DataDestinationIcon
-                  width="w-4"
-                  height="h-4"
-                  color="fill-semantic-bg-secondary-base-bg"
-                  position="my-auto"
-                />
-              )
-            }
-          />
-        ),
-      };
-    }) || [];
-
   return (
     <>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
@@ -540,38 +478,54 @@ export const FlowControl = (props: FlowControlProps) => {
         </Button>
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
-        <Combobox
-          items={aiItems}
-          placeholder="Search"
-          notFoundPlaceholder="No Item Found"
-          value={aiValue}
-          setValue={setAIValue}
-          label={
-            <Button size="lg" className="gap-x-2" variant="primary">
-              {aiValue
-                ? aiItems.find((aiItem) => aiItem.value === aiValue)?.label
-                : "AI"}
-              <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
-            </Button>
-          }
-        />
-
-        <Combobox
-          items={dataItems}
-          placeholder="Search"
-          notFoundPlaceholder="No Item Found"
-          value={dataValue}
-          setValue={setDataValue}
-          label={
-            <Button size="lg" className="gap-x-2" variant="primary">
-              {dataValue
-                ? dataItems.find((dataItem) => dataItem.value === dataValue)
-                    ?.label
-                : "Data"}
-              <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
-            </Button>
-          }
-        />
+        <SelectConnectorDefinitionDialog
+          open={aiDialogIsOpen}
+          onOpenChange={(open) => updateAiDialogIsOpen(() => open)}
+          type="CONNECTOR_TYPE_AI"
+        >
+          {aiDefinitions.isSuccess
+            ? aiDefinitions.data.map((definition) => (
+                <SelectConnectorDefinitionDialog.Item key={definition.id}>
+                  <ImageWithFallback
+                    src={`/icons/${definition.vendor}/${definition.icon}`}
+                    width={32}
+                    height={32}
+                    alt={`${definition.title}-icon`}
+                    fallbackImg={
+                      <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                    }
+                  />
+                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                    {definition.title}
+                  </p>
+                </SelectConnectorDefinitionDialog.Item>
+              ))
+            : null}
+        </SelectConnectorDefinitionDialog>
+        <SelectConnectorDefinitionDialog
+          open={dataDialogIsOpen}
+          onOpenChange={(open) => updateDataDialogIsOpen(() => open)}
+          type="CONNECTOR_TYPE_DATA"
+        >
+          {dataDefinitions.isSuccess
+            ? dataDefinitions.data.map((definition) => (
+                <SelectConnectorDefinitionDialog.Item key={definition.id}>
+                  <ImageWithFallback
+                    src={`/icons/${definition.vendor}/${definition.icon}`}
+                    width={32}
+                    height={32}
+                    alt={`${definition.title}-icon`}
+                    fallbackImg={
+                      <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                    }
+                  />
+                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                    {definition.title}
+                  </p>
+                </SelectConnectorDefinitionDialog.Item>
+              ))
+            : null}
+        </SelectConnectorDefinitionDialog>
       </div>
     </>
   );
