@@ -5,7 +5,6 @@ import {
   useConnectors,
   useWatchConnectors,
   ConnectorWithWatchState,
-  PipelineNameForm,
   useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
@@ -28,6 +27,7 @@ import { createGraphLayout } from "pipeline-builder/createGraphLayout";
 import { createInitialGraphData } from "pipeline-builder/createInitialGraphData";
 import { NodeData } from "pipeline-builder/type";
 import { usePipeline } from "pipeline-builder/sdk";
+import { PipelineNameForm } from "pipeline-builder/PipelineNameForm";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
