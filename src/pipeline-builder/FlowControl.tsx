@@ -1,6 +1,8 @@
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
+import { v4 as uuidv4 } from "uuid";
+
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
   CreatePipelinePayload,
@@ -10,6 +12,7 @@ import {
   getInstillApiErrorMessage,
   useActivatePipeline,
   useConnectorDefinitions,
+  useConnectorResources,
   useCreatePipeline,
   useDeActivatePipeline,
   usePipeline,
@@ -23,7 +26,9 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { SelectConnectorDefinitionDialog } from "./SelectConnectorDefinitionDialog";
+import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
+import { Node, Position, ReactFlowInstance } from "reactflow";
+import { ConnectorNodeData, PipelineConnectorComponent } from "./type";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -33,18 +38,18 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineUid: state.setPipelineUid,
   pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+  updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
   updatePipelineIsNew: state.updatePipelineIsNew,
   pipelineIsNew: state.pipelineIsNew,
-  aiDialogIsOpen: state.aiDialogIsOpen,
-  updateAiDialogIsOpen: state.updateAiDialogIsOpen,
-  dataDialogIsOpen: state.dataDialogIsOpen,
-  updateDataDialogIsOpen: state.updateDataDialogIsOpen,
+  selectResourceDialogIsOpen: state.selectResourceDialogIsOpen,
+  updateSelectResourceDialogIsOpen: state.updateSelectResourceDialogIsOpen,
 });
 
 export type FlowControlProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
+  reactFlowInstance: Nullable<ReactFlowInstance>;
 };
 
 /**
@@ -55,7 +60,7 @@ export type FlowControlProps = {
  */
 
 export const FlowControl = (props: FlowControlProps) => {
-  const { accessToken, enableQuery } = props;
+  const { accessToken, enableQuery, reactFlowInstance } = props;
   const router = useRouter();
   const {
     nodes,
@@ -63,15 +68,14 @@ export const FlowControl = (props: FlowControlProps) => {
     pipelineDescription,
     setPipelineUid,
     edges,
+    updateNodes,
     updateEdges,
     pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
     updatePipelineIsNew,
     pipelineIsNew,
-    aiDialogIsOpen,
-    updateAiDialogIsOpen,
-    dataDialogIsOpen,
-    updateDataDialogIsOpen,
+    selectResourceDialogIsOpen,
+    updateSelectResourceDialogIsOpen,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -79,6 +83,18 @@ export const FlowControl = (props: FlowControlProps) => {
 
   const aiDefinitions = useConnectorDefinitions({
     connectorResourceType: "CONNECTOR_TYPE_AI",
+    accessToken: null,
+    enabled: true,
+  });
+
+  const allConnectorResource = useConnectorResources({
+    connectorResourceType: null,
+    enabled: true,
+    accessToken: null,
+  });
+
+  const blockchainDefinitions = useConnectorDefinitions({
+    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
     accessToken: null,
     enabled: true,
   });
@@ -470,54 +486,174 @@ export const FlowControl = (props: FlowControlProps) => {
         </Button>
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
-        <SelectConnectorDefinitionDialog
-          open={aiDialogIsOpen}
-          onOpenChange={(open) => updateAiDialogIsOpen(() => open)}
-          type="CONNECTOR_TYPE_AI"
+        <SelectConnectorResourceDialog
+          open={selectResourceDialogIsOpen}
+          onOpenChange={(open) => updateSelectResourceDialogIsOpen(() => open)}
         >
-          {aiDefinitions.isSuccess
-            ? aiDefinitions.data.map((definition) => (
-                <SelectConnectorDefinitionDialog.Item key={definition.id}>
-                  <ImageWithFallback
-                    src={`/icons/${definition.vendor}/${definition.icon}`}
-                    width={32}
-                    height={32}
-                    alt={`${definition.title}-icon`}
-                    fallbackImg={
-                      <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                    }
-                  />
-                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                    {definition.title}
-                  </p>
-                </SelectConnectorDefinitionDialog.Item>
-              ))
-            : null}
-        </SelectConnectorDefinitionDialog>
-        <SelectConnectorDefinitionDialog
-          open={dataDialogIsOpen}
-          onOpenChange={(open) => updateDataDialogIsOpen(() => open)}
-          type="CONNECTOR_TYPE_DATA"
-        >
-          {dataDefinitions.isSuccess
-            ? dataDefinitions.data.map((definition) => (
-                <SelectConnectorDefinitionDialog.Item key={definition.id}>
-                  <ImageWithFallback
-                    src={`/icons/${definition.vendor}/${definition.icon}`}
-                    width={32}
-                    height={32}
-                    alt={`${definition.title}-icon`}
-                    fallbackImg={
-                      <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                    }
-                  />
-                  <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                    {definition.title}
-                  </p>
-                </SelectConnectorDefinitionDialog.Item>
-              ))
-            : null}
-        </SelectConnectorDefinitionDialog>
+          <div className="flex flex-col">
+            <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
+              <p className="mx-auto product-body-text-1-semibold">
+                Existing Resource
+              </p>
+            </div>
+            <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+              {allConnectorResource.isSuccess
+                ? allConnectorResource.data.map((connectorResource) => (
+                    <SelectConnectorResourceDialog.Item
+                      key={connectorResource.id}
+                      onClick={() => {
+                        if (!reactFlowInstance) return;
+
+                        const viewport = reactFlowInstance.getViewport();
+
+                        const newId = uuidv4();
+
+                        let componentType: Nullable<
+                          PipelineConnectorComponent["type"]
+                        > = null;
+
+                        switch (connectorResource.connector_type) {
+                          case "CONNECTOR_TYPE_AI":
+                            componentType = "COMPONENT_TYPE_CONNECTOR_AI";
+                            break;
+                          case "CONNECTOR_TYPE_BLOCKCHAIN":
+                            componentType =
+                              "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+                            break;
+                          case "CONNECTOR_TYPE_DATA":
+                            componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
+                            break;
+                          case "CONNECTOR_TYPE_OPERATOR":
+                            componentType = "COMPONENT_TYPE_OPERATOR";
+                            break;
+                        }
+
+                        if (!componentType) return;
+
+                        const newNode: Node<ConnectorNodeData> = {
+                          id: newId,
+                          type: "connectorNode",
+                          sourcePosition: Position.Left,
+                          targetPosition: Position.Right,
+                          data: {
+                            nodeType: "connector",
+                            component: {
+                              id: newId,
+                              resource_name: connectorResource.name,
+                              resource_detail: {
+                                ...connectorResource,
+                                connector_definition: null,
+                              },
+                              definition_name:
+                                connectorResource.connector_definition.name,
+                              configuration: {},
+                              type: componentType,
+                              definition_detail:
+                                connectorResource.connector_definition,
+                            },
+                          },
+                          position: reactFlowInstance.project({
+                            x: viewport.x,
+                            y: viewport.y,
+                          }),
+                        };
+
+                        updateNodes((nodes) => [...nodes, newNode]);
+                        updateSelectResourceDialogIsOpen(() => false);
+                      }}
+                    >
+                      <ImageWithFallback
+                        src={`/icons/${connectorResource.connector_definition.vendor}/${connectorResource.connector_definition.icon}`}
+                        width={32}
+                        height={32}
+                        alt={`${connectorResource.connector_definition.title}-icon`}
+                        fallbackImg={
+                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                        }
+                      />
+                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                        {connectorResource.id}
+                      </p>
+                    </SelectConnectorResourceDialog.Item>
+                  ))
+                : null}
+            </div>
+            <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
+              <p className="mx-auto product-body-text-1-semibold">
+                New Resource
+              </p>
+            </div>
+            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+              AI
+            </div>
+            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+              {aiDefinitions.isSuccess
+                ? aiDefinitions.data.map((definition) => (
+                    <SelectConnectorResourceDialog.Item key={definition.id}>
+                      <ImageWithFallback
+                        src={`/icons/${definition.vendor}/${definition.icon}`}
+                        width={32}
+                        height={32}
+                        alt={`${definition.title}-icon`}
+                        fallbackImg={
+                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                        }
+                      />
+                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                        {definition.title}
+                      </p>
+                    </SelectConnectorResourceDialog.Item>
+                  ))
+                : null}
+            </div>
+            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+              Blockchain
+            </div>
+            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+              {blockchainDefinitions.isSuccess
+                ? blockchainDefinitions.data.map((definition) => (
+                    <SelectConnectorResourceDialog.Item key={definition.id}>
+                      <ImageWithFallback
+                        src={`/icons/${definition.vendor}/${definition.icon}`}
+                        width={32}
+                        height={32}
+                        alt={`${definition.title}-icon`}
+                        fallbackImg={
+                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                        }
+                      />
+                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                        {definition.title}
+                      </p>
+                    </SelectConnectorResourceDialog.Item>
+                  ))
+                : null}
+            </div>
+            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+              Data
+            </div>
+            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+              {dataDefinitions.isSuccess
+                ? dataDefinitions.data.map((definition) => (
+                    <SelectConnectorResourceDialog.Item key={definition.id}>
+                      <ImageWithFallback
+                        src={`/icons/${definition.vendor}/${definition.icon}`}
+                        width={32}
+                        height={32}
+                        alt={`${definition.title}-icon`}
+                        fallbackImg={
+                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                        }
+                      />
+                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                        {definition.title}
+                      </p>
+                    </SelectConnectorResourceDialog.Item>
+                  ))
+                : null}
+            </div>
+          </div>
+        </SelectConnectorResourceDialog>
       </div>
     </>
   );

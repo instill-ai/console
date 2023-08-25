@@ -1,60 +1,40 @@
 import * as React from "react";
 
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
-import { Nullable } from "@instill-ai/toolkit";
 
-export type SelectConnectorDefinitionDialogProps = {
+export type SelectConnectorResourceDialogProps = {
   children: React.ReactNode;
-  type: "CONNECTOR_TYPE_AI" | "CONNECTOR_TYPE_DATA";
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export const SelectConnectorDefinitionDialog = (
-  props: SelectConnectorDefinitionDialogProps
+export const SelectConnectorResourceDialog = (
+  props: SelectConnectorResourceDialogProps
 ) => {
-  const { children, type, open, onOpenChange } = props;
+  const { children, open, onOpenChange } = props;
 
-  let dialogTitle: Nullable<string> = null;
-  let dialogDescription: Nullable<string> = null;
-  let connectorTypeName: Nullable<string> = null;
-
-  switch (type) {
-    case "CONNECTOR_TYPE_AI":
-      dialogTitle = "Add a new AI";
-      dialogDescription = "Select an AI to add to your pipeline";
-      connectorTypeName = "AI";
-      break;
-    case "CONNECTOR_TYPE_DATA":
-      dialogTitle = "Add a new data source";
-      dialogDescription = "Select a data source to add to your pipeline";
-      connectorTypeName = "Data";
-      break;
-  }
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>
         <Button className="gap-x-2" variant="primary" size="lg">
-          {connectorTypeName}
+          Add resource
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="flex max-h-[480px] w-full !max-w-[1284px] flex-col overflow-y-auto">
         <Dialog.Header className="mb-4">
-          <Dialog.Title className="mx-auto">{dialogTitle}</Dialog.Title>
+          <Dialog.Title className="mx-auto">Add a resource</Dialog.Title>
           <Dialog.Description className="mx-auto">
-            {dialogDescription}
+            Select a resource to add to your pipeline
           </Dialog.Description>
         </Dialog.Header>
-        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-          {children}
-        </div>
+        <div className="flex flex-col">{children}</div>
       </Dialog.Content>
     </Dialog.Root>
   );
 };
 
-const SelectConnectorDefinitionDialogItem = (
+const SelectConnectorResourceDialogItem = (
   props: {
     children: React.ReactNode;
   } & React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -78,4 +58,4 @@ const SelectConnectorDefinitionDialogItem = (
   );
 };
 
-SelectConnectorDefinitionDialog.Item = SelectConnectorDefinitionDialogItem;
+SelectConnectorResourceDialog.Item = SelectConnectorResourceDialogItem;

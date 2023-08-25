@@ -39,6 +39,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   connectorFormIsDirty: state.connectorFormIsDirty,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
   pipelineIsNew: state.pipelineIsNew,
+  selectedConnectorNodeId: state.selectedConnectorNodeId,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -54,6 +55,7 @@ const PipelineBuilderPage: FC & {
     updateNodes,
     updateEdges,
     pipelineIsNew,
+    selectedConnectorNodeId,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -83,7 +85,7 @@ const PipelineBuilderPage: FC & {
             resource_name: "",
             resource_detail: null,
             definition_name: "operator-definitions/start-operator",
-            definition_detail: {},
+            definition_detail: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -111,7 +113,7 @@ const PipelineBuilderPage: FC & {
             resource_name: "",
             resource_detail: null,
             definition_name: "operator-definitions/end-operator",
-            definition_detail: {},
+            definition_detail: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -161,7 +163,8 @@ const PipelineBuilderPage: FC & {
     return pipeline.isLoading || pipelineWatchState.isLoading;
   }, [pipeline.isLoading, pipelineWatchState.isLoading]);
 
-  const [, setReactFlowInstance] = useState<Nullable<ReactFlowInstance>>(null);
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
   const sources = useConnectorResources({
@@ -575,6 +578,7 @@ const PipelineBuilderPage: FC & {
           <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
             <Flow
               ref={reactFlowWrapper}
+              reactFlowInstance={reactFlowInstance}
               setReactFlowInstance={setReactFlowInstance}
               accessToken={null}
               enableQuery={true}
@@ -583,7 +587,9 @@ const PipelineBuilderPage: FC & {
             <div
               className={cn(
                 "flex w-[var(--right-panel-width)] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
-                rightPanelIsOpen ? "mr-0" : "-mr-[var(--right-panel-width)]"
+                selectedConnectorNodeId
+                  ? "mr-0"
+                  : "-mr-[var(--right-panel-width)]"
               )}
             >
               <RightPanel accessToken={null} />

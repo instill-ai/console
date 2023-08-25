@@ -4,14 +4,14 @@ import { Icons } from "@instill-ai/design-system";
 import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
 
 export const EmptyNode = ({ data, id }: NodeProps<NodeData>) => {
-  const updateAiDialogIsOpen = usePipelineBuilderStore(
-    (state) => state.updateAiDialogIsOpen
+  const updateSelectResourceDialogIsOpen = usePipelineBuilderStore(
+    (state) => state.updateSelectResourceDialogIsOpen
   );
 
   return (
     <>
       <button
-        onClick={() => updateAiDialogIsOpen(() => true)}
+        onClick={() => updateSelectResourceDialogIsOpen(() => true)}
         className="flex rounded-sm border border-dashed border-semantic-accent-default bg-semantic-accent-bg px-16 py-2"
       >
         <div className="my-auto flex flex-row gap-x-2 px-2 py-1.5">

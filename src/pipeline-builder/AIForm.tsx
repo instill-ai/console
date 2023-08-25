@@ -188,7 +188,6 @@ export type AIFormProps = {
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  updateSelectedConnectorNode: state.updateSelectedConnectorNode,
   updateConnectorFormIsDirty: state.updateConnectorFormIsDirty,
   updateNodes: state.updateNodes,
 });
@@ -196,11 +195,10 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 export const AIForm = (props: AIFormProps) => {
   const { ai, accessToken, disabledAll } = props;
 
-  const {
-    updateConnectorFormIsDirty,
-    updateSelectedConnectorNode,
-    updateNodes,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const { updateConnectorFormIsDirty, updateNodes } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
 
   const form = useForm<z.infer<typeof AIFormSchema>>({
     resolver: zodResolver(AIFormSchema),
@@ -244,22 +242,6 @@ export const AIForm = (props: AIFormProps) => {
     const oldId = ai.id;
     const newId = data.id;
 
-    updateSelectedConnectorNode((prev) => {
-      if (prev === null) return prev;
-
-      return {
-        ...prev,
-        data: {
-          ...prev.data,
-          connector: {
-            ...prev.data.component,
-            id: newId,
-            name: `connectors/${newId}`,
-          },
-        },
-      };
-    });
-
     updateNodes((prev) => {
       return prev.map((node) => {
         if (
@@ -301,22 +283,6 @@ export const AIForm = (props: AIFormProps) => {
             });
 
             // Update the selectedNode
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.component,
-                    configuration: result.connectorResource.configuration,
-                    description: result.connectorResource.description,
-                    uid: result.connectorResource.uid,
-                  },
-                },
-              };
-            });
 
             // Reset the form with the new configuration
             form.reset({
@@ -327,18 +293,6 @@ export const AIForm = (props: AIFormProps) => {
           },
           onError: (error) => {
             // Rollback the selectedNode'id
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  id: oldId,
-                  name: `connectors/${oldId}`,
-                },
-              };
-            });
 
             // Rollback the nodes'id
             updateNodes((prev) => {
@@ -403,23 +357,6 @@ export const AIForm = (props: AIFormProps) => {
               size: "small",
             });
 
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.component,
-                    configuration: result.connectorResource.configuration,
-                    description: result.connectorResource.description,
-                    uid: result.connectorResource.uid,
-                  },
-                },
-              };
-            });
-
             form.reset({
               ...ai,
               configuration: result.connectorResource.configuration,
@@ -427,19 +364,6 @@ export const AIForm = (props: AIFormProps) => {
             });
           },
           onError: (error) => {
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  id: oldId,
-                  name: `connectors/${oldId}`,
-                },
-              };
-            });
-
             // Rollback the nodes'id
             updateNodes((prev) => {
               return prev.map((node) => {

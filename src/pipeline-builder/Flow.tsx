@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Dispatch, SetStateAction, forwardRef } from "react";
+import { Dispatch, SetStateAction, forwardRef, useEffect } from "react";
 import {
   Background,
   BackgroundVariant,
@@ -31,6 +31,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 });
 
 export type FlowProps = {
+  reactFlowInstance: Nullable<ReactFlowInstance>;
   setReactFlowInstance: Dispatch<SetStateAction<Nullable<ReactFlowInstance>>>;
   accessToken: Nullable<string>;
   enableQuery: boolean;
@@ -49,7 +50,13 @@ const edgeTypes = {
 };
 
 export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
-  const { setReactFlowInstance, accessToken, enableQuery, isLoading } = props;
+  const {
+    reactFlowInstance,
+    setReactFlowInstance,
+    accessToken,
+    enableQuery,
+    isLoading,
+  } = props;
   const {
     nodes,
     edges,
@@ -58,6 +65,10 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     onConnect,
     updatePipelineRecipeIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+
+  // useEffect(() => {
+  //   console.log(nodes);
+  // }, [nodes]);
 
   return (
     <div className="relative flex-1">
@@ -140,7 +151,11 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           </div>
         ) : null}
       </div>
-      <FlowControl accessToken={accessToken} enableQuery={enableQuery} />
+      <FlowControl
+        reactFlowInstance={reactFlowInstance}
+        accessToken={accessToken}
+        enableQuery={enableQuery}
+      />
     </div>
   );
 });

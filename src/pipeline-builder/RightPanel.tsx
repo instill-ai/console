@@ -1,16 +1,31 @@
 import { Nullable } from "@instill-ai/toolkit";
-import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
+import {
+  PipelineBuilderStore,
+  usePipelineBuilderStore,
+} from "./usePipelineBuilderStore";
 import { AIForm } from "./AIForm";
 import { BlockchainForm } from "./BlockchainForm";
+import { shallow } from "zustand/shallow";
 
 export type RightPanelProps = {
   accessToken: Nullable<string>;
 };
 
+const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  nodes: state.nodes,
+  selectedConnectorNodeId: state.selectedConnectorNodeId,
+});
+
 export const RightPanel = (props: RightPanelProps) => {
   const { accessToken } = props;
-  const selectedConnectorNode = usePipelineBuilderStore(
-    (state) => state.selectedConnectorNode
+
+  const { nodes, selectedConnectorNodeId } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
+
+  const selectedConnectorNode = nodes.find(
+    (node) => node.id === selectedConnectorNodeId
   );
 
   return (
@@ -34,7 +49,7 @@ export const RightPanel = (props: RightPanelProps) => {
               id: selectedConnectorNode.data.component.id,
               description:
                 selectedConnectorNode.data.component.resource_detail
-                  .description,
+                  ?.description,
               configuration: selectedConnectorNode.data.component.configuration,
               connector_definition_name:
                 selectedConnectorNode.data.component.definition_name,
@@ -47,16 +62,7 @@ export const RightPanel = (props: RightPanelProps) => {
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ? (
           <BlockchainForm
-            blockchain={{
-              id: selectedConnectorNode.data.component.id,
-              description:
-                selectedConnectorNode.data.component.resource_detail
-                  .description,
-              configuration: selectedConnectorNode.data.component.configuration,
-              connector_definition_name:
-                selectedConnectorNode.data.component.definition_name,
-            }}
-            accessToken={accessToken}
+            configuration={selectedConnectorNode.data.component.configuration}
           />
         ) : null}
       </div>

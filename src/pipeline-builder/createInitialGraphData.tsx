@@ -1,11 +1,5 @@
 import { Edge, Node } from "reactflow";
-import {
-  NewPipelineWithWatchState,
-  NodeData,
-  PipelineConnectorComponentSchema,
-  PipelineEndComponentSchema,
-  PipelineStartComponentSchema,
-} from "./type";
+import { NewPipelineWithWatchState, NodeData } from "./type";
 
 export type CreateInitialGraphDataProps = {
   pipeline: NewPipelineWithWatchState;
@@ -20,13 +14,15 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   for (const component of pipeline.recipe.components) {
     if (component.id === "start") {
       try {
-        const startComponent = PipelineStartComponentSchema.parse(component);
         nodes.push({
           id: component.id,
           type: "startNode",
           data: {
             nodeType: "start",
-            component: startComponent,
+            component: {
+              ...component,
+              id: "start",
+            },
           },
           position: { x: 0, y: 0 },
         });
@@ -41,13 +37,12 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
 
     if (component.id === "end") {
       try {
-        const endComponent = PipelineEndComponentSchema.parse(component);
         nodes.push({
           id: component.id,
           type: "endNode",
           data: {
             nodeType: "end",
-            component: endComponent,
+            component: { ...component, id: "end" },
           },
           position: { x: 0, y: 0 },
         });
@@ -61,29 +56,26 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
     }
 
     try {
-      const connectorComponent =
-        PipelineConnectorComponentSchema.parse(component);
-
-      if (connectorComponent.type === "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN") {
+      if (component.type === "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN") {
         nodes.push({
-          id: connectorComponent.id,
+          id: component.id,
           type: "blockchainNode",
           data: {
             nodeType: "connector",
-            component: connectorComponent,
+            component,
           },
           position: { x: 0, y: 0 },
         });
         continue;
       }
 
-      if (connectorComponent.type === "COMPONENT_TYPE_CONNECTOR_AI") {
+      if (component.type === "COMPONENT_TYPE_CONNECTOR_AI") {
         nodes.push({
-          id: connectorComponent.id,
+          id: component.id,
           type: "aiNode",
           data: {
             nodeType: "connector",
-            component: connectorComponent,
+            component,
           },
           position: { x: 0, y: 0 },
         });

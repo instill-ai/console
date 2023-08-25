@@ -26,10 +26,9 @@ export type PipelineBuilderState = {
   isSavingPipeline: boolean;
   pipelineRecipeIsDirty: boolean;
   pipelineIsNew: boolean;
-  selectedConnectorNode: Nullable<Node<ConnectorNodeData>>;
+  selectedConnectorNodeId: Nullable<string>;
   connectorFormIsDirty: boolean;
-  aiDialogIsOpen: boolean;
-  dataDialogIsOpen: boolean;
+  selectResourceDialogIsOpen: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -46,14 +45,11 @@ export type PipelineBuilderAction = {
   updateIsSavingPipeline: (fn: (prev: boolean) => boolean) => void;
   updatePipelineRecipeIsDirty: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsNew: (fn: (prev: boolean) => boolean) => void;
-  updateSelectedConnectorNode: (
-    fn: (
-      prev: Nullable<Node<ConnectorNodeData>>
-    ) => Nullable<Node<ConnectorNodeData>>
+  updateSelectedConnectorNodeId: (
+    fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
-  updateAiDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
-  updateDataDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
@@ -68,10 +64,9 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   rightPanelIsOpen: false,
   pipelineRecipeIsDirty: false,
   pipelineIsNew: false,
-  selectedConnectorNode: null,
+  selectedConnectorNodeId: null,
   connectorFormIsDirty: false,
-  aiDialogIsOpen: false,
-  dataDialogIsOpen: false,
+  selectResourceDialogIsOpen: false,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -154,15 +149,13 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           rightPanelIsOpen: fn(state.rightPanelIsOpen),
         };
       }),
-    updateSelectedConnectorNode: (
-      fn: (
-        prev: Nullable<Node<ConnectorNodeData>>
-      ) => Nullable<Node<ConnectorNodeData>>
+    updateSelectedConnectorNodeId: (
+      fn: (prev: Nullable<string>) => Nullable<string>
     ) =>
       set((state) => {
         return {
           ...state,
-          selectedConnectorNode: fn(state.selectedConnectorNode),
+          selectedConnectorNodeId: fn(state.selectedConnectorNodeId),
         };
       }),
     updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) =>
@@ -172,18 +165,11 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           connectorFormIsDirty: fn(state.connectorFormIsDirty),
         };
       }),
-    updateAiDialogIsOpen: (fn: (prev: boolean) => boolean) =>
+    updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) =>
       set((state) => {
         return {
           ...state,
-          aiDialogIsOpen: fn(state.aiDialogIsOpen),
-        };
-      }),
-    updateDataDialogIsOpen: (fn: (prev: boolean) => boolean) =>
-      set((state) => {
-        return {
-          ...state,
-          dataDialogIsOpen: fn(state.dataDialogIsOpen),
+          selectResourceDialogIsOpen: fn(state.selectResourceDialogIsOpen),
         };
       }),
   })

@@ -1,167 +1,102 @@
-import * as React from "react";
-import cn from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
 
-import {
-  CreateConnectorResourcePayload,
-  Nullable,
-  UpdateConnectorResourcePayload,
-  getInstillApiErrorMessage,
-  useCreateConnectorResource,
-  useUpdateConnectorResource,
-  useConnectConnectorResource,
-  useDisonnectConnectorResource,
-  ConfigureBlockchainFormSchema,
-} from "@instill-ai/toolkit";
-import {
-  Button,
-  Form,
-  Icons,
-  Input,
-  Logos,
-  Select,
-  Switch,
-  Textarea,
-  useToast,
-} from "@instill-ai/design-system";
+import { Nullable } from "@instill-ai/toolkit";
+import { Button, Form, Input, Select } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
+import { useEffect } from "react";
 
-export const BlockchainFormSchema = z
-  .object({
-    id: z.string().min(1, { message: "ID is required" }),
-    description: z.string().optional(),
-    connector_definition_name: z.string(),
-    configuration: z.object({
-      capture_token: z.string().optional(),
-      asset_type: z.string().optional(),
-      metadata_texts: z.boolean().optional(),
-      metadata_structured_data: z.boolean().optional(),
-      metadata_metadata: z.boolean().optional(),
+export const BlockchainFormSchema = z.object({
+  images: z.string().optional().default(""),
+  asset_creator: z.string().optional().default(""),
+  abstract: z.string().optional().default(""),
+  custome: z
+    .object({
+      digital_source_type: z.string().optional().default(""),
+      mining_preference: z.string().optional().default(""),
+      generated_through: z.string().optional().default(""),
+      generated_by: z.string().optional().default(""),
+      creator_wallet: z.string().optional().default(""),
+      license: z
+        .object({
+          name: z.string().optional().default(""),
+          document: z.string().optional().default(""),
+        })
+        .optional(),
+    })
+    .optional()
+    .default({
+      digital_source_type: "trainedAlgorithmicMedia",
+      mining_preference: "notAllowed",
+      generated_through: "",
+      generated_by: "",
+      creator_wallet: "",
+      license: {
+        name: "",
+        document: "",
+      },
     }),
-  })
-  .superRefine((state, ctx) => {
-    if (
-      state.connector_definition_name ===
-      "connector-definitions/blockchain-numbers"
-    ) {
-      if (!state.configuration.capture_token) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Capture token is required",
-          path: ["configuration", "capture_token"],
-        });
-      }
-
-      if (!state.configuration.asset_type) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Asset type is required",
-          path: ["configuration", "asset_type"],
-        });
-      }
-    }
-  });
+});
 
 export type BlockchainFormProps = {
-  blockchain: z.infer<typeof BlockchainFormSchema>;
-  accessToken: Nullable<string>;
   disabledAll?: boolean;
+  configuration: Record<string, any>;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  updateConnectorFormIsDirty: state.updateConnectorFormIsDirty,
-  updateSelectedConnectorNode: state.updateSelectedConnectorNode,
   updateNodes: state.updateNodes,
+  selectedConnectorNodeId: state.selectedConnectorNodeId,
 });
 
 export const BlockchainForm = (props: BlockchainFormProps) => {
-  const { blockchain, accessToken, disabledAll } = props;
+  const { disabledAll, configuration } = props;
 
-  const {
-    updateSelectedConnectorNode,
-    updateConnectorFormIsDirty,
-    updateNodes,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const { updateNodes, selectedConnectorNodeId } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
 
-  const form = useForm<z.infer<typeof ConfigureBlockchainFormSchema>>({
-    resolver: zodResolver(ConfigureBlockchainFormSchema),
+  const form = useForm<z.infer<typeof BlockchainFormSchema>>({
+    resolver: zodResolver(BlockchainFormSchema),
     defaultValues: {
-      ...blockchain,
+      ...configuration,
+      images: undefined,
+      custome: {
+        digital_source_type: "trainedAlgorithmicMedia",
+        mining_preference: "notAllowed",
+      },
     },
   });
 
-  // Read the state before render to subscribe the form state through Proxy
-  const {
-    reset,
-    formState: { isDirty },
-  } = form;
+  const { reset } = form;
 
-  React.useEffect(() => {
-    updateConnectorFormIsDirty(() => isDirty);
-  }, [isDirty, updateConnectorFormIsDirty]);
+  useEffect(() => {
+    const parsedConfiguration = BlockchainFormSchema.safeParse(configuration);
 
-  React.useEffect(() => {
-    reset({
-      ...blockchain,
-    });
-  }, [blockchain, reset]);
+    if (parsedConfiguration.success) {
+      reset(parsedConfiguration.data);
+    }
+  }, [configuration, reset]);
 
-  const createBlockchain = useCreateConnectorResource();
-  const updateBlockchain = useUpdateConnectorResource();
-  const { toast } = useToast();
-
-  function onSubmit(data: z.infer<typeof ConfigureBlockchainFormSchema>) {
-    form.trigger([
-      "configuration",
-      "connector_definition_name",
-      "description",
-      "id",
-    ]);
-
-    // Optimistically update the selectedNode'id, because if the user change the pre-defined id
-    // and the previous nodes and selectedNodes stay unchanged, we will have a problem to update
-    // it once new data is coming in.
-
-    const oldId = blockchain.id;
-    const newId = data.id;
-
-    updateSelectedConnectorNode((prev) => {
-      if (prev === null) return prev;
-
-      return {
-        ...prev,
-        data: {
-          ...prev.data,
-          connector: {
-            ...prev.data.component,
-            id: newId,
-            name: `connectors/${newId}`,
-          },
-        },
-      };
-    });
-
-    updateNodes((prev) => {
-      return prev.map((node) => {
+  function onSubmit(data: z.infer<typeof BlockchainFormSchema>) {
+    updateNodes((nodes) => {
+      return nodes.map((node) => {
         if (
-          node.data.nodeType === "connector" &&
-          node.data.component.id === oldId
+          node.id === selectedConnectorNodeId &&
+          node.data.nodeType === "connector"
         ) {
           return {
             ...node,
             data: {
               ...node.data,
-              connector: {
+              component: {
                 ...node.data.component,
-                id: newId,
-                name: `connectors/${newId}`,
+                configuration: data,
               },
             },
           };
@@ -170,387 +105,30 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
         return node;
       });
     });
-
-    if ("uid" in blockchain) {
-      const payload: UpdateConnectorResourcePayload = {
-        connectorResourceName: `connectors/${data.id}`,
-        description: data.description,
-        configuration: data.configuration,
-      };
-
-      updateBlockchain.mutate(
-        { payload, accessToken },
-        {
-          onSuccess: (result) => {
-            toast({
-              title: "Successfully update AI",
-              variant: "alert-success",
-              size: "small",
-            });
-
-            // Update the selectedNode
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.component,
-                    configuration: result.connectorResource.configuration,
-                    description: result.connectorResource.description,
-                    uid: result.connectorResource.uid,
-                  },
-                },
-              };
-            });
-
-            // Reset the form with the new configuration
-            form.reset({
-              ...blockchain,
-              configuration: result.connectorResource.configuration,
-              description: result.connectorResource.description,
-            });
-          },
-          onError: (error) => {
-            // Rollback the selectedNode'id
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  id: oldId,
-                  name: `connectors/${oldId}`,
-                },
-              };
-            });
-
-            // Rollback the nodes'id
-            updateNodes((prev) => {
-              return prev.map((node) => {
-                if (
-                  node.data.nodeType === "connector" &&
-                  node.data.component.id === newId
-                ) {
-                  return {
-                    ...node,
-                    data: {
-                      ...node.data,
-                      connector: {
-                        ...node.data.component,
-                        id: oldId,
-                        name: `connectors/${oldId}`,
-                      },
-                    },
-                  };
-                }
-
-                return node;
-              });
-            });
-
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when update the AI",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when update the AI",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    } else {
-      const payload: CreateConnectorResourcePayload = {
-        connectorResourceName: `connectors/${data.id}`,
-        connector_definition_name: data.connector_definition_name,
-        description: data.description,
-        configuration: data.configuration,
-      };
-
-      createBlockchain.mutate(
-        {
-          payload,
-          accessToken,
-        },
-        {
-          onSuccess: (result) => {
-            toast({
-              title: "Successfully create AI",
-              variant: "alert-success",
-              size: "small",
-            });
-
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  connector: {
-                    ...prev.data.component,
-                    configuration: result.connectorResource.configuration,
-                    description: result.connectorResource.description,
-                    uid: result.connectorResource.uid,
-                  },
-                },
-              };
-            });
-
-            form.reset({
-              ...blockchain,
-              configuration: result.connectorResource.configuration,
-              description: result.connectorResource.description,
-            });
-          },
-          onError: (error) => {
-            updateSelectedConnectorNode((prev) => {
-              if (prev === null) return prev;
-
-              return {
-                ...prev,
-                data: {
-                  ...prev.data,
-                  id: oldId,
-                  name: `connectors/${oldId}`,
-                },
-              };
-            });
-
-            // Rollback the nodes'id
-            updateNodes((prev) => {
-              return prev.map((node) => {
-                if (
-                  node.data.nodeType === "connector" &&
-                  node.data.component.id === data.id
-                ) {
-                  return {
-                    ...node,
-                    data: {
-                      ...node.data,
-                      connector: {
-                        ...node.data.component,
-                        id: oldId,
-                        name: `connectors/${oldId}`,
-                      },
-                    },
-                  };
-                }
-
-                return node;
-              });
-            });
-
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when create the AI",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when create the AI",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-          },
-        }
-      );
-    }
   }
-
-  const [isConnecting, setIsConnecting] = React.useState(false);
-  const connectBlockchain = useConnectConnectorResource();
-  const disconnectBlockchain = useDisonnectConnectorResource();
-
-  // const handleConnectBlockchain = async function () {
-  //   if (!blockchain) return;
-
-  //   setIsConnecting(true);
-
-  //   const oldState = blockchain.watchState;
-
-  //   if (
-  //     blockchain.watchState === "STATE_CONNECTED" ||
-  //     blockchain.watchState === "STATE_ERROR"
-  //   ) {
-  //     disconnectBlockchain.mutate(
-  //       {
-  //         connectorName: blockchain.name,
-  //         accessToken,
-  //       },
-  //       {
-  //         onSuccess: () => {
-  //           toast({
-  //             title: `Successfully disconnect ${blockchain.id}`,
-  //             variant: "alert-success",
-  //             size: "small",
-  //           });
-  //           updateSelectedConnectorNode((prev) => {
-  //             if (prev === null) return prev;
-
-  //             return {
-  //               ...prev,
-  //               data: {
-  //                 ...prev.data,
-  //                 connector: {
-  //                   ...prev.data.component,
-  //                   watchState: "STATE_DISCONNECTED",
-  //                 },
-  //               },
-  //             };
-  //           });
-  //           setIsConnecting(false);
-  //         },
-  //         onError: (error) => {
-  //           setIsConnecting(false);
-
-  //           updateSelectedConnectorNode((prev) => {
-  //             if (prev === null) return prev;
-
-  //             return {
-  //               ...prev,
-  //               data: {
-  //                 ...prev.data,
-  //                 connector: {
-  //                   ...prev.data.component,
-  //                   watchState: oldState,
-  //                 },
-  //               },
-  //             };
-  //           });
-
-  //           if (isAxiosError(error)) {
-  //             toast({
-  //               title: "Something went wrong when disconnect the blockchain",
-  //               variant: "alert-error",
-  //               size: "large",
-  //               description: getInstillApiErrorMessage(error),
-  //             });
-  //           } else {
-  //             toast({
-  //               title: "Something went wrong when disconnect the blockchain",
-  //               variant: "alert-error",
-  //               size: "large",
-  //               description: "Please try again later",
-  //             });
-  //           }
-  //         },
-  //       }
-  //     );
-  //   } else {
-  //     connectBlockchain.mutate(
-  //       {
-  //         connectorName: blockchain.name,
-  //         accessToken,
-  //       },
-  //       {
-  //         onSuccess: () => {
-  //           toast({
-  //             title: `Successfully connect ${blockchain.id}`,
-  //             variant: "alert-success",
-  //             size: "small",
-  //           });
-  //           setIsConnecting(false);
-  //           updateSelectedConnectorNode((prev) => {
-  //             if (prev === null) return prev;
-
-  //             return {
-  //               ...prev,
-  //               data: {
-  //                 ...prev.data,
-  //                 connector: {
-  //                   ...prev.data.component,
-  //                   watchState: "STATE_CONNECTED",
-  //                 },
-  //               },
-  //             };
-  //           });
-  //         },
-  //         onError: (error) => {
-  //           setIsConnecting(false);
-  //           updateSelectedConnectorNode((prev) => {
-  //             if (prev === null) return prev;
-  //             return {
-  //               ...prev,
-  //               data: {
-  //                 ...prev.data,
-  //                 connector: {
-  //                   ...prev.data.component,
-  //                   watchState: oldState,
-  //                 },
-  //               },
-  //             };
-  //           });
-  //           if (isAxiosError(error)) {
-  //             toast({
-  //               title: "Something went wrong when connect the blockchain",
-  //               variant: "alert-error",
-  //               size: "large",
-  //               description: getInstillApiErrorMessage(error),
-  //             });
-  //           } else {
-  //             toast({
-  //               title: "Something went wrong when connect the blockchain",
-  //               variant: "alert-error",
-  //               size: "large",
-  //               description: "Please try again later",
-  //             });
-  //           }
-  //         },
-  //       }
-  //     );
-  //   }
-  // };
 
   return (
     <Form.Root {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="mb-10 flex flex-col space-y-5">
           <Form.Field
             control={form.control}
-            name="id"
+            name="images"
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>ID *</Form.Label>
+                  <Form.Label>Images *</Form.Label>
                   <Form.Control>
-                    <Input.Root className="!rounded-none">
+                    <Input.Root>
                       <Input.Core
                         {...field}
                         type="text"
                         value={field.value ?? ""}
-                        disabled={
-                          disabledAll
-                            ? disabledAll
-                            : "uid" in blockchain
-                            ? true
-                            : false
-                        }
                         autoComplete="off"
+                        disabled={disabledAll ? disabledAll : false}
                       />
                     </Input.Root>
                   </Form.Control>
-                  <Form.Description>
-                    Pick an ID to help you identify this resource. The ID
-                    conforms to RFC-1034, which restricts to letters, numbers,
-                    and hyphen, with the first character a letter, the last a
-                    letter or a number, and a 63 character maximum.
-                  </Form.Description>
                   <Form.Message />
                 </Form.Item>
               );
@@ -558,111 +136,22 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
           />
           <Form.Field
             control={form.control}
-            name="description"
+            name="asset_creator"
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>Asset Creator</Form.Label>
                   <Form.Control>
-                    <Textarea
-                      {...field}
-                      value={field.value ?? ""}
-                      className="!rounded-none"
-                      disabled={disabledAll}
-                    />
-                  </Form.Control>
-                  <Form.Description>
-                    Fill with a short description.
-                  </Form.Description>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="connector_definition_name"
-            render={({ field }) => {
-              return (
-                <Form.Item>
-                  <Form.Label>AI Connector Type</Form.Label>
-                  <Select.Root
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={disabledAll}
-                  >
-                    <Form.Control>
-                      <Select.Trigger className="w-full !rounded-none">
-                        <Select.Value placeholder="Select an blockchain connector type" />
-                      </Select.Trigger>
-                    </Form.Control>
-                    <Select.Content>
-                      <Select.Item
-                        key="connector-definitions/blockchain-numbers"
-                        value="connector-definitions/blockchain-numbers"
-                        className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
-                      >
-                        <div className="flex flex-row space-x-2">
-                          <Logos.Number className="my-auto h-5 w-5" />
-                          <p className="my-auto">Numbers Protocol</p>
-                        </div>
-                      </Select.Item>
-                    </Select.Content>
-                  </Select.Root>
-                  <Form.Description>
-                    Select a blockchain connector type.
-                  </Form.Description>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.capture_token"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={
-                    form.watch("connector_definition_name") ===
-                    "connector-definitions/blockchain-numbers"
-                      ? ""
-                      : "hidden"
-                  }
-                >
-                  <Form.Label>Capture token *</Form.Label>
-                  <Form.Control>
-                    <Input.Root className="!rounded-none">
+                    <Input.Root>
                       <Input.Core
                         {...field}
-                        type="password"
+                        type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
-                        onFocus={() => {
-                          if (field.value === "*****MASK*****") {
-                            field.onChange("");
-                          }
-                        }}
-                        onBlur={() => {
-                          if (
-                            field.value === "" &&
-                            blockchain.configuration.capture_token ===
-                              "*****MASK*****"
-                          ) {
-                            form.resetField("configuration.capture_token", {
-                              defaultValue: "*****MASK*****",
-                            });
-                          }
-                        }}
-                        disabled={disabledAll}
+                        disabled={disabledAll ? disabledAll : false}
                       />
                     </Input.Root>
                   </Form.Control>
-                  <Form.Description>
-                    Fill your Capture token in the Capture App. To access your
-                    tokens, you need a Capture App account and you can sign in
-                    with email or wallet to acquire the Capture Token.
-                  </Form.Description>
                   <Form.Message />
                 </Form.Item>
               );
@@ -670,210 +159,303 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
           />
           <Form.Field
             control={form.control}
-            name="configuration.asset_type"
+            name="abstract"
             render={({ field }) => {
               return (
-                <Form.Item
-                  className={
-                    form.watch("connector_definition_name") ===
-                    "connector-definitions/blockchain-numbers"
-                      ? ""
-                      : "hidden"
-                  }
-                >
-                  <Form.Label>Asset type *</Form.Label>
-                  <Select.Root
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={disabledAll}
-                  >
-                    <Form.Control>
-                      <Select.Trigger className="w-full !rounded-none">
-                        <Select.Value placeholder="Select an asset type" />
-                      </Select.Trigger>
-                    </Form.Control>
-                    <Select.Content>
-                      {["images"].map((item) => (
+                <Form.Item>
+                  <Form.Label>Abstract</Form.Label>
+                  <Form.Control>
+                    <Input.Root>
+                      <Input.Core
+                        {...field}
+                        type="text"
+                        value={field.value ?? ""}
+                        autoComplete="off"
+                        disabled={disabledAll ? disabledAll : false}
+                      />
+                    </Input.Root>
+                  </Form.Control>
+                  <Form.Message />
+                </Form.Item>
+              );
+            }}
+          />
+          <div className="flex flex-col gap-y-5 rounded-sm border border-semantic-bg-line p-5">
+            <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+              Custom
+            </p>
+            <Form.Field
+              control={form.control}
+              name="custome.digital_source_type"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Digital Source Type</Form.Label>
+                    <Select.Root
+                      onValueChange={field.onChange}
+                      disabled={disabledAll}
+                      value={field.value}
+                    >
+                      <Form.Control>
+                        <Select.Trigger className="w-full">
+                          <Select.Value placeholder="Select an Digital Source Type" />
+                        </Select.Trigger>
+                      </Form.Control>
+                      <Select.Content>
                         <Select.Item
-                          className="my-auto capitalize text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
-                          key={item}
-                          value={item}
+                          key="trainedAlgorithmicMedia"
+                          value="trainedAlgorithmicMedia"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
                         >
-                          <p className="my-auto">{item}</p>
+                          <p className="my-auto">trainedAlgorithmicMedia</p>
                         </Select.Item>
-                      ))}
-                    </Select.Content>
-                  </Select.Root>
-                  <Form.Description>
-                    The type of asset to be added to the Blockchain.
-                  </Form.Description>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.metadata_texts"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={cn(
-                    "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
-                    form.watch("connector_definition_name") ===
-                      "connector-definitions/blockchain-numbers"
-                      ? ""
-                      : "hidden"
-                  )}
-                >
-                  <div className="space-y-1">
-                    <Form.Label>{`'texts' input as asset metadata`}</Form.Label>
-                    <Form.Description className="w-8/12">
-                      Include the `texts` input in the asset metadata on the
-                      Blockchain.
+                        <Select.Item
+                          key="trainedAlgorithmicData"
+                          value="trainedAlgorithmicData"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">trainedAlgorithmicData</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="digitalCapture"
+                          value="digitalCapture"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">digitalCapture</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="digitalArt"
+                          value="digitalArt"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">digitalArt</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="algorithmicMedia"
+                          value="algorithmicMedia"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">algorithmicMedia</p>
+                        </Select.Item>
+                      </Select.Content>
+                    </Select.Root>
+                    <Form.Description>
+                      Select a blockchain connector type.
                     </Form.Description>
-                  </div>
-                  <Form.Control>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="custome.mining_preference"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Mining Preference</Form.Label>
+                    <Select.Root
+                      onValueChange={field.onChange}
                       disabled={disabledAll}
-                    />
-                  </Form.Control>
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.metadata_structured_data"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={cn(
-                    "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
-                    form.watch("connector_definition_name") ===
-                      "connector-definitions/blockchain-numbers"
-                      ? ""
-                      : "hidden"
-                  )}
-                >
-                  <div className="space-y-1">
-                    <Form.Label>
-                      {`'structured_data' input as asset metadata`}
-                    </Form.Label>
-                    <Form.Description className="w-8/12">
-                      Include the `structured_data` input in the asset metadata
-                      on the Blockchain.
-                    </Form.Description>
-                  </div>
-                  <Form.Control>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={disabledAll}
-                    />
-                  </Form.Control>
-                </Form.Item>
-              );
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="configuration.metadata_metadata"
-            render={({ field }) => {
-              return (
-                <Form.Item
-                  className={cn(
-                    "flex !flex-row items-center justify-between border border-semantic-bg-line py-3 pl-3 pr-6",
-                    form.watch("connector_definition_name") ===
-                      "connector-definitions/blockchain-numbers"
-                      ? ""
-                      : "hidden"
-                  )}
-                >
-                  <div className="space-y-1">
-                    <Form.Label>
-                      {`'metadata' input as asset metadata`}
-                    </Form.Label>
-                    <Form.Description className="w-8/12">
-                      Include the `metadata` input in the asset metadata on the
-                      Blockchain.
-                    </Form.Description>
-                  </div>
-                  <Form.Control>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={disabledAll}
-                    />
-                  </Form.Control>
-                </Form.Item>
-              );
-            }}
-          />
+                      value={field.value}
+                    >
+                      <Form.Control>
+                        <Select.Trigger className="w-full">
+                          <Select.Value placeholder="Select an Mining Preference" />
+                        </Select.Trigger>
+                      </Form.Control>
+                      <Select.Content>
+                        <Select.Item
+                          key="dataMining"
+                          value="dataMining"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">dataMining</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="aiInference"
+                          value="aiInference"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">aiInference</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="notAllowed"
+                          value="notAllowed"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">notAllowed</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="aiGenerativeTraining"
+                          value="aiGenerativeTraining"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">aiGenerativeTraining</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="aiGenerativeTrainingWithAuthorship"
+                          value="aiGenerativeTrainingWithAuthorship"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">
+                            aiGenerativeTrainingWithAuthorship
+                          </p>
+                        </Select.Item>
+                        <Select.Item
+                          key="aiTraining"
+                          value="aiTraining"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">aiTraining</p>
+                        </Select.Item>
+                        <Select.Item
+                          key="aiTrainingWithAuthorship"
+                          value="aiTrainingWithAuthorship"
+                          className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        >
+                          <p className="my-auto">aiTrainingWithAuthorship</p>
+                        </Select.Item>
+                      </Select.Content>
+                    </Select.Root>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="custome.generated_through"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Generated Through</Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          type="text"
+                          value={field.value ?? ""}
+                          autoComplete="off"
+                          disabled={disabledAll ? disabledAll : false}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="custome.generated_by"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Generated By</Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          type="text"
+                          value={field.value ?? ""}
+                          autoComplete="off"
+                          disabled={disabledAll ? disabledAll : false}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="custome.creator_wallet"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>Creator Wallet</Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          type="text"
+                          value={field.value ?? ""}
+                          autoComplete="off"
+                          disabled={disabledAll ? disabledAll : false}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <div className="flex flex-col gap-y-5 rounded-sm border border-semantic-bg-line p-5">
+              <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+                License
+              </p>
+              <Form.Field
+                control={form.control}
+                name="custome.license.name"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>License Name</Form.Label>
+                      <Form.Control>
+                        <Input.Root>
+                          <Input.Core
+                            {...field}
+                            type="text"
+                            value={field.value ?? ""}
+                            autoComplete="off"
+                            disabled={disabledAll ? disabledAll : false}
+                          />
+                        </Input.Root>
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  );
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="custome.license.name"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>License Document</Form.Label>
+                      <Form.Control>
+                        <Input.Root>
+                          <Input.Core
+                            {...field}
+                            type="text"
+                            value={field.value ?? ""}
+                            autoComplete="off"
+                            disabled={disabledAll ? disabledAll : false}
+                          />
+                        </Input.Root>
+                      </Form.Control>
+                      <Form.Description>
+                        Url to the license document
+                      </Form.Description>
+                      <Form.Message />
+                    </Form.Item>
+                  );
+                }}
+              />
+            </div>
+          </div>
         </div>
-
         <div className="flex w-full flex-row-reverse gap-x-4">
-          {/* <Button
-            onClick={handleConnectBlockchain}
-            className="gap-x-2"
-            variant="primary"
-            size="lg"
-            type="button"
-            disabled={
-              disabledAll ? disabledAll : "uid" in blockchain ? false : true
-            }
-          >
-            {blockchain.watchState === "STATE_CONNECTED" ||
-            blockchain.watchState === "STATE_ERROR"
-              ? "Disconnect"
-              : "Connect"}
-            {isConnecting ? (
-              <svg
-                className="m-auto h-4 w-4 animate-spin text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-            ) : blockchain.watchState === "STATE_CONNECTED" ||
-              blockchain.watchState === "STATE_ERROR" ? (
-              <Icons.Stop className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-            ) : (
-              <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-            )}
-          </Button> */}
           <Button
             type="submit"
             variant="secondaryColour"
-            disabled={
-              disabledAll
-                ? disabledAll
-                : "uid" in blockchain
-                ? isDirty
-                  ? false
-                  : true
-                : false
-            }
-            size={isDirty ? "lg" : "md"}
+            size="lg"
             className="gap-x-2"
           >
-            {"uid" in blockchain ? "Update" : "Create"}
-            <Icons.Save01 className="h-4 w-4 stroke-semantic-accent-on-bg group-disabled:stroke-semantic-fg-disabled" />
+            Save
           </Button>
         </div>
       </form>
