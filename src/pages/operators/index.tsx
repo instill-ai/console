@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
 import {
   SourcesTable,
-  useConnectorsWithPipelines,
+  useConnectorResourcesWithPipelines,
   useCreateUpdateDeleteResourceGuard,
-  useWatchConnectors,
+  useWatchConnectorResources,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { useRouter } from "next/router";
@@ -23,16 +23,16 @@ const SourcePage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const sources = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_OPERATOR",
+  const sources = useConnectorResourcesWithPipelines({
+    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
     enabled: true,
     accessToken: null,
   });
 
-  const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_OPERATOR",
+  const sourcesWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
     enabled: sources.isSuccess,
-    connectorNames: sources.isSuccess
+    connectorResourceNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
       : [],
     accessToken: null,
@@ -67,9 +67,6 @@ const SourcePage: FC & {
 
         <SourcesTable
           sources={sources.data ? sources.data : []}
-          sourcesWatchState={
-            sourcesWatchState.isSuccess ? sourcesWatchState.data : {}
-          }
           isError={sources.isError || sourcesWatchState.isError}
           isLoading={isLoadingResource}
           accessToken={null}

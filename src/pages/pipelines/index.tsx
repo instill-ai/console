@@ -87,7 +87,6 @@ const PipelinePage: FC & {
             pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
           }
           isError={pipelines.isError || pipelinesWatchState.isError}
-          marginBottom="mb-5"
           isLoading={isLoadingResource}
           accessToken={null}
         />

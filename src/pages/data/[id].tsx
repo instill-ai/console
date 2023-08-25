@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import {
-  useConnectorWithPipelines,
+  useConnectorResourceWithPipelines,
   useWarnUnsavedChanges,
   ConfigureDestinationForm,
   useCreateResourceFormStore,
@@ -11,7 +11,7 @@ import {
   CreateResourceFormStore,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
-  useWatchConnector,
+  useWatchConnectorResource,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -45,14 +45,14 @@ const DestinationDetailsPage: FC & {
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const destinationWithPipelines = useConnectorWithPipelines({
-    connectorName: id ? `connectors/${id.toString()}` : null,
+  const destinationWithPipelines = useConnectorResourceWithPipelines({
+    connectorResourceName: id ? `connector-resources/${id.toString()}` : null,
     accessToken: null,
     enabled: true,
   });
 
-  const destinationWatchState = useWatchConnector({
-    connectorName: destinationWithPipelines.isSuccess
+  const destinationWatchState = useWatchConnectorResource({
+    connectorResourceName: destinationWithPipelines.isSuccess
       ? destinationWithPipelines.data.name
       : null,
     accessToken: null,
@@ -123,7 +123,6 @@ const DestinationDetailsPage: FC & {
             destinationWithPipelines.isError || pipelinesWatchState.isError
           }
           isLoading={isLoadingResources}
-          marginBottom="mb-10"
           accessToken={null}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
 import {
   BlockchainsTable,
-  useConnectorsWithPipelines,
+  useConnectorResourcesWithPipelines,
   useCreateUpdateDeleteResourceGuard,
-  useWatchConnectors,
+  useWatchConnectorResources,
 } from "@instill-ai/toolkit";
 
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -24,16 +24,16 @@ const BlockchainsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const blockchains = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+  const blockchains = useConnectorResourcesWithPipelines({
+    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
     enabled: true,
     accessToken: null,
   });
 
-  const blockchainsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const blockchainsWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_AI",
     enabled: blockchains.isSuccess,
-    connectorNames: blockchains.isSuccess
+    connectorResourceNames: blockchains.isSuccess
       ? blockchains.data.map((blockchain) => blockchain.name)
       : [],
     accessToken: null,

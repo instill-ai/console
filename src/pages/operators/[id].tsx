@@ -1,13 +1,13 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
-  useConnectorWithPipelines,
+  useConnectorResourceWithPipelines,
   ConfigureSourceForm,
   StateLabel,
   PipelinesTable,
   useCreateUpdateDeleteResourceGuard,
   useWatchPipelines,
-  useWatchConnector,
+  useWatchConnectorResource,
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -27,15 +27,15 @@ const SourceDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const sourceWithPipelines = useConnectorWithPipelines({
+  const sourceWithPipelines = useConnectorResourceWithPipelines({
     enabled: true,
-    connectorName: id ? `connectors/${id.toString()}` : null,
+    connectorResourceName: id ? `connector-resources/${id.toString()}` : null,
     accessToken: null,
   });
 
-  const sourceWatchState = useWatchConnector({
+  const sourceWatchState = useWatchConnectorResource({
     enabled: sourceWithPipelines.isSuccess,
-    connectorName: sourceWithPipelines.isSuccess
+    connectorResourceName: sourceWithPipelines.isSuccess
       ? sourceWithPipelines.data.name
       : null,
     accessToken: null,
@@ -101,7 +101,6 @@ const SourceDetailsPage: FC & {
           }
           isError={sourceWithPipelines.isError || pipelinesWatchState.isError}
           isLoading={isLoadingResources}
-          marginBottom="mb-10"
           accessToken={null}
         />
         <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

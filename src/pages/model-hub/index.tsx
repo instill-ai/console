@@ -67,7 +67,6 @@ const ModelPage: FC & {
           }
           isError={models.isError || modelsWatchState.isError}
           isLoading={isLoadingResource}
-          marginBottom="mb-5"
         />
       </div>
     </>

@@ -2,9 +2,9 @@ import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import {
   Nullable,
-  useConnectors,
-  useWatchConnectors,
-  ConnectorWithWatchState,
+  useConnectorResources,
+  useWatchConnectorResources,
+  ConnectorResourceWithWatchState,
   useWatchPipeline,
 } from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
@@ -164,22 +164,24 @@ const PipelineBuilderPage: FC & {
   const [, setReactFlowInstance] = useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
-  const sources = useConnectors({
-    connectorType: "CONNECTOR_TYPE_OPERATOR",
+  const sources = useConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
     accessToken: null,
     enabled: true,
   });
 
-  const sourcesWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_OPERATOR",
-    connectorNames: sources.isSuccess
+  const sourcesWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
+    connectorResourceNames: sources.isSuccess
       ? sources.data.map((source) => source.name)
       : [],
     accessToken: null,
     enabled: sources.isSuccess && sources.data.length > 0,
   });
 
-  const sourcesWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
+  const sourcesWithWatchState = useMemo<
+    ConnectorResourceWithWatchState[]
+  >(() => {
     if (
       !sources.isSuccess ||
       !sources.data ||
@@ -215,22 +217,24 @@ const PipelineBuilderPage: FC & {
     sources.data,
   ]);
 
-  const destinations = useConnectors({
-    connectorType: "CONNECTOR_TYPE_DATA",
+  const destinations = useConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });
 
-  const destinationsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_DATA",
-    connectorNames: destinations.isSuccess
+  const destinationsWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_DATA",
+    connectorResourceNames: destinations.isSuccess
       ? destinations.data.map((destination) => destination.name)
       : [],
     accessToken: null,
     enabled: destinations.isSuccess && destinations.data.length > 0,
   });
 
-  const destinationsWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
+  const destinationsWithWatchState = useMemo<
+    ConnectorResourceWithWatchState[]
+  >(() => {
     if (
       !destinations.isSuccess ||
       !destinations.data ||
@@ -266,20 +270,20 @@ const PipelineBuilderPage: FC & {
     destinations.data,
   ]);
 
-  const ais = useConnectors({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const ais = useConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_AI",
     accessToken: null,
     enabled: true,
   });
 
-  const aisWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_AI",
-    connectorNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
+  const aisWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_AI",
+    connectorResourceNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
     accessToken: null,
     enabled: ais.isSuccess && ais.data.length > 0,
   });
 
-  const aisWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
+  const aisWithWatchState = useMemo<ConnectorResourceWithWatchState[]>(() => {
     if (
       !ais.isSuccess ||
       !ais.data ||
@@ -305,22 +309,24 @@ const PipelineBuilderPage: FC & {
     return ais.isLoading || aisWatchState.isLoading;
   }, [ais.isLoading, aisWatchState.isLoading, ais.isSuccess, ais.data]);
 
-  const blockchains = useConnectors({
-    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+  const blockchains = useConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
     accessToken: null,
     enabled: true,
   });
 
-  const blockchainsWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
-    connectorNames: blockchains.isSuccess
+  const blockchainsWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    connectorResourceNames: blockchains.isSuccess
       ? blockchains.data.map((ai) => ai.name)
       : [],
     accessToken: null,
     enabled: blockchains.isSuccess && blockchains.data.length > 0,
   });
 
-  const blockchainsWithWatchState = useMemo<ConnectorWithWatchState[]>(() => {
+  const blockchainsWithWatchState = useMemo<
+    ConnectorResourceWithWatchState[]
+  >(() => {
     if (
       !blockchains.isSuccess ||
       !blockchains.data ||

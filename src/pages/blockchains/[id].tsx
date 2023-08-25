@@ -1,11 +1,11 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
-  useConnectorWithPipelines,
+  useConnectorResourceWithPipelines,
   StateLabel,
   PipelinesTable,
   useWatchPipelines,
-  useWatchConnector,
+  useWatchConnectorResource,
   ConfigureBlockchainForm,
 } from "@instill-ai/toolkit";
 
@@ -25,15 +25,15 @@ const BlockchainDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const blockchainWithPipelines = useConnectorWithPipelines({
+  const blockchainWithPipelines = useConnectorResourceWithPipelines({
     enabled: true,
-    connectorName: id ? `connectors/${id.toString()}` : null,
+    connectorResourceName: id ? `connector-resources/${id.toString()}` : null,
     accessToken: null,
   });
 
-  const blockchainWatchState = useWatchConnector({
+  const blockchainWatchState = useWatchConnectorResource({
     enabled: blockchainWithPipelines.isSuccess,
-    connectorName: blockchainWithPipelines.isSuccess
+    connectorResourceName: blockchainWithPipelines.isSuccess
       ? blockchainWithPipelines.data.name
       : null,
     accessToken: null,
@@ -100,7 +100,6 @@ const BlockchainDetailsPage: FC & {
         }
         isError={blockchainWithPipelines.isError || pipelinesWatchState.isError}
         isLoading={isLoadingResources}
-        marginBottom="mb-10"
         accessToken={null}
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

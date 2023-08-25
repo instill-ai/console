@@ -1,11 +1,11 @@
 import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
-  useConnectorWithPipelines,
+  useConnectorResourceWithPipelines,
   StateLabel,
   PipelinesTable,
   useWatchPipelines,
-  useWatchConnector,
+  useWatchConnectorResource,
   ConfigureAIForm,
 } from "@instill-ai/toolkit";
 
@@ -25,15 +25,17 @@ const AIDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const aiWithPipelines = useConnectorWithPipelines({
+  const aiWithPipelines = useConnectorResourceWithPipelines({
     enabled: true,
-    connectorName: id ? `connectors/${id.toString()}` : null,
+    connectorResourceName: id ? `connector-resources/${id.toString()}` : null,
     accessToken: null,
   });
 
-  const aiWatchState = useWatchConnector({
+  const aiWatchState = useWatchConnectorResource({
     enabled: aiWithPipelines.isSuccess,
-    connectorName: aiWithPipelines.isSuccess ? aiWithPipelines.data.name : null,
+    connectorResourceName: aiWithPipelines.isSuccess
+      ? aiWithPipelines.data.name
+      : null,
     accessToken: null,
   });
 
@@ -93,7 +95,6 @@ const AIDetailsPage: FC & {
         }
         isError={aiWithPipelines.isError || pipelinesWatchState.isError}
         isLoading={isLoadingResources}
-        marginBottom="mb-10"
         accessToken={null}
       />
       <h3 className="mb-5 text-black text-instill-h3">Setting</h3>

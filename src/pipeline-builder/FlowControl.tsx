@@ -78,13 +78,13 @@ export const FlowControl = (props: FlowControlProps) => {
   const { id } = router.query;
 
   const aiDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_AI",
+    connectorResourceType: "CONNECTOR_TYPE_AI",
     accessToken: null,
     enabled: true,
   });
 
   const dataDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_DATA",
+    connectorResourceType: "CONNECTOR_TYPE_DATA",
     accessToken: null,
     enabled: true,
   });

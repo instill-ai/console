@@ -6,14 +6,14 @@ import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
 
 import {
-  CreateConnectorPayload,
+  CreateConnectorResourcePayload,
   Nullable,
-  UpdateConnectorPayload,
+  UpdateConnectorResourcePayload,
   getInstillApiErrorMessage,
-  useConnectConnector,
-  useCreateConnector,
-  useDisonnectConnector,
-  useUpdateConnector,
+  useConnectConnectorResource,
+  useCreateConnectorResource,
+  useDisonnectConnectorResource,
+  useUpdateConnectorResource,
   ImageWithFallback,
 } from "@instill-ai/toolkit";
 import {
@@ -225,8 +225,8 @@ export const AIForm = (props: AIFormProps) => {
     });
   }, [ai, reset]);
 
-  const updateConnector = useUpdateConnector();
-  const createConnector = useCreateConnector();
+  const createAI = useCreateConnectorResource();
+  const updateAI = useUpdateConnectorResource();
   const { toast } = useToast();
 
   function onSubmit(data: z.infer<typeof AIFormSchema>) {
@@ -284,13 +284,13 @@ export const AIForm = (props: AIFormProps) => {
     });
 
     if ("uid" in ai) {
-      const payload: UpdateConnectorPayload = {
-        connectorName: `connectors/${data.id}`,
+      const payload: UpdateConnectorResourcePayload = {
+        connectorResourceName: `connectors/${data.id}`,
         description: data.description,
         configuration: data.configuration,
       };
 
-      updateConnector.mutate(
+      updateAI.mutate(
         { payload, accessToken },
         {
           onSuccess: (result) => {
@@ -310,9 +310,9 @@ export const AIForm = (props: AIFormProps) => {
                   ...prev.data,
                   connector: {
                     ...prev.data.component,
-                    configuration: result.connector.configuration,
-                    description: result.connector.description,
-                    uid: result.connector.uid,
+                    configuration: result.connectorResource.configuration,
+                    description: result.connectorResource.description,
+                    uid: result.connectorResource.uid,
                   },
                 },
               };
@@ -321,8 +321,8 @@ export const AIForm = (props: AIFormProps) => {
             // Reset the form with the new configuration
             form.reset({
               ...ai,
-              configuration: result.connector.configuration,
-              description: result.connector.description,
+              configuration: result.connectorResource.configuration,
+              description: result.connectorResource.description,
             });
           },
           onError: (error) => {
@@ -383,14 +383,14 @@ export const AIForm = (props: AIFormProps) => {
         }
       );
     } else {
-      const payload: CreateConnectorPayload = {
-        connectorName: `connectors/${data.id}`,
+      const payload: CreateConnectorResourcePayload = {
+        connectorResourceName: `connectors/${data.id}`,
         connector_definition_name: data.connector_definition_name,
         description: data.description,
         configuration: data.configuration,
       };
 
-      createConnector.mutate(
+      createAI.mutate(
         {
           payload,
           accessToken,
@@ -412,9 +412,9 @@ export const AIForm = (props: AIFormProps) => {
                   ...prev.data,
                   connector: {
                     ...prev.data.component,
-                    configuration: result.connector.configuration,
-                    description: result.connector.description,
-                    uid: result.connector.uid,
+                    configuration: result.connectorResource.configuration,
+                    description: result.connectorResource.description,
+                    uid: result.connectorResource.uid,
                   },
                 },
               };
@@ -422,8 +422,8 @@ export const AIForm = (props: AIFormProps) => {
 
             form.reset({
               ...ai,
-              configuration: result.connector.configuration,
-              description: result.connector.description,
+              configuration: result.connectorResource.configuration,
+              description: result.connectorResource.description,
             });
           },
           onError: (error) => {
@@ -487,8 +487,8 @@ export const AIForm = (props: AIFormProps) => {
 
   const [isConnecting, setIsConnecting] = React.useState(false);
 
-  const connectBlockchain = useConnectConnector();
-  const disconnectBlockchain = useDisonnectConnector();
+  const connectBlockchain = useConnectConnectorResource();
+  const disconnectBlockchain = useDisonnectConnectorResource();
 
   // const handleConnectAI = async function () {
   //   if (!ai) return;

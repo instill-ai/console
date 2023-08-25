@@ -1,9 +1,9 @@
 import { FC, ReactElement } from "react";
 import {
   AIsTable,
-  useConnectorsWithPipelines,
+  useConnectorResourcesWithPipelines,
   useCreateUpdateDeleteResourceGuard,
-  useWatchConnectors,
+  useWatchConnectorResources,
 } from "@instill-ai/toolkit";
 
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -24,16 +24,16 @@ const AIsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const ais = useConnectorsWithPipelines({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const ais = useConnectorResourcesWithPipelines({
+    connectorResourceType: "CONNECTOR_TYPE_AI",
     enabled: true,
     accessToken: null,
   });
 
-  const aisWatchState = useWatchConnectors({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const aisWatchState = useWatchConnectorResources({
+    connectorResourceType: "CONNECTOR_TYPE_AI",
     enabled: ais.isSuccess,
-    connectorNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
+    connectorResourceNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
     accessToken: null,
   });
 

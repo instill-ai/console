@@ -7,14 +7,14 @@ import { isAxiosError } from "axios";
 import { shallow } from "zustand/shallow";
 
 import {
-  CreateConnectorPayload,
+  CreateConnectorResourcePayload,
   Nullable,
-  UpdateConnectorPayload,
+  UpdateConnectorResourcePayload,
   getInstillApiErrorMessage,
-  useCreateConnector,
-  useUpdateConnector,
-  useConnectConnector,
-  useDisonnectConnector,
+  useCreateConnectorResource,
+  useUpdateConnectorResource,
+  useConnectConnectorResource,
+  useDisonnectConnectorResource,
   ConfigureBlockchainFormSchema,
 } from "@instill-ai/toolkit";
 import {
@@ -113,8 +113,8 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
     });
   }, [blockchain, reset]);
 
-  const updateConnector = useUpdateConnector();
-  const createConnector = useCreateConnector();
+  const createBlockchain = useCreateConnectorResource();
+  const updateBlockchain = useUpdateConnectorResource();
   const { toast } = useToast();
 
   function onSubmit(data: z.infer<typeof ConfigureBlockchainFormSchema>) {
@@ -172,13 +172,13 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
     });
 
     if ("uid" in blockchain) {
-      const payload: UpdateConnectorPayload = {
-        connectorName: `connectors/${data.id}`,
+      const payload: UpdateConnectorResourcePayload = {
+        connectorResourceName: `connectors/${data.id}`,
         description: data.description,
         configuration: data.configuration,
       };
 
-      updateConnector.mutate(
+      updateBlockchain.mutate(
         { payload, accessToken },
         {
           onSuccess: (result) => {
@@ -198,9 +198,9 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   ...prev.data,
                   connector: {
                     ...prev.data.component,
-                    configuration: result.connector.configuration,
-                    description: result.connector.description,
-                    uid: result.connector.uid,
+                    configuration: result.connectorResource.configuration,
+                    description: result.connectorResource.description,
+                    uid: result.connectorResource.uid,
                   },
                 },
               };
@@ -209,8 +209,8 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             // Reset the form with the new configuration
             form.reset({
               ...blockchain,
-              configuration: result.connector.configuration,
-              description: result.connector.description,
+              configuration: result.connectorResource.configuration,
+              description: result.connectorResource.description,
             });
           },
           onError: (error) => {
@@ -271,14 +271,14 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
         }
       );
     } else {
-      const payload: CreateConnectorPayload = {
-        connectorName: `connectors/${data.id}`,
+      const payload: CreateConnectorResourcePayload = {
+        connectorResourceName: `connectors/${data.id}`,
         connector_definition_name: data.connector_definition_name,
         description: data.description,
         configuration: data.configuration,
       };
 
-      createConnector.mutate(
+      createBlockchain.mutate(
         {
           payload,
           accessToken,
@@ -300,9 +300,9 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                   ...prev.data,
                   connector: {
                     ...prev.data.component,
-                    configuration: result.connector.configuration,
-                    description: result.connector.description,
-                    uid: result.connector.uid,
+                    configuration: result.connectorResource.configuration,
+                    description: result.connectorResource.description,
+                    uid: result.connectorResource.uid,
                   },
                 },
               };
@@ -310,8 +310,8 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
 
             form.reset({
               ...blockchain,
-              configuration: result.connector.configuration,
-              description: result.connector.description,
+              configuration: result.connectorResource.configuration,
+              description: result.connectorResource.description,
             });
           },
           onError: (error) => {
@@ -374,8 +374,8 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   }
 
   const [isConnecting, setIsConnecting] = React.useState(false);
-  const connectBlockchain = useConnectConnector();
-  const disconnectBlockchain = useDisonnectConnector();
+  const connectBlockchain = useConnectConnectorResource();
+  const disconnectBlockchain = useDisonnectConnectorResource();
 
   // const handleConnectBlockchain = async function () {
   //   if (!blockchain) return;
