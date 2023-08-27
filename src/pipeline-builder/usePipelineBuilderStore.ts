@@ -13,7 +13,7 @@ import {
   applyNodeChanges,
 } from "reactflow";
 
-import { ConnectorNodeData, NodeData } from "./type";
+import { NodeData } from "./type";
 import { Nullable } from "@instill-ai/toolkit";
 
 export type PipelineBuilderState = {
