@@ -1,5 +1,5 @@
 import { Handle, NodeProps, Position } from "reactflow";
-import { EndNodeData, NodeData } from "./type";
+import { EndNodeData } from "./type";
 import {
   Button,
   Form,

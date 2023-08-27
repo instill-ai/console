@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Dispatch, SetStateAction, forwardRef, useEffect } from "react";
+import { Dispatch, SetStateAction, forwardRef } from "react";
 import {
   Background,
   BackgroundVariant,
@@ -62,7 +62,6 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     edges,
     onNodesChange,
     onEdgesChange,
-    onConnect,
     updatePipelineRecipeIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
@@ -77,7 +76,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
           <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesDelete={(nodes) => {
+            onNodesDelete={() => {
               updatePipelineRecipeIsDirty((prev) => {
                 if (prev) return prev;
                 return true;

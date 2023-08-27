@@ -3,7 +3,7 @@ import { NodeData } from "./type";
 import { Icons } from "@instill-ai/design-system";
 import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
 
-export const EmptyNode = ({ data, id }: NodeProps<NodeData>) => {
+export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
   const updateSelectResourceDialogIsOpen = usePipelineBuilderStore(
     (state) => state.updateSelectResourceDialogIsOpen
   );

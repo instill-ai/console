@@ -1,4 +1,3 @@
-import cn from "clsx";
 import { shallow } from "zustand/shallow";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,7 +25,6 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 
 export type PipelineNameFormProps = {
   accessToken: Nullable<string>;
-  enableQuery: boolean;
 };
 
 export const UpdatePipelineNameSchema = z.object({
@@ -34,9 +32,8 @@ export const UpdatePipelineNameSchema = z.object({
 });
 
 export const PipelineNameForm = (props: PipelineNameFormProps) => {
-  const { accessToken, enableQuery } = props;
+  const { accessToken } = props;
   const router = useRouter();
-  const { id } = router.query;
 
   const { toast } = useToast();
 

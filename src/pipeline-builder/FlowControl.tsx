@@ -29,6 +29,7 @@ import {
 import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
 import { Node, Position, ReactFlowInstance } from "reactflow";
 import { ConnectorNodeData, PipelineConnectorComponent } from "./type";
+import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -512,6 +513,8 @@ export const FlowControl = (props: FlowControlProps) => {
                           PipelineConnectorComponent["type"]
                         > = null;
 
+                        let configuration: Nullable<Record<string, any>> = null;
+
                         switch (connectorResource.connector_type) {
                           case "CONNECTOR_TYPE_AI":
                             componentType = "COMPONENT_TYPE_CONNECTOR_AI";
@@ -519,6 +522,10 @@ export const FlowControl = (props: FlowControlProps) => {
                           case "CONNECTOR_TYPE_BLOCKCHAIN":
                             componentType =
                               "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+                            configuration =
+                              getBlockchainConnectorDefaultConfiguration(
+                                connectorResource.connector_definition_name
+                              );
                             break;
                           case "CONNECTOR_TYPE_DATA":
                             componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
@@ -546,7 +553,7 @@ export const FlowControl = (props: FlowControlProps) => {
                               },
                               definition_name:
                                 connectorResource.connector_definition.name,
-                              configuration: {},
+                              configuration: configuration ? configuration : {},
                               type: componentType,
                               definition_detail:
                                 connectorResource.connector_definition,

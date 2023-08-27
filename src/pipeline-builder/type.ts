@@ -99,7 +99,7 @@ export type NewPipelineWithWatchState = {
   watchState: PipelineState;
 } & NewPipeline;
 
-const tt = {
+const mock = {
   name: "connector-resources/hello",
   uid: "ab10fd6b-fb75-4af8-9a85-6b6043f9f14d",
   id: "hello",

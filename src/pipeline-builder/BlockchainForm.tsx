@@ -3,7 +3,6 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shallow } from "zustand/shallow";
 
-import { Nullable } from "@instill-ai/toolkit";
 import { Button, Form, Input, Select } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
@@ -12,35 +11,22 @@ import {
 import { useEffect } from "react";
 
 export const BlockchainFormSchema = z.object({
-  images: z.string().optional().default(""),
-  asset_creator: z.string().optional().default(""),
-  abstract: z.string().optional().default(""),
-  custome: z
+  images: z.string().nullable(),
+  asset_creator: z.string().nullable(),
+  abstract: z.string().nullable(),
+  custom: z
     .object({
-      digital_source_type: z.string().optional().default(""),
-      mining_preference: z.string().optional().default(""),
-      generated_through: z.string().optional().default(""),
-      generated_by: z.string().optional().default(""),
-      creator_wallet: z.string().optional().default(""),
-      license: z
-        .object({
-          name: z.string().optional().default(""),
-          document: z.string().optional().default(""),
-        })
-        .optional(),
+      digital_source_type: z.string().nullable(),
+      mining_preference: z.string().nullable(),
+      generated_through: z.string().nullable(),
+      generated_by: z.string().nullable(),
+      creator_wallet: z.string().nullable(),
+      license: z.object({
+        name: z.string().nullable(),
+        document: z.string().nullable(),
+      }),
     })
-    .optional()
-    .default({
-      digital_source_type: "trainedAlgorithmicMedia",
-      mining_preference: "notAllowed",
-      generated_through: "",
-      generated_by: "",
-      creator_wallet: "",
-      license: {
-        name: "",
-        document: "",
-      },
-    }),
+    .nullable(),
 });
 
 export type BlockchainFormProps = {
@@ -61,12 +47,14 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
     shallow
   );
 
+  console.log(configuration);
+
   const form = useForm<z.infer<typeof BlockchainFormSchema>>({
     resolver: zodResolver(BlockchainFormSchema),
     defaultValues: {
       ...configuration,
       images: undefined,
-      custome: {
+      custom: {
         digital_source_type: "trainedAlgorithmicMedia",
         mining_preference: "notAllowed",
       },
@@ -76,11 +64,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   const { reset } = form;
 
   useEffect(() => {
-    const parsedConfiguration = BlockchainFormSchema.safeParse(configuration);
-
-    if (parsedConfiguration.success) {
-      reset(parsedConfiguration.data);
-    }
+    reset(configuration);
   }, [configuration, reset]);
 
   function onSubmit(data: z.infer<typeof BlockchainFormSchema>) {
@@ -186,7 +170,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             </p>
             <Form.Field
               control={form.control}
-              name="custome.digital_source_type"
+              name="custom.digital_source_type"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -194,7 +178,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                     <Select.Root
                       onValueChange={field.onChange}
                       disabled={disabledAll}
-                      value={field.value}
+                      value={field.value ?? undefined}
                     >
                       <Form.Control>
                         <Select.Trigger className="w-full">
@@ -249,7 +233,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             />
             <Form.Field
               control={form.control}
-              name="custome.mining_preference"
+              name="custom.mining_preference"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -257,7 +241,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
                     <Select.Root
                       onValueChange={field.onChange}
                       disabled={disabledAll}
-                      value={field.value}
+                      value={field.value ?? undefined}
                     >
                       <Form.Control>
                         <Select.Trigger className="w-full">
@@ -325,7 +309,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             />
             <Form.Field
               control={form.control}
-              name="custome.generated_through"
+              name="custom.generated_through"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -348,7 +332,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             />
             <Form.Field
               control={form.control}
-              name="custome.generated_by"
+              name="custom.generated_by"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -371,7 +355,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             />
             <Form.Field
               control={form.control}
-              name="custome.creator_wallet"
+              name="custom.creator_wallet"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -398,7 +382,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
               </p>
               <Form.Field
                 control={form.control}
-                name="custome.license.name"
+                name="custom.license.name"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -421,7 +405,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
               />
               <Form.Field
                 control={form.control}
-                name="custome.license.name"
+                name="custom.license.name"
                 render={({ field }) => {
                   return (
                     <Form.Item>
