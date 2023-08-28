@@ -53,7 +53,11 @@ export const RightPanel = (props: RightPanelProps) => {
                 />
               </div>
               <p className="my-auto w-[200px] truncate text-semantic-fg-primary product-headings-heading-5">
-                {selectedConnectorNode.data.component?.resource_name}
+                {
+                  selectedConnectorNode.data.component?.resource_name.split(
+                    "/"
+                  )[1]
+                }
               </p>
             </div>
             <Icons.Check className="my-auto h-5 w-5 stroke-semantic-fg-primary" />

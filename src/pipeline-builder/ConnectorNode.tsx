@@ -16,6 +16,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   switch (data.component.type) {
     case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
+      // Because right now blockchain connector doesn't have complicate category, so backend use
+      // "default" as its spec key
       inputSchema = (
         (
           (

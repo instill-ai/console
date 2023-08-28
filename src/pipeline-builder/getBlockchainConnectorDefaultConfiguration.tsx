@@ -1,6 +1,6 @@
-export const getBlockchainConnectorDefaultConfiguration = (
+export function getBlockchainConnectorDefaultConfiguration(
   connector_definition_name: string
-) => {
+) {
   switch (connector_definition_name) {
     case "connector-definitions/blockchain-numbers":
       return {
@@ -22,4 +22,4 @@ export const getBlockchainConnectorDefaultConfiguration = (
     default:
       return null;
   }
-};
+}

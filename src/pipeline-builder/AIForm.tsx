@@ -679,7 +679,7 @@ export const AIForm = (props: AIFormProps) => {
                     disabled={disabledAll}
                   >
                     <Form.Control>
-                      <Select.Trigger className="w-full !rounded-none">
+                      <Select.Trigger className="w-full">
                         <Select.Value />
                       </Select.Trigger>
                     </Form.Control>
@@ -1159,7 +1159,7 @@ export const AIForm = (props: AIFormProps) => {
                     disabled={disabledAll}
                   >
                     <Form.Control>
-                      <Select.Trigger className="w-full !rounded-none">
+                      <Select.Trigger>
                         <Select.Value />
                       </Select.Trigger>
                     </Form.Control>
@@ -1197,7 +1197,6 @@ export const AIForm = (props: AIFormProps) => {
                     <Textarea
                       {...field}
                       value={field.value ?? ""}
-                      className="!rounded-none"
                       disabled={disabledAll}
                     />
                   </Form.Control>
@@ -1308,7 +1307,7 @@ export const AIForm = (props: AIFormProps) => {
                 <Form.Item className={display ? "" : "hidden"}>
                   <Form.Label>max_tokens</Form.Label>
                   <Form.Control>
-                    <Input.Root className="!rounded-none">
+                    <Input.Root>
                       <Input.Core
                         {...field}
                         type="number"

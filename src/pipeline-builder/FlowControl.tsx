@@ -30,6 +30,7 @@ import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
 import { Node, Position, ReactFlowInstance } from "reactflow";
 import { ConnectorNodeData, PipelineConnectorComponent } from "./type";
 import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
+import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -497,7 +498,7 @@ export const FlowControl = (props: FlowControlProps) => {
                 Existing Resource
               </p>
             </div>
-            <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
               {allConnectorResource.isSuccess
                 ? allConnectorResource.data.map((connectorResource) => (
                     <SelectConnectorResourceDialog.Item
@@ -518,6 +519,9 @@ export const FlowControl = (props: FlowControlProps) => {
                         switch (connectorResource.connector_type) {
                           case "CONNECTOR_TYPE_AI":
                             componentType = "COMPONENT_TYPE_CONNECTOR_AI";
+                            configuration = getAiConnectorDefaultConfiguration(
+                              connectorResource.connector_definition_name
+                            );
                             break;
                           case "CONNECTOR_TYPE_BLOCKCHAIN":
                             componentType =

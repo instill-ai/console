@@ -23,7 +23,9 @@ export const SelectConnectorResourceDialog = (
       </Dialog.Trigger>
       <Dialog.Content className="flex max-h-[480px] w-full !max-w-[1284px] flex-col overflow-y-auto">
         <Dialog.Header className="mb-4">
-          <Dialog.Title className="mx-auto">Add a resource</Dialog.Title>
+          <Dialog.Title className="mx-auto !product-headings-heading-3">
+            Add a resource
+          </Dialog.Title>
           <Dialog.Description className="mx-auto">
             Select a resource to add to your pipeline
           </Dialog.Description>
