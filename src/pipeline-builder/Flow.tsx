@@ -65,10 +65,6 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     updatePipelineRecipeIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
-  // useEffect(() => {
-  //   console.log(nodes);
-  // }, [nodes]);
-
   return (
     <div className="relative flex-1">
       <div className="relative h-full w-full flex-1">

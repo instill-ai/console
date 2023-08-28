@@ -27,10 +27,11 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
-import { Node, Position, ReactFlowInstance } from "reactflow";
+import { Edge, Node, Position, ReactFlowInstance } from "reactflow";
 import { ConnectorNodeData, PipelineConnectorComponent } from "./type";
 import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
 import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
+import { createGraphLayout } from "./createGraphLayout";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -66,10 +67,10 @@ export const FlowControl = (props: FlowControlProps) => {
   const router = useRouter();
   const {
     nodes,
+    edges,
     pipelineId,
     pipelineDescription,
     setPipelineUid,
-    edges,
     updateNodes,
     updateEdges,
     pipelineRecipeIsDirty,
@@ -508,7 +509,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
                         const viewport = reactFlowInstance.getViewport();
 
-                        const newId = uuidv4();
+                        const newNodeId = uuidv4();
 
                         let componentType: Nullable<
                           PipelineConnectorComponent["type"]
@@ -542,14 +543,14 @@ export const FlowControl = (props: FlowControlProps) => {
                         if (!componentType) return;
 
                         const newNode: Node<ConnectorNodeData> = {
-                          id: newId,
+                          id: newNodeId,
                           type: "connectorNode",
                           sourcePosition: Position.Left,
                           targetPosition: Position.Right,
                           data: {
                             nodeType: "connector",
                             component: {
-                              id: newId,
+                              id: newNodeId,
                               resource_name: connectorResource.name,
                               resource_detail: {
                                 ...connectorResource,
@@ -569,8 +570,36 @@ export const FlowControl = (props: FlowControlProps) => {
                           }),
                         };
 
+                        const newEdges: Edge[] = [
+                          {
+                            id: uuidv4(),
+                            source: "start",
+                            target: newNodeId,
+                            type: "customEdge",
+                          },
+                          {
+                            id: uuidv4(),
+                            source: newNodeId,
+                            target: "end",
+                            type: "customEdge",
+                          },
+                        ];
+
                         updateNodes((nodes) => [...nodes, newNode]);
-                        updateSelectResourceDialogIsOpen(() => false);
+                        updateEdges((edges) => [...edges, ...newEdges]);
+
+                        createGraphLayout(
+                          [...nodes, newNode],
+                          [...edges, ...newEdges]
+                        )
+                          .then((graphData) => {
+                            updateNodes(() => graphData.nodes);
+                            updateEdges(() => graphData.edges);
+                            updateSelectResourceDialogIsOpen(() => false);
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
                       }}
                     >
                       <ImageWithFallback

@@ -559,7 +559,7 @@ const PipelineBuilderPage: FC & {
       <PageBase>
         <Topbar>
           <div className="flex px-3 py-2">
-            <PipelineNameForm accessToken={null} enableQuery={true} />
+            <PipelineNameForm accessToken={null} />
           </div>
         </Topbar>
         <PageBase.Container>

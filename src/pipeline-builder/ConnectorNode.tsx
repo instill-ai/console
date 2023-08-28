@@ -3,12 +3,24 @@ import { ConnectorNodeData } from "./type";
 import { OpenAPIV3 } from "openapi-types";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
 import { Icons } from "@instill-ai/design-system";
-import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
+import {
+  PipelineBuilderStore,
+  usePipelineBuilderStore,
+} from "./usePipelineBuilderStore";
+import { useEffect, useMemo, useState } from "react";
+import { shallow } from "zustand/shallow";
+
+const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  expandAllNodes: state.expandAllNodes,
+  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+});
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
-  const updateSelectedConnectorNodeId = usePipelineBuilderStore(
-    (state) => state.updateSelectedConnectorNodeId
-  );
+  const { expandAllNodes, updateSelectedConnectorNodeId } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+
+  const [exapndInputs, setExpandInputs] = useState(false);
+  const [exapndOutputs, setExpandOutputs] = useState(false);
 
   let inputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
   let outputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
@@ -71,12 +83,24 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       break;
   }
 
-  console.log(data.component);
+  useEffect(() => {
+    setExpandInputs(expandAllNodes);
+    setExpandOutputs(expandAllNodes);
+  }, [expandAllNodes]);
 
-  const allInputProperties = inputSchema ? getAllProperties(inputSchema) : [];
-  const allOutputProperties = outputSchema
-    ? getAllProperties(outputSchema)
-    : [];
+  const inputProperties = inputSchema ? getAllProperties(inputSchema) : [];
+
+  const collapsedInputProperties = useMemo(() => {
+    if (exapndInputs) return inputProperties;
+    return inputProperties.slice(0, 3);
+  }, [exapndInputs, inputProperties]);
+
+  const outputProperties = outputSchema ? getAllProperties(outputSchema) : [];
+
+  const collapsedOutputProperties = useMemo(() => {
+    if (exapndOutputs) return outputProperties;
+    return outputProperties.slice(0, 3);
+  }, [outputProperties, exapndOutputs]);
 
   return (
     <>
@@ -107,11 +131,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             </p>
           </div>
         ) : null}
-        {allInputProperties.length > 0 ? (
+        {inputProperties.length > 0 ? (
           <div className="mb-1 flex flex-col">
             <div className="mb-1 product-body-text-4-medium">Inputs</div>
-            <div className="flex flex-col gap-y-1">
-              {allInputProperties.map((property) => {
+            <div className="mb-1 flex flex-col gap-y-1">
+              {collapsedInputProperties.map((property) => {
                 const PropertyValue = property.path
                   ? dot.getter(data.component?.configuration, property.path)
                   : null;
@@ -135,13 +159,23 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 );
               })}
             </div>
+            {inputProperties.length > 3 ? (
+              <div className="flex flex-row-reverse">
+                <button
+                  onClick={() => setExpandInputs((prev) => !prev)}
+                  className="text-semantic-accent-hover !underline product-body-text-4-medium"
+                >
+                  {exapndInputs ? "Less" : "More"}
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : null}
-        {allOutputProperties.length > 0 ? (
+        {outputProperties.length > 0 ? (
           <div className="mb-1 flex flex-col">
             <div className="mb-1 product-body-text-4-medium">Outputs</div>
-            <div className="flex flex-col gap-y-1">
-              {allOutputProperties.map((property) => {
+            <div className="mb-1 flex flex-col gap-y-1">
+              {collapsedOutputProperties.map((property) => {
                 return (
                   <div
                     key={property.title ? property.title : property.path}
@@ -158,6 +192,16 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 );
               })}
             </div>
+            {outputProperties.length > 3 ? (
+              <div className="flex flex-row-reverse">
+                <button
+                  onClick={() => setExpandInputs((prev) => !prev)}
+                  className="text-semantic-accent-hover !underline product-body-text-4-medium"
+                >
+                  {exapndInputs ? "Less" : "More"}
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>

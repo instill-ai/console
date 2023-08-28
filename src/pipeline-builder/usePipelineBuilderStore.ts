@@ -29,6 +29,7 @@ export type PipelineBuilderState = {
   selectedConnectorNodeId: Nullable<string>;
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
+  expandAllNodes: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -50,6 +51,7 @@ export type PipelineBuilderAction = {
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updateExpandAllNodes: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
@@ -67,6 +69,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   selectedConnectorNodeId: null,
   connectorFormIsDirty: false,
   selectResourceDialogIsOpen: false,
+  expandAllNodes: false,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -170,6 +173,13 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
         return {
           ...state,
           selectResourceDialogIsOpen: fn(state.selectResourceDialogIsOpen),
+        };
+      }),
+    updateExpandAllNodes: (fn: (prev: boolean) => boolean) =>
+      set((state) => {
+        return {
+          ...state,
+          expandAllNodes: fn(state.expandAllNodes),
         };
       }),
   })

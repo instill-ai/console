@@ -5,7 +5,7 @@ import { NodeData } from "./type";
 // This is the default dimension of a connector node we have right now
 const CONNECTOR_NODE_DIMENSION = {
   width: 246,
-  height: 60,
+  height: 305,
 };
 
 const elk = new Elk({
