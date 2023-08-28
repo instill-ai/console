@@ -585,9 +585,6 @@ export const FlowControl = (props: FlowControlProps) => {
                           },
                         ];
 
-                        updateNodes((nodes) => [...nodes, newNode]);
-                        updateEdges((edges) => [...edges, ...newEdges]);
-
                         createGraphLayout(
                           [...nodes, newNode],
                           [...edges, ...newEdges]

@@ -1,23 +1,58 @@
+import * as z from "zod";
 import { Handle, NodeProps, Position } from "reactflow";
 import { ConnectorNodeData } from "./type";
 import { OpenAPIV3 } from "openapi-types";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
-import { Icons } from "@instill-ai/design-system";
+import { Form, Icons, useToast } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { useEffect, useMemo, useState } from "react";
 import { shallow } from "zustand/shallow";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
   updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+  updateNodes: state.updateNodes,
+  updateEdges: state.updateEdges,
+});
+
+export const UpdatePipelineIdSchema = z.object({
+  pipelineId: z.string().min(1, { message: "Title is required" }),
+});
+
+const UpdateNodeIdSchema = z.object({
+  nodeId: z.string().min(1, { message: "Title is required" }),
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
-  const { expandAllNodes, updateSelectedConnectorNodeId } =
-    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const {
+    expandAllNodes,
+    updateSelectedConnectorNodeId,
+    updateNodes,
+    updateEdges,
+  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+
+  const { toast } = useToast();
+
+  const updateNodeIdForm = useForm<z.infer<typeof UpdateNodeIdSchema>>({
+    resolver: zodResolver(UpdateNodeIdSchema),
+    mode: "onBlur",
+    defaultValues: {
+      nodeId: id,
+    },
+  });
+
+  const { reset } = updateNodeIdForm;
+
+  useEffect(() => {
+    reset({
+      nodeId: id,
+    });
+  }, [id, reset]);
 
   const [exapndInputs, setExpandInputs] = useState(false);
   const [exapndOutputs, setExpandOutputs] = useState(false);
@@ -102,6 +137,50 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     return outputProperties.slice(0, 3);
   }, [outputProperties, exapndOutputs]);
 
+  function handleRenameNode(newNodeId: string) {
+    updateEdges((prev) => {
+      return prev.map((edge) => {
+        // Find the edge that has this node as target
+        if (edge.target === id) {
+          return {
+            ...edge,
+            target: newNodeId,
+          };
+        }
+
+        // Find the edge that has this node as source
+        if (edge.source === id) {
+          return {
+            ...edge,
+            source: newNodeId,
+          };
+        }
+
+        return edge;
+      });
+    });
+
+    updateNodes((prev) => {
+      return prev.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            id: newNodeId,
+          };
+        }
+        return node;
+      });
+    });
+
+    updateSelectedConnectorNodeId(() => newNodeId);
+
+    toast({
+      title: "Successfully update node's name",
+      variant: "alert-success",
+      size: "small",
+    });
+  }
+
   return (
     <>
       <div
@@ -120,9 +199,33 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
           />
-          <p className="text-semantic-fg-secondary product-body-text-4-medium">
-            {data.component.resource_name.split("/")[1]}
-          </p>
+          <Form.Root {...updateNodeIdForm}>
+            <form className="my-auto flex flex-1">
+              <Form.Field
+                control={updateNodeIdForm.control}
+                name="nodeId"
+                render={({ field }) => {
+                  return (
+                    <input
+                      className="w-full bg-transparent p-1 text-semantic-fg-secondary product-body-text-4-medium focus:outline-none focus:ring-0"
+                      {...field}
+                      value={field.value}
+                      type="text"
+                      autoComplete="off"
+                      onBlur={() => {
+                        updateNodeIdForm.handleSubmit((data) => {
+                          if (data.nodeId) {
+                            console.log("submitting", data.nodeId);
+                            handleRenameNode(data.nodeId);
+                          }
+                        })();
+                      }}
+                    />
+                  );
+                }}
+              />
+            </form>
+          </Form.Root>
         </div>
         {aiTaskNotSelected ? (
           <div className="w-[232px] rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">

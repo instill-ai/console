@@ -25,6 +25,7 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { useEffect } from "react";
+import { extractReferencesFromConfiguration } from "./extractReferencesFromConfiguration";
 
 const AISchema = z
   .object({
@@ -504,6 +505,10 @@ export const AIForm = (props: AIFormProps) => {
         return node;
       });
     });
+
+    const references = extractReferencesFromConfiguration(data);
+
+    console.log(references);
   }
 
   return (

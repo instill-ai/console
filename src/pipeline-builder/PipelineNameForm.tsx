@@ -27,8 +27,8 @@ export type PipelineNameFormProps = {
   accessToken: Nullable<string>;
 };
 
-export const UpdatePipelineNameSchema = z.object({
-  pipelineId: z.string().min(1, { message: "Title is required" }),
+export const UpdatePipelineIdSchema = z.object({
+  pipelineId: z.string().min(1, { message: "Pipeline ID is required" }),
 });
 
 export const PipelineNameForm = (props: PipelineNameFormProps) => {
@@ -37,8 +37,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof UpdatePipelineNameSchema>>({
-    resolver: zodResolver(UpdatePipelineNameSchema),
+  const form = useForm<z.infer<typeof UpdatePipelineIdSchema>>({
+    resolver: zodResolver(UpdatePipelineIdSchema),
     mode: "onBlur",
   });
 
