@@ -9,6 +9,11 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { useEffect } from "react";
+import {
+  ConfigurationReference,
+  extractReferencesFromConfiguration,
+} from "./extractReferencesFromConfiguration";
+import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 
 export const BlockchainFormSchema = z.object({
   images: z.string().nullable(),
@@ -35,19 +40,17 @@ export type BlockchainFormProps = {
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  nodes: state.nodes,
   updateNodes: state.updateNodes,
+  updateEdges: state.updateEdges,
   selectedConnectorNodeId: state.selectedConnectorNodeId,
 });
 
 export const BlockchainForm = (props: BlockchainFormProps) => {
   const { disabledAll, configuration } = props;
 
-  const { updateNodes, selectedConnectorNodeId } = usePipelineBuilderStore(
-    pipelineBuilderSelector,
-    shallow
-  );
-
-  console.log(configuration);
+  const { nodes, updateNodes, updateEdges, selectedConnectorNodeId } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof BlockchainFormSchema>>({
     resolver: zodResolver(BlockchainFormSchema),
@@ -68,27 +71,44 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   }, [configuration, reset]);
 
   function onSubmit(data: z.infer<typeof BlockchainFormSchema>) {
-    updateNodes((nodes) => {
-      return nodes.map((node) => {
-        if (
-          node.id === selectedConnectorNodeId &&
-          node.data.nodeType === "connector"
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              component: {
-                ...node.data.component,
-                configuration: data,
-              },
+    const newNodes = nodes.map((node) => {
+      if (
+        node.id === selectedConnectorNodeId &&
+        node.data.nodeType === "connector"
+      ) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            component: {
+              ...node.data.component,
+              configuration: data,
             },
-          };
-        }
+          },
+        };
+      }
 
-        return node;
-      });
+      return node;
     });
+
+    updateNodes(() => newNodes);
+
+    const allReferences: ConfigurationReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+
+    updateEdges(() => newEdges);
   }
 
   return (

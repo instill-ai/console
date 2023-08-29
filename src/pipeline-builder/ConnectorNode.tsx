@@ -138,6 +138,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   }, [outputProperties, exapndOutputs]);
 
   function handleRenameNode(newNodeId: string) {
+    if (newNodeId === id) return;
+
     updateEdges((prev) => {
       return prev.map((edge) => {
         // Find the edge that has this node as target
@@ -215,7 +217,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                       onBlur={() => {
                         updateNodeIdForm.handleSubmit((data) => {
                           if (data.nodeId) {
-                            console.log("submitting", data.nodeId);
                             handleRenameNode(data.nodeId);
                           }
                         })();

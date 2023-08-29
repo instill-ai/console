@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Dispatch, SetStateAction, forwardRef } from "react";
+import { Dispatch, SetStateAction, forwardRef, useEffect } from "react";
 import {
   Background,
   BackgroundVariant,
@@ -110,6 +110,17 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             edgeTypes={edgeTypes}
             proOptions={{ hideAttribution: true }}
             selectNodesOnDrag={false}
+            onError={(msgId, msg) => {
+              // Nextjs strict mode will cause react-flow to throw an unnecessary error
+              // "It looks like you have created a new nodeTypes or edgeTypes object"
+              // https://github.com/wbkd/react-flow/issues/3065
+
+              if (msgId === "002") {
+                return;
+              }
+
+              console.warn(msg);
+            }}
           >
             <Controls />
             <Background

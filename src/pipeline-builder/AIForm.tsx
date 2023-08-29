@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +26,11 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { useEffect } from "react";
-import { extractReferencesFromConfiguration } from "./extractReferencesFromConfiguration";
+import {
+  ConfigurationReference,
+  extractReferencesFromConfiguration,
+} from "./extractReferencesFromConfiguration";
+import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 
 const AISchema = z
   .object({
@@ -455,20 +460,17 @@ export type AIFormProps = {
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  nodes: state.nodes,
   updateNodes: state.updateNodes,
+  updateEdges: state.updateEdges,
+  selectedConnectorNodeId: state.selectedConnectorNodeId,
 });
 
 export const AIForm = (props: AIFormProps) => {
   const { configuration, disabledAll, connector_definition_name } = props;
 
-  const selectedConnectorNodeId = usePipelineBuilderStore(
-    (state) => state.selectedConnectorNodeId
-  );
-
-  const { updateNodes } = usePipelineBuilderStore(
-    pipelineBuilderSelector,
-    shallow
-  );
+  const { nodes, updateNodes, updateEdges, selectedConnectorNodeId } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof AISchema>>({
     resolver: zodResolver(AISchema),
@@ -484,31 +486,45 @@ export const AIForm = (props: AIFormProps) => {
   }, [configuration, connector_definition_name, reset]);
 
   function onSubmit(data: z.infer<typeof AISchema>) {
-    updateNodes((nodes) => {
-      return nodes.map((node) => {
-        if (
-          node.id === selectedConnectorNodeId &&
-          node.data.nodeType === "connector"
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              component: {
-                ...node.data.component,
-                configuration: data,
-              },
-            },
-          };
-        }
+    if (!selectedConnectorNodeId) return;
 
-        return node;
-      });
+    const newNodes = nodes.map((node) => {
+      if (
+        node.id === selectedConnectorNodeId &&
+        node.data.nodeType === "connector"
+      ) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            component: {
+              ...node.data.component,
+              configuration: data,
+            },
+          },
+        };
+      }
+      return node;
     });
 
-    const references = extractReferencesFromConfiguration(data);
+    updateNodes(() => newNodes);
 
-    console.log(references);
+    const allReferences: ConfigurationReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+
+    updateEdges(() => newEdges);
   }
 
   return (

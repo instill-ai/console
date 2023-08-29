@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import cn from "clsx";
 import { Handle, NodeProps, Position } from "reactflow";
 import { StartNodeData } from "./type";
@@ -18,11 +19,26 @@ import { Nullable } from "@instill-ai/toolkit";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
+import {
+  PipelineBuilderStore,
+  usePipelineBuilderStore,
+} from "./usePipelineBuilderStore";
+import {
+  ConfigurationReference,
+  extractReferencesFromConfiguration,
+} from "./extractReferencesFromConfiguration";
+import { shallow } from "zustand/shallow";
+import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   key: z.string().min(1, { message: "Key is required" }),
+});
+
+const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  nodes: state.nodes,
+  updateNodes: state.updateNodes,
+  updateEdges: state.updateEdges,
 });
 
 export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -32,7 +48,10 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
 
-  const updateNodes = usePipelineBuilderStore((state) => state.updateNodes);
+  const { nodes, updateNodes, updateEdges } = usePipelineBuilderStore(
+    pipelineBuilderSelector,
+    shallow
+  );
 
   const form = useForm<z.infer<typeof CreateStartOperatorInputSchema>>({
     resolver: zodResolver(CreateStartOperatorInputSchema),
@@ -43,33 +62,49 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   ) => {
     if (!selectedType) return;
 
-    updateNodes((prev) => {
-      return prev.map((node) => {
-        if (node.data.nodeType === "start") {
-          if (prevFieldKey) {
-            delete node.data.component.configuration.body[prevFieldKey];
-          }
+    const newNodes = nodes.map((node) => {
+      if (node.data.nodeType === "start") {
+        if (prevFieldKey) {
+          delete node.data.component.configuration.body[prevFieldKey];
+        }
 
-          node.data = {
-            ...node.data,
-            component: {
-              ...node.data.component,
-              configuration: {
-                ...node.data.component.configuration,
-                body: {
-                  ...node.data.component.configuration.body,
-                  [formData.key]: {
-                    type: selectedType,
-                    title: formData.title,
-                  },
+        node.data = {
+          ...node.data,
+          component: {
+            ...node.data.component,
+            configuration: {
+              ...node.data.component.configuration,
+              body: {
+                ...node.data.component.configuration.body,
+                [formData.key]: {
+                  type: selectedType,
+                  title: formData.title,
                 },
               },
             },
-          };
-        }
-        return node;
-      });
+          },
+        };
+      }
+      return node;
     });
+
+    updateNodes(() => newNodes);
+
+    const allReferences: ConfigurationReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+    updateEdges(() => newEdges);
 
     setEnableEdit(false);
     setSelectedType(null);
@@ -81,18 +116,34 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   };
 
   const onDeleteField = (key: string) => {
-    updateNodes((prev) => {
-      return prev.map((node) => {
-        if (node.data.nodeType === "start") {
-          delete node.data.component.configuration.body[key];
+    const newNodes = nodes.map((node) => {
+      if (node.data.nodeType === "start") {
+        delete node.data.component.configuration.body[key];
 
-          node.data = {
-            ...node.data,
-          };
-        }
-        return node;
-      });
+        node.data = {
+          ...node.data,
+        };
+      }
+      return node;
     });
+
+    updateNodes(() => newNodes);
+
+    const allReferences: ConfigurationReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+    updateEdges(() => newEdges);
   };
 
   const onEditField = (key: string) => {

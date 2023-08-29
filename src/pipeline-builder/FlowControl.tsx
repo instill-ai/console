@@ -517,6 +517,27 @@ export const FlowControl = (props: FlowControlProps) => {
 
                         let configuration: Nullable<Record<string, any>> = null;
 
+                        // Remove the empty node and edges that connect to empty node if it exists
+                        const emptyNode = nodes.find(
+                          (e) => e.data.nodeType === "empty"
+                        );
+
+                        const newNodes = emptyNode
+                          ? nodes.filter((e) => e.data.nodeType !== "empty")
+                          : nodes;
+
+                        const newEdges = emptyNode
+                          ? edges.filter((e) => {
+                              if (
+                                e.source === emptyNode.id ||
+                                e.target === emptyNode.id
+                              ) {
+                                return false;
+                              }
+                              return true;
+                            })
+                          : edges;
+
                         switch (connectorResource.connector_type) {
                           case "CONNECTOR_TYPE_AI":
                             componentType = "COMPONENT_TYPE_CONNECTOR_AI";
@@ -542,7 +563,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
                         if (!componentType) return;
 
-                        const newNode: Node<ConnectorNodeData> = {
+                        newNodes.push({
                           id: newNodeId,
                           type: "connectorNode",
                           sourcePosition: Position.Left,
@@ -568,27 +589,26 @@ export const FlowControl = (props: FlowControlProps) => {
                             x: viewport.x,
                             y: viewport.y,
                           }),
-                        };
+                        });
 
-                        const newEdges: Edge[] = [
-                          {
-                            id: uuidv4(),
-                            source: "start",
-                            target: newNodeId,
-                            type: "customEdge",
-                          },
-                          {
-                            id: uuidv4(),
-                            source: newNodeId,
-                            target: "end",
-                            type: "customEdge",
-                          },
-                        ];
+                        newEdges.push(
+                          ...[
+                            {
+                              id: uuidv4(),
+                              source: "start",
+                              target: newNodeId,
+                              type: "customEdge",
+                            },
+                            {
+                              id: uuidv4(),
+                              source: newNodeId,
+                              target: "end",
+                              type: "customEdge",
+                            },
+                          ]
+                        );
 
-                        createGraphLayout(
-                          [...nodes, newNode],
-                          [...edges, ...newEdges]
-                        )
+                        createGraphLayout(newNodes, newEdges)
                           .then((graphData) => {
                             updateNodes(() => graphData.nodes);
                             updateEdges(() => graphData.edges);

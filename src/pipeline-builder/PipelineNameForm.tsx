@@ -135,7 +135,6 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
                     onBlur={() => {
                       form.handleSubmit(async (data) => {
                         if (data.pipelineId) {
-                          console.log("submitting", data.pipelineId);
                           await handleRenamePipeline(data.pipelineId);
                         }
                       })();
