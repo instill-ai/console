@@ -2,6 +2,12 @@ import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
@@ -27,8 +33,8 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
-import { Edge, Node, Position, ReactFlowInstance } from "reactflow";
-import { ConnectorNodeData, PipelineConnectorComponent } from "./type";
+import { Position, ReactFlowInstance } from "reactflow";
+import { PipelineConnectorComponent } from "./type";
 import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
 import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
 import { createGraphLayout } from "./createGraphLayout";
@@ -509,7 +515,10 @@ export const FlowControl = (props: FlowControlProps) => {
 
                         const viewport = reactFlowInstance.getViewport();
 
-                        const newNodeId = uuidv4();
+                        const randomName = uniqueNamesGenerator({
+                          dictionaries: [adjectives, colors, animals],
+                          separator: "-",
+                        });
 
                         let componentType: Nullable<
                           PipelineConnectorComponent["type"]
@@ -564,14 +573,14 @@ export const FlowControl = (props: FlowControlProps) => {
                         if (!componentType) return;
 
                         newNodes.push({
-                          id: newNodeId,
+                          id: randomName,
                           type: "connectorNode",
                           sourcePosition: Position.Left,
                           targetPosition: Position.Right,
                           data: {
                             nodeType: "connector",
                             component: {
-                              id: newNodeId,
+                              id: randomName,
                               resource_name: connectorResource.name,
                               resource_detail: {
                                 ...connectorResource,
@@ -596,12 +605,12 @@ export const FlowControl = (props: FlowControlProps) => {
                             {
                               id: uuidv4(),
                               source: "start",
-                              target: newNodeId,
+                              target: randomName,
                               type: "customEdge",
                             },
                             {
                               id: uuidv4(),
-                              source: newNodeId,
+                              source: randomName,
                               target: "end",
                               type: "customEdge",
                             },

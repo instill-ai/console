@@ -165,10 +165,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
     updateNodes((prev) => {
       return prev.map((node) => {
-        if (node.id === id) {
+        if (node.id === id && node.data.nodeType === "connector") {
           return {
             ...node,
             id: newNodeId,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                id: newNodeId,
+              },
+            },
           };
         }
         return node;
@@ -221,6 +228,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                             handleRenameNode(data.nodeId);
                           }
                         })();
+                      }}
+                      onKeyDown={(e) => {
+                        // Disable enter key to prevent default form submit behavior
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          updateNodeIdForm.handleSubmit((data) => {
+                            if (data.nodeId) {
+                              handleRenameNode(data.nodeId);
+                            }
+                          })();
+                        }
                       }}
                     />
                   );
