@@ -22,8 +22,6 @@ export const CustomEdge = ({
     targetPosition,
   });
 
-  const [hovered, setHovered] = React.useState(false);
-
   return (
     <>
       <path

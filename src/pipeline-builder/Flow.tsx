@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Dispatch, SetStateAction, forwardRef, useEffect } from "react";
+import { Dispatch, SetStateAction, forwardRef } from "react";
 import {
   Background,
   BackgroundVariant,

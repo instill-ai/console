@@ -3,7 +3,7 @@ import { NodeProps, Position } from "reactflow";
 import { ConnectorNodeData } from "./type";
 import { OpenAPIV3 } from "openapi-types";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
-import { Form, Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons, Tag, useToast } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
@@ -13,6 +13,7 @@ import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomHandle } from "./CustomHandle";
+import { extractReferenceFromString } from "./extractReferencesFromConfiguration";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
@@ -259,26 +260,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             <div className="mb-1 product-body-text-4-medium">Inputs</div>
             <div className="mb-1 flex flex-col gap-y-1">
               {collapsedInputProperties.map((property) => {
-                const PropertyValue = property.path
-                  ? dot.getter(data.component?.configuration, property.path)
-                  : null;
-
                 return (
-                  <div
+                  <InputPropertyItem
                     key={property.title ? property.title : property.path}
-                    className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
-                  >
-                    <div className="flex flex-row gap-x-2">
-                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-                        {property.title
-                          ? property.title
-                          : property.path?.split(".").pop()}
-                      </p>
-                      <p className="product-body-text-4-regular">
-                        {PropertyValue}
-                      </p>
-                    </div>
-                  </div>
+                    property={property}
+                    nodeId={id}
+                    connectorConfiguration={data.component.configuration}
+                  />
                 );
               })}
             </div>
@@ -374,4 +362,78 @@ const getAllProperties = (
   }
 
   return allProperties;
+};
+
+const InputPropertyItem = (props: {
+  property: ConnectorNodeProperty;
+  nodeId: string;
+  connectorConfiguration: Record<string, any>;
+}) => {
+  const { property, nodeId, connectorConfiguration } = props;
+  const [expandReferences, setExpandReferences] = useState(false);
+
+  const propertyValue = property.path
+    ? dot.getter(connectorConfiguration, property.path)
+    : null;
+
+  const references = propertyValue
+    ? extractReferenceFromString({
+        value: propertyValue as string,
+        nodeId,
+        currentPath: property.path ? property.path?.split(".") : [],
+      })
+    : [];
+
+  return (
+    <div
+      key={property.title ? property.title : property.path}
+      className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
+    >
+      <div className="flex flex-row gap-x-2">
+        <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
+          {property.title ? property.title : property.path?.split(".").pop()}
+        </p>
+
+        {/* 
+          The references will be displayed as <reference> <reference> <+2>
+        */}
+
+        {references.length === 0 ? (
+          <p className="product-body-text-4-regular">{propertyValue}</p>
+        ) : (
+          <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
+            <Tag size="md" variant="lightBlue">
+              {references[0].referenceValue}
+            </Tag>
+            {references.length > 1 ? (
+              expandReferences ? (
+                <>
+                  {references.map((reference) => (
+                    <Tag key={reference.path} size="md" variant="lightBlue">
+                      {reference.referenceValue}
+                    </Tag>
+                  ))}
+                  <button
+                    onClick={() => setExpandReferences((prev) => !prev)}
+                    className="text-semantic-accent-hover !underline product-body-text-4-medium"
+                  >
+                    shrink
+                  </button>
+                </>
+              ) : (
+                <Tag
+                  onClick={() => setExpandReferences((prev) => !prev)}
+                  size="md"
+                  variant="lightBlue"
+                  className="cursor-pointer"
+                >
+                  {`+ ${references.length - 1}`}
+                </Tag>
+              )
+            ) : null}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
