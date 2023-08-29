@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { Handle, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { ConnectorNodeData } from "./type";
 import { OpenAPIV3 } from "openapi-types";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CustomHandle } from "./CustomHandle";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
@@ -309,8 +310,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
         ) : null}
       </div>
-      <Handle type="target" position={Position.Left} id={id} />
-      <Handle type="source" position={Position.Right} id={id} />
+      <CustomHandle type="target" position={Position.Left} id={id} />
+      <CustomHandle type="source" position={Position.Right} id={id} />
     </>
   );
 };

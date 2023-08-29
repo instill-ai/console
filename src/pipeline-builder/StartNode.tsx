@@ -1,6 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
 import cn from "clsx";
-import { Handle, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { StartNodeData } from "./type";
 import {
   Button,
@@ -29,6 +28,7 @@ import {
 } from "./extractReferencesFromConfiguration";
 import { shallow } from "zustand/shallow";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
+import { CustomHandle } from "./CustomHandle";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -361,8 +361,9 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
           </div>
         )}
       </div>
-      <Handle type="target" position={Position.Left} id={id} />
-      <Handle type="source" position={Position.Right} id={id} />
+      <CustomHandle type="target" position={Position.Left} id={id} />
+
+      <CustomHandle type="source" position={Position.Right} id={id} />
     </>
   );
 };

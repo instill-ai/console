@@ -29,16 +29,23 @@ export const CustomEdge = ({
       <path
         id={id}
         style={style}
-        className={cn("fill-none stroke-semantic-fg-primary stroke-[1px]")}
-        strokeDasharray={6}
+        className={cn("fill-none stroke-semantic-accent-default stroke-[4px]")}
+        strokeDasharray={12}
         d={edgePath}
         markerEnd={markerEnd}
       />
+
+      {/* 
+
+      This is the code for hover detect effect on the edge
+      
       <path
         id={id}
         style={{ ...style, strokeDasharray: 0 }}
         className={cn(
-          "fill-none stroke-gray-400 stroke-[8px]",
+          // Because our colour design-token can't accept alpha value right now
+          // We have to use the color provided by TailwindCSS
+          "fill-none stroke-blue-700 stroke-[8px]",
           hovered ? "opacity-20" : "opacity-0"
         )}
         d={edgePath}
@@ -53,7 +60,9 @@ export const CustomEdge = ({
         onMouseLeave={() => setHovered(false)}
         d={edgePath}
         markerEnd={markerEnd}
-      />
+      /> 
+      
+      */}
     </>
   );
 };
