@@ -12,12 +12,10 @@ import {
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
   CreatePipelinePayload,
-  ImageWithFallback,
   Nullable,
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
   useActivatePipeline,
-  useConnectorDefinitions,
   useConnectorResources,
   useCreatePipeline,
   useDeActivatePipeline,
@@ -32,12 +30,12 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { SelectConnectorResourceDialog } from "./SelectConnectorResourceDialog";
 import { Position, ReactFlowInstance } from "reactflow";
 import { PipelineConnectorComponent } from "./type";
 import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
 import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
 import { createGraphLayout } from "./createGraphLayout";
+import { AddConnectorResourceDialog } from "./AddConnectorResourceDialog";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -89,30 +87,6 @@ export const FlowControl = (props: FlowControlProps) => {
 
   const { toast } = useToast();
   const { id } = router.query;
-
-  const aiDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_AI",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const allConnectorResource = useConnectorResources({
-    connectorResourceType: null,
-    enabled: true,
-    accessToken: null,
-  });
-
-  const blockchainDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const dataDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_DATA",
-    accessToken: null,
-    enabled: true,
-  });
 
   const pipeline = usePipeline({
     pipelineName: `pipelines/${id}`,
@@ -495,231 +469,119 @@ export const FlowControl = (props: FlowControlProps) => {
         </Button>
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
-        <SelectConnectorResourceDialog
+        <AddConnectorResourceDialog
           open={selectResourceDialogIsOpen}
           onOpenChange={(open) => updateSelectResourceDialogIsOpen(() => open)}
-        >
-          <div className="flex flex-col">
-            <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
-              <p className="mx-auto product-body-text-1-semibold">
-                Existing Resource
-              </p>
-            </div>
-            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-              {allConnectorResource.isSuccess
-                ? allConnectorResource.data.map((connectorResource) => (
-                    <SelectConnectorResourceDialog.Item
-                      key={connectorResource.id}
-                      onClick={() => {
-                        if (!reactFlowInstance) return;
+          accessToken={null}
+          type="inPipeline"
+          onSelectConnectorResource={(connectorResource) => {
+            if (!reactFlowInstance) return;
 
-                        const viewport = reactFlowInstance.getViewport();
+            const viewport = reactFlowInstance.getViewport();
 
-                        const randomName = uniqueNamesGenerator({
-                          dictionaries: [adjectives, colors, animals],
-                          separator: "-",
-                        });
+            const randomName = uniqueNamesGenerator({
+              dictionaries: [adjectives, colors, animals],
+              separator: "-",
+            });
 
-                        let componentType: Nullable<
-                          PipelineConnectorComponent["type"]
-                        > = null;
+            let componentType: Nullable<PipelineConnectorComponent["type"]> =
+              null;
 
-                        let configuration: Nullable<Record<string, any>> = null;
+            let configuration: Nullable<Record<string, any>> = null;
 
-                        // Remove the empty node and edges that connect to empty node if it exists
-                        const emptyNode = nodes.find(
-                          (e) => e.data.nodeType === "empty"
-                        );
+            // Remove the empty node and edges that connect to empty node if it exists
+            const emptyNode = nodes.find((e) => e.data.nodeType === "empty");
 
-                        const newNodes = emptyNode
-                          ? nodes.filter((e) => e.data.nodeType !== "empty")
-                          : nodes;
+            const newNodes = emptyNode
+              ? nodes.filter((e) => e.data.nodeType !== "empty")
+              : nodes;
 
-                        const newEdges = emptyNode
-                          ? edges.filter((e) => {
-                              if (
-                                e.source === emptyNode.id ||
-                                e.target === emptyNode.id
-                              ) {
-                                return false;
-                              }
-                              return true;
-                            })
-                          : edges;
+            const newEdges = emptyNode
+              ? edges.filter((e) => {
+                  if (e.source === emptyNode.id || e.target === emptyNode.id) {
+                    return false;
+                  }
+                  return true;
+                })
+              : edges;
 
-                        switch (connectorResource.connector_type) {
-                          case "CONNECTOR_TYPE_AI":
-                            componentType = "COMPONENT_TYPE_CONNECTOR_AI";
-                            configuration = getAiConnectorDefaultConfiguration(
-                              connectorResource.connector_definition_name
-                            );
-                            break;
-                          case "CONNECTOR_TYPE_BLOCKCHAIN":
-                            componentType =
-                              "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
-                            configuration =
-                              getBlockchainConnectorDefaultConfiguration(
-                                connectorResource.connector_definition_name
-                              );
-                            break;
-                          case "CONNECTOR_TYPE_DATA":
-                            componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
-                            break;
-                          case "CONNECTOR_TYPE_OPERATOR":
-                            componentType = "COMPONENT_TYPE_OPERATOR";
-                            break;
-                        }
+            switch (connectorResource.connector_type) {
+              case "CONNECTOR_TYPE_AI":
+                componentType = "COMPONENT_TYPE_CONNECTOR_AI";
+                configuration = getAiConnectorDefaultConfiguration(
+                  connectorResource.connector_definition_name
+                );
+                break;
+              case "CONNECTOR_TYPE_BLOCKCHAIN":
+                componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+                configuration = getBlockchainConnectorDefaultConfiguration(
+                  connectorResource.connector_definition_name
+                );
+                break;
+              case "CONNECTOR_TYPE_DATA":
+                componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
+                break;
+              case "CONNECTOR_TYPE_OPERATOR":
+                componentType = "COMPONENT_TYPE_OPERATOR";
+                break;
+            }
 
-                        if (!componentType) return;
+            if (!componentType) return;
 
-                        newNodes.push({
-                          id: randomName,
-                          type: "connectorNode",
-                          sourcePosition: Position.Left,
-                          targetPosition: Position.Right,
-                          data: {
-                            nodeType: "connector",
-                            component: {
-                              id: randomName,
-                              resource_name: connectorResource.name,
-                              resource_detail: {
-                                ...connectorResource,
-                                connector_definition: null,
-                              },
-                              definition_name:
-                                connectorResource.connector_definition.name,
-                              configuration: configuration ? configuration : {},
-                              type: componentType,
-                              definition_detail:
-                                connectorResource.connector_definition,
-                            },
-                          },
-                          position: reactFlowInstance.project({
-                            x: viewport.x,
-                            y: viewport.y,
-                          }),
-                        });
+            newNodes.push({
+              id: randomName,
+              type: "connectorNode",
+              sourcePosition: Position.Left,
+              targetPosition: Position.Right,
+              data: {
+                nodeType: "connector",
+                component: {
+                  id: randomName,
+                  resource_name: connectorResource.name,
+                  resource_detail: {
+                    ...connectorResource,
+                    connector_definition: null,
+                  },
+                  definition_name: connectorResource.connector_definition.name,
+                  configuration: configuration ? configuration : {},
+                  type: componentType,
+                  definition_detail: connectorResource.connector_definition,
+                },
+              },
+              position: reactFlowInstance.project({
+                x: viewport.x,
+                y: viewport.y,
+              }),
+            });
 
-                        newEdges.push(
-                          ...[
-                            {
-                              id: uuidv4(),
-                              source: "start",
-                              target: randomName,
-                              type: "customEdge",
-                            },
-                            {
-                              id: uuidv4(),
-                              source: randomName,
-                              target: "end",
-                              type: "customEdge",
-                            },
-                          ]
-                        );
+            newEdges.push(
+              ...[
+                {
+                  id: uuidv4(),
+                  source: "start",
+                  target: randomName,
+                  type: "customEdge",
+                },
+                {
+                  id: uuidv4(),
+                  source: randomName,
+                  target: "end",
+                  type: "customEdge",
+                },
+              ]
+            );
 
-                        createGraphLayout(newNodes, newEdges)
-                          .then((graphData) => {
-                            updateNodes(() => graphData.nodes);
-                            updateEdges(() => graphData.edges);
-                            updateSelectResourceDialogIsOpen(() => false);
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                      }}
-                    >
-                      <ImageWithFallback
-                        src={`/icons/${connectorResource.connector_definition.vendor}/${connectorResource.connector_definition.icon}`}
-                        width={32}
-                        height={32}
-                        alt={`${connectorResource.connector_definition.title}-icon`}
-                        fallbackImg={
-                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                        }
-                      />
-                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                        {connectorResource.id}
-                      </p>
-                    </SelectConnectorResourceDialog.Item>
-                  ))
-                : null}
-            </div>
-            <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
-              <p className="mx-auto product-body-text-1-semibold">
-                New Resource
-              </p>
-            </div>
-            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-              AI
-            </div>
-            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-              {aiDefinitions.isSuccess
-                ? aiDefinitions.data.map((definition) => (
-                    <SelectConnectorResourceDialog.Item key={definition.id}>
-                      <ImageWithFallback
-                        src={`/icons/${definition.vendor}/${definition.icon}`}
-                        width={32}
-                        height={32}
-                        alt={`${definition.title}-icon`}
-                        fallbackImg={
-                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                        }
-                      />
-                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                        {definition.title}
-                      </p>
-                    </SelectConnectorResourceDialog.Item>
-                  ))
-                : null}
-            </div>
-            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-              Blockchain
-            </div>
-            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-              {blockchainDefinitions.isSuccess
-                ? blockchainDefinitions.data.map((definition) => (
-                    <SelectConnectorResourceDialog.Item key={definition.id}>
-                      <ImageWithFallback
-                        src={`/icons/${definition.vendor}/${definition.icon}`}
-                        width={32}
-                        height={32}
-                        alt={`${definition.title}-icon`}
-                        fallbackImg={
-                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                        }
-                      />
-                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                        {definition.title}
-                      </p>
-                    </SelectConnectorResourceDialog.Item>
-                  ))
-                : null}
-            </div>
-            <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-              Data
-            </div>
-            <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-              {dataDefinitions.isSuccess
-                ? dataDefinitions.data.map((definition) => (
-                    <SelectConnectorResourceDialog.Item key={definition.id}>
-                      <ImageWithFallback
-                        src={`/icons/${definition.vendor}/${definition.icon}`}
-                        width={32}
-                        height={32}
-                        alt={`${definition.title}-icon`}
-                        fallbackImg={
-                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                        }
-                      />
-                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                        {definition.title}
-                      </p>
-                    </SelectConnectorResourceDialog.Item>
-                  ))
-                : null}
-            </div>
-          </div>
-        </SelectConnectorResourceDialog>
+            createGraphLayout(newNodes, newEdges)
+              .then((graphData) => {
+                updateNodes(() => graphData.nodes);
+                updateEdges(() => graphData.edges);
+                updateSelectResourceDialogIsOpen(() => false);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+        />
       </div>
     </>
   );

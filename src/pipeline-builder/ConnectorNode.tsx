@@ -125,14 +125,20 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     setExpandOutputs(expandAllNodes);
   }, [expandAllNodes]);
 
-  const inputProperties = inputSchema ? getAllProperties(inputSchema) : [];
+  const inputProperties = useMemo(() => {
+    if (!inputSchema) return [];
+    return getAllProperties(inputSchema);
+  }, [inputSchema]);
 
   const collapsedInputProperties = useMemo(() => {
     if (exapndInputs) return inputProperties;
     return inputProperties.slice(0, 3);
   }, [exapndInputs, inputProperties]);
 
-  const outputProperties = outputSchema ? getAllProperties(outputSchema) : [];
+  const outputProperties = useMemo(() => {
+    if (!outputSchema) return [];
+    return getAllProperties(outputSchema);
+  }, [outputSchema]);
 
   const collapsedOutputProperties = useMemo(() => {
     if (exapndOutputs) return outputProperties;
@@ -370,7 +376,6 @@ const InputPropertyItem = (props: {
   connectorConfiguration: Record<string, any>;
 }) => {
   const { property, nodeId, connectorConfiguration } = props;
-  const [expandReferences, setExpandReferences] = useState(false);
 
   const propertyValue = property.path
     ? dot.getter(connectorConfiguration, property.path)
@@ -405,32 +410,9 @@ const InputPropertyItem = (props: {
             <Tag size="md" variant="lightBlue">
               {references[0].referenceValue}
             </Tag>
-            {references.length > 1 ? (
-              expandReferences ? (
-                <>
-                  {references.map((reference) => (
-                    <Tag key={reference.path} size="md" variant="lightBlue">
-                      {reference.referenceValue}
-                    </Tag>
-                  ))}
-                  <button
-                    onClick={() => setExpandReferences((prev) => !prev)}
-                    className="text-semantic-accent-hover !underline product-body-text-4-medium"
-                  >
-                    shrink
-                  </button>
-                </>
-              ) : (
-                <Tag
-                  onClick={() => setExpandReferences((prev) => !prev)}
-                  size="md"
-                  variant="lightBlue"
-                  className="cursor-pointer"
-                >
-                  {`+ ${references.length - 1}`}
-                </Tag>
-              )
-            ) : null}
+            <Tag size="md" variant="lightBlue" className="cursor-pointer">
+              {`+ ${references.length - 1}`}
+            </Tag>
           </div>
         )}
       </div>

@@ -13,8 +13,6 @@ export function composeEdgesFromReferences(
     (node) => node.data.nodeType === "start"
   ) as Node<StartNodeData>;
 
-  console.log(nodes, references);
-
   for (const reference of references) {
     if (reference.referenceValue.split(".")[0] === "start") {
       const hasKeyInStartNodeBody = Object.keys(
@@ -52,8 +50,6 @@ export function composeEdgesFromReferences(
       }
     }
   }
-
-  console.log(edges);
 
   return edges;
 }

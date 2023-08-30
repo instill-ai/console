@@ -11,7 +11,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
   return (
     <div
       className={cn(
-        "absolute top-1/2 -translate-y-1/2",
+        "absolute top-1/2",
         passThrough.type === "target"
           ? "left-0 -translate-x-full"
           : "right-0 translate-x-full"
@@ -23,6 +23,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
           "!static !flex !h-4 !w-4 !border-[3px] !border-semantic-accent-pressed !bg-semantic-bg-primary",
           className
         )}
+        isConnectable={false}
       />
     </div>
   );

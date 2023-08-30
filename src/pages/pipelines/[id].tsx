@@ -68,8 +68,6 @@ const PipelineBuilderPage: FC & {
 
     const initialEmptyNodeId = uuidv4();
 
-    console.log(initialEmptyNodeId);
-
     const nodes: Node<NodeData>[] = [
       {
         id: "start",
@@ -470,7 +468,6 @@ const PipelineBuilderPage: FC & {
   ]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
-    console.log(pipelineIsNew);
     if (pipelineIsNew) return false;
 
     if (

@@ -82,7 +82,7 @@ export const RightPanel = (props: RightPanelProps) => {
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_AI" ? (
           <AIForm
-            connector_definition_name={
+            connectorDefinitionName={
               selectedConnectorNode.data.component.definition_name
             }
             configuration={selectedConnectorNode.data.component.configuration}

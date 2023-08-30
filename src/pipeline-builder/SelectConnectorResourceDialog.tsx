@@ -21,7 +21,7 @@ export const SelectConnectorResourceDialog = (
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="flex max-h-[480px] w-full !max-w-[1284px] flex-col overflow-y-auto">
+      <Dialog.Content className="flex max-h-[700px] !max-w-[1048px] flex-col overflow-y-auto">
         <Dialog.Header className="mb-4">
           <Dialog.Title className="mx-auto !product-headings-heading-3">
             Add a resource
