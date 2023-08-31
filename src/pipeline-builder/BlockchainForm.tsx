@@ -10,7 +10,7 @@ import {
 } from "./usePipelineBuilderStore";
 import { useEffect } from "react";
 import {
-  ConfigurationReference,
+  PipelineComponentReference,
   extractReferencesFromConfiguration,
 } from "./extractReferencesFromConfiguration";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
@@ -93,7 +93,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
 
     updateNodes(() => newNodes);
 
-    const allReferences: ConfigurationReference[] = [];
+    const allReferences: PipelineComponentReference[] = [];
 
     newNodes.forEach((node) => {
       if (node.data.component?.configuration) {

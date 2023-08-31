@@ -18,7 +18,8 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import {
-  ConfigurationReference,
+  PipelineComponentReference,
+  extractReferenceFromString,
   extractReferencesFromConfiguration,
 } from "./extractReferencesFromConfiguration";
 import { shallow } from "zustand/shallow";
@@ -81,7 +82,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
     updateNodes(() => newNodes);
 
-    const allReferences: ConfigurationReference[] = [];
+    const allReferences: PipelineComponentReference[] = [];
 
     newNodes.forEach((node) => {
       if (node.data.component?.configuration) {
@@ -120,7 +121,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
     updateNodes(() => newNodes);
 
-    const allReferences: ConfigurationReference[] = [];
+    const allReferences: PipelineComponentReference[] = [];
 
     newNodes.forEach((node) => {
       if (node.data.component?.configuration) {
@@ -258,6 +259,13 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
           <div className="flex flex-col gap-y-4">
             {Object.entries(data.component.configuration.body).map(
               ([key, value]) => {
+                const reference = extractReferenceFromString({
+                  key,
+                  value: value.value,
+                  currentPath: [],
+                  nodeId: "end",
+                });
+
                 return (
                   <div key={key} className="flex flex-col">
                     <div className="mb-2 flex flex-row items-center justify-between">
@@ -279,9 +287,26 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                       </div>
                     </div>
                     <div>
-                      <Tag className="gap-x-1.5" variant="lightBlue" size="md">
-                        {key}
-                      </Tag>
+                      {reference?.type === "singleCurlyBrace" ? (
+                        <Tag
+                          className="gap-x-1.5"
+                          variant="lightBlue"
+                          size="md"
+                        >
+                          {reference.referenceValue.withoutCurlyBraces}
+                        </Tag>
+                      ) : (
+                        reference?.referenceValues.map((referenceValue) => (
+                          <Tag
+                            key={referenceValue.withCurlyBraces}
+                            className="gap-x-1.5"
+                            variant="lightBlue"
+                            size="md"
+                          >
+                            {referenceValue.withoutCurlyBraces}
+                          </Tag>
+                        ))
+                      )}
                     </div>
                   </div>
                 );

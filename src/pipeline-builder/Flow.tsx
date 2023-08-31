@@ -28,6 +28,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+  testModeEnabled: state.testModeEnabled,
 });
 
 export type FlowProps = {
@@ -63,12 +64,21 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     onNodesChange,
     onEdgesChange,
     updatePipelineRecipeIsDirty,
+    testModeEnabled,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   return (
     <div className="relative flex-1">
       <div className="relative h-full w-full flex-1">
-        <div ref={ref} className={cn("h-full w-full flex-1")}>
+        <div
+          ref={ref}
+          className={cn(
+            "h-full w-full flex-1 border-[10px]",
+            testModeEnabled
+              ? "border-semantic-warning-bg"
+              : "border-transparent"
+          )}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -93,12 +103,13 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
                     node?.data.nodeType === "end"
                   ) {
                     return false;
+                  } else {
+                    return true;
                   }
                 } else {
                   return true;
                 }
               });
-
               onNodesChange(nextChanges);
             }}
             onEdgesChange={(changes) => {

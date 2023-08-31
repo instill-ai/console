@@ -13,13 +13,17 @@ import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomHandle } from "./CustomHandle";
-import { extractReferenceFromString } from "./extractReferencesFromConfiguration";
+import {
+  PipelineComponentReference,
+  extractReferenceFromString,
+} from "./extractReferencesFromConfiguration";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
   updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
+  testModeEnabled: state.testModeEnabled,
 });
 
 export const UpdatePipelineIdSchema = z.object({
@@ -36,6 +40,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateSelectedConnectorNodeId,
     updateNodes,
     updateEdges,
+    testModeEnabled,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -202,7 +207,15 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     <>
       <div
         onClick={() => {
-          updateSelectedConnectorNodeId(() => id);
+          updateSelectedConnectorNodeId((prev) => {
+            if (testModeEnabled) return null;
+
+            if (prev === id) {
+              return null;
+            } else {
+              return id;
+            }
+          });
         }}
         className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-line px-3 py-2.5"
       >
@@ -381,41 +394,122 @@ const InputPropertyItem = (props: {
     ? dot.getter(connectorConfiguration, property.path)
     : null;
 
-  const references = propertyValue
-    ? extractReferenceFromString({
-        value: propertyValue as string,
-        nodeId,
-        currentPath: property.path ? property.path?.split(".") : [],
-      })
-    : [];
+  const reference = extractReferenceFromString({
+    value: propertyValue,
+    nodeId,
+    currentPath: property.path ? property.path?.split(".") : [],
+  });
 
   return (
     <div
       key={property.title ? property.title : property.path}
       className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
     >
-      <div className="flex flex-row gap-x-2">
+      <div className="flex flex-row flex-wrap justify-between gap-x-2 gap-y-2">
         <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
           {property.title ? property.title : property.path?.split(".").pop()}
         </p>
-
-        {/* 
-          The references will be displayed as <reference> <reference> <+2>
-        */}
-
-        {references.length === 0 ? (
-          <p className="product-body-text-4-regular">{propertyValue}</p>
-        ) : (
-          <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
-            <Tag size="md" variant="lightBlue">
-              {references[0].referenceValue}
-            </Tag>
-            <Tag size="md" variant="lightBlue" className="cursor-pointer">
-              {`+ ${references.length - 1}`}
-            </Tag>
-          </div>
-        )}
+        <InputPropertyValue
+          reference={reference}
+          propertyValue={propertyValue}
+        />
       </div>
     </div>
   );
+};
+
+const InputPropertyValue = (props: {
+  reference: Nullable<PipelineComponentReference>;
+  propertyValue: any;
+}) => {
+  const { reference, propertyValue } = props;
+
+  const startOperatorInputData = usePipelineBuilderStore(
+    (state) => state.startOperatorInputData
+  );
+
+  const testModeEnabled = usePipelineBuilderStore(
+    (state) => state.testModeEnabled
+  );
+
+  if (!reference) {
+    return <p className="product-body-text-4-regular">{propertyValue}</p>;
+  }
+
+  if (testModeEnabled) {
+    if (reference.type === "singleCurlyBrace") {
+      if (
+        reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start"
+      ) {
+        const inputDataKey =
+          reference.referenceValue.withoutCurlyBraces.split(".")[1];
+        const inputDataValue = startOperatorInputData
+          ? startOperatorInputData[inputDataKey]
+          : null;
+
+        return (
+          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+            {inputDataValue ? inputDataValue : ""}
+          </div>
+        );
+      } else {
+        return (
+          <Tag size="md" variant="lightBlue">
+            {reference.referenceValue}
+          </Tag>
+        );
+      }
+    } else {
+      const startReferenceValues = reference.referenceValues.filter(
+        (e) => e.withoutCurlyBraces.split(".")[0] === "start"
+      );
+
+      if (startReferenceValues.length === 0) {
+        return (
+          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+            {reference.originalValue}
+          </div>
+        );
+      } else {
+        let substituteValue = reference.originalValue;
+        for (const referenceValue of startReferenceValues) {
+          const inputDataKey = referenceValue.withoutCurlyBraces.split(".")[1];
+          const inputDataValue = startOperatorInputData
+            ? startOperatorInputData[inputDataKey]
+            : null;
+          substituteValue = substituteValue.replace(
+            referenceValue.withCurlyBraces,
+            inputDataValue ? inputDataValue : ""
+          );
+        }
+
+        return (
+          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+            {substituteValue}
+          </div>
+        );
+      }
+    }
+  } else {
+    if (reference.type === "singleCurlyBrace") {
+      return (
+        <Tag size="md" variant="lightBlue">
+          {reference.referenceValue.withoutCurlyBraces}
+        </Tag>
+      );
+    } else {
+      return (
+        <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
+          <Tag size="md" variant="lightBlue">
+            {reference.referenceValues[0].withoutCurlyBraces}
+          </Tag>
+          {reference.referenceValues.length > 1 ? (
+            <Tag size="md" variant="lightBlue" className="cursor-pointer">
+              {`+ ${reference.referenceValues.length - 1}`}
+            </Tag>
+          ) : null}
+        </div>
+      );
+    }
+  }
 };

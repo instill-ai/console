@@ -73,6 +73,7 @@ export const StartNodeInputType = ({
   return (
     <div
       onClick={() => {
+        // We can't use checkbox because of this issue
         // https://github.com/radix-ui/primitives/issues/2291
         if (type === selectedType) {
           setSelectedType(null);

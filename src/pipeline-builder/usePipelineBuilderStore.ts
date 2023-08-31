@@ -15,6 +15,7 @@ import {
 
 import { NodeData } from "./type";
 import { Nullable } from "@instill-ai/toolkit";
+import { StartOperatorInputBodyValue } from "./useStartOperatorTestModeInputForm";
 
 export type PipelineBuilderState = {
   pipelineUid: Nullable<string>;
@@ -30,6 +31,8 @@ export type PipelineBuilderState = {
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
   expandAllNodes: boolean;
+  testModeEnabled: boolean;
+  startOperatorInputData: Nullable<StartOperatorInputBodyValue>;
 };
 
 export type PipelineBuilderAction = {
@@ -52,6 +55,12 @@ export type PipelineBuilderAction = {
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateExpandAllNodes: (fn: (prev: boolean) => boolean) => void;
+  updateTestModeEnabled: (fn: (prev: boolean) => boolean) => void;
+  updateStartOperatorInputData: (
+    fn: (
+      prev: Nullable<StartOperatorInputBodyValue>
+    ) => Nullable<StartOperatorInputBodyValue>
+  ) => void;
 };
 
 export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
@@ -70,6 +79,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   connectorFormIsDirty: false,
   selectResourceDialogIsOpen: false,
   expandAllNodes: false,
+  testModeEnabled: false,
+  startOperatorInputData: null,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -180,6 +191,24 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
         return {
           ...state,
           expandAllNodes: fn(state.expandAllNodes),
+        };
+      }),
+    updateTestModeEnabled: (fn: (prev: boolean) => boolean) =>
+      set((state) => {
+        return {
+          ...state,
+          testModeEnabled: fn(state.testModeEnabled),
+        };
+      }),
+    updateStartOperatorInputData: (
+      fn: (
+        prev: Nullable<StartOperatorInputBodyValue>
+      ) => Nullable<StartOperatorInputBodyValue>
+    ) =>
+      set((state) => {
+        return {
+          ...state,
+          startOperatorInputData: fn(state.startOperatorInputData),
         };
       }),
   })

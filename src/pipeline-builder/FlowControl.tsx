@@ -16,7 +16,6 @@ import {
   UpdatePipelinePayload,
   getInstillApiErrorMessage,
   useActivatePipeline,
-  useConnectorResources,
   useCreatePipeline,
   useDeActivatePipeline,
   usePipeline,
@@ -51,6 +50,9 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineIsNew: state.pipelineIsNew,
   selectResourceDialogIsOpen: state.selectResourceDialogIsOpen,
   updateSelectResourceDialogIsOpen: state.updateSelectResourceDialogIsOpen,
+  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+  testModeEnabled: state.testModeEnabled,
+  updateTestModeEnabled: state.updateTestModeEnabled,
 });
 
 export type FlowControlProps = {
@@ -83,6 +85,9 @@ export const FlowControl = (props: FlowControlProps) => {
     pipelineIsNew,
     selectResourceDialogIsOpen,
     updateSelectResourceDialogIsOpen,
+    testModeEnabled,
+    updateTestModeEnabled,
+    updateSelectedConnectorNodeId,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -465,6 +470,24 @@ export const FlowControl = (props: FlowControlProps) => {
             </svg>
           ) : (
             <Icons.Save01 className="h-5 w-5 stroke-semantic-fg-primary" />
+          )}
+        </Button>
+        <Button
+          onClick={() => {
+            updateTestModeEnabled((prev) => !prev);
+            updateSelectedConnectorNodeId(() => null);
+            updateSelectResourceDialogIsOpen(() => false);
+          }}
+          className="gap-x-2"
+          variant="secondaryGrey"
+          size="lg"
+        >
+          {testModeEnabled ? (
+            "Stop"
+          ) : (
+            <>
+              Test <Icons.Play className="h-5 w-5 stroke-semantic-fg-primary" />
+            </>
           )}
         </Button>
       </div>

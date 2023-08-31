@@ -1,7 +1,27 @@
-export type ConfigurationReference = {
+import { Nullable } from "@instill-ai/toolkit";
+
+export type PipelineComponentReference =
+  | DoubleCurlyBraceReference
+  | SingleCurlyBraceReference;
+
+export type DoubleCurlyBraceReference = {
+  type: "doubleCurlyBrace";
   path: string;
   originalValue: string;
-  referenceValue: string;
+  referenceValues: ReferenceValueSet[];
+  nodeId: string;
+};
+
+export type ReferenceValueSet = {
+  withoutCurlyBraces: string;
+  withCurlyBraces: string;
+};
+
+export type SingleCurlyBraceReference = {
+  type: "singleCurlyBrace";
+  path: string;
+  originalValue: string;
+  referenceValue: ReferenceValueSet;
   nodeId: string;
 };
 
@@ -10,7 +30,7 @@ export function extractReferencesFromConfiguration(
   nodeId: string,
   currentPath: string[] = []
 ) {
-  const results: ConfigurationReference[] = [];
+  const results: PipelineComponentReference[] = [];
 
   function getConfigurationReferences(key: string, value: any) {
     if (Array.isArray(value)) {
@@ -18,9 +38,15 @@ export function extractReferencesFromConfiguration(
         getConfigurationReferences("", item);
       }
     } else if (typeof value === "string") {
-      results.push(
-        ...extractReferenceFromString({ value, nodeId, currentPath, key })
-      );
+      const reference = extractReferenceFromString({
+        value,
+        nodeId,
+        currentPath,
+        key,
+      });
+      if (reference) {
+        results.push(reference);
+      }
     } else if (typeof value === "object" && value !== null) {
       for (const nestedKey in value) {
         if (value[nestedKey] !== null)
@@ -44,8 +70,9 @@ export function extractReferenceFromString({
   nodeId: string;
   currentPath: string[];
   key?: string;
-}) {
-  const results: ConfigurationReference[] = [];
+}): Nullable<PipelineComponentReference> {
+  if (!value) return null;
+
   const newPath = [...currentPath, key];
 
   // get reference value in the double curly braces
@@ -53,27 +80,33 @@ export function extractReferenceFromString({
   const doubleCurlyBracesMatchs = value.match(doubleCurlyBracesRegex);
   if (!doubleCurlyBracesMatchs) {
     const singleCurlyBracesRegex = /\{([^{}]+)\}/gm;
+
+    // Each value can only have one single curly braces reference
     const singleCurlyBracesMatchs = value.match(singleCurlyBracesRegex);
     if (singleCurlyBracesMatchs) {
-      for (const match of singleCurlyBracesMatchs) {
-        results.push({
-          path: newPath.join("."),
-          originalValue: value,
-          referenceValue: match.slice(1, -1).trim(),
-          nodeId,
-        });
-      }
-    }
-  } else {
-    for (const match of doubleCurlyBracesMatchs) {
-      results.push({
+      return {
         path: newPath.join("."),
         originalValue: value,
-        referenceValue: match.slice(2, -2).trim(),
+        referenceValue: {
+          withoutCurlyBraces: singleCurlyBracesMatchs[0].slice(1, -1).trim(),
+          withCurlyBraces: singleCurlyBracesMatchs[0],
+        },
         nodeId,
-      });
+        type: "singleCurlyBrace",
+      };
     }
+  } else {
+    return {
+      path: newPath.join("."),
+      originalValue: value,
+      referenceValues: doubleCurlyBracesMatchs.map((match) => ({
+        withoutCurlyBraces: match.slice(2, -2).trim(),
+        withCurlyBraces: match,
+      })),
+      nodeId,
+      type: "doubleCurlyBrace",
+    };
   }
 
-  return results;
+  return null;
 }

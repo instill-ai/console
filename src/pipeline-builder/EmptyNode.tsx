@@ -1,7 +1,8 @@
-import { Handle, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { NodeData } from "./type";
 import { Icons } from "@instill-ai/design-system";
 import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
+import { CustomHandle } from "./CustomHandle";
 
 export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
   const updateSelectResourceDialogIsOpen = usePipelineBuilderStore(
@@ -21,8 +22,8 @@ export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
           <Icons.Plus className="h-3 w-3 stroke-semantic-accent-default" />
         </div>
       </button>
-      <Handle type="target" position={Position.Left} id={id} />
-      <Handle type="source" position={Position.Right} id={id} />
+      <CustomHandle type="target" position={Position.Left} id={id} />
+      <CustomHandle type="source" position={Position.Right} id={id} />
     </>
   );
 };
