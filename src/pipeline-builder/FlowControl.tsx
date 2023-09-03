@@ -11,17 +11,15 @@ import {
 
 import { Button, Icons, useToast } from "@instill-ai/design-system";
 import {
-  CreatePipelinePayload,
+  CreateUserPipelinePayload,
   Nullable,
-  UpdatePipelinePayload,
+  UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
-  useActivatePipeline,
-  useCreatePipeline,
-  useDeActivatePipeline,
-  usePipeline,
-  useRenamePipeline,
-  useUpdatePipeline,
-  useWatchPipeline,
+  useCreateUserPipeline,
+  useRenameUserPipeline,
+  useUpdateUserPipeline,
+  useUser,
+  useUserPipeline,
 } from "@instill-ai/toolkit";
 import { constructPipelineRecipe } from "./constructPipelineRecipe";
 import { useState } from "react";
@@ -93,129 +91,19 @@ export const FlowControl = (props: FlowControlProps) => {
   const { toast } = useToast();
   const { id } = router.query;
 
-  const pipeline = usePipeline({
+  const user = useUser({
+    enabled: true,
+    accessToken,
+  });
+
+  const pipeline = useUserPipeline({
     pipelineName: `pipelines/${id}`,
     accessToken,
     enabled: !!id && enableQuery && !pipelineIsNew,
   });
 
-  const pipelineWatchState = useWatchPipeline({
-    pipelineName: `pipelines/${id}`,
-    accessToken,
-    enabled: !!id && !pipelineIsNew && pipeline.isSuccess && enableQuery,
-  });
-
-  const updatePipeline = useUpdatePipeline();
-  const createPipeline = useCreatePipeline();
-  const activatePipeline = useActivatePipeline();
-  const deactivatePipeline = useDeActivatePipeline();
-  const renamePipeline = useRenamePipeline();
-
-  const [isHandlingConnection, setIsHandlingConnection] = useState(false);
-
-  async function handleTogglePipeline() {
-    if (!pipeline.isSuccess || !pipelineWatchState.isSuccess) return;
-
-    setIsHandlingConnection(true);
-
-    if (
-      pipelineWatchState.data.state === "STATE_ACTIVE" ||
-      pipelineWatchState.data.state === "STATE_ERROR"
-    ) {
-      try {
-        await deactivatePipeline.mutateAsync({
-          pipelineName: `pipelines/${pipelineId}`,
-          accessToken,
-        });
-
-        toast({
-          title: "Successfully deativated the pipeline",
-          variant: "alert-success",
-          size: "small",
-        });
-        setIsHandlingConnection(false);
-
-        updateEdges((edges) => {
-          return edges.map((edge) => ({
-            ...edge,
-            animated: false,
-          }));
-        });
-
-        // When user deactivate the pipeline we help them update the pipeline recipe
-        if (pipelineRecipeIsDirty) {
-          await handleSavePipeline();
-        }
-      } catch (error) {
-        setIsHandlingConnection(false);
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when deactivated the pipeline",
-            description: getInstillApiErrorMessage(error),
-            variant: "alert-error",
-            size: "large",
-          });
-        } else {
-          toast({
-            title: "Something went wrong when deactivated the pipeline",
-            variant: "alert-error",
-            size: "large",
-          });
-        }
-      }
-    } else {
-      // If the user changed the pipeline's name we need to update the
-      // pipeline's name first
-
-      if (pipelineId !== pipeline.data.id) {
-        await handleRenamePipeline();
-      }
-
-      try {
-        // If the user had changed the recipe, we will first save the pipeline
-        // then activate the pipeline.
-
-        if (pipelineRecipeIsDirty) {
-          await handleSavePipeline();
-        }
-
-        await activatePipeline.mutateAsync({
-          pipelineName: `pipelines/${pipelineId}`,
-          accessToken,
-        });
-
-        toast({
-          title: "Successfully activated the pipeline",
-          variant: "alert-success",
-          size: "small",
-        });
-        setIsHandlingConnection(false);
-
-        updateEdges((edges) => {
-          return edges.map((edge) => ({
-            ...edge,
-            animated: true,
-          }));
-        });
-      } catch (error) {
-        setIsHandlingConnection(false);
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when activated the pipeline",
-            description: getInstillApiErrorMessage(error),
-            variant: "alert-error",
-            size: "large",
-          });
-        } else {
-          toast({
-            title: "Something went wrong when activated the pipeline",
-            variant: "alert-error",
-            size: "large",
-          });
-        }
-      }
-    }
-  }
+  const updateUserPipeline = useUpdateUserPipeline();
+  const createUserPipeline = useCreateUserPipeline();
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -231,22 +119,21 @@ export const FlowControl = (props: FlowControlProps) => {
       return;
     }
 
+    if (!user.isSuccess) {
+      return;
+    }
+
     setIsSaving(true);
 
     if (pipeline.isSuccess) {
-      // We need to rename the pipeline if the user changed the pipeline's name
-      if (pipelineId !== pipeline.data.id) {
-        await handleRenamePipeline();
-      }
-
-      const payload: UpdatePipelinePayload = {
+      const payload: UpdateUserPipelinePayload = {
         name: `pipelines/${pipelineId}`,
         description: pipelineDescription ?? undefined,
-        // recipe: constructPipelineRecipe(nodes, edges),
+        recipe: constructPipelineRecipe(nodes, edges),
       };
 
       try {
-        await updatePipeline.mutateAsync({
+        await updateUserPipeline.mutateAsync({
           payload,
           accessToken,
         });
@@ -278,14 +165,15 @@ export const FlowControl = (props: FlowControlProps) => {
 
     // If the user haven't created the pipeline yet, we will create the pipeline
 
-    const payload: CreatePipelinePayload = {
+    const payload: CreateUserPipelinePayload = {
       id: pipelineId,
       description: pipelineDescription ?? undefined,
       recipe: constructPipelineRecipe(nodes, edges),
     };
 
     try {
-      const res = await createPipeline.mutateAsync({
+      const res = await createUserPipeline.mutateAsync({
+        userName: user.data.name,
         payload,
         accessToken,
       });
@@ -323,123 +211,9 @@ export const FlowControl = (props: FlowControlProps) => {
     setIsSaving(false);
   }
 
-  async function handleRenamePipeline() {
-    if (!pipelineId || !pipeline.isSuccess) {
-      return;
-    }
-
-    try {
-      await renamePipeline.mutateAsync({
-        payload: {
-          pipelineId: pipeline.data.id,
-          newPipelineId: pipelineId,
-        },
-        accessToken,
-      });
-
-      router.push(`/pipelines/${pipelineId}`, undefined, {
-        shallow: true,
-      });
-
-      toast({
-        title: "Sussessfully renamed the pipeline",
-        variant: "alert-success",
-        size: "small",
-      });
-    } catch (error) {
-      if (isAxiosError(error)) {
-        toast({
-          title: "Something went wrong when rename the pipeline",
-          description: getInstillApiErrorMessage(error),
-          variant: "alert-error",
-          size: "large",
-        });
-      } else {
-        toast({
-          title: "Something went wrong when rename the pipeline",
-          variant: "alert-error",
-          description: "Please try again later",
-          size: "large",
-        });
-      }
-    }
-  }
-
   return (
     <>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
-        <Button
-          onClick={handleTogglePipeline}
-          className="gap-x-2"
-          variant="primary"
-          size="lg"
-          disabled={
-            pipeline.isSuccess && pipelineWatchState.isSuccess ? false : true
-          }
-        >
-          {pipelineWatchState.isSuccess ? (
-            pipelineWatchState.data.state === "STATE_ACTIVE" ||
-            pipelineWatchState.data.state === "STATE_ERROR" ? (
-              <>
-                <span>Unpublish</span>
-                {isHandlingConnection ? (
-                  <svg
-                    className="m-auto h-4 w-4 animate-spin text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                ) : (
-                  <Icons.Stop className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-                )}
-              </>
-            ) : (
-              <>
-                <span>Publish</span>
-                {isHandlingConnection ? (
-                  <svg
-                    className="m-auto h-4 w-4 animate-spin text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                ) : (
-                  <Icons.Play className="h-4 w-4 fill-semantic-fg-on-default stroke-semantic-fg-on-default group-disabled:fill-semantic-fg-disabled group-disabled:stroke-semantic-fg-disabled" />
-                )}
-              </>
-            )
-          ) : (
-            "Disabled"
-          )}
-        </Button>
         <Button
           onClick={handleSavePipeline}
           className="gap-x-2"
@@ -528,7 +302,7 @@ export const FlowControl = (props: FlowControlProps) => {
                 })
               : edges;
 
-            switch (connectorResource.connector_type) {
+            switch (connectorResource.type) {
               case "CONNECTOR_TYPE_AI":
                 componentType = "COMPONENT_TYPE_CONNECTOR_AI";
                 configuration = getAiConnectorDefaultConfiguration(
@@ -561,14 +335,14 @@ export const FlowControl = (props: FlowControlProps) => {
                 component: {
                   id: randomName,
                   resource_name: connectorResource.name,
-                  resource_detail: {
+                  resource: {
                     ...connectorResource,
                     connector_definition: null,
                   },
                   definition_name: connectorResource.connector_definition.name,
                   configuration: configuration ? configuration : {},
                   type: componentType,
-                  definition_detail: connectorResource.connector_definition,
+                  definition: connectorResource.connector_definition,
                 },
               },
               position: reactFlowInstance.project({

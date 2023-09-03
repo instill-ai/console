@@ -5,7 +5,8 @@ import {
   useConnectorResources,
   useWatchConnectorResources,
   ConnectorResourceWithWatchState,
-  useWatchPipeline,
+  useUserPipeline,
+  useUser,
 } from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
 import { Edge, Node, ReactFlowInstance } from "reactflow";
@@ -26,7 +27,6 @@ import {
 import { createGraphLayout } from "pipeline-builder/createGraphLayout";
 import { createInitialGraphData } from "pipeline-builder/createInitialGraphData";
 import { NodeData } from "pipeline-builder/type";
-import { usePipeline } from "pipeline-builder/sdk";
 import { PipelineNameForm } from "pipeline-builder/PipelineNameForm";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -63,6 +63,11 @@ const PipelineBuilderPage: FC & {
 
   // We initialize the pipeline with default start, end operator and a empty node.
 
+  const user = useUser({
+    enabled: true,
+    accessToken: null,
+  });
+
   useEffect(() => {
     if (!pipelineIsNew) return;
 
@@ -79,9 +84,9 @@ const PipelineBuilderPage: FC & {
             type: "COMPONENT_TYPE_OPERATOR",
             configuration: { body: {} },
             resource_name: "",
-            resource_detail: null,
+            resource: null,
             definition_name: "operator-definitions/start-operator",
-            definition_detail: null,
+            definition: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -107,9 +112,9 @@ const PipelineBuilderPage: FC & {
               body: {},
             },
             resource_name: "",
-            resource_detail: null,
+            resource: null,
             definition_name: "operator-definitions/end-operator",
-            definition_detail: null,
+            definition: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -142,22 +147,16 @@ const PipelineBuilderPage: FC & {
       });
   }, [pipelineIsNew, updateEdges, updateNodes]);
 
-  const pipeline = usePipeline({
-    enabled: !!id && !pipelineIsNew,
-    pipelineName: id ? `pipelines/${id}` : null,
+  const pipeline = useUserPipeline({
+    enabled: user.isSuccess && !!id && !pipelineIsNew,
+    pipelineName: user.isSuccess
+      ? id
+        ? `${user.data.name}/pipelines/${id}`
+        : null
+      : null,
     accessToken: null,
     retry: false,
   });
-
-  const pipelineWatchState = useWatchPipeline({
-    pipelineName: id ? `pipelines/${id}` : null,
-    enabled: !!id && !pipelineIsNew && pipeline.isSuccess,
-    accessToken: null,
-  });
-
-  const isLoadingPipelineWithWatchState = useMemo(() => {
-    return pipeline.isLoading || pipelineWatchState.isLoading;
-  }, [pipeline.isLoading, pipelineWatchState.isLoading]);
 
   const [reactFlowInstance, setReactFlowInstance] =
     useState<Nullable<ReactFlowInstance>>(null);
@@ -394,7 +393,6 @@ const PipelineBuilderPage: FC & {
   useEffect(() => {
     if (
       !pipeline.isSuccess ||
-      !pipelineWatchState.isSuccess ||
       !sources.isSuccess ||
       !destinations.isSuccess ||
       !ais.isSuccess ||
@@ -426,7 +424,6 @@ const PipelineBuilderPage: FC & {
         recipe: {
           ...pipeline.data.recipe,
         },
-        watchState: pipelineWatchState.data.state,
       },
     });
 
@@ -463,15 +460,12 @@ const PipelineBuilderPage: FC & {
     blockchains.data?.length,
     blockchainsWatchState.isSuccess,
     blockchainsWithWatchState,
-    pipelineWatchState.data?.state,
-    pipelineWatchState.isSuccess,
   ]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
     if (pipelineIsNew) return false;
 
     if (
-      isLoadingPipelineWithWatchState ||
       isLoadingAIsWithState ||
       isLoadingBlockchainsWithState ||
       isLoadingDestinationsWithState ||
@@ -483,7 +477,6 @@ const PipelineBuilderPage: FC & {
     return false;
   }, [
     pipelineIsNew,
-    isLoadingPipelineWithWatchState,
     isLoadingAIsWithState,
     isLoadingBlockchainsWithState,
     isLoadingDestinationsWithState,

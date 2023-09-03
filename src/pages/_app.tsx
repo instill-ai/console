@@ -9,12 +9,10 @@ import {
   AmplitudeCtx,
   env,
   ReactQueryDevtools,
-  usePipelineBuilderStore,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@instill-ai/design-system/dist/index.css";
-import "@instill-ai/toolkit/dist/index.css";
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
@@ -24,6 +22,7 @@ import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
 import { Toaster, useToast } from "@instill-ai/design-system";
+import { usePipelineBuilderStore } from "pipeline-builder/usePipelineBuilderStore";
 
 export const queryCache = new QueryCache();
 

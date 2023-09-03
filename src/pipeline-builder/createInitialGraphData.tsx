@@ -1,8 +1,9 @@
 import { Edge, Node } from "reactflow";
-import { NewPipelineWithWatchState, NodeData } from "./type";
+import { NodeData } from "./type";
+import { ConnectorDefinition, Pipeline } from "@instill-ai/toolkit";
 
 export type CreateInitialGraphDataProps = {
-  pipeline: NewPipelineWithWatchState;
+  pipeline: Pipeline;
 };
 
 export function createInitialGraphData(props: CreateInitialGraphDataProps) {
@@ -62,7 +63,10 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
           type: "blockchainNode",
           data: {
             nodeType: "connector",
-            component,
+            component: {
+              ...component,
+              definition: component.definition as ConnectorDefinition,
+            },
           },
           position: { x: 0, y: 0 },
         });
@@ -75,7 +79,10 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
           type: "aiNode",
           data: {
             nodeType: "connector",
-            component,
+            component: {
+              ...component,
+              definition: component.definition as ConnectorDefinition,
+            },
           },
           position: { x: 0, y: 0 },
         });

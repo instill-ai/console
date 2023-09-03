@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   Nullable,
+  RenameUserPipelinePayload,
   getInstillApiErrorMessage,
-  useRenamePipeline,
+  useRenameUserPipeline,
+  useUser,
 } from "@instill-ai/toolkit";
 import {
   PipelineBuilderStore,
@@ -37,6 +39,11 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
   const { toast } = useToast();
 
+  const user = useUser({
+    enabled: true,
+    accessToken,
+  });
+
   const form = useForm<z.infer<typeof UpdatePipelineIdSchema>>({
     resolver: zodResolver(UpdatePipelineIdSchema),
     mode: "onBlur",
@@ -61,19 +68,21 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     });
   }, [pipelineId, form]);
 
-  const renamePipeline = useRenamePipeline();
+  const renameUserPipeline = useRenameUserPipeline();
 
   async function handleRenamePipeline(newId: string) {
-    if (!pipelineId || pipelineIsNew) {
+    if (!pipelineId || pipelineIsNew || !user.isSuccess) {
       return;
     }
 
+    const payload: RenameUserPipelinePayload = {
+      name: `${user.data.name}/pipelines/${pipelineId}`,
+      new_pipeline_id: newId,
+    };
+
     try {
-      await renamePipeline.mutateAsync({
-        payload: {
-          pipelineId: pipelineId,
-          newPipelineId: newId,
-        },
+      await renameUserPipeline.mutateAsync({
+        payload: payload,
         accessToken,
       });
 

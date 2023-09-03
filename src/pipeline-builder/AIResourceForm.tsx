@@ -15,7 +15,8 @@ import {
   ConnectorResourceWithDefinition,
   Nullable,
   getInstillApiErrorMessage,
-  useCreateConnectorResource,
+  useCreateUserConnectorResource,
+  useUser,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
 import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
@@ -105,18 +106,25 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
         },
   });
 
-  const createAIConnectorResource = useCreateConnectorResource();
+  const user = useUser({
+    enabled: true,
+    accessToken,
+  });
+
+  const createAIConnectorResource = useCreateUserConnectorResource();
 
   function onSubmit(data: z.infer<typeof AIResourceFormSchema>) {
+    if (!user.isSuccess) return;
+
     const payload = {
-      connectorResourceName: `connector-resources/${data.id}`,
+      id: data.id,
       connector_definition_name: data.connector_definition_name,
       description: data.description ?? undefined,
       configuration: recursivelyReplaceNullWithUndefined(data.configuration),
     };
 
     createAIConnectorResource.mutate(
-      { payload, accessToken },
+      { payload, userName: user.data.name, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({

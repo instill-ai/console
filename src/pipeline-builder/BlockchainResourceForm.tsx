@@ -15,7 +15,8 @@ import {
   ConnectorResourceWithDefinition,
   Nullable,
   getInstillApiErrorMessage,
-  useCreateConnectorResource,
+  useCreateUserConnectorResource,
+  useUser,
 } from "@instill-ai/toolkit";
 import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
 import { isAxiosError } from "axios";
@@ -82,18 +83,25 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
 
   const { toast } = useToast();
 
-  const createBlockchainConnectorResource = useCreateConnectorResource();
+  const user = useUser({
+    enabled: true,
+    accessToken,
+  });
+
+  const createBlockchainConnectorResource = useCreateUserConnectorResource();
 
   function onSubmit(data: z.infer<typeof BlockchainResourceFormSchema>) {
+    if (!user.isSuccess) return;
+
     const payload = {
-      connectorResourceName: `connector-resources/${data.id}`,
+      id: data.id,
       connector_definition_name: data.connector_definition_name,
       description: data.description ?? undefined,
       configuration: recursivelyReplaceNullWithUndefined(data.configuration),
     };
 
     createBlockchainConnectorResource.mutate(
-      { payload, accessToken },
+      { payload, userName: user.data.name, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({

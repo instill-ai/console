@@ -75,8 +75,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       inputSchema = (
         (
           (
-            data.component?.definition_detail?.spec.openapi_specifications
-              .default.paths["/execute"]?.post
+            data.component?.definition?.spec.openapi_specifications.default
+              .paths["/execute"]?.post
               ?.requestBody as OpenAPIV3.RequestBodyObject
           ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
         ).properties?.inputs as OpenAPIV3.ArraySchemaObject
@@ -85,8 +85,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         (
           (
             (
-              data.component?.definition_detail?.spec.openapi_specifications
-                .default.paths["/execute"]?.post?.responses[
+              data.component?.definition?.spec.openapi_specifications.default
+                .paths["/execute"]?.post?.responses[
                 "200"
               ] as OpenAPIV3.ResponseObject
             ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
@@ -99,7 +99,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         inputSchema = (
           (
             (
-              data.component?.definition_detail?.spec.openapi_specifications[
+              data.component?.definition?.spec.openapi_specifications[
                 data.component.configuration.task
               ].paths["/execute"]?.post
                 ?.requestBody as OpenAPIV3.RequestBodyObject
@@ -110,7 +110,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           (
             (
               (
-                data.component?.definition_detail?.spec.openapi_specifications[
+                data.component?.definition?.spec.openapi_specifications[
                   data.component.configuration.task
                 ].paths["/execute"]?.post?.responses[
                   "200"
@@ -221,10 +221,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       >
         <div className="mb-1 flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.definition_detail?.vendor}/${data.component?.definition_detail?.icon}`}
+            src={`/icons/${data.component?.definition?.vendor}/${data.component?.definition?.icon}`}
             width={16}
             height={15}
-            alt={`${data.component?.definition_detail?.title}-icon`}
+            alt={`${data.component?.definition?.title}-icon`}
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }

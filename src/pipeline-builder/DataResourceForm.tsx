@@ -8,6 +8,7 @@ import {
   ConnectorDefinition,
   ConnectorResourceType,
   ConnectorResourceWithDefinition,
+  CreateUserConnectorResourcePayload,
   Nullable,
   dot,
   getInstillApiErrorMessage,
@@ -15,7 +16,8 @@ import {
   useAirbyteFormTree,
   useAirbyteSelectedConditionMap,
   useBuildAirbyteYup,
-  useCreateConnectorResource,
+  useCreateUserConnectorResource,
+  useUser,
   validateResourceId,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
@@ -54,6 +56,11 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
   } = props;
 
   const { toast } = useToast();
+
+  const user = useUser({
+    enabled: true,
+    accessToken: null,
+  });
 
   const [airbyteFormIsDirty, setAirbyteFormIsDirty] = React.useState(false);
 
@@ -123,10 +130,10 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     });
   }, [airbyteYup]);
 
-  const createDataConnectorResource = useCreateConnectorResource();
+  const createUserDataConnectorResource = useCreateUserConnectorResource();
 
   const onSubmit = React.useCallback(async () => {
-    if (!fieldValues || !formYup) {
+    if (!fieldValues || !formYup || !user.isSuccess) {
       return;
     }
 
@@ -181,15 +188,15 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
 
     setFieldErrors(null);
 
-    const payload = {
-      connectorResourceName: `connector-resources/${fieldValues.id}` as string,
+    const payload: CreateUserConnectorResourcePayload = {
+      id: `connector-resources/${fieldValues.id}` as string,
       connector_definition_name: dataDefinition.name,
       description: fieldValues.description as string,
       configuration: stripValues.configuration,
     };
 
-    createDataConnectorResource.mutate(
-      { payload, accessToken },
+    createUserDataConnectorResource.mutate(
+      { userName: user.data.name, payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({
@@ -223,7 +230,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       }
     );
   }, [
-    createDataConnectorResource,
+    createUserDataConnectorResource,
     formYup,
     fieldValues,
     dataDefinition,
