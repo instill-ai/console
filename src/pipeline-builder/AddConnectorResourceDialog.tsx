@@ -7,7 +7,8 @@ import {
   ImageWithFallback,
   Nullable,
   useConnectorDefinitions,
-  useConnectorResources,
+  useUser,
+  useUserConnectorResources,
 } from "@instill-ai/toolkit";
 import { AIResourceForm } from "./AIResourceForm";
 import { BlockchainResourceForm } from "./BlockchainResourceForm";
@@ -52,8 +53,14 @@ export const AddConnectorResourceDialog = (
   const [newConnectorType, setNewConnectorType] =
     React.useState<Nullable<ConnectorResourceType>>(null);
 
-  const allConnectorResource = useConnectorResources({
-    connectorResourceType: null,
+  const user = useUser({
+    enabled: true,
+    accessToken,
+  });
+
+  const allConnectorResources = useUserConnectorResources({
+    userName: user.isSuccess ? user.data.name : null,
+    connectorResourceType: "all",
     enabled: type === "inPipeline",
     accessToken,
   });
@@ -162,8 +169,8 @@ export const AddConnectorResourceDialog = (
                     </p>
                   </div>
                   <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
-                    {allConnectorResource.isSuccess
-                      ? allConnectorResource.data.map((connectorResource) => (
+                    {allConnectorResources.isSuccess
+                      ? allConnectorResources.data.map((connectorResource) => (
                           <AddConnectorResourceDialogItem
                             key={connectorResource.id}
                             onClick={() => {

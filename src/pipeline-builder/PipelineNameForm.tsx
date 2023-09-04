@@ -23,6 +23,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineId: state.pipelineId,
   setPipelineId: state.setPipelineId,
   pipelineIsNew: state.pipelineIsNew,
+  testModeEnabled: state.testModeEnabled,
 });
 
 export type PipelineNameFormProps = {
@@ -49,10 +50,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     mode: "onBlur",
   });
 
-  const { pipelineId, setPipelineId, pipelineIsNew } = usePipelineBuilderStore(
-    pipelineBuilderSelector,
-    shallow
-  );
+  const { pipelineId, setPipelineId, pipelineIsNew, testModeEnabled } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   // Disable edit on the topbar
   useEffect(() => {
@@ -148,6 +147,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
                         }
                       })();
                     }}
+                    onClick={(e) => e.stopPropagation()}
+                    disabled={testModeEnabled}
                   />
                 );
               }}

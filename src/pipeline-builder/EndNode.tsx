@@ -19,12 +19,12 @@ import {
 } from "./usePipelineBuilderStore";
 import {
   PipelineComponentReference,
-  extractReferenceFromString,
   extractReferencesFromConfiguration,
 } from "./extractReferencesFromConfiguration";
 import { shallow } from "zustand/shallow";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import { CustomHandle } from "./CustomHandle";
+import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
 
 export const CreateEndOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -259,7 +259,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
           <div className="flex flex-col gap-y-4">
             {Object.entries(data.component.configuration.body).map(
               ([key, value]) => {
-                const reference = extractReferenceFromString({
+                const reference = extractPipelineComponentReferenceFromString({
                   key,
                   value: value.value,
                   currentPath: [],

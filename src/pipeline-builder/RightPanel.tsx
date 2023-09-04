@@ -88,7 +88,9 @@ export const RightPanel = (props: RightPanelProps) => {
             connectorDefinitionName={
               selectedConnectorNode.data.component.definition_name
             }
-            configuration={selectedConnectorNode.data.component.configuration}
+            configuration={
+              selectedConnectorNode.data.component.configuration.input
+            }
           />
         ) : null}
         {selectedConnectorNode &&
@@ -96,7 +98,9 @@ export const RightPanel = (props: RightPanelProps) => {
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ? (
           <BlockchainForm
-            configuration={selectedConnectorNode.data.component.configuration}
+            configuration={
+              selectedConnectorNode.data.component.configuration.input
+            }
           />
         ) : null}
       </div>

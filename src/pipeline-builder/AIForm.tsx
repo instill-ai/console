@@ -30,6 +30,7 @@ import {
   extractReferencesFromConfiguration,
 } from "./extractReferencesFromConfiguration";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
+import { validateIntillUpstreamTypes } from "./validateIntillUpstreamTypes";
 
 const AISchema = z
   .object({
@@ -60,48 +61,18 @@ const AISchema = z
     // TASK_TEXT_GENERATION
     // model_id
     prompt: z.string().nullable().optional(),
-    seed: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
-    output_len: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
+    seed: z.string().nullable().optional(),
+    output_len: z.string().nullable().optional(),
     bad_words_list: z.string().nullable().optional(),
     stop_words_list: z.string().nullable().optional(),
-    top_k: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
+    top_k: z.string().nullable().optional(),
 
     // TASK_TEXT_TO_IMAGE
     // model_id
     // prompt
-    cfg_scale: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
-    steps: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
-    samples: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .nullable()
-      .optional(),
+    cfg_scale: z.string().nullable().optional(),
+    steps: z.string().nullable().optional(),
+    samples: z.string().nullable().optional(),
     // seed
 
     // connector-definitions/ai-openai
@@ -110,28 +81,9 @@ const AISchema = z
     // prompt
     model: z.string().nullable().optional(),
     system_message: z.string().nullable().optional(),
-    temperature: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(0, "Value must be greater than or equal to 0")
-      .max(2, "Value must be less than or equal to 2")
-      .nullable()
-      .optional(),
-    n: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .min(1, "Value must be greater than or equal to 1")
-      .max(5, "Value must be less than or equal to 5")
-      .nullable()
-      .optional(),
-    max_tokens: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .int({ message: "Value must be an integer" })
-      .min(1, "Value must be greater than or equal to 1")
-      .nullable()
-      .optional(),
+    temperature: z.string().nullable().optional(),
+    n: z.string().nullable().optional(),
+    max_tokens: z.string().nullable().optional(),
 
     // TASK_TEXT_EMBEDDINGS
     text: z.string().nullable().optional(),
@@ -150,20 +102,8 @@ const AISchema = z
     prompts: z.string().nullable().optional(),
     weights: z.string().nullable().optional(),
     engine: z.string().nullable().optional(),
-    height: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(128, "Value must be greater than or equal to 128")
-      .multipleOf(64, "Value must be a multiple of 64")
-      .nullable()
-      .optional(),
-    width: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(128, "Value must be greater than or equal to 128")
-      .multipleOf(64, "Value must be a multiple of 64")
-      .nullable()
-      .optional(),
+    height: z.string().nullable().optional(),
+    width: z.string().nullable().optional(),
     // cfg_scale
     clip_guidance_preset: z.string().nullable().optional(),
     sampler: z.string().nullable().optional(),
@@ -174,31 +114,13 @@ const AISchema = z
 
     // TASK_IMAGE_TO_IMAGE
     // prompts
-    weight: z.string().nullable().optional(),
+    // weights
     init_image: z.string().nullable().optional(),
     // engine
     init_image_mode: z.string().nullable().optional(),
-    image_strength: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(0, "Value must be greater than or equal to 0")
-      .max(1, "Value must be less than or equal to 1")
-      .nullable()
-      .optional(),
-    step_schedule_start: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(0, "Value must be greater than or equal to 0")
-      .max(1, "Value must be less than or equal to 1")
-      .nullable()
-      .optional(),
-    step_schedule_end: z.coerce
-      .number()
-      .positive({ message: "Value must be positive" })
-      .min(0, "Value must be greater than or equal to 0")
-      .max(1, "Value must be less than or equal to 1")
-      .nullable()
-      .optional(),
+    image_strength: z.string().nullable().optional(),
+    step_schedule_start: z.string().nullable().optional(),
+    step_schedule_end: z.string().nullable().optional(),
     // cfg_scale
     // clip_guidance_preset
     // sampler
@@ -218,6 +140,19 @@ const AISchema = z
           message: "Model ID is required",
           path: ["model_id"],
         });
+      } else {
+        const result = validateIntillUpstreamTypes({
+          type: "reference_and_string",
+          value: state.model_id,
+        });
+
+        if (!result.isValid) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: result.error,
+            path: ["model_id"],
+          });
+        }
       }
 
       if (
@@ -234,6 +169,19 @@ const AISchema = z
             message: "image_base64 is required",
             path: ["image_base64"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.image_base64,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["image_base64"],
+            });
+          }
         }
       }
 
@@ -244,46 +192,94 @@ const AISchema = z
             message: "prompt is required",
             path: ["prompt"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.prompt,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompt"],
+            });
+          }
         }
 
-        if (!state.output_len) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "output_len is required",
-            path: ["output_len"],
+        if (state.output_len) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.output_len,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["output_len"],
+            });
+          }
         }
 
-        if (!state.bad_words_list) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "bad_words_list is required",
-            path: ["bad_words_list"],
+        if (state.bad_words_list) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.bad_words_list,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["bad_words_list"],
+            });
+          }
         }
 
-        if (!state.stop_words_list) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "stop_words_list is required",
-            path: ["stop_words_list"],
+        if (state.stop_words_list) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.stop_words_list,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["stop_words_list"],
+            });
+          }
         }
 
-        if (!state.top_k) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "top_k is required",
-            path: ["top_k"],
+        if (state.top_k) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.top_k,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["top_k"],
+            });
+          }
         }
 
-        if (!state.seed) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "seed is required",
-            path: ["seed"],
+        if (state.seed) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.seed,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["seed"],
+            });
+          }
         }
       }
 
@@ -294,38 +290,79 @@ const AISchema = z
             message: "prompt is required",
             path: ["prompt"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.prompt,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompt"],
+            });
+          }
         }
 
-        if (!state.cfg_scale) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "cfg_scale is required",
-            path: ["cfg_scale"],
+        if (state.cfg_scale) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.cfg_scale,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["cfg_scale"],
+            });
+          }
         }
 
-        if (!state.steps) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "steps is required",
-            path: ["steps"],
+        if (state.steps) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.steps,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["steps"],
+            });
+          }
         }
 
-        if (!state.samples) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "samples is required",
-            path: ["samples"],
+        if (state.samples) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.samples,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["samples"],
+            });
+          }
         }
 
-        if (!state.seed) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "seed is required",
-            path: ["seed"],
+        if (state.seed) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.seed,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["samples"],
+            });
+          }
         }
       }
     }
@@ -346,6 +383,19 @@ const AISchema = z
             message: "prompt is required",
             path: ["prompt"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.prompt,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompt"],
+            });
+          }
         }
 
         if (!state.model) {
@@ -354,6 +404,66 @@ const AISchema = z
             message: "model is required",
             path: ["model"],
           });
+        }
+
+        if (state.system_message) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.system_message,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["system_message"],
+            });
+          }
+        }
+
+        if (state.temperature) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.temperature,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["temperature"],
+            });
+          }
+        }
+
+        if (state.n) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.n,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["n"],
+            });
+          }
+        }
+
+        if (state.max_tokens) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.max_tokens,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["max_tokens"],
+            });
+          }
         }
       }
 
@@ -364,6 +474,19 @@ const AISchema = z
             message: "text is required",
             path: ["text"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.text,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["text"],
+            });
+          }
         }
 
         if (!state.model) {
@@ -382,6 +505,19 @@ const AISchema = z
             message: "audio is required",
             path: ["audio"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference",
+            value: state.audio,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["audio"],
+            });
+          }
         }
 
         if (!state.model) {
@@ -390,6 +526,51 @@ const AISchema = z
             message: "model is required",
             path: ["model"],
           });
+        }
+
+        if (state.temperature) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.temperature,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["temperature"],
+            });
+          }
+        }
+
+        if (state.language) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.language,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["language"],
+            });
+          }
+        }
+
+        if (state.prompt) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_string",
+            value: state.prompt,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompt"],
+            });
+          }
         }
       }
     }
@@ -413,6 +594,34 @@ const AISchema = z
             message: "prompts is required",
             path: ["prompts"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference",
+            value: state.prompts,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompts"],
+            });
+          }
+        }
+
+        if (state.weights) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference",
+            value: state.weights,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["weights"],
+            });
+          }
         }
 
         if (!state.engine) {
@@ -421,6 +630,81 @@ const AISchema = z
             message: "engine is required",
             path: ["engine"],
           });
+        }
+
+        if (state.height) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.height,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["height"],
+            });
+          }
+        }
+
+        if (state.width) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.width,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["width"],
+            });
+          }
+        }
+
+        if (state.cfg_scale) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.cfg_scale,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["cfg_scale"],
+            });
+          }
+        }
+
+        if (state.seed) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.seed,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["seed"],
+            });
+          }
+        }
+
+        if (state.steps) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.steps,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["steps"],
+            });
+          }
         }
       }
 
@@ -431,6 +715,40 @@ const AISchema = z
             message: "prompts is required",
             path: ["prompts"],
           });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference",
+            value: state.prompts,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["prompts"],
+            });
+          }
+        }
+
+        if (!state.init_image) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "init_image is required",
+            path: ["init_image"],
+          });
+        } else {
+          const result = validateIntillUpstreamTypes({
+            type: "reference",
+            value: state.init_image,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["init_image"],
+            });
+          }
         }
 
         if (!state.engine) {
@@ -441,12 +759,109 @@ const AISchema = z
           });
         }
 
-        if (!state.init_image) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "init_image is required",
-            path: ["init_image"],
+        if (state.image_strength) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.image_strength,
           });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["image_strength"],
+            });
+          }
+        }
+
+        if (state.step_schedule_start) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.step_schedule_start,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["step_schedule_start"],
+            });
+          }
+        }
+
+        if (state.step_schedule_end) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.step_schedule_end,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["step_schedule_end"],
+            });
+          }
+        }
+
+        if (state.cfg_scale) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.cfg_scale,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["cfg_scale"],
+            });
+          }
+        }
+
+        if (state.samples) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.samples,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["samples"],
+            });
+          }
+        }
+
+        if (state.seed) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.seed,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["seed"],
+            });
+          }
+        }
+
+        if (state.steps) {
+          const result = validateIntillUpstreamTypes({
+            type: "reference_and_number",
+            value: state.steps,
+          });
+
+          if (!result.isValid) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: result.error,
+              path: ["steps"],
+            });
+          }
         }
       }
     }
@@ -501,7 +916,9 @@ export const AIForm = (props: AIFormProps) => {
             ...node.data,
             component: {
               ...node.data.component,
-              configuration: data,
+              configuration: {
+                input: data,
+              },
             },
           },
         };
@@ -984,8 +1401,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1032,8 +1449,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1300,8 +1717,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1330,8 +1747,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1571,8 +1988,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1602,8 +2019,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1868,8 +2285,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1908,8 +2325,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />
@@ -1945,8 +2362,8 @@ export const AIForm = (props: AIFormProps) => {
                     <Input.Root>
                       <Input.Core
                         {...field}
-                        type="number"
-                        value={field.value ?? undefined}
+                        type="text"
+                        value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
                       />

@@ -4,16 +4,22 @@ export function getAiConnectorDefaultConfiguration(
   switch (connector_definition_name) {
     case "connector-definitions/ai-instill-model":
       return {
-        task: null,
+        input: {
+          task: null,
+        },
       };
     case "connector-definitions/ai-openai":
       return {
-        task: null,
+        input: {
+          task: null,
+        },
       };
 
     case "connector-definitions/ai-stability-ai":
       return {
-        task: null,
+        input: {
+          task: null,
+        },
       };
     default:
       return null;

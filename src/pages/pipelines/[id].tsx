@@ -1,13 +1,6 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import {
-  Nullable,
-  useConnectorResources,
-  useWatchConnectorResources,
-  ConnectorResourceWithWatchState,
-  useUserPipeline,
-  useUser,
-} from "@instill-ai/toolkit";
+import { Nullable, useUserPipeline, useUser } from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
 import { Edge, Node, ReactFlowInstance } from "reactflow";
 import { v4 as uuidv4 } from "uuid";
@@ -162,204 +155,6 @@ const PipelineBuilderPage: FC & {
     useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
-  const sources = useConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const sourcesWatchState = useWatchConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_OPERATOR",
-    connectorResourceNames: sources.isSuccess
-      ? sources.data.map((source) => source.name)
-      : [],
-    accessToken: null,
-    enabled: sources.isSuccess && sources.data.length > 0,
-  });
-
-  const sourcesWithWatchState = useMemo<
-    ConnectorResourceWithWatchState[]
-  >(() => {
-    if (
-      !sources.isSuccess ||
-      !sources.data ||
-      !sourcesWatchState.isSuccess ||
-      !sourcesWatchState.data
-    ) {
-      return [];
-    }
-
-    return sources.data.map((source) => {
-      return {
-        ...source,
-        watchState:
-          `${source.name}` in sourcesWatchState.data
-            ? sourcesWatchState.data[source.name].state
-            : "STATE_UNSPECIFIED",
-      };
-    });
-  }, [
-    sources.isSuccess,
-    sources.data,
-    sourcesWatchState.isSuccess,
-    sourcesWatchState.data,
-  ]);
-
-  const isLoadingSourcesWithState = useMemo(() => {
-    if (sources.isSuccess && sources.data.length === 0) return false;
-    return sources.isLoading || sourcesWatchState.isLoading;
-  }, [
-    sources.isLoading,
-    sourcesWatchState.isLoading,
-    sources.isSuccess,
-    sources.data,
-  ]);
-
-  const destinations = useConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_DATA",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const destinationsWatchState = useWatchConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_DATA",
-    connectorResourceNames: destinations.isSuccess
-      ? destinations.data.map((destination) => destination.name)
-      : [],
-    accessToken: null,
-    enabled: destinations.isSuccess && destinations.data.length > 0,
-  });
-
-  const destinationsWithWatchState = useMemo<
-    ConnectorResourceWithWatchState[]
-  >(() => {
-    if (
-      !destinations.isSuccess ||
-      !destinations.data ||
-      !destinationsWatchState.isSuccess ||
-      !destinationsWatchState.data
-    ) {
-      return [];
-    }
-
-    return destinations.data.map((destination) => {
-      return {
-        ...destination,
-        watchState:
-          `${destination.name}` in destinationsWatchState.data
-            ? destinationsWatchState.data[destination.name].state
-            : "STATE_UNSPECIFIED",
-      };
-    });
-  }, [
-    destinations.isSuccess,
-    destinations.data,
-    destinationsWatchState.isSuccess,
-    destinationsWatchState.data,
-  ]);
-
-  const isLoadingDestinationsWithState = useMemo(() => {
-    if (destinations.isSuccess && destinations.data.length === 0) return false;
-    return destinations.isLoading || destinationsWatchState.isLoading;
-  }, [
-    destinations.isLoading,
-    destinationsWatchState.isLoading,
-    destinations.isSuccess,
-    destinations.data,
-  ]);
-
-  const ais = useConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_AI",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const aisWatchState = useWatchConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_AI",
-    connectorResourceNames: ais.isSuccess ? ais.data.map((ai) => ai.name) : [],
-    accessToken: null,
-    enabled: ais.isSuccess && ais.data.length > 0,
-  });
-
-  const aisWithWatchState = useMemo<ConnectorResourceWithWatchState[]>(() => {
-    if (
-      !ais.isSuccess ||
-      !ais.data ||
-      !aisWatchState.isSuccess ||
-      !aisWatchState.data
-    ) {
-      return [];
-    }
-
-    return ais.data.map((ai) => {
-      return {
-        ...ai,
-        watchState:
-          `${ai.name}` in aisWatchState.data
-            ? aisWatchState.data[ai.name].state
-            : "STATE_UNSPECIFIED",
-      };
-    });
-  }, [ais.isSuccess, ais.data, aisWatchState.isSuccess, aisWatchState.data]);
-
-  const isLoadingAIsWithState = useMemo(() => {
-    if (ais.isSuccess && ais.data.length === 0) return false;
-    return ais.isLoading || aisWatchState.isLoading;
-  }, [ais.isLoading, aisWatchState.isLoading, ais.isSuccess, ais.data]);
-
-  const blockchains = useConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
-    accessToken: null,
-    enabled: true,
-  });
-
-  const blockchainsWatchState = useWatchConnectorResources({
-    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
-    connectorResourceNames: blockchains.isSuccess
-      ? blockchains.data.map((ai) => ai.name)
-      : [],
-    accessToken: null,
-    enabled: blockchains.isSuccess && blockchains.data.length > 0,
-  });
-
-  const blockchainsWithWatchState = useMemo<
-    ConnectorResourceWithWatchState[]
-  >(() => {
-    if (
-      !blockchains.isSuccess ||
-      !blockchains.data ||
-      !blockchainsWatchState.isSuccess ||
-      !blockchainsWatchState.data
-    ) {
-      return [];
-    }
-
-    return blockchains.data.map((blockchain) => {
-      return {
-        ...blockchain,
-        watchState:
-          `${blockchain.name}` in blockchainsWatchState.data
-            ? blockchainsWatchState.data[blockchain.name].state
-            : "STATE_UNSPECIFIED",
-      };
-    });
-  }, [
-    blockchains.isSuccess,
-    blockchains.data,
-    blockchainsWatchState.isSuccess,
-    blockchainsWatchState.data,
-  ]);
-
-  const isLoadingBlockchainsWithState = useMemo(() => {
-    if (blockchains.isSuccess && blockchains.data.length === 0) return false;
-    return blockchains.isLoading || blockchainsWatchState.isLoading;
-  }, [
-    blockchains.isLoading,
-    blockchainsWatchState.isLoading,
-    blockchains.isSuccess,
-    blockchains.data,
-  ]);
-
   /* -------------------------------------------------------------------------
    * Initialize pipeline id
    * -----------------------------------------------------------------------*/
@@ -391,30 +186,7 @@ const PipelineBuilderPage: FC & {
   const [graphIsInitialized, setGraphIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (
-      !pipeline.isSuccess ||
-      !sources.isSuccess ||
-      !destinations.isSuccess ||
-      !ais.isSuccess ||
-      !blockchains.isSuccess ||
-      graphIsInitialized
-    ) {
-      return;
-    }
-
-    if (sources.data.length > 0 && !sourcesWatchState.isSuccess) {
-      return;
-    }
-
-    if (destinations.data.length > 0 && !destinationsWatchState.isSuccess) {
-      return;
-    }
-
-    if (ais.data.length > 0 && !aisWatchState.isSuccess) {
-      return;
-    }
-
-    if (blockchains.data.length > 0 && !blockchainsWatchState.isSuccess) {
+    if (!pipeline.isSuccess || graphIsInitialized) {
       return;
     }
 
@@ -444,44 +216,13 @@ const PipelineBuilderPage: FC & {
     pipeline.data,
     updateEdges,
     updateNodes,
-    ais.isSuccess,
-    ais.data?.length,
-    aisWatchState.isSuccess,
-    aisWithWatchState,
-    sources.isSuccess,
-    sources.data?.length,
-    sourcesWatchState.isSuccess,
-    sourcesWithWatchState,
-    destinations.isSuccess,
-    destinations.data?.length,
-    destinationsWatchState.isSuccess,
-    destinationsWithWatchState,
-    blockchains.isSuccess,
-    blockchains.data?.length,
-    blockchainsWatchState.isSuccess,
-    blockchainsWithWatchState,
   ]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
     if (pipelineIsNew) return false;
 
-    if (
-      isLoadingAIsWithState ||
-      isLoadingBlockchainsWithState ||
-      isLoadingDestinationsWithState ||
-      isLoadingSourcesWithState
-    ) {
-      return true;
-    }
-
     return false;
-  }, [
-    pipelineIsNew,
-    isLoadingAIsWithState,
-    isLoadingBlockchainsWithState,
-    isLoadingDestinationsWithState,
-    isLoadingSourcesWithState,
-  ]);
+  }, [pipelineIsNew]);
 
   /* -------------------------------------------------------------------------
    * Update the nodes and edges with up-to-date state

@@ -13,10 +13,13 @@ import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomHandle } from "./CustomHandle";
+import { PipelineComponentReference } from "./extractReferencesFromConfiguration";
+import { getConnectorOpenAPISchema } from "./getConnectorOpenAPISchema";
 import {
-  PipelineComponentReference,
-  extractReferenceFromString,
-} from "./extractReferencesFromConfiguration";
+  ConnectorNodeProperty,
+  getPropertiesFromOpenAPISchema,
+} from "./getPropertiesFromOpenAPISchema";
+import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
@@ -64,65 +67,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [exapndInputs, setExpandInputs] = useState(false);
   const [exapndOutputs, setExpandOutputs] = useState(false);
 
-  let inputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
-  let outputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
   let aiTaskNotSelected = false;
 
-  switch (data.component.type) {
-    case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
-      // Because right now blockchain connector doesn't have complicate category, so backend use
-      // "default" as its spec key
-      inputSchema = (
-        (
-          (
-            data.component?.definition?.spec.openapi_specifications.default
-              .paths["/execute"]?.post
-              ?.requestBody as OpenAPIV3.RequestBodyObject
-          ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
-        ).properties?.inputs as OpenAPIV3.ArraySchemaObject
-      ).items as OpenAPIV3.SchemaObject;
-      outputSchema = (
-        (
-          (
-            (
-              data.component?.definition?.spec.openapi_specifications.default
-                .paths["/execute"]?.post?.responses[
-                "200"
-              ] as OpenAPIV3.ResponseObject
-            ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
-          )["application/json"]?.schema as OpenAPIV3.SchemaObject
-        ).properties?.outputs as OpenAPIV3.ArraySchemaObject
-      ).items as OpenAPIV3.SchemaObject;
-      break;
-    case "COMPONENT_TYPE_CONNECTOR_AI":
-      if (data.component.configuration.task) {
-        inputSchema = (
-          (
-            (
-              data.component?.definition?.spec.openapi_specifications[
-                data.component.configuration.task
-              ].paths["/execute"]?.post
-                ?.requestBody as OpenAPIV3.RequestBodyObject
-            ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
-          ).properties?.inputs as OpenAPIV3.ArraySchemaObject
-        ).items as OpenAPIV3.SchemaObject;
-        outputSchema = (
-          (
-            (
-              (
-                data.component?.definition?.spec.openapi_specifications[
-                  data.component.configuration.task
-                ].paths["/execute"]?.post?.responses[
-                  "200"
-                ] as OpenAPIV3.ResponseObject
-              ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
-            )["application/json"]?.schema as OpenAPIV3.SchemaObject
-          ).properties?.outputs as OpenAPIV3.ArraySchemaObject
-        ).items as OpenAPIV3.SchemaObject;
-      } else {
-        aiTaskNotSelected = true;
-      }
-      break;
+  const { inputSchema, outputSchema } = getConnectorOpenAPISchema({
+    component: data.component,
+  });
+
+  if (
+    data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
+    !data.component.configuration.input.task
+  ) {
+    aiTaskNotSelected = true;
   }
 
   useEffect(() => {
@@ -132,7 +87,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const inputProperties = useMemo(() => {
     if (!inputSchema) return [];
-    return getAllProperties(inputSchema);
+    return getPropertiesFromOpenAPISchema(inputSchema);
   }, [inputSchema]);
 
   const collapsedInputProperties = useMemo(() => {
@@ -142,7 +97,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const outputProperties = useMemo(() => {
     if (!outputSchema) return [];
-    return getAllProperties(outputSchema);
+    return getPropertiesFromOpenAPISchema(outputSchema);
   }, [outputSchema]);
 
   const collapsedOutputProperties = useMemo(() => {
@@ -253,6 +208,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                         // Disable enter key to prevent default form submit behavior
                         if (e.key === "Enter") {
                           e.preventDefault();
+                          e.stopPropagation();
                           updateNodeIdForm.handleSubmit((data) => {
                             if (data.nodeId) {
                               handleRenameNode(data.nodeId);
@@ -284,7 +240,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                     key={property.title ? property.title : property.path}
                     property={property}
                     nodeId={id}
-                    connectorConfiguration={data.component.configuration}
+                    connectorConfiguration={data.component.configuration.input}
                   />
                 );
               })}
@@ -313,9 +269,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                   >
                     <div className="flex flex-row gap-x-2">
                       <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-                        {property.title
-                          ? property.title
-                          : property.path?.split(".").pop()}
+                        {property.path?.split(".").pop()}
                       </p>
                     </div>
                   </div>
@@ -341,48 +295,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   );
 };
 
-type ConnectorNodeProperty = OpenAPIV3.NonArraySchemaObject & { path?: string };
-
-const getAllProperties = (
-  schema: OpenAPIV3.SchemaObject,
-  parentKey?: string,
-  title?: string
-) => {
-  let allProperties: ConnectorNodeProperty[] = [];
-
-  if (schema.type === "object") {
-    if (schema.properties) {
-      Object.entries(schema.properties as OpenAPIV3.SchemaObject).map(
-        ([key, value]) => {
-          const parentKeyList = parentKey ? parentKey.split(".") : [];
-
-          allProperties = [
-            ...allProperties,
-            ...getAllProperties(value, [...parentKeyList, key].join(".")),
-          ];
-        }
-      );
-    }
-  } else if (schema.type === "array") {
-    allProperties = [
-      ...allProperties,
-      ...getAllProperties(
-        schema.items as OpenAPIV3.SchemaObject,
-        parentKey,
-        schema.title
-      ),
-    ];
-  } else {
-    allProperties.push({
-      path: parentKey,
-      ...schema,
-      title: title ? title : schema.title,
-    });
-  }
-
-  return allProperties;
-};
-
 const InputPropertyItem = (props: {
   property: ConnectorNodeProperty;
   nodeId: string;
@@ -394,10 +306,11 @@ const InputPropertyItem = (props: {
     ? dot.getter(connectorConfiguration, property.path)
     : null;
 
-  const reference = extractReferenceFromString({
+  const reference = extractPipelineComponentReferenceFromString({
     value: propertyValue,
     nodeId,
     currentPath: property.path ? property.path?.split(".") : [],
+    key: null,
   });
 
   return (
@@ -407,7 +320,7 @@ const InputPropertyItem = (props: {
     >
       <div className="flex flex-row flex-wrap justify-between gap-x-2 gap-y-2">
         <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-          {property.title ? property.title : property.path?.split(".").pop()}
+          {property.path?.split(".").pop()}
         </p>
         <InputPropertyValue
           reference={reference}

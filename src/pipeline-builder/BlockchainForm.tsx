@@ -82,7 +82,9 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             ...node.data,
             component: {
               ...node.data.component,
-              configuration: data,
+              configuration: {
+                input: data,
+              },
             },
           },
         };
