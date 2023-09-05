@@ -16,7 +16,6 @@ import {
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
-  useRenameUserPipeline,
   useUpdateUserPipeline,
   useUser,
   useUserPipeline,
@@ -33,6 +32,7 @@ import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConne
 import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
 import { createGraphLayout } from "./createGraphLayout";
 import { AddConnectorResourceDialog } from "./AddConnectorResourceDialog";
+import { TriggerPipelineSnippetModal } from "./TriggerPipelineSnippetModal";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -40,7 +40,6 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineId: state.pipelineId,
   pipelineDescription: state.pipelineDescription,
   setPipelineUid: state.setPipelineUid,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
@@ -77,7 +76,6 @@ export const FlowControl = (props: FlowControlProps) => {
     setPipelineUid,
     updateNodes,
     updateEdges,
-    pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
     updatePipelineIsNew,
     pipelineIsNew,
@@ -379,6 +377,9 @@ export const FlowControl = (props: FlowControlProps) => {
               });
           }}
         />
+      </div>
+      <div className="absolute bottom-8 right-8">
+        <TriggerPipelineSnippetModal />
       </div>
     </>
   );
