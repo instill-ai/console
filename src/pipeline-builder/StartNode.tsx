@@ -8,13 +8,19 @@ import {
   Icons,
   Input,
   Tag,
+  useToast,
 } from "@instill-ai/design-system";
 import * as React from "react";
 import {
   StartNodeInputType,
   StartOperatorInputTypes,
 } from "pipeline-builder/StartNodeInputType";
-import { Nullable } from "@instill-ai/toolkit";
+import {
+  Nullable,
+  useTriggerUserPipeline,
+  useTriggerUserPipelineRelease,
+  useUser,
+} from "@instill-ai/toolkit";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +35,7 @@ import {
 import { shallow } from "zustand/shallow";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import { CustomHandle } from "./CustomHandle";
-import { useStartOperatorTestModeInputForm } from "./useStartOperatorTestModeInputForm";
+import { useStartOperatorTestModeInputForm } from "./use-node-input-fields";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -37,10 +43,12 @@ export const CreateStartOperatorInputSchema = z.object({
 });
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
+  pipelineId: state.pipelineId,
   nodes: state.nodes,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
   testModeEnabled: state.testModeEnabled,
+  pipelineIsNew: state.pipelineIsNew,
   updateStartOperatorInputData: state.updateStartOperatorInputData,
 });
 
@@ -52,12 +60,15 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     React.useState<Nullable<string>>(null);
 
   const {
+    pipelineId,
     nodes,
     updateNodes,
     updateEdges,
     testModeEnabled,
     updateStartOperatorInputData,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+
+  const { toast } = useToast();
 
   const createStartOperatorInputform = useForm<
     z.infer<typeof CreateStartOperatorInputSchema>
@@ -71,10 +82,33 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     form: startOperatorTestModeInputForm,
   } = useStartOperatorTestModeInputForm({ nodes });
 
+  const user = useUser({
+    enabled: true,
+    accessToken: null,
+  });
+
+  const useTriggerPipeline = useTriggerUserPipeline();
+
   const onTestPipeline = (
     data: z.infer<typeof StartOperatorTestModeInputSchema>
   ) => {
-    console.log(data);
+    if (!user.isSuccess) return;
+
+    useTriggerPipeline.mutate(
+      {
+        pipelineName: `${user.data.name}/pipelines/${pipelineId}`,
+        accessToken: null,
+        payload: {
+          inputs: [data],
+        },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      }
+    );
+
     updateStartOperatorInputData(() => data);
   };
 
@@ -86,7 +120,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "start") {
         if (prevFieldKey) {
-          delete node.data.component.configuration.body[prevFieldKey];
+          delete node.data.component.configuration.metadata[prevFieldKey];
         }
 
         node.data = {
@@ -95,8 +129,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
             ...node.data.component,
             configuration: {
               ...node.data.component.configuration,
-              body: {
-                ...node.data.component.configuration.body,
+              metadata: {
                 [formData.key]: {
                   type: selectedType,
                   title: formData.title,
@@ -139,7 +172,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const onDeleteField = (key: string) => {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "start") {
-        delete node.data.component.configuration.body[key];
+        delete node.data.component.configuration[key];
 
         node.data = {
           ...node.data,
@@ -169,11 +202,11 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   const onEditField = (key: string) => {
     createStartOperatorInputform.reset({
-      title: data.component.configuration.body[key].title,
+      title: data.component.configuration.metadata[key].title,
       key: key,
     });
     setEnableEdit(true);
-    setSelectedType(data.component.configuration.body[key].type);
+    setSelectedType(data.component.configuration.metadata[key].type);
   };
 
   return (
@@ -297,11 +330,14 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
             </form>
           </Form.Root>
         ) : (
-          <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col">
             {testModeEnabled ? (
               <Form.Root {...startOperatorTestModeInputForm}>
                 <form
-                  className="w-full"
+                  className={cn(
+                    "w-full",
+                    startOperatorTestModeInputfields.length !== 0 ? "mb-3" : ""
+                  )}
                   onSubmit={startOperatorTestModeInputForm.handleSubmit(
                     onTestPipeline
                   )}
@@ -323,7 +359,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
                 </form>
               </Form.Root>
             ) : (
-              Object.entries(data.component.configuration.body).map(
+              Object.entries(data.component.configuration.metadata).map(
                 ([key, value]) => {
                   let icon: Nullable<React.ReactElement> = null;
 

@@ -31,6 +31,9 @@ import {
 } from "./extractReferencesFromConfiguration";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import { validateIntillUpstreamTypes } from "./validateIntillUpstreamTypes";
+import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
+import { recursivelyParseInt } from "./recursivelyParseInt";
+import { recursivelyTransformToString } from "./recursivelyTransformToString";
 
 const AISchema = z
   .object({
@@ -904,6 +907,7 @@ export const AIForm = (props: AIFormProps) => {
 
   function onSubmit(data: z.infer<typeof AISchema>) {
     if (!selectedConnectorNodeId) return;
+    const modifiedData = recursivelyReplaceNullWithUndefined(data);
 
     const newNodes = nodes.map((node) => {
       if (
@@ -917,7 +921,7 @@ export const AIForm = (props: AIFormProps) => {
             component: {
               ...node.data.component,
               configuration: {
-                input: data,
+                input: modifiedData,
               },
             },
           },

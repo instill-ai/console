@@ -34,11 +34,6 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const isLoadingResource =
-    pipelines.isLoading || (pipelines.isSuccess && pipelines.data.length > 0)
-      ? true
-      : false;
-
   const setPipelineId = usePipelineBuilderStore((state) => state.setPipelineId);
 
   const updatePipelineIsNew = usePipelineBuilderStore(
@@ -77,7 +72,7 @@ const PipelinePage: FC & {
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}
           isError={pipelines.isError}
-          isLoading={isLoadingResource}
+          isLoading={pipelines.isLoading}
           accessToken={null}
         />
       </div>

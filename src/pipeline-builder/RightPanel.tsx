@@ -45,21 +45,17 @@ export const RightPanel = (props: RightPanelProps) => {
               <div className="flex flex-row gap-x-1">
                 <div className="p-2.5">
                   <ImageWithFallback
-                    src={`/icons/${selectedConnectorNode.data.component?.definition?.vendor}/${selectedConnectorNode.data.component?.definition?.icon}`}
+                    src={`/icons/${selectedConnectorNode.data.component?.connector_definition?.vendor}/${selectedConnectorNode.data.component?.connector_definition?.icon}`}
                     width={16}
                     height={15}
-                    alt={`${selectedConnectorNode.data.component?.definition?.title}-icon`}
+                    alt={`${selectedConnectorNode.data.component?.connector_definition?.title}-icon`}
                     fallbackImg={
                       <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
                     }
                   />
                 </div>
                 <p className="my-auto w-[200px] truncate text-semantic-fg-primary product-headings-heading-5">
-                  {
-                    selectedConnectorNode.data.component?.resource_name.split(
-                      "/"
-                    )[1]
-                  }
+                  {selectedConnectorNode.data.component?.resource?.id}
                 </p>
               </div>
               <Icons.Check className="my-auto h-5 w-5 stroke-semantic-fg-primary" />

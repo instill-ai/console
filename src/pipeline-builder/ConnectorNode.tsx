@@ -1,32 +1,49 @@
+import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
 import { ConnectorNodeData } from "./type";
-import { OpenAPIV3 } from "openapi-types";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
-import { Form, Icons, Tag, useToast } from "@instill-ai/design-system";
+import {
+  Button,
+  Form,
+  Icons,
+  Input,
+  Tag,
+  Textarea,
+  useToast,
+} from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { useEffect, useMemo, useState } from "react";
 import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomHandle } from "./CustomHandle";
-import { PipelineComponentReference } from "./extractReferencesFromConfiguration";
+import {
+  PipelineComponentReference,
+  extractReferencesFromConfiguration,
+} from "./extractReferencesFromConfiguration";
 import { getConnectorOpenAPISchema } from "./getConnectorOpenAPISchema";
 import {
   ConnectorNodeProperty,
   getPropertiesFromOpenAPISchema,
 } from "./getPropertiesFromOpenAPISchema";
 import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
+import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
   updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+  nodes: state.nodes,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
   testModeEnabled: state.testModeEnabled,
+});
+
+export const DataConnectorInputSchema = z.object({
+  key: z.string().min(1, { message: "Key is required" }),
+  value: z.string().min(1, { message: "Value is required" }),
 });
 
 export const UpdatePipelineIdSchema = z.object({
@@ -41,12 +58,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
     expandAllNodes,
     updateSelectedConnectorNodeId,
+    nodes,
     updateNodes,
     updateEdges,
     testModeEnabled,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
+
+  const [enableEdit, setEnableEdit] = React.useState(false);
+  const [prevFieldKey, setPrevFieldKey] =
+    React.useState<Nullable<string>>(null);
 
   const updateNodeIdForm = useForm<z.infer<typeof UpdateNodeIdSchema>>({
     resolver: zodResolver(UpdateNodeIdSchema),
@@ -56,16 +78,22 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     },
   });
 
+  const dataConnectorInputForm = useForm<
+    z.infer<typeof DataConnectorInputSchema>
+  >({
+    resolver: zodResolver(DataConnectorInputSchema),
+  });
+
   const { reset } = updateNodeIdForm;
 
-  useEffect(() => {
+  React.useEffect(() => {
     reset({
       nodeId: id,
     });
   }, [id, reset]);
 
-  const [exapndInputs, setExpandInputs] = useState(false);
-  const [exapndOutputs, setExpandOutputs] = useState(false);
+  const [exapndInputs, setExpandInputs] = React.useState(false);
+  const [exapndOutputs, setExpandOutputs] = React.useState(false);
 
   let aiTaskNotSelected = false;
 
@@ -80,27 +108,27 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     aiTaskNotSelected = true;
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     setExpandInputs(expandAllNodes);
     setExpandOutputs(expandAllNodes);
   }, [expandAllNodes]);
 
-  const inputProperties = useMemo(() => {
+  const inputProperties = React.useMemo(() => {
     if (!inputSchema) return [];
     return getPropertiesFromOpenAPISchema(inputSchema);
   }, [inputSchema]);
 
-  const collapsedInputProperties = useMemo(() => {
+  const collapsedInputProperties = React.useMemo(() => {
     if (exapndInputs) return inputProperties;
     return inputProperties.slice(0, 3);
   }, [exapndInputs, inputProperties]);
 
-  const outputProperties = useMemo(() => {
+  const outputProperties = React.useMemo(() => {
     if (!outputSchema) return [];
     return getPropertiesFromOpenAPISchema(outputSchema);
   }, [outputSchema]);
 
-  const collapsedOutputProperties = useMemo(() => {
+  const collapsedOutputProperties = React.useMemo(() => {
     if (exapndOutputs) return outputProperties;
     return outputProperties.slice(0, 3);
   }, [outputProperties, exapndOutputs]);
@@ -158,12 +186,104 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     });
   }
 
+  function onEditDataConnectorInput(key: string) {
+    dataConnectorInputForm.reset({
+      value: data.component.configuration.input[key].value,
+      key: key,
+    });
+    setEnableEdit(true);
+  }
+
+  function onSubmitDataConnectorInput(
+    formData: z.infer<typeof DataConnectorInputSchema>
+  ) {
+    const newNodes = nodes.map((node) => {
+      if (node.data.nodeType === "connector" && node.id === id) {
+        if (prevFieldKey) {
+          delete node.data.component.configuration.input[prevFieldKey];
+        }
+
+        node.data = {
+          ...node.data,
+          component: {
+            ...node.data.component,
+            configuration: {
+              ...node.data.component.configuration,
+              input: {
+                ...node.data.component.configuration.input,
+                [formData.key]: formData.value,
+              },
+            },
+          },
+        };
+      }
+      return node;
+    });
+
+    updateNodes(() => newNodes);
+
+    const allReferences: PipelineComponentReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+    updateEdges(() => newEdges);
+
+    setEnableEdit(false);
+    setPrevFieldKey(null);
+    dataConnectorInputForm.reset({
+      value: "",
+      key: "",
+    });
+  }
+
+  function onDeleteDataConnectorInput(key: string) {
+    const newNodes = nodes.map((node) => {
+      if (node.data.nodeType === "connector" && node.id === id) {
+        delete node.data.component.configuration.body[key];
+
+        node.data = {
+          ...node.data,
+        };
+      }
+      return node;
+    });
+
+    updateNodes(() => newNodes);
+
+    const allReferences: PipelineComponentReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+    updateEdges(() => newEdges);
+  }
+
   return (
     <>
       <div
         onClick={() => {
           updateSelectedConnectorNodeId((prev) => {
             if (testModeEnabled) return null;
+            if (enableEdit) return null;
 
             if (prev === id) {
               return null;
@@ -174,14 +294,14 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         }}
         className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-line px-3 py-2.5"
       >
-        <div className="mb-1 flex flex-row gap-x-1">
+        <div className="mb-2 flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.definition?.vendor}/${data.component?.definition?.icon}`}
+            src={`/icons/${data.component?.connector_definition?.vendor}/${data.component?.connector_definition?.icon}`}
             width={16}
-            height={15}
-            alt={`${data.component?.definition?.title}-icon`}
+            height={16}
+            alt={`${data.component?.connector_definition?.title}-icon`}
             fallbackImg={
-              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+              <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
           />
           <Form.Root {...updateNodeIdForm}>
@@ -204,6 +324,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                           }
                         })();
                       }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                       onKeyDown={(e) => {
                         // Disable enter key to prevent default form submit behavior
                         if (e.key === "Enter") {
@@ -223,71 +346,252 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             </form>
           </Form.Root>
         </div>
-        {aiTaskNotSelected ? (
-          <div className="w-[232px] rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
-            <p className="text-semantic-fg-primary product-body-text-3-regular">
-              Please select AI task for this connector
-            </p>
-          </div>
-        ) : null}
-        {inputProperties.length > 0 ? (
-          <div className="mb-1 flex flex-col">
-            <div className="mb-1 product-body-text-4-medium">Inputs</div>
-            <div className="mb-1 flex flex-col gap-y-1">
-              {collapsedInputProperties.map((property) => {
-                return (
-                  <InputPropertyItem
-                    key={property.title ? property.title : property.path}
-                    property={property}
-                    nodeId={id}
-                    connectorConfiguration={data.component.configuration.input}
-                  />
-                );
-              })}
-            </div>
-            {inputProperties.length > 3 ? (
-              <div className="flex flex-row-reverse">
-                <button
-                  onClick={() => setExpandInputs((prev) => !prev)}
-                  className="text-semantic-accent-hover !underline product-body-text-4-medium"
-                >
-                  {exapndInputs ? "Less" : "More"}
-                </button>
+        {enableEdit ? (
+          <Form.Root {...dataConnectorInputForm}>
+            <form
+              onSubmit={dataConnectorInputForm.handleSubmit(
+                onSubmitDataConnectorInput
+              )}
+            >
+              <div className="mb-3 flex flex-row justify-between">
+                <Icons.ArrowLeft
+                  className="my-auto h-5 w-5 stroke-slate-500"
+                  onClick={() => {
+                    setEnableEdit(!enableEdit);
+                    dataConnectorInputForm.reset();
+                  }}
+                />
+                <div>
+                  <Button variant="primary" type="submit" size="sm">
+                    Save
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-col space-y-3">
+                <Form.Field
+                  control={dataConnectorInputForm.control}
+                  name="key"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item className="w-[318px]">
+                        <Form.Label className="!font-sans !text-base !font-semibold">
+                          Key
+                        </Form.Label>
+                        <Form.Control className="h-8">
+                          <Input.Root className="!px-[9px] !py-1.5">
+                            <Input.Core
+                              {...field}
+                              type="text"
+                              value={field.value ?? ""}
+                              autoComplete="off"
+                              className="!h-5 !text-sm"
+                              placeholder="prompt"
+                            />
+                          </Input.Root>
+                        </Form.Control>
+                        <Form.Message />
+                      </Form.Item>
+                    );
+                  }}
+                />
+                <Form.Field
+                  control={dataConnectorInputForm.control}
+                  name="value"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item className="w-[318px]">
+                        <Form.Label className="!font-sans !text-base !font-semibold">
+                          Value
+                        </Form.Label>
+                        <Form.Control>
+                          <Textarea
+                            {...field}
+                            value={field.value ?? ""}
+                            autoComplete="off"
+                            className="!h-[72px] resize-none !text-sm"
+                          />
+                        </Form.Control>
+                        <Form.Message />
+                      </Form.Item>
+                    );
+                  }}
+                />
+              </div>
+            </form>
+          </Form.Root>
+        ) : (
+          <>
+            {aiTaskNotSelected ? (
+              <div className="w-[232px] rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
+                <p className="text-semantic-fg-primary product-body-text-3-regular">
+                  Please select AI task for this connector
+                </p>
               </div>
             ) : null}
-          </div>
-        ) : null}
-        {outputProperties.length > 0 ? (
-          <div className="mb-1 flex flex-col">
-            <div className="mb-1 product-body-text-4-medium">Outputs</div>
-            <div className="mb-1 flex flex-col gap-y-1">
-              {collapsedOutputProperties.map((property) => {
-                return (
-                  <div
-                    key={property.title ? property.title : property.path}
-                    className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
-                  >
-                    <div className="flex flex-row gap-x-2">
-                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-                        {property.path?.split(".").pop()}
-                      </p>
-                    </div>
+            {aiTaskNotSelected ? null : (
+              <div className="mb-1 product-body-text-4-medium">Inputs</div>
+            )}
+            {inputProperties.length > 0 ? (
+              <div className="mb-1 flex flex-col gap-y-1">
+                {collapsedInputProperties.map((property) => {
+                  console.log(data.component.configuration.input);
+                  return (
+                    <InputPropertyItem
+                      key={property.title ? property.title : property.path}
+                      property={property}
+                      nodeId={id}
+                      connectorConfiguration={
+                        data.component.configuration.input
+                      }
+                    />
+                  );
+                })}
+                {inputProperties.length > 3 ? (
+                  <div className="flex flex-row-reverse">
+                    <button
+                      onClick={() => setExpandInputs((prev) => !prev)}
+                      className="text-semantic-accent-hover !underline product-body-text-4-medium"
+                    >
+                      {exapndInputs ? "Less" : "More"}
+                    </button>
                   </div>
-                );
-              })}
-            </div>
-            {outputProperties.length > 3 ? (
-              <div className="flex flex-row-reverse">
-                <button
-                  onClick={() => setExpandInputs((prev) => !prev)}
-                  className="text-semantic-accent-hover !underline product-body-text-4-medium"
-                >
-                  {exapndInputs ? "Less" : "More"}
-                </button>
+                ) : null}
               </div>
             ) : null}
-          </div>
-        ) : null}
+            {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" ? (
+              testModeEnabled ? (
+                <div className="mb-3 flex flex-col space-y-3">
+                  {Object.entries(data.component.configuration.input).map(
+                    ([key, value]) => {
+                      return (
+                        <div key={key} className="flex flex-col space-y-1">
+                          <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                            {key}
+                          </p>
+                          <div className="min-h-[32px] rounded-sm bg-semantic-bg-primary px-2 py-1 text-semantic-fg-primary"></div>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              ) : (
+                <div className="mb-3 flex flex-col">
+                  <div className="mb-3 flex flex-col space-y-4">
+                    {Object.entries(
+                      data.component.configuration.input as Record<string, any>
+                    ).map(([key, value]) => {
+                      const reference =
+                        extractPipelineComponentReferenceFromString({
+                          key,
+                          value: value.value,
+                          currentPath: [],
+                          nodeId: id,
+                        });
+
+                      return (
+                        <div key={key} className="flex flex-col">
+                          <div className="flex flex-row items-center justify-between">
+                            <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
+                              {key}
+                            </div>
+                            <div className="my-auto flex flex-row gap-x-4">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onEditDataConnectorInput(key);
+                                  setPrevFieldKey(key);
+                                }}
+                              >
+                                <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDeleteDataConnectorInput(key);
+                                }}
+                              >
+                                <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
+                              </button>
+                            </div>
+                          </div>
+                          <div>
+                            {reference?.type === "singleCurlyBrace" ? (
+                              <Tag
+                                className="gap-x-1.5"
+                                variant="lightBlue"
+                                size="md"
+                              >
+                                {reference.referenceValue.withoutCurlyBraces}
+                              </Tag>
+                            ) : (
+                              reference?.referenceValues.map(
+                                (referenceValue) => (
+                                  <Tag
+                                    key={referenceValue.withCurlyBraces}
+                                    className="gap-x-1.5"
+                                    variant="lightBlue"
+                                    size="md"
+                                  >
+                                    {referenceValue.withoutCurlyBraces}
+                                  </Tag>
+                                )
+                              )
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Button
+                    className="flex w-[232px]"
+                    variant="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEnableEdit(!enableEdit);
+                    }}
+                  >
+                    Add Field
+                    <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+                  </Button>
+                </div>
+              )
+            ) : null}
+            {aiTaskNotSelected ? null : (
+              <div className="mb-1 product-body-text-4-medium">Outputs</div>
+            )}
+
+            {outputProperties.length > 0 ? (
+              <div className="mb-1 flex flex-col">
+                <div className="mb-1 flex flex-col gap-y-1">
+                  {collapsedOutputProperties.map((property) => {
+                    return (
+                      <div
+                        key={property.title ? property.title : property.path}
+                        className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
+                      >
+                        <div className="flex flex-row gap-x-2">
+                          <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
+                            {property.path?.split(".").pop()}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {outputProperties.length > 3 ? (
+                  <div className="flex flex-row-reverse">
+                    <button
+                      onClick={() => setExpandInputs((prev) => !prev)}
+                      className="text-semantic-accent-hover !underline product-body-text-4-medium"
+                    >
+                      {exapndInputs ? "Less" : "More"}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </>
+        )}
       </div>
       <CustomHandle type="target" position={Position.Left} id={id} />
       <CustomHandle type="source" position={Position.Right} id={id} />
@@ -305,6 +609,8 @@ const InputPropertyItem = (props: {
   const propertyValue = property.path
     ? dot.getter(connectorConfiguration, property.path)
     : null;
+
+  console.log(propertyValue);
 
   const reference = extractPipelineComponentReferenceFromString({
     value: propertyValue,

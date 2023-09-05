@@ -1,28 +1,28 @@
 import { Edge, Node } from "reactflow";
 import { NodeData } from "./type";
 import { RawPipelineComponent } from "@instill-ai/toolkit";
+import { recursivelyParseInt } from "./recursivelyParseInt";
 
-export function constructPipelineRecipe(
-  nodes: Node<NodeData>[],
-  edges: Edge[]
-) {
+export function constructPipelineRecipe(nodes: Node<NodeData>[]) {
   const components: RawPipelineComponent[] = [];
 
   for (const node of nodes) {
     if (node.data.nodeType === "start") {
       components.push({
-        ...node.data.component,
         id: "start",
         resource_name: "",
+        configuration: recursivelyParseInt(node.data.component.configuration),
+        definition_name: node.data.component.definition_name,
       });
       continue;
     }
 
     if (node.data.nodeType === "end") {
       components.push({
-        ...node.data.component,
         id: "end",
         resource_name: "",
+        configuration: recursivelyParseInt(node.data.component.configuration),
+        definition_name: node.data.component.definition_name,
       });
       continue;
     }
@@ -32,8 +32,10 @@ export function constructPipelineRecipe(
     }
 
     components.push({
-      ...node.data.component,
       id: node.id,
+      resource_name: node.data.component.resource_name,
+      configuration: recursivelyParseInt(node.data.component.configuration),
+      definition_name: node.data.component.definition_name,
     });
   }
 

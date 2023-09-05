@@ -14,6 +14,8 @@ import {
   extractReferencesFromConfiguration,
 } from "./extractReferencesFromConfiguration";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
+import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
+import { recursivelyParseInt } from "./recursivelyParseInt";
 
 export const BlockchainFormSchema = z.object({
   images: z.string().nullable(),
@@ -71,6 +73,9 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   }, [configuration, reset]);
 
   function onSubmit(data: z.infer<typeof BlockchainFormSchema>) {
+    let modifiedData = recursivelyReplaceNullWithUndefined(data);
+    modifiedData = recursivelyParseInt(modifiedData);
+
     const newNodes = nodes.map((node) => {
       if (
         node.id === selectedConnectorNodeId &&
@@ -83,7 +88,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             component: {
               ...node.data.component,
               configuration: {
-                input: data,
+                input: modifiedData,
               },
             },
           },

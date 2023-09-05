@@ -21,7 +21,7 @@ import {
   useUserPipeline,
 } from "@instill-ai/toolkit";
 import { constructPipelineRecipe } from "./constructPipelineRecipe";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
@@ -94,40 +94,27 @@ export const FlowControl = (props: FlowControlProps) => {
     accessToken,
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName: `pipelines/${id}`,
-    accessToken,
-    enabled: !!id && enableQuery && !pipelineIsNew,
-  });
-
   const updateUserPipeline = useUpdateUserPipeline();
   const createUserPipeline = useCreateUserPipeline();
 
   const [isSaving, setIsSaving] = useState(false);
 
   async function handleSavePipeline() {
-    if (!pipelineId) {
-      toast({
-        title: "Pipeline ID not set",
-        description:
-          "The pipeline ID should be set before saving the pipeline.",
-        variant: "alert-error",
-        size: "large",
-      });
+    if (!user.isSuccess) {
       return;
     }
 
-    if (!user.isSuccess) {
+    if (!pipelineId) {
       return;
     }
 
     setIsSaving(true);
 
-    if (pipeline.isSuccess) {
+    if (!pipelineIsNew) {
       const payload: UpdateUserPipelinePayload = {
-        name: `pipelines/${pipelineId}`,
+        name: `${user.data.name}/pipelines/${pipelineId}`,
         description: pipelineDescription ?? undefined,
-        recipe: constructPipelineRecipe(nodes, edges),
+        recipe: constructPipelineRecipe(nodes),
       };
 
       try {
@@ -166,7 +153,7 @@ export const FlowControl = (props: FlowControlProps) => {
     const payload: CreateUserPipelinePayload = {
       id: pipelineId,
       description: pipelineDescription ?? undefined,
-      recipe: constructPipelineRecipe(nodes, edges),
+      recipe: constructPipelineRecipe(nodes),
     };
 
     try {
@@ -178,7 +165,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
       setPipelineUid(res.pipeline.uid);
 
-      router.push(`/pipelines/${pipelineId}`, undefined, {
+      await router.push(`/pipelines/${pipelineId}`, undefined, {
         shallow: true,
       });
 
@@ -246,6 +233,16 @@ export const FlowControl = (props: FlowControlProps) => {
         </Button>
         <Button
           onClick={() => {
+            if (pipelineIsNew) {
+              toast({
+                title: "Pipeline is not saved",
+                description: "Please save the pipeline before testing it.",
+                variant: "alert-error",
+                size: "large",
+              });
+              return;
+            }
+
             updateTestModeEnabled((prev) => !prev);
             updateSelectedConnectorNodeId(() => null);
             updateSelectResourceDialogIsOpen(() => false);
@@ -315,6 +312,9 @@ export const FlowControl = (props: FlowControlProps) => {
                 break;
               case "CONNECTOR_TYPE_DATA":
                 componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
+                configuration = {
+                  input: {},
+                };
                 break;
               case "CONNECTOR_TYPE_OPERATOR":
                 componentType = "COMPONENT_TYPE_OPERATOR";
@@ -340,7 +340,7 @@ export const FlowControl = (props: FlowControlProps) => {
                   definition_name: connectorResource.connector_definition.name,
                   configuration: configuration ? configuration : {},
                   type: componentType,
-                  definition: connectorResource.connector_definition,
+                  connector_definition: connectorResource.connector_definition,
                 },
               },
               position: reactFlowInstance.project({

@@ -57,7 +57,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
         if (prevFieldKey) {
-          delete node.data.component.configuration.body[prevFieldKey];
+          delete node.data.component.configuration.metadata[prevFieldKey];
         }
 
         node.data = {
@@ -66,12 +66,14 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
             ...node.data.component,
             configuration: {
               ...node.data.component.configuration,
-              body: {
-                ...node.data.component.configuration.body,
+              metadata: {
+                ...node.data.component.configuration.metadata,
                 [formData.key]: {
                   title: formData.title,
-                  value: formData.value,
                 },
+              },
+              input: {
+                [formData.key]: formData.value,
               },
             },
           },
@@ -107,10 +109,10 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     });
   };
 
-  const onDeleteField = (key: string) => {
+  function onDeleteField(key: string) {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
-        delete node.data.component.configuration.body[key];
+        delete node.data.component.configuration.metadata[key];
 
         node.data = {
           ...node.data,
@@ -136,16 +138,16 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
     const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
-  };
+  }
 
-  const onEditField = (key: string) => {
+  function onEditField(key: string) {
     form.reset({
-      title: data.component.configuration.body[key].title,
-      value: data.component.configuration.body[key].value,
+      title: data.component.configuration.metadata[key].title,
+      value: data.component.configuration.metadata[key].value,
       key: key,
     });
     setEnableEdit(true);
-  };
+  }
 
   return (
     <>
@@ -257,11 +259,11 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
           </Form.Root>
         ) : (
           <div className="flex flex-col gap-y-4">
-            {Object.entries(data.component.configuration.body).map(
+            {Object.entries(data.component.configuration.input).map(
               ([key, value]) => {
                 const reference = extractPipelineComponentReferenceFromString({
                   key,
-                  value: value.value,
+                  value: value,
                   currentPath: [],
                   nodeId: "end",
                 });
@@ -270,7 +272,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   <div key={key} className="flex flex-col">
                     <div className="mb-2 flex flex-row items-center justify-between">
                       <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-                        {value.title}
+                        {key}
                       </div>
                       <div className="my-auto flex flex-row gap-x-4">
                         <button

@@ -18,7 +18,7 @@ export function extractPipelineComponentReferenceFromString({
 
   // get reference value in the double curly braces
   const doubleCurlyBracesRegex = /\{\{([^{}]+)\}\}/gm;
-  const doubleCurlyBracesMatchs = value.match(doubleCurlyBracesRegex);
+  const doubleCurlyBracesMatchs = String(value).match(doubleCurlyBracesRegex);
   if (!doubleCurlyBracesMatchs) {
     const singleCurlyBracesRegex = /\{([^{}]+)\}/gm;
 

@@ -189,7 +189,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     setFieldErrors(null);
 
     const payload: CreateUserConnectorResourcePayload = {
-      id: `connector-resources/${fieldValues.id}` as string,
+      id: fieldValues.id as string,
       connector_definition_name: dataDefinition.name,
       description: fieldValues.description as string,
       configuration: stripValues.configuration,

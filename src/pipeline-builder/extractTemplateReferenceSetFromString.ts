@@ -1,4 +1,3 @@
-import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { ReferenceValueSet } from "./extractReferencesFromConfiguration";
 
 export type TemplateReference = {
@@ -24,6 +23,7 @@ export function extractTemplateReferenceSetFromString(
   const singleCurlyBraceReferences: TemplateReference[] = [];
   let doubleCurlyBraceReferenceCount = 0;
   const doubleCurlyBraceReferences: TemplateReference[] = [];
+  let subsituteValue = value;
 
   const doubleCurlyBracesRegex = /\{\{([^{}]+)\}\}/gm;
   const doubleCurlyBracesMatchs = value.match(doubleCurlyBracesRegex);
@@ -38,11 +38,12 @@ export function extractTemplateReferenceSetFromString(
         },
       });
       doubleCurlyBraceReferenceCount++;
+      subsituteValue = subsituteValue.replaceAll(match, "");
     }
   }
 
   const singleCurlyBracesRegex = /\{([^{}]+)\}/gm;
-  const singleCurlyBracesMatchs = value.match(singleCurlyBracesRegex);
+  const singleCurlyBracesMatchs = subsituteValue.match(singleCurlyBracesRegex);
 
   if (singleCurlyBracesMatchs) {
     for (const match of singleCurlyBracesMatchs) {

@@ -75,11 +75,11 @@ const PipelineBuilderPage: FC & {
           component: {
             id: "start",
             type: "COMPONENT_TYPE_OPERATOR",
-            configuration: { body: {} },
+            configuration: { metadata: {} },
             resource_name: "",
             resource: null,
             definition_name: "operator-definitions/start-operator",
-            definition: null,
+            operator_definition: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -102,12 +102,13 @@ const PipelineBuilderPage: FC & {
             id: "end",
             type: "COMPONENT_TYPE_OPERATOR",
             configuration: {
-              body: {},
+              metadata: {},
+              input: {},
             },
             resource_name: "",
             resource: null,
             definition_name: "operator-definitions/end-operator",
-            definition: null,
+            operator_definition: null,
           },
         },
         position: { x: 0, y: 0 },
@@ -141,7 +142,7 @@ const PipelineBuilderPage: FC & {
   }, [pipelineIsNew, updateEdges, updateNodes]);
 
   const pipeline = useUserPipeline({
-    enabled: user.isSuccess && !!id && !pipelineIsNew,
+    enabled: !!id && !pipelineIsNew,
     pipelineName: user.isSuccess
       ? id
         ? `${user.data.name}/pipelines/${id}`
@@ -199,6 +200,8 @@ const PipelineBuilderPage: FC & {
       },
     });
 
+    console.log(initialData);
+
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
         updateNodes(() => graphData.nodes);
@@ -223,67 +226,6 @@ const PipelineBuilderPage: FC & {
 
     return false;
   }, [pipelineIsNew]);
-
-  /* -------------------------------------------------------------------------
-   * Update the nodes and edges with up-to-date state
-   * -----------------------------------------------------------------------*/
-
-  // useEffect(() => {
-  //   updateNodes((prev) => {
-  //     const newNodes = [];
-
-  //     for (const node of prev) {
-  //       if (
-  //         node.data.nodeType === "start" ||
-  //         node.data.nodeType === "end" ||
-  //         node.data.nodeType === "empty"
-  //       ) {
-  //         newNodes.push(node);
-  //         continue;
-  //       }
-
-  //       if (node.data.connector.connector_type === "CONNECTOR_TYPE_AI") {
-  //         const targetAIName = node.data.connector.name;
-  //         const ai = aisWithWatchState.find((ai) => ai.name === targetAIName);
-  //         if (ai) {
-  //           const newAINode = node;
-  //           newAINode.data = {
-  //             nodeType: "connector",
-  //             connector: ai,
-  //           };
-  //           newNodes.push(newAINode);
-  //         }
-  //         continue;
-  //       }
-
-  //       if (
-  //         node.data.connector.connector_type === "CONNECTOR_TYPE_BLOCKCHAIN"
-  //       ) {
-  //         const targetBlockchainName = node.data.connector.name;
-  //         const blockchain = blockchainsWithWatchState.find(
-  //           (ai) => ai.name === targetBlockchainName
-  //         );
-  //         if (blockchain) {
-  //           const newBlockchainNode = node;
-  //           newBlockchainNode.data = {
-  //             nodeType: "connector",
-  //             connector: blockchain,
-  //           };
-  //           newNodes.push(newBlockchainNode);
-  //         }
-  //         continue;
-  //       }
-  //     }
-
-  //     return newNodes;
-  //   });
-  // }, [
-  //   aisWithWatchState,
-  //   sourcesWithWatchState,
-  //   destinationsWithWatchState,
-  //   blockchainsWithWatchState,
-  //   updateNodes,
-  // ]);
 
   return (
     <>

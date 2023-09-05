@@ -42,7 +42,7 @@ export type PipelineStartComponent = {
   resource: Nullable<ConnectorResource>;
   type: PipelineComponentType;
   definition_name: string;
-  definition: Nullable<OperatorDefinition>;
+  operator_definition: Nullable<OperatorDefinition>;
   configuration: Record<
     string,
     Record<
@@ -58,11 +58,8 @@ export type PipelineEndComponent = {
   resource: Nullable<ConnectorResource>;
   type: PipelineComponentType;
   definition_name: string;
-  definition: Nullable<OperatorDefinition>;
-  configuration: Record<
-    string,
-    Record<string, { title: string; value: string }>
-  >;
+  operator_definition: Nullable<OperatorDefinition>;
+  configuration: Record<string, Record<string, any>>;
 };
 
 export type PipelineComponentType =
@@ -78,7 +75,7 @@ export type PipelineConnectorComponent = {
   resource: Nullable<ConnectorResource>;
   type: PipelineComponentType;
   definition_name: string;
-  definition: Nullable<ConnectorDefinition>;
+  connector_definition: Nullable<ConnectorDefinition>;
   configuration: Record<string, any>;
 };
 

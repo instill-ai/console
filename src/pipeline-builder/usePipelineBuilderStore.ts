@@ -15,7 +15,7 @@ import {
 
 import { NodeData } from "./type";
 import { Nullable } from "@instill-ai/toolkit";
-import { StartOperatorInputBodyValue } from "./useStartOperatorTestModeInputForm";
+import { StartOperatorInputBodyValue } from "./use-node-input-fields/type";
 
 export type PipelineBuilderState = {
   pipelineUid: Nullable<string>;
