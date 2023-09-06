@@ -14,9 +14,9 @@ import {
 } from "reactflow";
 
 import { NodeData } from "./type";
-import { Nullable } from "@instill-ai/toolkit";
-import { StartOperatorInputBodyValue } from "./use-node-input-fields/type";
+import { Nullable, TriggerUserPipelineResponse } from "@instill-ai/toolkit";
 import { devtools } from "zustand/middleware";
+import { OpenAPIV3 } from "openapi-types";
 
 export type PipelineBuilderState = {
   pipelineUid: Nullable<string>;
@@ -33,7 +33,8 @@ export type PipelineBuilderState = {
   selectResourceDialogIsOpen: boolean;
   expandAllNodes: boolean;
   testModeEnabled: boolean;
-  startOperatorInputData: Nullable<StartOperatorInputBodyValue>;
+  testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
+  pipelineOpenAPISchema: Nullable<OpenAPIV3.Document>;
 };
 
 export type PipelineBuilderAction = {
@@ -57,10 +58,14 @@ export type PipelineBuilderAction = {
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateExpandAllNodes: (fn: (prev: boolean) => boolean) => void;
   updateTestModeEnabled: (fn: (prev: boolean) => boolean) => void;
-  updateStartOperatorInputData: (
+  updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<StartOperatorInputBodyValue>
-    ) => Nullable<StartOperatorInputBodyValue>
+      prev: Nullable<TriggerUserPipelineResponse>
+    ) => Nullable<TriggerUserPipelineResponse>
+  ) => void;
+
+  updatePipelineOpenAPISchema: (
+    fn: (prev: Nullable<OpenAPIV3.Document>) => Nullable<OpenAPIV3.Document>
   ) => void;
 };
 
@@ -81,7 +86,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   selectResourceDialogIsOpen: false,
   expandAllNodes: false,
   testModeEnabled: false,
-  startOperatorInputData: null,
+  testModeTriggerResponse: null,
+  pipelineOpenAPISchema: null,
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
@@ -201,15 +207,25 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           testModeEnabled: fn(state.testModeEnabled),
         };
       }),
-    updateStartOperatorInputData: (
+    updateTestModeTriggerResponse: (
       fn: (
-        prev: Nullable<StartOperatorInputBodyValue>
-      ) => Nullable<StartOperatorInputBodyValue>
+        prev: Nullable<TriggerUserPipelineResponse>
+      ) => Nullable<TriggerUserPipelineResponse>
     ) =>
       set((state) => {
         return {
           ...state,
-          startOperatorInputData: fn(state.startOperatorInputData),
+          testModeTriggerResponse: fn(state.testModeTriggerResponse),
+        };
+      }),
+
+    updatePipelineOpenAPISchema: (
+      fn: (prev: Nullable<OpenAPIV3.Document>) => Nullable<OpenAPIV3.Document>
+    ) =>
+      set((state) => {
+        return {
+          ...state,
+          pipelineOpenAPISchema: fn(state.pipelineOpenAPISchema),
         };
       }),
   }))

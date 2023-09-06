@@ -2,18 +2,14 @@ import cn from "clsx";
 import React, { Dispatch, ReactElement, SetStateAction } from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
 import { Nullable } from "@instill-ai/toolkit";
-
-export type StartOperatorInputTypes =
-  | "text"
-  | "image"
-  | "number"
-  | "audio"
-  | "boolean";
+import { StartOperatorInputSingularType } from "pipeline-builder/type";
 
 export type StartNodeInputTypeProps = {
-  type: StartOperatorInputTypes;
-  selectedType: Nullable<StartOperatorInputTypes>;
-  setSelectedType: Dispatch<SetStateAction<Nullable<StartOperatorInputTypes>>>;
+  type: StartOperatorInputSingularType;
+  selectedType: Nullable<StartOperatorInputSingularType>;
+  setSelectedType: Dispatch<
+    SetStateAction<Nullable<StartOperatorInputSingularType>>
+  >;
 };
 
 export const StartNodeInputType = ({

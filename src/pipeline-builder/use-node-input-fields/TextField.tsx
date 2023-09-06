@@ -1,7 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { Form, Input } from "@instill-ai/design-system";
 
-export const StringField = (props: {
+export const TextField = (props: {
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   fieldKey: string;
   title: string;

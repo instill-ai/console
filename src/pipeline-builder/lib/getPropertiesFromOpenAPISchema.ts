@@ -1,7 +1,8 @@
 import { OpenAPIV3 } from "openapi-types";
 
-export type ConnectorNodeProperty = OpenAPIV3.NonArraySchemaObject & {
+export type InstillAIOpenAPIProperty = OpenAPIV3.NonArraySchemaObject & {
   path?: string;
+  instillFormat?: string;
 };
 
 export function getPropertiesFromOpenAPISchema(
@@ -9,7 +10,7 @@ export function getPropertiesFromOpenAPISchema(
   parentKey?: string,
   title?: string
 ) {
-  let properties: ConnectorNodeProperty[] = [];
+  let properties: InstillAIOpenAPIProperty[] = [];
 
   if (schema.type === "object") {
     if (schema.properties) {

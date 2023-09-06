@@ -22,9 +22,13 @@ import {
   extractReferencesFromConfiguration,
   extractPipelineComponentReferenceFromString,
   composeEdgesFromReferences,
+  getPropertiesFromOpenAPISchema,
+  InstillAIOpenAPIProperty,
 } from "../lib";
 import { shallow } from "zustand/shallow";
 import { CustomHandle } from "./CustomHandle";
+import { getPipelineInputOutputSchema } from "pipeline-builder/lib/getPipelineInputOutputSchema";
+import { useEndOperatorTestModeOutputFields } from "pipeline-builder/use-node-output-fields";
 
 export const CreateEndOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -37,6 +41,9 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   edges: state.edges,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
+  testModeEnabled: state.testModeEnabled,
+  testModeTriggerResponse: state.testModeTriggerResponse,
+  pipelineOpenAPISchema: state.pipelineOpenAPISchema,
 });
 
 export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
@@ -44,10 +51,14 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
 
-  const { nodes, updateNodes, updateEdges } = usePipelineBuilderStore(
-    pipelineBuilderSelector,
-    shallow
-  );
+  const {
+    nodes,
+    updateNodes,
+    updateEdges,
+    testModeEnabled,
+    testModeTriggerResponse,
+    pipelineOpenAPISchema,
+  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof CreateEndOperatorInputSchema>>({
     resolver: zodResolver(CreateEndOperatorInputSchema),
@@ -73,6 +84,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                 },
               },
               input: {
+                ...node.data.component.configuration.input,
                 [formData.key]: formData.value,
               },
             },
@@ -82,10 +94,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
-    // updateNodes(() => {
-    //   console.log("updatedddd");
-    //   return newNodes;
-    // });
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -124,10 +133,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
-    // updateNodes(() => {
-    //   console.log("5r");
-    //   return newNodes;
-    // });
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -154,6 +160,11 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     });
     setEnableEdit(true);
   }
+
+  const testModeOutputFields = useEndOperatorTestModeOutputFields(
+    pipelineOpenAPISchema,
+    testModeTriggerResponse ? testModeTriggerResponse.outputs : []
+  );
 
   return (
     <>
@@ -263,6 +274,12 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
               </div>
             </form>
           </Form.Root>
+        ) : testModeEnabled ? (
+          <>
+            <div className="flex min-w-[200px] flex-col gap-y-4">
+              {testModeOutputFields}
+            </div>
+          </>
         ) : (
           <div className="flex flex-col gap-y-4">
             {Object.entries(data.component.configuration.input).map(

@@ -23,7 +23,7 @@ import { CustomHandle } from "./CustomHandle";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-  ConnectorNodeProperty,
+  InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
   getConnectorOpenAPISchema,
   extractPipelineComponentReferenceFromString,
@@ -152,24 +152,24 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       });
     });
 
-    // updateNodes((prev) => {
-    //   return prev.map((node) => {
-    //     if (node.id === id && node.data.nodeType === "connector") {
-    //       return {
-    //         ...node,
-    //         id: newNodeId,
-    //         data: {
-    //           ...node.data,
-    //           component: {
-    //             ...node.data.component,
-    //             id: newNodeId,
-    //           },
-    //         },
-    //       };
-    //     }
-    //     return node;
-    //   });
-    // });
+    updateNodes((prev) => {
+      return prev.map((node) => {
+        if (node.id === id && node.data.nodeType === "connector") {
+          return {
+            ...node,
+            id: newNodeId,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                id: newNodeId,
+              },
+            },
+          };
+        }
+        return node;
+      });
+    });
 
     updateSelectedConnectorNodeId(() => newNodeId);
 
@@ -214,10 +214,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return node;
     });
 
-    // updateNodes(() => {
-    //   console.log("7");
-    //   return newNodes;
-    // });
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -255,10 +252,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return node;
     });
 
-    // updateNodes(() => {
-    //   console.log("6");
-    //   return newNodes;
-    // });
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -448,7 +442,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 {inputProperties.length > 3 ? (
                   <div className="flex flex-row-reverse">
                     <button
-                      onClick={() => setExpandInputs((prev) => !prev)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandInputs((prev) => !prev);
+                      }}
                       className="text-semantic-accent-hover !underline product-body-text-4-medium"
                     >
                       {exapndInputs ? "Less" : "More"}
@@ -599,7 +596,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 };
 
 const InputPropertyItem = (props: {
-  property: ConnectorNodeProperty;
+  property: InstillAIOpenAPIProperty;
   nodeId: string;
   connectorConfiguration: Record<string, any>;
 }) => {
@@ -640,10 +637,6 @@ const InputPropertyValue = (props: {
 }) => {
   const { reference, propertyValue } = props;
 
-  const startOperatorInputData = usePipelineBuilderStore(
-    (state) => state.startOperatorInputData
-  );
-
   const testModeEnabled = usePipelineBuilderStore(
     (state) => state.testModeEnabled
   );
@@ -659,9 +652,7 @@ const InputPropertyValue = (props: {
       ) {
         const inputDataKey =
           reference.referenceValue.withoutCurlyBraces.split(".")[1];
-        const inputDataValue = startOperatorInputData
-          ? startOperatorInputData[inputDataKey]
-          : null;
+        const inputDataValue = "";
 
         return (
           <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
@@ -690,9 +681,7 @@ const InputPropertyValue = (props: {
         let substituteValue = reference.originalValue;
         for (const referenceValue of startReferenceValues) {
           const inputDataKey = referenceValue.withoutCurlyBraces.split(".")[1];
-          const inputDataValue = startOperatorInputData
-            ? startOperatorInputData[inputDataKey]
-            : null;
+          const inputDataValue = "";
           substituteValue = substituteValue.replace(
             referenceValue.withCurlyBraces,
             inputDataValue ? inputDataValue : ""

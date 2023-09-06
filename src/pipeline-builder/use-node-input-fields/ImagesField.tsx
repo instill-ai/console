@@ -4,15 +4,15 @@ import { Nullable } from "@instill-ai/toolkit";
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import { readFileToBinary } from "pipeline-builder/lib";
 
-export const ImageField = (props: {
+export const ImagesField = (props: {
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   fieldKey: string;
   title: string;
 }) => {
   const { form, fieldKey, title } = props;
 
-  const [imageFileUrl, setImageFileUrl] =
-    React.useState<Nullable<string>>(null);
+  const [imageFileURLs, setImageFileURLs] =
+    React.useState<Nullable<string[]>>(null);
 
   return (
     <Form.Field
@@ -28,15 +28,22 @@ export const ImageField = (props: {
             <Form.Control>
               <label
                 htmlFor={`start-operator-${fieldKey}`}
-                className="flex h-[150px] w-full cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
+                className="flex min-h-[110px] w-full cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
               >
-                {imageFileUrl ? (
-                  <img
-                    className="h-full w-full object-contain"
-                    src={imageFileUrl}
-                  />
+                {imageFileURLs ? (
+                  <div className="grid w-full grid-flow-row grid-cols-3 grid-rows-2">
+                    {imageFileURLs
+                      .slice(0, 5)
+                      .map((url) =>
+                        url ? (
+                          <img src={url} className="h-[55px] object-contain" />
+                        ) : (
+                          <></>
+                        )
+                      )}
+                  </div>
                 ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-y-2">
+                  <div className="my-auto flex h-full w-full flex-col items-center justify-center gap-y-2">
                     <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary" />
                     <p className="text-semantic-fg-primary product-body-text-4-regular">
                       Upload Image
@@ -48,13 +55,19 @@ export const ImageField = (props: {
                     id={`start-operator-${fieldKey}`}
                     type="file"
                     accept="images/*"
+                    multiple={true}
+                    // DesignToken-AlphaValueIssue:
                     onChange={async (e) => {
-                      if (e.target.files) {
-                        const binary = await readFileToBinary(
-                          e.target.files[0]
-                        );
-                        field.onChange(binary);
-                        setImageFileUrl(URL.createObjectURL(e.target.files[0]));
+                      if (e.target.files && e.target.files.length > 0) {
+                        const urls: string[] = [];
+                        const binaries: string[] = [];
+                        for (const file of e.target.files) {
+                          const binary = await readFileToBinary(file);
+                          urls.push(URL.createObjectURL(file));
+                          binaries.push(binary);
+                        }
+                        field.onChange(binaries);
+                        setImageFileURLs(urls);
                       }
                     }}
                   />

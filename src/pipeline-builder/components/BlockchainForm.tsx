@@ -12,7 +12,8 @@ import { useEffect } from "react";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
- composeEdgesFromReferences } from "../lib";
+  composeEdgesFromReferences,
+} from "../lib";
 
 export const BlockchainFormSchema = z.object({
   images: z.string().nullable(),
@@ -92,10 +93,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
       return node;
     });
 
-    // updateNodes(() => {
-    //   console.log("8");
-    //   return newNodes;
-    // });
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -429,7 +427,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
               />
               <Form.Field
                 control={form.control}
-                name="custom.license.name"
+                name="custom.license.document"
                 render={({ field }) => {
                   return (
                     <Form.Item>

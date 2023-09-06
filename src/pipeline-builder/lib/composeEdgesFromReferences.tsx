@@ -4,9 +4,8 @@ import {
   DoubleCurlyBraceReference,
   PipelineComponentReference,
   SingleCurlyBraceReference,
-
   getConnectorOpenAPISchema,
-  ConnectorNodeProperty,
+  InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from ".";
 import { NodeData } from "../type";
@@ -38,8 +37,8 @@ export function composeEdgesFromReferences(
       component: node.data.component,
     });
 
-    let inputProperties: ConnectorNodeProperty[] = [];
-    let outputProperties: ConnectorNodeProperty[] = [];
+    let inputProperties: InstillAIOpenAPIProperty[] = [];
+    let outputProperties: InstillAIOpenAPIProperty[] = [];
 
     if (inputSchema) {
       inputProperties = getPropertiesFromOpenAPISchema(inputSchema);
@@ -103,8 +102,13 @@ export function composeEdgesFromReferences(
 
     if (reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
       const referenceIsAvailable = startNodeAvailableRefernces.some(
-        (availableReference) =>
-          availableReference === reference.referenceValue.withoutCurlyBraces
+        (availableReference) => {
+          availableReference ===
+            reference.referenceValue.withoutCurlyBraces.replaceAll(
+              /\[[^\]]+\]/g,
+              ""
+            );
+        }
       );
 
       const hasNoEdgeForThisReference =
@@ -127,7 +131,11 @@ export function composeEdgesFromReferences(
     } else {
       const referenceIsAvailable = otherNodesAvailableReferences.some(
         (availableReference) =>
-          availableReference === reference.referenceValue.withoutCurlyBraces
+          availableReference ===
+          reference.referenceValue.withoutCurlyBraces.replaceAll(
+            /\[[^\]]+\]/g,
+            ""
+          )
       );
 
       const hasNoEdgeForThisReference =
@@ -172,7 +180,8 @@ export function composeEdgesFromReferences(
       if (referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
         const referenceIsAvailable = startNodeAvailableRefernces.some(
           (availableReference) =>
-            availableReference === referenceValue.withoutCurlyBraces
+            availableReference ===
+            referenceValue.withoutCurlyBraces.replaceAll(/\[[^\]]+\]/g, "")
         );
 
         if (referenceIsAvailable) {
@@ -183,7 +192,8 @@ export function composeEdgesFromReferences(
       } else {
         const referenceIsAvailable = otherNodesAvailableReferences.some(
           (availableReference) =>
-            availableReference === referenceValue.withoutCurlyBraces
+            availableReference ===
+            referenceValue.withoutCurlyBraces.replaceAll(/\[[^\]]+\]/g, "")
         );
 
         if (referenceIsAvailable) {

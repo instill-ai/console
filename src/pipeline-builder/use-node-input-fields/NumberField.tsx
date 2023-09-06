@@ -22,7 +22,7 @@ export const NumberField = (props: {
               <Input.Root>
                 <Input.Core
                   {...field}
-                  type="number"
+                  type="text"
                   value={field.value ?? ""}
                   autoComplete="off"
                   // AlphaValueIssue: We still have alpha value issue in

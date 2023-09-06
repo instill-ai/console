@@ -928,7 +928,7 @@ export const AIForm = (props: AIFormProps) => {
       return node;
     });
 
-    // updateNodes(() => newNodes);
+    updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -1560,7 +1560,10 @@ export const AIForm = (props: AIFormProps) => {
               let models: string[] = [];
               let description: Nullable<string> = null;
 
-              switch (form.watch("task")) {
+              // Upon the first render form.watch("task") is undefined
+              const watchTaskData = form.watch("task") ?? configuration.task;
+
+              switch (watchTaskData) {
                 case "TASK_TEXT_GENERATION":
                   models = [
                     "gpt-4",

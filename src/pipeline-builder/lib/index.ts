@@ -9,6 +9,7 @@ export * from "./getAiConnectorDefaultConfiguration";
 export * from "./getBlockchainConnectorDefaultConfiguration";
 export * from "./getConnectorOpenAPISchema";
 export * from "./getPropertiesFromOpenAPISchema";
+export * from "./readFileToBinary";
 export * from "./recursivelyParseInt";
 export * from "./recursivelyReplaceNullWithUndefined";
 export * from "./recursivelyTransformToString";

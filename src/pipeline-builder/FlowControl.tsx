@@ -19,7 +19,8 @@ import {
   useUpdateUserPipeline,
   useUser,
 } from "@instill-ai/toolkit";
-import { constructPipelineRecipe ,
+import {
+  constructPipelineRecipe,
   createGraphLayout,
   getBlockchainConnectorDefaultConfiguration,
   createInitialGraphData,
@@ -111,8 +112,6 @@ export const FlowControl = (props: FlowControlProps) => {
 
     setIsSaving(true);
 
-    console.log("hihi");
-
     if (!pipelineIsNew) {
       const payload: UpdateUserPipelinePayload = {
         name: `${user.data.name}/pipelines/${pipelineId}`,
@@ -143,20 +142,15 @@ export const FlowControl = (props: FlowControlProps) => {
           pipeline: res,
         });
 
-        console.log(nodes);
-
-        // createGraphLayout(nodes, edges)
-        //   .then((graphData) => {
-        //     updateNodes(() => {
-        //       console.log("11");
-        //       return graphData.nodes;
-        //     });
-        //     updateEdges(() => graphData.edges);
-        //     updateSelectResourceDialogIsOpen(() => false);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        createGraphLayout(nodes, edges)
+          .then((graphData) => {
+            updateNodes(() => graphData.nodes);
+            updateEdges(() => graphData.edges);
+            updateSelectResourceDialogIsOpen(() => false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (error) {
         if (isAxiosError(error)) {
           toast({
@@ -394,10 +388,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
             createGraphLayout(newNodes, newEdges)
               .then((graphData) => {
-                updateNodes(() => {
-                  console.log("3");
-                  return graphData.nodes;
-                });
+                updateNodes(() => graphData.nodes);
                 updateEdges(() => graphData.edges);
                 updateSelectResourceDialogIsOpen(() => false);
               })

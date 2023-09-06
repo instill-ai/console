@@ -17,7 +17,10 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "pipeline-builder/usePipelineBuilderStore";
-import { createGraphLayout , createInitialGraphData } from "pipeline-builder/lib";
+import {
+  createGraphLayout,
+  createInitialGraphData,
+} from "pipeline-builder/lib";
 import { NodeData } from "pipeline-builder/type";
 import { PipelineNameForm } from "pipeline-builder/components/PipelineNameForm";
 
@@ -31,6 +34,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
   pipelineIsNew: state.pipelineIsNew,
   selectedConnectorNodeId: state.selectedConnectorNodeId,
+  updatePipelineOpenAPISchema: state.updatePipelineOpenAPISchema,
 });
 
 export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
@@ -46,6 +50,7 @@ const PipelineBuilderPage: FC & {
     updateEdges,
     pipelineIsNew,
     selectedConnectorNodeId,
+    updatePipelineOpenAPISchema,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
@@ -131,10 +136,7 @@ const PipelineBuilderPage: FC & {
 
     createGraphLayout(nodes, edges)
       .then((graphData) => {
-        updateNodes(() => {
-          console.log("jrjrjrjr");
-          return graphData.nodes;
-        });
+        updateNodes(() => graphData.nodes);
         updateEdges(() => graphData.edges);
         setGraphIsInitialized(true);
       })
@@ -204,10 +206,7 @@ const PipelineBuilderPage: FC & {
 
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
-        updateNodes(() => {
-          console.log(graphData.nodes);
-          return graphData.nodes;
-        });
+        updateNodes(() => graphData.nodes);
         updateEdges(() => graphData.edges);
         setGraphIsInitialized(true);
       })
@@ -223,6 +222,11 @@ const PipelineBuilderPage: FC & {
     updateEdges,
     updateNodes,
   ]);
+
+  useEffect(() => {
+    if (!pipeline.isSuccess) return;
+    updatePipelineOpenAPISchema(() => pipeline.data.openapi_schema);
+  }, [pipeline.isSuccess, pipeline.data]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
     if (pipelineIsNew) return false;

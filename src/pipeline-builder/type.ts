@@ -43,13 +43,7 @@ export type PipelineStartComponent = {
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
-  configuration: Record<
-    string,
-    Record<
-      string,
-      { title: string; type: "text" | "image" | "number" | "audio" | "boolean" }
-    >
-  >;
+  configuration: Record<string, Record<string, StartOperatorInput>>;
 };
 
 export type PipelineEndComponent = {
@@ -83,3 +77,30 @@ export type PipelineComponent =
   | PipelineStartComponent
   | PipelineEndComponent
   | PipelineConnectorComponent;
+
+export type StartOperatorBody = Record<string, StartOperatorInput>;
+
+export type StartOperatorInputBodyValue = Record<string, any>;
+
+export type StartOperatorInput = {
+  title: string;
+  type: StartOperatorInputType;
+};
+
+export type StartOperatorInputType =
+  | StartOperatorInputSingularType
+  | StartOperatorInputArrayType;
+
+export type StartOperatorInputSingularType =
+  | "text"
+  | "number"
+  | "boolean"
+  | "audio"
+  | "image";
+
+export type StartOperatorInputArrayType =
+  | "text_array"
+  | "number_array"
+  | "boolean_array"
+  | "audio_array"
+  | "image_array";
