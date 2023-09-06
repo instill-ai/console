@@ -7,15 +7,12 @@ import { Button, Form, Input, Select } from "@instill-ai/design-system";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import { useEffect } from "react";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
-import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
-import { recursivelyParseInt } from "./recursivelyParseInt";
+ composeEdgesFromReferences } from "../lib";
 
 export const BlockchainFormSchema = z.object({
   images: z.string().nullable(),
@@ -73,9 +70,6 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
   }, [configuration, reset]);
 
   function onSubmit(data: z.infer<typeof BlockchainFormSchema>) {
-    let modifiedData = recursivelyReplaceNullWithUndefined(data);
-    modifiedData = recursivelyParseInt(modifiedData);
-
     const newNodes = nodes.map((node) => {
       if (
         node.id === selectedConnectorNodeId &&
@@ -88,7 +82,7 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
             component: {
               ...node.data.component,
               configuration: {
-                input: modifiedData,
+                input: data,
               },
             },
           },
@@ -98,7 +92,10 @@ export const BlockchainForm = (props: BlockchainFormProps) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("8");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 

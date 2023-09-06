@@ -19,7 +19,7 @@ import {
   useUser,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
-import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
+import { recursivelyReplaceNullWithUndefined } from "../lib";
 
 export const AIResourceFormSchema = z
   .object({

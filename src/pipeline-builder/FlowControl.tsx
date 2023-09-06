@@ -1,5 +1,4 @@
 import { isAxiosError } from "axios";
-import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -15,24 +14,28 @@ import {
   Nullable,
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
+  updateUserPipelineMutation,
   useCreateUserPipeline,
   useUpdateUserPipeline,
   useUser,
-  useUserPipeline,
 } from "@instill-ai/toolkit";
-import { constructPipelineRecipe } from "./constructPipelineRecipe";
-import { useEffect, useState } from "react";
+import { constructPipelineRecipe ,
+  createGraphLayout,
+  getBlockchainConnectorDefaultConfiguration,
+  createInitialGraphData,
+  getAiConnectorDefaultConfiguration,
+} from "./lib";
+import { useState } from "react";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { Position, ReactFlowInstance } from "reactflow";
 import { PipelineConnectorComponent } from "./type";
-import { getBlockchainConnectorDefaultConfiguration } from "./getBlockchainConnectorDefaultConfiguration";
-import { getAiConnectorDefaultConfiguration } from "./getAiConnectorDefaultConfiguration";
-import { createGraphLayout } from "./createGraphLayout";
-import { AddConnectorResourceDialog } from "./AddConnectorResourceDialog";
-import { TriggerPipelineSnippetModal } from "./TriggerPipelineSnippetModal";
+import {
+  AddConnectorResourceDialog,
+  TriggerPipelineSnippetModal,
+} from "./components";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -66,8 +69,7 @@ export type FlowControlProps = {
  */
 
 export const FlowControl = (props: FlowControlProps) => {
-  const { accessToken, enableQuery, reactFlowInstance } = props;
-  const router = useRouter();
+  const { accessToken, reactFlowInstance } = props;
   const {
     nodes,
     edges,
@@ -87,7 +89,6 @@ export const FlowControl = (props: FlowControlProps) => {
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
-  const { id } = router.query;
 
   const user = useUser({
     enabled: true,
@@ -110,6 +111,8 @@ export const FlowControl = (props: FlowControlProps) => {
 
     setIsSaving(true);
 
+    console.log("hihi");
+
     if (!pipelineIsNew) {
       const payload: UpdateUserPipelinePayload = {
         name: `${user.data.name}/pipelines/${pipelineId}`,
@@ -118,16 +121,42 @@ export const FlowControl = (props: FlowControlProps) => {
       };
 
       try {
-        await updateUserPipeline.mutateAsync({
+        // const res = await updateUserPipeline.mutateAsync({
+        //   payload,
+        //   accessToken,
+        // });
+
+        const res = await updateUserPipelineMutation({
           payload,
           accessToken,
         });
+
         toast({
           title: "Pipeline is saved",
           variant: "alert-success",
           size: "small",
         });
+
         updatePipelineRecipeIsDirty(() => false);
+
+        const { nodes, edges } = createInitialGraphData({
+          pipeline: res,
+        });
+
+        console.log(nodes);
+
+        // createGraphLayout(nodes, edges)
+        //   .then((graphData) => {
+        //     updateNodes(() => {
+        //       console.log("11");
+        //       return graphData.nodes;
+        //     });
+        //     updateEdges(() => graphData.edges);
+        //     updateSelectResourceDialogIsOpen(() => false);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
       } catch (error) {
         if (isAxiosError(error)) {
           toast({
@@ -165,10 +194,6 @@ export const FlowControl = (props: FlowControlProps) => {
 
       setPipelineUid(res.pipeline.uid);
 
-      await router.push(`/pipelines/${pipelineId}`, undefined, {
-        shallow: true,
-      });
-
       updatePipelineIsNew(() => false);
 
       toast({
@@ -204,6 +229,7 @@ export const FlowControl = (props: FlowControlProps) => {
           className="gap-x-2"
           variant="secondaryGrey"
           size="lg"
+          type="button"
         >
           Save
           {isSaving ? (
@@ -368,7 +394,10 @@ export const FlowControl = (props: FlowControlProps) => {
 
             createGraphLayout(newNodes, newEdges)
               .then((graphData) => {
-                updateNodes(() => graphData.nodes);
+                updateNodes(() => {
+                  console.log("3");
+                  return graphData.nodes;
+                });
                 updateEdges(() => graphData.edges);
                 updateSelectResourceDialogIsOpen(() => false);
               })

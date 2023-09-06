@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { Node, NodeProps, Position } from "reactflow";
-import { StartNodeData } from "./type";
+import { StartNodeData } from "../type";
 import {
   Button,
   ComplicateIcons,
@@ -11,31 +11,26 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import {
-  StartNodeInputType,
-  StartOperatorInputTypes,
-} from "pipeline-builder/StartNodeInputType";
-import {
-  Nullable,
-  useTriggerUserPipeline,
-  useTriggerUserPipelineRelease,
-  useUser,
-} from "@instill-ai/toolkit";
+
+import { Nullable, useTriggerUserPipeline, useUser } from "@instill-ai/toolkit";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
+ composeEdgesFromReferences } from "../lib";
 import { shallow } from "zustand/shallow";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import { CustomHandle } from "./CustomHandle";
-import { useStartOperatorTestModeInputForm } from "./use-node-input-fields";
+import { useStartOperatorTestModeInputForm } from "../use-node-input-fields";
+import {
+  StartNodeInputType,
+  StartOperatorInputTypes,
+} from "./StartNodeInputType";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -142,7 +137,10 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("2");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -181,7 +179,10 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("1");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 

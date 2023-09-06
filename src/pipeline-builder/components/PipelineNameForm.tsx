@@ -11,7 +11,7 @@ import {
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 import * as z from "zod";
 import { useForm } from "react-hook-form";

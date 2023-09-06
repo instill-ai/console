@@ -20,7 +20,6 @@ import {
   TriggeredPipeline,
   PipelinesChart,
   useWatchUserPipelineReleases,
-  useUserPipelineReleases,
   useUser,
 } from "@instill-ai/toolkit";
 

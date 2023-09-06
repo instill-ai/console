@@ -3,8 +3,7 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { AIForm } from "./AIForm";
-import { BlockchainForm } from "./BlockchainForm";
+import { BlockchainForm, AIForm } from "./components";
 import { shallow } from "zustand/shallow";
 import { Icons, Separator } from "@instill-ai/design-system";
 

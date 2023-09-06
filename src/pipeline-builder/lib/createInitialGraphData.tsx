@@ -1,15 +1,15 @@
-import { Edge, Node } from "reactflow";
-import { NodeData } from "./type";
+import { Node } from "reactflow";
+import { NodeData } from "../type";
 import {
   Pipeline,
   PipelineConnectorComponent,
   PipelineOperatorComponent,
 } from "@instill-ai/toolkit";
-import { recursivelyTransformToString } from "./recursivelyTransformToString";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
+  recursivelyTransformToString,
+} from ".";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 
 export type CreateInitialGraphDataProps = {
@@ -86,7 +86,6 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
     }
 
     if (component.type === "COMPONENT_TYPE_CONNECTOR_AI") {
-      console.log(component);
       nodes.push({
         id: component.id,
         type: "connectorNode",
@@ -121,8 +120,6 @@ export function createInitialGraphData(props: CreateInitialGraphDataProps) {
   });
 
   const edges = composeEdgesFromReferences(allReferences, nodes);
-
-  console.log(nodes);
 
   return {
     nodes,

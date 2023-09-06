@@ -1,6 +1,6 @@
-import { Nullable, PipelineComponentType, Spec } from "@instill-ai/toolkit";
+import { Nullable } from "@instill-ai/toolkit";
 import { OpenAPIV3 } from "openapi-types";
-import { PipelineConnectorComponent } from "./type";
+import { PipelineConnectorComponent } from "../type";
 
 export type GetConnectorOpenAPISchemaProps = {
   component: PipelineConnectorComponent;

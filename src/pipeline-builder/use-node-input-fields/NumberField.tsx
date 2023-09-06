@@ -9,6 +9,7 @@ export const NumberField = (props: {
   const { form, fieldKey, title } = props;
   return (
     <Form.Field
+      key={fieldKey}
       control={form.control}
       name={fieldKey}
       render={({ field }) => {

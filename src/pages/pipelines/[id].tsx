@@ -17,10 +17,9 @@ import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "pipeline-builder/usePipelineBuilderStore";
-import { createGraphLayout } from "pipeline-builder/createGraphLayout";
-import { createInitialGraphData } from "pipeline-builder/createInitialGraphData";
+import { createGraphLayout , createInitialGraphData } from "pipeline-builder/lib";
 import { NodeData } from "pipeline-builder/type";
-import { PipelineNameForm } from "pipeline-builder/PipelineNameForm";
+import { PipelineNameForm } from "pipeline-builder/components/PipelineNameForm";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -132,7 +131,10 @@ const PipelineBuilderPage: FC & {
 
     createGraphLayout(nodes, edges)
       .then((graphData) => {
-        updateNodes(() => graphData.nodes);
+        updateNodes(() => {
+          console.log("jrjrjrjr");
+          return graphData.nodes;
+        });
         updateEdges(() => graphData.edges);
         setGraphIsInitialized(true);
       })
@@ -200,11 +202,12 @@ const PipelineBuilderPage: FC & {
       },
     });
 
-    console.log(initialData);
-
     createGraphLayout(initialData.nodes, initialData.edges)
       .then((graphData) => {
-        updateNodes(() => graphData.nodes);
+        updateNodes(() => {
+          console.log(graphData.nodes);
+          return graphData.nodes;
+        });
         updateEdges(() => graphData.edges);
         setGraphIsInitialized(true);
       })

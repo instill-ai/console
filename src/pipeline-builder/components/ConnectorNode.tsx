@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { ConnectorNodeData } from "./type";
+import { ConnectorNodeData } from "../type";
 import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,14 +23,12 @@ import { CustomHandle } from "./CustomHandle";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
-import { getConnectorOpenAPISchema } from "./getConnectorOpenAPISchema";
-import {
   ConnectorNodeProperty,
   getPropertiesFromOpenAPISchema,
-} from "./getPropertiesFromOpenAPISchema";
-import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
+  getConnectorOpenAPISchema,
+  extractPipelineComponentReferenceFromString,
+  composeEdgesFromReferences,
+} from "../lib";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
@@ -44,10 +42,6 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
 export const DataConnectorInputSchema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
   value: z.string().min(1, { message: "Value is required" }),
-});
-
-export const UpdatePipelineIdSchema = z.object({
-  pipelineId: z.string().min(1, { message: "Title is required" }),
 });
 
 const UpdateNodeIdSchema = z.object({
@@ -158,24 +152,24 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       });
     });
 
-    updateNodes((prev) => {
-      return prev.map((node) => {
-        if (node.id === id && node.data.nodeType === "connector") {
-          return {
-            ...node,
-            id: newNodeId,
-            data: {
-              ...node.data,
-              component: {
-                ...node.data.component,
-                id: newNodeId,
-              },
-            },
-          };
-        }
-        return node;
-      });
-    });
+    // updateNodes((prev) => {
+    //   return prev.map((node) => {
+    //     if (node.id === id && node.data.nodeType === "connector") {
+    //       return {
+    //         ...node,
+    //         id: newNodeId,
+    //         data: {
+    //           ...node.data,
+    //           component: {
+    //             ...node.data.component,
+    //             id: newNodeId,
+    //           },
+    //         },
+    //       };
+    //     }
+    //     return node;
+    //   });
+    // });
 
     updateSelectedConnectorNodeId(() => newNodeId);
 
@@ -220,7 +214,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("7");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -258,7 +255,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("6");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -434,7 +434,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             {inputProperties.length > 0 ? (
               <div className="mb-1 flex flex-col gap-y-1">
                 {collapsedInputProperties.map((property) => {
-                  console.log(data.component.configuration.input);
                   return (
                     <InputPropertyItem
                       key={property.title ? property.title : property.path}
@@ -609,8 +608,6 @@ const InputPropertyItem = (props: {
   const propertyValue = property.path
     ? dot.getter(connectorConfiguration, property.path)
     : null;
-
-  console.log(propertyValue);
 
   const reference = extractPipelineComponentReferenceFromString({
     value: propertyValue,

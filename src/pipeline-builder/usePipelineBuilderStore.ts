@@ -16,6 +16,7 @@ import {
 import { NodeData } from "./type";
 import { Nullable } from "@instill-ai/toolkit";
 import { StartOperatorInputBodyValue } from "./use-node-input-fields/type";
+import { devtools } from "zustand/middleware";
 
 export type PipelineBuilderState = {
   pipelineUid: Nullable<string>;
@@ -84,7 +85,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
 };
 
 export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
-  (set, get) => ({
+  devtools((set, get) => ({
     ...pipelineBuilderInitialState,
     init: () => set(() => pipelineBuilderInitialState),
     setPipelineId: (pipelineId: Nullable<string>) =>
@@ -211,5 +212,5 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           startOperatorInputData: fn(state.startOperatorInputData),
         };
       }),
-  })
+  }))
 );

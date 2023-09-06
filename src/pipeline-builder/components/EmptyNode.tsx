@@ -1,7 +1,7 @@
 import { NodeProps, Position } from "reactflow";
-import { NodeData } from "./type";
+import { NodeData } from "../type";
 import { Icons } from "@instill-ai/design-system";
-import { usePipelineBuilderStore } from "./usePipelineBuilderStore";
+import { usePipelineBuilderStore } from "../usePipelineBuilderStore";
 import { CustomHandle } from "./CustomHandle";
 
 export const EmptyNode = ({ id }: NodeProps<NodeData>) => {

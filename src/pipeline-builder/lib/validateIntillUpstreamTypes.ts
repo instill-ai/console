@@ -1,4 +1,4 @@
-import { extractTemplateReferenceSetFromString } from "./extractTemplateReferenceSetFromString";
+import { extractTemplateReferenceSetFromString } from ".";
 
 export type ValidateIntillUpstreamTypes = {
   type: "reference" | "reference_and_string" | "reference_and_number";

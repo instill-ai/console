@@ -18,7 +18,7 @@ import {
   useCreateUserConnectorResource,
   useUser,
 } from "@instill-ai/toolkit";
-import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
+import { recursivelyReplaceNullWithUndefined } from "../lib";
 import { isAxiosError } from "axios";
 
 export const BlockchainResourceFormSchema = z

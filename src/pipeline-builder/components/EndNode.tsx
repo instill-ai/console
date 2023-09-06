@@ -1,5 +1,5 @@
 import { NodeProps, Position } from "reactflow";
-import { EndNodeData } from "./type";
+import { EndNodeData } from "../type";
 import {
   Button,
   Form,
@@ -16,15 +16,15 @@ import { Nullable } from "@instill-ai/toolkit";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
+  extractPipelineComponentReferenceFromString,
+  composeEdgesFromReferences,
+} from "../lib";
 import { shallow } from "zustand/shallow";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import { CustomHandle } from "./CustomHandle";
-import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
 
 export const CreateEndOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -82,7 +82,10 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("updatedddd");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 
@@ -121,7 +124,10 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => {
+    //   console.log("5r");
+    //   return newNodes;
+    // });
 
     const allReferences: PipelineComponentReference[] = [];
 

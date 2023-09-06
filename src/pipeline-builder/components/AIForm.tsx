@@ -23,17 +23,15 @@ import {
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
+} from "../usePipelineBuilderStore";
 import { useEffect } from "react";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-} from "./extractReferencesFromConfiguration";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
-import { validateIntillUpstreamTypes } from "./validateIntillUpstreamTypes";
-import { recursivelyReplaceNullWithUndefined } from "./recursivelyReplaceNullWithUndefined";
-import { recursivelyParseInt } from "./recursivelyParseInt";
-import { recursivelyTransformToString } from "./recursivelyTransformToString";
+  recursivelyReplaceNullWithUndefined,
+  composeEdgesFromReferences,
+  validateIntillUpstreamTypes,
+} from "../lib";
 
 const AISchema = z
   .object({
@@ -930,7 +928,7 @@ export const AIForm = (props: AIFormProps) => {
       return node;
     });
 
-    updateNodes(() => newNodes);
+    // updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
 

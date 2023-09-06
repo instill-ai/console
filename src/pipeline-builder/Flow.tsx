@@ -9,17 +9,19 @@ import {
 } from "reactflow";
 import { shallow } from "zustand/shallow";
 
-import { CustomEdge } from "./CustomEdge";
+import {
+  CustomEdge,
+  ConnectorNode,
+  EmptyNode,
+  EndNode,
+  StartNode,
+} from "./components";
 import { FlowControl } from "./FlowControl";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { Nullable } from "@instill-ai/toolkit";
-import { StartNode } from "./StartNode";
-import { ConnectorNode } from "./ConnectorNode";
-import { EmptyNode } from "./EmptyNode";
-import { EndNode } from "./EndNode";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -58,6 +60,7 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
     enableQuery,
     isLoading,
   } = props;
+
   const {
     nodes,
     edges,

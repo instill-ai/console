@@ -4,13 +4,12 @@ import {
   DoubleCurlyBraceReference,
   PipelineComponentReference,
   SingleCurlyBraceReference,
-} from "./extractReferencesFromConfiguration";
-import { NodeData } from "./type";
-import { getConnectorOpenAPISchema } from "./getConnectorOpenAPISchema";
-import {
+
+  getConnectorOpenAPISchema,
   ConnectorNodeProperty,
   getPropertiesFromOpenAPISchema,
-} from "./getPropertiesFromOpenAPISchema";
+} from ".";
+import { NodeData } from "../type";
 
 export function composeEdgesFromReferences(
   references: PipelineComponentReference[],
