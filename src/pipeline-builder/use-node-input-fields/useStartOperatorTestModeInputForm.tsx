@@ -76,7 +76,7 @@ export const useStartOperatorTestModeInputForm = (props: {
 export function transformStartOperatorBodyToZod(
   body: Nullable<StartOperatorBody>
 ) {
-  const zodSchema: z.ZodObject<any, any, any> = z.object({});
+  let zodSchema: z.ZodObject<any, any, any> = z.object({});
 
   if (!body) return zodSchema;
 
