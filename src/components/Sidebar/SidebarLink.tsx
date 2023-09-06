@@ -16,7 +16,7 @@ export const SidebarLink = (props: SidebarLinkProps) => {
     <Link
       href={href}
       className={cn(
-        "flex flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg",
+        "flex min-w-[280px] flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg",
         {
           "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg":
             hightlighted,

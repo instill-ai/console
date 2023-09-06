@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 import {
   useModels,
   useCreateUpdateDeleteResourceGuard,
-  useWatchModels,
+  useWatchUserModels,
   ModelsTable,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -27,7 +27,7 @@ const ModelPage: FC & {
     accessToken: null,
   });
 
-  const modelsWatchState = useWatchModels({
+  const modelsWatchState = useWatchUserModels({
     enabled: models.isSuccess,
     modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
     accessToken: null,
@@ -51,7 +51,9 @@ const ModelPage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
-            onClick={() => router.push("/model-hub/create")}
+            onClick={() => {
+              if (!enableGuard) router.push("/model-hub/create");
+            }}
           >
             <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
             Add Model
@@ -65,7 +67,6 @@ const ModelPage: FC & {
           }
           isError={models.isError || modelsWatchState.isError}
           isLoading={isLoadingResource}
-          marginBottom="mb-5"
         />
       </div>
     </>

@@ -2,8 +2,6 @@ import { FC, ReactElement } from "react";
 import {
   usePipelines,
   useCreateUpdateDeleteResourceGuard,
-  useWatchPipelines,
-  usePipelineBuilderStore,
   PipelinesTable,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
@@ -15,6 +13,7 @@ import {
 } from "unique-names-generator";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
+import { usePipelineBuilderStore } from "pipeline-builder/usePipelineBuilderStore";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -35,17 +34,6 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const pipelinesWatchState = useWatchPipelines({
-    enabled: pipelines.isSuccess,
-    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
-    accessToken: null,
-  });
-
-  const isLoadingResource =
-    pipelines.isLoading || (pipelines.isSuccess && pipelines.data.length > 0)
-      ? pipelinesWatchState.isLoading
-      : false;
-
   const setPipelineId = usePipelineBuilderStore((state) => state.setPipelineId);
 
   const updatePipelineIsNew = usePipelineBuilderStore(
@@ -65,6 +53,7 @@ const PipelinePage: FC & {
             className="gap-x-2"
             variant="primary"
             size="lg"
+            disabled={enableGuard}
             onClick={() => {
               const randomName = uniqueNamesGenerator({
                 dictionaries: [adjectives, colors, animals],
@@ -82,12 +71,8 @@ const PipelinePage: FC & {
 
         <PipelinesTable
           pipelines={pipelines.data ? pipelines.data : []}
-          pipelinesWatchState={
-            pipelinesWatchState.isSuccess ? pipelinesWatchState.data : {}
-          }
-          isError={pipelines.isError || pipelinesWatchState.isError}
-          marginBottom="mb-5"
-          isLoading={isLoadingResource}
+          isError={pipelines.isError}
+          isLoading={pipelines.isLoading}
           accessToken={null}
         />
       </div>

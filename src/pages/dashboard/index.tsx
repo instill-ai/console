@@ -11,7 +11,6 @@ import {
   getTimeInRFC3339Format,
   statusOptions,
   usePipelines,
-  useWatchPipelines,
   getPipelineTriggersSummary,
   FilterByDay,
   PipelineTriggerCountsLineChart,
@@ -20,6 +19,8 @@ import {
   useTriggeredPipelinesChart,
   TriggeredPipeline,
   PipelinesChart,
+  useWatchUserPipelineReleases,
+  useUser,
 } from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
@@ -81,9 +82,19 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const pipelinesWatchState = useWatchPipelines({
+  const user = useUser({
+    enabled: true,
+    accessToken: null,
+  });
+
+  // Under current design, the state is with pipeline release, so we need to
+  // query all the pipeline releases and filter from the data.
+
+  const pipelinesWatchState = useWatchUserPipelineReleases({
     enabled: pipelines.isSuccess,
-    pipelineNames: pipelines.isSuccess ? pipelines.data.map((p) => p.name) : [],
+    pipelineReleaseNames: pipelines.isSuccess
+      ? pipelines.data.map((p) => p.name)
+      : [],
     accessToken: null,
   });
 

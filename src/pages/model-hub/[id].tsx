@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { shallow } from "zustand/shallow";
 
 import {
-  useDeployModel,
-  useUnDeployModel,
   ChangeModelStateToggle,
   useWarnUnsavedChanges,
   useConfigureModelFormStore,
@@ -12,12 +10,15 @@ import {
   StateLabel,
   ModelTaskLabel,
   ModelDefinitionLabel,
-  useModelReadme,
   ModelConfigurationFields,
   useCreateUpdateDeleteResourceGuard,
-  useWatchModel,
   type ConfigureModelFormStore,
-  useModel,
+  useUserModel,
+  useUser,
+  useWatchUserModel,
+  useUserModelReadme,
+  useDeployUserModel,
+  useUndeployUserModel,
 } from "@instill-ai/toolkit";
 
 import {
@@ -59,15 +60,28 @@ const ModelDetailsPage: FC & {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const model = useModel({
+  const user = useUser({
     enabled: true,
-    modelName: id ? `models/${id}` : null,
     accessToken: null,
   });
 
-  const modelWatchState = useWatchModel({
-    enabled: true,
-    modelName: id ? `models/${id}` : null,
+  const model = useUserModel({
+    enabled: user.isSuccess,
+    modelName: user.isSuccess
+      ? id
+        ? `${user.data?.name}/models/${id}`
+        : null
+      : null,
+    accessToken: null,
+  });
+
+  const modelWatchState = useWatchUserModel({
+    enabled: user.isSuccess,
+    modelName: user.isSuccess
+      ? id
+        ? `${user.data?.name}/models/${id}`
+        : null
+      : null,
     accessToken: null,
   });
 
@@ -75,18 +89,22 @@ const ModelDetailsPage: FC & {
    * Get model card
    * -----------------------------------------------------------------------*/
 
-  const modelReadme = useModelReadme({
-    modelName: `models/${id}`,
+  const modelReadme = useUserModelReadme({
+    modelName: user.isSuccess
+      ? id
+        ? `${user.data?.name}/models/${id}`
+        : null
+      : null,
     accessToken: null,
-    enabled: id ? true : false,
+    enabled: user.isSuccess ? (id ? true : false) : false,
   });
 
   /* -------------------------------------------------------------------------
    * Toggle model state
    * -----------------------------------------------------------------------*/
 
-  const deployModel = useDeployModel();
-  const unDeployModel = useUnDeployModel();
+  const deployUserModel = useDeployUserModel();
+  const undeployUserModel = useUndeployUserModel();
 
   /* -------------------------------------------------------------------------
    * Render
@@ -127,8 +145,8 @@ const ModelDetailsPage: FC & {
           modelWatchState={
             modelWatchState.isSuccess ? modelWatchState.data.state : null
           }
-          switchOn={deployModel}
-          switchOff={unDeployModel}
+          switchOn={deployUserModel}
+          switchOff={undeployUserModel}
           marginBottom="mb-10"
           accessToken={null}
           disabled={enableGuard}
