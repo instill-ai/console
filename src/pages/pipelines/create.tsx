@@ -3,6 +3,7 @@ import { FC, ReactElement } from "react";
 import { env } from "@instill-ai/toolkit";
 
 import { Topbar, Sidebar, PageBase } from "@/components";
+import { Logo } from "@instill-ai/design-system";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -36,7 +37,7 @@ const CreatePipelinePage: FC & {
 CreatePipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>

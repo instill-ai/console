@@ -23,6 +23,7 @@ import {
 } from "pipeline-builder/lib";
 import { NodeData } from "pipeline-builder/type";
 import { PipelineNameForm } from "pipeline-builder/components/PipelineNameForm";
+import { Logo } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
@@ -237,8 +238,11 @@ const PipelineBuilderPage: FC & {
   return (
     <>
       <PageBase>
-        <Topbar>
-          <div className="flex px-3 py-2">
+        <Topbar
+          className="!border-b !border-semantic-bg-line !bg-semantic-bg-base-bg"
+          logo={<Logo variant="colourLogomark" width={38} />}
+        >
+          <div className="flex px-6 py-[18px]">
             <PipelineNameForm accessToken={null} />
           </div>
         </Topbar>

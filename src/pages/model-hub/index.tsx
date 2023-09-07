@@ -6,7 +6,7 @@ import {
   ModelsTable,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Icons, Logo } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 interface GetLayOutProps {
   page: ReactElement;
@@ -78,7 +78,7 @@ export default ModelPage;
 ModelPage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
