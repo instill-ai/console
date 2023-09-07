@@ -14,7 +14,7 @@ export const TextsField = (props: TextsFieldProps) => {
         {title}
       </p>
       <div className="flex flex-col space-y-1">
-        {texts.map((text) => (
+        {texts?.map((text) => (
           <div
             key={text}
             className="flex border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5 text-semantic-fg-primary product-body-text-4-regular"

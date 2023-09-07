@@ -28,9 +28,9 @@ import { useEffect } from "react";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-  recursivelyReplaceNullWithUndefined,
   composeEdgesFromReferences,
   validateIntillUpstreamTypes,
+  recursivelyReplaceNullAndEmptyStringWithUndefined,
 } from "../lib";
 
 const AISchema = z
@@ -905,7 +905,8 @@ export const AIForm = (props: AIFormProps) => {
 
   function onSubmit(data: z.infer<typeof AISchema>) {
     if (!selectedConnectorNodeId) return;
-    const modifiedData = recursivelyReplaceNullWithUndefined(data);
+    const modifiedData =
+      recursivelyReplaceNullAndEmptyStringWithUndefined(data);
 
     const newNodes = nodes.map((node) => {
       if (

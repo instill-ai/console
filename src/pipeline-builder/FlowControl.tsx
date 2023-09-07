@@ -252,7 +252,7 @@ export const FlowControl = (props: FlowControlProps) => {
           )}
         </Button>
         <Button
-          onClick={() => {
+          onClick={async () => {
             if (pipelineIsNew) {
               toast({
                 title: "Pipeline is not saved",
@@ -261,6 +261,10 @@ export const FlowControl = (props: FlowControlProps) => {
                 size: "large",
               });
               return;
+            }
+
+            if (!testModeEnabled) {
+              await handleSavePipeline();
             }
 
             updateTestModeEnabled((prev) => !prev);

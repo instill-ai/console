@@ -42,8 +42,6 @@ export const NumbersField = (props: {
           targetError = undefined;
         }
 
-        console.log(targetError);
-
         return (
           <div className="flex flex-col">
             <Form.Label className="mb-1 text-semantic-fg-primary product-body-text-3-semibold">
@@ -88,6 +86,8 @@ export const NumbersField = (props: {
                           const newTextFieldArray = [...numberFieldsArray];
                           newTextFieldArray.splice(idx, 1);
                           setNumberFieldsArray(newTextFieldArray);
+
+                          console.log(newNumberFieldsValue);
 
                           field.onChange(newNumberFieldsValue);
                         }}

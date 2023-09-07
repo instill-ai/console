@@ -34,7 +34,9 @@ import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
   composeEdgesFromReferences,
-  recursivelyParseInt,
+  recursivelyReplaceNullAndEmptyStringWithUndefined,
+  recursivelyRemoveUndefinedAndNullFromArray,
+  recursiveParseToInt,
 } from "../lib";
 import { shallow } from "zustand/shallow";
 import { CustomHandle } from "./CustomHandle";
@@ -109,6 +111,12 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   ) => {
     if (!user.isSuccess) return;
 
+    const input = recursivelyRemoveUndefinedAndNullFromArray(
+      recursivelyReplaceNullAndEmptyStringWithUndefined(
+        recursiveParseToInt(data)
+      )
+    );
+
     setIsTriggering(true);
 
     useTriggerPipeline.mutate(
@@ -116,8 +124,9 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
         pipelineName: `${user.data.name}/pipelines/${pipelineId}`,
         accessToken: null,
         payload: {
-          inputs: [recursivelyParseInt(data)],
+          inputs: [input],
         },
+        returnTraces: true,
       },
       {
         onSuccess: (data) => {
@@ -305,13 +314,13 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   return (
     <>
-      <div className="relative flex min-w-[246px] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5">
+      <div className="relative flex min-w-[246px] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             Start
           </p>
           {enableEdit ? null : (
-            <Icons.Edit05 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
+            <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
           )}
         </div>
 

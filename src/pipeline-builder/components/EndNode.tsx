@@ -94,6 +94,8 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
+    console.log(newNodes);
+
     updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
@@ -111,6 +113,8 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
     const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
+
+    console.log("2", newNodes);
 
     setEnableEdit(false);
     setPrevFieldKey(null);
@@ -155,7 +159,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
   function onEditField(key: string) {
     form.reset({
       title: data.component.configuration.metadata[key].title,
-      value: data.component.configuration.metadata[key].value,
+      value: data.component.configuration.input[key],
       key: key,
     });
     setEnableEdit(true);
@@ -168,13 +172,13 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   return (
     <>
-      <div className="flex flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5">
+      <div className="flex flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             End
           </p>
           {enableEdit ? null : (
-            <Icons.Edit05 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
+            <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
           )}
         </div>
 
