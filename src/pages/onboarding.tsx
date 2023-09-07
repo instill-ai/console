@@ -8,6 +8,7 @@ import {
   Sidebar,
   PageBase,
 } from "@/components";
+import { Logo } from "@instill-ai/design-system";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -35,7 +36,7 @@ const OnBoardingPage: FC & {
 OnBoardingPage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
