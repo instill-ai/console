@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
-import { Select, SingleSelectOption } from "@instill-ai/design-system";
+import { Logo, Select, SingleSelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
   Nullable,
@@ -288,7 +288,7 @@ const PipelinePage: FC & {
 PipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content contentPadding="py-8 px-16">{page}</PageBase.Content>

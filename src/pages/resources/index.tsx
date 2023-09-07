@@ -22,6 +22,7 @@ import {
   DataTable,
   Dialog,
   Icons,
+  Logo,
   useToast,
 } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
@@ -102,17 +103,25 @@ const PipelinePage: FC & {
       cell: ({ row }) => {
         const definition = row.original.connector_definition;
         return (
-          <div className="flex flex-col">
-            <div className="h-8 w-8 rounded-full bg-semantic-bg-secondary">
+          <div className="flex flex-row gap-x-3">
+            <div className="my-auto flex h-8 w-8 items-center justify-center rounded-full bg-semantic-bg-secondary">
               <ImageWithFallback
                 src={`/icons/${definition.vendor}/${definition.icon}`}
-                width={32}
-                height={32}
+                width={16}
+                height={16}
                 alt={`${definition.title}-icon`}
                 fallbackImg={
                   <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
                 }
               />
+            </div>
+            <div className="group flex cursor-pointer flex-col">
+              <p className="text-semantic-fg-primary product-body-text-3-semibold group-hover:!underline">
+                {row.getValue("id")}
+              </p>
+              <p className="text-[#475467] product-body-text-3-regular">
+                {definition.id}
+              </p>
             </div>
           </div>
         );
@@ -244,7 +253,7 @@ const PipelinePage: FC & {
 PipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>

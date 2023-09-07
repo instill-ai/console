@@ -50,6 +50,10 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     mode: "onBlur",
   });
 
+  const {
+    formState: { isDirty },
+  } = form;
+
   const { pipelineId, setPipelineId, pipelineIsNew, testModeEnabled } =
     usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
@@ -119,12 +123,12 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     <div className="flex w-full pl-4">
       <div className="flex flex-row gap-x-3">
         <Link className="flex flex-row gap-x-3" href="/pipelines">
-          <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-disabled-on-secondary-bg" />
-          <p className="my-auto text-semantic-fg-disabled-on-secondary-bg product-body-text-3-medium">
+          <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
+          <p className="my-auto text-semantic-fg-secondary product-body-text-3-medium">
             Pipelines
           </p>
         </Link>
-        <p className="my-auto pb-0.5 text-semantic-fg-disabled-on-secondary-bg product-headings-heading-6">
+        <p className="my-auto pb-0.5 text-semantic-fg-secondary product-headings-heading-6">
           /
         </p>
         <Form.Root {...form}>
@@ -135,20 +139,31 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
               render={({ field }) => {
                 return (
                   <input
-                    className="w-[360px] bg-transparent py-2 text-semantic-bg-primary product-headings-heading-6 focus:outline-none focus:ring-0"
+                    className="w-[360px] bg-transparent py-2 text-semantic-fg-primary product-body-text-3-semibold focus:outline-none focus:ring-0"
                     {...field}
                     value={field.value ?? "Untitled Pipeline"}
                     type="text"
                     autoComplete="off"
                     onBlur={() => {
                       form.handleSubmit(async (data) => {
-                        if (data.pipelineId) {
+                        if (data.pipelineId && isDirty) {
                           await handleRenamePipeline(data.pipelineId);
                         }
                       })();
                     }}
                     onClick={(e) => e.stopPropagation()}
                     disabled={testModeEnabled}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        form.handleSubmit(async (data) => {
+                          if (data.pipelineId && isDirty) {
+                            await handleRenamePipeline(data.pipelineId);
+                          }
+                        })();
+                      }
+                    }}
                   />
                 );
               }}

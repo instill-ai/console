@@ -139,8 +139,9 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             <Controls />
             <Background
               variant={BackgroundVariant.Dots}
-              gap={16}
-              color="#d1d5db"
+              gap={32}
+              color="#D2D6DB"
+              className="!bg-semantic-bg-alt-primary"
             />
           </ReactFlow>
         </div>

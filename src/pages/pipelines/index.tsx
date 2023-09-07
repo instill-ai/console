@@ -12,7 +12,7 @@ import {
   animals,
 } from "unique-names-generator";
 import { useRouter } from "next/router";
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Icons, Logo } from "@instill-ai/design-system";
 import { usePipelineBuilderStore } from "pipeline-builder/usePipelineBuilderStore";
 
 type GetLayOutProps = {
@@ -83,7 +83,7 @@ const PipelinePage: FC & {
 PipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>

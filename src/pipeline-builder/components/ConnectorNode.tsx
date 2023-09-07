@@ -286,7 +286,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             }
           });
         }}
-        className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-line px-3 py-2.5"
+        className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5"
       >
         <div className="mb-2 flex flex-row gap-x-1">
           <ImageWithFallback
