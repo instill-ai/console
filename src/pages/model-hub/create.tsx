@@ -11,6 +11,7 @@ import {
 } from "@instill-ai/toolkit";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Logo } from "@instill-ai/design-system";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -89,7 +90,7 @@ const CreateModelPage: FC & {
 CreateModelPage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar />
+      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
