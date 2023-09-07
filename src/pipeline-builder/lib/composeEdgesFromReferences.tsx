@@ -102,13 +102,12 @@ export function composeEdgesFromReferences(
 
     if (reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
       const referenceIsAvailable = startNodeAvailableRefernces.some(
-        (availableReference) => {
+        (availableReference) =>
           availableReference ===
-            reference.referenceValue.withoutCurlyBraces.replaceAll(
-              /\[[^\]]+\]/g,
-              ""
-            );
-        }
+          reference.referenceValue.withoutCurlyBraces.replaceAll(
+            /\[[^\]]+\]/g,
+            ""
+          )
       );
 
       const hasNoEdgeForThisReference =

@@ -61,6 +61,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const { toast } = useToast();
 
   const [enableEdit, setEnableEdit] = React.useState(false);
+  const [enableEditName, setEnableEditName] = React.useState(false);
+  const connectorNameEditInputRef = React.useRef<HTMLInputElement>(null);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
 
@@ -128,7 +130,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   }, [outputProperties, exapndOutputs]);
 
   function handleRenameNode(newNodeId: string) {
-    if (newNodeId === id) return;
+    if (newNodeId === id) {
+      setEnableEditName(false);
+      return;
+    }
 
     updateEdges((prev) => {
       return prev.map((edge) => {
@@ -178,6 +183,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       variant: "alert-success",
       size: "small",
     });
+
+    setEnableEditName(false);
   }
 
   function onEditDataConnectorInput(key: string) {
@@ -286,7 +293,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             }
           });
         }}
-        className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5"
+        className="flex flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg"
       >
         <div className="mb-2 flex flex-row gap-x-1">
           <ImageWithFallback
@@ -299,18 +306,20 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             }
           />
           <Form.Root {...updateNodeIdForm}>
-            <form className="my-auto flex flex-1">
+            <form className="my-auto flex">
               <Form.Field
                 control={updateNodeIdForm.control}
                 name="nodeId"
                 render={({ field }) => {
-                  return (
+                  return enableEditName ? (
                     <input
-                      className="w-full bg-transparent p-1 text-semantic-fg-secondary product-body-text-4-medium focus:outline-none focus:ring-0"
                       {...field}
+                      className="flex flex-shrink bg-transparent p-1 text-semantic-fg-secondary product-body-text-4-medium focus:outline-none focus:ring-0"
+                      ref={connectorNameEditInputRef}
                       value={field.value}
                       type="text"
                       autoComplete="off"
+                      disabled={!enableEditName}
                       onBlur={() => {
                         updateNodeIdForm.handleSubmit((data) => {
                           if (data.nodeId) {
@@ -334,11 +343,27 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                         }
                       }}
                     />
+                  ) : (
+                    <p className="p-1 text-semantic-fg-secondary product-body-text-4-medium">
+                      {field.value}
+                    </p>
                   );
                 }}
               />
             </form>
           </Form.Root>
+          {enableEditName ? null : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                connectorNameEditInputRef.current?.focus();
+                setEnableEditName(true);
+              }}
+              type="button"
+            >
+              <Icons.Edit03 className="h-4 w-4 stroke-semantic-fg-secondary" />
+            </button>
+          )}
         </div>
         {enableEdit ? (
           <Form.Root {...dataConnectorInputForm}>

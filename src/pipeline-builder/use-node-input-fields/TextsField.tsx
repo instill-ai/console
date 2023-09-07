@@ -51,7 +51,7 @@ export const TextsField = (props: {
               {textFieldsArray.map((_, idx) => {
                 return (
                   <div
-                    key={`${fieldKey}-${idx}`}
+                    key={`${fieldKey}-test-${idx}`}
                     className="flex w-full flex-row gap-x-2"
                   >
                     <Input.Root className="flex-1">

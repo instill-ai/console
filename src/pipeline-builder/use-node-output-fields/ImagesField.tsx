@@ -1,4 +1,5 @@
 import { Nullable } from "@instill-ai/toolkit";
+import { getImageTypeFromBase64String } from "pipeline-builder/lib/getImageTypeFromBase64";
 
 export type ImagesFieldProps = {
   title: Nullable<string>;
@@ -13,20 +14,21 @@ export const ImagesField = (props: ImagesFieldProps) => {
       <p className="text-semantic-fg-primary product-body-text-3-semibold">
         {title}
       </p>
-      <div className="grid grid-flow-row grid-cols-3 grid-rows-2">
-        {images
-          .slice(0, 5)
-          .map((image, idx) =>
-            image ? (
-              <img
-                alt={`${title}-images-{idx}`}
-                src={image}
-                className="object-contain"
-              />
-            ) : (
-              <></>
-            )
-          )}
+      <div className="flex max-w-[246px] flex-wrap">
+        {images?.slice(0, 5).map((image) => {
+          if (!image) return <></>;
+
+          const imageType = getImageTypeFromBase64String(image);
+
+          return (
+            <img
+              key={image}
+              alt={`${title}-images-{idx}`}
+              src={`data:image/${imageType};base64,${image}`}
+              className="object-contain"
+            />
+          );
+        })}
       </div>
     </div>
   );

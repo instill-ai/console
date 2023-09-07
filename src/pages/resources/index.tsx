@@ -191,8 +191,8 @@ const PipelinePage: FC & {
         searchKey={null}
         isLoading={userConnectorResources.isLoading}
         loadingRows={6}
-        primaryText="Pipelines"
-        secondaryText="Check your pipelines"
+        primaryText="Resources"
+        secondaryText="Check your resources"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -212,8 +212,8 @@ const PipelinePage: FC & {
         searchKey={null}
         isLoading={userConnectorResources.isLoading}
         loadingRows={6}
-        primaryText="Pipelines"
-        secondaryText="Check your pipelines"
+        primaryText="Resources"
+        secondaryText="Check your resources"
       >
         <div className="flex min-h-[300px] w-full flex-row items-center justify-center border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-[18px]">
           <h3 className="text-semantic-fg-primary product-headings-heading-3">

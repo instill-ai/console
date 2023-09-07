@@ -58,7 +58,7 @@ export function useEndOperatorTestModeOutputFields(
           );
           break;
         }
-        case "images": {
+        case "image_array": {
           fields.push(
             <ImagesField key={property.path} title={title} images={value} />
           );

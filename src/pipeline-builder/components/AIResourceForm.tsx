@@ -19,7 +19,7 @@ import {
   useUser,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
-import { recursivelyReplaceNullWithUndefined } from "../lib";
+import { recursivelyReplaceNullAndEmptyStringWithUndefined } from "../lib";
 
 export const AIResourceFormSchema = z
   .object({
@@ -120,7 +120,9 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
       id: data.id,
       connector_definition_name: data.connector_definition_name,
       description: data.description ?? undefined,
-      configuration: recursivelyReplaceNullWithUndefined(data.configuration),
+      configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
+        data.configuration
+      ),
     };
 
     createAIConnectorResource.mutate(
