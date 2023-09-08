@@ -121,10 +121,13 @@ export const AddConnectorResourceDialog = (
               <AIResourceForm
                 aiDefinition={newConnectorDefinition}
                 aiResource={null}
-                setNewConnectorDefinition={setNewConnectorDefinition}
-                setNewConnectorType={setNewConnectorType}
                 onSelectConnectorResource={props.onSelectConnectorResource}
                 accessToken={null}
+                enableBackButton={true}
+                onBack={() => {
+                  setNewConnectorDefinition(null);
+                  setNewConnectorType(null);
+                }}
               />
             ) : null}
             {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
@@ -132,10 +135,13 @@ export const AddConnectorResourceDialog = (
               <BlockchainResourceForm
                 blockchainDefinition={newConnectorDefinition}
                 blockchainResource={null}
-                setNewConnectorDefinition={setNewConnectorDefinition}
-                setNewConnectorType={setNewConnectorType}
                 onSelectConnectorResource={props.onSelectConnectorResource}
                 accessToken={null}
+                enableBackButton={true}
+                onBack={() => {
+                  setNewConnectorDefinition(null);
+                  setNewConnectorType(null);
+                }}
               />
             ) : null}
             {newConnectorType === "CONNECTOR_TYPE_DATA" &&
@@ -143,10 +149,13 @@ export const AddConnectorResourceDialog = (
               <DataResourceForm
                 dataDefinition={newConnectorDefinition}
                 dataResource={null}
-                setNewConnectorDefinition={setNewConnectorDefinition}
-                setNewConnectorType={setNewConnectorType}
                 onSelectConnectorResource={props.onSelectConnectorResource}
                 accessToken={null}
+                enableBackButton={true}
+                onBack={() => {
+                  setNewConnectorDefinition(null);
+                  setNewConnectorType(null);
+                }}
               />
             ) : null}
           </div>

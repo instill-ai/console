@@ -1,3 +1,4 @@
+import cn from "clsx";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -11,14 +12,18 @@ import {
 } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
-  ConnectorResourceType,
   ConnectorResourceWithDefinition,
   Nullable,
+  UpdateUserConnectorResourcePayload,
   getInstillApiErrorMessage,
   useCreateUserConnectorResource,
+  useUpdateUserConnectorResource,
   useUser,
 } from "@instill-ai/toolkit";
-import { recursivelyReplaceNullAndEmptyStringWithUndefined } from "../lib";
+import {
+  recursiveReplaceTargetValue,
+  recursivelyReplaceNullAndEmptyStringWithUndefined,
+} from "../lib";
 import { isAxiosError } from "axios";
 
 export const BlockchainResourceFormSchema = z
@@ -49,27 +54,29 @@ export type BlockchainResourceFormProps = {
   disabledAll?: boolean;
   blockchainResource: Nullable<ConnectorResourceWithDefinition>;
   blockchainDefinition: ConnectorDefinition;
-  setNewConnectorDefinition: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorDefinition>>
-  >;
-  setNewConnectorType: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorResourceType>>
-  >;
   onSelectConnectorResource: (
     connectorResource: ConnectorResourceWithDefinition
   ) => void;
   accessToken: Nullable<string>;
-};
+} & BackButtonProps;
+
+type BackButtonProps =
+  | {
+      enableBackButton: true;
+      onBack: () => void;
+    }
+  | {
+      enableBackButton: false;
+    };
 
 export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
   const {
     disabledAll,
     blockchainResource,
     blockchainDefinition,
-    setNewConnectorDefinition,
-    setNewConnectorType,
     onSelectConnectorResource,
     accessToken,
+    enableBackButton,
   } = props;
 
   const form = useForm<z.infer<typeof BlockchainResourceFormSchema>>({
@@ -88,22 +95,75 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
     accessToken,
   });
 
-  const createBlockchainConnectorResource = useCreateUserConnectorResource();
+  const createBlockchain = useCreateUserConnectorResource();
+  const updateBlockchain = useUpdateUserConnectorResource();
 
   function onSubmit(data: z.infer<typeof BlockchainResourceFormSchema>) {
     if (!user.isSuccess) return;
 
-    const payload = {
-      id: data.id,
-      connector_definition_name: data.connector_definition_name,
+    if (!blockchainResource) {
+      const payload = {
+        id: data.id,
+        connector_definition_name: data.connector_definition_name,
+        description: data.description ?? undefined,
+        configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
+          data.configuration
+        ),
+      };
+
+      createBlockchain.mutate(
+        { payload, userName: user.data.name, accessToken },
+        {
+          onSuccess: ({ connectorResource }) => {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: blockchainDefinition,
+            });
+
+            toast({
+              title: "Successfully create blockchain resource",
+              variant: "alert-success",
+              size: "small",
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title:
+                  "Something went wrong when create the blockchain resource",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title:
+                  "Something went wrong when create the blockchain resource",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+      return;
+    }
+
+    const payload: UpdateUserConnectorResourcePayload = {
+      connectorResourceName: blockchainResource.name,
       description: data.description ?? undefined,
       configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
-        data.configuration
+        recursiveReplaceTargetValue(
+          data.configuration,
+          "*****MASK*****",
+          undefined
+        )
       ),
     };
 
-    createBlockchainConnectorResource.mutate(
-      { payload, userName: user.data.name, accessToken },
+    updateBlockchain.mutate(
+      { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({
@@ -112,7 +172,7 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
           });
 
           toast({
-            title: "Successfully create blockchain resource",
+            title: "Successfully update blockchain resource",
             variant: "alert-success",
             size: "small",
           });
@@ -120,14 +180,14 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
         onError: (error) => {
           if (isAxiosError(error)) {
             toast({
-              title: "Something went wrong when create the blockchain resource",
+              title: "Something went wrong when update the blockchain resource",
               variant: "alert-error",
               size: "large",
               description: getInstillApiErrorMessage(error),
             });
           } else {
             toast({
-              title: "Something went wrong when create the blockchain resource",
+              title: "Something went wrong when update the blockchain resource",
               variant: "alert-error",
               size: "large",
               description: "Please try again later",
@@ -156,7 +216,7 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
                         type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
-                        disabled={disabledAll}
+                        disabled={blockchainResource ? true : disabledAll}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -226,23 +286,24 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
           />
         </div>
         <div className="flex w-full flex-row gap-x-4">
-          <Button
-            type="button"
-            variant="secondaryGrey"
-            size="lg"
-            className="!w-full !flex-1 gap-x-2"
-            onClick={() => {
-              setNewConnectorDefinition(null);
-              setNewConnectorType(null);
-            }}
-          >
-            Back
-          </Button>
+          {enableBackButton ? (
+            <Button
+              type="button"
+              variant="secondaryGrey"
+              size="lg"
+              className="!w-full !flex-1 gap-x-2"
+              onClick={() => {
+                props.onBack();
+              }}
+            >
+              Back
+            </Button>
+          ) : null}
           <Button
             type="submit"
             variant="primary"
             size="lg"
-            className="!w-full !flex-1 gap-x-2"
+            className={cn(enableBackButton ? "!w-full !flex-1" : "ml-auto")}
           >
             Save
           </Button>

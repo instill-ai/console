@@ -1,3 +1,4 @@
+import cn from "clsx";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -11,15 +12,19 @@ import {
 } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
-  ConnectorResourceType,
   ConnectorResourceWithDefinition,
   Nullable,
+  UpdateUserConnectorResourcePayload,
   getInstillApiErrorMessage,
   useCreateUserConnectorResource,
+  useUpdateUserConnectorResource,
   useUser,
 } from "@instill-ai/toolkit";
 import { isAxiosError } from "axios";
-import { recursivelyReplaceNullAndEmptyStringWithUndefined } from "../lib";
+import {
+  recursiveReplaceTargetValue,
+  recursivelyReplaceNullAndEmptyStringWithUndefined,
+} from "../lib";
 
 export const AIResourceFormSchema = z
   .object({
@@ -66,25 +71,27 @@ export type AIResourceFormProps = {
   disabledAll?: boolean;
   aiResource: Nullable<ConnectorResourceWithDefinition>;
   aiDefinition: ConnectorDefinition;
-  setNewConnectorDefinition: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorDefinition>>
-  >;
-  setNewConnectorType: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorResourceType>>
-  >;
   accessToken: Nullable<string>;
   onSelectConnectorResource: (
     connectorResource: ConnectorResourceWithDefinition
   ) => void;
-};
+} & BackButtonProps;
+
+type BackButtonProps =
+  | {
+      enableBackButton: true;
+      onBack: () => void;
+    }
+  | {
+      enableBackButton: false;
+    };
 
 export const AIResourceForm = (props: AIResourceFormProps) => {
   const {
     disabledAll,
     aiResource,
     aiDefinition,
-    setNewConnectorDefinition,
-    setNewConnectorType,
+    enableBackButton,
     accessToken,
     onSelectConnectorResource,
   } = props;
@@ -96,37 +103,93 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
     defaultValues: aiResource
       ? {
           ...aiResource,
-          configuration: {
-            ...aiResource.configuration,
-            server_url: "https://api-model.instill.tech",
-          },
         }
       : {
           connector_definition_name: aiDefinition.name,
         },
   });
 
+  React.useEffect(() => {
+    if (aiResource) {
+      form.reset({
+        ...aiResource,
+      });
+    }
+  }, [aiResource]);
+
   const user = useUser({
     enabled: true,
     accessToken,
   });
 
-  const createAIConnectorResource = useCreateUserConnectorResource();
+  const createAI = useCreateUserConnectorResource();
+  const updateAI = useUpdateUserConnectorResource();
 
   function onSubmit(data: z.infer<typeof AIResourceFormSchema>) {
     if (!user.isSuccess) return;
 
-    const payload = {
-      id: data.id,
-      connector_definition_name: data.connector_definition_name,
+    if (!aiResource) {
+      const payload = {
+        id: data.id,
+        connector_definition_name: data.connector_definition_name,
+        description: data.description ?? undefined,
+        configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
+          data.configuration
+        ),
+      };
+
+      createAI.mutate(
+        { payload, userName: user.data.name, accessToken },
+        {
+          onSuccess: ({ connectorResource }) => {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: aiDefinition,
+            });
+
+            toast({
+              title: "Successfully create ai resource",
+              variant: "alert-success",
+              size: "small",
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when create the ai resource",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when create the ai resource",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+
+      return;
+    }
+
+    const payload: UpdateUserConnectorResourcePayload = {
+      connectorResourceName: aiResource.name,
       description: data.description ?? undefined,
       configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
-        data.configuration
+        recursiveReplaceTargetValue(
+          data.configuration,
+          "*****MASK*****",
+          undefined
+        )
       ),
     };
 
-    createAIConnectorResource.mutate(
-      { payload, userName: user.data.name, accessToken },
+    updateAI.mutate(
+      { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({
@@ -135,7 +198,7 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
           });
 
           toast({
-            title: "Successfully create ai resource",
+            title: "Successfully update ai resource",
             variant: "alert-success",
             size: "small",
           });
@@ -143,14 +206,14 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
         onError: (error) => {
           if (isAxiosError(error)) {
             toast({
-              title: "Something went wrong when create the ai resource",
+              title: "Something went wrong when update the ai resource",
               variant: "alert-error",
               size: "large",
               description: getInstillApiErrorMessage(error),
             });
           } else {
             toast({
-              title: "Something went wrong when create the ai resource",
+              title: "Something went wrong when update the ai resource",
               variant: "alert-error",
               size: "large",
               description: "Please try again later",
@@ -179,7 +242,7 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
                         type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
-                        disabled={disabledAll}
+                        disabled={aiResource ? true : disabledAll}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -238,6 +301,20 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
                         value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            aiResource?.configuration.api_token ===
+                              "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -304,6 +381,20 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
                         value={field.value ?? ""}
                         autoComplete="off"
                         disabled={disabledAll}
+                        onFocus={() => {
+                          if (field.value === "*****MASK*****") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (
+                            field.value === "" &&
+                            aiResource?.configuration.api_key ===
+                              "*****MASK*****"
+                          ) {
+                            field.onChange("*****MASK*****");
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -348,23 +439,24 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
           />
         </div>
         <div className="flex w-full flex-row gap-x-4">
-          <Button
-            type="button"
-            variant="secondaryGrey"
-            size="lg"
-            className="!w-full !flex-1 gap-x-2"
-            onClick={() => {
-              setNewConnectorDefinition(null);
-              setNewConnectorType(null);
-            }}
-          >
-            Back
-          </Button>
+          {enableBackButton ? (
+            <Button
+              type="button"
+              variant="secondaryGrey"
+              size="lg"
+              className="!w-full !flex-1 gap-x-2"
+              onClick={() => {
+                props.onBack();
+              }}
+            >
+              Back
+            </Button>
+          ) : null}
           <Button
             type="submit"
             variant="primary"
             size="lg"
-            className="!w-full !flex-1 gap-x-2"
+            className={cn(enableBackButton ? "!w-full !flex-1" : "ml-auto")}
           >
             Save
           </Button>

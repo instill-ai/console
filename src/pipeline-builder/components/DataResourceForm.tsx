@@ -1,3 +1,4 @@
+import cn from "clsx";
 import * as React from "react";
 import * as yup from "yup";
 
@@ -6,10 +7,10 @@ import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
   ConnectorDefinition,
-  ConnectorResourceType,
   ConnectorResourceWithDefinition,
   CreateUserConnectorResourcePayload,
   Nullable,
+  UpdateUserConnectorResourcePayload,
   dot,
   getInstillApiErrorMessage,
   useAirbyteFieldValues,
@@ -17,6 +18,7 @@ import {
   useAirbyteSelectedConditionMap,
   useBuildAirbyteYup,
   useCreateUserConnectorResource,
+  useUpdateUserConnectorResource,
   useUser,
   validateResourceId,
 } from "@instill-ai/toolkit";
@@ -27,32 +29,38 @@ import {
   FormRoot,
   useToast,
 } from "@instill-ai/design-system";
+import {
+  recursiveReplaceTargetValue,
+  recursivelyReplaceNullAndEmptyStringWithUndefined,
+} from "pipeline-builder/lib";
 
 export type DataResourceFormProps = {
-  disabledAll?: boolean;
   dataResource: Nullable<ConnectorResourceWithDefinition>;
   dataDefinition: ConnectorDefinition;
-  setNewConnectorDefinition: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorDefinition>>
-  >;
-  setNewConnectorType: React.Dispatch<
-    React.SetStateAction<Nullable<ConnectorResourceType>>
-  >;
   onSelectConnectorResource: (
     connectorResource: ConnectorResourceWithDefinition
   ) => void;
   accessToken: Nullable<string>;
-};
+  disabledAll?: boolean;
+} & BackButtonProps;
+
+type BackButtonProps =
+  | {
+      enableBackButton: true;
+      onBack: () => void;
+    }
+  | {
+      enableBackButton: false;
+    };
 
 export const DataResourceForm = (props: DataResourceFormProps) => {
   const {
     disabledAll,
     dataResource,
     dataDefinition,
-    setNewConnectorDefinition,
-    setNewConnectorType,
     onSelectConnectorResource,
     accessToken,
+    enableBackButton,
   } = props;
 
   const { toast } = useToast();
@@ -71,6 +79,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
 
   const initialValues: Nullable<AirbyteFieldValues> = dataResource
     ? {
+        id: dataResource.id,
         configuration: dataResource.configuration,
         ...dot.toDot(dataResource.configuration),
         description: dataResource.description || undefined,
@@ -130,7 +139,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     });
   }, [airbyteYup]);
 
-  const createUserDataConnectorResource = useCreateUserConnectorResource();
+  const createData = useCreateUserConnectorResource();
+  const updateData = useUpdateUserConnectorResource();
 
   const onSubmit = React.useCallback(async () => {
     if (!fieldValues || !formYup || !user.isSuccess) {
@@ -188,15 +198,65 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
 
     setFieldErrors(null);
 
-    const payload: CreateUserConnectorResourcePayload = {
-      id: fieldValues.id as string,
-      connector_definition_name: dataDefinition.name,
+    if (!dataResource) {
+      const payload: CreateUserConnectorResourcePayload = {
+        id: fieldValues.id as string,
+        connector_definition_name: dataDefinition.name,
+        description: fieldValues.description as string,
+        configuration: stripValues.configuration,
+      };
+
+      createData.mutate(
+        { userName: user.data.name, payload, accessToken },
+        {
+          onSuccess: ({ connectorResource }) => {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: dataDefinition,
+            });
+
+            toast({
+              title: "Successfully create data resource",
+              variant: "alert-success",
+              size: "small",
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError(error)) {
+              toast({
+                title: "Something went wrong when create the data resource",
+                variant: "alert-error",
+                size: "large",
+                description: getInstillApiErrorMessage(error),
+              });
+            } else {
+              toast({
+                title: "Something went wrong when create the data resource",
+                variant: "alert-error",
+                size: "large",
+                description: "Please try again later",
+              });
+            }
+          },
+        }
+      );
+      return;
+    }
+
+    const payload: UpdateUserConnectorResourcePayload = {
+      connectorResourceName: dataResource.name,
       description: fieldValues.description as string,
-      configuration: stripValues.configuration,
+      configuration: recursivelyReplaceNullAndEmptyStringWithUndefined(
+        recursiveReplaceTargetValue(
+          stripValues.configuration,
+          "*****MASK*****",
+          undefined
+        )
+      ),
     };
 
-    createUserDataConnectorResource.mutate(
-      { userName: user.data.name, payload, accessToken },
+    updateData.mutate(
+      { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
           onSelectConnectorResource({
@@ -205,7 +265,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
           });
 
           toast({
-            title: "Successfully create data resource",
+            title: "Successfully update ai resource",
             variant: "alert-success",
             size: "small",
           });
@@ -213,14 +273,14 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         onError: (error) => {
           if (isAxiosError(error)) {
             toast({
-              title: "Something went wrong when create the data resource",
+              title: "Something went wrong when update the ai resource",
               variant: "alert-error",
               size: "large",
               description: getInstillApiErrorMessage(error),
             });
           } else {
             toast({
-              title: "Something went wrong when create the data resource",
+              title: "Something went wrong when update the ai resource",
               variant: "alert-error",
               size: "large",
               description: "Please try again later",
@@ -230,7 +290,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       }
     );
   }, [
-    createUserDataConnectorResource,
+    createData,
     formYup,
     fieldValues,
     dataDefinition,
@@ -254,7 +314,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
             "the last a letter or a number, and a 63 character maximum."
           }
           required={true}
-          disabled={disabledAll ? disabledAll : false}
+          disabled={dataResource ? true : disabledAll ? disabledAll : false}
           value={fieldValues ? (fieldValues.id as string) ?? null : null}
           error={fieldErrors ? (fieldErrors.id as string) ?? null : null}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -274,23 +334,24 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         />
       </div>
       <div className="flex w-full flex-row gap-x-4">
-        <Button
-          type="button"
-          variant="secondaryGrey"
-          size="lg"
-          className="!w-full !flex-1"
-          onClick={() => {
-            setNewConnectorDefinition(null);
-            setNewConnectorType(null);
-          }}
-        >
-          Back
-        </Button>
+        {enableBackButton ? (
+          <Button
+            type="button"
+            variant="secondaryGrey"
+            size="lg"
+            className="!w-full !flex-1 gap-x-2"
+            onClick={() => {
+              props.onBack();
+            }}
+          >
+            Back
+          </Button>
+        ) : null}
         <Button
           variant="secondaryColour"
           disabled={disabledAll ? disabledAll : false}
           size="lg"
-          className="!w-full !flex-1"
+          className={cn(enableBackButton ? "!w-full !flex-1" : "ml-auto")}
           onClick={() => onSubmit()}
           type="button"
         >
