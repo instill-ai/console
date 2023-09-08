@@ -50,8 +50,8 @@ export const CreateStartOperatorInputSchema = z.object({
 });
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  pipelineId: state.pipelineId,
   pipelineIsNew: state.pipelineIsNew,
+  pipelineName: state.pipelineName,
   nodes: state.nodes,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
@@ -69,7 +69,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const [inputTypeIsArray, setInputTypeIsArray] = React.useState(false);
 
   const {
-    pipelineId,
+    pipelineName,
     nodes,
     updateNodes,
     updateEdges,
@@ -91,17 +91,12 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     form: startOperatorTestModeInputForm,
   } = useStartOperatorTestModeInputForm({ nodes });
 
-  const user = useUser({
-    enabled: true,
-    accessToken: null,
-  });
-
   const useTriggerPipeline = useTriggerUserPipeline();
 
   const onTriggerPipeline = (
     data: z.infer<typeof StartOperatorTestModeInputSchema>
   ) => {
-    if (!user.isSuccess) return;
+    if (!pipelineName) return;
 
     const input = recursivelyRemoveUndefinedAndNullFromArray(
       recursivelyReplaceNullAndEmptyStringWithUndefined(
@@ -113,7 +108,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
     useTriggerPipeline.mutate(
       {
-        pipelineName: `${user.data.name}/pipelines/${pipelineId}`,
+        pipelineName,
         accessToken: null,
         payload: {
           inputs: [input],

@@ -21,6 +21,7 @@ import { OpenAPIV3 } from "openapi-types";
 export type PipelineBuilderState = {
   pipelineUid: Nullable<string>;
   pipelineId: Nullable<string>;
+  pipelineName: Nullable<string>;
   pipelineDescription: Nullable<string>;
   nodes: Node<NodeData>[];
   edges: Edge[];
@@ -41,6 +42,7 @@ export type PipelineBuilderAction = {
   init: () => void;
   setPipelineUid: (pipelineUid: Nullable<string>) => void;
   setPipelineId: (pipelineId: Nullable<string>) => void;
+  setPipelineName: (pipelineName: Nullable<string>) => void;
   setPipelineDescription: (pipelineDescription: Nullable<string>) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
@@ -73,6 +75,7 @@ export type PipelineBuilderStore = PipelineBuilderState & PipelineBuilderAction;
 
 export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineId: null,
+  pipelineName: null,
   pipelineUid: null,
   pipelineDescription: null,
   nodes: [],
@@ -101,6 +104,10 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
     setPipelineUid: (pipelineUid: Nullable<string>) =>
       set((state) => {
         return { ...state, pipelineUid };
+      }),
+    setPipelineName: (pipelineName: Nullable<string>) =>
+      set((state) => {
+        return { ...state, pipelineName };
       }),
     setPipelineDescription: (pipelineDescription: Nullable<string>) =>
       set((state) => {

@@ -15,4 +15,5 @@ export * from "./recursiveParseToInt";
 export * from "./recursivelyRemoveUndefinedAndNullFromArray";
 export * from "./recursivelyReplaceNullAndEmptyStringWithUndefined";
 export * from "./recursivelyTransformToString";
+export * from "./recursiveReplaceTargetValue";
 export * from "./validateIntillUpstreamTypes";

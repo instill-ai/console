@@ -22,6 +22,7 @@ import { isAxiosError } from "axios";
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineId: state.pipelineId,
   setPipelineId: state.setPipelineId,
+  setPipelineName: state.setPipelineName,
   pipelineIsNew: state.pipelineIsNew,
   testModeEnabled: state.testModeEnabled,
 });
@@ -54,8 +55,13 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     formState: { isDirty },
   } = form;
 
-  const { pipelineId, setPipelineId, pipelineIsNew, testModeEnabled } =
-    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  const {
+    pipelineId,
+    setPipelineId,
+    setPipelineName,
+    pipelineIsNew,
+    testModeEnabled,
+  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   // Disable edit on the topbar
   useEffect(() => {
@@ -100,6 +106,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
       });
 
       setPipelineId(newId);
+      setPipelineName(payload.name);
     } catch (error) {
       if (isAxiosError(error)) {
         toast({

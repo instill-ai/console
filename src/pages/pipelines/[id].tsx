@@ -28,6 +28,7 @@ import { Logo } from "@instill-ai/design-system";
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   setPipelineId: state.setPipelineId,
   setPipelineUid: state.setPipelineUid,
+  setPipelineName: state.setPipelineName,
   setPipelineDescription: state.setPipelineDescription,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
@@ -46,6 +47,7 @@ const PipelineBuilderPage: FC & {
   const {
     setPipelineId,
     setPipelineUid,
+    setPipelineName,
     setPipelineDescription,
     updateNodes,
     updateEdges,
@@ -175,6 +177,7 @@ const PipelineBuilderPage: FC & {
 
     setPipelineUid(pipeline.data.uid);
     setPipelineId(pipeline.data.id);
+    setPipelineName(pipeline.data.name);
     setPipelineDescription(pipeline.data.description);
   }, [
     pipeline.data,
