@@ -13,6 +13,7 @@ import {
   CreateUserPipelinePayload,
   Nullable,
   UpdateUserPipelinePayload,
+  env,
   getInstillApiErrorMessage,
   updateUserPipelineMutation,
   useCreateUserPipeline,
@@ -24,18 +25,24 @@ import {
   getBlockchainConnectorDefaultConfiguration,
   createInitialGraphData,
   getAiConnectorDefaultConfiguration,
+  getPropertiesFromOpenAPISchema,
 } from "./lib";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
-import { Position, ReactFlowInstance } from "reactflow";
-import { GeneralRecord, PipelineConnectorComponent } from "./type";
+import { Node, Position, ReactFlowInstance } from "reactflow";
+import {
+  GeneralRecord,
+  PipelineConnectorComponent,
+  StartNodeData,
+} from "./type";
 import {
   AddConnectorResourceDialog,
   TriggerPipelineSnippetModal,
 } from "./components";
+import { triggerPipelineSnippets } from "./components/triggerPipelineSnippets";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -53,6 +60,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
   testModeEnabled: state.testModeEnabled,
   updateTestModeEnabled: state.updateTestModeEnabled,
+  pipelineOpenAPISchema: state.pipelineOpenAPISchema,
 });
 
 export type FlowControlProps = {
@@ -86,6 +94,7 @@ export const FlowControl = (props: FlowControlProps) => {
     testModeEnabled,
     updateTestModeEnabled,
     updateSelectedConnectorNodeId,
+    pipelineOpenAPISchema,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -212,6 +221,96 @@ export const FlowControl = (props: FlowControlProps) => {
 
     setIsSaving(false);
   }
+
+  const codeSnippte = useMemo(() => {
+    if (!user.isSuccess) return "";
+
+    const input: GeneralRecord = {};
+
+    const startNode = nodes.find(
+      (e) => e.data.nodeType === "start"
+    ) as Node<StartNodeData>;
+
+    if (!startNode) return "";
+
+    for (const [key, metadata] of Object.entries(
+      startNode.data.component.configuration.metadata
+    )) {
+      switch (metadata.type) {
+        case "text": {
+          input[key] = "Please put your value here";
+          break;
+        }
+        case "text_array": {
+          input[key] = [
+            "Please put your first value here",
+            "Please put your second value here",
+            "...",
+          ];
+          break;
+        }
+        case "number": {
+          input[key] = 123456;
+          break;
+        }
+        case "number_array": {
+          input[key] = [123456, 654321];
+          break;
+        }
+        case "image": {
+          input[key] = "your image base64 encoded string";
+          break;
+        }
+        case "image_array": {
+          input[key] = [
+            "Please put your first image base64 encoded string",
+            "Please put your second image base64 encoded string",
+            "...",
+          ];
+          break;
+        }
+        case "audio": {
+          input[key] = "Please put your audio base64 encoded string";
+          break;
+        }
+        case "audio_array": {
+          input[key] = [
+            "Please put your first audio base64 encoded string",
+            "Please put your second audio base64 encoded string",
+            "...",
+          ];
+          break;
+        }
+        case "boolean": {
+          input[key] = true;
+          break;
+        }
+        case "boolean_array": {
+          input[key] = [true, false];
+          break;
+        }
+      }
+    }
+
+    const inputsString = JSON.stringify({ inputs: [input] }, null, "\t");
+
+    let snippet = triggerPipelineSnippets.cloud;
+
+    snippet = snippet
+      .replace(
+        /\{vdp-pipeline-base-url\}/g,
+        env("NEXT_PUBLIC_VDP_API_GATEWAY_URL")
+      )
+      .replace(
+        /\{pipeline-name\}/g,
+        `${user.data.name}/pipelines/${pipelineId}`
+      )
+      .replace(/\{input-array\}/g, inputsString);
+
+    console.log(snippet);
+
+    return snippet;
+  }, [nodes, user.data, user.isSuccess, pipelineId]);
 
   return (
     <>
@@ -401,7 +500,7 @@ export const FlowControl = (props: FlowControlProps) => {
         />
       </div>
       <div className="absolute bottom-8 right-8">
-        <TriggerPipelineSnippetModal />
+        <TriggerPipelineSnippetModal snippet={codeSnippte} />
       </div>
     </>
   );

@@ -4,6 +4,8 @@ import {
   useCreateUpdateDeleteResourceGuard,
   useWatchUserModels,
   ModelsTable,
+  useUserModels,
+  useUser,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { Button, Icons, Logo } from "@instill-ai/design-system";
@@ -22,8 +24,14 @@ const ModelPage: FC & {
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const models = useModels({
+  const user = useUser({
     enabled: true,
+    accessToken: null,
+  });
+
+  const models = useUserModels({
+    userName: user.isSuccess ? user.data.name : null,
+    enabled: user.isSuccess,
     accessToken: null,
   });
 

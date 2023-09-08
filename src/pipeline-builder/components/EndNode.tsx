@@ -170,9 +170,6 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             End
           </p>
-          {enableEdit ? null : (
-            <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
-          )}
         </div>
 
         {enableEdit ? (

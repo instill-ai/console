@@ -138,46 +138,41 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return;
     }
 
-    updateEdges((prev) => {
-      return prev.map((edge) => {
-        // Find the edge that has this node as target
-        if (edge.target === id) {
-          return {
-            ...edge,
-            target: newNodeId,
-          };
-        }
-
-        // Find the edge that has this node as source
-        if (edge.source === id) {
-          return {
-            ...edge,
-            source: newNodeId,
-          };
-        }
-
-        return edge;
-      });
-    });
-
-    updateNodes((prev) => {
-      return prev.map((node) => {
-        if (node.id === id && node.data.nodeType === "connector") {
-          return {
-            ...node,
-            id: newNodeId,
-            data: {
-              ...node.data,
-              component: {
-                ...node.data.component,
-                id: newNodeId,
-              },
+    const newNodes = nodes.map((node) => {
+      if (node.id === id && node.data.nodeType === "connector") {
+        return {
+          ...node,
+          id: newNodeId,
+          data: {
+            ...node.data,
+            component: {
+              ...node.data.component,
+              id: newNodeId,
             },
-          };
-        }
-        return node;
-      });
+          },
+        };
+      }
+      return node;
     });
+
+    updateNodes((prev) => newNodes);
+
+    const allReferences: PipelineComponentReference[] = [];
+
+    newNodes.forEach((node) => {
+      if (node.data.component?.configuration) {
+        allReferences.push(
+          ...extractReferencesFromConfiguration(
+            node.data.component?.configuration,
+            node.id
+          )
+        );
+      }
+    });
+
+    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+
+    updateEdges(() => newEdges);
 
     updateSelectedConnectorNodeId(() => newNodeId);
 
