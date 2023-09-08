@@ -75,15 +75,15 @@ const PipelinePage: FC & {
           setIsDeleting(false);
           if (isAxiosError(error)) {
             toast({
-              title: "Successfully delete resource",
+              title: "Something went wrong when delete the resource",
               description: getInstillApiErrorMessage(error),
               variant: "alert-error",
               size: "large",
             });
           } else {
             toast({
-              title: "Successfully delete resource",
-              description: "Something went wrong when delete the resource",
+              title: "Something went wrong when delete the resource",
+              description: "Please try again later",
               variant: "alert-error",
               size: "large",
             });
