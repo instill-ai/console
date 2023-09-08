@@ -26,6 +26,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
+import { AddConnectorResourceDialog } from "pipeline-builder/components";
 
 type GetLayOutProps = {
   page: ReactElement;
@@ -42,6 +43,9 @@ const PipelinePage: FC & {
   const { toast } = useToast();
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [addConnectorDialogIsOpen, seteAddConnectorDialogIsOpen] =
+    useState(false);
+
   const deleteUserConnectorResource = useDeleteUserConnectorResource();
 
   function handleDeleteUserConnectorResource(
@@ -232,6 +236,17 @@ const PipelinePage: FC & {
     <>
       <PageHead title="pipelines" />
       <div className="flex flex-col">
+        <div className="mb-8 flex">
+          <AddConnectorResourceDialog
+            open={addConnectorDialogIsOpen}
+            onOpenChange={(open) => seteAddConnectorDialogIsOpen(open)}
+            accessToken={null}
+            type="inResource"
+            onSelectConnectorResource={() => {
+              seteAddConnectorDialogIsOpen(false);
+            }}
+          />
+        </div>
         <DataTable
           columns={columns}
           data={

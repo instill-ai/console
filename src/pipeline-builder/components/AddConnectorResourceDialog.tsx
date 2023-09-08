@@ -196,7 +196,14 @@ export const AddConnectorResourceDialog = (
                 </div>
               </>
             ) : (
-              <></>
+              <Dialog.Header>
+                <Dialog.Title className="mx-auto !product-headings-heading-3">
+                  Add a resource
+                </Dialog.Title>
+                <Dialog.Description className="mx-auto">
+                  Select a resource definition to create new resource
+                </Dialog.Description>
+              </Dialog.Header>
             )}
             <div className="flex flex-col">
               <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
