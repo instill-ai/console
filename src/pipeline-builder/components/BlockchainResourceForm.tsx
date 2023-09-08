@@ -54,10 +54,10 @@ export type BlockchainResourceFormProps = {
   disabledAll?: boolean;
   blockchainResource: Nullable<ConnectorResourceWithDefinition>;
   blockchainDefinition: ConnectorDefinition;
-  onSelectConnectorResource: (
+  accessToken: Nullable<string>;
+  onSelectConnectorResource?: (
     connectorResource: ConnectorResourceWithDefinition
   ) => void;
-  accessToken: Nullable<string>;
 } & BackButtonProps;
 
 type BackButtonProps =
@@ -115,10 +115,12 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
         { payload, userName: user.data.name, accessToken },
         {
           onSuccess: ({ connectorResource }) => {
-            onSelectConnectorResource({
-              ...connectorResource,
-              connector_definition: blockchainDefinition,
-            });
+            if (onSelectConnectorResource) {
+              onSelectConnectorResource({
+                ...connectorResource,
+                connector_definition: blockchainDefinition,
+              });
+            }
 
             toast({
               title: "Successfully create blockchain resource",
@@ -166,10 +168,12 @@ export const BlockchainResourceForm = (props: BlockchainResourceFormProps) => {
       { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
-          onSelectConnectorResource({
-            ...connectorResource,
-            connector_definition: blockchainDefinition,
-          });
+          if (onSelectConnectorResource) {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: blockchainDefinition,
+            });
+          }
 
           toast({
             title: "Successfully update blockchain resource",

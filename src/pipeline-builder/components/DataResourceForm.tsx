@@ -37,11 +37,11 @@ import {
 export type DataResourceFormProps = {
   dataResource: Nullable<ConnectorResourceWithDefinition>;
   dataDefinition: ConnectorDefinition;
-  onSelectConnectorResource: (
-    connectorResource: ConnectorResourceWithDefinition
-  ) => void;
   accessToken: Nullable<string>;
   disabledAll?: boolean;
+  onSelectConnectorResource?: (
+    connectorResource: ConnectorResourceWithDefinition
+  ) => void;
 } & BackButtonProps;
 
 type BackButtonProps =
@@ -67,7 +67,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
 
   const user = useUser({
     enabled: true,
-    accessToken: null,
+    accessToken,
   });
 
   const [airbyteFormIsDirty, setAirbyteFormIsDirty] = React.useState(false);
@@ -210,10 +210,12 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         { userName: user.data.name, payload, accessToken },
         {
           onSuccess: ({ connectorResource }) => {
-            onSelectConnectorResource({
-              ...connectorResource,
-              connector_definition: dataDefinition,
-            });
+            if (onSelectConnectorResource) {
+              onSelectConnectorResource({
+                ...connectorResource,
+                connector_definition: dataDefinition,
+              });
+            }
 
             toast({
               title: "Successfully create data resource",
@@ -259,11 +261,12 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
-          onSelectConnectorResource({
-            ...connectorResource,
-            connector_definition: dataDefinition,
-          });
-
+          if (onSelectConnectorResource) {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: dataDefinition,
+            });
+          }
           toast({
             title: "Successfully update ai resource",
             variant: "alert-success",
@@ -299,6 +302,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     toast,
     user.isSuccess,
     user.data?.name,
+    dataResource,
+    updateData,
   ]);
 
   return (

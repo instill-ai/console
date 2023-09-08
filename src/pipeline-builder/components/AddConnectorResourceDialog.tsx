@@ -67,20 +67,20 @@ export const AddConnectorResourceDialog = (
 
   const aiDefinitions = useConnectorDefinitions({
     connectorResourceType: "CONNECTOR_TYPE_AI",
-    accessToken: null,
     enabled: true,
+    accessToken,
   });
 
   const blockchainDefinitions = useConnectorDefinitions({
     connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
-    accessToken: null,
     enabled: true,
+    accessToken,
   });
 
   const dataDefinitions = useConnectorDefinitions({
     connectorResourceType: "CONNECTOR_TYPE_DATA",
-    accessToken: null,
     enabled: true,
+    accessToken,
   });
 
   return (

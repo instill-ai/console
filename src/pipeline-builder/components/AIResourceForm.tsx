@@ -72,7 +72,7 @@ export type AIResourceFormProps = {
   aiResource: Nullable<ConnectorResourceWithDefinition>;
   aiDefinition: ConnectorDefinition;
   accessToken: Nullable<string>;
-  onSelectConnectorResource: (
+  onSelectConnectorResource?: (
     connectorResource: ConnectorResourceWithDefinition
   ) => void;
 } & BackButtonProps;
@@ -109,13 +109,15 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
         },
   });
 
+  const { reset } = form;
+
   React.useEffect(() => {
     if (aiResource) {
-      form.reset({
+      reset({
         ...aiResource,
       });
     }
-  }, [aiResource]);
+  }, [aiResource, reset]);
 
   const user = useUser({
     enabled: true,
@@ -142,10 +144,12 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
         { payload, userName: user.data.name, accessToken },
         {
           onSuccess: ({ connectorResource }) => {
-            onSelectConnectorResource({
-              ...connectorResource,
-              connector_definition: aiDefinition,
-            });
+            if (onSelectConnectorResource) {
+              onSelectConnectorResource({
+                ...connectorResource,
+                connector_definition: aiDefinition,
+              });
+            }
 
             toast({
               title: "Successfully create ai resource",
@@ -192,10 +196,12 @@ export const AIResourceForm = (props: AIResourceFormProps) => {
       { payload, accessToken },
       {
         onSuccess: ({ connectorResource }) => {
-          onSelectConnectorResource({
-            ...connectorResource,
-            connector_definition: aiDefinition,
-          });
+          if (onSelectConnectorResource) {
+            onSelectConnectorResource({
+              ...connectorResource,
+              connector_definition: aiDefinition,
+            });
+          }
 
           toast({
             title: "Successfully update ai resource",

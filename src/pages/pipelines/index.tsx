@@ -3,6 +3,7 @@ import {
   usePipelines,
   useCreateUpdateDeleteResourceGuard,
   PipelinesTable,
+  useUser,
 } from "@instill-ai/toolkit";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import {
@@ -29,12 +30,21 @@ const PipelinePage: FC & {
 
   const enableGuard = useCreateUpdateDeleteResourceGuard();
 
-  const pipelines = usePipelines({
+  const user = useUser({
     enabled: true,
     accessToken: null,
   });
 
+  const pipelines = usePipelines({
+    enabled: user.isSuccess,
+    accessToken: null,
+  });
+
   const setPipelineId = usePipelineBuilderStore((state) => state.setPipelineId);
+
+  const setPipelineName = usePipelineBuilderStore(
+    (state) => state.setPipelineName
+  );
 
   const updatePipelineIsNew = usePipelineBuilderStore(
     (state) => state.updatePipelineIsNew
@@ -54,13 +64,18 @@ const PipelinePage: FC & {
             variant="primary"
             size="lg"
             disabled={enableGuard}
-            onClick={() => {
+            onClick={async () => {
+              if (!user.isSuccess) return;
+
               const randomName = uniqueNamesGenerator({
                 dictionaries: [adjectives, colors, animals],
                 separator: "-",
               });
               setPipelineId(randomName);
-              router.push(`/pipelines/${randomName}`);
+              setPipelineName(
+                `users/${user.data?.name}/pipelines/${randomName}`
+              );
+              await router.push(`/pipelines/${randomName}`);
               updatePipelineIsNew(() => true);
             }}
           >
