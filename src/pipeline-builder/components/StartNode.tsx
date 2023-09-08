@@ -21,7 +21,6 @@ import {
   Nullable,
   getInstillApiErrorMessage,
   useTriggerUserPipeline,
-  useUser,
 } from "@instill-ai/toolkit";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -306,9 +305,6 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             Start
           </p>
-          {enableEdit ? null : (
-            <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-fg-secondary" />
-          )}
         </div>
 
         {enableEdit ? (
