@@ -1,8 +1,6 @@
 import { Icons, Separator } from "@instill-ai/design-system";
-import { PipelineCollapsible } from "./PipelineCollapsible";
 import { SidebarLink } from "./SidebarLink";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 export const Sidebar = () => {
   const router = useRouter();
@@ -48,7 +46,7 @@ export const Sidebar = () => {
       <div className="flex flex-col space-y-6 px-4 pb-8">
         <a
           className="flex flex-row space-x-3 rounded-xs px-3 py-2 hover:bg-semantic-bg-base-bg"
-          href="https://www.instill.tech/docs/welcome"
+          href="https://www.instill.tech/docs"
           target="_blank"
           rel="noopener noreferrer"
         >

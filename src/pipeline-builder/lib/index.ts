@@ -7,7 +7,7 @@ export * from "./extractReferencesFromConfiguration";
 export * from "./extractTemplateReferenceSetFromString";
 export * from "./getAiConnectorDefaultConfiguration";
 export * from "./getBlockchainConnectorDefaultConfiguration";
-export * from "./getConnectorOpenAPISchema";
+export * from "./getConnectorInputOutputSchema";
 export * from "./getPropertiesFromOpenAPISchema";
 export * from "./readFileToBinary";
 export * from "./recursiveParseToInt";

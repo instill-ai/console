@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Node, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import {
   StartNodeData,
   StartOperatorInputSingularType,
@@ -95,14 +95,6 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     enabled: true,
     accessToken: null,
   });
-
-  const {
-    formState: { errors },
-  } = startOperatorTestModeInputForm;
-
-  React.useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   const useTriggerPipeline = useTriggerUserPipeline();
 

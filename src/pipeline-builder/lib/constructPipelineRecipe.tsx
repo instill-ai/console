@@ -1,4 +1,4 @@
-import { Edge, Node } from "reactflow";
+import { Node } from "reactflow";
 import { NodeData } from "../type";
 import { RawPipelineComponent } from "@instill-ai/toolkit";
 import { recursiveParseToInt } from "./recursiveParseToInt";

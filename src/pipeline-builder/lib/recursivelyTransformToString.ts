@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 export function recursivelyTransformToString(obj: any) {
   if (obj === null || obj === undefined) {
     return obj;

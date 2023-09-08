@@ -1,8 +1,8 @@
-import { UseFormReturn } from "react-hook-form";
 import { Form, Switch } from "@instill-ai/design-system";
+import { GeneralUseFormReturn } from "pipeline-builder/type";
 
 export const BooleanField = (props: {
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
 }) => {

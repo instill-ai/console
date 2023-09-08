@@ -227,7 +227,7 @@ const PipelineBuilderPage: FC & {
   useEffect(() => {
     if (!pipeline.isSuccess) return;
     updatePipelineOpenAPISchema(() => pipeline.data.openapi_schema);
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPISchema]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
     if (pipelineIsNew) return false;

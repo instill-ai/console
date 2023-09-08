@@ -16,7 +16,6 @@ import {
   getInstillApiErrorMessage,
   updateUserPipelineMutation,
   useCreateUserPipeline,
-  useUpdateUserPipeline,
   useUser,
 } from "@instill-ai/toolkit";
 import {
@@ -32,7 +31,7 @@ import {
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { Position, ReactFlowInstance } from "reactflow";
-import { PipelineConnectorComponent } from "./type";
+import { GeneralRecord, PipelineConnectorComponent } from "./type";
 import {
   AddConnectorResourceDialog,
   TriggerPipelineSnippetModal,
@@ -96,7 +95,6 @@ export const FlowControl = (props: FlowControlProps) => {
     accessToken,
   });
 
-  const updateUserPipeline = useUpdateUserPipeline();
   const createUserPipeline = useCreateUserPipeline();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -303,7 +301,7 @@ export const FlowControl = (props: FlowControlProps) => {
             let componentType: Nullable<PipelineConnectorComponent["type"]> =
               null;
 
-            let configuration: Nullable<Record<string, any>> = null;
+            let configuration: Nullable<GeneralRecord> = null;
 
             // Remove the empty node and edges that connect to empty node if it exists
             const emptyNode = nodes.find((e) => e.data.nodeType === "empty");

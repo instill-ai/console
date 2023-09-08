@@ -1,6 +1,5 @@
 import { FC, ReactElement, useState } from "react";
 import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-import { useRouter } from "next/router";
 import {
   ConnectorResourceWithDefinition,
   GeneralDeleteResourceModal,

@@ -36,15 +36,13 @@ export const expectToSelectOption = async (
   }
 };
 
-export const deleteDestination = async (
-  dataId: string
-): Promise<void> => {
+export const deleteDestination = async (dataId: string): Promise<void> => {
   try {
     const client = createInstillAxiosTestClient("vdp");
 
     const { data } = await client.get(`/connectors?view=VIEW_FULL`);
 
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    /* isable-next-line @typescript-eslint/no-explicit-any */
     const targetDestination = (data.connectors as any[]).find(
       (e) => e.id === dataId
     );

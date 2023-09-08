@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { ConnectorNodeData } from "../type";
-import { ImageWithFallback, Nullable, dot } from "@instill-ai/toolkit";
+import { ConnectorNodeData, GeneralRecord } from "../../type";
+import { ImageWithFallback, Nullable } from "@instill-ai/toolkit";
 import {
   Button,
   Form,
@@ -15,20 +15,21 @@ import {
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
+} from "../../usePipelineBuilderStore";
 import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CustomHandle } from "./CustomHandle";
+import { CustomHandle } from "../CustomHandle";
 import {
   PipelineComponentReference,
   extractReferencesFromConfiguration,
-  InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
-  getConnectorOpenAPISchema,
+  getConnectorInputOutputSchema,
   extractPipelineComponentReferenceFromString,
   composeEdgesFromReferences,
-} from "../lib";
+} from "../../lib";
+import { InputPropertyItem } from "./InputPropertyItem";
+import { useConnectorTestModeOutputFields } from "pipeline-builder/use-node-output-fields";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   expandAllNodes: state.expandAllNodes,
@@ -37,6 +38,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
   testModeEnabled: state.testModeEnabled,
+  testModeTriggerResponse: state.testModeTriggerResponse,
 });
 
 export const DataConnectorInputSchema = z.object({
@@ -56,6 +58,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateNodes,
     updateEdges,
     testModeEnabled,
+    testModeTriggerResponse,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -93,9 +96,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   let aiTaskNotSelected = false;
 
-  const { inputSchema, outputSchema } = getConnectorOpenAPISchema({
-    component: data.component,
-  });
+  const { inputSchema, outputSchema } = getConnectorInputOutputSchema(
+    data.component
+  );
 
   if (
     data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
@@ -278,6 +281,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
+  const testModeOutputFields = useConnectorTestModeOutputFields(
+    data.component,
+    testModeTriggerResponse?.metadata?.traces ?? null
+  );
+
   return (
     <>
       <div
@@ -453,15 +461,22 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             {inputProperties.length > 0 ? (
               <div className="mb-1 flex flex-col gap-y-1">
                 {collapsedInputProperties.map((property) => {
+                  const path = property.title
+                    ? property.title
+                    : property.path ?? null;
+
                   return (
-                    <InputPropertyItem
-                      key={property.title ? property.title : property.path}
-                      property={property}
-                      nodeId={id}
-                      connectorConfiguration={
-                        data.component.configuration.input
-                      }
-                    />
+                    <InputPropertyItem key={path} propertyPath={path}>
+                      <InputPropertyItem.Value
+                        property={property}
+                        connectorConfiguration={
+                          data.component.configuration.input
+                        }
+                        traces={
+                          testModeTriggerResponse?.metadata?.traces ?? null
+                        }
+                      />
+                    </InputPropertyItem>
                   );
                 })}
                 {inputProperties.length > 3 ? (
@@ -483,7 +498,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               testModeEnabled ? (
                 <div className="mb-3 flex flex-col space-y-3">
                   {Object.entries(data.component.configuration.input).map(
-                    ([key, value]) => {
+                    ([key]) => {
                       return (
                         <div key={key} className="flex flex-col space-y-1">
                           <p className="text-semantic-fg-primary product-body-text-3-semibold">
@@ -499,7 +514,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 <div className="mb-3 flex flex-col">
                   <div className="mb-3 flex flex-col space-y-4">
                     {Object.entries(
-                      data.component.configuration.input as Record<string, any>
+                      data.component.configuration.input as GeneralRecord
                     ).map(([key, value]) => {
                       const reference =
                         extractPipelineComponentReferenceFromString({
@@ -584,20 +599,24 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             {outputProperties.length > 0 ? (
               <div className="mb-1 flex flex-col">
                 <div className="mb-1 flex flex-col gap-y-1">
-                  {collapsedOutputProperties.map((property) => {
-                    return (
-                      <div
-                        key={property.title ? property.title : property.path}
-                        className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
-                      >
-                        <div className="flex flex-row gap-x-2">
-                          <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-                            {property.path?.split(".").pop()}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {testModeEnabled
+                    ? testModeOutputFields
+                    : collapsedOutputProperties.map((property) => {
+                        return (
+                          <div
+                            key={
+                              property.title ? property.title : property.path
+                            }
+                            className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
+                          >
+                            <div className="flex flex-row gap-x-2">
+                              <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
+                                {property.path?.split(".").pop()}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
                 </div>
                 {outputProperties.length > 3 ? (
                   <div className="flex flex-row-reverse">
@@ -618,128 +637,4 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       <CustomHandle type="source" position={Position.Right} id={id} />
     </>
   );
-};
-
-const InputPropertyItem = (props: {
-  property: InstillAIOpenAPIProperty;
-  nodeId: string;
-  connectorConfiguration: Record<string, any>;
-}) => {
-  const { property, nodeId, connectorConfiguration } = props;
-
-  const propertyValue = property.path
-    ? dot.getter(connectorConfiguration, property.path)
-    : null;
-
-  const reference = extractPipelineComponentReferenceFromString({
-    value: propertyValue,
-    nodeId,
-    currentPath: property.path ? property.path?.split(".") : [],
-    key: null,
-  });
-
-  return (
-    <div
-      key={property.title ? property.title : property.path}
-      className="w-[232px] rounded-[6px] bg-semantic-bg-primary p-2"
-    >
-      <div className="flex flex-row flex-wrap justify-between gap-x-2 gap-y-2">
-        <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-          {property.path?.split(".").pop()}
-        </p>
-        <InputPropertyValue
-          reference={reference}
-          propertyValue={propertyValue}
-        />
-      </div>
-    </div>
-  );
-};
-
-const InputPropertyValue = (props: {
-  reference: Nullable<PipelineComponentReference>;
-  propertyValue: any;
-}) => {
-  const { reference, propertyValue } = props;
-
-  const testModeEnabled = usePipelineBuilderStore(
-    (state) => state.testModeEnabled
-  );
-
-  if (!reference) {
-    return <p className="product-body-text-4-regular">{propertyValue}</p>;
-  }
-
-  if (testModeEnabled) {
-    if (reference.type === "singleCurlyBrace") {
-      if (
-        reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start"
-      ) {
-        const inputDataKey =
-          reference.referenceValue.withoutCurlyBraces.split(".")[1];
-        const inputDataValue = "";
-
-        return (
-          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
-            {inputDataValue ? inputDataValue : ""}
-          </div>
-        );
-      } else {
-        return (
-          <Tag size="md" variant="lightBlue">
-            {reference.referenceValue}
-          </Tag>
-        );
-      }
-    } else {
-      const startReferenceValues = reference.referenceValues.filter(
-        (e) => e.withoutCurlyBraces.split(".")[0] === "start"
-      );
-
-      if (startReferenceValues.length === 0) {
-        return (
-          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
-            {reference.originalValue}
-          </div>
-        );
-      } else {
-        let substituteValue = reference.originalValue;
-        for (const referenceValue of startReferenceValues) {
-          const inputDataKey = referenceValue.withoutCurlyBraces.split(".")[1];
-          const inputDataValue = "";
-          substituteValue = substituteValue.replace(
-            referenceValue.withCurlyBraces,
-            inputDataValue ? inputDataValue : ""
-          );
-        }
-
-        return (
-          <div className="min-h-[32px] min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
-            {substituteValue}
-          </div>
-        );
-      }
-    }
-  } else {
-    if (reference.type === "singleCurlyBrace") {
-      return (
-        <Tag size="md" variant="lightBlue">
-          {reference.referenceValue.withoutCurlyBraces}
-        </Tag>
-      );
-    } else {
-      return (
-        <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
-          <Tag size="md" variant="lightBlue">
-            {reference.referenceValues[0].withoutCurlyBraces}
-          </Tag>
-          {reference.referenceValues.length > 1 ? (
-            <Tag size="md" variant="lightBlue" className="cursor-pointer">
-              {`+ ${reference.referenceValues.length - 1}`}
-            </Tag>
-          ) : null}
-        </div>
-      );
-    }
-  }
 };

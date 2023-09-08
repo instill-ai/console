@@ -1,54 +1,63 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { Nullable, TriggerUserPipelineResponse } from "@instill-ai/toolkit";
-import { OpenAPIV3 } from "openapi-types";
 import {
   InstillAIOpenAPIProperty,
+  getConnectorInputOutputSchema,
   getPropertiesFromOpenAPISchema,
 } from "pipeline-builder/lib";
-import { getPipelineInputOutputSchema } from "pipeline-builder/lib/getPipelineInputOutputSchema";
 import * as React from "react";
 import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
 import { ImageField } from "./ImageField";
 import { ImagesField } from "./ImagesField";
+import { PipelineConnectorComponent } from "pipeline-builder/type";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
+import { AudioField } from "./AudioField";
+import { AudiosField } from "./AudiosType";
 
-export function useEndOperatorTestModeOutputFields(
-  openAPISchema: Nullable<OpenAPIV3.Document>,
-  outputs: TriggerUserPipelineResponse["outputs"]
+export function useConnectorTestModeOutputFields(
+  component: PipelineConnectorComponent,
+  traces: Nullable<TriggerUserPipelineResponse["metadata"]["traces"]>
 ) {
   const fields = React.useMemo(() => {
     let outputProperties: InstillAIOpenAPIProperty[] = [];
     const fields: React.ReactElement[] = [];
 
-    if (!openAPISchema) {
+    if (!component) {
       return [];
     }
 
-    const { outputSchema } = getPipelineInputOutputSchema(openAPISchema);
+    const { outputSchema } = getConnectorInputOutputSchema(component);
 
     if (outputSchema) {
       outputProperties = getPropertiesFromOpenAPISchema(outputSchema);
     }
 
-    for (const property of outputProperties) {
-      let value: any = null;
-      const title = property.title ? property.title : property.path ?? null;
+    console.log(outputProperties, traces);
 
-      if (outputs[0]) {
-        value = property.path ? outputs[0][property.path] : null;
+    const trace = traces ? traces[component.id] : null;
+
+    for (const property of outputProperties) {
+      const title = property.path ? property.path : property.title ?? null;
+
+      let propertyValue: any = null;
+
+      if (trace) {
+        if (property.path) {
+          propertyValue = trace.outputs[0][property.path];
+        }
       }
 
       switch (property.instillFormat) {
         case "text": {
           fields.push(
             <TextField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              text={value}
+              text={propertyValue}
             />
           );
           break;
@@ -56,10 +65,10 @@ export function useEndOperatorTestModeOutputFields(
         case "text_array": {
           fields.push(
             <TextsField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              texts={value}
+              texts={propertyValue}
             />
           );
           break;
@@ -67,10 +76,10 @@ export function useEndOperatorTestModeOutputFields(
         case "image": {
           fields.push(
             <ImageField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              image={value}
+              image={propertyValue}
             />
           );
           break;
@@ -78,10 +87,10 @@ export function useEndOperatorTestModeOutputFields(
         case "image_array": {
           fields.push(
             <ImagesField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              images={value}
+              images={propertyValue}
             />
           );
           break;
@@ -89,10 +98,10 @@ export function useEndOperatorTestModeOutputFields(
         case "number": {
           fields.push(
             <NumberField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              number={value}
+              number={propertyValue}
             />
           );
           break;
@@ -100,10 +109,32 @@ export function useEndOperatorTestModeOutputFields(
         case "number_array": {
           fields.push(
             <NumbersField
-              nodeType="end"
+              nodeType="connector"
               key={property.path}
               title={title}
-              numbers={value}
+              numbers={propertyValue}
+            />
+          );
+          break;
+        }
+        case "audio": {
+          fields.push(
+            <AudioField
+              nodeType="connector"
+              key={property.path}
+              title={title}
+              audio={propertyValue}
+            />
+          );
+          break;
+        }
+        case "audio_array": {
+          fields.push(
+            <AudiosField
+              nodeType="connector"
+              key={property.path}
+              title={title}
+              audios={propertyValue}
             />
           );
           break;
@@ -112,7 +143,7 @@ export function useEndOperatorTestModeOutputFields(
     }
 
     return fields;
-  }, [openAPISchema, outputs]);
+  }, [component, traces]);
 
   return fields;
 }

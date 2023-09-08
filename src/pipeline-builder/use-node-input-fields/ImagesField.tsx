@@ -1,11 +1,13 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import * as React from "react";
-import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "@instill-ai/toolkit";
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import { readFileToBinary } from "pipeline-builder/lib";
+import { GeneralUseFormReturn } from "pipeline-builder/type";
 
 export const ImagesField = (props: {
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
 }) => {
@@ -36,7 +38,11 @@ export const ImagesField = (props: {
                       .slice(0, 5)
                       .map((url) =>
                         url ? (
-                          <img src={url} className="h-[55px] object-contain" />
+                          <img
+                            src={url}
+                            alt={`${fieldKey}-image-${url}`}
+                            className="h-[55px] object-contain"
+                          />
                         ) : (
                           <></>
                         )

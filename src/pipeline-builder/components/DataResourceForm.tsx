@@ -237,6 +237,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     accessToken,
     onSelectConnectorResource,
     toast,
+    user.isSuccess,
+    user.data?.name,
   ]);
 
   return (

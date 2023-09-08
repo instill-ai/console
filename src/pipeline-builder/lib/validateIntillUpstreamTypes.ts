@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { extractTemplateReferenceSetFromString } from ".";
 
 export type ValidateIntillUpstreamTypes = {
@@ -24,6 +26,13 @@ export function validateIntillUpstreamTypes(
 
   switch (type) {
     case "reference": {
+      if (templateReferenceSet.doubleCurlyBrace.count > 0) {
+        return {
+          isValid: false,
+          error: "This field only accepts single curly braces reference",
+        };
+      }
+
       if (
         templateReferenceSet.singleCurlyBrace.count === 0 &&
         templateReferenceSet.doubleCurlyBrace.count === 0
@@ -31,17 +40,6 @@ export function validateIntillUpstreamTypes(
         return {
           isValid: false,
           error: "This field only accepts reference",
-        };
-      }
-
-      if (
-        templateReferenceSet.singleCurlyBrace.count === 1 &&
-        templateReferenceSet.doubleCurlyBrace.count > 0
-      ) {
-        return {
-          isValid: false,
-          error:
-            "Single curly braces reference can not be used with double curly braces reference",
         };
       }
 

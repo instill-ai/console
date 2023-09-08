@@ -14,6 +14,7 @@ import {
   extractReferencesFromConfiguration,
   composeEdgesFromReferences,
 } from "../lib";
+import { GeneralRecord } from "pipeline-builder/type";
 
 export const BlockchainFormSchema = z.object({
   images: z.string().nullable(),
@@ -35,8 +36,8 @@ export const BlockchainFormSchema = z.object({
 });
 
 export type BlockchainFormProps = {
+  configuration: GeneralRecord;
   disabledAll?: boolean;
-  configuration: Record<string, any>;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({

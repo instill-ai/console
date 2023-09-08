@@ -32,6 +32,7 @@ import {
   validateIntillUpstreamTypes,
   recursivelyReplaceNullAndEmptyStringWithUndefined,
 } from "../lib";
+import { GeneralRecord } from "pipeline-builder/type";
 
 const AISchema = z
   .object({
@@ -871,7 +872,7 @@ const AISchema = z
 export type AIFormProps = {
   disabledAll?: boolean;
   connectorDefinitionName: string;
-  configuration: Record<string, any>;
+  configuration: GeneralRecord;
 };
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
