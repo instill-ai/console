@@ -6,6 +6,7 @@ export * from "./extractPipelineComponentReferenceFromString";
 export * from "./extractReferencesFromConfiguration";
 export * from "./extractTemplateReferenceSetFromString";
 export * from "./getAiConnectorDefaultConfiguration";
+export * from "./getAudioTypeFromBase64";
 export * from "./getBlockchainConnectorDefaultConfiguration";
 export * from "./getConnectorInputOutputSchema";
 export * from "./getPropertiesFromOpenAPISchema";

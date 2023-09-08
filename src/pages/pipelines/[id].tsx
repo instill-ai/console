@@ -274,7 +274,7 @@ const PipelineBuilderPage: FC & {
                   : "-mr-[var(--right-panel-width)]"
               )}
             >
-              <RightPanel accessToken={null} />
+              <RightPanel />
             </div>
           </div>
         </PageBase.Container>
