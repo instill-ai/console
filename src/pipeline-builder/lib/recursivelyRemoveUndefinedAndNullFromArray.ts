@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 export function recursivelyRemoveUndefinedAndNullFromArray(array: any) {
   if (typeof array === "object") {
     for (const key in array) {

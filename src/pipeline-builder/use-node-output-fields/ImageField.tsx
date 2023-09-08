@@ -1,23 +1,45 @@
 import { Nullable } from "@instill-ai/toolkit";
+import { ConnectorNodeFieldRoot, EndNodeFieldRoot } from "./FieldRoot";
+import { getImageTypeFromBase64String } from "pipeline-builder/lib/getImageTypeFromBase64";
 
 export type ImageFieldProps = {
+  nodeType: "end" | "connector";
   title: Nullable<string>;
   image: Nullable<string>;
 };
 
 export const ImageField = (props: ImageFieldProps) => {
-  const { title, image } = props;
+  const { nodeType, title, image } = props;
+
+  const imageType = image ? getImageTypeFromBase64String(image) : null;
+
+  if (nodeType === "connector") {
+    return (
+      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+        {image ? (
+          <img
+            src={`data:image/${imageType};base64,${image}`}
+            alt={`${title}-image`}
+            className="object-contain"
+          />
+        ) : (
+          <></>
+        )}
+      </ConnectorNodeFieldRoot>
+    );
+  }
 
   return (
-    <div className="flex flex-col space-y-2">
-      <p className="text-semantic-fg-primary product-body-text-3-semibold">
-        {title}
-      </p>
+    <EndNodeFieldRoot title={title} key={`${title}-field`}>
       {image ? (
-        <img src={image} alt={`${title}-image`} className="object-contain" />
+        <img
+          src={`data:image/${imageType};base64,${image}`}
+          alt={`${title}-image`}
+          className="object-contain"
+        />
       ) : (
         <></>
       )}
-    </div>
+    </EndNodeFieldRoot>
   );
 };

@@ -227,7 +227,7 @@ const PipelineBuilderPage: FC & {
   useEffect(() => {
     if (!pipeline.isSuccess) return;
     updatePipelineOpenAPISchema(() => pipeline.data.openapi_schema);
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPISchema]);
 
   const isLoadingGraphFirstPaint = useMemo(() => {
     if (pipelineIsNew) return false;
@@ -274,7 +274,7 @@ const PipelineBuilderPage: FC & {
                   : "-mr-[var(--right-panel-width)]"
               )}
             >
-              <RightPanel accessToken={null} />
+              <RightPanel />
             </div>
           </div>
         </PageBase.Container>

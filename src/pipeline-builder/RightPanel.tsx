@@ -1,26 +1,21 @@
-import { ImageWithFallback, Nullable } from "@instill-ai/toolkit";
+import { ImageWithFallback } from "@instill-ai/toolkit";
 import {
   PipelineBuilderStore,
   usePipelineBuilderStore,
 } from "./usePipelineBuilderStore";
 import { BlockchainForm, AIForm } from "./components";
 import { shallow } from "zustand/shallow";
-import { Icons, Separator } from "@instill-ai/design-system";
-
-export type RightPanelProps = {
-  accessToken: Nullable<string>;
-};
+import { Button, Icons, Separator } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
   selectedConnectorNodeId: state.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
 });
 
-export const RightPanel = (props: RightPanelProps) => {
-  const { nodes, selectedConnectorNodeId } = usePipelineBuilderStore(
-    pipelineBuilderSelector,
-    shallow
-  );
+export const RightPanel = () => {
+  const { nodes, selectedConnectorNodeId, updateSelectedConnectorNodeId } =
+    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const selectedConnectorNode = nodes.find(
     (node) => node.id === selectedConnectorNodeId
@@ -28,10 +23,21 @@ export const RightPanel = (props: RightPanelProps) => {
 
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="mb-6 flex w-full items-center justify-center rounded-sm bg-semantic-bg-base-bg">
-        <p className="py-2 text-semantic-fg-primary product-body-text-1-semibold">
+      <div className="mb-6 flex w-full flex-row gap-x-1">
+        <p className="flex flex-1 items-center justify-center rounded-sm bg-semantic-bg-base-bg py-2 text-semantic-fg-primary product-body-text-1-semibold">
           Connector Properties
         </p>
+        <Button
+          className="h-10 w-10 !px-0 !py-0"
+          variant="secondaryGrey"
+          size="md"
+          type="button"
+          onClick={() => {
+            updateSelectedConnectorNodeId(() => null);
+          }}
+        >
+          <Icons.X className="h-4 w-4 stroke-semantic-fg-primary" />
+        </Button>
       </div>
       {selectedConnectorNode ? (
         <div className="mb-5 flex w-full flex-row gap-x-6">

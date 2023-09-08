@@ -1,5 +1,6 @@
 import { Nullable } from "@instill-ai/toolkit";
 import { extractPipelineComponentReferenceFromString } from "./extractPipelineComponentReferenceFromString";
+import { GeneralRecord } from "pipeline-builder/type";
 
 export type PipelineComponentReference =
   | DoubleCurlyBraceReference
@@ -27,12 +28,13 @@ export type SingleCurlyBraceReference = {
 };
 
 export function extractReferencesFromConfiguration(
-  configuration: Record<string, any>,
+  configuration: GeneralRecord,
   nodeId: string,
   currentPath: string[] = []
 ) {
   const results: PipelineComponentReference[] = [];
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function getConfigurationReferences(key: string, value: any) {
     if (Array.isArray(value)) {
       for (const item of value) {

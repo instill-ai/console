@@ -22,12 +22,9 @@ import {
   extractReferencesFromConfiguration,
   extractPipelineComponentReferenceFromString,
   composeEdgesFromReferences,
-  getPropertiesFromOpenAPISchema,
-  InstillAIOpenAPIProperty,
 } from "../lib";
 import { shallow } from "zustand/shallow";
 import { CustomHandle } from "./CustomHandle";
-import { getPipelineInputOutputSchema } from "pipeline-builder/lib/getPipelineInputOutputSchema";
 import { useEndOperatorTestModeOutputFields } from "pipeline-builder/use-node-output-fields";
 
 export const CreateEndOperatorInputSchema = z.object({
@@ -94,8 +91,6 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
       return node;
     });
 
-    console.log(newNodes);
-
     updateNodes(() => newNodes);
 
     const allReferences: PipelineComponentReference[] = [];
@@ -113,8 +108,6 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
     const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
-
-    console.log("2", newNodes);
 
     setEnableEdit(false);
     setPrevFieldKey(null);

@@ -20,7 +20,6 @@ import {
   TriggeredPipeline,
   PipelinesChart,
   useWatchUserPipelineReleases,
-  useUser,
 } from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
@@ -82,11 +81,6 @@ const PipelinePage: FC & {
     accessToken: null,
   });
 
-  const user = useUser({
-    enabled: true,
-    accessToken: null,
-  });
-
   // Under current design, the state is with pipeline release, so we need to
   // query all the pipeline releases and filter from the data.
 
@@ -134,7 +128,12 @@ const PipelinePage: FC & {
       );
     }
     return chartList;
-  }, [triggeredPipelines, pipelinesWatchState]);
+  }, [
+    pipelinesWatchState,
+    pipelinesChart.isSuccess,
+    pipelinesChart.data,
+    selectedStatusOption,
+  ]);
 
   const triggeredPipelineList = useMemo<TriggeredPipeline[]>(() => {
     if (!triggeredPipelines.isSuccess || !pipelinesWatchState.isSuccess) {

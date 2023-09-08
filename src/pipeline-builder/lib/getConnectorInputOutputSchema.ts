@@ -2,15 +2,9 @@ import { Nullable } from "@instill-ai/toolkit";
 import { OpenAPIV3 } from "openapi-types";
 import { PipelineConnectorComponent } from "../type";
 
-export type GetConnectorOpenAPISchemaProps = {
-  component: PipelineConnectorComponent;
-};
-
-export function getConnectorOpenAPISchema(
-  props: GetConnectorOpenAPISchemaProps
+export function getConnectorInputOutputSchema(
+  component: PipelineConnectorComponent
 ) {
-  const { component } = props;
-
   let inputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
   let outputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
 

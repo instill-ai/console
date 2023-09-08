@@ -1,11 +1,11 @@
-import { UseFormReturn } from "react-hook-form";
 import * as React from "react";
 import { Nullable } from "@instill-ai/toolkit";
 import { Form, Input } from "@instill-ai/design-system";
 import { readFileToBinary } from "pipeline-builder/lib";
+import { GeneralUseFormReturn } from "pipeline-builder/type";
 
 export const AudioField = (props: {
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
 }) => {

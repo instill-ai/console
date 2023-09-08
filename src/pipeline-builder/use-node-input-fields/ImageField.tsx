@@ -1,11 +1,11 @@
 import * as React from "react";
-import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "@instill-ai/toolkit";
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import { readFileToBinary } from "pipeline-builder/lib";
+import { GeneralUseFormReturn } from "pipeline-builder/type";
 
 export const ImageField = (props: {
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
 }) => {
@@ -34,6 +34,7 @@ export const ImageField = (props: {
                   <img
                     className="h-full w-full object-contain"
                     src={imageFileUrl}
+                    alt={`${fieldKey}-image}`}
                   />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center gap-y-2">

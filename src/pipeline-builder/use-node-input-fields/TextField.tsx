@@ -1,8 +1,8 @@
-import { UseFormReturn } from "react-hook-form";
 import { Form, Input } from "@instill-ai/design-system";
+import { GeneralUseFormReturn } from "pipeline-builder/type";
 
 export const TextField = (props: {
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
 }) => {

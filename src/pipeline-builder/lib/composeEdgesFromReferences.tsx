@@ -4,7 +4,7 @@ import {
   DoubleCurlyBraceReference,
   PipelineComponentReference,
   SingleCurlyBraceReference,
-  getConnectorOpenAPISchema,
+  getConnectorInputOutputSchema,
   InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from ".";
@@ -33,9 +33,9 @@ export function composeEdgesFromReferences(
 
     if (node.data.nodeType === "end") return;
 
-    const { inputSchema, outputSchema } = getConnectorOpenAPISchema({
-      component: node.data.component,
-    });
+    const { inputSchema, outputSchema } = getConnectorInputOutputSchema(
+      node.data.component
+    );
 
     let inputProperties: InstillAIOpenAPIProperty[] = [];
     let outputProperties: InstillAIOpenAPIProperty[] = [];
@@ -240,54 +240,3 @@ export function composeEdgesFromReferences(
 
   return edges;
 }
-
-const mock = {
-  id: "developed-fuchsia-rattlesnake",
-  recipe: {
-    version: "v1alpha",
-    components: [
-      {
-        id: "start",
-        resource_name: "",
-        configuration: {
-          metadata: {
-            prompt: {
-              type: "text",
-              title: "prompt",
-            },
-          },
-        },
-        definition_name: "operator-definitions/start-operator",
-      },
-      {
-        id: "end",
-        resource_name: "",
-        configuration: {
-          metadata: {
-            result: {
-              title: "result",
-              value: "{ test.images }",
-            },
-          },
-        },
-        definition_name: "operator-definitions/end-operator",
-      },
-      {
-        id: "test",
-        resource_name: "",
-        configuration: {
-          input: {
-            connector_definition_name: "connector-definitions/ai-stability-ai",
-            task: "TASK_TEXT_TO_IMAGE",
-            seed: "1",
-            cfg_scale: "1",
-            steps: "1",
-            prompts: "{{ start.prompt }}",
-            engine: "stable-diffusion-xl-1024-v1-0",
-          },
-        },
-        definition_name: "connector-definitions/ai-stability-ai",
-      },
-    ],
-  },
-};

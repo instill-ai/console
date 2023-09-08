@@ -1,9 +1,12 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import {
   ConnectorDefinition,
   ConnectorResource,
   Nullable,
   OperatorDefinition,
 } from "@instill-ai/toolkit";
+import { UseFormReturn } from "react-hook-form";
 
 export type ConnectorNodeData = {
   nodeType: "connector";
@@ -104,3 +107,11 @@ export type StartOperatorInputArrayType =
   | "boolean_array"
   | "audio_array"
   | "image_array";
+
+export type GeneralUseFormReturn = UseFormReturn<
+  { [k: string]: any },
+  any,
+  undefined
+>;
+
+export type GeneralRecord = Record<string, any>;
