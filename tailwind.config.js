@@ -5,7 +5,6 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/services/**/*.{js,ts,jsx,tsx}",
-    "./src/pipeline-builder/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@instill-ai/design-system/dist/*.{js,mjs}",
     "./node_modules/@instill-ai/toolkit/dist/*.{js,mjs}",
   ],

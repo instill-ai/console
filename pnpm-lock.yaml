@@ -14,14 +14,14 @@ dependencies:
     specifier: ^3.1.1
     version: 3.1.1(react-hook-form@7.45.0)
   '@instill-ai/design-system':
-    specifier: ^0.47.2
-    version: 0.47.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+    specifier: ^0.49.0
+    version: 0.49.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
   '@instill-ai/design-tokens':
     specifier: ^0.3.2
     version: 0.3.2(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.66.0-rc.49
-    version: 0.66.0-rc.49(@instill-ai/design-system@0.47.2)(@instill-ai/design-tokens@0.3.2)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.66.0
+    version: 0.66.0(@instill-ai/design-system@0.49.0)(@instill-ai/design-tokens@0.3.2)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -3505,8 +3505,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@instill-ai/design-system@0.47.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
-    resolution: {integrity: sha512-B4DvNpj/9mChf3CxDf1CRgu7VjGDrdpcXMt6uLe5UWtMm1oAZLDapjRo8yfX7SE+F1f3Yj+9MfHGsLGbSnkzBQ==}
+  /@instill-ai/design-system@0.49.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1):
+    resolution: {integrity: sha512-ulCuHNoWTsH9R1bKme+WaXkFpiMB3Ygtd3aQ6BtQBTs7eG19MyfvZfGpZOzXQs3F0CHOM7v9ugwsuFQpMRyXOg==}
     engines: {node: '>=14.6.0'}
     peerDependencies:
       react: ^18.2.0
@@ -3552,10 +3552,10 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.14)
     dev: false
 
-  /@instill-ai/toolkit@0.66.0-rc.49(@instill-ai/design-system@0.47.2)(@instill-ai/design-tokens@0.3.2)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-DUVM1VV0E3gQ0xUZYQFrI2vhUYnJH0KvX4luI/zyxnxqePAkPNcdiR29ddSphTdA8f6j7Dviiydav8GGwmDDhQ==}
+  /@instill-ai/toolkit@0.66.0(@instill-ai/design-system@0.49.0)(@instill-ai/design-tokens@0.3.2)(@types/react-dom@17.0.17)(@types/react@17.0.48)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-CE0JAuR75pV/JH3G91JANrlRWQzpkErG9AmVVk7NpUQIIpJiYPhsiBwMv165hEOciG7VaHpK9bqF/U19NgXb3g==}
     peerDependencies:
-      '@instill-ai/design-system': 0.47.2
+      '@instill-ai/design-system': 0.49.0
       '@instill-ai/design-tokens': 0.3.2
       next: ^13.2.4
       react: ^18.2.0
@@ -3564,7 +3564,7 @@ packages:
       '@amplitude/analytics-browser': 1.12.0
       '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.0)
-      '@instill-ai/design-system': 0.47.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
+      '@instill-ai/design-system': 0.49.0(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
       '@instill-ai/design-tokens': 0.3.2(tailwindcss@3.3.1)
       '@radix-ui/react-label': 2.0.2(@types/react-dom@17.0.17)(@types/react@17.0.48)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot': 1.0.2(@types/react@17.0.48)(react@18.2.0)
@@ -6027,11 +6027,11 @@ packages:
     resolution: {integrity: sha512-RkmxRUBmHG5i6yPNGrpO+qEKizWrXu29Ip0qCAncEcXGxAfWyHDLRv73H5DTTo/1KnjzaEbgWb0VK1M3i/p1Tw==}
     dev: true
 
-  /@storybook/channels@7.5.0-alpha.1:
-    resolution: {integrity: sha512-+nk9NR0vFY4YK2CNwEto0ZpO/B8Z0ZZ80PRCx/26osh8sjo12zFoumyH8cy5ZkaOqIgZg+OLNY6W8FgsrGQdjg==}
+  /@storybook/channels@7.5.0-alpha.2:
+    resolution: {integrity: sha512-lUGaxj5yNBKjVL8oo6wCxBuFXaneoUZ5VnC8X3biUd1N1m5EQphxeDov5ZQkZhmGemHXdJq07vnP1WKtd8zd+w==}
     dependencies:
-      '@storybook/client-logger': 7.5.0-alpha.1
-      '@storybook/core-events': 7.5.0-alpha.1
+      '@storybook/client-logger': 7.5.0-alpha.2
+      '@storybook/core-events': 7.5.0-alpha.2
       '@storybook/global': 5.0.0
       qs: 6.11.0
       telejson: 7.2.0
@@ -6099,8 +6099,8 @@ packages:
       '@storybook/global': 5.0.0
     dev: true
 
-  /@storybook/client-logger@7.5.0-alpha.1:
-    resolution: {integrity: sha512-AfxlIm3AGEQAM1NsrM/HtuJFA/sGpT/ZL4tn8ltDQbbqyRvLPYcL1LrzE5pavMxg5eExO6jlzpoQaoP6uDotvw==}
+  /@storybook/client-logger@7.5.0-alpha.2:
+    resolution: {integrity: sha512-kZWjw7zXVzbniZqMBeuc0ayddUuPcVl893/giMl8zXxgid17nTyndh8uGOBiBQwbuXuKC9KHYQ4JdJb3pZlYJg==}
     dependencies:
       '@storybook/global': 5.0.0
     dev: true
@@ -6188,8 +6188,8 @@ packages:
     resolution: {integrity: sha512-T7TtaKA+WNipdAM+06sLWjl0ziNI80MDoPFAdTVgpebTrLofhnzkDxlkRW/ymsGuGqnJTn77yiRHTnDKLchDsA==}
     dev: true
 
-  /@storybook/core-events@7.5.0-alpha.1:
-    resolution: {integrity: sha512-ikQK2EwMAuhyOQ3nDKscnyCsnNSzJANDr15nMjzYImdcESqK6pqeiV7DGAeaNRpDVEgvixYM3046IO1vxsTeoQ==}
+  /@storybook/core-events@7.5.0-alpha.2:
+    resolution: {integrity: sha512-ypnWXpiQ+a53IRjGIPpdp6XUREP4cLR/jnjqtBDvVl5BbPy80uJq1jFsqP5yLF3BNuCkn7+UKFZyPoU4E975uQ==}
     dependencies:
       ts-dedent: 2.2.0
     dev: true
@@ -6333,14 +6333,14 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/instrumenter@7.5.0-alpha.1:
-    resolution: {integrity: sha512-3JhtbdyOaPjsuHwsAoo9za14m+dZPetgvhzu9N5KqQJtq2IzgD+I//mZdAHJAxAJh47uG3pXszX56+VwGyzVIw==}
+  /@storybook/instrumenter@7.5.0-alpha.2:
+    resolution: {integrity: sha512-EUrexYYvFuSi5+mok3Thn2XuIrvLOUklxGm8XrzWI6yPwemDYXsSlqMBhfoSkxReQ9yBfFLzJTpO8M4iXOYeoQ==}
     dependencies:
-      '@storybook/channels': 7.5.0-alpha.1
-      '@storybook/client-logger': 7.5.0-alpha.1
-      '@storybook/core-events': 7.5.0-alpha.1
+      '@storybook/channels': 7.5.0-alpha.2
+      '@storybook/client-logger': 7.5.0-alpha.2
+      '@storybook/core-events': 7.5.0-alpha.2
       '@storybook/global': 5.0.0
-      '@storybook/preview-api': 7.5.0-alpha.1
+      '@storybook/preview-api': 7.5.0-alpha.2
     dev: true
 
   /@storybook/manager-api@7.0.0-beta.29(react-dom@18.2.0)(react@18.2.0):
@@ -6469,15 +6469,15 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/preview-api@7.5.0-alpha.1:
-    resolution: {integrity: sha512-pNG+Mm+SEQ8a4QDhwLQ+W+4+rTuML/CWc4nGuh6J4ozi6+3YjmQpMTbWD5tXbjq298bcUq0PMJDmWSEBWyCZfQ==}
+  /@storybook/preview-api@7.5.0-alpha.2:
+    resolution: {integrity: sha512-w7apy8z4sz/Mx6MjtUn0EPjHhzTRCthKAZN7ZpbJT75P3wi7feY4MyXV/QjYpucyC43otjPZne2UKdg9m0lsNA==}
     dependencies:
-      '@storybook/channels': 7.5.0-alpha.1
-      '@storybook/client-logger': 7.5.0-alpha.1
-      '@storybook/core-events': 7.5.0-alpha.1
+      '@storybook/channels': 7.5.0-alpha.2
+      '@storybook/client-logger': 7.5.0-alpha.2
+      '@storybook/core-events': 7.5.0-alpha.2
       '@storybook/csf': 0.1.0
       '@storybook/global': 5.0.0
-      '@storybook/types': 7.5.0-alpha.1
+      '@storybook/types': 7.5.0-alpha.2
       '@types/qs': 6.9.7
       dequal: 2.0.3
       lodash: 4.17.21
@@ -6629,8 +6629,8 @@ packages:
   /@storybook/testing-library@0.0.14-next.1:
     resolution: {integrity: sha512-1CAl40IKIhcPaCC4pYCG0b9IiYNymktfV/jTrX7ctquRY3akaN7f4A1SippVHosksft0M+rQTFE0ccfWW581fw==}
     dependencies:
-      '@storybook/client-logger': 7.5.0-alpha.1
-      '@storybook/instrumenter': 7.5.0-alpha.1
+      '@storybook/client-logger': 7.5.0-alpha.2
+      '@storybook/instrumenter': 7.5.0-alpha.2
       '@testing-library/dom': 8.16.0
       '@testing-library/user-event': 13.5.0(@testing-library/dom@8.16.0)
       ts-dedent: 2.2.0
@@ -6663,10 +6663,10 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/types@7.5.0-alpha.1:
-    resolution: {integrity: sha512-+g9UW83JpJqFnmbFyLRi0QQPViAv9VTbtfiP/ocFoYUxmEbbyFVWdvmFqryikDgfe+RwMlu0W0rmPDHahkhIwQ==}
+  /@storybook/types@7.5.0-alpha.2:
+    resolution: {integrity: sha512-vCoilHPWk0oP+GEM0sWtopn9yEcU6dvz69y3+kR9mQX6gj5ZL6uDwg/nqxi/4cGrp4khpGkKMqVswrn5EiGKuw==}
     dependencies:
-      '@storybook/channels': 7.5.0-alpha.1
+      '@storybook/channels': 7.5.0-alpha.2
       '@types/babel__core': 7.1.20
       '@types/express': 4.17.15
       file-system-cache: 2.3.0

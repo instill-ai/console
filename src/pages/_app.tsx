@@ -9,6 +9,7 @@ import {
   AmplitudeCtx,
   env,
   ReactQueryDevtools,
+  usePipelineBuilderStore,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -22,7 +23,6 @@ import { useRouter } from "next/router";
 import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
 import { Toaster, useToast } from "@instill-ai/design-system";
-import { usePipelineBuilderStore } from "pipeline-builder/usePipelineBuilderStore";
 
 export const queryCache = new QueryCache();
 
@@ -47,6 +47,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const { dismiss: dismissToast } = useToast();
 
+  function isPipelineDetailPage(path: string) {
+    if (path.split("/")[1] === "pipelines" && path.split("/")[2]) {
+      return true;
+    }
+    return false;
+  }
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -54,8 +61,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       // We will only init the pipeline builder when user is previously on the
       // pipeline builder page
       if (
-        previousURL === "/pipelines/[id]" &&
-        window.history.state.url !== "/pipelines/[id]"
+        isPipelineDetailPage(previousURL) &&
+        !isPipelineDetailPage(window.history.state.url)
       ) {
         initPipelineBuilder();
       }

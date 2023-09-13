@@ -8,4 +8,3 @@ export * from "./PageHead";
 export * from "./PageTitle";
 export * from "./Topbar";
 export * from "./PageBase";
-export * from "./ResourcesTable";

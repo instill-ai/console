@@ -115,9 +115,7 @@ jobs:
 
       - name: Launch Instill Base (latest)
         run: |
-          CONSOLE_PUBLIC_API_GATEWAY_BASE_HOST=api-gateway-base \
-          CONSOLE_PUBLIC_API_GATEWAY_VDP_HOST=api-gateway-vdp \
-          CONSOLE_PUBLIC_API_GATEWAY_MODEL_HOST=api-gateway-model \
+          CONSOLE_PUBLIC_API_GATEWAY_HOST=api-gateway \
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
@@ -179,12 +177,8 @@ jobs:
             -e NEXT_PUBLIC_API_VERSION=v1alpha \
             -e NEXT_PUBLIC_CONSOLE_EDITION=local-ce:test \
             -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
-            -e NEXT_PUBLIC_BASE_API_GATEWAY_URL=http://${API_GATEWAY_BASE_HOST}:${API_GATEWAY_BASE_PORT}  \
-            -e NEXT_SERVER_BASE_API_GATEWAY_URL=http://${API_GATEWAY_BASE_HOST}:${API_GATEWAY_BASE_PORT}  \
-            -e NEXT_PUBLIC_VDP_API_GATEWAY_URL=http://${API_GATEWAY_VDP_HOST}:${API_GATEWAY_VDP_PORT}  \
-            -e NEXT_SERVER_VDP_API_GATEWAY_URL=http://${API_GATEWAY_VDP_HOST}:${API_GATEWAY_VDP_PORT}  \
-            -e NEXT_PUBLIC_MODEL_API_GATEWAY_URL=http://${API_GATEWAY_MODEL_HOST}:${API_GATEWAY_MODEL_PORT}  \
-            -e NEXT_SERVER_MODEL_API_GATEWAY_URL=http://${API_GATEWAY_MODEL_HOST}:${API_GATEWAY_MODEL_PORT}  \
+            -e NEXT_PUBLIC_BASE_API_GATEWAY_URL=http://api-gateway:8080  \
+            -e NEXT_SERVER_BASE_API_GATEWAY_URL=http://api-gateway:8080  \
             -e NEXT_PUBLIC_SELF_SIGNED_CERTIFICATION=false \
             -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME=instill-ai-user \
             --network instill-network \
