@@ -16,10 +16,7 @@ const PipelineBuilderPage: FC & {
   const router = useRouter();
   return (
     <PageBase>
-      <Topbar
-        className="!border-b !border-semantic-bg-line !bg-semantic-bg-base-bg"
-        logo={<Logo variant="colourLogomark" width={38} />}
-      >
+      <Topbar logo={<Logo variant="colourLogomark" width={38} />}>
         <div className="flex px-6 py-[18px]">
           <PipelineNameForm accessToken={null} enableQuery={true} />
         </div>
