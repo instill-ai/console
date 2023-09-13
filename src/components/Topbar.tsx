@@ -13,7 +13,7 @@ export const Topbar = (props: TopbarProps) => {
   return (
     <div
       className={cn(
-        "flex h-[var(--topbar-height)] flex-row bg-semantic-bg-secondary-alt-primary px-4",
+        "flex h-[var(--topbar-height)] flex-row border-b border-semantic-bg-line bg-semantic-bg-primary px-4",
         className
       )}
     >
