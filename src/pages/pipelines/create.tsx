@@ -31,7 +31,7 @@ const CreatePipelinePage: FC & {
 CreatePipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar logo={<Logo variant="colourLogomark" width={180} />} />
+      <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>

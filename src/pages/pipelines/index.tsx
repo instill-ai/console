@@ -28,7 +28,7 @@ const PipelinePage: FC & {
 PipelinePage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar logo={<Logo variant="colourLogomark" width={180} />} />
+      <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
