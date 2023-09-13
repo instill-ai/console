@@ -1,27 +1,27 @@
-import ReactMarkdown from "react-markdown";
 import cn from "clsx";
-import { NoBgSquareProgress } from "@instill-ai/design-system";
 import remarkFrontmatter from "remark-frontmatter";
-
+import ReactMarkdown from "react-markdown";
 import { Nullable } from "@instill-ai/toolkit";
+
+import { NoBgSquareProgress } from "@instill-ai/design-system";
 
 export type ModelReadmeMarkdownProps = {
   markdown: Nullable<string>;
-  marginBottom: string;
   isLoading: boolean;
+  className?: string;
 };
 
 export const ModelReadmeMarkdown = ({
   markdown,
   isLoading,
-  marginBottom,
+  className,
 }: ModelReadmeMarkdownProps) => {
   return (
     <div
       className={cn(
         "flex w-full flex-col border border-instillGrey20 bg-white p-5",
-        marginBottom,
-        { "min-h-[200px]": !markdown || isLoading }
+        { "min-h-[200px]": !markdown || isLoading },
+        className
       )}
     >
       {isLoading ? (

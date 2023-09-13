@@ -36,7 +36,7 @@ const OnBoardingPage: FC & {
 OnBoardingPage.getLayout = (page) => {
   return (
     <PageBase>
-      <Topbar logo={<Logo variant="ColourLogomarkWhiteType" width={180} />} />
+      <Topbar logo={<Logo variant="colourLogomark" width={180} />} />
       <PageBase.Container>
         <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
