@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 
 import { PageTitle, PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { Logo } from "@instill-ai/design-system";
-import { useUser, useUserConnectorResource } from "@instill-ai/toolkit";
 import {
   AIResourceForm,
   BlockchainResourceForm,
   DataResourceForm,
-} from "pipeline-builder/components";
+  useUser,
+  useUserConnectorResource,
+} from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
   page: ReactElement;

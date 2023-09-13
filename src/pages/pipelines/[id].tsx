@@ -1,28 +1,25 @@
 import cn from "clsx";
 import { FC, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Nullable, useUserPipeline, useUser } from "@instill-ai/toolkit";
+import {
+  Nullable,
+  useUserPipeline,
+  useUser,
+  PipelineBuilderStore,
+  usePipelineBuilderStore,
+  createInitialGraphData,
+  createGraphLayout,
+  PipelineNameForm,
+  Flow,
+  RightPanel,
+  NodeData,
+} from "@instill-ai/toolkit";
 import { shallow } from "zustand/shallow";
 import { Edge, Node, ReactFlowInstance } from "reactflow";
 import { v4 as uuidv4 } from "uuid";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
 import { PageBase, PageHead, Topbar } from "@/components";
 import { useRouter } from "next/router";
-import { RightPanel } from "pipeline-builder/RightPanel";
-import { Flow } from "pipeline-builder/Flow";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "pipeline-builder/usePipelineBuilderStore";
-import {
-  createGraphLayout,
-  createInitialGraphData,
-} from "pipeline-builder/lib";
-import { NodeData } from "pipeline-builder/type";
-import { PipelineNameForm } from "pipeline-builder/components/PipelineNameForm";
+
 import { Logo } from "@instill-ai/design-system";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -37,9 +34,12 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineIsNew: state.pipelineIsNew,
   selectedConnectorNodeId: state.selectedConnectorNodeId,
   updatePipelineOpenAPISchema: state.updatePipelineOpenAPISchema,
+  updateAccessToken: state.updateAccessToken,
 });
 
-export const DROPPABLE_AREA_ID = "pipeline-builder-droppable";
+type GetLayOutProps = {
+  page: ReactElement;
+};
 
 const PipelineBuilderPage: FC & {
   getLayout?: FC<GetLayOutProps>;
@@ -54,14 +54,11 @@ const PipelineBuilderPage: FC & {
     pipelineIsNew,
     selectedConnectorNodeId,
     updatePipelineOpenAPISchema,
+    updateAccessToken,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const router = useRouter();
   const { id } = router.query;
-
-  // We need to warn user of unsave changes when they try to leave the page
-
-  // We initialize the pipeline with default start, end operator and a empty node.
 
   const user = useUser({
     enabled: true,
@@ -148,8 +145,12 @@ const PipelineBuilderPage: FC & {
       });
   }, [pipelineIsNew, updateEdges, updateNodes]);
 
+  useEffect(() => {
+    updateAccessToken(() => null);
+  }, []);
+
   const pipeline = useUserPipeline({
-    enabled: !!id && !pipelineIsNew,
+    enabled: !!id && !pipelineIsNew && user.isSuccess,
     pipelineName: user.isSuccess
       ? id
         ? `${user.data.name}/pipelines/${id}`
@@ -239,50 +240,48 @@ const PipelineBuilderPage: FC & {
   }, [pipelineIsNew]);
 
   return (
-    <>
-      <PageBase>
-        <Topbar
-          className="!border-b !border-semantic-bg-line !bg-semantic-bg-base-bg"
-          logo={<Logo variant="colourLogomark" width={38} />}
-        >
-          <div className="flex px-6 py-[18px]">
-            <PipelineNameForm accessToken={null} />
+    <PageBase>
+      <Topbar
+        className="!border-b !border-semantic-bg-line !bg-semantic-bg-base-bg"
+        logo={<Logo variant="colourLogomark" width={38} />}
+      >
+        <div className="flex px-6 py-[18px]">
+          <PipelineNameForm accessToken={null} />
+        </div>
+      </Topbar>
+      <PageBase.Container>
+        <style jsx>
+          {`
+            .pipeline-builder {
+              --sidebar-width: 96px;
+              --left-panel-width: 256px;
+              --right-panel-width: 456px;
+            }
+          `}
+        </style>
+        <PageHead title="pipeline-builder" />
+        <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+          <Flow
+            ref={reactFlowWrapper}
+            reactFlowInstance={reactFlowInstance}
+            setReactFlowInstance={setReactFlowInstance}
+            accessToken={null}
+            enableQuery={true}
+            isLoading={isLoadingGraphFirstPaint}
+          />
+          <div
+            className={cn(
+              "flex w-[var(--right-panel-width)] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
+              selectedConnectorNodeId
+                ? "mr-0"
+                : "-mr-[var(--right-panel-width)]"
+            )}
+          >
+            <RightPanel />
           </div>
-        </Topbar>
-        <PageBase.Container>
-          <style jsx>
-            {`
-              .pipeline-builder {
-                --sidebar-width: 96px;
-                --left-panel-width: 256px;
-                --right-panel-width: 456px;
-              }
-            `}
-          </style>
-          <PageHead title="pipeline-builder" />
-          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
-            <Flow
-              ref={reactFlowWrapper}
-              reactFlowInstance={reactFlowInstance}
-              setReactFlowInstance={setReactFlowInstance}
-              accessToken={null}
-              enableQuery={true}
-              isLoading={isLoadingGraphFirstPaint}
-            />
-            <div
-              className={cn(
-                "flex w-[var(--right-panel-width)] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
-                selectedConnectorNodeId
-                  ? "mr-0"
-                  : "-mr-[var(--right-panel-width)]"
-              )}
-            >
-              <RightPanel />
-            </div>
-          </div>
-        </PageBase.Container>
-      </PageBase>
-    </>
+        </div>
+      </PageBase.Container>
+    </PageBase>
   );
 };
 

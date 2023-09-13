@@ -7,8 +7,11 @@ import {
   ResourcesTable,
 } from "@/components";
 import { Logo } from "@instill-ai/design-system";
-import { AddConnectorResourceDialog } from "pipeline-builder/components";
-import { useUser, useUserConnectorResources } from "@instill-ai/toolkit";
+import {
+  AddConnectorResourceDialog,
+  useUser,
+  useUserConnectorResources,
+} from "@instill-ai/toolkit";
 
 type GetLayOutProps = {
   page: ReactElement;
