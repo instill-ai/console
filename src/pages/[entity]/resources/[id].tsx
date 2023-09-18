@@ -1,23 +1,21 @@
-import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { ResourceSettingPageMainView } from "@instill-ai/toolkit";
+import {
+  PageBase,
+  ResourceSettingPageMainView,
+  Topbar,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Sidebar, ConsoleCorePageHead } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const ResourceDetailsPage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const ResourceDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
 
   return (
     <>
-      <PageHead title={`resources/${id}`} />
+      <ConsoleCorePageHead title={`resources/${id}`} />
       <ResourceSettingPageMainView
         router={router}
         accessToken={null}
