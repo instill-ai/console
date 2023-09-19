@@ -28,7 +28,8 @@ export const queryCache = new QueryCache();
 
 export const queryClient = new QueryClient({ queryCache });
 
-type NextPageWithLayout = NextPage & {
+/* eslint-disable-next-line @typescript-eslint/ban-types */
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
@@ -43,7 +44,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
   const trackingToken = useTrackingToken();
 
-  const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
+  // const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
 
   const { dismiss: dismissToast } = useToast();
 
@@ -54,29 +55,29 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return false;
   }
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
 
-    function onRouteChange() {
-      // We will only init the pipeline builder when user is previously on the
-      // pipeline builder page
-      if (
-        isPipelineDetailPage(previousURL) &&
-        !isPipelineDetailPage(window.history.state.url)
-      ) {
-        initPipelineBuilder();
-      }
+  //   function onRouteChange() {
+  //     // We will only init the pipeline builder when user is previously on the
+  //     // pipeline builder page
+  //     if (
+  //       isPipelineDetailPage(previousURL) &&
+  //       !isPipelineDetailPage(window.history.state.url)
+  //     ) {
+  //       initPipelineBuilder();
+  //     }
 
-      dismissToast();
-      setPreviousUrl(window.history.state.url);
-    }
+  //     dismissToast();
+  //     setPreviousUrl(window.history.state.url);
+  //   }
 
-    router.events.on("routeChangeComplete", onRouteChange);
+  //   router.events.on("routeChangeComplete", onRouteChange);
 
-    return () => {
-      router.events.off("routeChangeComplete", onRouteChange);
-    };
-  }, [router.events, initPipelineBuilder, dismissToast, previousURL]);
+  //   return () => {
+  //     router.events.off("routeChangeComplete", onRouteChange);
+  //   };
+  // }, [router.events, initPipelineBuilder, dismissToast, previousURL]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;

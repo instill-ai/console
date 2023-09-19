@@ -1,20 +1,19 @@
-import { FC, ReactElement } from "react";
-import { ModelHubListPageMainView } from "@instill-ai/toolkit";
-import { Logo } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import {
+  ModelHubListPageMainView,
+  PageBase,
+  Topbar,
+} from "@instill-ai/toolkit";
+import { Logo } from "@instill-ai/design-system";
 
-import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
-interface GetLayOutProps {
-  page: ReactElement;
-}
+import { Sidebar, ConsoleCorePageHead } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
-const ModelPage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const ModelPage: NextPageWithLayout = () => {
   const router = useRouter();
   return (
     <>
-      <PageHead title="models" />
+      <ConsoleCorePageHead title="models" />
       <ModelHubListPageMainView
         router={router}
         accessToken={null}

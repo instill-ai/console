@@ -1,21 +1,19 @@
-import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { PipelineListPageMainView } from "@instill-ai/toolkit";
+import {
+  PageBase,
+  PipelineListPageMainView,
+  Topbar,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
+import { Sidebar, ConsoleCorePageHead } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const PipelinePage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const PipelinePage: NextPageWithLayout = () => {
   const router = useRouter();
   return (
     <>
-      <PageHead title="pipelines" />
+      <ConsoleCorePageHead title="pipelines" />
       <PipelineListPageMainView
         router={router}
         accessToken={null}

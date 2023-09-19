@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
-import { FC, ReactElement } from "react";
-import { env } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { Topbar, Sidebar, PageBase } from "@/components";
+import { Sidebar } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
+import { PageBase, Topbar } from "@instill-ai/toolkit";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
@@ -14,13 +14,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const CreatePipelinePage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const CreatePipelinePage: NextPageWithLayout = () => {
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
