@@ -131,10 +131,6 @@
       "pnpm prettier:fix",
       "eslint --cache --fix",
       "jest --bail --findRelatedTests"
-    ],
-    "*.stories.{ts,tsx}": [
-      "pnpm prettier:fix",
-      "eslint --cache --fix"
     ]
   },
   "engines": {
