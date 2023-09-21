@@ -34,7 +34,7 @@ Please refer to the [Environment variables document](/docs/environment-variables
 
 Please refer to the [Integration test document](/docs/integration-test.md) for more details.
 
-### CI/CD
+## About CI/CD
 
 - **pull_request** to the `main` branch will trigger the **`Integration Test`** workflow running the integration test using the image built on the PR head branch.
 - **push** to the `main` branch will trigger
