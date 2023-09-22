@@ -37,6 +37,7 @@ const CreateModelPage: FC & {
         router={router}
         accessToken={null}
         enableQuery={true}
+        disabledCreateModel={false}
       />
     </>
   );
