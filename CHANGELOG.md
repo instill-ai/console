@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.28.0-alpha](https://github.com/instill-ai/console/compare/v0.27.0-alpha...v0.28.0-alpha) (2023-09-22)
+
+
+### Features
+
+* adapt component centric design's pipeline builder ([#539](https://github.com/instill-ai/console/issues/539)) ([c4c05be](https://github.com/instill-ai/console/commit/c4c05be702d23ea9e1282abf8da7779dbe791e9a))
+* add /resources/rid page ([#537](https://github.com/instill-ai/console/issues/537)) ([1af8bd7](https://github.com/instill-ai/console/commit/1af8bd7f9d61c33b1bc61751f72757d7a18f1ad0))
+* add create resource dialog into /resources page ([#535](https://github.com/instill-ai/console/issues/535)) ([523933b](https://github.com/instill-ai/console/commit/523933b5b014bf4b69c06a605ac5e8203638c1c0))
+* based on separate metric data into buckets in backend, adopt in the console ([#519](https://github.com/instill-ai/console/issues/519)) ([3c19082](https://github.com/instill-ai/console/commit/3c190827752f034385b691d7393411c8932f05d4))
+* bump up toolkit version  ([#534](https://github.com/instill-ai/console/issues/534)) ([85bb2ed](https://github.com/instill-ai/console/commit/85bb2ed2c43c4e2b522e2da3e5bf996a6e839476))
+* revamp pipeline builder to new component-centric-design ([#529](https://github.com/instill-ai/console/issues/529)) ([0963842](https://github.com/instill-ai/console/commit/09638421902599133d8ba5cdc297e9c0138fadd7))
+* update favicon ([#516](https://github.com/instill-ai/console/issues/516)) ([1d97534](https://github.com/instill-ai/console/commit/1d975349460e4e24253ea7f4189683cba24c5483))
+* update how we handle data in trigger mode ([#533](https://github.com/instill-ai/console/issues/533)) ([6036774](https://github.com/instill-ai/console/commit/6036774279a1095e885e7165381b035eef31ac61))
+* update how we handle triggered trace data ([#536](https://github.com/instill-ai/console/issues/536)) ([7c335fb](https://github.com/instill-ai/console/commit/7c335fbcc6a738665fece4a833b3eca040048e27))
+* update pipeline trigger snippet ([#538](https://github.com/instill-ai/console/issues/538)) ([e32fbe7](https://github.com/instill-ai/console/commit/e32fbe7fa2963eb842925d88b9d5066abf5cf451))
+* update pipeline-builder color ([#531](https://github.com/instill-ai/console/issues/531)) ([0458984](https://github.com/instill-ai/console/commit/04589842fac00ad8c015411148c8a4dd71f7bc8e))
+* update tables access token props ([#522](https://github.com/instill-ai/console/issues/522)) ([a492388](https://github.com/instill-ai/console/commit/a49238848b9436a0224bbebeac0fc1bac8eee648))
+* update topbar color ([#540](https://github.com/instill-ai/console/issues/540)) ([2984474](https://github.com/instill-ai/console/commit/29844747f6605ddfed8793af81f2dda3724713d3))
+* User can create model (currently they cant) ([#549](https://github.com/instill-ai/console/issues/549)) ([8e1b89e](https://github.com/instill-ai/console/commit/8e1b89e12866d6c5f681b50caf6cf5b09a9f57f1))
+
+
+### Bug Fixes
+
+* fix create model issue that the watch modelName is not correct ([#551](https://github.com/instill-ai/console/issues/551)) ([de19825](https://github.com/instill-ai/console/commit/de19825f97a509be07f7542bf3ef3482753f71c3))
+* fix data source issue ([#542](https://github.com/instill-ai/console/issues/542)) ([5596859](https://github.com/instill-ai/console/commit/5596859c3e3f88f60f1b64c697f0b661f6178693))
+* fix integration-test not correctly import expect ([#552](https://github.com/instill-ai/console/issues/552)) ([853a6d4](https://github.com/instill-ai/console/commit/853a6d48191b1a724871cbf57f202963b1b021ed))
+* fix Pages not correctly passing Topbar props ([#532](https://github.com/instill-ai/console/issues/532)) ([72385be](https://github.com/instill-ai/console/commit/72385be5fd5454c33dee748fe1a0777e73f2ed6c))
+* fix snippet typo ([#544](https://github.com/instill-ai/console/issues/544)) ([879ee17](https://github.com/instill-ai/console/commit/879ee17c271d090b31d6b2644171aa6072f7591c))
+
 ## [0.27.0-alpha](https://github.com/instill-ai/console/compare/v0.26.0-alpha...v0.27.0-alpha) (2023-08-03)
 
 
