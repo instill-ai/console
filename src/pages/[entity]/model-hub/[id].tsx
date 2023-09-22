@@ -1,26 +1,20 @@
-import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
   useUserModelReadme,
   ModelHubSettingPageMainView,
+  PageBase,
+  Topbar,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import {
-  PageHead,
   ModelReadmeMarkdown,
-  Topbar,
   Sidebar,
-  PageBase,
+  ConsoleCorePageHead,
 } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const ModelDetailsPage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const ModelDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -32,7 +26,7 @@ const ModelDetailsPage: FC & {
 
   return (
     <>
-      <PageHead title={`models/${id}`} />
+      <ConsoleCorePageHead title={`models/${id}`} />
       <ModelHubSettingPageMainView
         router={router}
         accessToken={null}

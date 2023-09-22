@@ -1,19 +1,17 @@
-import { FC, ReactElement } from "react";
 import { Logo } from "@instill-ai/design-system";
-import { DashboardPipelineListPageMainView } from "@instill-ai/toolkit";
+import {
+  DashboardPipelineListPageMainView,
+  PageBase,
+  Topbar,
+} from "@instill-ai/toolkit";
 
-import { PageBase, PageHead, Sidebar, Topbar } from "@/components";
+import { ConsoleCorePageHead, Sidebar } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const PipelinePage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const PipelinePage: NextPageWithLayout = () => {
   return (
     <>
-      <PageHead title="dashboard" />
+      <ConsoleCorePageHead title="dashboard" />
       <DashboardPipelineListPageMainView
         accessToken={null}
         enableQuery={true}

@@ -2,7 +2,8 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { FC, ReactElement, useEffect } from "react";
 import { parse } from "cookie";
-import { PageBase, PageContentContainer } from "@/components";
+import { PageBase, useUser } from "@instill-ai/toolkit";
+import { NextPageWithLayout } from "./_app";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;
@@ -17,16 +18,16 @@ export type MainPageProps = {
   cookies: string;
 };
 
-interface GetLayOutProps {
-  page: ReactElement;
-}
-
-const MainPage: FC<MainPageProps> & {
-  getLayout?: FC<GetLayOutProps>;
-} = ({ cookies }) => {
+const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   const router = useRouter();
 
+  const user = useUser({
+    enabled: true,
+    accessToken: null,
+  });
+
   useEffect(() => {
+    console.log(cookies);
     if (!router.isReady) return;
 
     if (!cookies) {
@@ -36,18 +37,26 @@ const MainPage: FC<MainPageProps> & {
 
     const cookieList = parse(cookies);
 
+    console.log(user.data);
+
     if (!cookieList["instill-ai-user"]) {
       router.push("/onboarding");
     } else {
-      router.push("/pipelines");
+      if (user.isSuccess) {
+        router.push(`/${user.data.id}/pipelines`);
+      }
     }
-  }, [router, cookies]);
+  }, [router, cookies, user.isSuccess, user.data]);
 
-  return <PageContentContainer></PageContentContainer>;
+  return <></>;
 };
 
 MainPage.getLayout = (page) => {
-  return <PageBase>{page}</PageBase>;
+  return (
+    <PageBase.Container>
+      <PageBase.Content>{page}</PageBase.Content>
+    </PageBase.Container>
+  );
 };
 
 export default MainPage;

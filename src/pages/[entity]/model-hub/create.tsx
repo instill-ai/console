@@ -1,10 +1,15 @@
 import { GetServerSideProps } from "next";
-import { FC, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { env, ModelHubCreatePageMainView } from "@instill-ai/toolkit";
-
-import { PageHead, Topbar, Sidebar, PageBase } from "@/components";
 import { Logo } from "@instill-ai/design-system";
+import {
+  env,
+  ModelHubCreatePageMainView,
+  PageBase,
+  Topbar,
+} from "@instill-ai/toolkit";
+
+import { Sidebar, ConsoleCorePageHead } from "@/components";
+import { NextPageWithLayout } from "@/pages/_app";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -21,23 +26,16 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
-
-const CreateModelPage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const CreateModelPage: NextPageWithLayout = () => {
   const router = useRouter();
 
   return (
     <>
-      <PageHead title="Create model" />
+      <ConsoleCorePageHead title="Create model" />
       <ModelHubCreatePageMainView
         router={router}
         accessToken={null}
         enableQuery={true}
-        disabledCreateModel={false}
       />
     </>
   );
