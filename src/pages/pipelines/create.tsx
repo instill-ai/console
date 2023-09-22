@@ -1,6 +1,5 @@
 import { GetServerSideProps } from "next";
 import { FC, ReactElement } from "react";
-import { env } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { Topbar, Sidebar, PageBase } from "@/components";
