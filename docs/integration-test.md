@@ -1,7 +1,4 @@
-
-## Future improvemnet
-
-- Use page object model
+# About integration of Instill AI console
 
 ## About the test container
 

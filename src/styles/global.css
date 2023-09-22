@@ -25,4 +25,5 @@
 
 :root {
   --topbar-height: 72px;
+  --pipeline-builder-bottom-bar-height: 24px;
 }

@@ -1,31 +1,18 @@
-import { FC, ReactElement } from "react";
-
-import {
-  PageTitle,
-  PageHead,
-  OnboardingForm,
-  Topbar,
-  Sidebar,
-  PageBase,
-} from "@/components";
 import { Logo } from "@instill-ai/design-system";
+import { PageBase, PageTitle, Topbar } from "@instill-ai/toolkit";
 
-type GetLayOutProps = {
-  page: ReactElement;
-};
+import { NextPageWithLayout } from "./_app";
+import { OnboardingForm, Sidebar, ConsoleCorePageHead } from "@/components";
 
-const OnBoardingPage: FC & {
-  getLayout?: FC<GetLayOutProps>;
-} = () => {
+const OnBoardingPage: NextPageWithLayout = () => {
   return (
     <>
-      <PageHead title="Onboarding" />
+      <ConsoleCorePageHead title="Onboarding" />
       <div className="flex flex-col">
         <PageTitle
           title="Welcome to VDP console"
           breadcrumbs={["Onboarding"]}
-          disabledButton={true}
-          marginBottom="mb-10"
+          className="mb-10"
         />
         <OnboardingForm />
       </div>

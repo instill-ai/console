@@ -194,7 +194,7 @@ export const OnboardingForm = () => {
     updateUser.mutate(
       { payload, accessToken: null },
       {
-        onSuccess: async () => {
+        onSuccess: async (user) => {
           if (amplitudeIsInit) {
             sendAmplitudeData("submit_onboarding_form", {
               type: "critical_action",
@@ -208,7 +208,7 @@ export const OnboardingForm = () => {
             message: "Succeed.",
           }));
           await axios.post("/api/set-user-cookie", { token });
-          router.push("/pipelines");
+          router.push(`/${user.id}/pipelines`);
         },
         onError: (error) => {
           if (error instanceof Error) {

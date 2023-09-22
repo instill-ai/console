@@ -42,9 +42,6 @@ module.exports = {
 
     // eslint-plugin-react-hooks
     "plugin:react-hooks/recommended",
-
-    // eslint-plugin-storybook
-    "plugin:storybook/recommended",
   ],
   rules: {
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
