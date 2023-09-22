@@ -10,6 +10,7 @@ import {
   env,
   ReactQueryDevtools,
   usePipelineBuilderStore,
+  useCreateResourceFormStore,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -44,6 +45,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const trackingToken = useTrackingToken();
 
   const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
+  const initCreateResourceFormStore = useCreateResourceFormStore(
+    (state) => state.init
+  );
 
   const { dismiss: dismissToast } = useToast();
 
@@ -69,6 +73,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
       dismissToast();
       setPreviousUrl(window.history.state.url);
+      initCreateResourceFormStore();
     }
 
     router.events.on("routeChangeComplete", onRouteChange);
@@ -76,7 +81,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return () => {
       router.events.off("routeChangeComplete", onRouteChange);
     };
-  }, [router.events, initPipelineBuilder, dismissToast, previousURL]);
+  }, [
+    router.events,
+    initPipelineBuilder,
+    dismissToast,
+    previousURL,
+    initCreateResourceFormStore,
+  ]);
 
   useEffect(() => {
     if (!router.isReady || !trackingToken.data) return;
