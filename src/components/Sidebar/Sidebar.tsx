@@ -4,13 +4,15 @@ import { DiscordIcon, Icons, Separator } from "@instill-ai/design-system";
 import { LoadingSpin, useUser } from "@instill-ai/toolkit";
 
 import { SidebarLink } from "./SidebarLink";
+import { useAccessToken } from "@/lib";
 
 export const Sidebar = () => {
   const router = useRouter();
+  const accessToken = useAccessToken();
 
   const user = useUser({
-    enabled: true,
-    accessToken: null,
+    enabled: accessToken.isSuccess,
+    accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
   return (
@@ -117,7 +119,7 @@ export const Sidebar = () => {
         </a>
         <Link
           className="flex flex-row space-x-3 px-3 py-2 hover:bg-semantic-bg-base-bg"
-          href="/api/auth/logout"
+          href="/logout"
         >
           <Icons.Logout01 className="h-6 w-6 stroke-semantic-fg-primary" />
           <p className="stroke-semantic-fg-primary product-body-text-2-semibold">

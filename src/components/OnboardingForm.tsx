@@ -21,7 +21,7 @@ import {
   type User,
   type Nullable,
 } from "@instill-ai/toolkit";
-import { mgmtRoleOptions } from "@/lib";
+import { mgmtRoleOptions, useAccessToken } from "@/lib";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;
@@ -40,6 +40,7 @@ export const OnboardingForm = () => {
   const router = useRouter();
   const updateUser = useUpdateUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const accessToken = useAccessToken();
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
@@ -144,6 +145,10 @@ export const OnboardingForm = () => {
   });
 
   const handleSubmit = useCallback(() => {
+    if (!accessToken.isSuccess) {
+      return;
+    }
+
     const errors = {} as OnboardingFormErrors;
 
     if (!fieldValues.email) {
@@ -192,7 +197,7 @@ export const OnboardingForm = () => {
     }));
 
     updateUser.mutate(
-      { payload, accessToken: null },
+      { payload, accessToken: accessToken.data },
       {
         onSuccess: async (user) => {
           if (amplitudeIsInit) {
@@ -207,7 +212,10 @@ export const OnboardingForm = () => {
             description: null,
             message: "Succeed.",
           }));
-          await axios.post("/api/set-user-cookie", { token });
+          await axios.post("/api/set-user-cookie", {
+            key: "cookie_token",
+            value: token,
+          });
           router.push(`/${user.id}/pipelines`);
         },
         onError: (error) => {

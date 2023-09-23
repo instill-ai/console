@@ -21,9 +21,9 @@ import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
 
 import { useRouter } from "next/router";
-import { useTrackingToken } from "@/lib";
 import { ErrorBoundary } from "@/components";
 import { Toaster, useToast } from "@instill-ai/design-system";
+import { useAccessToken, useTrackToken } from "@/lib";
 
 export const queryCache = new QueryCache();
 
@@ -43,7 +43,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
   const [previousURL, setPreviousUrl] = useState("");
   const router = useRouter();
-  const trackingToken = useTrackingToken();
 
   const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
   const initCreateResourceFormStore = useCreateResourceFormStore(
@@ -89,31 +88,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     previousURL,
     initCreateResourceFormStore,
   ]);
-
-  useEffect(() => {
-    if (!router.isReady || !trackingToken.data) return;
-
-    if (trackingToken.data === "redirect-to-onboard") {
-      // We should clear the trackingToken to avoid once user had successfully setup user data, when we push them to the
-      // pipelines page, because there has no changes related to state, the trackingToken won't be flushed, so it remains
-      // redirect-to-onboard, user will be redirected to onboarding page again.
-      trackingToken.setData(null);
-      router.push("/onboarding");
-      return;
-    }
-
-    if (
-      env("NEXT_PUBLIC_CONSOLE_EDITION") !== "local-ce:dev" &&
-      !amplitudeIsInit
-    ) {
-      if (env("NEXT_PUBLIC_USAGE_COLLECTION_ENABLED")) {
-        setAmplitudeIsInit(false);
-      } else {
-        initAmplitude(trackingToken.data);
-        setAmplitudeIsInit(true);
-      }
-    }
-  }, [router.isReady, trackingToken, router.asPath, amplitudeIsInit, router]);
 
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>

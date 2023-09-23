@@ -1,3 +1,4 @@
 export * from "./auth";
 export * from "./mgmtRoleOptions";
-export * from "./useTrackingToken";
+export * from "./useAccessToken";
+export * from "./useTrackToken";

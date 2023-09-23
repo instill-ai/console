@@ -1,4 +1,9 @@
-import { setCookie, env, type SetCookiePayload } from "@instill-ai/toolkit";
+import {
+  setCookie,
+  env,
+  removeCookie,
+  type SetCookiePayload,
+} from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -9,21 +14,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 
-  if (!body.token) {
-    return res.status(500).end("Token not provided");
+  if (!body.key) {
+    return res.status(500).end("Key not provided");
+  }
+
+  if (!body.value) {
+    return res.status(500).end("Value not provided");
   }
 
   if (!env("NEXT_PUBLIC_CONSOLE_BASE_URL")) {
     return res.status(500).end("Env CONSOLE_BASE_URL is not provided");
   }
 
+  const targetCookie = req.cookies[body.key];
+
   try {
+    if (targetCookie) {
+      removeCookie({
+        res,
+        key: body.key,
+      });
+    }
+
     const payload: SetCookiePayload = {
       res: res,
-      key: "instill-ai-user",
-      value: JSON.stringify({
-        cookie_token: body.token,
-      }),
+      key: body.key,
+      value: body.value,
       secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? true,
       domain: null,
       maxAge: 60 * 60 * 24 * 30,
