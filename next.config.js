@@ -27,4 +27,7 @@ module.exports = {
   experimental: {
     forceSwcTransforms: true,
   },
+  unstable_allowDynamic: [
+    "node_modules/echarts/lib/coord/geo/GeoJSONResource.js",
+  ],
 };

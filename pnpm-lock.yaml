@@ -20,7 +20,7 @@ dependencies:
     specifier: ^0.3.2
     version: 0.3.2(tailwindcss@3.3.1)
   '@instill-ai/toolkit':
-    specifier: ^0.68.0-rc.42
+    specifier: ^0.68.0-rc.41
     version: 0.68.0-rc.42(@instill-ai/design-system@0.52.0)(@instill-ai/design-tokens@0.3.2)(@types/react-dom@18.2.0)(@types/react@18.2.0)(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.3
@@ -2032,7 +2032,7 @@ packages:
       '@types/node': 17.0.45
       chalk: 4.1.2
       cosmiconfig: 7.0.1
-      cosmiconfig-typescript-loader: 2.0.2(@types/node@17.0.45)(typescript@4.7.4)
+      cosmiconfig-typescript-loader: 2.0.2(@types/node@17.0.45)(cosmiconfig@7.0.1)(typescript@4.7.4)
       lodash: 4.17.21
       resolve-from: 5.0.0
       typescript: 4.7.4
@@ -6148,11 +6148,12 @@ packages:
       browserslist: 4.21.4
     dev: true
 
-  /cosmiconfig-typescript-loader@2.0.2(@types/node@17.0.45)(typescript@4.7.4):
+  /cosmiconfig-typescript-loader@2.0.2(@types/node@17.0.45)(cosmiconfig@7.0.1)(typescript@4.7.4):
     resolution: {integrity: sha512-KmE+bMjWMXJbkWCeY4FJX/npHuZPNr9XF9q9CIQ/bpFwi1qHfCmSiKarrCcRa0LO4fWjk93pVoeRtJAkTGcYNw==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@types/node': '*'
+      cosmiconfig: '>=7'
       typescript: '>=3'
     dependencies:
       '@types/node': 17.0.45
