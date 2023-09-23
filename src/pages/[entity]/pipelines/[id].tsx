@@ -9,9 +9,13 @@ import {
 
 import { ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib";
 
 const PipelineBuilderPage: NextPageWithLayout = () => {
   const router = useRouter();
+  const accessToken = useAccessToken();
+
+  console.log(accessToken.data, accessToken.isSuccess);
   return (
     <>
       <ConsoleCorePageHead title="Pipeline builder" />
@@ -24,8 +28,8 @@ const PipelineBuilderPage: NextPageWithLayout = () => {
         <PageBase.Container>
           <PipelineBuilderMainView
             router={router}
-            accessToken={null}
-            enableQuery={true}
+            accessToken={accessToken.isSuccess ? accessToken.data : null}
+            enableQuery={accessToken.isSuccess}
           />
         </PageBase.Container>
       </PageBase>

@@ -10,6 +10,7 @@ import {
 
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -28,14 +29,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const CreateModelPage: NextPageWithLayout = () => {
   const router = useRouter();
+  const accessToken = useAccessToken();
 
   return (
     <>
       <ConsoleCorePageHead title="Create model" />
       <ModelHubCreatePageMainView
         router={router}
-        accessToken={null}
-        enableQuery={true}
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
       />
     </>
   );

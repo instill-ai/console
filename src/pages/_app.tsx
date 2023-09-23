@@ -5,9 +5,7 @@ import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
-  initAmplitude,
   AmplitudeCtx,
-  env,
   ReactQueryDevtools,
   usePipelineBuilderStore,
   useCreateResourceFormStore,
@@ -23,7 +21,6 @@ import "reactflow/dist/style.css";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "@/components";
 import { Toaster, useToast } from "@instill-ai/design-system";
-import { useAccessToken, useTrackToken } from "@/lib";
 
 export const queryCache = new QueryCache();
 

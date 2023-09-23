@@ -7,12 +7,17 @@ import { Logo } from "@instill-ai/design-system";
 
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib";
 
 const PipelinePage: NextPageWithLayout = () => {
+  const accessToken = useAccessToken();
   return (
     <>
       <ConsoleCorePageHead title="pipelines" />
-      <ResourceListPageMainView accessToken={null} enableQuery={true} />
+      <ResourceListPageMainView
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
+      />
     </>
   );
 };

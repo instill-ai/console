@@ -7,14 +7,16 @@ import {
 
 import { ConsoleCorePageHead, Sidebar } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib";
 
 const PipelinePage: NextPageWithLayout = () => {
+  const accessToken = useAccessToken();
   return (
     <>
       <ConsoleCorePageHead title="dashboard" />
       <DashboardPipelineListPageMainView
-        accessToken={null}
-        enableQuery={true}
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
       />
     </>
   );

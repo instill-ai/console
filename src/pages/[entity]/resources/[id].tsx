@@ -8,18 +8,20 @@ import { Logo } from "@instill-ai/design-system";
 
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib";
 
 const ResourceDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
+  const accessToken = useAccessToken();
 
   return (
     <>
       <ConsoleCorePageHead title={`resources/${id}`} />
       <ResourceSettingPageMainView
         router={router}
-        accessToken={null}
-        enableQuery={true}
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
       />
     </>
   );

@@ -38,7 +38,6 @@ export function withMiddlewareAuthRequired(
           { status: 401 }
         );
       }
-      console.log("middleware auth required");
       return NextResponse.redirect(new URL("/login", origin));
     }
 
