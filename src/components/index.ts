@@ -1,4 +1,5 @@
 export * from "./AuthPageBase";
+export * from "./ChangePasswordForm";
 export * from "./ConsoleCorePageHead";
 export * from "./Sidebar";
 export * from "./ErrorBoundary";

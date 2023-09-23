@@ -1,3 +1,4 @@
+import { removeCookie } from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,13 +14,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const targetCookie = cookies[body.key];
-  let responseBody: null | any = null;
 
   if (targetCookie) {
-    responseBody = targetCookie;
+    removeCookie({
+      res,
+      key: body.key,
+    });
   }
 
-  return res.status(200).json(responseBody);
+  return res.status(200).send("ok");
 };
 
 export default handler;

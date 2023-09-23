@@ -3,19 +3,24 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const LoginFormSchema = z.object({
+export const LoginFormSchema = z.object({
   username: z.string(),
   password: z.string(),
+  // .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
-export const LoginForm = () => {
+export type LoginFormProps = {
+  onSubmit: (data: z.infer<typeof LoginFormSchema>) => void;
+};
+
+export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
+    defaultValues: {
+      username: "admin",
+      password: "",
+    },
   });
-
-  function onSubmit(data: z.infer<typeof LoginFormSchema>) {
-    alert(JSON.stringify(data));
-  }
 
   return (
     <Form.Root {...form}>
@@ -38,6 +43,7 @@ export const LoginForm = () => {
                         id={field.name}
                         placeholder="Username"
                         type="text"
+                        disabled={true}
                       />
                     </Input.Root>
                   </Form.Control>

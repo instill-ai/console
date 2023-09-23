@@ -4,6 +4,7 @@ import {
   ModelHubSettingPageMainView,
   PageBase,
   Topbar,
+  useUser,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
@@ -13,15 +14,17 @@ import {
   ConsoleCorePageHead,
 } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 const ModelDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, entity } = router.query;
+  const accessToken = useAccessToken();
 
   const modelReadme = useUserModelReadme({
-    modelName: id ? `users/instill-ai/models/${id}` : null,
-    accessToken: null,
-    enabled: !!id,
+    modelName: id ? `users/${entity}/models/${id}` : null,
+    accessToken: accessToken.isSuccess ? accessToken.data : null,
+    enabled: accessToken.isSuccess,
   });
 
   return (
@@ -29,8 +32,8 @@ const ModelDetailsPage: NextPageWithLayout = () => {
       <ConsoleCorePageHead title={`models/${id}`} />
       <ModelHubSettingPageMainView
         router={router}
-        accessToken={null}
-        enableQuery={true}
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
         modelReadme={
           <ModelReadmeMarkdown
             isLoading={modelReadme.isLoading}

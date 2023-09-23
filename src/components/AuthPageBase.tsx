@@ -25,7 +25,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
                 <p className="font-sans text-5xl font-bold leading-[60px]">
                   <span className="text-semantic-fg-primary">Meet</span>{" "}
                   <span className="text-semantic-accent-default">
-                    Instill Cloud
+                    Instill Core
                   </span>
                 </p>
                 <p className="font-sans text-xl font-bold leading-4 text-semantic-fg-primary">

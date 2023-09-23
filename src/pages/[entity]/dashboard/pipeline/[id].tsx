@@ -8,17 +8,19 @@ import {
 
 import { ConsoleCorePageHead, Sidebar } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 const PipelinePage: NextPageWithLayout = () => {
   const router = useRouter();
+  const accessToken = useAccessToken();
 
   return (
     <>
       <ConsoleCorePageHead title="Dashboard pipeline details" />
       <DashboardPipelineDetailsPageMainView
         router={router}
-        accessToken={null}
-        enableQuery={true}
+        accessToken={accessToken.isSuccess ? accessToken.data : null}
+        enableQuery={accessToken.isSuccess}
       />
     </>
   );
