@@ -10,7 +10,7 @@ import {
 
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useAccessToken } from "@/lib";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {

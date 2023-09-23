@@ -7,7 +7,7 @@ import {
 
 import { ConsoleCorePageHead, Sidebar } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useAccessToken } from "@/lib";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 const PipelinePage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();

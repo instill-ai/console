@@ -8,7 +8,7 @@ import { Logo } from "@instill-ai/design-system";
 
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useAccessToken } from "@/lib";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 const ResourceDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();

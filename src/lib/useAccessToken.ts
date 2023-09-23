@@ -1,3 +1,5 @@
+"use client";
+
 import { authValidateTokenAction, useQuery } from "@instill-ai/toolkit";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -16,8 +18,6 @@ export function useAccessToken() {
       if (!accessToken) {
         throw new Error("No accessToken in response");
       }
-
-      console.log("accessToken", accessToken);
 
       await authValidateTokenAction({ accessToken });
 

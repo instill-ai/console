@@ -18,7 +18,7 @@ import {
 import { useToast } from "@instill-ai/design-system";
 import axios, { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useTrackToken } from "@/lib";
+import { useTrackToken } from "@/lib/useTrackToken";
 
 const LoginPage: NextPageWithLayout = () => {
   const router = useRouter();

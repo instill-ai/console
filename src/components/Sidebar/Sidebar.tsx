@@ -4,7 +4,7 @@ import { DiscordIcon, Icons, Separator } from "@instill-ai/design-system";
 import { LoadingSpin, useUser } from "@instill-ai/toolkit";
 
 import { SidebarLink } from "./SidebarLink";
-import { useAccessToken } from "@/lib";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 export const Sidebar = () => {
   const router = useRouter();

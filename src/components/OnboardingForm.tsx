@@ -21,7 +21,8 @@ import {
   type User,
   type Nullable,
 } from "@instill-ai/toolkit";
-import { mgmtRoleOptions, useAccessToken } from "@/lib";
+import { mgmtRoleOptions } from "@/lib";
+import { useAccessToken } from "@/lib/useAccessToken";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;
