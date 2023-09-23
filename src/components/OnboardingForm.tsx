@@ -213,8 +213,10 @@ export const OnboardingForm = () => {
             message: "Succeed.",
           }));
           await axios.post("/api/set-user-cookie", {
-            key: "cookie_token",
-            value: token,
+            key: "instill-ai-user",
+            value: JSON.stringify({
+              cookie_token: token,
+            }),
           });
           router.push(`/${user.id}/pipelines`);
         },

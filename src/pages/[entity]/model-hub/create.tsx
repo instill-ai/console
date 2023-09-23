@@ -38,6 +38,7 @@ const CreateModelPage: NextPageWithLayout = () => {
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
+        disabledCreateModel={false}
       />
     </>
   );

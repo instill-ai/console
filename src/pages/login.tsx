@@ -54,6 +54,8 @@ const LoginPage: NextPageWithLayout = () => {
         setAccessToken(res);
         setLoginIsComplete(true);
       } else {
+        setAccessToken(res);
+        setLoginIsComplete(true);
         setChangePasswordIsComplete(true);
       }
     } catch (error) {

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const LoginFormSchema = z.object({
   username: z.string(),
   password: z.string(),
+  // .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
 export type LoginFormProps = {
@@ -17,6 +18,7 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       username: "admin",
+      password: "",
     },
   });
 

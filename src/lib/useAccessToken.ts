@@ -1,4 +1,4 @@
-import { useQuery } from "@instill-ai/toolkit";
+import { authValidateTokenAction, useQuery } from "@instill-ai/toolkit";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -17,16 +17,24 @@ export function useAccessToken() {
         throw new Error("No accessToken in response");
       }
 
+      console.log("accessToken", accessToken);
+
+      await authValidateTokenAction({ accessToken });
+
       return Promise.resolve(accessToken);
     },
     {
-      onError: (error) => {
+      onError: async (error) => {
         console.error(
           "Something went wrong when try to get accessToken",
           error
         );
 
-        router.push("/login");
+        await axios.post("/api/remove-user-cookie", {
+          key: "instill-auth-session",
+        });
+
+        await router.push("/login");
       },
       retry: false,
       refetchOnWindowFocus: false,

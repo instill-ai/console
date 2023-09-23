@@ -92,7 +92,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
         <div id="modal-root" />
         <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </AmplitudeCtx.Provider>
   );

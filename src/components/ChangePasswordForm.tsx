@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const ChangePasswordFormSchema = z.object({
-  new_password: z.string(),
+  new_password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
 export type ChangePasswordFormProps = {
@@ -14,6 +16,9 @@ export type ChangePasswordFormProps = {
 export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
   const form = useForm<z.infer<typeof ChangePasswordFormSchema>>({
     resolver: zodResolver(ChangePasswordFormSchema),
+    defaultValues: {
+      new_password: "",
+    },
   });
 
   return (
