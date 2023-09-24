@@ -8,8 +8,10 @@ import { Logo } from "@instill-ai/design-system";
 import { Sidebar, ConsoleCorePageHead } from "@/components";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useAccessToken } from "@/lib/useAccessToken";
+import { useRouter } from "next/router";
 
 const PipelinePage: NextPageWithLayout = () => {
+  const router = useRouter();
   const accessToken = useAccessToken();
   return (
     <>
@@ -17,6 +19,7 @@ const PipelinePage: NextPageWithLayout = () => {
       <ResourceListPageMainView
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
+        router={router}
       />
     </>
   );
