@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const { dismiss: dismissToast } = useToast();
 
   function isPipelineDetailPage(path: string) {
-    if (path.split("/")[1] === "pipelines" && path.split("/")[2]) {
+    if (path.split("/")[2] === "pipelines" && path.split("/")[3]) {
       return true;
     }
     return false;
