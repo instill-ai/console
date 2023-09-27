@@ -21,7 +21,8 @@
     "prettier:check": "prettier --check",
     "lint": "next lint",
     "download-airbyte-icons": "node ./downloadAirbyteIcons.js",
-    "integration-test": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && npx playwright test"
+    "integration-test": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && npx playwright test",
+    "check-pnpm-overrides": "node ./scripts/checkPnpmOverrides.mjs"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^1.9.1",
@@ -67,7 +68,6 @@
     "tailwindcss-animate": "^1.0.6",
     "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.0",
-    "yaml": "^2.0.1",
     "yup": "^0.32.11",
     "zod": "^3.21.4",
     "zustand": "^4.3.7"
@@ -111,6 +111,7 @@
     "eslint-plugin-testing-library": "^5.3.1",
     "husky": "^7.0.0",
     "jest": "^27.5.1",
+    "js-yaml": "^4.1.0",
     "lint-staged": ">=10",
     "msw": "^0.42.1",
     "npm-run-all": "^4.1.5",
@@ -129,7 +130,14 @@
     "*.{js,jsx,ts,tsx}": [
       "pnpm prettier:fix",
       "eslint --cache --fix",
-      "jest --bail --findRelatedTests"
+      "jest --bail --findRelatedTests",
+      "pnpm check-pnpm-overrides"
+    ],
+    "package.json": [
+      "pnpm check-pnpm-overrides"
+    ],
+    "pnpm-lock.yaml": [
+      "pnpm check-pnpm-overrides"
     ]
   },
   "engines": {

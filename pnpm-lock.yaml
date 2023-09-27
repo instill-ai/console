@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@amplitude/analytics-browser':
     specifier: ^1.9.1
@@ -130,9 +134,6 @@ dependencies:
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
-  yaml:
-    specifier: ^2.0.1
-    version: 2.1.1
   yup:
     specifier: ^0.32.11
     version: 0.32.11
@@ -258,6 +259,9 @@ devDependencies:
   jest:
     specifier: ^27.5.1
     version: 27.5.1
+  js-yaml:
+    specifier: ^4.1.0
+    version: 4.1.0
   lint-staged:
     specifier: '>=10'
     version: 13.0.3
@@ -300,14 +304,14 @@ devDependencies:
 
 packages:
 
-  /@amplitude/analytics-browser@1.12.0:
-    resolution: {integrity: sha512-EUGm+GZHx4IrupdVuFs3cFoey7xoSKSBxn143lGQUSM9UYRPweZqgrDfAk3xixgvtlTbOvl0i0zSxrCAwfUCEw==}
+  /@amplitude/analytics-browser@1.13.1:
+    resolution: {integrity: sha512-KQu/czMK3R9dRzxQX1XHMZ3nxcYFFxhuX8m25es8YePChtzTT+ZIoJl0oyDLZo2ayQtx+wVTxL3ro52DaNoZIg==}
     dependencies:
-      '@amplitude/analytics-client-common': 1.1.0
-      '@amplitude/analytics-core': 1.2.0
-      '@amplitude/analytics-types': 1.3.0
-      '@amplitude/plugin-page-view-tracking-browser': 1.0.6
-      '@amplitude/plugin-web-attribution-browser': 1.0.6
+      '@amplitude/analytics-client-common': 1.2.0
+      '@amplitude/analytics-core': 1.2.3
+      '@amplitude/analytics-types': 1.3.3
+      '@amplitude/plugin-page-view-tracking-browser': 1.0.10
+      '@amplitude/plugin-web-attribution-browser': 1.0.10
       '@amplitude/ua-parser-js': 0.7.31
       tslib: 2.5.0
     dev: false
@@ -333,12 +337,12 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@amplitude/analytics-client-common@1.1.0:
-    resolution: {integrity: sha512-UEAfgpuZZyZBPjVCk+b83m/2s7cNSPkMxJm+0RgAOChFsLgWhX+PJiJ/GOvLUDcZbls1nXHdeOIDYZchhRy6dA==}
+  /@amplitude/analytics-client-common@1.2.0:
+    resolution: {integrity: sha512-hDvBNudZal77EZxGKYpCBDt0xNcHm+WPcTyHql/g9JKTWaV3YtC80onebV9rxP7eWDsD0LoRf7ee/MBiihIhSw==}
     dependencies:
-      '@amplitude/analytics-connector': 1.4.6
-      '@amplitude/analytics-core': 1.2.0
-      '@amplitude/analytics-types': 1.3.0
+      '@amplitude/analytics-connector': 1.5.0
+      '@amplitude/analytics-core': 1.2.3
+      '@amplitude/analytics-types': 1.3.3
       tslib: 2.5.0
     dev: false
 
@@ -348,6 +352,10 @@ packages:
       '@amplitude/ua-parser-js': 0.7.31
     dev: false
 
+  /@amplitude/analytics-connector@1.5.0:
+    resolution: {integrity: sha512-T8mOYzB9RRxckzhL0NTHwdge9xuFxXEOplC8B1Y3UX3NHa3BLh7DlBUZlCOwQgMc2nxDfnSweDL5S3bhC+W90g==}
+    dev: false
+
   /@amplitude/analytics-core@0.12.1:
     resolution: {integrity: sha512-ATaXV6oJVsoqxYiyHTmBmgwauDwj0DjZ4HAR5jtw6bMU+OI8QTo+acnoLT/2Q9sw9gfl84fuKd8NBV7NuOsQ+Q==}
     dependencies:
@@ -355,10 +363,10 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@amplitude/analytics-core@1.2.0:
-    resolution: {integrity: sha512-KgsrhPWoj2XrEVBiT65aGmGMbpxMGqeugXY99Y7m8DcKkcXfqBMX2tOOrg9ryb9LFCo3OOKnRLplK7WuKTHYLA==}
+  /@amplitude/analytics-core@1.2.3:
+    resolution: {integrity: sha512-3WADE8IcxU7ZERMkBb0+JP7t6EekyFPM0djtNKXQaxgGgH3oqQzMmBCg19UnYYiBSHrZkpiMBLHNAvXL6HM7zg==}
     dependencies:
-      '@amplitude/analytics-types': 1.3.0
+      '@amplitude/analytics-types': 1.3.3
       tslib: 2.5.0
     dev: false
 
@@ -366,8 +374,8 @@ packages:
     resolution: {integrity: sha512-5DrnjWbbG50v1KuRG90g05yEAd80OngxwyjG8ejMVY2/lXmPjwH3xCBrHRnXlnwpaMHKh/RGEtvM5+JAYZ39rA==}
     dev: false
 
-  /@amplitude/analytics-types@1.3.0:
-    resolution: {integrity: sha512-+Cz7J5lZdOqZv3njpTqtnhG/pZXOR+sTUC/aKnoMisCCVlEdJpPzN9UV17/7RCMwjDUjw8WsfhlNJAIqXO42Iw==}
+  /@amplitude/analytics-types@1.3.3:
+    resolution: {integrity: sha512-V4/h+izhG7NyVfIva1uhe6bToI/l5n+UnEomL3KEO9DkFoKiOG7KmXo/fmzfU6UmD1bUEWmy//hUFF16BfrEww==}
     dev: false
 
   /@amplitude/plugin-page-view-tracking-browser@0.6.3:
@@ -378,11 +386,11 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@amplitude/plugin-page-view-tracking-browser@1.0.6:
-    resolution: {integrity: sha512-eeAswgfgLt1weIMpBP3W742SS7k6elSVFbmR8LQ5DHFHe3YioDlSEiOxf1jyidlrFVSSPD6xh76P0Lhe6HEBAQ==}
+  /@amplitude/plugin-page-view-tracking-browser@1.0.10:
+    resolution: {integrity: sha512-J4IyBy2+7Zg8LUEv0KHR3qUVlODzQA/2OUgQaefsWGp0/fNahZ2TUNyPTJ7ug56PfiKAmQPvAhnlcPLVY//scw==}
     dependencies:
-      '@amplitude/analytics-client-common': 1.1.0
-      '@amplitude/analytics-types': 1.3.0
+      '@amplitude/analytics-client-common': 1.2.0
+      '@amplitude/analytics-types': 1.3.3
       tslib: 2.5.0
     dev: false
 
@@ -394,11 +402,12 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@amplitude/plugin-web-attribution-browser@1.0.6:
-    resolution: {integrity: sha512-ujrXFM9xo9izqAoGqLxJlbJ0fVB9LY1PSO+089mYrcj6t3snYp+0SQ6wcUZQg4Y42llEF0xgmCNmjQZCtlpRHw==}
+  /@amplitude/plugin-web-attribution-browser@1.0.10:
+    resolution: {integrity: sha512-3m5A2eHngEaN11rIuVEFCdwH7VP3BJ/OIgR5JvRjs1NScpOVBU3WQKpVOozm70dj7gxIvd0bnBvJQWwDXalt/w==}
     dependencies:
-      '@amplitude/analytics-client-common': 1.1.0
-      '@amplitude/analytics-types': 1.3.0
+      '@amplitude/analytics-client-common': 1.2.0
+      '@amplitude/analytics-core': 1.2.3
+      '@amplitude/analytics-types': 1.3.3
       tslib: 2.5.0
     dev: false
 
@@ -2381,7 +2390,7 @@ packages:
       react: ^18.2.0
       react-dom: ^18.2.0
     dependencies:
-      '@amplitude/analytics-browser': 1.12.0
+      '@amplitude/analytics-browser': 1.13.1
       '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.0)
       '@instill-ai/design-system': 0.53.3(@types/react-dom@18.2.0)(@types/react@18.2.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.1)
@@ -10695,8 +10704,8 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /prismjs@1.28.0:
-    resolution: {integrity: sha512-8aaXdYvl1F7iC7Xm1spqSaY/OJBpYW3v+KJ+F17iYxvdc8sfjW194COK5wVhMZX45tGteiBQgdvD/nhxcRwylw==}
+  /prismjs@1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
     dev: false
 
@@ -10936,7 +10945,7 @@ packages:
       '@babel/runtime': 7.20.7
       highlight.js: 10.7.3
       lowlight: 1.20.0
-      prismjs: 1.28.0
+      prismjs: 1.29.0
       react: 18.2.0
       refractor: 3.6.0
     dev: false
@@ -12871,6 +12880,7 @@ packages:
   /yaml@2.1.1:
     resolution: {integrity: sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==}
     engines: {node: '>= 14'}
+    dev: true
 
   /yargs-parser@20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
