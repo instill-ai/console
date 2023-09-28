@@ -30,7 +30,7 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   });
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !cookies) return;
 
     const cookieList = parse(cookies);
 
