@@ -24,7 +24,7 @@ export function withMiddlewareAuthRequired(
     }
 
     const authRes = NextResponse.next();
-    const sessionCookie = req.cookies.get("instill-ai-session");
+    const sessionCookie = req.cookies.get("instill-auth-session");
     const session = JSON.parse(sessionCookie?.value || "{}");
 
     if (!session.access_token) {
