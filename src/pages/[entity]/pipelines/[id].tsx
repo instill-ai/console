@@ -14,6 +14,7 @@ import { useAccessToken } from "@/lib/useAccessToken";
 const PipelineBuilderPage: NextPageWithLayout = () => {
   const router = useRouter();
   const accessToken = useAccessToken();
+
   return (
     <>
       <ConsoleCorePageHead title="Pipeline builder" />
