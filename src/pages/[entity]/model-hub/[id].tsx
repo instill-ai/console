@@ -4,7 +4,6 @@ import {
   ModelHubSettingPageMainView,
   PageBase,
   Topbar,
-  useUser,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 

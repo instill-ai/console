@@ -240,7 +240,14 @@ export const OnboardingForm = () => {
         },
       }
     );
-  }, [fieldValues, amplitudeIsInit, router, updateUser]);
+  }, [
+    fieldValues,
+    amplitudeIsInit,
+    router,
+    updateUser,
+    accessToken.data,
+    accessToken.isSuccess,
+  ]);
 
   return (
     <FormRoot formLess={false}>

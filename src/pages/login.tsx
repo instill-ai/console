@@ -137,6 +137,7 @@ const LoginPage: NextPageWithLayout = () => {
     changePasswordIsComplete,
     user.data,
     user.isSuccess,
+    router,
   ]);
 
   return (
