@@ -41,7 +41,16 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
                         {...field}
                         id={field.name}
                         placeholder="New password"
-                        type="text"
+                        type="password"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          if (e.target.value === "password") {
+                            form.setError("new_password", {
+                              message:
+                                "Password must be different from default password",
+                            });
+                          }
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -51,7 +60,12 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
             }}
           />
         </div>
-        <Button variant="primary" className="!w-full !flex-1" size="lg">
+        <Button
+          variant="primary"
+          className="!w-full !flex-1"
+          size="lg"
+          disabled={form.watch("new_password") === "password" ? true : false}
+        >
           Continue
         </Button>
       </form>
