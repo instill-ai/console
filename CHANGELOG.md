@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.29.0-alpha](https://github.com/instill-ai/console/compare/v0.28.0-alpha...v0.29.0-alpha) (2023-09-30)
+
+
+### Features
+
+* **auth:** support simple login and logout in core ([#556](https://github.com/instill-ai/console/issues/556)) ([8bffdae](https://github.com/instill-ai/console/commit/8bffdaecf4b79f910abd6bfdf87688bec1dd820c))
+* **auth:** Unauthenticated user will be block by our auth-guard ([#555](https://github.com/instill-ai/console/issues/555)) ([47eaac7](https://github.com/instill-ai/console/commit/47eaac76ff32b0f4e336da2d60782f03f7bc4c67))
+* **pipeline-builder:** Non owner user can view public pipeline or pipeline that is shared by link ([#566](https://github.com/instill-ai/console/issues/566)) ([11aac63](https://github.com/instill-ai/console/commit/11aac63406a012299a2572a48b53fdc70d80802e))
+* **pipeline-builder:** User can clone pipeline that is shared by other users ([#567](https://github.com/instill-ai/console/issues/567)) ([c88760f](https://github.com/instill-ai/console/commit/c88760fb95f92c3214cecef4861f1be1541f4ef1))
+* **pipeline-builder:** user can have a centralize place to view all the templates ([#562](https://github.com/instill-ai/console/issues/562)) ([79f5c77](https://github.com/instill-ai/console/commit/79f5c7793d88b626e9f778e2e8e684d671a35337))
+* **pipeline-builder:** user can have node with uncreated resource on pipeline builder ([#559](https://github.com/instill-ai/console/issues/559)) ([c894cbf](https://github.com/instill-ai/console/commit/c894cbf360504a835b57ca202604cd63313c4116))
+* **pipeline-builder:** user can have pre-formatted text field to better visualize the output ([#572](https://github.com/instill-ai/console/issues/572)) ([1bbb953](https://github.com/instill-ai/console/commit/1bbb953812a534acbc5c817b11b7208c584ef7bc))
+* **pipeline-builder:** User can now have a centralize control panel to copy, delete and configure node ([#560](https://github.com/instill-ai/console/issues/560)) ([08dd9c7](https://github.com/instill-ai/console/commit/08dd9c76fb84b554d378f6decd23b2b7401bc5a3))
+* **pipeline-builder:** user can share their private pipeline with sharing a unique link ([#565](https://github.com/instill-ai/console/issues/565)) ([21d8d98](https://github.com/instill-ai/console/commit/21d8d98556fe8ee6080de6c6937e90c6776b7c73))
+* **pipeline-builder:** User can toggle their pipelines permission level ([#564](https://github.com/instill-ai/console/issues/564)) ([b0dc47b](https://github.com/instill-ai/console/commit/b0dc47b1bb5ec90165e25eb84414dd3151fa472d))
+* **pipeline-builder:** User can view staff pick templates on pipeline list page ([#561](https://github.com/instill-ai/console/issues/561)) ([cd35a1c](https://github.com/instill-ai/console/commit/cd35a1c8cd2bfb899db2d11f4be13bc530aaba21))
+* **pipeline-builder:** User will have 1.5x wider node under normal mode and 2.0 wider node under test mode ([#557](https://github.com/instill-ai/console/issues/557)) ([24a29c5](https://github.com/instill-ai/console/commit/24a29c52ae1a2301cd823123f9439267dc651648))
+* **pipeline-builder:** When user delete the whole name of pipeline, we will recover it back to previous name on blur or enter  ([#558](https://github.com/instill-ai/console/issues/558)) ([dc55909](https://github.com/instill-ai/console/commit/dc55909c3e011a4e5d1073b54799ccca89e62551))
+* prepare release 0.29.0-alpha ([#574](https://github.com/instill-ai/console/issues/574)) ([a28c83f](https://github.com/instill-ai/console/commit/a28c83fb5b3241b989a81cf755630b23cd9a89e5))
+* support namespace in URL, recipe display and add contribution guideline ([#553](https://github.com/instill-ai/console/issues/553)) ([5d91e0b](https://github.com/instill-ai/console/commit/5d91e0b19cafea78ab1df332d5cd208d5fa932c8))
+* **user:** User can generate API token in user-setting page ([#568](https://github.com/instill-ai/console/issues/568)) ([1df5e30](https://github.com/instill-ai/console/commit/1df5e307fb8307b7d21d26194a0bfcc1b9dc99a7))
+
+
+### Bug Fixes
+
+* fix a bug that user can change password to default password ([#569](https://github.com/instill-ai/console/issues/569)) ([b84e4b2](https://github.com/instill-ai/console/commit/b84e4b289e28fd6caf23da5e2e933fb82c2a03e5))
+* fix back to latest version button won't reset the field value on node ([#570](https://github.com/instill-ai/console/issues/570)) ([6c3e281](https://github.com/instill-ai/console/commit/6c3e2817cb8912c26edc5aad5beaec56c874cf2a))
+* fix user can't have filtered existing resource when create resource on node ([#578](https://github.com/instill-ai/console/issues/578)) ([c6b76e0](https://github.com/instill-ai/console/commit/c6b76e019c0c515cf8e13aa380936951945ef903))
+* **model-hub:** fix model namespace is wrong in instill-core's /models/&lt;model_id&gt; page ([#571](https://github.com/instill-ai/console/issues/571)) ([dc64460](https://github.com/instill-ai/console/commit/dc6446089cc727560ce72b5e9a3442cfa8d26991))
+
+
+### Miscellaneous
+
+* better guard our repo from pnpm overrides ([#563](https://github.com/instill-ai/console/issues/563)) ([9848f9d](https://github.com/instill-ai/console/commit/9848f9d20158c84f89c613b2be0aafea2c8ba08b))
+* fix e2e disk size is not enough issue ([#576](https://github.com/instill-ai/console/issues/576)) ([73deb91](https://github.com/instill-ai/console/commit/73deb917bbf37f6e5af5622a1e0175e4a313f900))
+
 ## [0.28.0-alpha](https://github.com/instill-ai/console/compare/v0.27.0-alpha...v0.28.0-alpha) (2023-09-22)
 
 
