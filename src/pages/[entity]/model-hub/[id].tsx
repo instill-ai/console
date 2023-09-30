@@ -41,6 +41,7 @@ const ModelDetailsPage: NextPageWithLayout = () => {
           />
         }
         modelNamespace="admin"
+        disabledConfigureModel={false}
       />
     </>
   );
