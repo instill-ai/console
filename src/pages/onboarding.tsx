@@ -10,7 +10,7 @@ const OnBoardingPage: NextPageWithLayout = () => {
       <ConsoleCorePageHead title="Onboarding" />
       <div className="flex flex-col">
         <PageTitle
-          title="Welcome to VDP console"
+          title="Welcome to Instill Core"
           breadcrumbs={["Onboarding"]}
           className="mb-10"
         />
