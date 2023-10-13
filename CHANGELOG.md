@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.30.0-alpha](https://github.com/instill-ai/console/compare/v0.29.0-alpha...v0.30.0-alpha) (2023-10-13)
+
+
+### Features
+
+* **general:** User can better identify the process is still running when doing actions ([#592](https://github.com/instill-ai/console/issues/592)) ([638cc23](https://github.com/instill-ai/console/commit/638cc233f28e7b3a033f3dbc7ae077f51b67919a))
+* **pipeline-builder:** adapt new component input structure  ([#590](https://github.com/instill-ai/console/issues/590)) ([0e15855](https://github.com/instill-ai/console/commit/0e158551653a7b5761774149db1e1618cceb8d3d))
+* **pipeline-builder:** make the array fields on start node start with only one field ([#594](https://github.com/instill-ai/console/issues/594)) ([53f1b9e](https://github.com/instill-ai/console/commit/53f1b9e31134d3308c0af37a6fa578d762392e4a))
+* **pipeline-builder:** User can create the copy of their pipeline with one click ([#584](https://github.com/instill-ai/console/issues/584)) ([060cb6b](https://github.com/instill-ai/console/commit/060cb6bd70b9e4ad9d2cd10e4f1965a093c1e2f4))
+* **pipeline-builder:** User can have autoresize input when edit node and pipeline name ([#585](https://github.com/instill-ai/console/issues/585)) ([07cd7aa](https://github.com/instill-ai/console/commit/07cd7aa60ea40ba65dc2396e1327cb3e08d0f0ad))
+
+
+### Bug Fixes
+
+* **cicd:** fix GitHub action labeler issue ([#591](https://github.com/instill-ai/console/issues/591)) ([9be1110](https://github.com/instill-ai/console/commit/9be1110450ff2b555f1b0956b1cdddbe947b1192))
+* **pipeline-builder:** fix a bug when create fields on the end operator will wrongly use the key from the previous edited field ([#593](https://github.com/instill-ai/console/issues/593)) ([e7ed100](https://github.com/instill-ai/console/commit/e7ed1008e59c75214490a44e19a378e17a308e81))
+* **pipeline-builder:** fix path issue when get input/output schema for data connector ([#589](https://github.com/instill-ai/console/issues/589)) ([e77c459](https://github.com/instill-ai/console/commit/e77c4596a6ba1ca62105efb3f3ef279a3b0fe908))
+* **pipeline-builder:** fix rename pipeline issue when there has unsaved changes ([#588](https://github.com/instill-ai/console/issues/588)) ([e5688d5](https://github.com/instill-ai/console/commit/e5688d53efb229f8a652a1a33381d333fb2c3968))
+* **pipeline-builder:** fix start operator wrongly delete input when you edit without saving then create a new field ([#586](https://github.com/instill-ai/console/issues/586)) ([dda2435](https://github.com/instill-ai/console/commit/dda2435e6a1c59aa52f8b14f4b80f034db600df6))
+
+
+### Miscellaneous
+
+* prepare 0.30.0 release ([#595](https://github.com/instill-ai/console/issues/595)) ([dded69c](https://github.com/instill-ai/console/commit/dded69c3667756cc4494047dde658ace3003d9bf))
+* prepare 0.30.0 release ([#597](https://github.com/instill-ai/console/issues/597)) ([b60540f](https://github.com/instill-ai/console/commit/b60540fa9802ae8e105bc41061d2ce26404fcb66))
+* update title onboarding ([#582](https://github.com/instill-ai/console/issues/582)) ([ab31c07](https://github.com/instill-ai/console/commit/ab31c07d5bbb4705ce4a0936c97c44dfed3fbc42))
+
 ## [0.29.0-alpha](https://github.com/instill-ai/console/compare/v0.28.0-alpha...v0.29.0-alpha) (2023-09-30)
 
 
