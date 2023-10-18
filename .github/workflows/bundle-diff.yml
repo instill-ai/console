@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: pr
-          path: ./app/console/.next/stats.json
+          path: ./apps/console/.next/stats.json
 
   build-base:
     name: "Build base stats"
@@ -98,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: base
-          path: ./app/console/.next/stats.json
+          path: ./apps/console/.next/stats.json
 
   compare:
     name: "Compare base & head bundle sizes"
