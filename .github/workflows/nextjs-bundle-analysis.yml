@@ -19,7 +19,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     env:
-      working-directory: ./apps/console
+      working-directory: apps/console
     steps:
       - uses: actions/checkout@v3
 
