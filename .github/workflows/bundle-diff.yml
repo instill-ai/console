@@ -49,10 +49,9 @@ jobs:
 
       - name: Upload stats.json
         uses: actions/upload-artifact@v2
-        working-directory: ./apps/console
         with:
           name: pr
-          path: .next/stats.json
+          path: ./app/console/.next/stats.json
 
   build-base:
     name: "Build base stats"
@@ -99,10 +98,9 @@ jobs:
 
       - name: Upload stats.json
         uses: actions/upload-artifact@v2
-        working-directory: ./apps/console
         with:
           name: base
-          path: .next/stats.json
+          path: ./app/console/.next/stats.json
 
   compare:
     name: "Compare base & head bundle sizes"
