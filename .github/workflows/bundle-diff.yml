@@ -43,11 +43,13 @@ jobs:
 
       - name: Build
         run: ANALYZE=true pnpm build
+        working-directory: ./apps/console
         env:
           NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
 
       - name: Upload stats.json
         uses: actions/upload-artifact@v2
+        working-directory: ./apps/console
         with:
           name: pr
           path: .next/stats.json
@@ -91,11 +93,13 @@ jobs:
 
       - name: Build
         run: ANALYZE=true pnpm build
+        working-directory: ./apps/console
         env:
           NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
 
       - name: Upload stats.json
         uses: actions/upload-artifact@v2
+        working-directory: ./apps/console
         with:
           name: base
           path: .next/stats.json
