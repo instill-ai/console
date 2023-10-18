@@ -1,0 +1,34 @@
+.loading-animation {
+  animation: loading-pan step-start infinite;
+  transition: none;
+}
+
+@keyframes loading-pan {
+  11% {
+    transform: translate(0%, 0%);
+  }
+  22% {
+    transform: translate(66%, 0%);
+  }
+  33% {
+    transform: translate(132%, 0%);
+  }
+  44% {
+    transform: translate(0%, 66%);
+  }
+  55% {
+    transform: translate(66%, 66%);
+  }
+  66% {
+    transform: translate(132%, 66%);
+  }
+  77% {
+    transform: translate(0%, 132%);
+  }
+  88% {
+    transform: translate(66%, 132%);
+  }
+  99% {
+    transform: translate(132%, 132%);
+  }
+}

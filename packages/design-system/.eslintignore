@@ -1,0 +1,16 @@
+# Build folders
+es
+lib
+dist
+umd
+out
+node_modules
+tsup.config.ts
+esbuild.js
+
+# test
+setupTests.ts
+vitest.config.ts
+
+# React
+**/storybook-static/**
