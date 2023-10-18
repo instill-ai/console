@@ -95,7 +95,6 @@ export const PipelineBuilderMainView = (
     },
     router,
   });
-
   const user = useUser({
     enabled: enableQuery,
     accessToken,

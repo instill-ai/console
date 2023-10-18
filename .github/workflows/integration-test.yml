@@ -108,7 +108,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./apps/console
           load: true
           tags: instill/console:latest
 
@@ -180,6 +180,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run console integration test (latest)
+        working-directory: ./apps/console
         run: |
           docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
           docker run -t --rm \

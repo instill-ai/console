@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "test": "vitest --run --passWithNoTests",
+    "dev": "tsup src && tsc --watch --emitDeclarationOnly",
     "build": "pnpm rimraf dist && tsup src && pnpm ts-types",
     "ts-types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
