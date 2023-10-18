@@ -2,8 +2,6 @@
 
 # dependencies
 node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
@@ -12,15 +10,20 @@ node_modules
 .next/
 out/
 build
+dist
 
 # Cache
 **/tsconfig.tsbuildinfo
 **/.eslintcache
 .cache/*
+.rollup.cache
 
 # misc
 .DS_Store
 *.pem
+
+# turbo
+.turbo
 
 # debug
 npm-debug.log*
@@ -33,18 +36,10 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Docker overrides
-
-./docker-compose.override.yml
-
 # Deployment platforms
 
 .vercel
-/test-results/
-/playwright-report/
-/playwright/.cache/
-/integration-test/.auth/
 
-# Generated env file
-
-/public/__env.js
+# Storybook
+storybook-static
+packages/design-system/public/tailwind.css

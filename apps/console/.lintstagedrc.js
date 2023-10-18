@@ -1,3 +1,5 @@
+// ref: https://nextjs.org/docs/pages/building-your-application/configuring/eslint#lint-staged
+
 const path = require("path");
 
 const buildEslintCommand = (filenames) =>
