@@ -43,7 +43,6 @@ jobs:
 
       - name: Build
         run: ANALYZE=true pnpm build
-        working-directory: ./apps/console
         env:
           NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
 
@@ -92,7 +91,6 @@ jobs:
 
       - name: Build
         run: ANALYZE=true pnpm build
-        working-directory: ./apps/console
         env:
           NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.BOTGITHUBTOKEN }}
 
