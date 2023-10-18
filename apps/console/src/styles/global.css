@@ -1,0 +1,37 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@font-face {
+  font-family: "instill";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/instillFont-Regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("/fonts/instillFont-Regular.woff")
+      format("woff");
+}
+
+
+.code-block > pre {
+  border-radius: 6px;
+  padding: 30px 20px;
+  overflow: scroll;
+  font-size: 14px;
+}
+
+/* For the topbar */
+
+:root {
+  --topbar-height: 72px;
+  --pipeline-builder-bottom-bar-height: 24px;
+}

@@ -1,0 +1,37 @@
+# pull playwright docker image
+FROM mcr.microsoft.com/playwright:v1.35.1-focal
+WORKDIR /app
+
+ARG TEST_USER="playwright"
+
+RUN npm install -g pnpm@8.1.1
+
+COPY .npmrc package.json pnpm-lock.yaml ./
+
+# Install vim for debugging
+RUN apt-get update
+RUN apt-get install vim -y
+
+RUN pnpm install --frozen-lockfile
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 playwright
+
+COPY --chown=playwright:nodejs ./integration-test ./integration-test
+COPY --chown=playwright:nodejs ./playwright.config.ts ./
+COPY --chown=playwright:nodejs ./.env ./
+COPY --chown=playwright:nodejs ./next-env.mjs ./
+COPY --chown=playwright:nodejs ./entrypoint-playwright.sh ./
+
+RUN mkdir public
+
+USER ${TEST_USER}
+
+RUN echo "test user: $TEST_USER"
+
+# Permisions to execute script
+RUN chmod +x ./entrypoint-playwright.sh
+RUN chmod +x ./next-env.mjs
+
+# We need this permission for env.sh to create the __env.js in /public folder
+RUN chmod +rwx ./.env
