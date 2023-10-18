@@ -89,7 +89,7 @@
     "zod": "^3.21.4",
     "zustand": "^4.3.6"
   },
-  "lint-staged":{
+  "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix"
     ]
@@ -100,5 +100,11 @@
     "next": "^13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "nextBundleAnalysis": {
+    "budget": null,
+    "budgetPercentIncreaseRed": 20,
+    "minimumChangeThreshold": 0,
+    "showDetails": true
   }
 }

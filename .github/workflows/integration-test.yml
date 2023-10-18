@@ -159,7 +159,7 @@ jobs:
       - name: Load .env file (model)
         uses: cardinalby/export-env-action@v2
         with:
-          envFile: .env
+          envFile: ./apps/console/.env
 
       - name: Launch Instill Model (latest)
         run: |
