@@ -23,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: print tree
+        run: |
+          sudo apt-get install tree
+          tree -a
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
