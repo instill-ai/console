@@ -120,7 +120,7 @@ jobs:
       - name: Load .env file (base)
         uses: cardinalby/export-env-action@v2
         with:
-          envFile: ./apps/console/.env
+          envFile: .env
 
       - name: Launch Instill Base (latest)
         run: |
@@ -140,7 +140,7 @@ jobs:
       - name: Load .env file (vdp)
         uses: cardinalby/export-env-action@v2
         with:
-          envFile: ./apps/console/.env
+          envFile: .env
 
       - name: Launch Instill VDP (latest)
         run: |
@@ -159,7 +159,7 @@ jobs:
       - name: Load .env file (model)
         uses: cardinalby/export-env-action@v2
         with:
-          envFile: ./apps/console/.env
+          envFile: .env
 
       - name: Launch Instill Model (latest)
         run: |
@@ -180,7 +180,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run console integration test (latest)
-        working-directory: ./apps/console
         run: |
           docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
           docker run -t --rm \
