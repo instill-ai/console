@@ -1,10 +1,17 @@
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const inlineEnvPrefixes = ["NEXT_PUBLIC", "NEXT_SERVER"];
 
 function main() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
   const updateEnvFile =
     process.env.NEXT_ENV_UPDATE_ENV_FILE === "false" ? false : true;
+
+  const envFilePath = path.join(__dirname, ".env");
 
   // 1. Get the key-value pairs from process.env with key starting with NEXT_PUBLIC
   const inlineEnvKeys = Object.keys(process.env).filter((key) =>
@@ -21,7 +28,7 @@ function main() {
   console.log(inlineEnv);
 
   // 2. Get the key-value pairs from .env file
-  const envFile = dotEnvParse(fs.readFileSync(".env", "utf8"));
+  const envFile = dotEnvParse(fs.readFileSync(envFilePath, "utf8"));
   const localFileEnv = {};
   Object.keys(envFile).forEach((key) => {
     localFileEnv[key] = envFile[key];
@@ -43,12 +50,15 @@ function main() {
     Object.keys(mergedEnv).forEach((key) => {
       newEnvFileContent += `${key}=${mergedEnv[key]}\n`;
     });
-    fs.writeFileSync(".env", newEnvFileContent);
+    fs.writeFileSync(envFilePath, newEnvFileContent);
   }
 
   // 4. Write the merged key-value pairs to public/__env.js
   const publicEnvJs = `window.__env = ${JSON.stringify(mergedEnv)};\n`;
-  fs.writeFileSync("public/__env.js", publicEnvJs);
+
+  const envJSFilePath = path.join(__dirname, "public/__env.js");
+
+  fs.writeFileSync(envJSFilePath, publicEnvJs);
 }
 
 main();

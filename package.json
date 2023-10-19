@@ -8,6 +8,12 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "docker-build": "./scripts/docker-build.sh",
+    "docker-run-host": "./scripts/docker-run-host.sh",
+    "docker-remove": "./scripts/docker-remove.sh",
+    "docker-build-test": "./scripts/docker-build-test.sh",
+    "docker-run-test": "./scripts/docker-run-test.sh",
+    "docker:prune-cache": "docker buildx prune",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

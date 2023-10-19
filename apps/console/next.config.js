@@ -24,6 +24,7 @@ module.exports = {
     return config;
   },
   output: "standalone",
+  outputFileTracing: true,
   experimental: {
     forceSwcTransforms: true,
   },
