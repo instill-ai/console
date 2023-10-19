@@ -55,7 +55,7 @@ jobs:
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
       - name: Build Packages
-        run: pnpm ci-build-packages
+        run: pnpm build
 
       - name: Restore next build
         uses: actions/cache@v3
@@ -68,10 +68,6 @@ jobs:
           path: ./apps/console/.next/cache
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
-
-      - name: Build next.js app
-        # change this if your site requires a custom build command
-        run: ./apps/console/node_modules/.bin/next build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
