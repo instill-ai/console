@@ -79,11 +79,6 @@ jobs:
         if: github.event_name == 'release'
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
-      - name: Download airbyte icons
-        if: github.event_name == 'release'
-        run: pnpm download-airbyte-icons
-        working-directory: ./apps/console
-
       - name: Build and push (release)
         if: github.event_name == 'release'
         uses: docker/build-push-action@v3

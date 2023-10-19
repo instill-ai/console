@@ -3,8 +3,7 @@
   "packages": {
     "apps/console": {
       "release-type": "node",
-      "package-name": "console",
-      "component": "console", 
+      "package-name": "",
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
