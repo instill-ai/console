@@ -108,7 +108,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v3
         with:
-          context: ./apps/console
+          context: .
           load: true
           tags: instill/console:latest
 
