@@ -46,7 +46,7 @@
     "cross-env": "^7.0.3",
     "echarts": "^5.4.2",
     "elkjs": "^0.8.2",
-    "next": "^13.4.2",
+    "next": "^13.5.0",
     "next-mdx-remote": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -64,7 +64,7 @@
     "zustand": "^4.3.7"
   },
   "devDependencies": {
-    "@next/env": "^12.2.3",
+    "@next/env": "^13.5.0",
     "@playwright/test": "^1.35.1",
     "@types/cookie": "^0.5.1",
     "@types/json-schema": "^7.0.11",
@@ -74,7 +74,6 @@
     "@types/react-dom": "^18.2.0",
     "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.4",
-    "babel-loader": "^8.2.4",
     "dotenv": "^16.0.1",
     "eslint": "^8.13.0",
     "js-yaml": "^4.1.0",

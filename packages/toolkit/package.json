@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "test": "vitest --run --passWithNoTests",
-    "dev": "tsup src && tsc --watch --emitDeclarationOnly",
+    "dev": "tsup src --watch",
+    "dev-ts": "tsc --watch --emitDeclarationOnly",
     "build": "pnpm rimraf dist && tsup src && pnpm ts-types",
     "ts-types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
@@ -78,7 +79,6 @@
     "elkjs": "^0.8.2",
     "fuse.js": "^6.6.2",
     "immer": "^9.0.19",
-    "next": "^13.2.4",
     "react-hook-form": "^7.45.0",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.8.3",
@@ -97,7 +97,7 @@
   "peerDependencies": {
     "@instill-ai/design-system": "workspace:*",
     "@instill-ai/design-tokens": "workspace:*",
-    "next": "^13.2.4",
+    "next": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

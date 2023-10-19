@@ -115,7 +115,7 @@ export const FullTemplatesCommand = ({
         <Command.List className="!max-w-none w-[750px]">
           <Command.Empty>No results found.</Command.Empty>
           {Object.keys(templatesByCategory).map((category) => (
-            <>
+            <React.Fragment key={category}>
               <Command.Group className="!w-full" heading={category}>
                 <div className="grid grid-cols-3 w-full gap-y-4 gap-x-6">
                   {templatesByCategory[category].map((template) => (
@@ -135,7 +135,7 @@ export const FullTemplatesCommand = ({
                 </div>
               </Command.Group>
               <Command.Separator />
-            </>
+            </React.Fragment>
           ))}
         </Command.List>
       </Command.Dialog>

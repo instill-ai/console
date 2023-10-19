@@ -1,4 +1,3 @@
-import Image from "next/image";
 import * as React from "react";
 
 export type ImageWithFallbackProps = {
@@ -20,13 +19,14 @@ export const ImageWithFallback = ({
   return error ? (
     fallbackImg
   ) : (
-    <Image
+    <img
       src={src}
       width={width}
       height={height}
       alt={alt}
       onError={() => {
         setError(true);
+        console.log(error);
       }}
       className="flex-shrink-0"
     />
