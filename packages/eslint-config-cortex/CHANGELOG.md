@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.5.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.0...@instill-ai/eslint-config-cortex-v0.5.1) (2023-10-19)
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.5.0](https://github.com/instill-ai/design-system/compare/@instill-ai/eslint-config-cortex-v0.4.1...@instill-ai/eslint-config-cortex-v0.5.0) (2023-09-13)
 
 
