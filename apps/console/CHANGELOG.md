@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.30.1-alpha](https://github.com/instill-ai/console/compare/console-v0.30.0-alpha...console-v0.30.1-alpha) (2023-10-19)
+
+
+### Bug Fixes
+
+* fix GA not correctly build images when publish version ([5088db0](https://github.com/instill-ai/console/commit/5088db018512ea4883fb9fc2fb74b11ec2c98b51))
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.30.0-alpha](https://github.com/instill-ai/console/compare/v0.29.0-alpha...v0.30.0-alpha) (2023-10-13)
 
 
