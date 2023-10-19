@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.30.1-alpha](https://github.com/instill-ai/console/compare/console-v0.30.0-alpha...console-v0.30.1-alpha) (2023-10-19)
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.30.0-alpha](https://github.com/instill-ai/console/compare/v0.29.0-alpha...v0.30.0-alpha) (2023-10-13)
 
 
