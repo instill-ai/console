@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.55.8](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.55.7...@instill-ai/design-system-v0.55.8) (2023-10-19)
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.55.7](https://github.com/instill-ai/cortex/compare/@instill-ai/design-system-v0.55.6...@instill-ai/design-system-v0.55.7) (2023-10-13)
 
 
