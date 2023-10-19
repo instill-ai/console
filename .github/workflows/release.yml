@@ -17,14 +17,16 @@ jobs:
         id: release
         with:
           token: ${{ secrets.botGitHubToken }}
-          release-type: node
           command: manifest
           config-file: release-please/config.json
           manifest-file: release-please/manifest.json
-      - uses: actions/checkout@v2
-        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Checkout
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.botGitHubToken }}
+
       - name: Import GPG Key
         if: ${{ steps.release.outputs.release_created }}
         uses: crazy-max/ghaction-import-gpg@v5
@@ -34,6 +36,7 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
           git_tag_gpgsign: true
+
       - name: Tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}
         run: |
@@ -46,3 +49,48 @@ jobs:
           git tag -a v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} pointing to tag ${{ steps.release.outputs.tag_name }}"
           git push origin v${{ steps.release.outputs.major }}
           git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
+
+      - name: Setup Node.js 16.x
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - uses: pnpm/action-setup@v2.0.1
+        if: ${{ steps.release.outputs.releases_created }}
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        if: ${{ steps.release.outputs.releases_created }}
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        if: ${{ steps.release.outputs.releases_created }}
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Setup npmrc
+        if: ${{ steps.release.outputs.releases_created }}
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMTOKEN }}" > .npmrc
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.releases_created }}
+        run: rm -rf node_modules && pnpm i --frozen-lockfile
+
+      - name: Build packages
+        if: ${{ steps.release.outputs.releases_created }}
+        run: pnpm ci-build-packages
+
+      - name: Publish packages
+        if: ${{ steps.release.outputs.releases_created }}
+        run: pnpm -r publish --no-git-checks

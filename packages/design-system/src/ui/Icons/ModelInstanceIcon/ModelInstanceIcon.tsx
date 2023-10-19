@@ -1,0 +1,31 @@
+import React from "react";
+import IconBase, { IconBaseProps } from "../IconBase";
+
+export type ModelInstanceIconProps = Omit<IconBaseProps, "viewBox" | "fill">;
+
+const ModelInstanceIcon: React.FC<ModelInstanceIconProps> = (props) => {
+  const { width, height, position, style, color } = props;
+  return (
+    <IconBase
+      viewBox="0 0 30 30"
+      width={width}
+      height={height}
+      color={color}
+      position={position}
+      style={style}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M22 16.85C19.1557 16.85 16.85 19.1557 16.85 22C16.85 24.8443 19.1557 27.15 22 27.15C24.8443 27.15 27.15 24.8443 27.15 22C27.15 19.1557 24.8443 16.85 22 16.85ZM18.15 22C18.15 19.8737 19.8737 18.15 22 18.15C24.1263 18.15 25.85 19.8737 25.85 22C25.85 24.1263 24.1263 25.85 22 25.85C19.8737 25.85 18.15 24.1263 18.15 22ZM20.0291 20.1264L19.8791 20.2764V21.0764L20.0291 21.2264H21.9958L19.6111 23.6111V23.8232L20.1768 24.3889H20.3889L22.7736 22.0042V23.9709L22.9236 24.1209H23.7236L23.8736 23.9709V20.6764L23.8297 20.5703L23.4297 20.1703L23.3236 20.1264H20.0291Z"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M6 5.25C5.58579 5.25 5.25 5.58579 5.25 6V24C5.25 24.4142 5.58579 24.75 6 24.75H15.5608C15.3576 24.2747 15.2055 23.7724 15.1113 23.25H12.75L12.75 18.75H15.7986C16.0856 18.2034 16.4428 17.6994 16.8582 17.25H12.75V12.75H17.25L17.25 16.8582C17.6994 16.4428 18.2034 16.0856 18.75 15.7986L18.75 12.75H23.25V15.1113C23.7724 15.2055 24.2747 15.3576 24.75 15.5608V6C24.75 5.58579 24.4142 5.25 24 5.25H6ZM6.75 11.25V6.75H11.25L11.25 11.25H6.75ZM12.75 11.25L12.75 6.75H17.25V11.25H12.75ZM6.75 12.75H11.25V17.25H6.75V12.75ZM6.75 18.75H11.25L11.25 23.25H6.75V18.75ZM18.75 11.25V6.75H23.25V11.25H18.75Z"
+      />
+    </IconBase>
+  );
+};
+
+export default ModelInstanceIcon;

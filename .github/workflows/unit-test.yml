@@ -45,11 +45,11 @@ jobs:
       - name: Install dependencies
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
+      - name: Run build
+        run: pnpm build
+
       - name: Run linter
         run: pnpm lint
 
       - name: Run tests
         run: pnpm test
-
-      - name: Run build
-        run: pnpm build

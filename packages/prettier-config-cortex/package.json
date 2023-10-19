@@ -1,0 +1,13 @@
+{
+  "name": "@instill-ai/prettier-config-cortex",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prettier": "latest",
+    "prettier-plugin-tailwindcss": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

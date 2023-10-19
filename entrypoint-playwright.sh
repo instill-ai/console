@@ -1,3 +1,4 @@
 #!/bin/bash
-node next-env.mjs
+node ./apps/console/next-env.mjs
+cd ./apps/console
 npx playwright test

@@ -1,0 +1,1 @@
+export { validateResourceId } from "./validateResourceId";

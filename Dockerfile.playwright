@@ -1,27 +1,34 @@
 # pull playwright docker image
-FROM mcr.microsoft.com/playwright:v1.35.1-focal
+# Install dependencies only when needed
+FROM --platform=$BUILDPLATFORM node:16-alpine AS builder
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+RUN npm install -g pnpm@8.1.1
+
+COPY . . 
+
+RUN pnpm install --frozen-lockfile
+
+FROM mcr.microsoft.com/playwright:v1.39.0-focal
 WORKDIR /app
 
 ARG TEST_USER="playwright"
 
 RUN npm install -g pnpm@8.1.1
 
-COPY .npmrc package.json pnpm-lock.yaml ./
-
 # Install vim for debugging
 RUN apt-get update
 RUN apt-get install vim -y
 
-RUN pnpm install --frozen-lockfile
+COPY --from=builder --chown=playwright:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=playwright:nodejs /app/apps/console ./apps/console
+COPY --from=builder --chown=playwright:nodejs /app/entrypoint-playwright.sh ./
+
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 playwright
-
-COPY --chown=playwright:nodejs ./integration-test ./integration-test
-COPY --chown=playwright:nodejs ./playwright.config.ts ./
-COPY --chown=playwright:nodejs ./.env ./
-COPY --chown=playwright:nodejs ./next-env.mjs ./
-COPY --chown=playwright:nodejs ./entrypoint-playwright.sh ./
 
 RUN mkdir public
 
@@ -31,7 +38,8 @@ RUN echo "test user: $TEST_USER"
 
 # Permisions to execute script
 RUN chmod +x ./entrypoint-playwright.sh
-RUN chmod +x ./next-env.mjs
+RUN chmod +x ./apps/console/next-env.mjs
 
 # We need this permission for env.sh to create the __env.js in /public folder
-RUN chmod +rwx ./.env
+RUN chmod +wx ./apps/console/public
+RUN chmod +rwx ./apps/console/.env
