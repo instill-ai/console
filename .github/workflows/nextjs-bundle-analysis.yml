@@ -18,8 +18,6 @@ permissions:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    env:
-      working-directory: apps/console
     steps:
       - uses: actions/checkout@v3
 
@@ -73,13 +71,12 @@ jobs:
 
       - name: Build next.js app
         # change this if your site requires a custom build command
-        working-directory: ${{ env.working-directory }}}
-        run: ./node_modules/.bin/next build
+        run: ./apps/console/node_modules/.bin/next build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
       - name: Analyze bundle
-        working-directory: ${{ env.working-directory }}}
+        working-directory: ./apps/console
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle
@@ -111,13 +108,13 @@ jobs:
       # entry in your package.json file.
       - name: Compare with base branch bundle
         if: success() && github.event.number
-        working-directory: ${{ env.working-directory }}}
+        working-directory: ./apps/console
         run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
         id: get-comment-body
         if: success() && github.event.number
-        working-directory: ${{ env.working-directory }}}
+        working-directory: ./apps/console
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
