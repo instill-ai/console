@@ -15,9 +15,9 @@
     "ts-types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "dev": "tsx ./buildStyleDictionary.ts",
-    "build-sd": "npx tsx ./src/buildSDTokens.ts",
-    "build-tw": "npx tsx ./src/buildTailwindPreset.ts",
-    "build-css-variables": "npx tsx ./src/buildCSSVariables.ts"
+    "build-sd": "tsx ./src/buildSDTokens.ts",
+    "build-tw": "tsx ./src/buildTailwindPreset.ts",
+    "build-css-variables": "tsx ./src/buildCSSVariables.ts"
   },
   "sideEffects": [
     "**/*.css"
