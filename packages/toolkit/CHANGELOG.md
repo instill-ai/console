@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.69.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.69.0...@instill-ai/toolkit-v0.69.1) (2023-10-20)
+
+
+### Miscellaneous
+
+* adapt new core structure among instill-ai project ([#610](https://github.com/instill-ai/console/issues/610)) ([9b51e90](https://github.com/instill-ai/console/commit/9b51e90e0e165704efc386931663c5c90d6bd923))
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.69.0](https://github.com/instill-ai/cortex/compare/@instill-ai/toolkit-v0.68.2...@instill-ai/toolkit-v0.69.0) (2023-10-13)
 
 

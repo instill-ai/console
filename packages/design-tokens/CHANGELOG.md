@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.2...@instill-ai/design-tokens-v0.3.3) (2023-10-20)
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+
 ## [0.3.2](https://github.com/instill-ai/design-system/compare/@instill-ai/design-tokens-v0.3.1...@instill-ai/design-tokens-v0.3.2) (2023-07-19)
 
 
