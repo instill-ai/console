@@ -6,40 +6,21 @@ import produce from "immer";
 import { z } from "zod";
 import { validateResourceId } from "../utility";
 
-// Althought userName is nullable, we need to verify its existence before
+// Althought id is nullable, we need to verify its existence before
 // submit it.
 
 export const configureProfileFormFieldSchema = z.object({
-  firstName: z.nullable(z.string()),
-  lastName: z.nullable(z.string()),
-  userName: z.nullable(z.string()),
-  orgName: z.nullable(z.string()),
+  first_name: z.nullable(z.string()),
+  last_name: z.nullable(z.string()),
+  id: z.nullable(z.string()),
+  org_name: z.nullable(z.string()),
   role: z.nullable(z.string()),
-  newsletterSubscription: z.nullable(z.boolean()),
+  newsletter_subscription: z.nullable(z.boolean()),
 });
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
 export const validateConfigureProfileFormFieldSchema = (value: any) =>
-  configureProfileFormFieldSchema
-    .superRefine((state, ctx) => {
-      if (!state.userName) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["userName"],
-          message: "Username is required.",
-        });
-      } else {
-        if (!validateResourceId(state.userName)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["userName"],
-            message:
-              "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
-          });
-        }
-      }
-    })
-    .parse(value);
+  configureProfileFormFieldSchema;
 
 export type ProfileFormFields = z.infer<typeof configureProfileFormFieldSchema>;
 
@@ -70,20 +51,20 @@ export type ConfigureProfileFormStore = ConfigureProfileFormState &
 export const configureProfileFormInitialState: ConfigureProfileFormState = {
   formIsDirty: false,
   fields: {
-    firstName: null,
-    lastName: null,
-    userName: null,
-    orgName: null,
+    first_name: null,
+    last_name: null,
+    id: null,
+    org_name: null,
     role: null,
-    newsletterSubscription: null,
+    newsletter_subscription: null,
   },
   errors: {
-    firstName: null,
-    lastName: null,
-    userName: null,
-    orgName: null,
+    first_name: null,
+    last_name: null,
+    id: null,
+    org_name: null,
     role: null,
-    newsletterSubscription: null,
+    newsletter_subscription: null,
   },
 };
 
