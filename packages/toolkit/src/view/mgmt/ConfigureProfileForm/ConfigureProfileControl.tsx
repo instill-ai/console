@@ -52,6 +52,8 @@ export const ConfigureProfileControl = (
         return;
       }
 
+      console.log("fields", fields);
+
       validateConfigureProfileFormFieldSchema(fields);
 
       if (fields.userName !== instillUser.data.id) {
@@ -88,7 +90,7 @@ export const ConfigureProfileControl = (
                 ? undefined
                 : fields.userName?.trim() || undefined,
             role: fields.role || undefined,
-            newsletter_subscription: fields.newsletterSubscription || undefined,
+            newsletter_subscription: fields.newsletterSubscription || false,
           },
           accessToken,
         },

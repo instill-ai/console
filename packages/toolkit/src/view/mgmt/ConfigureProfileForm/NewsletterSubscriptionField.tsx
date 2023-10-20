@@ -33,15 +33,13 @@ export const NewsletterSubscriptionField = (
 
   return (
     <div className="w-full">
-      <Field.Root>
-        <Label htmlFor="profile-newsletter-subscription" className="mb-3">
+      <Field.Root className="!space-y-2">
+        <Label htmlFor="profile-newsletter-subscription">
           Newsletter subscription *
         </Label>
         <Switch
           id="profile-newsletter-subscription"
           onCheckedChange={(checked) => {
-            console.log(checked);
-
             setFieldValue("newsletterSubscription", checked);
           }}
           checked={newsletterSubscription || false}
