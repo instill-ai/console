@@ -2,9 +2,8 @@ import * as React from "react";
 import { z } from "zod";
 import {
   BasicProgressMessageBox,
-  OutlineButton,
+  Button,
   ProgressMessageBoxState,
-  SolidButton,
 } from "@instill-ai/design-system";
 import {
   Nullable,
@@ -147,25 +146,25 @@ export const ConfigureProfileControl = (
         />
       </div>
       <div className="ml-auto flex flex-row gap-x-2">
-        <OutlineButton
+        <Button
+          size="lg"
           disabled={false}
-          onClickHandler={null}
-          position="my-auto"
+          variant="secondaryGrey"
+          className="my-auto px-10"
           type="button"
           color="secondary"
-          hoveredShadow={null}
         >
           Cancel
-        </OutlineButton>
-        <SolidButton
-          type="button"
-          color="primary"
+        </Button>
+        <Button
+          variant="primary"
+          size="lg"
           disabled={instillUser.isSuccess ? false : true}
-          position="my-auto"
-          onClickHandler={() => handleSubmit()}
+          className="my-auto"
+          onClick={() => handleSubmit()}
         >
           Save Changes
-        </SolidButton>
+        </Button>
       </div>
     </div>
   );

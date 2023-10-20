@@ -5,7 +5,7 @@ import {
   type User,
   type ConfigureProfileFormStore,
 } from "../../../lib";
-import { BasicTextField } from "@instill-ai/design-system";
+import { Label, Input } from "@instill-ai/design-system";
 import { shallow } from "zustand/shallow";
 
 const selector = (state: ConfigureProfileFormStore) => ({
@@ -31,18 +31,30 @@ export const OrgNameField = (props: OrgNameFieldProps) => {
 
   return (
     <div className="w-[287px]">
-      <BasicTextField
-        id="profile-orgname"
-        label="Organisation Name"
-        additionalMessageOnLabel="Your company name"
-        key="orgName"
-        required={false}
-        value={orgName}
-        error={orgNameError}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          setFieldValue("orgName", event.target.value)
-        }
-      />
+      <div className="mb-2 flex flex-row gap-x-2">
+        <Label>Organisation Name</Label>
+        <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+          Your company name
+        </p>
+      </div>
+      <Input.Root>
+        <Input.Core
+          disabled={false}
+          id="profile-orgname"
+          type="text"
+          placeholder=""
+          required={false}
+          value={orgName || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setFieldValue("orgName", event.target.value);
+          }}
+        />
+      </Input.Root>
+      {orgNameError && (
+        <p className="my-2 font-sans text-xs font-normal text-instillRed">
+          {orgNameError}
+        </p>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { shallow } from "zustand/shallow";
-import { BasicToggleField } from "@instill-ai/design-system";
+import { Switch, Field, Label } from "@instill-ai/design-system";
 import {
   useConfigureProfileFormStore,
   type Nullable,
@@ -33,16 +33,25 @@ export const NewsletterSubscriptionField = (
 
   return (
     <div className="w-full">
-      <BasicToggleField
-        id="profile-newsletter-subscription"
-        label="Newsletter subscription"
-        value={newsletterSubscription || false}
-        required={true}
-        description="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
-        onChange={(event) =>
-          setFieldValue("newsletterSubscription", event.target.checked)
-        }
-      />
+      <Field.Root>
+        <Label htmlFor="profile-newsletter-subscription" className="mb-3">
+          Newsletter subscription *
+        </Label>
+        <Switch
+          id="profile-newsletter-subscription"
+          onCheckedChange={(checked) => {
+            console.log(checked);
+
+            setFieldValue("newsletterSubscription", checked);
+          }}
+          checked={newsletterSubscription || false}
+        />
+        <Field.Description className="m-3">
+          Receive the latest news from Instill AI for open source updates,
+          community highlights, blog posts, useful tutorials and more! You can
+          unsubscribe any time.
+        </Field.Description>
+      </Field.Root>
     </div>
   );
 };

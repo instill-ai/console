@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BasicTextField } from "@instill-ai/design-system";
+import { BasicTextField, Label, Input } from "@instill-ai/design-system";
 import { shallow } from "zustand/shallow";
 import {
   useConfigureProfileFormStore,
@@ -29,18 +29,30 @@ export const LastNameField = (props: LastNameFieldProps) => {
 
   return (
     <div className="w-[287px]">
-      <BasicTextField
-        id="profile-lastname"
-        label="Last name"
-        key="lastName"
-        additionalMessageOnLabel="(optional)"
-        required={false}
-        value={lastName}
-        error={lastNameError}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          setFieldValue("lastName", event.target.value)
-        }
-      />
+      <div className="mb-2 flex flex-row gap-x-2">
+        <Label>Last Name</Label>
+        <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+          (optional)
+        </p>
+      </div>
+      <Input.Root>
+        <Input.Core
+          disabled={false}
+          id="profile-lastName"
+          type="text"
+          placeholder=""
+          required={false}
+          value={lastName || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setFieldValue("lastName", event.target.value)
+          }
+        />
+      </Input.Root>
+      {lastNameError && (
+        <p className="my-2 font-sans text-xs font-normal text-instillRed">
+          {lastNameError}
+        </p>
+      )}
     </div>
   );
 };

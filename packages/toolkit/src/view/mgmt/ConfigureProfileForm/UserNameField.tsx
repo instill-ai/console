@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BasicTextField } from "@instill-ai/design-system";
+import { Label, Input } from "@instill-ai/design-system";
 import { shallow } from "zustand/shallow";
 import {
   useConfigureProfileFormStore,
@@ -31,27 +31,39 @@ export const UserNameField = (props: UserNameFieldProps) => {
 
   return (
     <div className="w-[287px]">
-      <BasicTextField
-        id="profile-username"
-        label="Username"
-        key="userName"
-        additionalMessageOnLabel="This will be your unique identifier"
-        required={true}
-        value={userName}
-        error={userNameError}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          const value = event.target.value;
-          setFieldValue("userName", value);
-          if (!validateResourceId(value)) {
-            setFieldError(
-              "userName",
-              "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
-            );
-          } else {
-            setFieldError("userName", null);
-          }
-        }}
-      />
+      <div className="mb-2 flex flex-row gap-x-2">
+        <Label>Username *</Label>
+        <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+          This will be your unique identifier
+        </p>
+      </div>
+      <Input.Root>
+        <Input.Core
+          disabled={false}
+          id="profile-userName"
+          type="text"
+          placeholder=""
+          required={false}
+          value={userName || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.value;
+            setFieldValue("userName", value);
+            if (!validateResourceId(value)) {
+              setFieldError(
+                "userName",
+                "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+              );
+            } else {
+              setFieldError("userName", null);
+            }
+          }}
+        />
+      </Input.Root>
+      {userNameError && (
+        <p className="my-2 font-sans text-xs font-normal text-instillRed">
+          {userNameError}
+        </p>
+      )}
     </div>
   );
 };

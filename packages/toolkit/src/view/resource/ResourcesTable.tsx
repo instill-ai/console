@@ -195,7 +195,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         primaryText="Resources"
         secondaryText="Check your resources"
       >
-        <div className="flex min-h-[300px] w-full flex-row items-center justify-center border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-[18px]">
+        <div className="flex min-h-[300px] w-full flex-row items-center justify-center bg-semantic-bg-primary px-[9px] py-[18px]">
           <h3 className="text-semantic-fg-primary product-headings-heading-3">
             Set up your first resource
           </h3>
