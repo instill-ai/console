@@ -12,4 +12,5 @@ docker run --rm -t \
   -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME='instill-ai-user' \
   -e NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE=false \
   -e NEXT_PUBLIC_SET_SECURE_COOKIE=false \
+  --name instill-console \
   instill-console
