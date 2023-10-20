@@ -12,7 +12,7 @@ export async function getUserQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetUserResponse>("/users/me");
 
@@ -34,7 +34,7 @@ export async function checkUserIdExist({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     const { data } = await client.get<CheckUserIdExistResponse>(
       `/users/${id}/exist`
     );
@@ -56,7 +56,7 @@ export async function getApiTokenQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetApiTokenResponse>(`/${tokenName}`);
 
@@ -82,7 +82,7 @@ export async function listApiTokensQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     const tokens: ApiToken[] = [];
 
     const queryString = getQueryString({
