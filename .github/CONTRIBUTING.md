@@ -9,16 +9,6 @@ We appreciate your contribution to this amazing project! Any form of engagement 
 
 Please refer to the [community contributing section](https://github.com/instill-ai/community#contributing) for more details.
 
-## Current limitations
-
-Due to all the logic of console lies in the [cortex](https://github.com/instill-ai/design-system). And currently the local development workflow had been blocked by several pnpm link issues. 
-
-- [Support peer dependencies when symlinking in development #604](https://github.com/pnpm/pnpm/issues/604)
-- [Saving packages with their dependency set in the store #1001](https://github.com/pnpm/pnpm/issues/1001)
-
-We have to release RC version in order to sync between console and our cortex while developing locally. But to release RC version require our company's secret key. So it's hard for contributor to correctly set up the local development process.
-
-We will take a close look at the pnpm issue and try to find a workaround for this. 
 
 ## Development and codebase contribution
 
@@ -38,6 +28,30 @@ Please take these general guidelines into consideration when you are sending a P
 5. **Open a Pull Request:** Initiate a pull request to our repository. Our team will review your changes and collaborate with you on any necessary refinements.
 
 When you are ready to send a PR, we recommend you to first open a `draft` one. This will trigger a bunch of `tests` [workflows](https://github.com/instill-ai/connector-ai/tree/main/.github/workflows) running a thorough test suite on multiple platforms. After the tests are done and passed, you can now mark the PR `open` to notify the codebase owners to review. We appreciate your endeavour to pass the integration test for your PR to make sure the sanity with respect to the entire scope of **Instill Core**.
+
+## How to contribute to the console
+
+### Local development environment setup
+
+- instill-ai/core
+   - Go to [instill-ai/core](https://github.com/instill-ai/core) and clone it.
+   - Spin up the services by `make latest PROFILE=all`
+- instill-ai/vdp
+   - Go to [instill-ai/vdp](https://github.com/instill-ai/vdp) and clone it.
+   - Spin up the services by `make latest PROFILE=all`
+- instill-ai/model (if you are developing model related pages)
+   - Go to [instill-ai/model]https://github.com/instill-ai/model) and clone it.
+   - Spin up the services by `make latest PROFILE=all`
+
+### Spin up the console
+
+- Go to [instill-ai/console](https://github.com/instill-ai/console) and clone it
+- Go to the root of the project and run `pnpm install` and then run `pnpm build`
+- Go to the `packages/toolkit` and run `pnpm dev`, keep this terminal running
+- Open another terminal then go to the `packages/toolkit` and run `pnpm dev-ts`, keep this terminal running
+- Go to the `apps/console`, and run pnpm dev, keep this terminal running
+- You are all set, go to `http://localhost:3000` to see the console
+
 
 ## Last words
 
