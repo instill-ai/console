@@ -7,7 +7,7 @@ export async function authLogoutAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
 
     await client.post("/auth/logout");
   } catch (err) {
@@ -30,7 +30,7 @@ export async function authLoginAction({
   payload: AuthLoginActionPayload;
 }) {
   try {
-    const client = createInstillAxiosClient(null, "base");
+    const client = createInstillAxiosClient(null, "core");
 
     const { data } = await client.post<AuthLoginActionResponse>(
       "/auth/login",
@@ -49,7 +49,7 @@ export async function authValidateTokenAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     await client.post("/auth/validate_access_token");
   } catch (err) {
     return Promise.reject(err);

@@ -34,7 +34,7 @@ export async function listPipelineTriggerRecordsQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     const triggers: PipelineTriggerRecord[] = [];
 
     const queryString = getQueryString({
@@ -78,7 +78,7 @@ export async function listTriggeredPipelineQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     const pipelines: TriggeredPipeline[] = [];
 
     const queryString = getQueryString({
@@ -122,7 +122,7 @@ export async function listTriggeredPipelineChartQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "base");
+    const client = createInstillAxiosClient(accessToken, "core");
     const pipelinesChart: PipelinesChart[] = [];
 
     const queryString = getQueryString({

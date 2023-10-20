@@ -4,7 +4,7 @@ import { Nullable } from "../../type";
 
 export function createInstillAxiosClient(
   accessToken: Nullable<string>,
-  product: "base" | "model" | "vdp"
+  product: "core" | "model" | "vdp"
 ) {
   const headers = accessToken
     ? {
