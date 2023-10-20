@@ -39,6 +39,7 @@ export const UserNameField = (props: UserNameFieldProps) => {
       </div>
       <Input.Root>
         <Input.Core
+          className="pl-2"
           disabled={false}
           id="profile-userName"
           type="text"

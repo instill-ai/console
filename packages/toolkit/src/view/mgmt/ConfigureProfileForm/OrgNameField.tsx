@@ -39,6 +39,7 @@ export const OrgNameField = (props: OrgNameFieldProps) => {
       </div>
       <Input.Root>
         <Input.Core
+          className="pl-2"
           disabled={false}
           id="profile-orgname"
           type="text"

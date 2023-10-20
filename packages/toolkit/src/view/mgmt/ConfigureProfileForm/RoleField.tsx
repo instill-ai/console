@@ -1,6 +1,8 @@
 import * as React from "react";
 import {
   BasicSingleSelect,
+  Label,
+  Select,
   SingleSelectOption,
 } from "@instill-ai/design-system";
 import { shallow } from "zustand/shallow";
@@ -40,22 +42,41 @@ export const RoleField = (props: RoleFieldProps) => {
 
   return (
     <div className="w-[287px]">
-      <BasicSingleSelect
-        id="profile-role"
-        label="Role"
-        additionalMessageOnLabel="(optional)"
-        key="role"
-        required={false}
-        options={roles}
-        value={selectedRoleOption}
-        error={roleError}
-        onChange={(option) => {
-          setFieldValue("role", option ? option.value.toString() : null);
+      <div className="mb-2 flex flex-row gap-x-2">
+        <Label>Role</Label>
+        <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+          (optional)
+        </p>
+      </div>
+
+      <Select.Root
+        value={selectedRoleOption?.value}
+        onValueChange={(option) => {
+          setFieldValue("role", option ? option.toString() : null);
           setSelectedRoleOption(
-            roles.find((e) => e.value === option?.value.toString()) || null
+            roles.find((e) => e.value === option?.toString()) || null
           );
         }}
-      />
+      >
+        <Select.Trigger className="w-full pl-[14px]">
+          <Select.Value placeholder="Select Role" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Group>
+            {roles.map((role) => (
+              <Select.Item value={role.value} key={role.value}>
+                {role.label}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+
+      {roleError && (
+        <p className="my-2 font-sans text-xs font-normal text-instillRed">
+          {roleError}
+        </p>
+      )}
     </div>
   );
 };
