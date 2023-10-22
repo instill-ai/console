@@ -32,7 +32,7 @@ export const useRenameUserPipeline = () => {
       });
     },
     {
-      onSuccess: async ({ pipeline, accessToken, oldPipelineName }) => {
+      onSuccess: async ({ pipeline, oldPipelineName }) => {
         // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
         const pipelineNameArray = pipeline.name.split("/");
         const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;

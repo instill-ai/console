@@ -6,7 +6,7 @@ import {
   ModelsWatchState,
   watchUserModel,
 } from "../../vdp-sdk";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 export type OnSuccessAfterModelMutationProps =
   | OnSuccessAfterDeleteModelProps

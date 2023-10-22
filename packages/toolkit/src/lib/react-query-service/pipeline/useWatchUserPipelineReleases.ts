@@ -27,7 +27,7 @@ export function useWatchUserPipelineReleases({
   }
 
   return useQuery(
-    ["pipelineReleases", , "watch"],
+    ["pipelineReleases", "watch"],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -37,7 +37,7 @@ export function useWatchUserPipelineReleases({
         return Promise.reject(new Error("pipelineReleaseNames not provided"));
       }
 
-      let watches: PipelineReleasesWatchState = {};
+      const watches: PipelineReleasesWatchState = {};
 
       for (const pipelineReleaseName of pipelineReleaseNames) {
         const watch = await watchUserPipelineReleaseQuery({

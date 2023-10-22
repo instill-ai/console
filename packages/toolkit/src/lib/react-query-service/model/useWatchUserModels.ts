@@ -34,7 +34,7 @@ export function useWatchUserModels({
         return Promise.reject(new Error("Model names not provided"));
       }
 
-      let watches: ModelsWatchState = {};
+      const watches: ModelsWatchState = {};
 
       for (const modelName of modelNames) {
         const watch = await watchUserModel({

@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { JSONSchema7 } from "json-schema";
 import { ConnectorResourceState } from "./connector";
 import { ModelState } from "./model";
 import { OpenAPIV3 } from "openapi-types";
 import { PipelineReleaseState } from "./pipeline";
+import { InstillJSONSchema } from "../use-instill-form";
 
 export type ErrorDetails = {
   "@type": string;
@@ -24,8 +23,8 @@ export type ResourceState =
   | ConnectorResourceState;
 
 export type Spec = {
-  resource_specification: JSONSchema7;
-  component_specification: JSONSchema7;
+  resource_specification: InstillJSONSchema;
+  component_specification: InstillJSONSchema;
   openapi_specifications: Record<string, OpenAPIV3.Document>;
 };
 

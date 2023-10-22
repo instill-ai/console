@@ -27,7 +27,7 @@ export function createInstillAxiosClient(
     );
   }
 
-  let baseURL: Nullable<string> = `${
+  const baseURL: Nullable<string> = `${
     process.env.NEXT_SERVER_API_GATEWAY_URL ??
     env("NEXT_PUBLIC_API_GATEWAY_URL")
   }/${product}/${env("NEXT_PUBLIC_API_VERSION")}`;

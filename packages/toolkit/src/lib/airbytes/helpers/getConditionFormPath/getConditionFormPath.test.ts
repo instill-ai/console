@@ -50,7 +50,7 @@ test("should find path from a simple condition form", () => {
   };
 
   const path = getConditionFormPath(form);
-  expect(path).toStrictEqual("tunnel_method.tunnel_method");
+  expect(path).toBe("tunnel_method.tunnel_method");
 });
 
 test("find path when some of the const field is missing", () => {
@@ -159,5 +159,5 @@ test("find path when some of the const field is missing", () => {
   };
 
   const path = getConditionFormPath(form);
-  expect(path).toStrictEqual("tunnel_method.tunnel_method");
+  expect(path).toBe("tunnel_method.tunnel_method");
 });

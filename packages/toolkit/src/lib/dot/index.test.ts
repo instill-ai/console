@@ -17,7 +17,7 @@ describe("getter", () => {
   });
 
   test('return "undefined" if value was not found using given path', () => {
-    expect(dot.getter(obj, "foo.aar")).not.toBeDefined();
+    expect(dot.getter(obj, "foo.aar")).toBeUndefined();
   });
 
   test("return defaultValue if value was not found using given path", () => {

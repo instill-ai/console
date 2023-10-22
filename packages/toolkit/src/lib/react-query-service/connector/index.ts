@@ -3,7 +3,6 @@ export * from "./useConnectorDefinitions";
 export * from "./useConnectorResources";
 export * from "./useConnectUserConnectorResource";
 export * from "./useCreateUserConnectorResource";
-export * from "./useUserConnectorResource";
 export * from "./useDeleteUserConnectorResource";
 export * from "./useDisonnectUserConnectorResource";
 export * from "./useUpdateUserConnectorResource";

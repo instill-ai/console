@@ -16,5 +16,5 @@
       "dependsOn": ["build"]
     }
   },
-  "globalEnv": ["NEXT_PUBLIC_API_VERSION","NODE_ENV"]
+  "globalEnv": ["NEXT_PUBLIC_API_VERSION","NODE_ENV","NEXT_PUBLIC_API_GATEWAY_URL","NEXT_SERVER_API_GATEWAY_URL"]
 }
