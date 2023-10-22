@@ -49,11 +49,10 @@ export const ProfileTab = (props: ProfileTabProps) => {
 
   return (
     <TabBase title="Profile" description="Update your details here.">
-      <div className="w-full min-w-[720px] border border-[#E4E4E4] bg-white p-10">
+      <div className="w-full min-w-[720px] rounded-sm border border-[#E4E4E4] bg-white p-10">
         <ConfigureProfileForm
           user={user.isSuccess ? user.data : null}
           roles={mgmtRoleOptions}
-          width="lg:w-[680px] w-full"
           onConfigure={null}
           accessToken={accessToken}
         />

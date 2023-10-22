@@ -49,7 +49,7 @@ export const ModelHubListPageMainView = (
             router.push(`/${entity}/model-hub/create`);
           }}
         >
-          <Icons.Plus className="h-5 w-5 stroke-semantic-bg-primary" />
+          <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
           Add Model
         </Button>
       </div>

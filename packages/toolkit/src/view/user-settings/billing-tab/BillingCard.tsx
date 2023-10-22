@@ -27,7 +27,7 @@ export const BillingCard = (props: BillingCardProps) => {
   } = props;
 
   return (
-    <div className="flex w-full flex-col border border-[#EAECF0] bg-white">
+    <div className="flex w-full flex-col border border-[#EAECF0] bg-white rounded-sm">
       <div className="grid grid-flow-row grid-cols-2 gap-x-8 border-b border-b-[#EAECF0] p-6">
         <div className="flex flex-col">
           <div className="mb-2 flex flex-row gap-x-2">
