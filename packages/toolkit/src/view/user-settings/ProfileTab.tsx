@@ -53,7 +53,6 @@ export const ProfileTab = (props: ProfileTabProps) => {
         <ConfigureProfileForm
           user={user.isSuccess ? user.data : null}
           roles={mgmtRoleOptions}
-          width="lg:w-[680px] w-full"
           onConfigure={null}
           accessToken={accessToken}
         />

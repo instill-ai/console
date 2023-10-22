@@ -1,17 +1,11 @@
-import {
-  validateConfigureProfileFormFieldSchema,
-  type Nullable,
-  type User,
-  configureProfileFormFieldSchema,
-  checkUserIdExist,
-  useConfigureProfileFormStore,
-  useUser,
-  useUpdateUser,
-  getInstillApiErrorMessage,
-} from "../../../lib";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import React from "react";
+import { isAxiosError } from "axios";
+
 import {
   SingleSelectOption,
-  FormRootProps,
   Form,
   ProgressMessageBoxState,
   Input,
@@ -20,21 +14,28 @@ import {
   Select,
   Switch,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import React from "react";
-import { isAxiosError } from "axios";
+
+import {
+  validateConfigureProfileFormFieldSchema,
+  configureProfileFormFieldSchema,
+  checkUserIdExist,
+  useConfigureProfileFormStore,
+  useUser,
+  useUpdateUser,
+  getInstillApiErrorMessage,
+  type Nullable,
+  type User,
+} from "../../../lib";
 
 export type ConfigureProfileFormProps = {
   user: Nullable<User>;
   roles: SingleSelectOption[];
   onConfigure: Nullable<() => void>;
   accessToken: Nullable<string>;
-} & Pick<FormRootProps, "marginBottom" | "width">;
+};
 
 export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
-  const { user, marginBottom, roles, width, onConfigure, accessToken } = props;
+  const { user, roles, onConfigure, accessToken } = props;
 
   const setFieldError = useConfigureProfileFormStore(
     (state) => state.setFieldError
@@ -79,7 +80,14 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
       });
 
       if (userIdExist) {
-        setFieldError("id", "User ID already exists. Please try another one.");
+        form.setError(
+          "id",
+          {
+            type: "manual",
+            message: "User ID already exists. Please try another one.",
+          },
+          { shouldFocus: true }
+        );
         return;
       }
     }
@@ -328,7 +336,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                     onCheckedChange={field.onChange}
                     checked={field.value || undefined}
                   />
-                  <Form.Description className="m-3">
+                  <Form.Description>
                     Receive the latest news from Instill AI for open source
                     updates, community highlights, blog posts, useful tutorials
                     and more! You can unsubscribe any time.
