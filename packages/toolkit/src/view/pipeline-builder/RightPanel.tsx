@@ -58,22 +58,21 @@ export const RightPanel = () => {
       <div className="flex w-full pb-10">
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "connector" &&
-        selectedConnectorNode.data.component.connector_definition &&
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_AI" ? (
-          // <AIForm
-          //   connectorDefinitionName={
-          //     selectedConnectorNode.data.component.definition_name
-          //   }
-          //   configuration={selectedConnectorNode.data.component.configuration}
-          // />
-          <AIAutoForm
-            configuration={selectedConnectorNode.data.component.configuration}
-            connectorDefinition={
-              selectedConnectorNode.data.component.connector_definition
+          <AIForm
+            connectorDefinitionName={
+              selectedConnectorNode.data.component.definition_name
             }
+            configuration={selectedConnectorNode.data.component.configuration}
           />
-        ) : null}
+        ) : // <AIAutoForm
+        //   configuration={selectedConnectorNode.data.component.configuration}
+        //   connectorDefinition={
+        //     selectedConnectorNode.data.component.connector_definition
+        //   }
+        // />
+        null}
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "connector" &&
         selectedConnectorNode.data.component.type ===
