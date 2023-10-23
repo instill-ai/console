@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { recursiveReplaceNullAndEmptyStringWithUndefined } from "./recursiveReplaceNullAndEmptyStringWithUndefined";
 
 test("", () => {
-  let obj = {
+  const obj = {
     number: 0.4,
     string: "string",
     foo: {

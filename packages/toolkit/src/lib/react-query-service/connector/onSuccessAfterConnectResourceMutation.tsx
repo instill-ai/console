@@ -1,11 +1,10 @@
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   ConnectorResource,
   ConnectorResourceWatchState,
   ConnectorResourceWithDefinition,
   ConnectorResourcesWatchState,
   getConnectorDefinitionQuery,
-  getUserConnectorResourceQuery,
   watchUserConnectorResource,
 } from "../../vdp-sdk";
 import { Nullable } from "../../type";

@@ -1,10 +1,8 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { Nullable, dot } from "../../lib";
+import { dot } from "../../lib";
 import { z } from "zod";
 import produce from "immer";
-
-type resourceType = Nullable<"new" | "existing">;
 
 // We haven't had a good way to guarantee the correctness of formIsDirty
 // Right now it just counts on whether the form had been changed from null

@@ -11,7 +11,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-turbo": "latest",
     "eslint-import-resolver-typescript": "^3.5.3",
-    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-storybook": "^0.6.10",

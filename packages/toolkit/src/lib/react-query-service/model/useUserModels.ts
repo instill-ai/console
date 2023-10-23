@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { env } from "../../utility";
-import { listModelsQuery, listUserModelsQuery } from "../../vdp-sdk";
+import { listUserModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useUserModels = ({

@@ -25,7 +25,7 @@ import {
   getInstillApiErrorMessage,
   type Nullable,
   type User,
-} from "../../../lib";
+} from "../../lib";
 
 export type ConfigureProfileFormProps = {
   user: Nullable<User>;

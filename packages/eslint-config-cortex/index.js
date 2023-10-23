@@ -33,7 +33,6 @@ module.exports = {
     "prettier",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:testing-library/react",
     "plugin:storybook/recommended",
@@ -45,7 +44,6 @@ module.exports = {
   // These rules come from eslint-config-next, we though these rules suit our
   // needs too
   rules: {
-    "import/no-anonymous-default-export": "warn",
     "react/no-unknown-property": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",

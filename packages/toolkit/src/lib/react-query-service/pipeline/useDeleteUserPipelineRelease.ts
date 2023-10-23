@@ -28,7 +28,7 @@ export const useDeleteUserPipelineRelease = () => {
       return Promise.resolve({ pipelineReleaseName, accessToken });
     },
     {
-      onSuccess: async ({ pipelineReleaseName, accessToken }) => {
+      onSuccess: async ({ pipelineReleaseName }) => {
         // At this stage the pipelineName will be
         // users/<uid>/pipelines/<pid>/releases/<version>
         const pipelineReleaseNameArray = pipelineReleaseName.split("/");
