@@ -114,7 +114,7 @@ export function pickFieldComponentFromInstillFormTree({
       <BooleanField
         key={tree.path}
         path={tree.path}
-        title={tree.title ?? tree.fieldKey ?? null}
+        title={tree.fieldKey ?? tree.title ?? null}
         form={form}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
@@ -128,7 +128,7 @@ export function pickFieldComponentFromInstillFormTree({
         key={tree.path}
         path={tree.path}
         form={form}
-        title={tree.title ?? tree.fieldKey ?? null}
+        title={tree.fieldKey ?? tree.title ?? null}
         options={tree.enum}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
@@ -142,7 +142,7 @@ export function pickFieldComponentFromInstillFormTree({
         key={tree.path}
         path={tree.path}
         form={form}
-        title={tree.title ?? tree.fieldKey ?? null}
+        title={tree.fieldKey ?? tree.title ?? null}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
       />
@@ -154,7 +154,7 @@ export function pickFieldComponentFromInstillFormTree({
       key={tree.path}
       path={tree.path}
       form={form}
-      title={tree.title ?? tree.fieldKey ?? null}
+      title={tree.fieldKey ?? tree.title ?? null}
       description={tree.description}
       additionalDescription={tree.additionalDescription}
     />
