@@ -1,5 +1,5 @@
 {
-  "name": "auto-form-playground",
+  "name": "instill-form-playground",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.2.0",
+    "@monaco-editor/react": "^4.6.0",
+    "@instill-ai/design-system": "workspace:*",
+    "@instill-ai/design-tokens": "workspace:*",
+    "@instill-ai/toolkit": "workspace:*",
     "react": "^18",
     "react-dom": "^18",
-    "next": "13.5.6"
+    "next": "13.5.6",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "typescript": "^5",
@@ -22,6 +28,8 @@
     "postcss": "^8",
     "tailwindcss": "^3",
     "eslint": "^8",
-    "eslint-config-next": "13.5.6"
+    "eslint-config-next": "13.5.6",
+    "@instill-ai/eslint-config-cortex": "workspace:*",
+    "@instill-ai/prettier-config-cortex": "workspace:*"
   }
 }

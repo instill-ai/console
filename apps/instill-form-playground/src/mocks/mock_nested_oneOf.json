@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "oneOf": [
+    {
+      "properties": {
+        "input": {
+          "oneOf": [
+            {
+              "properties": {
+                "model": {
+                  "const": "MODEL_DAVINCI",
+                  "instillEditOnNode": true
+                },
+                "prompt": {
+                  "type": "string",
+                  "instillEditOnNode": true
+                }
+              },
+              "required": [
+                "prompt", "model"
+              ]
+            },
+            {
+              "properties": {
+                "model": {
+                  "const": "MODEL_GPT4",
+                  "instillEditOnNode": true
+                },
+                "system_message": {
+                  "type": "string",
+                  "instillEditOnNode": true
+                }
+              },
+              "required": [
+                "system_message", "model"
+              ]
+            }
+          ],
+          "type": "object"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "task": {
+          "const": "TASK_TEXT_GENERATION",
+          "instillEditOnNode": true
+        }
+      },
+      "type": "object",
+      "required": ["input"]
+    },
+    {
+      "properties": {
+        "input": {
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "",
+              "instillFormat": "text",
+              "instillUpstreamTypes": [
+                "value",
+                "reference"
+              ],
+              "title": "Text",
+              "instillEditOnNode": true
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "type": "object"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "task": {
+          "const": "TASK_TEXT_EMBEDDINGS",
+          "instillEditOnNode": true
+        }
+      },
+      "type": "object",
+      "required": ["input"]
+    },
+    {
+      "properties": {
+        "input": {
+          "properties": {
+            "audio": {
+              "type": "string",
+              "description": "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
+              "instillFormat": "audio",
+              "instillUpstreamTypes": [
+                "reference"
+              ],
+              "title": "Audio",
+              "instillEditOnNode": true
+            }
+          },
+          "required": [
+            "audio"
+          ],
+          "type": "object"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "task": {
+          "const": "TASK_SPEECH_RECOGNITION",
+          "instillEditOnNode": true
+        }
+      },
+      "type": "object",
+      "required": ["input"]
+    }
+  ],
+  "title": "OpenAI Component",
+  "type": "object"
+}
