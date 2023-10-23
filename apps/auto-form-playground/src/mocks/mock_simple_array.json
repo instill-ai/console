@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": ["host", "ports"],
+  "properties": {
+    "host": {
+      "type": "string",
+      "description": "Hostname of the database.",
+      "example": "hello-world"
+    },
+    "ports": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "port": {
+            "type": "integer",
+            "description": "Port of the database.",
+            "examples": [5432]
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

@@ -8,5 +8,6 @@ export * from "./react-query-service";
 export * from "./store";
 export * from "./table";
 export * from "./type";
+export * from "./use-instill-form";
 export * from "./utility";
 export * from "./vdp-sdk";

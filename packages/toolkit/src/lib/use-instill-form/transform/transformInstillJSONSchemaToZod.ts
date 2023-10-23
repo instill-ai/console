@@ -256,7 +256,7 @@ const customErrorMap: z.ZodErrorMap = (error, ctx) => {
   switch (error.code) {
     case z.ZodIssueCode.invalid_type:
       if (error.expected === "string" && ctx.data === null) {
-        return { message: "This field is required" };
+        return { message: "Required" };
       }
       break;
   }

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": ["host", "port", "user", "dbname"],
+  "properties": {
+    "host": { "type": "string", "description": "Hostname of the database." },
+    "port": {
+      "type": "integer",
+      "description": "Port of the database."
+    },
+    "user": {
+      "type": "string",
+      "description": "Username to use to access the database."
+    },
+    "dbname": { "type": "string", "description": "Name of the database." },
+    "password": {
+      "credential_field": true,
+      "type": "string",
+      "description": "Password associated with the username."
+    }
+  }
+}
