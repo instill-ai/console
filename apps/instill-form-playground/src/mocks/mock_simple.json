@@ -1,32 +1,57 @@
 {
+  "title": "Simple JSON",
+  "type": "object",
+  "required": [
+    "text",
+    "model"
+  ],
   "properties": {
     "model": {
       "type":"string",
-      "enum": ["text-embedding-ada-002"],
       "description": "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
       "example": "text-embedding-ada-002",
       "instillFormat": "text",
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "text-embedding-ada-002"
+          ],
+          "instillUpstreamType": "value"
+        },
+        {
+          "type": "string",
+          "instillUpstreamType": "reference"
+        }
+      ],
       "instillUpstreamTypes": [
         "value",
         "reference"
       ],
-      "title": "Model",
-      "x-oaiTypeLabel": "string"
+      "title": "Model"    
     },
     "text": {
-      "type": "string",
       "description": "",
       "instillFormat": "text",
+      "anyOf": [
+        {
+          "type": "string",
+          "instillUpstreamType": "value"
+        },
+        {
+          "type": "string",
+          "instillUpstreamType": "reference"
+        },
+        {
+          "type": "string",
+          "instillUpstreamType": "template"
+        }
+      ],
       "instillUpstreamTypes": [
         "value",
         "reference"
       ],
       "title": "Text"
     }
-  },
-  "required": [
-    "text",
-    "model"
-  ],
-  "type": "object"
+  }
 }

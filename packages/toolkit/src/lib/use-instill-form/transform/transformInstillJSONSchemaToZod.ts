@@ -5,6 +5,7 @@ import {
   instillZodSchema,
 } from "../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
+import { extractTemplateReferenceSetFromString } from "../../../view";
 
 export function transformInstillJSONSchemaToZod({
   parentSchema,
@@ -27,6 +28,11 @@ export function transformInstillJSONSchemaToZod({
 
   const isHidden = checkIsHiddenBySchema
     ? checkIsHiddenBySchema(targetSchema)
+    : false;
+
+  const isRequired = propertyKey
+    ? Array.isArray(parentSchema.required) &&
+      parentSchema.required.includes(propertyKey)
     : false;
 
   // const field will only be used in oneOf field conditions
@@ -84,65 +90,6 @@ export function transformInstillJSONSchemaToZod({
     return instillZodSchema;
   }
 
-  // Handle the anyOf fields
-  if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
-    const anyOfConditions = targetSchema.anyOf as InstillJSONSchema[];
-    const anyOfSchemaArray: z.ZodTypeAny[] = [];
-
-    const isRequired = propertyKey
-      ? Array.isArray(parentSchema.required) &&
-        parentSchema.required.includes(propertyKey)
-      : false;
-
-    for (const condition of anyOfConditions) {
-      if (typeof condition !== "boolean") {
-        if (condition.properties) {
-          let anyOfSchema = z.object({});
-
-          for (const [entryKey, entryJsonSchema] of Object.entries(
-            condition.properties
-          )) {
-            if (typeof entryJsonSchema !== "boolean") {
-              anyOfSchema = anyOfSchema.extend({
-                [entryKey]: transformInstillJSONSchemaToZod({
-                  parentSchema: condition,
-                  targetSchema: entryJsonSchema,
-                  propertyKey: entryKey,
-                  propertyPath: propertyPath
-                    ? `${propertyPath}.${entryKey}`
-                    : entryKey,
-                  selectedConditionMap,
-                  checkIsHiddenBySchema,
-                }),
-              });
-            }
-          }
-          anyOfSchemaArray.push(anyOfSchema);
-        } else {
-          const anyOfSchema = transformInstillJSONSchemaToZod({
-            parentSchema,
-            targetSchema: condition,
-            selectedConditionMap,
-            checkIsHiddenBySchema,
-          });
-
-          anyOfSchemaArray.push(anyOfSchema);
-        }
-      }
-    }
-
-    // Just like what we did for the enum, we also need to do the casting here
-    instillZodSchema = z.union(
-      anyOfSchemaArray as [z.ZodTypeAny, z.ZodTypeAny, ...z.ZodTypeAny[]]
-    );
-
-    if (!isRequired || forceOptional || isHidden) {
-      instillZodSchema = instillZodSchema.nullable().optional();
-    }
-
-    return instillZodSchema;
-  }
-
   // Handle the enum fields
   if (targetSchema.enum) {
     // We need to do the castring here to make typescript happy.
@@ -154,10 +101,61 @@ export function transformInstillJSONSchemaToZod({
     const enumValues = targetSchema.enum as [string, ...string[]];
     instillZodSchema = z.enum(enumValues);
 
-    const isRequired = propertyKey
-      ? Array.isArray(parentSchema.required) &&
-        parentSchema.required.includes(propertyKey)
-      : false;
+    if (!isRequired || forceOptional || isHidden) {
+      instillZodSchema = instillZodSchema.nullable().optional();
+    }
+
+    return instillZodSchema;
+  }
+
+  if (targetSchema.type === "array") {
+    if (
+      typeof targetSchema.items === "object" &&
+      !Array.isArray(targetSchema.items)
+    ) {
+      const arraySchema = z.array(
+        transformInstillJSONSchemaToZod({
+          parentSchema,
+          targetSchema: targetSchema.items as InstillJSONSchema,
+          selectedConditionMap,
+          checkIsHiddenBySchema,
+        })
+      );
+
+      instillZodSchema = arraySchema;
+
+      if (!isRequired || forceOptional || isHidden) {
+        instillZodSchema = instillZodSchema.nullable().optional();
+      }
+    }
+    return instillZodSchema;
+  }
+
+  if (targetSchema.type === "object") {
+    const objectProperties = targetSchema.properties ?? {};
+
+    let objectSchema = z.object({});
+
+    for (const [entryKey, entryJsonSchema] of Object.entries(
+      objectProperties
+    )) {
+      if (typeof entryJsonSchema !== "boolean") {
+        objectSchema = objectSchema.extend({
+          [entryKey]: transformInstillJSONSchemaToZod({
+            parentSchema: targetSchema,
+            targetSchema: entryJsonSchema,
+            propertyKey: entryKey,
+            propertyPath: propertyPath
+              ? `${propertyPath}.${entryKey}`
+              : entryKey,
+            selectedConditionMap,
+            checkIsHiddenBySchema,
+          }),
+        });
+      }
+    }
+
+    instillZodSchema = objectSchema;
 
     if (!isRequired || forceOptional || isHidden) {
       instillZodSchema = instillZodSchema.nullable().optional();
@@ -166,85 +164,145 @@ export function transformInstillJSONSchemaToZod({
     return instillZodSchema;
   }
 
-  // Handle the normal type of the json schema
-  switch (targetSchema.type) {
-    case "array": {
-      if (
-        typeof targetSchema.items === "object" &&
-        !Array.isArray(targetSchema.items)
-      ) {
-        const arraySchema = z.array(
-          transformInstillJSONSchemaToZod({
-            parentSchema,
-            targetSchema: targetSchema.items as InstillJSONSchema,
-            selectedConditionMap,
-            checkIsHiddenBySchema,
-          })
-        );
+  /* -------------------------------------------------------------------------
+     Handle anyOf field (anyOf will onlye be used to setup 
+     instillUpstreamTypes)
 
-        instillZodSchema = arraySchema;
-      }
-      break;
-    }
-    case "object": {
-      const objectProperties = targetSchema.properties ?? {};
+     Most of the time, the schema's fields will have anyOf field,
+   * -----------------------------------------------------------------------*/
 
-      let objectSchema = z.object({});
+  if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
+    const instillUpstreamValue = targetSchema.anyOf.find(
+      (e) => e.instillUpstreamType === "value"
+    );
 
-      for (const [entryKey, entryJsonSchema] of Object.entries(
-        objectProperties
-      )) {
-        if (typeof entryJsonSchema !== "boolean") {
-          objectSchema = objectSchema.extend({
-            [entryKey]: transformInstillJSONSchemaToZod({
-              parentSchema: targetSchema,
-              targetSchema: entryJsonSchema,
-              propertyKey: entryKey,
-              propertyPath: propertyPath
-                ? `${propertyPath}.${entryKey}`
-                : entryKey,
-              selectedConditionMap,
-              checkIsHiddenBySchema,
-            }),
-          });
+    const acceptPrimitive = instillUpstreamValue ? true : false;
+
+    const acceptReference = targetSchema.anyOf.some(
+      (e) => e.instillUpstreamType === "reference"
+    );
+
+    const acceptTemplate = targetSchema.anyOf.some(
+      (e) => e.instillUpstreamType === "template"
+    );
+
+    if (instillUpstreamValue) {
+      if (instillUpstreamValue.enum) {
+        const enumValues = instillUpstreamValue.enum as [string, ...string[]];
+        instillZodSchema = z.enum(enumValues);
+      } else {
+        switch (instillUpstreamValue.type) {
+          case "string": {
+            instillZodSchema = z.string({
+              errorMap: customErrorMap,
+            });
+            break;
+          }
+          case "boolean": {
+            instillZodSchema = z.boolean();
+            break;
+          }
+          case "integer":
+          case "number": {
+            // Because number field can also write string as reference. We need to
+            // set the initial zod schema to string and then validate it with
+            // superRefine.
+
+            const integerSchema = z.string();
+
+            instillZodSchema = integerSchema;
+            break;
+          }
         }
       }
-
-      instillZodSchema = objectSchema;
-
-      break;
-    }
-    case "string": {
+    } else {
       instillZodSchema = z.string({
         errorMap: customErrorMap,
       });
-      break;
     }
-    case "boolean": {
-      instillZodSchema = z.boolean();
-      break;
-    }
-    case "integer":
-    case "number": {
-      // Because number field can also write string as reference. We need to
-      // set the initial zod schema to string and then validate it with
-      // superRefine.
 
-      const integerSchema = z.string();
+    /* -----------------------------------------------------------------------
+      We use superRefine to validate the value of the field with reference
+      and template 
+    * -----------------------------------------------------------------------*/
 
-      instillZodSchema = integerSchema;
-      break;
+    instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+      if (typeof val === "string") {
+        const referenceSet = extractTemplateReferenceSetFromString(val);
+
+        if (
+          !acceptPrimitive &&
+          referenceSet.doubleCurlyBrace.count === 0 &&
+          referenceSet.singleCurlyBrace.count === 0
+        ) {
+          if (acceptReference && !acceptTemplate) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "This field only accepts reference",
+            });
+          }
+
+          if (!acceptReference && acceptTemplate) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "This field only accepts template",
+            });
+          }
+
+          if (acceptReference && acceptTemplate) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "This field only accepts reference or template",
+            });
+          }
+        }
+
+        if (referenceSet.singleCurlyBrace.count > 0 && !acceptReference) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "This field doesn't accept reference `{}`",
+          });
+        }
+
+        if (referenceSet.doubleCurlyBrace.count > 0 && !acceptTemplate) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "This field doesn't accept template `{{}}`",
+          });
+        }
+
+        if (
+          referenceSet.singleCurlyBrace.count === 0 &&
+          referenceSet.doubleCurlyBrace.count === 0 &&
+          instillUpstreamValue &&
+          (instillUpstreamValue.type === "integer" ||
+            instillUpstreamValue.type === "number")
+        ) {
+          if (isNaN(Number(val))) {
+            if (acceptReference) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "This field only accepts number or reference",
+              });
+            } else {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "This field only accepts number",
+              });
+            }
+          }
+        }
+      }
+    });
+
+    if (!isRequired || forceOptional || isHidden) {
+      instillZodSchema = instillZodSchema.nullable().optional();
     }
+
+    return instillZodSchema;
   }
 
-  const isRequired = propertyKey
-    ? Array.isArray(parentSchema.required) &&
-      parentSchema.required.includes(propertyKey)
-    : false;
-
-  if (!isRequired || forceOptional || isHidden) {
-    instillZodSchema = instillZodSchema.nullable().optional();
-  }
+  // We don't validate the field without anyOf
 
   return instillZodSchema;
 }
