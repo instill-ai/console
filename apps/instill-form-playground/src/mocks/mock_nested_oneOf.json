@@ -8,12 +8,14 @@
             {
               "properties": {
                 "model": {
-                  "const": "MODEL_DAVINCI",
-                  "instillEditOnNode": true
+                  "const": "MODEL_DAVINCI"
                 },
                 "prompt": {
-                  "type": "string",
-                  "instillEditOnNode": true
+                  "anyOf": [
+                    {"type": "string", "instillUpstreamType": "value"},
+                    {"type": "string", "instillUpstreamType": "template"},
+                    {"type": "string", "instillUpstreamType": "reference"}
+                  ]
                 }
               },
               "required": [
@@ -23,12 +25,10 @@
             {
               "properties": {
                 "model": {
-                  "const": "MODEL_GPT4",
-                  "instillEditOnNode": true
+                  "const": "MODEL_GPT4"
                 },
                 "system_message": {
-                  "type": "string",
-                  "instillEditOnNode": true
+                  "type": "string"
                 }
               },
               "required": [
@@ -43,8 +43,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_TEXT_GENERATION",
-          "instillEditOnNode": true
+          "const": "TASK_TEXT_GENERATION"
         }
       },
       "type": "object",
@@ -55,15 +54,18 @@
         "input": {
           "properties": {
             "text": {
-              "type": "string",
               "description": "",
               "instillFormat": "text",
+              "anyOf": [
+                {"type": "string", "instillUpstreamType": "value"},
+                {"type": "string", "instillUpstreamType": "template"},
+                {"type": "string", "instillUpstreamType": "reference"}
+              ],
               "instillUpstreamTypes": [
                 "value",
                 "reference"
               ],
-              "title": "Text",
-              "instillEditOnNode": true
+              "title": "Text"
             }
           },
           "required": [
@@ -76,8 +78,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_TEXT_EMBEDDINGS",
-          "instillEditOnNode": true
+          "const": "TASK_TEXT_EMBEDDINGS"
         }
       },
       "type": "object",
@@ -88,14 +89,17 @@
         "input": {
           "properties": {
             "audio": {
-              "type": "string",
               "description": "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
               "instillFormat": "audio",
-              "instillUpstreamTypes": [
+              "anyOf": [
+                {"type": "string", "instillUpstreamType": "value"},
+                {"type": "string", "instillUpstreamType": "reference"}
+              ],
+              "instillUpstreamTypes": [ 
+                "value",
                 "reference"
               ],
-              "title": "Audio",
-              "instillEditOnNode": true
+              "title": "Audio"
             }
           },
           "required": [
@@ -108,8 +112,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_SPEECH_RECOGNITION",
-          "instillEditOnNode": true
+          "const": "TASK_SPEECH_RECOGNITION"
         }
       },
       "type": "object",
