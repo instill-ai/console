@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Dialog, Icons } from "@instill-ai/design-system";
 import { Nullable, useUserConnectorResources } from "../../../lib";
-import { AIResourceForm } from "../../ai";
 import { BlockchainResourceForm } from "../../blockchain";
 import { DataResourceForm } from "../../data";
 import {
@@ -12,6 +11,7 @@ import { shallow } from "zustand/shallow";
 import { useRouter } from "next/router";
 import { SelectConnectorResourceDialogItem } from "./SelectConnectorResourceDialogItem";
 import { ImageWithFallback } from "../../../components";
+import { AIResourceAutoForm } from "../../ai/AIResourceAutoForm";
 
 export type CreateResourceDialogProps = {
   accessToken: Nullable<string>;
@@ -130,12 +130,11 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
               </p>
             </div>
             {connectorType === "CONNECTOR_TYPE_AI" && connectorDefinition ? (
-              <AIResourceForm
+              <AIResourceAutoForm
                 aiDefinition={connectorDefinition}
                 aiResource={null}
                 accessToken={accessToken}
                 onSubmit={onCreated ? onCreated : undefined}
-                enableBackButton={true}
                 onBack={() => {
                   updateState(() => ({
                     open: false,
@@ -145,7 +144,6 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                     onSelectedExistingResource: null,
                   }));
                 }}
-                enableQuery={enableQuery}
               />
             ) : null}
             {connectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&

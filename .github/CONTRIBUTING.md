@@ -51,6 +51,7 @@ When you are ready to send a PR, we recommend you to first open a `draft` one. T
 - Open another terminal then go to the `packages/toolkit` and run `pnpm dev-ts`, keep this terminal running
 - Go to the `apps/console`, and run pnpm dev, keep this terminal running
 - You are all set, go to `http://localhost:3000` to see the console
+- The default login password is: `password`
 
 
 ## Last words

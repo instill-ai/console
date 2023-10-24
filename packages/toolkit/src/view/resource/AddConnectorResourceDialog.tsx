@@ -9,8 +9,8 @@ import {
   Nullable,
   useConnectorDefinitions,
 } from "../../lib";
-import { AIResourceForm } from "../ai";
 import { ImageWithFallback } from "../../components";
+import { AIResourceAutoForm } from "../ai/AIResourceAutoForm";
 
 export type AddConnectorResourceDialogProps = {
   open: boolean;
@@ -195,17 +195,15 @@ export const AddConnectorResourceDialog = (
             </div>
             {newConnectorType === "CONNECTOR_TYPE_AI" &&
             newConnectorDefinition ? (
-              <AIResourceForm
+              <AIResourceAutoForm
                 aiDefinition={newConnectorDefinition}
                 aiResource={null}
                 onSubmit={props.onSubmit}
                 accessToken={accessToken}
-                enableBackButton={true}
                 onBack={() => {
                   setNewConnectorDefinition(null);
                   setNewConnectorType(null);
                 }}
-                enableQuery={enableQuery}
               />
             ) : null}
             {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&

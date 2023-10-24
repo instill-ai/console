@@ -1,6 +1,6 @@
 import { PageTitle } from "../../components";
 import { GeneralPageProp, useUserConnectorResource } from "../../lib";
-import { AIResourceForm } from "../ai";
+import { AIResourceAutoForm } from "../ai/AIResourceAutoForm";
 import { BlockchainResourceForm } from "../blockchain";
 import { DataResourceForm } from "../data";
 
@@ -32,12 +32,10 @@ export const ResourceSettingPageMainView = (
       {userConnectorResource.isSuccess ? (
         <>
           {userConnectorResource.data.type === "CONNECTOR_TYPE_AI" ? (
-            <AIResourceForm
+            <AIResourceAutoForm
               aiDefinition={userConnectorResource.data.connector_definition}
               aiResource={userConnectorResource.data}
               accessToken={accessToken}
-              enableBackButton={false}
-              enableQuery={enableQuery}
             />
           ) : null}
           {userConnectorResource.data.type === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
