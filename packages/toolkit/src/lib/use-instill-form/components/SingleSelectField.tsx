@@ -1,17 +1,23 @@
 import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
 
-export const SingleSelectField = (props: {
+export const SingleSelectField = ({
+  form,
+  path,
+  title,
+  options,
+  description,
+  additionalDescription,
+  disabled,
+}: {
   form: GeneralUseFormReturn;
   path: string;
   title: string | null;
   options: string[];
   description?: string;
   additionalDescription?: string;
+  disabled?: boolean;
 }) => {
-  const { form, path, title, options, description, additionalDescription } =
-    props;
-
   return (
     <Form.Field
       key={path}
@@ -56,6 +62,7 @@ export const SingleSelectField = (props: {
                 field.onChange(e);
               }}
               value={field.value ?? undefined}
+              disabled={disabled}
             >
               <Form.Control>
                 <Select.Trigger className="w-full">

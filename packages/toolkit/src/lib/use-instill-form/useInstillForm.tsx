@@ -16,11 +16,13 @@ import { GeneralRecord } from "../type";
 export function useInstillForm({
   schema,
   data,
+  disabledAll,
   checkIsHiddenByFormTree,
   checkIsHiddenBySchema,
 }: {
   schema: InstillJSONSchema | null;
   data: GeneralRecord | null;
+  disabledAll?: boolean;
   checkIsHiddenByFormTree?: (tree: InstillFormTree) => boolean;
   checkIsHiddenBySchema?: (schema: InstillJSONSchema) => boolean;
 }) {
@@ -101,6 +103,7 @@ export function useInstillForm({
         selectedConditionMap,
         setSelectedConditionMap,
         checkIsHiddenByFormTree,
+        disabledAll,
       }),
       formTree,
     };
@@ -111,6 +114,7 @@ export function useInstillForm({
     checkIsHiddenByFormTree,
     form,
     selectedConditionMap,
+    disabledAll,
   ]);
 
   return {

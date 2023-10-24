@@ -1,14 +1,21 @@
 import { Form, Icons, Input, Tooltip } from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
 
-export const TextField = (props: {
+export const TextField = ({
+  form,
+  path,
+  title,
+  description,
+  additionalDescription,
+  disabled,
+}: {
   form: GeneralUseFormReturn;
   path: string;
   title: string | null;
   description?: string;
   additionalDescription?: string;
+  disabled?: boolean;
 }) => {
-  const { form, path, title, description, additionalDescription } = props;
   return (
     <Form.Field
       key={path}
@@ -59,6 +66,7 @@ export const TextField = (props: {
                     field.onChange(e);
                     form.trigger(path, { shouldFocus: true });
                   }}
+                  disabled={disabled}
                 />
               </Input.Root>
             </Form.Control>

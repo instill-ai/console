@@ -1,14 +1,21 @@
 import { Form, Icons, Switch, Tooltip } from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
 
-export const BooleanField = (props: {
+export const BooleanField = ({
+  form,
+  path,
+  title,
+  description,
+  additionalDescription,
+  disabled,
+}: {
   form: GeneralUseFormReturn;
   path: string;
   title: null | string;
   description?: string;
   additionalDescription?: string;
+  disabled?: boolean;
 }) => {
-  const { form, path, title, description, additionalDescription } = props;
   return (
     <Form.Field
       key={path}
@@ -55,6 +62,7 @@ export const BooleanField = (props: {
                   field.onChange(e);
                   form.trigger(path, { shouldFocus: true });
                 }}
+                disabled={disabled}
               />
             </Form.Control>
             <Form.Message />

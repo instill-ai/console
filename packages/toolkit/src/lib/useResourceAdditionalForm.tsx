@@ -43,6 +43,7 @@ export const useResourceAdditionalForm = ({
                         field.onChange(e.target.value);
                         form.trigger("id");
                       }}
+                      disabled={data?.id ? true : false}
                     />
                   </Input.Root>
                 </Form.Control>
