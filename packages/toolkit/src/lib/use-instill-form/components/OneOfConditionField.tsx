@@ -13,6 +13,7 @@ export const OneOfConditionField = ({
   setSelectedConditionMap,
   description,
   additionalDescription,
+  disabled,
 }: {
   form: GeneralUseFormReturn;
   path: string;
@@ -24,6 +25,7 @@ export const OneOfConditionField = ({
   description?: string;
   additionalDescription?: string;
   title?: string;
+  disabled?: boolean;
 }) => {
   const conditionOptions = React.useMemo(() => {
     return Object.entries(conditionComponents).map(([k]) => k);
@@ -90,6 +92,7 @@ export const OneOfConditionField = ({
                   });
                 }}
                 value={field.value ?? undefined}
+                disabled={disabled}
               >
                 <Form.Control>
                   <Select.Trigger className="w-full">

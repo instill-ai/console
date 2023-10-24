@@ -84,6 +84,7 @@ export function pickFieldComponentFromInstillFormTree({
         conditionComponents={conditionComponents}
         title={constField.fieldKey ?? undefined}
         additionalDescription={tree.additionalDescription}
+        disabled={disabledAll}
       />
     );
   }
@@ -118,6 +119,7 @@ export function pickFieldComponentFromInstillFormTree({
         form={form}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
+        disabled={disabledAll}
       />
     );
   }
@@ -132,6 +134,7 @@ export function pickFieldComponentFromInstillFormTree({
         options={tree.enum}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
+        disabled={disabledAll}
       />
     );
   }
@@ -145,6 +148,7 @@ export function pickFieldComponentFromInstillFormTree({
         title={tree.fieldKey ?? tree.title ?? null}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
+        disabled={disabledAll}
       />
     );
   }
@@ -157,6 +161,7 @@ export function pickFieldComponentFromInstillFormTree({
       title={tree.fieldKey ?? tree.title ?? null}
       description={tree.description}
       additionalDescription={tree.additionalDescription}
+      disabled={disabledAll}
     />
   );
 }
