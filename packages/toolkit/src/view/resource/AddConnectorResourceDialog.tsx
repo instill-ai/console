@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
-import { BlockchainResourceForm } from "../blockchain";
 import { DataResourceForm } from "../data";
 import {
   ConnectorDefinition,
@@ -11,6 +10,7 @@ import {
 } from "../../lib";
 import { ImageWithFallback } from "../../components";
 import { AIResourceAutoForm } from "../ai/AIResourceAutoForm";
+import { BlockchainResourceAutoForm } from "../blockchain";
 
 export type AddConnectorResourceDialogProps = {
   open: boolean;
@@ -90,34 +90,28 @@ export const AddConnectorResourceDialog = (
               </div>
               <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
                 {aiDefinitions.isSuccess
-                  ? aiDefinitions.data
-                      .filter(
-                        (definition) =>
-                          definition.name !==
-                          "connector-definitions/ai-hugging-face"
-                      )
-                      .map((definition) => (
-                        <AddConnectorResourceDialogItem
-                          key={definition.id}
-                          onClick={() => {
-                            setNewConnectorDefinition(definition);
-                            setNewConnectorType("CONNECTOR_TYPE_AI");
-                          }}
-                        >
-                          <ImageWithFallback
-                            src={`/icons/${definition.vendor}/${definition.icon}`}
-                            width={32}
-                            height={32}
-                            alt={`${definition.title}-icon`}
-                            fallbackImg={
-                              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                            }
-                          />
-                          <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                            {definition.title}
-                          </p>
-                        </AddConnectorResourceDialogItem>
-                      ))
+                  ? aiDefinitions.data.map((definition) => (
+                      <AddConnectorResourceDialogItem
+                        key={definition.id}
+                        onClick={() => {
+                          setNewConnectorDefinition(definition);
+                          setNewConnectorType("CONNECTOR_TYPE_AI");
+                        }}
+                      >
+                        <ImageWithFallback
+                          src={`/icons/${definition.vendor}/${definition.icon}`}
+                          width={32}
+                          height={32}
+                          alt={`${definition.title}-icon`}
+                          fallbackImg={
+                            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                          }
+                        />
+                        <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                          {definition.title}
+                        </p>
+                      </AddConnectorResourceDialogItem>
+                    ))
                   : null}
               </div>
               <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
@@ -196,8 +190,8 @@ export const AddConnectorResourceDialog = (
             {newConnectorType === "CONNECTOR_TYPE_AI" &&
             newConnectorDefinition ? (
               <AIResourceAutoForm
-                aiDefinition={newConnectorDefinition}
-                aiResource={null}
+                definition={newConnectorDefinition}
+                resource={null}
                 onSubmit={props.onSubmit}
                 accessToken={accessToken}
                 onBack={() => {
@@ -208,17 +202,15 @@ export const AddConnectorResourceDialog = (
             ) : null}
             {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
             newConnectorDefinition ? (
-              <BlockchainResourceForm
-                blockchainDefinition={newConnectorDefinition}
-                blockchainResource={null}
+              <BlockchainResourceAutoForm
+                definition={newConnectorDefinition}
+                resource={null}
                 onSubmit={props.onSubmit}
                 accessToken={accessToken}
-                enableBackButton={true}
                 onBack={() => {
                   setNewConnectorDefinition(null);
                   setNewConnectorType(null);
                 }}
-                enableQuery={enableQuery}
               />
             ) : null}
             {newConnectorType === "CONNECTOR_TYPE_DATA" &&

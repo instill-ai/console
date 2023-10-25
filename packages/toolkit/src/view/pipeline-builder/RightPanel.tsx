@@ -4,10 +4,9 @@ import {
 } from "./usePipelineBuilderStore";
 import { shallow } from "zustand/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
-import { AIForm } from "../ai";
-import { BlockchainForm } from "../blockchain";
 import { DataComponentForm } from "../data";
-import { AIAutoForm } from "../ai/AIAutoForm";
+import { AIComponentAutoForm } from "../ai";
+import { BlockchainComponentAutoForm } from "../blockchain/BlockchainComponentAutoForm";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,
@@ -61,7 +60,7 @@ export const RightPanel = () => {
         selectedConnectorNode.data.component.connector_definition &&
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_AI" ? (
-          <AIAutoForm
+          <AIComponentAutoForm
             configuration={selectedConnectorNode.data.component.configuration}
             connectorDefinition={
               selectedConnectorNode.data.component.connector_definition
@@ -70,10 +69,14 @@ export const RightPanel = () => {
         ) : null}
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "connector" &&
+        selectedConnectorNode.data.component.connector_definition &&
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ? (
-          <BlockchainForm
+          <BlockchainComponentAutoForm
             configuration={selectedConnectorNode.data.component.configuration}
+            connectorDefinition={
+              selectedConnectorNode.data.component.connector_definition
+            }
           />
         ) : null}
         {selectedConnectorNode &&
