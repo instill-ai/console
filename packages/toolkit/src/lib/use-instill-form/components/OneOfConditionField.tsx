@@ -1,7 +1,7 @@
 import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
 import * as React from "react";
 import { recursivelyResetFormData } from "../transform";
-import { GeneralUseFormReturn } from "../../type";
+import { GeneralUseFormReturn, Nullable } from "../../type";
 import { InstillFormTree, SelectedConditionMap } from "../type";
 
 export const OneOfConditionField = ({
@@ -10,6 +10,7 @@ export const OneOfConditionField = ({
   title,
   tree,
   conditionComponents,
+  selectedConditionMap,
   setSelectedConditionMap,
   description,
   additionalDescription,
@@ -18,8 +19,9 @@ export const OneOfConditionField = ({
   form: GeneralUseFormReturn;
   path: string;
   tree: InstillFormTree;
+  selectedConditionMap: Nullable<SelectedConditionMap>;
   setSelectedConditionMap: React.Dispatch<
-    React.SetStateAction<SelectedConditionMap | null>
+    React.SetStateAction<Nullable<SelectedConditionMap>>
   >;
   conditionComponents: Record<string, React.ReactNode>;
   description?: string;
@@ -27,9 +29,25 @@ export const OneOfConditionField = ({
   title?: string;
   disabled?: boolean;
 }) => {
+  const [prevSelectedConditionMap, setPrevSelectedConditionMap] =
+    React.useState<Nullable<SelectedConditionMap>>(null);
+
   const conditionOptions = React.useMemo(() => {
     return Object.entries(conditionComponents).map(([k]) => k);
   }, [conditionComponents]);
+
+  // Once the condition is changed, we need to reset the child form data
+  // of the previous condition.
+
+  React.useEffect(() => {
+    if (prevSelectedConditionMap) {
+      const formValues = form.getValues();
+      recursivelyResetFormData(tree, prevSelectedConditionMap, formValues);
+      form.reset(formValues);
+    }
+  }, [prevSelectedConditionMap, selectedConditionMap]);
+
+  console.log("value", form.getValues());
 
   return (
     <div key={path} className="flex flex-col">
@@ -74,17 +92,6 @@ export const OneOfConditionField = ({
                 onValueChange={(event) => {
                   field.onChange(event);
                   setSelectedConditionMap((prev) => {
-                    // If the user change the condition, we will remove the
-                    // data of the previous condition
-
-                    const formValues = form.getValues();
-
-                    if (prev) {
-                      recursivelyResetFormData(tree, prev, formValues);
-                    }
-
-                    form.reset(formValues);
-
                     return {
                       ...prev,
                       [path]: event,

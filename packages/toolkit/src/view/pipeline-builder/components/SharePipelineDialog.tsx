@@ -14,6 +14,7 @@ import {
   env,
   getInstillApiErrorMessage,
   useUpdateUserPipeline,
+  useUser,
   useUserPipeline,
 } from "../../../lib";
 import { useRouter } from "next/router";
@@ -41,10 +42,15 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
 
   const { toast } = useToast();
 
-  const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+  const user = useUser({
     accessToken,
-    enabled: enableQuery && !pipelineIsNew,
+    enabled: enableQuery,
+  });
+
+  const pipeline = useUserPipeline({
+    pipelineName: `${user.data?.name}/pipelines/${id}`,
+    accessToken,
+    enabled: enableQuery && !pipelineIsNew && user.isSuccess,
   });
 
   const updatePipeline = useUpdateUserPipeline();

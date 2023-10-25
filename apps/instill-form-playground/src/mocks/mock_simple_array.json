@@ -3,7 +3,13 @@
   "required": ["host", "ports"],
   "properties": {
     "host": {
-      "type": "string",
+      "anyOf": [
+        {
+          "type": "string",
+          "instillUpstreamType": "value"
+        }
+      ],
+      "instillUpstreamTypes": ["value"],
       "description": "Hostname of the database.",
       "example": "hello-world"
     },
@@ -12,7 +18,13 @@
       "items": {
         "properties": {
           "port": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer",
+                "instillUpstreamType": "value"
+              }
+            ],
+            "instillUpstreamTypes": ["value"],
             "description": "Port of the database.",
             "examples": [5432]
           }

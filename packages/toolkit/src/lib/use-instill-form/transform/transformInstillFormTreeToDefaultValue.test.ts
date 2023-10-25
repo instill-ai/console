@@ -28,16 +28,9 @@ test("should transform formItem with example", () => {
     type: "string",
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
-    model: "gpt-3.5-turbo",
-  });
+  expect(value).toStrictEqual({ model: "gpt-3.5-turbo" });
 });
 
 test("should transform formItem with examples", () => {
@@ -66,14 +59,9 @@ test("should transform formItem with examples", () => {
     type: "string",
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
+  expect(value).toStrictEqual({
     model: "gpt-3.5-turbo",
   });
 });
@@ -133,14 +121,9 @@ test("should transform formGroup", () => {
     ],
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
+  expect(value).toStrictEqual({
     model: "text-embedding-ada-002",
     text: null,
   });
@@ -469,14 +452,9 @@ test("should transform formCondition", () => {
     },
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
+  expect(value).toStrictEqual({
     input: { model: null },
     metadata: null,
     task: "TASK_TEXT_GENERATION",
@@ -918,14 +896,9 @@ test("should transform nested formCondition", () => {
     },
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
+  expect(value).toStrictEqual({
     input: { model: "MODEL_DAVINCI", prompt: null },
     metadata: null,
     task: "TASK_TEXT_GENERATION",
@@ -1002,15 +975,555 @@ test("should transform formArray", () => {
     ],
   };
 
-  const data = {};
+  const value = transformInstillFormTreeToDefaultValue(tree);
 
-  transformInstillFormTreeToDefaultValue({
-    tree,
-    data,
-  });
-
-  expect(data).toStrictEqual({
+  expect(value).toStrictEqual({
     host: "hello-world",
     ports: [{ port: "5432" }],
+  });
+});
+
+test("should transform to selected conditions", () => {
+  const tree: InstillFormTree = {
+    title: "OpenAI Component",
+    _type: "formCondition",
+    fieldKey: null,
+    path: null,
+    conditions: {
+      TASK_TEXT_GENERATION: {
+        _type: "formGroup",
+        fieldKey: null,
+        path: null,
+        isRequired: false,
+        jsonSchema: {
+          type: "object",
+          properties: {
+            input: {
+              oneOf: [
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_DAVINCI",
+                    },
+                    prompt: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "template",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "reference",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value", "reference", "template"],
+                    },
+                  },
+                  required: ["prompt", "model"],
+                },
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_GPT4",
+                    },
+                    system_message: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value"],
+                    },
+                  },
+                  required: ["system_message", "model"],
+                },
+              ],
+              type: "object",
+            },
+            task: {
+              const: "TASK_TEXT_GENERATION",
+            },
+          },
+          required: ["input"],
+        },
+        properties: [
+          {
+            _type: "formCondition",
+            fieldKey: "input",
+            path: "input",
+            conditions: {
+              MODEL_DAVINCI: {
+                _type: "formGroup",
+                fieldKey: "input",
+                path: "input",
+                isRequired: true,
+                jsonSchema: {
+                  type: "object",
+                  properties: {
+                    model: {
+                      const: "MODEL_DAVINCI",
+                    },
+                    prompt: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "template",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "reference",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value", "reference", "template"],
+                    },
+                  },
+                  required: ["prompt", "model"],
+                },
+                properties: [
+                  {
+                    const: "MODEL_DAVINCI",
+                    _type: "formItem",
+                    fieldKey: "model",
+                    path: "input.model",
+                    isRequired: true,
+                    type: "null",
+                  },
+                  {
+                    instillUpstreamTypes: ["value", "reference", "template"],
+                    _type: "formItem",
+                    fieldKey: "prompt",
+                    path: "input.prompt",
+                    isRequired: true,
+                    type: "string",
+                  },
+                ],
+              },
+              MODEL_GPT4: {
+                _type: "formGroup",
+                fieldKey: "input",
+                path: "input",
+                isRequired: true,
+                jsonSchema: {
+                  type: "object",
+                  properties: {
+                    model: {
+                      const: "MODEL_GPT4",
+                    },
+                    system_message: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value"],
+                    },
+                  },
+                  required: ["system_message", "model"],
+                },
+                properties: [
+                  {
+                    const: "MODEL_GPT4",
+                    _type: "formItem",
+                    fieldKey: "model",
+                    path: "input.model",
+                    isRequired: true,
+                    type: "null",
+                  },
+                  {
+                    instillUpstreamTypes: ["value"],
+                    _type: "formItem",
+                    fieldKey: "system_message",
+                    path: "input.system_message",
+                    isRequired: true,
+                    type: "string",
+                  },
+                ],
+              },
+            },
+            isRequired: true,
+            jsonSchema: {
+              oneOf: [
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_DAVINCI",
+                    },
+                    prompt: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "template",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "reference",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value", "reference", "template"],
+                    },
+                  },
+                  required: ["prompt", "model"],
+                },
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_GPT4",
+                    },
+                    system_message: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value"],
+                    },
+                  },
+                  required: ["system_message", "model"],
+                },
+              ],
+              type: "object",
+            },
+          },
+          {
+            const: "TASK_TEXT_GENERATION",
+            _type: "formItem",
+            fieldKey: "task",
+            path: "task",
+            isRequired: false,
+            type: "null",
+          },
+        ],
+      },
+      TASK_TEXT_EMBEDDINGS: {
+        _type: "formGroup",
+        fieldKey: null,
+        path: null,
+        isRequired: false,
+        jsonSchema: {
+          type: "object",
+          properties: {
+            input: {
+              properties: {
+                text: {
+                  description: "",
+                  instillFormat: "text",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "value",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "template",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["value", "reference", "template"],
+                  title: "Text",
+                },
+              },
+              required: ["text"],
+              type: "object",
+            },
+            task: {
+              const: "TASK_TEXT_EMBEDDINGS",
+            },
+          },
+          required: ["input"],
+        },
+        properties: [
+          {
+            _type: "formGroup",
+            fieldKey: "input",
+            path: "input",
+            isRequired: true,
+            jsonSchema: {
+              properties: {
+                text: {
+                  description: "",
+                  instillFormat: "text",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "value",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "template",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["value", "reference", "template"],
+                  title: "Text",
+                },
+              },
+              required: ["text"],
+              type: "object",
+            },
+            properties: [
+              {
+                description: "",
+                instillUpstreamTypes: ["value", "reference", "template"],
+                title: "Text",
+                _type: "formItem",
+                fieldKey: "text",
+                path: "input.text",
+                isRequired: true,
+                type: "string",
+              },
+            ],
+          },
+          {
+            const: "TASK_TEXT_EMBEDDINGS",
+            _type: "formItem",
+            fieldKey: "task",
+            path: "task",
+            isRequired: false,
+            type: "null",
+          },
+        ],
+      },
+      TASK_SPEECH_RECOGNITION: {
+        _type: "formGroup",
+        fieldKey: null,
+        path: null,
+        isRequired: false,
+        jsonSchema: {
+          type: "object",
+          properties: {
+            input: {
+              properties: {
+                audio: {
+                  description:
+                    "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
+                  instillFormat: "audio",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["reference"],
+                  title: "Audio",
+                },
+              },
+              required: ["audio"],
+              type: "object",
+            },
+            task: {
+              const: "TASK_SPEECH_RECOGNITION",
+            },
+          },
+          required: ["input"],
+        },
+        properties: [
+          {
+            _type: "formGroup",
+            fieldKey: "input",
+            path: "input",
+            isRequired: true,
+            jsonSchema: {
+              properties: {
+                audio: {
+                  description:
+                    "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
+                  instillFormat: "audio",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["reference"],
+                  title: "Audio",
+                },
+              },
+              required: ["audio"],
+              type: "object",
+            },
+            properties: [
+              {
+                description:
+                  "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
+                instillUpstreamTypes: ["reference"],
+                title: "Audio",
+                _type: "formItem",
+                fieldKey: "audio",
+                path: "input.audio",
+                isRequired: true,
+                type: "null",
+              },
+            ],
+          },
+          {
+            const: "TASK_SPEECH_RECOGNITION",
+            _type: "formItem",
+            fieldKey: "task",
+            path: "task",
+            isRequired: false,
+            type: "null",
+          },
+        ],
+      },
+    },
+    isRequired: false,
+    jsonSchema: {
+      $schema: "http://json-schema.org/draft-07/schema#",
+      oneOf: [
+        {
+          properties: {
+            input: {
+              oneOf: [
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_DAVINCI",
+                    },
+                    prompt: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "template",
+                        },
+                        {
+                          type: "string",
+                          instillUpstreamType: "reference",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value", "reference", "template"],
+                    },
+                  },
+                  required: ["prompt", "model"],
+                },
+                {
+                  properties: {
+                    model: {
+                      const: "MODEL_GPT4",
+                    },
+                    system_message: {
+                      anyOf: [
+                        {
+                          type: "string",
+                          instillUpstreamType: "value",
+                        },
+                      ],
+                      instillUpstreamTypes: ["value"],
+                    },
+                  },
+                  required: ["system_message", "model"],
+                },
+              ],
+              type: "object",
+            },
+            task: {
+              const: "TASK_TEXT_GENERATION",
+            },
+          },
+          type: "object",
+          required: ["input"],
+        },
+        {
+          properties: {
+            input: {
+              properties: {
+                text: {
+                  description: "",
+                  instillFormat: "text",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "value",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "template",
+                    },
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["value", "reference", "template"],
+                  title: "Text",
+                },
+              },
+              required: ["text"],
+              type: "object",
+            },
+            task: {
+              const: "TASK_TEXT_EMBEDDINGS",
+            },
+          },
+          type: "object",
+          required: ["input"],
+        },
+        {
+          properties: {
+            input: {
+              properties: {
+                audio: {
+                  description:
+                    "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
+                  instillFormat: "audio",
+                  anyOf: [
+                    {
+                      type: "string",
+                      instillUpstreamType: "reference",
+                    },
+                  ],
+                  instillUpstreamTypes: ["reference"],
+                  title: "Audio",
+                },
+              },
+              required: ["audio"],
+              type: "object",
+            },
+            task: {
+              const: "TASK_SPEECH_RECOGNITION",
+            },
+          },
+          type: "object",
+          required: ["input"],
+        },
+      ],
+      title: "OpenAI Component",
+      type: "object",
+    },
+  };
+
+  expect(
+    transformInstillFormTreeToDefaultValue(tree, {
+      selectedConditionMap: {
+        task: "TASK_SPEECH_RECOGNITION",
+      },
+    })
+  ).toStrictEqual({
+    input: { audio: null },
+    task: "TASK_SPEECH_RECOGNITION",
   });
 });

@@ -60,7 +60,9 @@ export const TextField = ({
                 <Input.Core
                   {...field}
                   type="text"
-                  value={field.value ?? ""}
+                  value={
+                    typeof field.value === "object" ? "" : field.value ?? ""
+                  }
                   autoComplete="off"
                   onChange={(e) => {
                     field.onChange(e);

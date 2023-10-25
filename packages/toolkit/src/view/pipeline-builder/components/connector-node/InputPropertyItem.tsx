@@ -49,8 +49,6 @@ const InputPropertyValue = (props: {
     key: null,
   });
 
-  console.log("holy bug", property, reference);
-
   const testModeEnabled = usePipelineBuilderStore(
     (state) => state.testModeEnabled
   );
