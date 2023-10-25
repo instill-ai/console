@@ -4,7 +4,7 @@ import {
 } from "./usePipelineBuilderStore";
 import { shallow } from "zustand/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
-import { DataComponentForm } from "../data";
+import { DataComponentAutoForm, DataComponentForm } from "../data";
 import { AIComponentAutoForm } from "../ai";
 import { BlockchainComponentAutoForm } from "../blockchain/BlockchainComponentAutoForm";
 
@@ -81,17 +81,16 @@ export const RightPanel = () => {
         ) : null}
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "connector" &&
+        selectedConnectorNode.data.component.connector_definition &&
         selectedConnectorNode.data.component.type ===
           "COMPONENT_TYPE_CONNECTOR_DATA" ? (
-          selectedConnectorNode.data.component.definition_name ===
-            "connector-definitions/data-pinecone" ||
-          selectedConnectorNode.data.component.definition_name ===
-            "connector-definitions/data-gcs" ? (
-            <DataComponentForm
-              connectorDefinitionName={
-                selectedConnectorNode.data.component.definition_name
-              }
+          selectedConnectorNode.data.component.connector_definition?.vendor !==
+          "Airbyte" ? (
+            <DataComponentAutoForm
               configuration={selectedConnectorNode.data.component.configuration}
+              connectorDefinition={
+                selectedConnectorNode.data.component.connector_definition
+              }
             />
           ) : null
         ) : null}

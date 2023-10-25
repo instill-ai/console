@@ -11,7 +11,7 @@ import {
 import { shallow } from "zustand/shallow";
 import { ResourceComponentForm } from "../resource";
 
-export type AIComponentAutoFormProps = {
+export type DataComponentAutoFormProps = {
   connectorDefinition: ConnectorDefinition;
   configuration: GeneralRecord;
   disabledAll?: boolean;
@@ -26,7 +26,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
 });
 
-export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
+export const DataComponentAutoForm = (props: DataComponentAutoFormProps) => {
   const {
     nodes,
     updateNodes,
