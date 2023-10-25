@@ -15,7 +15,7 @@ import {
 import { toastInstillError } from "../../lib/toastInstillError";
 import { ResourceResourceForm, ResourceResourceFormData } from "../resource";
 
-export type AIResourceAutoFormProps = {
+export type BlockchainResourceAutoFormProps = {
   resource: Nullable<ConnectorResourceWithDefinition>;
   definition: ConnectorDefinition;
   accessToken: Nullable<string>;
@@ -24,9 +24,10 @@ export type AIResourceAutoFormProps = {
   onBack?: () => void;
 };
 
-export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
-  const { definition, resource, accessToken, disabledAll, onSubmit, onBack } =
-    props;
+export const BlockchainResourceAutoForm = (
+  props: BlockchainResourceAutoFormProps
+) => {
+  const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
   const router = useRouter();
   const { entity } = router.query;
@@ -59,13 +60,13 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
         }
 
         toast({
-          title: "Successfully create AI resource",
+          title: "Successfully create blockchain resource",
           variant: "alert-success",
           size: "small",
         });
       } catch (error) {
         toastInstillError({
-          title: "Something went wrong when create the AI resource",
+          title: "Something went wrong when create the blockchain resource",
           toast,
           error,
         });
@@ -97,13 +98,13 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
       }
 
       toast({
-        title: "Successfully update AI resource",
+        title: "Successfully update blockchain resource",
         variant: "alert-success",
         size: "small",
       });
     } catch (error) {
       toastInstillError({
-        title: "Something went wrong when update the AI resource",
+        title: "Something went wrong when update the blockchain resource",
         toast,
         error,
       });

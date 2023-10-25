@@ -149,33 +149,27 @@ export const SelectConnectorResourceDialog = (
             </div>
             <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
               {aiDefinitions.isSuccess
-                ? aiDefinitions.data
-                    .filter(
-                      (definition) =>
-                        definition.name !==
-                        "connector-definitions/ai-hugging-face"
-                    )
-                    .map((definition) => (
-                      <SelectConnectorResourceDialogItem
-                        key={definition.id}
-                        onClick={() => {
-                          onSelect(definition);
-                        }}
-                      >
-                        <ImageWithFallback
-                          src={`/icons/${definition.vendor}/${definition.icon}`}
-                          width={32}
-                          height={32}
-                          alt={`${definition.title}-icon`}
-                          fallbackImg={
-                            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                          }
-                        />
-                        <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                          {definition.title}
-                        </p>
-                      </SelectConnectorResourceDialogItem>
-                    ))
+                ? aiDefinitions.data.map((definition) => (
+                    <SelectConnectorResourceDialogItem
+                      key={definition.id}
+                      onClick={() => {
+                        onSelect(definition);
+                      }}
+                    >
+                      <ImageWithFallback
+                        src={`/icons/${definition.vendor}/${definition.icon}`}
+                        width={32}
+                        height={32}
+                        alt={`${definition.title}-icon`}
+                        fallbackImg={
+                          <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                        }
+                      />
+                      <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                        {definition.title}
+                      </p>
+                    </SelectConnectorResourceDialogItem>
+                  ))
                 : null}
             </div>
             <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">

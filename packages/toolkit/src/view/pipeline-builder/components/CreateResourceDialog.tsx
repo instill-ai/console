@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Dialog, Icons } from "@instill-ai/design-system";
 import { Nullable, useUserConnectorResources } from "../../../lib";
-import { BlockchainResourceForm } from "../../blockchain";
 import { DataResourceForm } from "../../data";
 import {
   PipelineBuilderStore,
@@ -12,6 +11,7 @@ import { useRouter } from "next/router";
 import { SelectConnectorResourceDialogItem } from "./SelectConnectorResourceDialogItem";
 import { ImageWithFallback } from "../../../components";
 import { AIResourceAutoForm } from "../../ai/AIResourceAutoForm";
+import { BlockchainResourceAutoForm } from "../../blockchain";
 
 export type CreateResourceDialogProps = {
   accessToken: Nullable<string>;
@@ -131,8 +131,8 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
             </div>
             {connectorType === "CONNECTOR_TYPE_AI" && connectorDefinition ? (
               <AIResourceAutoForm
-                aiDefinition={connectorDefinition}
-                aiResource={null}
+                definition={connectorDefinition}
+                resource={null}
                 accessToken={accessToken}
                 onSubmit={onCreated ? onCreated : undefined}
                 onBack={() => {
@@ -148,11 +148,10 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
             ) : null}
             {connectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
             connectorDefinition ? (
-              <BlockchainResourceForm
-                blockchainDefinition={connectorDefinition}
-                blockchainResource={null}
+              <BlockchainResourceAutoForm
+                definition={connectorDefinition}
+                resource={null}
                 accessToken={accessToken}
-                enableBackButton={true}
                 onSubmit={onCreated ? onCreated : undefined}
                 onBack={() => {
                   updateState(() => ({
@@ -163,7 +162,6 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                     onSelectedExistingResource: null,
                   }));
                 }}
-                enableQuery={enableQuery}
               />
             ) : null}
             {connectorType === "CONNECTOR_TYPE_DATA" && connectorDefinition ? (
