@@ -5,6 +5,7 @@ import {
   GeneralPageProp,
   generateRandomReadableName,
   useConnectorDefinitions,
+  useUser,
   useUserPipelines,
 } from "../../lib";
 import {
@@ -39,9 +40,16 @@ export const PipelineListPageMainView = (
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
-  const pipelines = useUserPipelines({
-    userName: `users/${entity}`,
+
+  const user = useUser({
     enabled: enableQuery,
+    accessToken,
+    retry: false,
+  });
+
+  const pipelines = useUserPipelines({
+    userName: user.data?.name ?? null,
+    enabled: enableQuery && user.isSuccess,
     accessToken,
   });
 
