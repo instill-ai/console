@@ -54,8 +54,8 @@ export function useInstillForm({
     setFormTree(_formTree);
 
     const _selectedConditionMap =
-      transformInstillFormTreeToInitialSelectedCondition({
-        tree: _formTree,
+      transformInstillFormTreeToInitialSelectedCondition(_formTree, {
+        initialData: data ?? undefined,
       });
 
     const _ValidatorSchema = transformInstillJSONSchemaToZod({

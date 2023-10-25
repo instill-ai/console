@@ -5,6 +5,7 @@ import {
   composeEdgesFromReferences,
   extractReferencesFromConfiguration,
   recursiveReplaceNullAndEmptyStringWithUndefined,
+  recursiveTransformToString,
   usePipelineBuilderStore,
 } from "../pipeline-builder";
 import { shallow } from "zustand/shallow";
@@ -39,7 +40,9 @@ export const BlockchainComponentAutoForm = (
 
   function onSubmit(data: any) {
     if (!selectedConnectorNodeId) return;
-    const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(data);
+    const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(
+      recursiveTransformToString(data)
+    );
 
     const newNodes = nodes.map((node) => {
       if (
