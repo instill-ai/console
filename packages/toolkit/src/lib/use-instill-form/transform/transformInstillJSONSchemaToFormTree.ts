@@ -1,3 +1,5 @@
+import { JSONSchema7TypeName } from "json-schema";
+import { Nullable } from "../../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
 import {
   InstillFormGroupItem,
@@ -132,16 +134,33 @@ export function transformInstillJSONSchemaToFormTree({
     };
   }
 
+  /* -----------------------------------------------------------------------
+    We are using anyOf field on formItem to store the types
+  * -----------------------------------------------------------------------*/
+
+  let type: Nullable<JSONSchema7TypeName> = null;
+
+  if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
+    const instillUpstreamValue = targetSchema.anyOf.find(
+      (e) => e.instillUpstreamType === "value"
+    );
+
+    if (instillUpstreamValue) {
+      if (Array.isArray(instillUpstreamValue.type)) {
+        type = instillUpstreamValue.type[0];
+      } else {
+        type = instillUpstreamValue.type ?? null;
+      }
+    }
+  }
+
   return {
     ...pickBaseFields(targetSchema),
     _type: "formItem",
     fieldKey: key ?? null,
     path: (path || key) ?? null,
     isRequired,
-    type:
-      (Array.isArray(targetSchema.type)
-        ? targetSchema.type[0]
-        : targetSchema.type) ?? "null",
+    type: type ? type : "null",
   };
 }
 
@@ -155,6 +174,8 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "const",
   "title",
   "instillEditOnNode",
+  "instillUpstreamTypes",
+  "instillUpstreamType",
 ];
 
 function pickBaseFields(schema: InstillJSONSchema): Partial<InstillJSONSchema> {
