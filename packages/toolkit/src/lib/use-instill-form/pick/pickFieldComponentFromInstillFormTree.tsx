@@ -27,7 +27,26 @@ export function pickFieldComponentFromInstillFormTree({
   checkIsHiddenByFormTree?: (tree: InstillFormTree) => boolean;
 }): React.ReactNode {
   if (tree._type === "formGroup") {
-    return (
+    return tree.fieldKey ? (
+      <div
+        key={tree.path || tree.fieldKey}
+        className="flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-5"
+      >
+        <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+          {tree.fieldKey || tree.path}
+        </p>
+        {tree.properties.map((property) => {
+          return pickFieldComponentFromInstillFormTree({
+            form,
+            tree: property,
+            selectedConditionMap,
+            setSelectedConditionMap,
+            disabledAll,
+            checkIsHiddenByFormTree,
+          });
+        })}
+      </div>
+    ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {tree.properties.map((property) => {
           return pickFieldComponentFromInstillFormTree({
@@ -79,6 +98,7 @@ export function pickFieldComponentFromInstillFormTree({
         form={form}
         path={constField.path}
         tree={tree}
+        selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
         key={constField.path}
         conditionComponents={conditionComponents}

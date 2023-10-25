@@ -67,12 +67,7 @@ export function useInstillForm({
 
     setValidatorSchema(_ValidatorSchema);
 
-    const _data = {};
-
-    transformInstillFormTreeToDefaultValue({
-      tree: _formTree,
-      data: _data,
-    });
+    const _data = transformInstillFormTreeToDefaultValue(_formTree);
 
     const _defaultValues = data ? data : _data;
 
