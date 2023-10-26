@@ -420,6 +420,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
           {currentVersion === "latest" && isOwner ? (
             <ConnectorNodeControlPanel
+              componentType={data.component.type}
               handleEditNode={() =>
                 updateSelectedConnectorNodeId((prev) => {
                   if (prev === id) {
@@ -430,7 +431,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               }
               handleCopyNode={handleCopyNode}
               handleDeleteNode={handleDeleteNode}
-              resourceName={data.component.resource_name}
               testModeEnabled={testModeEnabled}
             />
           ) : null}
