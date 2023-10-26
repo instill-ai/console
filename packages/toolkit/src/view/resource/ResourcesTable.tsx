@@ -102,7 +102,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
                   height={16}
                   alt={`${definition.title}-icon`}
                   fallbackImg={
-                    <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                    <Icons.Box className="h-4 w-4 stroke-semantic-fg-primary" />
                   }
                 />
               }

@@ -41,7 +41,7 @@ export const TextsField = (props: {
         }
 
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <Form.Label className="mb-1 text-semantic-fg-primary product-body-text-3-semibold">
               {title}
             </Form.Label>

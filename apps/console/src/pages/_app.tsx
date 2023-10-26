@@ -1,6 +1,12 @@
 import { NextPage } from "next";
 import { AppProps } from "next/app";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from "react";
 import {
   QueryCache,
   QueryClient,
