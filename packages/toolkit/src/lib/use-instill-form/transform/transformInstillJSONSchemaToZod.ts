@@ -302,7 +302,59 @@ export function transformInstillJSONSchemaToZod({
     return instillZodSchema;
   }
 
-  // We don't validate the field without anyOf
+  /* -------------------------------------------------------------------------
+     Handle the primitive fields
+   * -----------------------------------------------------------------------*/
+
+  if (targetSchema.enum) {
+    // We need to do the castring here to make typescript happy.
+    // The reason is typescript need to know the amount of the element
+    // in the enum, but the enum is dynamic right here, so the ts will
+    // complaint about it.
+    // ref: https://github.com/colinhacks/zod/issues/2376
+
+    const enumValues = targetSchema.enum as [string, ...string[]];
+    instillZodSchema = z.enum(enumValues);
+
+    const isRequired = propertyKey
+      ? Array.isArray(parentSchema.required) &&
+        parentSchema.required.includes(propertyKey)
+      : false;
+
+    if (!isRequired || forceOptional || isHidden) {
+      instillZodSchema = instillZodSchema.nullable().optional();
+    }
+
+    return instillZodSchema;
+  }
+
+  switch (targetSchema.type) {
+    case "string": {
+      instillZodSchema = z.string({
+        errorMap: customErrorMap,
+      });
+      break;
+    }
+    case "boolean": {
+      instillZodSchema = z.boolean();
+      break;
+    }
+    case "integer":
+    case "number": {
+      // Because number field can also write string as reference. We need to
+      // set the initial zod schema to string and then validate it with
+      // superRefine.
+
+      const integerSchema = z.string();
+
+      instillZodSchema = integerSchema;
+      break;
+    }
+  }
+
+  if (!isRequired || forceOptional || isHidden) {
+    instillZodSchema = instillZodSchema.nullable().optional();
+  }
 
   return instillZodSchema;
 }

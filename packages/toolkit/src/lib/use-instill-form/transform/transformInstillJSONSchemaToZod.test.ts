@@ -365,3 +365,54 @@ test("should transform nested fields with anyOf", () => {
 
   expect(speechZodSchema.safeParse(stringAudio).success).toBe(false);
 });
+
+test("should transform fields without anyOf", () => {
+  const schema: InstillJSONSchema = {
+    type: "object",
+    required: ["host", "port", "user", "dbname"],
+    properties: {
+      host: { type: "string", description: "Hostname of the database." },
+      port: {
+        type: "integer",
+        description: "Port of the database.",
+      },
+      user: {
+        type: "string",
+        description: "Username to use to access the database.",
+      },
+      dbname: { type: "string", description: "Name of the database." },
+      password: {
+        instillCredentialField: true,
+        type: "string",
+        description: "Password associated with the username.",
+      },
+    },
+  };
+
+  const testedObj = {
+    host: "localhost",
+    port: "5432",
+    user: "foo",
+    dbname: "postgres-test",
+    password: "bar",
+  };
+
+  const zodSchema = transformInstillJSONSchemaToZod({
+    parentSchema: schema,
+    targetSchema: schema,
+    selectedConditionMap: null,
+  });
+
+  const parsedObj = zodSchema.safeParse(testedObj);
+
+  expect(parsedObj).toStrictEqual({
+    success: true,
+    data: {
+      host: "localhost",
+      port: "5432",
+      user: "foo",
+      dbname: "postgres-test",
+      password: "bar",
+    },
+  });
+});

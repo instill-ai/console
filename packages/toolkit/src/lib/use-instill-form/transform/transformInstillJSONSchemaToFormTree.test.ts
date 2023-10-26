@@ -1840,3 +1840,110 @@ test("should transform formArray JSON schema to formTree", () => {
 
   expect(formTree).toStrictEqual(expectedFormTree);
 });
+
+test("should transform basic JSON schema without anyOf to formTree", () => {
+  const schema: InstillJSONSchema = {
+    type: "object",
+    required: ["host", "port", "user", "dbname"],
+    properties: {
+      host: { type: "string", description: "Hostname of the database." },
+      port: {
+        type: "integer",
+        description: "Port of the database.",
+      },
+      user: {
+        type: "string",
+        description: "Username to use to access the database.",
+      },
+      dbname: { type: "string", description: "Name of the database." },
+      password: {
+        instillCredentialField: true,
+        type: "string",
+        description: "Password associated with the username.",
+      },
+    },
+  };
+
+  const expected: InstillFormTree = {
+    _type: "formGroup",
+    fieldKey: null,
+    path: null,
+    isRequired: false,
+    jsonSchema: {
+      type: "object",
+      required: ["host", "port", "user", "dbname"],
+      properties: {
+        host: {
+          type: "string",
+          description: "Hostname of the database.",
+        },
+        port: {
+          type: "integer",
+          description: "Port of the database.",
+        },
+        user: {
+          type: "string",
+          description: "Username to use to access the database.",
+        },
+        dbname: {
+          type: "string",
+          description: "Name of the database.",
+        },
+        password: {
+          instillCredentialField: true,
+          type: "string",
+          description: "Password associated with the username.",
+        },
+      },
+    },
+    properties: [
+      {
+        description: "Hostname of the database.",
+        _type: "formItem",
+        fieldKey: "host",
+        path: "host",
+        isRequired: true,
+        type: "string",
+      },
+      {
+        description: "Port of the database.",
+        _type: "formItem",
+        fieldKey: "port",
+        path: "port",
+        isRequired: true,
+        type: "integer",
+      },
+      {
+        description: "Username to use to access the database.",
+        _type: "formItem",
+        fieldKey: "user",
+        path: "user",
+        isRequired: true,
+        type: "string",
+      },
+      {
+        description: "Name of the database.",
+        _type: "formItem",
+        fieldKey: "dbname",
+        path: "dbname",
+        isRequired: true,
+        type: "string",
+      },
+      {
+        instillCredentialField: true,
+        description: "Password associated with the username.",
+        _type: "formItem",
+        fieldKey: "password",
+        path: "password",
+        isRequired: false,
+        type: "string",
+      },
+    ],
+  };
+
+  const formTree = transformInstillJSONSchemaToFormTree({
+    targetSchema: schema,
+  });
+
+  expect(formTree).toStrictEqual(expected);
+});

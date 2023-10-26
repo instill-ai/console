@@ -152,6 +152,12 @@ export function transformInstillJSONSchemaToFormTree({
         type = instillUpstreamValue.type ?? null;
       }
     }
+  } else {
+    if (Array.isArray(targetSchema.type)) {
+      type = targetSchema.type[0] ?? null;
+    } else {
+      type = targetSchema.type ?? null;
+    }
   }
 
   return {
