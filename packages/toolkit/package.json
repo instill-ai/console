@@ -25,9 +25,11 @@
   "files": [
     "dist"
   ],
+  "prettier": "@instill-ai/prettier-config-cortex",
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/cookie": "^0.5.1",

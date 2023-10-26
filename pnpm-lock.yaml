@@ -14,6 +14,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: latest
         version: 17.8.0
+      '@instill-ai/prettier-config-cortex':
+        specifier: workspace:*
+        version: link:packages/prettier-config-cortex
       husky:
         specifier: ^7.0.0
         version: 7.0.4
@@ -389,6 +392,9 @@ importers:
       '@instill-ai/eslint-config-cortex':
         specifier: workspace:*
         version: link:../eslint-config-cortex
+      '@instill-ai/prettier-config-cortex':
+        specifier: workspace:*
+        version: link:../prettier-config-cortex
       '@playwright/test':
         specifier: ^1.20.1
         version: 1.39.0
@@ -543,6 +549,9 @@ importers:
       '@instill-ai/eslint-config-cortex':
         specifier: workspace:*
         version: link:../eslint-config-cortex
+      '@instill-ai/prettier-config-cortex':
+        specifier: workspace:*
+        version: link:../prettier-config-cortex
       '@testing-library/jest-dom':
         specifier: ^5.16.5
         version: 5.17.0
@@ -706,6 +715,9 @@ importers:
       '@instill-ai/eslint-config-cortex':
         specifier: workspace:*
         version: link:../eslint-config-cortex
+      '@instill-ai/prettier-config-cortex':
+        specifier: workspace:*
+        version: link:../prettier-config-cortex
       '@testing-library/jest-dom':
         specifier: ^5.16.5
         version: 5.17.0

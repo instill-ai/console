@@ -9,6 +9,7 @@
     "design-system",
     "design-tokens"
   ],
+  "prettier": "@instill-ai/prettier-config-cortex",
   "scripts": {
     "test": "vitest --run --passWithNoTests",
     "build": "pnpm build-sd && pnpm build-tw && pnpm build-css-variables",
@@ -29,6 +30,7 @@
   "private": false,
   "devDependencies": {
     "@instill-ai/eslint-config-cortex": "workspace:*",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^18.14.1",
     "@vitejs/plugin-react": "^3.1.0",
