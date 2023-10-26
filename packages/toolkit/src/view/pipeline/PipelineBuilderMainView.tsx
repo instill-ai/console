@@ -104,8 +104,8 @@ export const PipelineBuilderMainView = (
   });
 
   const pipeline = useUserPipeline({
-    enabled: enableQuery && user.isSuccess && !!id && !pipelineIsNew,
-    pipelineName: id ? `${user.data?.name}/pipelines/${id}` : null,
+    enabled: enableQuery && !!id && !pipelineIsNew,
+    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
     accessToken,
     retry: false,
   });
