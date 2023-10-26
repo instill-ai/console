@@ -27,7 +27,6 @@ import {
   extractReferencesFromConfiguration,
   getConnectorInputOutputSchema,
   composeEdgesFromReferences,
-  createGraphLayout,
 } from "../../lib";
 import { Nullable } from "../../../../lib";
 import {
@@ -78,6 +77,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const { toast } = useToast();
 
   const connectorIDInputRef = React.useRef<HTMLInputElement>(null);
+
+  const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
 
   const [enableEdit, setEnableEdit] = React.useState(false);
 
@@ -258,14 +259,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
     updatePipelineRecipeIsDirty(() => true);
 
-    createGraphLayout(newNodes, newEdges)
-      .then((graphData) => {
-        updateNodes(() => graphData.nodes);
-        updateEdges(() => graphData.edges);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    updateNodes(() => newNodes);
+    updateEdges(() => newEdges);
   }
 
   function handleDeleteNode() {
@@ -303,7 +298,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           }
         )}
       >
-        <div className="mb-3 flex flex-row w-full">
+        <div
+          className={cn("flex flex-row w-full", { "mb-3": !nodeIsCollapsed })}
+        >
           <div className="flex flex-row gap-x-1 mr-auto">
             <ImageWithFallback
               src={`/icons/${data.component?.connector_definition?.vendor}/${data.component?.connector_definition?.icon}`}
@@ -432,190 +429,197 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               handleCopyNode={handleCopyNode}
               handleDeleteNode={handleDeleteNode}
               testModeEnabled={testModeEnabled}
+              nodeIsCollapsed={nodeIsCollapsed}
+              setNodeIsCollapsed={setNodeIsCollapsed}
             />
           ) : null}
         </div>
 
-        {resourceNotCreated ? (
-          <div className="w-full mb-3 gap-y-2 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
-            <p className="text-semantic-fg-primary product-body-text-3-regular">
-              Please create resource for this connector
-            </p>
-            <LinkButton
-              className="gap-x-2"
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                updateCreateResourceDialogState(() => ({
-                  open: true,
-                  connectorType:
-                    data.component.connector_definition?.type ?? null,
-                  connectorDefinition:
-                    data.component.connector_definition ?? null,
-                  onCreated: (connectorResource) => {
-                    const newNodes = nodes.map((node) => {
-                      if (
-                        node.data.nodeType === "connector" &&
-                        node.id === id
-                      ) {
-                        node.data = {
-                          ...node.data,
-                          component: {
-                            ...node.data.component,
-                            resource_name: connectorResource.name,
-                            resource: {
-                              ...connectorResource,
-                              connector_definition: null,
-                            },
-                          },
-                        };
-                      }
-                      return node;
-                    });
+        {nodeIsCollapsed ? null : (
+          <>
+            {resourceNotCreated ? (
+              <div className="w-full mb-3 gap-y-2 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
+                <p className="text-semantic-fg-primary product-body-text-3-regular">
+                  Please create resource for this connector
+                </p>
+                <LinkButton
+                  className="gap-x-2"
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    updateCreateResourceDialogState(() => ({
+                      open: true,
+                      connectorType:
+                        data.component.connector_definition?.type ?? null,
+                      connectorDefinition:
+                        data.component.connector_definition ?? null,
+                      onCreated: (connectorResource) => {
+                        const newNodes = nodes.map((node) => {
+                          if (
+                            node.data.nodeType === "connector" &&
+                            node.id === id
+                          ) {
+                            node.data = {
+                              ...node.data,
+                              component: {
+                                ...node.data.component,
+                                resource_name: connectorResource.name,
+                                resource: {
+                                  ...connectorResource,
+                                  connector_definition: null,
+                                },
+                              },
+                            };
+                          }
+                          return node;
+                        });
 
-                    updateNodes(() => newNodes);
+                        updateNodes(() => newNodes);
 
-                    const allReferences: PipelineComponentReference[] = [];
+                        const allReferences: PipelineComponentReference[] = [];
 
-                    newNodes.forEach((node) => {
-                      if (node.data.component?.configuration) {
-                        allReferences.push(
-                          ...extractReferencesFromConfiguration(
-                            node.data.component?.configuration,
-                            node.id
-                          )
+                        newNodes.forEach((node) => {
+                          if (node.data.component?.configuration) {
+                            allReferences.push(
+                              ...extractReferencesFromConfiguration(
+                                node.data.component?.configuration,
+                                node.id
+                              )
+                            );
+                          }
+                        });
+
+                        const newEdges = composeEdgesFromReferences(
+                          allReferences,
+                          newNodes
                         );
-                      }
-                    });
+                        updatePipelineRecipeIsDirty(() => true);
+                        updateEdges(() => newEdges);
 
-                    const newEdges = composeEdgesFromReferences(
-                      allReferences,
-                      newNodes
-                    );
-                    updatePipelineRecipeIsDirty(() => true);
-                    updateEdges(() => newEdges);
+                        updateCreateResourceDialogState(() => ({
+                          open: false,
+                          connectorType: null,
+                          connectorDefinition: null,
+                          onCreated: null,
+                          onSelectedExistingResource: null,
+                        }));
+                      },
+                      onSelectedExistingResource: (connectorResource) => {
+                        updateNodes((prev) => {
+                          return prev.map((node) => {
+                            if (
+                              node.data.nodeType === "connector" &&
+                              node.id === id
+                            ) {
+                              node.data = {
+                                ...node.data,
+                                component: {
+                                  ...node.data.component,
+                                  resource_name: connectorResource.name,
+                                },
+                              };
+                            }
+                            return node;
+                          });
+                        });
 
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
+                        updatePipelineRecipeIsDirty(() => true);
+
+                        updateCreateResourceDialogState(() => ({
+                          open: false,
+                          connectorType: null,
+                          connectorDefinition: null,
+                          onCreated: null,
+                          onSelectedExistingResource: null,
+                        }));
+                      },
                     }));
-                  },
-                  onSelectedExistingResource: (connectorResource) => {
-                    updateNodes((prev) => {
-                      return prev.map((node) => {
-                        if (
-                          node.data.nodeType === "connector" &&
-                          node.id === id
-                        ) {
-                          node.data = {
-                            ...node.data,
-                            component: {
-                              ...node.data.component,
-                              resource_name: connectorResource.name,
-                            },
-                          };
-                        }
-                        return node;
-                      });
-                    });
+                  }}
+                >
+                  Create resource
+                </LinkButton>
+              </div>
+            ) : null}
+            {aiTaskNotSelected && !resourceNotCreated ? (
+              <div className="w-full mb-3 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
+                <p className="text-semantic-fg-primary product-body-text-3-regular">
+                  Please select AI task for this connector
+                </p>
+              </div>
+            ) : null}
+            {dataTaskNotSelected && !resourceNotCreated ? (
+              <div className="w-full mb-3 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
+                <p className="text-semantic-fg-primary product-body-text-3-regular">
+                  Please select Data task for this connector
+                </p>
+              </div>
+            ) : null}
 
-                    updatePipelineRecipeIsDirty(() => true);
-
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  },
-                }));
-              }}
-            >
-              Create resource
-            </LinkButton>
-          </div>
-        ) : null}
-        {aiTaskNotSelected && !resourceNotCreated ? (
-          <div className="w-full mb-3 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
-            <p className="text-semantic-fg-primary product-body-text-3-regular">
-              Please select AI task for this connector
-            </p>
-          </div>
-        ) : null}
-        {dataTaskNotSelected && !resourceNotCreated ? (
-          <div className="w-full mb-3 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
-            <p className="text-semantic-fg-primary product-body-text-3-regular">
-              Please select Data task for this connector
-            </p>
-          </div>
-        ) : null}
-
-        {/* 
+            {/* 
           Input properties
         */}
 
-        {!aiTaskNotSelected &&
-        !dataTaskNotSelected &&
-        !resourceNotCreated &&
-        !enableEdit ? (
-          <div className="flex flex-col">
-            <div className="mb-1 product-body-text-4-medium">input</div>
-            <InputProperties
-              component={data.component}
-              inputSchema={inputSchema}
-              traces={testModeTriggerResponse?.metadata?.traces ?? null}
-            />
-          </div>
-        ) : null}
+            {!aiTaskNotSelected &&
+            !dataTaskNotSelected &&
+            !resourceNotCreated &&
+            !enableEdit ? (
+              <div className="flex flex-col">
+                <div className="mb-1 product-body-text-4-medium">input</div>
+                <InputProperties
+                  component={data.component}
+                  inputSchema={inputSchema}
+                  traces={testModeTriggerResponse?.metadata?.traces ?? null}
+                />
+              </div>
+            ) : null}
 
-        {/* 
+            {/* 
           Data connector free form
         */}
 
-        {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-        data.component.definition_name !==
-          "connector-definitions/data-pinecone" &&
-        data.component.definition_name !== "connector-definitions/data-gcs" ? (
-          <DataConnectorFreeForm
-            nodeID={id}
-            component={data.component}
-            dataTaskNotSelected={dataTaskNotSelected}
-            enableEdit={enableEdit}
-            setEnableEdit={setEnableEdit}
-          />
-        ) : null}
+            {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
+            data.component.definition_name !==
+              "connector-definitions/data-pinecone" &&
+            data.component.definition_name !==
+              "connector-definitions/data-gcs" ? (
+              <DataConnectorFreeForm
+                nodeID={id}
+                component={data.component}
+                dataTaskNotSelected={dataTaskNotSelected}
+                enableEdit={enableEdit}
+                setEnableEdit={setEnableEdit}
+              />
+            ) : null}
 
-        {/* 
+            {/* 
           Output properties
         */}
 
-        {!aiTaskNotSelected &&
-        !dataTaskNotSelected &&
-        !resourceNotCreated &&
-        !enableEdit ? (
-          <div className="flex flex-col">
-            <div className="mb-1 product-body-text-4-medium">output</div>
-            <OutputProperties
-              component={data.component}
-              outputSchema={outputSchema}
-              traces={testModeTriggerResponse?.metadata?.traces ?? null}
-            />
-          </div>
-        ) : null}
+            {!aiTaskNotSelected &&
+            !dataTaskNotSelected &&
+            !resourceNotCreated &&
+            !enableEdit ? (
+              <div className="flex flex-col">
+                <div className="mb-1 product-body-text-4-medium">output</div>
+                <OutputProperties
+                  component={data.component}
+                  outputSchema={outputSchema}
+                  traces={testModeTriggerResponse?.metadata?.traces ?? null}
+                />
+              </div>
+            ) : null}
 
-        <div className="flex flex-row-reverse">
-          <ResourceIDTag
-            resourceID={
-              data.component.resource_name
-                ? data.component.resource_name.split("/")[3]
-                : null
-            }
-          />
-        </div>
+            <div className="flex flex-row-reverse">
+              <ResourceIDTag
+                resourceID={
+                  data.component.resource_name
+                    ? data.component.resource_name.split("/")[3]
+                    : null
+                }
+              />
+            </div>
+          </>
+        )}
       </div>
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}
