@@ -49,6 +49,7 @@ import { Image01 } from "./Image01";
 import { Logout01 } from "./Logout01";
 import { Model } from "./Model";
 import { Menu01 } from "./Menu01";
+import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
 import { Pipeline } from "./Pipeline";
 import { Plus } from "./Plus";
@@ -120,6 +121,7 @@ export const Icons = {
   Logout01,
   Model,
   Menu01,
+  Minus,
   Mail01,
   Pipeline,
   Play,
