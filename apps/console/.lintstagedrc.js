@@ -9,6 +9,4 @@ const buildEslintCommand = (filenames) =>
 
 module.exports = {
   "*.{js,jsx,ts,tsx}": [buildEslintCommand],
-  "package.json": ["pnpm check-pnpm-overrides"],
-  "pnpm-lock.yaml": ["pnpm check-pnpm-overrides"],
 };

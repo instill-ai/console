@@ -6,6 +6,7 @@
   "author": "Instill AI",
   "license": "Elastic License 2.0",
   "private": false,
+  "@instill-ai/prettier-config-cortex": "workspace:*",
   "scripts": {
     "dev": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",
     "build": "next build",
@@ -16,8 +17,7 @@
     "prettier:check": "prettier --check",
     "lint": "next lint",
     "download-airbyte-icons": "node ./downloadAirbyteIcons.js",
-    "integration-test": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && npx playwright test",
-    "check-pnpm-overrides": "node ./scripts/checkPnpmOverrides.mjs"
+    "integration-test": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && npx playwright test"
   },
   "dependencies": {
     "@instill-ai/design-system": "workspace:*",

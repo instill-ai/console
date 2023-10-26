@@ -10,6 +10,7 @@
     "ui",
     "react"
   ],
+  "prettier": "@instill-ai/prettier-config-cortex",
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
@@ -44,6 +45,7 @@
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@instill-ai/eslint-config-cortex": "workspace:*",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "@playwright/test": "^1.20.1",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.0.3",

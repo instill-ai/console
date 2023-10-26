@@ -30,6 +30,7 @@
     "lint-staged": ">=10",
     "prettier": "latest",
     "prettier-plugin-tailwindcss": "latest",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "turbo": "latest"
   },
   "engines": {
