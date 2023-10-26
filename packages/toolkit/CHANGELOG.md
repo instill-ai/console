@@ -753,7 +753,7 @@
 ### Miscellaneous
 
 * **toolkit:** add multiple on action at ConfigureAIForm ([#538](https://github.com/instill-ai/design-system/issues/538)) ([01e07c2](https://github.com/instill-ai/design-system/commit/01e07c2836613f5570a81c04908beae61b099b19))
-* **toolkit:** replace airbyte_secret with credential_field ([#534](https://github.com/instill-ai/design-system/issues/534)) ([9d15496](https://github.com/instill-ai/design-system/commit/9d154963b90b929abc696430e6109e8cf4bf9714))
+* **toolkit:** replace airbyte_secret with instillCredentialField ([#534](https://github.com/instill-ai/design-system/issues/534)) ([9d15496](https://github.com/instill-ai/design-system/commit/9d154963b90b929abc696430e6109e8cf4bf9714))
 
 ## [0.48.0](https://github.com/instill-ai/design-system/compare/@instill-ai/toolkit-v0.47.5...@instill-ai/toolkit-v0.48.0) (2023-06-27)
 

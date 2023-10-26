@@ -6,7 +6,7 @@ import {
 } from "json-schema";
 
 type InstillJsonSchemaProps = {
-  credential_field?: boolean;
+  instillCredentialField?: boolean;
   example?: string | number;
   "x-oaiTypeLabel"?: string;
   nullable?: boolean;

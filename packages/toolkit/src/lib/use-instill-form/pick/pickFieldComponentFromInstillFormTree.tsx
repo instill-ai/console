@@ -6,6 +6,7 @@ import {
   SingleSelectField,
   TextAreaField,
   TextField,
+  CredentialTextField,
 } from "../components";
 import { GeneralUseFormReturn } from "../../type";
 
@@ -162,6 +163,20 @@ export function pickFieldComponentFromInstillFormTree({
   if (tree.type === "string" && tree.isMultiline) {
     return (
       <TextAreaField
+        key={tree.path}
+        path={tree.path}
+        form={form}
+        title={tree.fieldKey ?? tree.title ?? null}
+        description={tree.description}
+        additionalDescription={tree.additionalDescription}
+        disabled={disabledAll}
+      />
+    );
+  }
+
+  if (tree.instillCredentialField) {
+    return (
+      <CredentialTextField
         key={tree.path}
         path={tree.path}
         form={form}
