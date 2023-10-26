@@ -66,6 +66,8 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     if (!testModeEnabled) {
       setIsTriggering(false);
     }
+    updateTestModeTriggerResponse(() => null);
+    startOperatorTestModeInputForm.reset();
   }, [testModeEnabled]);
 
   const useTriggerPipeline = useTriggerUserPipeline();
@@ -131,7 +133,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   return (
     <React.Fragment>
-      <div className="relative flex min-w-[246px] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
+      <div className="relative flex min-w-[332px] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             start

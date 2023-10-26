@@ -22,17 +22,17 @@ export const ImagesField = (props: {
       name={fieldKey}
       render={({ field }) => {
         return (
-          <Form.Item className="!w-[232px]">
+          <Form.Item className="w-full">
             <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
               {title}
             </Form.Label>
             <Form.Control>
               <label
                 htmlFor={`op-start-${fieldKey}`}
-                className="flex min-h-[110px] w-full cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
+                className="flex min-h-[150px] w-full border border-semantic-bg-line border-dashed cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
               >
                 {imageFileURLs ? (
-                  <div className="grid w-full grid-flow-row grid-cols-3 grid-rows-2">
+                  <div className="grid w-full grid-flow-row grid-cols-3">
                     {imageFileURLs
                       .slice(0, 5)
                       .map((url) =>

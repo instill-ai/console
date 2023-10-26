@@ -20,14 +20,14 @@ export const ImageField = (props: {
       name={fieldKey}
       render={({ field }) => {
         return (
-          <Form.Item className="!w-[232px]">
+          <Form.Item className="w-full">
             <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
               {title}
             </Form.Label>
             <Form.Control>
               <label
                 htmlFor={`op-start-${fieldKey}`}
-                className="flex h-[150px] w-full cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
+                className="flex h-[150px] w-full cursor-pointer border border-semantic-bg-line border-dashed flex-col rounded bg-semantic-bg-base-bg"
               >
                 {imageFileUrl ? (
                   <img

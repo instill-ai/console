@@ -181,7 +181,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   return (
     <>
-      <div className="flex flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
+      <div className="flex flex-col w-[332px] rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
             end
@@ -221,7 +221,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   name="title"
                   render={({ field }) => {
                     return (
-                      <Form.Item className="w-[318px]">
+                      <Form.Item className="w-full">
                         <Form.Label className="!font-sans !text-base !font-semibold">
                           Title
                         </Form.Label>
@@ -247,7 +247,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   name="key"
                   render={({ field }) => {
                     return (
-                      <Form.Item className="w-[318px]">
+                      <Form.Item className="w-full">
                         <Form.Label className="!font-sans !text-base !font-semibold">
                           Key
                         </Form.Label>
@@ -273,7 +273,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   name="value"
                   render={({ field }) => {
                     return (
-                      <Form.Item className="w-[318px]">
+                      <Form.Item className="w-full">
                         <Form.Label className="!font-sans !text-base !font-semibold">
                           Value
                         </Form.Label>
@@ -295,7 +295,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
           </Form.Root>
         ) : testModeEnabled ? (
           <>
-            <div className="flex min-w-[200px] flex-col gap-y-4">
+            <div className="flex w-full flex-col gap-y-4">
               {testModeOutputFields}
             </div>
           </>
@@ -359,7 +359,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
               }
             )}
             <Button
-              className="flex w-[232px]"
+              className="flex w-full"
               variant="primary"
               onClick={() => setEnableEdit(!enableEdit)}
               disabled={

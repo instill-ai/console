@@ -14,7 +14,7 @@ export const TextField = (props: {
       name={fieldKey}
       render={({ field }) => {
         return (
-          <Form.Item>
+          <Form.Item className="w-full">
             <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
               {title}
             </Form.Label>
