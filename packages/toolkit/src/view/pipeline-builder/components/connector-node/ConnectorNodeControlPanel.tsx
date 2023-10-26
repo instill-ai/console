@@ -36,6 +36,10 @@ export const ConnectorNodeControlPanel = ({
 
   return (
     <div className="flex flex-row gap-x-3">
+      {/* 
+        Control - open right panel
+      */}
+
       <Tooltip.Provider>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
@@ -70,6 +74,11 @@ export const ConnectorNodeControlPanel = ({
           </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
+
+      {/* 
+        Control - more options
+      */}
+
       <Popover.Root
         open={moreOptionsIsOpen}
         onOpenChange={(open) => setMoreOptionsIsOpen(open)}
