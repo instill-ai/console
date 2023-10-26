@@ -1,21 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "paths": {
-      "@/components": ["components"],
-      "@/components/*": ["components/*"],
-      "@/types": ["types"],
-      "@/types/*": ["types/*"],
-      "@/styles": ["styles"],
-      "@/styles/*": ["styles/*"],
-      "@/lib": ["lib"],
-      "@/lib/*": ["lib/*"],
-      "@/pages": ["pages"],
-      "@/pages/*": ["pages/*"],
-      "@/stores": ["stores"],
-      "@/stores/*": ["stores/*"]
-    },
     "target": "es5",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",

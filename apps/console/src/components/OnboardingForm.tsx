@@ -219,7 +219,7 @@ export const OnboardingForm = () => {
               cookie_token: token,
             }),
           });
-          router.push(`/${user.id}/pipelines`);
+          await router.push(`/${user.id}/pipelines`);
         },
         onError: (error) => {
           if (error instanceof Error) {

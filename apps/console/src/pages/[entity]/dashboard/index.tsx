@@ -8,9 +8,11 @@ import {
 import { ConsoleCorePageHead, Sidebar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
+import { useTrackToken } from "../../../lib/useTrackToken";
 
 const PipelinePage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
+  useTrackToken({ enabled: true });
   return (
     <>
       <ConsoleCorePageHead title="dashboard" />
