@@ -176,6 +176,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillEditOnNode",
   "instillUpstreamTypes",
   "instillUpstreamType",
+  "instillCredentialField",
 ];
 
 function pickBaseFields(schema: InstillJSONSchema): Partial<InstillJSONSchema> {
