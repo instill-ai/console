@@ -16,16 +16,22 @@ import {
 } from "@instill-ai/design-system";
 
 import {
-  validateConfigureProfileFormFieldSchema,
-  configureProfileFormFieldSchema,
   checkUserIdExist,
-  useConfigureProfileFormStore,
   useUser,
   useUpdateUser,
   getInstillApiErrorMessage,
   type Nullable,
   type User,
 } from "../../lib";
+
+export const configureProfileFormFieldSchema = z.object({
+  first_name: z.nullable(z.string()),
+  last_name: z.nullable(z.string()),
+  id: z.nullable(z.string()),
+  org_name: z.nullable(z.string()),
+  role: z.nullable(z.string()),
+  newsletter_subscription: z.nullable(z.boolean()),
+});
 
 export type ConfigureProfileFormProps = {
   user: Nullable<User>;
@@ -36,10 +42,6 @@ export type ConfigureProfileFormProps = {
 
 export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
   const { user, roles, onConfigure, accessToken } = props;
-
-  const setFieldError = useConfigureProfileFormStore(
-    (state) => state.setFieldError
-  );
 
   const instillUser = useUser({
     accessToken,
@@ -69,8 +71,6 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
     if (!instillUser.isSuccess) {
       return;
     }
-
-    validateConfigureProfileFormFieldSchema(data);
 
     if (data.id !== instillUser.data.id) {
       // Check whether user id exist
