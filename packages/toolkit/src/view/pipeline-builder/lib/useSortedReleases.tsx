@@ -42,7 +42,7 @@ export function useSortedReleases({
 
       return 0;
     });
-  }, [pipelineReleases.data, pipelineReleases.isSuccess]);
+  }, [pipelineReleases.data, pipelineReleases.isSuccess, pipelineName]);
 
   return sortedReleases;
 }

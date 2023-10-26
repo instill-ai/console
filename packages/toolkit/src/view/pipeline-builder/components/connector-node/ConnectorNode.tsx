@@ -51,8 +51,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   testModeTriggerResponse: state.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: state.updateCreateResourceDialogState,
-  isLatestVersion: state.isLatestVersion,
   isOwner: state.isOwner,
+  currentVersion: state.currentVersion,
 });
 
 const UpdateNodeIdSchema = z.object({
@@ -71,8 +71,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
-    isLatestVersion,
     isOwner,
+    currentVersion,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -418,7 +418,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               </Tooltip.Root>
             </Tooltip.Provider>
           </div>
-          {isLatestVersion && isOwner ? (
+          {currentVersion === "latest" && isOwner ? (
             <ConnectorNodeControlPanel
               handleEditNode={() =>
                 updateSelectedConnectorNodeId((prev) => {

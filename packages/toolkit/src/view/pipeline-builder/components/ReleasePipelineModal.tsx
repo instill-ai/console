@@ -41,10 +41,13 @@ export const ReleasePipelineFormSchema = z.object({
 
 export type ReleasePipelineModalProps = {
   accessToken: Nullable<string>;
+  disabled?: boolean;
 };
 
-export const ReleasePipelineModal = (props: ReleasePipelineModalProps) => {
-  const { accessToken } = props;
+export const ReleasePipelineModal = ({
+  accessToken,
+  disabled,
+}: ReleasePipelineModalProps) => {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const [isReleasing, setIsReleasing] = React.useState(false);
 
@@ -140,7 +143,7 @@ export const ReleasePipelineModal = (props: ReleasePipelineModalProps) => {
                 <Button
                   variant="primary"
                   size="lg"
-                  disabled={pipelineRecipeIsDirty || pipelineIsNew}
+                  disabled={pipelineRecipeIsDirty || pipelineIsNew || disabled}
                   className={
                     pipelineRecipeIsDirty || pipelineIsNew
                       ? "pointer-events-none"

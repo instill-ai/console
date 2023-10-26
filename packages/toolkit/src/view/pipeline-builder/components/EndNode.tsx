@@ -43,8 +43,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   testModeTriggerResponse: state.testModeTriggerResponse,
   pipelineOpenAPISchema: state.pipelineOpenAPISchema,
   updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
-  isLatestVersion: state.isLatestVersion,
   isOwner: state.isOwner,
+  currentVersion: state.currentVersion,
 });
 
 export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
@@ -61,8 +61,8 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     testModeTriggerResponse,
     pipelineOpenAPISchema,
     updatePipelineRecipeIsDirty,
-    isLatestVersion,
     isOwner,
+    currentVersion,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const form = useForm<z.infer<typeof CreateEndOperatorInputSchema>>({
@@ -316,7 +316,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                       <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
                         {key}
                       </div>
-                      {isLatestVersion && isOwner ? (
+                      {currentVersion === "latest" && isOwner ? (
                         <div className="my-auto flex flex-row gap-x-4">
                           <button
                             onClick={() => {
@@ -362,13 +362,15 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
               className="flex w-[232px]"
               variant="primary"
               onClick={() => setEnableEdit(!enableEdit)}
-              disabled={isOwner ? (isLatestVersion ? false : true) : true}
+              disabled={
+                isOwner ? (currentVersion === "latest" ? false : true) : true
+              }
             >
               <p className="my-auto">Add Field</p>
               <Icons.Plus
                 className={cn(
                   "my-auto h-4 w-4",
-                  isLatestVersion
+                  currentVersion === "latest"
                     ? "stroke-semantic-bg-primary"
                     : "stroke-semantic-fg-secondary"
                 )}
