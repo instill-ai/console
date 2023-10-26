@@ -56,7 +56,6 @@ export type PipelineBuilderState = {
   pipelineOpenAPISchema: Nullable<OpenAPIV3.Document>;
   accessToken: Nullable<string>;
   createResourceDialogState: PipelineBuilderCreateResourceDialogState;
-  isLatestVersion: boolean;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
   isOwner: boolean;
@@ -98,7 +97,6 @@ export type PipelineBuilderAction = {
       prev: PipelineBuilderCreateResourceDialogState
     ) => PipelineBuilderCreateResourceDialogState
   ) => void;
-  updateIsLatestVersion: (fn: (prev: boolean) => boolean) => void;
   updateCurrentVersion: (
     fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
@@ -134,7 +132,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
     onCreated: null,
     onSelectedExistingResource: null,
   },
-  isLatestVersion: true,
   currentVersion: null,
   initializedByTemplateOrClone: false,
   isOwner: false,
@@ -292,13 +289,6 @@ export const usePipelineBuilderStore = create<PipelineBuilderStore>()(
           return {
             ...state,
             createResourceDialogState: fn(state.createResourceDialogState),
-          };
-        }),
-      updateIsLatestVersion: (fn: (prev: boolean) => boolean) =>
-        set((state) => {
-          return {
-            ...state,
-            isLatestVersion: fn(state.isLatestVersion),
           };
         }),
       updateCurrentVersion: (

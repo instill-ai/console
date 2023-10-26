@@ -1,3 +1,5 @@
+import * as React from "react";
+import cn from "clsx";
 import { Button, Icons, Popover } from "@instill-ai/design-system";
 import { Nullable, getHumanReadableStringFromTime } from "../../../lib";
 import {
@@ -19,8 +21,6 @@ export type BottomBarProps = {
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   pipelineName: state.pipelineName,
   pipelineIsNew: state.pipelineIsNew,
-  isLatestVersion: state.isLatestVersion,
-  updateIsLatestVersion: state.updateIsLatestVersion,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
   currentVersion: state.currentVersion,
@@ -34,8 +34,6 @@ export const BottomBar = (props: BottomBarProps) => {
   const {
     pipelineIsNew,
     pipelineName,
-    isLatestVersion,
-    updateIsLatestVersion,
     updateNodes,
     updateEdges,
     currentVersion,
@@ -74,53 +72,41 @@ export const BottomBar = (props: BottomBarProps) => {
           </p>
           <div className="flex flex-col gap-y-4">
             {sortedReleases.length > 0 ? (
-              sortedReleases.map((release, idx) => (
-                <Button
-                  key={release.id}
-                  className="w-full"
-                  variant="tertiaryGrey"
+              <React.Fragment>
+                <VersionButton
+                  id="latest"
+                  currentVersion={currentVersion}
                   onClick={() => {
-                    if (idx !== 0) {
-                      updateIsLatestVersion(() => false);
-                    } else {
-                      updateIsLatestVersion(() => true);
-                    }
-
-                    if (release.id === sortedReleases[0].id) {
-                      updateIsLatestVersion(() => true);
-                    } else {
-                      updateSelectedConnectorNodeId(() => null);
-                    }
-
-                    updateCurrentVersion(() => release.id);
-
-                    const { nodes, edges } = createInitialGraphData(
-                      release.recipe
-                    );
-
-                    createGraphLayout(nodes, edges)
-                      .then((graphData) => {
-                        updateNodes(() => graphData.nodes);
-                        updateEdges(() => graphData.edges);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                    updateCurrentVersion(() => "latest");
                   }}
-                >
-                  <div className="flex flex-col w-full">
-                    <p className="mb-2 product-body-text-3-medium w-full text-left text-semantic-fg-primary">
-                      {release.id}
-                    </p>
-                    <p className="product-body-text-4-medium w-full text-left text-semantic-fg-disabled">
-                      {getHumanReadableStringFromTime(
-                        release.create_time,
-                        Date.now()
-                      )}
-                    </p>
-                  </div>
-                </Button>
-              ))
+                />
+                {sortedReleases.map((release, idx) => (
+                  <VersionButton
+                    key={release.id}
+                    id={release.id}
+                    currentVersion={currentVersion}
+                    createTime={release.create_time}
+                    onClick={() => {
+                      updateSelectedConnectorNodeId(() => null);
+
+                      updateCurrentVersion(() => release.id);
+
+                      const { nodes, edges } = createInitialGraphData(
+                        release.recipe
+                      );
+
+                      createGraphLayout(nodes, edges)
+                        .then((graphData) => {
+                          updateNodes(() => graphData.nodes);
+                          updateEdges(() => graphData.edges);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }}
+                  />
+                ))}
+              </React.Fragment>
             ) : (
               <div className="product-body-text-4-medium text-semantic-fg-disabled">
                 This pipeline has no released versions.
@@ -133,11 +119,6 @@ export const BottomBar = (props: BottomBarProps) => {
         <p className="product-body-text-4-medium text-semantic-fg-secondary">
           Pipeline {currentVersion ? `(${currentVersion})` : null}
         </p>
-        {isLatestVersion ? (
-          <p className="product-body-text-4-medium text-semantic-accent-default">
-            latest
-          </p>
-        ) : null}
       </div>
 
       {/* 
@@ -146,5 +127,54 @@ export const BottomBar = (props: BottomBarProps) => {
 
       <div className="w-[88px]"></div>
     </div>
+  );
+};
+
+const VersionButton = ({
+  id,
+  currentVersion,
+  onClick,
+  createTime,
+}: {
+  id: string;
+  currentVersion: Nullable<string>;
+  createTime?: string;
+  onClick: () => void;
+}) => {
+  return (
+    <Button
+      key={id}
+      className={cn(
+        "w-full",
+        currentVersion === id ? "hover:!bg-semantic-accent-default" : ""
+      )}
+      variant={currentVersion === id ? "primary" : "tertiaryColour"}
+      onClick={onClick}
+    >
+      <div className="flex flex-col w-full gap-y-2">
+        <p
+          className={cn(
+            "product-body-text-3-medium w-full text-left",
+            currentVersion === id
+              ? "text-semantic-fg-on-default"
+              : "text-semantic-fg-secondary"
+          )}
+        >
+          {id}
+        </p>
+        {createTime ? (
+          <p
+            className={cn(
+              "product-body-text-4-medium w-full text-left",
+              currentVersion === id
+                ? "text-semantic-fg-on-default"
+                : "text-semantic-fg-disabled"
+            )}
+          >
+            {getHumanReadableStringFromTime(createTime, Date.now())}
+          </p>
+        ) : null}
+      </div>
+    </Button>
   );
 };

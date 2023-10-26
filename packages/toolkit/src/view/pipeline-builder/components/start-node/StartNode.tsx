@@ -19,9 +19,11 @@ import { useStartOperatorTestModeInputForm } from "../../use-node-input-fields";
 import {
   getInstillApiErrorMessage,
   useTriggerUserPipeline,
+  useTriggerUserPipelineRelease,
 } from "../../../../lib";
 import { StartNodeInputForm } from "./StartNodeInputForm";
 import { LoadingSpin } from "../../../../components";
+import { toastInstillError } from "../../../../lib/toastInstillError";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -36,6 +38,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   testModeEnabled: state.testModeEnabled,
   updateTestModeTriggerResponse: state.updateTestModeTriggerResponse,
   accessToken: state.accessToken,
+  currentVersion: state.currentVersion,
 });
 
 export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -48,6 +51,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     testModeEnabled,
     updateTestModeTriggerResponse,
     accessToken,
+    currentVersion,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const { toast } = useToast();
@@ -58,11 +62,18 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     form: startOperatorTestModeInputForm,
   } = useStartOperatorTestModeInputForm({ nodes });
 
-  const useTriggerPipeline = useTriggerUserPipeline();
+  React.useEffect(() => {
+    if (!testModeEnabled) {
+      setIsTriggering(false);
+    }
+  }, [testModeEnabled]);
 
-  const onTriggerPipeline = (
+  const useTriggerPipeline = useTriggerUserPipeline();
+  const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
+
+  async function onTriggerPipeline(
     data: z.infer<typeof StartOperatorTestModeInputSchema>
-  ) => {
+  ) {
     if (!pipelineName) return;
 
     const input = recursiveRemoveUndefinedAndNullFromArray(
@@ -71,41 +82,48 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
     setIsTriggering(true);
 
-    useTriggerPipeline.mutate(
-      {
-        pipelineName,
-        accessToken,
-        payload: {
-          inputs: [input],
-        },
-        returnTraces: true,
-      },
-      {
-        onSuccess: (data) => {
-          setIsTriggering(false);
-          updateTestModeTriggerResponse(() => data);
-        },
-        onError: (error) => {
-          setIsTriggering(false);
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when trigger the pipeline",
-              variant: "alert-error",
-              size: "large",
-              description: getInstillApiErrorMessage(error),
-            });
-          } else {
-            toast({
-              title: "Something went wrong when trigger the pipeline",
-              variant: "alert-error",
-              size: "large",
-              description: "Please try again later",
-            });
-          }
-        },
+    if (currentVersion === "latest") {
+      try {
+        const data = await useTriggerPipeline.mutateAsync({
+          pipelineName,
+          accessToken,
+          payload: {
+            inputs: [input],
+          },
+          returnTraces: true,
+        });
+
+        setIsTriggering(false);
+        updateTestModeTriggerResponse(() => data);
+      } catch (error) {
+        toastInstillError({
+          title: "Something went wrong when trigger the pipeline",
+          error,
+          toast,
+        });
       }
-    );
-  };
+    } else {
+      try {
+        const data = await useTriggerPipelineRelease.mutateAsync({
+          pipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
+          payload: {
+            inputs: [input],
+          },
+          accessToken,
+          returnTraces: true,
+        });
+
+        setIsTriggering(false);
+        updateTestModeTriggerResponse(() => data);
+      } catch (error) {
+        toastInstillError({
+          title: "Something went wrong when trigger the pipeline",
+          error,
+          toast,
+        });
+      }
+    }
+  }
 
   const hasSourceEdges = React.useMemo(() => {
     return edges.some((edge) => edge.source === id);

@@ -13,11 +13,10 @@ import {
 const selector = (state: PipelineBuilderStore) => ({
   pipelineName: state.pipelineName,
   pipelineIsNew: state.pipelineIsNew,
-  isLatestVersion: state.isLatestVersion,
-  updateIsLatestVersion: state.updateIsLatestVersion,
   updateCurrentVersion: state.updateCurrentVersion,
   updateNodes: state.updateNodes,
   updateEdges: state.updateEdges,
+  currentVersion: state.currentVersion,
 });
 
 export type BackToLatestVersionTopBarProps = {
@@ -32,11 +31,10 @@ export const BackToLatestVersionTopBar = (
   const {
     pipelineName,
     pipelineIsNew,
-    isLatestVersion,
     updateCurrentVersion,
-    updateIsLatestVersion,
     updateNodes,
     updateEdges,
+    currentVersion,
   } = usePipelineBuilderStore(selector, shallow);
 
   const sortedReleases = useSortedReleases({
@@ -47,11 +45,12 @@ export const BackToLatestVersionTopBar = (
 
   return (
     <>
-      {isLatestVersion || sortedReleases.length === 0 ? null : (
+      {currentVersion === "latest" || sortedReleases.length === 0 ? null : (
         <div className="flex flex-col bg-semantic-bg-base-bg w-full h-8">
           <p className="m-auto">
             <span className="product-body-text-4-medium text-semantic-fg-secondary ">
-              You are viewing a past version of this pipeline.
+              You are viewing a past version of this pipeline, which is not
+              editable.
             </span>
             {` `}
             <span
@@ -61,8 +60,7 @@ export const BackToLatestVersionTopBar = (
                   return;
                 }
 
-                updateCurrentVersion(() => sortedReleases[0].id);
-                updateIsLatestVersion(() => true);
+                updateCurrentVersion(() => "latest");
 
                 const { nodes, edges } = createInitialGraphData(
                   sortedReleases[0].recipe

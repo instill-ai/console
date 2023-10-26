@@ -130,6 +130,8 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             onPaneClick={() => {
               updateSelectedConnectorNodeId(() => null);
             }}
+            snapGrid={[32, 32]}
+            snapToGrid={true}
             onInit={setReactFlowInstance}
             fitView={true}
             fitViewOptions={{

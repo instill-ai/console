@@ -48,6 +48,7 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateAccessToken: state.updateAccessToken,
   initializedByTemplateOrClone: state.initializedByTemplateOrClone,
   updateIsOwner: state.updateIsOwner,
+  updateCurrentVersion: state.updateCurrentVersion,
 });
 
 export type PipelineBuilderMainViewProps = GeneralPageProp;
@@ -78,6 +79,7 @@ export const PipelineBuilderMainView = (
     updateAccessToken,
     initializedByTemplateOrClone,
     updateIsOwner,
+    updateCurrentVersion,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
@@ -136,6 +138,8 @@ export const PipelineBuilderMainView = (
 
   React.useEffect(() => {
     if (graphIsInitialized || !user.isSuccess) return;
+
+    updateCurrentVersion(() => "latest");
 
     // If the pipeline is new, we need to give it initial data
     if (pipelineIsNew) {

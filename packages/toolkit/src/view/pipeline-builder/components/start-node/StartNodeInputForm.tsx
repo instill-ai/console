@@ -39,8 +39,8 @@ const selector = (store: PipelineBuilderStore) => ({
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  isLatestVersion: store.isLatestVersion,
   isOwner: store.isOwner,
+  currentVersion: store.currentVersion,
 });
 
 export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
@@ -49,8 +49,8 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
-    isLatestVersion,
     isOwner,
+    currentVersion,
   } = usePipelineBuilderStore(selector, shallow);
 
   const [enableEdit, setEnableEdit] = React.useState(false);
@@ -453,21 +453,18 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
                 <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
                   {key}
                 </div>
-                {isLatestVersion && isOwner ? (
+                {currentVersion === "latest" && isOwner ? (
                   <div className="my-auto flex flex-row gap-x-4">
                     <button
                       onClick={() => {
                         onEditInput(key);
                         setPrevFieldKey(key);
                       }}
-                      disabled={isLatestVersion ? false : true}
+                      disabled={false}
                     >
                       <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
                     </button>
-                    <button
-                      onClick={() => onDeleteInput(key)}
-                      disabled={isLatestVersion ? false : true}
-                    >
+                    <button onClick={() => onDeleteInput(key)} disabled={false}>
                       <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
                     </button>
                   </div>
@@ -487,14 +484,14 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
         className="flex w-full flex-1"
         variant="primary"
         onClick={() => setEnableEdit(!enableEdit)}
-        disabled={isOwner ? (isLatestVersion ? false : true) : true}
+        disabled={isOwner ? (currentVersion === "latest" ? false : true) : true}
         type="button"
       >
         <p className="my-auto">Add Field</p>
         <Icons.Plus
           className={cn(
             "my-auto h-4 w-4 stroke-semantic-bg-primary",
-            isLatestVersion
+            currentVersion === "latest"
               ? "stroke-semantic-bg-primary"
               : "stroke-semantic-fg-secondary"
           )}

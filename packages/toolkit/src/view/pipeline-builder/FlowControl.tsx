@@ -63,8 +63,8 @@ const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
   testModeEnabled: state.testModeEnabled,
   updateTestModeEnabled: state.updateTestModeEnabled,
-  isLatestVersion: state.isLatestVersion,
   isOwner: state.isOwner,
+  currentVersion: state.currentVersion,
 });
 
 export type FlowControlProps = {
@@ -100,8 +100,8 @@ export const FlowControl = (props: FlowControlProps) => {
     testModeEnabled,
     updateTestModeEnabled,
     updateSelectedConnectorNodeId,
-    isLatestVersion,
     isOwner,
+    currentVersion,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
   const router = useRouter();
   const { entity } = router.query;
@@ -293,10 +293,16 @@ export const FlowControl = (props: FlowControlProps) => {
         ? triggerPipelineSnippets.cloud
         : triggerPipelineSnippets.core;
 
+    const triggerEndpoint =
+      currentVersion === "latest"
+        ? "trigger"
+        : `releases/${currentVersion}/trigger`;
+
     snippet = snippet
       .replace(/\{vdp-pipeline-base-url\}/g, env("NEXT_PUBLIC_API_GATEWAY_URL"))
       .replace(/\{pipeline-name\}/g, `users/${entity}/pipelines/${pipelineId}`)
-      .replace(/\{input-array\}/g, inputsString);
+      .replace(/\{input-array\}/g, inputsString)
+      .replace(/\{trigger-endpoint\}/g, triggerEndpoint);
 
     return snippet;
   }, [nodes, pipelineId, appEnv, entity]);
@@ -306,12 +312,12 @@ export const FlowControl = (props: FlowControlProps) => {
       return false;
     }
 
-    if (!isLatestVersion) {
+    if (currentVersion !== "latest") {
       return false;
     }
 
     return true;
-  }, [isLatestVersion, pipelineRecipeIsDirty]);
+  }, [currentVersion, pipelineRecipeIsDirty]);
 
   function constructNode(
     resource: ConnectorResourceWithDefinition | ConnectorDefinition
@@ -507,7 +513,10 @@ export const FlowControl = (props: FlowControlProps) => {
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
         {isOwner ? (
           <>
-            <ReleasePipelineModal accessToken={accessToken} />
+            <ReleasePipelineModal
+              accessToken={accessToken}
+              disabled={currentVersion !== "latest"}
+            />
             <Button
               onClick={handleSavePipeline}
               className="gap-x-2"
@@ -633,7 +642,7 @@ export const FlowControl = (props: FlowControlProps) => {
             onSelect={(resource) => {
               constructNode(resource);
             }}
-            disabled={isLatestVersion ? false : true}
+            disabled={currentVersion === "latest" ? false : true}
           />
         ) : null}
       </div>
