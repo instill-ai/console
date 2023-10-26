@@ -11,6 +11,7 @@ import {
 import { Sidebar, ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
+import { useTrackToken } from "../../../lib/useTrackToken";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const CreateModelPage: NextPageWithLayout = () => {
   const router = useRouter();
   const accessToken = useAccessToken();
+  useTrackToken({ enabled: true });
 
   return (
     <>

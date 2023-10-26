@@ -1526,4 +1526,15 @@ test("should transform to selected conditions", () => {
     input: { audio: null },
     task: "TASK_SPEECH_RECOGNITION",
   });
+
+  expect(
+    transformInstillFormTreeToDefaultValue(tree, {
+      selectedConditionMap: {
+        task: "TASK_SPEECH_RECOGNITION",
+      },
+    })
+  ).toStrictEqual({
+    input: { audio: null },
+    task: "TASK_SPEECH_RECOGNITION",
+  });
 });

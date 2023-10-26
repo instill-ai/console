@@ -9,10 +9,12 @@ import { Sidebar, ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useRouter } from "next/router";
+import { useTrackToken } from "../../../lib/useTrackToken";
 
 const PipelinePage: NextPageWithLayout = () => {
   const router = useRouter();
   const accessToken = useAccessToken();
+  useTrackToken({ enabled: true });
   return (
     <>
       <ConsoleCorePageHead title="pipelines" />

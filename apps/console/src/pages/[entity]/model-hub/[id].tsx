@@ -14,11 +14,13 @@ import {
 } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
+import { useTrackToken } from "../../../lib/useTrackToken";
 
 const ModelDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id, entity } = router.query;
   const accessToken = useAccessToken();
+  useTrackToken({ enabled: true });
 
   const modelReadme = useUserModelReadme({
     modelName: id ? `users/${entity}/models/${id}` : null,

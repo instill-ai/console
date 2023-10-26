@@ -9,12 +9,13 @@ import { Logo } from "@instill-ai/design-system";
 import { Sidebar, ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
+import { useTrackToken } from "../../../lib/useTrackToken";
 
 const ResourceDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
   const accessToken = useAccessToken();
-
+  useTrackToken({ enabled: true });
   return (
     <>
       <ConsoleCorePageHead title={`resources/${id}`} />

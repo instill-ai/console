@@ -43,6 +43,10 @@ Please refer to the [Integration test document](/docs/integration-test.md) for m
 
 Please refer to the [CICD document](/docs/cicd.md) for more details.
 
+## How to add templates into instill-ai
+
+Please refer to the [Template document](/docs/template.md) for more details.
+
 ## License
 
 See the [LICENSE](./LICENSE) file for licensing information.

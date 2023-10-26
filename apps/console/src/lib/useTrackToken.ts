@@ -1,5 +1,3 @@
-"use client";
-
 import { useQuery } from "@instill-ai/toolkit";
 import axios from "axios";
 import { useRouter } from "next/router";

@@ -10,9 +10,11 @@ import {
 import { Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "./_app";
 import { useAccessToken } from "../lib/useAccessToken";
+import { useTrackToken } from "../lib/useTrackToken";
 
 const SettingsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
+  useTrackToken({ enabled: true });
 
   const tabs = [
     {
