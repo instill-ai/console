@@ -48,9 +48,9 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
   });
 
   const pipeline = useUserPipeline({
-    pipelineName: `${user.data?.name}/pipelines/${id}`,
+    pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enableQuery && !pipelineIsNew && user.isSuccess,
+    enabled: enableQuery && !pipelineIsNew,
   });
 
   const updatePipeline = useUpdateUserPipeline();
