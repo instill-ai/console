@@ -1,5 +1,17 @@
 # eslint-config-cortex
 
+## [1.1.0](https://github.com/instill-ai/console/compare/@instill-ai/prettier-config-cortex-v1.0.0...@instill-ai/prettier-config-cortex-v1.1.0) (2023-10-27)
+
+
+### Features
+
+* **pipeline-builder:** Reduce the frequency of triggering auto-alignment function to reduce the un-predictable outcomes ([#640](https://github.com/instill-ai/console/issues/640)) ([c458263](https://github.com/instill-ai/console/commit/c4582634df06c61bd0316736f0cbae3eb40c70a8))
+
+
+### Miscellaneous
+
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+
 ## 1.0.0 (2023-10-20)
 
 
