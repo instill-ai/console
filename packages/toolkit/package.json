@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.69.1",
+  "version": "0.70.0",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",

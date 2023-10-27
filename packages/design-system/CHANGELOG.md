@@ -1,5 +1,15 @@
 # @instill-ai/design-system
 
+## [0.55.9](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.55.8...@instill-ai/design-system-v0.55.9) (2023-10-27)
+
+
+### Miscellaneous
+
+* add DotsHorizontal icon ([#631](https://github.com/instill-ai/console/issues/631)) ([05f2e60](https://github.com/instill-ai/console/commit/05f2e6003cf8e4de478a1b4035c0e38899c99051))
+* **design-system:** add minus icon ([#633](https://github.com/instill-ai/console/issues/633)) ([8919eae](https://github.com/instill-ai/console/commit/8919eae7ddd8d40aaa0d5b9d314e53d0281535d8))
+* **design-system:** expose Toast related function return types ([#620](https://github.com/instill-ai/console/issues/620)) ([0b26c2d](https://github.com/instill-ai/console/commit/0b26c2d7fc58f359b6fde97943888ae69e549233))
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+
 ## [0.55.8](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.55.7...@instill-ai/design-system-v0.55.8) (2023-10-20)
 
 

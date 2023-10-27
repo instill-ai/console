@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.5.2](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.1...@instill-ai/eslint-config-cortex-v0.5.2) (2023-10-27)
+
+
+### Miscellaneous
+
+* **auto-form:** migrate auto-form function into console ([#615](https://github.com/instill-ai/console/issues/615)) ([64bd122](https://github.com/instill-ai/console/commit/64bd12213676ecbcf07b37f6dc574417f3e7bce8))
+
 ## [0.5.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.0...@instill-ai/eslint-config-cortex-v0.5.1) (2023-10-20)
 
 
