@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { listPipelinesQuery, listUserPipelinesQuery } from "../../vdp-sdk";
+import { listUserPipelinesQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 import type { Nullable } from "../../type";
 
