@@ -76,12 +76,12 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
   return (
-    <div className="relative flex flex-col flex-1">
+    <div className="relative flex flex-1 flex-col">
       <BackToLatestVersionTopBar
         enableQuery={enableQuery}
         accessToken={accessToken}
       />
-      <div className="relative h-full w-full flex flex-1">
+      <div className="relative flex h-full w-full flex-1">
         <div
           ref={ref}
           className={cn(
@@ -130,8 +130,8 @@ export const Flow = forwardRef<HTMLDivElement, FlowProps>((props, ref) => {
             onPaneClick={() => {
               updateSelectedConnectorNodeId(() => null);
             }}
-            snapGrid={[32, 32]}
-            snapToGrid={true}
+            // snapGrid={[32, 32]}
+            // snapToGrid={true}
             onInit={setReactFlowInstance}
             fitView={true}
             fitViewOptions={{
