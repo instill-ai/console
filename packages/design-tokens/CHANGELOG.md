@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.3...@instill-ai/design-tokens-v0.3.4) (2023-10-27)
+
+
+### Miscellaneous
+
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+
 ## [0.3.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.2...@instill-ai/design-tokens-v0.3.3) (2023-10-20)
 
 

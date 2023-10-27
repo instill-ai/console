@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.70.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.69.1...@instill-ai/toolkit-v0.70.0) (2023-10-27)
+
+
+### Features
+
+* add instill form playground ([#617](https://github.com/instill-ai/console/issues/617)) ([b9e4513](https://github.com/instill-ai/console/commit/b9e4513e36a80df9b319454b815584162daee988))
+* **auto-form-generation:** adapt auto-form-generation on AI related forms ([#621](https://github.com/instill-ai/console/issues/621)) ([f6a1600](https://github.com/instill-ai/console/commit/f6a16006c699c88f3fb8c28d24cfbf4865f73864))
+* **auto-form-generation:** expose disabledAll props on use-instill-form ([#622](https://github.com/instill-ai/console/issues/622)) ([b51b49a](https://github.com/instill-ai/console/commit/b51b49a02307dab1bf8e17a980acf4000fbba808))
+* **auto-form-generation:** support auto-form-generation on blockchain related forms ([#623](https://github.com/instill-ai/console/issues/623)) ([ae23dc3](https://github.com/instill-ai/console/commit/ae23dc39f03a65eb09eef3b03d92cca050063dd0))
+* **auto-form:** User can have fine-grained field level error message when input the reference/template ([#619](https://github.com/instill-ai/console/issues/619)) ([b970896](https://github.com/instill-ai/console/commit/b9708961fc533f22cbf612c47bee11a46249abcf))
+* **auto-gen-form:** correctly display nested fields ([#625](https://github.com/instill-ai/console/issues/625)) ([242d278](https://github.com/instill-ai/console/commit/242d278604a9f95440cc7f3b020e19fb09281a15))
+* **auto-gen-form:** correctly parse field's type from anyOf ([#624](https://github.com/instill-ai/console/issues/624)) ([f1676d9](https://github.com/instill-ai/console/commit/f1676d944df885dc61f97f8e0b5494d706b82de0))
+* **auto-gen-form:** support auto-gen-form on data related forms ([#626](https://github.com/instill-ai/console/issues/626)) ([d06277a](https://github.com/instill-ai/console/commit/d06277a931eeea9ae584ee81bb5644030ba2daef))
+* **auto-gen-form:** Support instillCredentialField attribute in auto-gen-form and correctly display field ([#630](https://github.com/instill-ai/console/issues/630)) ([dd6d7bd](https://github.com/instill-ai/console/commit/dd6d7bd1b6d16930456456f31742f8cf99e4c99a))
+* **auto-gen-form:** support schema without anyOf field ([#635](https://github.com/instill-ai/console/issues/635)) ([02bd31e](https://github.com/instill-ai/console/commit/02bd31ebe35b7f5cb1f672bc8832377dbcea8f9f))
+* **pipeline-builder:** Reduce the frequency of triggering auto-alignment function to reduce the un-predictable outcomes ([#640](https://github.com/instill-ai/console/issues/640)) ([c458263](https://github.com/instill-ai/console/commit/c4582634df06c61bd0316736f0cbae3eb40c70a8))
+* **pipeline-builder:** User can collapse/expand the component ([#634](https://github.com/instill-ai/console/issues/634)) ([49eb621](https://github.com/instill-ai/console/commit/49eb6218e417d7e3303d4c3f5edcbe4734932ded))
+* **pipeline-builder:** User can have a cleaner control dropdown on pipeline-builder's component ([#632](https://github.com/instill-ai/console/issues/632)) ([22968f1](https://github.com/instill-ai/console/commit/22968f130eb79844be97124885118286e8671a92))
+* **pipeline-builder:** user can have more unified nodes width across pipeline builder ([#629](https://github.com/instill-ai/console/issues/629)) ([6f0d0c4](https://github.com/instill-ai/console/commit/6f0d0c4eea07f0cccf90ed7a8cc9d8d272ee8e02))
+
+
+### Bug Fixes
+
+* fix the bug of not correctly redirecting user back to onboarding page ([#627](https://github.com/instill-ai/console/issues/627)) ([36f903a](https://github.com/instill-ai/console/commit/36f903a35dda37ca7a0e311f3549487ae5af5e54))
+* **pipeline-builder:** fix console not correctly displayed shared pipeline ([#637](https://github.com/instill-ai/console/issues/637)) ([15614b1](https://github.com/instill-ai/console/commit/15614b1acbba9c7243021e2ff3212f02edba658d))
+* **pipeline-builder:** fix console not correctly recognize complicated reference ([#638](https://github.com/instill-ai/console/issues/638)) ([2d91ec0](https://github.com/instill-ai/console/commit/2d91ec045b9ab4cee041c291ed3c44d17d6ee21f))
+* **version-control:** fix pipeline released version not correctly guard, the trigger endpoint not correctly generate ([#628](https://github.com/instill-ai/console/issues/628)) ([24c9352](https://github.com/instill-ai/console/commit/24c935296bdd4c08b218939e1b800f337c0ea56e))
+
+
+### Miscellaneous
+
+* **auto-form:** migrate auto-form function into console ([#615](https://github.com/instill-ai/console/issues/615)) ([64bd122](https://github.com/instill-ai/console/commit/64bd12213676ecbcf07b37f6dc574417f3e7bce8))
+* disable snap to grid ([#641](https://github.com/instill-ai/console/issues/641)) ([af364c2](https://github.com/instill-ai/console/commit/af364c21d17e3c011860e870233be4f39fc613da))
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+* **toolkit:** Namananand/ins 2260 update profile setting page ([#613](https://github.com/instill-ai/console/issues/613)) ([6fa962b](https://github.com/instill-ai/console/commit/6fa962b534ec80fe1eb77411c7eb4612e991b66c))
+
 ## [0.69.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.69.0...@instill-ai/toolkit-v0.69.1) (2023-10-20)
 
 

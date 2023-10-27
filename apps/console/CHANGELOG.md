@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.31.0-alpha](https://github.com/instill-ai/console/compare/v0.30.1-alpha...v0.31.0-alpha) (2023-10-27)
+
+
+### Features
+
+* **auto-gen-form:** Support instillCredentialField attribute in auto-gen-form and correctly display field ([#630](https://github.com/instill-ai/console/issues/630)) ([dd6d7bd](https://github.com/instill-ai/console/commit/dd6d7bd1b6d16930456456f31742f8cf99e4c99a))
+* **pipeline-builder:** user can have more unified nodes width across pipeline builder ([#629](https://github.com/instill-ai/console/issues/629)) ([6f0d0c4](https://github.com/instill-ai/console/commit/6f0d0c4eea07f0cccf90ed7a8cc9d8d272ee8e02))
+
+
+### Bug Fixes
+
+* fix the bug of not correctly redirecting user back to onboarding page ([#627](https://github.com/instill-ai/console/issues/627)) ([36f903a](https://github.com/instill-ai/console/commit/36f903a35dda37ca7a0e311f3549487ae5af5e54))
+* **pipeline-builder:** fix console not correctly recognize complicated reference ([#638](https://github.com/instill-ai/console/issues/638)) ([2d91ec0](https://github.com/instill-ai/console/commit/2d91ec045b9ab4cee041c291ed3c44d17d6ee21f))
+
+
+### Miscellaneous
+
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+
 ## [0.30.1-alpha](https://github.com/instill-ai/console/compare/v0.30.0-alpha...v0.30.1-alpha) (2023-10-20)
 
 
