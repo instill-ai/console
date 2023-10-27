@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, ConnectorResource } from "../connector";
 import { Spec, Visibility } from "../types";

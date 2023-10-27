@@ -23,11 +23,7 @@ import {
   useRenameUserPipeline,
   useUpdateUserPipeline,
 } from "../../../lib";
-import {
-  constructPipelineRecipe,
-  createGraphLayout,
-  createInitialGraphData,
-} from "../lib";
+import { constructPipelineRecipe, createInitialGraphData } from "../lib";
 import { AutoresizeInputWrapper } from "../../../components";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
@@ -180,10 +176,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
         const { nodes, edges } = createInitialGraphData(res.pipeline.recipe);
 
-        const graph = await createGraphLayout(nodes, edges);
-
-        updateNodes(() => graph.nodes);
-        updateEdges(() => graph.edges);
+        updateNodes(() => nodes);
+        updateEdges(() => edges);
       } catch (error) {
         if (isAxiosError(error)) {
           toast({
@@ -270,7 +264,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
                   <div className="flex flex-row gap-x-2">
                     <AutoresizeInputWrapper
                       value={field.value ?? ""}
-                      className="max-w-[400px] h-9"
+                      className="h-9 max-w-[400px]"
                       placeholderClassname={cn("p-2", textStyle)}
                     >
                       <input
@@ -338,7 +332,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
           </form>
         </Form.Root>
         {pipelineRecipeIsDirty ? (
-          <p className="my-auto product-body-text-4-regular text-semantic-fg-disabled">{`(unsaved)`}</p>
+          <p className="my-auto text-semantic-fg-disabled product-body-text-4-regular">{`(unsaved)`}</p>
         ) : null}
       </div>
     </div>

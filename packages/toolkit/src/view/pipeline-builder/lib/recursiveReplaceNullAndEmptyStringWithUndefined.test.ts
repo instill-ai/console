@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { recursiveReplaceNullAndEmptyStringWithUndefined } from "./recursiveReplaceNullAndEmptyStringWithUndefined";
 
-test("", () => {
+test("should replace null and empty string with undefined", () => {
   const obj = {
     number: 0.4,
     string: "string",

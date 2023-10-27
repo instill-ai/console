@@ -158,7 +158,7 @@ export const ReleasePipelineModal = ({
               </span>
             </Tooltip.Trigger>
             <Tooltip.Portal>
-              <Tooltip.Content className="!px-3 !py-2 rounded-sm !product-body-text-4-semibold bg-semantic-bg-primary">
+              <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
                 {pipelineRecipeIsDirty || pipelineIsNew
                   ? "Please save the pipeline first"
                   : "Release the pipeline"}
@@ -175,22 +175,22 @@ export const ReleasePipelineModal = ({
       </Dialog.Trigger>
       <Dialog.Content className="!max-w-[560px]">
         <div className="flex flex-col">
-          <div className="flex flex-col mb-5">
+          <div className="mb-5 flex flex-col">
             <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line">
               <Icons.CodeBrowser className="h-5 w-5 stroke-semantic-fg-primary" />
             </div>
             <div className="flex flex-col gap-y-1">
-              <p className="product-body-text-1-semibold text-semantic-fg-primary">
+              <p className="text-semantic-fg-primary product-body-text-1-semibold">
                 Release Pipeline
               </p>
-              <p className="product-body-text-3-regular text-semantic-fg-disabled">
+              <p className="text-semantic-fg-disabled product-body-text-3-regular">
                 Please enter a name and description for this release version.
               </p>
             </div>
           </div>
           <Form.Root {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col space-y-3 mb-8">
+              <div className="mb-8 flex flex-col space-y-3">
                 <Form.Field
                   control={form.control}
                   name="id"

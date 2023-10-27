@@ -5,6 +5,7 @@ import { Button, Form } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorResourceWithDefinition,
+  GeneralRecord,
   Nullable,
   useInstillForm,
   useResourceAdditionalForm,
@@ -25,7 +26,7 @@ export type ResourceResourceFormData = {
     id: string;
     description: Nullable<string>;
   };
-} & Record<string, any>;
+} & GeneralRecord;
 
 export const ResourceResourceForm = ({
   definition,

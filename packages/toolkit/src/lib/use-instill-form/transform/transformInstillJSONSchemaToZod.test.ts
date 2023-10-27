@@ -1,4 +1,3 @@
-import * as z from "zod";
 import { test, expect } from "vitest";
 import { InstillJSONSchema } from "../type";
 import { transformInstillJSONSchemaToZod } from ".";

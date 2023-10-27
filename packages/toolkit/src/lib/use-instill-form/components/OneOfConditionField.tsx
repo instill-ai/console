@@ -63,7 +63,7 @@ export const OneOfConditionField = ({
                   <Tooltip.Provider>
                     <Tooltip.Root>
                       <Tooltip.Trigger asChild>
-                        <Icons.HelpCircle className="w-[14px] my-auto cursor-pointer h-[14px] stroke-semantic-fg-secondary" />
+                        <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
                       </Tooltip.Trigger>
                       <Tooltip.Portal>
                         <Tooltip.Content
@@ -71,8 +71,8 @@ export const OneOfConditionField = ({
                           sideOffset={5}
                           side="top"
                         >
-                          <div className="!px-3 !py-2 !rounded-sm !bg-semantic-bg-primary">
-                            <p className="product-body-text-4-semibold break-all text-semantic-fg-primary">
+                          <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
+                            <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
                               {additionalDescription}
                             </p>
                           </div>
@@ -92,6 +92,7 @@ export const OneOfConditionField = ({
                 onValueChange={(event) => {
                   field.onChange(event);
                   setSelectedConditionMap((prev) => {
+                    setPrevSelectedConditionMap(prev);
                     return {
                       ...prev,
                       [path]: event,

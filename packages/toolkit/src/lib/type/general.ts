@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as React from "react";
 import { NextRouter } from "next/router";
 import { UseFormReturn } from "react-hook-form";

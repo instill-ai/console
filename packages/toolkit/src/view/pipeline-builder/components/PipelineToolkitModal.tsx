@@ -39,7 +39,7 @@ export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
           <Icons.CodeBrowser className="h-5 w-5 stroke-semantic-fg-primary" />
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="!max-w-[560px] !h-[475px]">
+      <Dialog.Content className="!h-[475px] !max-w-[560px]">
         <div className="flex flex-col">
           <div className="mb-6 flex flex-row space-x-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line">

@@ -9,6 +9,7 @@ type PipelineTriggerCountsLineChartProps = {
   selectedTimeOption: SingleSelectOption;
 };
 
+/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
 function selectGraph(params: any, myChart: echarts.ECharts): void {
   myChart.dispatchAction({
     type: "legendSelect",
@@ -17,6 +18,7 @@ function selectGraph(params: any, myChart: echarts.ECharts): void {
   });
 }
 
+/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
 function unselectGraph(params: any, myChart: echarts.ECharts): void {
   for (const legend in params.selected) {
     if (legend !== params.name) {
@@ -64,6 +66,8 @@ export const PipelineTriggerCountsLineChart = ({
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
+
+          /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
           formatter: function (params: any) {
             const trigger_time = params.name;
             const pipeline_id = params.seriesName;
@@ -104,6 +108,8 @@ export const PipelineTriggerCountsLineChart = ({
       };
 
       myChart.setOption(option, true);
+
+      /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
       myChart.on("legendselectchanged", function (params: any) {
         const selected = Object.values(params.selected);
         if (selected.filter((select) => !select).length === selected.length) {

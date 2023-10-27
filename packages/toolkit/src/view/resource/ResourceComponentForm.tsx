@@ -1,4 +1,3 @@
-import * as z from "zod";
 import { Button, Form } from "@instill-ai/design-system";
 import { ConnectorDefinition, GeneralRecord } from "../../lib";
 import { useInstillForm } from "../../lib/use-instill-form";
@@ -7,6 +6,8 @@ export type ResourceComponentFormProps = {
   disabledAll?: boolean;
   connectorDefinition: ConnectorDefinition;
   configuration: GeneralRecord;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onSubmit: (data: any) => void;
 };
 

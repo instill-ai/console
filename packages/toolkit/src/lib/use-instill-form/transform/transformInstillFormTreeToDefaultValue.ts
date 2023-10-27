@@ -60,7 +60,7 @@ export function transformInstillFormTreeToDefaultValue(
   }
 
   if (tree._type === "formGroup") {
-    const formGroupValue: Record<string, any> = {};
+    const formGroupValue: GeneralRecord = {};
 
     for (const property of tree.properties) {
       transformInstillFormTreeToDefaultValue(property, {
@@ -78,7 +78,7 @@ export function transformInstillFormTreeToDefaultValue(
   }
 
   if (tree._type === "formArray") {
-    const formArrayValue: Record<string, any> = {};
+    const formArrayValue: GeneralRecord = {};
 
     for (const property of tree.properties) {
       transformInstillFormTreeToDefaultValue(property, {

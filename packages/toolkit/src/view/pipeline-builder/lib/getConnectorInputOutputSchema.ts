@@ -120,17 +120,3 @@ export function getConnectorInputOutputSchema(
 
   return { outputSchema, inputSchema };
 }
-
-function checkHasTaskField(schema: JSONSchema7) {
-  const oneOf = schema.oneOf as JSONSchema7[];
-
-  if (!oneOf) {
-    return false;
-  }
-
-  const hasTaskField = oneOf.some((schema) => {
-    return schema.properties?.task;
-  });
-
-  return hasTaskField;
-}

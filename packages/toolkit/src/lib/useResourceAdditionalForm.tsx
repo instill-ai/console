@@ -85,7 +85,7 @@ export const useResourceAdditionalForm = ({
         />
       </React.Fragment>
     );
-  }, []);
+  }, [data?.id, form]);
 
   return { form, fields };
 };

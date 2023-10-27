@@ -8,6 +8,7 @@ export const configureModelFormFieldSchema = z.object({
   description: z.string().nullable(),
 });
 
+/* eslint-disabled-next-line @typescript-eslint/no-explicit-any */
 export const validateConfigureModelFormSchema = (value: any) =>
   configureModelFormFieldSchema.parse(value);
 

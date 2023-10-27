@@ -14,7 +14,6 @@ import {
   env,
   getInstillApiErrorMessage,
   useUpdateUserPipeline,
-  useUser,
   useUserPipeline,
 } from "../../../lib";
 import { useRouter } from "next/router";
@@ -41,11 +40,6 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
   const pipelineIsNew = usePipelineBuilderStore((state) => state.pipelineIsNew);
 
   const { toast } = useToast();
-
-  const user = useUser({
-    accessToken,
-    enabled: enableQuery,
-  });
 
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
@@ -113,14 +107,14 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
           Share
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="!p-0 !w-[480px]">
-        <div className="flex w-full h-full flex-col">
-          <div className="px-6 py-3 flex border-b border-semantic-bg-line">
-            <p className="my-auto product-button-button-2 text-semantic-accent-pressed">
+      <Dialog.Content className="!w-[480px] !p-0">
+        <div className="flex h-full w-full flex-col">
+          <div className="flex border-b border-semantic-bg-line px-6 py-3">
+            <p className="my-auto text-semantic-accent-pressed product-button-button-2">
               Share
             </p>
           </div>
-          <div className="flex flex-col px-6 py-3 gap-y-3">
+          <div className="flex flex-col gap-y-3 px-6 py-3">
             <div className="flex flex-col">
               <div className="mb-3 flex flex-row gap-x-2">
                 <p className="product-body-text-3-semibold">
@@ -129,10 +123,10 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
                 <Tooltip.Provider>
                   <Tooltip.Root>
                     <Tooltip.Trigger asChild={true}>
-                      <Icons.HelpCircle className="w-4 h-4 stroke-semantic-fg-secondary" />
+                      <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-secondary" />
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
-                      <Tooltip.Content className="!px-3 !py-2 !w-[300px] rounded-sm !product-body-text-4-semibold bg-semantic-bg-primary">
+                      <Tooltip.Content className="!w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
                         A public pipeline can be viewed by any logged in user in
                         Instill Cloud, but it can not be edited or triggered.
                         <Tooltip.Arrow
@@ -210,15 +204,15 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
             </div>
             {!pipelineIsPublic ? (
               <div className="flex flex-col">
-                <div className="flex mb-3 flex-row gap-x-2">
+                <div className="mb-3 flex flex-row gap-x-2">
                   <p className="product-body-text-3-semibold">Share by link</p>
                   <Tooltip.Provider>
                     <Tooltip.Root>
                       <Tooltip.Trigger asChild={true}>
-                        <Icons.HelpCircle className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-secondary" />
                       </Tooltip.Trigger>
                       <Tooltip.Portal>
-                        <Tooltip.Content className="!px-3 !w-[300px] !py-2 rounded-sm !product-body-text-4-semibold bg-semantic-bg-primary">
+                        <Tooltip.Content className="!w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
                           Users with the link can view the pipeline, but they
                           can not edit or trigger the pipeline
                           <Tooltip.Arrow
@@ -297,9 +291,9 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
             <div className="flex flex-row justify-between">
               <div className="flex flex-row gap-x-3">
                 {pipelineIsPublic || enableShareCode ? (
-                  <Icons.LockUnlocked03 className="my-auto w-6 h-6 stroke-semantic-fg-secondary" />
+                  <Icons.LockUnlocked03 className="my-auto h-6 w-6 stroke-semantic-fg-secondary" />
                 ) : (
-                  <Icons.Lock03 className="my-auto w-6 h-6 stroke-semantic-fg-secondary" />
+                  <Icons.Lock03 className="my-auto h-6 w-6 stroke-semantic-fg-secondary" />
                 )}
                 <p className="my-auto product-button-button-3">
                   {pipelineIsPublic
@@ -335,9 +329,9 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
                 size="md"
               >
                 {copied ? (
-                  <Icons.Check className="my-auto w-[14px] h-[14px] stroke-semantic-accent-default" />
+                  <Icons.Check className="my-auto h-[14px] w-[14px] stroke-semantic-accent-default" />
                 ) : (
-                  <Icons.Link01 className="my-auto w-[14px] h-[14px] stroke-semantic-accent-default" />
+                  <Icons.Link01 className="my-auto h-[14px] w-[14px] stroke-semantic-accent-default" />
                 )}
                 Copy Link
               </Button>
