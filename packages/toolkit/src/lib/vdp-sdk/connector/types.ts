@@ -1,6 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { Pipeline } from "../pipeline";
 import { Spec } from "../types";
 
 export type ConnectorResourceState =

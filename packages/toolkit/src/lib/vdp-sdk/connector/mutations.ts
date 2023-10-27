@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { AirbyteFieldValues } from "../../airbytes";
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";

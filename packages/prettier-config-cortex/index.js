@@ -4,7 +4,7 @@ module.exports = {
   singleQuote: false,
   tabWidth: 2,
   trailingComma: "es5",
-  useTabs: true,
+  useTabs: false,
   overrides: [
     {
       files: [".*", "*.json", "*.md", "*.toml", "*.yml"],

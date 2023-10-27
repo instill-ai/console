@@ -36,6 +36,7 @@ export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
     updatePipelineRecipeIsDirty,
   } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function onSubmit(data: any) {
     if (!selectedConnectorNodeId) return;
     const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(

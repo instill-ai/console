@@ -104,11 +104,11 @@ export function useInstillForm({
     };
   }, [
     schema,
-    selectedConditionMap,
     formTree,
     checkIsHiddenByFormTree,
     form,
     selectedConditionMap,
+    setSelectedConditionMap,
     disabledAll,
   ]);
 

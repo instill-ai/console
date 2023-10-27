@@ -25,8 +25,7 @@ export type AIResourceAutoFormProps = {
 };
 
 export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
-  const { definition, resource, accessToken, disabledAll, onSubmit, onBack } =
-    props;
+  const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
   const router = useRouter();
   const { entity } = router.query;

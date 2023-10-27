@@ -48,7 +48,7 @@ export const BottomBar = (props: BottomBarProps) => {
   });
 
   return (
-    <div className="h-[var(--pipeline-builder-bottom-bar-height)] w-full flex-shrink-0 flex flex-row">
+    <div className="flex h-[var(--pipeline-builder-bottom-bar-height)] w-full flex-shrink-0 flex-row">
       <Popover.Root>
         <Popover.Trigger asChild={true}>
           <Button
@@ -57,7 +57,7 @@ export const BottomBar = (props: BottomBarProps) => {
             variant="tertiaryColour"
             type="button"
           >
-            <Icons.Tag01 className="w-3 h-3 stroke-semantic-accent-default" />
+            <Icons.Tag01 className="h-3 w-3 stroke-semantic-accent-default" />
             Releases
           </Button>
         </Popover.Trigger>
@@ -65,7 +65,7 @@ export const BottomBar = (props: BottomBarProps) => {
           side="top"
           sideOffset={4}
           align="start"
-          className="h-[386px] w-[220px] p-2 flex flex-col !rounded-none"
+          className="flex h-[386px] w-[220px] flex-col !rounded-none p-2"
         >
           <p className="mb-[18px] text-semantic-fg-primary product-body-text-3-semibold">
             Releases
@@ -80,7 +80,7 @@ export const BottomBar = (props: BottomBarProps) => {
                     updateCurrentVersion(() => "latest");
                   }}
                 />
-                {sortedReleases.map((release, idx) => (
+                {sortedReleases.map((release) => (
                   <VersionButton
                     key={release.id}
                     id={release.id}
@@ -108,15 +108,15 @@ export const BottomBar = (props: BottomBarProps) => {
                 ))}
               </React.Fragment>
             ) : (
-              <div className="product-body-text-4-medium text-semantic-fg-disabled">
+              <div className="text-semantic-fg-disabled product-body-text-4-medium">
                 This pipeline has no released versions.
               </div>
             )}
           </div>
         </Popover.Content>
       </Popover.Root>
-      <div className="flex-1 flex flex-row gap-x-2 my-auto justify-center">
-        <p className="product-body-text-4-medium text-semantic-fg-secondary">
+      <div className="my-auto flex flex-1 flex-row justify-center gap-x-2">
+        <p className="text-semantic-fg-secondary product-body-text-4-medium">
           Pipeline {currentVersion ? `(${currentVersion})` : null}
         </p>
       </div>
@@ -151,10 +151,10 @@ const VersionButton = ({
       variant={currentVersion === id ? "primary" : "tertiaryColour"}
       onClick={onClick}
     >
-      <div className="flex flex-col w-full gap-y-2">
+      <div className="flex w-full flex-col gap-y-2">
         <p
           className={cn(
-            "product-body-text-3-medium w-full text-left",
+            "w-full text-left product-body-text-3-medium",
             currentVersion === id
               ? "text-semantic-fg-on-default"
               : "text-semantic-fg-secondary"
@@ -165,7 +165,7 @@ const VersionButton = ({
         {createTime ? (
           <p
             className={cn(
-              "product-body-text-4-medium w-full text-left",
+              "w-full text-left product-body-text-4-medium",
               currentVersion === id
                 ? "text-semantic-fg-on-default"
                 : "text-semantic-fg-disabled"

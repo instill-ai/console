@@ -53,6 +53,9 @@ export function composeEdgesFromReferences(
 			outputProperties = getPropertiesFromOpenAPISchema(outputSchema);
 		}
 
+		// We only need to have the key, not the full path. And we will enhance this
+		// part by adapting InstillFormTree
+
 		for (const inputProperty of inputProperties) {
 			otherNodesAvailableReferences.push(
 				`${node.id}.input.${
@@ -74,7 +77,7 @@ export function composeEdgesFromReferences(
 		}
 	});
 
-	console.log("available", otherNodesAvailableReferences);
+	// 2. Loop throught references to compose edges
 
 	for (const reference of references) {
 		if (reference.type === "singleCurlyBrace") {

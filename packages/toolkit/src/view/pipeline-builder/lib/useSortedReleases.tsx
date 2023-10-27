@@ -42,6 +42,9 @@ export function useSortedReleases({
 
       return 0;
     });
+
+    // When every user change pipelineName we will rerender the pipelineReleases
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [pipelineReleases.data, pipelineReleases.isSuccess, pipelineName]);
 
   return sortedReleases;

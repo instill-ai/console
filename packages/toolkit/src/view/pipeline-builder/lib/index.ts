@@ -5,6 +5,7 @@ export * from "./createInitialGraphData";
 export * from "./extractPipelineComponentReferenceFromString";
 export * from "./extractReferencesFromConfiguration";
 export * from "./extractTemplateReferenceSetFromString";
+export * from "./generateNewNodeIdx";
 export * from "./getAiConnectorDefaultConfiguration";
 export * from "./getAudioTypeFromBase64";
 export * from "./getBlockchainConnectorDefaultConfiguration";
