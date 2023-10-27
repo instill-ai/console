@@ -34,4 +34,7 @@
 :root {
   --topbar-height: 72px;
   --pipeline-builder-bottom-bar-height: 24px;
+  --pipeline-builder-node-available-width: 332px;
+  --pipeline-builder-node-padding-x: 12px;
+  --pipeline-builder-node-padding-y: 10px;
 }

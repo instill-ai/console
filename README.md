@@ -50,3 +50,9 @@ Please refer to the [Template document](/docs/template.md) for more details.
 ## License
 
 See the [LICENSE](./LICENSE) file for licensing information.
+
+## About the exported CSS variables
+
+- `--pipeline-builder-node-available-width`: control the max width of the node
+- `--pipeline-builder-node-padding-x`
+- `--pipeline-builder-node-padding-y`

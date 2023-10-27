@@ -2,244 +2,275 @@ import { v4 as uuidv4 } from "uuid";
 import { Edge, Node } from "reactflow";
 
 import {
-  getConnectorInputOutputSchema,
-  InstillAIOpenAPIProperty,
-  getPropertiesFromOpenAPISchema,
+	getConnectorInputOutputSchema,
+	InstillAIOpenAPIProperty,
+	getPropertiesFromOpenAPISchema,
 } from ".";
 import {
-  DoubleCurlyBraceReference,
-  NodeData,
-  PipelineComponentReference,
-  SingleCurlyBraceReference,
+	DoubleCurlyBraceReference,
+	NodeData,
+	PipelineComponentReference,
+	SingleCurlyBraceReference,
 } from "../type";
 
 export function composeEdgesFromReferences(
-  references: PipelineComponentReference[],
-  nodes: Node<NodeData>[]
+	references: PipelineComponentReference[],
+	nodes: Node<NodeData>[]
 ) {
-  const edges: Edge[] = [];
+	const edges: Edge[] = [];
 
-  const otherNodesAvailableReferences: string[] = [];
-  const startNodeAvailableRefernces: string[] = [];
+	const otherNodesAvailableReferences: string[] = [];
+	const startNodeAvailableRefernces: string[] = [];
 
-  nodes.forEach((node) => {
-    if (!node.data.component) return;
+	// 1. loop through nodes to get all available references
 
-    if (node.data.nodeType === "start") {
-      for (const [key] of Object.entries(
-        node.data.component.configuration.metadata
-      )) {
-        startNodeAvailableRefernces.push(`${node.id}.${key}`);
-      }
-      return;
-    }
+	nodes.forEach((node) => {
+		if (!node.data.component) return;
 
-    if (node.data.nodeType === "end") return;
+		if (node.data.nodeType === "start") {
+			for (const [key] of Object.entries(
+				node.data.component.configuration.metadata
+			)) {
+				startNodeAvailableRefernces.push(`${node.id}.${key}`);
+			}
+			return;
+		}
 
-    const { inputSchema, outputSchema } = getConnectorInputOutputSchema(
-      node.data.component
-    );
+		if (node.data.nodeType === "end") return;
 
-    let inputProperties: InstillAIOpenAPIProperty[] = [];
-    let outputProperties: InstillAIOpenAPIProperty[] = [];
+		const { inputSchema, outputSchema } = getConnectorInputOutputSchema(
+			node.data.component
+		);
 
-    if (inputSchema) {
-      inputProperties = getPropertiesFromOpenAPISchema(inputSchema);
-    }
+		let inputProperties: InstillAIOpenAPIProperty[] = [];
+		let outputProperties: InstillAIOpenAPIProperty[] = [];
 
-    if (outputSchema) {
-      outputProperties = getPropertiesFromOpenAPISchema(outputSchema);
-    }
+		if (inputSchema) {
+			inputProperties = getPropertiesFromOpenAPISchema(inputSchema);
+		}
 
-    for (const inputProperty of inputProperties) {
-      otherNodesAvailableReferences.push(
-        `${node.id}.input.${
-          inputProperty.path?.includes(".")
-            ? inputProperty.path?.split(".").pop()
-            : inputProperty.path
-        }`
-      );
-    }
+		if (outputSchema) {
+			outputProperties = getPropertiesFromOpenAPISchema(outputSchema);
+		}
 
-    for (const outputProperty of outputProperties) {
-      otherNodesAvailableReferences.push(
-        `${node.id}.output.${
-          outputProperty.path?.includes(".")
-            ? outputProperty.path?.split(".").pop()
-            : outputProperty.path
-        }`
-      );
-    }
-  });
+		for (const inputProperty of inputProperties) {
+			otherNodesAvailableReferences.push(
+				`${node.id}.input.${
+					inputProperty.path?.includes(".")
+						? inputProperty.path?.split(".").pop()
+						: inputProperty.path
+				}`
+			);
+		}
 
-  for (const reference of references) {
-    if (reference.type === "singleCurlyBrace") {
-      edges.push(
-        ...composeEdgeForSingleCurlyBrace({
-          reference,
-          startNodeAvailableRefernces,
-          otherNodesAvailableReferences,
-        })
-      );
-    } else {
-      edges.push(
-        ...composeEdgeForDoubleCurlyBrace({
-          reference,
-          startNodeAvailableRefernces,
-          otherNodesAvailableReferences,
-        })
-      );
-    }
-  }
+		for (const outputProperty of outputProperties) {
+			otherNodesAvailableReferences.push(
+				`${node.id}.output.${
+					outputProperty.path?.includes(".")
+						? outputProperty.path?.split(".").pop()
+						: outputProperty.path
+				}`
+			);
+		}
+	});
 
-  function composeEdgeForSingleCurlyBrace({
-    reference,
-    otherNodesAvailableReferences,
-    startNodeAvailableRefernces,
-  }: {
-    reference: SingleCurlyBraceReference;
-    otherNodesAvailableReferences: string[];
-    startNodeAvailableRefernces: string[];
-  }) {
-    const edgesForSingleCurlyBrace: Edge[] = [];
+	console.log("available", otherNodesAvailableReferences);
 
-    if (reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
-      const referenceIsAvailable = startNodeAvailableRefernces.some(
-        (availableReference) =>
-          availableReference ===
-          reference.referenceValue.withoutCurlyBraces.replaceAll(
-            /\[[^\]]+\]/g,
-            ""
-          )
-      );
+	for (const reference of references) {
+		if (reference.type === "singleCurlyBrace") {
+			edges.push(
+				...composeEdgeForSingleCurlyBrace({
+					reference,
+					startNodeAvailableRefernces,
+					otherNodesAvailableReferences,
+				})
+			);
+		} else {
+			edges.push(
+				...composeEdgeForDoubleCurlyBrace({
+					reference,
+					startNodeAvailableRefernces,
+					otherNodesAvailableReferences,
+				})
+			);
+		}
+	}
 
-      const hasNoEdgeForThisReference =
-        edgesForSingleCurlyBrace.find(
-          (edge) => edge.source === "start" && edge.target === reference.nodeId
-        ) === undefined;
+	function composeEdgeForSingleCurlyBrace({
+		reference,
+		otherNodesAvailableReferences,
+		startNodeAvailableRefernces,
+	}: {
+		reference: SingleCurlyBraceReference;
+		otherNodesAvailableReferences: string[];
+		startNodeAvailableRefernces: string[];
+	}) {
+		const edgesForSingleCurlyBrace: Edge[] = [];
 
-      if (
-        referenceIsAvailable &&
-        hasNoEdgeForThisReference &&
-        reference.nodeId
-      ) {
-        edgesForSingleCurlyBrace.push({
-          id: uuidv4(),
-          source: "start",
-          target: reference.nodeId,
-          type: "customEdge",
-        });
-      }
-    } else {
-      const referenceIsAvailable = otherNodesAvailableReferences.some(
-        (availableReference) =>
-          availableReference ===
-          reference.referenceValue.withoutCurlyBraces.replaceAll(
-            /\[[^\]]+\]/g,
-            ""
-          )
-      );
+		if (reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
+			const referenceIsAvailable = startNodeAvailableRefernces.some(
+				(availableReference) =>
+					checkReferenceIsAvailable(
+						reference.referenceValue.withoutCurlyBraces,
+						availableReference
+					)
+			);
 
-      const hasNoEdgeForThisReference =
-        edgesForSingleCurlyBrace.find(
-          (edge) =>
-            edge.source ===
-              reference.referenceValue.withoutCurlyBraces.split(".")[0] &&
-            edge.target === reference.nodeId
-        ) === undefined;
+			const hasNoEdgeForThisReference =
+				edgesForSingleCurlyBrace.find(
+					(edge) => edge.source === "start" && edge.target === reference.nodeId
+				) === undefined;
 
-      if (
-        referenceIsAvailable &&
-        hasNoEdgeForThisReference &&
-        reference.nodeId
-      ) {
-        edgesForSingleCurlyBrace.push({
-          id: uuidv4(),
-          source: reference.referenceValue.withoutCurlyBraces.split(".")[0],
-          target: reference.nodeId,
-          type: "customEdge",
-        });
-      }
-    }
+			if (
+				referenceIsAvailable &&
+				hasNoEdgeForThisReference &&
+				reference.nodeId
+			) {
+				edgesForSingleCurlyBrace.push({
+					id: uuidv4(),
+					source: "start",
+					target: reference.nodeId,
+					type: "customEdge",
+				});
+			}
+		} else {
+			const referenceIsAvailable = otherNodesAvailableReferences.some(
+				(availableReference) =>
+					checkReferenceIsAvailable(
+						reference.referenceValue.withoutCurlyBraces,
+						availableReference
+					)
+			);
 
-    return edgesForSingleCurlyBrace;
-  }
+			const hasNoEdgeForThisReference =
+				edgesForSingleCurlyBrace.find(
+					(edge) =>
+						edge.source ===
+							reference.referenceValue.withoutCurlyBraces.split(".")[0] &&
+						edge.target === reference.nodeId
+				) === undefined;
 
-  function composeEdgeForDoubleCurlyBrace({
-    reference,
-    otherNodesAvailableReferences,
-    startNodeAvailableRefernces,
-  }: {
-    reference: DoubleCurlyBraceReference;
-    otherNodesAvailableReferences: string[];
-    startNodeAvailableRefernces: string[];
-  }) {
-    const edgesForDoubleCurlyBrace: Edge[] = [];
-    const referenceValuesWithStartOperator: string[] = [];
-    const referenceValuesWithOtherNode: string[] = [];
+			if (
+				referenceIsAvailable &&
+				hasNoEdgeForThisReference &&
+				reference.nodeId
+			) {
+				edgesForSingleCurlyBrace.push({
+					id: uuidv4(),
+					source: reference.referenceValue.withoutCurlyBraces.split(".")[0],
+					target: reference.nodeId,
+					type: "customEdge",
+				});
+			}
+		}
 
-    for (const referenceValue of reference.referenceValues) {
-      if (referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
-        const referenceIsAvailable = startNodeAvailableRefernces.some(
-          (availableReference) =>
-            availableReference ===
-            referenceValue.withoutCurlyBraces.replaceAll(/\[[^\]]+\]/g, "")
-        );
+		return edgesForSingleCurlyBrace;
+	}
 
-        if (referenceIsAvailable) {
-          referenceValuesWithStartOperator.push(
-            referenceValue.withoutCurlyBraces
-          );
-        }
-      } else {
-        const referenceIsAvailable = otherNodesAvailableReferences.some(
-          (availableReference) =>
-            availableReference ===
-            referenceValue.withoutCurlyBraces.replaceAll(/\[[^\]]+\]/g, "")
-        );
+	function composeEdgeForDoubleCurlyBrace({
+		reference,
+		otherNodesAvailableReferences,
+		startNodeAvailableRefernces,
+	}: {
+		reference: DoubleCurlyBraceReference;
+		otherNodesAvailableReferences: string[];
+		startNodeAvailableRefernces: string[];
+	}) {
+		const edgesForDoubleCurlyBrace: Edge[] = [];
+		const referenceValuesWithStartOperator: string[] = [];
+		const referenceValuesWithOtherNode: string[] = [];
 
-        if (referenceIsAvailable) {
-          referenceValuesWithOtherNode.push(referenceValue.withoutCurlyBraces);
-        }
-      }
-    }
+		for (const referenceValue of reference.referenceValues) {
+			if (referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
+				const referenceIsAvailable = startNodeAvailableRefernces.some(
+					(availableReference) =>
+						checkReferenceIsAvailable(
+							referenceValue.withoutCurlyBraces,
+							availableReference
+						)
+				);
 
-    if (referenceValuesWithStartOperator.length > 0) {
-      const hasNoEdgeForThisReferenceToStart =
-        edgesForDoubleCurlyBrace.find(
-          (edge) => edge.source === "start" && edge.target === reference.nodeId
-        ) === undefined;
+				if (referenceIsAvailable) {
+					referenceValuesWithStartOperator.push(
+						referenceValue.withoutCurlyBraces
+					);
+				}
+			} else {
+				const referenceIsAvailable = otherNodesAvailableReferences.some(
+					(availableReference) =>
+						checkReferenceIsAvailable(
+							referenceValue.withoutCurlyBraces,
+							availableReference
+						)
+				);
 
-      if (hasNoEdgeForThisReferenceToStart && reference.nodeId) {
-        edgesForDoubleCurlyBrace.push({
-          id: uuidv4(),
-          source: "start",
-          target: reference.nodeId,
-          type: "customEdge",
-        });
-      }
-    }
+				if (referenceIsAvailable) {
+					referenceValuesWithOtherNode.push(referenceValue.withoutCurlyBraces);
+				}
+			}
+		}
 
-    for (const referenceValue of referenceValuesWithOtherNode) {
-      const hasNoEdgeForThisReferenceToOtherNode =
-        edgesForDoubleCurlyBrace.find(
-          (edge) =>
-            edge.source === referenceValue.split(".")[0] &&
-            edge.target === reference.nodeId
-        ) === undefined;
+		if (referenceValuesWithStartOperator.length > 0) {
+			const hasNoEdgeForThisReferenceToStart =
+				edgesForDoubleCurlyBrace.find(
+					(edge) => edge.source === "start" && edge.target === reference.nodeId
+				) === undefined;
 
-      if (hasNoEdgeForThisReferenceToOtherNode && reference.nodeId) {
-        edgesForDoubleCurlyBrace.push({
-          id: uuidv4(),
-          source: referenceValue.split(".")[0],
-          target: reference.nodeId,
-          type: "customEdge",
-        });
-      }
-    }
+			if (hasNoEdgeForThisReferenceToStart && reference.nodeId) {
+				edgesForDoubleCurlyBrace.push({
+					id: uuidv4(),
+					source: "start",
+					target: reference.nodeId,
+					type: "customEdge",
+				});
+			}
+		}
 
-    return edgesForDoubleCurlyBrace;
-  }
+		for (const referenceValue of referenceValuesWithOtherNode) {
+			const hasNoEdgeForThisReferenceToOtherNode =
+				edgesForDoubleCurlyBrace.find(
+					(edge) =>
+						edge.source === referenceValue.split(".")[0] &&
+						edge.target === reference.nodeId
+				) === undefined;
 
-  return edges;
+			if (hasNoEdgeForThisReferenceToOtherNode && reference.nodeId) {
+				edgesForDoubleCurlyBrace.push({
+					id: uuidv4(),
+					source: referenceValue.split(".")[0],
+					target: reference.nodeId,
+					type: "customEdge",
+				});
+			}
+		}
+
+		return edgesForDoubleCurlyBrace;
+	}
+
+	return edges;
+}
+
+function checkReferenceIsAvailable(
+	value: string,
+	availableReference: string
+): boolean {
+	const referenceValueWithoutArray = value.replaceAll(/\[[^\]]+\]/g, "");
+
+	if (availableReference === referenceValueWithoutArray) {
+		return true;
+	}
+
+	// If the target is a object, user can reference the key in the object, which may
+	// break how we check if the reference is available. For example, if the target is
+	// "start.input.my_object", and the user reference "start.input.my_object.key1",
+	// we should still allow it.
+
+	const firstThreeLayersOfReferenceValueWithoutArray =
+		referenceValueWithoutArray.split(".").slice(0, 3).join(".");
+
+	if (availableReference === firstThreeLayersOfReferenceValueWithoutArray) {
+		return true;
+	}
+
+	return false;
 }
