@@ -37,7 +37,6 @@
                 "value",
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Model",
               "x-oaiTypeLabel": "string"
             },
@@ -65,7 +64,6 @@
                 "value",
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Prompt"
             },
             "system_message": {
@@ -108,8 +106,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_TEXT_GENERATION",
-          "instillEditOnNode": true
+          "const": "TASK_TEXT_GENERATION"
         }
       },
       "type": "object",
@@ -122,7 +119,7 @@
             "model": {
               "type":"string",
               "enum": ["text-embedding-ada-002"],
-              "additionalDescription":"ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
+              "instillShortDescription":"ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
               "description": "Please fill in the model ID you want to use.",
               "example": "text-embedding-ada-002",
               "instillFormat": "text",
@@ -130,7 +127,6 @@
                 "value",
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Model",
               "x-oaiTypeLabel": "string"
             },
@@ -142,7 +138,6 @@
                 "value",
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Text"
             }
           },
@@ -157,8 +152,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_TEXT_EMBEDDINGS",
-          "instillEditOnNode": true
+          "const": "TASK_TEXT_EMBEDDINGS"
         }
       },
       "type": "object",
@@ -175,7 +169,6 @@
               "instillUpstreamTypes": [
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Audio"
             },
             "language": {
@@ -211,7 +204,6 @@
                 "value",
                 "reference"
               ],
-              "instillEditOnNode": true,
               "title": "Prompt"
             },
             "temperature": {
@@ -236,8 +228,7 @@
           "type": "object"
         },
         "task": {
-          "const": "TASK_SPEECH_RECOGNITION",
-          "instillEditOnNode": true
+          "const": "TASK_SPEECH_RECOGNITION"
         }
       },
       "type": "object",

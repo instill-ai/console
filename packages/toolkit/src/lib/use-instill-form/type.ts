@@ -13,8 +13,9 @@ type InstillJsonSchemaProps = {
   instillUpstreamType?: string;
   instillUpstreamTypes?: string[];
   instillFormat?: string;
-  instillEditOnNode?: boolean;
-  additionalDescription?: string;
+  instillShortDescription?: string;
+  instillUIOrder?: number;
+  instillEditOnNodeFields?: string[];
 };
 
 // This type is especially for jsonSchema OneOf properties
@@ -62,8 +63,10 @@ type InstillFormBaseFields = {
   title?: string;
   description?: string;
   isMultiline?: boolean;
-  additionalDescription?: string;
-  instillEditOnNode?: boolean;
+  instillShortDescription?: string;
+  instillCredentialField?: boolean;
+  instillUIOrder?: number;
+  instillEditOnNodeFields?: string[];
 };
 
 export type InstillFormItem = {

@@ -13,7 +13,7 @@ export const OneOfConditionField = ({
   selectedConditionMap,
   setSelectedConditionMap,
   description,
-  additionalDescription,
+  shortDescription,
   disabled,
 }: {
   form: GeneralUseFormReturn;
@@ -26,7 +26,7 @@ export const OneOfConditionField = ({
   conditionComponents: Record<string, React.ReactNode>;
   title: Nullable<string>;
   description?: string;
-  additionalDescription?: string;
+  shortDescription?: string;
   disabled?: boolean;
 }) => {
   const [prevSelectedConditionMap, setPrevSelectedConditionMap] =
@@ -57,7 +57,7 @@ export const OneOfConditionField = ({
             <Form.Item>
               <div className="flex flex-row gap-x-2">
                 <Form.Label>{title}</Form.Label>
-                {additionalDescription ? (
+                {description ? (
                   <Tooltip.Provider>
                     <Tooltip.Root>
                       <Tooltip.Trigger asChild>
@@ -71,7 +71,7 @@ export const OneOfConditionField = ({
                         >
                           <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
                             <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
-                              {additionalDescription}
+                              {description}
                             </p>
                           </div>
                           <Tooltip.Arrow
@@ -119,7 +119,7 @@ export const OneOfConditionField = ({
                   })}
                 </Select.Content>
               </Select.Root>
-              <Form.Description>{description}</Form.Description>
+              <Form.Description>{shortDescription}</Form.Description>
               <Form.Message />
             </Form.Item>
           );
