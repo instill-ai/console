@@ -16,32 +16,10 @@ export default function Home() {
   const [data, setData] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
-  const { form, fields, ValidatorSchema, formTree } = useInstillForm({
+  const { form, fields, ValidatorSchema, formTree } = useInstillForm(
     schema,
-    data: null,
-    // checkIsHiddenByFormTree: (tree) => {
-    //   if (tree._type === "formCondition") {
-    //     return false;
-    //   }
-
-    //   if (tree.instillEditOnNode) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // },
-    // checkIsHiddenBySchema: (schema) => {
-    //   if (schema.oneOf) {
-    //     return false;
-    //   }
-
-    //   if (schema.instillEditOnNode) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // },
-  });
+    null
+  );
 
   return (
     <div className="flex flex-1 min-h-screen min-w-[100vh] flex-col">

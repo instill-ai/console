@@ -27,13 +27,13 @@ export type UseInstillFormOptions = {
 export function useInstillForm(
   schema: InstillJSONSchema | null,
   data: GeneralRecord | null,
-  {
-    disabledAll,
-    checkIsHiddenByTree,
-    checkIsHiddenBySchema,
-    chooseTitleFrom,
-  }: UseInstillFormOptions
+  options?: UseInstillFormOptions
 ) {
+  const disabledAll = options?.disabledAll ?? false;
+  const checkIsHiddenBySchema = options?.checkIsHiddenBySchema ?? undefined;
+  const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
+  const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
+
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
 
   const [selectedConditionMap, setSelectedConditionMap] =
