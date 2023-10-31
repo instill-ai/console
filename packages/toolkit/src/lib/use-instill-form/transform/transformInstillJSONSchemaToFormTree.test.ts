@@ -13,6 +13,7 @@ test("should transform basic JSON schema to formTree", () => {
         description:
           "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
         example: "text-embedding-ada-002",
+        instillUIOrder: 0,
         instillFormat: "text",
         anyOf: [
           {
@@ -31,6 +32,8 @@ test("should transform basic JSON schema to formTree", () => {
       text: {
         description: "",
         instillFormat: "text",
+        instillCredentialField: true,
+        instillUIOrder: 1,
         anyOf: [
           {
             type: "string",
@@ -69,6 +72,7 @@ test("should transform basic JSON schema to formTree", () => {
           description:
             "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
           example: "text-embedding-ada-002",
+          instillUIOrder: 0,
           instillFormat: "text",
           anyOf: [
             {
@@ -87,6 +91,8 @@ test("should transform basic JSON schema to formTree", () => {
         text: {
           description: "",
           instillFormat: "text",
+          instillCredentialField: true,
+          instillUIOrder: 1,
           anyOf: [
             {
               type: "string",
@@ -120,6 +126,7 @@ test("should transform basic JSON schema to formTree", () => {
         path: "model",
         isRequired: true,
         type: "string",
+        instillUIOrder: 0,
       },
       {
         description: "",
@@ -130,6 +137,8 @@ test("should transform basic JSON schema to formTree", () => {
         path: "text",
         isRequired: true,
         type: "string",
+        instillUIOrder: 1,
+        instillCredentialField: true,
       },
     ],
   };
