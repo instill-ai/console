@@ -37,11 +37,14 @@ export const ResourceResourceForm = ({
 }: ResourceResourceFormProps) => {
   const [isSaving, setIsSaving] = React.useState(false);
 
-  const { form, fields, ValidatorSchema } = useInstillForm({
-    schema: definition.spec.resource_specification,
-    data: resource?.configuration ?? null,
-    disabledAll,
-  });
+  const { form, fields, ValidatorSchema } = useInstillForm(
+    definition.spec.resource_specification,
+    resource?.configuration ?? null,
+    {
+      disabledAll,
+      chooseTitleFrom: "title",
+    }
+  );
 
   const { form: resourceAdditionalForm, fields: resourceAdditionalFormFields } =
     useResourceAdditionalForm({

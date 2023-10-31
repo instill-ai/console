@@ -17,11 +17,14 @@ export const ResourceComponentForm = ({
   onSubmit,
   disabledAll,
 }: ResourceComponentFormProps) => {
-  const { form, fields } = useInstillForm({
-    schema: connectorDefinition.spec.component_specification,
-    data: configuration,
-    disabledAll,
-  });
+  const { form, fields } = useInstillForm(
+    connectorDefinition.spec.component_specification,
+    configuration,
+    {
+      disabledAll,
+      chooseTitleFrom: "key",
+    }
+  );
 
   return (
     <Form.Root {...form}>

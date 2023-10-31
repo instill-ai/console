@@ -51,9 +51,7 @@ test("should transform basic JSON schema to formTree", () => {
     },
   };
 
-  const formTree = transformInstillJSONSchemaToFormTree({
-    targetSchema: schema,
-  });
+  const formTree = transformInstillJSONSchemaToFormTree(schema);
 
   const expectedFormTree: InstillFormTree = {
     title: "Simple JSON",
@@ -483,9 +481,7 @@ test("should transform real InstillJSONSchema to formTree", () => {
     type: "object",
   };
 
-  const formTree = transformInstillJSONSchemaToFormTree({
-    targetSchema: schema,
-  });
+  const formTree = transformInstillJSONSchemaToFormTree(schema);
 
   const expectedFormTree: InstillFormTree = {
     title: "OpenAI Component",
@@ -1745,9 +1741,7 @@ test("should transform formArray JSON schema to formTree", () => {
     },
   };
 
-  const formTree = transformInstillJSONSchemaToFormTree({
-    targetSchema: schema,
-  });
+  const formTree = transformInstillJSONSchemaToFormTree(schema);
 
   const expectedFormTree: InstillFormTree = {
     _type: "formGroup",
@@ -1941,9 +1935,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
     ],
   };
 
-  const formTree = transformInstillJSONSchemaToFormTree({
-    targetSchema: schema,
-  });
+  const formTree = transformInstillJSONSchemaToFormTree(schema);
 
   expect(formTree).toStrictEqual(expected);
 });
