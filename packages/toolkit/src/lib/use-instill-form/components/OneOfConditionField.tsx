@@ -24,9 +24,9 @@ export const OneOfConditionField = ({
     React.SetStateAction<Nullable<SelectedConditionMap>>
   >;
   conditionComponents: Record<string, React.ReactNode>;
+  title: Nullable<string>;
   description?: string;
   additionalDescription?: string;
-  title?: string;
   disabled?: boolean;
 }) => {
   const [prevSelectedConditionMap, setPrevSelectedConditionMap] =
@@ -46,8 +46,6 @@ export const OneOfConditionField = ({
       form.reset(formValues);
     }
   }, [prevSelectedConditionMap, selectedConditionMap]);
-
-  console.log("value", form.getValues());
 
   return (
     <div key={path} className="flex flex-col">

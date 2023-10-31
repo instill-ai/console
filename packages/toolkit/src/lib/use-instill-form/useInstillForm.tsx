@@ -9,23 +9,31 @@ import {
 } from "./transform";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { pickFieldComponentFromInstillFormTree } from "./pick";
+import {
+  PickFieldComponentFromInstillFormTreeOptions,
+  pickFieldComponentFromInstillFormTree,
+} from "./pick";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
 import { GeneralRecord } from "../type";
 
-export function useInstillForm({
-  schema,
-  data,
-  disabledAll,
-  checkIsHiddenByFormTree,
-  checkIsHiddenBySchema,
-}: {
-  schema: InstillJSONSchema | null;
-  data: GeneralRecord | null;
+export type UseInstillFormOptions = {
   disabledAll?: boolean;
-  checkIsHiddenByFormTree?: (tree: InstillFormTree) => boolean;
   checkIsHiddenBySchema?: (schema: InstillJSONSchema) => boolean;
-}) {
+} & Pick<
+  PickFieldComponentFromInstillFormTreeOptions,
+  "checkIsHiddenByTree" | "chooseTitleFrom"
+>;
+
+export function useInstillForm(
+  schema: InstillJSONSchema | null,
+  data: GeneralRecord | null,
+  {
+    disabledAll,
+    checkIsHiddenByTree,
+    checkIsHiddenBySchema,
+    chooseTitleFrom,
+  }: UseInstillFormOptions
+) {
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
 
   const [selectedConditionMap, setSelectedConditionMap] =
@@ -46,9 +54,8 @@ export function useInstillForm({
   React.useEffect(() => {
     if (!schema) return;
 
-    const _formTree = transformInstillJSONSchemaToFormTree({
+    const _formTree = transformInstillJSONSchemaToFormTree(schema, {
       parentSchema: schema,
-      targetSchema: schema,
     });
 
     setFormTree(_formTree);
@@ -92,24 +99,28 @@ export function useInstillForm({
     }
 
     return {
-      fields: pickFieldComponentFromInstillFormTree({
+      fields: pickFieldComponentFromInstillFormTree(
+        formTree,
         form,
-        tree: formTree,
         selectedConditionMap,
         setSelectedConditionMap,
-        checkIsHiddenByFormTree,
-        disabledAll,
-      }),
+        {
+          checkIsHiddenByTree,
+          disabledAll,
+          chooseTitleFrom,
+        }
+      ),
       formTree,
     };
   }, [
     schema,
     formTree,
-    checkIsHiddenByFormTree,
+    checkIsHiddenByTree,
     form,
     selectedConditionMap,
     setSelectedConditionMap,
     disabledAll,
+    chooseTitleFrom,
   ]);
 
   return {

@@ -10,23 +10,33 @@ import {
 } from "../components";
 import { GeneralUseFormReturn } from "../../type";
 
-export function pickFieldComponentFromInstillFormTree({
-  form,
-  tree,
-  selectedConditionMap,
-  setSelectedConditionMap,
-  disabledAll,
-  checkIsHiddenByFormTree,
-}: {
-  form: GeneralUseFormReturn;
-  tree: InstillFormTree;
-  selectedConditionMap: SelectedConditionMap | null;
+export type PickFieldComponentFromInstillFormTreeOptions = {
+  disabledAll?: boolean;
+  checkIsHiddenByTree?: (tree: InstillFormTree) => boolean;
+
+  // By default we will choose title from title field in JSON schema
+  chooseTitleFrom?: "title" | "key";
+};
+
+export function pickFieldComponentFromInstillFormTree(
+  tree: InstillFormTree,
+  form: GeneralUseFormReturn,
+  selectedConditionMap: SelectedConditionMap | null,
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<SelectedConditionMap | null>
-  >;
-  disabledAll?: boolean;
-  checkIsHiddenByFormTree?: (tree: InstillFormTree) => boolean;
-}): React.ReactNode {
+  >,
+  options?: PickFieldComponentFromInstillFormTreeOptions
+): React.ReactNode {
+  const disabledAll = options?.disabledAll ?? false;
+  const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
+  const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
+
+  let title = tree.title ?? tree.fieldKey ?? null;
+
+  if (chooseTitleFrom === "key") {
+    title = tree.fieldKey ?? null;
+  }
+
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
       <div
@@ -37,33 +47,39 @@ export function pickFieldComponentFromInstillFormTree({
           {tree.fieldKey || tree.path}
         </p>
         {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree({
+          return pickFieldComponentFromInstillFormTree(
+            property,
             form,
-            tree: property,
             selectedConditionMap,
             setSelectedConditionMap,
-            disabledAll,
-            checkIsHiddenByFormTree,
-          });
+            {
+              disabledAll,
+              checkIsHiddenByTree,
+              chooseTitleFrom,
+            }
+          );
         })}
       </div>
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree({
+          return pickFieldComponentFromInstillFormTree(
+            property,
             form,
-            tree: property,
             selectedConditionMap,
             setSelectedConditionMap,
-            disabledAll,
-            checkIsHiddenByFormTree,
-          });
+            {
+              disabledAll,
+              checkIsHiddenByTree,
+              chooseTitleFrom,
+            }
+          );
         })}
       </React.Fragment>
     );
   }
 
-  if (checkIsHiddenByFormTree && checkIsHiddenByFormTree(tree)) {
+  if (checkIsHiddenByTree && checkIsHiddenByTree(tree)) {
     return null;
   }
 
@@ -72,14 +88,17 @@ export function pickFieldComponentFromInstillFormTree({
       Object.entries(tree.conditions).map(([k, v]) => {
         return [
           k,
-          pickFieldComponentFromInstillFormTree({
-            tree: v,
+          pickFieldComponentFromInstillFormTree(
+            v,
             form,
             selectedConditionMap,
             setSelectedConditionMap,
-            disabledAll,
-            checkIsHiddenByFormTree,
-          }),
+            {
+              disabledAll,
+              checkIsHiddenByTree,
+              chooseTitleFrom,
+            }
+          ),
         ];
       })
     );
@@ -103,7 +122,7 @@ export function pickFieldComponentFromInstillFormTree({
         setSelectedConditionMap={setSelectedConditionMap}
         key={constField.path}
         conditionComponents={conditionComponents}
-        title={constField.fieldKey ?? undefined}
+        title={title}
         additionalDescription={tree.additionalDescription}
         disabled={disabledAll}
       />
@@ -114,14 +133,17 @@ export function pickFieldComponentFromInstillFormTree({
     return (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree({
+          return pickFieldComponentFromInstillFormTree(
+            property,
             form,
-            tree: property,
             selectedConditionMap,
             setSelectedConditionMap,
-            disabledAll,
-            checkIsHiddenByFormTree,
-          });
+            {
+              disabledAll,
+              checkIsHiddenByTree,
+              chooseTitleFrom,
+            }
+          );
         })}
       </React.Fragment>
     );
@@ -136,7 +158,7 @@ export function pickFieldComponentFromInstillFormTree({
       <BooleanField
         key={tree.path}
         path={tree.path}
-        title={tree.fieldKey ?? tree.title ?? null}
+        title={title}
         form={form}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
@@ -151,7 +173,7 @@ export function pickFieldComponentFromInstillFormTree({
         key={tree.path}
         path={tree.path}
         form={form}
-        title={tree.fieldKey ?? tree.title ?? null}
+        title={title}
         options={tree.enum}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
@@ -166,7 +188,7 @@ export function pickFieldComponentFromInstillFormTree({
         key={tree.path}
         path={tree.path}
         form={form}
-        title={tree.fieldKey ?? tree.title ?? null}
+        title={title}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
         disabled={disabledAll}
@@ -180,7 +202,7 @@ export function pickFieldComponentFromInstillFormTree({
         key={tree.path}
         path={tree.path}
         form={form}
-        title={tree.fieldKey ?? tree.title ?? null}
+        title={title}
         description={tree.description}
         additionalDescription={tree.additionalDescription}
         disabled={disabledAll}
@@ -193,7 +215,7 @@ export function pickFieldComponentFromInstillFormTree({
       key={tree.path}
       path={tree.path}
       form={form}
-      title={tree.fieldKey ?? tree.title ?? null}
+      title={title}
       description={tree.description}
       additionalDescription={tree.additionalDescription}
       disabled={disabledAll}

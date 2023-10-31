@@ -8,18 +8,20 @@ import {
   InstillJSONSchemaDefinition,
 } from "../type";
 
-export function transformInstillJSONSchemaToFormTree({
-  targetSchema,
-  key,
-  path,
-  parentSchema,
-}: {
-  targetSchema: InstillJSONSchemaDefinition;
+export type TransformInstillJSONSchemaToFormTreeOptions = {
   key?: string;
   path?: string;
   parentSchema?: InstillJSONSchema;
-}): InstillFormTree {
+};
+
+export function transformInstillJSONSchemaToFormTree(
+  targetSchema: InstillJSONSchemaDefinition,
+  options?: TransformInstillJSONSchemaToFormTreeOptions
+): InstillFormTree {
   let isRequired = false;
+  const key = options?.key;
+  const path = options?.path;
+  const parentSchema = options?.parentSchema;
 
   if (
     key &&
@@ -57,12 +59,14 @@ export function transformInstillJSONSchemaToFormTree({
 
         return [
           constValue,
-          transformInstillJSONSchemaToFormTree({
-            targetSchema: { type: targetSchema.type, ...condition },
-            parentSchema,
-            key,
-            path,
-          }),
+          transformInstillJSONSchemaToFormTree(
+            { type: targetSchema.type, ...condition },
+            {
+              parentSchema,
+              key,
+              path,
+            }
+          ),
         ];
       })
     );
@@ -95,12 +99,14 @@ export function transformInstillJSONSchemaToFormTree({
     !Array.isArray(targetSchema.items) &&
     targetSchema.items.type === "object"
   ) {
-    const propertyFormTree = transformInstillJSONSchemaToFormTree({
-      targetSchema: targetSchema.items,
-      parentSchema: targetSchema,
-      key,
-      path,
-    }) as InstillFormGroupItem;
+    const propertyFormTree = transformInstillJSONSchemaToFormTree(
+      targetSchema.items,
+      {
+        parentSchema: targetSchema,
+        key,
+        path,
+      }
+    ) as InstillFormGroupItem;
 
     return {
       ...pickBaseFields(targetSchema),
@@ -115,8 +121,7 @@ export function transformInstillJSONSchemaToFormTree({
   if (targetSchema.properties) {
     const properties = Object.entries(targetSchema.properties || []).map(
       ([key, schema]) =>
-        transformInstillJSONSchemaToFormTree({
-          targetSchema: schema,
+        transformInstillJSONSchemaToFormTree(schema, {
           parentSchema: targetSchema,
           key,
           path: path ? `${path}.${key}` : key,
