@@ -119,14 +119,25 @@ export function transformInstillJSONSchemaToFormTree(
   }
 
   if (targetSchema.properties) {
-    const properties = Object.entries(targetSchema.properties || []).map(
-      ([key, schema]) =>
+    const properties = Object.entries(targetSchema.properties || [])
+      .map(([key, schema]) =>
         transformInstillJSONSchemaToFormTree(schema, {
           parentSchema: targetSchema,
           key,
           path: path ? `${path}.${key}` : key,
         })
-    );
+      )
+      .sort((a, b) => {
+        if (typeof a.instillUIOrder === "undefined") {
+          return 1;
+        }
+
+        if (typeof b.instillUIOrder === "undefined") {
+          return -1;
+        }
+
+        return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
+      });
 
     return {
       ...pickBaseFields(targetSchema),
