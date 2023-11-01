@@ -50,9 +50,9 @@ const Template: StoryFn = () => {
                     />
                   </Input.Root>
                 </Form.Control>
-                <Form.Description>
-                  Please fill in your username
-                </Form.Description>
+                <Form.Description
+                  text={`Please fill in your username, here is the <a href='#'>rule</a>`}
+                />
                 <Form.Message />
               </Form.Item>
             );

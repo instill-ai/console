@@ -10,7 +10,7 @@ import { shallow } from "zustand/shallow";
 import { useRouter } from "next/router";
 import { SelectConnectorResourceDialogItem } from "./SelectConnectorResourceDialogItem";
 import { ImageWithFallback } from "../../../components";
-import { AIResourceAutoForm } from "../../ai/AIResourceAutoForm";
+import { AIResourceAutoForm } from "../../ai";
 import { BlockchainResourceAutoForm } from "../../blockchain";
 
 export type CreateResourceDialogProps = {

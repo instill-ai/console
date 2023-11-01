@@ -6,7 +6,7 @@ import { shallow } from "zustand/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { DataComponentAutoForm } from "../data";
 import { AIComponentAutoForm } from "../ai";
-import { BlockchainComponentAutoForm } from "../blockchain/BlockchainComponentAutoForm";
+import { BlockchainComponentAutoForm } from "../blockchain";
 
 const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
   nodes: state.nodes,

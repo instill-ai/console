@@ -1,4 +1,10 @@
-import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
+import {
+  Form,
+  Icons,
+  ParagraphWithHTML,
+  Select,
+  Tooltip,
+} from "@instill-ai/design-system";
 import * as React from "react";
 import { recursivelyResetFormData } from "../transform";
 import { GeneralUseFormReturn, Nullable } from "../../type";
@@ -48,7 +54,7 @@ export const OneOfConditionField = ({
   }, [prevSelectedConditionMap, selectedConditionMap]);
 
   return (
-    <div key={path} className="flex flex-col">
+    <div key={path} className="flex flex-col gap-y-5">
       <Form.Field
         control={form.control}
         name={path}
@@ -70,9 +76,10 @@ export const OneOfConditionField = ({
                           side="top"
                         >
                           <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
-                            <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
-                              {description}
-                            </p>
+                            <ParagraphWithHTML
+                              text={description}
+                              className="break-all text-semantic-fg-primary product-body-text-4-semibold"
+                            />
                           </div>
                           <Tooltip.Arrow
                             className="fill-white"
@@ -119,7 +126,7 @@ export const OneOfConditionField = ({
                   })}
                 </Select.Content>
               </Select.Root>
-              <Form.Description>{shortDescription}</Form.Description>
+              <Form.Description text={shortDescription ?? null} />
               <Form.Message />
             </Form.Item>
           );

@@ -62,9 +62,7 @@ const WithFormTemplate: StoryFn = () => {
                     disabled={true}
                   />
                 </Form.Control>
-                <Form.Description>
-                  Please fill in your username
-                </Form.Description>
+                <Form.Description text=" Please fill in your username" />
                 <Form.Message />
               </Form.Item>
             );
