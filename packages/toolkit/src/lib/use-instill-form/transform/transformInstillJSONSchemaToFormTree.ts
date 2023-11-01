@@ -1,4 +1,4 @@
-import { JSONSchema7TypeName } from "json-schema";
+import { JSONSchema7Type, JSONSchema7TypeName } from "json-schema";
 import { Nullable } from "../../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
 import {
@@ -156,6 +156,22 @@ export function transformInstillJSONSchemaToFormTree(
       } else {
         type = instillUpstreamValue.type ?? null;
       }
+
+      // We will store information of enum in anyOf field
+
+      if (instillUpstreamValue.enum) {
+        return {
+          ...pickBaseFields(targetSchema),
+          _type: "formItem",
+          fieldKey: key ?? null,
+          path: (path || key) ?? null,
+          isRequired,
+          type: type ? type : "null",
+          enum: instillUpstreamValue.enum,
+          example: instillUpstreamValue.example,
+          examples: instillUpstreamValue.examples,
+        };
+      }
     }
   } else {
     if (Array.isArray(targetSchema.type)) {
@@ -180,14 +196,15 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "example",
   "examples",
   "description",
-  "additionalDescription",
+  "instillShortDescription",
   "pattern",
   "const",
   "title",
-  "instillEditOnNode",
   "instillUpstreamTypes",
   "instillUpstreamType",
   "instillCredentialField",
+  "instillUIOrder",
+  "instillEditOnNodeFields",
 ];
 
 function pickBaseFields(schema: InstillJSONSchema): Partial<InstillJSONSchema> {

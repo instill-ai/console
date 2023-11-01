@@ -7,7 +7,7 @@ export const SingleSelectField = ({
   title,
   options,
   description,
-  additionalDescription,
+  shortDescription,
   disabled,
 }: {
   form: GeneralUseFormReturn;
@@ -15,7 +15,7 @@ export const SingleSelectField = ({
   title: string | null;
   options: string[];
   description?: string;
-  additionalDescription?: string;
+  shortDescription?: string;
   disabled?: boolean;
 }) => {
   return (
@@ -28,11 +28,11 @@ export const SingleSelectField = ({
           <Form.Item>
             <div className="flex flex-row gap-x-2">
               <Form.Label>{title}</Form.Label>
-              {additionalDescription ? (
+              {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
                     <Tooltip.Trigger asChild>
-                      <Icons.HelpCircle className="w-[14px] my-auto cursor-pointer h-[14px] stroke-semantic-fg-secondary" />
+                      <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
                       <Tooltip.Content
@@ -40,9 +40,9 @@ export const SingleSelectField = ({
                         sideOffset={5}
                         side="top"
                       >
-                        <div className="!px-3 !py-2 !rounded-sm !bg-semantic-bg-primary">
-                          <p className="product-body-text-4-semibold break-all text-semantic-fg-primary">
-                            {additionalDescription}
+                        <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
+                          <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
+                            {description}
                           </p>
                         </div>
                         <Tooltip.Arrow
@@ -83,7 +83,7 @@ export const SingleSelectField = ({
                 })}
               </Select.Content>
             </Select.Root>
-            <Form.Description>{description}</Form.Description>
+            <Form.Description>{shortDescription}</Form.Description>
             <Form.Message />
           </Form.Item>
         );

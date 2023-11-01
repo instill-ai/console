@@ -123,7 +123,7 @@ export function pickFieldComponentFromInstillFormTree(
         key={constField.path}
         conditionComponents={conditionComponents}
         title={title}
-        additionalDescription={tree.additionalDescription}
+        shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
       />
     );
@@ -161,7 +161,7 @@ export function pickFieldComponentFromInstillFormTree(
         title={title}
         form={form}
         description={tree.description}
-        additionalDescription={tree.additionalDescription}
+        shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
       />
     );
@@ -176,7 +176,7 @@ export function pickFieldComponentFromInstillFormTree(
         title={title}
         options={tree.enum}
         description={tree.description}
-        additionalDescription={tree.additionalDescription}
+        shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
       />
     );
@@ -190,7 +190,7 @@ export function pickFieldComponentFromInstillFormTree(
         form={form}
         title={title}
         description={tree.description}
-        additionalDescription={tree.additionalDescription}
+        shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
       />
     );
@@ -204,7 +204,7 @@ export function pickFieldComponentFromInstillFormTree(
         form={form}
         title={title}
         description={tree.description}
-        additionalDescription={tree.additionalDescription}
+        shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
       />
     );
@@ -217,7 +217,7 @@ export function pickFieldComponentFromInstillFormTree(
       form={form}
       title={title}
       description={tree.description}
-      additionalDescription={tree.additionalDescription}
+      shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
     />
   );
