@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as z from "zod";
-import { InstillFormTree, InstillJSONSchema } from "./type";
+import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "./type";
 import {
   transformInstillJSONSchemaToFormTree,
   transformInstillJSONSchemaToZod,
@@ -18,11 +18,8 @@ import { GeneralRecord } from "../type";
 
 export type UseInstillFormOptions = {
   disabledAll?: boolean;
-  checkIsHiddenBySchema?: (schema: InstillJSONSchema) => boolean;
-} & Pick<
-  PickFieldComponentFromInstillFormTreeOptions,
-  "checkIsHiddenByTree" | "chooseTitleFrom"
->;
+  checkIsHidden?: CheckIsHidden;
+} & Pick<PickFieldComponentFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
   schema: InstillJSONSchema | null,
@@ -30,9 +27,8 @@ export function useInstillForm(
   options?: UseInstillFormOptions
 ) {
   const disabledAll = options?.disabledAll ?? false;
-  const checkIsHiddenBySchema = options?.checkIsHiddenBySchema ?? undefined;
-  const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
+  const checkIsHidden = options?.checkIsHidden ?? undefined;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
 
@@ -56,6 +52,7 @@ export function useInstillForm(
 
     const _formTree = transformInstillJSONSchemaToFormTree(schema, {
       parentSchema: schema,
+      checkIsHidden,
     });
 
     setFormTree(_formTree);
@@ -69,7 +66,7 @@ export function useInstillForm(
       parentSchema: schema,
       targetSchema: schema,
       selectedConditionMap: _selectedConditionMap,
-      checkIsHiddenBySchema,
+      checkIsHidden,
     });
 
     setValidatorSchema(_ValidatorSchema);
@@ -79,7 +76,7 @@ export function useInstillForm(
     const _defaultValues = data ? data : _data;
 
     form.reset(_defaultValues);
-  }, [schema, checkIsHiddenBySchema, data, form]);
+  }, [schema, checkIsHidden, data, form]);
 
   React.useEffect(() => {
     if (!schema || !selectedConditionMap) return;
@@ -105,7 +102,6 @@ export function useInstillForm(
         selectedConditionMap,
         setSelectedConditionMap,
         {
-          checkIsHiddenByTree,
           disabledAll,
           chooseTitleFrom,
         }
@@ -115,7 +111,7 @@ export function useInstillForm(
   }, [
     schema,
     formTree,
-    checkIsHiddenByTree,
+    checkIsHidden,
     form,
     selectedConditionMap,
     setSelectedConditionMap,

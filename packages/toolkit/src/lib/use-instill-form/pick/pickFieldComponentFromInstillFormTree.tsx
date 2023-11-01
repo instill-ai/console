@@ -37,6 +37,10 @@ export function pickFieldComponentFromInstillFormTree(
     title = tree.fieldKey ?? null;
   }
 
+  if (tree.isHidden) {
+    return null;
+  }
+
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
       <div

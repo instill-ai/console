@@ -1,5 +1,6 @@
 import * as z from "zod";
 import {
+  CheckIsHidden,
   InstillJSONSchema,
   SelectedConditionMap,
   instillZodSchema,
@@ -14,7 +15,7 @@ export function transformInstillJSONSchemaToZod({
   propertyKey,
   propertyPath,
   forceOptional,
-  checkIsHiddenBySchema,
+  checkIsHidden,
 }: {
   parentSchema: InstillJSONSchema;
   targetSchema: InstillJSONSchema;
@@ -22,12 +23,16 @@ export function transformInstillJSONSchemaToZod({
   propertyKey?: string;
   propertyPath?: string;
   forceOptional?: boolean;
-  checkIsHiddenBySchema?: (schema: InstillJSONSchema) => boolean;
+  checkIsHidden?: CheckIsHidden;
 }): instillZodSchema {
   let instillZodSchema: z.ZodTypeAny = z.any();
 
-  const isHidden = checkIsHiddenBySchema
-    ? checkIsHiddenBySchema(targetSchema)
+  const isHidden = checkIsHidden
+    ? checkIsHidden({
+        parentSchema,
+        targetSchema,
+        targetKey: propertyKey ?? null,
+      })
     : false;
 
   const isRequired = propertyKey
@@ -79,7 +84,7 @@ export function transformInstillJSONSchemaToZod({
         selectedConditionMap,
         propertyKey,
         propertyPath,
-        checkIsHiddenBySchema,
+        checkIsHidden,
       });
     }
 
@@ -118,7 +123,7 @@ export function transformInstillJSONSchemaToZod({
           parentSchema,
           targetSchema: targetSchema.items as InstillJSONSchema,
           selectedConditionMap,
-          checkIsHiddenBySchema,
+          checkIsHidden,
         })
       );
 
@@ -149,7 +154,7 @@ export function transformInstillJSONSchemaToZod({
               ? `${propertyPath}.${entryKey}`
               : entryKey,
             selectedConditionMap,
-            checkIsHiddenBySchema,
+            checkIsHidden,
           }),
         });
       }

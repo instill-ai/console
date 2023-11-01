@@ -6,12 +6,14 @@ import {
   InstillFormTree,
   InstillJSONSchema,
   InstillJSONSchemaDefinition,
+  CheckIsHidden,
 } from "../type";
 
 export type TransformInstillJSONSchemaToFormTreeOptions = {
   key?: string;
   path?: string;
   parentSchema?: InstillJSONSchema;
+  checkIsHidden?: CheckIsHidden;
 };
 
 export function transformInstillJSONSchemaToFormTree(
@@ -22,6 +24,7 @@ export function transformInstillJSONSchemaToFormTree(
   const key = options?.key;
   const path = options?.path;
   const parentSchema = options?.parentSchema;
+  const checkIsHidden = options?.checkIsHidden;
 
   if (
     key &&
@@ -65,6 +68,7 @@ export function transformInstillJSONSchemaToFormTree(
               parentSchema,
               key,
               path,
+              checkIsHidden,
             }
           ),
         ];
@@ -105,6 +109,7 @@ export function transformInstillJSONSchemaToFormTree(
         parentSchema: targetSchema,
         key,
         path,
+        checkIsHidden,
       }
     ) as InstillFormGroupItem;
 
@@ -125,6 +130,7 @@ export function transformInstillJSONSchemaToFormTree(
           parentSchema: targetSchema,
           key,
           path: path ? `${path}.${key}` : key,
+          checkIsHidden,
         })
       )
       .sort((a, b) => {
@@ -148,6 +154,19 @@ export function transformInstillJSONSchemaToFormTree(
       jsonSchema: targetSchema,
       properties: properties ?? [],
     };
+  }
+
+  let isHidden = false;
+
+  if (
+    checkIsHidden &&
+    checkIsHidden({
+      parentSchema: parentSchema ?? null,
+      targetSchema,
+      targetKey: key ?? null,
+    })
+  ) {
+    isHidden = true;
   }
 
   /* -----------------------------------------------------------------------
@@ -181,6 +200,7 @@ export function transformInstillJSONSchemaToFormTree(
           enum: instillUpstreamValue.enum,
           example: instillUpstreamValue.example,
           examples: instillUpstreamValue.examples,
+          isHidden,
         };
       }
     }
@@ -199,6 +219,7 @@ export function transformInstillJSONSchemaToFormTree(
     path: (path || key) ?? null,
     isRequired,
     type: type ? type : "null",
+    isHidden,
   };
 }
 
@@ -207,12 +228,13 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "example",
   "examples",
   "description",
-  "instillShortDescription",
   "pattern",
   "const",
   "title",
+  "instillShortDescription",
   "instillUpstreamTypes",
   "instillUpstreamType",
+  "instillFormat",
   "instillCredentialField",
   "instillUIOrder",
   "instillEditOnNodeFields",
