@@ -362,7 +362,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
             });
 
             if (operationIsDone) {
-              const modelName = `models/${modelId.trim()}`;
+              const modelName = `${user.data.name}/models/${modelId.trim()}`;
               const modelState = await watchUserModel({
                 modelName,
                 accessToken,
@@ -440,7 +440,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
             });
 
             if (operationIsDone) {
-              const modelName = `models/${modelId.trim()}`;
+              const modelName = `${user.data.name}/models/${modelId.trim()}`;
               const modelState = await watchUserModel({
                 modelName,
                 accessToken,
@@ -605,8 +605,8 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   if (disabledCreateModel) {
     return (
-      <div className={cn("flex-1 h-full", width || "w-full")}>
-        <p className="font-normal text-sm font-sans m-auto w-2/3 text-center">
+      <div className={cn("h-full flex-1", width || "w-full")}>
+        <p className="m-auto w-2/3 text-center font-sans text-sm font-normal">
           Model creation is currently disabled, Please use our pre-deployed
           models
         </p>
@@ -616,7 +616,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   return (
     <FormRoot marginBottom={marginBottom} width={width}>
-      <div className="flex flex-col gap-y-5 mb-10">
+      <div className="mb-10 flex flex-col gap-y-5">
         <BasicTextField
           id="model-id"
           label="ID"
@@ -796,7 +796,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           </>
         ) : null}
       </div>
-      <div className="flex flex-row mb-10">
+      <div className="mb-10 flex flex-row">
         <BasicProgressMessageBox
           state={createModelMessageBoxState}
           setActivate={(activate) =>
