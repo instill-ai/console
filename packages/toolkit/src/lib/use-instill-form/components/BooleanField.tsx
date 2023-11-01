@@ -1,5 +1,6 @@
 import { Form, Icons, Switch, Tooltip } from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
+import { ParagraphWithHTML } from "@instill-ai/design-system";
 
 export const BooleanField = ({
   form,
@@ -39,9 +40,10 @@ export const BooleanField = ({
                         side="top"
                       >
                         <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
-                          <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
-                            {description}
-                          </p>
+                          <ParagraphWithHTML
+                            text={description}
+                            className="break-all text-semantic-fg-primary product-body-text-4-semibold"
+                          />
                         </div>
                         <Tooltip.Arrow
                           className="fill-white"
@@ -66,7 +68,7 @@ export const BooleanField = ({
               />
             </Form.Control>
             <Form.Message />
-            <Form.Description>{shortDescription}</Form.Description>
+            <Form.Description text={shortDescription ?? null} />
           </Form.Item>
         );
       }}

@@ -1,4 +1,10 @@
-import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
+import {
+  Form,
+  Icons,
+  ParagraphWithHTML,
+  Select,
+  Tooltip,
+} from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
 
 export const SingleSelectField = ({
@@ -41,9 +47,10 @@ export const SingleSelectField = ({
                         side="top"
                       >
                         <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
-                          <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
-                            {description}
-                          </p>
+                          <ParagraphWithHTML
+                            text={description}
+                            className="break-all text-semantic-fg-primary product-body-text-4-semibold"
+                          />
                         </div>
                         <Tooltip.Arrow
                           className="fill-white"
@@ -83,7 +90,7 @@ export const SingleSelectField = ({
                 })}
               </Select.Content>
             </Select.Root>
-            <Form.Description>{shortDescription}</Form.Description>
+            <Form.Description text={shortDescription ?? null} />
             <Form.Message />
           </Form.Item>
         );

@@ -47,12 +47,7 @@ export const useResourceAdditionalForm = ({
                     />
                   </Input.Root>
                 </Form.Control>
-                <Form.Description>
-                  Pick an ID to help you identify this resource. The ID conforms
-                  to RFC-1034, which restricts to letters, numbers, and hyphen,
-                  with the first character a letter, the last a letter or a
-                  number, and a 63 character maximum.
-                </Form.Description>
+                <Form.Description text="Pick an ID to help you identify this resource. The ID should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters." />
                 <Form.Message />
               </Form.Item>
             );
@@ -75,9 +70,7 @@ export const useResourceAdditionalForm = ({
                     }}
                   />
                 </Form.Control>
-                <Form.Description>
-                  Fill with a short description.
-                </Form.Description>
+                <Form.Description text="Fill with a short description." />
                 <Form.Message />
               </Form.Item>
             );

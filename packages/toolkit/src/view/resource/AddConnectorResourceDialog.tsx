@@ -9,7 +9,7 @@ import {
   useConnectorDefinitions,
 } from "../../lib";
 import { ImageWithFallback } from "../../components";
-import { AIResourceAutoForm } from "../ai/AIResourceAutoForm";
+import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
 
 export type AddConnectorResourceDialogProps = {

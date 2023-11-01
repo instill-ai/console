@@ -1,4 +1,10 @@
-import { Form, Icons, Textarea, Tooltip } from "@instill-ai/design-system";
+import {
+  Form,
+  Icons,
+  ParagraphWithHTML,
+  Textarea,
+  Tooltip,
+} from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../type";
 
 export const TextAreaField = ({
@@ -38,9 +44,10 @@ export const TextAreaField = ({
                         side="top"
                       >
                         <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
-                          <p className="break-all text-semantic-fg-primary product-body-text-4-semibold">
-                            {description}
-                          </p>
+                          <ParagraphWithHTML
+                            text={description}
+                            className="break-all text-semantic-fg-primary product-body-text-4-semibold"
+                          />
                         </div>
                         <Tooltip.Arrow
                           className="fill-white"
@@ -71,7 +78,7 @@ export const TextAreaField = ({
                 disabled={disabled}
               />
             </Form.Control>
-            <Form.Description>{shortDescription}</Form.Description>
+            <Form.Description text={shortDescription ?? null} />
             <Form.Message />
           </Form.Item>
         );

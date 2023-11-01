@@ -12,6 +12,7 @@ export * from "./Input";
 export * from "./Label";
 export * from "./LinkButton";
 export * from "./Logos";
+export * from "./ParagraphWithHTML";
 export * from "./Popover";
 export * from "./ScrollArea";
 export * from "./Select";

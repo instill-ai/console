@@ -1,6 +1,6 @@
 import { PageTitle } from "../../components";
 import { GeneralPageProp, useUserConnectorResource } from "../../lib";
-import { AIResourceAutoForm } from "../ai/AIResourceAutoForm";
+import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
 import { DataResourceForm } from "../data";
 

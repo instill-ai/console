@@ -171,7 +171,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                   <Form.Item className="w-[287px]">
                     <div className="mb-2 flex flex-row gap-x-2">
                       <Form.Label>First Name</Form.Label>
-                      <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+                      <p className="text-instillGrey70 my-auto font-sans text-xs font-normal">
                         (optional)
                       </p>
                     </div>
@@ -201,7 +201,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                   <Form.Item className="w-[287px]">
                     <div className="mb-2 flex flex-row gap-x-2">
                       <Form.Label>Last Name</Form.Label>
-                      <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+                      <p className="text-instillGrey70 my-auto font-sans text-xs font-normal">
                         (optional)
                       </p>
                     </div>
@@ -233,7 +233,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                 <Form.Item className="w-[287px]">
                   <div className="mb-2 flex flex-row gap-x-2">
                     <Form.Label>Username *</Form.Label>
-                    <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+                    <p className="text-instillGrey70 my-auto font-sans text-xs font-normal">
                       This will be your unique identifier
                     </p>
                   </div>
@@ -263,7 +263,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                 <Form.Item className="w-[287px]">
                   <div className="mb-2 flex flex-row gap-x-2">
                     <Form.Label>Organisation Name</Form.Label>
-                    <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+                    <p className="text-instillGrey70 my-auto font-sans text-xs font-normal">
                       Your company name
                     </p>
                   </div>
@@ -293,7 +293,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                 <Form.Item className="w-[287px]">
                   <div className="mb-2 flex flex-row gap-x-2">
                     <Form.Label>Role</Form.Label>
-                    <p className="my-auto font-sans text-xs font-normal text-instillGrey70">
+                    <p className="text-instillGrey70 my-auto font-sans text-xs font-normal">
                       (optional)
                     </p>
                   </div>
@@ -336,11 +336,7 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
                     onCheckedChange={field.onChange}
                     checked={field.value || undefined}
                   />
-                  <Form.Description>
-                    Receive the latest news from Instill AI for open source
-                    updates, community highlights, blog posts, useful tutorials
-                    and more! You can unsubscribe any time.
-                  </Form.Description>
+                  <Form.Description text="Receive the latest news from Instill AI for open source updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time." />
                   <Form.Message />
                 </Form.Item>
               );

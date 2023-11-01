@@ -12,12 +12,14 @@ import {
 } from "react-hook-form";
 
 import { Label } from "../Label";
+import { ParagraphWithHTML } from "../ParagraphWithHTML";
+import { Nullable } from "../../types/general";
 
 const FormRoot = ReactHookFormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
@@ -28,7 +30,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -131,20 +133,22 @@ FormControl.displayName = "FormControl";
 
 const FormDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => {
+  Omit<React.HTMLAttributes<HTMLParagraphElement>, "children"> & {
+    text: Nullable<string>;
+  }
+>(({ className, text, ...props }, ref) => {
   const { formDescriptionId } = useFormField();
-
-  // We use hex code temporary, until our design-token support opacity
   return (
-    <p
+    <ParagraphWithHTML
+      {...props}
       ref={ref}
       id={formDescriptionId}
+      text={text}
       className={cn(
-        "flex product-body-text-3-regular text-[#1D243380]",
+        // We use hex code temporary, until our design-token support opacity
+        "text-[#1D243380] product-body-text-3-regular",
         className
       )}
-      {...props}
     />
   );
 });
@@ -166,7 +170,7 @@ const FormMessage = React.forwardRef<
       ref={ref}
       id={formMessageId}
       className={cn(
-        "product-body-text-3-regular text-semantic-error-default",
+        "text-semantic-error-default product-body-text-3-regular",
         className
       )}
       {...props}
