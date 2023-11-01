@@ -1,5 +1,5 @@
 import { transformInstillJSONSchemaToFormTree } from ".";
-import { InstillFormTree, InstillJSONSchema } from "../type";
+import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "../type";
 import { test, expect } from "vitest";
 
 test("should transform basic JSON schema to formTree", () => {
@@ -127,6 +127,8 @@ test("should transform basic JSON schema to formTree", () => {
         isRequired: true,
         type: "string",
         instillUIOrder: 0,
+        isHidden: false,
+        instillFormat: "text",
       },
       {
         description: "",
@@ -139,6 +141,8 @@ test("should transform basic JSON schema to formTree", () => {
         type: "string",
         instillUIOrder: 1,
         instillCredentialField: true,
+        isHidden: false,
+        instillFormat: "text",
       },
     ],
   };
@@ -237,6 +241,7 @@ test("should transform formArray JSON schema to formTree", () => {
         path: "host",
         isRequired: true,
         type: "string",
+        isHidden: false,
       },
       {
         _type: "formArray",
@@ -269,6 +274,7 @@ test("should transform formArray JSON schema to formTree", () => {
             path: "ports.port",
             isRequired: false,
             type: "integer",
+            isHidden: false,
           },
         ],
       },
@@ -341,6 +347,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         path: "host",
         isRequired: true,
         type: "string",
+        isHidden: false,
       },
       {
         description: "Port of the database.",
@@ -349,6 +356,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         path: "port",
         isRequired: true,
         type: "integer",
+        isHidden: false,
       },
       {
         description: "Username to use to access the database.",
@@ -357,6 +365,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         path: "user",
         isRequired: true,
         type: "string",
+        isHidden: false,
       },
       {
         description: "Name of the database.",
@@ -365,6 +374,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         path: "dbname",
         isRequired: true,
         type: "string",
+        isHidden: false,
       },
       {
         instillCredentialField: true,
@@ -374,6 +384,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         path: "password",
         isRequired: false,
         type: "string",
+        isHidden: false,
       },
     ],
   };
@@ -381,4 +392,175 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
   const formTree = transformInstillJSONSchemaToFormTree(schema);
 
   expect(formTree).toStrictEqual(expected);
+});
+
+test("should transfomr isHidden formTree", () => {
+  const schema: InstillJSONSchema = {
+    title: "Simple JSON",
+    type: "object",
+    required: ["text", "model"],
+    properties: {
+      model: {
+        type: "string",
+        description:
+          "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
+        example: "text-embedding-ada-002",
+        instillUIOrder: 0,
+        instillFormat: "text",
+        anyOf: [
+          {
+            type: "string",
+            enum: ["text-embedding-ada-002"],
+            instillUpstreamType: "value",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "reference",
+          },
+        ],
+        instillUpstreamTypes: ["value", "reference"],
+        title: "Model",
+      },
+      text: {
+        description: "",
+        instillFormat: "text",
+        instillCredentialField: true,
+        instillUIOrder: 1,
+        anyOf: [
+          {
+            type: "string",
+            instillUpstreamType: "value",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "reference",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "template",
+          },
+        ],
+        instillUpstreamTypes: ["value", "reference"],
+        title: "Text",
+      },
+    },
+    instillEditOnNodeFields: ["model"],
+  };
+
+  const formTree = transformInstillJSONSchemaToFormTree(schema, {
+    checkIsHidden: ({ parentSchema, targetKey }) => {
+      if (!parentSchema) {
+        return false;
+      }
+
+      if (!parentSchema.instillEditOnNodeFields) {
+        return false;
+      }
+
+      if (!targetKey) {
+        return false;
+      }
+
+      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
+        return false;
+      }
+
+      return true;
+    },
+  });
+
+  const expectedFormTree: InstillFormTree = {
+    title: "Simple JSON",
+    _type: "formGroup",
+    instillEditOnNodeFields: ["model"],
+    fieldKey: null,
+    path: null,
+    isRequired: false,
+    jsonSchema: {
+      title: "Simple JSON",
+      type: "object",
+      required: ["text", "model"],
+      properties: {
+        model: {
+          type: "string",
+          description:
+            "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
+          example: "text-embedding-ada-002",
+          instillUIOrder: 0,
+          instillFormat: "text",
+          anyOf: [
+            {
+              type: "string",
+              enum: ["text-embedding-ada-002"],
+              instillUpstreamType: "value",
+            },
+            {
+              type: "string",
+              instillUpstreamType: "reference",
+            },
+          ],
+          instillUpstreamTypes: ["value", "reference"],
+          title: "Model",
+        },
+        text: {
+          description: "",
+          instillFormat: "text",
+          instillCredentialField: true,
+          instillUIOrder: 1,
+          anyOf: [
+            {
+              type: "string",
+              instillUpstreamType: "value",
+            },
+            {
+              type: "string",
+              instillUpstreamType: "reference",
+            },
+            {
+              type: "string",
+              instillUpstreamType: "template",
+            },
+          ],
+          instillUpstreamTypes: ["value", "reference"],
+          title: "Text",
+        },
+      },
+      instillEditOnNodeFields: ["model"],
+    },
+    properties: [
+      {
+        description:
+          "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
+        instillUpstreamTypes: ["value", "reference"],
+        enum: ["text-embedding-ada-002"],
+        example: undefined,
+        examples: undefined,
+        title: "Model",
+        _type: "formItem",
+        fieldKey: "model",
+        path: "model",
+        isRequired: true,
+        type: "string",
+        instillUIOrder: 0,
+        isHidden: false,
+        instillFormat: "text",
+      },
+      {
+        description: "",
+        instillUpstreamTypes: ["value", "reference"],
+        title: "Text",
+        _type: "formItem",
+        fieldKey: "text",
+        path: "text",
+        isRequired: true,
+        type: "string",
+        instillUIOrder: 1,
+        instillCredentialField: true,
+        isHidden: true,
+        instillFormat: "text",
+      },
+    ],
+  };
+
+  expect(formTree).toStrictEqual(expectedFormTree);
 });

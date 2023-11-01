@@ -1,3 +1,7 @@
+
+## How do we implement `instillEditOnNodeFields`
+
+
 ## The object value filter on TextField
 
 ```TypeScript
@@ -18,7 +22,7 @@
 </Input.Root>
 ```
 
-Sometime the when we change the condition, the old value may look like a object for the new fields.
+Sometime when we change the condition, the old value may look like a object for the new fields.
 
 For example, we have a structure like this 
 

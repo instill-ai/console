@@ -4,19 +4,23 @@ import {
   JSONSchema7Definition,
   JSONSchema7TypeName,
 } from "json-schema";
+import { Nullable } from "../type";
 
-type InstillJsonSchemaProps = {
-  instillCredentialField?: boolean;
-  example?: string | number;
-  "x-oaiTypeLabel"?: string;
-  nullable?: boolean;
+export type InstillCustomProps = {
   instillUpstreamType?: string;
   instillUpstreamTypes?: string[];
   instillFormat?: string;
   instillShortDescription?: string;
   instillUIOrder?: number;
   instillEditOnNodeFields?: string[];
+  instillCredentialField?: boolean;
 };
+
+type InstillJsonSchemaProps = {
+  example?: string | number;
+  "x-oaiTypeLabel"?: string;
+  nullable?: boolean;
+} & InstillCustomProps;
 
 // This type is especially for jsonSchema OneOf properties
 // {"key.subkey.credential": "oauth" }
@@ -63,11 +67,8 @@ type InstillFormBaseFields = {
   title?: string;
   description?: string;
   isMultiline?: boolean;
-  instillShortDescription?: string;
-  instillCredentialField?: boolean;
-  instillUIOrder?: number;
-  instillEditOnNodeFields?: string[];
-};
+  isHidden?: boolean;
+} & InstillCustomProps;
 
 export type InstillFormItem = {
   _type: "formItem";
@@ -98,3 +99,9 @@ export type InstillFormTree =
   | InstillFormGroupItem
   | InstillFormConditionItem
   | InstillArrayItem;
+
+export type CheckIsHidden = (props: {
+  parentSchema: Nullable<InstillJSONSchema>;
+  targetSchema: Nullable<InstillJSONSchema>;
+  targetKey: Nullable<string>;
+}) => boolean;

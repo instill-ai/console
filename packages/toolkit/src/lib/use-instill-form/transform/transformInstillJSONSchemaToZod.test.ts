@@ -415,3 +415,95 @@ test("should transform fields without anyOf", () => {
     },
   });
 });
+
+test("should transform isHidden", () => {
+  const schema: InstillJSONSchema = {
+    title: "Simple JSON",
+    type: "object",
+    required: ["text", "model"],
+    properties: {
+      model: {
+        type: "string",
+        description:
+          "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
+        example: "text-embedding-ada-002",
+        instillUIOrder: 0,
+        instillFormat: "text",
+        anyOf: [
+          {
+            type: "string",
+            enum: ["text-embedding-ada-002"],
+            instillUpstreamType: "value",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "reference",
+          },
+        ],
+        instillUpstreamTypes: ["value", "reference"],
+        title: "Model",
+      },
+      text: {
+        description: "",
+        instillFormat: "text",
+        instillCredentialField: true,
+        instillUIOrder: 1,
+        anyOf: [
+          {
+            type: "string",
+            instillUpstreamType: "value",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "reference",
+          },
+          {
+            type: "string",
+            instillUpstreamType: "template",
+          },
+        ],
+        instillUpstreamTypes: ["value", "reference"],
+        title: "Text",
+      },
+    },
+    instillEditOnNodeFields: ["model"],
+  };
+
+  const zodSchema = transformInstillJSONSchemaToZod({
+    parentSchema: schema,
+    targetSchema: schema,
+    selectedConditionMap: null,
+    checkIsHidden: ({ parentSchema, targetKey }) => {
+      if (!parentSchema) {
+        return false;
+      }
+
+      if (!parentSchema.instillEditOnNodeFields) {
+        return false;
+      }
+
+      if (!targetKey) {
+        return false;
+      }
+
+      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
+        return false;
+      }
+
+      return true;
+    },
+  });
+
+  const testedObj = {
+    model: "text-embedding-ada-002",
+  };
+
+  const parsedObj = zodSchema.safeParse(testedObj);
+
+  expect(parsedObj).toStrictEqual({
+    success: true,
+    data: {
+      model: "text-embedding-ada-002",
+    },
+  });
+});

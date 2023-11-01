@@ -1,6 +1,6 @@
 import { Button, Form } from "@instill-ai/design-system";
 import { ConnectorDefinition, GeneralRecord } from "../../lib";
-import { useInstillForm } from "../../lib/use-instill-form";
+import { CheckIsHidden, useInstillForm } from "../../lib/use-instill-form";
 
 export type ResourceComponentFormProps = {
   disabledAll?: boolean;
@@ -9,6 +9,7 @@ export type ResourceComponentFormProps = {
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onSubmit: (data: any) => void;
+  checkIsHidden?: CheckIsHidden;
 };
 
 export const ResourceComponentForm = ({
@@ -16,6 +17,7 @@ export const ResourceComponentForm = ({
   connectorDefinition,
   onSubmit,
   disabledAll,
+  checkIsHidden,
 }: ResourceComponentFormProps) => {
   const { form, fields } = useInstillForm(
     connectorDefinition.spec.component_specification,
@@ -23,6 +25,7 @@ export const ResourceComponentForm = ({
     {
       disabledAll,
       chooseTitleFrom: "key",
+      checkIsHidden,
     }
   );
 
