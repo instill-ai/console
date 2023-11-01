@@ -88,7 +88,7 @@ export async function createUserModelMutation({
       }
 
       const { data } = await client.post<CreateUserModelResponse>(
-        "/models/multipart",
+        `${userName}/models/multipart`,
         formData,
         {
           headers: {
