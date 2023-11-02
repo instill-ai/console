@@ -1,22 +1,20 @@
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
+
 import { DataComponentAutoForm } from "../data";
 import { AIComponentAutoForm } from "../ai";
 import { BlockchainComponentAutoForm } from "../blockchain";
+import { InstillStore, useInstillStore } from "../../lib";
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  nodes: state.nodes,
-  selectedConnectorNodeId: state.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const RightPanel = () => {
   const { nodes, selectedConnectorNodeId, updateSelectedConnectorNodeId } =
-    usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+    useInstillStore(useShallow(selector));
 
   const selectedConnectorNode = nodes.find(
     (node) => node.id === selectedConnectorNodeId

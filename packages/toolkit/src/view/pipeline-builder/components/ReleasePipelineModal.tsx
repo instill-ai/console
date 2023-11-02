@@ -1,5 +1,9 @@
 import * as React from "react";
 import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useShallow } from "zustand/react/shallow";
+import { isAxiosError } from "axios";
 import {
   Button,
   Dialog,
@@ -10,28 +14,23 @@ import {
   Tooltip,
   useToast,
 } from "@instill-ai/design-system";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   CreateUserPipelineReleasePayload,
+  InstillStore,
   Nullable,
   getInstillApiErrorMessage,
   useCreateUserPipelineRelease,
+  useInstillStore,
 } from "../../../lib";
 import { constructPipelineRecipe } from "../lib";
-import { isAxiosError } from "axios";
 import { LoadingSpin } from "../../../components";
 
-const selector = (state: PipelineBuilderStore) => ({
-  pipelineName: state.pipelineName,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
-  nodes: state.nodes,
-  pipelineIsNew: state.pipelineIsNew,
+const selector = (store: InstillStore) => ({
+  pipelineName: store.pipelineName,
+  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
+  nodes: store.nodes,
+  pipelineIsNew: store.pipelineIsNew,
 });
 
 export const ReleasePipelineFormSchema = z.object({
@@ -54,7 +53,7 @@ export const ReleasePipelineModal = ({
   const { toast } = useToast();
 
   const { pipelineName, nodes, pipelineRecipeIsDirty, pipelineIsNew } =
-    usePipelineBuilderStore(selector, shallow);
+    useInstillStore(useShallow(selector));
 
   const form = useForm<z.infer<typeof ReleasePipelineFormSchema>>({
     resolver: zodResolver(ReleasePipelineFormSchema),

@@ -1,22 +1,21 @@
 import * as React from "react";
 import { OpenAPIV3 } from "openapi-types";
+import { useShallow } from "zustand/react/shallow";
+
 import {
+  InstillStore,
   Nullable,
   PipelineConnectorComponent,
   PipelineTrace,
+  useInstillStore,
 } from "../../../../lib";
 import {
   InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from "../../lib";
 import { useConnectorTestModeOutputFields } from "../../use-node-output-fields";
-import {
-  PipelineBuilderState,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
 
-const selector = (store: PipelineBuilderState) => ({
+const selector = (store: InstillStore) => ({
   expandAllNodes: store.expandAllNodes,
   testModeEnabled: store.testModeEnabled,
 });
@@ -37,9 +36,8 @@ export const OutputProperties = ({
     traces
   );
 
-  const { expandAllNodes, testModeEnabled } = usePipelineBuilderStore(
-    selector,
-    shallow
+  const { expandAllNodes, testModeEnabled } = useInstillStore(
+    useShallow(selector)
   );
 
   const outputProperties = React.useMemo(() => {

@@ -7,8 +7,8 @@ import {
   Tabs,
 } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";
-import { usePipelineBuilderStore } from "../usePipelineBuilderStore";
 import { constructPipelineRecipe } from "../lib";
+import { useInstillStore } from "../../../lib";
 
 export type PipelineToolkitModalModalProps = {
   snippet: string;
@@ -22,7 +22,7 @@ const tabContentStyle =
 export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
   const { snippet } = props;
 
-  const nodes = usePipelineBuilderStore((state) => state.nodes);
+  const nodes = useInstillStore((state) => state.nodes);
 
   const recipeString = React.useMemo(() => {
     return JSON.stringify(constructPipelineRecipe(nodes), null, 2);

@@ -1,11 +1,11 @@
 import { NodeProps, Position } from "reactflow";
 import { NodeData } from "../type";
 import { Icons } from "@instill-ai/design-system";
-import { usePipelineBuilderStore } from "../usePipelineBuilderStore";
 import { CustomHandle } from "./CustomHandle";
+import { useInstillStore } from "../../../lib";
 
 export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
-  const updateSelectResourceDialogIsOpen = usePipelineBuilderStore(
+  const updateSelectResourceDialogIsOpen = useInstillStore(
     (state) => state.updateSelectResourceDialogIsOpen
   );
 

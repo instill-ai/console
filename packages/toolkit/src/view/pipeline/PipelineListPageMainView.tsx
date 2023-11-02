@@ -1,18 +1,16 @@
 import { Button, Icons } from "@instill-ai/design-system";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
+import dynamic from "next/dynamic";
 
 import {
   GeneralPageProp,
+  InstillStore,
   generateRandomReadableName,
   useConnectorDefinitions,
+  useInstillStore,
   useUser,
   useUserPipelines,
 } from "../../lib";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../pipeline-builder";
-import dynamic from "next/dynamic";
 import { StaffPickTemplates } from "../pipeline-builder/components/template";
 
 const PipelinesTable = dynamic(
@@ -22,10 +20,10 @@ const PipelinesTable = dynamic(
 
 export type PipelineListPageMainViewProps = GeneralPageProp;
 
-const selector = (state: PipelineBuilderStore) => ({
-  setPipelineId: state.setPipelineId,
-  setPipelineName: state.setPipelineName,
-  updatePipelineIsNew: state.updatePipelineIsNew,
+const selector = (store: InstillStore) => ({
+  setPipelineId: store.setPipelineId,
+  setPipelineName: store.setPipelineName,
+  updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
 export const PipelineListPageMainView = (
@@ -35,7 +33,7 @@ export const PipelineListPageMainView = (
   const { entity } = router.query;
 
   const { setPipelineId, setPipelineName, updatePipelineIsNew } =
-    usePipelineBuilderStore(selector, shallow);
+    useInstillStore(useShallow(selector));
 
   /* -------------------------------------------------------------------------
    * Query resource data

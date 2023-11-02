@@ -1,15 +1,18 @@
-import { ConnectorDefinition, GeneralRecord } from "../../lib";
 import {
-  PipelineBuilderStore,
+  ConnectorDefinition,
+  GeneralRecord,
+  InstillStore,
+  useInstillStore,
+} from "../../lib";
+import {
   PipelineComponentReference,
   composeEdgesFromReferences,
   extractReferencesFromConfiguration,
   recursiveReplaceNullAndEmptyStringWithUndefined,
   recursiveTransformToString,
-  usePipelineBuilderStore,
 } from "../pipeline-builder";
-import { shallow } from "zustand/shallow";
 import { ResourceComponentForm } from "../resource";
+import { useShallow } from "zustand/react/shallow";
 
 export type AIComponentAutoFormProps = {
   connectorDefinition: ConnectorDefinition;
@@ -17,13 +20,13 @@ export type AIComponentAutoFormProps = {
   disabledAll?: boolean;
 };
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  nodes: state.nodes,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  selectedConnectorNodeId: state.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
-  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
 export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
@@ -34,7 +37,7 @@ export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
     selectedConnectorNodeId,
     updateSelectedConnectorNodeId,
     updatePipelineRecipeIsDirty,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function onSubmit(data: any) {

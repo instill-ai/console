@@ -1,12 +1,14 @@
 import * as React from "react";
 import cn from "clsx";
+import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Popover } from "@instill-ai/design-system";
-import { Nullable, getHumanReadableStringFromTime } from "../../../lib";
+
 import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
+  InstillStore,
+  Nullable,
+  getHumanReadableStringFromTime,
+  useInstillStore,
+} from "../../../lib";
 import {
   createGraphLayout,
   createInitialGraphData,
@@ -18,14 +20,14 @@ export type BottomBarProps = {
   accessToken: Nullable<string>;
 };
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  pipelineName: state.pipelineName,
-  pipelineIsNew: state.pipelineIsNew,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  currentVersion: state.currentVersion,
-  updateCurrentVersion: state.updateCurrentVersion,
-  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
+const selector = (store: InstillStore) => ({
+  pipelineName: store.pipelineName,
+  pipelineIsNew: store.pipelineIsNew,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  currentVersion: store.currentVersion,
+  updateCurrentVersion: store.updateCurrentVersion,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const BottomBar = (props: BottomBarProps) => {
@@ -39,7 +41,7 @@ export const BottomBar = (props: BottomBarProps) => {
     currentVersion,
     updateCurrentVersion,
     updateSelectedConnectorNodeId,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
     pipelineName,

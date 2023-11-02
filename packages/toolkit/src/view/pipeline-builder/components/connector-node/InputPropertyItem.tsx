@@ -6,12 +6,12 @@ import {
   Nullable,
   TriggerUserPipelineResponse,
   dot,
+  useInstillStore,
 } from "../../../../lib";
 import {
   InstillAIOpenAPIProperty,
   extractPipelineComponentReferenceFromString,
 } from "../../lib";
-import { usePipelineBuilderStore } from "../../usePipelineBuilderStore";
 
 export const InputPropertyItem = (props: {
   propertyPath: Nullable<string>;
@@ -49,14 +49,12 @@ const InputPropertyValue = (props: {
     key: null,
   });
 
-  const testModeEnabled = usePipelineBuilderStore(
-    (state) => state.testModeEnabled
-  );
+  const testModeEnabled = useInstillStore((state) => state.testModeEnabled);
 
   if (!reference || !reference.nodeId) {
     return propertyConfiguration !== null ||
       propertyConfiguration !== undefined ? (
-      <div className="min-h-[32px] min-w-[100px] break-all rounded-sm text-semantic-fg-secondary border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+      <div className="min-h-[32px] min-w-[100px] break-all rounded-sm border border-semantic-bg-line px-2 py-1.5 text-semantic-fg-secondary product-body-text-3-regular">
         {`${propertyConfiguration}`}
       </div>
     ) : null;
@@ -66,7 +64,7 @@ const InputPropertyValue = (props: {
     const traceValue = traces[reference.nodeId].inputs[0][reference.path];
 
     return (
-      <div className="min-h-[32px] break-all min-w-[100px] rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+      <div className="min-h-[32px] min-w-[100px] break-all rounded-sm border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
         {traceValue}
       </div>
     );

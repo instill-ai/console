@@ -9,7 +9,6 @@ import {
   Tooltip,
   useToast,
 } from "@instill-ai/design-system";
-import { shallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,17 +17,13 @@ import {
   NodeData,
   PipelineComponentReference,
 } from "../../type";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
 import { CustomHandle } from "../CustomHandle";
 import {
   extractReferencesFromConfiguration,
   getConnectorInputOutputSchema,
   composeEdgesFromReferences,
 } from "../../lib";
-import { Nullable } from "../../../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../../../lib";
 import {
   AutoresizeInputWrapper,
   ImageWithFallback,
@@ -38,20 +33,21 @@ import { ResourceIDTag } from "./ResourceIDTag";
 import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
+import { useShallow } from "zustand/react/shallow";
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  selectedConnectorNodeId: state.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
-  nodes: state.nodes,
-  edges: state.edges,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  testModeEnabled: state.testModeEnabled,
-  testModeTriggerResponse: state.testModeTriggerResponse,
-  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
-  updateCreateResourceDialogState: state.updateCreateResourceDialogState,
-  isOwner: state.isOwner,
-  currentVersion: state.currentVersion,
+const selector = (store: InstillStore) => ({
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  nodes: store.nodes,
+  edges: store.edges,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  testModeEnabled: store.testModeEnabled,
+  testModeTriggerResponse: store.testModeTriggerResponse,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  isOwner: store.isOwner,
+  currentVersion: store.currentVersion,
 });
 
 const UpdateNodeIdSchema = z.object({
@@ -72,7 +68,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateCreateResourceDialogState,
     isOwner,
     currentVersion,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
 

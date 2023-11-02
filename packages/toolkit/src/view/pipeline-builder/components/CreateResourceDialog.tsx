@@ -1,13 +1,15 @@
 import * as React from "react";
-import { Dialog, Icons } from "@instill-ai/design-system";
-import { Nullable, useUserConnectorResources } from "../../../lib";
-import { DataResourceForm } from "../../data";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
 import { useRouter } from "next/router";
+import { useShallow } from "zustand/react/shallow";
+import { Dialog, Icons } from "@instill-ai/design-system";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useUserConnectorResources,
+} from "../../../lib";
+import { DataResourceForm } from "../../data";
+
 import { SelectConnectorResourceDialogItem } from "./SelectConnectorResourceDialogItem";
 import { ImageWithFallback } from "../../../components";
 import { AIResourceAutoForm } from "../../ai";
@@ -18,9 +20,9 @@ export type CreateResourceDialogProps = {
   enableQuery: boolean;
 };
 
-const selector = (state: PipelineBuilderStore) => ({
-  state: state.createResourceDialogState,
-  updateState: state.updateCreateResourceDialogState,
+const selector = (store: InstillStore) => ({
+  state: store.createResourceDialogState,
+  updateState: store.updateCreateResourceDialogState,
 });
 
 export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
@@ -34,7 +36,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
       onSelectedExistingResource,
     },
     updateState,
-  } = usePipelineBuilderStore(selector, shallow);
+  } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { entity } = router.query;
 

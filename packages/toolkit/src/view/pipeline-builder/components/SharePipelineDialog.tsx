@@ -13,13 +13,13 @@ import {
   UpdateUserPipelinePayload,
   env,
   getInstillApiErrorMessage,
+  useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../lib";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 import { LoadingSpin } from "../../../components";
-import { usePipelineBuilderStore } from "../usePipelineBuilderStore";
 
 export type SharePipelineDialogProps = {
   accessToken: Nullable<string>;
@@ -37,7 +37,7 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
   const [isUpdatingShareCodePermission, setIsUpdatingShareCodePermission] =
     React.useState(false);
 
-  const pipelineIsNew = usePipelineBuilderStore((state) => state.pipelineIsNew);
+  const pipelineIsNew = useInstillStore((state) => state.pipelineIsNew);
 
   const { toast } = useToast();
 

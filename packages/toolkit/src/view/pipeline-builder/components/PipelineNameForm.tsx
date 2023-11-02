@@ -4,41 +4,39 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
 import * as z from "zod";
-import { shallow } from "zustand/shallow";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
+import { useShallow } from "zustand/react/shallow";
 
 import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
-import {
   CreateUserPipelinePayload,
+  InstillStore,
   Nullable,
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
+  useInstillStore,
   useRenameUserPipeline,
   useUpdateUserPipeline,
 } from "../../../lib";
 import { constructPipelineRecipe, createInitialGraphData } from "../lib";
 import { AutoresizeInputWrapper } from "../../../components";
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  pipelineId: state.pipelineId,
-  setPipelineId: state.setPipelineId,
-  setPipelineUid: state.setPipelineUid,
-  setPipelineName: state.setPipelineName,
-  nodes: state.nodes,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  pipelineIsNew: state.pipelineIsNew,
-  testModeEnabled: state.testModeEnabled,
-  updatePipelineIsNew: state.updatePipelineIsNew,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
-  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+const selector = (store: InstillStore) => ({
+  pipelineId: store.pipelineId,
+  setPipelineId: store.setPipelineId,
+  setPipelineUid: store.setPipelineUid,
+  setPipelineName: store.setPipelineName,
+  nodes: store.nodes,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  pipelineIsNew: store.pipelineIsNew,
+  testModeEnabled: store.testModeEnabled,
+  updatePipelineIsNew: store.updatePipelineIsNew,
+  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
 export type PipelineNameFormProps = {
@@ -81,7 +79,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     updatePipelineIsNew,
     pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     form.reset({
