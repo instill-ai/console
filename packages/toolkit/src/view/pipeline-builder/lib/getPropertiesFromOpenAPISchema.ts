@@ -1,12 +1,12 @@
-import { OpenAPIV3 } from "openapi-types";
+import { InstillJSONSchema } from "../../../lib";
 
-export type InstillAIOpenAPIProperty = OpenAPIV3.SchemaObject & {
+export type InstillAIOpenAPIProperty = InstillJSONSchema & {
   path?: string;
   instillFormat?: string;
 };
 
 export function getPropertiesFromOpenAPISchema(
-  schema: OpenAPIV3.SchemaObject,
+  schema: InstillJSONSchema,
   parentKey?: string,
   title?: string,
   parentIsArray?: boolean
@@ -15,20 +15,18 @@ export function getPropertiesFromOpenAPISchema(
 
   if (schema.type === "object") {
     if (schema.properties) {
-      Object.entries(schema.properties as OpenAPIV3.SchemaObject).map(
-        ([key, value]) => {
-          const parentKeyList = parentKey ? parentKey.split(".") : [];
+      Object.entries(schema.properties).map(([key, value]) => {
+        const parentKeyList = parentKey ? parentKey.split(".") : [];
 
-          properties = [
-            ...properties,
-            ...getPropertiesFromOpenAPISchema(
-              value,
-              [...parentKeyList, key].join("."),
-              key
-            ),
-          ];
-        }
-      );
+        properties = [
+          ...properties,
+          ...getPropertiesFromOpenAPISchema(
+            value,
+            [...parentKeyList, key].join("."),
+            key
+          ),
+        ];
+      });
     }
   } else if (schema.type === "array") {
     properties = [
@@ -36,11 +34,11 @@ export function getPropertiesFromOpenAPISchema(
       {
         ...schema,
         items: getPropertiesFromOpenAPISchema(
-          schema.items as OpenAPIV3.SchemaObject,
+          schema.items as InstillJSONSchema,
           parentKey,
           undefined,
           true
-        ) as OpenAPIV3.ArraySchemaObject["items"],
+        ) as InstillJSONSchema["items"],
         path: parentKey,
         title: schema.title ? schema.title : title,
       },

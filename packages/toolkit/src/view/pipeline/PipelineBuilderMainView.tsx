@@ -83,6 +83,8 @@ export const PipelineBuilderMainView = (
     updateCurrentVersion,
   } = useInstillStore(useShallow(selector));
 
+  useSmartHint();
+
   const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
     React.useState(false);
 
@@ -110,8 +112,6 @@ export const PipelineBuilderMainView = (
     accessToken,
     retry: false,
   });
-
-  useSmartHint(pipeline.isSuccess ? pipeline.data : null);
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) return;

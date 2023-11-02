@@ -1,11 +1,11 @@
 import { OpenAPIV3 } from "openapi-types";
-import { Nullable } from "../../../lib";
+import { InstillJSONSchema, Nullable } from "../../../lib";
 
 export function getPipelineInputOutputSchema(
   schema: Nullable<OpenAPIV3.Document>
 ) {
-  let inputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
-  let outputSchema: Nullable<OpenAPIV3.SchemaObject> = null;
+  let inputSchema: Nullable<InstillJSONSchema> = null;
+  let outputSchema: Nullable<InstillJSONSchema> = null;
 
   if (!schema) {
     return { outputSchema, inputSchema };
@@ -18,7 +18,7 @@ export function getPipelineInputOutputSchema(
           ?.requestBody as OpenAPIV3.RequestBodyObject
       ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
     ).properties?.inputs as OpenAPIV3.ArraySchemaObject
-  ).items as OpenAPIV3.SchemaObject;
+  ).items as InstillJSONSchema;
 
   outputSchema = (
     (
@@ -30,7 +30,7 @@ export function getPipelineInputOutputSchema(
         ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
       )["application/json"]?.schema as OpenAPIV3.SchemaObject
     ).properties?.outputs as OpenAPIV3.ArraySchemaObject
-  ).items as OpenAPIV3.SchemaObject;
+  ).items as InstillJSONSchema;
 
   return { outputSchema, inputSchema };
 }

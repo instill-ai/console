@@ -39,5 +39,5 @@ export const useSmartHint = () => {
     }
 
     updateSmartHints(() => smartHints);
-  }, [nodes]);
+  }, [nodes, updateSmartHints]);
 };

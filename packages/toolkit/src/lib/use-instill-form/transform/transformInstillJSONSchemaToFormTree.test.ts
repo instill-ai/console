@@ -1,5 +1,5 @@
 import { transformInstillJSONSchemaToFormTree } from ".";
-import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "../type";
+import { InstillFormTree, InstillJSONSchema } from "../type";
 import { test, expect } from "vitest";
 
 test("should transform basic JSON schema to formTree", () => {
