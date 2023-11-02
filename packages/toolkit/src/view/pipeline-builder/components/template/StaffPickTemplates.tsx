@@ -1,33 +1,32 @@
 import cn from "clsx";
 import * as React from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
+import { useRouter } from "next/router";
+import { Button, useToast } from "@instill-ai/design-system";
+
 import { PipelineTemplate, PipelineTemplatesByCategory } from "../../type";
 import { templates } from "../../lib/templates";
-import { Button, useToast } from "@instill-ai/design-system";
 import { TemplateCard } from "./TemplateCard";
 import { createInitialGraphData } from "../../lib";
 import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
-import {
   ConnectorDefinition,
+  InstillStore,
   Nullable,
   PipelineComponent,
   PipelineRecipe,
   generateRandomReadableName,
+  useInstillStore,
 } from "../../../../lib";
-import { useRouter } from "next/router";
 import { FullTemplatesCommand } from "./FullTemplatesCommand";
 
-const selector = (state: PipelineBuilderStore) => ({
-  setPipelineId: state.setPipelineId,
-  setPipelineName: state.setPipelineName,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  updateInitializedByTemplateOrClone: state.updateInitializedByTemplateOrClone,
-  updatePipelineIsNew: state.updatePipelineIsNew,
-  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
+const selector = (store: InstillStore) => ({
+  setPipelineId: store.setPipelineId,
+  setPipelineName: store.setPipelineName,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  updateInitializedByTemplateOrClone: store.updateInitializedByTemplateOrClone,
+  updatePipelineIsNew: store.updatePipelineIsNew,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
 export type StaffPickTemplatesProps = {
@@ -53,7 +52,7 @@ export const StaffPickTemplates = ({
     updateInitializedByTemplateOrClone,
     updatePipelineIsNew,
     updatePipelineRecipeIsDirty,
-  } = usePipelineBuilderStore(selector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const templatesByCategory = React.useMemo(() => {
     const result: PipelineTemplatesByCategory = {};
@@ -161,14 +160,14 @@ export const StaffPickTemplates = ({
         className
       )}
     >
-      <div className="flex flex-row px-4 py-2 border-b border-semantic-bg-line">
+      <div className="flex flex-row border-b border-semantic-bg-line px-4 py-2">
         <svg
           width="112"
           height="11"
           viewBox="0 0 112 11"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="mr-20 my-auto"
+          className="my-auto mr-20"
         >
           <g clipPath="url(#clip0_195_13750)">
             <path
@@ -309,7 +308,7 @@ export const StaffPickTemplates = ({
           ))}
         </div>
       </div>
-      <div className="flex flex-row py-3 px-24 gap-x-6">
+      <div className="flex flex-row gap-x-6 px-24 py-3">
         {connectorDefinitions
           ? selectedCategory
             ? templatesByCategory[selectedCategory]
@@ -339,7 +338,7 @@ export const StaffPickTemplates = ({
           : [0, 1, 2].map((e) => (
               <div
                 key={`template-skeleton-${e}`}
-                className="block w-[215px] h-[130px] bg-semantic-bg-line rounded-[4px] animate-pulse"
+                className="block h-[130px] w-[215px] animate-pulse rounded-[4px] bg-semantic-bg-line"
               />
             ))}
 

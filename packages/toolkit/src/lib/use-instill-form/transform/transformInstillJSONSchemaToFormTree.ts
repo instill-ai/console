@@ -1,4 +1,4 @@
-import { JSONSchema7Type, JSONSchema7TypeName } from "json-schema";
+import { JSONSchema7TypeName } from "json-schema";
 import { Nullable } from "../../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
 import {

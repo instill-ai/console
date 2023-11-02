@@ -1,14 +1,10 @@
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { shallow } from "zustand/shallow";
 import { StartNodeData } from "../../type";
 import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
+import { useShallow } from "zustand/react/shallow";
 
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
 import {
   recursiveRemoveUndefinedAndNullFromArray,
   recursiveReplaceNullAndEmptyStringWithUndefined,
@@ -16,6 +12,8 @@ import {
 import { CustomHandle } from "../CustomHandle";
 import { useStartOperatorTestModeInputForm } from "../../use-node-input-fields";
 import {
+  InstillStore,
+  useInstillStore,
   useTriggerUserPipeline,
   useTriggerUserPipelineRelease,
 } from "../../../../lib";
@@ -28,15 +26,15 @@ export const CreateStartOperatorInputSchema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
 });
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  pipelineIsNew: state.pipelineIsNew,
-  pipelineName: state.pipelineName,
-  nodes: state.nodes,
-  edges: state.edges,
-  testModeEnabled: state.testModeEnabled,
-  updateTestModeTriggerResponse: state.updateTestModeTriggerResponse,
-  accessToken: state.accessToken,
-  currentVersion: state.currentVersion,
+const selector = (store: InstillStore) => ({
+  pipelineIsNew: store.pipelineIsNew,
+  pipelineName: store.pipelineName,
+  nodes: store.nodes,
+  edges: store.edges,
+  testModeEnabled: store.testModeEnabled,
+  updateTestModeTriggerResponse: store.updateTestModeTriggerResponse,
+  accessToken: store.accessToken,
+  currentVersion: store.currentVersion,
 });
 
 export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -50,7 +48,7 @@ export const StartNode = ({ data, id }: NodeProps<StartNodeData>) => {
     updateTestModeTriggerResponse,
     accessToken,
     currentVersion,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
 

@@ -13,7 +13,7 @@ import {
   QueryClientProvider,
   AmplitudeCtx,
   ReactQueryDevtools,
-  usePipelineBuilderStore,
+  useInstillStore,
   useCreateResourceFormStore,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
@@ -47,7 +47,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const [previousURL, setPreviousUrl] = useState("");
   const router = useRouter();
 
-  const initPipelineBuilder = usePipelineBuilderStore((state) => state.init);
+  const initPipelineBuilder = useInstillStore(
+    (state) => state.initPipelineBuilder
+  );
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (state) => state.init
   );

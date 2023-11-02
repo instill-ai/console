@@ -45,13 +45,15 @@ export const OneOfConditionField = ({
   // Once the condition is changed, we need to reset the child form data
   // of the previous condition.
 
+  const { reset } = form;
+
   React.useEffect(() => {
     if (prevSelectedConditionMap) {
       const formValues = form.getValues();
       recursivelyResetFormData(tree, prevSelectedConditionMap, formValues);
-      form.reset(formValues);
+      reset(formValues);
     }
-  }, [prevSelectedConditionMap, selectedConditionMap]);
+  }, [prevSelectedConditionMap, selectedConditionMap, reset, tree]);
 
   return (
     <div key={path} className="flex flex-col gap-y-5">

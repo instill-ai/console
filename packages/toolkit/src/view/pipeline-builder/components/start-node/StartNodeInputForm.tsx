@@ -10,19 +10,18 @@ import {
   Input,
   Tag,
 } from "@instill-ai/design-system";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useShallow } from "zustand/react/shallow";
+
 import { StartNodeInputType } from "../StartNodeInputType";
 import {
+  InstillStore,
   Nullable,
   StartOperatorInputSingularType,
   StartOperatorInputType,
+  useInstillStore,
 } from "../../../../lib";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
 import { PipelineComponentReference, StartNodeData } from "../../type";
 import {
   composeEdgesFromReferences,
@@ -34,7 +33,7 @@ export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
 });
 
-const selector = (store: PipelineBuilderStore) => ({
+const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
@@ -51,7 +50,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
     updatePipelineRecipeIsDirty,
     isOwner,
     currentVersion,
-  } = usePipelineBuilderStore(selector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [selectedType, setSelectedType] =

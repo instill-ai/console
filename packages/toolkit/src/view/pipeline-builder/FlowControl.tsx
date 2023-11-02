@@ -1,8 +1,9 @@
 import * as React from "react";
 import { isAxiosError } from "axios";
-import { shallow } from "zustand/shallow";
-
+import { Node, Position, ReactFlowInstance } from "reactflow";
+import { useRouter } from "next/router";
 import { Button, Icons, useToast } from "@instill-ai/design-system";
+import { useShallow } from "zustand/react/shallow";
 
 import {
   constructPipelineRecipe,
@@ -10,12 +11,6 @@ import {
   getAiConnectorDefaultConfiguration,
   generateNewNodeIdx,
 } from "./lib";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "./usePipelineBuilderStore";
-import { Node, Position, ReactFlowInstance } from "reactflow";
-
 import {
   ReleasePipelineModal,
   PipelineToolkitModal,
@@ -29,6 +24,7 @@ import {
   CreateUserPipelinePayload,
   GeneralRecord,
   InstillAppEnv,
+  InstillStore,
   Nullable,
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
@@ -36,33 +32,33 @@ import {
   generateRandomReadableName,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
+  useInstillStore,
   useUpdateUserPipeline,
   useUser,
 } from "../../lib";
 import { StartNodeData } from "./type";
-import { useRouter } from "next/router";
 import { SharePipelineDialog } from "./components/SharePipelineDialog";
 import { LoadingSpin } from "../../components";
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  nodes: state.nodes,
-  edges: state.edges,
-  pipelineId: state.pipelineId,
-  pipelineDescription: state.pipelineDescription,
-  setPipelineUid: state.setPipelineUid,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
-  updatePipelineRecipeIsDirty: state.updatePipelineRecipeIsDirty,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  updatePipelineIsNew: state.updatePipelineIsNew,
-  pipelineIsNew: state.pipelineIsNew,
-  selectResourceDialogIsOpen: state.selectResourceDialogIsOpen,
-  updateSelectResourceDialogIsOpen: state.updateSelectResourceDialogIsOpen,
-  updateSelectedConnectorNodeId: state.updateSelectedConnectorNodeId,
-  testModeEnabled: state.testModeEnabled,
-  updateTestModeEnabled: state.updateTestModeEnabled,
-  isOwner: state.isOwner,
-  currentVersion: state.currentVersion,
+const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  edges: store.edges,
+  pipelineId: store.pipelineId,
+  pipelineDescription: store.pipelineDescription,
+  setPipelineUid: store.setPipelineUid,
+  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  updatePipelineIsNew: store.updatePipelineIsNew,
+  pipelineIsNew: store.pipelineIsNew,
+  selectResourceDialogIsOpen: store.selectResourceDialogIsOpen,
+  updateSelectResourceDialogIsOpen: store.updateSelectResourceDialogIsOpen,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  testModeEnabled: store.testModeEnabled,
+  updateTestModeEnabled: store.updateTestModeEnabled,
+  isOwner: store.isOwner,
+  currentVersion: store.currentVersion,
 });
 
 export type FlowControlProps = {
@@ -93,7 +89,7 @@ export const FlowControl = (props: FlowControlProps) => {
     updateSelectedConnectorNodeId,
     isOwner,
     currentVersion,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { entity } = router.query;
 

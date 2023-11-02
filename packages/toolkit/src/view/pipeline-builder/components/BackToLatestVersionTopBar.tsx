@@ -1,22 +1,19 @@
-import { shallow } from "zustand/shallow";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../usePipelineBuilderStore";
-import { Nullable } from "../../../lib";
+import { useShallow } from "zustand/react/shallow";
+
+import { InstillStore, Nullable, useInstillStore } from "../../../lib";
 import {
   createGraphLayout,
   createInitialGraphData,
   useSortedReleases,
 } from "../lib";
 
-const selector = (state: PipelineBuilderStore) => ({
-  pipelineName: state.pipelineName,
-  pipelineIsNew: state.pipelineIsNew,
-  updateCurrentVersion: state.updateCurrentVersion,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  currentVersion: state.currentVersion,
+const selector = (store: InstillStore) => ({
+  pipelineName: store.pipelineName,
+  pipelineIsNew: store.pipelineIsNew,
+  updateCurrentVersion: store.updateCurrentVersion,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  currentVersion: store.currentVersion,
 });
 
 export type BackToLatestVersionTopBarProps = {
@@ -35,7 +32,7 @@ export const BackToLatestVersionTopBar = (
     updateNodes,
     updateEdges,
     currentVersion,
-  } = usePipelineBuilderStore(selector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
     pipelineName,
@@ -46,15 +43,15 @@ export const BackToLatestVersionTopBar = (
   return (
     <>
       {currentVersion === "latest" || sortedReleases.length === 0 ? null : (
-        <div className="flex flex-col bg-semantic-bg-base-bg w-full h-8">
+        <div className="flex h-8 w-full flex-col bg-semantic-bg-base-bg">
           <p className="m-auto">
-            <span className="product-body-text-4-medium text-semantic-fg-secondary ">
+            <span className="text-semantic-fg-secondary product-body-text-4-medium ">
               You are viewing a past version of this pipeline, which is not
               editable.
             </span>
             {` `}
             <span
-              className="hover:!underline text-semantic-accent-default cursor-pointer product-body-text-4-medium"
+              className="cursor-pointer text-semantic-accent-default product-body-text-4-medium hover:!underline"
               onClick={() => {
                 if (sortedReleases.length === 0) {
                   return;
@@ -79,7 +76,7 @@ export const BackToLatestVersionTopBar = (
               Click Here
             </span>
             {` `}
-            <span className="product-body-text-4-medium text-semantic-fg-secondary">
+            <span className="text-semantic-fg-secondary product-body-text-4-medium">
               for the latest version.
             </span>
           </p>

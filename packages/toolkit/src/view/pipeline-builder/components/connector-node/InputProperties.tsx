@@ -1,19 +1,18 @@
 import * as React from "react";
 import { OpenAPIV3 } from "openapi-types";
+import { useShallow } from "zustand/react/shallow";
+
 import {
+  InstillStore,
   Nullable,
   PipelineConnectorComponent,
   PipelineTrace,
+  useInstillStore,
 } from "../../../../lib";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
 import { getPropertiesFromOpenAPISchema } from "../../lib";
 import { InputPropertyItem } from "./InputPropertyItem";
 
-const selector = (store: PipelineBuilderStore) => ({
+const selector = (store: InstillStore) => ({
   expandAllNodes: store.expandAllNodes,
 });
 
@@ -26,7 +25,7 @@ export const InputProperties = ({
   inputSchema: Nullable<OpenAPIV3.SchemaObject>;
   traces: Nullable<Record<string, PipelineTrace>>;
 }) => {
-  const { expandAllNodes } = usePipelineBuilderStore(selector, shallow);
+  const { expandAllNodes } = useInstillStore(useShallow(selector));
 
   const [exapndInputs, setExpandInputs] = React.useState(false);
 

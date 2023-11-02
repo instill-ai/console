@@ -8,17 +8,16 @@ import {
   Textarea,
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useShallow } from "zustand/react/shallow";
+
 import {
   GeneralRecord,
+  InstillStore,
   Nullable,
   PipelineConnectorComponent,
+  useInstillStore,
 } from "../../../../lib";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  PipelineBuilderStore,
-  usePipelineBuilderStore,
-} from "../../usePipelineBuilderStore";
-import { shallow } from "zustand/shallow";
 import { PipelineComponentReference } from "../../type";
 import {
   composeEdgesFromReferences,
@@ -30,7 +29,7 @@ export const Schema = z.object({
   value: z.string().min(1, { message: "Value is required" }),
 });
 
-const selector = (store: PipelineBuilderStore) => ({
+const selector = (store: InstillStore) => ({
   testModeEnabled: store.testModeEnabled,
   nodes: store.nodes,
   updateNodes: store.updateNodes,
@@ -64,7 +63,7 @@ export const DataConnectorFreeForm = ({
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
-  } = usePipelineBuilderStore(selector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   function onSubmitDataConnectorInput(formData: z.infer<typeof Schema>) {
     const newNodes = nodes.map((node) => {
@@ -172,7 +171,7 @@ export const DataConnectorFreeForm = ({
                   <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
                     {key}
                   </p>
-                  <div className="min-h-[32px] min-w-[100px] break-all rounded-sm text-semantic-fg-secondary border border-semantic-bg-line px-2 py-1.5 product-body-text-3-regular">
+                  <div className="min-h-[32px] min-w-[100px] break-all rounded-sm border border-semantic-bg-line px-2 py-1.5 text-semantic-fg-secondary product-body-text-3-regular">
                     {value}
                   </div>
                 </div>
@@ -275,8 +274,8 @@ export const DataConnectorFreeForm = ({
               return (
                 <div key={key} className="flex flex-col">
                   <div className="flex flex-row items-center justify-between">
-                    <div className="flex flex-col gap-y-1 my-auto">
-                      <p className="my-auto product-body-text-3-semibold text-semantic-fg-primary">
+                    <div className="my-auto flex flex-col gap-y-1">
+                      <p className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
                         {key}
                       </p>
                     </div>

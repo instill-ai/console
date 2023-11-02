@@ -1,15 +1,20 @@
 import cn from "clsx";
 import * as React from "react";
-import { shallow } from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
+import { useShallow } from "zustand/react/shallow";
+import { useToast } from "@instill-ai/design-system";
+import { Edge, Node, ReactFlowInstance } from "reactflow";
+import { isAxiosError } from "axios";
 
 import {
   CreateUserPipelinePayload,
   GeneralPageProp,
+  InstillStore,
   Nullable,
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
+  useInstillStore,
   useNavigationObserver,
   useUpdateUserPipeline,
   useUser,
@@ -19,36 +24,31 @@ import {
   BottomBar,
   Flow,
   NodeData,
-  PipelineBuilderStore,
   RightPanel,
   constructPipelineRecipe,
   createGraphLayout,
   createInitialGraphData,
-  usePipelineBuilderStore,
 } from "../pipeline-builder";
-import { useToast } from "@instill-ai/design-system";
-import { Edge, Node, ReactFlowInstance } from "reactflow";
 import { WarnUnsavedChangesModal } from "../../components";
-import { isAxiosError } from "axios";
 
-const pipelineBuilderSelector = (state: PipelineBuilderStore) => ({
-  nodes: state.nodes,
-  edges: state.edges,
-  pipelineId: state.pipelineId,
-  setPipelineId: state.setPipelineId,
-  setPipelineUid: state.setPipelineUid,
-  setPipelineName: state.setPipelineName,
-  setPipelineDescription: state.setPipelineDescription,
-  updateNodes: state.updateNodes,
-  updateEdges: state.updateEdges,
-  pipelineRecipeIsDirty: state.pipelineRecipeIsDirty,
-  pipelineIsNew: state.pipelineIsNew,
-  selectedConnectorNodeId: state.selectedConnectorNodeId,
-  updatePipelineOpenAPISchema: state.updatePipelineOpenAPISchema,
-  updateAccessToken: state.updateAccessToken,
-  initializedByTemplateOrClone: state.initializedByTemplateOrClone,
-  updateIsOwner: state.updateIsOwner,
-  updateCurrentVersion: state.updateCurrentVersion,
+const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  edges: store.edges,
+  pipelineId: store.pipelineId,
+  setPipelineId: store.setPipelineId,
+  setPipelineUid: store.setPipelineUid,
+  setPipelineName: store.setPipelineName,
+  setPipelineDescription: store.setPipelineDescription,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
+  pipelineIsNew: store.pipelineIsNew,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updatePipelineOpenAPISchema: store.updatePipelineOpenAPISchema,
+  updateAccessToken: store.updateAccessToken,
+  initializedByTemplateOrClone: store.initializedByTemplateOrClone,
+  updateIsOwner: store.updateIsOwner,
+  updateCurrentVersion: store.updateCurrentVersion,
 });
 
 export type PipelineBuilderMainViewProps = GeneralPageProp;
@@ -80,7 +80,7 @@ export const PipelineBuilderMainView = (
     initializedByTemplateOrClone,
     updateIsOwner,
     updateCurrentVersion,
-  } = usePipelineBuilderStore(pipelineBuilderSelector, shallow);
+  } = useInstillStore(useShallow(selector));
 
   const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
     React.useState(false);
@@ -137,7 +137,6 @@ export const PipelineBuilderMainView = (
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(graphIsInitialized);
     if (graphIsInitialized || !user.isSuccess) return;
 
     updateCurrentVersion(() => "latest");
