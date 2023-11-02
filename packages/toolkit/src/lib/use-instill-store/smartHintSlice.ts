@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 import { InstillStore, InstillStoreMutators, SmartHintSlice } from "./types";
+import { SmartHint } from "../use-smart-hint";
 
 export const createSmartHintSlice: StateCreator<
   InstillStore,
@@ -8,5 +9,11 @@ export const createSmartHintSlice: StateCreator<
   SmartHintSlice
 > = (set) => ({
   smartHints: [],
-  updateSmartHints: (smartHints) => set({ smartHints }),
+  updateSmartHints: (fn: (prev: SmartHint[]) => SmartHint[]) =>
+    set((state) => {
+      return {
+        ...state,
+        smartHints: fn(state.smartHints),
+      };
+    }),
 });

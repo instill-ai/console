@@ -94,7 +94,7 @@ export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;
 
 export type SmartHintSlice = {
   smartHints: SmartHint[];
-  updateSmartHints: (smartHints: SmartHint[]) => void;
+  updateSmartHints: (fn: (prev: SmartHint[]) => SmartHint[]) => void;
 };
 
 export type InstillStore = SmartHintSlice & PipelineBuilderSlice;

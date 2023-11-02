@@ -16,6 +16,7 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useNavigationObserver,
+  useSmartHint,
   useUpdateUserPipeline,
   useUser,
   useUserPipeline,
@@ -81,6 +82,8 @@ export const PipelineBuilderMainView = (
     updateIsOwner,
     updateCurrentVersion,
   } = useInstillStore(useShallow(selector));
+
+  useSmartHint();
 
   const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
     React.useState(false);

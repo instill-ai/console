@@ -111,7 +111,6 @@ export function useInstillForm(
   }, [
     schema,
     formTree,
-    checkIsHidden,
     form,
     selectedConditionMap,
     setSelectedConditionMap,

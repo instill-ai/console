@@ -1,8 +1,8 @@
 import * as React from "react";
-import { OpenAPIV3 } from "openapi-types";
 import { useShallow } from "zustand/react/shallow";
 
 import {
+  InstillJSONSchema,
   InstillStore,
   Nullable,
   PipelineConnectorComponent,
@@ -22,7 +22,7 @@ export const InputProperties = ({
   traces,
 }: {
   component: PipelineConnectorComponent;
-  inputSchema: Nullable<OpenAPIV3.SchemaObject>;
+  inputSchema: Nullable<InstillJSONSchema>;
   traces: Nullable<Record<string, PipelineTrace>>;
 }) => {
   const { expandAllNodes } = useInstillStore(useShallow(selector));

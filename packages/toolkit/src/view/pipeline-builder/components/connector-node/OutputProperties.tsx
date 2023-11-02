@@ -1,8 +1,8 @@
 import * as React from "react";
-import { OpenAPIV3 } from "openapi-types";
 import { useShallow } from "zustand/react/shallow";
 
 import {
+  InstillJSONSchema,
   InstillStore,
   Nullable,
   PipelineConnectorComponent,
@@ -26,7 +26,7 @@ export const OutputProperties = ({
   traces,
 }: {
   component: PipelineConnectorComponent;
-  outputSchema: Nullable<OpenAPIV3.SchemaObject>;
+  outputSchema: Nullable<InstillJSONSchema>;
   traces: Nullable<Record<string, PipelineTrace>>;
 }) => {
   const [exapndOutputs, setExpandOutputs] = React.useState(false);
