@@ -1,9 +1,43 @@
-import { useEffect } from "react";
-import { Pipeline } from "../vdp-sdk";
-import { Nullable } from "../type";
+import * as React from "react";
+import { useShallow } from "zustand/react/shallow";
 
-export const useSmartHint = (pipeline: Nullable<Pipeline>) => {
-  useEffect(() => {
-    console.log("placeholder");
-  }, [pipeline]);
+import { InstillStore, useInstillStore } from "../use-instill-store";
+import { getConnectorInputOutputSchema } from "../../view";
+import { SmartHint } from "./types";
+import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
+import { extractHintsFromConnectorComponentOutputFormTree } from "./extractHintsFromConnectorComponentOutputFormTree";
+
+const selector = (store: InstillStore) => ({
+  updateSmartHints: store.updateSmartHints,
+  nodes: store.nodes,
+});
+
+export const useSmartHint = () => {
+  const { updateSmartHints, nodes } = useInstillStore(useShallow(selector));
+
+  React.useEffect(() => {
+    let smartHints: SmartHint[] = [];
+
+    for (const node of nodes) {
+      if (node.data.nodeType === "connector") {
+        const { outputSchema } = getConnectorInputOutputSchema(
+          node.data.component
+        );
+
+        if (outputSchema) {
+          const outputFormTree =
+            transformInstillJSONSchemaToFormTree(outputSchema);
+
+          const hints = extractHintsFromConnectorComponentOutputFormTree(
+            outputFormTree,
+            node.id
+          );
+
+          smartHints = [...smartHints, ...hints];
+        }
+      }
+    }
+
+    updateSmartHints(() => smartHints);
+  }, [nodes]);
 };

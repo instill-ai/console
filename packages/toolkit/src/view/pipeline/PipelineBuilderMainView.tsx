@@ -16,6 +16,7 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useNavigationObserver,
+  useSmartHint,
   useUpdateUserPipeline,
   useUser,
   useUserPipeline,
@@ -109,6 +110,8 @@ export const PipelineBuilderMainView = (
     accessToken,
     retry: false,
   });
+
+  useSmartHint(pipeline.isSuccess ? pipeline.data : null);
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) return;
