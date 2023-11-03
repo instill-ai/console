@@ -3,10 +3,10 @@ import { removeObjKey } from "../../utility";
 import {
   createUserPipelineReleaseMutation,
   watchUserPipelineReleaseQuery,
-  type CreateUserPipelinePayload,
   type PipelineRelease,
   type PipelineReleaseWatchState,
   type PipelineReleasesWatchState,
+  type CreateUserPipelineReleasePayload,
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
@@ -20,7 +20,7 @@ export const useCreateUserPipelineRelease = () => {
       accessToken,
     }: {
       pipelineName: string;
-      payload: CreateUserPipelinePayload;
+      payload: CreateUserPipelineReleasePayload;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {

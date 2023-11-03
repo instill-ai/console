@@ -1,22 +1,48 @@
 import { Node } from "reactflow";
-import { NodeData, PipelineComponentReference } from "../type";
 
+import {
+  NodeData,
+  PipelineComponentMetadata,
+  PipelineComponentReference,
+} from "../type";
 import {
   extractReferencesFromConfiguration,
   recursiveTransformToString,
 } from ".";
 import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
 import {
+  GeneralRecord,
+  Nullable,
   PipelineConnectorComponent,
   PipelineEndComponent,
   PipelineRecipe,
   PipelineStartComponent,
 } from "../../../lib";
 
-export function createInitialGraphData(recipe: PipelineRecipe) {
+export type CreateInitialGraphDataOptions = {
+  metadata?: GeneralRecord;
+};
+
+export function createInitialGraphData(
+  recipe: PipelineRecipe,
+  options?: CreateInitialGraphDataOptions
+) {
   const nodes: Node<NodeData>[] = [];
 
+  const metadata = options ? options.metadata : null;
+
   for (const component of recipe.components) {
+    let componentMetadata: Nullable<PipelineComponentMetadata> = null;
+
+    if (
+      metadata &&
+      "components" in metadata &&
+      Array.isArray(metadata.components)
+    ) {
+      componentMetadata =
+        metadata.components.find((c) => c.id === component.id) ?? null;
+    }
+
     if (component.id === "start") {
       nodes.push({
         id: component.id,
@@ -31,8 +57,11 @@ export function createInitialGraphData(recipe: PipelineRecipe) {
               .operator_definition,
             resource_name: null,
           },
+          note: componentMetadata ? componentMetadata.note : null,
         },
-        position: { x: 0, y: 0 },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
       });
 
       continue;
@@ -52,8 +81,11 @@ export function createInitialGraphData(recipe: PipelineRecipe) {
               .operator_definition,
             resource_name: null,
           },
+          note: componentMetadata ? componentMetadata.note : null,
         },
-        position: { x: 0, y: 0 },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
       });
       continue;
     }
@@ -70,8 +102,11 @@ export function createInitialGraphData(recipe: PipelineRecipe) {
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
+          note: componentMetadata ? componentMetadata.note : null,
         },
-        position: { x: 0, y: 0 },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
       });
       continue;
     }
@@ -88,8 +123,11 @@ export function createInitialGraphData(recipe: PipelineRecipe) {
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
+          note: componentMetadata ? componentMetadata.note : null,
         },
-        position: { x: 0, y: 0 },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
       });
       continue;
     }
@@ -106,8 +144,11 @@ export function createInitialGraphData(recipe: PipelineRecipe) {
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
+          note: componentMetadata ? componentMetadata.note : null,
         },
-        position: { x: 0, y: 0 },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
       });
       continue;
     }

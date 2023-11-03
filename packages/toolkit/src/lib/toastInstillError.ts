@@ -9,10 +9,10 @@ export function toastInstillError({
 }: {
   title: string;
   toast: UseToastReturn["toast"];
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   error: any;
 }) {
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-
   if (isAxiosError(error)) {
     toast({
       title,

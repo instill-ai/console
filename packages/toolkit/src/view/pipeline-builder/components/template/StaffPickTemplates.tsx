@@ -7,7 +7,7 @@ import { Button, useToast } from "@instill-ai/design-system";
 import { PipelineTemplate, PipelineTemplatesByCategory } from "../../type";
 import { templates } from "../../lib/templates";
 import { TemplateCard } from "./TemplateCard";
-import { createInitialGraphData } from "../../lib";
+import { createGraphLayout, createInitialGraphData } from "../../lib";
 import {
   ConnectorDefinition,
   InstillStore,
@@ -143,14 +143,19 @@ export const StaffPickTemplates = ({
     );
 
     const randomName = generateRandomReadableName();
-    setPipelineId(randomName);
-    setPipelineName(`users/${entity}/pipelines/${randomName}`);
-    updatePipelineRecipeIsDirty(() => true);
-    updateNodes(() => initialGraphData.nodes);
-    updateEdges(() => initialGraphData.edges);
-    updateInitializedByTemplateOrClone(() => true);
-    updatePipelineIsNew(() => true);
-    router.push(`/${entity}/pipelines/${randomName}`);
+
+    createGraphLayout(initialGraphData.nodes, initialGraphData.edges).then(
+      (graphData) => {
+        updateNodes(() => graphData.nodes);
+        updateEdges(() => graphData.edges);
+        setPipelineId(randomName);
+        setPipelineName(`users/${entity}/pipelines/${randomName}`);
+        updatePipelineRecipeIsDirty(() => true);
+        updateInitializedByTemplateOrClone(() => true);
+        updatePipelineIsNew(() => true);
+        router.push(`/${entity}/pipelines/${randomName}`);
+      }
+    );
   }
 
   return (

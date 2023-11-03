@@ -1,9 +1,8 @@
 import cn from "clsx";
 import * as React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useShallow } from "zustand/react/shallow";
 import { useToast } from "@instill-ai/design-system";
-import { Edge, Node, ReactFlowInstance } from "reactflow";
+import { ReactFlowInstance } from "reactflow";
 import { isAxiosError } from "axios";
 
 import {
@@ -16,40 +15,28 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useNavigationObserver,
+  usePipelineBuilderGraph,
   useSmartHint,
   useUpdateUserPipeline,
-  useUser,
   useUserPipeline,
 } from "../../lib";
 import {
   BottomBar,
   Flow,
-  NodeData,
   RightPanel,
+  composePipelineMetadataFromNodes,
   constructPipelineRecipe,
-  createGraphLayout,
-  createInitialGraphData,
 } from "../pipeline-builder";
 import { WarnUnsavedChangesModal } from "../../components";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  edges: store.edges,
   pipelineId: store.pipelineId,
-  setPipelineId: store.setPipelineId,
-  setPipelineUid: store.setPipelineUid,
-  setPipelineName: store.setPipelineName,
-  setPipelineDescription: store.setPipelineDescription,
-  updateNodes: store.updateNodes,
-  updateEdges: store.updateEdges,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
   updatePipelineOpenAPISchema: store.updatePipelineOpenAPISchema,
   updateAccessToken: store.updateAccessToken,
-  initializedByTemplateOrClone: store.initializedByTemplateOrClone,
-  updateIsOwner: store.updateIsOwner,
-  updateCurrentVersion: store.updateCurrentVersion,
 });
 
 export type PipelineBuilderMainViewProps = GeneralPageProp;
@@ -65,22 +52,12 @@ export const PipelineBuilderMainView = (
 
   const {
     nodes,
-    edges,
     pipelineId,
-    setPipelineId,
-    setPipelineUid,
-    setPipelineName,
-    setPipelineDescription,
-    updateNodes,
-    updateEdges,
     pipelineRecipeIsDirty,
     pipelineIsNew,
     selectedConnectorNodeId,
     updatePipelineOpenAPISchema,
     updateAccessToken,
-    initializedByTemplateOrClone,
-    updateIsOwner,
-    updateCurrentVersion,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -99,11 +76,6 @@ export const PipelineBuilderMainView = (
       setWarnUnsaveChangesModalIsOpen(true);
     },
     router,
-  });
-  const user = useUser({
-    enabled: enableQuery,
-    accessToken,
-    retry: false,
   });
 
   const pipeline = useUserPipeline({
@@ -133,163 +105,13 @@ export const PipelineBuilderMainView = (
   }, [pipeline.isError, pipelineIsNew, router, entity]);
 
   /* -------------------------------------------------------------------------
-   * Set initial pipeline node data if pipeline is new
-   * initialize graph if pipeline is not new
+   * Initialize the pipeline graph
    * -----------------------------------------------------------------------*/
 
-  const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
-
-  React.useEffect(() => {
-    if (graphIsInitialized || !user.isSuccess) return;
-
-    updateCurrentVersion(() => "latest");
-
-    // If the pipeline is new, we need to give it initial data
-    if (pipelineIsNew) {
-      let newNodes: Node<NodeData>[] = [];
-      let newEdges: Edge[] = [];
-
-      updateIsOwner(() => true);
-
-      if (initializedByTemplateOrClone) {
-        newNodes = nodes;
-        newEdges = edges;
-      } else {
-        const initialEmptyNodeId = uuidv4();
-
-        newNodes = [
-          {
-            id: "start",
-            type: "startNode",
-            data: {
-              nodeType: "start",
-              component: {
-                id: "start",
-                type: "COMPONENT_TYPE_OPERATOR",
-                configuration: { metadata: {} },
-                resource_name: null,
-                resource: null,
-                definition_name: "operator-definitions/op-start",
-                operator_definition: null,
-              },
-            },
-            position: { x: 0, y: 0 },
-          },
-          {
-            id: initialEmptyNodeId,
-            type: "emptyNode",
-            data: {
-              nodeType: "empty",
-              component: null,
-            },
-            position: { x: 0, y: 0 },
-          },
-          {
-            id: "end",
-            type: "endNode",
-            data: {
-              nodeType: "end",
-              component: {
-                id: "end",
-                type: "COMPONENT_TYPE_OPERATOR",
-                configuration: {
-                  metadata: {},
-                  input: {},
-                },
-                resource_name: null,
-                resource: null,
-                definition_name: "operator-definitions/op-end",
-                operator_definition: null,
-              },
-            },
-            position: { x: 0, y: 0 },
-          },
-        ];
-        newEdges = [
-          {
-            id: "start-empty",
-            type: "customEdge",
-            source: "start",
-            target: initialEmptyNodeId,
-          },
-          {
-            id: "empty-end",
-            type: "customEdge",
-            source: initialEmptyNodeId,
-            target: "end",
-          },
-        ];
-      }
-
-      createGraphLayout(newNodes, newEdges)
-        .then((graphData) => {
-          updateNodes(() => graphData.nodes);
-          updateEdges(() => graphData.edges);
-          setGraphIsInitialized(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      return;
-    }
-
-    // If the pipeline is not new, but we get the slug, we need to set the
-    // pipeline id
-
-    if (!pipeline.isSuccess) {
-      if (id) {
-        setPipelineId(id.toString());
-      }
-      return;
-    }
-
-    // Check whether current user is the owner of the pipeline
-    if (pipeline.data.user !== user.data.name) {
-      updateIsOwner(() => false);
-    } else {
-      updateIsOwner(() => true);
-    }
-
-    // If the pipeline is not new and we have the pipeline data, we need to
-    // set the pipeline id and update the graph
-
-    setPipelineUid(pipeline.data.uid);
-    setPipelineId(pipeline.data.id);
-    setPipelineName(pipeline.data.name);
-    setPipelineDescription(pipeline.data.description);
-
-    const initialGraphData = createInitialGraphData(pipeline.data.recipe);
-
-    createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
-      .then((graphData) => {
-        updateNodes(() => graphData.nodes);
-        updateEdges(() => graphData.edges);
-        setGraphIsInitialized(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return;
-  }, [
-    pipelineIsNew,
-    pipeline.isSuccess,
-    updateEdges,
-    updateNodes,
-    pipeline.data,
-    setPipelineDescription,
-    setPipelineId,
-    setPipelineUid,
-    id,
-    setPipelineName,
-    graphIsInitialized,
-    nodes,
-    edges,
-    initializedByTemplateOrClone,
-    updateIsOwner,
-    user.data?.name,
-    user.isSuccess,
-    updateCurrentVersion,
-  ]);
+  const { graphIsInitialized } = usePipelineBuilderGraph({
+    enableQuery,
+    accessToken,
+  });
 
   /* -------------------------------------------------------------------------
    * Render
@@ -359,6 +181,7 @@ export const PipelineBuilderMainView = (
             const payload: UpdateUserPipelinePayload = {
               name: `users/${entity}/pipelines/${pipelineId}`,
               recipe: constructPipelineRecipe(nodes),
+              metadata: composePipelineMetadataFromNodes(nodes),
             };
 
             try {
@@ -398,6 +221,7 @@ export const PipelineBuilderMainView = (
           const payload: CreateUserPipelinePayload = {
             id: pipelineId,
             recipe: constructPipelineRecipe(nodes),
+            metadata: composePipelineMetadataFromNodes(nodes),
           };
 
           try {

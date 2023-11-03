@@ -11,21 +11,25 @@ import {
 export type ConnectorNodeData = {
   nodeType: "connector";
   component: PipelineConnectorComponent;
+  note: Nullable<string>;
 };
 
 export type EmptyNodeData = {
   nodeType: "empty";
   component: null;
+  note: null;
 };
 
 export type StartNodeData = {
   nodeType: "start";
   component: PipelineStartComponent;
+  note: Nullable<string>;
 };
 
 export type EndNodeData = {
   nodeType: "end";
   component: PipelineEndComponent;
+  note: Nullable<string>;
 };
 
 export type NodeData =
@@ -68,3 +72,14 @@ export type PipelineTemplate = {
 };
 
 export type PipelineTemplatesByCategory = Record<string, PipelineTemplate[]>;
+
+export type PipelineMetadata = {
+  components: PipelineComponentMetadata[];
+};
+
+export type PipelineComponentMetadata = {
+  id: string;
+  x: number;
+  y: number;
+  note: Nullable<string>;
+};

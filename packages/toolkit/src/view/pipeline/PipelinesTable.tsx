@@ -84,6 +84,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
       id: `copy-of-${targetPipeline.id}`,
       description: targetPipeline.description,
       recipe: getRawPipelineRecipeFromPipelineRecipe(targetPipeline.recipe),
+      metadata: targetPipeline.metadata,
     };
 
     createPipeline.mutate(
