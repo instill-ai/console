@@ -10,10 +10,13 @@ import {
   useInstillStore,
 } from "../../../lib";
 import {
+  checkIsValidPosition,
   createGraphLayout,
   createInitialGraphData,
   useSortedReleases,
 } from "../lib";
+import { Edge, Node } from "reactflow";
+import { NodeData } from "../type";
 
 export type BottomBarProps = {
   enableQuery: boolean;
@@ -93,11 +96,32 @@ export const BottomBar = (props: BottomBarProps) => {
 
                       updateCurrentVersion(() => release.id);
 
-                      const { nodes, edges } = createInitialGraphData(
-                        release.recipe
-                      );
+                      let newNodes: Node<NodeData>[] = [];
+                      let newEdges: Edge[] = [];
 
-                      createGraphLayout(nodes, edges)
+                      if (
+                        checkIsValidPosition(
+                          sortedReleases[0].recipe,
+                          sortedReleases[0].metadata ?? null
+                        )
+                      ) {
+                        const { nodes, edges } = createInitialGraphData(
+                          sortedReleases[0].recipe,
+                          {
+                            metadata: sortedReleases[0].metadata,
+                          }
+                        );
+                        newNodes = nodes;
+                        newEdges = edges;
+                      } else {
+                        const { nodes, edges } = createInitialGraphData(
+                          sortedReleases[0].recipe
+                        );
+                        newNodes = nodes;
+                        newEdges = edges;
+                      }
+
+                      createGraphLayout(newNodes, newEdges)
                         .then((graphData) => {
                           updateNodes(() => graphData.nodes);
                           updateEdges(() => graphData.edges);

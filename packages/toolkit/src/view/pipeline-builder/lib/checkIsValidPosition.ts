@@ -1,11 +1,11 @@
-import { GeneralRecord, PipelineRecipe } from "../../../lib";
+import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
 import { PipelineComponentMetadata } from "../type";
 
 export function checkIsValidPosition(
   recipe: PipelineRecipe,
-  metadata: GeneralRecord
+  metadata: Nullable<GeneralRecord>
 ): boolean {
-  if ("components" in metadata) {
+  if (metadata && "components" in metadata) {
     if (Array.isArray(metadata.components) && metadata.components.length > 0) {
       const componentMetadatas =
         metadata.components as PipelineComponentMetadata[];

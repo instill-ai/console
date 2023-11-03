@@ -20,6 +20,8 @@ export function generateChartData(
   ]);
 
   const xAxis = Array.from(new Set(xAxisSortedDates));
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const yAxis: any = [];
 
   // Initialize yAxis arrays for each pipeline

@@ -3,7 +3,7 @@
 import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, ConnectorResource } from "../connector";
 import { Spec, Visibility } from "../types";
-import { Nullable } from "../../type";
+import { GeneralRecord, Nullable } from "../../type";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -60,6 +60,7 @@ export type Pipeline = {
   openapi_schema: OpenAPIV3.Document;
   owner: string;
   permission: PipelinePermission;
+  metadata: GeneralRecord;
 };
 
 export type OperatorDefinition = {
@@ -108,6 +109,7 @@ export type PipelineRelease = {
   update_time: string;
   visibility: Visibility;
   openapi_schema: OpenAPIV3.Document;
+  metadata: GeneralRecord;
 };
 
 export type PipelineTrace = {

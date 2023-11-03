@@ -1,4 +1,6 @@
+export * from "./checkIsValidPosition";
 export * from "./composeEdgesFromReferences";
+export * from "./composePipelineMetadataFromNodes";
 export * from "./constructPipelineRecipe";
 export * from "./createGraphLayout";
 export * from "./createInitialGraphData";

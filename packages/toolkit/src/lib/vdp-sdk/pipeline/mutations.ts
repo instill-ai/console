@@ -1,4 +1,4 @@
-import { Nullable } from "../../type";
+import { GeneralRecord, Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import {
   Pipeline,
@@ -12,6 +12,7 @@ export type CreateUserPipelinePayload = {
   id: string;
   description?: string;
   recipe: RawPipelineRecipe;
+  metadata: GeneralRecord;
 };
 
 export type CreatePipelineResponse = {
@@ -45,6 +46,7 @@ export type UpdateUserPipelinePayload = {
   description?: string;
   recipe?: RawPipelineRecipe;
   permission?: RawPipelinePermission;
+  metadata?: GeneralRecord;
 };
 
 export type RawPipelinePermission = {

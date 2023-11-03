@@ -10,6 +10,7 @@ import {
   getBlockchainConnectorDefaultConfiguration,
   getAiConnectorDefaultConfiguration,
   generateNewNodeIdx,
+  composePipelineMetadataFromNodes,
 } from "./lib";
 import {
   ReleasePipelineModal,
@@ -118,6 +119,7 @@ export const FlowControl = (props: FlowControlProps) => {
         name: `users/${entity}/pipelines/${pipelineId}`,
         description: pipelineDescription ?? undefined,
         recipe: constructPipelineRecipe(nodes),
+        metadata: composePipelineMetadataFromNodes(nodes),
       };
 
       try {
@@ -160,6 +162,7 @@ export const FlowControl = (props: FlowControlProps) => {
       id: pipelineId,
       description: pipelineDescription ?? undefined,
       recipe: constructPipelineRecipe(nodes),
+      metadata: composePipelineMetadataFromNodes(nodes),
     };
 
     try {
@@ -427,6 +430,7 @@ export const FlowControl = (props: FlowControlProps) => {
               type: componentType,
               connector_definition: resource.connector_definition,
             },
+            note: null,
           },
           position: reactFlowInstance.project({
             x: viewport.x,
@@ -454,6 +458,7 @@ export const FlowControl = (props: FlowControlProps) => {
               connector_definition: resource,
               configuration: configuration ? configuration : {},
             },
+            note: null,
           },
           position: reactFlowInstance.project({
             x: viewport.x,
@@ -544,6 +549,7 @@ export const FlowControl = (props: FlowControlProps) => {
                 const payload: CreateUserPipelinePayload = {
                   id: generateRandomReadableName(),
                   recipe: constructPipelineRecipe(nodes, true),
+                  metadata: composePipelineMetadataFromNodes(nodes),
                 };
 
                 try {

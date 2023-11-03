@@ -21,7 +21,10 @@ import {
   useRenameUserPipeline,
   useUpdateUserPipeline,
 } from "../../../lib";
-import { constructPipelineRecipe, createInitialGraphData } from "../lib";
+import {
+  composePipelineMetadataFromNodes,
+  constructPipelineRecipe,
+} from "../lib";
 import { AutoresizeInputWrapper } from "../../../components";
 
 const selector = (store: InstillStore) => ({
@@ -30,8 +33,6 @@ const selector = (store: InstillStore) => ({
   setPipelineUid: store.setPipelineUid,
   setPipelineName: store.setPipelineName,
   nodes: store.nodes,
-  updateNodes: store.updateNodes,
-  updateEdges: store.updateEdges,
   pipelineIsNew: store.pipelineIsNew,
   testModeEnabled: store.testModeEnabled,
   updatePipelineIsNew: store.updatePipelineIsNew,
@@ -74,8 +75,6 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     pipelineIsNew,
     testModeEnabled,
     nodes,
-    updateNodes,
-    updateEdges,
     updatePipelineIsNew,
     pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
@@ -109,6 +108,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
       const payload: CreateUserPipelinePayload = {
         id: newId,
         recipe: constructPipelineRecipe(nodes),
+        metadata: composePipelineMetadataFromNodes(nodes),
       };
 
       try {
@@ -162,20 +162,16 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
       const payload: UpdateUserPipelinePayload = {
         name: `users/${entity}/pipelines/${pipelineId}`,
         recipe: constructPipelineRecipe(nodes),
+        metadata: composePipelineMetadataFromNodes(nodes),
       };
 
       try {
-        const res = await updateUserPipeline.mutateAsync({
+        await updateUserPipeline.mutateAsync({
           payload,
           accessToken,
         });
 
         updatePipelineRecipeIsDirty(() => false);
-
-        const { nodes, edges } = createInitialGraphData(res.pipeline.recipe);
-
-        updateNodes(() => nodes);
-        updateEdges(() => edges);
       } catch (error) {
         if (isAxiosError(error)) {
           toast({
