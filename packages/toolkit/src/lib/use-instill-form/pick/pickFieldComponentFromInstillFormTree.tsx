@@ -133,22 +133,20 @@ export function pickFieldComponentFromInstillFormTree(
     );
   }
 
-  if (tree._type === "formArray") {
+  if (tree._type === "objectArray") {
     return (
       <React.Fragment key={tree.path || tree.fieldKey}>
-        {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree(
-            property,
-            form,
-            selectedConditionMap,
-            setSelectedConditionMap,
-            {
-              disabledAll,
-              checkIsHiddenByTree,
-              chooseTitleFrom,
-            }
-          );
-        })}
+        {pickFieldComponentFromInstillFormTree(
+          tree.properties,
+          form,
+          selectedConditionMap,
+          setSelectedConditionMap,
+          {
+            disabledAll,
+            checkIsHiddenByTree,
+            chooseTitleFrom,
+          }
+        )}
       </React.Fragment>
     );
   }
@@ -223,6 +221,9 @@ export function pickFieldComponentFromInstillFormTree(
       description={tree.description}
       shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
+      instillAcceptFormats={tree.instillAcceptFormats ?? []}
+      type={tree.type}
+      isRequired={tree.isRequired}
     />
   );
 }

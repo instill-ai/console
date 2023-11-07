@@ -21,7 +21,7 @@ export const FullTemplatesCommand = ({
         onClick={() => {
           setOpen(true);
         }}
-        className="group relative cursor-pointer w-[204px] h-[124px]"
+        className="group relative h-[124px] w-[204px] cursor-pointer"
         onMouseEnter={() => {
           setIsHoverOnTrigger(true);
         }}
@@ -99,11 +99,11 @@ export const FullTemplatesCommand = ({
             </clipPath>
           </defs>
         </svg>
-        <div className="flex flex-row py-[9px] px-3 gap-x-2 absolute right-0 bottom-0 transition-transform group-hover:-translate-y-5">
-          <p className="product-button-button-2 text-semantic-bg-primary">
+        <div className="absolute bottom-0 right-0 flex flex-row gap-x-2 px-3 py-[9px] transition-transform group-hover:-translate-y-5">
+          <p className="text-semantic-bg-primary product-button-button-2">
             All Templates
           </p>
-          <Icons.ArrowNarrowRight className="w-[14px] h-[14px] stroke-semantic-bg-primary" />
+          <Icons.ArrowNarrowRight className="h-[14px] w-[14px] stroke-semantic-bg-primary" />
         </div>
       </button>
       <Command.Dialog
@@ -111,13 +111,18 @@ export const FullTemplatesCommand = ({
         open={open}
         onOpenChange={setOpen}
       >
-        <Command.Input placeholder="Search Template..." />
-        <Command.List className="!max-w-none w-[750px]">
+        <Command.Input
+          startIcon={
+            <Icons.SearchSm className="h-4 w-4 stroke-semantic-bg-line" />
+          }
+          placeholder="Search Template..."
+        />
+        <Command.List className="w-[750px] !max-w-none">
           <Command.Empty>No results found.</Command.Empty>
           {Object.keys(templatesByCategory).map((category) => (
             <React.Fragment key={category}>
               <Command.Group className="!w-full" heading={category}>
-                <div className="grid grid-cols-3 w-full gap-y-4 gap-x-6">
+                <div className="grid w-full grid-cols-3 gap-x-6 gap-y-4">
                   {templatesByCategory[category].map((template) => (
                     <Command.Item
                       key={template.id}

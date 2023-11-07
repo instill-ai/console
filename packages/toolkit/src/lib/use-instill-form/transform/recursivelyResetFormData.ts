@@ -14,10 +14,12 @@ export function recursivelyResetFormData(
       }
       break;
     }
-    case "formArray": {
-      for (const item of resetTree.properties) {
-        recursivelyResetFormData(item, resetSelectedConditionMap, formData);
-      }
+    case "objectArray": {
+      recursivelyResetFormData(
+        resetTree.properties,
+        resetSelectedConditionMap,
+        formData
+      );
       break;
     }
     case "formCondition": {

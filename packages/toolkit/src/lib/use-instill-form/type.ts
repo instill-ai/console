@@ -10,6 +10,7 @@ export type InstillCustomProps = {
   instillUpstreamType?: string;
   instillUpstreamTypes?: string[];
   instillFormat?: string;
+  instillAcceptFormats?: string[];
   instillShortDescription?: string;
   instillUIOrder?: number;
   instillEditOnNodeFields?: string[];
@@ -88,9 +89,9 @@ export type InstillFormConditionItem = {
   jsonSchema: InstillJSONSchema;
 } & InstillFormBaseFields;
 
-export type InstillArrayItem = {
-  _type: "formArray";
-  properties: InstillFormTree[];
+export type InstillObjectArrayItem = {
+  _type: "objectArray";
+  properties: InstillFormTree;
   jsonSchema: InstillJSONSchema;
 } & InstillFormBaseFields;
 
@@ -98,7 +99,7 @@ export type InstillFormTree =
   | InstillFormItem
   | InstillFormGroupItem
   | InstillFormConditionItem
-  | InstillArrayItem;
+  | InstillObjectArrayItem;
 
 export type CheckIsHidden = (props: {
   parentSchema: Nullable<InstillJSONSchema>;

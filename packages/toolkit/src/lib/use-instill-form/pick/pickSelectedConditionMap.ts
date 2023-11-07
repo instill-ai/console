@@ -34,21 +34,19 @@ export function pickSelectedConditionMap({
     return map;
   }
 
-  if (tree._type === "formArray") {
+  if (tree._type === "objectArray") {
     let map: SelectedConditionMap = {};
 
-    tree.properties.map((property) => {
-      const childMap = pickSelectedConditionMap({
-        tree: property,
-        initialValue,
-        parentMap,
-      });
-      map = {
-        ...map,
-        ...parentMap,
-        ...childMap,
-      };
+    const childMap = pickSelectedConditionMap({
+      tree: tree.properties,
+      initialValue,
+      parentMap,
     });
+    map = {
+      ...map,
+      ...parentMap,
+      ...childMap,
+    };
 
     return map;
   }

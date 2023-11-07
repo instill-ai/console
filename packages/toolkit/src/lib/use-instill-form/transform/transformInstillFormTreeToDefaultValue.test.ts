@@ -905,7 +905,7 @@ test("should transform nested formCondition", () => {
   });
 });
 
-test("should transform formArray", () => {
+test("should transform objectArray", () => {
   const tree: InstillFormTree = {
     _type: "formGroup",
     fieldKey: null,
@@ -913,19 +913,20 @@ test("should transform formArray", () => {
     isRequired: false,
     jsonSchema: {
       type: "object",
-      required: ["host", "ports"],
+      required: ["ports"],
       properties: {
-        host: {
-          type: "string",
-          description: "Hostname of the database.",
-          example: "hello-world",
-        },
         ports: {
           type: "array",
           items: {
             properties: {
               port: {
-                type: "integer",
+                anyOf: [
+                  {
+                    type: "integer",
+                    instillUpstreamType: "value",
+                  },
+                ],
+                instillUpstreamTypes: ["value"],
                 description: "Port of the database.",
                 examples: [5432],
               },
@@ -937,40 +938,65 @@ test("should transform formArray", () => {
     },
     properties: [
       {
-        description: "Hostname of the database.",
-        example: "hello-world",
-        _type: "formItem",
-        fieldKey: "host",
-        path: "host",
-        isRequired: true,
-        type: "string",
-      },
-      {
-        _type: "formArray",
+        properties: {
+          _type: "formGroup",
+          fieldKey: "ports",
+          path: "ports",
+          isRequired: false,
+          jsonSchema: {
+            properties: {
+              port: {
+                anyOf: [
+                  {
+                    type: "integer",
+                    instillUpstreamType: "value",
+                  },
+                ],
+                instillUpstreamTypes: ["value"],
+                description: "Port of the database.",
+                examples: [5432],
+              },
+            },
+            type: "object",
+          },
+          properties: [
+            {
+              instillUpstreamTypes: ["value"],
+              description: "Port of the database.",
+              examples: [5432],
+              _type: "formItem",
+              fieldKey: "port",
+              path: "ports.port",
+              isRequired: false,
+              type: "integer",
+              isHidden: false,
+              instillAcceptFormats: [],
+            },
+          ],
+        },
+        jsonSchema: {
+          type: "array",
+          items: {
+            properties: {
+              port: {
+                anyOf: [
+                  {
+                    type: "integer",
+                    instillUpstreamType: "value",
+                  },
+                ],
+                instillUpstreamTypes: ["value"],
+                description: "Port of the database.",
+                examples: [5432],
+              },
+            },
+            type: "object",
+          },
+        },
+        _type: "objectArray",
         fieldKey: "ports",
         path: "ports",
         isRequired: true,
-        jsonSchema: {
-          properties: {
-            port: {
-              type: "integer",
-              description: "Port of the database.",
-              examples: [5432],
-            },
-          },
-          type: "object",
-        },
-        properties: [
-          {
-            description: "Port of the database.",
-            examples: [5432],
-            _type: "formItem",
-            fieldKey: "port",
-            path: "ports.port",
-            isRequired: false,
-            type: "integer",
-          },
-        ],
       },
     ],
   };
@@ -978,7 +1004,6 @@ test("should transform formArray", () => {
   const value = transformInstillFormTreeToDefaultValue(tree);
 
   expect(value).toStrictEqual({
-    host: "hello-world",
     ports: [{ port: "5432" }],
   });
 });

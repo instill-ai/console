@@ -1218,6 +1218,4 @@ test("should select the condition in the initial data", () => {
         task: "TASK_SPEECH_RECOGNITION",
       },
     });
-
-  console.log(selectedConditionMap);
 });

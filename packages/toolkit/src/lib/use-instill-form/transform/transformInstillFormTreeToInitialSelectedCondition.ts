@@ -28,13 +28,14 @@ export function transformInstillFormTreeToInitialSelectedCondition(
     }
   }
 
-  if (tree._type === "formArray") {
-    for (const item of tree.properties) {
-      selectedConditionMap = {
-        ...selectedConditionMap,
-        ...transformInstillFormTreeToInitialSelectedCondition(item, options),
-      };
-    }
+  if (tree._type === "objectArray") {
+    selectedConditionMap = {
+      ...selectedConditionMap,
+      ...transformInstillFormTreeToInitialSelectedCondition(
+        tree.properties,
+        options
+      ),
+    };
   }
 
   if (tree._type === "formCondition") {
