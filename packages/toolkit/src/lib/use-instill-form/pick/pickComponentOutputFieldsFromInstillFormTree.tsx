@@ -1,22 +1,39 @@
 import * as React from "react";
 import { InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
-import { PipelineTrace } from "../../vdp-sdk";
+import { PipelineTrace, TriggerUserPipelineResponse } from "../../vdp-sdk";
 import { Nullable } from "../../type";
+import { dot } from "../../dot";
+
+export type PickComponentOutputFieldsFromInstillFormTreeProps =
+  | {
+      tree: InstillFormTree;
+      data: Nullable<PipelineTrace>;
+      nodeType: "connector";
+    }
+  | {
+      tree: InstillFormTree;
+      data: Nullable<TriggerUserPipelineResponse["outputs"]>;
+      nodeType: "end";
+    };
 
 export function pickComponentOutputFieldsFromInstillFormTree(
-  tree: InstillFormTree,
-  trace: Nullable<PipelineTrace>,
-  nodeType: "end" | "connector"
+  props: PickComponentOutputFieldsFromInstillFormTreeProps
 ) {
   // 1. Preprocess
+
+  const { tree, nodeType, data } = props;
 
   // Process value
   let propertyValue: any = null;
 
-  if (trace) {
+  if (nodeType === "connector") {
     if (tree.path) {
-      propertyValue = trace.outputs[0][tree.path];
+      propertyValue = data?.outputs[0][tree.path] ?? null;
+    }
+  } else {
+    if (tree.path && data && data[0]) {
+      propertyValue = dot.getter(data[0], tree.path);
     }
   }
 
@@ -33,21 +50,19 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           {tree.fieldKey || tree.path}
         </p>
         {tree.properties.map((property) => {
-          return pickComponentOutputFieldsFromInstillFormTree(
-            property,
-            trace,
-            nodeType
-          );
+          return pickComponentOutputFieldsFromInstillFormTree({
+            ...props,
+            tree: property,
+          });
         })}
       </div>
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {tree.properties.map((property) => {
-          return pickComponentOutputFieldsFromInstillFormTree(
-            property,
-            trace,
-            nodeType
-          );
+          return pickComponentOutputFieldsFromInstillFormTree({
+            ...props,
+            tree: property,
+          });
         })}
       </React.Fragment>
     );
@@ -62,11 +77,17 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "objectArray") {
     return (
       <React.Fragment key={tree.path || tree.fieldKey}>
-        {pickComponentOutputFieldsFromInstillFormTree(
-          tree.properties,
-          trace,
-          nodeType
-        )}
+        {nodeType === "connector"
+          ? pickComponentOutputFieldsFromInstillFormTree({
+              tree: tree.properties,
+              nodeType,
+              data,
+            })
+          : pickComponentOutputFieldsFromInstillFormTree({
+              tree: tree.properties,
+              nodeType,
+              data,
+            })}
       </React.Fragment>
     );
   }

@@ -170,13 +170,11 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setEnableEdit(true);
   }
 
-  const testModeOutputFields = useComponentOutputFields(
-    pipelineOpenAPIOutputSchema,
-    testModeTriggerResponse?.metadata.traces
-      ? testModeTriggerResponse?.metadata.traces[id]
-      : null,
-    "end"
-  );
+  const testModeOutputFields = useComponentOutputFields({
+    schema: pipelineOpenAPIOutputSchema,
+    data: testModeTriggerResponse?.outputs ?? null,
+    nodeType: "end",
+  });
 
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);

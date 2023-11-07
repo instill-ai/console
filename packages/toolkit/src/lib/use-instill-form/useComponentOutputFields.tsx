@@ -1,20 +1,24 @@
 import * as React from "react";
-import { pickComponentOutputFieldsFromInstillFormTree } from "./pick/pickComponentOutputFieldsFromInstillFormTree";
+import { pickComponentOutputFieldsFromInstillFormTree } from "./pick";
 import { InstillJSONSchema } from "./type";
-import {
-  PipelineConnectorComponent,
-  PipelineTrace,
-  TriggerUserPipelineResponse,
-} from "../vdp-sdk";
-import { getConnectorInputOutputSchema } from "../../view";
+import { PipelineTrace, TriggerUserPipelineResponse } from "../vdp-sdk";
 import { Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 
-export function useComponentOutputFields(
-  schema: Nullable<InstillJSONSchema>,
-  trace: Nullable<PipelineTrace>,
-  nodeType: "end" | "connector"
-) {
+export type UseComponentOutputFieldsProps =
+  | {
+      nodeType: "end";
+      schema: Nullable<InstillJSONSchema>;
+      data: Nullable<TriggerUserPipelineResponse["outputs"]>;
+    }
+  | {
+      nodeType: "connector";
+      schema: Nullable<InstillJSONSchema>;
+      data: Nullable<PipelineTrace>;
+    };
+
+export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
+  const { nodeType, schema, data } = props;
   const fields = React.useMemo(() => {
     if (!schema) {
       return null;
@@ -22,18 +26,13 @@ export function useComponentOutputFields(
 
     const outputFormTree = transformInstillJSONSchemaToFormTree(schema);
 
-    const fields = pickComponentOutputFieldsFromInstillFormTree(
-      outputFormTree,
-      trace,
-      nodeType
-    );
-
-    if (nodeType === "end") {
-      console.log("fields", fields, outputFormTree, schema, trace);
-    }
+    const fields = pickComponentOutputFieldsFromInstillFormTree({
+      ...props,
+      tree: outputFormTree,
+    });
 
     return fields;
-  }, [schema, trace, nodeType]);
+  }, [schema, nodeType, data]);
 
   return fields;
 }
