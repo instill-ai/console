@@ -1,9 +1,9 @@
 import { test, expect } from "vitest";
-import { PipelineStartComponentConfigurationMetadata } from "../vdp-sdk";
+import { StartOperatorMetadata } from "../vdp-sdk";
 import { transformStartOperatorMetadataToSmartHints } from "./transformStartOperatorMetadataToSmartHints";
 
 test("should transform start operator metadata to smart hints", () => {
-  const metadata: PipelineStartComponentConfigurationMetadata = {
+  const metadata: StartOperatorMetadata = {
     text: {
       type: "string",
       instillFormat: "string",
@@ -40,7 +40,7 @@ test("should transform start operator metadata to smart hints with empty metadat
 });
 
 test("should transform array metadata to smart hints", () => {
-  const metadata: PipelineStartComponentConfigurationMetadata = {
+  const metadata: StartOperatorMetadata = {
     text: {
       type: "array",
       instillFormat: "array:string",

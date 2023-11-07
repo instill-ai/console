@@ -18,11 +18,16 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               prompts: {
                 title: "My prompts",
-                type: "text_array",
+                type: "array",
+                instillFormat: "array:string",
+                items: {
+                  type: "string",
+                },
               },
               shape: {
                 title: "Sticker shape",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
             },
           },
@@ -118,7 +123,11 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               prompts: {
                 title: "My prompts",
-                type: "text_array",
+                type: "array",
+                instillFormat: "array:string",
+                items: {
+                  type: "string",
+                },
               },
             },
           },
@@ -233,11 +242,16 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               asset_creator: {
                 title: "Asset Creator Name",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               prompts: {
                 title: "My Prompts",
-                type: "text_array",
+                type: "array",
+                instillFormat: "array:string",
+                items: {
+                  type: "string",
+                },
               },
             },
           },
@@ -333,31 +347,38 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               recipient: {
                 title: "Recipient name",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               recipient_company: {
                 title: "Recipient company name",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               sender: {
                 title: "Sender name",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               sender_company: {
                 title: "Sender company name",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               sender_role: {
                 title: "Sender job title",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               topic: {
                 title: "Email topic",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               word_number: {
                 title: "Number of words",
                 type: "number",
+                instillFormat: "number",
               },
             },
           },
@@ -422,11 +443,13 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               email: {
                 title: "Email",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               key_info: {
                 title: "Key information to extract (separate with commas)",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
             },
           },
@@ -492,16 +515,19 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               article: {
                 title: "Article",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               format: {
                 title: "Summary format style (sentences or bullets)",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               guideline: {
                 title:
                   "Additional guideline for summary. e.g., focus on action points.  ",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
             },
           },
@@ -566,11 +592,13 @@ export const templates: PipelineTemplate[] = [
             metadata: {
               keywords: {
                 title: "Generate a article optimized for this SEO Keywords",
-                type: "text",
+                type: "string",
+                instillFormat: "string",
               },
               section_number: {
                 title: "How many sections would you like? (3-7 recommended)",
                 type: "number",
+                instillFormat: "number",
               },
             },
           },

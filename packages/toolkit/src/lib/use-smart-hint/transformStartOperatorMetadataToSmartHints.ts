@@ -1,8 +1,8 @@
-import { PipelineStartComponentConfigurationMetadata } from "../vdp-sdk";
+import { StartOperatorMetadata } from "../vdp-sdk";
 import { SmartHint } from "./types";
 
 export function transformStartOperatorMetadataToSmartHints(
-  metadata: PipelineStartComponentConfigurationMetadata
+  metadata: StartOperatorMetadata
 ): SmartHint[] {
   const hints: SmartHint[] = [];
   for (const [key, value] of Object.entries(metadata)) {

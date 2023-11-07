@@ -133,14 +133,9 @@ export type PipelineStartComponent = {
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
   configuration: {
-    metadata: PipelineStartComponentConfigurationMetadata;
+    metadata?: StartOperatorMetadata;
   } & GeneralRecord;
 };
-
-export type PipelineStartComponentConfigurationMetadata = Record<
-  string,
-  StartOperatorInput
->;
 
 export type PipelineEndComponent = {
   id: "end";
@@ -167,9 +162,7 @@ export type PipelineComponent =
   | PipelineEndComponent
   | PipelineConnectorComponent;
 
-export type StartOperatorBody = Record<string, StartOperatorInput>;
-
-export type StartOperatorInputBodyValue = Record<string, any>;
+export type StartOperatorMetadata = Record<string, StartOperatorInput>;
 
 export type StartOperatorInput = {
   title: string;
@@ -180,8 +173,4 @@ export type StartOperatorInput = {
   };
 };
 
-export type StartOperatorInputType =
-  | "text"
-  | "audio"
-  | "image"
-  | JSONSchema7TypeName;
+export type StartOperatorInputType = "audio" | "image" | JSONSchema7TypeName;

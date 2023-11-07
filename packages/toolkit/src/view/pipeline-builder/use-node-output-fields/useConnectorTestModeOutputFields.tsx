@@ -83,13 +83,13 @@ function getOutputFieldComponent({
     }
 
     switch (property.instillFormat) {
-      case "text": {
+      case "string": {
         fields.push(
           <TextField nodeType="connector" title={title} text={propertyValue} />
         );
         break;
       }
-      case "text_array": {
+      case "array:string": {
         fields.push(
           <TextsField
             nodeType="connector"
@@ -109,7 +109,7 @@ function getOutputFieldComponent({
         );
         break;
       }
-      case "image_array": {
+      case "array:image/*": {
         fields.push(
           <ImagesField
             nodeType="connector"
@@ -129,7 +129,7 @@ function getOutputFieldComponent({
         );
         break;
       }
-      case "number_array": {
+      case "array:number": {
         fields.push(
           <NumbersField
             nodeType="connector"
@@ -139,7 +139,7 @@ function getOutputFieldComponent({
         );
         break;
       }
-      case "audio": {
+      case "audio/*": {
         fields.push(
           <AudioField
             nodeType="connector"
@@ -149,7 +149,7 @@ function getOutputFieldComponent({
         );
         break;
       }
-      case "audio_array": {
+      case "array:audio/*": {
         fields.push(
           <AudiosField
             nodeType="connector"

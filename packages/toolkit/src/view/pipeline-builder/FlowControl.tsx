@@ -208,17 +208,19 @@ export const FlowControl = (props: FlowControlProps) => {
       (e) => e.data.nodeType === "start"
     ) as Node<StartNodeData>;
 
-    if (!startNode) return "";
+    if (!startNode || !startNode.data.component.configuration.metadata) {
+      return "";
+    }
 
     for (const [key, metadata] of Object.entries(
       startNode.data.component.configuration.metadata
     )) {
-      switch (metadata.type) {
-        case "text": {
+      switch (metadata.instillFormat) {
+        case "string": {
           input[key] = "Please put your value here";
           break;
         }
-        case "text_array": {
+        case "array:string": {
           input[key] = [
             "Please put your first value here",
             "Please put your second value here",
@@ -230,7 +232,7 @@ export const FlowControl = (props: FlowControlProps) => {
           input[key] = 123456;
           break;
         }
-        case "number_array": {
+        case "array:number": {
           input[key] = [123456, 654321];
           break;
         }
@@ -238,7 +240,7 @@ export const FlowControl = (props: FlowControlProps) => {
           input[key] = "your image base64 encoded string";
           break;
         }
-        case "image_array": {
+        case "array:image/*": {
           input[key] = [
             "Please put your first image base64 encoded string",
             "Please put your second image base64 encoded string",
@@ -250,7 +252,7 @@ export const FlowControl = (props: FlowControlProps) => {
           input[key] = "Please put your audio base64 encoded string";
           break;
         }
-        case "audio_array": {
+        case "array:audio/*": {
           input[key] = [
             "Please put your first audio base64 encoded string",
             "Please put your second audio base64 encoded string",
@@ -262,7 +264,7 @@ export const FlowControl = (props: FlowControlProps) => {
           input[key] = true;
           break;
         }
-        case "boolean_array": {
+        case "array:boolean": {
           input[key] = [true, false];
           break;
         }

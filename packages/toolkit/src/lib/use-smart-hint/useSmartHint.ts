@@ -39,6 +39,10 @@ export const useSmartHint = () => {
       }
 
       if (node.data.nodeType === "start") {
+        if (!node.data.component.configuration.metadata) {
+          continue;
+        }
+
         const hints = transformStartOperatorMetadataToSmartHints(
           node.data.component.configuration.metadata
         );

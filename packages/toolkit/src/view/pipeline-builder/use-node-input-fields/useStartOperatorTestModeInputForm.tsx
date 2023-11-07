@@ -16,7 +16,7 @@ import { TextsField } from "./TextsField";
 import { ImagesField } from "./ImagesField";
 import { NumbersField } from "./NumbersField";
 import { AudiosField } from "./AudiosField";
-import { Nullable, StartOperatorBody, SuperRefineRule } from "../../../lib";
+import { Nullable, StartOperatorMetadata, SuperRefineRule } from "../../../lib";
 
 export const useStartOperatorTestModeInputForm = (props: {
   nodes: Node<NodeData>[];
@@ -29,6 +29,10 @@ export const useStartOperatorTestModeInputForm = (props: {
       (node) => node.data.nodeType === "start"
     ) as Node<StartNodeData>;
 
+    if (!startNode.data.component.configuration.metadata) {
+      return [];
+    }
+
     return transformStartOperatorBodyToSuperRefineRules(
       startNode.data.component.configuration.metadata
     );
@@ -39,6 +43,10 @@ export const useStartOperatorTestModeInputForm = (props: {
     const startNode = nodes.find(
       (node) => node.data.nodeType === "start"
     ) as Node<StartNodeData>;
+
+    if (!startNode.data.component.configuration.metadata) {
+      return z.object({}) as z.ZodObject<any, any, any>;
+    }
 
     return transformStartOperatorBodyToZod(
       startNode.data.component.configuration.metadata
@@ -65,6 +73,10 @@ export const useStartOperatorTestModeInputForm = (props: {
       (node) => node.data.nodeType === "start"
     ) as Node<StartNodeData>;
 
+    if (!startNode.data.component.configuration.metadata) {
+      return [];
+    }
+
     return transformStartOperatorBodyToFields(
       startNode.data.component.configuration.metadata,
       form
@@ -79,18 +91,18 @@ export const useStartOperatorTestModeInputForm = (props: {
 };
 
 export function transformStartOperatorBodyToZod(
-  body: Nullable<StartOperatorBody>
+  metadata: Nullable<StartOperatorMetadata>
 ) {
   let zodSchema: z.ZodObject<any, any, any> = z.object({});
 
-  if (!body) return zodSchema;
+  if (!metadata) return zodSchema;
 
-  for (const [key, value] of Object.entries(body)) {
-    switch (value.type) {
-      case "text":
+  for (const [key, value] of Object.entries(metadata)) {
+    switch (value.instillFormat) {
+      case "string":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
-      case "text_array":
+      case "array:string":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional()
@@ -105,7 +117,7 @@ export function transformStartOperatorBodyToZod(
           z.coerce.number().nullable().optional()
         );
         break;
-      case "number_array":
+      case "array:number":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.coerce.number().nullable().optional()).nullable().optional()
@@ -114,7 +126,7 @@ export function transformStartOperatorBodyToZod(
       case "audio":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
-      case "audio_array":
+      case "array:audio/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string()).nullable().optional()
@@ -123,7 +135,7 @@ export function transformStartOperatorBodyToZod(
       case "image":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
-      case "image_array":
+      case "array:image/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string()).nullable().optional()
@@ -138,62 +150,62 @@ export function transformStartOperatorBodyToZod(
 }
 
 export function transformStartOperatorBodyToFields(
-  body: Nullable<StartOperatorBody>,
+  metadata: Nullable<StartOperatorMetadata>,
   form: UseFormReturn<{ [k: string]: any }, any, undefined>
 ) {
   const fields: React.ReactElement[] = [];
 
-  if (!body) return fields;
+  if (!metadata) return fields;
 
   // This component will only be displayed under test mode, and under test
   // /view-only mode, we will display user defined title as title.
 
-  for (const [key, input] of Object.entries(body)) {
-    switch (input.type) {
-      case "text":
+  for (const [key, value] of Object.entries(metadata)) {
+    switch (value.instillFormat) {
+      case "string":
         fields.push(
-          <TextField form={form} fieldKey={key} title={input.title} />
+          <TextField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "text_array": {
+      case "array:string": {
         fields.push(
-          <TextsField form={form} fieldKey={key} title={input.title} />
+          <TextsField form={form} fieldKey={key} title={value.title} />
         );
         break;
       }
       case "boolean":
         fields.push(
-          <BooleanField form={form} fieldKey={key} title={input.title} />
+          <BooleanField form={form} fieldKey={key} title={value.title} />
         );
         break;
       case "number":
         fields.push(
-          <NumberField form={form} fieldKey={key} title={input.title} />
+          <NumberField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "number_array":
+      case "array:number":
         fields.push(
-          <NumbersField form={form} fieldKey={key} title={input.title} />
+          <NumbersField form={form} fieldKey={key} title={value.title} />
         );
         break;
       case "audio":
         fields.push(
-          <AudioField form={form} fieldKey={key} title={input.title} />
+          <AudioField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "audio_array":
+      case "array:audio/*":
         fields.push(
-          <AudiosField form={form} fieldKey={key} title={input.title} />
+          <AudiosField form={form} fieldKey={key} title={value.title} />
         );
         break;
       case "image":
         fields.push(
-          <ImageField form={form} fieldKey={key} title={input.title} />
+          <ImageField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "image_array":
+      case "array:image/*":
         fields.push(
-          <ImagesField form={form} fieldKey={key} title={input.title} />
+          <ImagesField form={form} fieldKey={key} title={value.title} />
         );
         break;
       default:
@@ -205,15 +217,15 @@ export function transformStartOperatorBodyToFields(
 }
 
 export function transformStartOperatorBodyToSuperRefineRules(
-  body: Nullable<StartOperatorBody>
+  metadata: Nullable<StartOperatorMetadata>
 ) {
   const rules: SuperRefineRule[] = [];
 
-  if (!body) return rules;
+  if (!metadata) return rules;
 
-  for (const [key, input] of Object.entries(body)) {
-    switch (input.type) {
-      case "text":
+  for (const [key, value] of Object.entries(metadata)) {
+    switch (value.instillFormat) {
+      case "string":
         rules.push({
           key,
           validator: (value) => {
@@ -234,7 +246,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "text_array":
+      case "array:string":
         rules.push({
           key,
           validator: (value) => {
@@ -297,7 +309,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "number_array":
+      case "array:number":
         rules.push({
           key,
           validator: (value) => {
@@ -342,7 +354,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "audio_array":
+      case "array:audio/*":
         rules.push({
           key,
           validator: (value) => {
@@ -378,7 +390,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "image_array":
+      case "array:image/*":
         rules.push({
           key,
           validator: (value) => {

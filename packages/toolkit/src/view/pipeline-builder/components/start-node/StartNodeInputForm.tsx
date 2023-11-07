@@ -172,7 +172,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
 
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "start" && configuraton) {
-        if (prevFieldKey) {
+        if (prevFieldKey && node.data.component.configuration.metadata) {
           delete node.data.component.configuration.metadata[prevFieldKey];
         }
 
@@ -225,7 +225,9 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
   const onDeleteInput = (key: string) => {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "start") {
-        delete node.data.component.configuration.metadata[key];
+        if (node.data.component.configuration.metadata) {
+          delete node.data.component.configuration.metadata[key];
+        }
 
         node.data = {
           ...node.data,
@@ -285,6 +287,8 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
   }
 
   const onEditInput = (key: string) => {
+    if (!data.component.configuration.metadata) return;
+
     form.reset({
       title: data.component.configuration.metadata[key].title,
       key: key,
@@ -476,133 +480,138 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
     </Form.Root>
   ) : (
     <div className="flex flex-col space-y-3">
-      {Object.entries(data.component.configuration.metadata).map(
-        ([key, value]) => {
-          let icon: Nullable<React.ReactElement> = null;
-          let label: Nullable<string> = null;
+      {data.component.configuration.metadata
+        ? Object.entries(data.component.configuration.metadata).map(
+            ([key, value]) => {
+              let icon: Nullable<React.ReactElement> = null;
+              let label: Nullable<string> = null;
 
-          switch (value.instillFormat) {
-            case "string": {
-              icon = (
-                <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "text";
+              switch (value.instillFormat) {
+                case "string": {
+                  icon = (
+                    <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "text";
 
-              break;
-            }
-            case "array:string": {
-              icon = (
-                <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "text_array";
+                  break;
+                }
+                case "array:string": {
+                  icon = (
+                    <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "text_array";
 
-              break;
-            }
-            case "audio": {
-              icon = (
-                <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "audio";
-              break;
-            }
-            case "array:audio/*": {
-              icon = (
-                <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "audio_array";
-              break;
-            }
-            case "boolean": {
-              icon = (
-                <ComplicateIcons.ToggleLeft
-                  fillAreaColor="fill-semantic-accent-on-bg"
-                  className="m-auto h-4 w-4"
-                />
-              );
-              label = "boolean";
-              break;
-            }
-            case "array:boolean": {
-              icon = (
-                <ComplicateIcons.ToggleLeft
-                  fillAreaColor="fill-semantic-accent-on-bg"
-                  className="m-auto h-4 w-4"
-                />
-              );
-              label = "boolean_array";
-              break;
-            }
-            case "image": {
-              icon = (
-                <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "image";
-              break;
-            }
-            case "array:image/*": {
-              icon = (
-                <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
-              );
-              label = "image_array";
-              break;
-            }
-            case "number": {
-              icon = (
-                <ComplicateIcons.Number
-                  fillAreaColor="fill-semantic-accent-on-bg"
-                  className="m-auto h-4 w-4"
-                />
-              );
-              label = "number";
-              break;
-            }
-            case "array:number": {
-              icon = (
-                <ComplicateIcons.Number
-                  fillAreaColor="fill-semantic-accent-on-bg"
-                  className="m-auto h-4 w-4"
-                />
-              );
-              label = "number_array";
-              break;
-            }
-            default:
-              break;
-          }
+                  break;
+                }
+                case "audio": {
+                  icon = (
+                    <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "audio";
+                  break;
+                }
+                case "array:audio/*": {
+                  icon = (
+                    <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "audio_array";
+                  break;
+                }
+                case "boolean": {
+                  icon = (
+                    <ComplicateIcons.ToggleLeft
+                      fillAreaColor="fill-semantic-accent-on-bg"
+                      className="m-auto h-4 w-4"
+                    />
+                  );
+                  label = "boolean";
+                  break;
+                }
+                case "array:boolean": {
+                  icon = (
+                    <ComplicateIcons.ToggleLeft
+                      fillAreaColor="fill-semantic-accent-on-bg"
+                      className="m-auto h-4 w-4"
+                    />
+                  );
+                  label = "boolean_array";
+                  break;
+                }
+                case "image": {
+                  icon = (
+                    <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "image";
+                  break;
+                }
+                case "array:image/*": {
+                  icon = (
+                    <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+                  );
+                  label = "image_array";
+                  break;
+                }
+                case "number": {
+                  icon = (
+                    <ComplicateIcons.Number
+                      fillAreaColor="fill-semantic-accent-on-bg"
+                      className="m-auto h-4 w-4"
+                    />
+                  );
+                  label = "number";
+                  break;
+                }
+                case "array:number": {
+                  icon = (
+                    <ComplicateIcons.Number
+                      fillAreaColor="fill-semantic-accent-on-bg"
+                      className="m-auto h-4 w-4"
+                    />
+                  );
+                  label = "number_array";
+                  break;
+                }
+                default:
+                  break;
+              }
 
-          return (
-            <div key={key} className="flex flex-col">
-              <div className="mb-2 flex flex-row items-center justify-between">
-                <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-                  {key}
-                </div>
-                {currentVersion === "latest" && isOwner ? (
-                  <div className="my-auto flex flex-row gap-x-4">
-                    <button
-                      onClick={() => {
-                        onEditInput(key);
-                        setPrevFieldKey(key);
-                      }}
-                      disabled={false}
-                    >
-                      <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
-                    </button>
-                    <button onClick={() => onDeleteInput(key)} disabled={false}>
-                      <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
-                    </button>
+              return (
+                <div key={key} className="flex flex-col">
+                  <div className="mb-2 flex flex-row items-center justify-between">
+                    <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
+                      {key}
+                    </div>
+                    {currentVersion === "latest" && isOwner ? (
+                      <div className="my-auto flex flex-row gap-x-4">
+                        <button
+                          onClick={() => {
+                            onEditInput(key);
+                            setPrevFieldKey(key);
+                          }}
+                          disabled={false}
+                        >
+                          <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
+                        </button>
+                        <button
+                          onClick={() => onDeleteInput(key)}
+                          disabled={false}
+                        >
+                          <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
-              </div>
-              <div>
-                <Tag className="gap-x-1.5" variant="lightBlue" size="md">
-                  {icon}
-                  {label}
-                </Tag>
-              </div>
-            </div>
-          );
-        }
-      )}
+                  <div>
+                    <Tag className="gap-x-1.5" variant="lightBlue" size="md">
+                      {icon}
+                      {label}
+                    </Tag>
+                  </div>
+                </div>
+              );
+            }
+          )
+        : null}
       <Button
         className="flex w-full flex-1"
         variant="primary"
