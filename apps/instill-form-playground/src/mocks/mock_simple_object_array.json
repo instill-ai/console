@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": ["ports"],
+  "properties": {
+    "ports": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "instillUpstreamType": "value"
+              }
+            ],
+            "instillUpstreamTypes": ["value"],
+            "description": "Port of the database.",
+            "examples": [5432]
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

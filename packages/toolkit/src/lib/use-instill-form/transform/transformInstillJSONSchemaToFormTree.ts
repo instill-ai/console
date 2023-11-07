@@ -7,6 +7,7 @@ import {
   InstillJSONSchema,
   InstillJSONSchemaDefinition,
   CheckIsHidden,
+  InstillFormItem,
 } from "../type";
 
 export type TransformInstillJSONSchemaToFormTreeOptions = {
@@ -44,6 +45,67 @@ export function transformInstillJSONSchemaToFormTree(
       type: "null",
     };
   }
+
+  let isHidden = false;
+
+  if (
+    checkIsHidden &&
+    checkIsHidden({
+      parentSchema: parentSchema ?? null,
+      targetSchema,
+      targetKey: key ?? null,
+    })
+  ) {
+    isHidden = true;
+  }
+
+  const baseFields = pickBaseFields(targetSchema);
+
+  // 1. Preprocess
+
+  let type: Nullable<JSONSchema7TypeName> = null;
+
+  // 1.1 Get the type and instillAcceptFormats from anyOf field
+  if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
+    const instillUpstreamValue = targetSchema.anyOf.find(
+      (e) => e.instillUpstreamType === "value"
+    );
+
+    if (instillUpstreamValue) {
+      if (Array.isArray(instillUpstreamValue.type)) {
+        type = instillUpstreamValue.type[0];
+      } else {
+        type = instillUpstreamValue.type ?? null;
+      }
+
+      // We will store information of enum in anyOf field
+      if (instillUpstreamValue.enum) {
+        return {
+          ...baseFields,
+          _type: "formItem",
+          fieldKey: key ?? null,
+          path: (path || key) ?? null,
+          isRequired,
+          type: type ? type : "null",
+          enum: instillUpstreamValue.enum,
+          example: instillUpstreamValue.example,
+          examples: instillUpstreamValue.examples,
+          isHidden,
+          instillAcceptFormats: baseFields.instillAcceptFormats
+            ? baseFields.instillAcceptFormats
+            : [],
+        };
+      }
+    }
+  } else {
+    if (Array.isArray(targetSchema.type)) {
+      type = targetSchema.type[0] ?? null;
+    } else {
+      type = targetSchema.type ?? null;
+    }
+  }
+
+  // 2. Main process
 
   if (targetSchema.oneOf && targetSchema.oneOf.length > 0) {
     const conditions = Object.fromEntries(
@@ -87,7 +149,7 @@ export function transformInstillJSONSchemaToFormTree(
 
     return {
       ...constBaseFields,
-      ...pickBaseFields(targetSchema),
+      ...baseFields,
       _type: "formCondition",
       fieldKey: key ?? null,
       path: (path || key) ?? null,
@@ -100,27 +162,42 @@ export function transformInstillJSONSchemaToFormTree(
   if (
     targetSchema.type === "array" &&
     typeof targetSchema.items === "object" &&
-    !Array.isArray(targetSchema.items) &&
-    targetSchema.items.type === "object"
+    !Array.isArray(targetSchema.items)
   ) {
-    const propertyFormTree = transformInstillJSONSchemaToFormTree(
-      targetSchema.items,
-      {
-        parentSchema: targetSchema,
-        key,
-        path,
-        checkIsHidden,
-      }
-    ) as InstillFormGroupItem;
+    if (targetSchema.items.type === "object") {
+      const itemsFormTree = transformInstillJSONSchemaToFormTree(
+        targetSchema.items,
+        {
+          parentSchema: targetSchema,
+          key,
+          path,
+          checkIsHidden,
+        }
+      );
 
-    return {
-      ...pickBaseFields(targetSchema),
-      ...propertyFormTree,
-      _type: "formArray",
-      fieldKey: key ?? null,
-      path: (path || key) ?? null,
-      isRequired,
-    };
+      return {
+        ...baseFields,
+        properties: itemsFormTree,
+        jsonSchema: targetSchema,
+        _type: "objectArray",
+        fieldKey: key ?? null,
+        path: (path || key) ?? null,
+        isRequired,
+      };
+    } else {
+      return {
+        ...pickBaseFields(targetSchema.items),
+        ...baseFields,
+        _type: "formItem",
+        fieldKey: key ?? null,
+        path: (path || key) ?? null,
+        isRequired,
+        type: "array",
+        instillAcceptFormats: baseFields.instillAcceptFormats
+          ? baseFields.instillAcceptFormats
+          : [],
+      };
+    }
   }
 
   if (targetSchema.properties) {
@@ -146,7 +223,7 @@ export function transformInstillJSONSchemaToFormTree(
       });
 
     return {
-      ...pickBaseFields(targetSchema),
+      ...baseFields,
       _type: "formGroup",
       fieldKey: key ?? null,
       path: (path || key) ?? null,
@@ -156,70 +233,19 @@ export function transformInstillJSONSchemaToFormTree(
     };
   }
 
-  let isHidden = false;
-
-  if (
-    checkIsHidden &&
-    checkIsHidden({
-      parentSchema: parentSchema ?? null,
-      targetSchema,
-      targetKey: key ?? null,
-    })
-  ) {
-    isHidden = true;
-  }
-
-  /* -----------------------------------------------------------------------
-    We are using anyOf field on formItem to store the types
-  * -----------------------------------------------------------------------*/
-
-  let type: Nullable<JSONSchema7TypeName> = null;
-
-  if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
-    const instillUpstreamValue = targetSchema.anyOf.find(
-      (e) => e.instillUpstreamType === "value"
-    );
-
-    if (instillUpstreamValue) {
-      if (Array.isArray(instillUpstreamValue.type)) {
-        type = instillUpstreamValue.type[0];
-      } else {
-        type = instillUpstreamValue.type ?? null;
-      }
-
-      // We will store information of enum in anyOf field
-
-      if (instillUpstreamValue.enum) {
-        return {
-          ...pickBaseFields(targetSchema),
-          _type: "formItem",
-          fieldKey: key ?? null,
-          path: (path || key) ?? null,
-          isRequired,
-          type: type ? type : "null",
-          enum: instillUpstreamValue.enum,
-          example: instillUpstreamValue.example,
-          examples: instillUpstreamValue.examples,
-          isHidden,
-        };
-      }
-    }
-  } else {
-    if (Array.isArray(targetSchema.type)) {
-      type = targetSchema.type[0] ?? null;
-    } else {
-      type = targetSchema.type ?? null;
-    }
-  }
+  // 3. Post process
 
   return {
-    ...pickBaseFields(targetSchema),
+    ...baseFields,
     _type: "formItem",
     fieldKey: key ?? null,
     path: (path || key) ?? null,
     isRequired,
     type: type ? type : "null",
     isHidden,
+    instillAcceptFormats: baseFields.instillAcceptFormats
+      ? baseFields.instillAcceptFormats
+      : [],
   };
 }
 
@@ -235,6 +261,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillUpstreamTypes",
   "instillUpstreamType",
   "instillFormat",
+  "instillAcceptFormats",
   "instillCredentialField",
   "instillUIOrder",
   "instillEditOnNodeFields",

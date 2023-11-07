@@ -1,6 +1,6 @@
+import { test, expect } from "vitest";
 import { transformInstillJSONSchemaToFormTree } from ".";
 import { InstillFormTree, InstillJSONSchema } from "../type";
-import { test, expect } from "vitest";
 
 test("should transform basic JSON schema to formTree", () => {
   const schema: InstillJSONSchema = {
@@ -15,6 +15,7 @@ test("should transform basic JSON schema to formTree", () => {
         example: "text-embedding-ada-002",
         instillUIOrder: 0,
         instillFormat: "text",
+        instillAcceptFormats: ["string", "text/*"],
         anyOf: [
           {
             type: "string",
@@ -34,6 +35,7 @@ test("should transform basic JSON schema to formTree", () => {
         instillFormat: "text",
         instillCredentialField: true,
         instillUIOrder: 1,
+        instillAcceptFormats: ["string", "text/*"],
         anyOf: [
           {
             type: "string",
@@ -74,6 +76,7 @@ test("should transform basic JSON schema to formTree", () => {
           example: "text-embedding-ada-002",
           instillUIOrder: 0,
           instillFormat: "text",
+          instillAcceptFormats: ["string", "text/*"],
           anyOf: [
             {
               type: "string",
@@ -93,6 +96,7 @@ test("should transform basic JSON schema to formTree", () => {
           instillFormat: "text",
           instillCredentialField: true,
           instillUIOrder: 1,
+          instillAcceptFormats: ["string", "text/*"],
           anyOf: [
             {
               type: "string",
@@ -117,6 +121,7 @@ test("should transform basic JSON schema to formTree", () => {
         description:
           "ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models/overview) for descriptions of them.\n",
         instillUpstreamTypes: ["value", "reference"],
+        instillAcceptFormats: ["string", "text/*"],
         enum: ["text-embedding-ada-002"],
         example: undefined,
         examples: undefined,
@@ -133,6 +138,7 @@ test("should transform basic JSON schema to formTree", () => {
       {
         description: "",
         instillUpstreamTypes: ["value", "reference"],
+        instillAcceptFormats: ["string", "text/*"],
         title: "Text",
         _type: "formItem",
         fieldKey: "text",
@@ -150,22 +156,11 @@ test("should transform basic JSON schema to formTree", () => {
   expect(formTree).toStrictEqual(expectedFormTree);
 });
 
-test("should transform formArray JSON schema to formTree", () => {
+test("should transform object in array JSON schema to formTree", () => {
   const schema: InstillJSONSchema = {
     type: "object",
-    required: ["host", "ports"],
+    required: ["ports"],
     properties: {
-      host: {
-        anyOf: [
-          {
-            type: "string",
-            instillUpstreamType: "value",
-          },
-        ],
-        instillUpstreamTypes: ["value"],
-        description: "Hostname of the database.",
-        example: "hello-world",
-      },
       ports: {
         type: "array",
         items: {
@@ -197,19 +192,8 @@ test("should transform formArray JSON schema to formTree", () => {
     isRequired: false,
     jsonSchema: {
       type: "object",
-      required: ["host", "ports"],
+      required: ["ports"],
       properties: {
-        host: {
-          anyOf: [
-            {
-              type: "string",
-              instillUpstreamType: "value",
-            },
-          ],
-          instillUpstreamTypes: ["value"],
-          description: "Hostname of the database.",
-          example: "hello-world",
-        },
         ports: {
           type: "array",
           items: {
@@ -233,50 +217,65 @@ test("should transform formArray JSON schema to formTree", () => {
     },
     properties: [
       {
-        instillUpstreamTypes: ["value"],
-        description: "Hostname of the database.",
-        example: "hello-world",
-        _type: "formItem",
-        fieldKey: "host",
-        path: "host",
-        isRequired: true,
-        type: "string",
-        isHidden: false,
-      },
-      {
-        _type: "formArray",
+        properties: {
+          _type: "formGroup",
+          fieldKey: "ports",
+          path: "ports",
+          isRequired: false,
+          jsonSchema: {
+            properties: {
+              port: {
+                anyOf: [
+                  {
+                    type: "integer",
+                    instillUpstreamType: "value",
+                  },
+                ],
+                instillUpstreamTypes: ["value"],
+                description: "Port of the database.",
+                examples: [5432],
+              },
+            },
+            type: "object",
+          },
+          properties: [
+            {
+              instillUpstreamTypes: ["value"],
+              instillAcceptFormats: [],
+              description: "Port of the database.",
+              examples: [5432],
+              _type: "formItem",
+              fieldKey: "port",
+              path: "ports.port",
+              isRequired: false,
+              type: "integer",
+              isHidden: false,
+            },
+          ],
+        },
+        jsonSchema: {
+          type: "array",
+          items: {
+            properties: {
+              port: {
+                anyOf: [
+                  {
+                    type: "integer",
+                    instillUpstreamType: "value",
+                  },
+                ],
+                instillUpstreamTypes: ["value"],
+                description: "Port of the database.",
+                examples: [5432],
+              },
+            },
+            type: "object",
+          },
+        },
+        _type: "objectArray",
         fieldKey: "ports",
         path: "ports",
         isRequired: true,
-        jsonSchema: {
-          properties: {
-            port: {
-              anyOf: [
-                {
-                  type: "integer",
-                  instillUpstreamType: "value",
-                },
-              ],
-              instillUpstreamTypes: ["value"],
-              description: "Port of the database.",
-              examples: [5432],
-            },
-          },
-          type: "object",
-        },
-        properties: [
-          {
-            instillUpstreamTypes: ["value"],
-            description: "Port of the database.",
-            examples: [5432],
-            _type: "formItem",
-            fieldKey: "port",
-            path: "ports.port",
-            isRequired: false,
-            type: "integer",
-            isHidden: false,
-          },
-        ],
       },
     ],
   };
@@ -348,6 +347,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         isRequired: true,
         type: "string",
         isHidden: false,
+        instillAcceptFormats: [],
       },
       {
         description: "Port of the database.",
@@ -357,6 +357,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         isRequired: true,
         type: "integer",
         isHidden: false,
+        instillAcceptFormats: [],
       },
       {
         description: "Username to use to access the database.",
@@ -366,6 +367,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         isRequired: true,
         type: "string",
         isHidden: false,
+        instillAcceptFormats: [],
       },
       {
         description: "Name of the database.",
@@ -375,6 +377,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         isRequired: true,
         type: "string",
         isHidden: false,
+        instillAcceptFormats: [],
       },
       {
         instillCredentialField: true,
@@ -385,6 +388,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         isRequired: false,
         type: "string",
         isHidden: false,
+        instillAcceptFormats: [],
       },
     ],
   };
@@ -394,7 +398,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
   expect(formTree).toStrictEqual(expected);
 });
 
-test("should transfomr isHidden formTree", () => {
+test("should transform isHidden formTree", () => {
   const schema: InstillJSONSchema = {
     title: "Simple JSON",
     type: "object",
@@ -544,6 +548,7 @@ test("should transfomr isHidden formTree", () => {
         instillUIOrder: 0,
         isHidden: false,
         instillFormat: "text",
+        instillAcceptFormats: [],
       },
       {
         description: "",
@@ -558,6 +563,7 @@ test("should transfomr isHidden formTree", () => {
         instillCredentialField: true,
         isHidden: true,
         instillFormat: "text",
+        instillAcceptFormats: [],
       },
     ],
   };
