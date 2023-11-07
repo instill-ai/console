@@ -10,8 +10,8 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  PickFieldComponentFromInstillFormTreeOptions,
-  pickFieldComponentFromInstillFormTree,
+  PickRegularFieldsFromInstillFormTreeOptions,
+  pickRegularFieldsFromInstillFormTree,
 } from "./pick";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
 import { GeneralRecord } from "../type";
@@ -19,7 +19,7 @@ import { GeneralRecord } from "../type";
 export type UseInstillFormOptions = {
   disabledAll?: boolean;
   checkIsHidden?: CheckIsHidden;
-} & Pick<PickFieldComponentFromInstillFormTreeOptions, "chooseTitleFrom">;
+} & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
   schema: InstillJSONSchema | null,
@@ -96,7 +96,7 @@ export function useInstillForm(
     }
 
     return {
-      fields: pickFieldComponentFromInstillFormTree(
+      fields: pickRegularFieldsFromInstillFormTree(
         formTree,
         form,
         selectedConditionMap,

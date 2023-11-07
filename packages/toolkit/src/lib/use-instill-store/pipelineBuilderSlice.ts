@@ -12,7 +12,6 @@ import { Nullable } from "../type";
 
 import { NodeData } from "../../view";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
-import { OpenAPIV3 } from "openapi-types";
 import { StateCreator } from "zustand";
 import {
   InstillStore,
@@ -21,6 +20,7 @@ import {
   PipelineBuilderSlice,
   PipelineBuilderState,
 } from "./types";
+import { InstillJSONSchema } from "../use-instill-form";
 
 export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineId: null,
@@ -39,7 +39,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   expandAllNodes: false,
   testModeEnabled: false,
   testModeTriggerResponse: null,
-  pipelineOpenAPISchema: null,
+  pipelineOpenAPIOutputSchema: null,
   accessToken: null,
   createResourceDialogState: {
     open: false,
@@ -183,13 +183,13 @@ export const createPipelineBuilderSlice: StateCreator<
       };
     }),
 
-  updatePipelineOpenAPISchema: (
-    fn: (prev: Nullable<OpenAPIV3.Document>) => Nullable<OpenAPIV3.Document>
+  updatePipelineOpenAPIOutputSchema: (
+    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) =>
     set((state) => {
       return {
         ...state,
-        pipelineOpenAPISchema: fn(state.pipelineOpenAPISchema),
+        pipelineOpenAPIOutputSchema: fn(state.pipelineOpenAPIOutputSchema),
       };
     }),
   updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) =>

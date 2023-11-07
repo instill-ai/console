@@ -21,8 +21,12 @@ import {
   composeEdgesFromReferences,
 } from "../lib";
 import { CustomHandle } from "./CustomHandle";
-import { InstillStore, Nullable, useInstillStore } from "../../../lib";
-import { useEndOperatorTestModeOutputFields } from "../use-node-output-fields";
+import {
+  InstillStore,
+  Nullable,
+  useComponentOutputFields,
+  useInstillStore,
+} from "../../../lib";
 
 export const CreateEndOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -37,7 +41,7 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   testModeEnabled: store.testModeEnabled,
   testModeTriggerResponse: store.testModeTriggerResponse,
-  pipelineOpenAPISchema: store.pipelineOpenAPISchema,
+  pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
@@ -55,7 +59,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     updateEdges,
     testModeEnabled,
     testModeTriggerResponse,
-    pipelineOpenAPISchema,
+    pipelineOpenAPIOutputSchema,
     updatePipelineRecipeIsDirty,
     isOwner,
     currentVersion,
@@ -166,9 +170,12 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setEnableEdit(true);
   }
 
-  const testModeOutputFields = useEndOperatorTestModeOutputFields(
-    pipelineOpenAPISchema,
-    testModeTriggerResponse ? testModeTriggerResponse.outputs : []
+  const testModeOutputFields = useComponentOutputFields(
+    pipelineOpenAPIOutputSchema,
+    testModeTriggerResponse?.metadata.traces
+      ? testModeTriggerResponse?.metadata.traces[id]
+      : null,
+    "end"
   );
 
   const hasTargetEdges = React.useMemo(() => {

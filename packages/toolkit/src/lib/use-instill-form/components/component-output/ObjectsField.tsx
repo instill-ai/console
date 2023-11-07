@@ -1,4 +1,4 @@
-import { GeneralRecord, Nullable } from "../../../lib";
+import { GeneralRecord, Nullable } from "../../../type";
 import { ConnectorNodeFieldRoot, EndNodeFieldRoot } from "./FieldRoot";
 
 export type ObjectsFieldProps = {

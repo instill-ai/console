@@ -6,9 +6,9 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { recursivelyResetFormData } from "../transform";
-import { GeneralUseFormReturn, Nullable } from "../../type";
-import { InstillFormTree, SelectedConditionMap } from "../type";
+import { recursivelyResetFormData } from "../../transform";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { InstillFormTree, SelectedConditionMap } from "../../type";
 
 export const OneOfConditionField = ({
   form,

@@ -6,7 +6,7 @@ import {
   ParagraphWithHTML,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../type";
+import { GeneralUseFormReturn } from "../../../type";
 
 export const CredentialTextField = ({
   form,

@@ -1,16 +1,9 @@
 import * as React from "react";
 import { InstillFormTree, SelectedConditionMap } from "../type";
-import {
-  OneOfConditionField,
-  BooleanField,
-  SingleSelectField,
-  TextAreaField,
-  TextField,
-  CredentialTextField,
-} from "../components";
+import { RegularFields } from "../components";
 import { GeneralUseFormReturn } from "../../type";
 
-export type PickFieldComponentFromInstillFormTreeOptions = {
+export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
   checkIsHiddenByTree?: (tree: InstillFormTree) => boolean;
 
@@ -18,14 +11,14 @@ export type PickFieldComponentFromInstillFormTreeOptions = {
   chooseTitleFrom?: "title" | "key";
 };
 
-export function pickFieldComponentFromInstillFormTree(
+export function pickRegularFieldsFromInstillFormTree(
   tree: InstillFormTree,
   form: GeneralUseFormReturn,
   selectedConditionMap: SelectedConditionMap | null,
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<SelectedConditionMap | null>
   >,
-  options?: PickFieldComponentFromInstillFormTreeOptions
+  options?: PickRegularFieldsFromInstillFormTreeOptions
 ): React.ReactNode {
   const disabledAll = options?.disabledAll ?? false;
   const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
@@ -51,7 +44,7 @@ export function pickFieldComponentFromInstillFormTree(
           {tree.fieldKey || tree.path}
         </p>
         {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree(
+          return pickRegularFieldsFromInstillFormTree(
             property,
             form,
             selectedConditionMap,
@@ -67,7 +60,7 @@ export function pickFieldComponentFromInstillFormTree(
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {tree.properties.map((property) => {
-          return pickFieldComponentFromInstillFormTree(
+          return pickRegularFieldsFromInstillFormTree(
             property,
             form,
             selectedConditionMap,
@@ -92,7 +85,7 @@ export function pickFieldComponentFromInstillFormTree(
       Object.entries(tree.conditions).map(([k, v]) => {
         return [
           k,
-          pickFieldComponentFromInstillFormTree(
+          pickRegularFieldsFromInstillFormTree(
             v,
             form,
             selectedConditionMap,
@@ -118,7 +111,7 @@ export function pickFieldComponentFromInstillFormTree(
     }
 
     return (
-      <OneOfConditionField
+      <RegularFields.OneOfConditionField
         form={form}
         path={constField.path}
         tree={tree}
@@ -136,7 +129,7 @@ export function pickFieldComponentFromInstillFormTree(
   if (tree._type === "objectArray") {
     return (
       <React.Fragment key={tree.path || tree.fieldKey}>
-        {pickFieldComponentFromInstillFormTree(
+        {pickRegularFieldsFromInstillFormTree(
           tree.properties,
           form,
           selectedConditionMap,
@@ -157,7 +150,7 @@ export function pickFieldComponentFromInstillFormTree(
 
   if (tree.type === "boolean") {
     return (
-      <BooleanField
+      <RegularFields.BooleanField
         key={tree.path}
         path={tree.path}
         title={title}
@@ -171,7 +164,7 @@ export function pickFieldComponentFromInstillFormTree(
 
   if (tree.type === "string" && tree.enum && tree.enum.length > 0) {
     return (
-      <SingleSelectField
+      <RegularFields.SingleSelectField
         key={tree.path}
         path={tree.path}
         form={form}
@@ -186,7 +179,7 @@ export function pickFieldComponentFromInstillFormTree(
 
   if (tree.type === "string" && tree.isMultiline) {
     return (
-      <TextAreaField
+      <RegularFields.TextAreaField
         key={tree.path}
         path={tree.path}
         form={form}
@@ -200,7 +193,7 @@ export function pickFieldComponentFromInstillFormTree(
 
   if (tree.instillCredentialField) {
     return (
-      <CredentialTextField
+      <RegularFields.CredentialTextField
         key={tree.path}
         path={tree.path}
         form={form}
@@ -213,7 +206,7 @@ export function pickFieldComponentFromInstillFormTree(
   }
 
   return (
-    <TextField
+    <RegularFields.TextField
       key={tree.path}
       path={tree.path}
       form={form}

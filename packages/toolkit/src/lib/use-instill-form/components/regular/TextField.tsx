@@ -8,12 +8,12 @@ import {
   Popover,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../type";
-import { useInstillStore } from "../../use-instill-store";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { useInstillStore } from "../../../use-instill-store";
 import {
   SmartHint,
   pickSmartHintsFromAcceptFormats,
-} from "../../use-smart-hint";
+} from "../../../use-smart-hint";
 
 export const TextField = ({
   form,

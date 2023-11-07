@@ -1,13 +1,8 @@
-import {
-  Form,
-  Icons,
-  ParagraphWithHTML,
-  Textarea,
-  Tooltip,
-} from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../type";
+import { Form, Icons, Switch, Tooltip } from "@instill-ai/design-system";
+import { GeneralUseFormReturn } from "../../../type";
+import { ParagraphWithHTML } from "@instill-ai/design-system";
 
-export const TextAreaField = ({
+export const BooleanField = ({
   form,
   path,
   title,
@@ -17,13 +12,14 @@ export const TextAreaField = ({
 }: {
   form: GeneralUseFormReturn;
   path: string;
-  title: string | null;
+  title: null | string;
   description?: string;
   shortDescription?: string;
   disabled?: boolean;
 }) => {
   return (
     <Form.Field
+      key={path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -62,24 +58,17 @@ export const TextAreaField = ({
               ) : null}
             </div>
             <Form.Control>
-              <Textarea
-                {...field}
-                // At some moment the value maybe a object
-                // For example, { foo: { bar: "baz" } }}}. For foo.bar field
-                // its value is a string But for foo field its value is a object.
-                // And some time the foo field is not a object field but a string field,
-                // we need to deal with it
-                value={typeof field.value === "object" ? "" : field.value ?? ""}
-                autoComplete="off"
-                onChange={(e) => {
+              <Switch
+                checked={field.value}
+                onCheckedChange={(e) => {
                   field.onChange(e);
                   form.trigger(path, { shouldFocus: true });
                 }}
                 disabled={disabled}
               />
             </Form.Control>
-            <Form.Description text={shortDescription ?? null} />
             <Form.Message />
+            <Form.Description text={shortDescription ?? null} />
           </Form.Item>
         );
       }}
