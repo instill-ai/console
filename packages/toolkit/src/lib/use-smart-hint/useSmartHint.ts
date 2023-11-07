@@ -6,6 +6,7 @@ import { getConnectorInputOutputSchema } from "../../view";
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
 import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
+import { transformStartOperatorMetadataToSmartHints } from "./transformStartOperatorMetadataToSmartHints";
 
 const selector = (store: InstillStore) => ({
   updateSmartHints: store.updateSmartHints,
@@ -35,6 +36,18 @@ export const useSmartHint = () => {
 
           smartHints = [...smartHints, ...hints];
         }
+      }
+
+      if (node.data.nodeType === "start") {
+        if (!node.data.component.configuration.metadata) {
+          continue;
+        }
+
+        const hints = transformStartOperatorMetadataToSmartHints(
+          node.data.component.configuration.metadata
+        );
+
+        smartHints = [...smartHints, ...hints];
       }
     }
 

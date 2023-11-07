@@ -4,6 +4,7 @@ import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, ConnectorResource } from "../connector";
 import { Spec, Visibility } from "../types";
 import { GeneralRecord, Nullable } from "../../type";
+import { JSONSchema7TypeName } from "json-schema";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -131,7 +132,9 @@ export type PipelineStartComponent = {
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
-  configuration: Record<string, Record<string, StartOperatorInput>>;
+  configuration: {
+    metadata?: StartOperatorMetadata;
+  } & GeneralRecord;
 };
 
 export type PipelineEndComponent = {
@@ -159,29 +162,15 @@ export type PipelineComponent =
   | PipelineEndComponent
   | PipelineConnectorComponent;
 
-export type StartOperatorBody = Record<string, StartOperatorInput>;
-
-export type StartOperatorInputBodyValue = Record<string, any>;
+export type StartOperatorMetadata = Record<string, StartOperatorInput>;
 
 export type StartOperatorInput = {
   title: string;
   type: StartOperatorInputType;
+  instillFormat: string;
+  items?: {
+    type: string;
+  };
 };
 
-export type StartOperatorInputType =
-  | StartOperatorInputSingularType
-  | StartOperatorInputArrayType;
-
-export type StartOperatorInputSingularType =
-  | "text"
-  | "number"
-  | "boolean"
-  | "audio"
-  | "image";
-
-export type StartOperatorInputArrayType =
-  | "text_array"
-  | "number_array"
-  | "boolean_array"
-  | "audio_array"
-  | "image_array";
+export type StartOperatorInputType = "audio" | "image" | JSONSchema7TypeName;

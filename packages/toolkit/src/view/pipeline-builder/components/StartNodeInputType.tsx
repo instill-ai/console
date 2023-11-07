@@ -1,11 +1,11 @@
 import cn from "clsx";
 import * as React from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-import { Nullable, StartOperatorInputSingularType } from "../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../lib";
 
 export type StartNodeInputTypeProps = {
-  type: StartOperatorInputSingularType;
-  selectedType: Nullable<StartOperatorInputSingularType>;
+  type: StartOperatorInputType;
+  selectedType: Nullable<StartOperatorInputType>;
   onSelect: () => void;
 };
 
@@ -18,7 +18,7 @@ export const StartNodeInputType = ({
   let label: Nullable<string> = null;
 
   switch (type) {
-    case "text": {
+    case "string": {
       icon = (
         <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
