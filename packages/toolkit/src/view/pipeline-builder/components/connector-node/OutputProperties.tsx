@@ -31,11 +31,11 @@ export const OutputProperties = ({
 }) => {
   const [exapndOutputs, setExpandOutputs] = React.useState(false);
 
-  const testModeOutputFields = useComponentOutputFields(
-    outputSchema,
-    traces ? traces[component.id] : null,
-    "connector"
-  );
+  const testModeOutputFields = useComponentOutputFields({
+    schema: outputSchema,
+    data: traces ? traces[component.id] : null,
+    nodeType: "connector",
+  });
 
   const { expandAllNodes, testModeEnabled } = useInstillStore(
     useShallow(selector)
