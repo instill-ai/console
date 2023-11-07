@@ -77,19 +77,17 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  if (tree._type === "formArray") {
-    const formArrayValue: GeneralRecord = {};
+  if (tree._type === "objectArray") {
+    const objectArrayValue: GeneralRecord = {};
 
-    for (const property of tree.properties) {
-      transformInstillFormTreeToDefaultValue(property, {
-        initialData: formArrayValue,
-        isRoot: true,
-        selectedConditionMap,
-      });
-    }
+    transformInstillFormTreeToDefaultValue(tree.properties, {
+      initialData: objectArrayValue,
+      isRoot: true,
+      selectedConditionMap,
+    });
 
     if (tree.path) {
-      dot.setter(initialData, tree.path, [formArrayValue]);
+      dot.setter(initialData, tree.path, [objectArrayValue]);
     }
     return initialData;
   }
