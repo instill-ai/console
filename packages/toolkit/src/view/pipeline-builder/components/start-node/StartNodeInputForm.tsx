@@ -18,7 +18,7 @@ import { StartNodeInputType } from "../StartNodeInputType";
 import {
   InstillStore,
   Nullable,
-  StartOperatorInputSingularType,
+  StartOperatorInput,
   StartOperatorInputType,
   useInstillStore,
 } from "../../../../lib";
@@ -54,7 +54,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
 
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [selectedType, setSelectedType] =
-    React.useState<Nullable<StartOperatorInputSingularType>>(null);
+    React.useState<Nullable<StartOperatorInputType>>(null);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
   const [inputTypeIsArray, setInputTypeIsArray] = React.useState(false);
@@ -65,36 +65,113 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
 
   const onCreateInput = (formData: z.infer<typeof Schema>) => {
     if (!selectedType) return;
-
-    let finalType: StartOperatorInputType = selectedType;
+    let configuraton: Nullable<StartOperatorInput> = null;
 
     if (inputTypeIsArray) {
       switch (selectedType) {
-        case "text": {
-          finalType = "text_array";
+        case "string": {
+          configuraton = {
+            type: "array",
+            items: {
+              type: "string",
+            },
+            instillFormat: "array:string",
+            title: formData.title,
+          };
           break;
         }
         case "audio": {
-          finalType = "audio_array";
+          configuraton = {
+            type: "array",
+            items: {
+              type: "string",
+            },
+            instillFormat: "array:audio/*",
+            title: formData.title,
+          };
           break;
         }
         case "boolean": {
-          finalType = "boolean_array";
+          configuraton = {
+            type: "array",
+            items: {
+              type: "boolean",
+            },
+            instillFormat: "array:boolean",
+            title: formData.title,
+          };
           break;
         }
         case "image": {
-          finalType = "image_array";
+          configuraton = {
+            type: "array",
+            items: {
+              type: "string",
+            },
+            instillFormat: "array:image/*",
+            title: formData.title,
+          };
           break;
         }
         case "number": {
-          finalType = "number_array";
+          configuraton = {
+            type: "array",
+            items: {
+              type: "number",
+            },
+            instillFormat: "array:number",
+            title: formData.title,
+          };
+          break;
+        }
+      }
+    } else {
+      switch (selectedType) {
+        case "string": {
+          configuraton = {
+            type: "string",
+            instillFormat: "string",
+            title: formData.title,
+          };
+          break;
+        }
+        case "audio": {
+          configuraton = {
+            type: "string",
+            instillFormat: "audio/*",
+            title: formData.title,
+          };
+          break;
+        }
+        case "boolean": {
+          configuraton = {
+            type: "boolean",
+            instillFormat: "boolean",
+            title: formData.title,
+          };
+          break;
+        }
+        case "image": {
+          configuraton = {
+            type: "string",
+            instillFormat: "image/*",
+            title: formData.title,
+          };
+          break;
+        }
+        case "number": {
+          configuraton = {
+            type: "number",
+            instillFormat: "number",
+            title: formData.title,
+          };
           break;
         }
       }
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "start") {
+      if (node.data.nodeType === "start" && configuraton) {
         if (prevFieldKey) {
           delete node.data.component.configuration.metadata[prevFieldKey];
         }
@@ -107,10 +184,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
               ...node.data.component.configuration,
               metadata: {
                 ...node.data.component.configuration.metadata,
-                [formData.key]: {
-                  type: finalType,
-                  title: formData.title,
-                },
+                [formData.key]: configuraton,
               },
             },
           },
@@ -180,45 +254,51 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
     updatePipelineRecipeIsDirty(() => true);
   };
 
+  function pickSelectedTypeFromInstillFormat(
+    instillFormat: string
+  ): Nullable<StartOperatorInputType> {
+    switch (instillFormat) {
+      case "string":
+      case "array:string": {
+        return "string";
+      }
+      case "audio":
+      case "array:audio/*": {
+        return "audio";
+      }
+      case "boolean":
+      case "array:boolean": {
+        return "boolean";
+      }
+      case "image":
+      case "array:image/*": {
+        return "image";
+      }
+      case "number":
+      case "array:number": {
+        return "number";
+      }
+
+      default:
+        return null;
+    }
+  }
+
   const onEditInput = (key: string) => {
     form.reset({
       title: data.component.configuration.metadata[key].title,
       key: key,
     });
     setEnableEdit(true);
-    setSelectedType(() => {
-      let finalType = data.component.configuration.metadata[key].type;
+    setInputTypeIsArray(
+      data.component.configuration.metadata[key].type === "array"
+    );
 
-      switch (finalType) {
-        case "text_array": {
-          finalType = "text";
-          setInputTypeIsArray(true);
-          break;
-        }
-        case "audio_array": {
-          finalType = "audio";
-          setInputTypeIsArray(true);
-          break;
-        }
-        case "boolean_array": {
-          finalType = "boolean";
-          setInputTypeIsArray(true);
-          break;
-        }
-        case "image_array": {
-          finalType = "image";
-          setInputTypeIsArray(true);
-          break;
-        }
-        case "number_array": {
-          finalType = "number";
-          setInputTypeIsArray(true);
-          break;
-        }
-      }
-
-      return finalType;
-    });
+    setSelectedType(
+      pickSelectedTypeFromInstillFormat(
+        data.component.configuration.metadata[key].instillFormat
+      )
+    );
   };
 
   return enableEdit ? (
@@ -251,13 +331,13 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
         </div>
         <div className="mb-3 grid grid-cols-2 gap-x-3 gap-y-3">
           <StartNodeInputType
-            type="text"
+            type="string"
             selectedType={selectedType}
             onSelect={() => {
-              if (selectedType === "text") {
+              if (selectedType === "string") {
                 setSelectedType(null);
               } else {
-                setSelectedType("text");
+                setSelectedType("string");
               }
               setInputTypeIsArray(false);
             }}
@@ -311,7 +391,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
             }}
           />
         </div>
-        {["number", "image", "text", "audio"].includes(selectedType ?? "") ? (
+        {["number", "image", "string", "audio"].includes(selectedType ?? "") ? (
           <div className="mb-3 flex flex-row space-x-3">
             <Checkbox
               checked={inputTypeIsArray}
@@ -399,47 +479,91 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
       {Object.entries(data.component.configuration.metadata).map(
         ([key, value]) => {
           let icon: Nullable<React.ReactElement> = null;
+          let label: Nullable<string> = null;
 
-          switch (value.type) {
-            case "text":
-            case "text_array": {
+          switch (value.instillFormat) {
+            case "string": {
               icon = (
                 <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
               );
+              label = "text";
+
               break;
             }
-            case "audio":
-            case "audio_array": {
+            case "array:string": {
+              icon = (
+                <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+              );
+              label = "text_array";
+
+              break;
+            }
+            case "audio": {
               icon = (
                 <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
               );
+              label = "audio";
               break;
             }
-            case "boolean":
-            case "boolean_array": {
+            case "array:audio/*": {
+              icon = (
+                <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+              );
+              label = "audio_array";
+              break;
+            }
+            case "boolean": {
               icon = (
                 <ComplicateIcons.ToggleLeft
                   fillAreaColor="fill-semantic-accent-on-bg"
                   className="m-auto h-4 w-4"
                 />
               );
+              label = "boolean";
               break;
             }
-            case "image":
-            case "image_array": {
+            case "array:boolean": {
+              icon = (
+                <ComplicateIcons.ToggleLeft
+                  fillAreaColor="fill-semantic-accent-on-bg"
+                  className="m-auto h-4 w-4"
+                />
+              );
+              label = "boolean_array";
+              break;
+            }
+            case "image": {
               icon = (
                 <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
               );
+              label = "image";
               break;
             }
-            case "number":
-            case "number_array": {
+            case "array:image/*": {
+              icon = (
+                <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
+              );
+              label = "image_array";
+              break;
+            }
+            case "number": {
               icon = (
                 <ComplicateIcons.Number
                   fillAreaColor="fill-semantic-accent-on-bg"
                   className="m-auto h-4 w-4"
                 />
               );
+              label = "number";
+              break;
+            }
+            case "array:number": {
+              icon = (
+                <ComplicateIcons.Number
+                  fillAreaColor="fill-semantic-accent-on-bg"
+                  className="m-auto h-4 w-4"
+                />
+              );
+              label = "number_array";
               break;
             }
             default:
@@ -472,7 +596,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
               <div>
                 <Tag className="gap-x-1.5" variant="lightBlue" size="md">
                   {icon}
-                  {value.type}
+                  {label}
                 </Tag>
               </div>
             </div>

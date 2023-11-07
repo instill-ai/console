@@ -1,7 +1,6 @@
 import cn from "clsx";
 import * as React from "react";
 import {
-  Command,
   Form,
   Icons,
   Input,
@@ -11,7 +10,10 @@ import {
 } from "@instill-ai/design-system";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { useInstillStore } from "../../use-instill-store";
-import { SmartHint } from "../../use-smart-hint";
+import {
+  SmartHint,
+  pickSmartHintsFromAcceptFormats,
+} from "../../use-smart-hint";
 
 export const TextField = ({
   form,
@@ -37,8 +39,6 @@ export const TextField = ({
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
     React.useState(false);
   const [isUsingCurlyBraces, setIsUsingCurlyBraces] = React.useState(false);
-  const [selectedHint, setSelectedHint] =
-    React.useState<Nullable<SmartHint>>(null);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -50,9 +50,9 @@ export const TextField = ({
       return [];
     }
 
-    return [];
+    console.log(smartHints, instillAcceptFormats);
 
-    // return pickSmartHintsFromAcceptFormats(smartHints, instillAcceptFormats);
+    return pickSmartHintsFromAcceptFormats(smartHints, instillAcceptFormats);
   }, [smartHints, instillAcceptFormats]);
 
   return (
@@ -169,10 +169,10 @@ export const TextField = ({
                     <div className="flex flex-col gap-y-2">
                       {targetHints.map((hint, index) => {
                         return (
-                          <div
+                          <button
                             key={hint.path}
                             className={cn(
-                              "rounded p-2 product-body-text-4-semibold",
+                              "flex rounded p-2 product-body-text-4-semibold",
                               {
                                 "bg-semantic-accent-bg text-semantic-accent-hover":
                                   highlightedHintIndex === index,
@@ -192,9 +192,12 @@ export const TextField = ({
                                 setSmartHintsPopoverIsOpen(false);
                               }
                             }}
+                            onMouseEnter={() => {
+                              setHighlightedHintIndex(index);
+                            }}
                           >
                             {hint.path}
-                          </div>
+                          </button>
                         );
                       })}
                     </div>
