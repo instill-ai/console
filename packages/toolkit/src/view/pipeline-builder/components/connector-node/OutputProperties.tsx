@@ -7,13 +7,13 @@ import {
   Nullable,
   PipelineConnectorComponent,
   PipelineTrace,
+  useComponentOutputFields,
   useInstillStore,
 } from "../../../../lib";
 import {
   InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from "../../lib";
-import { useConnectorTestModeOutputFields } from "../../use-node-output-fields";
 
 const selector = (store: InstillStore) => ({
   expandAllNodes: store.expandAllNodes,
@@ -31,9 +31,10 @@ export const OutputProperties = ({
 }) => {
   const [exapndOutputs, setExpandOutputs] = React.useState(false);
 
-  const testModeOutputFields = useConnectorTestModeOutputFields(
-    component,
-    traces
+  const testModeOutputFields = useComponentOutputFields(
+    outputSchema,
+    traces ? traces[component.id] : null,
+    "connector"
   );
 
   const { expandAllNodes, testModeEnabled } = useInstillStore(

@@ -26,8 +26,10 @@ import {
   RightPanel,
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
+  getConnectorInputOutputSchema,
 } from "../pipeline-builder";
 import { WarnUnsavedChangesModal } from "../../components";
+import { getPipelineInputOutputSchema } from "../pipeline-builder/lib/getPipelineInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -35,7 +37,7 @@ const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
-  updatePipelineOpenAPISchema: store.updatePipelineOpenAPISchema,
+  updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   updateAccessToken: store.updateAccessToken,
 });
 
@@ -56,7 +58,7 @@ export const PipelineBuilderMainView = (
     pipelineRecipeIsDirty,
     pipelineIsNew,
     selectedConnectorNodeId,
-    updatePipelineOpenAPISchema,
+    updatePipelineOpenAPIOutputSchema,
     updateAccessToken,
   } = useInstillStore(useShallow(selector));
 
@@ -87,8 +89,13 @@ export const PipelineBuilderMainView = (
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) return;
-    updatePipelineOpenAPISchema(() => pipeline.data.openapi_schema);
-  }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPISchema]);
+
+    const { outputSchema } = getPipelineInputOutputSchema(
+      pipeline.data.openapi_schema
+    );
+
+    updatePipelineOpenAPIOutputSchema(() => outputSchema);
+  }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
   React.useEffect(() => {
     updateAccessToken(() => accessToken);

@@ -1,3 +1,3 @@
 export * from "./pickConstInfoFromOneOfCondition";
-export * from "./pickFieldComponentFromInstillFormTree";
+export * from "./pickRegularFieldsFromInstillFormTree";
 export * from "./pickSelectedConditionMap";

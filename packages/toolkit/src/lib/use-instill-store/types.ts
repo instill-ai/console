@@ -9,6 +9,7 @@ import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { OpenAPIV3 } from "openapi-types";
 import { SmartHint } from "../use-smart-hint";
+import { InstillJSONSchema } from "../use-instill-form";
 
 export type PipelineBuilderCreateResourceDialogState = {
   open: boolean;
@@ -39,7 +40,7 @@ export type PipelineBuilderState = {
   expandAllNodes: boolean;
   testModeEnabled: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
-  pipelineOpenAPISchema: Nullable<OpenAPIV3.Document>;
+  pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
   accessToken: Nullable<string>;
   createResourceDialogState: PipelineBuilderCreateResourceDialogState;
   currentVersion: Nullable<string>;
@@ -74,8 +75,8 @@ export type PipelineBuilderAction = {
       prev: Nullable<TriggerUserPipelineResponse>
     ) => Nullable<TriggerUserPipelineResponse>
   ) => void;
-  updatePipelineOpenAPISchema: (
-    fn: (prev: Nullable<OpenAPIV3.Document>) => Nullable<OpenAPIV3.Document>
+  updatePipelineOpenAPIOutputSchema: (
+    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) => void;
   updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updateCreateResourceDialogState: (

@@ -1,18 +1,25 @@
-import { Form, Icons, Switch, Tooltip } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../type";
-import { ParagraphWithHTML } from "@instill-ai/design-system";
+import {
+  Form,
+  Icons,
+  ParagraphWithHTML,
+  Select,
+  Tooltip,
+} from "@instill-ai/design-system";
+import { GeneralUseFormReturn } from "../../../type";
 
-export const BooleanField = ({
+export const SingleSelectField = ({
   form,
   path,
   title,
+  options,
   description,
   shortDescription,
   disabled,
 }: {
   form: GeneralUseFormReturn;
   path: string;
-  title: null | string;
+  title: string | null;
+  options: string[];
   description?: string;
   shortDescription?: string;
   disabled?: boolean;
@@ -57,18 +64,34 @@ export const BooleanField = ({
                 </Tooltip.Provider>
               ) : null}
             </div>
-            <Form.Control>
-              <Switch
-                checked={field.value}
-                onCheckedChange={(e) => {
-                  field.onChange(e);
-                  form.trigger(path, { shouldFocus: true });
-                }}
-                disabled={disabled}
-              />
-            </Form.Control>
-            <Form.Message />
+            <Select.Root
+              onValueChange={(e) => {
+                field.onChange(e);
+              }}
+              value={field.value ?? undefined}
+              disabled={disabled}
+            >
+              <Form.Control>
+                <Select.Trigger className="w-full">
+                  <Select.Value />
+                </Select.Trigger>
+              </Form.Control>
+              <Select.Content>
+                {options.map((option) => {
+                  return (
+                    <Select.Item
+                      key={option}
+                      value={option}
+                      className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                    >
+                      <p className="my-auto">{option}</p>
+                    </Select.Item>
+                  );
+                })}
+              </Select.Content>
+            </Select.Root>
             <Form.Description text={shortDescription ?? null} />
+            <Form.Message />
           </Form.Item>
         );
       }}
