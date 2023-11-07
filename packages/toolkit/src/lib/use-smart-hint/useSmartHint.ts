@@ -5,7 +5,7 @@ import { InstillStore, useInstillStore } from "../use-instill-store";
 import { getConnectorInputOutputSchema } from "../../view";
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
-import { extractHintsFromConnectorComponentOutputFormTree } from "./extractHintsFromConnectorComponentOutputFormTree";
+import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
 
 const selector = (store: InstillStore) => ({
   updateSmartHints: store.updateSmartHints,
@@ -28,7 +28,7 @@ export const useSmartHint = () => {
           const outputFormTree =
             transformInstillJSONSchemaToFormTree(outputSchema);
 
-          const hints = extractHintsFromConnectorComponentOutputFormTree(
+          const hints = transformConnectorComponentFormTreeToSmartHints(
             outputFormTree,
             node.id
           );
