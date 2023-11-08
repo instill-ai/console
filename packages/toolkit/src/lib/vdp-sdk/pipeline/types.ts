@@ -173,4 +173,7 @@ export type StartOperatorInput = {
   };
 };
 
-export type StartOperatorInputType = "audio" | "image" | JSONSchema7TypeName;
+export type StartOperatorInputType =
+  | "audio/*"
+  | "image/*"
+  | JSONSchema7TypeName;

@@ -236,7 +236,7 @@ export const FlowControl = (props: FlowControlProps) => {
           input[key] = [123456, 654321];
           break;
         }
-        case "image": {
+        case "image/*": {
           input[key] = "your image base64 encoded string";
           break;
         }
@@ -248,7 +248,7 @@ export const FlowControl = (props: FlowControlProps) => {
           ];
           break;
         }
-        case "audio": {
+        case "audio/*": {
           input[key] = "Please put your audio base64 encoded string";
           break;
         }

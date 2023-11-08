@@ -6,6 +6,11 @@ export function pickSmartHintsFromAcceptFormats(
 ): SmartHint[] {
   const pickHints: SmartHint[] = [];
 
+  // Deal with */* -> means it accepts all types
+  if (instillAcceptFormats.includes("*/*")) {
+    return hints;
+  }
+
   for (const hint of hints) {
     // Deal with array
     if (hint.type === "array") {
