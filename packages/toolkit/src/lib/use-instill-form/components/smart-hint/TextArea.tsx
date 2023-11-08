@@ -171,6 +171,7 @@ export const TextArea = ({
                         setHighlightedHintIndex,
                         inputRef,
                         smartHintsScrollAreaViewportRef,
+                        smartHintEnabledPos,
                       });
                     }}
                   />
@@ -210,6 +211,7 @@ export const TextArea = ({
                       highlightedHintIndex={highlightedHintIndex}
                       setHighlightedHintIndex={setHighlightedHintIndex}
                       inputRef={inputRef}
+                      smartHintEnabledPos={smartHintEnabledPos}
                     />
                   </React.Fragment>
                 ) : (

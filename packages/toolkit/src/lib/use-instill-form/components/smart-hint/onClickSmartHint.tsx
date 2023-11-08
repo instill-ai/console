@@ -8,6 +8,7 @@ export function onClickSmartHint({
   field,
   smartHint,
   setEnableSmartHints,
+  smartHintEnabledPos,
 }: {
   inputRef: React.MutableRefObject<
     Nullable<HTMLInputElement | HTMLTextAreaElement>
@@ -20,15 +21,18 @@ export function onClickSmartHint({
   >;
   smartHint: SmartHint;
   setEnableSmartHints: React.Dispatch<React.SetStateAction<boolean>>;
+  smartHintEnabledPos: Nullable<number>;
 }) {
   if (inputRef.current) {
     const cursorPosition = inputRef.current.selectionStart;
     const value = field.value ?? "";
-    const newValue = `${value.slice(0, cursorPosition)}${
+
+    const newValue = `${value.slice(0, smartHintEnabledPos ?? 0 + 1)}${
       smartHint.path
     }${value.slice(cursorPosition)}`;
 
     field.onChange(newValue);
     setEnableSmartHints(false);
+    inputRef.current.focus();
   }
 }

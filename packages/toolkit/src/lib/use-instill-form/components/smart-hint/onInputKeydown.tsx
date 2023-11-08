@@ -1,6 +1,7 @@
 import * as React from "react";
 import { SmartHint } from "../../../use-smart-hint";
 import { ControllerRenderProps } from "react-hook-form";
+import { Nullable } from "../../../type";
 
 export function onInputKeydown({
   field,
@@ -14,6 +15,7 @@ export function onInputKeydown({
   initSmartHintState,
   enableSmartHints,
   setEnableSmartHints,
+  smartHintEnabledPos,
 }: {
   field: ControllerRenderProps<
     {
@@ -31,6 +33,7 @@ export function onInputKeydown({
   smartHintsScrollAreaViewportRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   initSmartHintState: () => void;
+  smartHintEnabledPos: Nullable<number>;
 }) {
   switch (event.key) {
     case "ArrowDown": {
@@ -76,7 +79,8 @@ export function onInputKeydown({
           if (inputRef.current) {
             const cursorPosition = inputRef.current.selectionStart;
             const value = field.value ?? "";
-            const newValue = `${value.slice(0, cursorPosition)}${
+
+            const newValue = `${value.slice(0, smartHintEnabledPos ?? 0 + 1)}${
               filteredHints[highlightedHintIndex].path
             }${value.slice(cursorPosition)}`;
 

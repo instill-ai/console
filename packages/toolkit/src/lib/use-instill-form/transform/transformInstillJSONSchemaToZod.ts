@@ -198,11 +198,17 @@ export function transformInstillJSONSchemaToZod({
       } else {
         switch (instillUpstreamValue.type) {
           case "string": {
-            instillZodSchema = z
-              .string({
+            if (isRequired) {
+              instillZodSchema = z
+                .string({
+                  errorMap: customErrorMap,
+                })
+                .min(1, "This field is required");
+            } else {
+              instillZodSchema = z.string({
                 errorMap: customErrorMap,
-              })
-              .min(1, "This field is required");
+              });
+            }
             break;
           }
           case "boolean": {
@@ -215,7 +221,11 @@ export function transformInstillJSONSchemaToZod({
             // set the initial zod schema to string and then validate it with
             // superRefine.
 
-            instillZodSchema = z.string().min(1, "This field is required");
+            if (isRequired) {
+              instillZodSchema = z.string().min(1, "This field is required");
+            } else {
+              instillZodSchema = z.string();
+            }
             break;
           }
         }
@@ -380,11 +390,18 @@ export function transformInstillJSONSchemaToZod({
 
   switch (targetSchema.type) {
     case "string": {
-      instillZodSchema = z
-        .string({
+      if (isRequired) {
+        instillZodSchema = z
+          .string({
+            errorMap: customErrorMap,
+          })
+          .min(1, "This field is required");
+      } else {
+        instillZodSchema = z.string({
           errorMap: customErrorMap,
-        })
-        .min(1, "This field is required");
+        });
+      }
+
       break;
     }
     case "boolean": {
@@ -397,7 +414,11 @@ export function transformInstillJSONSchemaToZod({
       // set the initial zod schema to string and then validate it with
       // superRefine.
 
-      instillZodSchema = z.string().min(1, "This field is required");
+      if (isRequired) {
+        instillZodSchema = z.string().min(1, "This field is required");
+      } else {
+        instillZodSchema = z.string();
+      }
       break;
     }
   }

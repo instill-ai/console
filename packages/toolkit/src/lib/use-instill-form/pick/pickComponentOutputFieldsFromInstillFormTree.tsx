@@ -50,6 +50,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           {tree.fieldKey || tree.path}
         </p>
         {tree.properties.map((property) => {
+          console.log(property);
+
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: property,

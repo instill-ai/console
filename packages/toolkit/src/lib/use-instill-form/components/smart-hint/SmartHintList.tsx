@@ -4,6 +4,7 @@ import { ScrollArea } from "@instill-ai/design-system";
 import { SmartHint } from "../../../use-smart-hint";
 import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
+import { Nullable } from "../../../type";
 
 export const SmartHintList = ({
   field,
@@ -15,6 +16,7 @@ export const SmartHintList = ({
   highlightedHintIndex,
   setHighlightedHintIndex,
   inputRef,
+  smartHintEnabledPos,
 }: {
   field: ControllerRenderProps<
     {
@@ -30,6 +32,7 @@ export const SmartHintList = ({
   highlightedHintIndex: number;
   setHighlightedHintIndex: React.Dispatch<React.SetStateAction<number>>;
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
+  smartHintEnabledPos: Nullable<number>;
 }) => {
   return (
     <ScrollArea.Root viewPortRef={smartHintsScrollAreaViewportRef}>
@@ -54,6 +57,7 @@ export const SmartHintList = ({
                       smartHint: hint,
                       setEnableSmartHints,
                       inputRef,
+                      smartHintEnabledPos,
                     });
                   }}
                   onMouseEnter={() => {
