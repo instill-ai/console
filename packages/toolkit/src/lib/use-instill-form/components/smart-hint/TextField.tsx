@@ -172,6 +172,7 @@ export const TextField = ({
                           setHighlightedHintIndex,
                           inputRef,
                           smartHintsScrollAreaViewportRef,
+                          smartHintEnabledPos,
                         });
                       }}
                     />
@@ -212,6 +213,7 @@ export const TextField = ({
                       highlightedHintIndex={highlightedHintIndex}
                       setHighlightedHintIndex={setHighlightedHintIndex}
                       inputRef={inputRef}
+                      smartHintEnabledPos={smartHintEnabledPos}
                     />
                   </React.Fragment>
                 ) : (
