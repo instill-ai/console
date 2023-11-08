@@ -123,7 +123,7 @@ export function transformStartOperatorBodyToZod(
           z.array(z.coerce.number().nullable().optional()).nullable().optional()
         );
         break;
-      case "audio":
+      case "audio/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
       case "array:audio/*":
@@ -132,7 +132,7 @@ export function transformStartOperatorBodyToZod(
           z.array(z.string()).nullable().optional()
         );
         break;
-      case "image":
+      case "image/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
       case "array:image/*":
@@ -188,7 +188,7 @@ export function transformStartOperatorBodyToFields(
           <NumbersField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "audio":
+      case "audio/*":
         fields.push(
           <AudioField form={form} fieldKey={key} title={value.title} />
         );
@@ -198,7 +198,7 @@ export function transformStartOperatorBodyToFields(
           <AudiosField form={form} fieldKey={key} title={value.title} />
         );
         break;
-      case "image":
+      case "image/*":
         fields.push(
           <ImageField form={form} fieldKey={key} title={value.title} />
         );
@@ -339,7 +339,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "audio":
+      case "audio/*":
         rules.push({
           key,
           validator: (value) => {
@@ -375,7 +375,7 @@ export function transformStartOperatorBodyToSuperRefineRules(
           },
         });
         break;
-      case "image":
+      case "image/*":
         rules.push({
           key,
           validator: (value) => {

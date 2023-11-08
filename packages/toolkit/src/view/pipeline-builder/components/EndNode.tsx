@@ -1,17 +1,8 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { NodeProps, Position } from "reactflow";
-import {
-  Button,
-  Form,
-  Icons,
-  Input,
-  Tag,
-  Textarea,
-} from "@instill-ai/design-system";
+import { Button, Form, Icons, Tag } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { EndNodeData, PipelineComponentReference } from "../type";
@@ -22,17 +13,13 @@ import {
 } from "../lib";
 import { CustomHandle } from "./CustomHandle";
 import {
+  InstillJSONSchema,
   InstillStore,
   Nullable,
   useComponentOutputFields,
+  useInstillForm,
   useInstillStore,
 } from "../../../lib";
-
-export const CreateEndOperatorInputSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  key: z.string().min(1, { message: "Key is required" }),
-  value: z.string().min(1, { message: "Value is required" }),
-});
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -46,6 +33,56 @@ const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
 });
+
+const CreateEndOperatorInputSchema: InstillJSONSchema = {
+  title: "End node operator intput schema",
+  type: "object",
+  required: ["title", "key", "value"],
+  properties: {
+    title: {
+      instillAcceptFormats: ["string"],
+      anyOf: [
+        {
+          type: "string",
+          instillUpstreamType: "value",
+        },
+      ],
+      instillUpstreamTypes: ["value"],
+      title: "Title",
+    },
+    key: {
+      instillAcceptFormats: ["string"],
+      anyOf: [
+        {
+          type: "string",
+          instillUpstreamType: "value",
+        },
+      ],
+      instillUpstreamTypes: ["value"],
+      title: "Key",
+    },
+    value: {
+      instillAcceptFormats: ["*/*"],
+      anyOf: [
+        {
+          instillUpstreamType: "value",
+          type: "string",
+        },
+        {
+          instillUpstreamType: "reference",
+          pattern: "^\\{.*\\}$",
+          type: "string",
+        },
+        {
+          instillUpstreamType: "template",
+          type: "string",
+        },
+      ],
+      instillUpstreamTypes: ["value", "reference", "template"],
+      title: "Value",
+    },
+  },
+};
 
 export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
@@ -65,11 +102,14 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     currentVersion,
   } = useInstillStore(useShallow(selector));
 
-  const form = useForm<z.infer<typeof CreateEndOperatorInputSchema>>({
-    resolver: zodResolver(CreateEndOperatorInputSchema),
-  });
+  const { form, fields, ValidatorSchema } = useInstillForm(
+    CreateEndOperatorInputSchema,
+    null
+  );
 
-  const onSubmit = (formData: z.infer<typeof CreateEndOperatorInputSchema>) => {
+  const onSubmit = (formData: z.infer<typeof ValidatorSchema>) => {
+    console.log(ValidatorSchema.safeParse(formData));
+
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
         if (prevFieldKey) {
@@ -216,82 +256,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   </Button>
                 </div>
               </div>
-              <div className="flex flex-col space-y-3">
-                <Form.Field
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="w-full">
-                        <Form.Label className="!font-sans !text-base !font-semibold">
-                          Title
-                        </Form.Label>
-                        <Form.Control className="h-8">
-                          <Input.Root className="!px-[9px] !py-1.5">
-                            <Input.Core
-                              {...field}
-                              type="text"
-                              value={field.value ?? ""}
-                              autoComplete="off"
-                              className="!h-5 !text-sm"
-                              placeholder="Prompt"
-                            />
-                          </Input.Root>
-                        </Form.Control>
-                        <Form.Message />
-                      </Form.Item>
-                    );
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="key"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="w-full">
-                        <Form.Label className="!font-sans !text-base !font-semibold">
-                          Key
-                        </Form.Label>
-                        <Form.Control className="h-8">
-                          <Input.Root className="!px-[9px] !py-1.5">
-                            <Input.Core
-                              {...field}
-                              type="text"
-                              value={field.value ?? ""}
-                              autoComplete="off"
-                              className="!h-5 !text-sm"
-                              placeholder="prompt"
-                            />
-                          </Input.Root>
-                        </Form.Control>
-                        <Form.Message />
-                      </Form.Item>
-                    );
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="value"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item className="w-full">
-                        <Form.Label className="!font-sans !text-base !font-semibold">
-                          Value
-                        </Form.Label>
-                        <Form.Control>
-                          <Textarea
-                            {...field}
-                            value={field.value ?? ""}
-                            autoComplete="off"
-                            className="!h-[72px] resize-none !text-sm"
-                          />
-                        </Form.Control>
-                        <Form.Message />
-                      </Form.Item>
-                    );
-                  }}
-                />
-              </div>
+              <div className="flex flex-col space-y-3">{fields}</div>
             </form>
           </Form.Root>
         ) : testModeEnabled ? (

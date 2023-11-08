@@ -52,7 +52,7 @@ test("should extract hints from formGroup", () => {
 
   expect(hints).toStrictEqual([
     {
-      path: "root.texts",
+      path: "root.output.texts",
       key: "texts",
       instillFormat: "text/plain",
       type: "array",
@@ -264,25 +264,25 @@ test("should extract hints from objectArray", () => {
 
   expect(hints).toStrictEqual([
     {
-      path: "root.segments",
+      path: "root.output.segments",
       key: "segments",
       instillFormat: "null",
       type: "array",
       properties: [
         {
-          path: "root.segments.label",
+          path: "root.output.segments.label",
           key: "label",
           instillFormat: "string",
           type: "null",
         },
         {
-          path: "root.segments.mask",
+          path: "root.output.segments.mask",
           key: "mask",
           instillFormat: "image/jpeg",
           type: "null",
         },
         {
-          path: "root.segments.score",
+          path: "root.output.segments.score",
           key: "score",
           instillFormat: "number",
           type: "null",

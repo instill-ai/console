@@ -26,6 +26,7 @@ export function transformConnectorComponentFormTreeToSmartHints(
 
     if (tree.path) {
       const pathArray = tree.path.split(".");
+      pathArray.unshift("output");
       pathArray.unshift(componentNodeID);
 
       return [
@@ -50,6 +51,7 @@ export function transformConnectorComponentFormTreeToSmartHints(
 
   if (tree.path) {
     const pathArray = tree.path.split(".");
+    pathArray.unshift("output");
     pathArray.unshift(componentNodeID);
 
     hints.push({

@@ -198,9 +198,11 @@ export function transformInstillJSONSchemaToZod({
       } else {
         switch (instillUpstreamValue.type) {
           case "string": {
-            instillZodSchema = z.string({
-              errorMap: customErrorMap,
-            });
+            instillZodSchema = z
+              .string({
+                errorMap: customErrorMap,
+              })
+              .min(1, "This field is required");
             break;
           }
           case "boolean": {
@@ -213,9 +215,7 @@ export function transformInstillJSONSchemaToZod({
             // set the initial zod schema to string and then validate it with
             // superRefine.
 
-            const integerSchema = z.string();
-
-            instillZodSchema = integerSchema;
+            instillZodSchema = z.string().min(1, "This field is required");
             break;
           }
         }
@@ -297,6 +297,47 @@ export function transformInstillJSONSchemaToZod({
             }
           }
         }
+
+        if (
+          referenceSet.doubleCurlyBrace.count > 0 &&
+          referenceSet.singleCurlyBrace.count > 0
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Template {{}} can not be used with reference {}",
+          });
+        }
+
+        if (referenceSet.singleCurlyBrace.count > 0 && val.includes("{{}}")) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Template {{}} can not be used with reference {}",
+          });
+        }
+
+        if (referenceSet.singleCurlyBrace.count > 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Reference {} can only be used once",
+          });
+
+          return;
+        }
+
+        if (
+          referenceSet.singleCurlyBrace.count > 0 &&
+          val.replace(
+            referenceSet.singleCurlyBrace.references[0].originalValue,
+            ""
+          ).length > 0
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Reference {} can only be used alone",
+          });
+
+          return;
+        }
       }
     });
 
@@ -335,9 +376,11 @@ export function transformInstillJSONSchemaToZod({
 
   switch (targetSchema.type) {
     case "string": {
-      instillZodSchema = z.string({
-        errorMap: customErrorMap,
-      });
+      instillZodSchema = z
+        .string({
+          errorMap: customErrorMap,
+        })
+        .min(1, "This field is required");
       break;
     }
     case "boolean": {
@@ -350,9 +393,7 @@ export function transformInstillJSONSchemaToZod({
       // set the initial zod schema to string and then validate it with
       // superRefine.
 
-      const integerSchema = z.string();
-
-      instillZodSchema = integerSchema;
+      instillZodSchema = z.string().min(1, "This field is required");
       break;
     }
   }

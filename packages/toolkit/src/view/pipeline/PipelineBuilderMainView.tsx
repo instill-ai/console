@@ -26,7 +26,6 @@ import {
   RightPanel,
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
-  getConnectorInputOutputSchema,
 } from "../pipeline-builder";
 import { WarnUnsavedChangesModal } from "../../components";
 import { getPipelineInputOutputSchema } from "../pipeline-builder/lib/getPipelineInputOutputSchema";

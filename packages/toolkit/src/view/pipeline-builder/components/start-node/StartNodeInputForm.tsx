@@ -80,7 +80,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
           };
           break;
         }
-        case "audio": {
+        case "audio/*": {
           configuraton = {
             type: "array",
             items: {
@@ -102,7 +102,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
           };
           break;
         }
-        case "image": {
+        case "image/*": {
           configuraton = {
             type: "array",
             items: {
@@ -135,7 +135,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
           };
           break;
         }
-        case "audio": {
+        case "audio/*": {
           configuraton = {
             type: "string",
             instillFormat: "audio/*",
@@ -151,7 +151,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
           };
           break;
         }
-        case "image": {
+        case "image/*": {
           configuraton = {
             type: "string",
             instillFormat: "image/*",
@@ -264,17 +264,17 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
       case "array:string": {
         return "string";
       }
-      case "audio":
+      case "audio/*":
       case "array:audio/*": {
-        return "audio";
+        return "audio/*";
       }
       case "boolean":
       case "array:boolean": {
         return "boolean";
       }
-      case "image":
+      case "image/*":
       case "array:image/*": {
-        return "image";
+        return "image/*";
       }
       case "number":
       case "array:number": {
@@ -359,25 +359,25 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
             }}
           />
           <StartNodeInputType
-            type="image"
+            type="image/*"
             selectedType={selectedType}
             onSelect={() => {
-              if (selectedType === "image") {
+              if (selectedType === "image/*") {
                 setSelectedType(null);
               } else {
-                setSelectedType("image");
+                setSelectedType("image/*");
               }
               setInputTypeIsArray(false);
             }}
           />
           <StartNodeInputType
-            type="audio"
+            type="audio/*"
             selectedType={selectedType}
             onSelect={() => {
-              if (selectedType === "audio") {
+              if (selectedType === "audio/*") {
                 setSelectedType(null);
               } else {
-                setSelectedType("audio");
+                setSelectedType("audio/*");
               }
               setInputTypeIsArray(false);
             }}
@@ -395,7 +395,9 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
             }}
           />
         </div>
-        {["number", "image", "string", "audio"].includes(selectedType ?? "") ? (
+        {["number", "image/*", "string", "audio/*"].includes(
+          selectedType ?? ""
+        ) ? (
           <div className="mb-3 flex flex-row space-x-3">
             <Checkbox
               checked={inputTypeIsArray}
@@ -491,7 +493,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
                   icon = (
                     <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "text";
+                  label = "string";
 
                   break;
                 }
@@ -499,22 +501,22 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
                   icon = (
                     <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "text_array";
+                  label = "array:string";
 
                   break;
                 }
-                case "audio": {
+                case "audio/*": {
                   icon = (
                     <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "audio";
+                  label = "audio/*";
                   break;
                 }
                 case "array:audio/*": {
                   icon = (
                     <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "audio_array";
+                  label = "array:audio/*";
                   break;
                 }
                 case "boolean": {
@@ -534,21 +536,21 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
                       className="m-auto h-4 w-4"
                     />
                   );
-                  label = "boolean_array";
+                  label = "array:boolean";
                   break;
                 }
-                case "image": {
+                case "image/*": {
                   icon = (
                     <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "image";
+                  label = "image/*";
                   break;
                 }
                 case "array:image/*": {
                   icon = (
                     <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-accent-on-bg" />
                   );
-                  label = "image_array";
+                  label = "array:image/*";
                   break;
                 }
                 case "number": {
@@ -568,7 +570,7 @@ export const StartNodeInputForm = ({ data }: { data: StartNodeData }) => {
                       className="m-auto h-4 w-4"
                     />
                   );
-                  label = "number_array";
+                  label = "array:number";
                   break;
                 }
                 default:

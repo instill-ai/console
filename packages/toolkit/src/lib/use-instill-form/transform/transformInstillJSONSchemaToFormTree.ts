@@ -2,12 +2,10 @@ import { JSONSchema7TypeName } from "json-schema";
 import { Nullable } from "../../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
 import {
-  InstillFormGroupItem,
   InstillFormTree,
   InstillJSONSchema,
   InstillJSONSchemaDefinition,
   CheckIsHidden,
-  InstillFormItem,
 } from "../type";
 
 export type TransformInstillJSONSchemaToFormTreeOptions = {

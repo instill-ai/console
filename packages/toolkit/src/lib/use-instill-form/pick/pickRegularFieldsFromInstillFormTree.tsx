@@ -215,8 +215,8 @@ export function pickRegularFieldsFromInstillFormTree(
       shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
       instillAcceptFormats={tree.instillAcceptFormats ?? []}
-      type={tree.type}
       isRequired={tree.isRequired}
+      instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
     />
   );
 }

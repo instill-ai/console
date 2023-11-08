@@ -25,7 +25,7 @@ export const StartNodeInputType = ({
       label = "Text";
       break;
     }
-    case "audio": {
+    case "audio/*": {
       icon = (
         <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
@@ -42,7 +42,7 @@ export const StartNodeInputType = ({
       label = "Boolean";
       break;
     }
-    case "image": {
+    case "image/*": {
       icon = (
         <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
