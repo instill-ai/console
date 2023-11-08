@@ -26,6 +26,7 @@ export const ResourceComponentForm = ({
       disabledAll,
       chooseTitleFrom: "key",
       checkIsHidden,
+      enableSmartHint: true,
     }
   );
 

@@ -18,13 +18,12 @@ export type UseComponentOutputFieldsProps =
     };
 
 export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
-  const { nodeType, schema, data } = props;
   const fields = React.useMemo(() => {
-    if (!schema) {
+    if (!props.schema) {
       return null;
     }
 
-    const outputFormTree = transformInstillJSONSchemaToFormTree(schema);
+    const outputFormTree = transformInstillJSONSchemaToFormTree(props.schema);
 
     const fields = pickComponentOutputFieldsFromInstillFormTree({
       ...props,
@@ -32,7 +31,7 @@ export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
     });
 
     return fields;
-  }, [schema, nodeType, data]);
+  }, [props]);
 
   return fields;
 }

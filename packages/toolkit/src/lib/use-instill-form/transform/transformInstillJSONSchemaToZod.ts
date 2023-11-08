@@ -232,6 +232,10 @@ export function transformInstillJSONSchemaToZod({
     * -----------------------------------------------------------------------*/
 
     instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+      if (val === "") {
+        return;
+      }
+
       if (typeof val === "string") {
         const referenceSet = extractTemplateReferenceSetFromString(val);
 

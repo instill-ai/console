@@ -2,6 +2,7 @@ import * as React from "react";
 import { InstillFormTree, SelectedConditionMap } from "../type";
 import { RegularFields } from "../components";
 import { GeneralUseFormReturn } from "../../type";
+import { SmartHintFields } from "../components/smart-hint";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
@@ -9,6 +10,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
 
   // By default we will choose title from title field in JSON schema
   chooseTitleFrom?: "title" | "key";
+  enableSmartHint?: boolean;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -23,6 +25,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const disabledAll = options?.disabledAll ?? false;
   const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
+  const enableSmartHint = options?.enableSmartHint ?? false;
 
   let title = tree.title ?? tree.fieldKey ?? null;
 
@@ -49,11 +52,7 @@ export function pickRegularFieldsFromInstillFormTree(
             form,
             selectedConditionMap,
             setSelectedConditionMap,
-            {
-              disabledAll,
-              checkIsHiddenByTree,
-              chooseTitleFrom,
-            }
+            options
           );
         })}
       </div>
@@ -65,11 +64,7 @@ export function pickRegularFieldsFromInstillFormTree(
             form,
             selectedConditionMap,
             setSelectedConditionMap,
-            {
-              disabledAll,
-              checkIsHiddenByTree,
-              chooseTitleFrom,
-            }
+            options
           );
         })}
       </React.Fragment>
@@ -90,11 +85,7 @@ export function pickRegularFieldsFromInstillFormTree(
             form,
             selectedConditionMap,
             setSelectedConditionMap,
-            {
-              disabledAll,
-              checkIsHiddenByTree,
-              chooseTitleFrom,
-            }
+            options
           ),
         ];
       })
@@ -134,11 +125,7 @@ export function pickRegularFieldsFromInstillFormTree(
           form,
           selectedConditionMap,
           setSelectedConditionMap,
-          {
-            disabledAll,
-            checkIsHiddenByTree,
-            chooseTitleFrom,
-          }
+          options
         )}
       </React.Fragment>
     );
@@ -177,7 +164,24 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
-  if (tree.type === "string" && tree.isMultiline) {
+  if (tree.type === "string" && tree.instillUiMultiline) {
+    if (enableSmartHint) {
+      return (
+        <SmartHintFields.TextArea
+          key={tree.path}
+          path={tree.path}
+          form={form}
+          title={title}
+          description={tree.description}
+          shortDescription={tree.instillShortDescription}
+          disabled={disabledAll}
+          instillAcceptFormats={tree.instillAcceptFormats ?? []}
+          isRequired={tree.isRequired}
+          instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
+        />
+      );
+    }
+
     return (
       <RegularFields.TextAreaField
         key={tree.path}
@@ -205,6 +209,23 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
+  if (enableSmartHint) {
+    return (
+      <SmartHintFields.TextField
+        key={tree.path}
+        path={tree.path}
+        form={form}
+        title={title}
+        description={tree.description}
+        shortDescription={tree.instillShortDescription}
+        disabled={disabledAll}
+        instillAcceptFormats={tree.instillAcceptFormats ?? []}
+        isRequired={tree.isRequired}
+        instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
+      />
+    );
+  }
+
   return (
     <RegularFields.TextField
       key={tree.path}
@@ -214,9 +235,6 @@ export function pickRegularFieldsFromInstillFormTree(
       description={tree.description}
       shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
-      instillAcceptFormats={tree.instillAcceptFormats ?? []}
-      isRequired={tree.isRequired}
-      instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
     />
   );
 }

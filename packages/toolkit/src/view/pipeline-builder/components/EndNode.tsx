@@ -67,6 +67,7 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
         {
           instillUpstreamType: "value",
           type: "string",
+          maximum: 2048,
         },
         {
           instillUpstreamType: "reference",
@@ -78,6 +79,7 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
           type: "string",
         },
       ],
+      instillUiMultiline: true,
       instillUpstreamTypes: ["value", "reference", "template"],
       title: "Value",
     },
@@ -104,12 +106,13 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     CreateEndOperatorInputSchema,
-    null
+    null,
+    {
+      enableSmartHint: true,
+    }
   );
 
   const onSubmit = (formData: z.infer<typeof ValidatorSchema>) => {
-    console.log(ValidatorSchema.safeParse(formData));
-
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
         if (prevFieldKey) {
