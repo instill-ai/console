@@ -169,6 +169,7 @@ export function usePipelineBuilderGraph({
     updateNodes,
     updateEdges,
     user.isSuccess,
+    updateCurrentVersion,
   ]);
 
   // Initialize the pipeline graph for existed pipeline

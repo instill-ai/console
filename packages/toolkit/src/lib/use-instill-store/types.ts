@@ -7,7 +7,6 @@ import {
 } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
-import { OpenAPIV3 } from "openapi-types";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
 
