@@ -19,6 +19,7 @@ import { GeneralRecord } from "../type";
 export type UseInstillFormOptions = {
   disabledAll?: boolean;
   checkIsHidden?: CheckIsHidden;
+  enableSmartHint?: boolean;
 } & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
@@ -29,6 +30,7 @@ export function useInstillForm(
   const disabledAll = options?.disabledAll ?? false;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const checkIsHidden = options?.checkIsHidden ?? undefined;
+  const enableSmartHint = options?.enableSmartHint ?? false;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
 
@@ -90,24 +92,24 @@ export function useInstillForm(
     setValidatorSchema(_ValidatorSchema);
   }, [schema, selectedConditionMap]);
 
-  const { fields } = React.useMemo(() => {
+  const fields = React.useMemo(() => {
     if (!schema || !formTree) {
-      return { fields: null, formTree: null };
+      return null;
     }
 
-    return {
-      fields: pickRegularFieldsFromInstillFormTree(
-        formTree,
-        form,
-        selectedConditionMap,
-        setSelectedConditionMap,
-        {
-          disabledAll,
-          chooseTitleFrom,
-        }
-      ),
+    const fields = pickRegularFieldsFromInstillFormTree(
       formTree,
-    };
+      form,
+      selectedConditionMap,
+      setSelectedConditionMap,
+      {
+        disabledAll,
+        chooseTitleFrom,
+        enableSmartHint,
+      }
+    );
+
+    return fields;
   }, [
     schema,
     formTree,
@@ -116,6 +118,7 @@ export function useInstillForm(
     setSelectedConditionMap,
     disabledAll,
     chooseTitleFrom,
+    enableSmartHint,
   ]);
 
   return {

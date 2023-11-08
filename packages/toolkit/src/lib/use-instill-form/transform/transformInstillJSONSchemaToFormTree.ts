@@ -63,6 +63,8 @@ export function transformInstillJSONSchemaToFormTree(
 
   let type: Nullable<JSONSchema7TypeName> = null;
 
+  let anyOfFields: Partial<InstillJSONSchema> = {};
+
   // 1.1 Get the type and instillAcceptFormats from anyOf field
   if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
     const instillUpstreamValue = targetSchema.anyOf.find(
@@ -75,6 +77,8 @@ export function transformInstillJSONSchemaToFormTree(
       } else {
         type = instillUpstreamValue.type ?? null;
       }
+
+      anyOfFields = pickBaseFields(instillUpstreamValue);
 
       // We will store information of enum in anyOf field
       if (instillUpstreamValue.enum) {
@@ -234,6 +238,7 @@ export function transformInstillJSONSchemaToFormTree(
   // 3. Post process
 
   return {
+    ...anyOfFields,
     ...baseFields,
     _type: "formItem",
     fieldKey: key ?? null,
@@ -263,6 +268,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillCredentialField",
   "instillUIOrder",
   "instillEditOnNodeFields",
+  "instillUiMultiline",
 ];
 
 function pickBaseFields(schema: InstillJSONSchema): Partial<InstillJSONSchema> {
