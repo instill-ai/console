@@ -4,7 +4,7 @@ export default withMiddlewareAuthRequired();
 
 export const config = {
   matcher: [
-    "/(.*?)/resources/:path*",
+    "/(.*?)/connectors/:path*",
     "/(.*?)/dashboard/:path*",
     "/(.*?)/pipelines/:path*",
     "/(.*?)/model-hub/:path*",

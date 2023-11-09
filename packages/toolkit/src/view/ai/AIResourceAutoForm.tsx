@@ -58,13 +58,13 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
         }
 
         toast({
-          title: "Successfully create AI resource",
+          title: "Successfully create AI connector",
           variant: "alert-success",
           size: "small",
         });
       } catch (error) {
         toastInstillError({
-          title: "Something went wrong when create the AI resource",
+          title: "Something went wrong when create the AI connector",
           toast,
           error,
         });
@@ -96,13 +96,13 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
       }
 
       toast({
-        title: "Successfully update AI resource",
+        title: "Successfully update AI connector",
         variant: "alert-success",
         size: "small",
       });
     } catch (error) {
       toastInstillError({
-        title: "Something went wrong when update the AI resource",
+        title: "Something went wrong when update the AI connector",
         toast,
         error,
       });

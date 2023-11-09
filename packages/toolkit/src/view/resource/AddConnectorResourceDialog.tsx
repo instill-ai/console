@@ -84,7 +84,7 @@ export const AddConnectorResourceDialog = (
               <div className="flex flex-col">
                 <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
                   <p className="mx-auto product-body-text-1-semibold">
-                    New Resource
+                    New Connectors
                   </p>
                 </div>
                 <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
