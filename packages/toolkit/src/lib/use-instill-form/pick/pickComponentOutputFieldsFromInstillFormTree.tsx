@@ -1,39 +1,47 @@
 import * as React from "react";
 import { InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
-import { PipelineTrace, TriggerUserPipelineResponse } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import { dot } from "../../dot";
 
-export type PickComponentOutputFieldsFromInstillFormTreeProps =
-  | {
-      tree: InstillFormTree;
-      data: Nullable<PipelineTrace>;
-      nodeType: "connector";
-    }
-  | {
-      tree: InstillFormTree;
-      data: Nullable<TriggerUserPipelineResponse["outputs"]>;
-      nodeType: "end";
-    };
+export type PickComponentOutputFieldsFromInstillFormTreeProps = {
+  tree: InstillFormTree;
+  data: Nullable<Record<string, any>>;
+  nodeType: "end" | "connector";
+  chooseTitleFrom?: "title" | "path";
+  hideField?: boolean;
+};
 
 export function pickComponentOutputFieldsFromInstillFormTree(
   props: PickComponentOutputFieldsFromInstillFormTreeProps
 ) {
   // 1. Preprocess
 
-  const { tree, nodeType, data } = props;
+  const { tree, nodeType, data, chooseTitleFrom, hideField } = props;
+
+  let title = tree.path ?? tree.title ?? null;
+
+  if (chooseTitleFrom === "title") {
+    title = tree.title ?? null;
+  }
 
   // Process value
   let propertyValue: any = null;
 
-  if (nodeType === "connector") {
-    if (tree.path) {
-      propertyValue = data?.outputs[0][tree.path] ?? null;
+  if (tree._type === "formGroup") {
+    propertyValue = data ?? null;
+  } else if (tree._type === "objectArray") {
+    if (tree.fieldKey) {
+      propertyValue = data
+        ? Array.isArray(data[tree.fieldKey])
+          ? data[tree.fieldKey][0]
+          : null
+        : null;
+    } else {
+      propertyValue = Array.isArray(data) ? data[0] : null;
     }
-  } else {
-    if (tree.path && data && data[0]) {
-      propertyValue = dot.getter(data[0], tree.path);
+  } else if (tree._type === "formItem") {
+    if (tree.fieldKey) {
+      propertyValue = data ? data[tree.fieldKey] ?? null : null;
     }
   }
 
@@ -44,15 +52,16 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     return tree.fieldKey ? (
       <div
         key={tree.path || tree.fieldKey}
-        className="flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-5"
+        className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2"
       >
-        <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+        <p className="text-semantic-fg-secondary product-body-text-4-semibold">
           {tree.fieldKey || tree.path}
         </p>
         {tree.properties.map((property) => {
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: property,
+            data: propertyValue,
           });
         })}
       </div>
@@ -62,6 +71,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: property,
+            data: propertyValue,
           });
         })}
       </React.Fragment>
@@ -77,17 +87,11 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "objectArray") {
     return (
       <React.Fragment key={tree.path || tree.fieldKey}>
-        {nodeType === "connector"
-          ? pickComponentOutputFieldsFromInstillFormTree({
-              tree: tree.properties,
-              nodeType,
-              data,
-            })
-          : pickComponentOutputFieldsFromInstillFormTree({
-              tree: tree.properties,
-              nodeType,
-              data,
-            })}
+        {pickComponentOutputFieldsFromInstillFormTree({
+          ...props,
+          tree: tree.properties,
+          data: propertyValue,
+        })}
       </React.Fragment>
     );
   }
@@ -111,8 +115,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     return (
       <ComponentOutputFields.TextField
         nodeType={nodeType}
-        title={tree.title ?? tree.path}
+        title={title}
         text={propertyValue}
+        hideField={hideField}
       />
     );
   }
@@ -128,8 +133,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         return (
           <ComponentOutputFields.TextsField
             nodeType={nodeType}
-            title={tree.title ?? tree.path}
+            title={title}
             texts={propertyValue}
+            hideField={hideField}
           />
         );
       }
@@ -137,8 +143,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         return (
           <ComponentOutputFields.AudiosField
             nodeType={nodeType}
-            title={tree.title ?? tree.path}
+            title={title}
             audios={propertyValue}
+            hideField={hideField}
           />
         );
       }
@@ -146,8 +153,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         return (
           <ComponentOutputFields.ImagesField
             nodeType={nodeType}
-            title={tree.title ?? tree.path}
+            title={title}
             images={propertyValue}
+            hideField={hideField}
           />
         );
       }
@@ -155,8 +163,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         return (
           <ComponentOutputFields.TextsField
             nodeType={nodeType}
-            title={tree.title ?? tree.path}
+            title={title}
             texts={propertyValue}
+            hideField={hideField}
           />
         );
       }
@@ -164,8 +173,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         return (
           <ComponentOutputFields.TextField
             nodeType={nodeType}
-            title={tree.title ?? tree.path}
+            title={title}
             text={propertyValue}
+            hideField={hideField}
           />
         );
       }
@@ -182,8 +192,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       return (
         <ComponentOutputFields.TextField
           nodeType={nodeType}
-          title={tree.title ?? tree.path}
+          title={title}
           text={propertyValue}
+          hideField={hideField}
         />
       );
     }
@@ -191,8 +202,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       return (
         <ComponentOutputFields.AudioField
           nodeType={nodeType}
-          title={tree.title ?? tree.path}
+          title={title}
           audio={propertyValue}
+          hideField={hideField}
         />
       );
     }
@@ -200,8 +212,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       return (
         <ComponentOutputFields.ImageField
           nodeType={nodeType}
-          title={tree.title ?? tree.path}
+          title={title}
           image={propertyValue}
+          hideField={hideField}
         />
       );
     }
@@ -209,8 +222,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       return (
         <ComponentOutputFields.TextField
           nodeType={nodeType}
-          title={tree.title ?? tree.path}
+          title={title}
           text={propertyValue}
+          hideField={hideField}
         />
       );
     }
@@ -218,8 +232,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       return (
         <ComponentOutputFields.TextField
           nodeType={nodeType}
-          title={tree.title ?? tree.path}
+          title={title}
           text={propertyValue}
+          hideField={hideField}
         />
       );
     }

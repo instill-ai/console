@@ -17,7 +17,7 @@ export const ConnectorNodeFieldRoot = ({
     <div
       key={key}
       className={cn(
-        "flex w-full max-w-[calc(var(--pipeline-builder-node-available-width)-var(--pipeline-builder-node-padding-x))] flex-row flex-wrap gap-2 rounded-[6px] bg-semantic-bg-primary p-2",
+        "flex w-full max-w-[calc(var(--pipeline-builder-node-available-width)-var(--pipeline-builder-node-padding-x))] flex-row flex-wrap gap-y-2 rounded-[6px] bg-semantic-bg-primary p-2",
         className
       )}
     >
