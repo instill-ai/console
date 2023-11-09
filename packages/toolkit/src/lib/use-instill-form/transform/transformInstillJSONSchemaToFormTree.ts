@@ -78,7 +78,9 @@ export function transformInstillJSONSchemaToFormTree(
         type = instillUpstreamValue.type ?? null;
       }
 
-      anyOfFields = pickBaseFields(instillUpstreamValue);
+      anyOfFields = pickBaseFields(instillUpstreamValue, [
+        "instillUpstreamType",
+      ]);
 
       // We will store information of enum in anyOf field
       if (instillUpstreamValue.enum) {
@@ -271,12 +273,19 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillUiMultiline",
 ];
 
-function pickBaseFields(schema: InstillJSONSchema): Partial<InstillJSONSchema> {
+function pickBaseFields(
+  schema: InstillJSONSchema,
+  ignoreFields?: string[]
+): Partial<InstillJSONSchema> {
   const partialSchema: Partial<InstillJSONSchema> = {
     ...Object.fromEntries(
-      Object.entries(schema).filter(([k]) =>
-        baseFields.includes(k as keyof InstillJSONSchema)
-      )
+      Object.entries(schema).filter(([k]) => {
+        if (ignoreFields && ignoreFields.includes(k)) {
+          return false;
+        }
+
+        return baseFields.includes(k as keyof InstillJSONSchema);
+      })
     ),
   };
 

@@ -109,7 +109,7 @@ export function pickRegularFieldsFromInstillFormTree(
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
         key={constField.path}
-        conditionComponents={conditionComponents}
+        conditionComponentsMap={conditionComponents}
         title={title}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}

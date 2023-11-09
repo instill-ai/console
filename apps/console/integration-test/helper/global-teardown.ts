@@ -12,7 +12,7 @@ async function globalTeardown() {
     await deleteAllPipelines();
     await deleteAllSources();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 

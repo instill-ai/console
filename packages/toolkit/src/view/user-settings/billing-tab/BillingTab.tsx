@@ -59,7 +59,6 @@ export const BillingTab = () => {
   //           : instillUser.data?.customer_id,
   //     })
   //     .then(({ data }) => {
-  //       console.log(stripeData.data, data);
   //       Router.push(data.url);
   //     })
   //     .catch((err) => {

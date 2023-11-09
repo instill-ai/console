@@ -26,7 +26,7 @@ export const ImageWithFallback = ({
       alt={alt}
       onError={() => {
         setError(true);
-        console.log(error);
+        console.error(error);
       }}
       className="flex-shrink-0"
     />

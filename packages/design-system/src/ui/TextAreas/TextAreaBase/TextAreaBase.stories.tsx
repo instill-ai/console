@@ -10,7 +10,7 @@ const meta: Meta<typeof TextAreaBase> = {
 export default meta;
 
 const Template: StoryFn<typeof TextAreaBase> = (args) => (
-  <TextAreaBase onFocus={() => console.log("hihihi")} {...args} />
+  <TextAreaBase {...args} />
 );
 
 export const Playground: StoryFn<typeof TextAreaBase> = Template.bind({});
