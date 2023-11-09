@@ -2,12 +2,11 @@ export function getImageTypeFromBase64String(base64String: string) {
   const imageFormats = {
     jpeg: "/9j",
     png: "iVB",
+    webp: "UklGR",
   };
 
-  const header = base64String.substring(0, 3);
-
   for (const [key, value] of Object.entries(imageFormats)) {
-    if (header === value) {
+    if (base64String.startsWith(value)) {
       return key;
     }
   }
