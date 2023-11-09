@@ -5,10 +5,10 @@ export function recursiveParseToNum(input: any): any {
     // If input is already a number, return it.
     return input;
   } else if (typeof input === "string") {
-    // Attempt to parse strings to numbers.
-    if (!isNaN(parseFloat(input))) {
+    // Use unart plus to parse strings to numbers.
+    if (!isNaN(+input)) {
       if (input !== "") {
-        return parseFloat(input);
+        return +input;
       } else {
         return input;
       }

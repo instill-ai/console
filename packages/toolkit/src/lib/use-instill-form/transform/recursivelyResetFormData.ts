@@ -1,39 +1,36 @@
 import { dot } from "../../dot";
 import { GeneralRecord } from "../../type";
 import { InstillFormTree, SelectedConditionMap } from "../type";
+import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";
 
 export function recursivelyResetFormData(
-  resetTree: InstillFormTree,
-  resetSelectedConditionMap: SelectedConditionMap,
+  tree: InstillFormTree,
+  selectedConditionMap: SelectedConditionMap,
   formData: GeneralRecord
 ) {
-  switch (resetTree._type) {
+  switch (tree._type) {
     case "formGroup": {
-      for (const property of resetTree.properties) {
-        recursivelyResetFormData(property, resetSelectedConditionMap, formData);
+      for (const property of tree.properties) {
+        recursivelyResetFormData(property, selectedConditionMap, formData);
       }
       break;
     }
     case "objectArray": {
-      recursivelyResetFormData(
-        resetTree.properties,
-        resetSelectedConditionMap,
-        formData
-      );
+      recursivelyResetFormData(tree.properties, selectedConditionMap, formData);
       break;
     }
     case "formCondition": {
-      const constField = resetTree.conditions[
-        Object.keys(resetTree.conditions)[0]
+      const constField = tree.conditions[
+        Object.keys(tree.conditions)[0]
       ].properties.find((e) => "const" in e);
 
       if (constField && constField.path) {
-        const selectedCondition = resetSelectedConditionMap[constField.path];
+        const selectedCondition = selectedConditionMap[constField.path];
 
-        if (selectedCondition && resetTree.conditions[selectedCondition]) {
+        if (selectedCondition && tree.conditions[selectedCondition]) {
           recursivelyResetFormData(
-            resetTree.conditions[selectedCondition],
-            resetSelectedConditionMap,
+            tree.conditions[selectedCondition],
+            selectedConditionMap,
             formData
           );
         }
@@ -42,13 +39,13 @@ export function recursivelyResetFormData(
       break;
     }
     default: {
-      if ("const" in resetTree) {
+      if ("const" in tree) {
         break;
       }
 
-      if (resetTree.path) {
-        dot.setter(formData, resetTree.path, null);
-      }
+      transformInstillFormTreeToDefaultValue(tree, {
+        initialData: formData,
+      });
     }
   }
 }

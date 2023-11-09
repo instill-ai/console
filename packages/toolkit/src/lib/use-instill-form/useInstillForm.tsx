@@ -33,16 +33,14 @@ export function useInstillForm(
   const enableSmartHint = options?.enableSmartHint ?? false;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
-
-  const [selectedConditionMap, setSelectedConditionMap] =
-    useInstillSelectedConditionMap(formTree, data);
-
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
     z.any()
   );
-
   const [initialValues, setInitialValues] =
     React.useState<Nullable<GeneralRecord>>(null);
+
+  const [selectedConditionMap, setSelectedConditionMap] =
+    useInstillSelectedConditionMap(formTree, data);
 
   const form = useForm<z.infer<typeof ValidatorSchema>>({
     resolver: zodResolver(ValidatorSchema),
@@ -90,11 +88,7 @@ export function useInstillForm(
     setInitialValues(_defaultValues);
   }, [schema, checkIsHidden, data, form]);
 
-  // Delay the initialisation of the form after the first render
-  React.useEffect(() => {
-    form.reset(initialValues);
-  }, [form, initialValues]);
-
+  // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {
     if (!schema || !selectedConditionMap) return;
 
@@ -106,6 +100,11 @@ export function useInstillForm(
 
     setValidatorSchema(_ValidatorSchema);
   }, [schema, selectedConditionMap]);
+
+  // Delay the initialisation of the form after the first render
+  React.useEffect(() => {
+    form.reset(initialValues);
+  }, [form, initialValues]);
 
   const fields = React.useMemo(() => {
     if (!formTree) {
