@@ -27,6 +27,11 @@ export function pickSmartHintsFromAcceptFormats(
             properties: childPickHints,
           });
         }
+        // Deal with array type
+      } else {
+        if (instillAcceptFormats.includes(`array:${hint.instillFormat}`)) {
+          pickHints.push(hint);
+        }
       }
     }
 
