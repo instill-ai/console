@@ -3,11 +3,7 @@ import * as z from "zod";
 import { Button, Form, Textarea } from "@instill-ai/design-system";
 
 import MonacoEditor from "@monaco-editor/react";
-import {
-  GeneralRecord,
-  InstillJSONSchema,
-  useInstillForm,
-} from "@instill-ai/toolkit";
+import { InstillJSONSchema, useInstillForm } from "@instill-ai/toolkit";
 
 export default function Home() {
   const [code, setCode] = React.useState<string | null>(null);
@@ -94,10 +90,6 @@ export default function Home() {
                   variant="primary"
                   onClick={() => {
                     const data = form.getValues();
-
-                    form.handleSubmit((data) => {
-                      console.log(data);
-                    })();
 
                     try {
                       const parsedData = ValidatorSchema.parse(data);

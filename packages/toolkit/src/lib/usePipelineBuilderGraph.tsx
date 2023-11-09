@@ -159,7 +159,7 @@ export function usePipelineBuilderGraph({
         setGraphIsInitialized(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, [
     graphIsInitialized,
@@ -229,7 +229,7 @@ export function usePipelineBuilderGraph({
         setGraphIsInitialized(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, [
     id,

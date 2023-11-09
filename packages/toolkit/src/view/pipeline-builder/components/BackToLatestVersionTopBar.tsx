@@ -92,7 +92,7 @@ export const BackToLatestVersionTopBar = (
                 updateEdges(() => graphData.edges);
               })
               .catch((err) => {
-                console.log(err);
+                console.error(err);
               });
           }}
         >

@@ -9,7 +9,7 @@ export const initAmplitude = (
   enabledSessionTracking = true
 ) => {
   if (!env("NEXT_PUBLIC_AMPLITUDE_KEY")) {
-    console.log("Amplitude key is not set");
+    console.error("Amplitude key is not set");
     return;
   }
 

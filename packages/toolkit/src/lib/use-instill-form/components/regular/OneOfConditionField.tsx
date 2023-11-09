@@ -15,7 +15,7 @@ export const OneOfConditionField = ({
   path,
   title,
   tree,
-  conditionComponents,
+  conditionComponentsMap,
   selectedConditionMap,
   setSelectedConditionMap,
   description,
@@ -29,7 +29,7 @@ export const OneOfConditionField = ({
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<Nullable<SelectedConditionMap>>
   >;
-  conditionComponents: Record<string, React.ReactNode>;
+  conditionComponentsMap: Record<string, React.ReactNode>;
   title: Nullable<string>;
   description?: string;
   shortDescription?: string;
@@ -39,11 +39,19 @@ export const OneOfConditionField = ({
     React.useState<Nullable<SelectedConditionMap>>(null);
 
   const conditionOptions = React.useMemo(() => {
-    return Object.entries(conditionComponents).map(([k]) => k);
-  }, [conditionComponents]);
+    return Object.entries(conditionComponentsMap).map(([k]) => k);
+  }, [conditionComponentsMap]);
 
   // Once the condition is changed, we need to reset the child form data
   // of the previous condition.
+
+  const conditionComponents = React.useMemo(() => {
+    if (!selectedConditionMap) return null;
+
+    const selectedCondition = selectedConditionMap[path];
+
+    return conditionComponentsMap[selectedCondition];
+  }, [conditionComponentsMap, selectedConditionMap, path]);
 
   const { reset, getValues } = form;
 
@@ -134,11 +142,7 @@ export const OneOfConditionField = ({
           );
         }}
       />
-      {conditionComponents[form.watch(path)] ? (
-        <div className="flex flex-col gap-y-5">
-          {conditionComponents[form.watch(path)]}
-        </div>
-      ) : null}
+      <div className="flex flex-col gap-y-5">{conditionComponents}</div>
     </div>
   );
 };

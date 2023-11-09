@@ -127,7 +127,7 @@ export const BottomBar = (props: BottomBarProps) => {
                           updateEdges(() => graphData.edges);
                         })
                         .catch((err) => {
-                          console.log(err);
+                          console.error(err);
                         });
                     }}
                   />

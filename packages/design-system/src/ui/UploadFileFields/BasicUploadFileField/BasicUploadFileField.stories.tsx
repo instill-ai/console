@@ -43,7 +43,7 @@ export const DemoFileReader: StoryFn<typeof BasicUploadFileField> = () => {
       reader.readAsDataURL(inputFileList[0]);
 
       reader.onloadend = () => {
-        console.log(reader.result);
+        console.error(reader.result);
       };
     }
   };

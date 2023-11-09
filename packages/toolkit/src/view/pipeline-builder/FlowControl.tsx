@@ -343,13 +343,7 @@ export const FlowControl = (props: FlowControlProps) => {
             .map((e) => e.id),
           "ai"
         );
-        configuration =
-          "configuration" in resource
-            ? getAiConnectorDefaultConfiguration(
-                resource.connector_definition_name
-              )
-            : getAiConnectorDefaultConfiguration(resource.name);
-        componentType = "COMPONENT_TYPE_CONNECTOR_AI";
+        (configuration = {}), (componentType = "COMPONENT_TYPE_CONNECTOR_AI");
         break;
       }
       case "CONNECTOR_TYPE_BLOCKCHAIN": {
@@ -363,13 +357,8 @@ export const FlowControl = (props: FlowControlProps) => {
             .map((e) => e.id),
           "blockchain"
         );
-        configuration =
-          "configuration" in resource
-            ? getBlockchainConnectorDefaultConfiguration(
-                resource.connector_definition_name
-              )
-            : getBlockchainConnectorDefaultConfiguration(resource.name);
-        componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+        (configuration = {}),
+          (componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN");
         break;
       }
       case "CONNECTOR_TYPE_DATA": {
@@ -382,9 +371,7 @@ export const FlowControl = (props: FlowControlProps) => {
             .map((e) => e.id),
           "data"
         );
-        configuration = {
-          input: {},
-        };
+        configuration = {};
         componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
         break;
       }

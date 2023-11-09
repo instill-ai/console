@@ -14,7 +14,7 @@ export const removeRegisteredUser = async () => {
       cookie_token: "",
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -26,7 +26,7 @@ export const addRegisteredUser = async () => {
       cookie_token: uuidv4(),
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
