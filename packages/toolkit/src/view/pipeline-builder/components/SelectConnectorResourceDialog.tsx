@@ -1,6 +1,6 @@
 import cn from "clsx";
 import * as React from "react";
-import { Button, Dialog, Icons } from "@instill-ai/design-system";
+import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import {
   ConnectorDefinition,
@@ -91,24 +91,25 @@ export const SelectConnectorResourceDialog = (
                   : "stroke-semantic-bg-primary"
               )}
             />
-            Add resource
+            Add component
           </Button>
         )}
       </Dialog.Trigger>
-      <Dialog.Content className="flex max-h-[700px] !max-w-[1048px] flex-col overflow-y-auto">
-        <React.Fragment>
+      <Dialog.Content className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0">
+        <ScrollArea.Root className="h-[700px] p-6">
+          <Dialog.Close className="bg-semantic-bg-primary" />
           <Dialog.Header>
             <Dialog.Title className="mx-auto !product-headings-heading-3">
-              Add a resource
+              Add a component
             </Dialog.Title>
             <Dialog.Description className="mx-auto">
-              Select a resource to add to your pipeline
+              Select a connector to add to your pipeline
             </Dialog.Description>
           </Dialog.Header>
           <div className="flex flex-col">
             <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
               <p className="mx-auto product-body-text-1-semibold">
-                Existing Resource
+                Existing Connectors
               </p>
             </div>
             <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
@@ -141,7 +142,7 @@ export const SelectConnectorResourceDialog = (
           <div className="flex flex-col">
             <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
               <p className="mx-auto product-body-text-1-semibold">
-                New Resource
+                New Connector
               </p>
             </div>
             <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
@@ -229,7 +230,7 @@ export const SelectConnectorResourceDialog = (
                 : null}
             </div>
           </div>
-        </React.Fragment>
+        </ScrollArea.Root>
       </Dialog.Content>
     </Dialog.Root>
   );
