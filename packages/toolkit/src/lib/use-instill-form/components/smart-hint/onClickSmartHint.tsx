@@ -27,6 +27,16 @@ export function onClickSmartHint({
     const cursorPosition = inputRef.current.selectionStart;
     const value = field.value ?? "";
 
+    // let closeBrace = "";
+
+    // if (value[smartHintEnabledPos - 1] === "{") {
+    //   closeBrace = "}";
+    // }
+
+    // if (value[smartHintEnabledPos - 2] === "{") {
+    //   closeBrace = "}}";
+    // }
+
     const newValue = `${value.slice(0, smartHintEnabledPos ?? 0 + 1)}${
       smartHint.path
     }${value.slice(cursorPosition)}`;
