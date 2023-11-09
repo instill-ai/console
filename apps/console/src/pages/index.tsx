@@ -48,7 +48,7 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
     }
   }, [router, cookies, user.isSuccess, user.data, user.isError]);
 
-  return <></>;
+  return <div />;
 };
 
 MainPage.getLayout = (page) => {

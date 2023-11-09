@@ -1,3 +1,4 @@
+import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { DiscordIcon, Icons, Separator } from "@instill-ai/design-system";
@@ -19,7 +20,7 @@ export const Sidebar = () => {
     <div className="flex w-[312px] flex-col bg-semantic-bg-primary">
       <div className="mb-auto px-4 pt-4">
         {user.isSuccess ? (
-          <>
+          <React.Fragment>
             <SidebarLink
               href={`/${user.data.id}/pipelines`}
               icon={
@@ -57,7 +58,7 @@ export const Sidebar = () => {
               hightlighted={router.pathname.split("/")[1] === "dashboard"}
               className="px-3"
             />
-          </>
+          </React.Fragment>
         ) : (
           <div className="flex h-[217px] w-full items-center justify-center">
             <LoadingSpin />

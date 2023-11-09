@@ -478,10 +478,10 @@ export const FlowControl = (props: FlowControlProps) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
         {isOwner ? (
-          <>
+          <React.Fragment>
             <ReleasePipelineModal
               accessToken={accessToken}
               disabled={currentVersion !== "latest"}
@@ -529,75 +529,73 @@ export const FlowControl = (props: FlowControlProps) => {
               {testModeEnabled ? (
                 "Stop"
               ) : (
-                <>
+                <React.Fragment>
                   Test
                   <Icons.Play className="h-5 w-5 stroke-semantic-fg-primary" />
-                </>
+                </React.Fragment>
               )}
             </Button>
             <SharePipelineDialog
               accessToken={accessToken}
               enableQuery={enableQuery}
             />
-          </>
+          </React.Fragment>
         ) : (
-          <>
-            <Button
-              onClick={async () => {
-                if (!user.isSuccess) return;
+          <Button
+            onClick={async () => {
+              if (!user.isSuccess) return;
 
-                setIsCloning(true);
+              setIsCloning(true);
 
-                const payload: CreateUserPipelinePayload = {
-                  id: generateRandomReadableName(),
-                  recipe: constructPipelineRecipe(nodes, true),
-                  metadata: composePipelineMetadataFromNodes(nodes),
-                };
+              const payload: CreateUserPipelinePayload = {
+                id: generateRandomReadableName(),
+                recipe: constructPipelineRecipe(nodes, true),
+                metadata: composePipelineMetadataFromNodes(nodes),
+              };
 
-                try {
-                  await createUserPipeline.mutateAsync({
-                    payload,
-                    accessToken,
-                    userName: user.data.name,
-                  });
+              try {
+                await createUserPipeline.mutateAsync({
+                  payload,
+                  accessToken,
+                  userName: user.data.name,
+                });
 
-                  setIsCloning(false);
+                setIsCloning(false);
 
-                  await router.push(`/${user.data.id}/pipelines/${payload.id}`);
+                await router.push(`/${user.data.id}/pipelines/${payload.id}`);
 
-                  router.reload();
+                router.reload();
 
+                toast({
+                  title: "Successfully cloned the pipeline",
+                  variant: "alert-success",
+                  size: "small",
+                });
+              } catch (error) {
+                setIsCloning(false);
+                if (isAxiosError(error)) {
                   toast({
-                    title: "Successfully cloned the pipeline",
-                    variant: "alert-success",
-                    size: "small",
+                    title: "Something went wrong when clone the pipeline",
+                    description: getInstillApiErrorMessage(error),
+                    variant: "alert-error",
+                    size: "large",
                   });
-                } catch (error) {
-                  setIsCloning(false);
-                  if (isAxiosError(error)) {
-                    toast({
-                      title: "Something went wrong when clone the pipeline",
-                      description: getInstillApiErrorMessage(error),
-                      variant: "alert-error",
-                      size: "large",
-                    });
-                  } else {
-                    toast({
-                      title: "Something went wrong when clone the pipeline",
-                      variant: "alert-error",
-                      size: "large",
-                    });
-                  }
+                } else {
+                  toast({
+                    title: "Something went wrong when clone the pipeline",
+                    variant: "alert-error",
+                    size: "large",
+                  });
                 }
-              }}
-              className="!gap-x-2"
-              variant="primary"
-              size="lg"
-              disabled={isCloning}
-            >
-              {isCloning ? <LoadingSpin /> : "Clone"}
-            </Button>
-          </>
+              }
+            }}
+            className="!gap-x-2"
+            variant="primary"
+            size="lg"
+            disabled={isCloning}
+          >
+            {isCloning ? <LoadingSpin /> : "Clone"}
+          </Button>
         )}
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
@@ -623,6 +621,6 @@ export const FlowControl = (props: FlowControlProps) => {
         accessToken={accessToken}
         enableQuery={enableQuery}
       />
-    </>
+    </React.Fragment>
   );
 };

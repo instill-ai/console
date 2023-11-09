@@ -1,3 +1,4 @@
+import * as React from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { Logo } from "@instill-ai/design-system";
@@ -34,7 +35,7 @@ const CreateModelPage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
 
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="Create model" />
       <ModelHubCreatePageMainView
         router={router}
@@ -42,7 +43,7 @@ const CreateModelPage: NextPageWithLayout = () => {
         enableQuery={accessToken.isSuccess}
         disabledCreateModel={false}
       />
-    </>
+    </React.Fragment>
   );
 };
 

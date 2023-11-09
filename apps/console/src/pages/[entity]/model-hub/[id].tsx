@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import {
   useUserModelReadme,
@@ -29,7 +30,7 @@ const ModelDetailsPage: NextPageWithLayout = () => {
   });
 
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title={`models/${id}`} />
       <ModelHubSettingPageMainView
         router={router}
@@ -45,7 +46,7 @@ const ModelDetailsPage: NextPageWithLayout = () => {
         modelNamespace="admin"
         disabledConfigureModel={false}
       />
-    </>
+    </React.Fragment>
   );
 };
 

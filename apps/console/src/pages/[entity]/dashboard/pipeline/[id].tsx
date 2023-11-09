@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import { Logo } from "@instill-ai/design-system";
 import {
@@ -17,14 +18,14 @@ const PipelinePage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
 
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="Dashboard pipeline details" />
       <DashboardPipelineDetailsPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
       />
-    </>
+    </React.Fragment>
   );
 };
 

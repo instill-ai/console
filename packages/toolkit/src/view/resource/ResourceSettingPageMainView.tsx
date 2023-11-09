@@ -1,3 +1,4 @@
+import * as React from "react";
 import { PageTitle } from "../../components";
 import { GeneralPageProp, useUserConnectorResource } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
@@ -30,7 +31,7 @@ export const ResourceSettingPageMainView = (
         className="mb-5"
       />
       {userConnectorResource.isSuccess ? (
-        <>
+        <React.Fragment>
           {userConnectorResource.data.type === "CONNECTOR_TYPE_AI" ? (
             <AIResourceAutoForm
               definition={userConnectorResource.data.connector_definition}
@@ -54,7 +55,7 @@ export const ResourceSettingPageMainView = (
               enableQuery={enableQuery}
             />
           ) : null}
-        </>
+        </React.Fragment>
       ) : (
         <div className="flex h-[300px] w-full items-center justify-center rounded-md border border-semantic-bg-line text-semantic-fg-primary product-body-text-3-semibold">
           loading...

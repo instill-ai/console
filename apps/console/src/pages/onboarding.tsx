@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Logo } from "@instill-ai/design-system";
 import { PageBase, PageTitle, Topbar } from "@instill-ai/toolkit";
 
@@ -6,7 +7,7 @@ import { OnboardingForm, Sidebar, ConsoleCorePageHead } from "../components";
 
 const OnBoardingPage: NextPageWithLayout = () => {
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="Onboarding" />
       <div className="flex flex-col">
         <PageTitle
@@ -16,7 +17,7 @@ const OnBoardingPage: NextPageWithLayout = () => {
         />
         <OnboardingForm />
       </div>
-    </>
+    </React.Fragment>
   );
 };
 

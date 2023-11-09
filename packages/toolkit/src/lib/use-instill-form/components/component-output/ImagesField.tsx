@@ -16,7 +16,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
       <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
         <div className="flex w-full flex-wrap">
           {images?.slice(0, 5).map((image) => {
-            if (!image) return <></>;
+            if (!image) return null;
 
             const imageType = getImageTypeFromBase64String(image);
 
@@ -38,7 +38,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
     <EndNodeFieldRoot title={title} key={`${title}-field`}>
       <div className="flex w-full flex-wrap">
         {images?.slice(0, 5).map((image) => {
-          if (!image) return <></>;
+          if (!image) return null;
 
           const imageType = getImageTypeFromBase64String(image);
 

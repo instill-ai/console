@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import { Logo } from "@instill-ai/design-system";
 import {
@@ -18,7 +19,7 @@ const PipelineBuilderPage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
 
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="Pipeline builder" />
       <PageBase>
         <Topbar logo={<Logo variant="colourLogomark" width={38} />}>
@@ -37,7 +38,7 @@ const PipelineBuilderPage: NextPageWithLayout = () => {
           />
         </PageBase.Container>
       </PageBase>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { NodeProps, Position } from "reactflow";
 import { NodeData } from "../type";
 import { Icons } from "@instill-ai/design-system";
@@ -10,7 +11,7 @@ export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
   );
 
   return (
-    <>
+    <React.Fragment>
       <button
         onClick={() => updateSelectResourceDialogIsOpen(() => true)}
         className="flex rounded-sm border border-dashed border-semantic-accent-default bg-semantic-accent-bg px-16 py-2"
@@ -24,6 +25,6 @@ export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
       </button>
       <CustomHandle type="target" position={Position.Left} id={id} />
       <CustomHandle type="source" position={Position.Right} id={id} />
-    </>
+    </React.Fragment>
   );
 };

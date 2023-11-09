@@ -267,7 +267,7 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
    * -----------------------------------------------------------------------*/
 
   return (
-    <>
+    <React.Fragment>
       <FormRoot marginBottom={marginBottom} width={width}>
         <div className="mb-10 flex flex-col">
           <BasicTextArea
@@ -319,6 +319,6 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
         resource={model}
         handleDeleteResource={handleDeleteModel}
       />
-    </>
+    </React.Fragment>
   );
 };

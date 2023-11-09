@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import {
   PageBase,
@@ -16,14 +17,14 @@ const PipelinePage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
       <PipelineListPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
       />
-    </>
+    </React.Fragment>
   );
 };
 

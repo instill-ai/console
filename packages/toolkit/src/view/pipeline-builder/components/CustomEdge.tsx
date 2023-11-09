@@ -22,14 +22,12 @@ export const CustomEdge = ({
   });
 
   return (
-    <>
-      <path
-        id={id}
-        style={style}
-        className={cn("fill-none stroke-semantic-accent-default stroke-[4px]")}
-        d={edgePath}
-        markerEnd={markerEnd}
-      />
-    </>
+    <path
+      id={id}
+      style={style}
+      className={cn("fill-none stroke-semantic-accent-default stroke-[4px]")}
+      d={edgePath}
+      markerEnd={markerEnd}
+    />
   );
 };

@@ -22,20 +22,20 @@ export const PipelineTableDropdownMenu = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
 
   return (
-    <>
+    <React.Fragment>
       <div className="flex justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button className="!px-2 !py-2" variant="tertiaryGrey">
-              <Icons.DotsVertical className="w-4 h-4 stroke-semantic-fg-primary" />
+              <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
             </Button>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content className="w-[129px] !rounded !py-2 !px-0">
+          <DropdownMenu.Content className="w-[129px] !rounded !px-0 !py-2">
             <DropdownMenu.Item
               onClick={() => {
                 handleDuplicatePipeline(pipeline);
               }}
-              className="!product-button-button-2 !px-4 !py-2.5"
+              className="!px-4 !py-2.5 !product-button-button-2"
             >
               Duplicate
             </DropdownMenu.Item>
@@ -43,7 +43,7 @@ export const PipelineTableDropdownMenu = ({
               onClick={() => {
                 setDeleteDialogIsOpen(true);
               }}
-              className="!product-button-button-2 !px-4 !py-2.5 !text-semantic-error-default"
+              className="!px-4 !py-2.5 !text-semantic-error-default !product-button-button-2"
             >
               Delete
             </DropdownMenu.Item>
@@ -61,6 +61,6 @@ export const PipelineTableDropdownMenu = ({
           />
         </Dialog.Content>
       </Dialog.Root>
-    </>
+    </React.Fragment>
   );
 };

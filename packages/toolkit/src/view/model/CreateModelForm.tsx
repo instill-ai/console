@@ -683,7 +683,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           )}">Setup Guide</a>`}
         />
         {selectedModelDefinitionOption?.value === "model-definitions/github" ? (
-          <>
+          <React.Fragment>
             <BasicTextField
               id="model-github-repo-url"
               label="GitHub repository"
@@ -709,32 +709,30 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
               }
               disabled={modelCreated ? true : false}
             />
-          </>
+          </React.Fragment>
         ) : null}
         {selectedModelDefinitionOption?.value === "model-definitions/local" ? (
-          <>
-            <BasicUploadFileField
-              id="model-local-file"
-              name="file"
-              label="Upload a file"
-              description="Create and upload a zip file that contains all the model files from your computer"
-              error={modelLocalFileError}
-              placeholder=""
-              uploadButtonText="Upload"
-              required={true}
-              readOnly={false}
-              disabled={modelCreated ? true : false}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue(
-                  "model.new.local.file",
-                  event.target.files ? event.target.files[0] : null
-                )
-              }
-            />
-          </>
+          <BasicUploadFileField
+            id="model-local-file"
+            name="file"
+            label="Upload a file"
+            description="Create and upload a zip file that contains all the model files from your computer"
+            error={modelLocalFileError}
+            placeholder=""
+            uploadButtonText="Upload"
+            required={true}
+            readOnly={false}
+            disabled={modelCreated ? true : false}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setFieldValue(
+                "model.new.local.file",
+                event.target.files ? event.target.files[0] : null
+              )
+            }
+          />
         ) : null}
         {selectedModelDefinitionOption?.value === "model-definitions/artivc" ? (
-          <>
+          <React.Fragment>
             <BasicTextField
               id="model-artivc-gcs-bucket-path"
               label="GCS Bucket Path"
@@ -774,26 +772,21 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 )
               }
             />
-          </>
+          </React.Fragment>
         ) : null}
         {selectedModelDefinitionOption?.value ===
         "model-definitions/huggingface" ? (
-          <>
-            <BasicTextField
-              id="model-huggingface-repo-url"
-              label="HuggingFace model ID"
-              description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
-              required={true}
-              value={modelHuggingFaceRepoUrl}
-              error={modelHuggingFaceRepoUrlError}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue(
-                  "model.new.huggingFace.repoUrl",
-                  event.target.value
-                )
-              }
-            />
-          </>
+          <BasicTextField
+            id="model-huggingface-repo-url"
+            label="HuggingFace model ID"
+            description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
+            required={true}
+            value={modelHuggingFaceRepoUrl}
+            error={modelHuggingFaceRepoUrlError}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setFieldValue("model.new.huggingFace.repoUrl", event.target.value)
+            }
+          />
         ) : null}
       </div>
       <div className="mb-10 flex flex-row">

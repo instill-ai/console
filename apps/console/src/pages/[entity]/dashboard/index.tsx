@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Logo } from "@instill-ai/design-system";
 import {
   DashboardPipelineListPageMainView,
@@ -14,13 +15,13 @@ const PipelinePage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="dashboard" />
       <DashboardPipelineListPageMainView
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
       />
-    </>
+    </React.Fragment>
   );
 };
 

@@ -22,7 +22,7 @@ export const PageHead = ({ meta, additionHead }: PageHeadProps) => {
       : `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${router.asPath}`;
 
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>{meta.title}</title>
         {meta.pageDescription && (
@@ -69,6 +69,6 @@ export const PageHead = ({ meta, additionHead }: PageHeadProps) => {
         <link rel="shortcut icon" href="/images/favicon.ico" />
         {additionHead}
       </Head>
-    </>
+    </React.Fragment>
   );
 };

@@ -42,7 +42,7 @@ export const ModalRoot = ({
   return el.current
     ? open
       ? createPortal(
-          <>
+          <React.Fragment>
             {/** Background backdrop, show/hide based on modal state. */}
             <div className="fixed inset-0 bg-instillGrey95 bg-opacity-50 transition-opacity"></div>
 
@@ -61,7 +61,7 @@ export const ModalRoot = ({
                 </div>
               </div>
             </div>
-          </>,
+          </React.Fragment>,
           el.current
         )
       : null

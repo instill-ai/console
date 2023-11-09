@@ -198,65 +198,58 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
     successIconWidth,
   ]);
 
-  return (
-    <>
-      {state.activate ? (
-        <div
-          className={cn(
-            "flex flex-row min-h-[85px] instill-progress-message-box-shadow",
-            width,
-            boxBorderRadius
-          )}
-        >
-          <div
-            className={cn(
-              "flex p-2.5",
-              indicatorColumnWidth,
-              indicatorColumnBottomLeftBorderRadius,
-              indicatorColumnTopLeftBorderRadius,
-              state.status === "error"
-                ? errorindicatorColumnBgColor
-                : state.status === "success"
-                ? successIndicatorColumnBgColor
-                : processingIndicatorColumnBgColor
-            )}
-          >
-            {statusIcon}
-          </div>
-          <div
-            className={cn(
-              "flex flex-row flex-1 pl-[15px] pr-2.5 py-2.5",
-              messageColumnBgColor,
-              messageColumnBottomRightBorderRadius,
-              messageColumnTopRightBorderRadius
-            )}
-          >
-            <div className="flex flex-col flex-1 gap-y-[5px]">
-              <h3 className="text-instill-h3 text-instillGrey90 break-normal">
-                {state.message}
-              </h3>
-              <p className="text-instillGrey70 text-instill-small">
-                {state.description}
-              </p>
-            </div>
-            {closable ? (
-              <button
-                onClick={() => setActivate(false)}
-                className="flex mb-auto"
-              >
-                <XIcon
-                  position="m-auto"
-                  color="fill-instillGrey30"
-                  width="w-4"
-                  height="h-4"
-                />
-              </button>
-            ) : null}
-          </div>
+  return state.activate ? (
+    <div
+      className={cn(
+        "flex min-h-[85px] flex-row instill-progress-message-box-shadow",
+        width,
+        boxBorderRadius
+      )}
+    >
+      <div
+        className={cn(
+          "flex p-2.5",
+          indicatorColumnWidth,
+          indicatorColumnBottomLeftBorderRadius,
+          indicatorColumnTopLeftBorderRadius,
+          state.status === "error"
+            ? errorindicatorColumnBgColor
+            : state.status === "success"
+            ? successIndicatorColumnBgColor
+            : processingIndicatorColumnBgColor
+        )}
+      >
+        {statusIcon}
+      </div>
+      <div
+        className={cn(
+          "flex flex-1 flex-row py-2.5 pl-[15px] pr-2.5",
+          messageColumnBgColor,
+          messageColumnBottomRightBorderRadius,
+          messageColumnTopRightBorderRadius
+        )}
+      >
+        <div className="flex flex-1 flex-col gap-y-[5px]">
+          <h3 className="text-instill-h3 break-normal text-instillGrey90">
+            {state.message}
+          </h3>
+          <p className="text-instill-small text-instillGrey70">
+            {state.description}
+          </p>
         </div>
-      ) : null}
-    </>
-  );
+        {closable ? (
+          <button onClick={() => setActivate(false)} className="mb-auto flex">
+            <XIcon
+              position="m-auto"
+              color="fill-instillGrey30"
+              width="w-4"
+              height="h-4"
+            />
+          </button>
+        ) : null}
+      </div>
+    </div>
+  ) : null;
 };
 
 export default ProgressMessageBoxBase;

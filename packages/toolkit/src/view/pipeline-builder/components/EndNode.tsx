@@ -224,7 +224,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }, [edges, id]);
 
   return (
-    <>
+    <React.Fragment>
       <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
         <div className="mb-4 flex flex-row gap-x-1">
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
@@ -263,11 +263,9 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
             </form>
           </Form.Root>
         ) : testModeEnabled ? (
-          <>
-            <div className="flex w-full flex-col gap-y-4">
-              {testModeOutputFields}
-            </div>
-          </>
+          <div className="flex w-full flex-col gap-y-4">
+            {testModeOutputFields}
+          </div>
         ) : (
           <div className="flex flex-col gap-y-4">
             {Object.entries(data.component.configuration.input).map(
@@ -354,6 +352,6 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
         position={Position.Left}
         id={id}
       />
-    </>
+    </React.Fragment>
   );
 };

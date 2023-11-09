@@ -29,7 +29,7 @@ export const ImagesField = (props: {
             <Form.Control>
               <label
                 htmlFor={`op-start-${fieldKey}`}
-                className="flex min-h-[150px] w-full border border-semantic-bg-line border-dashed cursor-pointer flex-col rounded bg-semantic-bg-base-bg"
+                className="flex min-h-[150px] w-full cursor-pointer flex-col rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg"
               >
                 {imageFileURLs ? (
                   <div className="grid w-full grid-flow-row grid-cols-3">
@@ -43,9 +43,7 @@ export const ImagesField = (props: {
                             alt={`${fieldKey}-${url}`}
                             className="h-[55px] object-contain"
                           />
-                        ) : (
-                          <></>
-                        )
+                        ) : null
                       )}
                   </div>
                 ) : (
