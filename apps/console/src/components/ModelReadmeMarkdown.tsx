@@ -1,3 +1,4 @@
+import * as React from "react";
 import cn from "clsx";
 import remarkFrontmatter from "remark-frontmatter";
 import ReactMarkdown from "react-markdown";
@@ -39,14 +40,14 @@ export const ModelReadmeMarkdown = ({
           </ReactMarkdown>
         </div>
       ) : (
-        <>
+        <React.Fragment>
           <h3 className="mx-auto mt-auto text-instillGrey90 text-instill-h3">
             There is no Model card
           </h3>
           <p className="mx-auto mb-auto text-instillGrey50 text-instill-body">
             You can add a README.md to describe the model.
           </p>
-        </>
+        </React.Fragment>
       )}
     </div>
   );

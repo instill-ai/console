@@ -134,57 +134,51 @@ const InputLabelBase = React.forwardRef<InputLabelBaseRef, InputLabelBaseProps>(
       errorLabelTextColor,
     } = props;
 
-    return (
-      <>
-        {type !== "hide" ? (
-          <label
-            ref={ref}
-            className="z-10 flex flex-row gap-x-2 w-full"
-            htmlFor={htmlFor}
-          >
-            {label ? (
-              <p
-                className={cn(
-                  "flex-shrink-0",
-                  error
-                    ? cn(
-                        errorLabelFontFamily,
-                        errorLabelFontSize,
-                        errorLabelFontWeight,
-                        errorLabelLineHeight,
-                        errorLabelTextColor
-                      )
-                    : cn(
-                        labelFontSize,
-                        labelFontWeight,
-                        labelTextColor,
-                        labelFontFamily,
-                        labelLineHeight
-                      )
-                )}
-              >{`${label} ${required ? "*" : ""}`}</p>
-            ) : null}
-            <p
-              className={cn(
-                "my-auto",
-                messageFontFamily,
-                messageLineHeight,
-                messageFontSize,
-                messageFontWeight,
-                error ? errorLabelTextColor : messageTextColor
-              )}
-              data-testid={
-                error ? `${htmlFor}-label-error` : `${htmlFor}-label-message`
-              }
-            >
-              {error ? error : message}
-            </p>
-          </label>
-        ) : (
-          ""
-        )}
-      </>
-    );
+    return type !== "hide" ? (
+      <label
+        ref={ref}
+        className="z-10 flex w-full flex-row gap-x-2"
+        htmlFor={htmlFor}
+      >
+        {label ? (
+          <p
+            className={cn(
+              "flex-shrink-0",
+              error
+                ? cn(
+                    errorLabelFontFamily,
+                    errorLabelFontSize,
+                    errorLabelFontWeight,
+                    errorLabelLineHeight,
+                    errorLabelTextColor
+                  )
+                : cn(
+                    labelFontSize,
+                    labelFontWeight,
+                    labelTextColor,
+                    labelFontFamily,
+                    labelLineHeight
+                  )
+            )}
+          >{`${label} ${required ? "*" : ""}`}</p>
+        ) : null}
+        <p
+          className={cn(
+            "my-auto",
+            messageFontFamily,
+            messageLineHeight,
+            messageFontSize,
+            messageFontWeight,
+            error ? errorLabelTextColor : messageTextColor
+          )}
+          data-testid={
+            error ? `${htmlFor}-label-error` : `${htmlFor}-label-message`
+          }
+        >
+          {error ? error : message}
+        </p>
+      </label>
+    ) : null;
   }
 );
 

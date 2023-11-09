@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast, ToastProps } from "./Toast";
 import { Toaster } from "./Toaster";
@@ -26,7 +27,7 @@ const ToastWithHook = ({
   const { toast } = useToast();
 
   return (
-    <>
+    <React.Fragment>
       <Toaster />
       <Button
         variant="primary"
@@ -44,7 +45,7 @@ const ToastWithHook = ({
       >
         Toast
       </Button>
-    </>
+    </React.Fragment>
   );
 };
 
@@ -88,7 +89,7 @@ export const NotificationIcon: Story = {
   render: () => (
     <ToastWithHook
       variant="notification-icon"
-      icon={<Icons.Cube01 className="w-5 h-5 stroke-semantic-fg-primary" />}
+      icon={<Icons.Cube01 className="h-5 w-5 stroke-semantic-fg-primary" />}
       action={
         <Toast.Action altText="UndoAction" asChild>
           <div className="flex flex-row space-x-4">

@@ -181,7 +181,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
             <button
               type="button"
               onClick={() => clickHandler(i)}
-              className={cn("flex absolute cursor-pointer", bgIconPosition)}
+              className={cn("absolute flex cursor-pointer", bgIconPosition)}
             >
               {e.bgIcon}
             </button>
@@ -190,7 +190,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
             type="button"
             onClick={() => clickHandler(i)}
             className={cn(
-              "flex flex-row cursor-pointer",
+              "flex cursor-pointer flex-row",
               headerStyle.headerPadding,
               activeIndex.includes(i)
                 ? e.headerActiveBgColor
@@ -210,13 +210,11 @@ const AccordionBase = (props: AccordionBaseProps) => {
             >
               {e.header}
             </div>
-            {enableHeaderIcon ? (
-              <>
-                {activeIndex.includes(i)
-                  ? headerStyle.headerActiveIcon
-                  : headerStyle.headerInActiveIcon}
-              </>
-            ) : null}
+            {enableHeaderIcon
+              ? activeIndex.includes(i)
+                ? headerStyle.headerActiveIcon
+                : headerStyle.headerInActiveIcon
+              : null}
           </button>
           <div className="w-full">
             <div className={activeIndex.includes(i) ? "flex" : "hidden"}>

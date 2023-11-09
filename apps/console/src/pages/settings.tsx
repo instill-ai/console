@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ConsoleCorePageHead, Sidebar } from "../components";
 import {
   Topbar,
@@ -44,10 +45,10 @@ const SettingsPage: NextPageWithLayout = () => {
    * -----------------------------------------------------------------------*/
 
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
       <SettingsPageView tabs={tabs} enableQuery={accessToken.isSuccess} />
-    </>
+    </React.Fragment>
   );
 };
 

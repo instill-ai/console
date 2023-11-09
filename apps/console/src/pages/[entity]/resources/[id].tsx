@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import {
   PageBase,
@@ -17,14 +18,14 @@ const ResourceDetailsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title={`resources/${id}`} />
       <ResourceSettingPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
       />
-    </>
+    </React.Fragment>
   );
 };
 

@@ -25,7 +25,7 @@ export function CommandDialogDemo() {
   }, []);
 
   return (
-    <>
+    <React.Fragment>
       <p className="text-muted-foreground text-sm">
         Press{" "}
         <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
@@ -65,6 +65,6 @@ export function CommandDialogDemo() {
           </Command.Group>
         </Command.List>
       </Command.Dialog>
-    </>
+    </React.Fragment>
   );
 }

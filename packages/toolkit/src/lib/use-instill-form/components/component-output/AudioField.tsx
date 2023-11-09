@@ -23,9 +23,7 @@ export const AudioField = (props: AudioFieldProps) => {
               controls={true}
               src={`data:audio/${audioType};base64,${audio}`}
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </div>
       </ConnectorNodeFieldRoot>
     );
@@ -40,9 +38,7 @@ export const AudioField = (props: AudioFieldProps) => {
             controls={true}
             src={`data:audio/${audioType};base64,${audio}`}
           />
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
     </EndNodeFieldRoot>
   );

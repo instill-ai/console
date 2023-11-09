@@ -1,5 +1,5 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ProgressMessageBoxState } from "../ProgressMessageBoxBase";
 import BasicProgressMessageBox from "./BasicProgressMessageBox";
 
@@ -19,7 +19,7 @@ const Template: StoryFn<typeof BasicProgressMessageBox> = (args) => {
       status: "progressing",
     });
   return (
-    <>
+    <React.Fragment>
       <button
         className="mb-10"
         onClick={() =>
@@ -38,7 +38,7 @@ const Template: StoryFn<typeof BasicProgressMessageBox> = (args) => {
           setMessageBoxState((prev) => ({ ...prev, activate }))
         }
       />
-    </>
+    </React.Fragment>
   );
 };
 export const Playground: StoryFn<typeof BasicProgressMessageBox> =

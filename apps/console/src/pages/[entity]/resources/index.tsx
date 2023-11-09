@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   PageBase,
   ResourceListPageMainView,
@@ -16,14 +17,14 @@ const PipelinePage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
   return (
-    <>
+    <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
       <ResourceListPageMainView
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
         router={router}
       />
-    </>
+    </React.Fragment>
   );
 };
 

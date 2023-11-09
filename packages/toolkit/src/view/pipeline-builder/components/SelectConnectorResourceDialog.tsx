@@ -96,7 +96,7 @@ export const SelectConnectorResourceDialog = (
         )}
       </Dialog.Trigger>
       <Dialog.Content className="flex max-h-[700px] !max-w-[1048px] flex-col overflow-y-auto">
-        <>
+        <React.Fragment>
           <Dialog.Header>
             <Dialog.Title className="mx-auto !product-headings-heading-3">
               Add a resource
@@ -229,7 +229,7 @@ export const SelectConnectorResourceDialog = (
                 : null}
             </div>
           </div>
-        </>
+        </React.Fragment>
       </Dialog.Content>
     </Dialog.Root>
   );

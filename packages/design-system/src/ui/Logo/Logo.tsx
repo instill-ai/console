@@ -729,7 +729,7 @@ export const Logo = (props: LogoProps) => {
       break;
     }
     case "whiteLogomarkWhiteType": {
-      logo = <>{getWhiteLogomarkWhiteType(width)}</>;
+      logo = getWhiteLogomarkWhiteType(width);
       break;
     }
     case "responsiveColourLogomarkWhiteType": {
@@ -742,7 +742,7 @@ export const Logo = (props: LogoProps) => {
       break;
     }
     case "ColourLogomarkWhiteType": {
-      logo = <>{getColourLogomarkWhiteType(width)}</>;
+      logo = getColourLogomarkWhiteType(width);
       break;
     }
     case "responsiveColourLogomarkBlackType": {
@@ -764,27 +764,27 @@ export const Logo = (props: LogoProps) => {
       break;
     }
     case "blackLogomarkBlackType": {
-      logo = <>{getBlackLogomarkBlackType(width)}</>;
+      logo = getBlackLogomarkBlackType(width);
       break;
     }
     case "ColourLogomarkBlackType": {
-      logo = <>{getColourLogomarkBlackType(width)}</>;
+      logo = getColourLogomarkBlackType(width);
       break;
     }
     case "whiteLogomark": {
-      logo = <>{getWhiteLogomark(width)}</>;
+      logo = getWhiteLogomark(width);
       break;
     }
     case "blackLogomark": {
-      logo = <>{getBlackLogomark(width)}</>;
+      logo = getBlackLogomark(width);
       break;
     }
     case "blueLogomark": {
-      logo = <>{getBlueLogomark(width)}</>;
+      logo = getBlueLogomark(width);
       break;
     }
     case "colourLogomark": {
-      logo = <>{getColourLogomark(width)}</>;
+      logo = getColourLogomark(width);
       break;
     }
   }

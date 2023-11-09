@@ -1,3 +1,4 @@
+import * as React from "react";
 import cn from "clsx";
 import { BasicTextArea, BasicTextField } from "@instill-ai/design-system";
 import { Model, Nullable } from "../../lib";
@@ -18,7 +19,7 @@ export const ModelConfigurationFields = (
   return (
     <div className={cn("flex flex-col gap-y-5", marginBottom)}>
       {model?.model_definition === "model-definitions/github" ? (
-        <>
+        <React.Fragment>
           <BasicTextField
             id="model-github-repo-url"
             label="GitHub repository"
@@ -38,24 +39,22 @@ export const ModelConfigurationFields = (
             error={null}
             disabled={true}
           />
-        </>
+        </React.Fragment>
       ) : null}
       {model?.model_definition === "model-definitions/local" ? (
-        <>
-          <BasicTextField
-            id="model-local-file"
-            name="file"
-            label="Uploaded model file"
-            description="The zip file that contains the model files."
-            required={true}
-            readOnly={false}
-            value={model.configuration.content}
-            disabled={true}
-          />
-        </>
+        <BasicTextField
+          id="model-local-file"
+          name="file"
+          label="Uploaded model file"
+          description="The zip file that contains the model files."
+          required={true}
+          readOnly={false}
+          value={model.configuration.content}
+          disabled={true}
+        />
       ) : null}
       {model?.model_definition === "model-definitions/artivc" ? (
-        <>
+        <React.Fragment>
           <BasicTextField
             id="model-artivc-gcs-bucket-path"
             label="GCS Bucket Path"
@@ -83,20 +82,18 @@ export const ModelConfigurationFields = (
             error={null}
             disabled={true}
           />
-        </>
+        </React.Fragment>
       ) : null}
       {model?.model_definition === "model-definitions/huggingface" ? (
-        <>
-          <BasicTextField
-            id="model-huggingface-repo-url"
-            label="HuggingFace model ID"
-            description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
-            required={true}
-            value={model.configuration.repo_id}
-            error={null}
-            disabled={true}
-          />
-        </>
+        <BasicTextField
+          id="model-huggingface-repo-url"
+          label="HuggingFace model ID"
+          description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
+          required={true}
+          value={model.configuration.repo_id}
+          error={null}
+          disabled={true}
+        />
       ) : null}
     </div>
   );

@@ -298,7 +298,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <div
         className={cn(
           "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg",
@@ -643,6 +643,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         position={Position.Right}
         id={id}
       />
-    </>
+    </React.Fragment>
   );
 };

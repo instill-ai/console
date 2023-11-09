@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Table } from "../Table";
-import * as React from "react";
 import { DataTablePagination } from "./DataTablePagination";
 import { Input } from "../Input";
 import { Nullable } from "../../types/general";
@@ -136,7 +136,7 @@ const DataTable = <TData, TValue>({
         </Table.Header>
         <Table.Body>
           {isLoading ? (
-            <>
+            <React.Fragment>
               {[...Array(loadingRows || 6).keys()].map((e) => (
                 <Table.Row
                   key={`table-skeleton-row-${e}`}
@@ -149,9 +149,9 @@ const DataTable = <TData, TValue>({
                   ))}
                 </Table.Row>
               ))}
-            </>
+            </React.Fragment>
           ) : (
-            <>
+            <React.Fragment>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <Table.Row
@@ -182,7 +182,7 @@ const DataTable = <TData, TValue>({
                   </Table.Cell>
                 </Table.Row>
               )}
-            </>
+            </React.Fragment>
           )}
         </Table.Body>
       </Table.Root>

@@ -33,7 +33,7 @@ export const useBuildAirbyteFields = (
   setFormIsDirty: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const fields = React.useMemo(() => {
-    if (!formTree) return <></>;
+    if (!formTree) return null;
     return pickComponent(
       formTree,
       disabledAll,
@@ -251,11 +251,11 @@ export const pickComponent = (
             ))}
           </Select.Content>
         </Select.Root>
-        <p className="product-body-text-3-regular text-[#1D243380]">
+        <p className="text-[#1D243380] product-body-text-3-regular">
           {formTree.description ?? ""}
         </p>
         {errors ? (
-          <p className="product-body-text-3-regular text-semantic-error-default">
+          <p className="text-semantic-error-default product-body-text-3-regular">
             {errors[formTree.path] ?? null}
           </p>
         ) : null}

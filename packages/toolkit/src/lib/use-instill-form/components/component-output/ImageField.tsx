@@ -23,9 +23,7 @@ export const ImageField = (props: ImageFieldProps) => {
               alt={`${title}`}
               className="object-contain"
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </div>
       </ConnectorNodeFieldRoot>
     );
@@ -40,9 +38,7 @@ export const ImageField = (props: ImageFieldProps) => {
             alt={`${title}`}
             className="object-contain"
           />
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
     </EndNodeFieldRoot>
   );

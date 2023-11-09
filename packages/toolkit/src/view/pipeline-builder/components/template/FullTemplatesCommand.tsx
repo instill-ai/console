@@ -16,7 +16,7 @@ export const FullTemplatesCommand = ({
   const [isHoverOnTrigger, setIsHoverOnTrigger] = React.useState(false);
 
   return (
-    <>
+    <React.Fragment>
       <button
         onClick={() => {
           setOpen(true);
@@ -144,6 +144,6 @@ export const FullTemplatesCommand = ({
           ))}
         </Command.List>
       </Command.Dialog>
-    </>
+    </React.Fragment>
   );
 };

@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 const LogoutPage: NextPageWithLayout = () => {
-  return <></>;
+  return <div />;
 };
 
 LogoutPage.getLayout = (page) => {
