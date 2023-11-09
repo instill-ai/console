@@ -39,32 +39,32 @@ export const GeneralDeleteResourceModal = (
 
     if ("connector_definition" in resource) {
       if (resource.type === "CONNECTOR_TYPE_OPERATOR") {
-        title = `Delete ${resource.id} Source`;
+        title = `Delete ${resource.id}`;
         description =
           "This action cannot be undone. This will permanently delete the source.";
       } else if (resource.type === "CONNECTOR_TYPE_DATA") {
-        title = `Delete ${resource.id} Destination`;
+        title = `Delete ${resource.id}`;
         description =
           "This action cannot be undone. This will permanently delete the destination.";
       } else if (resource.type === "CONNECTOR_TYPE_AI") {
-        title = `Delete ${resource.id} AI`;
+        title = `Delete ${resource.id}`;
         description =
           "This action cannot be undone. This will permanently delete the AI.";
       } else if (resource.type === "CONNECTOR_TYPE_BLOCKCHAIN") {
-        title = `Delete ${resource.id} Blockchain`;
+        title = `Delete ${resource.id}`;
         description =
           "This action cannot be undone. This will permanently delete the blockchain.";
       } else {
-        title = `Delete ${resource.id} Connector`;
+        title = `Delete ${resource.id}`;
         description =
           "This action cannot be undone. This will permanently delete the connector.";
       }
     } else if ("recipe" in resource) {
-      title = `Delete ${resource.id} Pipeline`;
+      title = `Delete ${resource.id}`;
       description =
         "This action cannot be undone. This will permanently delete the pipeline.";
     } else if ("model_definition" in resource) {
-      title = `Delete ${resource.id} Model`;
+      title = `Delete ${resource.id}`;
       description =
         "This action cannot be undone. This will permanently delete the model.";
     } else {

@@ -31,12 +31,12 @@ export const Sidebar = () => {
               className="mb-2 px-3"
             />
             <SidebarLink
-              href={`/${user.data.id}/resources`}
+              href={`/${user.data.id}/connectors`}
               icon={
                 <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
               }
-              name="Resources"
-              hightlighted={router.pathname.split("/")[1] === "resources"}
+              name="Connectors"
+              hightlighted={router.pathname.split("/")[1] === "connectors"}
               className="mb-2 px-3"
             />
             <SidebarLink

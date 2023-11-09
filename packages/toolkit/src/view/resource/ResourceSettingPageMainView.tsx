@@ -27,7 +27,7 @@ export const ResourceSettingPageMainView = (
     <div className="flex flex-col">
       <PageTitle
         title={`${id?.toString()}`}
-        breadcrumbs={["Resources", "Resource Settings"]}
+        breadcrumbs={["Connectors", "Connector Settings"]}
         className="mb-5"
       />
       {userConnectorResource.isSuccess ? (

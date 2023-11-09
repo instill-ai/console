@@ -247,7 +247,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     if (!validateResourceId(modelId as string)) {
       setFieldError(
         "model.new.id",
-        "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+        "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
       );
       return;
     } else if (modelId) {
@@ -645,7 +645,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
               setFieldValue("model.new.id", value);
               setFieldError(
                 "model.new.id",
-                "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+                "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
               );
             }
           }}

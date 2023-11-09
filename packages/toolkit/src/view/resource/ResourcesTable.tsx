@@ -87,7 +87,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
       cell: ({ row }) => {
         const definition = row.original.connector_definition;
         const resourceNameFragments = row.original.name.split("/");
-        const resourceLink = `/${resourceNameFragments[1]}/resources/${resourceNameFragments[3]}`;
+        const resourceLink = `/${resourceNameFragments[1]}/connectors/${resourceNameFragments[3]}`;
         return (
           <div className="text-left">
             <TableCell
@@ -174,8 +174,8 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Resources"
-        secondaryText="Check your resources"
+        primaryText="Connectors"
+        secondaryText="Check your connectors"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -192,12 +192,12 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Resources"
-        secondaryText="Check your resources"
+        primaryText="Connectors"
+        secondaryText="Check your connectors"
       >
         <div className="flex min-h-[300px] w-full flex-row items-center justify-center bg-semantic-bg-primary px-[9px] py-[18px]">
           <h3 className="text-semantic-fg-primary product-headings-heading-3">
-            Set up your first resource
+            Set up your first connectors
           </h3>
         </div>
       </DataTable>
@@ -209,12 +209,12 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
       columns={columns}
       data={connectorResources}
       pageSize={6}
-      searchPlaceholder={"Search Resource"}
+      searchPlaceholder={"Search Connectors"}
       searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
-      primaryText="Resource"
-      secondaryText="Check your resource"
+      primaryText="Connectors"
+      secondaryText="Check your connectors"
     />
   );
 };

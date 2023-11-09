@@ -152,7 +152,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     if (!validateResourceId(fieldValues.id as string)) {
       setFieldErrors((prev) => ({
         ...prev,
-        id: "Resource ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
+        id: "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
       }));
       return;
     }
@@ -219,7 +219,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
             }
 
             toast({
-              title: "Successfully create data resource",
+              title: "Successfully create data connector",
               variant: "alert-success",
               size: "small",
             });
@@ -229,14 +229,14 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
           onError: (error) => {
             if (isAxiosError(error)) {
               toast({
-                title: "Something went wrong when create the data resource",
+                title: "Something went wrong when create the data connector",
                 variant: "alert-error",
                 size: "large",
                 description: getInstillApiErrorMessage(error),
               });
             } else {
               toast({
-                title: "Something went wrong when create the data resource",
+                title: "Something went wrong when create the data connector",
                 variant: "alert-error",
                 size: "large",
                 description: "Please try again later",
@@ -273,7 +273,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
             });
           }
           toast({
-            title: "Successfully update ai resource",
+            title: "Successfully update ai connector",
             variant: "alert-success",
             size: "small",
           });
@@ -283,14 +283,14 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         onError: (error) => {
           if (isAxiosError(error)) {
             toast({
-              title: "Something went wrong when update the ai resource",
+              title: "Something went wrong when update the ai connector",
               variant: "alert-error",
               size: "large",
               description: getInstillApiErrorMessage(error),
             });
           } else {
             toast({
-              title: "Something went wrong when update the ai resource",
+              title: "Something went wrong when update the ai connector",
               variant: "alert-error",
               size: "large",
               description: "Please try again later",
@@ -323,7 +323,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
           label="ID"
           key="id"
           description={
-            "Pick a name to help you identify this resource. The ID conforms to RFC-1034, " +
+            "Pick a name to help you identify this connector. The ID conforms to RFC-1034, " +
             "which restricts to letters, numbers, and hyphen, with the first character a letter," +
             "the last a letter or a number, and a 63 character maximum."
           }
