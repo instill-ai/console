@@ -105,7 +105,13 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  if ("examples" in tree) {
+  if ("default" in tree && tree.default) {
+    defaultValue = `${tree.default}`;
+    dot.setter(initialData, key, defaultValue);
+    return initialData;
+  }
+
+  if ("examples" in tree && tree.examples) {
     switch (typeof tree.examples) {
       case "object":
         if (Array.isArray(tree.examples)) {
@@ -126,7 +132,7 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  if ("example" in tree) {
+  if ("example" in tree && tree.example) {
     switch (typeof tree.example) {
       case "number":
         defaultValue = `${tree.example}`;

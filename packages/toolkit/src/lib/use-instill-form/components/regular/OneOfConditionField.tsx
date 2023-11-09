@@ -6,9 +6,13 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { recursivelyResetFormData } from "../../transform";
+import {
+  recursivelyResetFormData,
+  transformInstillFormTreeToDefaultValue,
+} from "../../transform";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
 import { InstillFormTree, SelectedConditionMap } from "../../type";
+import { dot } from "../../../dot";
 
 export const OneOfConditionField = ({
   form,
@@ -56,9 +60,10 @@ export const OneOfConditionField = ({
   const { reset, getValues } = form;
 
   React.useEffect(() => {
-    if (prevSelectedConditionMap) {
+    if (prevSelectedConditionMap && selectedConditionMap) {
       const formValues = getValues();
-      recursivelyResetFormData(tree, prevSelectedConditionMap, formValues);
+      recursivelyResetFormData(tree, selectedConditionMap, formValues);
+      setPrevSelectedConditionMap(null);
       reset(formValues);
     }
   }, [prevSelectedConditionMap, selectedConditionMap, reset, tree, getValues]);
