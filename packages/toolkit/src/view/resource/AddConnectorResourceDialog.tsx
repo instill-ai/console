@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Dialog, Icons } from "@instill-ai/design-system";
+import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import { DataResourceForm } from "../data";
 import {
@@ -64,172 +64,176 @@ export const AddConnectorResourceDialog = (
         ) : (
           <Button className="gap-x-2" variant="primary" size="lg">
             <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-            Add resource
+            Add connector
           </Button>
         )}
       </Dialog.Trigger>
-      <Dialog.Content className="flex max-h-[700px] !max-w-[1048px] flex-col overflow-y-auto">
-        {!newConnectorType ? (
-          <React.Fragment>
-            <Dialog.Header>
-              <Dialog.Title className="mx-auto !product-headings-heading-3">
-                Add a resource
-              </Dialog.Title>
-              <Dialog.Description className="mx-auto">
-                Select a resource definition to create new resource
-              </Dialog.Description>
-            </Dialog.Header>
+      <Dialog.Content className="flex !max-w-[1048px] flex-col !p-0">
+        <ScrollArea.Root className="h-[700px] p-6">
+          {!newConnectorType ? (
+            <React.Fragment>
+              <Dialog.Close className="bg-semantic-bg-primary" />
+              <Dialog.Header className="mb-5">
+                <Dialog.Title className="mx-auto !product-headings-heading-3">
+                  Add a connector
+                </Dialog.Title>
+                <Dialog.Description className="mx-auto">
+                  Select a connector definition to create new connector
+                </Dialog.Description>
+              </Dialog.Header>
+              <div className="flex flex-col">
+                <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
+                  <p className="mx-auto product-body-text-1-semibold">
+                    New Resource
+                  </p>
+                </div>
+                <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+                  AI
+                </div>
+                <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
+                  {aiDefinitions.isSuccess
+                    ? aiDefinitions.data.map((definition) => (
+                        <AddConnectorResourceDialogItem
+                          key={definition.id}
+                          onClick={() => {
+                            setNewConnectorDefinition(definition);
+                            setNewConnectorType("CONNECTOR_TYPE_AI");
+                          }}
+                        >
+                          <ImageWithFallback
+                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            width={32}
+                            height={32}
+                            alt={`${definition.title}-icon`}
+                            fallbackImg={
+                              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                            }
+                          />
+                          <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                            {definition.title}
+                          </p>
+                        </AddConnectorResourceDialogItem>
+                      ))
+                    : null}
+                </div>
+                <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+                  Blockchain
+                </div>
+                <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+                  {blockchainDefinitions.isSuccess
+                    ? blockchainDefinitions.data.map((definition) => (
+                        <AddConnectorResourceDialogItem
+                          key={definition.id}
+                          onClick={() => {
+                            setNewConnectorDefinition(definition);
+                            setNewConnectorType("CONNECTOR_TYPE_BLOCKCHAIN");
+                          }}
+                        >
+                          <ImageWithFallback
+                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            width={32}
+                            height={32}
+                            alt={`${definition.title}-icon`}
+                            fallbackImg={
+                              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                            }
+                          />
+                          <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                            {definition.title}
+                          </p>
+                        </AddConnectorResourceDialogItem>
+                      ))
+                    : null}
+                </div>
+                <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+                  Data
+                </div>
+                <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
+                  {dataDefinitions.isSuccess
+                    ? dataDefinitions.data.map((definition) => (
+                        <AddConnectorResourceDialogItem
+                          key={definition.id}
+                          onClick={() => {
+                            setNewConnectorDefinition(definition);
+                            setNewConnectorType("CONNECTOR_TYPE_DATA");
+                          }}
+                        >
+                          <ImageWithFallback
+                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            width={32}
+                            height={32}
+                            alt={`${definition.title}-icon`}
+                            fallbackImg={
+                              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                            }
+                          />
+                          <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
+                            {definition.title}
+                          </p>
+                        </AddConnectorResourceDialogItem>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </React.Fragment>
+          ) : (
             <div className="flex flex-col">
-              <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
-                <p className="mx-auto product-body-text-1-semibold">
-                  New Resource
+              <Dialog.Close className="bg-semantic-bg-primary" />
+              <div className="mb-5 flex flex-col ">
+                <div className="mb-4 flex h-12 w-12 rounded-[10px] border border-semantic-bg-line shadow-xxs">
+                  <Icons.IntersectSquare className="m-auto h-6 w-6 stroke-semantic-fg-secondary" />
+                </div>
+                <p className="text-semantic-fg-primary product-body-text-1-semibold">
+                  Add Connector
+                </p>
+                <p className="text-semantic-fg-disabled product-body-text-3-regular">
+                  Set up connector to build your pipeline.
                 </p>
               </div>
-              <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-                AI
-              </div>
-              <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
-                {aiDefinitions.isSuccess
-                  ? aiDefinitions.data.map((definition) => (
-                      <AddConnectorResourceDialogItem
-                        key={definition.id}
-                        onClick={() => {
-                          setNewConnectorDefinition(definition);
-                          setNewConnectorType("CONNECTOR_TYPE_AI");
-                        }}
-                      >
-                        <ImageWithFallback
-                          src={`/icons/${definition.vendor}/${definition.icon}`}
-                          width={32}
-                          height={32}
-                          alt={`${definition.title}-icon`}
-                          fallbackImg={
-                            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                          }
-                        />
-                        <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                          {definition.title}
-                        </p>
-                      </AddConnectorResourceDialogItem>
-                    ))
-                  : null}
-              </div>
-              <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-                Blockchain
-              </div>
-              <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-                {blockchainDefinitions.isSuccess
-                  ? blockchainDefinitions.data.map((definition) => (
-                      <AddConnectorResourceDialogItem
-                        key={definition.id}
-                        onClick={() => {
-                          setNewConnectorDefinition(definition);
-                          setNewConnectorType("CONNECTOR_TYPE_BLOCKCHAIN");
-                        }}
-                      >
-                        <ImageWithFallback
-                          src={`/icons/${definition.vendor}/${definition.icon}`}
-                          width={32}
-                          height={32}
-                          alt={`${definition.title}-icon`}
-                          fallbackImg={
-                            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                          }
-                        />
-                        <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                          {definition.title}
-                        </p>
-                      </AddConnectorResourceDialogItem>
-                    ))
-                  : null}
-              </div>
-              <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-                Data
-              </div>
-              <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
-                {dataDefinitions.isSuccess
-                  ? dataDefinitions.data.map((definition) => (
-                      <AddConnectorResourceDialogItem
-                        key={definition.id}
-                        onClick={() => {
-                          setNewConnectorDefinition(definition);
-                          setNewConnectorType("CONNECTOR_TYPE_DATA");
-                        }}
-                      >
-                        <ImageWithFallback
-                          src={`/icons/${definition.vendor}/${definition.icon}`}
-                          width={32}
-                          height={32}
-                          alt={`${definition.title}-icon`}
-                          fallbackImg={
-                            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-                          }
-                        />
-                        <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                          {definition.title}
-                        </p>
-                      </AddConnectorResourceDialogItem>
-                    ))
-                  : null}
-              </div>
+              {newConnectorType === "CONNECTOR_TYPE_AI" &&
+              newConnectorDefinition ? (
+                <AIResourceAutoForm
+                  definition={newConnectorDefinition}
+                  resource={null}
+                  onSubmit={props.onSubmit}
+                  accessToken={accessToken}
+                  onBack={() => {
+                    setNewConnectorDefinition(null);
+                    setNewConnectorType(null);
+                  }}
+                />
+              ) : null}
+              {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
+              newConnectorDefinition ? (
+                <BlockchainResourceAutoForm
+                  definition={newConnectorDefinition}
+                  resource={null}
+                  onSubmit={props.onSubmit}
+                  accessToken={accessToken}
+                  onBack={() => {
+                    setNewConnectorDefinition(null);
+                    setNewConnectorType(null);
+                  }}
+                />
+              ) : null}
+              {newConnectorType === "CONNECTOR_TYPE_DATA" &&
+              newConnectorDefinition ? (
+                <DataResourceForm
+                  dataDefinition={newConnectorDefinition}
+                  dataResource={null}
+                  onSubmit={props.onSubmit}
+                  accessToken={accessToken}
+                  enableBackButton={true}
+                  onBack={() => {
+                    setNewConnectorDefinition(null);
+                    setNewConnectorType(null);
+                  }}
+                  enableQuery={enableQuery}
+                />
+              ) : null}
             </div>
-          </React.Fragment>
-        ) : (
-          <div className="flex flex-col">
-            <div className="mb-5 flex flex-col ">
-              <div className="mb-4 flex h-12 w-12 rounded-[10px] border border-semantic-bg-line shadow-xxs">
-                <Icons.IntersectSquare className="m-auto h-6 w-6 stroke-semantic-fg-secondary" />
-              </div>
-              <p className="text-semantic-fg-primary product-body-text-1-semibold">
-                Add Resource
-              </p>
-              <p className="text-semantic-fg-disabled product-body-text-3-regular">
-                Setup your resource to build your pipeline.
-              </p>
-            </div>
-            {newConnectorType === "CONNECTOR_TYPE_AI" &&
-            newConnectorDefinition ? (
-              <AIResourceAutoForm
-                definition={newConnectorDefinition}
-                resource={null}
-                onSubmit={props.onSubmit}
-                accessToken={accessToken}
-                onBack={() => {
-                  setNewConnectorDefinition(null);
-                  setNewConnectorType(null);
-                }}
-              />
-            ) : null}
-            {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
-            newConnectorDefinition ? (
-              <BlockchainResourceAutoForm
-                definition={newConnectorDefinition}
-                resource={null}
-                onSubmit={props.onSubmit}
-                accessToken={accessToken}
-                onBack={() => {
-                  setNewConnectorDefinition(null);
-                  setNewConnectorType(null);
-                }}
-              />
-            ) : null}
-            {newConnectorType === "CONNECTOR_TYPE_DATA" &&
-            newConnectorDefinition ? (
-              <DataResourceForm
-                dataDefinition={newConnectorDefinition}
-                dataResource={null}
-                onSubmit={props.onSubmit}
-                accessToken={accessToken}
-                enableBackButton={true}
-                onBack={() => {
-                  setNewConnectorDefinition(null);
-                  setNewConnectorType(null);
-                }}
-                enableQuery={enableQuery}
-              />
-            ) : null}
-          </div>
-        )}
+          )}
+        </ScrollArea.Root>
       </Dialog.Content>
     </Dialog.Root>
   );

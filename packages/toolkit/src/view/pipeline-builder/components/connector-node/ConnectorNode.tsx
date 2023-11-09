@@ -450,7 +450,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             {resourceNotCreated ? (
               <div className="mb-3 w-full gap-y-2 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
                 <p className="text-semantic-fg-primary product-body-text-3-regular">
-                  Please create resource for this connector
+                  Please create a connector for this component
                 </p>
                 <LinkButton
                   className="gap-x-2"
@@ -546,7 +546,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                     }));
                   }}
                 >
-                  Create resource
+                  Create connector
                 </LinkButton>
               </div>
             ) : null}
