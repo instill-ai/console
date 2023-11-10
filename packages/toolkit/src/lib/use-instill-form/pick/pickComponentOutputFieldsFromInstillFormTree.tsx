@@ -1,7 +1,7 @@
 import * as React from "react";
 import { InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
-import { Nullable } from "../../type";
+import { GeneralRecord, Nullable } from "../../type";
 
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
@@ -33,11 +33,11 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     if (tree.fieldKey) {
       propertyValue = data
         ? Array.isArray(data[tree.fieldKey])
-          ? data[tree.fieldKey][0]
+          ? data[tree.fieldKey]
           : null
         : null;
     } else {
-      propertyValue = Array.isArray(data) ? data[0] : null;
+      propertyValue = Array.isArray(data) ? data : null;
     }
   } else if (tree._type === "formItem") {
     if (tree.fieldKey) {
@@ -84,8 +84,23 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process objectArray
+  // Becase we don't know the index of the output objectArray, we need to user
+  // the data as a hint here
+
   if (tree._type === "objectArray") {
-    return (
+    const objectArrayData = propertyValue as GeneralRecord[];
+
+    return propertyValue ? (
+      <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
+        {objectArrayData.map((data) =>
+          pickComponentOutputFieldsFromInstillFormTree({
+            ...props,
+            tree: tree.properties,
+            data: data,
+          })
+        )}
+      </div>
+    ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
         {pickComponentOutputFieldsFromInstillFormTree({
           ...props,
