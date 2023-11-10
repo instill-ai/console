@@ -31,7 +31,7 @@ export function useFilteredHints({
       instillAcceptFormats
     );
 
-    if (smartHintEnabledPos && currentCursorPos) {
+    if (smartHintEnabledPos !== null && currentCursorPos !== null) {
       searchCode = fieldValue.substring(smartHintEnabledPos, currentCursorPos);
 
       if (searchCode) {

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { SmartHint } from "../../../use-smart-hint";
 import { ControllerRenderProps } from "react-hook-form";
-import { Nullable } from "../../../type";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
 
 export function onInputKeydown({
+  form,
   field,
   event,
   path,
@@ -17,6 +18,7 @@ export function onInputKeydown({
   setEnableSmartHints,
   smartHintEnabledPos,
 }: {
+  form: GeneralUseFormReturn;
   field: ControllerRenderProps<
     {
       [k: string]: any;
@@ -75,24 +77,26 @@ export function onInputKeydown({
     case "Enter": {
       if (enableSmartHints) {
         event.preventDefault();
-        if (filteredHints.length > 0 && enableSmartHints) {
+        if (filteredHints.length > 0) {
           if (inputRef.current) {
             const cursorPosition = inputRef.current.selectionStart;
             const value = field.value ?? "";
 
-            // let closeBrace = "";
+            let closeBrace = "";
 
-            // if (value[smartHintEnabledPos - 1] === "{") {
-            //   closeBrace = "}";
-            // }
+            if (smartHintEnabledPos) {
+              if (value[smartHintEnabledPos - 1] === "{") {
+                closeBrace = "}";
+              }
 
-            // if (value[smartHintEnabledPos - 2] === "{") {
-            //   closeBrace = "}}";
-            // }
+              if (value[smartHintEnabledPos - 2] === "{") {
+                closeBrace = "}}";
+              }
+            }
 
-            const newValue = `${value.slice(0, smartHintEnabledPos ?? 0 + 1)}${
+            const newValue = `${value.slice(0, smartHintEnabledPos)}${
               filteredHints[highlightedHintIndex].path
-            }${value.slice(cursorPosition)}`;
+            }${closeBrace}${value.slice(cursorPosition)}`;
 
             field.onChange(newValue);
             setEnableSmartHints(false);
