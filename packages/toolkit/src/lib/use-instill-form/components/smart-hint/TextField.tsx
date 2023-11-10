@@ -17,6 +17,8 @@ import { useFilteredHints } from "./useFilteredHints";
 import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
+import { SmartHintWarning } from "../../type";
+import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 
 export const TextField = ({
   form,
@@ -47,17 +49,23 @@ export const TextField = ({
     React.useState<Nullable<number>>(null);
   const [currentCursorPos, setCurrentCursorPos] =
     React.useState<Nullable<number>>(null);
-
   const inputRef = React.useRef<Nullable<HTMLInputElement>>(null);
   const smartHintsScrollAreaViewportRef =
     React.useRef<Nullable<HTMLDivElement>>(null);
-
   const [highlightedHintIndex, setHighlightedHintIndex] =
     React.useState<number>(0);
+  const [smartHintWarning, setSmartHintWarning] =
+    React.useState<Nullable<SmartHintWarning>>(null);
 
   const { getFieldState, formState } = useFormContext();
   const { error } = getFieldState(path, formState);
   const fieldValue = form.getValues(path) as string;
+
+  useValidateReferenceAndTemplate({
+    hints: smartHints,
+    fieldValue,
+    setSmartHintWarning,
+  });
 
   function initSmartHintState() {
     setEnableSmartHints(false);
@@ -202,6 +210,7 @@ export const TextField = ({
                       error={error}
                       supportReference={supportReference}
                       supportTemplate={supportTemplate}
+                      smartHintWarning={smartHintWarning}
                     />
                     <SmartHintList
                       field={field}
@@ -229,6 +238,7 @@ export const TextField = ({
                     error={error}
                     supportReference={supportReference}
                     supportTemplate={supportTemplate}
+                    smartHintWarning={smartHintWarning}
                   />
                 )}
               </Popover.Content>

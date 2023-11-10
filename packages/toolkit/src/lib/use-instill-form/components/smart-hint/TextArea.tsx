@@ -3,7 +3,6 @@ import * as React from "react";
 import {
   Form,
   Icons,
-  Input,
   ParagraphWithHTML,
   Popover,
   Textarea,
@@ -18,6 +17,7 @@ import { useFilteredHints } from "./useFilteredHints";
 import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
+import { SmartHintWarning } from "../../type";
 
 export const TextArea = ({
   form,
@@ -55,7 +55,8 @@ export const TextArea = ({
 
   const [highlightedHintIndex, setHighlightedHintIndex] =
     React.useState<number>(0);
-
+  const [smartHintWarning, setSmartHintWarning] =
+    React.useState<Nullable<SmartHintWarning>>(null);
   const { getFieldState, formState } = useFormContext();
   const { error } = getFieldState(path, formState);
   const fieldValue = form.getValues(path) as string;
@@ -200,6 +201,7 @@ export const TextArea = ({
                       error={error}
                       supportReference={supportReference}
                       supportTemplate={supportTemplate}
+                      smartHintWarning={smartHintWarning}
                     />
                     <SmartHintList
                       form={form}
@@ -227,6 +229,7 @@ export const TextArea = ({
                     error={error}
                     supportReference={supportReference}
                     supportTemplate={supportTemplate}
+                    smartHintWarning={smartHintWarning}
                   />
                 )}
               </Popover.Content>
