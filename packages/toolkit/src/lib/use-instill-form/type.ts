@@ -107,3 +107,9 @@ export type CheckIsHidden = (props: {
   targetSchema: Nullable<InstillJSONSchema>;
   targetKey: Nullable<string>;
 }) => boolean;
+
+export type SmartHintWarning = {
+  message?: string;
+  notAvailableReferences: string[];
+  notAvailableTemplates: string[];
+};
