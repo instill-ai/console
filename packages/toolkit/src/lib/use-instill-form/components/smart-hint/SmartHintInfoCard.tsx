@@ -82,7 +82,7 @@ export const SmartHintInfoCard = ({
             </div>
             <div className="flex flex-col gap-y-2">
               <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-                This field support reference, you can use {` `}
+                This field support reference, you can use{" "}
                 <Tag
                   variant="lightBlue"
                   size="sm"

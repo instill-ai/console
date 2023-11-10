@@ -44,8 +44,8 @@ export function useInstillForm(
 
   const form = useForm<z.infer<typeof ValidatorSchema>>({
     resolver: zodResolver(ValidatorSchema),
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: data,
   });
 

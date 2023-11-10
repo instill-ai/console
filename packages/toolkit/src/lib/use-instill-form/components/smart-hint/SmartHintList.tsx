@@ -1,12 +1,13 @@
 import * as React from "react";
 import cn from "clsx";
-import { ScrollArea } from "@instill-ai/design-system";
+import { ScrollArea, Tag } from "@instill-ai/design-system";
 import { SmartHint } from "../../../use-smart-hint";
 import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
-import { Nullable } from "../../../type";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
 
 export const SmartHintList = ({
+  form,
   field,
   smartHintsScrollAreaViewportRef,
   enableSmartHints,
@@ -17,6 +18,7 @@ export const SmartHintList = ({
   setHighlightedHintIndex,
   inputRef,
   smartHintEnabledPos,
+  instillUpstreamTypes,
 }: {
   field: ControllerRenderProps<
     {
@@ -24,6 +26,7 @@ export const SmartHintList = ({
     },
     string
   >;
+  form: GeneralUseFormReturn;
   smartHintsScrollAreaViewportRef: React.RefObject<HTMLDivElement>;
   enableSmartHints: boolean;
   setEnableSmartHints: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +36,7 @@ export const SmartHintList = ({
   setHighlightedHintIndex: React.Dispatch<React.SetStateAction<number>>;
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
+  instillUpstreamTypes: string[];
 }) => {
   return (
     <ScrollArea.Root viewPortRef={smartHintsScrollAreaViewportRef}>
@@ -53,6 +57,8 @@ export const SmartHintList = ({
                   )}
                   onClick={() => {
                     onClickSmartHint({
+                      form,
+                      path,
                       field,
                       smartHint: hint,
                       setEnableSmartHints,
@@ -75,7 +81,25 @@ export const SmartHintList = ({
           )
         ) : (
           <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-            No available hints
+            You can use{" "}
+            {instillUpstreamTypes.includes("reference") ? (
+              <Tag
+                variant="lightBlue"
+                size="sm"
+                className="!rounded !px-2 !py-0.5"
+              >{`{}`}</Tag>
+            ) : null}{" "}
+            {instillUpstreamTypes.includes("template") ? (
+              <>
+                or{" "}
+                <Tag
+                  variant="lightBlue"
+                  size="sm"
+                  className="!rounded !px-2 !py-0.5"
+                >{`{{}}`}</Tag>
+              </>
+            ) : null}{" "}
+            to trigger smart hint
           </p>
         )}
       </div>

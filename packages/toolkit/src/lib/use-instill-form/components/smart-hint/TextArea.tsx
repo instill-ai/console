@@ -147,6 +147,7 @@ export const TextArea = ({
                         path,
                         setEnableSmartHints,
                         setCurrentCursorPos,
+                        smartHintEnabledPos,
                         setSmartHintEnabledPos,
                         setSmartHintsPopoverIsOpen,
                       });
@@ -161,6 +162,7 @@ export const TextArea = ({
                     onKeyDown={(e) => {
                       onInputKeydown({
                         event: e,
+                        form,
                         field,
                         path,
                         setEnableSmartHints,
@@ -200,6 +202,7 @@ export const TextArea = ({
                       supportTemplate={supportTemplate}
                     />
                     <SmartHintList
+                      form={form}
                       field={field}
                       smartHintsScrollAreaViewportRef={
                         smartHintsScrollAreaViewportRef
@@ -212,6 +215,7 @@ export const TextArea = ({
                       setHighlightedHintIndex={setHighlightedHintIndex}
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
+                      instillUpstreamTypes={instillUpstreamTypes}
                     />
                   </React.Fragment>
                 ) : (
