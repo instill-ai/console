@@ -4,25 +4,17 @@ import {
   pickComponentOutputFieldsFromInstillFormTree,
 } from "./pick";
 import { InstillJSONSchema } from "./type";
-import { PipelineTrace, TriggerUserPipelineResponse } from "../vdp-sdk";
+import { TriggerUserPipelineResponse } from "../vdp-sdk";
 import { Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 
-export type UseComponentOutputFieldsProps =
-  | {
-      nodeType: "end";
-      schema: Nullable<InstillJSONSchema>;
-      data: Nullable<TriggerUserPipelineResponse["outputs"]>;
-      chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];
-      hideField?: PickComponentOutputFieldsFromInstillFormTreeProps["hideField"];
-    }
-  | {
-      nodeType: "connector";
-      schema: Nullable<InstillJSONSchema>;
-      data: Nullable<Record<string, any>>;
-      chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];
-      hideField?: PickComponentOutputFieldsFromInstillFormTreeProps["hideField"];
-    };
+export type UseComponentOutputFieldsProps = {
+  nodeType: "connector" | "end";
+  schema: Nullable<InstillJSONSchema>;
+  data: Nullable<Record<string, any>>;
+  chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];
+  hideField?: PickComponentOutputFieldsFromInstillFormTreeProps["hideField"];
+};
 
 export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
   const fields = React.useMemo(() => {
