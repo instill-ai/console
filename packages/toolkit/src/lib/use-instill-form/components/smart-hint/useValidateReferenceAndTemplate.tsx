@@ -26,9 +26,20 @@ export function useValidateReferenceAndTemplate({
     if (templateReferenceSet.doubleCurlyBrace.count > 0) {
       for (const template of templateReferenceSet.doubleCurlyBrace.references) {
         if (
-          !hints.find(
-            (hint) => hint.path === template.referenceValue.withoutCurlyBraces
-          )
+          !hints.find((hint) => {
+            if (hint.path === template.referenceValue.withoutCurlyBraces) {
+              return true;
+            }
+
+            // We need to generate more fine grained objectArray hint
+            if (
+              template.referenceValue.withoutCurlyBraces.includes(hint.path)
+            ) {
+              return true;
+            }
+
+            return false;
+          })
         ) {
           notAvailableTemplates.push(template.referenceValue.withCurlyBraces);
         }
@@ -39,9 +50,20 @@ export function useValidateReferenceAndTemplate({
       for (const reference of templateReferenceSet.singleCurlyBrace
         .references) {
         if (
-          !hints.find(
-            (hint) => hint.path === reference.referenceValue.withoutCurlyBraces
-          )
+          !hints.find((hint) => {
+            if (hint.path === reference.referenceValue.withoutCurlyBraces) {
+              return true;
+            }
+
+            // We need to generate more fine grained objectArray hint
+            if (
+              reference.referenceValue.withoutCurlyBraces.includes(hint.path)
+            ) {
+              return true;
+            }
+
+            return false;
+          })
         ) {
           notAvailableReferences.push(reference.referenceValue.withCurlyBraces);
         }

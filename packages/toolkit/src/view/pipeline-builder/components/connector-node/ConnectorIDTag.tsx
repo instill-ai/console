@@ -1,37 +1,35 @@
 import { Tag, Tooltip } from "@instill-ai/design-system";
 import { Nullable } from "../../../../lib";
 
-export const ResourceIDTag = ({
-  resourceID,
+export const ConnectorIDTag = ({
+  connectorID,
 }: {
-  resourceID: Nullable<string>;
+  connectorID: Nullable<string>;
 }) => {
-  // const resourceID = resourceName ? resourceName.split("/")[3] : null;
-
-  return resourceID ? (
+  return connectorID ? (
     <Tooltip.Provider>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <Tag
             variant="lightNeutral"
             size="sm"
-            className="!max-w-[120px] !truncate !cursor-default"
+            className="!max-w-[120px] !cursor-default !truncate"
           >
-            {resourceID}
+            {connectorID}
           </Tag>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
             sideOffset={5}
             side="right"
-            className="!px-3 !py-2 rounded-sm max-w-[300px] bg-semantic-bg-primary"
+            className="max-w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2"
           >
             <div className="flex flex-col gap-y-1 text-left">
-              <p className="product-body-text-4-semibold bg-semantic-bg-primary">
-                resource ID
+              <p className="bg-semantic-bg-primary product-body-text-4-semibold">
+                Connector ID
               </p>
-              <p className="product-body-text-4-regular break-words text-semantic-fg-secondary">
-                {resourceID}
+              <p className="break-words text-semantic-fg-secondary product-body-text-4-regular">
+                {connectorID}
               </p>
             </div>
             <Tooltip.Arrow
