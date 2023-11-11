@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.4...@instill-ai/design-tokens-v0.3.5) (2023-11-10)
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto-gen form not correctly handle re-render issue ([#665](https://github.com/instill-ai/console/issues/665)) ([2363cc4](https://github.com/instill-ai/console/commit/2363cc44e6452f8f8bb5859b12dbc2086d8f1168))
+
 ## [0.3.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.3...@instill-ai/design-tokens-v0.3.4) (2023-10-27)
 
 

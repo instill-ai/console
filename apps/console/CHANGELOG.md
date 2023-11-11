@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.32.0-alpha](https://github.com/instill-ai/console/compare/v0.31.0-alpha...v0.32.0-alpha) (2023-11-10)
+
+
+### Features
+
+* rename /resources with /connectors to simplify the term on console ([#664](https://github.com/instill-ai/console/issues/664)) ([253dbdb](https://github.com/instill-ai/console/commit/253dbdb692e85f5150b8f7c2cbe4f462c0f9263e))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto-gen form not correctly handle re-render issue ([#665](https://github.com/instill-ai/console/issues/665)) ([2363cc4](https://github.com/instill-ai/console/commit/2363cc44e6452f8f8bb5859b12dbc2086d8f1168))
+
+
+### Miscellaneous
+
+* **general:** use unified store with slice to better control global state ([#652](https://github.com/instill-ai/console/issues/652)) ([334298c](https://github.com/instill-ai/console/commit/334298c8050ad8782f4f9165f9cc642f2be8a341))
+* replace &lt;&gt;</> with <React.Fragment> ([#662](https://github.com/instill-ai/console/issues/662)) ([5ec2a71](https://github.com/instill-ai/console/commit/5ec2a71cf99bd03f160075ed0f392c31cddabe76))
+
 ## [0.31.0-alpha](https://github.com/instill-ai/console/compare/v0.30.1-alpha...v0.31.0-alpha) (2023-10-27)
 
 
