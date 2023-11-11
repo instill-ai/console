@@ -1,5 +1,32 @@
 # @instill-ai/design-system
 
+## [0.57.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.56.0...@instill-ai/design-system-v0.57.0) (2023-11-11)
+
+
+### Features
+
+* **auto-gen-form:** Support HTML tag (strong, a, code, em) in form field description ([#648](https://github.com/instill-ai/console/issues/648)) ([569ef1c](https://github.com/instill-ai/console/commit/569ef1c4e8f955703c20cf84a87f2d4b3b4ebca7))
+* **smart-hint:** add smart hint component and support up-to-date backend syntax ([#655](https://github.com/instill-ai/console/issues/655)) ([c90246d](https://github.com/instill-ai/console/commit/c90246d0c1d57079b2afcf8a6df8f04457819ce9))
+* **smart-hint:** user can be hinted by the smart hint system ([#659](https://github.com/instill-ai/console/issues/659)) ([aa6976f](https://github.com/instill-ai/console/commit/aa6976f346a31d9003951ec70e1bbf6854a2f63a))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto-gen form not correctly handle re-render issue ([#665](https://github.com/instill-ai/console/issues/665)) ([2363cc4](https://github.com/instill-ai/console/commit/2363cc44e6452f8f8bb5859b12dbc2086d8f1168))
+
+
+### Miscellaneous
+
+* add DotsHorizontal icon ([#631](https://github.com/instill-ai/console/issues/631)) ([05f2e60](https://github.com/instill-ai/console/commit/05f2e6003cf8e4de478a1b4035c0e38899c99051))
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+* **design-system:** add minus icon ([#633](https://github.com/instill-ai/console/issues/633)) ([8919eae](https://github.com/instill-ai/console/commit/8919eae7ddd8d40aaa0d5b9d314e53d0281535d8))
+* **design-system:** expose Toast related function return types ([#620](https://github.com/instill-ai/console/issues/620)) ([0b26c2d](https://github.com/instill-ai/console/commit/0b26c2d7fc58f359b6fde97943888ae69e549233))
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+* release main ([#609](https://github.com/instill-ai/console/issues/609)) ([74d9fef](https://github.com/instill-ai/console/commit/74d9fef738867308a54dbd43ba201c31eb9bfed5))
+* release main ([#642](https://github.com/instill-ai/console/issues/642)) ([b78fb4f](https://github.com/instill-ai/console/commit/b78fb4f0be1c959e70ababdaa20e7d513c91eb68))
+* release main ([#645](https://github.com/instill-ai/console/issues/645)) ([66f9f3b](https://github.com/instill-ai/console/commit/66f9f3b6114ce754a1fe735c390fb7109b567f68))
+* replace &lt;&gt;</> with <React.Fragment> ([#662](https://github.com/instill-ai/console/issues/662)) ([5ec2a71](https://github.com/instill-ai/console/commit/5ec2a71cf99bd03f160075ed0f392c31cddabe76))
+
 ## [0.56.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.55.9...@instill-ai/design-system-v0.56.0) (2023-11-10)
 
 
