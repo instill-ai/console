@@ -98,7 +98,7 @@ export const SelectConnectorResourceDialog = (
       <Dialog.Content className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0">
         <ScrollArea.Root className="h-[700px] p-6">
           <Dialog.Close className="bg-semantic-bg-primary" />
-          <Dialog.Header>
+          <Dialog.Header className="mb-4">
             <Dialog.Title className="mx-auto !product-headings-heading-3">
               Add a component
             </Dialog.Title>

@@ -29,7 +29,7 @@ import {
   ImageWithFallback,
 } from "../../../../components";
 import { ConnectorNodeControlPanel } from "./ConnectorNodeControlPanel";
-import { ResourceIDTag } from "./ResourceIDTag";
+import { ConnectorIDTag } from "./ConnectorIDTag";
 import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
@@ -622,8 +622,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             ) : null}
 
             <div className="flex flex-row-reverse">
-              <ResourceIDTag
-                resourceID={
+              <ConnectorIDTag
+                connectorID={
                   data.component.resource_name
                     ? data.component.resource_name.split("/")[3]
                     : null
