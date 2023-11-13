@@ -109,6 +109,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     null,
     {
       enableSmartHint: true,
+      chooseTitleFrom: "title",
     }
   );
 
@@ -217,6 +218,7 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     schema: pipelineOpenAPIOutputSchema,
     data: testModeTriggerResponse?.outputs ?? null,
     nodeType: "end",
+    chooseTitleFrom: "title",
   });
 
   const hasTargetEdges = React.useMemo(() => {
