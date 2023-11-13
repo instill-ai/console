@@ -42,7 +42,7 @@ export function transformInstillJSONSchemaToZod({
 
   // const field will only be used in oneOf field conditions
   if (targetSchema.const) {
-    instillZodSchema = z.literal(targetSchema.const as string);
+    instillZodSchema = z.string();
 
     if (isHidden) {
       instillZodSchema = instillZodSchema.nullable().optional();
