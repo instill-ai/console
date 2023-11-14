@@ -16,6 +16,7 @@ export type InstillCustomProps = {
   instillUiMultiline?: boolean;
   instillEditOnNodeFields?: string[];
   instillCredentialField?: boolean;
+  instillPatternErrorMessage?: string;
 };
 
 type InstillJsonSchemaProps = {

@@ -18,6 +18,7 @@ import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
 import { SmartHintWarning } from "../../type";
+import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 
 export const TextArea = ({
   form,
@@ -67,6 +68,12 @@ export const TextArea = ({
     setSmartHintEnabledPos(null);
     setCurrentCursorPos(null);
   }
+
+  useValidateReferenceAndTemplate({
+    hints: smartHints,
+    fieldValue,
+    setSmartHintWarning,
+  });
 
   const filteredHints = useFilteredHints({
     smartHints,
