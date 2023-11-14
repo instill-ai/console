@@ -12,12 +12,14 @@ export function useFilteredHints({
   currentCursorPos,
   smartHintEnabledPos,
   fieldValue,
+  componentID,
 }: {
   smartHints: SmartHint[];
   instillAcceptFormats: string[];
   currentCursorPos: Nullable<number>;
   smartHintEnabledPos: Nullable<number>;
   fieldValue: string;
+  componentID?: string;
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
     if (!smartHints || smartHints.length === 0) {
@@ -35,10 +37,28 @@ export function useFilteredHints({
       searchCode = fieldValue.substring(smartHintEnabledPos, currentCursorPos);
 
       if (searchCode) {
-        return allHints.filter((hint) =>
-          hint.path.startsWith(searchCode as string)
-        );
+        return allHints.filter((hint) => {
+          if (componentID) {
+            const hintPath = hint.path.split(".");
+            if (componentID === hintPath[0]) {
+              return false;
+            }
+          }
+
+          return hint.path.startsWith(searchCode as string);
+        });
       }
+    }
+
+    if (componentID) {
+      return allHints.filter((hint) => {
+        const hintPath = hint.path.split(".");
+        if (componentID === hintPath[0]) {
+          return false;
+        }
+
+        return true;
+      });
     }
 
     return allHints;
@@ -48,6 +68,7 @@ export function useFilteredHints({
     currentCursorPos,
     smartHintEnabledPos,
     fieldValue,
+    componentID,
   ]);
 
   return filteredHints;

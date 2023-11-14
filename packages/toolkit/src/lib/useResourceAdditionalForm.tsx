@@ -5,10 +5,22 @@ import { Nullable } from "vitest";
 import * as z from "zod";
 import { Form, Input, Textarea } from "@instill-ai/design-system";
 
-export const ResourceAdditionalFormSchema = z.object({
-  id: z.string(),
-  description: z.string().nullable().optional(),
-});
+export const ResourceAdditionalFormSchema = z
+  .object({
+    id: z.string(),
+    description: z.string().nullable().optional(),
+  })
+  .superRefine((val, ctx) => {
+    const regexPattern = new RegExp("^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$");
+    if (!regexPattern.test(val.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "The ID should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters.",
+        path: ["id"],
+      });
+    }
+  });
 
 export const useResourceAdditionalForm = ({
   data,

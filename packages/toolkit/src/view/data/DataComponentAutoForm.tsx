@@ -19,6 +19,7 @@ export type DataComponentAutoFormProps = {
   connectorDefinition: ConnectorDefinition;
   configuration: GeneralRecord;
   disabledAll?: boolean;
+  componentID?: string;
 };
 
 const selector = (store: InstillStore) => ({

@@ -63,6 +63,7 @@ export const RightPanel = () => {
             connectorDefinition={
               selectedConnectorNode.data.component.connector_definition
             }
+            componentID={selectedConnectorNodeId ?? undefined}
           />
         ) : null}
         {selectedConnectorNode &&
@@ -75,6 +76,7 @@ export const RightPanel = () => {
             connectorDefinition={
               selectedConnectorNode.data.component.connector_definition
             }
+            componentID={selectedConnectorNodeId ?? undefined}
           />
         ) : null}
         {selectedConnectorNode &&
@@ -89,6 +91,7 @@ export const RightPanel = () => {
               connectorDefinition={
                 selectedConnectorNode.data.component.connector_definition
               }
+              componentID={selectedConnectorNodeId ?? undefined}
             />
           ) : null
         ) : null}
