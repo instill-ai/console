@@ -20,6 +20,7 @@ export type UseInstillFormOptions = {
   disabledAll?: boolean;
   checkIsHidden?: CheckIsHidden;
   enableSmartHint?: boolean;
+  componentID?: string;
 } & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
@@ -31,6 +32,7 @@ export function useInstillForm(
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const checkIsHidden = options?.checkIsHidden ?? undefined;
   const enableSmartHint = options?.enableSmartHint ?? false;
+  const componentID = options?.componentID ?? "";
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -120,6 +122,7 @@ export function useInstillForm(
         disabledAll,
         chooseTitleFrom,
         enableSmartHint,
+        componentID,
       }
     );
 

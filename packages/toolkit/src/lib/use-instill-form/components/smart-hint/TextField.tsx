@@ -30,6 +30,7 @@ export const TextField = ({
   instillAcceptFormats,
   isRequired,
   instillUpstreamTypes,
+  componentID,
 }: {
   form: GeneralUseFormReturn;
   path: string;
@@ -40,6 +41,7 @@ export const TextField = ({
   disabled?: boolean;
   isRequired?: boolean;
   instillUpstreamTypes: string[];
+  componentID?: string;
 }) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -80,6 +82,7 @@ export const TextField = ({
     currentCursorPos,
     smartHintEnabledPos,
     fieldValue,
+    componentID,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");

@@ -10,6 +10,7 @@ export type ResourceComponentFormProps = {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onSubmit: (data: any) => void;
   checkIsHidden?: CheckIsHidden;
+  componentID?: string;
 };
 
 export const ResourceComponentForm = ({
@@ -18,6 +19,7 @@ export const ResourceComponentForm = ({
   onSubmit,
   disabledAll,
   checkIsHidden,
+  componentID,
 }: ResourceComponentFormProps) => {
   const { form, fields } = useInstillForm(
     connectorDefinition.spec.component_specification,
@@ -27,6 +29,7 @@ export const ResourceComponentForm = ({
       chooseTitleFrom: "key",
       checkIsHidden,
       enableSmartHint: true,
+      componentID,
     }
   );
 

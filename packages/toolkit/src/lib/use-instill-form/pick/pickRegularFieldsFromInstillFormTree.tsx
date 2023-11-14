@@ -11,6 +11,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   // By default we will choose title from title field in JSON schema
   chooseTitleFrom?: "title" | "key";
   enableSmartHint?: boolean;
+  componentID?: string;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -26,6 +27,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const enableSmartHint = options?.enableSmartHint ?? false;
+  const componentID = options?.componentID ?? "";
 
   let title = tree.title ?? tree.fieldKey ?? null;
 
@@ -178,6 +180,7 @@ export function pickRegularFieldsFromInstillFormTree(
           instillAcceptFormats={tree.instillAcceptFormats ?? []}
           isRequired={tree.isRequired}
           instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
+          componentID={componentID}
         />
       );
     }
@@ -222,6 +225,7 @@ export function pickRegularFieldsFromInstillFormTree(
         instillAcceptFormats={tree.instillAcceptFormats ?? []}
         isRequired={tree.isRequired}
         instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
+        componentID={componentID}
       />
     );
   }
