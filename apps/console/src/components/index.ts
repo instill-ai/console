@@ -2,6 +2,7 @@ export * from "./AuthPageBase";
 export * from "./ChangePasswordForm";
 export * from "./ConsoleCorePageHead";
 export * from "./Sidebar";
+export * from "./Topbar";
 export * from "./ErrorBoundary";
 export * from "./LoginForm";
 export * from "./ModelReadmeMarkdown";
