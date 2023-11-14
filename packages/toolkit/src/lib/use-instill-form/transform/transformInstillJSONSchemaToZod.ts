@@ -247,6 +247,21 @@ export function transformInstillJSONSchemaToZod({
       }
 
       if (typeof val === "string") {
+        // Process regex pattern
+
+        if (instillUpstreamValue && instillUpstreamValue.pattern) {
+          const regexPattern = new RegExp(instillUpstreamValue.pattern);
+
+          if (!regexPattern.test(val)) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: instillUpstreamValue.instillPatternErrorMessage
+                ? instillUpstreamValue.instillPatternErrorMessage
+                : `This field doesn't match the pattern ${instillUpstreamValue.pattern}`,
+            });
+          }
+        }
+
         const referenceSet = extractTemplateReferenceSetFromString(val);
 
         if (
@@ -422,6 +437,21 @@ export function transformInstillJSONSchemaToZod({
       break;
     }
   }
+
+  instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+    if (targetSchema.pattern) {
+      const regexPattern = new RegExp(targetSchema.pattern);
+
+      if (!regexPattern.test(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: targetSchema.instillPatternErrorMessage
+            ? targetSchema.instillPatternErrorMessage
+            : `This field doesn't match the pattern ${targetSchema.pattern}`,
+        });
+      }
+    }
+  });
 
   if (!isRequired || forceOptional || isHidden) {
     instillZodSchema = instillZodSchema.nullable().optional();

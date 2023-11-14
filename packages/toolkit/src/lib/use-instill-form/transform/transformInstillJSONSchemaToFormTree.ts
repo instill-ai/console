@@ -271,6 +271,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillUIOrder",
   "instillEditOnNodeFields",
   "instillUiMultiline",
+  "instillPatternErrorMessage",
 ];
 
 function pickBaseFields(
