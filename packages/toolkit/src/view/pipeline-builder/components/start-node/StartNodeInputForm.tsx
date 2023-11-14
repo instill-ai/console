@@ -28,10 +28,22 @@ import {
   extractReferencesFromConfiguration,
 } from "../../lib";
 
-export const Schema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  key: z.string().min(1, { message: "Key is required" }),
-});
+export const Schema = z
+  .object({
+    title: z.string().min(1, { message: "Title is required" }),
+    key: z.string().min(1, { message: "Key is required" }),
+  })
+  .superRefine((val, ctx) => {
+    const regexPattern = new RegExp("^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$");
+    if (!regexPattern.test(val.key)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "The key should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters.",
+        path: ["key"],
+      });
+    }
+  });
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
