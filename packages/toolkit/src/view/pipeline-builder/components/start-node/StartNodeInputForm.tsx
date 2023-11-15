@@ -21,6 +21,7 @@ import {
   StartOperatorInput,
   StartOperatorInputType,
   useInstillStore,
+  validateComponentID,
 } from "../../../../lib";
 import { PipelineComponentReference, StartNodeData } from "../../type";
 import {
@@ -34,12 +35,11 @@ export const Schema = z
     key: z.string().min(1, { message: "Key is required" }),
   })
   .superRefine((val, ctx) => {
-    const regexPattern = new RegExp("^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$");
-    if (!regexPattern.test(val.key)) {
+    if (!validateComponentID(val.key)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "The key should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters.",
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
         path: ["key"],
       });
     }

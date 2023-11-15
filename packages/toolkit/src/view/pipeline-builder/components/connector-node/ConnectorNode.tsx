@@ -23,7 +23,12 @@ import {
   getConnectorInputOutputSchema,
   composeEdgesFromReferences,
 } from "../../lib";
-import { InstillStore, Nullable, useInstillStore } from "../../../../lib";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  validateComponentID,
+} from "../../../../lib";
 import {
   AutoresizeInputWrapper,
   ImageWithFallback,
@@ -139,6 +144,19 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   function handleRenameNode(newNodeId: string) {
     if (newNodeId === id) {
+      return;
+    }
+
+    if (!validateComponentID(newNodeId)) {
+      toast({
+        title:
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
+        variant: "alert-error",
+        size: "small",
+      });
+      updateNodeIdForm.reset({
+        nodeId: id,
+      });
       return;
     }
 
