@@ -56,9 +56,9 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
         {
           type: "string",
           instillUpstreamType: "value",
-          pattern: "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$",
+          pattern: "^[a-zA-Z_]{0,62}[a-zA-Z_0-9]*$",
           instillPatternErrorMessage:
-            "The key should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters.",
+            "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
         },
       ],
       instillUpstreamTypes: ["value"],
