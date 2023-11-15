@@ -2,7 +2,8 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { PageBase, PipelineListPageMainView } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
-import { Sidebar, ConsoleCorePageHead, Topbar } from "../../../components";
+
+import { ConsoleCorePageHead, Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";

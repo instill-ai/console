@@ -1,12 +1,8 @@
 import * as React from "react";
-import {
-  PageBase,
-  ResourceListPageMainView,
-  Topbar,
-} from "@instill-ai/toolkit";
+import { PageBase, ResourceListPageMainView } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { Sidebar, ConsoleCorePageHead } from "../../../components";
+import { ConsoleCorePageHead, Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useRouter } from "next/router";
@@ -33,7 +29,6 @@ PipelinePage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
         <PageBase.Content contentPadding="p-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>

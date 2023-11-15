@@ -53,8 +53,8 @@ export const Topbar = (props: TopbarProps) => {
                   <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />
                 }
                 name="Pipelines"
-                hightlighted={router.pathname.split("/")[1] === "pipelines"}
-                className="px-4 my-2"
+                hightlighted={router.pathname.split("/")[2] === "pipelines"}
+                className="px-4 my-2 mx-1"
               />
               <TopbarLink
                 href={`/${user.data.id}/connectors`}
@@ -62,8 +62,8 @@ export const Topbar = (props: TopbarProps) => {
                   <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
                 }
                 name="Connectors"
-                hightlighted={router.pathname.split("/")[1] === "connectors"}
-                className="px-4 my-2"
+                hightlighted={router.pathname.split("/")[2] === "connectors"}
+                className="px-4 my-2 mx-1"
               />
               <TopbarLink
                 href={`/${user.data.id}/model-hub`}
@@ -71,8 +71,8 @@ export const Topbar = (props: TopbarProps) => {
                   <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />
                 }
                 name="Model Hub"
-                hightlighted={router.pathname.split("/")[1] === "model-hub"}
-                className="px-4 my-2"
+                hightlighted={router.pathname.split("/")[2] === "model-hub"}
+                className="px-4 my-2 mx-1"
               />
 
               <TopbarLink
@@ -81,8 +81,8 @@ export const Topbar = (props: TopbarProps) => {
                   <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
                 }
                 name="Dashboard"
-                hightlighted={router.pathname.split("/")[1] === "dashboard"}
-                className="px-4 my-2"
+                hightlighted={router.pathname.split("/")[2] === "dashboard"}
+                className="px-4 my-2 mx-1"
               />
             </React.Fragment>
           ) : (

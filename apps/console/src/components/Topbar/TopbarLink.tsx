@@ -18,8 +18,7 @@ export const TopbarLink = (props: TopbarLinkProps) => {
       className={cn(
         "flex flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg",
         {
-          "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg":
-            hightlighted,
+          "border-opacity-100 bg-semantic-accent-bg": hightlighted,
         },
         className
       )}
