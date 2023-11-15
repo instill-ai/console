@@ -4,10 +4,9 @@ import { Logo } from "@instill-ai/design-system";
 import {
   DashboardPipelineDetailsPageMainView,
   PageBase,
-  Topbar,
 } from "@instill-ai/toolkit";
 
-import { ConsoleCorePageHead, Sidebar } from "../../../../components";
+import { ConsoleCorePageHead, Topbar } from "../../../../components";
 import { NextPageWithLayout } from "../../../_app";
 import { useAccessToken } from "../../../../lib/useAccessToken";
 import { useTrackToken } from "../../../../lib/useTrackToken";
@@ -34,7 +33,6 @@ PipelinePage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
         <PageBase.Content contentPadding="py-8 px-16">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
