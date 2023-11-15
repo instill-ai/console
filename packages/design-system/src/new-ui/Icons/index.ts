@@ -66,6 +66,7 @@ import { Tag01 } from "./Tag01";
 import { Trash01 } from "./Trash01";
 import { Type02 } from "./Type02";
 import { Upload01 } from "./Upload01";
+import { User02 } from "./User02";
 import { VideoRecorder } from "./VideoRecorder";
 import { X } from "./X";
 
@@ -138,6 +139,7 @@ export const Icons = {
   Trash01,
   Type02,
   Upload01,
+  User02,
   VideoRecorder,
   X,
 };
