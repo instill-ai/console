@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.73.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.73.0...@instill-ai/toolkit-v0.73.1) (2023-11-15)
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto-gen-form not correctly handle zod validation for condition fields ([#681](https://github.com/instill-ai/console/issues/681)) ([3f479c1](https://github.com/instill-ai/console/commit/3f479c1c502793d98d222c32bfa676c7d1ceecd9))
+* **auto-gen-form:** fix end component didn't correctly handle the key naming rule ([#682](https://github.com/instill-ai/console/issues/682)) ([628ab92](https://github.com/instill-ai/console/commit/628ab92235622615e5dc103387555f7265f7e327))
+* **auto-gen-form:** fix end component not picking the title as title in test mode ([#680](https://github.com/instill-ai/console/issues/680)) ([0e8c292](https://github.com/instill-ai/console/commit/0e8c2926ee5519e91f5148520b0d4ca43247ec6d))
+* **pipeline-builder:** Fix start component not throw error when user input the incorrect key ([#684](https://github.com/instill-ai/console/issues/684)) ([ac9f8c4](https://github.com/instill-ai/console/commit/ac9f8c4596b951d383b7dafec4b4e974788f4a1e))
+* **pipeline-builder:** fix validate component ID's regex ([#685](https://github.com/instill-ai/console/issues/685)) ([e31d364](https://github.com/instill-ai/console/commit/e31d36441046ade4845c2ae63f148d01366fcea6))
+* **smart-hint:** Fix smart hint wrongly hint user to use the same component's output ([#683](https://github.com/instill-ai/console/issues/683)) ([79ccf38](https://github.com/instill-ai/console/commit/79ccf380bfac48ec4cbc8d73df2a83b95b7474e3))
+
 ## [0.73.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.72.0...@instill-ai/toolkit-v0.73.0) (2023-11-11)
 
 

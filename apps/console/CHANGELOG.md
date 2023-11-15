@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.1-alpha](https://github.com/instill-ai/console/compare/v0.32.0-alpha...v0.32.1-alpha) (2023-11-15)
+
+
+### Bug Fixes
+
+* fix google search icon is missing issue ([#678](https://github.com/instill-ai/console/issues/678)) ([bf6dde0](https://github.com/instill-ai/console/commit/bf6dde00979e275466866cd7c921baee3d97bd9f))
+
 ## [0.32.0-alpha](https://github.com/instill-ai/console/compare/v0.31.0-alpha...v0.32.0-alpha) (2023-11-10)
 
 
