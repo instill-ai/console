@@ -7,10 +7,9 @@ import { useShallow } from "zustand/react/shallow";
 
 import {
   constructPipelineRecipe,
-  getBlockchainConnectorDefaultConfiguration,
-  getAiConnectorDefaultConfiguration,
-  generateNewNodeIdx,
   composePipelineMetadataFromNodes,
+  transformConnectorDefinitionIDToComponentIDPrefix,
+  generateNewComponentIndex,
 } from "./lib";
 import {
   ReleasePipelineModal,
@@ -329,61 +328,42 @@ export const FlowControl = (props: FlowControlProps) => {
       : edges;
 
     let nodePrefix: Nullable<string> = null;
-    let nodeIndex = 0;
+
+    if ("connector_definition" in resource) {
+      nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
+        resource.connector_definition.id
+      );
+    } else {
+      nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
+        resource.id
+      );
+    }
+
+    const nodeIndex = generateNewComponentIndex(
+      nodes.map((e) => e.id),
+      nodePrefix
+    );
+
     let configuration: Nullable<GeneralRecord> = null;
 
     switch (resource.type) {
       case "CONNECTOR_TYPE_AI": {
-        nodePrefix = "ai";
-        nodeIndex = generateNewNodeIdx(
-          nodes
-            .filter(
-              (e) => e.data.component?.type === "COMPONENT_TYPE_CONNECTOR_AI"
-            )
-            .map((e) => e.id),
-          "ai"
-        );
-        (configuration = {}), (componentType = "COMPONENT_TYPE_CONNECTOR_AI");
+        configuration = {};
+        componentType = "COMPONENT_TYPE_CONNECTOR_AI";
         break;
       }
       case "CONNECTOR_TYPE_BLOCKCHAIN": {
-        nodePrefix = "blockchain";
-        nodeIndex = generateNewNodeIdx(
-          nodes
-            .filter(
-              (e) =>
-                e.data.component?.type === "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN"
-            )
-            .map((e) => e.id),
-          "blockchain"
-        );
-        (configuration = {}),
-          (componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN");
+        configuration = {};
+        componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
         break;
       }
       case "CONNECTOR_TYPE_DATA": {
-        nodePrefix = "data";
-        nodeIndex = generateNewNodeIdx(
-          nodes
-            .filter(
-              (e) => e.data.component?.type === "COMPONENT_TYPE_CONNECTOR_DATA"
-            )
-            .map((e) => e.id),
-          "data"
-        );
         configuration = {};
         componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
         break;
       }
 
       case "CONNECTOR_TYPE_OPERATOR": {
-        nodePrefix = "op";
-        nodeIndex = generateNewNodeIdx(
-          nodes
-            .filter((e) => e.data.component?.type === "COMPONENT_TYPE_OPERATOR")
-            .map((e) => e.id),
-          "op"
-        );
         configuration = {};
         componentType = "COMPONENT_TYPE_OPERATOR";
         break;
