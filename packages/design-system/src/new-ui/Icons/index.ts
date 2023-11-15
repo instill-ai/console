@@ -47,10 +47,12 @@ import { LockUnlocked03 } from "./LockUnlocked03";
 import { InfoCircle } from "./InfoCircle";
 import { Image01 } from "./Image01";
 import { Logout01 } from "./Logout01";
+import { LayersTwo01 } from "./LayersTwo01";
 import { Model } from "./Model";
 import { Menu01 } from "./Menu01";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
+import { MessageSmileSquare } from "./MessageSmileSquare";
 import { Pipeline } from "./Pipeline";
 import { Plus } from "./Plus";
 import { Play } from "./Play";
@@ -61,11 +63,13 @@ import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Speaker01 } from "./Speaker01";
 import { Stop } from "./Stop";
+import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
 import { Tag01 } from "./Tag01";
 import { Trash01 } from "./Trash01";
 import { Type02 } from "./Type02";
 import { Upload01 } from "./Upload01";
+import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { VideoRecorder } from "./VideoRecorder";
 import { X } from "./X";
@@ -120,10 +124,12 @@ export const Icons = {
   InfoCircle,
   Image01,
   Logout01,
+  LayersTwo01,
   Model,
   Menu01,
   Minus,
   Mail01,
+  MessageSmileSquare,
   Pipeline,
   Play,
   Plus,
@@ -134,11 +140,13 @@ export const Icons = {
   Sliders01,
   Speaker01,
   Stop,
+  SearchLg,
   SearchSm,
   Tag01,
   Trash01,
   Type02,
   Upload01,
+  User01,
   User02,
   VideoRecorder,
   X,
