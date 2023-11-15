@@ -1,7 +1,6 @@
 import * as React from "react";
-import { ConsoleCorePageHead, Sidebar } from "../components";
+import { ConsoleCorePageHead, Topbar } from "../components";
 import {
-  Topbar,
   PageBase,
   ProfileTab,
   APITokenTab,
@@ -57,8 +56,7 @@ SettingsPage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
-        <PageBase.Content>{page}</PageBase.Content>
+        <PageBase.Content contentPadding="px-28 py-10">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
