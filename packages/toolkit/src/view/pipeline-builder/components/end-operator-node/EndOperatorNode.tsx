@@ -224,6 +224,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       key: key,
     });
     setEnableEdit(true);
+    setPrevFieldKey(key);
   }
 
   const testModeOutputFields = useComponentOutputFields({
@@ -272,13 +273,16 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       });
 
     setSortedItems(endOperatorInputItems);
-  }, [data.component.configuration]);
+  }, [data]);
 
   return (
     <React.Fragment>
       <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
-        <div className="mb-4 flex flex-row gap-x-1">
-          <p className="text-semantic-fg-secondary product-body-text-4-medium">
+        <div className="mb-6 flex flex-row gap-x-1">
+          <div className="flex h-6 w-6 rounded bg-semantic-bg-line">
+            <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+          </div>
+          <p className="my-auto text-semantic-fg-secondary product-body-text-4-medium">
             end
           </p>
         </div>
