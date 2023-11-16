@@ -6,6 +6,7 @@ import { ToggleLeft } from "./ToggleLeft";
 import { TextEmbedding } from "./TextEmbedding";
 import { TextGeneration } from "./TextGeneration";
 import { TextToImage } from "./TextToImage";
+import { Drag } from "./Drag";
 
 export const ComplicateIcons = {
   Doc,
@@ -16,4 +17,5 @@ export const ComplicateIcons = {
   ToggleLeft,
   TextGeneration,
   TextToImage,
+  Drag,
 };

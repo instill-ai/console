@@ -4,22 +4,25 @@ import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
 import { Button, Form, Icons, Tag } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
+import { arrayMove } from "@dnd-kit/sortable";
 
-import { EndNodeData, PipelineComponentReference } from "../type";
+import { EndNodeData, PipelineComponentReference } from "../../type";
 import {
   extractReferencesFromConfiguration,
-  extractPipelineComponentReferenceFromString,
   composeEdgesFromReferences,
-} from "../lib";
-import { CustomHandle } from "./CustomHandle";
+} from "../../lib";
+import { CustomHandle } from "../CustomHandle";
 import {
   InstillJSONSchema,
   InstillStore,
   Nullable,
+  StartOperatorMetadata,
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
-} from "../../../lib";
+} from "../../../../lib";
+import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
+import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -89,7 +92,13 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
   },
 };
 
-export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
+export type EndOperatorNodeFieldItem = {
+  key: string;
+  value: string;
+  title: string;
+};
+
+export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
@@ -228,6 +237,43 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
     return edges.some((edge) => edge.target === id);
   }, [edges, id]);
 
+  const [sortedItems, setSortedItems] = React.useState<
+    EndOperatorNodeFieldItem[]
+  >([]);
+
+  React.useEffect(() => {
+    const endOperatorInputItems = Object.entries(
+      data.component.configuration.input
+    )
+      .map(([key, value]) => {
+        const title = data.component.configuration.metadata[key].title;
+
+        return {
+          key,
+          value,
+          title,
+        };
+      })
+      .sort((a, b) => {
+        const aOrder =
+          data.component.configuration.metadata[a.key].instillUiOrder;
+        const bOrder =
+          data.component.configuration.metadata[b.key].instillUiOrder;
+
+        if (typeof aOrder === "undefined") {
+          return 1;
+        }
+
+        if (typeof bOrder === "undefined") {
+          return -1;
+        }
+
+        return aOrder > bOrder ? 1 : -1;
+      });
+
+    setSortedItems(endOperatorInputItems);
+  }, [data.component.configuration]);
+
   return (
     <React.Fragment>
       <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
@@ -272,64 +318,72 @@ export const EndNode = ({ data, id }: NodeProps<EndNodeData>) => {
             {testModeOutputFields}
           </div>
         ) : (
-          <div className="flex flex-col gap-y-4">
-            {Object.entries(data.component.configuration.input).map(
-              ([key, value]) => {
-                const reference = extractPipelineComponentReferenceFromString({
-                  key,
-                  value: value,
-                  currentPath: [],
-                  nodeId: "end",
-                });
+          <div className="flex flex-col">
+            <VerticalSortableWrapper
+              items={sortedItems}
+              onDragEnd={(event) => {
+                const { active, over } = event;
 
-                return (
-                  <div key={key} className="flex flex-col">
-                    <div className="mb-2 flex flex-row items-center justify-between">
-                      <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-                        {key}
-                      </div>
-                      {currentVersion === "latest" && isOwner ? (
-                        <div className="my-auto flex flex-row gap-x-4">
-                          <button
-                            onClick={() => {
-                              onEditField(key);
-                              setPrevFieldKey(key);
-                            }}
-                          >
-                            <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
-                          </button>
-                          <button onClick={() => onDeleteField(key)}>
-                            <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
-                          </button>
-                        </div>
-                      ) : null}
-                    </div>
-                    <div>
-                      {reference?.type === "singleCurlyBrace" ? (
-                        <Tag
-                          className="gap-x-1.5"
-                          variant="lightBlue"
-                          size="md"
-                        >
-                          {reference.referenceValue.withoutCurlyBraces}
-                        </Tag>
-                      ) : (
-                        reference?.referenceValues.map((referenceValue) => (
-                          <Tag
-                            key={referenceValue.withCurlyBraces}
-                            className="gap-x-1.5"
-                            variant="lightBlue"
-                            size="md"
-                          >
-                            {referenceValue.withoutCurlyBraces}
-                          </Tag>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                );
-              }
-            )}
+                if (over && active.id !== over.id) {
+                  let newSortedItems: EndOperatorNodeFieldItem[] = [];
+
+                  setSortedItems((items) => {
+                    const oldIndex = items.findIndex(
+                      (e) => e.key === active.id
+                    );
+                    const newIndex = items.findIndex((e) => e.key === over.id);
+
+                    newSortedItems = arrayMove(items, oldIndex, newIndex);
+
+                    return newSortedItems;
+                  });
+
+                  if (newSortedItems.length > 0) {
+                    const newMetadata: Record<string, StartOperatorMetadata> =
+                      {};
+
+                    newSortedItems.forEach((item, index) => {
+                      newMetadata[item.key] = {
+                        ...data.component.configuration.metadata[item.key],
+                        instillUiOrder: index,
+                      };
+                    });
+
+                    const newNodes = nodes.map((node) => {
+                      if (node.data.nodeType === "end") {
+                        node.data = {
+                          ...node.data,
+                          component: {
+                            ...node.data.component,
+                            configuration: {
+                              ...node.data.component.configuration,
+                              metadata: newMetadata,
+                            },
+                          },
+                        };
+                      }
+                      return node;
+                    });
+
+                    updateNodes(() => newNodes);
+                    updatePipelineRecipeIsDirty(() => true);
+                  }
+                }
+              }}
+            >
+              <div className="mb-4 flex flex-col gap-y-4">
+                {sortedItems.map((item) => (
+                  <UserDefinedFieldItem
+                    key={item.key}
+                    outputKey={item.key}
+                    outputValue={item.value}
+                    onEditField={onEditField}
+                    onDeleteField={onDeleteField}
+                    setPrevFieldKey={setPrevFieldKey}
+                  />
+                ))}
+              </div>
+            </VerticalSortableWrapper>
             <Button
               className="flex w-full"
               variant="primary"
