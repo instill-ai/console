@@ -13,7 +13,7 @@ import {
   CustomEdge,
   ConnectorNode,
   EmptyNode,
-  EndNode,
+  EndOperatorNode,
   StartNode,
   BackToLatestVersionTopBar,
 } from "./components";
@@ -52,7 +52,7 @@ const nodeTypes = {
   startNode: StartNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
-  endNode: EndNode,
+  endNode: EndOperatorNode,
 };
 
 const edgeTypes = {

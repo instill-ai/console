@@ -5,7 +5,7 @@ export * from "./connector-node";
 export * from "./CustomEdge";
 export * from "./CustomHandle";
 export * from "./EmptyNode";
-export * from "./EndNode";
+export * from "./end-operator-node/EndOperatorNode";
 export * from "./PipelineNameForm";
 export * from "./ReleasePipelineModal";
 export * from "./SelectConnectorResourceDialog";
