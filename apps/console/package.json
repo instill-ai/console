@@ -54,7 +54,7 @@
     "react-markdown": "^8.0.3",
     "reactflow": "^11.8.3",
     "remark-frontmatter": "^4.0.1",
-    "sharp": "^0.30.7",
+    "sharp": "^0.32.6",
     "shiki": "^0.11.1",
     "tailwindcss-animate": "^1.0.6",
     "unique-names-generator": "^4.7.1",
