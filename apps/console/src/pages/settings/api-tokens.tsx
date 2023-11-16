@@ -24,7 +24,7 @@ const SettingsPage: NextPageWithLayout = () => {
         <div className="w-1/6">
           <ProfileSidebar />
         </div>
-        <div className="5/6">
+        <div className="w-5/6">
           <APITokenTab
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
