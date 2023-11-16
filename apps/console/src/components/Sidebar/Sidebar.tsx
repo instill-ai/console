@@ -17,7 +17,7 @@ export const Sidebar = () => {
   });
 
   return (
-    <div className="flex w-[312px] flex-col bg-semantic-bg-primary">
+    <div className="flex w-[312px] flex-col bg-semantic-bg-base-bg">
       <div className="mb-auto px-4 pt-4">
         {user.isSuccess ? (
           <React.Fragment>

@@ -1,4 +1,5 @@
 import { Nullable, useApiTokens } from "../../../lib";
+import { TabBase } from "../TabBase";
 import { APITokenTable } from "./APITokenTable";
 import { CreateAPITokenDialog } from "./CreateAPITokenDialog";
 
@@ -16,16 +17,18 @@ export const APITokenTab = (props: APITokenTabProps) => {
   });
 
   return (
-    <div className="flex min-w-[720px] w-full flex-col gap-y-4">
-      <div className="flex w- mb-3 justify-end">
-        <CreateAPITokenDialog accessToken={accessToken} />
+    <TabBase title="API Tokens" description="Manage your API Tokens">
+      <div className="flex w-full min-w-[720px] flex-col gap-y-4">
+        <div className="w- mb-3 flex justify-end">
+          <CreateAPITokenDialog accessToken={accessToken} />
+        </div>
+        <APITokenTable
+          isError={apiTokens.isError}
+          isLoading={apiTokens.isLoading}
+          accessToken={accessToken}
+          tokens={apiTokens.data ?? []}
+        />
       </div>
-      <APITokenTable
-        isError={apiTokens.isError}
-        isLoading={apiTokens.isLoading}
-        accessToken={accessToken}
-        tokens={apiTokens.data ?? []}
-      />
-    </div>
+    </TabBase>
   );
 };

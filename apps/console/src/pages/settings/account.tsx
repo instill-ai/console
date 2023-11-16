@@ -1,5 +1,10 @@
 import * as React from "react";
-import { ConsoleCorePageHead, Topbar } from "../components";
+import {
+  ConsoleCorePageHead,
+  ProfileSidebar,
+  Sidebar,
+  Topbar,
+} from "../../components";
 import {
   PageBase,
   ProfileTab,
@@ -7,37 +12,14 @@ import {
   SettingsPageView,
 } from "@instill-ai/toolkit";
 
-import { Logo } from "@instill-ai/design-system";
-import { NextPageWithLayout } from "./_app";
-import { useAccessToken } from "../lib/useAccessToken";
-import { useTrackToken } from "../lib/useTrackToken";
+import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import { NextPageWithLayout } from "../_app";
+import { useAccessToken } from "../../lib/useAccessToken";
+import { useTrackToken } from "../../lib/useTrackToken";
 
 const SettingsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
-
-  const tabs = [
-    {
-      id: "profile",
-      name: "My Details",
-      element: (
-        <ProfileTab
-          accessToken={accessToken.isSuccess ? accessToken.data : null}
-          enableQuery={accessToken.isSuccess}
-        />
-      ),
-    },
-    {
-      id: "api-tokens",
-      name: "API Tokens",
-      element: (
-        <APITokenTab
-          accessToken={accessToken.isSuccess ? accessToken.data : null}
-          enableQuery={accessToken.isSuccess}
-        />
-      ),
-    },
-  ];
 
   /* -------------------------------------------------------------------------
    * Render
@@ -46,7 +28,15 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
-      <SettingsPageView tabs={tabs} enableQuery={accessToken.isSuccess} />
+      <Breadcrumb
+        items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
+      />
+      <div className="w-full flex mt-16 gap-x-14">
+        <div className="w-1/6">
+          <ProfileSidebar />
+        </div>
+        <div className="5/6">Account</div>
+      </div>
     </React.Fragment>
   );
 };
