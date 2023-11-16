@@ -233,8 +233,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     chooseTitleFrom: "title",
   });
 
-  console.log(pipelineOpenAPIOutputSchema);
-
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
   }, [edges, id]);

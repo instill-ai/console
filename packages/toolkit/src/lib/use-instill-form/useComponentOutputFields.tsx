@@ -4,7 +4,6 @@ import {
   pickComponentOutputFieldsFromInstillFormTree,
 } from "./pick";
 import { InstillJSONSchema } from "./type";
-import { TriggerUserPipelineResponse } from "../vdp-sdk";
 import { Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 

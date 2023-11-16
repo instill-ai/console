@@ -45,7 +45,7 @@ export const VerticalSortableWrapper = ({
     >
       <SortableContext
         items={items.map((item) => ({ id: item.key }))}
-        strategy={verticalListSortingStrategy}
+        // strategy={verticalListSortingStrategy}
       >
         {children}
       </SortableContext>
