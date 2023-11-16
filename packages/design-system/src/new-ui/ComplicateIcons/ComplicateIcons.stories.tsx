@@ -71,9 +71,19 @@ export const Number: Story = {
     />
   ),
 };
+
 export const ToogleLeft: Story = {
   render: () => (
     <ComplicateIcons.ToggleLeft
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const Drag: Story = {
+  render: () => (
+    <ComplicateIcons.Drag
       fillAreaColor="fill-semantic-fg-secondary"
       className="h-5 w-5"
     />
