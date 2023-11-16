@@ -1,17 +1,6 @@
 import * as React from "react";
-import {
-  ConsoleCorePageHead,
-  ProfileSidebar,
-  Sidebar,
-  Topbar,
-} from "../../components";
-import {
-  PageBase,
-  ProfileTab,
-  APITokenTab,
-  SettingsPageView,
-} from "@instill-ai/toolkit";
-
+import { ConsoleCorePageHead, ProfileSidebar, Topbar } from "../../components";
+import { PageBase, OrganizationTab } from "@instill-ai/toolkit";
 import { Breadcrumb, Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "../../lib/useAccessToken";
@@ -35,7 +24,12 @@ const SettingsPage: NextPageWithLayout = () => {
         <div className="w-1/6">
           <ProfileSidebar />
         </div>
-        <div className="5/6">organizations</div>
+        <div className="w-5/6">
+          <OrganizationTab
+            accessToken={accessToken.isSuccess ? accessToken.data : null}
+            enableQuery={accessToken.isSuccess}
+          />
+        </div>
       </div>
     </React.Fragment>
   );

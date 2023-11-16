@@ -5,6 +5,7 @@ export * from "./dashboard";
 export * from "./data";
 export * from "./mgmt";
 export * from "./model";
+export * from "./organizations";
 export * from "./pipeline";
 export * from "./pipeline-builder";
 export * from "./resource";
