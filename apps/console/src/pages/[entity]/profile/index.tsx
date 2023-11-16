@@ -74,10 +74,10 @@ const PipelinePage: NextPageWithLayout = () => {
       <Breadcrumb
         items={[{ label: "Home", link: "/" }, { label: "Profile" }]}
       />
-      <div className="w-full flex flex-row gap-x-6 mt-16">
+      <div className="w-full flex flex-row gap-x-14 mt-16">
         <div className="w-1/5 space-y-8">
           <div className="flex flex-col space-y-4 items-center">
-            <div className="h-[160px] w-[160px] rounded-[100px] bg-semantic-bg-secondary my-auto flex items-center justify-center cursor-pointer">
+            <div className="h-[160px] w-[160px] rounded-[100px] bg-semantic-bg-line my-auto flex items-center justify-center cursor-pointer">
               <Icons.User02 className="h-[84px] w-[84px] stroke-slate-500" />
             </div>
             <div className="flex flex-col items-center space-y-1">
@@ -132,14 +132,23 @@ const PipelinePage: NextPageWithLayout = () => {
             </div>
             <Separator orientation="horizontal" />
           </div>
+
           <div>
-            <PipelinesTable
-              pipelines={pipelines.data ? pipelines.data : []}
-              isError={pipelines.isError}
-              isLoading={pipelines.isLoading || connectorDefinitions.isLoading}
-              accessToken={accessToken.isSuccess ? accessToken.data : null}
-              enableQuery={accessToken.isSuccess}
-            />
+            {pipelines.data?.length ? (
+              <PipelinesTable
+                pipelines={pipelines.data ? pipelines.data : []}
+                isError={pipelines.isError}
+                isLoading={
+                  pipelines.isLoading || connectorDefinitions.isLoading
+                }
+                accessToken={accessToken.isSuccess ? accessToken.data : null}
+                enableQuery={accessToken.isSuccess}
+              />
+            ) : (
+              <p className="text-semantic-fg-disabled product-headings-heading-5">
+                No pipelines created yet
+              </p>
+            )}
           </div>
           <div className="relative w-full">
             <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-semantic-bg-base-bg px-2">
@@ -150,14 +159,20 @@ const PipelinePage: NextPageWithLayout = () => {
             <Separator orientation="horizontal" />
           </div>
           <div>
-            <ModelsTable
-              models={models.isSuccess ? models.data : []}
-              modelsWatchState={
-                modelsWatchState.isSuccess ? modelsWatchState.data : {}
-              }
-              isError={models.isError || modelsWatchState.isError}
-              isLoading={isLoadingResource}
-            />
+            {models.data?.length ? (
+              <ModelsTable
+                models={models.isSuccess ? models.data : []}
+                modelsWatchState={
+                  modelsWatchState.isSuccess ? modelsWatchState.data : {}
+                }
+                isError={models.isError || modelsWatchState.isError}
+                isLoading={isLoadingResource}
+              />
+            ) : (
+              <p className="text-semantic-fg-disabled product-headings-heading-5">
+                No Models imported yet
+              </p>
+            )}
           </div>
         </div>
       </div>
