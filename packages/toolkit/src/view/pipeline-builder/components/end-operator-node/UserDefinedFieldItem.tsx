@@ -2,8 +2,7 @@ import * as React from "react";
 import cn from "clsx";
 import { useShallow } from "zustand/react/shallow";
 import { InstillStore, Nullable, useInstillStore } from "../../../../lib";
-import { extractPipelineComponentReferenceFromString } from "../../lib";
-import { ComplicateIcons, Icons, Tag } from "@instill-ai/design-system";
+import { ComplicateIcons, Icons } from "@instill-ai/design-system";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useReactFlow } from "reactflow";
@@ -39,13 +38,6 @@ export const UserDefinedFieldItem = ({
 
   const reactFlowInstance = useReactFlow();
 
-  const reference = extractPipelineComponentReferenceFromString({
-    key: outputKey,
-    value: outputValue,
-    currentPath: [],
-    nodeId: "end",
-  });
-
   // Because dndkit is using the cached boundingbox information when first
   // render. They don't know the ancestor (reactflow) zoom level when
   // calculate the transform, we need to take it into account.
@@ -71,56 +63,44 @@ export const UserDefinedFieldItem = ({
       style={style}
       {...attributes}
     >
-      <button
-        {...listeners}
-        className="opacity-0 group-hover:opacity-100"
-        ref={setNodeRef}
-      >
-        <ComplicateIcons.Drag
-          className="h-4 w-4"
-          fillAreaColor="fill-semantic-node-connector-off"
-        />
-      </button>
+      <div className="my-auto flex">
+        <button
+          {...listeners}
+          className="h-4 w-4 opacity-0 group-hover:opacity-100"
+          ref={setNodeRef}
+        >
+          <ComplicateIcons.Drag
+            className="h-4 w-4"
+            fillAreaColor="fill-semantic-node-connector-off"
+          />
+        </button>
+      </div>
       <div className="flex w-full flex-col">
         <div className="mb-2 flex flex-row items-center justify-between">
           <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
             {outputKey}
           </div>
           {currentVersion === "latest" && isOwner ? (
-            <div className="my-auto flex flex-row gap-x-4">
+            <div className="my-auto flex flex-row gap-x-2">
               <button
-                onClick={() => {
-                  onEditField(outputKey);
-                  setPrevFieldKey(outputKey);
-                }}
+                onClick={() => onEditField(outputKey)}
+                className="flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default"
               >
-                <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
+                edit field
+                <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
               </button>
               <button onClick={() => onDeleteField(outputKey)}>
-                <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
+                <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
               </button>
             </div>
           ) : null}
         </div>
-        <div>
-          {reference?.type === "singleCurlyBrace" ? (
-            <Tag className="gap-x-1.5" variant="lightBlue" size="md">
-              {reference.referenceValue.withoutCurlyBraces}
-            </Tag>
-          ) : (
-            reference?.referenceValues.map((referenceValue) => (
-              <Tag
-                key={referenceValue.withCurlyBraces}
-                className="gap-x-1.5"
-                variant="lightBlue"
-                size="md"
-              >
-                {referenceValue.withoutCurlyBraces}
-              </Tag>
-            ))
-          )}
-        </div>
+        <p className="nodrag rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-1.5 py-[9px] product-body-text-4-regular">
+          {outputValue}
+        </p>
       </div>
+      {/* Placeholder */}
+      <div className="flex h-4 w-4 flex-shrink-0"></div>
     </div>
   );
 };
