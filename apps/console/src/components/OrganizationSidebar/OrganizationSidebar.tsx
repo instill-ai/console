@@ -46,7 +46,7 @@ export const OrganizationSidebar = () => {
         {user.isSuccess ? (
           <React.Fragment>
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}`}
+              href={`/organization/${organisation.name}/settings`}
               name="Profile"
               hightlighted={router.pathname.split("/")[3] === "settings"}
               className="mb-2 px-3"
@@ -58,25 +58,25 @@ export const OrganizationSidebar = () => {
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/organizations`}
+              href={`/organization/${organisation.name}/members`}
               name="Members"
-              hightlighted={router.pathname.split("/")[3] === "organizations"}
+              hightlighted={router.pathname.split("/")[3] === "members"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/organizations`}
+              href={`/organization/${organisation.name}/permissions`}
               name="Permissions"
-              hightlighted={router.pathname.split("/")[3] === "organizations"}
+              hightlighted={router.pathname.split("/")[3] === "permissions"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/settings/${organisation.name}/billings`}
+              href={`/organization/${organisation.name}/billing`}
               name="Billing"
-              hightlighted={router.pathname.split("/")[3] === "billings"}
+              hightlighted={router.pathname.split("/")[3] === "billing"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/settings/${organisation.name}/api-tokens`}
+              href={`/organization/${organisation.name}/api-tokens`}
               name="API Tokens"
               hightlighted={router.pathname.split("/")[3] === "api-tokens"}
               className="px-3"
