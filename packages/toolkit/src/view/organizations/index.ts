@@ -1,1 +1,2 @@
-export * from "./OrganizationTab";
+export * from "./OrganizationsTab";
+export * from "./OrganizationSettings";

@@ -2,13 +2,14 @@ import { Button, Icons, Logos } from "@instill-ai/design-system";
 import { Nullable, useUser } from "../../lib";
 import { TabBase } from "../user-settings/TabBase";
 import { CreateOrganizationDialog } from "./CreateOrganizationDialog";
+import Link from "next/link";
 
-export type OrganizationTabProps = {
+export type OrganizationsTabProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
 };
 
-export const OrganizationTab = (props: OrganizationTabProps) => {
+export const OrganizationsTab = (props: OrganizationsTabProps) => {
   const { accessToken, enableQuery } = props;
 
   const user = useUser({
@@ -41,15 +42,19 @@ export const OrganizationTab = (props: OrganizationTabProps) => {
           <div className="flex w-full flex-row">
             <div className="flex w-3/4 gap-x-3">
               <div className="my-auto">
-                <Button variant="secondaryGrey" size="lg" className="!p-3.5">
-                  <Logos.OpenAI className="h-7 w-7" />
-                </Button>
+                <Link href={`/organization/open-ai/settings`}>
+                  <Button variant="secondaryGrey" size="lg" className="!p-3.5">
+                    <Logos.OpenAI className="h-7 w-7" />
+                  </Button>
+                </Link>
               </div>
 
               <div className="my-auto">
-                <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                  Open AI
-                </p>
+                <Link href={`/organization/open-ai/settings`}>
+                  <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                    Open AI
+                  </p>
+                </Link>
                 <p className="text-semantic-fg-disabled product-body-text-4-regular">
                   Company
                 </p>
