@@ -78,5 +78,5 @@ export function useValidateReferenceAndTemplate({
     } else {
       setSmartHintWarning(null);
     }
-  }, [fieldValue, hints]);
+  }, [fieldValue, hints, setSmartHintWarning]);
 }

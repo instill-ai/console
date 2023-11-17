@@ -39,6 +39,8 @@ import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
+import { NodeWrapper } from "../NodeWrapper";
+import { NodeHead } from "../NodeHead";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -51,8 +53,6 @@ const selector = (store: InstillStore) => ({
   testModeTriggerResponse: store.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
-  isOwner: store.isOwner,
-  currentVersion: store.currentVersion,
 });
 
 const UpdateNodeIdSchema = z.object({
@@ -71,8 +71,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
-    isOwner,
-    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -80,7 +78,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const connectorIDInputRef = React.useRef<HTMLInputElement>(null);
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
-
+  const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
 
   const updateNodeIdForm = useForm<z.infer<typeof UpdateNodeIdSchema>>({
@@ -316,7 +314,12 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   }
 
   return (
-    <React.Fragment>
+    <NodeWrapper
+      nodeType={data.nodeType}
+      id={id}
+      note={data.note}
+      noteIsOpen={noteIsOpen}
+    >
       <div
         className={cn(
           "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg",
@@ -326,9 +329,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           }
         )}
       >
-        <div
-          className={cn("flex w-full flex-row", { "mb-3": !nodeIsCollapsed })}
-        >
+        <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
           <div className="mr-auto flex flex-row gap-x-1">
             <ImageWithFallback
               src={`/icons/${data.component?.connector_definition?.vendor}/${data.component?.connector_definition?.icon}`}
@@ -443,25 +444,25 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               </Tooltip.Root>
             </Tooltip.Provider>
           </div>
-          {currentVersion === "latest" && isOwner ? (
-            <ConnectorNodeControlPanel
-              componentType={data.component.type}
-              handleEditNode={() =>
-                updateSelectedConnectorNodeId((prev) => {
-                  if (prev === id) {
-                    return null;
-                  }
-                  return id;
-                })
-              }
-              handleCopyNode={handleCopyNode}
-              handleDeleteNode={handleDeleteNode}
-              testModeEnabled={testModeEnabled}
-              nodeIsCollapsed={nodeIsCollapsed}
-              setNodeIsCollapsed={setNodeIsCollapsed}
-            />
-          ) : null}
-        </div>
+          <ConnectorNodeControlPanel
+            componentType={data.component.type}
+            handleEditNode={() =>
+              updateSelectedConnectorNodeId((prev) => {
+                if (prev === id) {
+                  return null;
+                }
+                return id;
+              })
+            }
+            handleCopyNode={handleCopyNode}
+            handleDeleteNode={handleDeleteNode}
+            testModeEnabled={testModeEnabled}
+            nodeIsCollapsed={nodeIsCollapsed}
+            setNodeIsCollapsed={setNodeIsCollapsed}
+            handleToggleNote={() => setNoteIsOpen((prev) => !prev)}
+            noteIsOpen={noteIsOpen}
+          />
+        </NodeHead>
 
         {nodeIsCollapsed ? null : (
           <>
@@ -663,6 +664,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         position={Position.Right}
         id={id}
       />
-    </React.Fragment>
+    </NodeWrapper>
   );
 };
