@@ -9,10 +9,11 @@ import * as React from "react";
 export type OrganizationSettingsProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
+  disabledAll: boolean;
 };
 
 export const OrganizationSettings = (props: OrganizationSettingsProps) => {
-  const { accessToken, enableQuery } = props;
+  const { accessToken, enableQuery, disabledAll } = props;
 
   const [data, setData] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -89,11 +90,12 @@ export const OrganizationSettings = (props: OrganizationSettingsProps) => {
           ],
           instillUpstreamTypes: ["value", "reference"],
           title: "Organisation Domain Name",
-          example: "open.com",
+          example: "openai.com",
         },
       },
     },
-    null
+    null,
+    { disabledAll: disabledAll }
   );
 
   return (
@@ -111,28 +113,30 @@ export const OrganizationSettings = (props: OrganizationSettingsProps) => {
         <Form.Root {...form}>
           <form className="w-full">
             <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
-            <div className="flex flex-row-reverse">
-              <Button
-                type="button"
-                size="lg"
-                variant="primary"
-                onClick={() => {
-                  const data = form.getValues();
+            {disabledAll === false ? (
+              <div className="flex flex-row-reverse">
+                <Button
+                  type="button"
+                  size="lg"
+                  variant="primary"
+                  onClick={() => {
+                    const data = form.getValues();
 
-                  try {
-                    const parsedData = ValidatorSchema.parse(data);
-                    setData(JSON.stringify(parsedData, null, 2));
-                    setError(null);
-                  } catch (err) {
-                    if (err instanceof z.ZodError) {
-                      setError(JSON.stringify(err, null, 2));
+                    try {
+                      const parsedData = ValidatorSchema.parse(data);
+                      setData(JSON.stringify(parsedData, null, 2));
+                      setError(null);
+                    } catch (err) {
+                      if (err instanceof z.ZodError) {
+                        setError(JSON.stringify(err, null, 2));
+                      }
                     }
-                  }
-                }}
-              >
-                Save Change
-              </Button>
-            </div>
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            ) : null}
           </form>
         </Form.Root>
       </div>

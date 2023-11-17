@@ -37,7 +37,7 @@ const SettingsPage: NextPageWithLayout = () => {
           <OrganizationSettings
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
-            disabledAll={false}
+            disabledAll={true}
           />
         </div>
       </div>
