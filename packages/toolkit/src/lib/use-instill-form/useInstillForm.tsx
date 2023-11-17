@@ -88,7 +88,7 @@ export function useInstillForm(
       : _data;
 
     setInitialValues(_defaultValues);
-  }, [schema, checkIsHidden, data, form]);
+  }, [schema, checkIsHidden, data, form, setSelectedConditionMap]);
 
   // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {
@@ -135,6 +135,7 @@ export function useInstillForm(
     disabledAll,
     chooseTitleFrom,
     enableSmartHint,
+    componentID,
   ]);
 
   return {

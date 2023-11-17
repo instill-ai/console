@@ -10,10 +10,7 @@ import {
   useComponentOutputFields,
   useInstillStore,
 } from "../../../../lib";
-import {
-  InstillAIOpenAPIProperty,
-  getPropertiesFromOpenAPISchema,
-} from "../../lib";
+import { getPropertiesFromOpenAPISchema } from "../../lib";
 
 const selector = (store: InstillStore) => ({
   expandAllNodes: store.expandAllNodes,
