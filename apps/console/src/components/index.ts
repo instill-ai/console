@@ -3,6 +3,7 @@ export * from "./ChangePasswordForm";
 export * from "./ConsoleCorePageHead";
 export * from "./Sidebar";
 export * from "./ProfileSidebar";
+export * from "./OrganizationSidebar";
 export * from "./Topbar";
 export * from "./ErrorBoundary";
 export * from "./LoginForm";
