@@ -37,6 +37,7 @@ import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
+import { FilePlus01 } from "./FilePlus01";
 import { FilterLines } from "./FilterLines";
 import { Gear01 } from "./Gear01";
 import { HelpCircle } from "./HelpCircle";
@@ -114,6 +115,7 @@ export const Icons = {
   Edit05,
   File04,
   File05,
+  FilePlus01,
   FilterLines,
   Gear01,
   HelpCircle,
