@@ -5,7 +5,7 @@
   "repository": "https://github.com/instill-ai/console.git",
   "author": "Instill AI",
   "license": "Elastic License 2.0",
-  "private": false,
+  "private": true,
   "@instill-ai/prettier-config-cortex": "workspace:*",
   "scripts": {
     "dev": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",

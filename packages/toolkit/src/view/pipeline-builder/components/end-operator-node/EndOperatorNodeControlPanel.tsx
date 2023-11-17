@@ -5,9 +5,13 @@ import { NodeDropdownMenu } from "../NodeDropdownMenu";
 export const EndOperatorNodeControlPanel = ({
   nodeIsCollapsed,
   setNodeIsCollapsed,
+  handleToggleNote,
+  noteIsOpen,
 }: {
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  handleToggleNote: () => void;
+  noteIsOpen: boolean;
 }) => {
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
@@ -56,11 +60,28 @@ export const EndOperatorNodeControlPanel = ({
         Control - more options
       */}
 
-      <NodeDropdownMenu
+      <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}
         componentTypeName="End"
-      ></NodeDropdownMenu>
+      >
+        <NodeDropdownMenu.Item
+          onClick={(e) => {
+            e.stopPropagation();
+            handleToggleNote();
+            setMoreOptionsIsOpen(false);
+          }}
+        >
+          {noteIsOpen ? (
+            <Icons.FileMinus01 className="h-4 w-4 stroke-semantic-fg-secondary" />
+          ) : (
+            <Icons.FilePlus01 className="h-4 w-4 stroke-semantic-fg-secondary" />
+          )}
+          <p className="text-semantic-fg-secondary product-body-text-4-medium">
+            Toggle note
+          </p>
+        </NodeDropdownMenu.Item>
+      </NodeDropdownMenu.Root>
     </div>
   );
 };

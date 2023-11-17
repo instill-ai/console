@@ -1,4 +1,3 @@
-import { dot } from "../../dot";
 import { GeneralRecord } from "../../type";
 import { InstillFormTree, SelectedConditionMap } from "../type";
 import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";

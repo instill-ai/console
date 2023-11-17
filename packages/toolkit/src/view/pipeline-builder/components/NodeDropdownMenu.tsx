@@ -79,15 +79,17 @@ const NodeDropdownMenuRoot = ({
   );
 };
 
-const NodeDropdownMenuItem = ({
-  onClick,
-  children,
-}: {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  children: React.ReactNode;
-}) => {
+const NodeDropdownMenuItem = (
+  props: {
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    children: React.ReactNode;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+) => {
+  const { onClick, children, ...passThrough } = props;
+
   return (
     <button
+      {...passThrough}
       onClick={onClick}
       className="flex flex-row gap-x-2 px-2 py-1 hover:bg-semantic-bg-base-bg"
     >

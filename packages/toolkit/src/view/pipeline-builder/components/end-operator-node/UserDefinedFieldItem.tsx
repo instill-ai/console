@@ -15,13 +15,11 @@ const selector = (store: InstillStore) => ({
 export const UserDefinedFieldItem = ({
   outputKey,
   outputValue,
-  setPrevFieldKey,
   onDeleteField,
   onEditField,
 }: {
   outputKey: string;
   outputValue: string;
-  setPrevFieldKey: React.Dispatch<React.SetStateAction<Nullable<string>>>;
   onDeleteField: (key: string) => void;
   onEditField: (key: string) => void;
 }) => {

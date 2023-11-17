@@ -2,7 +2,7 @@ import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { Button, Form, Icons, Tag } from "@instill-ai/design-system";
+import { Button, Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -23,6 +23,9 @@ import {
 } from "../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
+import { NodeWrapper } from "../NodeWrapper";
+import { NodeHead } from "../NodeHead";
+import { EndOperatorNodeControlPanel } from "./EndOperatorNodeControlPanel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -102,6 +105,8 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
+  const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
+  const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
 
   const {
     nodes,
@@ -276,18 +281,31 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }, [data]);
 
   return (
-    <React.Fragment>
-      <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
-        <div className="mb-6 flex flex-row gap-x-1">
-          <div className="flex h-6 w-6 rounded bg-semantic-bg-line">
-            <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+    <NodeWrapper
+      nodeType={data.nodeType}
+      id={id}
+      note={data.note}
+      noteIsOpen={noteIsOpen}
+    >
+      <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
+        <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
+          <div className="mr-auto flex flex-row gap-x-2">
+            <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
+              <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+            </div>
+            <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
+              end
+            </p>
           </div>
-          <p className="my-auto text-semantic-fg-secondary product-body-text-4-medium">
-            end
-          </p>
-        </div>
+          <EndOperatorNodeControlPanel
+            nodeIsCollapsed={nodeIsCollapsed}
+            setNodeIsCollapsed={setNodeIsCollapsed}
+            handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
+            noteIsOpen={noteIsOpen}
+          />
+        </NodeHead>
 
-        {enableEdit ? (
+        {nodeIsCollapsed ? null : enableEdit ? (
           <Form.Root {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="mb-3 flex flex-row justify-between">
@@ -383,7 +401,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
                     outputValue={item.value}
                     onEditField={onEditField}
                     onDeleteField={onDeleteField}
-                    setPrevFieldKey={setPrevFieldKey}
                   />
                 ))}
               </div>
@@ -415,6 +432,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
         position={Position.Left}
         id={id}
       />
-    </React.Fragment>
+    </NodeWrapper>
   );
 };

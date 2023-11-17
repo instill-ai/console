@@ -38,7 +38,7 @@ export const NodeWrapper = ({
         )}
       >
         <Textarea
-          className="!resize-none !border-none !bg-transparent !text-semantic-fg-disabled !outline-none !product-body-text-4-medium"
+          className="nowheel !resize-none !border-none !bg-transparent !text-semantic-fg-disabled !outline-none !product-body-text-4-medium"
           value={noteValue ?? ""}
           onChange={(e) => {
             if (timer.current) {
@@ -61,14 +61,12 @@ export const NodeWrapper = ({
                 })
               );
               updatePipelineRecipeIsDirty(() => true);
-              console.log("update note");
             }, 1000);
 
             setNoteValue(e.target.value);
           }}
         />
       </div>
-
       {children}
     </div>
   );
