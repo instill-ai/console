@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../lib";
-import { readFileToBinary } from "../lib";
+import { GeneralUseFormReturn, Nullable } from "../../..";
+import { readFileToBinary } from "../../../../view";
 
 export const AudioField = (props: {
   form: GeneralUseFormReturn;

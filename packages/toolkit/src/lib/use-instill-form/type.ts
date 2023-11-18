@@ -114,3 +114,9 @@ export type SmartHintWarning = {
   notAvailableReferences: string[];
   notAvailableTemplates: string[];
 };
+
+export type StartOperatorFreeFormFieldItem = {
+  instillUIOrder?: number;
+  key: string;
+  component: React.ReactElement;
+};

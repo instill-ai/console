@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { Form, Icons, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../lib";
-import { readFileToBinary } from "../lib";
+import { GeneralUseFormReturn, Nullable } from "../../..";
+import { readFileToBinary } from "../../../../view";
 
 export const ImagesField = (props: {
   form: GeneralUseFormReturn;

@@ -14,7 +14,7 @@ import {
   ConnectorNode,
   EmptyNode,
   EndOperatorNode,
-  StartNode,
+  StartOperatorNode,
   BackToLatestVersionTopBar,
 } from "./components";
 import { FlowControl } from "./FlowControl";
@@ -49,7 +49,7 @@ export type FlowProps = {
 };
 
 const nodeTypes = {
-  startNode: StartNode,
+  startNode: StartOperatorNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,

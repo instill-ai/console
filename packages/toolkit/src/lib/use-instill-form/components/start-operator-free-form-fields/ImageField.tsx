@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Form, Icons, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../lib";
-import { readFileToBinary } from "../lib";
+import { GeneralUseFormReturn, Nullable } from "../../..";
+import { readFileToBinary } from "../../../../view";
 
 export const ImageField = (props: {
   form: GeneralUseFormReturn;
@@ -27,7 +27,7 @@ export const ImageField = (props: {
             <Form.Control>
               <label
                 htmlFor={`op-start-${fieldKey}`}
-                className="flex h-[150px] w-full cursor-pointer border border-semantic-bg-line border-dashed flex-col rounded bg-semantic-bg-base-bg"
+                className="flex h-[150px] w-full cursor-pointer flex-col rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg"
               >
                 {imageFileUrl ? (
                   <img

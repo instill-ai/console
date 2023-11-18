@@ -1,7 +1,7 @@
 import { Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../lib";
+import { GeneralUseFormReturn } from "../../..";
 
-export const TextField = (props: {
+export const NumberField = (props: {
   form: GeneralUseFormReturn;
   fieldKey: string;
   title: string;
@@ -14,7 +14,7 @@ export const TextField = (props: {
       name={fieldKey}
       render={({ field }) => {
         return (
-          <Form.Item className="w-full">
+          <Form.Item>
             <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
               {title}
             </Form.Label>
@@ -22,13 +22,13 @@ export const TextField = (props: {
               <Input.Root>
                 <Input.Core
                   {...field}
-                  type="text"
+                  type="number"
                   value={field.value ?? ""}
                   autoComplete="off"
                   // AlphaValueIssue: We still have alpha value issue in
                   // out design-token, so we need to use the hex value
                   // here
-                  className="!text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
+                  className="appearance-none !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
                 />
               </Input.Root>
             </Form.Control>

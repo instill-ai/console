@@ -1,6 +1,6 @@
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
-import { GeneralUseFormReturn } from "../../../lib";
+import { GeneralUseFormReturn } from "../../..";
 
 export const NumbersField = (props: {
   form: GeneralUseFormReturn;
@@ -59,7 +59,7 @@ export const NumbersField = (props: {
                         type="number"
                         value={numberFieldsValue[idx] ?? undefined}
                         autoComplete="off"
-                        className="text-semantic-fg-primary product-body-text-4-regular appearance-none"
+                        className="appearance-none text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newNumberFieldsValue = [...numberFieldsValue];
                           newNumberFieldsValue[idx] = e.target.value;

@@ -1,5 +1,5 @@
 import { Form, Switch } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../lib";
+import { GeneralUseFormReturn } from "../../../type";
 
 export const BooleanField = (props: {
   form: GeneralUseFormReturn;

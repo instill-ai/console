@@ -171,6 +171,7 @@ export type StartOperatorInput = {
   items?: {
     type: string;
   };
+  instillUiOrder?: number;
 };
 
 export type StartOperatorInputType =

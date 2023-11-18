@@ -1,17 +1,19 @@
 import * as React from "react";
 import { Button, Icons, Tooltip } from "@instill-ai/design-system";
-import { NodeDropdownMenu } from "../NodeDropdownMenu";
+import { NodeDropdownMenu } from "./NodeDropdownMenu";
 
-export const EndOperatorNodeControlPanel = ({
+export const StartEndOperatorControlPanel = ({
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,
   noteIsOpen,
+  componentTypeName,
 }: {
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
   noteIsOpen: boolean;
+  componentTypeName: "End" | "Start";
 }) => {
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
@@ -63,7 +65,7 @@ export const EndOperatorNodeControlPanel = ({
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}
-        componentTypeName="End"
+        componentTypeName={componentTypeName}
       >
         <NodeDropdownMenu.Item
           onClick={(e) => {

@@ -25,7 +25,7 @@ import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
-import { EndOperatorNodeControlPanel } from "./EndOperatorNodeControlPanel";
+import { StartEndOperatorControlPanel } from "../StartEndOperatorControlPanel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -297,11 +297,12 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
               end
             </p>
           </div>
-          <EndOperatorNodeControlPanel
+          <StartEndOperatorControlPanel
             nodeIsCollapsed={nodeIsCollapsed}
             setNodeIsCollapsed={setNodeIsCollapsed}
             handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
             noteIsOpen={noteIsOpen}
+            componentTypeName="End"
           />
         </NodeHead>
 
@@ -397,8 +398,8 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
                 {sortedItems.map((item) => (
                   <UserDefinedFieldItem
                     key={item.key}
-                    outputKey={item.key}
-                    outputValue={item.value}
+                    fieldKey={item.key}
+                    fieldValue={item.value}
                     onEditField={onEditField}
                     onDeleteField={onDeleteField}
                   />
