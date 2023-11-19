@@ -10,13 +10,9 @@ export function pickStartOperatorFreeFormFields(
   onEditField: (key: string) => void,
   onDeleteField: (key: string) => void
 ) {
-  // We should not directly return this object. We should return an array of
-  // React components instead. The reason is if we rely on object to render
-  // things, react will wrongly recognize it as unpure some time. For example
-  // it will cause TipTap to re-render and cause weird behavior.
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
-  if (!metadata) return [];
+  if (!metadata) return fields;
 
   // The reason we don't directly return the components at the item of the array
   // is we want to sort the fields by the order of `instillUIOrder` property.
@@ -190,17 +186,15 @@ export function pickStartOperatorFreeFormFields(
     }
   }
 
-  return fields
-    .sort((a, b) => {
-      if (typeof a.instillUIOrder === "undefined") {
-        return 1;
-      }
+  return fields.sort((a, b) => {
+    if (typeof a.instillUIOrder === "undefined") {
+      return 1;
+    }
 
-      if (typeof b.instillUIOrder === "undefined") {
-        return -1;
-      }
+    if (typeof b.instillUIOrder === "undefined") {
+      return -1;
+    }
 
-      return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
-    })
-    .map((field) => field.component);
+    return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
+  });
 }

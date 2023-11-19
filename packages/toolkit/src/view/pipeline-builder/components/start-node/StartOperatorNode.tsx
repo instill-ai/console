@@ -464,7 +464,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
-                      {startOperatorTestModeInputfields}
+                      {startOperatorTestModeInputfields.map(
+                        (field) => field.component
+                      )}
                     </div>
                   </VerticalSortableWrapper>
                   <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">
