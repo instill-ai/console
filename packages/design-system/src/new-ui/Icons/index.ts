@@ -1,5 +1,6 @@
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
+import { AlighLeft } from "./AlighLeft";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowDown } from "./ArrowDown";
 import { ArrowLeft } from "./ArrowLeft";
@@ -48,6 +49,7 @@ import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { InfoCircle } from "./InfoCircle";
 import { Image01 } from "./Image01";
+import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
 import { LayersTwo01 } from "./LayersTwo01";
 import { Model } from "./Model";
@@ -79,6 +81,7 @@ import { X } from "./X";
 export const Icons = {
   AlertCircle,
   AlertTriangle,
+  AlighLeft,
   ArrowUp,
   ArrowDown,
   ArrowLeft,
@@ -127,6 +130,7 @@ export const Icons = {
   LockUnlocked03,
   InfoCircle,
   Image01,
+  ImagePlus,
   Logout01,
   LayersTwo01,
   Model,
