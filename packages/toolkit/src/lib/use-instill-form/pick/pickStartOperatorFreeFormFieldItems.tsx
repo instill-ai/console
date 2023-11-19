@@ -14,8 +14,8 @@ export function pickStartOperatorFreeFormFieldItems(
 
   if (!metadata) return fields;
 
-  // This component will only be displayed under test mode, and under test
-  // /view-only mode, we will display user defined title as title.
+  // The reason we don't directly return the components at the item of the array
+  // is we want to sort the fields by the order of `instillUIOrder` property.
 
   for (const [key, value] of Object.entries(metadata)) {
     switch (value.instillFormat) {

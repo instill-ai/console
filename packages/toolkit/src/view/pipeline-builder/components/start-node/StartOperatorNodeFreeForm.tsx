@@ -1,13 +1,7 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Icons,
-  Input,
-} from "@instill-ai/design-system";
+import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "../StartNodeInputType";
@@ -35,16 +29,12 @@ export const StartOperatorFreeFormSchema = z
 
 export const StartOperatorNodeFreeForm = ({
   form,
-  inputTypeIsArray,
-  setInputTypeIsArray,
   selectedType,
   setSelectedType,
   onCreateFreeFormField,
   onCancel,
 }: {
   form: UseFormReturn<{ title: string; key: string }, any, undefined>;
-  inputTypeIsArray: boolean;
-  setInputTypeIsArray: React.Dispatch<React.SetStateAction<boolean>>;
   selectedType: Nullable<StartOperatorInputType>;
   setSelectedType: React.Dispatch<
     React.SetStateAction<Nullable<StartOperatorInputType>>
@@ -85,7 +75,6 @@ export const StartOperatorNodeFreeForm = ({
               } else {
                 setSelectedType("string");
               }
-              setInputTypeIsArray(false);
             }}
           />
           <StartNodeInputType
@@ -97,7 +86,6 @@ export const StartOperatorNodeFreeForm = ({
               } else {
                 setSelectedType("number");
               }
-              setInputTypeIsArray(false);
             }}
           />
           <StartNodeInputType
@@ -109,7 +97,6 @@ export const StartOperatorNodeFreeForm = ({
               } else {
                 setSelectedType("image/*");
               }
-              setInputTypeIsArray(false);
             }}
           />
           <StartNodeInputType
@@ -121,7 +108,6 @@ export const StartOperatorNodeFreeForm = ({
               } else {
                 setSelectedType("audio/*");
               }
-              setInputTypeIsArray(false);
             }}
           />
           <StartNodeInputType
@@ -133,34 +119,9 @@ export const StartOperatorNodeFreeForm = ({
               } else {
                 setSelectedType("boolean");
               }
-              setInputTypeIsArray(false);
             }}
           />
         </div>
-        {["number", "image/*", "string", "audio/*"].includes(
-          selectedType ?? ""
-        ) ? (
-          <div className="mb-3 flex flex-row space-x-3">
-            <Checkbox
-              checked={inputTypeIsArray}
-              onCheckedChange={(e) => {
-                if (typeof e === "boolean") {
-                  setInputTypeIsArray(e);
-                }
-              }}
-              id="is_array"
-              className="my-auto h-4 w-4"
-            />
-            <div className="grid gap-1.5 leading-none">
-              <label
-                htmlFor="is_array"
-                className="text-semantic-fg-primary product-body-text-4-semibold"
-              >
-                Convert selected type to array
-              </label>
-            </div>
-          </div>
-        ) : null}
         <div
           className={cn(
             selectedType ? "" : "hidden",

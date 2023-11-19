@@ -39,7 +39,7 @@ export const ImagesField = ({
                   className="flex min-h-[150px] w-full cursor-pointer flex-col rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg"
                 >
                   {imageFileURLs ? (
-                    <div className="grid w-full grid-flow-row grid-cols-3">
+                    <div className="grid h-full w-full grid-flow-row grid-cols-3">
                       {imageFileURLs
                         .slice(0, 5)
                         .map((url) =>
@@ -48,7 +48,7 @@ export const ImagesField = ({
                               key={`${path}-${url}`}
                               src={url}
                               alt={`${path}-${url}`}
-                              className="h-[55px] object-contain"
+                              className="h-[55px] object-cover"
                             />
                           ) : null
                         )}

@@ -429,8 +429,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           {enableEdit ? (
             <StartOperatorNodeFreeForm
               form={form}
-              inputTypeIsArray={inputTypeIsArray}
-              setInputTypeIsArray={setInputTypeIsArray}
               selectedType={selectedType}
               setSelectedType={setSelectedType}
               onCreateFreeFormField={onCreateFreeFormField}
