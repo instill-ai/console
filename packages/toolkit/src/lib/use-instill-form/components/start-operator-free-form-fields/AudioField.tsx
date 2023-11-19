@@ -1,59 +1,72 @@
 import * as React from "react";
 import { Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../..";
+import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
+import { FieldRoot } from "./FieldRoot";
+import { FieldHead } from "./FieldHead";
 
-export const AudioField = (props: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
-}) => {
-  const { form, fieldKey, title } = props;
+export const AudioField = ({
+  form,
+  path,
+  title,
+  onEditField,
+  onDeleteField,
+}: {
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+} & AutoFormFieldBaseProps) => {
   const [audioFileUrl, setAudioFileUrl] =
     React.useState<Nullable<string>>(null);
 
   return (
-    <Form.Field
-      key={fieldKey}
-      control={form.control}
-      name={fieldKey}
-      render={({ field }) => {
-        return (
-          <Form.Item>
-            <div className="flex flex-row justify-between">
-              <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
-                {title}
-              </Form.Label>
-              <label
-                htmlFor={`op-start-${fieldKey}`}
-                className="cursor-pointer capitalize text-semantic-accent-default !underline product-button-button-3"
-              >
-                upload file
-              </label>
-            </div>
-
-            <audio controls={true} src={audioFileUrl ?? undefined} />
-
-            <Form.Control>
-              <Input.Root className="hidden">
-                <Input.Core
-                  id={`op-start-${fieldKey}`}
-                  type="file"
-                  accept="audio/*"
-                  onChange={async (e) => {
-                    if (e.target.files) {
-                      const binary = await readFileToBinary(e.target.files[0]);
-                      field.onChange(binary);
-                      setAudioFileUrl(URL.createObjectURL(e.target.files[0]));
-                    }
-                  }}
+    <FieldRoot path={path}>
+      <Form.Field
+        key={path}
+        control={form.control}
+        name={path}
+        render={({ field }) => {
+          return (
+            <Form.Item>
+              <div className="flex flex-row justify-between">
+                <FieldHead
+                  title={title}
+                  path={path}
+                  onDeleteField={onDeleteField}
+                  onEditField={onEditField}
                 />
-              </Input.Root>
-            </Form.Control>
-            <Form.Message />
-          </Form.Item>
-        );
-      }}
-    />
+                <label
+                  htmlFor={`op-start-${path}`}
+                  className="cursor-pointer capitalize text-semantic-accent-default !underline product-button-button-3"
+                >
+                  upload file
+                </label>
+              </div>
+
+              <audio controls={true} src={audioFileUrl ?? undefined} />
+
+              <Form.Control>
+                <Input.Root className="hidden">
+                  <Input.Core
+                    id={`op-start-${path}`}
+                    type="file"
+                    accept="audio/*"
+                    onChange={async (e) => {
+                      if (e.target.files) {
+                        const binary = await readFileToBinary(
+                          e.target.files[0]
+                        );
+                        field.onChange(binary);
+                        setAudioFileUrl(URL.createObjectURL(e.target.files[0]));
+                      }
+                    }}
+                  />
+                </Input.Root>
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          );
+        }}
+      />
+    </FieldRoot>
   );
 };

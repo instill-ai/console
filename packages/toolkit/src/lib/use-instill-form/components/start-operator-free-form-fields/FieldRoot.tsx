@@ -5,10 +5,10 @@ import { useReactFlow } from "reactflow";
 import { CSS } from "@dnd-kit/utilities";
 
 export const FieldRoot = ({
-  fieldKey,
+  path,
   children,
 }: {
-  fieldKey: string;
+  path: string;
   children: React.ReactNode;
 }) => {
   const {
@@ -18,7 +18,7 @@ export const FieldRoot = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: fieldKey });
+  } = useSortable({ id: path });
 
   const reactFlowInstance = useReactFlow();
 
@@ -41,7 +41,7 @@ export const FieldRoot = ({
     <div
       {...attributes}
       style={style}
-      key={fieldKey}
+      key={path}
       className={cn(
         "nodrag group flex cursor-default flex-row gap-x-2 bg-semantic-bg-base-bg",
         isDragging ? "z-10" : ""

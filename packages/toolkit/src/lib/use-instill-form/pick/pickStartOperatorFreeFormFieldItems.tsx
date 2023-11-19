@@ -26,7 +26,7 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.TextField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
@@ -41,7 +41,7 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.TextsField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
@@ -57,8 +57,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.BooleanField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -70,8 +72,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.NumberField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -83,8 +87,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.NumbersField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -96,8 +102,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.AudioField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -109,8 +117,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.AudiosField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -122,8 +132,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.ImageField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });
@@ -135,8 +147,10 @@ export function pickStartOperatorFreeFormFieldItems(
           component: (
             <StartOperatorFreeFormFields.ImagesField
               form={form}
-              fieldKey={key}
+              path={key}
               title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
           ),
         });

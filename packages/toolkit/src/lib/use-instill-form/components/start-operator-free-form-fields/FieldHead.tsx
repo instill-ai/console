@@ -1,5 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
-import { InstillStore, useInstillStore } from "../../..";
+import { InstillStore, Nullable, useInstillStore } from "../../..";
 import { Icons } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
@@ -9,12 +9,12 @@ const selector = (store: InstillStore) => ({
 
 export const FieldHead = ({
   title,
-  fieldKey,
+  path,
   onEditField,
   onDeleteField,
 }: {
-  title: string;
-  fieldKey: string;
+  title: Nullable<string>;
+  path: string;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 }) => {
@@ -28,13 +28,13 @@ export const FieldHead = ({
         <div className="my-auto flex flex-row gap-x-2">
           <button
             type="button"
-            onClick={() => onEditField(fieldKey)}
+            onClick={() => onEditField(path)}
             className="flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default"
           >
             edit field
             <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
           </button>
-          <button type="button" onClick={() => onDeleteField(fieldKey)}>
+          <button type="button" onClick={() => onDeleteField(path)}>
             <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
           </button>
         </div>

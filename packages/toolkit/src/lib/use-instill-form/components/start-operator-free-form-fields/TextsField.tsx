@@ -1,22 +1,19 @@
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
-import { GeneralUseFormReturn } from "../../..";
+import { AutoFormFieldBaseProps } from "../../..";
 import { FieldRoot } from "./FieldRoot";
 import { FieldHead } from "./FieldHead";
 
 export const TextsField = ({
   form,
-  fieldKey,
+  path,
   title,
   onEditField,
   onDeleteField,
 }: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
-}) => {
+} & AutoFormFieldBaseProps) => {
   const [textFieldsArray, setTextFieldsArray] = React.useState<number[]>([1]);
 
   const [textFieldsValue, setTextFieldsValue] = React.useState<
@@ -24,11 +21,11 @@ export const TextsField = ({
   >([""]);
 
   return (
-    <FieldRoot fieldKey={fieldKey}>
+    <FieldRoot path={path}>
       <Form.Field
-        key={fieldKey}
+        key={path}
         control={form.control}
-        name={fieldKey}
+        name={path}
         render={({ field }) => {
           const {
             formState: { errors },
@@ -55,7 +52,7 @@ export const TextsField = ({
             <div className="flex w-full flex-col">
               <FieldHead
                 title={title}
-                fieldKey={fieldKey}
+                path={path}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
               />
@@ -63,7 +60,7 @@ export const TextsField = ({
                 {textFieldsArray.map((_, idx) => {
                   return (
                     <div
-                      key={`${fieldKey}-test-${idx}`}
+                      key={`${path}-test-${idx}`}
                       className="flex w-full flex-row gap-x-2"
                     >
                       <Input.Root className="flex-1">

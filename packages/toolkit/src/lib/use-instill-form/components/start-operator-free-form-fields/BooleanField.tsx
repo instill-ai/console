@@ -1,30 +1,44 @@
 import { Form, Switch } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../type";
+import { AutoFormFieldBaseProps } from "../../type";
+import { FieldRoot } from "./FieldRoot";
+import { FieldHead } from "./FieldHead";
 
-export const BooleanField = (props: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
-}) => {
-  const { form, fieldKey, title } = props;
+export const BooleanField = ({
+  form,
+  path,
+  title,
+  onEditField,
+  onDeleteField,
+}: {
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+} & AutoFormFieldBaseProps) => {
   return (
-    <Form.Field
-      key={fieldKey}
-      control={form.control}
-      name={fieldKey}
-      render={({ field }) => {
-        return (
-          <Form.Item>
-            <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
-              {title}
-            </Form.Label>
-            <Form.Control>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
-            </Form.Control>
-            <Form.Message />
-          </Form.Item>
-        );
-      }}
-    />
+    <FieldRoot path={path}>
+      <Form.Field
+        key={path}
+        control={form.control}
+        name={path}
+        render={({ field }) => {
+          return (
+            <Form.Item>
+              <FieldHead
+                title={title}
+                path={path}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+              />
+              <Form.Control>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          );
+        }}
+      />
+    </FieldRoot>
   );
 };

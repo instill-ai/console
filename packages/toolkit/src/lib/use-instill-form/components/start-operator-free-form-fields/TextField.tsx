@@ -1,33 +1,30 @@
 import { Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../..";
+import { AutoFormFieldBaseProps } from "../../..";
 import { FieldRoot } from "./FieldRoot";
 import { FieldHead } from "./FieldHead";
 
 export const TextField = ({
   form,
-  fieldKey,
+  path,
   title,
   onEditField,
   onDeleteField,
 }: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
-}) => {
+} & AutoFormFieldBaseProps) => {
   return (
-    <FieldRoot fieldKey={fieldKey}>
+    <FieldRoot path={path}>
       <Form.Field
-        key={fieldKey}
+        key={path}
         control={form.control}
-        name={fieldKey}
+        name={path}
         render={({ field }) => {
           return (
             <Form.Item className="w-full">
               <FieldHead
                 title={title}
-                fieldKey={fieldKey}
+                path={path}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
               />
