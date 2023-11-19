@@ -10,7 +10,7 @@ import {
   transformStartOperatorMetadataToZod,
 } from "./transform";
 import { useForm } from "react-hook-form";
-import { pickStartOperatorFreeFormFieldItems } from "./pick/pickStartOperatorFreeFormFieldItems";
+import { pickStartOperatorFreeFormFields } from "./pick";
 
 export const useStartOperatorFreeForm = (props: {
   data: StartNodeData;
@@ -54,22 +54,24 @@ export const useStartOperatorFreeForm = (props: {
     resolver: zodResolver(Schema),
   });
 
-  const fieldItems = React.useMemo(() => {
+  const fields = React.useMemo(() => {
     if (!data.component.configuration.metadata) {
       return [];
     }
 
-    return pickStartOperatorFreeFormFieldItems(
+    const fields = pickStartOperatorFreeFormFields(
       data.component.configuration.metadata,
       form,
       onEditField,
       onDeleteField
     );
+
+    return fields;
   }, [data, form]);
 
   return {
     form,
     Schema,
-    fieldItems,
+    fields,
   };
 };

@@ -4,15 +4,19 @@ import { StartOperatorMetadata } from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
 import { StartOperatorFreeFormFieldItem } from "../type";
 
-export function pickStartOperatorFreeFormFieldItems(
+export function pickStartOperatorFreeFormFields(
   metadata: Nullable<StartOperatorMetadata>,
   form: UseFormReturn<{ [k: string]: any }, any, undefined>,
   onEditField: (key: string) => void,
   onDeleteField: (key: string) => void
 ) {
+  // We should not directly return this object. We should return an array of
+  // React components instead. The reason is if we rely on object to render
+  // things, react will wrongly recognize it as unpure some time. For example
+  // it will cause TipTap to re-render and cause weird behavior.
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
-  if (!metadata) return fields;
+  if (!metadata) return [];
 
   // The reason we don't directly return the components at the item of the array
   // is we want to sort the fields by the order of `instillUIOrder` property.
@@ -20,19 +24,37 @@ export function pickStartOperatorFreeFormFieldItems(
   for (const [key, value] of Object.entries(metadata)) {
     switch (value.instillFormat) {
       case "string":
-        fields.push({
-          key,
-          instillUIOrder: value.instillUiOrder,
-          component: (
-            <StartOperatorFreeFormFields.TextField
-              form={form}
-              path={key}
-              title={value.title}
-              onDeleteField={onDeleteField}
-              onEditField={onEditField}
-            />
-          ),
-        });
+        if (value.instillUIMultiline) {
+          fields.push({
+            key,
+            instillUIOrder: value.instillUiOrder,
+            component: (
+              <StartOperatorFreeFormFields.LongTextField
+                key={key}
+                form={form}
+                path={key}
+                title={value.title}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+              />
+            ),
+          });
+        } else {
+          fields.push({
+            key,
+            instillUIOrder: value.instillUiOrder,
+            component: (
+              <StartOperatorFreeFormFields.TextField
+                key={key}
+                form={form}
+                path={key}
+                title={value.title}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+              />
+            ),
+          });
+        }
         break;
       case "array:string": {
         fields.push({
@@ -40,6 +62,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.TextsField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -56,6 +79,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.BooleanField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -71,6 +95,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumberField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -86,6 +111,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumbersField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -101,6 +127,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudioField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -116,6 +143,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudiosField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -131,6 +159,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImageField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -146,6 +175,7 @@ export function pickStartOperatorFreeFormFieldItems(
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImagesField
+              key={key}
               form={form}
               path={key}
               title={value.title}
@@ -160,15 +190,17 @@ export function pickStartOperatorFreeFormFieldItems(
     }
   }
 
-  return fields.sort((a, b) => {
-    if (typeof a.instillUIOrder === "undefined") {
-      return 1;
-    }
+  return fields
+    .sort((a, b) => {
+      if (typeof a.instillUIOrder === "undefined") {
+        return 1;
+      }
 
-    if (typeof b.instillUIOrder === "undefined") {
-      return -1;
-    }
+      if (typeof b.instillUIOrder === "undefined") {
+        return -1;
+      }
 
-    return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
-  });
+      return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
+    })
+    .map((field) => field.component);
 }

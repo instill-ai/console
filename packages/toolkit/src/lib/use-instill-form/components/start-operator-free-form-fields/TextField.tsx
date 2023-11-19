@@ -13,6 +13,8 @@ export const TextField = ({
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
+  console.log("yo");
+
   return (
     <FieldRoot path={path}>
       <Form.Field

@@ -4,7 +4,7 @@ import * as z from "zod";
 import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
-import { StartNodeInputType } from "../StartNodeInputType";
+import { StartNodeInputType } from "./StartNodeInputType";
 import {
   Nullable,
   StartOperatorInputType,
@@ -78,6 +78,17 @@ export const StartOperatorNodeFreeForm = ({
             }}
           />
           <StartNodeInputType
+            type="long_string"
+            selectedType={selectedType}
+            onSelect={() => {
+              if (selectedType === "long_string") {
+                setSelectedType(null);
+              } else {
+                setSelectedType("long_string");
+              }
+            }}
+          />
+          <StartNodeInputType
             type="number"
             selectedType={selectedType}
             onSelect={() => {
@@ -96,6 +107,17 @@ export const StartOperatorNodeFreeForm = ({
                 setSelectedType(null);
               } else {
                 setSelectedType("image/*");
+              }
+            }}
+          />
+          <StartNodeInputType
+            type="array:image/*"
+            selectedType={selectedType}
+            onSelect={() => {
+              if (selectedType === "array:image/*") {
+                setSelectedType(null);
+              } else {
+                setSelectedType("array:image/*");
               }
             }}
           />

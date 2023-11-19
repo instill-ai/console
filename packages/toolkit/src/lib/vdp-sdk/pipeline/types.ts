@@ -172,10 +172,12 @@ export type StartOperatorInput = {
     type: string;
   };
   instillUiOrder?: number;
+  instillUIMultiline?: boolean;
 };
 
 export type StartOperatorInputType =
   | "audio/*"
   | "image/*"
   | "long_string"
+  | "array:image/*"
   | JSONSchema7TypeName;

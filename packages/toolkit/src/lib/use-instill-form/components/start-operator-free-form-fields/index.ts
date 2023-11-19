@@ -3,6 +3,7 @@ import { AudiosField } from "./AudiosField";
 import { BooleanField } from "./BooleanField";
 import { ImageField } from "./ImageField";
 import { ImagesField } from "./ImagesField";
+import { LongTextField } from "./LongTextField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
 import { TextField } from "./TextField";
@@ -14,6 +15,7 @@ export const StartOperatorFreeFormFields = {
   BooleanField,
   ImageField,
   ImagesField,
+  LongTextField,
   NumberField,
   NumbersField,
   TextField,

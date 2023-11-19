@@ -84,7 +84,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     React.useState<Nullable<StartOperatorInputType>>(null);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
-  const [inputTypeIsArray, setInputTypeIsArray] = React.useState(false);
 
   const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
     resolver: zodResolver(StartOperatorFreeFormSchema),
@@ -98,9 +97,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       key: key,
     });
     setEnableEdit(true);
-    setInputTypeIsArray(
-      data.component.configuration.metadata[key].type === "array"
-    );
 
     setSelectedType(
       pickSelectedTypeFromInstillFormat(
@@ -149,106 +145,66 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     if (!selectedType) return;
     let configuraton: Nullable<StartOperatorInput> = null;
 
-    if (inputTypeIsArray) {
-      switch (selectedType) {
-        case "string": {
-          configuraton = {
-            type: "array",
-            items: {
-              type: "string",
-            },
-            instillFormat: "array:string",
-            title: formData.title,
-          };
-          break;
-        }
-        case "audio/*": {
-          configuraton = {
-            type: "array",
-            items: {
-              type: "string",
-            },
-            instillFormat: "array:audio/*",
-            title: formData.title,
-          };
-          break;
-        }
-        case "boolean": {
-          configuraton = {
-            type: "array",
-            items: {
-              type: "boolean",
-            },
-            instillFormat: "array:boolean",
-            title: formData.title,
-          };
-          break;
-        }
-        case "image/*": {
-          configuraton = {
-            type: "array",
-            items: {
-              type: "string",
-            },
-            instillFormat: "array:image/*",
-            title: formData.title,
-          };
-          break;
-        }
-        case "number": {
-          configuraton = {
-            type: "array",
-            items: {
-              type: "number",
-            },
-            instillFormat: "array:number",
-            title: formData.title,
-          };
-          break;
-        }
+    switch (selectedType) {
+      case "string": {
+        configuraton = {
+          type: "string",
+          instillFormat: "string",
+          title: formData.title,
+        };
+        break;
       }
-    } else {
-      switch (selectedType) {
-        case "string": {
-          configuraton = {
+      case "long_string": {
+        configuraton = {
+          type: "string",
+          instillFormat: "string",
+          instillUIMultiline: true,
+          title: formData.title,
+        };
+        break;
+      }
+      case "audio/*": {
+        configuraton = {
+          type: "string",
+          instillFormat: "audio/*",
+          title: formData.title,
+        };
+        break;
+      }
+      case "boolean": {
+        configuraton = {
+          type: "boolean",
+          instillFormat: "boolean",
+          title: formData.title,
+        };
+        break;
+      }
+      case "image/*": {
+        configuraton = {
+          type: "string",
+          instillFormat: "image/*",
+          title: formData.title,
+        };
+        break;
+      }
+      case "array:image/*": {
+        configuraton = {
+          type: "array",
+          items: {
             type: "string",
-            instillFormat: "string",
-            title: formData.title,
-          };
-          break;
-        }
-        case "audio/*": {
-          configuraton = {
-            type: "string",
-            instillFormat: "audio/*",
-            title: formData.title,
-          };
-          break;
-        }
-        case "boolean": {
-          configuraton = {
-            type: "boolean",
-            instillFormat: "boolean",
-            title: formData.title,
-          };
-          break;
-        }
-        case "image/*": {
-          configuraton = {
-            type: "string",
-            instillFormat: "image/*",
-            title: formData.title,
-          };
-          break;
-        }
-        case "number": {
-          configuraton = {
-            type: "number",
-            instillFormat: "number",
-            title: formData.title,
-          };
-          break;
-        }
+          },
+          instillFormat: "array:image/*",
+          title: formData.title,
+        };
+        break;
+      }
+      case "number": {
+        configuraton = {
+          type: "number",
+          instillFormat: "number",
+          title: formData.title,
+        };
+        break;
       }
     }
 
@@ -296,7 +252,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     setEnableEdit(false);
     setSelectedType(null);
     setPrevFieldKey(null);
-    setInputTypeIsArray(false);
     updatePipelineRecipeIsDirty(() => true);
     form.reset({
       title: "",
@@ -312,11 +267,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       title: "",
       key: "",
     });
-    setInputTypeIsArray(false);
   }
   const {
     Schema: StartOperatorTestModeInputSchema,
-    fieldItems: startOperatorTestModeInputfieldItems,
+    fields: startOperatorTestModeInputfields,
     form: startOperatorTestModeInputForm,
   } = useStartOperatorFreeForm({
     data,
@@ -444,27 +398,26 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                   )}
                 >
                   <VerticalSortableWrapper
-                    items={startOperatorTestModeInputfieldItems.map((e) => ({
-                      key: e.key,
+                    // we directly use the key as the id, because the key is guarded
+                    // but our auto-form, it should be always present
+                    items={startOperatorTestModeInputfields.map((e) => ({
+                      key: e.key as string,
                     }))}
                     onDragEnd={(event) => {
                       const { active, over } = event;
 
                       if (over && active.id !== over.id) {
-                        let newFieldItems =
-                          startOperatorTestModeInputfieldItems;
-
                         const oldIndex =
-                          startOperatorTestModeInputfieldItems.findIndex(
+                          startOperatorTestModeInputfields.findIndex(
                             (e) => e.key === active.id
                           );
                         const newIndex =
-                          startOperatorTestModeInputfieldItems.findIndex(
+                          startOperatorTestModeInputfields.findIndex(
                             (e) => e.key === over.id
                           );
 
-                        newFieldItems = arrayMove(
-                          startOperatorTestModeInputfieldItems,
+                        const newFieldItems = arrayMove(
+                          startOperatorTestModeInputfields,
                           oldIndex,
                           newIndex
                         );
@@ -477,12 +430,14 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
                           newFieldItems.forEach((item, index) => {
                             if (data.component.configuration.metadata) {
-                              newMetadata[item.key] = {
-                                ...data.component.configuration.metadata[
-                                  item.key
-                                ],
-                                instillUiOrder: index,
-                              };
+                              if (item.key) {
+                                newMetadata[item.key] = {
+                                  ...data.component.configuration.metadata[
+                                    item.key
+                                  ],
+                                  instillUiOrder: index,
+                                };
+                              }
                             }
                           });
 
@@ -509,9 +464,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
-                      {startOperatorTestModeInputfieldItems.map(
-                        (field) => field.component
-                      )}
+                      {startOperatorTestModeInputfields}
                     </div>
                   </VerticalSortableWrapper>
                   <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">

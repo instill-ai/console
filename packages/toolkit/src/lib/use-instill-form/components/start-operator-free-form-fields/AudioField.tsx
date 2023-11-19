@@ -42,7 +42,11 @@ export const AudioField = ({
                 </label>
               </div>
 
-              <audio controls={true} src={audioFileUrl ?? undefined} />
+              <audio
+                className="w-full"
+                controls={true}
+                src={audioFileUrl ?? undefined}
+              />
 
               <Form.Control>
                 <Input.Root className="hidden">
