@@ -26,6 +26,7 @@ import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { StartEndOperatorControlPanel } from "../StartEndOperatorControlPanel";
+import { SortableFieldWrapper } from "../SortableFieldWrapper";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -396,13 +397,15 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             >
               <div className="mb-4 flex flex-col gap-y-4">
                 {sortedItems.map((item) => (
-                  <UserDefinedFieldItem
-                    key={item.key}
-                    fieldKey={item.key}
-                    fieldValue={item.value}
-                    onEditField={onEditField}
-                    onDeleteField={onDeleteField}
-                  />
+                  <SortableFieldWrapper key={item.key} path={item.key}>
+                    <UserDefinedFieldItem
+                      key={item.key}
+                      fieldKey={item.key}
+                      fieldValue={item.value}
+                      onEditField={onEditField}
+                      onDeleteField={onDeleteField}
+                    />
+                  </SortableFieldWrapper>
                 ))}
               </div>
             </VerticalSortableWrapper>

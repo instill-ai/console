@@ -20,7 +20,7 @@ export const FieldHead = ({
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
   return (
-    <div className="mb-2 flex flex-row items-center justify-between">
+    <div className="flex flex-row items-center justify-between">
       <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
         {title}
       </div>

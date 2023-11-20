@@ -4,7 +4,7 @@ import { ComplicateIcons } from "@instill-ai/design-system";
 import { useReactFlow } from "reactflow";
 import { CSS } from "@dnd-kit/utilities";
 
-export const FieldRoot = ({
+export const SortableFieldWrapper = ({
   path,
   children,
 }: {
@@ -15,23 +15,26 @@ export const FieldRoot = ({
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: path });
+  } = useSortable({
+    id: path,
+  });
 
   const reactFlowInstance = useReactFlow();
 
   // Because dndkit is using the cached boundingbox information when first
-  // render. They don't know the ancestor (reactflow) zoom level when
+  // render. They don't know the ancestor (reBeactflow) zoom level when
   // calculate the transform, we need to take it into account.
   const style = {
     transform: transform
       ? CSS.Transform.toString({
           x: transform.x / reactFlowInstance.getZoom(),
           y: transform.y / reactFlowInstance.getZoom(),
-          scaleX: transform.scaleX,
-          scaleY: transform.scaleY,
+          scaleX: 1,
+          scaleY: 1,
         })
       : undefined,
     transition,
@@ -40,6 +43,7 @@ export const FieldRoot = ({
   return (
     <div
       {...attributes}
+      ref={setNodeRef}
       style={style}
       key={path}
       className={cn(
@@ -50,8 +54,8 @@ export const FieldRoot = ({
       <div className="my-auto flex">
         <button
           {...listeners}
+          ref={setActivatorNodeRef}
           className="h-4 w-4 opacity-0 group-hover:opacity-100"
-          ref={setNodeRef}
           type="button"
         >
           <ComplicateIcons.Drag

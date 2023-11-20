@@ -18,7 +18,6 @@ import {
   Nullable,
   StartOperatorInput,
   StartOperatorInputType,
-  StartOperatorMetadata,
   useInstillStore,
   useStartOperatorFreeForm,
   useTriggerUserPipeline,
@@ -38,6 +37,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { pickSelectedTypeFromInstillFormat } from "./pickSelectedTypeFromInstillFormat";
 import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 import { arrayMove } from "@dnd-kit/sortable";
+import { SortableFieldWrapper } from "../SortableFieldWrapper";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -83,6 +83,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const [selectedType, setSelectedType] =
     React.useState<Nullable<StartOperatorInputType>>(null);
   const [prevFieldKey, setPrevFieldKey] =
+    React.useState<Nullable<string>>(null);
+  const [onDraggedFieldKey, setOnDraggedFieldKey] =
     React.useState<Nullable<string>>(null);
 
   const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
@@ -403,6 +405,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     items={startOperatorTestModeInputfields.map((e) => ({
                       key: e.key as string,
                     }))}
+                    onDragStart={(event) => {
+                      setOnDraggedFieldKey(event.active.id.toString());
+                    }}
                     onDragEnd={(event) => {
                       const { active, over } = event;
 
@@ -461,12 +466,18 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                           updatePipelineRecipeIsDirty(() => true);
                         }
                       }
+                      setOnDraggedFieldKey(null);
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
-                      {startOperatorTestModeInputfields.map(
-                        (field) => field.component
-                      )}
+                      {startOperatorTestModeInputfields.map((field) => (
+                        <SortableFieldWrapper
+                          key={field.key}
+                          path={field.key as string}
+                        >
+                          {field}
+                        </SortableFieldWrapper>
+                      ))}
                     </div>
                   </VerticalSortableWrapper>
                   <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">

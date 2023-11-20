@@ -12,7 +12,7 @@ export function pickStartOperatorFreeFormFields(
 ) {
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
-  if (!metadata) return fields;
+  if (!metadata) return [];
 
   // The reason we don't directly return the components at the item of the array
   // is we want to sort the fields by the order of `instillUIOrder` property.
@@ -186,15 +186,17 @@ export function pickStartOperatorFreeFormFields(
     }
   }
 
-  return fields.sort((a, b) => {
-    if (typeof a.instillUIOrder === "undefined") {
-      return 1;
-    }
+  return fields
+    .sort((a, b) => {
+      if (typeof a.instillUIOrder === "undefined") {
+        return 1;
+      }
 
-    if (typeof b.instillUIOrder === "undefined") {
-      return -1;
-    }
+      if (typeof b.instillUIOrder === "undefined") {
+        return -1;
+      }
 
-    return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
-  });
+      return a.instillUIOrder > b.instillUIOrder ? 1 : -1;
+    })
+    .map((e) => e.component);
 }

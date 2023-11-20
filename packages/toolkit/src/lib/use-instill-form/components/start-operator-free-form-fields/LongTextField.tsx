@@ -1,6 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FieldRoot } from "./FieldRoot";
 import { AutoFormFieldBaseProps } from "../../type";
 import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
@@ -36,28 +35,26 @@ export const LongTextField = ({
   });
 
   return (
-    <FieldRoot path={path}>
-      <Form.Field
-        key={path}
-        control={form.control}
-        name={path}
-        render={({ field }) => {
-          return (
-            <Form.Item className="w-full">
-              <FieldHead
-                title={title}
-                path={path}
-                onDeleteField={onDeleteField}
-                onEditField={onEditField}
-              />
-              <Form.Control>
-                <EditorContent value={field.value ?? ""} editor={editor} />
-              </Form.Control>
-              <Form.Message />
-            </Form.Item>
-          );
-        }}
-      />
-    </FieldRoot>
+    <Form.Field
+      key={path}
+      control={form.control}
+      name={path}
+      render={({ field }) => {
+        return (
+          <Form.Item className="w-full">
+            <FieldHead
+              title={title}
+              path={path}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+            />
+            <Form.Control>
+              <EditorContent value={field.value ?? ""} editor={editor} />
+            </Form.Control>
+            <Form.Message />
+          </Form.Item>
+        );
+      }}
+    />
   );
 };
