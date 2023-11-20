@@ -141,7 +141,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               fitView={true}
               fitViewOptions={{
                 includeHiddenNodes: true,
-                maxZoom: 0.8,
+                maxZoom: 2,
                 padding: 20,
               }}
               nodeTypes={nodeTypes}

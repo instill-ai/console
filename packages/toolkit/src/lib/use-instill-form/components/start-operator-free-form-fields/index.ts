@@ -6,6 +6,7 @@ import { ImagesField } from "./ImagesField";
 import { LongTextField } from "./LongTextField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
+import { TextareaField } from "./TextareaField";
 import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
 
@@ -18,6 +19,7 @@ export const StartOperatorFreeFormFields = {
   LongTextField,
   NumberField,
   NumbersField,
+  TextareaField,
   TextField,
   TextsField,
 };

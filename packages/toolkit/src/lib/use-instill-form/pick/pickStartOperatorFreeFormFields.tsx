@@ -25,7 +25,7 @@ export function pickStartOperatorFreeFormFields(
             key,
             instillUIOrder: value.instillUiOrder,
             component: (
-              <StartOperatorFreeFormFields.LongTextField
+              <StartOperatorFreeFormFields.TextareaField
                 key={key}
                 form={form}
                 path={key}
