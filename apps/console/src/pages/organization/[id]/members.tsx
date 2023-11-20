@@ -7,13 +7,7 @@ import {
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
-
-import {
-  PageBase,
-  OrganizationSettings,
-  APITokenTab,
-  BillingTab,
-} from "@instill-ai/toolkit";
+import { PageBase, OrganizationMembers } from "@instill-ai/toolkit";
 import { Breadcrumb, Logo } from "@instill-ai/design-system";
 
 const SettingsPage: NextPageWithLayout = () => {
@@ -38,7 +32,12 @@ const SettingsPage: NextPageWithLayout = () => {
         <div className="w-1/6">
           <OrganizationSidebar />
         </div>
-        <div className="w-5/6">member data</div>
+        <div className="w-5/6">
+          <OrganizationMembers
+            accessToken={accessToken.isSuccess ? accessToken.data : null}
+            enableQuery={accessToken.isSuccess}
+          />
+        </div>
       </div>
     </React.Fragment>
   );
