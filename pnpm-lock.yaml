@@ -328,6 +328,9 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.0.6
         version: 1.0.7(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-progress':
+        specifier: ^1.0.3
+        version: 1.0.3(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-scroll-area':
         specifier: ^1.0.3
         version: 1.0.5(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
@@ -5264,6 +5267,28 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
+  /@radix-ui/react-progress@1.0.3(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-5G6Om/tYSxjSeEdrb1VfKkfZfn/1IlPWd731h2RfPuSbIfNUgfqAwbKfJCg/PP6nuUCTrYzalwHSpSinoWoCag==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.2
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.29)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.2.29
+      '@types/react-dom': 18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@radix-ui/react-roving-focus@1.0.4(@types/react-dom@18.2.0)(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-2mUg5Mgcu001VkGy+FfzZyzbmuUWzgWkj3rvv4yu+mLw03+mTzbxZHvfcGyFp2b8EkQeMkpRQ5FiA2Vr2O6TeQ==}
     peerDependencies:
@@ -8504,7 +8529,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.23.2)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.5.0(@types/node@18.18.6)
+      vite: 4.5.0(@types/node@20.5.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -18137,42 +18162,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-    dev: true
-
-  /vite@4.5.0(@types/node@18.18.6):
-    resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.18.6
-      esbuild: 0.18.20
-      postcss: 8.4.31
-      rollup: 3.29.4
-    optionalDependencies:
-      fsevents: 2.3.3
     dev: true
 
   /vite@4.5.0(@types/node@20.5.1):
