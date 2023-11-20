@@ -144,6 +144,11 @@ export const OrganizationMembers = (props: OrganizationMembersProps) => {
             />
           </div>
         </div>
+        <div className="flex w-full justify-end">
+          <Button variant={"primary"} size={"lg"}>
+            Save Chnages
+          </Button>
+        </div>
       </div>
     </div>
   );
