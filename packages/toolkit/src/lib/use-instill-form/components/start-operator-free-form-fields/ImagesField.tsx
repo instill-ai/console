@@ -4,7 +4,7 @@ import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 
-export const ImagesField = ({
+export const OldImagesField = ({
   form,
   path,
   title,
