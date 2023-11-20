@@ -8,15 +8,10 @@ import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
-import {
-  PageBase,
-  OrganizationSettings,
-  APITokenTab,
-  BillingTab,
-} from "@instill-ai/toolkit";
+import { PageBase } from "@instill-ai/toolkit";
 import { Breadcrumb, Logo } from "@instill-ai/design-system";
 
-const SettingsPage: NextPageWithLayout = () => {
+const PermissionsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
 
@@ -38,13 +33,13 @@ const SettingsPage: NextPageWithLayout = () => {
         <div className="w-1/6">
           <OrganizationSidebar />
         </div>
-        <div className="w-5/6">permissions data</div>
+        <div className="w-5/6">permission</div>
       </div>
     </React.Fragment>
   );
 };
 
-SettingsPage.getLayout = (page) => {
+PermissionsPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
@@ -55,4 +50,4 @@ SettingsPage.getLayout = (page) => {
   );
 };
 
-export default SettingsPage;
+export default PermissionsPage;
