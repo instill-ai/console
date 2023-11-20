@@ -23,80 +23,80 @@ export const OrganizationSettings = (props: OrganizationSettingsProps) => {
     accessToken,
   });
 
-  const { form, fields, ValidatorSchema, formTree } = useInstillForm(
-    {
-      title: "Organization",
-      type: "object",
-      required: ["name", "email", "username"],
-      properties: {
-        username: {
-          description: "",
-          instillFormat: "text",
-          anyOf: [
-            {
-              type: "string",
-              instillUpstreamType: "value",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "reference",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "template",
-            },
-          ],
-          instillUpstreamTypes: ["value", "reference"],
-          title: "Organisation Username",
-          example: "open-ai",
-        },
-        email: {
-          description: "",
-          instillFormat: "text",
-          anyOf: [
-            {
-              type: "string",
-              instillUpstreamType: "value",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "reference",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "template",
-            },
-          ],
-          instillUpstreamTypes: ["value", "reference"],
-          title: "Email",
-          example: "sam.altman@openai.com",
-        },
-        name: {
-          description: "",
-          instillFormat: "text",
-          anyOf: [
-            {
-              type: "string",
-              instillUpstreamType: "value",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "reference",
-            },
-            {
-              type: "string",
-              instillUpstreamType: "template",
-            },
-          ],
-          instillUpstreamTypes: ["value", "reference"],
-          title: "Organisation Domain Name",
-          example: "openai.com",
-        },
-      },
-    },
-    null,
-    { disabledAll: disabledAll }
-  );
+  // const { form, fields, ValidatorSchema, formTree } = useInstillForm(
+  //   {
+  //     title: "Organization",
+  //     type: "object",
+  //     required: ["name", "email", "username"],
+  //     properties: {
+  //       username: {
+  //         description: "",
+  //         instillFormat: "text",
+  //         anyOf: [
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "value",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "reference",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "template",
+  //           },
+  //         ],
+  //         instillUpstreamTypes: ["value", "reference"],
+  //         title: "Organisation Username",
+  //         example: "open-ai",
+  //       },
+  //       email: {
+  //         description: "",
+  //         instillFormat: "text",
+  //         anyOf: [
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "value",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "reference",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "template",
+  //           },
+  //         ],
+  //         instillUpstreamTypes: ["value", "reference"],
+  //         title: "Email",
+  //         example: "sam.altman@openai.com",
+  //       },
+  //       name: {
+  //         description: "",
+  //         instillFormat: "text",
+  //         anyOf: [
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "value",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "reference",
+  //           },
+  //           {
+  //             type: "string",
+  //             instillUpstreamType: "template",
+  //           },
+  //         ],
+  //         instillUpstreamTypes: ["value", "reference"],
+  //         title: "Organisation Domain Name",
+  //         example: "openai.com",
+  //       },
+  //     },
+  //   },
+  //   null,
+  //   { disabledAll: disabledAll }
+  // );
 
   return (
     <div className="flex flex-col">
@@ -110,35 +110,38 @@ export const OrganizationSettings = (props: OrganizationSettingsProps) => {
       </div>
 
       <div className="flex h-full w-full flex-col">
-        <Form.Root {...form}>
+        {/* <Form.Root {...form}> */}
           <form className="w-full">
-            <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+            <div className="mb-5 flex flex-col gap-y-5">
+              {/* {fields} */}
+              
+              </div>
             {disabledAll === false ? (
               <div className="flex flex-row-reverse">
                 <Button
                   type="button"
                   size="lg"
                   variant="primary"
-                  onClick={() => {
-                    const data = form.getValues();
+                  // onClick={() => {
+                  //   const data = form.getValues();
 
-                    try {
-                      const parsedData = ValidatorSchema.parse(data);
-                      setData(JSON.stringify(parsedData, null, 2));
-                      setError(null);
-                    } catch (err) {
-                      if (err instanceof z.ZodError) {
-                        setError(JSON.stringify(err, null, 2));
-                      }
-                    }
-                  }}
+                  //   try {
+                  //     const parsedData = ValidatorSchema.parse(data);
+                  //     setData(JSON.stringify(parsedData, null, 2));
+                  //     setError(null);
+                  //   } catch (err) {
+                  //     if (err instanceof z.ZodError) {
+                  //       setError(JSON.stringify(err, null, 2));
+                  //     }
+                  //   }
+                  // }}
                 >
                   Submit
                 </Button>
               </div>
             ) : null}
           </form>
-        </Form.Root>
+        {/* </Form.Root> */}
       </div>
     </div>
   );
