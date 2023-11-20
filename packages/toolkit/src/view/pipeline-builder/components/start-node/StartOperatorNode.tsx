@@ -499,7 +499,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                 </form>
               </Form.Root>
               <Button
-                className="flex w-full flex-1"
+                className="flex w-full flex-1 gap-x-2"
                 variant="tertiaryColour"
                 onClick={() => setEnableEdit(!enableEdit)}
                 disabled={
@@ -507,7 +507,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                 }
                 type="button"
               >
-                <p className="my-auto">Add Field</p>
+                <p className="my-auto pt-0.5">Add Field</p>
                 <Icons.Plus
                   className={cn(
                     "my-auto h-4 w-4 stroke-semantic-accent-default",

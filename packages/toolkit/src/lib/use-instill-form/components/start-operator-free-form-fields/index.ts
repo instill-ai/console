@@ -1,8 +1,8 @@
 import { AudioField } from "./AudioField";
 import { AudiosField } from "./AudiosField";
 import { BooleanField } from "./BooleanField";
-import { ImageField } from "./ImageField";
-import { ImagesField } from "./ImagesField";
+import { ImageField } from "./NewImageField";
+import { ImagesField } from "./NewImagesField";
 import { LongTextField } from "./LongTextField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
