@@ -36,6 +36,7 @@ const SettingsPage: NextPageWithLayout = () => {
           <OrganizationMembers
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
+            isEditable={true}
           />
         </div>
       </div>

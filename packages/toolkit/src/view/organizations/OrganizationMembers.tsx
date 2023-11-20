@@ -12,10 +12,11 @@ import MemberCard from "./MemberCard";
 export type OrganizationMembersProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
+  isEditable: boolean;
 };
 
 export const OrganizationMembers = (props: OrganizationMembersProps) => {
-  const { accessToken, enableQuery } = props;
+  const { accessToken, enableQuery, isEditable } = props;
 
   const user = useUser({
     enabled: enableQuery,
@@ -95,7 +96,7 @@ export const OrganizationMembers = (props: OrganizationMembersProps) => {
                   Default Role for New Members
                 </p>
                 <div className="w-1/3">
-                  <Select.Root>
+                  <Select.Root disabled={!isEditable}>
                     <Select.Trigger className="w-1/2">
                       <Select.Value placeholder="Select a role" />
                     </Select.Trigger>
@@ -131,24 +132,30 @@ export const OrganizationMembers = (props: OrganizationMembersProps) => {
               memberName={"Ping-Lin Chang"}
               memberRole={"write"}
               profileUrl=""
+              isEditable={isEditable}
             />
             <MemberCard
               memberName={"Naman Anand"}
               memberRole={"write"}
               profileUrl=""
+              isEditable={isEditable}
             />
             <MemberCard
               memberName={"Xiaofei Du"}
               memberRole={"write"}
               profileUrl=""
+              isEditable={isEditable}
             />
           </div>
         </div>
-        <div className="flex w-full justify-end">
-          <Button variant={"primary"} size={"lg"}>
-            Save Chnages
-          </Button>
-        </div>
+
+        {isEditable ? (
+          <div className="flex w-full justify-end">
+            <Button variant={"primary"} size={"lg"}>
+              Save Chnages
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
