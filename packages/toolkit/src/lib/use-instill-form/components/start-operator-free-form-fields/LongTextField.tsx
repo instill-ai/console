@@ -43,6 +43,7 @@ export const LongTextField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -95,6 +96,7 @@ export const LongTextField = ({
             <Form.Control>
               <EditorContent editor={editor} />
             </Form.Control>
+            <Form.Description text={description} />
             <Form.Message />
           </Form.Item>
         );

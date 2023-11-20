@@ -7,6 +7,7 @@ export const NumbersField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -48,7 +49,7 @@ export const NumbersField = ({
         }
 
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-y-2">
             <FieldHead
               title={title}
               path={path}
@@ -129,6 +130,7 @@ export const NumbersField = ({
                 Add field
               </button>
             </div>
+            <Form.Description text={description} />
           </div>
         );
       }}

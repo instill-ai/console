@@ -6,6 +6,7 @@ export const NumberField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -40,6 +41,7 @@ export const NumberField = ({
                 />
               </Input.Root>
             </Form.Control>
+            <Form.Description text={description} />
             <Form.Message />
           </Form.Item>
         );

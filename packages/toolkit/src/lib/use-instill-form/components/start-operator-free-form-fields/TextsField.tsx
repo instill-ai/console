@@ -7,6 +7,7 @@ export const TextsField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -109,7 +110,7 @@ export const TextsField = ({
               </p>
             ) : null}
 
-            <div className="flex">
+            <div className="mb-2 flex">
               <button
                 type="button"
                 className="flex text-semantic-accent-default !underline product-button-button-3"
@@ -128,6 +129,8 @@ export const TextsField = ({
                 Add field
               </button>
             </div>
+            <Form.Description text={description} />
+            <Form.Message />
           </Form.Item>
         );
       }}

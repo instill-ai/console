@@ -8,6 +8,7 @@ export const AudioField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -62,6 +63,7 @@ export const AudioField = ({
                 />
               </Input.Root>
             </Form.Control>
+            <Form.Description text={description} />
             <Form.Message />
           </Form.Item>
         );
