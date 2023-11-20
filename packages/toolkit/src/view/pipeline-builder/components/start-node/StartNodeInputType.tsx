@@ -1,7 +1,7 @@
 import cn from "clsx";
 import * as React from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-import { Nullable, StartOperatorInputType } from "../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../lib";
 
 export type StartNodeInputTypeProps = {
   type: StartOperatorInputType;
@@ -23,6 +23,13 @@ export const StartNodeInputType = ({
         <Icons.Type02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
       label = "Text";
+      break;
+    }
+    case "long_string": {
+      icon = (
+        <Icons.AlighLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Long text";
       break;
     }
     case "audio/*": {
@@ -47,6 +54,13 @@ export const StartNodeInputType = ({
         <Icons.Image01 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
       label = "Image";
+      break;
+    }
+    case "array:image/*": {
+      icon = (
+        <Icons.ImagePlus className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple images";
       break;
     }
     case "number": {

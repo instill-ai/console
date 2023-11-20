@@ -1,24 +1,31 @@
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
-import { GeneralUseFormReturn } from "../../../lib";
+import { AutoFormFieldBaseProps } from "../../..";
+import { FieldHead } from "./FieldHead";
 
-export const TextsField = (props: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
-}) => {
-  const [textFieldsArray, setTextFieldsArray] = React.useState<number[]>([1]);
+export const NumbersField = ({
+  form,
+  path,
+  title,
+  onEditField,
+  onDeleteField,
+}: {
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+} & AutoFormFieldBaseProps) => {
+  const [numberFieldsArray, setNumberFieldsArray] = React.useState<number[]>([
+    1,
+  ]);
 
-  const [textFieldsValue, setTextFieldsValue] = React.useState<
+  const [numberFieldsValue, setNumberFieldsValue] = React.useState<
     (string | undefined)[]
   >([""]);
 
-  const { form, fieldKey, title } = props;
   return (
     <Form.Field
-      key={fieldKey}
+      key={path}
       control={form.control}
-      name={fieldKey}
+      name={path}
       render={({ field }) => {
         const {
           formState: { errors },
@@ -41,29 +48,32 @@ export const TextsField = (props: {
         }
 
         return (
-          <div className="flex flex-col w-full">
-            <Form.Label className="mb-1 text-semantic-fg-primary product-body-text-3-semibold">
-              {title}
-            </Form.Label>
+          <div className="flex flex-col">
+            <FieldHead
+              title={title}
+              path={path}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+            />
             <div className="mb-1.5 flex flex-col space-y-1">
-              {textFieldsArray.map((_, idx) => {
+              {numberFieldsArray.map((_, idx) => {
                 return (
                   <div
-                    key={`${fieldKey}-test-${idx}`}
+                    key={`${path}-${idx}`}
                     className="flex w-full flex-row gap-x-2"
                   >
                     <Input.Root className="flex-1">
                       <Input.Core
-                        type="text"
-                        value={textFieldsValue[idx] ?? undefined}
+                        type="number"
+                        value={numberFieldsValue[idx] ?? undefined}
                         autoComplete="off"
-                        className="text-semantic-fg-primary product-body-text-4-regular"
+                        className="appearance-none text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
-                          const newTextFieldsValue = [...textFieldsValue];
-                          newTextFieldsValue[idx] = e.target.value;
-                          setTextFieldsValue(newTextFieldsValue);
+                          const newNumberFieldsValue = [...numberFieldsValue];
+                          newNumberFieldsValue[idx] = e.target.value;
+                          setNumberFieldsValue(newNumberFieldsValue);
 
-                          field.onChange(newTextFieldsValue);
+                          field.onChange(newNumberFieldsValue);
                         }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -72,20 +82,20 @@ export const TextsField = (props: {
                         }}
                       />
                     </Input.Root>
-                    {textFieldsArray.length > 1 ? (
+                    {numberFieldsArray.length > 1 ? (
                       <button
                         type="button"
                         className="my-auto flex h-6 w-6 flex-shrink-0 rounded border border-semantic-bg-line hover:border-semantic-fg-secondary"
                         onClick={() => {
-                          const newTextFieldsValue = [...textFieldsValue];
-                          newTextFieldsValue.splice(idx, 1);
-                          setTextFieldsValue(newTextFieldsValue);
+                          const newNumberFieldsValue = [...numberFieldsValue];
+                          newNumberFieldsValue.splice(idx, 1);
+                          setNumberFieldsValue(newNumberFieldsValue);
 
-                          const newTextFieldsArray = [...textFieldsArray];
-                          newTextFieldsArray.splice(idx, 1);
-                          setTextFieldsArray(newTextFieldsArray);
+                          const newTextFieldArray = [...numberFieldsArray];
+                          newTextFieldArray.splice(idx, 1);
+                          setNumberFieldsArray(newTextFieldArray);
 
-                          field.onChange(newTextFieldsValue);
+                          field.onChange(newNumberFieldsValue);
                         }}
                       >
                         <Icons.X className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
@@ -97,24 +107,23 @@ export const TextsField = (props: {
             </div>
             {targetError ? (
               <p className="mb-3 text-semantic-error-default !product-body-text-4-regular">
-                {targetError}
+                {String(targetError)}
               </p>
             ) : null}
-
             <div className="flex">
               <button
                 type="button"
                 className="flex text-semantic-accent-default !underline product-button-button-3"
                 onClick={() => {
-                  const newTextFieldsValue = [...textFieldsValue];
-                  newTextFieldsValue.push(undefined);
-                  setTextFieldsValue(newTextFieldsValue);
+                  const newNumberFieldsValue = [...numberFieldsValue];
+                  newNumberFieldsValue.push(undefined);
+                  setNumberFieldsValue(newNumberFieldsValue);
 
-                  const newTextFieldsArray = [...textFieldsArray];
-                  newTextFieldsArray.push(1);
-                  setTextFieldsArray(newTextFieldsArray);
+                  const newNumberFieldsArray = [...numberFieldsArray];
+                  newNumberFieldsArray.push(1);
+                  setNumberFieldsArray(newNumberFieldsArray);
 
-                  field.onChange(newTextFieldsValue);
+                  field.onChange(newNumberFieldsValue);
                 }}
               >
                 Add field

@@ -14,7 +14,7 @@ import {
   ConnectorNode,
   EmptyNode,
   EndOperatorNode,
-  StartNode,
+  StartOperatorNode,
   BackToLatestVersionTopBar,
 } from "./components";
 import { FlowControl } from "./FlowControl";
@@ -49,7 +49,7 @@ export type FlowProps = {
 };
 
 const nodeTypes = {
-  startNode: StartNode,
+  startNode: StartOperatorNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,
@@ -141,7 +141,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               fitView={true}
               fitViewOptions={{
                 includeHiddenNodes: true,
-                maxZoom: 0.8,
+                maxZoom: 2,
                 padding: 20,
               }}
               nodeTypes={nodeTypes}

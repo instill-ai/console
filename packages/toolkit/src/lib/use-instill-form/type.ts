@@ -4,7 +4,7 @@ import {
   JSONSchema7Definition,
   JSONSchema7TypeName,
 } from "json-schema";
-import { Nullable } from "../type";
+import { GeneralUseFormReturn, Nullable } from "../type";
 
 export type InstillCustomProps = {
   instillUpstreamType?: string;
@@ -113,4 +113,16 @@ export type SmartHintWarning = {
   message?: string;
   notAvailableReferences: string[];
   notAvailableTemplates: string[];
+};
+
+export type StartOperatorFreeFormFieldItem = {
+  instillUIOrder?: number;
+  key: string;
+  component: React.ReactElement;
+};
+
+export type AutoFormFieldBaseProps = {
+  form: GeneralUseFormReturn;
+  path: string;
+  title: string | null;
 };

@@ -1,39 +1,46 @@
 import * as React from "react";
 import { Form, Icons, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../lib";
-import { readFileToBinary } from "../lib";
+import { AutoFormFieldBaseProps, Nullable } from "../../..";
+import { readFileToBinary } from "../../../../view";
+import { FieldHead } from "./FieldHead";
 
-export const ImageField = (props: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
-}) => {
-  const { form, fieldKey, title } = props;
-
+export const ImageField = ({
+  form,
+  path,
+  title,
+  onEditField,
+  onDeleteField,
+}: {
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+} & AutoFormFieldBaseProps) => {
   const [imageFileUrl, setImageFileUrl] =
     React.useState<Nullable<string>>(null);
 
   return (
     <Form.Field
-      key={fieldKey}
+      key={path}
       control={form.control}
-      name={fieldKey}
+      name={path}
       render={({ field }) => {
         return (
           <Form.Item className="w-full">
-            <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
-              {title}
-            </Form.Label>
+            <FieldHead
+              title={title}
+              path={path}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+            />
             <Form.Control>
               <label
-                htmlFor={`op-start-${fieldKey}`}
-                className="flex h-[150px] w-full cursor-pointer border border-semantic-bg-line border-dashed flex-col rounded bg-semantic-bg-base-bg"
+                htmlFor={`op-start-${path}`}
+                className="flex h-[150px] w-full cursor-pointer flex-col rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg"
               >
                 {imageFileUrl ? (
                   <img
                     className="h-full w-full object-contain"
                     src={imageFileUrl}
-                    alt={`${fieldKey}-image}`}
+                    alt={`${path}-image}`}
                   />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center gap-y-2">
@@ -45,7 +52,7 @@ export const ImageField = (props: {
                 )}
                 <Input.Root className="hidden">
                   <Input.Core
-                    id={`op-start-${fieldKey}`}
+                    id={`op-start-${path}`}
                     type="file"
                     accept="images/*"
                     onChange={async (e) => {

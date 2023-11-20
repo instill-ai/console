@@ -1,31 +1,39 @@
 import * as React from "react";
 import { Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../lib";
-import { readFileToBinary } from "../lib";
+import { AutoFormFieldBaseProps, Nullable } from "../../..";
+import { readFileToBinary } from "../../../../view";
+import { FieldHead } from "./FieldHead";
 
-export const AudiosField = (props: {
-  form: GeneralUseFormReturn;
-  fieldKey: string;
-  title: string;
-}) => {
-  const { form, fieldKey, title } = props;
+export const AudiosField = ({
+  form,
+  path,
+  title,
+  onEditField,
+  onDeleteField,
+}: {
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+} & AutoFormFieldBaseProps) => {
   const [audioFileURLs, setAudioFileURLs] =
     React.useState<Nullable<string[]>>(null);
 
   return (
     <Form.Field
-      key={fieldKey}
+      key={path}
       control={form.control}
-      name={fieldKey}
+      name={path}
       render={({ field }) => {
         return (
           <Form.Item className="!w-[232px]">
             <div className="flex flex-row justify-between">
-              <Form.Label className="text-semantic-fg-primary product-body-text-3-semibold">
-                {title}
-              </Form.Label>
+              <FieldHead
+                title={title}
+                path={path}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+              />
               <label
-                htmlFor={`op-start-${fieldKey}`}
+                htmlFor={`op-start-${path}`}
                 className="my-auto cursor-pointer text-center capitalize text-semantic-accent-default !underline product-button-button-3"
               >
                 upload files
@@ -46,7 +54,7 @@ export const AudiosField = (props: {
             <Form.Control>
               <Input.Root className="hidden">
                 <Input.Core
-                  id={`op-start-${fieldKey}`}
+                  id={`op-start-${path}`}
                   type="file"
                   accept="audio/*"
                   // DesignToken-AlphaValueIssue:
