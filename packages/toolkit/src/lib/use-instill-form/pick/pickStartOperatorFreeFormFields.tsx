@@ -32,6 +32,7 @@ export function pickStartOperatorFreeFormFields(
                 title={value.title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
+                description={value.description ?? null}
               />
             ),
           });
@@ -47,6 +48,7 @@ export function pickStartOperatorFreeFormFields(
                 title={value.title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
+                description={value.description ?? null}
               />
             ),
           });
@@ -64,6 +66,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -81,6 +84,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -97,6 +101,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -113,6 +118,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -129,6 +135,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -145,6 +152,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -161,6 +169,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });
@@ -177,6 +186,7 @@ export function pickStartOperatorFreeFormFields(
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              description={value.description ?? null}
             />
           ),
         });

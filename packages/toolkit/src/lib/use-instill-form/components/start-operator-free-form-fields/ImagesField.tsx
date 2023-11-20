@@ -1,21 +1,22 @@
 import * as React from "react";
-import { Form, Icons, Input } from "@instill-ai/design-system";
-import { AutoFormFieldBaseProps, Nullable } from "../../..";
+import { Form, Input, ScrollArea } from "@instill-ai/design-system";
+import { AutoFormFieldBaseProps, fillArrayWithZeros } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
+import { ImageListItem } from "./ImageListItem";
 
-export const OldImagesField = ({
+export const ImagesField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
-  const [imageFileURLs, setImageFileURLs] =
-    React.useState<Nullable<string[]>>(null);
+  const [imageFiles, setImageFiles] = React.useState<File[]>([]);
 
   return (
     <Form.Field
@@ -31,58 +32,101 @@ export const OldImagesField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
             />
-            <Form.Control>
-              <label
-                htmlFor={`op-start-${path}`}
-                className="flex min-h-[150px] w-full cursor-pointer flex-col rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg"
-              >
-                {imageFileURLs ? (
-                  <div className="grid h-full w-full grid-flow-row grid-cols-3">
-                    {imageFileURLs
-                      .slice(0, 5)
-                      .map((url) =>
-                        url ? (
-                          <img
-                            key={`${path}-${url}`}
-                            src={url}
-                            alt={`${path}-${url}`}
-                            className="h-[55px] object-cover"
-                          />
-                        ) : null
-                      )}
-                  </div>
-                ) : (
-                  <div className="my-auto flex h-full w-full flex-col items-center justify-center gap-y-2">
-                    <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary" />
-                    <p className="text-semantic-fg-primary product-body-text-4-regular">
-                      Upload Image
-                    </p>
-                  </div>
-                )}
-                <Input.Root className="hidden">
-                  <Input.Core
-                    id={`op-start-${path}`}
-                    type="file"
-                    accept="images/*"
-                    multiple={true}
-                    // DesignToken-AlphaValueIssue:
-                    onChange={async (e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        const urls: string[] = [];
-                        const binaries: string[] = [];
-                        for (const file of e.target.files) {
-                          const binary = await readFileToBinary(file);
-                          urls.push(URL.createObjectURL(file));
-                          binaries.push(binary);
+
+            <div className="grid w-full grid-flow-row grid-cols-4">
+              {imageFiles.length > 0
+                ? fillArrayWithZeros(imageFiles, 8)
+                    .slice(0, 8)
+                    .map((file, i) => {
+                      return file ? (
+                        <img
+                          key={`${path}-${file.name}`}
+                          src={URL.createObjectURL(file)}
+                          alt={`${path}-${file.name}`}
+                          className="h-[55px] object-cover"
+                        />
+                      ) : (
+                        <div
+                          key={`${path}-${i}`}
+                          className="h-[55px] w-full bg-semantic-bg-secondary"
+                        />
+                      );
+                    })
+                : Array.from({ length: 8 }).map((_, i) => (
+                    <div
+                      key={`${path}-${i}`}
+                      className="h-[55px] w-full bg-semantic-bg-secondary"
+                    />
+                  ))}
+            </div>
+            <div className="flex flex-row-reverse gap-x-1">
+              <Form.Control>
+                <label
+                  htmlFor={`op-start-${path}`}
+                  className="flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
+                >
+                  Upload image
+                  <Input.Root className="hidden">
+                    <Input.Core
+                      id={`op-start-${path}`}
+                      type="file"
+                      accept="images/*"
+                      multiple={true}
+                      onChange={async (e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          const files: File[] = [];
+                          const binaries: string[] = [];
+                          for (const file of e.target.files) {
+                            const binary = await readFileToBinary(file);
+                            files.push(file);
+                            binaries.push(binary);
+                          }
+                          field.onChange(binaries);
+                          setImageFiles((prev) => [...prev, ...files]);
                         }
-                        field.onChange(binaries);
-                        setImageFileURLs(urls);
-                      }
-                    }}
-                  />
-                </Input.Root>
-              </label>
-            </Form.Control>
+                      }}
+                    />
+                  </Input.Root>
+                </label>
+              </Form.Control>
+              {imageFiles.length > 0 ? (
+                <button
+                  type="button"
+                  className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
+                  onClick={() => {
+                    field.onChange([]);
+                    setImageFiles([]);
+                  }}
+                >
+                  Delete all
+                </button>
+              ) : null}
+            </div>
+            {imageFiles.length > 0 ? (
+              <ScrollArea.Root className="nowheel h-[190px]">
+                <div className="flex flex-col gap-y-1">
+                  {imageFiles.map((e, i) => (
+                    <ImageListItem
+                      key={`${path}-${e.name}-item`}
+                      name={e.name}
+                      onDelete={() => {
+                        const newFiles = imageFiles.filter(
+                          (_, index) => index !== i
+                        );
+
+                        setImageFiles(newFiles);
+                        field.onChange(
+                          newFiles.map((file) => {
+                            return readFileToBinary(file);
+                          })
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+              </ScrollArea.Root>
+            ) : null}
+            <Form.Description text={description} />
             <Form.Message />
           </Form.Item>
         );

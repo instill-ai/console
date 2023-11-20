@@ -6,6 +6,7 @@ export const BooleanField = ({
   form,
   path,
   title,
+  description,
   onEditField,
   onDeleteField,
 }: {
@@ -29,6 +30,7 @@ export const BooleanField = ({
             <Form.Control>
               <Switch checked={field.value} onCheckedChange={field.onChange} />
             </Form.Control>
+            <Form.Description text={description} />
             <Form.Message />
           </Form.Item>
         );

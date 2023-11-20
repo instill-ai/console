@@ -173,6 +173,7 @@ export type StartOperatorInput = {
   };
   instillUiOrder?: number;
   instillUIMultiline?: boolean;
+  description?: string;
 };
 
 export type StartOperatorInputType =

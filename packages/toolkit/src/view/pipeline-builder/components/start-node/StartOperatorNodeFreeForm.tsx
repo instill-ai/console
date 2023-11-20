@@ -1,7 +1,13 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { Button, Form, Icons, Input } from "@instill-ai/design-system";
+import {
+  Button,
+  Form,
+  Icons,
+  Input,
+  Textarea,
+} from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
@@ -15,6 +21,7 @@ export const StartOperatorFreeFormSchema = z
   .object({
     title: z.string().min(1, { message: "Title is required" }),
     key: z.string().min(1, { message: "Key is required" }),
+    description: z.string().optional(),
   })
   .superRefine((val, ctx) => {
     if (!validateComponentID(val.key)) {
@@ -34,7 +41,11 @@ export const StartOperatorNodeFreeForm = ({
   onCreateFreeFormField,
   onCancel,
 }: {
-  form: UseFormReturn<{ title: string; key: string }, any, undefined>;
+  form: UseFormReturn<
+    z.infer<typeof StartOperatorFreeFormSchema>,
+    any,
+    undefined
+  >;
   selectedType: Nullable<StartOperatorInputType>;
   setSelectedType: React.Dispatch<
     React.SetStateAction<Nullable<StartOperatorInputType>>
@@ -197,6 +208,28 @@ export const StartOperatorNodeFreeForm = ({
                       />
                     </Input.Root>
                   </Form.Control>
+                  <Form.Message />
+                </Form.Item>
+              );
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="description"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label className="!font-sans !text-base !font-semibold">
+                    Description
+                  </Form.Label>
+                  <Form.Control>
+                    <Textarea
+                      {...field}
+                      value={field.value ?? ""}
+                      className="h-[100px] !resize-none !text-sm"
+                    />
+                  </Form.Control>
+                  <Form.Description text="The description of this field" />
                   <Form.Message />
                 </Form.Item>
               );

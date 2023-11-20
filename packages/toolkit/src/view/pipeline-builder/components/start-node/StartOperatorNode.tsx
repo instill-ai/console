@@ -97,6 +97,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     form.reset({
       title: data.component.configuration.metadata[key].title,
       key: key,
+      description: data.component.configuration.metadata[key].description,
     });
     setEnableEdit(true);
 
@@ -153,6 +154,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           type: "string",
           instillFormat: "string",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -162,6 +164,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           instillFormat: "string",
           instillUIMultiline: true,
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -170,6 +173,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           type: "string",
           instillFormat: "audio/*",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -178,6 +182,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           type: "boolean",
           instillFormat: "boolean",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -186,6 +191,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           type: "string",
           instillFormat: "image/*",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -197,6 +203,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           },
           instillFormat: "array:image/*",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }
@@ -205,6 +212,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           type: "number",
           instillFormat: "number",
           title: formData.title,
+          description: formData.description,
         };
         break;
       }

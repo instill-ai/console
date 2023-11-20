@@ -125,4 +125,5 @@ export type AutoFormFieldBaseProps = {
   form: GeneralUseFormReturn;
   path: string;
   title: string | null;
+  description: string | null;
 };
