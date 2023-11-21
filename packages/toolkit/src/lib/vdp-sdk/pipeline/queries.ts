@@ -1,6 +1,11 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
-import { Pipeline, PipelineRelease, PipelineReleaseWatchState } from "./types";
+import {
+  OperatorDefinition,
+  Pipeline,
+  PipelineRelease,
+  PipelineReleaseWatchState,
+} from "./types";
 
 export type ListPipelinesResponse = {
   pipelines: Pipeline[];
@@ -240,6 +245,84 @@ export async function watchUserPipelineReleaseQuery({
       `/${pipelineReleaseName}/watch`
     );
     return Promise.resolve(data.state);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Operator
+ * -----------------------------------------------------------------------*/
+
+export type ListOperatorDefinitionsResponse = {
+  operator_definitions: OperatorDefinition[];
+  next_page_token: string;
+  total_size: number;
+};
+
+export async function listOperatorDefinitionsQuery({
+  pageSize,
+  nextPageToken,
+  accessToken,
+  filter,
+}: {
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+  accessToken: Nullable<string>;
+  filter: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+    const operatorDefinitions: OperatorDefinition[] = [];
+
+    const queryString = getQueryString({
+      baseURL: `/operator-definitions?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken,
+      filter,
+    });
+
+    const { data } =
+      await client.get<ListOperatorDefinitionsResponse>(queryString);
+
+    operatorDefinitions.push(...data.operator_definitions);
+
+    if (data.next_page_token) {
+      operatorDefinitions.push(
+        ...(await listOperatorDefinitionsQuery({
+          pageSize,
+          accessToken,
+          nextPageToken: data.next_page_token,
+          filter,
+        }))
+      );
+    }
+
+    return Promise.resolve(operatorDefinitions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetOperatorDefinitionResponse = {
+  operator_definition: OperatorDefinition;
+};
+
+export async function getOperatorDefinitionQuery({
+  operatorDefinitionName,
+  accessToken,
+}: {
+  operatorDefinitionName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+
+    const { data } = await client.get<GetOperatorDefinitionResponse>(
+      `/${operatorDefinitionName}?view=VIEW_FULL`
+    );
+
+    return Promise.resolve(data.operator_definition);
   } catch (err) {
     return Promise.reject(err);
   }
