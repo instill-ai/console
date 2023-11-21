@@ -288,148 +288,143 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       note={data.note}
       noteIsOpen={noteIsOpen}
     >
-      <div className="flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
-        <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
-          <div className="mr-auto flex flex-row gap-x-2">
-            <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
-              <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
-            </div>
-            <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
-              end
-            </p>
+      <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
+        <div className="mr-auto flex flex-row gap-x-2">
+          <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
+            <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
           </div>
-          <StartEndOperatorControlPanel
-            nodeIsCollapsed={nodeIsCollapsed}
-            setNodeIsCollapsed={setNodeIsCollapsed}
-            handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
-            noteIsOpen={noteIsOpen}
-            componentTypeName="End"
-          />
-        </NodeHead>
+          <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
+            end
+          </p>
+        </div>
+        <StartEndOperatorControlPanel
+          nodeIsCollapsed={nodeIsCollapsed}
+          setNodeIsCollapsed={setNodeIsCollapsed}
+          handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
+          noteIsOpen={noteIsOpen}
+          componentTypeName="End"
+        />
+      </NodeHead>
 
-        {nodeIsCollapsed ? null : enableEdit ? (
-          <Form.Root {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="mb-3 flex flex-row justify-between">
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  className="!px-2 !py-2"
-                  type="button"
-                  onClick={() => {
-                    setEnableEdit(!enableEdit);
-                    setPrevFieldKey(null);
-                    form.reset({
-                      title: "",
-                      key: "",
-                      value: "",
-                    });
-                  }}
-                >
-                  <Icons.ArrowLeft className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
+      {nodeIsCollapsed ? null : enableEdit ? (
+        <Form.Root {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="mb-3 flex flex-row justify-between">
+              <Button
+                variant="tertiaryGrey"
+                size="sm"
+                className="!px-2 !py-2"
+                type="button"
+                onClick={() => {
+                  setEnableEdit(!enableEdit);
+                  setPrevFieldKey(null);
+                  form.reset({
+                    title: "",
+                    key: "",
+                    value: "",
+                  });
+                }}
+              >
+                <Icons.ArrowLeft className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
+              </Button>
+              <div>
+                <Button variant="primary" type="submit" size="sm">
+                  Save
                 </Button>
-                <div>
-                  <Button variant="primary" type="submit" size="sm">
-                    Save
-                  </Button>
-                </div>
               </div>
-              <div className="flex flex-col space-y-3">{fields}</div>
-            </form>
-          </Form.Root>
-        ) : testModeEnabled ? (
-          <div className="flex w-full flex-col gap-y-4">
-            {testModeOutputFields}
-          </div>
-        ) : (
-          <div className="flex flex-col">
-            <VerticalSortableWrapper
-              items={sortedItems}
-              onDragEnd={(event) => {
-                const { active, over } = event;
+            </div>
+            <div className="flex flex-col space-y-3">{fields}</div>
+          </form>
+        </Form.Root>
+      ) : testModeEnabled ? (
+        <div className="flex w-full flex-col gap-y-4">
+          {testModeOutputFields}
+        </div>
+      ) : (
+        <div className="flex flex-col">
+          <VerticalSortableWrapper
+            items={sortedItems}
+            onDragEnd={(event) => {
+              const { active, over } = event;
 
-                if (over && active.id !== over.id) {
-                  let newSortedItems: EndOperatorNodeFieldItem[] = [];
+              if (over && active.id !== over.id) {
+                let newSortedItems: EndOperatorNodeFieldItem[] = [];
 
-                  setSortedItems((items) => {
-                    const oldIndex = items.findIndex(
-                      (e) => e.key === active.id
-                    );
-                    const newIndex = items.findIndex((e) => e.key === over.id);
+                setSortedItems((items) => {
+                  const oldIndex = items.findIndex((e) => e.key === active.id);
+                  const newIndex = items.findIndex((e) => e.key === over.id);
 
-                    newSortedItems = arrayMove(items, oldIndex, newIndex);
+                  newSortedItems = arrayMove(items, oldIndex, newIndex);
 
-                    return newSortedItems;
+                  return newSortedItems;
+                });
+
+                if (newSortedItems.length > 0) {
+                  const newMetadata: Record<string, StartOperatorMetadata> = {};
+
+                  newSortedItems.forEach((item, index) => {
+                    newMetadata[item.key] = {
+                      ...data.component.configuration.metadata[item.key],
+                      instillUiOrder: index,
+                    };
                   });
 
-                  if (newSortedItems.length > 0) {
-                    const newMetadata: Record<string, StartOperatorMetadata> =
-                      {};
-
-                    newSortedItems.forEach((item, index) => {
-                      newMetadata[item.key] = {
-                        ...data.component.configuration.metadata[item.key],
-                        instillUiOrder: index,
-                      };
-                    });
-
-                    const newNodes = nodes.map((node) => {
-                      if (node.data.nodeType === "end") {
-                        node.data = {
-                          ...node.data,
-                          component: {
-                            ...node.data.component,
-                            configuration: {
-                              ...node.data.component.configuration,
-                              metadata: newMetadata,
-                            },
+                  const newNodes = nodes.map((node) => {
+                    if (node.data.nodeType === "end") {
+                      node.data = {
+                        ...node.data,
+                        component: {
+                          ...node.data.component,
+                          configuration: {
+                            ...node.data.component.configuration,
+                            metadata: newMetadata,
                           },
-                        };
-                      }
-                      return node;
-                    });
+                        },
+                      };
+                    }
+                    return node;
+                  });
 
-                    updateNodes(() => newNodes);
-                    updatePipelineRecipeIsDirty(() => true);
-                  }
+                  updateNodes(() => newNodes);
+                  updatePipelineRecipeIsDirty(() => true);
                 }
-              }}
-            >
-              <div className="mb-4 flex flex-col gap-y-4">
-                {sortedItems.map((item) => (
-                  <SortableFieldWrapper key={item.key} path={item.key}>
-                    <UserDefinedFieldItem
-                      key={item.key}
-                      fieldKey={item.key}
-                      fieldValue={item.value}
-                      onEditField={onEditField}
-                      onDeleteField={onDeleteField}
-                    />
-                  </SortableFieldWrapper>
-                ))}
-              </div>
-            </VerticalSortableWrapper>
-            <Button
-              className="flex w-full"
-              variant="primary"
-              onClick={() => setEnableEdit(!enableEdit)}
-              disabled={
-                isOwner ? (currentVersion === "latest" ? false : true) : true
               }
-            >
-              <p className="my-auto">Add Field</p>
-              <Icons.Plus
-                className={cn(
-                  "my-auto h-4 w-4",
-                  currentVersion === "latest"
-                    ? "stroke-semantic-bg-primary"
-                    : "stroke-semantic-fg-secondary"
-                )}
-              />
-            </Button>
-          </div>
-        )}
-      </div>
+            }}
+          >
+            <div className="mb-4 flex flex-col gap-y-4">
+              {sortedItems.map((item) => (
+                <SortableFieldWrapper key={item.key} path={item.key}>
+                  <UserDefinedFieldItem
+                    key={item.key}
+                    fieldKey={item.key}
+                    fieldValue={item.value}
+                    onEditField={onEditField}
+                    onDeleteField={onDeleteField}
+                  />
+                </SortableFieldWrapper>
+              ))}
+            </div>
+          </VerticalSortableWrapper>
+          <Button
+            className="flex w-full"
+            variant="primary"
+            onClick={() => setEnableEdit(!enableEdit)}
+            disabled={
+              isOwner ? (currentVersion === "latest" ? false : true) : true
+            }
+          >
+            <p className="my-auto">Add Field</p>
+            <Icons.Plus
+              className={cn(
+                "my-auto h-4 w-4",
+                currentVersion === "latest"
+                  ? "stroke-semantic-bg-primary"
+                  : "stroke-semantic-fg-secondary"
+              )}
+            />
+          </Button>
+        </div>
+      )}
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}
         type="target"

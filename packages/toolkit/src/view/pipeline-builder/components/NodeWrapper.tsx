@@ -7,6 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
 });
 
 export const NodeWrapper = ({
@@ -22,9 +23,8 @@ export const NodeWrapper = ({
   noteIsOpen: boolean;
   note: Nullable<string>;
 }) => {
-  const { updateNodes, updatePipelineRecipeIsDirty } = useInstillStore(
-    useShallow(selector)
-  );
+  const { updateNodes, updatePipelineRecipeIsDirty, selectedConnectorNodeId } =
+    useInstillStore(useShallow(selector));
   const timer = React.useRef<Nullable<number>>(null);
   const [noteValue, setNoteValue] = React.useState(note);
 
@@ -67,7 +67,17 @@ export const NodeWrapper = ({
           }}
         />
       </div>
-      {children}
+      <div
+        className={cn(
+          "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg",
+          {
+            "outline outline-2 outline-offset-1 outline-semantic-accent-default":
+              id === selectedConnectorNodeId,
+          }
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 };

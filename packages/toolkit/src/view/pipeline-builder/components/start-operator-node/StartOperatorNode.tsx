@@ -375,163 +375,159 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       note={data.note}
       noteIsOpen={noteIsOpen}
     >
-      <div className="relative flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg">
-        <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
-          <div className="mr-auto flex flex-row gap-x-2">
-            <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
-              <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
-            </div>
-            <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
-              start
-            </p>
+      <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
+        <div className="mr-auto flex flex-row gap-x-2">
+          <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
+            <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
           </div>
-          <StartEndOperatorControlPanel
-            nodeIsCollapsed={nodeIsCollapsed}
-            setNodeIsCollapsed={setNodeIsCollapsed}
-            handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
-            noteIsOpen={noteIsOpen}
-            componentTypeName="Start"
+          <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
+            start
+          </p>
+        </div>
+        <StartEndOperatorControlPanel
+          nodeIsCollapsed={nodeIsCollapsed}
+          setNodeIsCollapsed={setNodeIsCollapsed}
+          handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
+          noteIsOpen={noteIsOpen}
+          componentTypeName="Start"
+        />
+      </NodeHead>
+      <div className="flex flex-col">
+        {enableEdit ? (
+          <StartOperatorNodeFreeForm
+            form={form}
+            selectedType={selectedType}
+            setSelectedType={setSelectedType}
+            onCreateFreeFormField={onCreateFreeFormField}
+            onCancel={onCancelFreeForm}
           />
-        </NodeHead>
-        <div className="flex flex-col">
-          {enableEdit ? (
-            <StartOperatorNodeFreeForm
-              form={form}
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              onCreateFreeFormField={onCreateFreeFormField}
-              onCancel={onCancelFreeForm}
-            />
-          ) : (
-            <div className="flex flex-col gap-y-3">
-              <Form.Root {...startOperatorTestModeInputForm}>
-                <form
-                  className="w-full"
-                  onSubmit={startOperatorTestModeInputForm.handleSubmit(
-                    onTriggerPipeline
-                  )}
-                >
-                  <VerticalSortableWrapper
-                    // we directly use the key as the id, because the key is guarded
-                    // but our auto-form, it should be always present
-                    items={startOperatorTestModeInputfields.map((e) => ({
-                      key: e.key as string,
-                    }))}
-                    onDragStart={(event) => {
-                      setOnDraggedFieldKey(event.active.id.toString());
-                    }}
-                    onDragEnd={(event) => {
-                      const { active, over } = event;
+        ) : (
+          <div className="flex flex-col gap-y-3">
+            <Form.Root {...startOperatorTestModeInputForm}>
+              <form
+                className="w-full"
+                onSubmit={startOperatorTestModeInputForm.handleSubmit(
+                  onTriggerPipeline
+                )}
+              >
+                <VerticalSortableWrapper
+                  // we directly use the key as the id, because the key is guarded
+                  // but our auto-form, it should be always present
+                  items={startOperatorTestModeInputfields.map((e) => ({
+                    key: e.key as string,
+                  }))}
+                  onDragStart={(event) => {
+                    setOnDraggedFieldKey(event.active.id.toString());
+                  }}
+                  onDragEnd={(event) => {
+                    const { active, over } = event;
 
-                      if (over && active.id !== over.id) {
-                        const oldIndex =
-                          startOperatorTestModeInputfields.findIndex(
-                            (e) => e.key === active.id
-                          );
-                        const newIndex =
-                          startOperatorTestModeInputfields.findIndex(
-                            (e) => e.key === over.id
-                          );
-
-                        const newFieldItems = arrayMove(
-                          startOperatorTestModeInputfields,
-                          oldIndex,
-                          newIndex
+                    if (over && active.id !== over.id) {
+                      const oldIndex =
+                        startOperatorTestModeInputfields.findIndex(
+                          (e) => e.key === active.id
+                        );
+                      const newIndex =
+                        startOperatorTestModeInputfields.findIndex(
+                          (e) => e.key === over.id
                         );
 
-                        if (newFieldItems.length > 0) {
-                          const newMetadata: Record<
-                            string,
-                            StartOperatorInput
-                          > = {};
+                      const newFieldItems = arrayMove(
+                        startOperatorTestModeInputfields,
+                        oldIndex,
+                        newIndex
+                      );
 
-                          newFieldItems.forEach((item, index) => {
-                            if (data.component.configuration.metadata) {
-                              if (item.key) {
-                                newMetadata[item.key] = {
-                                  ...data.component.configuration.metadata[
-                                    item.key
-                                  ],
-                                  instillUiOrder: index,
-                                };
-                              }
-                            }
-                          });
+                      if (newFieldItems.length > 0) {
+                        const newMetadata: Record<string, StartOperatorInput> =
+                          {};
 
-                          const newNodes = nodes.map((node) => {
-                            if (node.data.nodeType === "start") {
-                              node.data = {
-                                ...node.data,
-                                component: {
-                                  ...node.data.component,
-                                  configuration: {
-                                    ...node.data.component.configuration,
-                                    metadata: newMetadata,
-                                  },
-                                },
+                        newFieldItems.forEach((item, index) => {
+                          if (data.component.configuration.metadata) {
+                            if (item.key) {
+                              newMetadata[item.key] = {
+                                ...data.component.configuration.metadata[
+                                  item.key
+                                ],
+                                instillUiOrder: index,
                               };
                             }
-                            return node;
-                          });
+                          }
+                        });
 
-                          updateNodes(() => newNodes);
-                          updatePipelineRecipeIsDirty(() => true);
-                        }
+                        const newNodes = nodes.map((node) => {
+                          if (node.data.nodeType === "start") {
+                            node.data = {
+                              ...node.data,
+                              component: {
+                                ...node.data.component,
+                                configuration: {
+                                  ...node.data.component.configuration,
+                                  metadata: newMetadata,
+                                },
+                              },
+                            };
+                          }
+                          return node;
+                        });
+
+                        updateNodes(() => newNodes);
+                        updatePipelineRecipeIsDirty(() => true);
                       }
-                      setOnDraggedFieldKey(null);
-                    }}
-                  >
-                    <div className="flex flex-col gap-y-4">
-                      {startOperatorTestModeInputfields.map((field) => (
-                        <SortableFieldWrapper
-                          key={field.key}
-                          path={field.key as string}
-                        >
-                          {field}
-                        </SortableFieldWrapper>
-                      ))}
-                    </div>
-                  </VerticalSortableWrapper>
-                  <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">
-                    <Button
-                      type="submit"
-                      variant="secondaryGrey"
-                      size="lg"
-                      className="gap-x-2"
-                      disabled={isTriggering}
-                    >
-                      Run
-                      {isTriggering ? (
-                        <LoadingSpin className="!text-semantic-fg-secondary" />
-                      ) : (
-                        <Icons.Play className="h-4 w-4 stroke-semantic-fg-primary" />
-                      )}
-                    </Button>
+                    }
+                    setOnDraggedFieldKey(null);
+                  }}
+                >
+                  <div className="flex flex-col gap-y-4">
+                    {startOperatorTestModeInputfields.map((field) => (
+                      <SortableFieldWrapper
+                        key={field.key}
+                        path={field.key as string}
+                      >
+                        {field}
+                      </SortableFieldWrapper>
+                    ))}
                   </div>
-                </form>
-              </Form.Root>
-              <Button
-                className="flex w-full flex-1 gap-x-2"
-                variant="tertiaryColour"
-                onClick={() => setEnableEdit(!enableEdit)}
-                disabled={
-                  isOwner ? (currentVersion === "latest" ? false : true) : true
-                }
-                type="button"
-              >
-                <p className="my-auto pt-0.5">Add Field</p>
-                <Icons.Plus
-                  className={cn(
-                    "my-auto h-4 w-4 stroke-semantic-accent-default",
-                    currentVersion === "latest"
-                      ? "stroke-semantic-accent-default"
-                      : "stroke-semantic-fg-secondary"
-                  )}
-                />
-              </Button>
-            </div>
-          )}
-        </div>
+                </VerticalSortableWrapper>
+                <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">
+                  <Button
+                    type="submit"
+                    variant="secondaryGrey"
+                    size="lg"
+                    className="gap-x-2"
+                    disabled={isTriggering}
+                  >
+                    Run
+                    {isTriggering ? (
+                      <LoadingSpin className="!text-semantic-fg-secondary" />
+                    ) : (
+                      <Icons.Play className="h-4 w-4 stroke-semantic-fg-primary" />
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form.Root>
+            <Button
+              className="flex w-full flex-1 gap-x-2"
+              variant="tertiaryColour"
+              onClick={() => setEnableEdit(!enableEdit)}
+              disabled={
+                isOwner ? (currentVersion === "latest" ? false : true) : true
+              }
+              type="button"
+            >
+              <p className="my-auto pt-0.5">Add Field</p>
+              <Icons.Plus
+                className={cn(
+                  "my-auto h-4 w-4 stroke-semantic-accent-default",
+                  currentVersion === "latest"
+                    ? "stroke-semantic-accent-default"
+                    : "stroke-semantic-fg-secondary"
+                )}
+              />
+            </Button>
+          </div>
+        )}
       </div>
       <CustomHandle
         className={hasSourceEdges ? "" : "!opacity-0"}
