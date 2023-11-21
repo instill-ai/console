@@ -126,4 +126,5 @@ export type AutoFormFieldBaseProps = {
   path: string;
   title: string | null;
   description: string | null;
+  size?: "sm";
 };

@@ -1,3 +1,4 @@
+import cn from "clsx";
 import {
   Form,
   Icons,
@@ -7,8 +8,12 @@ import {
 } from "@instill-ai/design-system";
 import * as React from "react";
 import { recursivelyResetFormData } from "../../transform";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
-import { InstillFormTree, SelectedConditionMap } from "../../type";
+import { Nullable } from "../../../type";
+import {
+  AutoFormFieldBaseProps,
+  InstillFormTree,
+  SelectedConditionMap,
+} from "../../type";
 
 export const OneOfConditionField = ({
   form,
@@ -21,20 +26,17 @@ export const OneOfConditionField = ({
   description,
   shortDescription,
   disabled,
+  size,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
   tree: InstillFormTree;
   selectedConditionMap: Nullable<SelectedConditionMap>;
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<Nullable<SelectedConditionMap>>
   >;
   conditionComponentsMap: Record<string, React.ReactNode>;
-  title: Nullable<string>;
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
-}) => {
+} & AutoFormFieldBaseProps) => {
   const [prevSelectedConditionMap, setPrevSelectedConditionMap] =
     React.useState<Nullable<SelectedConditionMap>>(null);
 
@@ -73,7 +75,13 @@ export const OneOfConditionField = ({
           return (
             <Form.Item>
               <div className="flex flex-row gap-x-2">
-                <Form.Label>{title}</Form.Label>
+                <Form.Label
+                  className={
+                    size === "sm" ? "!product-body-text-4-semibold" : ""
+                  }
+                >
+                  {title}
+                </Form.Label>
                 {description ? (
                   <Tooltip.Provider>
                     <Tooltip.Root>
@@ -119,7 +127,12 @@ export const OneOfConditionField = ({
                 disabled={disabled}
               >
                 <Form.Control>
-                  <Select.Trigger className="w-full">
+                  <Select.Trigger
+                    className={cn(
+                      "w-full",
+                      size === "sm" ? "!product-body-text-4-regular" : ""
+                    )}
+                  >
                     <Select.Value />
                   </Select.Trigger>
                 </Form.Control>
@@ -129,7 +142,12 @@ export const OneOfConditionField = ({
                       <Select.Item
                         key={option}
                         value={option}
-                        className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                        className={cn(
+                          "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
+                          size === "sm"
+                            ? "!product-body-text-4-regular"
+                            : "product-body-text-4-regular"
+                        )}
                       >
                         <p className="my-auto">{option}</p>
                       </Select.Item>
@@ -143,7 +161,7 @@ export const OneOfConditionField = ({
           );
         }}
       />
-      <div className="flex flex-col gap-y-5">{conditionComponents}</div>
+      <div className="flex flex-col gap-y-4">{conditionComponents}</div>
     </div>
   );
 };

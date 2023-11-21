@@ -1,6 +1,6 @@
 import { Form, Icons, Switch, Tooltip } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../type";
 import { ParagraphWithHTML } from "@instill-ai/design-system";
+import type { AutoFormFieldBaseProps } from "../../type";
 
 export const BooleanField = ({
   form,
@@ -9,14 +9,11 @@ export const BooleanField = ({
   description,
   shortDescription,
   disabled,
+  size,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
-  title: null | string;
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
-}) => {
+} & AutoFormFieldBaseProps) => {
   return (
     <Form.Field
       key={path}
@@ -26,7 +23,11 @@ export const BooleanField = ({
         return (
           <Form.Item>
             <div className="flex flex-row gap-x-2">
-              <Form.Label>{title}</Form.Label>
+              <Form.Label
+                className={size === "sm" ? "!product-body-text-4-semibold" : ""}
+              >
+                {title}
+              </Form.Label>
               {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
@@ -68,7 +69,10 @@ export const BooleanField = ({
               />
             </Form.Control>
             <Form.Message />
-            <Form.Description text={shortDescription ?? null} />
+            <Form.Description
+              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              text={shortDescription ?? null}
+            />
           </Form.Item>
         );
       }}

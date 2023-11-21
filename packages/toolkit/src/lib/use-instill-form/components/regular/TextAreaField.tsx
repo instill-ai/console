@@ -5,7 +5,7 @@ import {
   Textarea,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../type";
+import { AutoFormFieldBaseProps } from "../../type";
 
 export const TextAreaField = ({
   form,
@@ -14,14 +14,11 @@ export const TextAreaField = ({
   description,
   shortDescription,
   disabled,
+  size,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
-  title: string | null;
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
-}) => {
+} & AutoFormFieldBaseProps) => {
   return (
     <Form.Field
       control={form.control}
@@ -30,7 +27,11 @@ export const TextAreaField = ({
         return (
           <Form.Item>
             <div className="flex flex-row gap-x-2">
-              <Form.Label>{title}</Form.Label>
+              <Form.Label
+                className={size === "sm" ? "!product-body-text-4-semibold" : ""}
+              >
+                {title}
+              </Form.Label>
               {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
@@ -64,6 +65,7 @@ export const TextAreaField = ({
             <Form.Control>
               <Textarea
                 {...field}
+                className={size === "sm" ? "!product-body-text-4-regular" : ""}
                 // At some moment the value maybe a object
                 // For example, { foo: { bar: "baz" } }}}. For foo.bar field
                 // its value is a string But for foo field its value is a object.
@@ -78,7 +80,10 @@ export const TextAreaField = ({
                 disabled={disabled}
               />
             </Form.Control>
-            <Form.Description text={shortDescription ?? null} />
+            <Form.Description
+              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              text={shortDescription ?? null}
+            />
             <Form.Message />
           </Form.Item>
         );

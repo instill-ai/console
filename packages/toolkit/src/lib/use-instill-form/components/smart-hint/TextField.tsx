@@ -17,7 +17,7 @@ import { useFilteredHints } from "./useFilteredHints";
 import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
-import { SmartHintWarning } from "../../type";
+import { AutoFormFieldBaseProps, SmartHintWarning } from "../../type";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 
 export const TextField = ({
@@ -31,18 +31,15 @@ export const TextField = ({
   isRequired,
   instillUpstreamTypes,
   componentID,
+  size,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
-  title: string | null;
   instillAcceptFormats: string[];
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
-}) => {
+} & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
     React.useState(false);
@@ -97,7 +94,11 @@ export const TextField = ({
         return (
           <Form.Item className="w-full">
             <div className="flex flex-row gap-x-2">
-              <Form.Label>{isRequired ? `${title} *` : title}</Form.Label>
+              <Form.Label
+                className={size === "sm" ? "!product-body-text-4-semibold" : ""}
+              >
+                {isRequired ? `${title} *` : title}
+              </Form.Label>
               {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
@@ -149,6 +150,9 @@ export const TextField = ({
                       type="text"
                       value={
                         typeof field.value === "object" ? "" : field.value ?? ""
+                      }
+                      className={
+                        size === "sm" ? "!product-body-text-4-regular" : ""
                       }
                       autoComplete="off"
                       onChange={(e) => {
@@ -246,7 +250,10 @@ export const TextField = ({
                 )}
               </Popover.Content>
             </Popover.Root>
-            <Form.Description text={shortDescription ?? null} />
+            <Form.Description
+              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              text={shortDescription ?? null}
+            />
             <Form.Message />
           </Form.Item>
         );

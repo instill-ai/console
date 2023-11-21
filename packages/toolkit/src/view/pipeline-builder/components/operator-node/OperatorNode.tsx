@@ -15,7 +15,9 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../lib";
 import {
+  CheckIsHidden,
   InstillStore,
+  Nullable,
   useInstillForm,
   useInstillStore,
   validateComponentID,
@@ -64,10 +66,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       nodeID: id,
     });
   }, [id, reset]);
-
-  const { inputSchema, outputSchema } = React.useMemo(() => {
-    return getOperatorInputOutputSchema(data.component);
-  }, [data.component]);
 
   function handleRename(newID: string) {
     if (newID === id) {
@@ -232,33 +230,79 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
-  console.log(data);
+  // We need to put this function into a useCallback to prevent infinite loop
+  const checkIsHidden: CheckIsHidden = React.useCallback(
+    ({ parentSchema, targetKey }) => {
+      if (!parentSchema) {
+        return false;
+      }
+
+      if (!parentSchema.instillEditOnNodeFields) {
+        return false;
+      }
+
+      if (!targetKey) {
+        return false;
+      }
+
+      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
+        return false;
+      }
+
+      return true;
+    },
+    []
+  );
 
   const { fields, form } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
-    {}
-    // {
-    //   checkIsHidden: ({ parentSchema, targetKey }) => {
-    //     if (!parentSchema) {
-    //       return false;
-    //     }
-
-    //     if (!parentSchema.instillEditOnNodeFields) {
-    //       return false;
-    //     }
-
-    //     if (!targetKey) {
-    //       return false;
-    //     }
-
-    //     if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
-    //       return false;
-    //     }
-
-    //     return true;
-    //   },
-    // }
+    data.component.configuration,
+    {
+      checkIsHidden,
+      size: "sm",
+    }
   );
+
+  const {
+    getValues,
+    formState: { isDirty, isValid },
+    handleSubmit,
+  } = form;
+
+  const values = getValues();
+
+  React.useEffect(() => {
+    if (!isDirty || !isValid) return;
+    const timer = setTimeout(() => {
+      handleSubmit(() => {
+        updateNodes((nodes) => {
+          return nodes.map((node) => {
+            if (node.data.nodeType === "operator" && node.id === id) {
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  component: {
+                    ...node.data.component,
+                    configuration: {
+                      ...node.data.component.configuration,
+                      ...values,
+                    },
+                  },
+                },
+              };
+            }
+
+            return node;
+          });
+        });
+        updatePipelineRecipeIsDirty(() => true);
+      })();
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [values, isDirty, isValid]);
 
   return (
     <NodeWrapper
