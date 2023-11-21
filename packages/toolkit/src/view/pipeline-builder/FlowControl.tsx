@@ -14,7 +14,7 @@ import {
 import {
   ReleasePipelineModal,
   PipelineToolkitModal,
-  SelectConnectorResourceDialog,
+  SelectPipelineComponentDefinitionDialog,
   CreateResourceDialog,
 } from "./components";
 import { triggerPipelineSnippets } from "./components/triggerPipelineSnippets";
@@ -26,6 +26,7 @@ import {
   InstillAppEnv,
   InstillStore,
   Nullable,
+  OperatorDefinition,
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
   env,
@@ -304,7 +305,10 @@ export const FlowControl = (props: FlowControlProps) => {
   }, [currentVersion, pipelineRecipeIsDirty]);
 
   function constructNode(
-    resource: ConnectorResourceWithDefinition | ConnectorDefinition
+    resource:
+      | ConnectorResourceWithDefinition
+      | ConnectorDefinition
+      | OperatorDefinition
   ) {
     if (!reactFlowInstance) return;
 
@@ -327,6 +331,8 @@ export const FlowControl = (props: FlowControlProps) => {
         })
       : edges;
 
+    // Construct the default component ID prefix. For example, if the definition
+    // is `connector-definitions/instill-ai`, the prefix will be `instill_ai`
     let nodePrefix: Nullable<string> = null;
 
     if ("connector_definition" in resource) {
@@ -339,92 +345,118 @@ export const FlowControl = (props: FlowControlProps) => {
       );
     }
 
+    // Generate a new component index
     const nodeIndex = generateNewComponentIndex(
       nodes.map((e) => e.id),
       nodePrefix
     );
 
-    let configuration: Nullable<GeneralRecord> = null;
-
-    switch (resource.type) {
-      case "CONNECTOR_TYPE_AI": {
-        configuration = {};
-        componentType = "COMPONENT_TYPE_CONNECTOR_AI";
-        break;
-      }
-      case "CONNECTOR_TYPE_BLOCKCHAIN": {
-        configuration = {};
-        componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
-        break;
-      }
-      case "CONNECTOR_TYPE_DATA": {
-        configuration = {};
-        componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
-        break;
-      }
-
-      case "CONNECTOR_TYPE_OPERATOR": {
-        configuration = {};
-        componentType = "COMPONENT_TYPE_OPERATOR";
-        break;
-      }
-    }
-
     const nodeID = `${nodePrefix}_${nodeIndex}`;
 
-    if (!componentType) {
-      throw new Error("Component type is not defined");
-    }
+    let configuration: Nullable<GeneralRecord> = null;
 
-    if ("configuration" in resource) {
-      // Create a new array to let reactflow rerender the component
-      newNodes = [
-        ...newNodes,
-        {
-          id: nodeID,
-          type: "connectorNode",
-          sourcePosition: Position.Left,
-          targetPosition: Position.Right,
-          data: {
-            nodeType: "connector",
-            component: {
-              id: nodeID,
-              resource_name: resource.name,
-              resource: {
-                ...resource,
-                connector_definition: null,
+    // Process the connectors
+    if ("type" in resource) {
+      switch (resource.type) {
+        case "CONNECTOR_TYPE_AI": {
+          configuration = {};
+          componentType = "COMPONENT_TYPE_CONNECTOR_AI";
+          break;
+        }
+        case "CONNECTOR_TYPE_BLOCKCHAIN": {
+          configuration = {};
+          componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+          break;
+        }
+        case "CONNECTOR_TYPE_DATA": {
+          configuration = {};
+          componentType = "COMPONENT_TYPE_CONNECTOR_DATA";
+          break;
+        }
+      }
+
+      if (!componentType) {
+        throw new Error("Component type is not defined");
+      }
+
+      if ("configuration" in resource) {
+        // Create a new array to let reactflow rerender the component
+        newNodes = [
+          ...newNodes,
+          {
+            id: nodeID,
+            type: "connectorNode",
+            sourcePosition: Position.Left,
+            targetPosition: Position.Right,
+            data: {
+              nodeType: "connector",
+              component: {
+                id: nodeID,
+                resource_name: resource.name,
+                resource: {
+                  ...resource,
+                  connector_definition: null,
+                },
+                definition_name: resource.connector_definition.name,
+                configuration: configuration ? configuration : {},
+                type: componentType,
+                connector_definition: resource.connector_definition,
               },
-              definition_name: resource.connector_definition.name,
-              configuration: configuration ? configuration : {},
-              type: componentType,
-              connector_definition: resource.connector_definition,
+              note: null,
             },
-            note: null,
+            position: reactFlowInstance.project({
+              x: viewport.x,
+              y: viewport.y,
+            }),
           },
-          position: reactFlowInstance.project({
-            x: viewport.x,
-            y: viewport.y,
-          }),
-        },
-      ];
+        ];
+      } else {
+        // Create a new array to let reactflow rerender the component
+        newNodes = [
+          ...newNodes,
+          {
+            id: nodeID,
+            type: "connectorNode",
+            sourcePosition: Position.Left,
+            targetPosition: Position.Right,
+            data: {
+              nodeType: "connector",
+              component: {
+                id: nodeID,
+                resource_name: null,
+                resource: null,
+                definition_name: resource.name,
+                type: componentType,
+                connector_definition: resource,
+                configuration: configuration ? configuration : {},
+              },
+              note: null,
+            },
+            position: reactFlowInstance.project({
+              x: viewport.x,
+              y: viewport.y,
+            }),
+          },
+        ];
+      }
     } else {
-      // Create a new array to let reactflow rerender the component
+      // Process the operators
       newNodes = [
         ...newNodes,
         {
           id: nodeID,
-          type: "connectorNode",
+          type: "operatorNode",
           sourcePosition: Position.Left,
           targetPosition: Position.Right,
           data: {
-            nodeType: "connector",
+            nodeType: "operator",
             component: {
               id: nodeID,
               resource_name: null,
               resource: null,
               definition_name: resource.name,
-              type: componentType,
-              connector_definition: resource,
+              type: "COMPONENT_TYPE_OPERATOR",
+              operator_definition: resource,
               configuration: configuration ? configuration : {},
             },
             note: null,
@@ -438,7 +470,6 @@ export const FlowControl = (props: FlowControlProps) => {
     }
 
     updatePipelineRecipeIsDirty(() => true);
-
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updateSelectResourceDialogIsOpen(() => false);
@@ -567,7 +598,7 @@ export const FlowControl = (props: FlowControlProps) => {
       </div>
       <div className="absolute left-8 top-8 flex flex-row gap-x-4">
         {isOwner ? (
-          <SelectConnectorResourceDialog
+          <SelectPipelineComponentDefinitionDialog
             enableQuery={enableQuery}
             open={selectResourceDialogIsOpen}
             onOpenChange={(open) =>

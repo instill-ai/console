@@ -15,6 +15,7 @@ export * from "./LinkButton";
 export * from "./Logos";
 export * from "./ParagraphWithHTML";
 export * from "./Popover";
+export * from "./Progress";
 export * from "./ScrollArea";
 export * from "./Select";
 export * from "./Skeleton";

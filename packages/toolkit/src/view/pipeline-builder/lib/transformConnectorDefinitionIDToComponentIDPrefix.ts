@@ -1,7 +1,5 @@
-export function transformConnectorDefinitionIDToComponentIDPrefix(
-  connectorID: string
-) {
-  return connectorID
+export function transformConnectorDefinitionIDToComponentIDPrefix(id: string) {
+  return id
     .split("-")
     .filter((item) => {
       if (
@@ -9,7 +7,8 @@ export function transformConnectorDefinitionIDToComponentIDPrefix(
         item === "data" ||
         item === "destination" ||
         item === "airbyte" ||
-        item === "blockchain"
+        item === "blockchain" ||
+        item === "op"
       ) {
         return false;
       }

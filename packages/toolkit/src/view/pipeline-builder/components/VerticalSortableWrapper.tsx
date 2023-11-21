@@ -2,6 +2,8 @@ import * as React from "react";
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
+  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   closestCenter,
@@ -11,7 +13,7 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
 type SortableItem = {
@@ -22,29 +24,30 @@ export const VerticalSortableWrapper = ({
   onDragEnd,
   children,
   items,
+  onDragOver,
+  onDragStart,
 }: {
   onDragEnd: (event: DragEndEvent) => void;
+  onDragStart?: (event: DragStartEvent) => void;
+  onDragOver?: (event: DragOverEvent) => void;
   children: React.ReactNode;
   items: SortableItem[];
 }) => {
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const sensors = useSensors(useSensor(PointerSensor));
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={onDragEnd}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
       modifiers={[restrictToVerticalAxis]}
       autoScroll={false}
     >
       <SortableContext
+        strategy={verticalListSortingStrategy}
         items={items.map((item) => ({ id: item.key }))}
-        // strategy={verticalListSortingStrategy}
       >
         {children}
       </SortableContext>

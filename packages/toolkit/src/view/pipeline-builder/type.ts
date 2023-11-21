@@ -6,6 +6,7 @@ import {
   PipelineEndComponent,
   PipelineRecipe,
   PipelineStartComponent,
+  PipelineOperatorComponent,
 } from "../../lib";
 
 export type ConnectorNodeData = {
@@ -32,11 +33,18 @@ export type EndNodeData = {
   note: Nullable<string>;
 };
 
+export type OperatorNodeData = {
+  nodeType: "operator";
+  component: PipelineOperatorComponent;
+  note: Nullable<string>;
+};
+
 export type NodeData =
   | ConnectorNodeData
   | EmptyNodeData
   | StartNodeData
-  | EndNodeData;
+  | EndNodeData
+  | OperatorNodeData;
 
 export type PipelineComponentReference =
   | DoubleCurlyBraceReference
