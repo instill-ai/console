@@ -1,8 +1,6 @@
-import cn from "clsx";
 import * as React from "react";
-import * as z from "zod";
 import { Node, NodeProps, Position } from "reactflow";
-import { Icons, LinkButton, useToast } from "@instill-ai/design-system";
+import { Icons, useToast } from "@instill-ai/design-system";
 
 import {
   ConnectorNodeData,
@@ -14,6 +12,8 @@ import {
   extractReferencesFromConfiguration,
   getConnectorInputOutputSchema,
   composeEdgesFromReferences,
+  transformConnectorDefinitionIDToComponentIDPrefix,
+  generateNewComponentIndex,
 } from "../../lib";
 import {
   InstillStore,
@@ -22,7 +22,6 @@ import {
   validateComponentID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
-import { ConnectorNodeControlPanel } from "./ConnectorNodeControlPanel";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
@@ -33,6 +32,7 @@ import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { TaskNotSelectedWarning } from "./TaskNotSelectedWarning";
+import { ConnectorOperatorControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -41,14 +41,9 @@ const selector = (store: InstillStore) => ({
   edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
-  testModeEnabled: store.testModeEnabled,
   testModeTriggerResponse: store.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
-});
-
-const UpdateNodeIdSchema = z.object({
-  nodeId: z.string().nullable().optional(),
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -59,7 +54,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     edges,
     updateNodes,
     updateEdges,
-    testModeEnabled,
     testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
@@ -214,30 +208,20 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   }, [edges, id]);
 
   function handleCopyNode() {
-    const nodeIndex =
-      nodes.filter((node) => node.data.component?.type === data.component.type)
-        .length + 1;
-
-    let nodePrefix: Nullable<string> = null;
-
-    switch (data.component.connector_definition?.type) {
-      case "CONNECTOR_TYPE_AI": {
-        nodePrefix = "ai";
-        break;
-      }
-      case "CONNECTOR_TYPE_BLOCKCHAIN": {
-        nodePrefix = "blockchain";
-        break;
-      }
-      case "CONNECTOR_TYPE_DATA": {
-        nodePrefix = "data";
-        break;
-      }
-      case "CONNECTOR_TYPE_OPERATOR": {
-        nodePrefix = "operator";
-        break;
-      }
+    if (!data.component.connector_definition) {
+      return;
     }
+
+    const nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
+      data.component.connector_definition.id
+    );
+
+    // Generate a new component index
+    const nodeIndex = generateNewComponentIndex(
+      nodes.map((e) => e.id),
+      nodePrefix
+    );
+
     const nodeID = `${nodePrefix}_${nodeIndex}`;
 
     const newNodes: Node<NodeData>[] = [
@@ -323,7 +307,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             handleRename={handleRename}
           />
         </div>
-        <ConnectorNodeControlPanel
+        <ConnectorOperatorControlPanel
           componentType={data.component.type}
           handleEditNode={() =>
             updateSelectedConnectorNodeId((prev) => {
@@ -335,7 +319,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           }
           handleCopyNode={handleCopyNode}
           handleDeleteNode={handleDeleteNode}
-          testModeEnabled={testModeEnabled}
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen((prev) => !prev)}

@@ -41,7 +41,7 @@ export const OperatorSection = ({
                   }}
                 >
                   <ImageWithFallback
-                    src={`/icons/operator/${definition.icon}`}
+                    src={`/icons/instill-ai/${definition.icon}`}
                     width={32}
                     height={32}
                     alt={`${definition.title}-icon`}

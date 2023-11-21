@@ -25,6 +25,7 @@ import {
   Nullable,
   useInstillStore,
 } from "../../lib";
+import { OperatorNode } from "./components";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -53,6 +54,7 @@ const nodeTypes = {
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,
+  operatorNode: OperatorNode,
 };
 
 const edgeTypes = {

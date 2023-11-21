@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Icons, Tooltip } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
@@ -8,20 +8,20 @@ import {
 } from "../../../../lib";
 import { NodeDropdownMenu } from "../NodeDropdownMenu";
 import { useShallow } from "zustand/react/shallow";
+import { ControlPanel } from "./ControlPanel";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
 });
 
-export const ConnectorNodeControlPanel = ({
+export const ConnectorOperatorControlPanel = ({
   componentType,
   handleDeleteNode,
   handleCopyNode,
   handleEditNode,
   nodeIsCollapsed,
   setNodeIsCollapsed,
-  testModeEnabled,
   handleToggleNote,
   noteIsOpen,
 }: {
@@ -31,7 +31,6 @@ export const ConnectorNodeControlPanel = ({
   handleEditNode: () => void;
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-  testModeEnabled: boolean;
   handleToggleNote: () => void;
   noteIsOpen: boolean;
 }) => {
@@ -51,92 +50,20 @@ export const ConnectorNodeControlPanel = ({
     case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
       componentTypeName = "Blockchain Component";
       break;
+    case "COMPONENT_TYPE_OPERATOR":
+      componentTypeName = "Operator Component";
+      break;
   }
 
   return (
-    <div className="flex flex-row gap-x-3">
-      <Tooltip.Provider>
-        <Tooltip.Root>
-          <Tooltip.Trigger asChild>
-            {/* 
-              eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            */}
-            <span className="flex" tabIndex={0}>
-              <Button
-                className="!my-auto !px-1 !py-1 hover:!bg-semantic-bg-secondary"
-                variant="tertiaryGrey"
-                size="sm"
-                disabled={false}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setNodeIsCollapsed(!nodeIsCollapsed);
-                }}
-              >
-                {nodeIsCollapsed ? (
-                  <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
-                ) : (
-                  <Icons.Minus className="h-4 w-4 stroke-semantic-fg-secondary" />
-                )}
-              </Button>
-            </span>
-          </Tooltip.Trigger>
-          <Tooltip.Portal>
-            <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
-              {`${nodeIsCollapsed ? "Expand" : "Collapse"} component`}
-              <Tooltip.Arrow
-                className="fill-semantic-bg-primary"
-                offset={10}
-                width={9}
-                height={6}
-              />
-            </Tooltip.Content>
-          </Tooltip.Portal>
-        </Tooltip.Root>
-      </Tooltip.Provider>
-
-      {/* 
-        Control - open right panel
-      */}
-
-      <Tooltip.Provider>
-        <Tooltip.Root>
-          <Tooltip.Trigger asChild>
-            {/* 
-              eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            */}
-            <span className="flex" tabIndex={0}>
-              <Button
-                className="!my-auto !px-1 !py-1 hover:!bg-semantic-bg-secondary"
-                variant="tertiaryGrey"
-                size="sm"
-                disabled={testModeEnabled}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEditNode();
-                }}
-              >
-                <Icons.Gear01 className="h-4 w-4 stroke-semantic-fg-secondary" />
-              </Button>
-            </span>
-          </Tooltip.Trigger>
-          <Tooltip.Portal>
-            <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
-              Open configuration right panel
-              <Tooltip.Arrow
-                className="fill-semantic-bg-primary"
-                offset={10}
-                width={9}
-                height={6}
-              />
-            </Tooltip.Content>
-          </Tooltip.Portal>
-        </Tooltip.Root>
-      </Tooltip.Provider>
-
-      {/* 
-        Control - more options
-      */}
-
+    <ControlPanel.Root>
+      <ControlPanel.Toggle
+        isCollapsed={nodeIsCollapsed}
+        onTrigger={() => {
+          setNodeIsCollapsed(!nodeIsCollapsed);
+        }}
+      />
+      <ControlPanel.Configure onTrigger={handleEditNode} />
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}
@@ -185,6 +112,6 @@ export const ConnectorNodeControlPanel = ({
           </p>
         </NodeDropdownMenu.Item>
       </NodeDropdownMenu.Root>
-    </div>
+    </ControlPanel.Root>
   );
 };
