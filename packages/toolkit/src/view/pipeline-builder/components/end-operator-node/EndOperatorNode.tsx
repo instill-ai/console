@@ -25,8 +25,8 @@ import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
-import { StartEndOperatorControlPanel } from "../StartEndOperatorControlPanel";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
+import { StartEndOperatorControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
