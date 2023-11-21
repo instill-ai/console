@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { getConnectorDefinitionQuery } from "../../vdp-sdk";
+import { getOperatorDefinitionQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useConnectorDefinition = ({
-  connectorDefinitionName,
+export const useOperatorDefinition = ({
+  operatorDefinitionName,
   accessToken,
   enabled,
   retry,
 }: {
-  connectorDefinitionName: Nullable<string>;
+  operatorDefinitionName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -19,29 +19,27 @@ export const useConnectorDefinition = ({
 }) => {
   let enableQuery = false;
 
-  if (connectorDefinitionName && enabled) {
+  if (operatorDefinitionName && enabled) {
     enableQuery = true;
   }
 
   return useQuery(
-    ["connector-definitions", connectorDefinitionName],
+    ["operator-definitions", operatorDefinitionName],
     async () => {
-      if (!connectorDefinitionName) {
-        return Promise.reject(
-          new Error("connectorDefinitionName not provided")
-        );
+      if (!operatorDefinitionName) {
+        return Promise.reject(new Error("operatorDefinitionName not provided"));
       }
 
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const connectorDefinition = await getConnectorDefinitionQuery({
-        connectorDefinitionName,
+      const operatorDefinition = await getOperatorDefinitionQuery({
+        operatorDefinitionName,
         accessToken,
       });
 
-      return Promise.resolve(connectorDefinition);
+      return Promise.resolve(operatorDefinition);
     },
     {
       enabled: enableQuery,

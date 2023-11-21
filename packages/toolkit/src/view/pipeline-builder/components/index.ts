@@ -8,6 +8,6 @@ export * from "./EmptyNode";
 export * from "./end-operator-node/EndOperatorNode";
 export * from "./PipelineNameForm";
 export * from "./ReleasePipelineModal";
-export * from "./SelectConnectorResourceDialog";
-export * from "./start-node";
+export * from "./select-component-definition-dialog";
+export * from "./start-operator-node";
 export * from "./PipelineToolkitModal";

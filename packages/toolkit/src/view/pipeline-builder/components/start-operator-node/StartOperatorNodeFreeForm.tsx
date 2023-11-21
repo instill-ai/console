@@ -11,11 +11,7 @@ import {
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
-import {
-  Nullable,
-  StartOperatorInputType,
-  validateComponentID,
-} from "../../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../lib";
 
 export const StartOperatorFreeFormSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),

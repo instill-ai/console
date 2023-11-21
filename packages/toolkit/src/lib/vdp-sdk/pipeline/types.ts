@@ -137,6 +137,16 @@ export type PipelineStartComponent = {
   } & GeneralRecord;
 };
 
+export type PipelineOperatorComponent = {
+  id: string;
+  resource_name: Nullable<string>;
+  resource: Nullable<ConnectorResource>;
+  type: PipelineComponentType;
+  definition_name: string;
+  operator_definition: Nullable<OperatorDefinition>;
+  configuration: GeneralRecord;
+};
+
 export type PipelineEndComponent = {
   id: "end";
   resource_name: Nullable<string>;
@@ -144,7 +154,7 @@ export type PipelineEndComponent = {
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
-  configuration: Record<string, Record<string, any>>;
+  configuration: Record<string, GeneralRecord>;
 };
 
 export type PipelineConnectorComponent = {
@@ -154,7 +164,7 @@ export type PipelineConnectorComponent = {
   type: PipelineComponentType;
   definition_name: string;
   connector_definition: Nullable<ConnectorDefinition>;
-  configuration: Record<string, any>;
+  configuration: GeneralRecord;
 };
 
 export type PipelineComponent =

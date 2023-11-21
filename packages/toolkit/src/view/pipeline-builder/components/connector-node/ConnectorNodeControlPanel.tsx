@@ -51,9 +51,6 @@ export const ConnectorNodeControlPanel = ({
     case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
       componentTypeName = "Blockchain Component";
       break;
-    case "COMPONENT_TYPE_OPERATOR":
-      componentTypeName = "Operator";
-      break;
   }
 
   return (

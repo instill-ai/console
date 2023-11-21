@@ -2,18 +2,18 @@ import { OpenAPIV3 } from "openapi-types";
 import {
   InstillJSONSchema,
   Nullable,
-  PipelineConnectorComponent,
+  PipelineOperatorComponent,
 } from "../../../lib";
 import { JSONSchema7 } from "json-schema";
 
-export function getConnectorInputOutputSchema(
-  component: PipelineConnectorComponent
+export function getOperatorInputOutputSchema(
+  component: PipelineOperatorComponent
 ) {
   let inputSchema: Nullable<InstillJSONSchema> = null;
   let outputSchema: Nullable<InstillJSONSchema> = null;
 
   // Sometime the component don't have complete data (Like the response of mutating the pipeline)
-  if (!component.connector_definition) {
+  if (!component.operator_definition) {
     return { outputSchema, inputSchema };
   }
 
@@ -26,7 +26,7 @@ export function getConnectorInputOutputSchema(
     inputSchema = (
       (
         (
-          component?.connector_definition?.spec.openapi_specifications[
+          component?.operator_definition?.spec.openapi_specifications[
             component.configuration.task
           ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
         ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
@@ -36,7 +36,7 @@ export function getConnectorInputOutputSchema(
       (
         (
           (
-            component?.connector_definition?.spec.openapi_specifications[
+            component?.operator_definition?.spec.openapi_specifications[
               component.configuration.task
             ].paths["/execute"]?.post?.responses[
               "200"
@@ -46,13 +46,13 @@ export function getConnectorInputOutputSchema(
       ).properties?.outputs as OpenAPIV3.ArraySchemaObject
     ).items as InstillJSONSchema;
   } else if (
-    component.connector_definition.spec.component_specification.oneOf &&
-    component.connector_definition.spec.component_specification.oneOf.length > 0
+    component.operator_definition.spec.component_specification.oneOf &&
+    component.operator_definition.spec.component_specification.oneOf.length > 0
   ) {
     const defaultTask =
       ((
         (
-          component.connector_definition.spec.component_specification
+          component.operator_definition.spec.component_specification
             .oneOf[0] as JSONSchema7
         )?.properties?.task as JSONSchema7
       )?.const as string) ?? null;
@@ -64,7 +64,7 @@ export function getConnectorInputOutputSchema(
     inputSchema = (
       (
         (
-          component?.connector_definition?.spec.openapi_specifications[
+          component?.operator_definition?.spec.openapi_specifications[
             defaultTask
           ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
         ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
@@ -74,7 +74,7 @@ export function getConnectorInputOutputSchema(
       (
         (
           (
-            component?.connector_definition?.spec.openapi_specifications[
+            component?.operator_definition?.spec.openapi_specifications[
               defaultTask
             ].paths["/execute"]?.post?.responses[
               "200"
