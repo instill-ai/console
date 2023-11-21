@@ -21,10 +21,7 @@ import {
   useInstillStore,
   validateComponentID,
 } from "../../../../lib";
-import {
-  AutoresizeInputWrapper,
-  ImageWithFallback,
-} from "../../../../components";
+import { ImageWithFallback } from "../../../../components";
 import { ConnectorNodeControlPanel } from "./ConnectorNodeControlPanel";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { OutputProperties } from "./OutputProperties";
