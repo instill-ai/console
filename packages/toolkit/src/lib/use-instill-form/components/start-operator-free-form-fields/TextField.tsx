@@ -41,7 +41,7 @@ export const TextField = ({
                 />
               </Input.Root>
             </Form.Control>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

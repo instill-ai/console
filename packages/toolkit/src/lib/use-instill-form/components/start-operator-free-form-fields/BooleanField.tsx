@@ -20,7 +20,7 @@ export const BooleanField = ({
       name={path}
       render={({ field }) => {
         return (
-          <Form.Item>
+          <Form.Item className="w-full">
             <FieldHead
               title={title}
               path={path}
@@ -30,7 +30,7 @@ export const BooleanField = ({
             <Form.Control>
               <Switch checked={field.value} onCheckedChange={field.onChange} />
             </Form.Control>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

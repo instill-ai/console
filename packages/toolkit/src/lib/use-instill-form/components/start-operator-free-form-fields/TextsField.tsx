@@ -129,7 +129,7 @@ export const TextsField = ({
                 Add field
               </button>
             </div>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

@@ -38,7 +38,7 @@ export const TextareaField = ({
                 className="!resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
               />
             </Form.Control>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

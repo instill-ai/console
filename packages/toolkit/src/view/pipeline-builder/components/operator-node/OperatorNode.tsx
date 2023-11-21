@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons, useToast } from "@instill-ai/design-system";
 
 import {
   NodeData,
@@ -16,6 +16,7 @@ import {
 } from "../../lib";
 import {
   InstillStore,
+  useInstillForm,
   useInstillStore,
   validateComponentID,
 } from "../../../../lib";
@@ -25,6 +26,7 @@ import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -62,6 +64,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       nodeID: id,
     });
   }, [id, reset]);
+
+  const { inputSchema, outputSchema } = React.useMemo(() => {
+    return getOperatorInputOutputSchema(data.component);
+  }, [data.component]);
 
   function handleRename(newID: string) {
     if (newID === id) {
@@ -226,6 +232,34 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
+  console.log(data);
+
+  const { fields, form } = useInstillForm(
+    data.component.operator_definition?.spec.component_specification ?? null,
+    {}
+    // {
+    //   checkIsHidden: ({ parentSchema, targetKey }) => {
+    //     if (!parentSchema) {
+    //       return false;
+    //     }
+
+    //     if (!parentSchema.instillEditOnNodeFields) {
+    //       return false;
+    //     }
+
+    //     if (!targetKey) {
+    //       return false;
+    //     }
+
+    //     if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
+    //       return false;
+    //     }
+
+    //     return true;
+    //   },
+    // }
+  );
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -271,7 +305,11 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         />
       </NodeHead>
 
-      {nodeIsCollapsed ? null : <></>}
+      {nodeIsCollapsed ? null : (
+        <Form.Root {...form}>
+          <form>{fields}</form>
+        </Form.Root>
+      )}
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}
         type="target"

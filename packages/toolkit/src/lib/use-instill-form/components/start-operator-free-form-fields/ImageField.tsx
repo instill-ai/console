@@ -48,7 +48,7 @@ export const ImageField = ({
                 />
               )}
             </div>
-            <div className="flex flex-row-reverse gap-x-1">
+            <div className="flex flex-row gap-x-1">
               <Form.Control>
                 <label
                   htmlFor={`op-start-${path}`}
@@ -82,7 +82,7 @@ export const ImageField = ({
                 }}
               />
             ) : null}
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

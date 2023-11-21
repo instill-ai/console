@@ -47,26 +47,22 @@ export const SortableFieldWrapper = ({
       style={style}
       key={path}
       className={cn(
-        "nodrag group flex cursor-default flex-row gap-x-2 bg-semantic-bg-base-bg",
+        "nodrag group relative flex cursor-default flex-row gap-x-2 bg-semantic-bg-base-bg",
         isDragging ? "z-10" : ""
       )}
     >
-      <div className="my-auto flex">
-        <button
-          {...listeners}
-          ref={setActivatorNodeRef}
-          className="h-4 w-4 opacity-0 group-hover:opacity-100"
-          type="button"
-        >
-          <ComplicateIcons.Drag
-            className="h-4 w-4"
-            fillAreaColor="fill-semantic-node-connector-off"
-          />
-        </button>
-      </div>
+      <button
+        {...listeners}
+        ref={setActivatorNodeRef}
+        className="absolute left-0 top-1/2 h-4 w-4 -translate-x-3 -translate-y-1/2 opacity-0 group-hover:opacity-100"
+        type="button"
+      >
+        <ComplicateIcons.Drag
+          className="h-4 w-4"
+          fillAreaColor="fill-semantic-node-connector-off"
+        />
+      </button>
       <div className="flex w-full">{children}</div>
-      {/* Placeholder */}
-      <div className="flex h-4 w-4 flex-shrink-0"></div>
     </div>
   );
 };
