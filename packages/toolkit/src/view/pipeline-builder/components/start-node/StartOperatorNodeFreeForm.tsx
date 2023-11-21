@@ -17,22 +17,10 @@ import {
   validateComponentID,
 } from "../../../../lib";
 
-export const StartOperatorFreeFormSchema = z
-  .object({
-    title: z.string().min(1, { message: "Title is required" }),
-    key: z.string().min(1, { message: "Key is required" }),
-    description: z.string().optional(),
-  })
-  .superRefine((val, ctx) => {
-    if (!validateComponentID(val.key)) {
-      return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
-        path: ["key"],
-      });
-    }
-  });
+export const StartOperatorFreeFormSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  description: z.string().optional(),
+});
 
 export const StartOperatorNodeFreeForm = ({
   form,
@@ -182,37 +170,13 @@ export const StartOperatorNodeFreeForm = ({
                       />
                     </Input.Root>
                   </Form.Control>
+                  <Form.Description text="The key of this field will be automatically generated. The title will be lowercase, all the special characters will be removed and the spaces will be replaced with underscore" />
                   <Form.Message />
                 </Form.Item>
               );
             }}
           />
-          <Form.Field
-            control={form.control}
-            name="key"
-            render={({ field }) => {
-              return (
-                <Form.Item>
-                  <Form.Label className="!font-sans !text-base !font-semibold">
-                    Key
-                  </Form.Label>
-                  <Form.Control className="h-8">
-                    <Input.Root className="!px-[9px] !py-1.5">
-                      <Input.Core
-                        {...field}
-                        type="text"
-                        value={field.value ?? ""}
-                        autoComplete="off"
-                        className="!h-5 !text-sm"
-                        placeholder="text_prompt"
-                      />
-                    </Input.Root>
-                  </Form.Control>
-                  <Form.Message />
-                </Form.Item>
-              );
-            }}
-          />
+
           <Form.Field
             control={form.control}
             name="description"
