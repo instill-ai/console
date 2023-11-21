@@ -8,8 +8,8 @@ import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
-import { PageBase } from "@instill-ai/toolkit";
-import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import { PageBase, PermissionTable } from "@instill-ai/toolkit";
+import { Breadcrumb, Button, Logo, Separator } from "@instill-ai/design-system";
 
 const PermissionsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
@@ -33,7 +33,26 @@ const PermissionsPage: NextPageWithLayout = () => {
         <div className="w-1/6">
           <OrganizationSidebar />
         </div>
-        <div className="w-5/6">permission</div>
+        <div className="w-5/6">
+          <div className="w-full">
+            <p className="product-body-text-1-semibold">Permission Groups</p>
+            <Separator className="my-6" />
+          </div>
+          <div className="w-full">
+            <PermissionTable
+              permissions={[{}, {}]}
+              isError={false}
+              isLoading={false}
+              accessToken={accessToken}
+              enableQuery={true}
+            />
+          </div>
+          <div className="flex justify-end my-3">
+            <Button variant="primary" size="lg">
+              Save Changes
+            </Button>
+          </div>
+        </div>
       </div>
     </React.Fragment>
   );
