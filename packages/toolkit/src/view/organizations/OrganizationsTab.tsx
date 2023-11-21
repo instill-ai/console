@@ -42,7 +42,7 @@ export const OrganizationsTab = (props: OrganizationsTabProps) => {
           <div className="flex w-full flex-row">
             <div className="flex w-3/4 gap-x-3">
               <div className="my-auto">
-                <Link href={`/organization/open-ai/settings`}>
+                <Link href={`/organization/open-ai`}>
                   <Button variant="secondaryGrey" size="lg" className="!p-3.5">
                     <Logos.OpenAI className="h-7 w-7" />
                   </Button>
@@ -50,7 +50,7 @@ export const OrganizationsTab = (props: OrganizationsTabProps) => {
               </div>
 
               <div className="my-auto">
-                <Link href={`/organization/open-ai/settings`}>
+                <Link href={`/organization/open-ai`}>
                   <p className="text-semantic-fg-primary product-body-text-2-semibold">
                     Open AI
                   </p>
