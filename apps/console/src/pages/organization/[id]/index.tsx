@@ -88,7 +88,7 @@ const OrganizationPage: NextPageWithLayout = () => {
             </div>
             <div className="flex flex-row gap-x-4">
               <div className="flex flex-row gap-x-2">
-                <Icons.AlertCircle className="h-3 w-3 stroke-slate-800 my-auto" />
+                <Icons.Globe01 className="h-3 w-3 stroke-slate-800 my-auto" />
                 <p className="product-button-button-3 !lowercase my-auto">
                   www.openai.com
                 </p>
