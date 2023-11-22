@@ -2,7 +2,7 @@ import cn from "clsx";
 import * as React from "react";
 import { InstillFormTree, SelectedConditionMap } from "../type";
 import { RegularFields } from "../components";
-import { GeneralUseFormReturn } from "../../type";
+import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
@@ -32,7 +32,13 @@ export function pickRegularFieldsFromInstillFormTree(
   const componentID = options?.componentID ?? "";
   const size = options?.size;
 
-  let title = tree.title ?? tree.fieldKey ?? null;
+  let title: Nullable<string> = null;
+
+  if (!title || title === "") {
+    title = tree.fieldKey ?? null;
+  } else {
+    title = tree.title ?? null;
+  }
 
   if (chooseTitleFrom === "key") {
     title = tree.fieldKey ?? null;
