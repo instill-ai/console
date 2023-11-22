@@ -32,8 +32,8 @@ export const StabilityAI = React.forwardRef<
           y2="50"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.119792" stop-color="#9F43FF" />
-          <stop offset="0.838542" stop-color="#A26DFF" />
+          <stop offset="0.119792" stopColor="#9F43FF" />
+          <stop offset="0.838542" stopColor="#A26DFF" />
         </linearGradient>
       </defs>
     </LogoBase>

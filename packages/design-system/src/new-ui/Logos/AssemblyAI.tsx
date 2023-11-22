@@ -44,7 +44,7 @@ export const AssemblyAI = React.forwardRef<
           gradientTransform="translate(25.0283 18.5006) rotate(112.412) scale(34.2732 23.395)"
         >
           <stop stopColor="#142167" />
-          <stop offset="1" stop-color="#263DB5" />
+          <stop offset="1" stopColor="#263DB5" />
         </radialGradient>
         <radialGradient
           id="paint1_radial_463_107"
@@ -55,7 +55,7 @@ export const AssemblyAI = React.forwardRef<
           gradientTransform="translate(46.6637 21.4142) rotate(132.41) scale(31.8128 111.308)"
         >
           <stop stopColor="#4259D4" />
-          <stop offset="1" stop-color="#6A81FC" />
+          <stop offset="1" stopColor="#6A81FC" />
         </radialGradient>
       </defs>
     </LogoBase>
