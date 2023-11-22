@@ -1,4 +1,4 @@
-export * from "./validateResourceId";
+export * from "./validateInstillID";
 export * from "./getHumanReadableStringFromTime";
 export * from "./config";
 export * from "./handle";
@@ -10,4 +10,3 @@ export * from "./generateRandomReadableName";
 export * from "./getCanvasTextWidth";
 export * from "./chunk";
 export * from "./removeObjKey";
-export * from "./validateComponentID";

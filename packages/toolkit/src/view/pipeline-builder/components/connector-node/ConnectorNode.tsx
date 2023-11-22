@@ -17,9 +17,8 @@ import {
 } from "../../lib";
 import {
   InstillStore,
-  Nullable,
   useInstillStore,
-  validateComponentID,
+  validateInstillID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
@@ -123,10 +122,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return;
     }
 
-    if (!validateComponentID(newID)) {
+    if (!validateInstillID(newID)) {
       toast({
         title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
         variant: "alert-error",
         size: "small",
       });
