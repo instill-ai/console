@@ -42,6 +42,7 @@ import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilterLines } from "./FilterLines";
 import { Gear01 } from "./Gear01";
+import { Globe01 } from "./Globe01";
 import { HelpCircle } from "./HelpCircle";
 import { IntersectSquare } from "./IntersectSquare";
 import { Link01 } from "./Link01";
@@ -123,6 +124,7 @@ export const Icons = {
   FilePlus01,
   FilterLines,
   Gear01,
+  Globe01,
   HelpCircle,
   IntersectSquare,
   Link01,
