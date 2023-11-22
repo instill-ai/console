@@ -6,3 +6,4 @@ export * from "./UsersCard";
 export * from "./PermissionTable";
 export * from "./PermissionTablePlaceholder";
 export * from "./TeamMembersCard";
+export * from "./CreateOrganizationDialog";

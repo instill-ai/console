@@ -4,7 +4,6 @@ import {
   InstillJSONSchema,
   PageBase,
   PipelineListPageMainView,
-  Topbar,
   useInstillForm,
 } from "@instill-ai/toolkit";
 import { Form, Logo } from "@instill-ai/design-system";
