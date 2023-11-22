@@ -33,26 +33,6 @@ export const SmartHintInfoCard = ({
   return (
     <div className={cn("flex w-full flex-col", className)}>
       <div className="flex flex-col gap-y-4 p-2">
-        {isRequired ? (
-          <div className="flex flex-row gap-x-2">
-            {field.value && field.value !== "" ? (
-              <Icons.CheckCircle className="my-auto h-4 w-4 stroke-semantic-success-default" />
-            ) : (
-              <Icons.AlertCircle className="my-auto h-4 w-4 stroke-semantic-warning-default" />
-            )}
-
-            <p
-              className={cn(
-                "my-auto product-body-text-3-semibold",
-                field.value && field.value !== ""
-                  ? "text-semantic-success-default"
-                  : "text-semantic-warning-default"
-              )}
-            >
-              required
-            </p>
-          </div>
-        ) : null}
         {instillAcceptFormats.length > 0 ? (
           <div className="flex flex-row gap-x-2">
             <div className="pt-0.5">

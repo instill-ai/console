@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import { GeneralUseFormReturn } from "../../../type";
+import { AutoFormFieldBaseProps } from "../../type";
 
 export const CredentialTextField = ({
   form,
@@ -15,17 +16,15 @@ export const CredentialTextField = ({
   description,
   shortDescription,
   disabled,
+  size,
+  isHidden,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
-  title: string | null;
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
-}) => {
+} & AutoFormFieldBaseProps) => {
   const [isMasked, setIsMasked] = React.useState(false);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -34,7 +33,11 @@ export const CredentialTextField = ({
         return (
           <Form.Item>
             <div className="flex flex-row gap-x-2">
-              <Form.Label>{title}</Form.Label>
+              <Form.Label
+                className={size === "sm" ? "!product-body-text-4-semibold" : ""}
+              >
+                {title}
+              </Form.Label>
               {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
@@ -69,6 +72,9 @@ export const CredentialTextField = ({
               <Input.Root>
                 <Input.Core
                   {...field}
+                  className={
+                    size === "sm" ? "!product-body-text-4-regular" : ""
+                  }
                   type="text"
                   value={
                     typeof field.value === "object" ? "" : field.value ?? ""
@@ -93,8 +99,13 @@ export const CredentialTextField = ({
                 />
               </Input.Root>
             </Form.Control>
-            <Form.Description text={shortDescription ?? null} />
-            <Form.Message />
+            <Form.Description
+              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              text={shortDescription ?? null}
+            />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

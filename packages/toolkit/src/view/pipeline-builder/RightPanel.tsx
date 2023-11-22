@@ -5,19 +5,24 @@ import { DataComponentAutoForm } from "../data";
 import { AIComponentAutoForm } from "../ai";
 import { BlockchainComponentAutoForm } from "../blockchain";
 import { InstillStore, useInstillStore } from "../../lib";
+import { OperatorComponentAutoForm } from "../pipeline/OperatorComponentAutoForm";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  selectedConnectorNodeId: store.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export const RightPanel = () => {
-  const { nodes, selectedConnectorNodeId, updateSelectedConnectorNodeId } =
-    useInstillStore(useShallow(selector));
+  const {
+    nodes,
+    currentAdvancedConfigurationNodeID,
+    updateCurrentAdvancedConfigurationNodeID,
+  } = useInstillStore(useShallow(selector));
 
   const selectedConnectorNode = nodes.find(
-    (node) => node.id === selectedConnectorNodeId
+    (node) => node.id === currentAdvancedConfigurationNodeID
   );
 
   return (
@@ -32,7 +37,7 @@ export const RightPanel = () => {
           size="md"
           type="button"
           onClick={() => {
-            updateSelectedConnectorNodeId(() => null);
+            updateCurrentAdvancedConfigurationNodeID(() => null);
           }}
         >
           <Icons.X className="h-4 w-4 stroke-semantic-fg-primary" />
@@ -60,10 +65,23 @@ export const RightPanel = () => {
           "COMPONENT_TYPE_CONNECTOR_AI" ? (
           <AIComponentAutoForm
             configuration={selectedConnectorNode.data.component.configuration}
-            connectorDefinition={
+            definition={
               selectedConnectorNode.data.component.connector_definition
             }
-            componentID={selectedConnectorNodeId ?? undefined}
+            componentID={currentAdvancedConfigurationNodeID ?? undefined}
+          />
+        ) : null}
+        {selectedConnectorNode &&
+        selectedConnectorNode.data.nodeType === "operator" &&
+        selectedConnectorNode.data.component.operator_definition &&
+        selectedConnectorNode.data.component.type ===
+          "COMPONENT_TYPE_OPERATOR" ? (
+          <OperatorComponentAutoForm
+            configuration={selectedConnectorNode.data.component.configuration}
+            definition={
+              selectedConnectorNode.data.component.operator_definition
+            }
+            componentID={currentAdvancedConfigurationNodeID ?? undefined}
           />
         ) : null}
         {selectedConnectorNode &&
@@ -73,10 +91,10 @@ export const RightPanel = () => {
           "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ? (
           <BlockchainComponentAutoForm
             configuration={selectedConnectorNode.data.component.configuration}
-            connectorDefinition={
+            definition={
               selectedConnectorNode.data.component.connector_definition
             }
-            componentID={selectedConnectorNodeId ?? undefined}
+            componentID={currentAdvancedConfigurationNodeID ?? undefined}
           />
         ) : null}
         {selectedConnectorNode &&
@@ -88,10 +106,10 @@ export const RightPanel = () => {
           "Airbyte" ? (
             <DataComponentAutoForm
               configuration={selectedConnectorNode.data.component.configuration}
-              connectorDefinition={
+              definition={
                 selectedConnectorNode.data.component.connector_definition
               }
-              componentID={selectedConnectorNodeId ?? undefined}
+              componentID={currentAdvancedConfigurationNodeID ?? undefined}
             />
           ) : null
         ) : null}

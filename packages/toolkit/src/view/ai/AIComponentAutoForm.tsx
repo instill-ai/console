@@ -15,7 +15,7 @@ import { ResourceComponentForm } from "../resource";
 import { useShallow } from "zustand/react/shallow";
 
 export type AIComponentAutoFormProps = {
-  connectorDefinition: ConnectorDefinition;
+  definition: ConnectorDefinition;
   configuration: GeneralRecord;
   disabledAll?: boolean;
   componentID?: string;

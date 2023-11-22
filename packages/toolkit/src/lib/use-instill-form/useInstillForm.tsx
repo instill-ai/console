@@ -21,6 +21,7 @@ export type UseInstillFormOptions = {
   checkIsHidden?: CheckIsHidden;
   enableSmartHint?: boolean;
   componentID?: string;
+  size?: "sm";
 } & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
@@ -33,6 +34,7 @@ export function useInstillForm(
   const checkIsHidden = options?.checkIsHidden ?? undefined;
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
+  const size = options?.size;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -88,7 +90,7 @@ export function useInstillForm(
       : _data;
 
     setInitialValues(_defaultValues);
-  }, [schema, checkIsHidden, data, form]);
+  }, [schema, checkIsHidden, data, form, setSelectedConditionMap]);
 
   // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {
@@ -123,6 +125,7 @@ export function useInstillForm(
         chooseTitleFrom,
         enableSmartHint,
         componentID,
+        size,
       }
     );
 
@@ -135,6 +138,7 @@ export function useInstillForm(
     disabledAll,
     chooseTitleFrom,
     enableSmartHint,
+    componentID,
   ]);
 
   return {

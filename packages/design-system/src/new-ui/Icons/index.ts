@@ -1,5 +1,6 @@
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
+import { AlighLeft } from "./AlighLeft";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowDown } from "./ArrowDown";
 import { ArrowLeft } from "./ArrowLeft";
@@ -37,8 +38,11 @@ import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
+import { FileMinus01 } from "./FileMinus01";
+import { FilePlus01 } from "./FilePlus01";
 import { FilterLines } from "./FilterLines";
 import { Gear01 } from "./Gear01";
+import { Globe01 } from "./Globe01";
 import { HelpCircle } from "./HelpCircle";
 import { IntersectSquare } from "./IntersectSquare";
 import { Link01 } from "./Link01";
@@ -46,6 +50,7 @@ import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { InfoCircle } from "./InfoCircle";
 import { Image01 } from "./Image01";
+import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
 import { LayersTwo01 } from "./LayersTwo01";
 import { Model } from "./Model";
@@ -77,6 +82,7 @@ import { X } from "./X";
 export const Icons = {
   AlertCircle,
   AlertTriangle,
+  AlighLeft,
   ArrowUp,
   ArrowDown,
   ArrowLeft,
@@ -114,8 +120,11 @@ export const Icons = {
   Edit05,
   File04,
   File05,
+  FileMinus01,
+  FilePlus01,
   FilterLines,
   Gear01,
+  Globe01,
   HelpCircle,
   IntersectSquare,
   Link01,
@@ -123,6 +132,7 @@ export const Icons = {
   LockUnlocked03,
   InfoCircle,
   Image01,
+  ImagePlus,
   Logout01,
   LayersTwo01,
   Model,

@@ -24,7 +24,7 @@ export const useConnectorDefinition = ({
   }
 
   return useQuery(
-    ["connector-definition", connectorDefinitionName],
+    ["connector-definitions", connectorDefinitionName],
     async () => {
       if (!connectorDefinitionName) {
         return Promise.reject(

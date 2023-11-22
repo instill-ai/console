@@ -12,6 +12,8 @@ import {
   PipelineComponentReference,
   SingleCurlyBraceReference,
 } from "../type";
+import { InstillJSONSchema, Nullable } from "../../../lib";
+import { getOperatorInputOutputSchema } from "./getOperatorInputOutputSchema";
 
 export function composeEdgesFromReferences(
   references: PipelineComponentReference[],
@@ -41,9 +43,24 @@ export function composeEdgesFromReferences(
 
     if (node.data.nodeType === "end") return;
 
-    const { inputSchema, outputSchema } = getConnectorInputOutputSchema(
-      node.data.component
-    );
+    let inputSchema: Nullable<InstillJSONSchema> = null;
+    let outputSchema: Nullable<InstillJSONSchema> = null;
+
+    if (node.data.nodeType === "operator") {
+      const {
+        inputSchema: operatorInputSchema,
+        outputSchema: operatorOutputSchema,
+      } = getOperatorInputOutputSchema(node.data.component);
+      inputSchema = operatorInputSchema;
+      outputSchema = operatorOutputSchema;
+    } else {
+      const {
+        inputSchema: connectorInputSchema,
+        outputSchema: connectorOutputSchema,
+      } = getConnectorInputOutputSchema(node.data.component);
+      inputSchema = connectorInputSchema;
+      outputSchema = connectorOutputSchema;
+    }
 
     let inputProperties: InstillAIOpenAPIProperty[] = [];
     let outputProperties: InstillAIOpenAPIProperty[] = [];

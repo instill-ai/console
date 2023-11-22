@@ -13,8 +13,8 @@ import {
   CustomEdge,
   ConnectorNode,
   EmptyNode,
-  EndNode,
-  StartNode,
+  EndOperatorNode,
+  StartOperatorNode,
   BackToLatestVersionTopBar,
 } from "./components";
 import { FlowControl } from "./FlowControl";
@@ -25,6 +25,7 @@ import {
   Nullable,
   useInstillStore,
 } from "../../lib";
+import { OperatorNode } from "./components";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -35,6 +36,8 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   testModeEnabled: store.testModeEnabled,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export type FlowProps = {
@@ -49,10 +52,11 @@ export type FlowProps = {
 };
 
 const nodeTypes = {
-  startNode: StartNode,
+  startNode: StartOperatorNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
-  endNode: EndNode,
+  endNode: EndOperatorNode,
+  operatorNode: OperatorNode,
 };
 
 const edgeTypes = {
@@ -78,6 +82,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       updatePipelineRecipeIsDirty,
       testModeEnabled,
       updateSelectedConnectorNodeId,
+      updateCurrentAdvancedConfigurationNodeID,
     } = useInstillStore(useShallow(selector));
 
     return (
@@ -134,6 +139,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               }}
               onPaneClick={() => {
                 updateSelectedConnectorNodeId(() => null);
+                updateCurrentAdvancedConfigurationNodeID(() => null);
               }}
               // snapGrid={[32, 32]}
               // snapToGrid={true}
@@ -141,7 +147,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               fitView={true}
               fitViewOptions={{
                 includeHiddenNodes: true,
-                maxZoom: 0.8,
+                maxZoom: 2,
                 padding: 20,
               }}
               nodeTypes={nodeTypes}

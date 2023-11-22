@@ -25,7 +25,7 @@ import {
   useBuildAirbyteYup,
   useCreateUserConnectorResource,
   useUpdateUserConnectorResource,
-  validateResourceId,
+  validateInstillID,
 } from "../../lib";
 import {
   recursiveReplaceNullAndEmptyStringWithUndefined,
@@ -149,10 +149,10 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     let stripValues = {} as { configuration: AirbyteFieldValues };
 
     // We don't validate the rest of the field if the ID is incorrect
-    if (!validateResourceId(fieldValues.id as string)) {
+    if (!validateInstillID(fieldValues.id as string)) {
       setFieldErrors((prev) => ({
         ...prev,
-        id: "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum.",
+        id: "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
       }));
       return;
     }
