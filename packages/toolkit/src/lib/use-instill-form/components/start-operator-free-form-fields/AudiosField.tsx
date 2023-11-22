@@ -11,6 +11,7 @@ export const AudiosField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -18,7 +19,7 @@ export const AudiosField = ({
   const [audioFileURLs, setAudioFileURLs] =
     React.useState<Nullable<string[]>>(null);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}

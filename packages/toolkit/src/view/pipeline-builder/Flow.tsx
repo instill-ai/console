@@ -36,6 +36,8 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   testModeEnabled: store.testModeEnabled,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export type FlowProps = {
@@ -80,6 +82,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       updatePipelineRecipeIsDirty,
       testModeEnabled,
       updateSelectedConnectorNodeId,
+      updateCurrentAdvancedConfigurationNodeID,
     } = useInstillStore(useShallow(selector));
 
     return (
@@ -136,6 +139,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               }}
               onPaneClick={() => {
                 updateSelectedConnectorNodeId(() => null);
+                updateCurrentAdvancedConfigurationNodeID(() => null);
               }}
               // snapGrid={[32, 32]}
               // snapToGrid={true}

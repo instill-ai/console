@@ -32,6 +32,7 @@ export const TextArea = ({
   instillUpstreamTypes,
   componentID,
   size,
+  isHidden,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -86,7 +87,7 @@ export const TextArea = ({
   const supportTemplate = instillUpstreamTypes.includes("template");
   const supportReference = instillUpstreamTypes.includes("reference");
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -252,7 +253,9 @@ export const TextArea = ({
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
             />
-            <Form.Message />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

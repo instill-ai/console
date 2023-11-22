@@ -17,13 +17,14 @@ export const CredentialTextField = ({
   shortDescription,
   disabled,
   size,
+  isHidden,
 }: {
   shortDescription?: string;
   disabled?: boolean;
 } & AutoFormFieldBaseProps) => {
   const [isMasked, setIsMasked] = React.useState(false);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -102,7 +103,9 @@ export const CredentialTextField = ({
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
             />
-            <Form.Message />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

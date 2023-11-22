@@ -8,7 +8,7 @@ import {
   Popover,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { Nullable } from "../../../type";
 import { useInstillStore } from "../../../use-instill-store";
 
 import { useFormContext } from "react-hook-form";
@@ -32,6 +32,7 @@ export const TextField = ({
   instillUpstreamTypes,
   componentID,
   size,
+  isHidden,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -85,7 +86,7 @@ export const TextField = ({
   const supportTemplate = instillUpstreamTypes.includes("template");
   const supportReference = instillUpstreamTypes.includes("reference");
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -254,7 +255,9 @@ export const TextField = ({
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
             />
-            <Form.Message />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

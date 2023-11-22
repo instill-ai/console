@@ -23,7 +23,6 @@ import {
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
-import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
@@ -33,6 +32,7 @@ import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { TaskNotSelectedWarning } from "./TaskNotSelectedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { ComponentOutputs } from "../ComponentOutputs";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -473,14 +473,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           !dataTaskNotSelected &&
           !resourceNotCreated &&
           !enableEdit ? (
-            <div className="flex flex-col">
-              <div className="mb-1 product-body-text-4-medium">output</div>
-              <OutputProperties
-                component={data.component}
-                outputSchema={outputSchema}
-                traces={testModeTriggerResponse?.metadata?.traces ?? null}
-              />
-            </div>
+            <ComponentOutputs
+              componentID={data.component.id}
+              outputSchema={outputSchema}
+              traces={testModeTriggerResponse?.metadata?.traces ?? null}
+            />
           ) : null}
 
           <div className="flex flex-row-reverse">

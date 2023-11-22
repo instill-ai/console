@@ -9,11 +9,12 @@ export const TextareaField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}

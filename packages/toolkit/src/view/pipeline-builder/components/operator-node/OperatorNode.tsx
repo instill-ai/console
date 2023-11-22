@@ -17,7 +17,6 @@ import {
 import {
   CheckIsHidden,
   InstillStore,
-  Nullable,
   useInstillForm,
   useInstillStore,
   validateComponentID,
@@ -28,6 +27,8 @@ import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
+import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
@@ -39,6 +40,7 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  testModeTriggerResponse: store.testModeTriggerResponse,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -50,6 +52,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
+    testModeTriggerResponse,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -254,12 +257,17 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     []
   );
 
+  const { outputSchema } = React.useMemo(() => {
+    return getOperatorInputOutputSchema(data.component);
+  }, [data]);
+
   const { fields, form } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {
-      checkIsHidden,
       size: "sm",
+      enableSmartHint: true,
+      checkIsHidden,
     }
   );
 
@@ -272,7 +280,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   const values = getValues();
 
   React.useEffect(() => {
-    if (!isDirty || !isValid) return;
+    if (!isDirty || !isValid) {
+      return;
+    }
+
     const timer = setTimeout(() => {
       handleSubmit(() => {
         updateNodes((nodes) => {
@@ -350,10 +361,24 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       </NodeHead>
 
       {nodeIsCollapsed ? null : (
-        <Form.Root {...form}>
-          <form>{fields}</form>
-        </Form.Root>
+        <>
+          <div className="mb-4">
+            <Form.Root {...form}>
+              <form>{fields}</form>
+            </Form.Root>
+          </div>
+          <div className="mb-2 flex flex-row-reverse">
+            <OpenAdvancedConfigurationButton id={id} disabled={!isValid} />
+          </div>
+
+          <ComponentOutputs
+            componentID={data.component.id}
+            outputSchema={outputSchema}
+            traces={testModeTriggerResponse?.metadata?.traces ?? null}
+          />
+        </>
       )}
+
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}
         type="target"

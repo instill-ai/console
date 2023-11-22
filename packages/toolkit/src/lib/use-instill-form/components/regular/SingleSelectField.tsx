@@ -17,12 +17,13 @@ export const SingleSelectField = ({
   shortDescription,
   disabled,
   size,
+  isHidden,
 }: {
   options: string[];
   shortDescription?: string;
   disabled?: boolean;
 } & AutoFormFieldBaseProps) => {
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -103,7 +104,9 @@ export const SingleSelectField = ({
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
             />
-            <Form.Message />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

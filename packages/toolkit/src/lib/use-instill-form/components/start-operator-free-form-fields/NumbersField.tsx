@@ -10,6 +10,7 @@ export const NumbersField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -22,7 +23,7 @@ export const NumbersField = ({
     (string | undefined)[]
   >([""]);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}

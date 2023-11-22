@@ -10,11 +10,12 @@ export const BooleanField = ({
   shortDescription,
   disabled,
   size,
+  isHidden,
 }: {
   shortDescription?: string;
   disabled?: boolean;
 } & AutoFormFieldBaseProps) => {
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -68,10 +69,13 @@ export const BooleanField = ({
                 disabled={disabled}
               />
             </Form.Control>
-            <Form.Message />
+
             <Form.Description
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
+            />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
             />
           </Form.Item>
         );

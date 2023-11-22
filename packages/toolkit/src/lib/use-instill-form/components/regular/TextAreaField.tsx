@@ -15,11 +15,12 @@ export const TextAreaField = ({
   shortDescription,
   disabled,
   size,
+  isHidden,
 }: {
   shortDescription?: string;
   disabled?: boolean;
 } & AutoFormFieldBaseProps) => {
-  return (
+  return isHidden ? null : (
     <Form.Field
       control={form.control}
       name={path}
@@ -84,7 +85,9 @@ export const TextAreaField = ({
               className={size === "sm" ? "!product-body-text-4-regular" : ""}
               text={shortDescription ?? null}
             />
-            <Form.Message />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

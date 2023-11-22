@@ -38,10 +38,6 @@ export function pickRegularFieldsFromInstillFormTree(
     title = tree.fieldKey ?? null;
   }
 
-  if (tree.isHidden) {
-    return null;
-  }
-
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey}>
@@ -131,6 +127,7 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         description={tree.description ?? null}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -164,6 +161,7 @@ export function pickRegularFieldsFromInstillFormTree(
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -180,6 +178,7 @@ export function pickRegularFieldsFromInstillFormTree(
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -200,6 +199,7 @@ export function pickRegularFieldsFromInstillFormTree(
           instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
           componentID={componentID}
           size={size}
+          isHidden={tree.isHidden}
         />
       );
     }
@@ -214,6 +214,7 @@ export function pickRegularFieldsFromInstillFormTree(
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -229,6 +230,7 @@ export function pickRegularFieldsFromInstillFormTree(
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -248,6 +250,7 @@ export function pickRegularFieldsFromInstillFormTree(
         instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
         componentID={componentID}
         size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -262,6 +265,7 @@ export function pickRegularFieldsFromInstillFormTree(
       shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
       size={size}
+      isHidden={tree.isHidden}
     />
   );
 }

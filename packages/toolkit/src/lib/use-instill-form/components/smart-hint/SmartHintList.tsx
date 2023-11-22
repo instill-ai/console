@@ -40,7 +40,12 @@ export const SmartHintList = ({
 }) => {
   return (
     <ScrollArea.Root viewPortRef={smartHintsScrollAreaViewportRef}>
-      <div className="flex !h-[224px] flex-col gap-y-2">
+      <div
+        className={cn(
+          "flex !max-h-[224px] flex-col gap-y-2",
+          enableSmartHints ? "h-[224px]" : "p-4"
+        )}
+      >
         {enableSmartHints ? (
           filteredHints.length > 0 ? (
             filteredHints.map((hint, index) => {

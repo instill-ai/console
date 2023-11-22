@@ -12,13 +12,14 @@ export const ImageField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
