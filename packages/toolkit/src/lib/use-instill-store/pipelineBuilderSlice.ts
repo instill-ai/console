@@ -36,6 +36,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   selectedConnectorNodeId: null,
   connectorFormIsDirty: false,
   selectResourceDialogIsOpen: false,
+  currentAdvancedConfigurationNodeID: null,
   expandAllNodes: false,
   testModeEnabled: false,
   testModeTriggerResponse: null,
@@ -141,6 +142,17 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         selectedConnectorNodeId: fn(state.selectedConnectorNodeId),
+      };
+    }),
+  updateCurrentAdvancedConfigurationNodeID: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentAdvancedConfigurationNodeID: fn(
+          state.currentAdvancedConfigurationNodeID
+        ),
       };
     }),
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) =>

@@ -16,7 +16,7 @@ import {
 import { ResourceComponentForm } from "../resource";
 
 export type BlockchainComponentAutoFormProps = {
-  connectorDefinition: ConnectorDefinition;
+  definition: ConnectorDefinition;
   configuration: GeneralRecord;
   disabledAll?: boolean;
   componentID?: string;

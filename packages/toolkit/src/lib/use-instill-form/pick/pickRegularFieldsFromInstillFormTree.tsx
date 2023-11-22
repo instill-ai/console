@@ -1,3 +1,4 @@
+import cn from "clsx";
 import * as React from "react";
 import { InstillFormTree, SelectedConditionMap } from "../type";
 import { RegularFields } from "../components";
@@ -12,6 +13,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   chooseTitleFrom?: "title" | "key";
   enableSmartHint?: boolean;
   componentID?: string;
+  size?: "sm";
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -28,6 +30,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
+  const size = options?.size;
 
   let title = tree.title ?? tree.fieldKey ?? null;
 
@@ -35,28 +38,35 @@ export function pickRegularFieldsFromInstillFormTree(
     title = tree.fieldKey ?? null;
   }
 
-  if (tree.isHidden) {
-    return null;
-  }
-
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
-      <div
-        key={tree.path || tree.fieldKey}
-        className="flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-5"
-      >
-        <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+      <div key={tree.path || tree.fieldKey}>
+        <p
+          className={cn(
+            "mb-2 text-semantic-fg-primary",
+            size === "sm"
+              ? "product-body-text-4-medium"
+              : "product-body-text-3-medium"
+          )}
+        >
           {tree.fieldKey || tree.path}
         </p>
-        {tree.properties.map((property) => {
-          return pickRegularFieldsFromInstillFormTree(
-            property,
-            form,
-            selectedConditionMap,
-            setSelectedConditionMap,
-            options
-          );
-        })}
+        <div
+          className={cn(
+            "flex flex-col gap-y-4 border border-semantic-bg-line",
+            size === "sm" ? "rounded p-2" : "rounded-sm p-4"
+          )}
+        >
+          {tree.properties.map((property) => {
+            return pickRegularFieldsFromInstillFormTree(
+              property,
+              form,
+              selectedConditionMap,
+              setSelectedConditionMap,
+              options
+            );
+          })}
+        </div>
       </div>
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
@@ -115,6 +125,9 @@ export function pickRegularFieldsFromInstillFormTree(
         title={title}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
+        description={tree.description ?? null}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -144,9 +157,11 @@ export function pickRegularFieldsFromInstillFormTree(
         path={tree.path}
         title={title}
         form={form}
-        description={tree.description}
+        description={tree.description ?? null}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -159,9 +174,11 @@ export function pickRegularFieldsFromInstillFormTree(
         form={form}
         title={title}
         options={tree.enum}
-        description={tree.description}
+        description={tree.description ?? null}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -174,13 +191,15 @@ export function pickRegularFieldsFromInstillFormTree(
           path={tree.path}
           form={form}
           title={title}
-          description={tree.description}
+          description={tree.description ?? null}
           shortDescription={tree.instillShortDescription}
           disabled={disabledAll}
           instillAcceptFormats={tree.instillAcceptFormats ?? []}
           isRequired={tree.isRequired}
           instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
           componentID={componentID}
+          size={size}
+          isHidden={tree.isHidden}
         />
       );
     }
@@ -191,9 +210,11 @@ export function pickRegularFieldsFromInstillFormTree(
         path={tree.path}
         form={form}
         title={title}
-        description={tree.description}
+        description={tree.description ?? null}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -205,9 +226,11 @@ export function pickRegularFieldsFromInstillFormTree(
         path={tree.path}
         form={form}
         title={title}
-        description={tree.description}
+        description={tree.description ?? null}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -219,13 +242,15 @@ export function pickRegularFieldsFromInstillFormTree(
         path={tree.path}
         form={form}
         title={title}
-        description={tree.description}
+        description={tree.description ?? null}
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         instillAcceptFormats={tree.instillAcceptFormats ?? []}
         isRequired={tree.isRequired}
         instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
         componentID={componentID}
+        size={size}
+        isHidden={tree.isHidden}
       />
     );
   }
@@ -236,9 +261,11 @@ export function pickRegularFieldsFromInstillFormTree(
       path={tree.path}
       form={form}
       title={title}
-      description={tree.description}
+      description={tree.description ?? null}
       shortDescription={tree.instillShortDescription}
       disabled={disabledAll}
+      size={size}
+      isHidden={tree.isHidden}
     />
   );
 }

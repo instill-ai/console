@@ -11,6 +11,7 @@ export const AudiosField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -18,14 +19,14 @@ export const AudiosField = ({
   const [audioFileURLs, setAudioFileURLs] =
     React.useState<Nullable<string[]>>(null);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
       name={path}
       render={({ field }) => {
         return (
-          <Form.Item className="!w-[232px]">
+          <Form.Item className="w-full">
             <div className="flex flex-row justify-between">
               <FieldHead
                 title={title}
@@ -76,7 +77,7 @@ export const AudiosField = ({
                 />
               </Input.Root>
             </Form.Control>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

@@ -1,3 +1,4 @@
+import cn from "clsx";
 import {
   Form,
   Icons,
@@ -5,7 +6,7 @@ import {
   Select,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../type";
+import { AutoFormFieldBaseProps } from "../../type";
 
 export const SingleSelectField = ({
   form,
@@ -15,16 +16,14 @@ export const SingleSelectField = ({
   description,
   shortDescription,
   disabled,
+  size,
+  isHidden,
 }: {
-  form: GeneralUseFormReturn;
-  path: string;
-  title: string | null;
   options: string[];
-  description?: string;
   shortDescription?: string;
   disabled?: boolean;
-}) => {
-  return (
+} & AutoFormFieldBaseProps) => {
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -33,7 +32,9 @@ export const SingleSelectField = ({
         return (
           <Form.Item>
             <div className="flex flex-row gap-x-2">
-              <Form.Label>{title}</Form.Label>
+              <Form.Label className={size === "sm" ? "!text-sm" : ""}>
+                {title}
+              </Form.Label>
               {description ? (
                 <Tooltip.Provider>
                   <Tooltip.Root>
@@ -73,7 +74,11 @@ export const SingleSelectField = ({
             >
               <Form.Control>
                 <Select.Trigger className="w-full">
-                  <Select.Value />
+                  <Select.Value
+                    className={
+                      size === "sm" ? "!product-body-text-4-semibold" : ""
+                    }
+                  />
                 </Select.Trigger>
               </Form.Control>
               <Select.Content>
@@ -82,7 +87,12 @@ export const SingleSelectField = ({
                     <Select.Item
                       key={option}
                       value={option}
-                      className="my-auto text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                      className={cn(
+                        "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
+                        size === "sm"
+                          ? "!product-body-text-4-regular"
+                          : "product-body-text-3-regular"
+                      )}
                     >
                       <p className="my-auto">{option}</p>
                     </Select.Item>
@@ -90,8 +100,13 @@ export const SingleSelectField = ({
                 })}
               </Select.Content>
             </Select.Root>
-            <Form.Description text={shortDescription ?? null} />
-            <Form.Message />
+            <Form.Description
+              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              text={shortDescription ?? null}
+            />
+            <Form.Message
+              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+            />
           </Form.Item>
         );
       }}

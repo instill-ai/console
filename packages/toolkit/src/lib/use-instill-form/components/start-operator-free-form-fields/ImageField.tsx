@@ -12,13 +12,14 @@ export const ImageField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -48,7 +49,7 @@ export const ImageField = ({
                 />
               )}
             </div>
-            <div className="flex flex-row-reverse gap-x-1">
+            <div className="flex flex-row gap-x-1">
               <Form.Control>
                 <label
                   htmlFor={`op-start-${path}`}
@@ -82,7 +83,7 @@ export const ImageField = ({
                 }}
               />
             ) : null}
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

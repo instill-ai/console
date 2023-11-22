@@ -12,13 +12,14 @@ export const ImagesField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -59,7 +60,7 @@ export const ImagesField = ({
                     />
                   ))}
             </div>
-            <div className="flex flex-row-reverse gap-x-1">
+            <div className="flex flex-row gap-x-1">
               <Form.Control>
                 <label
                   htmlFor={`op-start-${path}`}
@@ -103,8 +104,8 @@ export const ImagesField = ({
               ) : null}
             </div>
             {imageFiles.length > 0 ? (
-              <ScrollArea.Root className="nowheel h-[190px]">
-                <div className="flex flex-col gap-y-1">
+              <ScrollArea.Root className="nowheel h-[216px] rounded bg-semantic-bg-secondary p-2">
+                <div className="flex h-full flex-col gap-y-2">
                   {imageFiles.map((e, i) => (
                     <ImageListItem
                       key={`${path}-${e.name}-item`}
@@ -126,7 +127,7 @@ export const ImagesField = ({
                 </div>
               </ScrollArea.Root>
             ) : null}
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

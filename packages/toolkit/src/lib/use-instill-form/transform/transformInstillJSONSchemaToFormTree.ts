@@ -52,6 +52,7 @@ export function transformInstillJSONSchemaToFormTree(
       parentSchema: parentSchema ?? null,
       targetSchema,
       targetKey: key ?? null,
+      targetPath: path ?? null,
     })
   ) {
     isHidden = true;
@@ -159,6 +160,9 @@ export function transformInstillJSONSchemaToFormTree(
       path: (path || key) ?? null,
       conditions,
       isRequired,
+
+      // Conditition field's isHidden will be handled with different UI logic
+      isHidden,
       jsonSchema: targetSchema,
     };
   }
