@@ -32,11 +32,7 @@ export const OrganizationsTab = (props: OrganizationsTabProps) => {
             </p>
           </div>
           <div className="mb-3 flex h-10 w-1/5 justify-end">
-            <Link href={"/settings/pricing"}>
-              <Button variant="primary" size="lg">
-                Create organisation
-              </Button>
-            </Link>
+            <CreateOrganizationDialog accessToken={accessToken} />
           </div>
         </div>
         <div className="border-b border-b-[#EAECF0]" />
