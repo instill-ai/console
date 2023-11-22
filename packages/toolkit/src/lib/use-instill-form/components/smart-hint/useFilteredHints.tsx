@@ -18,10 +18,14 @@ export function useFilteredHints({
   instillAcceptFormats: string[];
   currentCursorPos: Nullable<number>;
   smartHintEnabledPos: Nullable<number>;
-  fieldValue: string;
+  fieldValue?: string;
   componentID?: string;
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
+    if (!fieldValue) {
+      return [];
+    }
+
     if (!smartHints || smartHints.length === 0) {
       return [];
     }
