@@ -40,10 +40,10 @@ const PermissionsPage: NextPageWithLayout = () => {
           </div>
           <div className="w-full">
             <PermissionTable
-              permissions={[{}, {}]}
+              permissions={[]}
               isError={false}
               isLoading={false}
-              accessToken={accessToken}
+              accessToken={null}
               enableQuery={true}
             />
           </div>
