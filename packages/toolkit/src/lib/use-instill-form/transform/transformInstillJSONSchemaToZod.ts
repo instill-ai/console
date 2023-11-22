@@ -42,6 +42,9 @@ export function transformInstillJSONSchemaToZod({
     : false;
 
   // const field will only be used in oneOf field conditions
+  // We don't need to use literal for const field because
+  // the value that can be selected had been defined by us
+  // (We don't need to be worry about user input the wrong value)
   if (targetSchema.const) {
     instillZodSchema = z.string();
 
@@ -97,15 +100,12 @@ export function transformInstillJSONSchemaToZod({
   }
 
   // Handle the enum fields
-  if (targetSchema.enum) {
-    // We need to do the castring here to make typescript happy.
-    // The reason is typescript need to know the amount of the element
-    // in the enum, but the enum is dynamic right here, so the ts will
-    // complaint about it.
-    // ref: https://github.com/colinhacks/zod/issues/2376
+  // We don't need to use enum for enum field because
+  // the value that can be selected had been defined by us
+  // (We don't need to be worry about user input the wrong value)
 
-    const enumValues = targetSchema.enum as [string, ...string[]];
-    instillZodSchema = z.enum(enumValues);
+  if (targetSchema.enum) {
+    instillZodSchema = z.string();
 
     if (!isRequired || forceOptional || isHidden) {
       instillZodSchema = instillZodSchema.nullable().optional();
@@ -193,9 +193,12 @@ export function transformInstillJSONSchemaToZod({
     );
 
     if (instillUpstreamValue) {
+      // Handle the enum fields
+      // We don't need to use enum for enum field because
+      // the value that can be selected had been defined by us
+      // (We don't need to be worry about user input the wrong value)
       if (instillUpstreamValue.enum) {
-        const enumValues = instillUpstreamValue.enum as [string, ...string[]];
-        instillZodSchema = z.enum(enumValues);
+        instillZodSchema = z.string();
       } else {
         switch (instillUpstreamValue.type) {
           case "string": {
@@ -251,6 +254,10 @@ export function transformInstillJSONSchemaToZod({
     * -----------------------------------------------------------------------*/
 
     instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+      if (isHidden) {
+        return;
+      }
+
       if (val === "") {
         return;
       }
@@ -390,15 +397,12 @@ export function transformInstillJSONSchemaToZod({
      Handle the primitive fields
    * -----------------------------------------------------------------------*/
 
+  // Handle the enum fields
+  // We don't need to use enum for enum field because
+  // the value that can be selected had been defined by us
+  // (We don't need to be worry about user input the wrong value)
   if (targetSchema.enum) {
-    // We need to do the castring here to make typescript happy.
-    // The reason is typescript need to know the amount of the element
-    // in the enum, but the enum is dynamic right here, so the ts will
-    // complaint about it.
-    // ref: https://github.com/colinhacks/zod/issues/2376
-
-    const enumValues = targetSchema.enum as [string, ...string[]];
-    instillZodSchema = z.enum(enumValues);
+    instillZodSchema = z.string();
 
     const isRequired = propertyKey
       ? Array.isArray(parentSchema.required) &&

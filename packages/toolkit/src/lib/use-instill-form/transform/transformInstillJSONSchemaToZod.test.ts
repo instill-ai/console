@@ -70,13 +70,6 @@ test("should transform basic json schema to zod schema", () => {
     },
   });
 
-  const outOfEnumModel = {
-    text: "foo",
-    model: "text-embedding-ada-003",
-  };
-
-  expect(zodSchema.safeParse(outOfEnumModel).success).toBe(false);
-
   const emptyString = {
     text: "",
     model: "text-embedding-ada-002",
