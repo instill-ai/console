@@ -42,13 +42,11 @@ export const DataConnectorFreeForm = ({
   setEnableEdit,
   nodeID,
   component,
-  dataTaskNotSelected,
 }: {
   enableEdit: boolean;
   setEnableEdit: React.Dispatch<React.SetStateAction<boolean>>;
   nodeID: string;
   component: PipelineConnectorComponent;
-  dataTaskNotSelected: boolean;
 }) => {
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
@@ -304,19 +302,17 @@ export const DataConnectorFreeForm = ({
             })
           : null}
       </div>
-      {dataTaskNotSelected ? null : (
-        <Button
-          className="flex w-full"
-          variant="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            setEnableEdit(!enableEdit);
-          }}
-        >
-          Add Field
-          <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
-        </Button>
-      )}
+      <Button
+        className="flex w-full"
+        variant="primary"
+        onClick={(e) => {
+          e.stopPropagation();
+          setEnableEdit(!enableEdit);
+        }}
+      >
+        Add Field
+        <Icons.Plus className="my-auto h-5 w-5 stroke-semantic-bg-primary " />
+      </Button>
     </div>
   );
 };

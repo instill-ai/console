@@ -17,6 +17,7 @@ import {
 import {
   CheckIsHidden,
   InstillStore,
+  useCheckIsHiddenOnNode,
   useInstillForm,
   useInstillStore,
   validateInstillID,
@@ -30,6 +31,7 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
+import { useConfigurationUpdaterOnNode } from "../useConfigurationUpdaterOnNode";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -233,29 +235,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
-  // We need to put this function into a useCallback to prevent infinite loop
-  const checkIsHidden: CheckIsHidden = React.useCallback(
-    ({ parentSchema, targetKey }) => {
-      if (!parentSchema) {
-        return false;
-      }
-
-      if (!parentSchema.instillEditOnNodeFields) {
-        return false;
-      }
-
-      if (!targetKey) {
-        return false;
-      }
-
-      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
-        return false;
-      }
-
-      return true;
-    },
-    []
-  );
+  const checkIsHidden = useCheckIsHiddenOnNode();
 
   const { outputSchema } = React.useMemo(() => {
     return getOperatorInputOutputSchema(data.component);
@@ -272,48 +252,15 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   );
 
   const {
-    getValues,
-    formState: { isDirty, isValid },
-    handleSubmit,
+    formState: { isValid },
   } = form;
 
-  const values = getValues();
-
-  React.useEffect(() => {
-    if (!isDirty || !isValid) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      handleSubmit(() => {
-        updateNodes((nodes) => {
-          return nodes.map((node) => {
-            if (node.data.nodeType === "operator" && node.id === id) {
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  component: {
-                    ...node.data.component,
-                    configuration: {
-                      ...node.data.component.configuration,
-                      ...values,
-                    },
-                  },
-                },
-              };
-            }
-
-            return node;
-          });
-        });
-        updatePipelineRecipeIsDirty(() => true);
-      })();
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [values, isDirty, isValid]);
+  useConfigurationUpdaterOnNode(
+    id,
+    form,
+    data.nodeType,
+    data.component.configuration
+  );
 
   return (
     <NodeWrapper
