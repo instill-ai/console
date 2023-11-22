@@ -5,3 +5,4 @@ export * from "./MemberCard";
 export * from "./UsersCard";
 export * from "./PermissionTable";
 export * from "./PermissionTablePlaceholder";
+export * from "./TeamMembersCard";

@@ -7,7 +7,7 @@ import {
   ModelsTable,
   PageBase,
   PipelinesTable,
-  UsersCard,
+  TeamMembersCard,
   useConnectorDefinitions,
   useModels,
   useUser,
@@ -130,7 +130,7 @@ const OrganizationPage: NextPageWithLayout = () => {
             </div>
           </div>
           <div>
-            <UsersCard members={[]} />
+            <TeamMembersCard members={[]} />
           </div>
           <div>
             <Link href="/organization/open-ai/settings">
