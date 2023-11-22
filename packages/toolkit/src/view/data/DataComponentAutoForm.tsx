@@ -4,6 +4,7 @@ import {
   ConnectorDefinition,
   GeneralRecord,
   InstillStore,
+  useCheckIsHiddenOnRightPanel,
   useInstillStore,
 } from "../../lib";
 import {
@@ -92,5 +93,13 @@ export const DataComponentAutoForm = (props: DataComponentAutoFormProps) => {
     updatePipelineRecipeIsDirty(() => true);
   }
 
-  return <ResourceComponentForm {...props} onSubmit={onSubmit} />;
+  const checkIsHidden = useCheckIsHiddenOnRightPanel();
+
+  return (
+    <ResourceComponentForm
+      {...props}
+      onSubmit={onSubmit}
+      checkIsHidden={checkIsHidden}
+    />
+  );
 };

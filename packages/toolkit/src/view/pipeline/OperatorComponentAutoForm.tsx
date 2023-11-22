@@ -4,6 +4,7 @@ import {
   GeneralRecord,
   InstillStore,
   OperatorDefinition,
+  useCheckIsHiddenOnRightPanel,
   useInstillStore,
 } from "../../lib";
 import {
@@ -45,30 +46,7 @@ export const OperatorComponentAutoForm = (
     updatePipelineRecipeIsDirty,
   } = useInstillStore(useShallow(selector));
 
-  const checkIsHidden: CheckIsHidden = React.useCallback(
-    ({ parentSchema, targetPath, targetKey, targetSchema }) => {
-      if (!targetKey || !targetPath) {
-        return true;
-      }
-
-      // We don't want to showcase task selection on the right-panel
-      if (targetPath && targetPath === "task") {
-        return true;
-      }
-
-      if (
-        targetKey &&
-        parentSchema &&
-        parentSchema.instillEditOnNodeFields &&
-        parentSchema.instillEditOnNodeFields.includes(targetKey)
-      ) {
-        return true;
-      }
-
-      return false;
-    },
-    []
-  );
+  const checkIsHidden = useCheckIsHiddenOnRightPanel();
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function onSubmit(data: any) {
