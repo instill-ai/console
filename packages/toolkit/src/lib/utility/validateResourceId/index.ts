@@ -1,1 +1,0 @@
-export { validateResourceId } from "./validateResourceId";

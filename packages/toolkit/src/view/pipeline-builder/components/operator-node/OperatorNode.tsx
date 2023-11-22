@@ -19,7 +19,7 @@ import {
   InstillStore,
   useInstillForm,
   useInstillStore,
-  validateComponentID,
+  validateInstillID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { useShallow } from "zustand/react/shallow";
@@ -75,10 +75,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       return;
     }
 
-    if (!validateComponentID(newID)) {
+    if (!validateInstillID(newID)) {
       toast({
         title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
         variant: "alert-error",
         size: "small",
       });
