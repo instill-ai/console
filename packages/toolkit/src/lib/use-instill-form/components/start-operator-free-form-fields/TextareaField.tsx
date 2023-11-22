@@ -36,7 +36,7 @@ export const TextareaField = ({
                 // AlphaValueIssue: We still have alpha value issue in
                 // out design-token, so we need to use the hex value
                 // here
-                className="!resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
+                className="nodrag !resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
               />
             </Form.Control>
             <Form.Description className="!text-xs" text={description} />

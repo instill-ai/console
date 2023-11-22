@@ -1,3 +1,4 @@
+import cn from "clsx";
 import {
   Form,
   Icons,
@@ -66,7 +67,10 @@ export const TextAreaField = ({
             <Form.Control>
               <Textarea
                 {...field}
-                className={size === "sm" ? "!product-body-text-4-regular" : ""}
+                className={cn(
+                  "nodrag",
+                  size === "sm" ? "!product-body-text-4-regular" : ""
+                )}
                 // At some moment the value maybe a object
                 // For example, { foo: { bar: "baz" } }}}. For foo.bar field
                 // its value is a string But for foo field its value is a object.

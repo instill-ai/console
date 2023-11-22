@@ -67,7 +67,7 @@ export const TextsField = ({
                         type="text"
                         value={textFieldsValue[idx] ?? undefined}
                         autoComplete="off"
-                        className="text-semantic-fg-primary product-body-text-4-regular"
+                        className="nodrag text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newTextFieldsValue = [...textFieldsValue];
                           newTextFieldsValue[idx] = e.target.value;

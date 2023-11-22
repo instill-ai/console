@@ -147,9 +147,10 @@ export const TextArea = ({
                 <Form.Control>
                   <Textarea
                     {...field}
-                    className={
+                    className={cn(
+                      "nodrag",
                       size === "sm" ? "!product-body-text-4-regular" : ""
-                    }
+                    )}
                     ref={inputRef}
                     value={
                       typeof field.value === "object" ? "" : field.value ?? ""

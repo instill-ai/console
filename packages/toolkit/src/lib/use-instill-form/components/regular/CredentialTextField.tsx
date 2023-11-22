@@ -1,3 +1,4 @@
+import cn from "clsx";
 import * as React from "react";
 import {
   Form,
@@ -6,7 +7,6 @@ import {
   ParagraphWithHTML,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../../../type";
 import { AutoFormFieldBaseProps } from "../../type";
 
 export const CredentialTextField = ({
@@ -72,9 +72,10 @@ export const CredentialTextField = ({
               <Input.Root>
                 <Input.Core
                   {...field}
-                  className={
+                  className={cn(
+                    "nodrag",
                     size === "sm" ? "!product-body-text-4-regular" : ""
-                  }
+                  )}
                   type="text"
                   value={
                     typeof field.value === "object" ? "" : field.value ?? ""

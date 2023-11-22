@@ -64,7 +64,7 @@ export const NumbersField = ({
                     key={`${path}-${idx}`}
                     className="flex w-full flex-row gap-x-2"
                   >
-                    <Input.Root className="flex-1">
+                    <Input.Root className="nodrag flex-1">
                       <Input.Core
                         type="number"
                         value={numberFieldsValue[idx] ?? undefined}
