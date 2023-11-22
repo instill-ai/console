@@ -18,8 +18,8 @@ export const ATFSquare = React.forwardRef<
         fill="#F6F6F6"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M30.0147 10H50V50H36.6862V43.3284H23.3138V50H10V36.6862H16.6716V23.3431H23.3431V16.6716H30.0147V10ZM33.3358 19.9927V13.3211H46.6789V46.6789H40.0073V40.0073H19.9927V26.6642H26.6642V33.3358H40.0073V19.9927H33.3358ZM36.6862 23.3138H36.6569V29.9853H29.9853V30.0147H36.6862V23.3138ZM26.6642 26.6642H33.3358V19.9927H26.6642V26.6642ZM19.9927 40.0073H13.3211V46.6789H19.9927V40.0073Z"
         fill="#2B2B2B"
       />
@@ -28,8 +28,8 @@ export const ATFSquare = React.forwardRef<
         fill="#40A8F5"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M40.007 30.0134V33.3345H46.6789V30.0134H40.007Z"
         fill="#2B2B2B"
       />
@@ -42,8 +42,8 @@ export const ATFSquare = React.forwardRef<
         fill="#FFDF3A"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M29.9643 40.0073H33.2854V33.3291H29.9643V40.0073Z"
         fill="#2B2B2B"
       />

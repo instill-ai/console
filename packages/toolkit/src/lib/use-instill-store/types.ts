@@ -34,6 +34,7 @@ export type PipelineBuilderState = {
   pipelineRecipeIsDirty: boolean;
   pipelineIsNew: boolean;
   selectedConnectorNodeId: Nullable<string>;
+  currentAdvancedConfigurationNodeID: Nullable<string>;
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
   expandAllNodes: boolean;
@@ -63,6 +64,9 @@ export type PipelineBuilderAction = {
   updatePipelineRecipeIsDirty: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsNew: (fn: (prev: boolean) => boolean) => void;
   updateSelectedConnectorNodeId: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) => void;
+  updateCurrentAdvancedConfigurationNodeID: (
     fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;

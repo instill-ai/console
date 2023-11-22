@@ -1,7 +1,13 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import { PageBase, PipelineListPageMainView } from "@instill-ai/toolkit";
-import { Logo } from "@instill-ai/design-system";
+import {
+  InstillJSONSchema,
+  PageBase,
+  PipelineListPageMainView,
+  Topbar,
+  useInstillForm,
+} from "@instill-ai/toolkit";
+import { Form, Logo } from "@instill-ai/design-system";
 
 import { ConsoleCorePageHead, Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
@@ -12,6 +18,7 @@ const PipelinePage: NextPageWithLayout = () => {
   const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
+
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />

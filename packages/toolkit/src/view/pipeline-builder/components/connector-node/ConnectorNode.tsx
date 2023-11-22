@@ -17,13 +17,11 @@ import {
 } from "../../lib";
 import {
   InstillStore,
-  Nullable,
   useInstillStore,
-  validateComponentID,
+  validateInstillID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
-import { OutputProperties } from "./OutputProperties";
 import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
@@ -33,6 +31,7 @@ import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { TaskNotSelectedWarning } from "./TaskNotSelectedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { ComponentOutputs } from "../ComponentOutputs";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -123,10 +122,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       return;
     }
 
-    if (!validateComponentID(newID)) {
+    if (!validateInstillID(newID)) {
       toast({
         title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
         variant: "alert-error",
         size: "small",
       });
@@ -473,14 +472,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           !dataTaskNotSelected &&
           !resourceNotCreated &&
           !enableEdit ? (
-            <div className="flex flex-col">
-              <div className="mb-1 product-body-text-4-medium">output</div>
-              <OutputProperties
-                component={data.component}
-                outputSchema={outputSchema}
-                traces={testModeTriggerResponse?.metadata?.traces ?? null}
-              />
-            </div>
+            <ComponentOutputs
+              componentID={data.component.id}
+              outputSchema={outputSchema}
+              traces={testModeTriggerResponse?.metadata?.traces ?? null}
+            />
           ) : null}
 
           <div className="flex flex-row-reverse">

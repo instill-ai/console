@@ -17,7 +17,6 @@ import {
 } from "@instill-ai/design-system";
 
 import {
-  validateResourceId,
   useAmplitudeCtx,
   sendAmplitudeData,
   useCreateResourceFormStore,
@@ -32,6 +31,7 @@ import {
   useDeployUserModel,
   CreateUserModelPayload,
   watchUserModel,
+  validateInstillID,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
 
@@ -244,10 +244,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     if (!modelId || !user.isSuccess) return;
 
     // We don't validate the rest of the field if the ID is incorrect
-    if (!validateResourceId(modelId as string)) {
+    if (!validateInstillID(modelId as string)) {
       setFieldError(
         "model.new.id",
-        "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+        "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters."
       );
       return;
     } else if (modelId) {
@@ -638,7 +638,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
             const value = event.target.value.trim();
 
-            if (validateResourceId(value)) {
+            if (validateInstillID(value)) {
               setFieldValue("model.new.id", value);
               setFieldError("model.new.id", null);
             } else {

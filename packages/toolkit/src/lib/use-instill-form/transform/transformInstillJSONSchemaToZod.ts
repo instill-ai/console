@@ -32,6 +32,7 @@ export function transformInstillJSONSchemaToZod({
         parentSchema,
         targetSchema,
         targetKey: propertyKey ?? null,
+        targetPath: propertyPath ?? null,
       })
     : false;
 
@@ -231,9 +232,17 @@ export function transformInstillJSONSchemaToZod({
         }
       }
     } else {
-      instillZodSchema = z.string({
-        errorMap: customErrorMap,
-      });
+      if (isRequired) {
+        instillZodSchema = z
+          .string({
+            errorMap: customErrorMap,
+          })
+          .min(1, "This field is required");
+      } else {
+        instillZodSchema = z.string({
+          errorMap: customErrorMap,
+        });
+      }
     }
 
     /* -----------------------------------------------------------------------

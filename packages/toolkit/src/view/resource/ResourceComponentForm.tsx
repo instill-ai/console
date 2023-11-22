@@ -1,10 +1,14 @@
 import { Button, Form } from "@instill-ai/design-system";
-import { ConnectorDefinition, GeneralRecord } from "../../lib";
+import {
+  ConnectorDefinition,
+  GeneralRecord,
+  OperatorDefinition,
+} from "../../lib";
 import { CheckIsHidden, useInstillForm } from "../../lib/use-instill-form";
 
 export type ResourceComponentFormProps = {
   disabledAll?: boolean;
-  connectorDefinition: ConnectorDefinition;
+  definition: ConnectorDefinition | OperatorDefinition;
   configuration: GeneralRecord;
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -15,14 +19,14 @@ export type ResourceComponentFormProps = {
 
 export const ResourceComponentForm = ({
   configuration,
-  connectorDefinition,
+  definition,
   onSubmit,
   disabledAll,
   checkIsHidden,
   componentID,
 }: ResourceComponentFormProps) => {
-  const { form, fields } = useInstillForm(
-    connectorDefinition.spec.component_specification,
+  const { form, fields, formTree } = useInstillForm(
+    definition.spec.component_specification,
     configuration,
     {
       disabledAll,

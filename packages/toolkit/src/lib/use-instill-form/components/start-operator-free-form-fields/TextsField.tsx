@@ -10,6 +10,7 @@ export const TextsField = ({
   description,
   onEditField,
   onDeleteField,
+  isHidden,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -20,7 +21,7 @@ export const TextsField = ({
     (string | undefined)[]
   >([""]);
 
-  return (
+  return isHidden ? null : (
     <Form.Field
       key={path}
       control={form.control}
@@ -129,7 +130,7 @@ export const TextsField = ({
                 Add field
               </button>
             </div>
-            <Form.Description text={description} />
+            <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
         );

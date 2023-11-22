@@ -63,7 +63,6 @@ export const ConnectorOperatorControlPanel = ({
           setNodeIsCollapsed(!nodeIsCollapsed);
         }}
       />
-      <ControlPanel.Configure onTrigger={handleEditNode} />
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}

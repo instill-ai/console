@@ -35,7 +35,7 @@ const selector = (store: InstillStore) => ({
   pipelineId: store.pipelineId,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
-  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   updateAccessToken: store.updateAccessToken,
 });
@@ -56,7 +56,7 @@ export const PipelineBuilderMainView = (
     pipelineId,
     pipelineRecipeIsDirty,
     pipelineIsNew,
-    selectedConnectorNodeId,
+    currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
     updateAccessToken,
   } = useInstillStore(useShallow(selector));
@@ -152,7 +152,9 @@ export const PipelineBuilderMainView = (
         <div
           className={cn(
             "flex w-[var(--right-panel-width)] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
-            selectedConnectorNodeId ? "mr-0" : "-mr-[var(--right-panel-width)]"
+            currentAdvancedConfigurationNodeID
+              ? "mr-0"
+              : "-mr-[var(--right-panel-width)]"
           )}
         >
           <RightPanel />

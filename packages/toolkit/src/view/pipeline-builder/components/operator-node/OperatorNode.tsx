@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons, useToast } from "@instill-ai/design-system";
 
 import {
   NodeData,
@@ -15,9 +15,11 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../lib";
 import {
+  CheckIsHidden,
   InstillStore,
+  useInstillForm,
   useInstillStore,
-  validateComponentID,
+  validateInstillID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { useShallow } from "zustand/react/shallow";
@@ -25,6 +27,9 @@ import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
+import { ComponentOutputs } from "../ComponentOutputs";
+import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -35,6 +40,7 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  testModeTriggerResponse: store.testModeTriggerResponse,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -46,6 +52,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
+    testModeTriggerResponse,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -68,10 +75,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       return;
     }
 
-    if (!validateComponentID(newID)) {
+    if (!validateInstillID(newID)) {
       toast({
         title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 63 characters.",
+          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
         variant: "alert-error",
         size: "small",
       });
@@ -226,6 +233,88 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
+  // We need to put this function into a useCallback to prevent infinite loop
+  const checkIsHidden: CheckIsHidden = React.useCallback(
+    ({ parentSchema, targetKey }) => {
+      if (!parentSchema) {
+        return false;
+      }
+
+      if (!parentSchema.instillEditOnNodeFields) {
+        return false;
+      }
+
+      if (!targetKey) {
+        return false;
+      }
+
+      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
+        return false;
+      }
+
+      return true;
+    },
+    []
+  );
+
+  const { outputSchema } = React.useMemo(() => {
+    return getOperatorInputOutputSchema(data.component);
+  }, [data]);
+
+  const { fields, form } = useInstillForm(
+    data.component.operator_definition?.spec.component_specification ?? null,
+    data.component.configuration,
+    {
+      size: "sm",
+      enableSmartHint: true,
+      checkIsHidden,
+    }
+  );
+
+  const {
+    getValues,
+    formState: { isDirty, isValid },
+    handleSubmit,
+  } = form;
+
+  const values = getValues();
+
+  React.useEffect(() => {
+    if (!isDirty || !isValid) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      handleSubmit(() => {
+        updateNodes((nodes) => {
+          return nodes.map((node) => {
+            if (node.data.nodeType === "operator" && node.id === id) {
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  component: {
+                    ...node.data.component,
+                    configuration: {
+                      ...node.data.component.configuration,
+                      ...values,
+                    },
+                  },
+                },
+              };
+            }
+
+            return node;
+          });
+        });
+        updatePipelineRecipeIsDirty(() => true);
+      })();
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [values, isDirty, isValid]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -271,7 +360,25 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         />
       </NodeHead>
 
-      {nodeIsCollapsed ? null : <></>}
+      {nodeIsCollapsed ? null : (
+        <>
+          <div className="mb-4">
+            <Form.Root {...form}>
+              <form>{fields}</form>
+            </Form.Root>
+          </div>
+          <div className="mb-2 flex flex-row-reverse">
+            <OpenAdvancedConfigurationButton id={id} disabled={!isValid} />
+          </div>
+
+          <ComponentOutputs
+            componentID={data.component.id}
+            outputSchema={outputSchema}
+            traces={testModeTriggerResponse?.metadata?.traces ?? null}
+          />
+        </>
+      )}
+
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}
         type="target"

@@ -1,6 +1,6 @@
 import { useShallow } from "zustand/react/shallow";
 import { InstillStore, Nullable, useInstillStore } from "../../..";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Tooltip } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -21,9 +21,32 @@ export const FieldHead = ({
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
   return (
     <div className="flex flex-row items-center justify-between">
-      <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-        {title}
-      </div>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <div className="my-auto line-clamp-1 w-1/2 font-sans text-sm font-semibold text-semantic-fg-primary">
+              {title}
+            </div>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              sideOffset={5}
+              side="top"
+              className="max-w-[300px] rounded-sm !border-none bg-semantic-bg-primary !px-3 !py-2"
+            >
+              <p className="break-words text-semantic-fg-secondary !product-body-text-4-semibold">
+                {title}
+              </p>
+              <Tooltip.Arrow
+                className="fill-semantic-bg-primary"
+                offset={10}
+                width={9}
+                height={6}
+              />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
       {currentVersion === "latest" && isOwner ? (
         <div className="my-auto flex flex-row gap-x-2">
           <button

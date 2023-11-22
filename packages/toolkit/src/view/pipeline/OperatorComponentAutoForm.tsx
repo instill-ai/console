@@ -1,7 +1,9 @@
+import * as React from "react";
 import {
-  ConnectorDefinition,
+  CheckIsHidden,
   GeneralRecord,
   InstillStore,
+  OperatorDefinition,
   useInstillStore,
 } from "../../lib";
 import {
@@ -14,8 +16,8 @@ import {
 import { ResourceComponentForm } from "../resource";
 import { useShallow } from "zustand/react/shallow";
 
-export type AIComponentAutoFormProps = {
-  definition: ConnectorDefinition;
+export type OperatorComponentAutoFormProps = {
+  definition: OperatorDefinition;
   configuration: GeneralRecord;
   disabledAll?: boolean;
   componentID?: string;
@@ -25,32 +27,60 @@ const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
-  selectedConnectorNodeId: store.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
-export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
+export const OperatorComponentAutoForm = (
+  props: OperatorComponentAutoFormProps
+) => {
   const {
     nodes,
     updateNodes,
     updateEdges,
-    selectedConnectorNodeId,
-    updateSelectedConnectorNodeId,
+    currentAdvancedConfigurationNodeID,
+    updateCurrentAdvancedConfigurationNodeID,
     updatePipelineRecipeIsDirty,
   } = useInstillStore(useShallow(selector));
 
+  const checkIsHidden: CheckIsHidden = React.useCallback(
+    ({ parentSchema, targetPath, targetKey, targetSchema }) => {
+      if (!targetKey || !targetPath) {
+        return true;
+      }
+
+      // We don't want to showcase task selection on the right-panel
+      if (targetPath && targetPath === "task") {
+        return true;
+      }
+
+      if (
+        targetKey &&
+        parentSchema &&
+        parentSchema.instillEditOnNodeFields &&
+        parentSchema.instillEditOnNodeFields.includes(targetKey)
+      ) {
+        return true;
+      }
+
+      return false;
+    },
+    []
+  );
+
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function onSubmit(data: any) {
-    if (!selectedConnectorNodeId) return;
+    if (!currentAdvancedConfigurationNodeID) return;
     const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(
       recursiveTransformToString(data)
     );
 
     const newNodes = nodes.map((node) => {
       if (
-        node.id === selectedConnectorNodeId &&
-        node.data.nodeType === "connector"
+        node.id === currentAdvancedConfigurationNodeID &&
+        node.data.nodeType === "operator"
       ) {
         return {
           ...node,
@@ -87,9 +117,15 @@ export const AIComponentAutoForm = (props: AIComponentAutoFormProps) => {
     const newEdges = composeEdgesFromReferences(allReferences, newNodes);
 
     updateEdges(() => newEdges);
-    updateSelectedConnectorNodeId(() => null);
+    updateCurrentAdvancedConfigurationNodeID(() => null);
     updatePipelineRecipeIsDirty(() => true);
   }
 
-  return <ResourceComponentForm {...props} onSubmit={onSubmit} />;
+  return (
+    <ResourceComponentForm
+      {...props}
+      onSubmit={onSubmit}
+      checkIsHidden={checkIsHidden}
+    />
+  );
 };

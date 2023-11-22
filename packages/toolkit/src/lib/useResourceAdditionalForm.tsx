@@ -11,12 +11,12 @@ export const ResourceAdditionalFormSchema = z
     description: z.string().nullable().optional(),
   })
   .superRefine((val, ctx) => {
-    const regexPattern = new RegExp("^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$");
+    const regexPattern = new RegExp("^[a-z_][a-z_0-9]{0,31}$");
     if (!regexPattern.test(val.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "The ID should be lowercase without any space or special character besides the hyphen, and should be less than 63 characters.",
+          "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
         path: ["id"],
       });
     }

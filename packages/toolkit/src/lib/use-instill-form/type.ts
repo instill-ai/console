@@ -107,6 +107,7 @@ export type CheckIsHidden = (props: {
   parentSchema: Nullable<InstillJSONSchema>;
   targetSchema: Nullable<InstillJSONSchema>;
   targetKey: Nullable<string>;
+  targetPath: Nullable<string>;
 }) => boolean;
 
 export type SmartHintWarning = {
@@ -126,4 +127,6 @@ export type AutoFormFieldBaseProps = {
   path: string;
   title: string | null;
   description: string | null;
+  size?: "sm";
+  isHidden?: boolean;
 };

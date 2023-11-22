@@ -15,6 +15,7 @@ import {
   Nullable,
   PipelineConnectorComponent,
   PipelineEndComponent,
+  PipelineOperatorComponent,
   PipelineRecipe,
   PipelineStartComponent,
 } from "../../../lib";
@@ -78,6 +79,28 @@ export function createInitialGraphData(
             id: "end",
             configuration: recursiveTransformToString(component.configuration),
             operator_definition: (component as PipelineEndComponent)
+              .operator_definition,
+            resource_name: null,
+          },
+          note: componentMetadata ? componentMetadata.note : null,
+        },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
+      });
+      continue;
+    }
+
+    if (component.type === "COMPONENT_TYPE_OPERATOR") {
+      nodes.push({
+        id: component.id,
+        type: "operatorNode",
+        data: {
+          nodeType: "operator",
+          component: {
+            ...component,
+            configuration: recursiveTransformToString(component.configuration),
+            operator_definition: (component as PipelineOperatorComponent)
               .operator_definition,
             resource_name: null,
           },
