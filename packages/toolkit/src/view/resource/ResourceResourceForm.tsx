@@ -4,7 +4,7 @@ import cn from "clsx";
 import { Button, Form } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   GeneralRecord,
   Nullable,
   useInstillForm,
@@ -13,7 +13,7 @@ import {
 import { LoadingSpin } from "../../components";
 
 export type ResourceResourceFormProps = {
-  resource: Nullable<ConnectorResourceWithDefinition>;
+  resource: Nullable<ConnectorWithDefinition>;
   definition: ConnectorDefinition;
   accessToken: Nullable<string>;
   disabledAll?: boolean;

@@ -47,7 +47,7 @@ export function useUpdaterOnNode({
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
 
-    if (values.task !== updatedValue.current?.task) {
+    if (values.task !== configuration.task) {
       updateCurrentAdvancedConfigurationNodeID(() => null);
     }
 

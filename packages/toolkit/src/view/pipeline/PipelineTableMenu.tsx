@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Button, Dialog, DropdownMenu, Icons } from "@instill-ai/design-system";
-import {
-  ConnectorResourceWithDefinition,
-  Model,
-  Nullable,
-  Pipeline,
-} from "../../lib";
+import { ConnectorWithDefinition, Model, Nullable, Pipeline } from "../../lib";
 import { GeneralDeleteResourceModal } from "../../components";
 
 export const PipelineTableDropdownMenu = ({
@@ -16,7 +11,7 @@ export const PipelineTableDropdownMenu = ({
   pipeline: Pipeline;
   handleDuplicatePipeline: (pipeline: Pipeline) => void;
   handleDeletePipeline: (
-    resource: Nullable<Pipeline | ConnectorResourceWithDefinition | Model>
+    resource: Nullable<Pipeline | ConnectorWithDefinition | Model>
   ) => void;
 }) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);

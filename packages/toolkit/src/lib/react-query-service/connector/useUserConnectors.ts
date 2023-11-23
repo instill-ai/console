@@ -1,20 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { env } from "../../utility";
-import {
-  listUserConnectorResourcesQuery,
-  type ConnectorResourceType,
-} from "../../vdp-sdk";
 import type { Nullable } from "../../type";
+import { ConnectorType, listUserConnectorsQuery } from "../../vdp-sdk";
 
-export const useUserConnectorResources = ({
+export const useUserConnectors = ({
   userName,
-  connectorResourceType,
+  connectorType,
   accessToken,
   enabled,
   retry,
 }: {
   userName: Nullable<string>;
-  connectorResourceType: ConnectorResourceType | "all";
+  connectorType: ConnectorType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -30,7 +27,7 @@ export const useUserConnectorResources = ({
   }
 
   return useQuery(
-    ["connector-resources", userName, connectorResourceType],
+    [userName, "connectors", connectorType],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -40,19 +37,16 @@ export const useUserConnectorResources = ({
         return Promise.reject(new Error("userName not provided"));
       }
 
-      const connectorResourcesWithDefinition =
-        await listUserConnectorResourcesQuery({
-          userName,
-          pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-          nextPageToken: null,
-          accessToken,
-          filter:
-            connectorResourceType !== "all"
-              ? `connector_type=${connectorResourceType}`
-              : null,
-        });
+      const connectorsWithDefinition = await listUserConnectorsQuery({
+        userName,
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+        nextPageToken: null,
+        accessToken,
+        filter:
+          connectorType !== "all" ? `connector_type=${connectorType}` : null,
+      });
 
-      return Promise.resolve(connectorResourcesWithDefinition);
+      return Promise.resolve(connectorsWithDefinition);
     },
     {
       enabled: enableQuery,

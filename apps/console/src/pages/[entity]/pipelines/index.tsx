@@ -1,13 +1,11 @@
 import * as React from "react";
 import { useRouter } from "next/router";
 import {
-  InstillJSONSchema,
   PageBase,
   PipelineListPageMainView,
   Topbar,
-  useInstillForm,
 } from "@instill-ai/toolkit";
-import { Form, Logo } from "@instill-ai/design-system";
+import { Logo } from "@instill-ai/design-system";
 
 import { Sidebar, ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";

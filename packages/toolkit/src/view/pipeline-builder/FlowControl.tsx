@@ -20,7 +20,7 @@ import {
 import { triggerPipelineSnippets } from "./components/triggerPipelineSnippets";
 import {
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   CreateUserPipelinePayload,
   GeneralRecord,
   InstillAppEnv,
@@ -305,10 +305,7 @@ export const FlowControl = (props: FlowControlProps) => {
   }, [currentVersion, pipelineRecipeIsDirty]);
 
   function constructNode(
-    resource:
-      | ConnectorResourceWithDefinition
-      | ConnectorDefinition
-      | OperatorDefinition
+    resource: ConnectorWithDefinition | ConnectorDefinition | OperatorDefinition
   ) {
     if (!reactFlowInstance) return;
 
@@ -332,7 +329,7 @@ export const FlowControl = (props: FlowControlProps) => {
       : edges;
 
     // Construct the default component ID prefix. For example, if the definition
-    // is `connector-definitions/instill-ai`, the prefix will be `instill_ai`
+    // is `connector-definitions/instill_ai`, the prefix will be `instill_ai`
     let nodePrefix: Nullable<string> = null;
 
     if ("connector_definition" in resource) {

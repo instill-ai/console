@@ -1,17 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  watchUserConnectorResource,
-  type ConnectorResourcesWatchState,
-} from "../../vdp-sdk";
-import type { Nullable } from "../../type";
 
-export function useWatchUserConnectorResources({
-  connectorResourceNames,
+import type { Nullable } from "../../type";
+import { ConnectorsWatchState, watchUserConnector } from "../../vdp-sdk";
+
+export function useWatchUserConnectors({
+  connectorNames,
   accessToken,
   enabled,
   retry,
 }: {
-  connectorResourceNames: Nullable<string[]>;
+  connectorNames: Nullable<string[]>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -22,29 +20,29 @@ export function useWatchUserConnectorResources({
 }) {
   let enableQuery = false;
 
-  if (connectorResourceNames && enabled && connectorResourceNames.length > 0) {
+  if (connectorNames && enabled && connectorNames.length > 0) {
     enableQuery = true;
   }
 
   return useQuery(
-    ["connector-resources", "watch"],
+    ["connectors", "watch"],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!connectorResourceNames || connectorResourceNames.length === 0) {
+      if (!connectorNames || connectorNames.length === 0) {
         return Promise.reject(new Error("Invalid connector names"));
       }
 
-      const watches: ConnectorResourcesWatchState = {};
+      const watches: ConnectorsWatchState = {};
 
-      for (const connectorResourceName of connectorResourceNames) {
-        const watch = await watchUserConnectorResource({
-          connectorResourceName,
+      for (const connectorName of connectorNames) {
+        const watch = await watchUserConnector({
+          connectorName,
           accessToken,
         });
-        watches[connectorResourceName] = watch;
+        watches[connectorName] = watch;
       }
 
       return Promise.resolve(watches);

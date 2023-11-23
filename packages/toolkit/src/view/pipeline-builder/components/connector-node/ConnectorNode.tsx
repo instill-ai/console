@@ -261,6 +261,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       size: "sm",
       enableSmartHint: true,
       checkIsHidden,
+      componentID: data.component.id,
     }
   );
 
@@ -319,102 +320,92 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         />
       </NodeHead>
 
-      {nodeIsCollapsed ? null : (
-        <>
-          {resourceNotCreated ? (
-            <ResourceNotCreatedWarning
-              onCreate={() => {
-                updateCreateResourceDialogState(() => ({
-                  open: true,
-                  connectorType:
-                    data.component.connector_definition?.type ?? null,
-                  connectorDefinition:
-                    data.component.connector_definition ?? null,
-                  onCreated: (connectorResource) => {
-                    const newNodes = nodes.map((node) => {
-                      if (
-                        node.data.nodeType === "connector" &&
-                        node.id === id
-                      ) {
-                        node.data = {
-                          ...node.data,
-                          component: {
-                            ...node.data.component,
-                            resource_name: connectorResource.name,
-                            resource: {
-                              ...connectorResource,
-                              connector_definition: null,
-                            },
-                          },
-                        };
-                      }
-                      return node;
-                    });
+      {nodeIsCollapsed ? null : resourceNotCreated ? (
+        <ResourceNotCreatedWarning
+          onCreate={() => {
+            updateCreateResourceDialogState(() => ({
+              open: true,
+              connectorType: data.component.connector_definition?.type ?? null,
+              connectorDefinition: data.component.connector_definition ?? null,
+              onCreated: (connector) => {
+                const newNodes = nodes.map((node) => {
+                  if (node.data.nodeType === "connector" && node.id === id) {
+                    node.data = {
+                      ...node.data,
+                      component: {
+                        ...node.data.component,
+                        resource_name: connector.name,
+                        resource: {
+                          ...connector,
+                          connector_definition: null,
+                        },
+                      },
+                    };
+                  }
+                  return node;
+                });
 
-                    updateNodes(() => newNodes);
+                updateNodes(() => newNodes);
 
-                    const allReferences: PipelineComponentReference[] = [];
+                const allReferences: PipelineComponentReference[] = [];
 
-                    newNodes.forEach((node) => {
-                      if (node.data.component?.configuration) {
-                        allReferences.push(
-                          ...extractReferencesFromConfiguration(
-                            node.data.component?.configuration,
-                            node.id
-                          )
-                        );
-                      }
-                    });
-
-                    const newEdges = composeEdgesFromReferences(
-                      allReferences,
-                      newNodes
+                newNodes.forEach((node) => {
+                  if (node.data.component?.configuration) {
+                    allReferences.push(
+                      ...extractReferencesFromConfiguration(
+                        node.data.component?.configuration,
+                        node.id
+                      )
                     );
-                    updatePipelineRecipeIsDirty(() => true);
-                    updateEdges(() => newEdges);
+                  }
+                });
 
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  },
-                  onSelectedExistingResource: (connectorResource) => {
-                    updateNodes((prev) => {
-                      return prev.map((node) => {
-                        if (
-                          node.data.nodeType === "connector" &&
-                          node.id === id
-                        ) {
-                          node.data = {
-                            ...node.data,
-                            component: {
-                              ...node.data.component,
-                              resource_name: connectorResource.name,
-                            },
-                          };
-                        }
-                        return node;
-                      });
-                    });
+                const newEdges = composeEdgesFromReferences(
+                  allReferences,
+                  newNodes
+                );
+                updatePipelineRecipeIsDirty(() => true);
+                updateEdges(() => newEdges);
 
-                    updatePipelineRecipeIsDirty(() => true);
-
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  },
+                updateCreateResourceDialogState(() => ({
+                  open: false,
+                  connectorType: null,
+                  connectorDefinition: null,
+                  onCreated: null,
+                  onSelectedExistingResource: null,
                 }));
-              }}
-            />
-          ) : null}
+              },
+              onSelectedExistingResource: (connector) => {
+                updateNodes((prev) => {
+                  return prev.map((node) => {
+                    if (node.data.nodeType === "connector" && node.id === id) {
+                      node.data = {
+                        ...node.data,
+                        component: {
+                          ...node.data.component,
+                          resource_name: connector.name,
+                        },
+                      };
+                    }
+                    return node;
+                  });
+                });
 
+                updatePipelineRecipeIsDirty(() => true);
+
+                updateCreateResourceDialogState(() => ({
+                  open: false,
+                  connectorType: null,
+                  connectorDefinition: null,
+                  onCreated: null,
+                  onSelectedExistingResource: null,
+                }));
+              },
+            }));
+          }}
+        />
+      ) : (
+        <>
           <div className="mb-4">
             <Form.Root {...form}>
               <form>{fields}</form>
@@ -439,15 +430,14 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
 
           {/* 
-            Data connector free form
-          */}
+          Data connector free form
+        */}
 
           {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
+          data.component.definition_name !== "connector-definitions/pinecone" &&
+          data.component.definition_name !== "connector-definitions/gcs" &&
           data.component.definition_name !==
-            "connector-definitions/data-pinecone" &&
-          data.component.definition_name !== "connector-definitions/data-gcs" &&
-          data.component.definition_name !==
-            "connector-definitions/data-google-search" ? (
+            "connector-definitions/google_search" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data.component}
@@ -457,8 +447,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           ) : null}
 
           {/* 
-              Output properties
-            */}
+            Output properties
+          */}
 
           <div className="mb-4 w-full">
             {!resourceNotCreated && !enableEdit ? (

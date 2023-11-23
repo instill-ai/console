@@ -60,8 +60,7 @@ export const Regular: Story = {
                 },
                 {
                   id: "ai_1",
-                  resource_name:
-                    "users/summerbud-test/connector-resources/openai-dev",
+                  resource_name: "users/summerbud-test/connectors/openai-dev",
                   configuration: {
                     input: {
                       task: "TASK_TEXT_GENERATION",
@@ -72,7 +71,7 @@ export const Regular: Story = {
                       temperature: 0.8,
                     },
                   },
-                  definition_name: "connector-definitions/ai-openai",
+                  definition_name: "connector-definitions/ai_openai",
                 },
               ],
             },

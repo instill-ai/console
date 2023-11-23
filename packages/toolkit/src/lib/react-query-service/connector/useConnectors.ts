@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { env } from "../../utility";
 import {
-  ConnectorResourceType,
-  ConnectorResourceWithDefinition,
+  ConnectorType,
+  ConnectorWithDefinition,
   getConnectorDefinitionQuery,
-  listConnectorResourcesQuery,
+  listConnectorsQuery,
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useConnectorResources = ({
-  connectorResourceType,
+export const useConnectors = ({
+  connectorType,
   accessToken,
   enabled,
   retry,
 }: {
-  connectorResourceType: ConnectorResourceType | "all";
+  connectorType: ConnectorType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -24,37 +24,34 @@ export const useConnectorResources = ({
   retry?: false | number;
 }) => {
   return useQuery(
-    ["connector-resources", connectorResourceType],
+    ["connectors", connectorType],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const connectorResources = await listConnectorResourcesQuery({
+      const connectors = await listConnectorsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,
         accessToken,
         filter:
-          connectorResourceType !== "all"
-            ? `connector_type=${connectorResourceType}`
-            : null,
+          connectorType !== "all" ? `connector_type=${connectorType}` : null,
       });
 
-      const connectorResourcesWithDefinition: ConnectorResourceWithDefinition[] =
-        [];
+      const connectorsWithDefinition: ConnectorWithDefinition[] = [];
 
-      for (const connectorResource of connectorResources) {
+      for (const connector of connectors) {
         const definition = await getConnectorDefinitionQuery({
-          connectorDefinitionName: connectorResource.connector_definition_name,
+          connectorDefinitionName: connector.connector_definition_name,
           accessToken,
         });
-        connectorResourcesWithDefinition.push({
-          ...connectorResource,
+        connectorsWithDefinition.push({
+          ...connector,
           connector_definition: definition,
         });
       }
 
-      return Promise.resolve(connectorResourcesWithDefinition);
+      return Promise.resolve(connectorsWithDefinition);
     },
     {
       enabled,

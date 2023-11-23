@@ -2,7 +2,7 @@ export function getBlockchainConnectorDefaultConfiguration(
   connector_definition_name: string
 ) {
   switch (connector_definition_name) {
-    case "connector-definitions/blockchain-numbers":
+    case "connector-definitions/blockchain_numbers":
       return {
         input: {
           images: null,

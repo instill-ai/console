@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ConnectorResourceState } from "./connector";
+import { ConnectorState } from "./connector";
 import { ModelState } from "./model";
 import { OpenAPIV3 } from "openapi-types";
 import { PipelineReleaseState } from "./pipeline";
@@ -17,10 +17,7 @@ export type Violation = {
   subject: string;
 };
 
-export type ResourceState =
-  | ModelState
-  | PipelineReleaseState
-  | ConnectorResourceState;
+export type ResourceState = ModelState | PipelineReleaseState | ConnectorState;
 
 export type Spec = {
   resource_specification: InstillJSONSchema;

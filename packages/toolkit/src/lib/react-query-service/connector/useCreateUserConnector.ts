@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import {
-  createUserConnectorResourceMutation,
-  CreateUserConnectorResourcePayload,
+  CreateUserConnectorPayload,
+  createUserConnectorMutation,
 } from "../../vdp-sdk";
-import { onSuccessAfterConnectResourceMutation } from "./onSuccessAfterConnectResourceMutation";
+import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
-export const useCreateUserConnectorResource = () => {
+export const useCreateUserConnector = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -15,27 +15,27 @@ export const useCreateUserConnectorResource = () => {
       accessToken,
     }: {
       userName: string;
-      payload: CreateUserConnectorResourcePayload;
+      payload: CreateUserConnectorPayload;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const connectorResource = await createUserConnectorResourceMutation({
+      const connector = await createUserConnectorMutation({
         userName,
         payload,
         accessToken,
       });
 
-      return Promise.resolve({ connectorResource, accessToken });
+      return Promise.resolve({ connector, accessToken });
     },
     {
-      onSuccess: async ({ connectorResource, accessToken }) => {
-        await onSuccessAfterConnectResourceMutation({
+      onSuccess: async ({ connector, accessToken }) => {
+        await onSuccessAfterConnectMutation({
           type: "create",
           queryClient,
-          connectorResource,
+          connector,
           accessToken,
         });
       },

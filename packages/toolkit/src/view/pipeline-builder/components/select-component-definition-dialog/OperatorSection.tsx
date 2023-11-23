@@ -24,10 +24,7 @@ export const OperatorSection = ({
         {operatorDefinitions.isSuccess
           ? operatorDefinitions.data
               .filter((definition) => {
-                if (
-                  definition.id === "op-start" ||
-                  definition.id === "op-end"
-                ) {
+                if (definition.id === "start" || definition.id === "end") {
                   return false;
                 } else {
                   return true;

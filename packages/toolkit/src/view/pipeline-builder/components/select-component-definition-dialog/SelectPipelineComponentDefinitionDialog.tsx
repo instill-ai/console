@@ -4,7 +4,7 @@ import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import {
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   Nullable,
   OperatorDefinition,
 } from "../../../../lib";
@@ -12,7 +12,7 @@ import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
 
-export type SelectConnectorResourceDialogProps = {
+export type SelectPipelineComponentDefinitionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   trigger?: React.ReactElement;
@@ -23,14 +23,11 @@ export type SelectConnectorResourceDialogProps = {
 };
 
 export type PipelineComponentDefinitionOnSelect = (
-  resource:
-    | ConnectorResourceWithDefinition
-    | ConnectorDefinition
-    | OperatorDefinition
+  resource: ConnectorWithDefinition | ConnectorDefinition | OperatorDefinition
 ) => void;
 
 export const SelectPipelineComponentDefinitionDialog = (
-  props: SelectConnectorResourceDialogProps
+  props: SelectPipelineComponentDefinitionDialogProps
 ) => {
   const {
     open,

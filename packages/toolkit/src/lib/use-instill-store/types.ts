@@ -2,8 +2,8 @@ import { NodeData } from "../../view";
 import { Nullable } from "../type";
 import {
   ConnectorDefinition,
-  ConnectorResourceType,
-  ConnectorResourceWithDefinition,
+  ConnectorType,
+  ConnectorWithDefinition,
 } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
@@ -12,13 +12,11 @@ import { InstillJSONSchema } from "../use-instill-form";
 
 export type PipelineBuilderCreateResourceDialogState = {
   open: boolean;
-  connectorType: Nullable<ConnectorResourceType>;
+  connectorType: Nullable<ConnectorType>;
   connectorDefinition: Nullable<ConnectorDefinition>;
-  onCreated: Nullable<
-    (connectorResource: ConnectorResourceWithDefinition) => void
-  >;
+  onCreated: Nullable<(connector: ConnectorWithDefinition) => void>;
   onSelectedExistingResource: Nullable<
-    (connectorResource: ConnectorResourceWithDefinition) => void
+    (connector: ConnectorWithDefinition) => void
   >;
 };
 

@@ -9,7 +9,7 @@ Please follow the steps in the [CONTRIBUTION](/.github/CONTRIBUTING.md) to set u
 Copy the recipe from instill-ai console's toolkit. And then do two things to the component in the components array
 
 1. Replace the `resource_name` value with null
-2. Add a `resource: null` into the component 
+2. Add a `resource: null` into the component
 
 For example, this is a pipeline with basic configuration
 
@@ -23,7 +23,7 @@ For example, this is a pipeline with basic configuration
       "configuration": {
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-start"
+      "definition_name": "operator-definitions/start"
     },
     {
       "id": "end",
@@ -32,11 +32,11 @@ For example, this is a pipeline with basic configuration
         "input": {},
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-end"
+      "definition_name": "operator-definitions/end"
     },
     {
       "id": "ai_1",
-      "resource_name": "users/admin/connector-resources/yoyo",
+      "resource_name": "users/admin/connectors/yoyo",
       "configuration": {
         "input": {
           "image_base64": "{ start.image }",
@@ -45,7 +45,7 @@ For example, this is a pipeline with basic configuration
         },
         "task": "TASK_KEYPOINT"
       },
-      "definition_name": "connector-definitions/ai-instill-model"
+      "definition_name": "connector-definitions/ai_instill_model"
     }
   ]
 }
@@ -64,7 +64,7 @@ This is the correct template after cleaning it up
       "configuration": {
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-start"
+      "definition_name": "operator-definitions/start"
     },
     {
       "id": "end",
@@ -74,7 +74,7 @@ This is the correct template after cleaning it up
         "input": {},
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-end"
+      "definition_name": "operator-definitions/end"
     },
     {
       "id": "ai_1",
@@ -88,7 +88,7 @@ This is the correct template after cleaning it up
         },
         "task": "TASK_KEYPOINT"
       },
-      "definition_name": "connector-definitions/ai-instill-model"
+      "definition_name": "connector-definitions/ai_instill_model"
     }
   ]
 }
@@ -101,7 +101,7 @@ The file we store template is [here](/packages/toolkit/src/view/pipeline-builder
 Please put the new template with its good friends. And add some categories to it.
 
 Here are the categories we have
- 
+
 - AI-generated art
 - Copywriting
 - Extraction

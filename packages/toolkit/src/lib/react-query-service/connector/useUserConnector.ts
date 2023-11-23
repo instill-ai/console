@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  ConnectorWithDefinition,
   getConnectorDefinitionQuery,
-  getUserConnectorResourceQuery,
-  type ConnectorResourceWithDefinition,
+  getUserConnectorQuery,
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useUserConnectorResource = ({
-  connectorResourceName,
+export const useUserConnector = ({
+  connectorName,
   accessToken,
   enabled,
   retry,
 }: {
-  connectorResourceName: Nullable<string>;
+  connectorName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -23,37 +23,37 @@ export const useUserConnectorResource = ({
 }) => {
   let enableQuery = false;
 
-  if (connectorResourceName && enabled) {
+  if (connectorName && enabled) {
     enableQuery = true;
   }
 
   return useQuery(
-    ["connector-resources", connectorResourceName],
+    ["connectors", connectorName],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!connectorResourceName) {
-        return Promise.reject(new Error("connectorResourceName not provided"));
+      if (!connectorName) {
+        return Promise.reject(new Error("connectorName not provided"));
       }
 
-      const connectorResource = await getUserConnectorResourceQuery({
-        connectorResourceName,
+      const connector = await getUserConnectorQuery({
+        connectorName,
         accessToken,
       });
 
       const connectorDefinition = await getConnectorDefinitionQuery({
-        connectorDefinitionName: connectorResource.connector_definition_name,
+        connectorDefinitionName: connector.connector_definition_name,
         accessToken,
       });
 
-      const connectorResourceWithDefinition: ConnectorResourceWithDefinition = {
-        ...connectorResource,
+      const connectorWithDefinition: ConnectorWithDefinition = {
+        ...connector,
         connector_definition: connectorDefinition,
       };
 
-      return Promise.resolve(connectorResourceWithDefinition);
+      return Promise.resolve(connectorWithDefinition);
     },
     {
       enabled: enableQuery,

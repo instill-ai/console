@@ -8,7 +8,7 @@ import {
   Textarea,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { Nullable } from "../../../type";
 import { useInstillStore } from "../../../use-instill-store";
 
 import { useFormContext } from "react-hook-form";
