@@ -4,6 +4,8 @@ import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
+import { AudioListItem } from "./AudioListItem";
+import { is } from "immer/dist/internal";
 
 export const AudioField = ({
   form,
@@ -18,6 +20,7 @@ export const AudioField = ({
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [audioFile, setAudioFile] = React.useState<Nullable<File>>(null);
+  const fileRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -27,33 +30,45 @@ export const AudioField = ({
       render={({ field }) => {
         return (
           <Form.Item className="w-full">
-            <div className="flex flex-row justify-between">
-              <FieldHead
-                title={title}
-                path={path}
-                onDeleteField={onDeleteField}
-                onEditField={onEditField}
-              />
-            </div>
-
-            <audio
-              className="w-full"
-              controls={true}
-              src={audioFile ? URL.createObjectURL(audioFile) : undefined}
+            <FieldHead
+              title={title}
+              path={path}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
             />
 
-            <Form.Control>
-              <UploadFileInput
-                title="Upload audio"
-                fieldKey={path}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    setAudioFile(file);
+            <div className="flex">
+              <Form.Control>
+                <UploadFileInput
+                  ref={fileRef}
+                  title="Upload audio"
+                  fieldKey={path}
+                  accept="audio/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    console.log(file);
+                    if (file) {
+                      setAudioFile(file);
+                      const binary = await readFileToBinary(file);
+                      field.onChange(binary);
+                    }
+                  }}
+                />
+              </Form.Control>
+            </div>
+            {audioFile ? (
+              <AudioListItem
+                src={URL.createObjectURL(audioFile)}
+                name={audioFile.name}
+                onDelete={() => {
+                  setAudioFile(null);
+                  field.onChange(null);
+                  if (fileRef.current) {
+                    fileRef.current.value = "";
                   }
                 }}
               />
-            </Form.Control>
+            ) : null}
             <Form.Description className="!text-xs" text={description} />
             <Form.Message />
           </Form.Item>
