@@ -4,7 +4,6 @@ import {
   DragEndEvent,
   DragOverEvent,
   DragStartEvent,
-  KeyboardSensor,
   PointerSensor,
   closestCenter,
   useSensor,

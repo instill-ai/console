@@ -1,11 +1,7 @@
 import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
-
-import { DataComponentAutoForm } from "../data";
-import { AIComponentAutoForm } from "../ai";
-import { BlockchainComponentAutoForm } from "../blockchain";
 import { InstillStore, useInstillStore } from "../../lib";
-import { OperatorComponentAutoForm } from "../pipeline/OperatorComponentAutoForm";
+import { ComponentFormOnRightPanel } from "./components/ComponentFormOnRightPanel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -60,58 +56,27 @@ export const RightPanel = () => {
       <div className="flex w-full pb-10">
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "connector" &&
-        selectedConnectorNode.data.component.connector_definition &&
-        selectedConnectorNode.data.component.type ===
-          "COMPONENT_TYPE_CONNECTOR_AI" ? (
-          <AIComponentAutoForm
-            configuration={selectedConnectorNode.data.component.configuration}
+        selectedConnectorNode.data.component.connector_definition ? (
+          <ComponentFormOnRightPanel
+            componentID={selectedConnectorNode.data.component.id}
             definition={
               selectedConnectorNode.data.component.connector_definition
             }
-            componentID={currentAdvancedConfigurationNodeID ?? undefined}
+            configuration={selectedConnectorNode.data.component.configuration}
+            nodeType="connector"
           />
         ) : null}
         {selectedConnectorNode &&
         selectedConnectorNode.data.nodeType === "operator" &&
-        selectedConnectorNode.data.component.operator_definition &&
-        selectedConnectorNode.data.component.type ===
-          "COMPONENT_TYPE_OPERATOR" ? (
-          <OperatorComponentAutoForm
-            configuration={selectedConnectorNode.data.component.configuration}
+        selectedConnectorNode.data.component.operator_definition ? (
+          <ComponentFormOnRightPanel
+            componentID={selectedConnectorNode.data.component.id}
             definition={
               selectedConnectorNode.data.component.operator_definition
             }
-            componentID={currentAdvancedConfigurationNodeID ?? undefined}
-          />
-        ) : null}
-        {selectedConnectorNode &&
-        selectedConnectorNode.data.nodeType === "connector" &&
-        selectedConnectorNode.data.component.connector_definition &&
-        selectedConnectorNode.data.component.type ===
-          "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ? (
-          <BlockchainComponentAutoForm
             configuration={selectedConnectorNode.data.component.configuration}
-            definition={
-              selectedConnectorNode.data.component.connector_definition
-            }
-            componentID={currentAdvancedConfigurationNodeID ?? undefined}
+            nodeType="operator"
           />
-        ) : null}
-        {selectedConnectorNode &&
-        selectedConnectorNode.data.nodeType === "connector" &&
-        selectedConnectorNode.data.component.connector_definition &&
-        selectedConnectorNode.data.component.type ===
-          "COMPONENT_TYPE_CONNECTOR_DATA" ? (
-          selectedConnectorNode.data.component.connector_definition?.vendor !==
-          "Airbyte" ? (
-            <DataComponentAutoForm
-              configuration={selectedConnectorNode.data.component.configuration}
-              definition={
-                selectedConnectorNode.data.component.connector_definition
-              }
-              componentID={currentAdvancedConfigurationNodeID ?? undefined}
-            />
-          ) : null
         ) : null}
       </div>
     </div>

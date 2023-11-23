@@ -14,7 +14,7 @@ export const ObjectArrayField = (props: ObjectArrayFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {!hideField ? children : null}
       </ConnectorNodeFieldRoot>
     );

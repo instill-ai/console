@@ -130,3 +130,5 @@ export type AutoFormFieldBaseProps = {
   size?: "sm";
   isHidden?: boolean;
 };
+
+export type ZodAnyValidatorSchema = z.ZodType<any, any, any>;

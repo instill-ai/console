@@ -124,11 +124,6 @@ export const OneOfConditionField = ({
                         [path]: event,
                       };
                     });
-
-                    // We want to immediately trigger the form validation in
-                    // condition field, so that the error message can be shown
-                    // immediately.
-                    form.trigger();
                   }}
                   value={field.value ?? undefined}
                   disabled={disabled}

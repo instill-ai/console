@@ -1,3 +1,4 @@
+import cn from "clsx";
 import {
   Form,
   Icons,
@@ -68,9 +69,10 @@ export const TextField = ({
               <Input.Root>
                 <Input.Core
                   {...field}
-                  className={
+                  className={cn(
+                    "nodrag",
                     size === "sm" ? "!product-body-text-4-regular" : ""
-                  }
+                  )}
                   type="text"
                   value={
                     typeof field.value === "object" ? "" : field.value ?? ""

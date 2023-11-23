@@ -15,7 +15,6 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../lib";
 import {
-  CheckIsHidden,
   InstillStore,
   useInstillForm,
   useInstillStore,
@@ -30,6 +29,8 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
+import { useCheckIsHidden } from "../useCheckIsHidden";
+import { useUpdaterOnNode } from "../useUpdaterOnNode";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -41,6 +42,8 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   testModeTriggerResponse: store.testModeTriggerResponse,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -53,6 +56,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges,
     updatePipelineRecipeIsDirty,
     testModeTriggerResponse,
+    updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -233,35 +237,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
-  // We need to put this function into a useCallback to prevent infinite loop
-  const checkIsHidden: CheckIsHidden = React.useCallback(
-    ({ parentSchema, targetKey }) => {
-      if (!parentSchema) {
-        return false;
-      }
-
-      if (!parentSchema.instillEditOnNodeFields) {
-        return false;
-      }
-
-      if (!targetKey) {
-        return false;
-      }
-
-      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
-        return false;
-      }
-
-      return true;
-    },
-    []
-  );
-
   const { outputSchema } = React.useMemo(() => {
     return getOperatorInputOutputSchema(data.component);
   }, [data]);
 
-  const { fields, form } = useInstillForm(
+  const checkIsHidden = useCheckIsHidden("onNode");
+
+  const { fields, form, ValidatorSchema } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {
@@ -271,49 +253,15 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     }
   );
 
-  const {
-    getValues,
-    formState: { isDirty, isValid },
-    handleSubmit,
-  } = form;
+  const { getValues, trigger } = form;
 
-  const values = getValues();
-
-  React.useEffect(() => {
-    if (!isDirty || !isValid) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      handleSubmit(() => {
-        updateNodes((nodes) => {
-          return nodes.map((node) => {
-            if (node.data.nodeType === "operator" && node.id === id) {
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  component: {
-                    ...node.data.component,
-                    configuration: {
-                      ...node.data.component.configuration,
-                      ...values,
-                    },
-                  },
-                },
-              };
-            }
-
-            return node;
-          });
-        });
-        updatePipelineRecipeIsDirty(() => true);
-      })();
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [values, isDirty, isValid]);
+  useUpdaterOnNode({
+    id,
+    nodeType: "operator",
+    form,
+    ValidatorSchema,
+    configuration: data.component.configuration,
+  });
 
   return (
     <NodeWrapper
@@ -368,7 +316,21 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             </Form.Root>
           </div>
           <div className="mb-2 flex flex-row-reverse">
-            <OpenAdvancedConfigurationButton id={id} disabled={!isValid} />
+            <OpenAdvancedConfigurationButton
+              onClick={() => {
+                const values = getValues();
+
+                const parsedResult = ValidatorSchema.safeParse(values);
+
+                if (parsedResult.success) {
+                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                } else {
+                  for (const error of parsedResult.error.errors) {
+                    trigger(error.path.join("."));
+                  }
+                }
+              }}
+            />
           </div>
 
           <ComponentOutputs

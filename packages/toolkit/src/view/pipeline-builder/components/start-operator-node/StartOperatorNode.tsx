@@ -85,8 +85,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     React.useState<Nullable<StartOperatorInputType>>(null);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
-  const [onDraggedFieldKey, setOnDraggedFieldKey] =
-    React.useState<Nullable<string>>(null);
 
   const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
     resolver: zodResolver(StartOperatorFreeFormSchema),
@@ -417,9 +415,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     items={startOperatorTestModeInputfields.map((e) => ({
                       key: e.key as string,
                     }))}
-                    onDragStart={(event) => {
-                      setOnDraggedFieldKey(event.active.id.toString());
-                    }}
                     onDragEnd={(event) => {
                       const { active, over } = event;
 
@@ -478,7 +473,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                           updatePipelineRecipeIsDirty(() => true);
                         }
                       }
-                      setOnDraggedFieldKey(null);
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
