@@ -6,7 +6,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useUserConnectorResources,
+  useUserConnectors,
 } from "../../../lib";
 import { DataResourceForm } from "../../data";
 
@@ -40,9 +40,9 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
   const router = useRouter();
   const { entity } = router.query;
 
-  const existedConnectors = useUserConnectorResources({
+  const existedConnectors = useUserConnectors({
     userName: `users/${entity}`,
-    connectorResourceType: connectorType ?? "all",
+    connectorType: connectorType ?? "all",
     accessToken,
     enabled: enableQuery,
   });
@@ -103,25 +103,25 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                 </p>
               </div>
               <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
-                {filteredConnectors.map((connectorResource) => (
+                {filteredConnectors.map((connector) => (
                   <SelectConnectorResourceDialogItem
-                    key={connectorResource.id}
+                    key={connector.id}
                     onClick={() => {
                       if (!onSelectedExistingResource) return;
-                      onSelectedExistingResource(connectorResource);
+                      onSelectedExistingResource(connector);
                     }}
                   >
                     <ImageWithFallback
-                      src={`/icons/${connectorResource.connector_definition.vendor}/${connectorResource.connector_definition.icon}`}
+                      src={`/icons/${connector.connector_definition.vendor}/${connector.connector_definition.icon}`}
                       width={32}
                       height={32}
-                      alt={`${connectorResource.connector_definition.title}-icon`}
+                      alt={`${connector.connector_definition.title}-icon`}
                       fallbackImg={
                         <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
                       }
                     />
                     <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                      {connectorResource.id}
+                      {connector.id}
                     </p>
                   </SelectConnectorResourceDialogItem>
                 ))}

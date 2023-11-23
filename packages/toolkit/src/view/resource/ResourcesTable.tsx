@@ -10,13 +10,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { isAxiosError } from "axios";
 import * as React from "react";
 import {
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   Model,
   Nullable,
   Pipeline,
   formatDate,
   getInstillApiErrorMessage,
-  useDeleteUserConnectorResource,
+  useDeleteUserConnector,
 } from "../../lib";
 import {
   GeneralDeleteResourceModal,
@@ -27,7 +27,7 @@ import {
 } from "../../components";
 
 export type ResourcesTableProps = {
-  connectorResources: ConnectorResourceWithDefinition[];
+  connectorResources: ConnectorWithDefinition[];
   isError: boolean;
   isLoading: boolean;
   accessToken: Nullable<string>;
@@ -37,10 +37,10 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
   const { connectorResources, isError, isLoading, accessToken } = props;
   const { toast } = useToast();
 
-  const deleteUserConnectorResource = useDeleteUserConnectorResource();
+  const deleteUserConnectorResource = useDeleteUserConnector();
 
   function handleDeleteUserConnectorResource(
-    resource: Nullable<Pipeline | Model | ConnectorResourceWithDefinition>
+    resource: Nullable<Pipeline | Model | ConnectorWithDefinition>
   ) {
     if (!resource) {
       return;
@@ -48,7 +48,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
 
     deleteUserConnectorResource.mutate(
       {
-        connectorResourceName: resource.name,
+        connectorName: resource.name,
         accessToken,
       },
       {
@@ -80,7 +80,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
     );
   }
 
-  const columns: ColumnDef<ConnectorResourceWithDefinition>[] = [
+  const columns: ColumnDef<ConnectorWithDefinition>[] = [
     {
       accessorKey: "id",
       header: () => <div className="min-w-[650px] text-left">Pipelines</div>,

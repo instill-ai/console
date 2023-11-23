@@ -1,9 +1,9 @@
 import cn from "clsx";
-import { ConnectorResourceVisibility, Nullable } from "../../lib";
+import { ConnectorVisibility, Nullable } from "../../lib";
 
 export type VisibilityCellProps = {
   width: Nullable<string>;
-  visibility: ConnectorResourceVisibility;
+  visibility: ConnectorVisibility;
   padding: string;
 };
 
@@ -15,7 +15,7 @@ export const VisibilityCell = ({
   return (
     <td>
       <div className={cn("flex flex-row gap-x-2", width, padding)}>
-        <p className="my-auto flex text-instillGrey90 text-instill-body">
+        <p className="text-instillGrey90 text-instill-body my-auto flex">
           {visibility === "VISIBILITY_PRIVATE"
             ? "Private"
             : visibility === "VISIBILITY_PUBLIC"

@@ -14,19 +14,19 @@ export const NewConnectorSection = ({
   onSelect: PipelineComponentDefinitionOnSelect;
 }) => {
   const aiDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_AI",
+    connectorType: "CONNECTOR_TYPE_AI",
     enabled: enableQuery,
     accessToken,
   });
 
   const blockchainDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
     enabled: enableQuery,
     accessToken,
   });
 
   const dataDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_DATA",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: enableQuery,
     accessToken,
   });

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { AddConnectorResourceDialog } from "./AddConnectorResourceDialog";
-import { GeneralPageProp, useUserConnectorResources } from "../../lib";
+import { GeneralPageProp, useUserConnectors } from "../../lib";
 import dynamic from "next/dynamic";
 
 const ResourcesTable = dynamic(
@@ -22,10 +22,10 @@ export const ResourceListPageMainView = (
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const userConnectorResources = useUserConnectorResources({
+  const userConnector = useUserConnectors({
     userName: `users/${entity}`,
     enabled: enableQuery,
-    connectorResourceType: "all",
+    connectorType: "all",
     accessToken,
   });
 
@@ -47,11 +47,9 @@ export const ResourceListPageMainView = (
         />
       </div>
       <ResourcesTable
-        connectorResources={
-          userConnectorResources.isSuccess ? userConnectorResources.data : []
-        }
-        isError={userConnectorResources.isError}
-        isLoading={userConnectorResources.isLoading}
+        connectorResources={userConnector.isSuccess ? userConnector.data : []}
+        isError={userConnector.isError}
+        isLoading={userConnector.isLoading}
         accessToken={accessToken}
       />
     </div>

@@ -4,7 +4,7 @@ import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 import { DataResourceForm } from "../data";
 import {
   ConnectorDefinition,
-  ConnectorResourceType,
+  ConnectorType,
   Nullable,
   useConnectorDefinitions,
 } from "../../lib";
@@ -29,22 +29,22 @@ export const AddConnectorResourceDialog = (
   const [newConnectorDefinition, setNewConnectorDefinition] =
     React.useState<Nullable<ConnectorDefinition>>(null);
   const [newConnectorType, setNewConnectorType] =
-    React.useState<Nullable<ConnectorResourceType>>(null);
+    React.useState<Nullable<ConnectorType>>(null);
 
   const aiDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_AI",
+    connectorType: "CONNECTOR_TYPE_AI",
     enabled: enableQuery,
     accessToken,
   });
 
   const blockchainDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_BLOCKCHAIN",
+    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
     enabled: enableQuery,
     accessToken,
   });
 
   const dataDefinitions = useConnectorDefinitions({
-    connectorResourceType: "CONNECTOR_TYPE_DATA",
+    connectorType: "CONNECTOR_TYPE_DATA",
     enabled: enableQuery,
     accessToken,
   });

@@ -4,7 +4,7 @@ import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import {
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   Nullable,
   OperatorDefinition,
 } from "../../../../lib";
@@ -23,10 +23,7 @@ export type SelectConnectorResourceDialogProps = {
 };
 
 export type PipelineComponentDefinitionOnSelect = (
-  resource:
-    | ConnectorResourceWithDefinition
-    | ConnectorDefinition
-    | OperatorDefinition
+  resource: ConnectorWithDefinition | ConnectorDefinition | OperatorDefinition
 ) => void;
 
 export const SelectPipelineComponentDefinitionDialog = (

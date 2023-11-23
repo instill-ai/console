@@ -406,19 +406,20 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             </div>
           </VerticalSortableWrapper>
           <Button
-            className="flex w-full"
-            variant="primary"
+            className="flex w-full flex-1 gap-x-2"
+            variant="tertiaryColour"
             onClick={() => setEnableEdit(!enableEdit)}
             disabled={
               isOwner ? (currentVersion === "latest" ? false : true) : true
             }
+            type="button"
           >
-            <p className="my-auto">Add Field</p>
+            <p className="my-auto pt-0.5">Add Field</p>
             <Icons.Plus
               className={cn(
-                "my-auto h-4 w-4",
+                "my-auto h-4 w-4 stroke-semantic-accent-default",
                 currentVersion === "latest"
-                  ? "stroke-semantic-bg-primary"
+                  ? "stroke-semantic-accent-default"
                   : "stroke-semantic-fg-secondary"
               )}
             />

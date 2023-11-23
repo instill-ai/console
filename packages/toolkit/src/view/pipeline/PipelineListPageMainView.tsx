@@ -52,7 +52,7 @@ export const PipelineListPageMainView = (
   });
 
   const connectorDefinitions = useConnectorDefinitions({
-    connectorResourceType: "all",
+    connectorType: "all",
     enabled: enableQuery,
     accessToken,
   });
@@ -81,9 +81,8 @@ export const PipelineListPageMainView = (
         </Button>
       </div>
       <StaffPickTemplates
-        connectorDefinitions={
-          connectorDefinitions.isSuccess ? connectorDefinitions.data : null
-        }
+        accessToken={accessToken}
+        enableQuery={enableQuery}
         className="mb-6"
       />
       <PipelinesTable

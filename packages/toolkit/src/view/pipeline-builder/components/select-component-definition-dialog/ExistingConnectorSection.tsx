@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Nullable, useUserConnectorResources } from "../../../../lib";
+import { Nullable, useUserConnectors } from "../../../../lib";
 import { DialogSection } from "./DialogSection";
 import { ImageWithFallback } from "../../../../components";
 import { Icons } from "@instill-ai/design-system";
@@ -17,9 +17,9 @@ export const ExistingConnectorSection = ({
   const router = useRouter();
   const { entity } = router.query;
 
-  const allConnectorResources = useUserConnectorResources({
+  const allConnector = useUserConnectors({
     userName: `users/${entity}`,
-    connectorResourceType: "all",
+    connectorType: "all",
     enabled: enableQuery,
     accessToken,
   });
@@ -27,25 +27,25 @@ export const ExistingConnectorSection = ({
   return (
     <DialogSection.Root title="Existing Connectors">
       <DialogSection.Grid>
-        {allConnectorResources.isSuccess
-          ? allConnectorResources.data.map((connectorResource) => (
+        {allConnector.isSuccess
+          ? allConnector.data.map((connector) => (
               <DialogSection.Item
-                key={connectorResource.id}
+                key={connector.id}
                 onClick={() => {
-                  onSelect(connectorResource);
+                  onSelect(connector);
                 }}
               >
                 <ImageWithFallback
-                  src={`/icons/${connectorResource.connector_definition.vendor}/${connectorResource.connector_definition.icon}`}
+                  src={`/icons/${connector.connector_definition.vendor}/${connector.connector_definition.icon}`}
                   width={32}
                   height={32}
-                  alt={`${connectorResource.connector_definition.title}-icon`}
+                  alt={`${connector.connector_definition.title}-icon`}
                   fallbackImg={
                     <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
                   }
                 />
                 <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
-                  {connectorResource.id}
+                  {connector.id}
                 </p>
               </DialogSection.Item>
             ))
