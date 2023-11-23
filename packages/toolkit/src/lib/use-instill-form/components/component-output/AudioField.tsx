@@ -16,7 +16,7 @@ export const AudioField = (props: AudioFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {audio && !hideField ? (
           <div className="flex w-full">
             <audio

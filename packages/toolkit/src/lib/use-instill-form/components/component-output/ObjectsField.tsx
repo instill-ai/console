@@ -13,7 +13,7 @@ export const ObjectsField = (props: ObjectsFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {objects && !hideField ? (
           <div className="flex w-full flex-col flex-wrap gap-2">
             {objects?.map((object) => (

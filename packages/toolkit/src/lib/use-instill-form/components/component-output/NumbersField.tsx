@@ -13,7 +13,7 @@ export const NumbersField = (props: NumbersFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {numbers && !hideField ? (
           <div className="flex w-full flex-row flex-wrap gap-2">
             {numbers.map((number) => (

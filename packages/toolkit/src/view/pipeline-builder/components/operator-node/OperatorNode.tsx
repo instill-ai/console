@@ -30,6 +30,7 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
+import { useCheckIsHiddenOnNode } from "../useCheckIsHiddenOnNode";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -233,33 +234,11 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
-  // We need to put this function into a useCallback to prevent infinite loop
-  const checkIsHidden: CheckIsHidden = React.useCallback(
-    ({ parentSchema, targetKey }) => {
-      if (!parentSchema) {
-        return false;
-      }
-
-      if (!parentSchema.instillEditOnNodeFields) {
-        return false;
-      }
-
-      if (!targetKey) {
-        return false;
-      }
-
-      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
-        return false;
-      }
-
-      return true;
-    },
-    []
-  );
-
   const { outputSchema } = React.useMemo(() => {
     return getOperatorInputOutputSchema(data.component);
   }, [data]);
+
+  const checkIsHidden = useCheckIsHiddenOnNode();
 
   const { fields, form } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,

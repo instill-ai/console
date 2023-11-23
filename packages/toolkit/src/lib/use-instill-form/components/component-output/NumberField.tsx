@@ -13,7 +13,7 @@ export const NumberField = (props: NumberFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {number && !hideField ? (
           <div className="flex min-h-[36px] w-full items-center break-all rounded-sm text-semantic-fg-primary product-body-text-4-regular">
             {number}
