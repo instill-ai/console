@@ -152,9 +152,10 @@ export const TextField = ({
                       value={
                         typeof field.value === "object" ? "" : field.value ?? ""
                       }
-                      className={
+                      className={cn(
+                        "nodrag",
                         size === "sm" ? "!product-body-text-4-regular" : ""
-                      }
+                      )}
                       autoComplete="off"
                       onChange={(e) => {
                         onInputChange({

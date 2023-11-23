@@ -32,7 +32,9 @@ export const SingleSelectField = ({
         return (
           <Form.Item>
             <div className="flex flex-row gap-x-2">
-              <Form.Label className={size === "sm" ? "!text-sm" : ""}>
+              <Form.Label
+                className={size === "sm" ? "!product-body-text-4-medium" : ""}
+              >
                 {title}
               </Form.Label>
               {description ? (
@@ -73,12 +75,13 @@ export const SingleSelectField = ({
               disabled={disabled}
             >
               <Form.Control>
-                <Select.Trigger className="w-full">
-                  <Select.Value
-                    className={
-                      size === "sm" ? "!product-body-text-4-semibold" : ""
-                    }
-                  />
+                <Select.Trigger
+                  className={cn(
+                    "w-full",
+                    size === "sm" ? "!product-body-text-4-regular" : ""
+                  )}
+                >
+                  <Select.Value />
                 </Select.Trigger>
               </Form.Control>
               <Select.Content>
