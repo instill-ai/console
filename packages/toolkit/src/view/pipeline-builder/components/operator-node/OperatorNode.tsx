@@ -250,6 +250,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       size: "sm",
       enableSmartHint: true,
       checkIsHidden,
+      componentID: data.component.id,
     }
   );
 

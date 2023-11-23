@@ -12,7 +12,7 @@ import { ImageWithFallback } from "../../components";
 import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
 
-export type AddConnectorResourceDialogProps = {
+export type AddConnectorDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   trigger?: React.ReactElement;
@@ -21,9 +21,7 @@ export type AddConnectorResourceDialogProps = {
   enableQuery: boolean;
 };
 
-export const AddConnectorResourceDialog = (
-  props: AddConnectorResourceDialogProps
-) => {
+export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
   const { open, onOpenChange, trigger, accessToken, enableQuery } = props;
 
   const [newConnectorDefinition, setNewConnectorDefinition] =
@@ -93,7 +91,7 @@ export const AddConnectorResourceDialog = (
                 <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
                   {aiDefinitions.isSuccess
                     ? aiDefinitions.data.map((definition) => (
-                        <AddConnectorResourceDialogItem
+                        <AddConnectorDialogItem
                           key={definition.id}
                           onClick={() => {
                             setNewConnectorDefinition(definition);
@@ -112,7 +110,7 @@ export const AddConnectorResourceDialog = (
                           <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                             {definition.title}
                           </p>
-                        </AddConnectorResourceDialogItem>
+                        </AddConnectorDialogItem>
                       ))
                     : null}
                 </div>
@@ -122,7 +120,7 @@ export const AddConnectorResourceDialog = (
                 <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
                   {blockchainDefinitions.isSuccess
                     ? blockchainDefinitions.data.map((definition) => (
-                        <AddConnectorResourceDialogItem
+                        <AddConnectorDialogItem
                           key={definition.id}
                           onClick={() => {
                             setNewConnectorDefinition(definition);
@@ -141,7 +139,7 @@ export const AddConnectorResourceDialog = (
                           <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                             {definition.title}
                           </p>
-                        </AddConnectorResourceDialogItem>
+                        </AddConnectorDialogItem>
                       ))
                     : null}
                 </div>
@@ -151,7 +149,7 @@ export const AddConnectorResourceDialog = (
                 <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
                   {dataDefinitions.isSuccess
                     ? dataDefinitions.data.map((definition) => (
-                        <AddConnectorResourceDialogItem
+                        <AddConnectorDialogItem
                           key={definition.id}
                           onClick={() => {
                             setNewConnectorDefinition(definition);
@@ -170,7 +168,7 @@ export const AddConnectorResourceDialog = (
                           <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                             {definition.title}
                           </p>
-                        </AddConnectorResourceDialogItem>
+                        </AddConnectorDialogItem>
                       ))
                     : null}
                 </div>
@@ -239,7 +237,7 @@ export const AddConnectorResourceDialog = (
   );
 };
 
-const AddConnectorResourceDialogItem = (
+const AddConnectorDialogItem = (
   props: {
     children: React.ReactNode;
   } & React.ButtonHTMLAttributes<HTMLButtonElement>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AddConnectorResourceDialog } from "./AddConnectorResourceDialog";
+import { AddConnectorDialog } from "./AddConnectorDialog";
 import { GeneralPageProp, useUserConnectors } from "../../lib";
 import dynamic from "next/dynamic";
 
@@ -36,7 +36,7 @@ export const ResourceListPageMainView = (
   return (
     <div className="flex flex-col">
       <div className="mb-8 flex">
-        <AddConnectorResourceDialog
+        <AddConnectorDialog
           open={addConnectorDialogIsOpen}
           onOpenChange={(open) => setAddConnectorDialogIsOpen(open)}
           accessToken={accessToken}
@@ -47,7 +47,7 @@ export const ResourceListPageMainView = (
         />
       </div>
       <ResourcesTable
-        connectorResources={userConnector.isSuccess ? userConnector.data : []}
+        connectors={userConnector.isSuccess ? userConnector.data : []}
         isError={userConnector.isError}
         isLoading={userConnector.isLoading}
         accessToken={accessToken}

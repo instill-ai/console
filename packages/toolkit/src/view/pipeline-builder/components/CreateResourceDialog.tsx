@@ -10,10 +10,10 @@ import {
 } from "../../../lib";
 import { DataResourceForm } from "../../data";
 
-import { SelectConnectorResourceDialogItem } from "./SelectConnectorResourceDialogItem";
 import { ImageWithFallback } from "../../../components";
 import { AIResourceAutoForm } from "../../ai";
 import { BlockchainResourceAutoForm } from "../../blockchain";
+import { SelectConnectorDialogItem } from "./SelectConnectorDialogItem";
 
 export type CreateResourceDialogProps = {
   accessToken: Nullable<string>;
@@ -104,7 +104,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
               </div>
               <div className="grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
                 {filteredConnectors.map((connector) => (
-                  <SelectConnectorResourceDialogItem
+                  <SelectConnectorDialogItem
                     key={connector.id}
                     onClick={() => {
                       if (!onSelectedExistingResource) return;
@@ -123,7 +123,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                     <p className="my-auto text-left text-semantic-fg-primary product-headings-heading-5">
                       {connector.id}
                     </p>
-                  </SelectConnectorResourceDialogItem>
+                  </SelectConnectorDialogItem>
                 ))}
               </div>
             </div>

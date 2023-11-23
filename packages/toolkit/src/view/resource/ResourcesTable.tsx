@@ -27,26 +27,26 @@ import {
 } from "../../components";
 
 export type ResourcesTableProps = {
-  connectorResources: ConnectorWithDefinition[];
+  connectors: ConnectorWithDefinition[];
   isError: boolean;
   isLoading: boolean;
   accessToken: Nullable<string>;
 };
 
 export const ResourcesTable = (props: ResourcesTableProps) => {
-  const { connectorResources, isError, isLoading, accessToken } = props;
+  const { connectors, isError, isLoading, accessToken } = props;
   const { toast } = useToast();
 
-  const deleteUserConnectorResource = useDeleteUserConnector();
+  const deleteUserConnector = useDeleteUserConnector();
 
-  function handleDeleteUserConnectorResource(
+  function handleDeleteUserConnector(
     resource: Nullable<Pipeline | Model | ConnectorWithDefinition>
   ) {
     if (!resource) {
       return;
     }
 
-    deleteUserConnectorResource.mutate(
+    deleteUserConnector.mutate(
       {
         connectorName: resource.name,
         accessToken,
@@ -154,7 +154,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
               <Dialog.Content className="!w-[512px]">
                 <GeneralDeleteResourceModal
                   resource={row.original}
-                  handleDeleteResource={handleDeleteUserConnectorResource}
+                  handleDeleteResource={handleDeleteUserConnector}
                 />
               </Dialog.Content>
             </Dialog.Root>
@@ -182,7 +182,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
     );
   }
 
-  if (connectorResources.length === 0 && !isLoading) {
+  if (connectors.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
@@ -207,7 +207,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
   return (
     <DataTable
       columns={columns}
-      data={connectorResources}
+      data={connectors}
       pageSize={6}
       searchPlaceholder={"Search Connectors"}
       searchKey={"id"}

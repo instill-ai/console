@@ -261,6 +261,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       size: "sm",
       enableSmartHint: true,
       checkIsHidden,
+      componentID: data.component.id,
     }
   );
 

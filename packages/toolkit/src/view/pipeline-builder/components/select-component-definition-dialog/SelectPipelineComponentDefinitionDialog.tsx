@@ -12,7 +12,7 @@ import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
 
-export type SelectConnectorResourceDialogProps = {
+export type SelectPipelineComponentDefinitionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   trigger?: React.ReactElement;
@@ -27,7 +27,7 @@ export type PipelineComponentDefinitionOnSelect = (
 ) => void;
 
 export const SelectPipelineComponentDefinitionDialog = (
-  props: SelectConnectorResourceDialogProps
+  props: SelectPipelineComponentDefinitionDialogProps
 ) => {
   const {
     open,

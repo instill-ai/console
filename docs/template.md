@@ -23,7 +23,7 @@ For example, this is a pipeline with basic configuration
       "configuration": {
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-start"
+      "definition_name": "operator-definitions/start"
     },
     {
       "id": "end",
@@ -32,7 +32,7 @@ For example, this is a pipeline with basic configuration
         "input": {},
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-end"
+      "definition_name": "operator-definitions/end"
     },
     {
       "id": "ai_1",
@@ -64,7 +64,7 @@ This is the correct template after cleaning it up
       "configuration": {
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-start"
+      "definition_name": "operator-definitions/start"
     },
     {
       "id": "end",
@@ -74,7 +74,7 @@ This is the correct template after cleaning it up
         "input": {},
         "metadata": {}
       },
-      "definition_name": "operator-definitions/op-end"
+      "definition_name": "operator-definitions/end"
     },
     {
       "id": "ai_1",

@@ -128,6 +128,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     {
       enableSmartHint: true,
       chooseTitleFrom: "title",
+      componentID: data.component.id,
     }
   );
 
