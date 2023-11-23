@@ -15,6 +15,7 @@ import {
 } from "./pick";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
 import { GeneralRecord, Nullable } from "../type";
+import { recursivelyCheckObjectHasValue } from "./recursivelyCheckObjectHasValue";
 
 export type UseInstillFormOptions = {
   disabledAll?: boolean;
@@ -40,6 +41,7 @@ export function useInstillForm(
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
     z.any()
   );
+  const [isInitialised, setIsInitialised] = React.useState(false);
   const [initialValues, setInitialValues] =
     React.useState<Nullable<GeneralRecord>>(null);
 
@@ -55,7 +57,7 @@ export function useInstillForm(
 
   // The first render will come to here
   React.useEffect(() => {
-    if (!schema) return;
+    if (!schema || isInitialised) return;
 
     const _formTree = transformInstillJSONSchemaToFormTree(schema, {
       parentSchema: schema,
@@ -83,14 +85,25 @@ export function useInstillForm(
     const _data = transformInstillFormTreeToDefaultValue(_formTree);
 
     // Set initial values to the form. The data may be null or empty object
-    const _defaultValues = data
-      ? Object.keys(data).length !== 0
-        ? data
-        : _data
-      : _data;
+    // Id the data is a nested but empty object, we will fallback to default
+    // value
+
+    let _defaultValues: GeneralRecord = _data;
+
+    if (
+      data &&
+      data.task &&
+      data.input &&
+      !recursivelyCheckObjectHasValue(data.input)
+    ) {
+      _defaultValues = data;
+    }
+
+    console.log(_data);
 
     setInitialValues(_defaultValues);
-  }, [schema, checkIsHidden, data, form, setSelectedConditionMap]);
+    setIsInitialised(true);
+  }, [schema, checkIsHidden, data, setSelectedConditionMap, isInitialised]);
 
   // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {
@@ -100,15 +113,21 @@ export function useInstillForm(
       parentSchema: schema,
       targetSchema: schema,
       selectedConditionMap,
+      checkIsHidden,
     });
 
     setValidatorSchema(_ValidatorSchema);
-  }, [schema, selectedConditionMap]);
+  }, [schema, selectedConditionMap, checkIsHidden]);
 
   // Delay the initialisation of the form after the first render
   React.useEffect(() => {
     form.reset(initialValues);
   }, [form, initialValues]);
+
+  // When the schema is changed, trigger the form validation
+  React.useEffect(() => {
+    form.trigger();
+  }, [ValidatorSchema]);
 
   const fields = React.useMemo(() => {
     if (!formTree) {

@@ -16,5 +16,6 @@ export * from "./utility";
 export * from "./vdp-sdk";
 export * from "./fillArrayWithZero";
 export * from "./toastInstillError";
+export * from "./useDeepCompareEffect";
 export * from "./usePipelineBuilderGraph";
 export * from "./useResourceAdditionalForm";

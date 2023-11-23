@@ -241,7 +241,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     return getOperatorInputOutputSchema(data.component);
   }, [data]);
 
-  const { fields, form } = useInstillForm(
+  const { fields, form, ValidatorSchema } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {
@@ -255,12 +255,12 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     formState: { isValid },
   } = form;
 
-  useConfigurationUpdaterOnNode(
+  useConfigurationUpdaterOnNode({
     id,
     form,
-    data.nodeType,
-    data.component.configuration
-  );
+    nodeType: data.nodeType,
+    ValidatorSchema,
+  });
 
   return (
     <NodeWrapper

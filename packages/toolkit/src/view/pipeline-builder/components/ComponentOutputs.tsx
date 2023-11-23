@@ -23,9 +23,7 @@ export const ComponentOutputs = ({
   return (
     <div className="flex flex-col">
       <div className="mb-1 product-body-text-4-medium">output</div>
-      <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary py-2">
-        {componentOutputFields}
-      </div>
+      <div className="flex flex-col gap-y-1">{componentOutputFields}</div>
     </div>
   );
 };

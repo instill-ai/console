@@ -41,6 +41,8 @@ export function transformInstillJSONSchemaToZod({
       parentSchema.required.includes(propertyKey)
     : false;
 
+  console.log(propertyPath, isHidden, isRequired);
+
   // const field will only be used in oneOf field conditions
   // We don't need to use literal for const field because
   // the value that can be selected had been defined by us
@@ -202,17 +204,11 @@ export function transformInstillJSONSchemaToZod({
       } else {
         switch (instillUpstreamValue.type) {
           case "string": {
-            if (isRequired) {
-              instillZodSchema = z
-                .string({
-                  errorMap: customErrorMap,
-                })
-                .min(1, "This field is required");
-            } else {
-              instillZodSchema = z.string({
+            instillZodSchema = z
+              .string({
                 errorMap: customErrorMap,
-              });
-            }
+              })
+              .min(1, "This field is required");
             break;
           }
           case "boolean": {
@@ -225,27 +221,17 @@ export function transformInstillJSONSchemaToZod({
             // set the initial zod schema to string and then validate it with
             // superRefine.
 
-            if (isRequired) {
-              instillZodSchema = z.string().min(1, "This field is required");
-            } else {
-              instillZodSchema = z.string();
-            }
+            instillZodSchema = z.string().min(1, "This field is required");
             break;
           }
         }
       }
     } else {
-      if (isRequired) {
-        instillZodSchema = z
-          .string({
-            errorMap: customErrorMap,
-          })
-          .min(1, "This field is required");
-      } else {
-        instillZodSchema = z.string({
+      instillZodSchema = z
+        .string({
           errorMap: customErrorMap,
-        });
-      }
+        })
+        .min(1, "This field is required");
     }
 
     /* -----------------------------------------------------------------------
@@ -418,17 +404,11 @@ export function transformInstillJSONSchemaToZod({
 
   switch (targetSchema.type) {
     case "string": {
-      if (isRequired) {
-        instillZodSchema = z
-          .string({
-            errorMap: customErrorMap,
-          })
-          .min(1, "This field is required");
-      } else {
-        instillZodSchema = z.string({
+      instillZodSchema = z
+        .string({
           errorMap: customErrorMap,
-        });
-      }
+        })
+        .min(1, "This field is required");
 
       break;
     }
@@ -442,11 +422,7 @@ export function transformInstillJSONSchemaToZod({
       // set the initial zod schema to string and then validate it with
       // superRefine.
 
-      if (isRequired) {
-        instillZodSchema = z.string().min(1, "This field is required");
-      } else {
-        instillZodSchema = z.string();
-      }
+      instillZodSchema = z.string().min(1, "This field is required");
       break;
     }
   }
