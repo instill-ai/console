@@ -140,6 +140,7 @@ export function useInstillForm(
     chooseTitleFrom,
     enableSmartHint,
     componentID,
+    size,
   ]);
 
   return {

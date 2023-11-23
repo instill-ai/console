@@ -16,9 +16,7 @@ import {
   generateNewComponentIndex,
 } from "../../lib";
 import {
-  GeneralRecord,
   InstillStore,
-  Nullable,
   useInstillForm,
   useInstillStore,
   validateInstillID,
@@ -34,7 +32,6 @@ import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
-import isEqual from "lodash.isequal";
 import { useCheckIsHidden } from "../useCheckIsHidden";
 import { useUpdaterOnNode } from "../useUpdaterOnNode";
 
@@ -274,6 +271,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     nodeType: "connector",
     form,
     ValidatorSchema,
+    configuration: data.component.configuration,
   });
 
   return (
@@ -462,13 +460,15 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               Output properties
             */}
 
-          {!resourceNotCreated && !enableEdit ? (
-            <ComponentOutputs
-              componentID={data.component.id}
-              outputSchema={outputSchema}
-              traces={testModeTriggerResponse?.metadata?.traces ?? null}
-            />
-          ) : null}
+          <div className="mb-4 w-full">
+            {!resourceNotCreated && !enableEdit ? (
+              <ComponentOutputs
+                componentID={data.component.id}
+                outputSchema={outputSchema}
+                traces={testModeTriggerResponse?.metadata?.traces ?? null}
+              />
+            ) : null}
+          </div>
 
           <div className="flex flex-row-reverse">
             <ConnectorIDTag

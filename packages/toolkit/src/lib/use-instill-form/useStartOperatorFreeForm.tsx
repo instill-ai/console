@@ -67,7 +67,7 @@ export const useStartOperatorFreeForm = (props: {
     );
 
     return fields;
-  }, [data, form]);
+  }, [data, form, onEditField, onDeleteField]);
 
   return {
     form,

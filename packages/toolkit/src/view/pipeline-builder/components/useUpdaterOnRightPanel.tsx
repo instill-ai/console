@@ -13,28 +13,22 @@ import { useShallow } from "zustand/react/shallow";
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
-export function useUpdaterOnNode({
+export function useUpdaterOnRightPanel({
   id,
   nodeType,
   form,
   ValidatorSchema,
-  configuration,
 }: {
   id: string;
   nodeType: "connector" | "operator";
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
-  configuration: GeneralRecord;
 }) {
-  const {
-    updateNodes,
-    updatePipelineRecipeIsDirty,
-    updateCurrentAdvancedConfigurationNodeID,
-  } = useInstillStore(useShallow(selector));
+  const { updateNodes, updatePipelineRecipeIsDirty } = useInstillStore(
+    useShallow(selector)
+  );
 
   const { getValues } = form;
 
@@ -47,15 +41,7 @@ export function useUpdaterOnNode({
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
 
-    if (values.task !== updatedValue.current?.task) {
-      updateCurrentAdvancedConfigurationNodeID(() => null);
-    }
-
     if (!parsed.success) {
-      return;
-    }
-
-    if (isEqual(configuration, parsed.data)) {
       return;
     }
 
@@ -77,21 +63,14 @@ export function useUpdaterOnNode({
                 ...node.data,
                 component: {
                   ...node.data.component,
-                  configuration:
-                    parsed.data.task === node.data.component.configuration.task
-                      ? {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: {
-                            ...node.data.component.configuration.input,
-                            ...parsed.data.input,
-                          },
-                        }
-                      : {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: parsed.data.input,
-                        },
+                  configuration: {
+                    ...node.data.component.configuration,
+                    task: parsed.data.task,
+                    input: {
+                      ...node.data.component.configuration.input,
+                      ...parsed.data.input,
+                    },
+                  },
                 },
               },
             };
@@ -108,21 +87,14 @@ export function useUpdaterOnNode({
                 ...node.data,
                 component: {
                   ...node.data.component,
-                  configuration:
-                    parsed.data.task === node.data.component.configuration.task
-                      ? {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: {
-                            ...node.data.component.configuration.input,
-                            ...parsed.data.input,
-                          },
-                        }
-                      : {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: parsed.data.input,
-                        },
+                  configuration: {
+                    ...node.data.component.configuration,
+                    task: parsed.data.task,
+                    input: {
+                      ...node.data.component.configuration.input,
+                      ...parsed.data.input,
+                    },
+                  },
                 },
               },
             };
@@ -140,11 +112,9 @@ export function useUpdaterOnNode({
   }, [
     values,
     ValidatorSchema,
-    id,
     nodeType,
+    id,
     updateNodes,
     updatePipelineRecipeIsDirty,
-    updateCurrentAdvancedConfigurationNodeID,
-    configuration,
   ]);
 }

@@ -15,7 +15,6 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../lib";
 import {
-  CheckIsHidden,
   InstillStore,
   useInstillForm,
   useInstillStore,
@@ -261,6 +260,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     nodeType: "operator",
     form,
     ValidatorSchema,
+    configuration: data.component.configuration,
   });
 
   return (

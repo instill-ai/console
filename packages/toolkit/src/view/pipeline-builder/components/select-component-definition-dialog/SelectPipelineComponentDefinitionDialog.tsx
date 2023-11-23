@@ -8,7 +8,6 @@ import {
   Nullable,
   OperatorDefinition,
 } from "../../../../lib";
-import { useRouter } from "next/router";
 import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
@@ -42,9 +41,6 @@ export const SelectPipelineComponentDefinitionDialog = (
     enableQuery,
     disabled,
   } = props;
-
-  const router = useRouter();
-  const { entity } = router.query;
 
   return (
     <Dialog.Root
