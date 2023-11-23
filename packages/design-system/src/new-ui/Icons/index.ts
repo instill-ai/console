@@ -54,6 +54,7 @@ import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
 import { LayersTwo01 } from "./LayersTwo01";
 import { Model } from "./Model";
+import { PauseCircle } from "./PauseCircle";
 import { Menu01 } from "./Menu01";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
@@ -61,6 +62,7 @@ import { MessageSmileSquare } from "./MessageSmileSquare";
 import { Pipeline } from "./Pipeline";
 import { Plus } from "./Plus";
 import { Play } from "./Play";
+import { PlayCircle } from "./PlayCircle";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
@@ -137,12 +139,14 @@ export const Icons = {
   Logout01,
   LayersTwo01,
   Model,
+  PauseCircle,
   Menu01,
   Minus,
   Mail01,
   MessageSmileSquare,
   Pipeline,
   Play,
+  PlayCircle,
   Plus,
   RefreshCw05,
   Recording02,
