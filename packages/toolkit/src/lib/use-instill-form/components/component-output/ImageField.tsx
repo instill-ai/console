@@ -16,7 +16,7 @@ export const ImageField = (props: ImageFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {!hideField && image ? (
           <div className="flex w-full">
             <img

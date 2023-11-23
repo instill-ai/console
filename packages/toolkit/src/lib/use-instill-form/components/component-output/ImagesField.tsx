@@ -14,7 +14,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {images && !hideField ? (
           <div className="flex w-full flex-wrap">
             {images?.slice(0, 5).map((image) => {

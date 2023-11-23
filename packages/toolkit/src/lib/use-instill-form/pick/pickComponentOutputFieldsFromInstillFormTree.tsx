@@ -24,6 +24,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     title = tree.title ?? null;
   }
 
+  // Process key for react component
+  const reactCompKey = tree.path || tree.fieldKey;
+
   // Process value
   let propertyValue: any = null;
 
@@ -51,7 +54,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
       <div
-        key={tree.path || tree.fieldKey}
+        key={reactCompKey}
         className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2"
       >
         <p className="text-semantic-fg-secondary product-body-text-4-semibold">
@@ -66,7 +69,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         })}
       </div>
     ) : (
-      <React.Fragment key={tree.path || tree.fieldKey}>
+      <React.Fragment key={reactCompKey}>
         {tree.properties.map((property) => {
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
@@ -91,7 +94,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     const objectArrayData = propertyValue as GeneralRecord[];
 
     return propertyValue ? (
-      <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
+      <div key={reactCompKey} className="flex flex-col gap-y-2">
         {objectArrayData.map((data) =>
           pickComponentOutputFieldsFromInstillFormTree({
             ...props,
@@ -101,7 +104,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         )}
       </div>
     ) : (
-      <React.Fragment key={tree.path || tree.fieldKey}>
+      <React.Fragment key={reactCompKey}>
         {pickComponentOutputFieldsFromInstillFormTree({
           ...props,
           tree: tree.properties,
@@ -129,6 +132,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   ) {
     return (
       <ComponentOutputFields.TextField
+        key={reactCompKey}
         nodeType={nodeType}
         title={title}
         text={propertyValue}
@@ -147,6 +151,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "string": {
         return (
           <ComponentOutputFields.TextsField
+            key={reactCompKey}
             nodeType={nodeType}
             title={title}
             texts={propertyValue}
@@ -157,6 +162,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "audio": {
         return (
           <ComponentOutputFields.AudiosField
+            key={reactCompKey}
             nodeType={nodeType}
             title={title}
             audios={propertyValue}
@@ -167,6 +173,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "image": {
         return (
           <ComponentOutputFields.ImagesField
+            key={reactCompKey}
             nodeType={nodeType}
             title={title}
             images={propertyValue}
@@ -177,6 +184,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "text": {
         return (
           <ComponentOutputFields.TextsField
+            key={reactCompKey}
             nodeType={nodeType}
             title={title}
             texts={propertyValue}
@@ -187,6 +195,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       default: {
         return (
           <ComponentOutputFields.TextField
+            key={reactCompKey}
             nodeType={nodeType}
             title={title}
             text={propertyValue}
@@ -206,6 +215,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "string": {
       return (
         <ComponentOutputFields.TextField
+          key={reactCompKey}
           nodeType={nodeType}
           title={title}
           text={propertyValue}
@@ -216,6 +226,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "audio": {
       return (
         <ComponentOutputFields.AudioField
+          key={reactCompKey}
           nodeType={nodeType}
           title={title}
           audio={propertyValue}
@@ -226,6 +237,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "image": {
       return (
         <ComponentOutputFields.ImageField
+          key={reactCompKey}
           nodeType={nodeType}
           title={title}
           image={propertyValue}
@@ -236,6 +248,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "text": {
       return (
         <ComponentOutputFields.TextField
+          key={reactCompKey}
           nodeType={nodeType}
           title={title}
           text={propertyValue}
@@ -246,6 +259,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     default: {
       return (
         <ComponentOutputFields.TextField
+          key={reactCompKey}
           nodeType={nodeType}
           title={title}
           text={propertyValue}

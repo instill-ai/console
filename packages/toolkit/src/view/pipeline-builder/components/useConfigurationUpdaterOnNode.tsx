@@ -44,15 +44,16 @@ export function useConfigurationUpdaterOnNode({
   const values = getValues();
   const watchValues = watch();
 
+  // This will make sure that we have the latest values
   const upToDateValues = {
-    // ...watchValues,
+    ...watchValues,
     ...values,
   };
 
-  // values is a proxy object (it will be re-created every single time)
-  // so we need to deep compare it
+  // upToDateValues is a proxy object (it will be re-created every single time)
+  // so we need to deep compare it to avoid endless loop
   useDeepCompareEffect(() => {
-    setTempValues(upToDateValues);
+    console.log("upToDateValues", upToDateValues);
   }, [upToDateValues]);
 
   // Our useDeepCompareEffect can't structureClone ValidatorSchema, so
@@ -64,9 +65,78 @@ export function useConfigurationUpdaterOnNode({
 
     const parsedResult = ValidatorSchema.safeParse(upToDateValues);
 
+    // Instead of relying on isValid from react-hook-form, we will use our own
+    // Validator to check whether the form is valid or not
     if (parsedResult.success) {
       handleSubmit(() => {
-        onUpdate(upToDateValues);
+        console.log("tempValues", tempValues);
+
+        const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(
+          recursiveTransformToString(upToDateValues)
+        );
+
+        updateNodes((nodes) => {
+          return nodes.map((node) => {
+            if (
+              nodeType === "operator" &&
+              node.data.nodeType === "operator" &&
+              node.id === id
+            ) {
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  component: {
+                    ...node.data.component,
+                    configuration:
+                      node.data.component.configuration.task === values.task
+                        ? {
+                            ...node.data.component.configuration,
+                            ...modifiedData,
+                          }
+                        : {
+                            ...modifiedData,
+                          },
+                  },
+                },
+              };
+            }
+
+            if (
+              nodeType === "connector" &&
+              node.data.nodeType === "connector" &&
+              node.id === id
+            ) {
+              console.log(
+                "task diff",
+                node.data.component.configuration.task,
+                values.task
+              );
+
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  component: {
+                    ...node.data.component,
+                    configuration:
+                      node.data.component.configuration.task === values.task
+                        ? {
+                            ...node.data.component.configuration,
+                            ...modifiedData,
+                          }
+                        : {
+                            ...modifiedData,
+                          },
+                  },
+                },
+              };
+            }
+
+            return node;
+          });
+        });
+        updatePipelineRecipeIsDirty(() => true);
         setTempValues(null);
       })();
     } else {
@@ -75,61 +145,4 @@ export function useConfigurationUpdaterOnNode({
       }
     }
   }, [tempValues, ValidatorSchema]);
-
-  function onUpdate(values: GeneralRecord) {
-    const modifiedData = recursiveReplaceNullAndEmptyStringWithUndefined(
-      recursiveTransformToString(values)
-    );
-
-    updateNodes((nodes) => {
-      return nodes.map((node) => {
-        if (nodeType === "operator") {
-          if (node.data.nodeType === "operator" && node.id === id) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration:
-                    node.data.component.configuration.task === values.task
-                      ? {
-                          ...node.data.component.configuration,
-                          ...modifiedData,
-                        }
-                      : {
-                          ...modifiedData,
-                        },
-                },
-              },
-            };
-          }
-        } else {
-          if (node.data.nodeType === "connector" && node.id === id) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration:
-                    node.data.component.configuration.task === values.task
-                      ? {
-                          ...node.data.component.configuration,
-                          ...modifiedData,
-                        }
-                      : {
-                          ...modifiedData,
-                        },
-                },
-              },
-            };
-          }
-        }
-
-        return node;
-      });
-    });
-    updatePipelineRecipeIsDirty(() => true);
-  }
 }

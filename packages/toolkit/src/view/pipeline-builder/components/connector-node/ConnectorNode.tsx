@@ -79,15 +79,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     });
   }, [id, reset]);
 
-  let resourceNotCreated = false;
+  const [resourceNotCreated, setResourceNotCreated] = React.useState(false);
 
   const { outputSchema } = React.useMemo(() => {
     return getConnectorInputOutputSchema(data.component);
   }, [data.component]);
 
-  if (!data.component.resource_name) {
-    resourceNotCreated = true;
-  }
+  React.useEffect(() => {
+    if (!data.component.resource_name) {
+      setResourceNotCreated(true);
+    }
+  }, [data]);
 
   function handleRename(newID: string) {
     if (newID === id) {

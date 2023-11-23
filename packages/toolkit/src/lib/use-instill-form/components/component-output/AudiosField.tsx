@@ -14,7 +14,7 @@ export const AudiosField = (props: AudiosFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {audios && !hideField ? (
           <div className="flex w-full flex-col">
             {audios.map((audio) => {

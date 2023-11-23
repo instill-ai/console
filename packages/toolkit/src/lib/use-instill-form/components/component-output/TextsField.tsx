@@ -13,7 +13,7 @@ export const TextsField = (props: TextsFieldProps) => {
   const { nodeType, title, texts, hideField } = props;
 
   if (nodeType === "connector") {
-    <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+    <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
       {texts && !hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {texts.map((text) => (

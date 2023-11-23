@@ -41,8 +41,6 @@ export function transformInstillJSONSchemaToZod({
       parentSchema.required.includes(propertyKey)
     : false;
 
-  console.log(propertyPath, isHidden, isRequired);
-
   // const field will only be used in oneOf field conditions
   // We don't need to use literal for const field because
   // the value that can be selected had been defined by us

@@ -14,7 +14,7 @@ export const TextField = (props: TextFieldProps) => {
 
   if (nodeType === "connector") {
     return (
-      <ConnectorNodeFieldRoot title={title} key={`${title}-field`}>
+      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {text && !hideField ? (
           <div className="relative flex w-full flex-row justify-between gap-x-2 rounded-sm border border-semantic-bg-line p-2">
             <pre className="flex min-h-[36px] w-full flex-1 items-center whitespace-pre-line break-all text-semantic-fg-primary product-body-text-4-regular">

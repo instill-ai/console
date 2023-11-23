@@ -50,9 +50,10 @@ export function useInstillForm(
 
   const form = useForm<z.infer<typeof ValidatorSchema>>({
     resolver: zodResolver(ValidatorSchema),
-    mode: "onChange",
-    reValidateMode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
     defaultValues: data,
+    delayError: 1500,
   });
 
   // The first render will come to here
@@ -99,8 +100,6 @@ export function useInstillForm(
       _defaultValues = data;
     }
 
-    console.log(_data);
-
     setInitialValues(_defaultValues);
     setIsInitialised(true);
   }, [schema, checkIsHidden, data, setSelectedConditionMap, isInitialised]);
@@ -126,8 +125,12 @@ export function useInstillForm(
 
   // When the schema is changed, trigger the form validation
   React.useEffect(() => {
-    form.trigger();
-  }, [ValidatorSchema]);
+    if (!isInitialised) {
+      return;
+    }
+
+    // form.trigger();
+  }, [ValidatorSchema, isInitialised]);
 
   const fields = React.useMemo(() => {
     if (!formTree) {
