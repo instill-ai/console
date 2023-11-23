@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons, useToast } from "@instill-ai/design-system";
 
 import {
   ConnectorNodeData,
@@ -16,22 +16,26 @@ import {
   generateNewComponentIndex,
 } from "../../lib";
 import {
+  GeneralRecord,
   InstillStore,
+  Nullable,
+  useInstillForm,
   useInstillStore,
   validateInstillID,
 } from "../../../../lib";
 import { ImageWithFallback } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
-import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
-import { TaskNotSelectedWarning } from "./TaskNotSelectedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { ComponentOutputs } from "../ComponentOutputs";
+import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
+import isEqual from "lodash.isequal";
+import { useCheckIsHidden } from "../useCheckIsHidden";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -43,6 +47,8 @@ const selector = (store: InstillStore) => ({
   testModeTriggerResponse: store.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -56,6 +62,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
+    updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -74,44 +81,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     });
   }, [id, reset]);
 
-  let aiTaskNotSelected = false;
-  let dataTaskNotSelected = false;
   let resourceNotCreated = false;
 
-  const { inputSchema, outputSchema } = React.useMemo(() => {
-    if (
-      data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
-      !data.component.configuration.task
-    ) {
-      return { inputSchema: null, outputSchema: null };
-    }
-
-    if (
-      data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-      data.component.definition_name ===
-        "connector-definitions/data-pinecone" &&
-      !data.component.configuration.task
-    ) {
-      return { inputSchema: null, outputSchema: null };
-    }
-
+  const { outputSchema } = React.useMemo(() => {
     return getConnectorInputOutputSchema(data.component);
   }, [data.component]);
-
-  if (
-    data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
-    !data.component.configuration.task
-  ) {
-    aiTaskNotSelected = true;
-  }
-
-  if (
-    data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-    data.component.definition_name === "connector-definitions/data-pinecone" &&
-    !data.component.configuration.task
-  ) {
-    dataTaskNotSelected = true;
-  }
 
   if (!data.component.resource_name) {
     resourceNotCreated = true;
@@ -280,6 +254,71 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
+  const checkIsHidden = useCheckIsHidden("onNode");
+
+  const { fields, form, ValidatorSchema } = useInstillForm(
+    data.component.connector_definition?.spec.component_specification ?? null,
+    data.component.configuration,
+    {
+      size: "sm",
+      enableSmartHint: true,
+      checkIsHidden,
+    }
+  );
+
+  const {
+    getValues,
+    formState: { isDirty, isValid, errors },
+    trigger,
+  } = form;
+
+  const values = getValues();
+
+  const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
+
+  // We don't rely on the react-hook-form isValid and isDirty state
+  // because the isHidden fields make the formStart inacurate.
+  React.useEffect(() => {
+    const parsed = ValidatorSchema.safeParse(values);
+
+    if (!parsed.success) {
+      return;
+    }
+
+    if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      updateNodes((nodes) => {
+        return nodes.map((node) => {
+          if (node.data.nodeType === "connector" && node.id === id) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                component: {
+                  ...node.data.component,
+                  configuration: {
+                    ...node.data.component.configuration,
+                    ...parsed.data,
+                  },
+                },
+              },
+            };
+          }
+
+          return node;
+        });
+      });
+      updatePipelineRecipeIsDirty(() => true);
+      updatedValue.current = parsed.data;
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [values, isDirty, isValid, ValidatorSchema]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -420,34 +459,33 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               }}
             />
           ) : null}
-          {aiTaskNotSelected && !resourceNotCreated ? (
-            <TaskNotSelectedWarning componentType="COMPONENT_TYPE_CONNECTOR_AI" />
-          ) : null}
-          {dataTaskNotSelected && !resourceNotCreated ? (
-            <TaskNotSelectedWarning componentType="COMPONENT_TYPE_CONNECTOR_DATA" />
-          ) : null}
+
+          <div className="mb-4">
+            <Form.Root {...form}>
+              <form>{fields}</form>
+            </Form.Root>
+          </div>
+          <div className="mb-2 flex flex-row-reverse">
+            <OpenAdvancedConfigurationButton
+              onClick={() => {
+                const values = getValues();
+
+                const parsedResult = ValidatorSchema.safeParse(values);
+
+                if (parsedResult.success) {
+                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                } else {
+                  for (const error of parsedResult.error.errors) {
+                    trigger(error.path.join("."));
+                  }
+                }
+              }}
+            />
+          </div>
 
           {/* 
-              Input properties
-            */}
-
-          {!aiTaskNotSelected &&
-          !dataTaskNotSelected &&
-          !resourceNotCreated &&
-          !enableEdit ? (
-            <div className="flex flex-col">
-              <div className="mb-1 product-body-text-4-medium">input</div>
-              <InputProperties
-                component={data.component}
-                inputSchema={inputSchema}
-                traces={testModeTriggerResponse?.metadata?.traces ?? null}
-              />
-            </div>
-          ) : null}
-
-          {/* 
-              Data connector free form
-            */}
+            Data connector free form
+          */}
 
           {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
           data.component.definition_name !==
@@ -458,7 +496,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             <DataConnectorFreeForm
               nodeID={id}
               component={data.component}
-              dataTaskNotSelected={dataTaskNotSelected}
               enableEdit={enableEdit}
               setEnableEdit={setEnableEdit}
             />
@@ -468,10 +505,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               Output properties
             */}
 
-          {!aiTaskNotSelected &&
-          !dataTaskNotSelected &&
-          !resourceNotCreated &&
-          !enableEdit ? (
+          {!resourceNotCreated && !enableEdit ? (
             <ComponentOutputs
               componentID={data.component.id}
               outputSchema={outputSchema}

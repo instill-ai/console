@@ -1,16 +1,18 @@
 import * as React from "react";
 import { CheckIsHidden } from "../../../lib";
 
-export function useCheckIsHiddenOnRightPanel() {
+export function useCheckIsHidden(type: "onNode" | "onRightPanel") {
   const checkIsHidden: CheckIsHidden = React.useCallback(
     ({ parentSchema, targetPath, targetKey }) => {
+      let isHidden = false;
+
       if (!targetKey || !targetPath) {
-        return true;
+        isHidden = true;
       }
 
       // We don't want to showcase task selection on the right-panel
       if (targetPath && targetPath === "task") {
-        return true;
+        isHidden = true;
       }
 
       if (
@@ -19,12 +21,16 @@ export function useCheckIsHiddenOnRightPanel() {
         parentSchema.instillEditOnNodeFields &&
         parentSchema.instillEditOnNodeFields.includes(targetKey)
       ) {
-        return true;
+        isHidden = true;
       }
 
-      return false;
+      if (type === "onNode") {
+        return !isHidden;
+      } else {
+        return isHidden;
+      }
     },
-    []
+    [type]
   );
 
   return checkIsHidden;

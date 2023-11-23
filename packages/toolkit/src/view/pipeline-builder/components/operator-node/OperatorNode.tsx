@@ -30,7 +30,7 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
-import { useCheckIsHiddenOnNode } from "../useCheckIsHiddenOnNode";
+import { useCheckIsHidden } from "../useCheckIsHidden";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -42,6 +42,8 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   testModeTriggerResponse: store.testModeTriggerResponse,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -54,6 +56,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges,
     updatePipelineRecipeIsDirty,
     testModeTriggerResponse,
+    updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -238,9 +241,9 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     return getOperatorInputOutputSchema(data.component);
   }, [data]);
 
-  const checkIsHidden = useCheckIsHiddenOnNode();
+  const checkIsHidden = useCheckIsHidden("onNode");
 
-  const { fields, form } = useInstillForm(
+  const { fields, form, ValidatorSchema } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {
@@ -254,6 +257,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     getValues,
     formState: { isDirty, isValid },
     handleSubmit,
+    trigger,
   } = form;
 
   const values = getValues();
@@ -347,7 +351,21 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             </Form.Root>
           </div>
           <div className="mb-2 flex flex-row-reverse">
-            <OpenAdvancedConfigurationButton id={id} disabled={!isValid} />
+            <OpenAdvancedConfigurationButton
+              onClick={() => {
+                const values = getValues();
+
+                const parsedResult = ValidatorSchema.safeParse(values);
+
+                if (parsedResult.success) {
+                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                } else {
+                  for (const error of parsedResult.error.errors) {
+                    trigger(error.path.join("."));
+                  }
+                }
+              }}
+            />
           </div>
 
           <ComponentOutputs

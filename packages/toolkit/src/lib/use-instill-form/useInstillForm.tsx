@@ -100,10 +100,11 @@ export function useInstillForm(
       parentSchema: schema,
       targetSchema: schema,
       selectedConditionMap,
+      checkIsHidden,
     });
 
     setValidatorSchema(_ValidatorSchema);
-  }, [schema, selectedConditionMap]);
+  }, [schema, selectedConditionMap, checkIsHidden]);
 
   // Delay the initialisation of the form after the first render
   React.useEffect(() => {
