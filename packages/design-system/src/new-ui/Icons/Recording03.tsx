@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IconBase, IconBaseProps } from "./IconBase";
 
-export const Recording02 = React.forwardRef<
+export const Recording03 = React.forwardRef<
   SVGSVGElement,
   Omit<IconBaseProps, "viewBox" | "children">
 >((props, ref) => {
@@ -14,7 +14,7 @@ export const Recording02 = React.forwardRef<
       className={className}
     >
       <path
-        d="M3 10L3 14M7.5 11V13M12 6V18M16.5 3V21M21 10V14"
+        d="M6 11V13M10 9V15M14 7V17M18 11V13M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -22,4 +22,4 @@ export const Recording02 = React.forwardRef<
     </IconBase>
   );
 });
-Recording02.displayName = "IconRecording02";
+Recording03.displayName = "IconRecording03";

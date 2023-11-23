@@ -63,6 +63,7 @@ import { Plus } from "./Plus";
 import { Play } from "./Play";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Recording02 } from "./Recording02";
+import { Recording03 } from "./Recording03";
 import { Save01 } from "./Save01";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
@@ -145,6 +146,7 @@ export const Icons = {
   Plus,
   RefreshCw05,
   Recording02,
+  Recording03,
   Save01,
   SpeechRecognition,
   Sliders01,
