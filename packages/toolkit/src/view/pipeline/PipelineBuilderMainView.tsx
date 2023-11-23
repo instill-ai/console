@@ -125,16 +125,6 @@ export const PipelineBuilderMainView = (
 
   return (
     <div className="flex w-full flex-col">
-      <style jsx>
-        {`
-          .pipeline-builder {
-            --sidebar-width: 96px;
-            --left-panel-width: 256px;
-            --right-panel-width: 456px;
-          }
-        `}
-      </style>
-
       {/* 
         Pipeline builder main canvas
       */}
@@ -151,10 +141,8 @@ export const PipelineBuilderMainView = (
         />
         <div
           className={cn(
-            "flex w-[var(--right-panel-width)] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
-            currentAdvancedConfigurationNodeID
-              ? "mr-0"
-              : "-mr-[var(--right-panel-width)]"
+            "flex w-[456px] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
+            currentAdvancedConfigurationNodeID ? "mr-0" : "-mr-[456px]"
           )}
         >
           <RightPanel />
