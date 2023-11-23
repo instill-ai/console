@@ -36,10 +36,12 @@ import { DotsVertical } from "./DotsVertical";
 import { DownloadCloud01 } from "./DownloadCloud01";
 import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
+import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
+import { FilePlus02 } from "./FilePlus02";
 import { FilterLines } from "./FilterLines";
 import { Gear01 } from "./Gear01";
 import { Globe01 } from "./Globe01";
@@ -66,6 +68,8 @@ import { PlayCircle } from "./PlayCircle";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
+import { Recording04 } from "./Recording04";
+import { Recording05 } from "./Recording05";
 import { Save01 } from "./Save01";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
@@ -76,6 +80,7 @@ import { SearchSm } from "./SearchSm";
 import { Tag01 } from "./Tag01";
 import { Trash01 } from "./Trash01";
 import { Type02 } from "./Type02";
+import { TypePlus } from "./TypePlus";
 import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
@@ -121,10 +126,12 @@ export const Icons = {
   DownloadCloud01,
   Edit03,
   Edit05,
+  File02,
   File04,
   File05,
   FileMinus01,
   FilePlus01,
+  FilePlus02,
   FilterLines,
   Gear01,
   Globe01,
@@ -151,6 +158,8 @@ export const Icons = {
   RefreshCw05,
   Recording02,
   Recording03,
+  Recording04,
+  Recording05,
   Save01,
   SpeechRecognition,
   Sliders01,
@@ -161,6 +170,7 @@ export const Icons = {
   Tag01,
   Trash01,
   Type02,
+  TypePlus,
   Upload01,
   User01,
   User02,
