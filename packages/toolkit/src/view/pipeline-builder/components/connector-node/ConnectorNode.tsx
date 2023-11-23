@@ -36,6 +36,7 @@ import { ComponentOutputs } from "../ComponentOutputs";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import isEqual from "lodash.isequal";
 import { useCheckIsHidden } from "../useCheckIsHidden";
+import { useUpdaterOnNode } from "../useUpdaterOnNode";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -266,58 +267,14 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     }
   );
 
-  const {
-    getValues,
-    formState: { isDirty, isValid, errors },
-    trigger,
-  } = form;
+  const { getValues, trigger } = form;
 
-  const values = getValues();
-
-  const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
-
-  // We don't rely on the react-hook-form isValid and isDirty state
-  // because the isHidden fields make the formStart inacurate.
-  React.useEffect(() => {
-    const parsed = ValidatorSchema.safeParse(values);
-
-    if (!parsed.success) {
-      return;
-    }
-
-    if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      updateNodes((nodes) => {
-        return nodes.map((node) => {
-          if (node.data.nodeType === "connector" && node.id === id) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration: {
-                    ...node.data.component.configuration,
-                    ...parsed.data,
-                  },
-                },
-              },
-            };
-          }
-
-          return node;
-        });
-      });
-      updatePipelineRecipeIsDirty(() => true);
-      updatedValue.current = parsed.data;
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [values, isDirty, isValid, ValidatorSchema]);
+  useUpdaterOnNode({
+    id,
+    nodeType: "connector",
+    form,
+    ValidatorSchema,
+  });
 
   return (
     <NodeWrapper

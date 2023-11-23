@@ -31,6 +31,7 @@ import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationBut
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
 import { useCheckIsHidden } from "../useCheckIsHidden";
+import { useUpdaterOnNode } from "../useUpdaterOnNode";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -253,50 +254,14 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     }
   );
 
-  const {
-    getValues,
-    formState: { isDirty, isValid },
-    handleSubmit,
-    trigger,
-  } = form;
+  const { getValues, trigger } = form;
 
-  const values = getValues();
-
-  React.useEffect(() => {
-    if (!isDirty || !isValid) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      handleSubmit(() => {
-        updateNodes((nodes) => {
-          return nodes.map((node) => {
-            if (node.data.nodeType === "operator" && node.id === id) {
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  component: {
-                    ...node.data.component,
-                    configuration: {
-                      ...node.data.component.configuration,
-                      ...values,
-                    },
-                  },
-                },
-              };
-            }
-
-            return node;
-          });
-        });
-        updatePipelineRecipeIsDirty(() => true);
-      })();
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [values, isDirty, isValid]);
+  useUpdaterOnNode({
+    id,
+    nodeType: "operator",
+    form,
+    ValidatorSchema,
+  });
 
   return (
     <NodeWrapper
