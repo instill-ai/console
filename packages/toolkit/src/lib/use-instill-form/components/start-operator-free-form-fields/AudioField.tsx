@@ -1,11 +1,10 @@
 import * as React from "react";
-import { Form, Input } from "@instill-ai/design-system";
+import { Form } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
-import { is } from "immer/dist/internal";
 
 export const AudioField = ({
   form,
