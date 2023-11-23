@@ -191,4 +191,8 @@ export type StartOperatorInputType =
   | "image/*"
   | "long_string"
   | "array:image/*"
+  | "array:audio/*"
+  | "array:string"
+  | "*/*"
+  | "array:*/*"
   | JSONSchema7TypeName;

@@ -34,9 +34,16 @@ export const StartNodeInputType = ({
     }
     case "audio/*": {
       icon = (
-        <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Recording04 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
       label = "Audio";
+      break;
+    }
+    case "array:audio/*": {
+      icon = (
+        <Icons.Recording05 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Audios";
       break;
     }
     case "boolean": {
