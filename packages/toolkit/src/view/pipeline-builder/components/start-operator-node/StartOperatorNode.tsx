@@ -179,6 +179,18 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "array:audio/*": {
+        configuraton = {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          instillFormat: "array:audio/*",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
       case "boolean": {
         configuraton = {
           type: "boolean",

@@ -128,6 +128,17 @@ export const StartOperatorNodeFreeForm = ({
             }}
           />
           <StartNodeInputType
+            type="array:audio/*"
+            selectedType={selectedType}
+            onSelect={() => {
+              if (selectedType === "array:audio/*") {
+                setSelectedType(null);
+              } else {
+                setSelectedType("array:audio/*");
+              }
+            }}
+          />
+          <StartNodeInputType
             type="boolean"
             selectedType={selectedType}
             onSelect={() => {
