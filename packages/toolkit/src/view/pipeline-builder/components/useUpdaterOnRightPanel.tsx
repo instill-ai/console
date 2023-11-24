@@ -9,9 +9,16 @@ import {
 } from "../../../lib";
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
+import { PipelineComponentReference } from "../type";
+import {
+  composeEdgesFromReferences,
+  extractReferencesFromConfiguration,
+} from "../lib";
 
 const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
   updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
@@ -26,9 +33,8 @@ export function useUpdaterOnRightPanel({
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
 }) {
-  const { updateNodes, updatePipelineRecipeIsDirty } = useInstillStore(
-    useShallow(selector)
-  );
+  const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
+    useInstillStore(useShallow(selector));
 
   const { getValues } = form;
 
@@ -50,59 +56,75 @@ export function useUpdaterOnRightPanel({
     }
 
     const timer = setTimeout(() => {
-      updateNodes((nodes) => {
-        return nodes.map((node) => {
-          if (
-            nodeType === "connector" &&
-            node.data.nodeType === "connector" &&
-            node.id === id
-          ) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration: {
-                    ...node.data.component.configuration,
-                    task: parsed.data.task,
-                    input: {
-                      ...node.data.component.configuration.input,
-                      ...parsed.data.input,
-                    },
+      const newNodes = nodes.map((node) => {
+        if (
+          nodeType === "connector" &&
+          node.data.nodeType === "connector" &&
+          node.id === id
+        ) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                configuration: {
+                  ...node.data.component.configuration,
+                  task: parsed.data.task,
+                  input: {
+                    ...node.data.component.configuration.input,
+                    ...parsed.data.input,
                   },
                 },
               },
-            };
-          }
+            },
+          };
+        }
 
-          if (
-            nodeType === "operator" &&
-            node.data.nodeType === "operator" &&
-            node.id === id
-          ) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration: {
-                    ...node.data.component.configuration,
-                    task: parsed.data.task,
-                    input: {
-                      ...node.data.component.configuration.input,
-                      ...parsed.data.input,
-                    },
+        if (
+          nodeType === "operator" &&
+          node.data.nodeType === "operator" &&
+          node.id === id
+        ) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                configuration: {
+                  ...node.data.component.configuration,
+                  task: parsed.data.task,
+                  input: {
+                    ...node.data.component.configuration.input,
+                    ...parsed.data.input,
                   },
                 },
               },
-            };
-          }
+            },
+          };
+        }
 
-          return node;
-        });
+        return node;
       });
+
+      updateNodes(() => newNodes);
+
+      const allReferences: PipelineComponentReference[] = [];
+
+      newNodes.forEach((node) => {
+        if (node.data.component?.configuration) {
+          allReferences.push(
+            ...extractReferencesFromConfiguration(
+              node.data.component?.configuration,
+              node.id
+            )
+          );
+        }
+      });
+
+      const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+      updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;
     }, 1);
