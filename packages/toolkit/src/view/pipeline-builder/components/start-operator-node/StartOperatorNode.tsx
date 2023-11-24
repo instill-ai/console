@@ -421,7 +421,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
-            <Icons.Box className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+            <Icons.Lightning01 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
           </div>
           <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
             start
