@@ -1,6 +1,6 @@
 import { Icons } from "@instill-ai/design-system";
 
-export const ImageListItem = ({
+export const FileListItem = ({
   name,
   onDelete,
 }: {
@@ -15,7 +15,7 @@ export const ImageListItem = ({
       </p>
       <button
         onClick={() => onDelete()}
-        className="ml-auto hover:bg-semantic-bg-secondary"
+        className="ml-auto rounded p-1 hover:bg-semantic-bg-secondary"
         type="button"
       >
         <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />

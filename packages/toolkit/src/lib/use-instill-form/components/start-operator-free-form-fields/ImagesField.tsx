@@ -3,7 +3,7 @@ import { Form, Input, ScrollArea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, fillArrayWithZeros } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
-import { ImageListItem } from "./ImageListItem";
+import { FileListItem } from "./FileListItem";
 
 export const ImagesField = ({
   form,
@@ -66,7 +66,7 @@ export const ImagesField = ({
                   htmlFor={`op-start-${path}`}
                   className="flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
                 >
-                  Upload image
+                  Upload images
                   <Input.Root className="hidden">
                     <Input.Core
                       id={`op-start-${path}`}
@@ -107,7 +107,7 @@ export const ImagesField = ({
               <ScrollArea.Root className="nowheel h-[216px] rounded bg-semantic-bg-secondary p-2">
                 <div className="flex h-full flex-col gap-y-2">
                   {imageFiles.map((e, i) => (
-                    <ImageListItem
+                    <FileListItem
                       key={`${path}-${e.name}-item`}
                       name={e.name}
                       onDelete={() => {

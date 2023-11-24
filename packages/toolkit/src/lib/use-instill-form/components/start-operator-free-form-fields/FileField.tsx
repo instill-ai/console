@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Form, Input } from "@instill-ai/design-system";
+import { Form } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
 
-export const ImageField = ({
+export const FileField = ({
   form,
   path,
   title,
@@ -18,7 +18,7 @@ export const ImageField = ({
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
-  const [imageFile, setImageFile] = React.useState<Nullable<File>>();
+  const [uploadedFile, setUploadedFile] = React.useState<Nullable<File>>();
   const fileRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
@@ -35,46 +35,29 @@ export const ImageField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
             />
-
-            <div className="w-full">
-              {imageFile ? (
-                <img
-                  key={`${path}-${imageFile.name}`}
-                  src={URL.createObjectURL(imageFile)}
-                  alt={`${path}-${imageFile.name}`}
-                  className="h-[150px] w-full object-cover"
-                />
-              ) : (
-                <div
-                  key={`${path}-image-placeholder`}
-                  className="h-[150px] w-full bg-semantic-bg-secondary"
-                />
-              )}
-            </div>
             <div className="flex">
               <Form.Control>
                 <UploadFileInput
-                  id={`op-start-${path}`}
                   ref={fileRef}
-                  title="Upload image"
+                  title="Upload file"
                   fieldKey={path}
-                  accept="image/*"
+                  accept="*/*"
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
+                      setUploadedFile(file);
                       const binary = await readFileToBinary(file);
                       field.onChange(binary);
-                      setImageFile(file);
                     }
                   }}
                 />
               </Form.Control>
             </div>
-            {imageFile ? (
+            {uploadedFile ? (
               <FileListItem
-                name={imageFile.name}
+                name={uploadedFile.name}
                 onDelete={() => {
-                  setImageFile(null);
+                  setUploadedFile(null);
                   field.onChange(null);
                   if (fileRef.current) {
                     fileRef.current.value = "";

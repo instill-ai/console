@@ -40,7 +40,7 @@ export const AudiosField = ({
               <Form.Control>
                 <UploadFileInput
                   ref={fileRef}
-                  title="Upload audio"
+                  title="Upload audios"
                   fieldKey={path}
                   accept="audio/*"
                   multiple={true}
