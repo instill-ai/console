@@ -230,6 +230,15 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "*/*": {
+        configuraton = {
+          type: "string",
+          instillFormat: "*/*",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
     }
 
     const newNodes = nodes.map((node) => {

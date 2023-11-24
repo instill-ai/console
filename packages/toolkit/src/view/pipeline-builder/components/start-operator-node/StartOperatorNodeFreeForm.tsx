@@ -139,6 +139,17 @@ export const StartOperatorNodeFreeForm = ({
             }}
           />
           <StartNodeInputType
+            type="*/*"
+            selectedType={selectedType}
+            onSelect={() => {
+              if (selectedType === "*/*") {
+                setSelectedType(null);
+              } else {
+                setSelectedType("*/*");
+              }
+            }}
+          />
+          <StartNodeInputType
             type="boolean"
             selectedType={selectedType}
             onSelect={() => {

@@ -80,6 +80,13 @@ export const StartNodeInputType = ({
       label = "Number";
       break;
     }
+    case "*/*": {
+      icon = (
+        <Icons.File02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "File";
+      break;
+    }
     default:
       break;
   }
