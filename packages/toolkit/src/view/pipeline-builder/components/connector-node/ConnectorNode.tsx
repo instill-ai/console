@@ -34,6 +34,7 @@ import { ComponentOutputs } from "../ComponentOutputs";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { useCheckIsHidden } from "../useCheckIsHidden";
 import { useUpdaterOnNode } from "../useUpdaterOnNode";
+import { InstillErrors } from "../../../../constant/errors";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -96,8 +97,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
     if (!validateInstillID(newID)) {
       toast({
-        title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        title: InstillErrors.IDInvalidError,
         variant: "alert-error",
         size: "small",
       });

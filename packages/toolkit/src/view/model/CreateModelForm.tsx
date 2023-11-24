@@ -34,6 +34,7 @@ import {
   validateInstillID,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
+import { InstillErrors } from "../../constant/errors";
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
@@ -245,10 +246,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
     // We don't validate the rest of the field if the ID is incorrect
     if (!validateInstillID(modelId as string)) {
-      setFieldError(
-        "model.new.id",
-        "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters."
-      );
+      setFieldError("model.new.id", InstillErrors.IDInvalidError);
       return;
     } else if (modelId) {
       setFieldError("model.new.id", null);
@@ -645,7 +643,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
               setFieldValue("model.new.id", value);
               setFieldError(
                 "model.new.id",
-                "ID restricts to lowercase letters, numbers, and hyphen, with the first character a letter, the last a letter or a number, and a 63 character maximum."
+                "The ID should be lowercase without any space or special character besides the underscore or hyphen, it can not start with number or hyphen, and should be less than 32 characters."
               );
             }
           }}

@@ -136,6 +136,9 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
           size: "small",
         });
       } catch (error) {
+        form.reset({
+          pipelineId,
+        });
         if (isAxiosError(error)) {
           toast({
             title: "Something went wrong when save the pipeline",
@@ -173,6 +176,9 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
         updatePipelineRecipeIsDirty(() => false);
       } catch (error) {
+        form.reset({
+          pipelineId,
+        });
         if (isAxiosError(error)) {
           toast({
             title: "Something went wrong when save the pipeline",
@@ -215,6 +221,9 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
       setPipelineId(newId);
       setPipelineName(`users/${entity}/pipelines/${newId}`);
     } catch (error) {
+      form.reset({
+        pipelineId,
+      });
       if (isAxiosError(error)) {
         toast({
           title: "Something went wrong when rename the pipeline",
