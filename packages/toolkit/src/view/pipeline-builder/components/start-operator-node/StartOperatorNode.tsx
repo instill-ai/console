@@ -58,10 +58,10 @@ const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
 });
 
 export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
-  const [isTriggering, setIsTriggering] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
 
@@ -77,6 +77,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     isOwner,
     currentVersion,
     updatePipelineRecipeIsDirty,
+    updateIsTriggeringPipeline,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -336,7 +337,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   React.useEffect(() => {
     if (!testModeEnabled) {
-      setIsTriggering(false);
+      updateIsTriggeringPipeline(() => false);
     }
     updateTestModeTriggerResponse(() => null);
     startOperatorTriggerPipelineForm.reset();
@@ -355,11 +356,13 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   ) {
     if (!pipelineName) return;
 
+    console.log("trigger");
+
     const input = recursiveRemoveUndefinedAndNullFromArray(
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
     );
 
-    setIsTriggering(true);
+    updateIsTriggeringPipeline(() => true);
 
     if (currentVersion === "latest") {
       try {
@@ -372,10 +375,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           returnTraces: true,
         });
 
-        setIsTriggering(false);
+        updateIsTriggeringPipeline(() => false);
         updateTestModeTriggerResponse(() => data);
       } catch (error) {
-        setIsTriggering(false);
+        updateIsTriggeringPipeline(() => false);
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
@@ -393,10 +396,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           returnTraces: true,
         });
 
-        setIsTriggering(false);
+        updateIsTriggeringPipeline(() => false);
         updateTestModeTriggerResponse(() => data);
       } catch (error) {
-        setIsTriggering(false);
+        updateIsTriggeringPipeline(() => false);
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
@@ -435,7 +438,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         />
       </NodeHead>
       {nodeIsCollapsed ? null : (
-        <div className="flex flex-col">
+        <div className="nodrag flex flex-col">
           {enableEdit ? (
             <StartOperatorNodeFreeForm
               form={form}
@@ -532,12 +535,11 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     </div>
                   </VerticalSortableWrapper>
                   <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">
-                    <Button
+                    {/* <Button
                       type="submit"
                       variant="secondaryGrey"
                       size="lg"
                       className="gap-x-2"
-                      disabled={isTriggering}
                     >
                       Run
                       {isTriggering ? (
@@ -545,7 +547,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                       ) : (
                         <Icons.Play className="h-4 w-4 stroke-semantic-fg-primary" />
                       )}
-                    </Button>
+                    </Button> */}
                   </div>
                 </form>
               </Form.Root>

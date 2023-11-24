@@ -23,6 +23,7 @@ export const NumberField = ({
         return (
           <Form.Item>
             <FieldHead
+              form={form}
               title={title}
               path={path}
               onDeleteField={onDeleteField}

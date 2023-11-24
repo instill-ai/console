@@ -1,4 +1,3 @@
-import { getAudioTypeFromBase64 } from "../../../../view";
 import { Nullable } from "../../../type";
 import { ConnectorNodeFieldRoot, EndNodeFieldRoot } from "./FieldRoot";
 
@@ -12,18 +11,12 @@ export type AudioFieldProps = {
 export const AudioField = (props: AudioFieldProps) => {
   const { nodeType, title, audio, hideField } = props;
 
-  const audioType = audio ? getAudioTypeFromBase64(audio) : null;
-
   if (nodeType === "connector") {
     return (
       <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
         {audio && !hideField ? (
           <div className="flex w-full">
-            <audio
-              className="w-full"
-              controls={true}
-              src={`data:audio/${audioType};base64,${audio}`}
-            />
+            <audio className="w-full" controls={true} src={audio} />
           </div>
         ) : null}
       </ConnectorNodeFieldRoot>
@@ -34,11 +27,7 @@ export const AudioField = (props: AudioFieldProps) => {
     <EndNodeFieldRoot title={title} key={`${title}-field`}>
       {audio && !hideField ? (
         <div className="flex w-full">
-          <audio
-            className="w-full"
-            controls={true}
-            src={`data:audio/${audioType};base64,${audio}`}
-          />
+          <audio className="w-full" controls={true} src={audio} />
         </div>
       ) : null}
     </EndNodeFieldRoot>

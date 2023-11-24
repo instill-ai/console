@@ -11,9 +11,9 @@ type Story = StoryObj<typeof Menubar>;
 
 export const Regular: Story = {
   render: () => (
-    <Menubar.Root value="">
+    <Menubar.Root>
       <Menubar.Menu>
-        <Menubar.Trigger>
+        <Menubar.Trigger disabled={true}>
           <button>File</button>
         </Menubar.Trigger>
         <Menubar.Content>

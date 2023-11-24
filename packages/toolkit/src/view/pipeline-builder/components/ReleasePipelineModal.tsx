@@ -40,14 +40,17 @@ export const ReleasePipelineFormSchema = z.object({
 
 export type ReleasePipelineModalProps = {
   accessToken: Nullable<string>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   disabled?: boolean;
 };
 
 export const ReleasePipelineModal = ({
+  isOpen,
+  setIsOpen,
   accessToken,
   disabled,
 }: ReleasePipelineModalProps) => {
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const [isReleasing, setIsReleasing] = React.useState(false);
 
   const { toast } = useToast();
@@ -91,7 +94,7 @@ export const ReleasePipelineModal = ({
             size: "small",
           });
 
-          setModalIsOpen(false);
+          setIsOpen(false);
           setIsReleasing(false);
         },
         onError: (error) => {
@@ -118,60 +121,15 @@ export const ReleasePipelineModal = ({
 
   return (
     <Dialog.Root
-      open={modalIsOpen}
+      open={isOpen}
       onOpenChange={(e) => {
         form.reset({
           id: "",
           description: null,
         });
-        setModalIsOpen(e);
+        setIsOpen(e);
       }}
     >
-      <Dialog.Trigger asChild>
-        <Tooltip.Provider>
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              {/* 
-                This will make tooltip work even with a disabled button
-                https://www.radix-ui.com/primitives/docs/components/tooltip#displaying-a-tooltip-from-a-disabled-button
-              */}
-              {/* 
-                eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-              */}
-              <span className="flex" tabIndex={0}>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  disabled={pipelineRecipeIsDirty || pipelineIsNew || disabled}
-                  className={
-                    pipelineRecipeIsDirty || pipelineIsNew
-                      ? "pointer-events-none"
-                      : ""
-                  }
-                  onClick={() => {
-                    setModalIsOpen(true);
-                  }}
-                >
-                  Release
-                </Button>
-              </span>
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-              <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
-                {pipelineRecipeIsDirty || pipelineIsNew
-                  ? "Please save the pipeline first"
-                  : "Release the pipeline"}
-                <Tooltip.Arrow
-                  className="fill-semantic-bg-primary"
-                  offset={10}
-                  width={9}
-                  height={6}
-                />
-              </Tooltip.Content>
-            </Tooltip.Portal>
-          </Tooltip.Root>
-        </Tooltip.Provider>
-      </Dialog.Trigger>
       <Dialog.Content className="!max-w-[560px]">
         <div className="flex flex-col">
           <div className="mb-5 flex flex-col">
@@ -238,7 +196,7 @@ export const ReleasePipelineModal = ({
                       id: "",
                       description: null,
                     });
-                    setModalIsOpen(false);
+                    setIsOpen(false);
                   }}
                   className="!flex-1"
                 >

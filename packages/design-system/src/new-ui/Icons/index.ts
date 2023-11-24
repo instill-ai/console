@@ -14,6 +14,7 @@ import { Check } from "./Check";
 import { Circle } from "./Circle";
 import { CodeBrowser } from "./CodeBrowser";
 import { CodeSnippet02 } from "./CodeSnippet02";
+import { CodeSquare02 } from "./CodeSquare02";
 import { Copy06 } from "./Copy06";
 import { Copy07 } from "./Copy07";
 import { CheckCircle } from "./CheckCircle";
@@ -78,6 +79,7 @@ import { Speaker01 } from "./Speaker01";
 import { Stop } from "./Stop";
 import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
+import { Share07 } from "./Share07";
 import { Tag01 } from "./Tag01";
 import { Trash01 } from "./Trash01";
 import { Type02 } from "./Type02";
@@ -117,6 +119,7 @@ export const Icons = {
   Circle,
   CodeBrowser,
   CodeSnippet02,
+  CodeSquare02,
   Copy06,
   Copy07,
   Cube01,
@@ -169,6 +172,7 @@ export const Icons = {
   Stop,
   SearchLg,
   SearchSm,
+  Share07,
   Tag01,
   Trash01,
   Type02,

@@ -33,12 +33,12 @@ const selector = (store: InstillStore) => ({
   edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
-  testModeEnabled: store.testModeEnabled,
   testModeTriggerResponse: store.testModeTriggerResponse,
   pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
+  isTriggeringPipeline: store.isTriggeringPipeline,
 });
 
 const CreateEndOperatorInputSchema: InstillJSONSchema = {
@@ -108,18 +108,19 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     React.useState<Nullable<string>>(null);
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
+  const [isViewResultMode, setIsViewResultMode] = React.useState(false);
 
   const {
     nodes,
     edges,
     updateNodes,
     updateEdges,
-    testModeEnabled,
     testModeTriggerResponse,
     pipelineOpenAPIOutputSchema,
     updatePipelineRecipeIsDirty,
     isOwner,
     currentVersion,
+    isTriggeringPipeline,
   } = useInstillStore(useShallow(selector));
 
   const { form, fields, ValidatorSchema } = useInstillForm(
@@ -282,6 +283,15 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setSortedItems(endOperatorInputItems);
   }, [data]);
 
+  // Once isTriggeringPipeline is true, we will automatically go into
+  // the view result mode.
+
+  React.useEffect(() => {
+    if (isTriggeringPipeline) {
+      setIsViewResultMode(true);
+    }
+  }, [isTriggeringPipeline]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -298,13 +308,22 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             end
           </p>
         </div>
-        <StartEndOperatorControlPanel
-          nodeIsCollapsed={nodeIsCollapsed}
-          setNodeIsCollapsed={setNodeIsCollapsed}
-          handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
-          noteIsOpen={noteIsOpen}
-          componentTypeName="End"
-        />
+        <div className="flex flex-row gap-x-3">
+          <button
+            type="button"
+            className="my-auto flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-semibold hover:bg-semantic-accent-bg-alt"
+            onClick={() => setIsViewResultMode(!isViewResultMode)}
+          >
+            {isViewResultMode ? "Edit" : "See Result"}
+          </button>
+          <StartEndOperatorControlPanel
+            nodeIsCollapsed={nodeIsCollapsed}
+            setNodeIsCollapsed={setNodeIsCollapsed}
+            handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
+            noteIsOpen={noteIsOpen}
+            componentTypeName="End"
+          />
+        </div>
       </NodeHead>
 
       {nodeIsCollapsed ? null : enableEdit ? (
@@ -337,7 +356,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             <div className="flex flex-col space-y-3">{fields}</div>
           </form>
         </Form.Root>
-      ) : testModeEnabled ? (
+      ) : isViewResultMode ? (
         <div className="flex w-full flex-col gap-y-4">
           {testModeOutputFields}
         </div>
