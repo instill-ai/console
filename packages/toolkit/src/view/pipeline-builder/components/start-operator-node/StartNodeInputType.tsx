@@ -25,6 +25,13 @@ export const StartNodeInputType = ({
       label = "Text";
       break;
     }
+    case "array:string": {
+      icon = (
+        <Icons.TypePlus className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Texts";
+      break;
+    }
     case "long_string": {
       icon = (
         <Icons.AlighLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />

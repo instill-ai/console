@@ -73,6 +73,17 @@ export const StartOperatorNodeFreeForm = ({
             }}
           />
           <StartNodeInputType
+            type="array:string"
+            selectedType={selectedType}
+            onSelect={() => {
+              if (selectedType === "array:string") {
+                setSelectedType(null);
+              } else {
+                setSelectedType("array:string");
+              }
+            }}
+          />
+          <StartNodeInputType
             type="long_string"
             selectedType={selectedType}
             onSelect={() => {
