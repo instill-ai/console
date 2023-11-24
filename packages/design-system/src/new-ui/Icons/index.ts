@@ -55,6 +55,7 @@ import { Image01 } from "./Image01";
 import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
 import { LayersTwo01 } from "./LayersTwo01";
+import { Lightning01 } from "./Lightning01";
 import { Model } from "./Model";
 import { PauseCircle } from "./PauseCircle";
 import { Menu01 } from "./Menu01";
@@ -145,6 +146,7 @@ export const Icons = {
   ImagePlus,
   Logout01,
   LayersTwo01,
+  Lightning01,
   Model,
   PauseCircle,
   Menu01,
