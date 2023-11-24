@@ -239,6 +239,18 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "array:*/*": {
+        configuraton = {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          instillFormat: "array:*/*",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
     }
 
     const newNodes = nodes.map((node) => {

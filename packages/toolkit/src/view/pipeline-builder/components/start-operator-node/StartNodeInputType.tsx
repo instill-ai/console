@@ -67,7 +67,7 @@ export const StartNodeInputType = ({
       icon = (
         <Icons.ImagePlus className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
-      label = "Multiple images";
+      label = "Multiple Images";
       break;
     }
     case "number": {
@@ -85,6 +85,13 @@ export const StartNodeInputType = ({
         <Icons.File02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
       label = "File";
+      break;
+    }
+    case "array:*/*": {
+      icon = (
+        <Icons.FilePlus02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Files";
       break;
     }
     default:

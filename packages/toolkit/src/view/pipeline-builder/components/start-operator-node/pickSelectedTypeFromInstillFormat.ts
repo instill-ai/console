@@ -34,7 +34,6 @@ export function pickSelectedTypeFromInstillFormat(
     case "array:*/*": {
       return "array:*/*";
     }
-
     default:
       return null;
   }

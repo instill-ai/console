@@ -19,7 +19,7 @@ export const AudiosField = ({
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [audioFiles, setAudioFiles] = React.useState<File[]>([]);
-  const fileRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -39,7 +39,7 @@ export const AudiosField = ({
             <div className="flex flex-row gap-x-1">
               <Form.Control>
                 <UploadFileInput
-                  ref={fileRef}
+                  ref={inputRef}
                   title="Upload audios"
                   fieldKey={path}
                   accept="audio/*"
@@ -66,6 +66,10 @@ export const AudiosField = ({
                   onClick={() => {
                     field.onChange([]);
                     setAudioFiles([]);
+
+                    if (inputRef.current) {
+                      inputRef.current.value = "";
+                    }
                   }}
                 >
                   Delete all
@@ -91,6 +95,12 @@ export const AudiosField = ({
                             return readFileToBinary(file);
                           })
                         );
+
+                        // We directly remove the browser input value, we don't need it
+                        // and it may cause some surprise when user reupload the same file
+                        if (inputRef.current) {
+                          inputRef.current.value = "";
+                        }
                       }}
                     />
                   ))}
