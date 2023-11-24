@@ -116,7 +116,7 @@ export const StartNodeInputType = ({
     >
       <div
         className={cn(
-          "my-auto flex h-4 w-4 items-center justify-center rounded-full border text-current",
+          "my-auto flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border text-current",
           type === selectedType
             ? "border-semantic-accent-default bg-semantic-accent-default"
             : "border-semantic-fg-primary group-hover:border-semantic-accent-hover group-hover:bg-semantic-accent-bg"

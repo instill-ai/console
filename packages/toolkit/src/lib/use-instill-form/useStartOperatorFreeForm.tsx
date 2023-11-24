@@ -52,6 +52,7 @@ export const useStartOperatorFreeForm = (props: {
 
   const form = useForm<z.infer<typeof Schema>>({
     resolver: zodResolver(Schema),
+    mode: "onChange",
   });
 
   const fields = React.useMemo(() => {

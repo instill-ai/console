@@ -61,7 +61,7 @@ export const SmartHintInfoCard = ({
         {supportReference ? (
           <div className="flex flex-row gap-x-2">
             <div className="pt-0.5">
-              <Icons.HelpCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
+              <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
             </div>
             <div className="flex flex-col gap-y-2">
               <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
@@ -82,7 +82,7 @@ export const SmartHintInfoCard = ({
         {supportTemplate ? (
           <div className="flex flex-row gap-x-2">
             <div className="pt-0.5">
-              <Icons.HelpCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
+              <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
             </div>
             <div className="flex flex-col gap-y-2">
               <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
