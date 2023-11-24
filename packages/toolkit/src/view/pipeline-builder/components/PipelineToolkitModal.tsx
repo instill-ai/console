@@ -1,17 +1,13 @@
 import * as React from "react";
-import {
-  Button,
-  Dialog,
-  Icons,
-  ScrollArea,
-  Tabs,
-} from "@instill-ai/design-system";
+import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";
 import { constructPipelineRecipe } from "../lib";
 import { useInstillStore } from "../../../lib";
 
 export type PipelineToolkitModalModalProps = {
   snippet: string;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const tabTriggerStyle =
@@ -20,7 +16,7 @@ const tabContentStyle =
   "h-full w-full rounded-sm border border-semantic-bg-line bg-semantic-accent-bg p-2";
 
 export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
-  const { snippet } = props;
+  const { snippet, isOpen, setIsOpen } = props;
 
   const nodes = useInstillStore((state) => state.nodes);
 
@@ -29,16 +25,7 @@ export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
   }, [nodes]);
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
-        <Button
-          className="h-12 w-12 !px-0 !py-0"
-          variant="secondaryGrey"
-          size="lg"
-        >
-          <Icons.CodeBrowser className="h-5 w-5 stroke-semantic-fg-primary" />
-        </Button>
-      </Dialog.Trigger>
+    <Dialog.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <Dialog.Content className="!h-[475px] !max-w-[560px]">
         <div className="flex flex-col">
           <div className="mb-6 flex flex-row space-x-4">

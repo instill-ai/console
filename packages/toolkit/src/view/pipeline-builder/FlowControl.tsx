@@ -1,8 +1,15 @@
+import cn from "clsx";
 import * as React from "react";
 import { isAxiosError } from "axios";
 import { Node, Position, ReactFlowInstance } from "reactflow";
 import { useRouter } from "next/router";
-import { Button, Icons, useToast } from "@instill-ai/design-system";
+import {
+  Button,
+  Icons,
+  Menubar,
+  Tooltip,
+  useToast,
+} from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import {
@@ -60,6 +67,7 @@ const selector = (store: InstillStore) => ({
   updateTestModeEnabled: store.updateTestModeEnabled,
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
+  isTriggeringPipeline: store.isTriggeringPipeline,
 });
 
 export type FlowControlProps = {
@@ -85,11 +93,9 @@ export const FlowControl = (props: FlowControlProps) => {
     pipelineIsNew,
     selectResourceDialogIsOpen,
     updateSelectResourceDialogIsOpen,
-    testModeEnabled,
-    updateTestModeEnabled,
-    updateSelectedConnectorNodeId,
     isOwner,
     currentVersion,
+    isTriggeringPipeline,
   } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { entity } = router.query;
@@ -106,6 +112,9 @@ export const FlowControl = (props: FlowControlProps) => {
 
   const [isSaving, setIsSaving] = React.useState(false);
   const [isCloning, setIsCloning] = React.useState(false);
+  const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
+  const [shareDialogIsOpen, setShareDialogIsOpen] = React.useState(false);
+  const [releaseDialogIsOpen, setReleaseDialogIsOpen] = React.useState(false);
 
   async function handleSavePipeline() {
     if (!pipelineId) {
@@ -472,68 +481,127 @@ export const FlowControl = (props: FlowControlProps) => {
     updateSelectResourceDialogIsOpen(() => false);
   }
 
+  const [openMenuItem, setOpenMenuItem] =
+    React.useState<Nullable<string>>(null);
+
   return (
     <React.Fragment>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
         {isOwner ? (
           <React.Fragment>
-            <ReleasePipelineModal
-              accessToken={accessToken}
-              disabled={currentVersion !== "latest"}
-            />
-            <Button
-              onClick={handleSavePipeline}
-              className="gap-x-2"
-              variant="secondaryGrey"
-              size="lg"
-              type="button"
-              disabled={canSave ? isSaving : true}
+            <Menubar.Root
+              // We don't want to trigger menu open state when user click
+              // on the menu item
+              value=""
             >
-              Save
-              {isSaving ? (
-                <LoadingSpin className="!text-black" />
-              ) : (
-                <Icons.Save01 className="h-5 w-5 stroke-semantic-fg-primary" />
-              )}
-            </Button>
-            <Button
-              onClick={async () => {
-                if (pipelineIsNew) {
-                  toast({
-                    title: "Pipeline is not saved",
-                    description: "Please save the pipeline before testing it.",
-                    variant: "alert-error",
-                    size: "large",
-                  });
-                  return;
-                }
-
-                if (pipelineRecipeIsDirty) {
-                  await handleSavePipeline();
-                }
-
-                updateTestModeEnabled((prev) => !prev);
-                updateSelectedConnectorNodeId(() => null);
-                updateSelectResourceDialogIsOpen(() => false);
-              }}
-              className="gap-x-2"
-              variant="secondaryGrey"
-              size="lg"
-              disabled={pipelineIsNew ? true : false}
-            >
-              {testModeEnabled ? (
-                "Stop"
-              ) : (
-                <React.Fragment>
-                  Test
-                  <Icons.Play className="h-5 w-5 stroke-semantic-fg-primary" />
-                </React.Fragment>
-              )}
-            </Button>
-            <SharePipelineDialog
-              accessToken={accessToken}
-              enableQuery={enableQuery}
-            />
+              <Menubar.Menu>
+                <Menubar.Trigger
+                  className="flex cursor-pointer flex-row gap-x-2 text-semantic-accent-default"
+                  value="play"
+                  type="submit"
+                  form="start-operator-trigger-pipeline-form"
+                  disabled={pipelineRecipeIsDirty}
+                  onClick={async (e) => {
+                    if (pipelineRecipeIsDirty) {
+                      await handleSavePipeline();
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  Run
+                  <div className="my-auto flex pt-0.5">
+                    {isTriggeringPipeline ? (
+                      <LoadingSpin className="!text-semantic-accent-default" />
+                    ) : (
+                      <Icons.PlayCircle
+                        className={cn(
+                          "my-auto h-4 w-4",
+                          pipelineRecipeIsDirty
+                            ? "stroke-semantic-fg-secondary"
+                            : "stroke-semantic-accent-default"
+                        )}
+                      />
+                    )}
+                  </div>
+                </Menubar.Trigger>
+              </Menubar.Menu>
+              <Menubar.Menu>
+                <Menubar.Trigger
+                  className="flex cursor-pointer flex-row gap-x-2"
+                  value="toolkit"
+                  onClick={() => setToolKitIsOpen((prev) => !prev)}
+                >
+                  Toolkit
+                  <div className="my-auto flex pt-0.5">
+                    <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                  </div>
+                </Menubar.Trigger>
+              </Menubar.Menu>
+              <Menubar.Menu>
+                <Menubar.Trigger
+                  className="flex cursor-pointer flex-row gap-x-2"
+                  value="save"
+                  onClick={handleSavePipeline}
+                  disabled={canSave ? isSaving : true}
+                >
+                  Save
+                  {isSaving ? (
+                    <LoadingSpin className="!text-black" />
+                  ) : (
+                    <Icons.Save01 className="h-4 w-4 stroke-semantic-fg-primary" />
+                  )}
+                </Menubar.Trigger>
+              </Menubar.Menu>
+              <Menubar.Menu>
+                <Menubar.Trigger
+                  className="flex cursor-pointer flex-row gap-x-2"
+                  value="share"
+                  onClick={() => setShareDialogIsOpen((prev) => !prev)}
+                >
+                  Share
+                  <Icons.Share07 className="h-4 w-4 stroke-semantic-fg-primary" />
+                </Menubar.Trigger>
+              </Menubar.Menu>
+              <Menubar.Menu>
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      {/* 
+                        This will make tooltip work even with a disabled button
+                        https://www.radix-ui.com/primitives/docs/components/tooltip#displaying-a-tooltip-from-a-disabled-button
+                      */}
+                      {/* 
+                        eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+                      */}
+                      <span className="flex" tabIndex={0}>
+                        <Menubar.Trigger
+                          className="flex cursor-pointer flex-row gap-x-2"
+                          value="release"
+                          onClick={() =>
+                            setReleaseDialogIsOpen((prev) => !prev)
+                          }
+                        >
+                          Release
+                        </Menubar.Trigger>
+                      </span>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
+                        {pipelineRecipeIsDirty || pipelineIsNew
+                          ? "Please save the pipeline first"
+                          : "Release the pipeline"}
+                        <Tooltip.Arrow
+                          className="fill-semantic-bg-primary"
+                          offset={10}
+                          width={9}
+                          height={6}
+                        />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+              </Menubar.Menu>
+            </Menubar.Root>
           </React.Fragment>
         ) : (
           <Button
@@ -593,7 +661,7 @@ export const FlowControl = (props: FlowControlProps) => {
           </Button>
         )}
       </div>
-      <div className="absolute left-8 top-8 flex flex-row gap-x-4">
+      <div className="absolute left-8 top-8 flex flex-row">
         {isOwner ? (
           <SelectPipelineComponentDefinitionDialog
             enableQuery={enableQuery}
@@ -609,12 +677,25 @@ export const FlowControl = (props: FlowControlProps) => {
           />
         ) : null}
       </div>
-      <div className="absolute bottom-8 right-8">
-        <PipelineToolkitModal snippet={codeSnippte} />
-      </div>
+      <PipelineToolkitModal
+        snippet={codeSnippte}
+        isOpen={toolKitIsOpen}
+        setIsOpen={setToolKitIsOpen}
+      />
+      <SharePipelineDialog
+        accessToken={accessToken}
+        enableQuery={enableQuery}
+        isOpen={shareDialogIsOpen}
+        setIsOpen={setShareDialogIsOpen}
+      />
       <CreateResourceDialog
         accessToken={accessToken}
         enableQuery={enableQuery}
+      />
+      <ReleasePipelineModal
+        isOpen={releaseDialogIsOpen}
+        setIsOpen={setReleaseDialogIsOpen}
+        accessToken={accessToken}
       />
     </React.Fragment>
   );

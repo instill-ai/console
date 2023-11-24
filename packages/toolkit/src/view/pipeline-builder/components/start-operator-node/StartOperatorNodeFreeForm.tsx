@@ -159,7 +159,7 @@ export const StartOperatorNodeFreeForm = ({
                           {constructFieldKey(field.value)}
                         </Tag>
                       </div>
-                      <Form.Description text="You will need this generated key to reference the valud of this field." />
+                      <Form.Description text="You will need this generated key to reference the value of this field." />
                     </>
                   ) : null}
 

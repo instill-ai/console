@@ -30,6 +30,7 @@ export const FilesField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              form={form}
               title={title}
               path={path}
               onDeleteField={onDeleteField}

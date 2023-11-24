@@ -1,5 +1,10 @@
 import { useShallow } from "zustand/react/shallow";
-import { InstillStore, Nullable, useInstillStore } from "../../..";
+import {
+  GeneralUseFormReturn,
+  InstillStore,
+  Nullable,
+  useInstillStore,
+} from "../../..";
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
@@ -8,11 +13,13 @@ const selector = (store: InstillStore) => ({
 });
 
 export const FieldHead = ({
+  form,
   title,
   path,
   onEditField,
   onDeleteField,
 }: {
+  form: GeneralUseFormReturn;
   title: Nullable<string>;
   path: string;
   onEditField: (key: string) => void;
@@ -111,7 +118,10 @@ export const FieldHead = ({
         <div className="my-auto flex flex-row gap-x-2">
           <button
             type="button"
-            onClick={() => onEditField(path)}
+            onClick={() => {
+              form.clearErrors();
+              onEditField(path);
+            }}
             className="my-auto flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
           >
             edit field

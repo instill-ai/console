@@ -18,13 +18,12 @@ export const AudiosField = (props: AudiosFieldProps) => {
         {audios && !hideField ? (
           <div className="flex w-full flex-col">
             {audios.map((audio) => {
-              const audioType = audio ? getAudioTypeFromBase64(audio) : null;
               return (
                 <audio
                   key={`${title}-${audio}-field`}
                   className="w-full"
                   controls={true}
-                  src={`data:audio/${audioType};base64,${audio}`}
+                  src={audio}
                 />
               );
             })}
@@ -39,13 +38,12 @@ export const AudiosField = (props: AudiosFieldProps) => {
       {audios && !hideField ? (
         <div className="flex w-full flex-col">
           {audios.map((audio) => {
-            const audioType = audio ? getAudioTypeFromBase64(audio) : null;
             return (
               <audio
                 key={`${title}-${audio}-field`}
                 className="w-full"
                 controls={true}
-                src={`data:audio/${audioType};base64,${audio}`}
+                src={audio}
               />
             );
           })}

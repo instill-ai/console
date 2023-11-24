@@ -44,6 +44,7 @@ export type PipelineBuilderState = {
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
   isOwner: boolean;
+  isTriggeringPipeline: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -90,6 +91,7 @@ export type PipelineBuilderAction = {
   ) => void;
   updateInitializedByTemplateOrClone: (fn: (prev: boolean) => boolean) => void;
   updateIsOwner: (fn: (prev: boolean) => boolean) => void;
+  updateIsTriggeringPipeline: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

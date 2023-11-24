@@ -9,8 +9,15 @@ import {
 } from "../../../lib";
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
+import { PipelineComponentReference } from "../type";
+import {
+  composeEdgesFromReferences,
+  extractReferencesFromConfiguration,
+} from "../lib";
 
 const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  updateEdges: store.updateEdges,
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCurrentAdvancedConfigurationNodeID:
@@ -31,7 +38,9 @@ export function useUpdaterOnNode({
   configuration: GeneralRecord;
 }) {
   const {
+    nodes,
     updateNodes,
+    updateEdges,
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
@@ -64,73 +73,89 @@ export function useUpdaterOnNode({
     }
 
     const timer = setTimeout(() => {
-      updateNodes((nodes) => {
-        return nodes.map((node) => {
-          if (
-            nodeType === "connector" &&
-            node.data.nodeType === "connector" &&
-            node.id === id
-          ) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration:
-                    parsed.data.task === node.data.component.configuration.task
-                      ? {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: {
-                            ...node.data.component.configuration.input,
-                            ...parsed.data.input,
-                          },
-                        }
-                      : {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: parsed.data.input,
+      const newNodes = nodes.map((node) => {
+        if (
+          nodeType === "connector" &&
+          node.data.nodeType === "connector" &&
+          node.id === id
+        ) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                configuration:
+                  parsed.data.task === node.data.component.configuration.task
+                    ? {
+                        ...node.data.component.configuration,
+                        task: parsed.data.task,
+                        input: {
+                          ...node.data.component.configuration.input,
+                          ...parsed.data.input,
                         },
-                },
+                      }
+                    : {
+                        ...node.data.component.configuration,
+                        task: parsed.data.task,
+                        input: parsed.data.input,
+                      },
               },
-            };
-          }
+            },
+          };
+        }
 
-          if (
-            nodeType === "operator" &&
-            node.data.nodeType === "operator" &&
-            node.id === id
-          ) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                component: {
-                  ...node.data.component,
-                  configuration:
-                    parsed.data.task === node.data.component.configuration.task
-                      ? {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: {
-                            ...node.data.component.configuration.input,
-                            ...parsed.data.input,
-                          },
-                        }
-                      : {
-                          ...node.data.component.configuration,
-                          task: parsed.data.task,
-                          input: parsed.data.input,
+        if (
+          nodeType === "operator" &&
+          node.data.nodeType === "operator" &&
+          node.id === id
+        ) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              component: {
+                ...node.data.component,
+                configuration:
+                  parsed.data.task === node.data.component.configuration.task
+                    ? {
+                        ...node.data.component.configuration,
+                        task: parsed.data.task,
+                        input: {
+                          ...node.data.component.configuration.input,
+                          ...parsed.data.input,
                         },
-                },
+                      }
+                    : {
+                        ...node.data.component.configuration,
+                        task: parsed.data.task,
+                        input: parsed.data.input,
+                      },
               },
-            };
-          }
+            },
+          };
+        }
 
-          return node;
-        });
+        return node;
       });
+
+      updateNodes(() => newNodes);
+
+      const allReferences: PipelineComponentReference[] = [];
+
+      newNodes.forEach((node) => {
+        if (node.data.component?.configuration) {
+          allReferences.push(
+            ...extractReferencesFromConfiguration(
+              node.data.component?.configuration,
+              node.id
+            )
+          );
+        }
+      });
+
+      const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+      updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;
     }, 1);

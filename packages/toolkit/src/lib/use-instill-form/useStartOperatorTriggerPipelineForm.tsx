@@ -12,7 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 import { pickStartOperatorFreeFormFields } from "./pick";
 
-export const useStartOperatorFreeForm = (props: {
+export const useStartOperatorTriggerPipelineForm = (props: {
   data: StartNodeData;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;

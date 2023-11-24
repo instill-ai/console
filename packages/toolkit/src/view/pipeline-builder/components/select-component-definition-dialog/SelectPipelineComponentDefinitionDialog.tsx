@@ -54,11 +54,11 @@ export const SelectPipelineComponentDefinitionDialog = (
             disabled={disabled}
             className="gap-x-2"
             variant="primary"
-            size="lg"
+            size="md"
           >
             <Icons.Plus
               className={cn(
-                "h-5 w-5",
+                "h-4 w-4",
                 disabled
                   ? "stroke-semantic-fg-secondary"
                   : "stroke-semantic-bg-primary"
