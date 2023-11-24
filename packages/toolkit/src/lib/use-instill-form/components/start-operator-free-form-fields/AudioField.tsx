@@ -19,7 +19,7 @@ export const AudioField = ({
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [audioFile, setAudioFile] = React.useState<Nullable<File>>(null);
-  const fileRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -39,7 +39,7 @@ export const AudioField = ({
             <div className="flex">
               <Form.Control>
                 <UploadFileInput
-                  ref={fileRef}
+                  ref={inputRef}
                   title="Upload audio"
                   fieldKey={path}
                   accept="audio/*"
@@ -62,8 +62,8 @@ export const AudioField = ({
                 onDelete={() => {
                   setAudioFile(null);
                   field.onChange(null);
-                  if (fileRef.current) {
-                    fileRef.current.value = "";
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
                   }
                 }}
               />

@@ -19,7 +19,7 @@ export const ImageField = ({
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
-  const fileRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -55,7 +55,7 @@ export const ImageField = ({
               <Form.Control>
                 <UploadFileInput
                   id={`op-start-${path}`}
-                  ref={fileRef}
+                  ref={inputRef}
                   title="Upload image"
                   fieldKey={path}
                   accept="image/*"
@@ -76,8 +76,8 @@ export const ImageField = ({
                 onDelete={() => {
                   setImageFile(null);
                   field.onChange(null);
-                  if (fileRef.current) {
-                    fileRef.current.value = "";
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
                   }
                 }}
               />
