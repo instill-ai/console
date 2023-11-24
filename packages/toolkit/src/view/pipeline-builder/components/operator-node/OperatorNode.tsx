@@ -31,6 +31,7 @@ import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
 import { useCheckIsHidden } from "../useCheckIsHidden";
 import { useUpdaterOnNode } from "../useUpdaterOnNode";
+import { InstillErrors } from "../../../../constant/errors";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -81,8 +82,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
 
     if (!validateInstillID(newID)) {
       toast({
-        title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        title: InstillErrors.IDInvalidError,
         variant: "alert-error",
         size: "small",
       });

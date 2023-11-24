@@ -34,6 +34,7 @@ import {
 import { AirbyteDestinationFields } from "../airbyte";
 import { useRouter } from "next/router";
 import { LoadingSpin } from "../../components";
+import { InstillErrors } from "../../constant/errors";
 
 export type DataResourceFormProps = {
   dataResource: Nullable<ConnectorWithDefinition>;
@@ -152,7 +153,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     if (!validateInstillID(fieldValues.id as string)) {
       setFieldErrors((prev) => ({
         ...prev,
-        id: "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        id: InstillErrors.IDInvalidError,
       }));
       return;
     }

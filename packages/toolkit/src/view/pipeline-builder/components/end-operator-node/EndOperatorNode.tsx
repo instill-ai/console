@@ -27,6 +27,7 @@ import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { StartEndOperatorControlPanel } from "../control-panel";
+import { InstillErrors } from "../../../../constant/errors";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -63,9 +64,8 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
         {
           type: "string",
           instillUpstreamType: "value",
-          pattern: "^[a-z_][a-z_0-9]{0,31}$",
-          instillPatternErrorMessage:
-            "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+          pattern: "^[a-z_][-a-z_0-9]{0,31}$",
+          instillPatternErrorMessage: InstillErrors.IDInvalidError,
         },
       ],
       instillUpstreamTypes: ["value"],
