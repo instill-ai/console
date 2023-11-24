@@ -56,7 +56,29 @@ export const TextsField = ({
               onEditField={onEditField}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
-              {textFieldsArray.map((_, idx) => {
+              <div className="w-full">
+                <Input.Root className="flex-1">
+                  <Input.Core
+                    type="text"
+                    value={textFieldsValue[0] ?? undefined}
+                    autoComplete="off"
+                    className="nodrag text-semantic-fg-primary product-body-text-4-regular"
+                    onChange={(e) => {
+                      const newTextFieldsValue = [...textFieldsValue];
+                      newTextFieldsValue[0] = e.target.value;
+                      setTextFieldsValue(newTextFieldsValue);
+
+                      field.onChange(newTextFieldsValue);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </Input.Root>
+              </div>
+              {textFieldsArray.slice(1).map((_, idx) => {
                 return (
                   <div
                     key={`${path}-test-${idx}`}
@@ -65,12 +87,12 @@ export const TextsField = ({
                     <Input.Root className="flex-1">
                       <Input.Core
                         type="text"
-                        value={textFieldsValue[idx] ?? undefined}
+                        value={textFieldsValue[idx + 1] ?? undefined}
                         autoComplete="off"
                         className="nodrag text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newTextFieldsValue = [...textFieldsValue];
-                          newTextFieldsValue[idx] = e.target.value;
+                          newTextFieldsValue[idx + 1] = e.target.value;
                           setTextFieldsValue(newTextFieldsValue);
 
                           field.onChange(newTextFieldsValue);
@@ -84,21 +106,21 @@ export const TextsField = ({
                     </Input.Root>
                     {textFieldsArray.length > 1 ? (
                       <button
+                        className="my-auto rounded p-1 hover:bg-semantic-error-bg-alt"
                         type="button"
-                        className="my-auto flex h-6 w-6 flex-shrink-0 rounded border border-semantic-bg-line hover:border-semantic-fg-secondary"
                         onClick={() => {
                           const newTextFieldsValue = [...textFieldsValue];
-                          newTextFieldsValue.splice(idx, 1);
+                          newTextFieldsValue.splice(idx + 1, 1);
                           setTextFieldsValue(newTextFieldsValue);
 
                           const newTextFieldsArray = [...textFieldsArray];
-                          newTextFieldsArray.splice(idx, 1);
+                          newTextFieldsArray.splice(idx + 1, 1);
                           setTextFieldsArray(newTextFieldsArray);
 
                           field.onChange(newTextFieldsValue);
                         }}
                       >
-                        <Icons.X className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
                       </button>
                     ) : null}
                   </div>
@@ -114,7 +136,7 @@ export const TextsField = ({
             <div className="mb-2 flex">
               <button
                 type="button"
-                className="flex text-semantic-accent-default !underline product-button-button-3"
+                className="flex text-semantic-accent-default !underline product-body-text-4-medium"
                 onClick={() => {
                   const newTextFieldsValue = [...textFieldsValue];
                   newTextFieldsValue.push(undefined);

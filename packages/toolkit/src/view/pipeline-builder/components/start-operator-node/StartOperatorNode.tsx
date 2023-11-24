@@ -160,6 +160,18 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "array:string": {
+        configuraton = {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          instillFormat: "array:string",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
       case "long_string": {
         configuraton = {
           type: "string",
