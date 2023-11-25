@@ -83,6 +83,11 @@ export const TextAreaField = ({
                   form.trigger(path, { shouldFocus: true });
                 }}
                 disabled={disabled}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
               />
             </Form.Control>
             <Form.Description

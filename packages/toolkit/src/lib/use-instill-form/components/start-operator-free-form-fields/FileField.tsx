@@ -41,9 +41,9 @@ export const FileField = ({
                 <UploadFileInput
                   id={`op-start-${path}`}
                   ref={inputRef}
-                  title="Upload image"
+                  title="Upload file"
                   fieldKey={path}
-                  accept="image/*"
+                  accept="*/*"
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
