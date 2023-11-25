@@ -45,7 +45,7 @@ For example, this is a pipeline with basic configuration
         },
         "task": "TASK_KEYPOINT"
       },
-      "definition_name": "connector-definitions/ai_instill_model"
+      "definition_name": "connector-definitions/instill-model"
     }
   ]
 }
@@ -88,7 +88,7 @@ This is the correct template after cleaning it up
         },
         "task": "TASK_KEYPOINT"
       },
-      "definition_name": "connector-definitions/ai_instill_model"
+      "definition_name": "connector-definitions/instill-model"
     }
   ]
 }

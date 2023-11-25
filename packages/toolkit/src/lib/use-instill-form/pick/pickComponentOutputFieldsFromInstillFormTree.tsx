@@ -120,8 +120,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     return null;
   }
 
-  console.log(tree);
-
   // Process regular field
   if (
     tree.instillFormat === "string" ||

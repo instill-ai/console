@@ -104,8 +104,6 @@ export const StaffPickTemplates = ({
       result[template.category].push(newTemplate);
     }
 
-    console.log(result);
-
     return result;
   }, [connectorDefinitions.data, connectorDefinitions.isSuccess]);
 

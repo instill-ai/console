@@ -46,7 +46,6 @@ export const AudioField = ({
                   accept="audio/*"
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
-                    console.log(file);
                     if (file) {
                       setAudioFile(file);
                       const binary = await readFileToBinary(file);

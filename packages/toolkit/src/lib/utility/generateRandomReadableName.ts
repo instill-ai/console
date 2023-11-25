@@ -8,6 +8,6 @@ import {
 export function generateRandomReadableName() {
   return uniqueNamesGenerator({
     dictionaries: [adjectives, colors, animals],
-    separator: "_",
+    separator: "-",
   });
 }

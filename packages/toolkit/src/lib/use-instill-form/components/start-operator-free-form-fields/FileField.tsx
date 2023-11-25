@@ -18,8 +18,8 @@ export const FileField = ({
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
-  const [uploadedFile, setUploadedFile] = React.useState<Nullable<File>>();
-  const fileRef = React.useRef<HTMLInputElement>(null);
+  const [uploadedFile, setUploadedFiles] = React.useState<Nullable<File>>();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -39,16 +39,17 @@ export const FileField = ({
             <div className="flex">
               <Form.Control>
                 <UploadFileInput
-                  ref={fileRef}
-                  title="Upload file"
+                  id={`op-start-${path}`}
+                  ref={inputRef}
+                  title="Upload image"
                   fieldKey={path}
-                  accept="*/*"
+                  accept="image/*"
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setUploadedFile(file);
                       const binary = await readFileToBinary(file);
                       field.onChange(binary);
+                      setUploadedFiles(file);
                     }
                   }}
                 />
@@ -58,10 +59,10 @@ export const FileField = ({
               <FileListItem
                 name={uploadedFile.name}
                 onDelete={() => {
-                  setUploadedFile(null);
+                  setUploadedFiles(null);
                   field.onChange(null);
-                  if (fileRef.current) {
-                    fileRef.current.value = "";
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
                   }
                 }}
               />
