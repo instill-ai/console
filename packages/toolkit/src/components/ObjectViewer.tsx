@@ -3,7 +3,7 @@ import { EditorView } from "@codemirror/view";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { Nullable } from "../lib";
 import { githubDark } from "@uiw/codemirror-theme-github";
-import { jsonLanguage, json } from "@codemirror/lang-json";
+import { json } from "@codemirror/lang-json";
 
 const fontSize = EditorView.baseTheme({
   "&": {

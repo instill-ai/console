@@ -27,7 +27,6 @@ import {
   StartOperatorNodeFreeForm,
   StartOperatorFreeFormSchema,
 } from "./StartOperatorNodeFreeForm";
-import { LoadingSpin } from "../../../../components";
 import { toastInstillError } from "../../../../lib/toastInstillError";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
@@ -39,7 +38,6 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { constructFieldKey } from "./constructFieldKey";
 import { StartEndOperatorControlPanel } from "../control-panel";
-import { BottomBar } from "../BottomBar";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -346,6 +344,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     testModeEnabled,
     startOperatorTriggerPipelineForm,
     updateTestModeTriggerResponse,
+    updateIsTriggeringPipeline,
   ]);
 
   const [enableEdit, setEnableEdit] = React.useState(false);

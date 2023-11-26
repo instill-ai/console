@@ -481,9 +481,6 @@ export const FlowControl = (props: FlowControlProps) => {
     updateSelectResourceDialogIsOpen(() => false);
   }
 
-  const [openMenuItem, setOpenMenuItem] =
-    React.useState<Nullable<string>>(null);
-
   return (
     <React.Fragment>
       <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
@@ -577,6 +574,7 @@ export const FlowControl = (props: FlowControlProps) => {
                         <Menubar.Trigger
                           className="flex cursor-pointer flex-row gap-x-2"
                           value="release"
+                          disabled={pipelineRecipeIsDirty}
                           onClick={() =>
                             setReleaseDialogIsOpen((prev) => !prev)
                           }

@@ -1,31 +1,22 @@
 import cn from "clsx";
-import { ControllerRenderProps, FieldError } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 import { Nullable } from "../../../type";
 import { Icons, Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../type";
 
 export const SmartHintInfoCard = ({
   title,
-  field,
   instillAcceptFormats,
-  isRequired,
   className,
   error,
   supportReference,
   supportTemplate,
   smartHintWarning,
 }: {
-  field: ControllerRenderProps<
-    {
-      [k: string]: any;
-    },
-    string
-  >;
   title: Nullable<string>;
   instillAcceptFormats: string[];
   supportReference: boolean;
   supportTemplate: boolean;
-  isRequired?: boolean;
   className?: string;
   error?: FieldError;
   smartHintWarning: Nullable<SmartHintWarning>;

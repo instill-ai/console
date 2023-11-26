@@ -290,7 +290,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     }
 
     return null;
-  }, [isOpenBottomBarOutput, testModeTriggerResponse]);
+  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
 
   return (
     <NodeWrapper

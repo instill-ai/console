@@ -20,7 +20,7 @@ import {
   useInstillStore,
   validateInstillID,
 } from "../../../../lib";
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback, ObjectViewer } from "../../../../components";
 import { useShallow } from "zustand/react/shallow";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
@@ -32,6 +32,7 @@ import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSc
 import { useCheckIsHidden } from "../useCheckIsHidden";
 import { useUpdaterOnNode } from "../useUpdaterOnNode";
 import { InstillErrors } from "../../../../constant/errors";
+import { NodeBottomBar } from "../NodeBottomBar";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -42,9 +43,9 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
-  testModeTriggerResponse: store.testModeTriggerResponse,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+  testModeTriggerResponse: store.testModeTriggerResponse,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -56,8 +57,8 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
-    testModeTriggerResponse,
     updateCurrentAdvancedConfigurationNodeID,
+    testModeTriggerResponse,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -107,7 +108,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.id === id && node.data.nodeType === "connector") {
+      if (node.id === id && node.data.nodeType === "operator") {
         return {
           ...node,
           id: newID,
@@ -264,12 +265,44 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     configuration: data.component.configuration,
   });
 
+  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
+    React.useState(false);
+
+  const bottomBarInformation = React.useMemo(() => {
+    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+
+    if (isOpenBottomBarOutput) {
+      return (
+        <div className="w-full">
+          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
+        </div>
+      );
+    }
+
+    return null;
+  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
+      renderNodeBottomBar={() => {
+        return (
+          <NodeBottomBar.Root>
+            <NodeBottomBar.Item
+              value="output"
+              onClick={() => {
+                setIsOpenBottomBarOutput((prev) => !prev);
+              }}
+            >
+              Output
+            </NodeBottomBar.Item>
+          </NodeBottomBar.Root>
+        );
+      }}
+      renderBottomBarInformation={() => bottomBarInformation}
     >
       {/* The header of node */}
 

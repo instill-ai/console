@@ -171,5 +171,7 @@ export function useUpdaterOnNode({
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
     configuration,
+    nodes,
+    updateEdges,
   ]);
 }
