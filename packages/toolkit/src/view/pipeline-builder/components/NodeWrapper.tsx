@@ -16,12 +16,16 @@ export const NodeWrapper = ({
   children,
   noteIsOpen,
   note,
+  renderBottomBarInformation,
+  renderNodeBottomBar,
 }: {
   nodeType: "start" | "end" | "connector" | "operator";
   id: string;
   children: React.ReactNode;
   noteIsOpen: boolean;
   note: Nullable<string>;
+  renderBottomBarInformation?: () => React.ReactNode;
+  renderNodeBottomBar?: () => React.ReactNode;
 }) => {
   const { updateNodes, updatePipelineRecipeIsDirty, selectedConnectorNodeId } =
     useInstillStore(useShallow(selector));
@@ -32,7 +36,7 @@ export const NodeWrapper = ({
     <div className="relative">
       <div
         className={cn(
-          "absolute right-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
+          "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
           noteIsOpen ? "" : "hidden",
           "-translate-y-[calc(100%+25px)]"
         )}
@@ -69,15 +73,24 @@ export const NodeWrapper = ({
       </div>
       <div
         className={cn(
-          "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg px-3 py-2.5 shadow-md hover:shadow-lg",
+          "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
           {
             "outline outline-2 outline-offset-1 outline-semantic-accent-default":
               id === selectedConnectorNodeId,
           }
         )}
       >
-        {children}
+        <div className="flex flex-col px-3 py-2.5">{children}</div>
+        {renderNodeBottomBar ? renderNodeBottomBar() : null}
       </div>
+      {renderBottomBarInformation ? (
+        <div
+          id={`${id}-node-bottom-information-container`}
+          className="absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+25px)]"
+        >
+          {renderBottomBarInformation()}
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -39,6 +39,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { constructFieldKey } from "./constructFieldKey";
 import { StartEndOperatorControlPanel } from "../control-panel";
+import { BottomBar } from "../BottomBar";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
