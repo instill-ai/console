@@ -16,6 +16,7 @@ export * from "./TableHead";
 export * from "./LoadingSpin";
 export * from "./ModelDefinitionLabel";
 export * from "./ModelTaskLabel";
+export * from "./ObjectViewer";
 export * from "./PageBase";
 export * from "./PageHead";
 export * from "./PageTitle";

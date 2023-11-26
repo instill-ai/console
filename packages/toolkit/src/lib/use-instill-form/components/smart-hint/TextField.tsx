@@ -212,9 +212,7 @@ export const TextField = ({
                   <React.Fragment>
                     <SmartHintInfoCard
                       title={title}
-                      field={field}
                       instillAcceptFormats={instillAcceptFormats}
-                      isRequired={isRequired}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
                       error={error}
                       supportReference={supportReference}
@@ -241,9 +239,7 @@ export const TextField = ({
                 ) : (
                   <SmartHintInfoCard
                     title={title}
-                    field={field}
                     instillAcceptFormats={instillAcceptFormats}
-                    isRequired={isRequired}
                     error={error}
                     supportReference={supportReference}
                     supportTemplate={supportTemplate}

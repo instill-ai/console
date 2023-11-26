@@ -138,5 +138,7 @@ export function useUpdaterOnRightPanel({
     id,
     updateNodes,
     updatePipelineRecipeIsDirty,
+    nodes,
+    updateEdges,
   ]);
 }

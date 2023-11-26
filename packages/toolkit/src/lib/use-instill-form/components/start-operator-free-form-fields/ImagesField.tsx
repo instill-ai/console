@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Input, ScrollArea } from "@instill-ai/design-system";
+import { Form, ScrollArea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, fillArrayWithZeros } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";

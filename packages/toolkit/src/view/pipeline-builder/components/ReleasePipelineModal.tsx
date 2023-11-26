@@ -11,7 +11,6 @@ import {
   Icons,
   Input,
   Textarea,
-  Tooltip,
   useToast,
 } from "@instill-ai/design-system";
 
@@ -28,9 +27,7 @@ import { LoadingSpin } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
-  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   nodes: store.nodes,
-  pipelineIsNew: store.pipelineIsNew,
 });
 
 export const ReleasePipelineFormSchema = z.object({
@@ -42,21 +39,18 @@ export type ReleasePipelineModalProps = {
   accessToken: Nullable<string>;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  disabled?: boolean;
 };
 
 export const ReleasePipelineModal = ({
   isOpen,
   setIsOpen,
   accessToken,
-  disabled,
 }: ReleasePipelineModalProps) => {
   const [isReleasing, setIsReleasing] = React.useState(false);
 
   const { toast } = useToast();
 
-  const { pipelineName, nodes, pipelineRecipeIsDirty, pipelineIsNew } =
-    useInstillStore(useShallow(selector));
+  const { pipelineName, nodes } = useInstillStore(useShallow(selector));
 
   const form = useForm<z.infer<typeof ReleasePipelineFormSchema>>({
     resolver: zodResolver(ReleasePipelineFormSchema),
