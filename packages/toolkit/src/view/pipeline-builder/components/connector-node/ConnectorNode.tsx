@@ -35,6 +35,7 @@ import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationBut
 import { useCheckIsHidden } from "../useCheckIsHidden";
 import { useUpdaterOnNode } from "../useUpdaterOnNode";
 import { InstillErrors } from "../../../../constant/errors";
+import { NodeBottomBar } from "../NodeBottomBar";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -69,6 +70,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
+  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
+    React.useState(false);
 
   const nodeIDEditorForm = useNodeIDEditorForm(id);
 
@@ -275,12 +278,35 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     configuration: data.component.configuration,
   });
 
+  const bottomBarInformation = React.useMemo(() => {
+    if (isOpenBottomBarOutput) {
+      return <div className="w-full">placeholder</div>;
+    }
+
+    return null;
+  }, [isOpenBottomBarOutput]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
+      renderNodeBottomBar={() => {
+        return (
+          <NodeBottomBar.Root>
+            <NodeBottomBar.Item
+              value="output"
+              onClick={() => {
+                setIsOpenBottomBarOutput((prev) => !prev);
+              }}
+            >
+              Output
+            </NodeBottomBar.Item>
+          </NodeBottomBar.Root>
+        );
+      }}
+      renderBottomBarInformation={() => bottomBarInformation}
     >
       {/* The header of node */}
 
@@ -430,8 +456,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
 
           {/* 
-          Data connector free form
-        */}
+            Data connector free form
+          */}
 
           {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
           data.component.definition_name !== "connector-definitions/pinecone" &&
@@ -460,7 +486,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             ) : null}
           </div>
 
-          <div className="flex flex-row-reverse">
+          <div className="mb-3 flex flex-row-reverse">
             <ConnectorIDTag
               connectorID={
                 data.component.resource_name
