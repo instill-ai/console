@@ -337,7 +337,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           <ComponentOutputs
             componentID={data.component.id}
             outputSchema={outputSchema}
-            traces={testModeTriggerResponse?.metadata?.traces ?? null}
+            nodeType="connector"
           />
         </>
       )}

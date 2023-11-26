@@ -86,7 +86,7 @@ export const NodeWrapper = ({
       {renderBottomBarInformation ? (
         <div
           id={`${id}-node-bottom-information-container`}
-          className="absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+25px)]"
+          className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+25px)]"
         >
           {renderBottomBarInformation()}
         </div>

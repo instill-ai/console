@@ -17,7 +17,6 @@ import {
   InstillStore,
   Nullable,
   StartOperatorMetadata,
-  useComponentOutputFields,
   useInstillForm,
   useInstillStore,
 } from "../../../../lib";
@@ -28,6 +27,7 @@ import { NodeHead } from "../NodeHead";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { StartEndOperatorControlPanel } from "../control-panel";
 import { InstillErrors } from "../../../../constant/errors";
+import { ComponentOutputs } from "../ComponentOutputs";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -235,13 +235,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setPrevFieldKey(key);
   }
 
-  const testModeOutputFields = useComponentOutputFields({
-    schema: pipelineOpenAPIOutputSchema,
-    data: testModeTriggerResponse?.outputs ?? null,
-    nodeType: "end",
-    chooseTitleFrom: "title",
-  });
-
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
   }, [edges, id]);
@@ -357,9 +350,11 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           </form>
         </Form.Root>
       ) : isViewResultMode ? (
-        <div className="flex w-full flex-col gap-y-4">
-          {testModeOutputFields}
-        </div>
+        <ComponentOutputs
+          componentID={data.component.id}
+          outputSchema={pipelineOpenAPIOutputSchema}
+          nodeType="end"
+        />
       ) : (
         <div className="flex flex-col">
           <VerticalSortableWrapper

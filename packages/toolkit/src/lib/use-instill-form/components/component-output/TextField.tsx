@@ -13,6 +13,8 @@ export type TextFieldProps = {
 export const TextField = (props: TextFieldProps) => {
   const { nodeType, title, text, hideField } = props;
 
+  const normalizedText = text ? String(text) : null;
+
   if (nodeType === "connector") {
     return (
       <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
@@ -35,7 +37,9 @@ export const TextField = (props: TextFieldProps) => {
 
   return (
     <EndNodeFieldRoot title={title} key={`${title}-field`}>
-      {text && !hideField ? <MDTextViewer text={text} /> : null}
+      {normalizedText && !hideField ? (
+        <MDTextViewer text={normalizedText} />
+      ) : null}
     </EndNodeFieldRoot>
   );
 };

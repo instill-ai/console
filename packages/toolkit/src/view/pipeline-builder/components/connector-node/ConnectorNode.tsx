@@ -21,7 +21,7 @@ import {
   useInstillStore,
   validateInstillID,
 } from "../../../../lib";
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback, ObjectViewer } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
@@ -279,12 +279,18 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   });
 
   const bottomBarInformation = React.useMemo(() => {
+    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+
     if (isOpenBottomBarOutput) {
-      return <div className="w-full">placeholder</div>;
+      return (
+        <div className="w-full">
+          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
+        </div>
+      );
     }
 
     return null;
-  }, [isOpenBottomBarOutput]);
+  }, [isOpenBottomBarOutput, testModeTriggerResponse]);
 
   return (
     <NodeWrapper
@@ -481,7 +487,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               <ComponentOutputs
                 componentID={data.component.id}
                 outputSchema={outputSchema}
-                traces={testModeTriggerResponse?.metadata?.traces ?? null}
+                nodeType="connector"
               />
             ) : null}
           </div>
