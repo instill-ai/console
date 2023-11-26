@@ -356,8 +356,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   ) {
     if (!pipelineName) return;
 
-    console.log("trigger");
-
     const input = recursiveRemoveUndefinedAndNullFromArray(
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
     );

@@ -97,6 +97,11 @@ export const CredentialTextField = ({
                       field.onChange("*****MASK*****");
                     }
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </Input.Root>
             </Form.Control>
