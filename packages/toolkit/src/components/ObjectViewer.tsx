@@ -29,7 +29,6 @@ export const ObjectViewer = ({ value }: { value: Nullable<string> }) => {
         theme={githubDark}
         editable={false}
         maxHeight="225px"
-        minHeight="120px"
         basicSetup={{
           highlightActiveLineGutter: false,
           highlightActiveLine: false,
