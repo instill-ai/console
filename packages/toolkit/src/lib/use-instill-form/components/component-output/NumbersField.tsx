@@ -11,7 +11,7 @@ export const NumbersField = (props: NumbersFieldProps) => {
   const { title, numbers, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {numbers && !hideField ? (
         <div className="flex w-full flex-row flex-wrap gap-2">
           {numbers.map((number) => (

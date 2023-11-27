@@ -11,7 +11,7 @@ export const AudiosField = (props: AudiosFieldProps) => {
   const { title, audios, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {audios && !hideField ? (
         <div className="flex w-full flex-col">
           {audios.map((audio) => {

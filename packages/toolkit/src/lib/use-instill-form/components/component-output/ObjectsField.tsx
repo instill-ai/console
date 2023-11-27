@@ -11,7 +11,7 @@ export const ObjectsField = (props: ObjectsFieldProps) => {
   const { title, objects, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {objects && !hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {objects?.map((object) => (

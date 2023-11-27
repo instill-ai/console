@@ -62,7 +62,6 @@ const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
   selectResourceDialogIsOpen: store.selectResourceDialogIsOpen,
   updateSelectResourceDialogIsOpen: store.updateSelectResourceDialogIsOpen,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   testModeEnabled: store.testModeEnabled,
   updateTestModeEnabled: store.updateTestModeEnabled,
   isOwner: store.isOwner,

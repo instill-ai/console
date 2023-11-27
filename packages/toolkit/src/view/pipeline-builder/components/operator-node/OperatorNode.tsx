@@ -343,14 +343,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         </div>
         <ConnectorOperatorControlPanel
           componentType={data.component.type}
-          handleEditNode={() =>
-            updateSelectedConnectorNodeId((prev) => {
-              if (prev === id) {
-                return null;
-              }
-              return id;
-            })
-          }
           handleCopyNode={handleCopyNode}
           handleDeleteNode={handleDeleteNode}
           nodeIsCollapsed={nodeIsCollapsed}

@@ -3,19 +3,19 @@ import * as React from "react";
 import { Nullable } from "../../../type";
 
 export const FieldRoot = ({
-  key,
+  fieldKey,
   title,
   children,
   className,
 }: {
-  key: string;
+  fieldKey: string;
   title: Nullable<string>;
   children: React.ReactNode;
   className?: string;
 }) => {
   return (
     <div
-      key={key}
+      key={fieldKey}
       className={cn(
         "flex w-full flex-col gap-y-2 rounded-[6px] bg-semantic-bg-primary p-2",
         className

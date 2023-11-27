@@ -13,7 +13,7 @@ export const ObjectArrayField = (props: ObjectArrayFieldProps) => {
   const { title, children, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {!hideField ? children : null}
     </FieldRoot>
   );
