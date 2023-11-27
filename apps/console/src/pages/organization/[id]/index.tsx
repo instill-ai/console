@@ -45,12 +45,6 @@ const OrganizationPage: NextPageWithLayout = () => {
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
-  const connectorDefinitions = useConnectorDefinitions({
-    connectorResourceType: "all",
-    enabled: accessToken.isSuccess,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-
   const models = useModels({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
@@ -116,9 +110,9 @@ const OrganizationPage: NextPageWithLayout = () => {
             <p className="product-body-text-2-semibold mb-2">Biography</p>
             <p className="product-body-text-3-regular">
               OpenAI researches artificial intelligence with the declared
-              intention of developing "safe and beneficial" artificial general
-              intelligence, which it defines as "highly autonomous systems that
-              outperform humans at most economically valuable work".
+              intention of developing safe and beneficial artificial general
+              intelligence, which it defines as highly autonomous systems that
+              outperform humans at most economically valuable work.
             </p>
           </div>
           <div>
@@ -157,9 +151,7 @@ const OrganizationPage: NextPageWithLayout = () => {
               <PipelinesTable
                 pipelines={pipelines.data ? pipelines.data : []}
                 isError={pipelines.isError}
-                isLoading={
-                  pipelines.isLoading || connectorDefinitions.isLoading
-                }
+                isLoading={pipelines.isLoading}
                 accessToken={accessToken.isSuccess ? accessToken.data : null}
                 enableQuery={accessToken.isSuccess}
               />

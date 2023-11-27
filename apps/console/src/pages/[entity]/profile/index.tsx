@@ -47,12 +47,6 @@ const PipelinePage: NextPageWithLayout = () => {
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
-  const connectorDefinitions = useConnectorDefinitions({
-    connectorResourceType: "all",
-    enabled: accessToken.isSuccess,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-
   const models = useModels({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
@@ -138,9 +132,7 @@ const PipelinePage: NextPageWithLayout = () => {
               <PipelinesTable
                 pipelines={pipelines.data ? pipelines.data : []}
                 isError={pipelines.isError}
-                isLoading={
-                  pipelines.isLoading || connectorDefinitions.isLoading
-                }
+                isLoading={pipelines.isLoading}
                 accessToken={accessToken.isSuccess ? accessToken.data : null}
                 enableQuery={accessToken.isSuccess}
               />
