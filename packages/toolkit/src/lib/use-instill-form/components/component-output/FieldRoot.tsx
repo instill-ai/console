@@ -2,34 +2,7 @@ import cn from "clsx";
 import * as React from "react";
 import { Nullable } from "../../../type";
 
-export const ConnectorNodeFieldRoot = ({
-  fieldKey,
-  title,
-  children,
-  className,
-}: {
-  fieldKey: string;
-  title: Nullable<string>;
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div
-      key={fieldKey}
-      className={cn(
-        "flex w-full max-w-[calc(var(--pipeline-builder-node-available-width)-var(--pipeline-builder-node-padding-x))] flex-row flex-wrap gap-y-2 rounded-[6px] bg-semantic-bg-primary p-2",
-        className
-      )}
-    >
-      <p className="text-semantic-fg-secondary product-body-text-4-semibold">
-        {title}
-      </p>
-      {children}
-    </div>
-  );
-};
-
-export const EndNodeFieldRoot = ({
+export const FieldRoot = ({
   key,
   title,
   children,
@@ -48,7 +21,7 @@ export const EndNodeFieldRoot = ({
         className
       )}
     >
-      <p className="text-semantic-fg-primary product-body-text-3-semibold">
+      <p className="text-semantic-fg-primary product-body-text-4-semibold">
         {title}
       </p>
       {children}

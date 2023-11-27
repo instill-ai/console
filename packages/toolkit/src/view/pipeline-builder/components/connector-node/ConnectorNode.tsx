@@ -279,7 +279,18 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   });
 
   const bottomBarInformation = React.useMemo(() => {
-    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+    if (
+      !testModeTriggerResponse ||
+      !testModeTriggerResponse.metadata ||
+      !testModeTriggerResponse.metadata.traces ||
+      !testModeTriggerResponse.metadata.traces[id] ||
+      !testModeTriggerResponse.metadata.traces[id].outputs ||
+      testModeTriggerResponse.metadata.traces[id].outputs.length === 0
+    ) {
+      return null;
+    }
+
+    const value = testModeTriggerResponse.metadata.traces[id].outputs[0];
 
     if (isOpenBottomBarOutput) {
       return (

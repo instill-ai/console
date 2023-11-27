@@ -18,18 +18,9 @@ export const ObjectViewer = ({ value }: { value: Nullable<string> }) => {
       <style jsx>{`
         .cm-gutters {
           border-radius: 8px 0 0 8px;
-          width: 20px;
-        }
-        .cm-gutter {
-          width: 20px;
         }
         .cm-editor {
           border-radius: 8px;
-        }
-        .cm-gutterElement {
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
         }
       `}</style>
       <ReactCodeMirror
@@ -38,10 +29,11 @@ export const ObjectViewer = ({ value }: { value: Nullable<string> }) => {
         theme={githubDark}
         editable={false}
         maxHeight="225px"
+        minHeight="120px"
         basicSetup={{
           highlightActiveLineGutter: false,
           highlightActiveLine: false,
-          lineNumbers: false,
+          lineNumbers: true,
         }}
       />
     </React.Fragment>
