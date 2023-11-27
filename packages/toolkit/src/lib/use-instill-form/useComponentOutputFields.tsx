@@ -8,7 +8,6 @@ import { Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 
 export type UseComponentOutputFieldsProps = {
-  nodeType: "connector" | "end";
   schema: Nullable<InstillJSONSchema>;
   data: Nullable<Record<string, any>>;
   chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];

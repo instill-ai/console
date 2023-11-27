@@ -2,13 +2,14 @@ import * as React from "react";
 import { InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
 import { GeneralRecord, Nullable } from "../../type";
+import { dot } from "../../dot";
 
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
   data: Nullable<Record<string, any>>;
-  nodeType: "end" | "connector";
   chooseTitleFrom?: "title" | "path";
   hideField?: boolean;
+  objectArrayIndex?: number;
 };
 
 export function pickComponentOutputFieldsFromInstillFormTree(
@@ -16,7 +17,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 ) {
   // 1. Preprocess
 
-  const { tree, nodeType, data, chooseTitleFrom, hideField } = props;
+  const { tree, data, chooseTitleFrom, hideField } = props;
 
   let title = tree.path ?? tree.title ?? null;
 
@@ -40,8 +41,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       propertyValue = Array.isArray(data) ? data : null;
     }
   } else if (tree._type === "formItem") {
-    if (tree.fieldKey) {
-      propertyValue = data ? data[tree.fieldKey] ?? null : null;
+    if (tree.path) {
+      propertyValue = data ? dot.getter(data, tree.path) ?? null : null;
     }
   }
 
@@ -51,7 +52,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "formGroup") {
     return tree.fieldKey ? (
       <div
-        key={tree.path || tree.fieldKey}
+        key={`${tree.path || tree.fieldKey}-${props.objectArrayIndex}`}
         className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2"
       >
         <p className="text-semantic-fg-secondary product-body-text-4-semibold">
@@ -66,7 +67,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         })}
       </div>
     ) : (
-      <React.Fragment key={tree.path || tree.fieldKey}>
+      <React.Fragment
+        key={`${tree.path || tree.fieldKey}-${props.objectArrayIndex}`}
+      >
         {tree.properties.map((property) => {
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
@@ -90,15 +93,23 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "objectArray") {
     const objectArrayData = propertyValue as GeneralRecord[];
 
-    return propertyValue ? (
+    return propertyValue && tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
-        {objectArrayData.map((data) =>
-          pickComponentOutputFieldsFromInstillFormTree({
+        {objectArrayData.map((data, idx) => {
+          return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: tree.properties,
-            data: data,
-          })
-        )}
+
+            // Because we are using path to get the value, we need to restructure
+            // the data here. The object array data will be data: [{foo: 1}, {foo: 2}],
+            // Down below the formTree the foo field's path is data.foo
+            // So we need to restructure the data to {data:{foo: 1}} and {data:{foo: 2}}
+            data: {
+              [tree.fieldKey as string]: data,
+            },
+            objectArrayIndex: idx,
+          });
+        })}
       </div>
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
@@ -121,17 +132,21 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process regular field
-  if (
-    tree.instillFormat === "string" ||
-    tree.instillFormat === "number" ||
-    tree.instillFormat === "integer" ||
-    tree.instillFormat === "boolean"
-  ) {
+  if (tree.instillFormat === "string" || tree.instillFormat === "boolean") {
     return (
       <ComponentOutputFields.TextField
-        nodeType={nodeType}
         title={title}
         text={propertyValue}
+        hideField={hideField}
+      />
+    );
+  }
+
+  if (tree.instillFormat === "number" || tree.instillFormat === "integer") {
+    return (
+      <ComponentOutputFields.NumberField
+        title={title}
+        number={propertyValue}
         hideField={hideField}
       />
     );
@@ -142,12 +157,19 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
     switch (arrayType) {
       case "number":
-      case "integer":
+      case "integer": {
+        return (
+          <ComponentOutputFields.NumbersField
+            title={title}
+            numbers={propertyValue}
+            hideField={hideField}
+          />
+        );
+      }
       case "boolean":
       case "string": {
         return (
           <ComponentOutputFields.TextsField
-            nodeType={nodeType}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -157,7 +179,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "audio": {
         return (
           <ComponentOutputFields.AudiosField
-            nodeType={nodeType}
             title={title}
             audios={propertyValue}
             hideField={hideField}
@@ -167,7 +188,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "image": {
         return (
           <ComponentOutputFields.ImagesField
-            nodeType={nodeType}
             title={title}
             images={propertyValue}
             hideField={hideField}
@@ -177,7 +197,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "text": {
         return (
           <ComponentOutputFields.TextsField
-            nodeType={nodeType}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -187,7 +206,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       default: {
         return (
           <ComponentOutputFields.TextsField
-            nodeType={nodeType}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -207,7 +225,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "string": {
       return (
         <ComponentOutputFields.TextField
-          nodeType={nodeType}
           title={title}
           text={propertyValue}
           hideField={hideField}
@@ -217,7 +234,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "audio": {
       return (
         <ComponentOutputFields.AudioField
-          nodeType={nodeType}
           title={title}
           audio={propertyValue}
           hideField={hideField}
@@ -227,7 +243,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "image": {
       return (
         <ComponentOutputFields.ImageField
-          nodeType={nodeType}
           title={title}
           image={propertyValue}
           hideField={hideField}
@@ -237,7 +252,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "text": {
       return (
         <ComponentOutputFields.TextField
-          nodeType={nodeType}
           title={title}
           text={propertyValue}
           hideField={hideField}
@@ -247,7 +261,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     default: {
       return (
         <ComponentOutputFields.TextField
-          nodeType={nodeType}
           title={title}
           text={propertyValue}
           hideField={hideField}

@@ -38,7 +38,7 @@ export const NodeWrapper = ({
         className={cn(
           "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
           noteIsOpen ? "" : "hidden",
-          "-translate-y-[calc(100%+25px)]"
+          "-translate-y-[calc(100%+16px)]"
         )}
       >
         <Textarea
@@ -86,7 +86,7 @@ export const NodeWrapper = ({
       {renderBottomBarInformation ? (
         <div
           id={`${id}-node-bottom-information-container`}
-          className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+25px)]"
+          className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)]"
         >
           {renderBottomBarInformation()}
         </div>

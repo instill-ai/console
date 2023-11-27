@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ScrollArea } from "@instill-ai/design-system";
 import {
   GeneralRecord,
@@ -16,24 +17,37 @@ export const ComponentOutputs = ({
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
 }) => {
-  const triggerResponse = useInstillStore(
-    (store) => store.testModeTriggerResponse
-  );
+  const res = useInstillStore((store) => store.testModeTriggerResponse);
 
-  let data: Nullable<GeneralRecord> = null;
+  const data = React.useMemo(() => {
+    let data: Nullable<GeneralRecord> = null;
 
-  if (nodeType === "connector") {
-    data = triggerResponse
-      ? triggerResponse.metadata.traces[componentID].outputs[0]
-      : null;
-  } else {
-    data = triggerResponse ? triggerResponse.outputs : null;
-  }
+    if (nodeType === "connector") {
+      if (
+        !res ||
+        !res.metadata.traces[componentID] ||
+        !res.metadata.traces[componentID].outputs ||
+        res.metadata.traces[componentID].outputs.length === 0
+      ) {
+        return data;
+      }
+      data = res.metadata.traces[componentID].outputs[0];
+
+      return data;
+    }
+
+    if (!res || !res.outputs) {
+      return data;
+    }
+
+    data = res.outputs[0];
+
+    return data;
+  }, [nodeType, componentID, res]);
 
   const componentOutputFields = useComponentOutputFields({
     schema: outputSchema,
     data,
-    nodeType,
   });
 
   return (
