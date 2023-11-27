@@ -49,6 +49,8 @@ const selector = (store: InstillStore) => ({
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+
+  currentVersion: store.currentVersion,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -63,6 +65,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
     updateCurrentAdvancedConfigurationNodeID,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -265,6 +268,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       enableSmartHint: true,
       checkIsHidden,
       componentID: data.component.id,
+      disabledAll: currentVersion !== "latest",
     }
   );
 
