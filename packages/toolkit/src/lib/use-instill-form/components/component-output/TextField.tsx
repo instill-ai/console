@@ -14,7 +14,7 @@ export const TextField = (props: TextFieldProps) => {
   const normalizedText = text ? String(text) : null;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {normalizedText && !hideField ? (
         <MDTextViewer text={normalizedText} />
       ) : null}

@@ -11,7 +11,7 @@ export const AudioField = (props: AudioFieldProps) => {
   const { title, audio, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {audio && !hideField ? (
         <div className="flex w-full">
           <audio className="w-full" controls={true} src={audio} />

@@ -19,7 +19,6 @@ export const ConnectorOperatorControlPanel = ({
   componentType,
   handleDeleteNode,
   handleCopyNode,
-  handleEditNode,
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,
@@ -28,7 +27,6 @@ export const ConnectorOperatorControlPanel = ({
   componentType: PipelineComponentType;
   handleDeleteNode: () => void;
   handleCopyNode: () => void;
-  handleEditNode: () => void;
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;

@@ -8,6 +8,7 @@ const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const NodeWrapper = ({
@@ -27,13 +28,22 @@ export const NodeWrapper = ({
   renderBottomBarInformation?: () => React.ReactNode;
   renderNodeBottomBar?: () => React.ReactNode;
 }) => {
-  const { updateNodes, updatePipelineRecipeIsDirty, selectedConnectorNodeId } =
-    useInstillStore(useShallow(selector));
+  const {
+    updateNodes,
+    updatePipelineRecipeIsDirty,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
+  } = useInstillStore(useShallow(selector));
   const timer = React.useRef<Nullable<number>>(null);
   const [noteValue, setNoteValue] = React.useState(note);
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onClick={() => {
+        updateSelectedConnectorNodeId(() => id);
+      }}
+    >
       <div
         className={cn(
           "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",

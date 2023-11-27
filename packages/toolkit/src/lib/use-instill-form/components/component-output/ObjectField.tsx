@@ -11,7 +11,7 @@ export const ObjectField = (props: ObjectFieldProps) => {
   const { title, object, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {object && !hideField ? (
         <div className="flex w-full">
           <pre className="flex min-h-[36px] w-full flex-1 whitespace-pre-line break-all text-semantic-fg-primary product-body-text-4-regular">

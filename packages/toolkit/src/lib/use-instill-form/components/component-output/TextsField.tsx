@@ -14,7 +14,7 @@ export const TextsField = (props: TextsFieldProps) => {
   const normalizedTexts = texts?.map((text) => String(text));
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {normalizedTexts && !hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {normalizedTexts.map((text) => (

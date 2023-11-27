@@ -11,7 +11,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
   const { title, images, hideField } = props;
 
   return (
-    <FieldRoot title={title} key={`${title}-field`}>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
       {images && !hideField ? (
         <div className="flex w-full flex-wrap">
           {images?.slice(0, 5)?.map((image) => {
