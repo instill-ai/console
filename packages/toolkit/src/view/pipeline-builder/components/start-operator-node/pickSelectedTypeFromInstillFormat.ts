@@ -4,27 +4,36 @@ export function pickSelectedTypeFromInstillFormat(
   instillFormat: string
 ): Nullable<StartOperatorInputType> {
   switch (instillFormat) {
-    case "string":
-    case "array:string": {
+    case "string": {
       return "string";
     }
-    case "audio/*":
-    case "array:audio/*": {
+    case "array:string": {
+      return "array:string";
+    }
+    case "audio/*": {
       return "audio/*";
     }
-    case "boolean":
-    case "array:boolean": {
+    case "array:audio/*": {
+      return "array:audio/*";
+    }
+    case "boolean": {
       return "boolean";
     }
-    case "image/*":
-    case "array:image/*": {
+    case "image/*": {
       return "image/*";
     }
-    case "number":
-    case "array:number": {
+    case "array:image/*": {
+      return "array:image/*";
+    }
+    case "number": {
       return "number";
     }
-
+    case "*/*": {
+      return "*/*";
+    }
+    case "array:*/*": {
+      return "array:*/*";
+    }
     default:
       return null;
   }

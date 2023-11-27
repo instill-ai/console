@@ -107,7 +107,11 @@ export function transformInstillJSONSchemaToZod({
     const enumValues = targetSchema.enum as [string, ...string[]];
     instillZodSchema = z.enum(enumValues);
 
-    if (!isRequired || forceOptional || isHidden) {
+    if (isHidden) {
+      instillZodSchema = z.any();
+    }
+
+    if (!isRequired || forceOptional) {
       instillZodSchema = instillZodSchema.nullable().optional();
     }
 
@@ -251,6 +255,10 @@ export function transformInstillJSONSchemaToZod({
     * -----------------------------------------------------------------------*/
 
     instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+      if (isHidden) {
+        return;
+      }
+
       if (val === "") {
         return;
       }
@@ -379,7 +387,11 @@ export function transformInstillJSONSchemaToZod({
       }
     });
 
-    if (!isRequired || forceOptional || isHidden) {
+    if (isHidden) {
+      instillZodSchema = z.any();
+    }
+
+    if (!isRequired || forceOptional) {
       instillZodSchema = instillZodSchema.nullable().optional();
     }
 
@@ -405,7 +417,11 @@ export function transformInstillJSONSchemaToZod({
         parentSchema.required.includes(propertyKey)
       : false;
 
-    if (!isRequired || forceOptional || isHidden) {
+    if (isHidden) {
+      instillZodSchema = z.any();
+    }
+
+    if (!isRequired || forceOptional) {
       instillZodSchema = instillZodSchema.nullable().optional();
     }
 
@@ -462,7 +478,11 @@ export function transformInstillJSONSchemaToZod({
     }
   });
 
-  if (!isRequired || forceOptional || isHidden) {
+  if (isHidden) {
+    instillZodSchema = z.any();
+  }
+
+  if (!isRequired || forceOptional) {
     instillZodSchema = instillZodSchema.nullable().optional();
   }
 

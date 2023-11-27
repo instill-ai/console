@@ -24,11 +24,12 @@ import { LoadingSpin } from "../../../components";
 export type SharePipelineDialogProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
-  const { accessToken, enableQuery } = props;
-  const [open, setOpen] = React.useState(false);
+  const { accessToken, enableQuery, isOpen, setIsOpen } = props;
   const [copied, setCopied] = React.useState(false);
   const router = useRouter();
   const { id, entity } = router.query;
@@ -94,19 +95,7 @@ export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
   }, [pipeline.isSuccess, pipelineIsPublic, enableShareCode]);
 
   return (
-    <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
-      <Dialog.Trigger asChild>
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-          variant="primary"
-          size="lg"
-          disabled={!pipeline.isSuccess}
-        >
-          Share
-        </Button>
-      </Dialog.Trigger>
+    <Dialog.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <Dialog.Content className="!w-[480px] !p-0">
         <div className="flex h-full w-full flex-col">
           <div className="flex border-b border-semantic-bg-line px-6 py-3">

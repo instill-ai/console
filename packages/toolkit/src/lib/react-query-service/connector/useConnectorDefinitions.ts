@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { env } from "../../utility";
-import {
-  ConnectorResourceType,
-  listConnectorDefinitionsQuery,
-} from "../../vdp-sdk";
+import { ConnectorType, listConnectorDefinitionsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useConnectorDefinitions = ({
-  connectorResourceType,
+  connectorType,
   accessToken,
   enabled,
   retry,
 }: {
-  connectorResourceType: ConnectorResourceType | "all";
+  connectorType: ConnectorType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -22,7 +19,7 @@ export const useConnectorDefinitions = ({
   retry?: false | number;
 }) => {
   return useQuery(
-    ["connector-definitions", connectorResourceType],
+    ["connector-definitions", connectorType],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -33,9 +30,7 @@ export const useConnectorDefinitions = ({
         nextPageToken: null,
         accessToken,
         filter:
-          connectorResourceType !== "all"
-            ? `connector_type=${connectorResourceType}`
-            : null,
+          connectorType !== "all" ? `connector_type=${connectorType}` : null,
       });
       return Promise.resolve(connectorDefinitions);
     },

@@ -23,6 +23,7 @@ export const TextField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              form={form}
               title={title}
               path={path}
               onDeleteField={onDeleteField}
@@ -38,7 +39,12 @@ export const TextField = ({
                   // AlphaValueIssue: We still have alpha value issue in
                   // out design-token, so we need to use the hex value
                   // here
-                  className="!text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
+                  className="nodrag !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </Input.Root>
             </Form.Control>

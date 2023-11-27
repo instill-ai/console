@@ -15,13 +15,12 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../lib";
 import {
-  CheckIsHidden,
   InstillStore,
   useInstillForm,
   useInstillStore,
   validateInstillID,
 } from "../../../../lib";
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback, ObjectViewer } from "../../../../components";
 import { useShallow } from "zustand/react/shallow";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
@@ -30,6 +29,10 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
 import { ComponentOutputs } from "../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
+import { useCheckIsHidden } from "../useCheckIsHidden";
+import { useUpdaterOnNode } from "../useUpdaterOnNode";
+import { InstillErrors } from "../../../../constant/errors";
+import { NodeBottomBar } from "../NodeBottomBar";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -40,6 +43,8 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
   testModeTriggerResponse: store.testModeTriggerResponse,
 });
 
@@ -52,6 +57,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
+    updateCurrentAdvancedConfigurationNodeID,
     testModeTriggerResponse,
   } = useInstillStore(useShallow(selector));
 
@@ -77,8 +83,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
 
     if (!validateInstillID(newID)) {
       toast({
-        title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        title: InstillErrors.IDInvalidError,
         variant: "alert-error",
         size: "small",
       });
@@ -103,7 +108,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.id === id && node.data.nodeType === "connector") {
+      if (node.id === id && node.data.nodeType === "operator") {
         return {
           ...node,
           id: newID,
@@ -233,87 +238,49 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
-  // We need to put this function into a useCallback to prevent infinite loop
-  const checkIsHidden: CheckIsHidden = React.useCallback(
-    ({ parentSchema, targetKey }) => {
-      if (!parentSchema) {
-        return false;
-      }
-
-      if (!parentSchema.instillEditOnNodeFields) {
-        return false;
-      }
-
-      if (!targetKey) {
-        return false;
-      }
-
-      if (parentSchema.instillEditOnNodeFields.includes(targetKey)) {
-        return false;
-      }
-
-      return true;
-    },
-    []
-  );
-
   const { outputSchema } = React.useMemo(() => {
     return getOperatorInputOutputSchema(data.component);
   }, [data]);
 
-  const { fields, form } = useInstillForm(
+  const checkIsHidden = useCheckIsHidden("onNode");
+
+  const { fields, form, ValidatorSchema } = useInstillForm(
     data.component.operator_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {
       size: "sm",
       enableSmartHint: true,
       checkIsHidden,
+      componentID: data.component.id,
     }
   );
 
-  const {
-    getValues,
-    formState: { isDirty, isValid },
-    handleSubmit,
-  } = form;
+  const { getValues, trigger } = form;
 
-  const values = getValues();
+  useUpdaterOnNode({
+    id,
+    nodeType: "operator",
+    form,
+    ValidatorSchema,
+    configuration: data.component.configuration,
+  });
 
-  React.useEffect(() => {
-    if (!isDirty || !isValid) {
-      return;
+  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
+    React.useState(false);
+
+  const bottomBarInformation = React.useMemo(() => {
+    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+
+    if (isOpenBottomBarOutput) {
+      return (
+        <div className="w-full">
+          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
+        </div>
+      );
     }
 
-    const timer = setTimeout(() => {
-      handleSubmit(() => {
-        updateNodes((nodes) => {
-          return nodes.map((node) => {
-            if (node.data.nodeType === "operator" && node.id === id) {
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  component: {
-                    ...node.data.component,
-                    configuration: {
-                      ...node.data.component.configuration,
-                      ...values,
-                    },
-                  },
-                },
-              };
-            }
-
-            return node;
-          });
-        });
-        updatePipelineRecipeIsDirty(() => true);
-      })();
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [values, isDirty, isValid]);
+    return null;
+  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
 
   return (
     <NodeWrapper
@@ -321,6 +288,21 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
+      renderNodeBottomBar={() => {
+        return (
+          <NodeBottomBar.Root>
+            <NodeBottomBar.Item
+              value="output"
+              onClick={() => {
+                setIsOpenBottomBarOutput((prev) => !prev);
+              }}
+            >
+              Output
+            </NodeBottomBar.Item>
+          </NodeBottomBar.Root>
+        );
+      }}
+      renderBottomBarInformation={() => bottomBarInformation}
     >
       {/* The header of node */}
 
@@ -368,13 +350,27 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             </Form.Root>
           </div>
           <div className="mb-2 flex flex-row-reverse">
-            <OpenAdvancedConfigurationButton id={id} disabled={!isValid} />
+            <OpenAdvancedConfigurationButton
+              onClick={() => {
+                const values = getValues();
+
+                const parsedResult = ValidatorSchema.safeParse(values);
+
+                if (parsedResult.success) {
+                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                } else {
+                  for (const error of parsedResult.error.errors) {
+                    trigger(error.path.join("."));
+                  }
+                }
+              }}
+            />
           </div>
 
           <ComponentOutputs
             componentID={data.component.id}
             outputSchema={outputSchema}
-            traces={testModeTriggerResponse?.metadata?.traces ?? null}
+            nodeType="connector"
           />
         </>
       )}

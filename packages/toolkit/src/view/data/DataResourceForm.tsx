@@ -13,18 +13,18 @@ import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
-  CreateUserConnectorResourcePayload,
+  ConnectorWithDefinition,
+  CreateUserConnectorPayload,
   Nullable,
-  UpdateUserConnectorResourcePayload,
+  UpdateUserConnectorPayload,
   dot,
   getInstillApiErrorMessage,
   useAirbyteFieldValues,
   useAirbyteFormTree,
   useAirbyteSelectedConditionMap,
   useBuildAirbyteYup,
-  useCreateUserConnectorResource,
-  useUpdateUserConnectorResource,
+  useCreateUserConnector,
+  useUpdateUserConnector,
   validateInstillID,
 } from "../../lib";
 import {
@@ -34,13 +34,14 @@ import {
 import { AirbyteDestinationFields } from "../airbyte";
 import { useRouter } from "next/router";
 import { LoadingSpin } from "../../components";
+import { InstillErrors } from "../../constant/errors";
 
 export type DataResourceFormProps = {
-  dataResource: Nullable<ConnectorResourceWithDefinition>;
+  dataResource: Nullable<ConnectorWithDefinition>;
   dataDefinition: ConnectorDefinition;
   accessToken: Nullable<string>;
   disabledAll?: boolean;
-  onSubmit?: (connectorResource: ConnectorResourceWithDefinition) => void;
+  onSubmit?: (connector: ConnectorWithDefinition) => void;
   enableQuery: boolean;
 } & BackButtonProps;
 
@@ -138,8 +139,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     });
   }, [airbyteYup]);
 
-  const createData = useCreateUserConnectorResource();
-  const updateData = useUpdateUserConnectorResource();
+  const createData = useCreateUserConnector();
+  const updateData = useUpdateUserConnector();
 
   const handleCreateData = React.useCallback(async () => {
     if (!fieldValues || !formYup || isSaving) {
@@ -152,7 +153,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     if (!validateInstillID(fieldValues.id as string)) {
       setFieldErrors((prev) => ({
         ...prev,
-        id: "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        id: InstillErrors.IDInvalidError,
       }));
       return;
     }
@@ -200,7 +201,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     setIsSaving(true);
 
     if (!dataResource) {
-      const payload: CreateUserConnectorResourcePayload = {
+      const payload: CreateUserConnectorPayload = {
         id: fieldValues.id as string,
         connector_definition_name: dataDefinition.name,
         description: fieldValues.description as string,
@@ -210,10 +211,10 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       createData.mutate(
         { userName: `users/${entity}`, payload, accessToken },
         {
-          onSuccess: ({ connectorResource }) => {
+          onSuccess: ({ connector }) => {
             if (onSubmit) {
               onSubmit({
-                ...connectorResource,
+                ...connector,
                 connector_definition: dataDefinition,
               });
             }
@@ -250,8 +251,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       return;
     }
 
-    const payload: UpdateUserConnectorResourcePayload = {
-      connectorResourceName: dataResource.name,
+    const payload: UpdateUserConnectorPayload = {
+      connectorName: dataResource.name,
       description: fieldValues.description as string,
       configuration: recursiveReplaceNullAndEmptyStringWithUndefined(
         recursiveReplaceTargetValue(
@@ -265,10 +266,10 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     updateData.mutate(
       { payload, accessToken },
       {
-        onSuccess: ({ connectorResource }) => {
+        onSuccess: ({ connector }) => {
           if (onSubmit) {
             onSubmit({
-              ...connectorResource,
+              ...connector,
               connector_definition: dataDefinition,
             });
           }

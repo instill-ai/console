@@ -137,10 +137,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     );
   }
 
-  const [type] = tree.instillFormat.split("/");
-
   if (tree.type === "array") {
-    switch (type) {
+    const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
+
+    switch (arrayType) {
       case "number":
       case "integer":
       case "boolean":
@@ -186,10 +186,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       }
       default: {
         return (
-          <ComponentOutputFields.TextField
+          <ComponentOutputFields.TextsField
             nodeType={nodeType}
             title={title}
-            text={propertyValue}
+            texts={propertyValue}
             hideField={hideField}
           />
         );
@@ -198,8 +198,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process singular types
+  const singularType = tree.instillFormat.split("/")[0];
 
-  switch (type) {
+  switch (singularType) {
     case "number":
     case "integer":
     case "boolean":

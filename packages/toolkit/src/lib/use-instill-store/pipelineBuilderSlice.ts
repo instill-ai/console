@@ -52,6 +52,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   currentVersion: null,
   initializedByTemplateOrClone: false,
   isOwner: false,
+  isTriggeringPipeline: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -241,6 +242,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         isOwner: fn(state.isOwner),
+      };
+    }),
+  updateIsTriggeringPipeline: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isTriggeringPipeline: fn(state.isTriggeringPipeline),
       };
     }),
 });

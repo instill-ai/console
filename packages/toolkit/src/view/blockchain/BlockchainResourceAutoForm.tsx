@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
-  ConnectorResourceWithDefinition,
+  ConnectorWithDefinition,
   Nullable,
-  UpdateUserConnectorResourcePayload,
-  useCreateUserConnectorResource,
-  useUpdateUserConnectorResource,
+  UpdateUserConnectorPayload,
+  useCreateUserConnector,
+  useUpdateUserConnector,
 } from "../../lib";
 import {
   recursiveReplaceNullAndEmptyStringWithUndefined,
@@ -16,11 +16,11 @@ import { toastInstillError } from "../../lib/toastInstillError";
 import { ResourceResourceForm, ResourceResourceFormData } from "../resource";
 
 export type BlockchainResourceAutoFormProps = {
-  resource: Nullable<ConnectorResourceWithDefinition>;
+  resource: Nullable<ConnectorWithDefinition>;
   definition: ConnectorDefinition;
   accessToken: Nullable<string>;
   disabledAll?: boolean;
-  onSubmit?: (connectorResource: ConnectorResourceWithDefinition) => void;
+  onSubmit?: (connector: ConnectorWithDefinition) => void;
   onBack?: () => void;
 };
 
@@ -32,8 +32,8 @@ export const BlockchainResourceAutoForm = (
   const router = useRouter();
   const { entity } = router.query;
 
-  const createUserConnectorResource = useCreateUserConnectorResource();
-  const updateUserConnectorResource = useUpdateUserConnectorResource();
+  const createUserConnector = useCreateUserConnector();
+  const updateUserConnector = useUpdateUserConnector();
 
   async function handleSubmit(data: ResourceResourceFormData) {
     if (!resource) {
@@ -45,16 +45,15 @@ export const BlockchainResourceAutoForm = (
           configuration: recursiveReplaceNullAndEmptyStringWithUndefined(data),
         };
 
-        const { connectorResource } =
-          await createUserConnectorResource.mutateAsync({
-            payload,
-            userName: `users/${entity}`,
-            accessToken,
-          });
+        const { connector } = await createUserConnector.mutateAsync({
+          payload,
+          userName: `users/${entity}`,
+          accessToken,
+        });
 
         if (onSubmit) {
           onSubmit({
-            ...connectorResource,
+            ...connector,
             connector_definition: definition,
           });
         }
@@ -76,23 +75,22 @@ export const BlockchainResourceAutoForm = (
     }
 
     try {
-      const payload: UpdateUserConnectorResourcePayload = {
-        connectorResourceName: resource.name,
+      const payload: UpdateUserConnectorPayload = {
+        connectorName: resource.name,
         description: data.description ?? undefined,
         configuration: recursiveReplaceNullAndEmptyStringWithUndefined(
           recursiveReplaceTargetValue(data, "*****MASK*****", undefined)
         ),
       };
 
-      const { connectorResource } =
-        await updateUserConnectorResource.mutateAsync({
-          payload,
-          accessToken,
-        });
+      const { connector } = await updateUserConnector.mutateAsync({
+        payload,
+        accessToken,
+      });
 
       if (onSubmit) {
         onSubmit({
-          ...connectorResource,
+          ...connector,
           connector_definition: definition,
         });
       }

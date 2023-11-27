@@ -1,3 +1,4 @@
+import cn from "clsx";
 import {
   Form,
   Icons,
@@ -66,7 +67,10 @@ export const TextAreaField = ({
             <Form.Control>
               <Textarea
                 {...field}
-                className={size === "sm" ? "!product-body-text-4-regular" : ""}
+                className={cn(
+                  "nodrag",
+                  size === "sm" ? "!product-body-text-4-regular" : ""
+                )}
                 // At some moment the value maybe a object
                 // For example, { foo: { bar: "baz" } }}}. For foo.bar field
                 // its value is a string But for foo field its value is a object.
@@ -79,6 +83,11 @@ export const TextAreaField = ({
                   form.trigger(path, { shouldFocus: true });
                 }}
                 disabled={disabled}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
               />
             </Form.Control>
             <Form.Description

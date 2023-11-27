@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons, useToast } from "@instill-ai/design-system";
 
 import {
   ConnectorNodeData,
@@ -17,21 +17,25 @@ import {
 } from "../../lib";
 import {
   InstillStore,
+  useInstillForm,
   useInstillStore,
   validateInstillID,
 } from "../../../../lib";
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback, ObjectViewer } from "../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
-import { InputProperties } from "./InputProperties";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { useShallow } from "zustand/react/shallow";
 import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
-import { TaskNotSelectedWarning } from "./TaskNotSelectedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { ComponentOutputs } from "../ComponentOutputs";
+import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
+import { useCheckIsHidden } from "../useCheckIsHidden";
+import { useUpdaterOnNode } from "../useUpdaterOnNode";
+import { InstillErrors } from "../../../../constant/errors";
+import { NodeBottomBar } from "../NodeBottomBar";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -43,6 +47,8 @@ const selector = (store: InstillStore) => ({
   testModeTriggerResponse: store.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
+  updateCurrentAdvancedConfigurationNodeID:
+    store.updateCurrentAdvancedConfigurationNodeID,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -56,6 +62,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
+    updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -63,6 +70,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
+  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
+    React.useState(false);
 
   const nodeIDEditorForm = useNodeIDEditorForm(id);
 
@@ -74,44 +83,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     });
   }, [id, reset]);
 
-  let aiTaskNotSelected = false;
-  let dataTaskNotSelected = false;
   let resourceNotCreated = false;
 
-  const { inputSchema, outputSchema } = React.useMemo(() => {
-    if (
-      data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
-      !data.component.configuration.task
-    ) {
-      return { inputSchema: null, outputSchema: null };
-    }
-
-    if (
-      data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-      data.component.definition_name ===
-        "connector-definitions/data-pinecone" &&
-      !data.component.configuration.task
-    ) {
-      return { inputSchema: null, outputSchema: null };
-    }
-
+  const { outputSchema } = React.useMemo(() => {
     return getConnectorInputOutputSchema(data.component);
   }, [data.component]);
-
-  if (
-    data.component.type === "COMPONENT_TYPE_CONNECTOR_AI" &&
-    !data.component.configuration.task
-  ) {
-    aiTaskNotSelected = true;
-  }
-
-  if (
-    data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-    data.component.definition_name === "connector-definitions/data-pinecone" &&
-    !data.component.configuration.task
-  ) {
-    dataTaskNotSelected = true;
-  }
 
   if (!data.component.resource_name) {
     resourceNotCreated = true;
@@ -124,8 +100,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
     if (!validateInstillID(newID)) {
       toast({
-        title:
-          "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        title: InstillErrors.IDInvalidError,
         variant: "alert-error",
         size: "small",
       });
@@ -280,12 +255,64 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateEdges(() => newEdges);
   }
 
+  const checkIsHidden = useCheckIsHidden("onNode");
+
+  const { fields, form, ValidatorSchema } = useInstillForm(
+    data.component.connector_definition?.spec.component_specification ?? null,
+    data.component.configuration,
+    {
+      size: "sm",
+      enableSmartHint: true,
+      checkIsHidden,
+      componentID: data.component.id,
+    }
+  );
+
+  const { getValues, trigger } = form;
+
+  useUpdaterOnNode({
+    id,
+    nodeType: "connector",
+    form,
+    ValidatorSchema,
+    configuration: data.component.configuration,
+  });
+
+  const bottomBarInformation = React.useMemo(() => {
+    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+
+    if (isOpenBottomBarOutput) {
+      return (
+        <div className="w-full">
+          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
+        </div>
+      );
+    }
+
+    return null;
+  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
+      renderNodeBottomBar={() => {
+        return (
+          <NodeBottomBar.Root>
+            <NodeBottomBar.Item
+              value="output"
+              onClick={() => {
+                setIsOpenBottomBarOutput((prev) => !prev);
+              }}
+            >
+              Output
+            </NodeBottomBar.Item>
+          </NodeBottomBar.Root>
+        );
+      }}
+      renderBottomBarInformation={() => bottomBarInformation}
     >
       {/* The header of node */}
 
@@ -325,161 +352,147 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         />
       </NodeHead>
 
-      {nodeIsCollapsed ? null : (
-        <>
-          {resourceNotCreated ? (
-            <ResourceNotCreatedWarning
-              onCreate={() => {
-                updateCreateResourceDialogState(() => ({
-                  open: true,
-                  connectorType:
-                    data.component.connector_definition?.type ?? null,
-                  connectorDefinition:
-                    data.component.connector_definition ?? null,
-                  onCreated: (connectorResource) => {
-                    const newNodes = nodes.map((node) => {
-                      if (
-                        node.data.nodeType === "connector" &&
-                        node.id === id
-                      ) {
-                        node.data = {
-                          ...node.data,
-                          component: {
-                            ...node.data.component,
-                            resource_name: connectorResource.name,
-                            resource: {
-                              ...connectorResource,
-                              connector_definition: null,
-                            },
-                          },
-                        };
-                      }
-                      return node;
-                    });
+      {nodeIsCollapsed ? null : resourceNotCreated ? (
+        <ResourceNotCreatedWarning
+          onCreate={() => {
+            updateCreateResourceDialogState(() => ({
+              open: true,
+              connectorType: data.component.connector_definition?.type ?? null,
+              connectorDefinition: data.component.connector_definition ?? null,
+              onCreated: (connector) => {
+                const newNodes = nodes.map((node) => {
+                  if (node.data.nodeType === "connector" && node.id === id) {
+                    node.data = {
+                      ...node.data,
+                      component: {
+                        ...node.data.component,
+                        resource_name: connector.name,
+                        resource: {
+                          ...connector,
+                          connector_definition: null,
+                        },
+                      },
+                    };
+                  }
+                  return node;
+                });
 
-                    updateNodes(() => newNodes);
+                updateNodes(() => newNodes);
 
-                    const allReferences: PipelineComponentReference[] = [];
+                const allReferences: PipelineComponentReference[] = [];
 
-                    newNodes.forEach((node) => {
-                      if (node.data.component?.configuration) {
-                        allReferences.push(
-                          ...extractReferencesFromConfiguration(
-                            node.data.component?.configuration,
-                            node.id
-                          )
-                        );
-                      }
-                    });
-
-                    const newEdges = composeEdgesFromReferences(
-                      allReferences,
-                      newNodes
+                newNodes.forEach((node) => {
+                  if (node.data.component?.configuration) {
+                    allReferences.push(
+                      ...extractReferencesFromConfiguration(
+                        node.data.component?.configuration,
+                        node.id
+                      )
                     );
-                    updatePipelineRecipeIsDirty(() => true);
-                    updateEdges(() => newEdges);
+                  }
+                });
 
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  },
-                  onSelectedExistingResource: (connectorResource) => {
-                    updateNodes((prev) => {
-                      return prev.map((node) => {
-                        if (
-                          node.data.nodeType === "connector" &&
-                          node.id === id
-                        ) {
-                          node.data = {
-                            ...node.data,
-                            component: {
-                              ...node.data.component,
-                              resource_name: connectorResource.name,
-                            },
-                          };
-                        }
-                        return node;
-                      });
-                    });
+                const newEdges = composeEdgesFromReferences(
+                  allReferences,
+                  newNodes
+                );
+                updatePipelineRecipeIsDirty(() => true);
+                updateEdges(() => newEdges);
 
-                    updatePipelineRecipeIsDirty(() => true);
-
-                    updateCreateResourceDialogState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  },
+                updateCreateResourceDialogState(() => ({
+                  open: false,
+                  connectorType: null,
+                  connectorDefinition: null,
+                  onCreated: null,
+                  onSelectedExistingResource: null,
                 }));
+              },
+              onSelectedExistingResource: (connector) => {
+                updateNodes((prev) => {
+                  return prev.map((node) => {
+                    if (node.data.nodeType === "connector" && node.id === id) {
+                      node.data = {
+                        ...node.data,
+                        component: {
+                          ...node.data.component,
+                          resource_name: connector.name,
+                        },
+                      };
+                    }
+                    return node;
+                  });
+                });
+
+                updatePipelineRecipeIsDirty(() => true);
+
+                updateCreateResourceDialogState(() => ({
+                  open: false,
+                  connectorType: null,
+                  connectorDefinition: null,
+                  onCreated: null,
+                  onSelectedExistingResource: null,
+                }));
+              },
+            }));
+          }}
+        />
+      ) : (
+        <>
+          <div className="mb-4">
+            <Form.Root {...form}>
+              <form>{fields}</form>
+            </Form.Root>
+          </div>
+          <div className="mb-2 flex flex-row-reverse">
+            <OpenAdvancedConfigurationButton
+              onClick={() => {
+                const values = getValues();
+
+                const parsedResult = ValidatorSchema.safeParse(values);
+
+                if (parsedResult.success) {
+                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                } else {
+                  for (const error of parsedResult.error.errors) {
+                    trigger(error.path.join("."));
+                  }
+                }
               }}
             />
-          ) : null}
-          {aiTaskNotSelected && !resourceNotCreated ? (
-            <TaskNotSelectedWarning componentType="COMPONENT_TYPE_CONNECTOR_AI" />
-          ) : null}
-          {dataTaskNotSelected && !resourceNotCreated ? (
-            <TaskNotSelectedWarning componentType="COMPONENT_TYPE_CONNECTOR_DATA" />
-          ) : null}
+          </div>
 
           {/* 
-              Input properties
-            */}
-
-          {!aiTaskNotSelected &&
-          !dataTaskNotSelected &&
-          !resourceNotCreated &&
-          !enableEdit ? (
-            <div className="flex flex-col">
-              <div className="mb-1 product-body-text-4-medium">input</div>
-              <InputProperties
-                component={data.component}
-                inputSchema={inputSchema}
-                traces={testModeTriggerResponse?.metadata?.traces ?? null}
-              />
-            </div>
-          ) : null}
-
-          {/* 
-              Data connector free form
-            */}
+            Data connector free form
+          */}
 
           {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
+          data.component.definition_name !== "connector-definitions/pinecone" &&
+          data.component.definition_name !== "connector-definitions/gcs" &&
           data.component.definition_name !==
-            "connector-definitions/data-pinecone" &&
-          data.component.definition_name !== "connector-definitions/data-gcs" &&
-          data.component.definition_name !==
-            "connector-definitions/data-google-search" ? (
+            "connector-definitions/google-search" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data.component}
-              dataTaskNotSelected={dataTaskNotSelected}
               enableEdit={enableEdit}
               setEnableEdit={setEnableEdit}
             />
           ) : null}
 
           {/* 
-              Output properties
-            */}
+            Output properties
+          */}
 
-          {!aiTaskNotSelected &&
-          !dataTaskNotSelected &&
-          !resourceNotCreated &&
-          !enableEdit ? (
-            <ComponentOutputs
-              componentID={data.component.id}
-              outputSchema={outputSchema}
-              traces={testModeTriggerResponse?.metadata?.traces ?? null}
-            />
-          ) : null}
+          <div className="mb-4 w-full">
+            {!resourceNotCreated && !enableEdit ? (
+              <ComponentOutputs
+                componentID={data.component.id}
+                outputSchema={outputSchema}
+                nodeType="connector"
+              />
+            ) : null}
+          </div>
 
-          <div className="flex flex-row-reverse">
+          <div className="mb-3 flex flex-row-reverse">
             <ConnectorIDTag
               connectorID={
                 data.component.resource_name

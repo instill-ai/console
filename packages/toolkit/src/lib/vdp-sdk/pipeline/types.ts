@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { OpenAPIV3 } from "openapi-types";
-import { ConnectorDefinition, ConnectorResource } from "../connector";
+import { ConnectorDefinition, Connector } from "../connector";
 import { Spec, Visibility } from "../types";
 import { GeneralRecord, Nullable } from "../../type";
 import { JSONSchema7TypeName } from "json-schema";
@@ -128,7 +128,7 @@ export type PipelineTriggerMetadata = {
 export type PipelineStartComponent = {
   id: "start";
   resource_name: Nullable<string>;
-  resource: Nullable<ConnectorResource>;
+  resource: Nullable<Connector>;
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
@@ -140,7 +140,7 @@ export type PipelineStartComponent = {
 export type PipelineOperatorComponent = {
   id: string;
   resource_name: Nullable<string>;
-  resource: Nullable<ConnectorResource>;
+  resource: Nullable<Connector>;
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
@@ -150,7 +150,7 @@ export type PipelineOperatorComponent = {
 export type PipelineEndComponent = {
   id: "end";
   resource_name: Nullable<string>;
-  resource: Nullable<ConnectorResource>;
+  resource: Nullable<Connector>;
   type: PipelineComponentType;
   definition_name: string;
   operator_definition: Nullable<OperatorDefinition>;
@@ -160,7 +160,7 @@ export type PipelineEndComponent = {
 export type PipelineConnectorComponent = {
   id: string;
   resource_name: Nullable<string>;
-  resource: Nullable<ConnectorResource>;
+  resource: Nullable<Connector>;
   type: PipelineComponentType;
   definition_name: string;
   connector_definition: Nullable<ConnectorDefinition>;
@@ -191,4 +191,8 @@ export type StartOperatorInputType =
   | "image/*"
   | "long_string"
   | "array:image/*"
+  | "array:audio/*"
+  | "array:string"
+  | "*/*"
+  | "array:*/*"
   | JSONSchema7TypeName;

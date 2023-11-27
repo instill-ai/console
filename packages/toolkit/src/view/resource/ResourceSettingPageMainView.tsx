@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PageTitle } from "../../components";
-import { GeneralPageProp, useUserConnectorResource } from "../../lib";
+import { GeneralPageProp, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
 import { DataResourceForm } from "../data";
@@ -13,8 +13,8 @@ export const ResourceSettingPageMainView = (
   const { accessToken, enableQuery, router } = props;
   const { id, entity } = router.query;
 
-  const userConnectorResource = useUserConnectorResource({
-    connectorResourceName: `users/${entity}/connector-resources/${id?.toString()}`,
+  const userConnector = useUserConnector({
+    connectorName: `users/${entity}/connectors/${id?.toString()}`,
     enabled: enableQuery && !!id,
     accessToken: accessToken,
   });
@@ -30,26 +30,26 @@ export const ResourceSettingPageMainView = (
         breadcrumbs={["Connectors", "Connector Settings"]}
         className="mb-5"
       />
-      {userConnectorResource.isSuccess ? (
+      {userConnector.isSuccess ? (
         <React.Fragment>
-          {userConnectorResource.data.type === "CONNECTOR_TYPE_AI" ? (
+          {userConnector.data.type === "CONNECTOR_TYPE_AI" ? (
             <AIResourceAutoForm
-              definition={userConnectorResource.data.connector_definition}
-              resource={userConnectorResource.data}
+              definition={userConnector.data.connector_definition}
+              resource={userConnector.data}
               accessToken={accessToken}
             />
           ) : null}
-          {userConnectorResource.data.type === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
+          {userConnector.data.type === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
             <BlockchainResourceAutoForm
-              definition={userConnectorResource.data.connector_definition}
-              resource={userConnectorResource.data}
+              definition={userConnector.data.connector_definition}
+              resource={userConnector.data}
               accessToken={accessToken}
             />
           ) : null}
-          {userConnectorResource.data.type === "CONNECTOR_TYPE_DATA" ? (
+          {userConnector.data.type === "CONNECTOR_TYPE_DATA" ? (
             <DataResourceForm
-              dataDefinition={userConnectorResource.data.connector_definition}
-              dataResource={userConnectorResource.data}
+              dataDefinition={userConnector.data.connector_definition}
+              dataResource={userConnector.data}
               accessToken={accessToken}
               enableBackButton={false}
               enableQuery={enableQuery}

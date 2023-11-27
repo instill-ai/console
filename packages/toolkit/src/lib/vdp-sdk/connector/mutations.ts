@@ -3,116 +3,121 @@
 import { AirbyteFieldValues } from "../../airbytes";
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { ConnectorResource } from "./types";
+import { Connector } from "./types";
 
-export type CreateUserConnectorResourcePayload = {
+export type CreateUserConnectorPayload = {
   id: string;
   connector_definition_name: string;
   description?: string;
   configuration: Record<string, any> | Record<string, never>;
 };
 
-export type CreateUserConnectorResourceResponse = {
-  connector_resource: ConnectorResource;
+export type CreateUserConnectorResponse = {
+  connector: Connector;
 };
 
-export async function createUserConnectorResourceMutation({
+export async function createUserConnectorMutation({
   userName,
   payload,
   accessToken,
 }: {
   userName: string;
-  payload: CreateUserConnectorResourcePayload;
+  payload: CreateUserConnectorPayload;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
 
-    const res = await client.post<CreateUserConnectorResourceResponse>(
-      `${userName}/connector-resources`,
+    const res = await client.post<CreateUserConnectorResponse>(
+      `${userName}/connectors`,
       payload
     );
-    return Promise.resolve(res.data.connector_resource);
+    return Promise.resolve(res.data.connector);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
-export async function deleteUserConnectorResourceMutation({
-  connectorResourceName,
+export async function deleteUserConnectorMutation({
+  connectorName,
   accessToken,
 }: {
-  connectorResourceName: string;
+  connectorName: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
 
-    await client.delete(`/${connectorResourceName}`);
+    await client.delete(`/${connectorName}`);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
-export type UpdateUserConnectorResourcePayload = {
-  connectorResourceName: string;
+export type UpdateUserConnectorPayload = {
+  connectorName: string;
   description?: string;
   configuration: /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   Record<string, any> | AirbyteFieldValues | Record<string, never>;
 };
 
-export type UpdateUserConnectorResourceResponse = {
-  connector_resource: ConnectorResource;
+export type UpdateUserConnectorResponse = {
+  connector: Connector;
 };
 
-export async function updateUserConnectorResourceMutation({
+export async function updateUserConnectorMutation({
   payload,
   accessToken,
 }: {
-  payload: UpdateUserConnectorResourcePayload;
+  payload: UpdateUserConnectorPayload;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
 
-    const res = await client.patch<UpdateUserConnectorResourceResponse>(
-      `/${payload.connectorResourceName}`,
+    const res = await client.patch<UpdateUserConnectorResponse>(
+      `/${payload.connectorName}`,
       {
         ...payload,
-        connectorResourceName: undefined,
+        // connector name don't need to be sent to the server
+        connectorName: undefined,
       }
     );
-    return Promise.resolve(res.data.connector_resource);
+    return Promise.resolve(res.data.connector);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
-export type RenameUserConnectorResourcePayload = {
-  name: string;
+export type RenameUserConnectorPayload = {
+  connectorName: string;
   new_connector_id: string;
 };
 
-export type RenameUserConnectorResourceResponse = {
-  connector_resource: ConnectorResource;
+export type RenameUserConnectorResponse = {
+  connector: Connector;
 };
 
-export async function renameUserConnectorResource({
+export async function renameUserConnector({
   payload,
   accessToken,
 }: {
-  payload: RenameUserConnectorResourcePayload;
+  payload: RenameUserConnectorPayload;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
 
-    const { data } = await client.post<RenameUserConnectorResourceResponse>(
-      `/${payload.name}/rename`,
-      payload
+    const { data } = await client.post<RenameUserConnectorResponse>(
+      `/${payload.connectorName}/rename`,
+      {
+        ...payload,
+        // connector name don't need to be sent to the server
+        connectorName: undefined,
+      }
     );
 
-    return Promise.resolve(data.connector_resource);
+    return Promise.resolve(data.connector);
   } catch (err) {
     return Promise.reject(err);
   }

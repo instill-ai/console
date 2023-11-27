@@ -8,7 +8,7 @@ import {
   Textarea,
   Tooltip,
 } from "@instill-ai/design-system";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { Nullable } from "../../../type";
 import { useInstillStore } from "../../../use-instill-store";
 
 import { useFormContext } from "react-hook-form";
@@ -147,9 +147,10 @@ export const TextArea = ({
                 <Form.Control>
                   <Textarea
                     {...field}
-                    className={
+                    className={cn(
+                      "nodrag",
                       size === "sm" ? "!product-body-text-4-regular" : ""
-                    }
+                    )}
                     ref={inputRef}
                     value={
                       typeof field.value === "object" ? "" : field.value ?? ""
@@ -209,9 +210,7 @@ export const TextArea = ({
                   <React.Fragment>
                     <SmartHintInfoCard
                       title={title}
-                      field={field}
                       instillAcceptFormats={instillAcceptFormats}
-                      isRequired={isRequired}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
                       error={error}
                       supportReference={supportReference}
@@ -238,9 +237,7 @@ export const TextArea = ({
                 ) : (
                   <SmartHintInfoCard
                     title={title}
-                    field={field}
                     instillAcceptFormats={instillAcceptFormats}
-                    isRequired={isRequired}
                     error={error}
                     supportReference={supportReference}
                     supportTemplate={supportTemplate}

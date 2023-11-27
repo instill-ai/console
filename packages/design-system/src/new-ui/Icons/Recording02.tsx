@@ -22,4 +22,4 @@ export const Recording02 = React.forwardRef<
     </IconBase>
   );
 });
-Recording02.displayName = "Recording02";
+Recording02.displayName = "IconRecording02";

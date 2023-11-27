@@ -25,6 +25,13 @@ export const StartNodeInputType = ({
       label = "Text";
       break;
     }
+    case "array:string": {
+      icon = (
+        <Icons.TypePlus className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Texts";
+      break;
+    }
     case "long_string": {
       icon = (
         <Icons.AlighLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -34,9 +41,16 @@ export const StartNodeInputType = ({
     }
     case "audio/*": {
       icon = (
-        <Icons.Recording02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Recording04 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
       label = "Audio";
+      break;
+    }
+    case "array:audio/*": {
+      icon = (
+        <Icons.Recording05 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Audios";
       break;
     }
     case "boolean": {
@@ -60,7 +74,7 @@ export const StartNodeInputType = ({
       icon = (
         <Icons.ImagePlus className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
-      label = "Multiple images";
+      label = "Multiple Images";
       break;
     }
     case "number": {
@@ -71,6 +85,20 @@ export const StartNodeInputType = ({
         />
       );
       label = "Number";
+      break;
+    }
+    case "*/*": {
+      icon = (
+        <Icons.File02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "File";
+      break;
+    }
+    case "array:*/*": {
+      icon = (
+        <Icons.FilePlus02 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Files";
       break;
     }
     default:
@@ -88,7 +116,7 @@ export const StartNodeInputType = ({
     >
       <div
         className={cn(
-          "my-auto flex h-4 w-4 items-center justify-center rounded-full border text-current",
+          "my-auto flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border text-current",
           type === selectedType
             ? "border-semantic-accent-default bg-semantic-accent-default"
             : "border-semantic-fg-primary group-hover:border-semantic-accent-hover group-hover:bg-semantic-accent-bg"

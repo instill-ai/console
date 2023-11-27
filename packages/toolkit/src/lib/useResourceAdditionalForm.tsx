@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Nullable } from "vitest";
 import * as z from "zod";
 import { Form, Input, Textarea } from "@instill-ai/design-system";
+import { InstillErrors } from "../constant/errors";
 
 export const ResourceAdditionalFormSchema = z
   .object({
@@ -11,12 +12,11 @@ export const ResourceAdditionalFormSchema = z
     description: z.string().nullable().optional(),
   })
   .superRefine((val, ctx) => {
-    const regexPattern = new RegExp("^[a-z_][a-z_0-9]{0,31}$");
+    const regexPattern = new RegExp("^[a-z_][-a-z_0-9]{0,31}$");
     if (!regexPattern.test(val.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          "The ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+        message: InstillErrors.IDInvalidError,
         path: ["id"],
       });
     }

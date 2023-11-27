@@ -11,7 +11,7 @@ import {
   type Nullable,
   type Pipeline,
   type Model,
-  type ConnectorResourceWithDefinition,
+  type ConnectorWithDefinition,
   type CreateUserPipelinePayload,
 } from "../../lib";
 import { SortIcon, TableCell, TableError } from "../../components";
@@ -39,7 +39,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
 
   const deletePipeline = useDeleteUserPipeline();
   function handleDeletePipeline(
-    resource: Nullable<Pipeline | Model | ConnectorResourceWithDefinition>
+    resource: Nullable<Pipeline | Model | ConnectorWithDefinition>
   ): void {
     if (!resource) return;
     deletePipeline.mutate(

@@ -9,12 +9,12 @@ import { templates } from "../../lib/templates";
 import { TemplateCard } from "./TemplateCard";
 import { createGraphLayout, createInitialGraphData } from "../../lib";
 import {
-  ConnectorDefinition,
   InstillStore,
   Nullable,
   PipelineComponent,
   PipelineRecipe,
   generateRandomReadableName,
+  useConnectorDefinitions,
   useInstillStore,
 } from "../../../../lib";
 import { FullTemplatesCommand } from "./FullTemplatesCommand";
@@ -31,18 +31,26 @@ const selector = (store: InstillStore) => ({
 
 export type StaffPickTemplatesProps = {
   className?: string;
-  connectorDefinitions: Nullable<ConnectorDefinition[]>;
+  accessToken: Nullable<string>;
+  enableQuery: boolean;
 };
 
 export const StaffPickTemplates = ({
+  accessToken,
+  enableQuery,
   className,
-  connectorDefinitions,
 }: StaffPickTemplatesProps) => {
   const [selectedCategory, setSelectedCategory] =
     React.useState<Nullable<string>>(null);
   const { toast } = useToast();
   const router = useRouter();
   const { entity } = router.query;
+
+  const connectorDefinitions = useConnectorDefinitions({
+    connectorType: "all",
+    enabled: enableQuery,
+    accessToken,
+  });
 
   const {
     setPipelineId,
@@ -57,7 +65,7 @@ export const StaffPickTemplates = ({
   const templatesByCategory = React.useMemo(() => {
     const result: PipelineTemplatesByCategory = {};
 
-    if (!connectorDefinitions) return result;
+    if (!connectorDefinitions.isSuccess) return result;
 
     for (const template of templates) {
       if (!result[template.category]) {
@@ -75,7 +83,7 @@ export const StaffPickTemplates = ({
           continue;
         }
 
-        const targetDefinition = connectorDefinitions?.find(
+        const targetDefinition = connectorDefinitions.data.find(
           (definition) => definition.name === component.definition_name
         );
 
@@ -97,10 +105,10 @@ export const StaffPickTemplates = ({
     }
 
     return result;
-  }, [connectorDefinitions]);
+  }, [connectorDefinitions.data, connectorDefinitions.isSuccess]);
 
   function onSelectTemplate(template: PipelineTemplate) {
-    if (!connectorDefinitions) return;
+    if (!connectorDefinitions.isSuccess) return;
 
     const newComponents: PipelineComponent[] = [];
 
@@ -113,7 +121,7 @@ export const StaffPickTemplates = ({
         continue;
       }
 
-      const targetDefinition = connectorDefinitions.find(
+      const targetDefinition = connectorDefinitions.data.find(
         (definition) => definition.name === component.definition_name
       );
 
@@ -314,7 +322,7 @@ export const StaffPickTemplates = ({
         </div>
       </div>
       <div className="flex flex-row gap-x-6 px-24 py-3">
-        {connectorDefinitions
+        {connectorDefinitions.isSuccess
           ? selectedCategory
             ? templatesByCategory[selectedCategory]
                 .slice(0, 3)

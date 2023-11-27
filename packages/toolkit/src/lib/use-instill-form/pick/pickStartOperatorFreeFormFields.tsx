@@ -191,6 +191,40 @@ export function pickStartOperatorFreeFormFields(
           ),
         });
         break;
+      case "*/*":
+        fields.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <StartOperatorFreeFormFields.FileField
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+            />
+          ),
+        });
+        break;
+      case "array:*/*":
+        fields.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <StartOperatorFreeFormFields.FilesField
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+            />
+          ),
+        });
+        break;
       default:
         break;
     }

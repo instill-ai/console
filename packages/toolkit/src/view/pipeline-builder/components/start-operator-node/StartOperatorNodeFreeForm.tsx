@@ -1,4 +1,3 @@
-import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
 import {
@@ -6,15 +5,20 @@ import {
   Form,
   Icons,
   Input,
+  Tag,
   Textarea,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
 import { Nullable, StartOperatorInputType } from "../../../../lib";
+import { constructFieldKey } from "./constructFieldKey";
 
 export const StartOperatorFreeFormSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
+  title: z
+    .string()
+    .min(1, { message: "Title is required" })
+    .max(32, { message: "Title must be less than 32 characters" }),
   description: z.string().optional(),
 });
 
@@ -64,87 +68,61 @@ export const StartOperatorNodeFreeForm = ({
           <StartNodeInputType
             type="string"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "string") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("string");
-              }
-            }}
+            onSelect={() => setSelectedType("string")}
+          />
+          <StartNodeInputType
+            type="array:string"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("array:string")}
           />
           <StartNodeInputType
             type="long_string"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "long_string") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("long_string");
-              }
-            }}
+            onSelect={() => setSelectedType("long_string")}
           />
           <StartNodeInputType
             type="number"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "number") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("number");
-              }
-            }}
+            onSelect={() => setSelectedType("number")}
           />
           <StartNodeInputType
             type="image/*"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "image/*") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("image/*");
-              }
-            }}
+            onSelect={() => setSelectedType("image/*")}
           />
           <StartNodeInputType
             type="array:image/*"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "array:image/*") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("array:image/*");
-              }
-            }}
+            onSelect={() => setSelectedType("array:image/*")}
           />
           <StartNodeInputType
             type="audio/*"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "audio/*") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("audio/*");
-              }
-            }}
+            onSelect={() => setSelectedType("audio/*")}
+          />
+          <StartNodeInputType
+            type="array:audio/*"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("array:audio/*")}
+          />
+          <StartNodeInputType
+            type="*/*"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("*/*")}
+          />
+          <StartNodeInputType
+            type="array:*/*"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("array:*/*")}
           />
           <StartNodeInputType
             type="boolean"
             selectedType={selectedType}
-            onSelect={() => {
-              if (selectedType === "boolean") {
-                setSelectedType(null);
-              } else {
-                setSelectedType("boolean");
-              }
-            }}
+            onSelect={() => setSelectedType("boolean")}
           />
         </div>
-        <div
-          className={cn(
-            selectedType ? "" : "hidden",
-            "flex flex-col space-y-3"
-          )}
-        >
+        <div></div>
+        <div className={"flex flex-col space-y-3"}>
           <Form.Field
             control={form.control}
             name="title"
@@ -166,7 +144,24 @@ export const StartOperatorNodeFreeForm = ({
                       />
                     </Input.Root>
                   </Form.Control>
-                  <Form.Description text="The key of this field will be automatically generated. The title will be lowercase, all the special characters will be removed and the spaces will be replaced with underscore" />
+                  {field.value ? (
+                    <>
+                      <div className="flex flex-row flex-wrap gap-x-1">
+                        <p className="my-auto mb-0.5 product-body-text-4-medium">
+                          generated key for this field: {` `}
+                        </p>
+                        <Tag
+                          className="max-w-full truncate !py-0.5"
+                          size="sm"
+                          variant="lightNeutral"
+                        >
+                          {constructFieldKey(field.value)}
+                        </Tag>
+                      </div>
+                      <Form.Description text="You will need this generated key to reference the value of this field." />
+                    </>
+                  ) : null}
+
                   <Form.Message />
                 </Form.Item>
               );

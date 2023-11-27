@@ -17,7 +17,6 @@ import {
   InstillStore,
   Nullable,
   StartOperatorMetadata,
-  useComponentOutputFields,
   useInstillForm,
   useInstillStore,
 } from "../../../../lib";
@@ -27,18 +26,19 @@ import { NodeWrapper } from "../NodeWrapper";
 import { NodeHead } from "../NodeHead";
 import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { StartEndOperatorControlPanel } from "../control-panel";
+import { InstillErrors } from "../../../../constant/errors";
+import { ComponentOutputs } from "../ComponentOutputs";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
-  testModeEnabled: store.testModeEnabled,
-  testModeTriggerResponse: store.testModeTriggerResponse,
   pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
+  isTriggeringPipeline: store.isTriggeringPipeline,
 });
 
 const CreateEndOperatorInputSchema: InstillJSONSchema = {
@@ -63,9 +63,8 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
         {
           type: "string",
           instillUpstreamType: "value",
-          pattern: "^[a-z_][a-z_0-9]{0,31}$",
-          instillPatternErrorMessage:
-            "The component ID should be lowercase without any space or special character besides the underscore, and should be less than 32 characters.",
+          pattern: "^[a-z_][-a-z_0-9]{0,31}$",
+          instillPatternErrorMessage: InstillErrors.IDInvalidError,
         },
       ],
       instillUpstreamTypes: ["value"],
@@ -108,18 +107,18 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     React.useState<Nullable<string>>(null);
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
+  const [isViewResultMode, setIsViewResultMode] = React.useState(false);
 
   const {
     nodes,
     edges,
     updateNodes,
     updateEdges,
-    testModeEnabled,
-    testModeTriggerResponse,
     pipelineOpenAPIOutputSchema,
     updatePipelineRecipeIsDirty,
     isOwner,
     currentVersion,
+    isTriggeringPipeline,
   } = useInstillStore(useShallow(selector));
 
   const { form, fields, ValidatorSchema } = useInstillForm(
@@ -128,6 +127,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     {
       enableSmartHint: true,
       chooseTitleFrom: "title",
+      componentID: data.component.id,
     }
   );
 
@@ -233,13 +233,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setPrevFieldKey(key);
   }
 
-  const testModeOutputFields = useComponentOutputFields({
-    schema: pipelineOpenAPIOutputSchema,
-    data: testModeTriggerResponse?.outputs ?? null,
-    nodeType: "end",
-    chooseTitleFrom: "title",
-  });
-
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
   }, [edges, id]);
@@ -281,6 +274,15 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setSortedItems(endOperatorInputItems);
   }, [data]);
 
+  // Once isTriggeringPipeline is true, we will automatically go into
+  // the view result mode.
+
+  React.useEffect(() => {
+    if (isTriggeringPipeline) {
+      setIsViewResultMode(true);
+    }
+  }, [isTriggeringPipeline]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -297,13 +299,22 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             end
           </p>
         </div>
-        <StartEndOperatorControlPanel
-          nodeIsCollapsed={nodeIsCollapsed}
-          setNodeIsCollapsed={setNodeIsCollapsed}
-          handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
-          noteIsOpen={noteIsOpen}
-          componentTypeName="End"
-        />
+        <div className="flex flex-row gap-x-3">
+          <button
+            type="button"
+            className="my-auto flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-semibold hover:bg-semantic-accent-bg-alt"
+            onClick={() => setIsViewResultMode(!isViewResultMode)}
+          >
+            {isViewResultMode ? "Edit" : "See Result"}
+          </button>
+          <StartEndOperatorControlPanel
+            nodeIsCollapsed={nodeIsCollapsed}
+            setNodeIsCollapsed={setNodeIsCollapsed}
+            handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
+            noteIsOpen={noteIsOpen}
+            componentTypeName="End"
+          />
+        </div>
       </NodeHead>
 
       {nodeIsCollapsed ? null : enableEdit ? (
@@ -336,10 +347,12 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             <div className="flex flex-col space-y-3">{fields}</div>
           </form>
         </Form.Root>
-      ) : testModeEnabled ? (
-        <div className="flex w-full flex-col gap-y-4">
-          {testModeOutputFields}
-        </div>
+      ) : isViewResultMode ? (
+        <ComponentOutputs
+          componentID={data.component.id}
+          outputSchema={pipelineOpenAPIOutputSchema}
+          nodeType="end"
+        />
       ) : (
         <div className="flex flex-col">
           <VerticalSortableWrapper
@@ -406,19 +419,20 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             </div>
           </VerticalSortableWrapper>
           <Button
-            className="flex w-full"
-            variant="primary"
+            className="flex w-full flex-1 gap-x-2"
+            variant="tertiaryColour"
             onClick={() => setEnableEdit(!enableEdit)}
             disabled={
               isOwner ? (currentVersion === "latest" ? false : true) : true
             }
+            type="button"
           >
-            <p className="my-auto">Add Field</p>
+            <p className="my-auto pt-0.5">Add Field</p>
             <Icons.Plus
               className={cn(
-                "my-auto h-4 w-4",
+                "my-auto h-4 w-4 stroke-semantic-accent-default",
                 currentVersion === "latest"
-                  ? "stroke-semantic-bg-primary"
+                  ? "stroke-semantic-accent-default"
                   : "stroke-semantic-fg-secondary"
               )}
             />

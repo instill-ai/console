@@ -52,6 +52,7 @@ export const NumbersField = ({
         return (
           <div className="flex flex-col gap-y-2">
             <FieldHead
+              form={form}
               title={title}
               path={path}
               onDeleteField={onDeleteField}
@@ -69,7 +70,7 @@ export const NumbersField = ({
                         type="number"
                         value={numberFieldsValue[idx] ?? undefined}
                         autoComplete="off"
-                        className="appearance-none text-semantic-fg-primary product-body-text-4-regular"
+                        className="nodrag appearance-none text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newNumberFieldsValue = [...numberFieldsValue];
                           newNumberFieldsValue[idx] = e.target.value;

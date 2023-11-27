@@ -3,7 +3,8 @@ import { Form, Input } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
-import { ImageListItem } from "./ImageListItem";
+import { FileListItem } from "./FileListItem";
+import { UploadFileInput } from "./UploadFileInput";
 
 export const ImageField = ({
   form,
@@ -18,6 +19,7 @@ export const ImageField = ({
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return isHidden ? null : (
     <Form.Field
@@ -28,6 +30,7 @@ export const ImageField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              form={form}
               title={title}
               path={path}
               onDeleteField={onDeleteField}
@@ -49,37 +52,34 @@ export const ImageField = ({
                 />
               )}
             </div>
-            <div className="flex flex-row gap-x-1">
+            <div className="flex">
               <Form.Control>
-                <label
-                  htmlFor={`op-start-${path}`}
-                  className="flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
-                >
-                  Upload image
-                  <Input.Root className="hidden">
-                    <Input.Core
-                      id={`op-start-${path}`}
-                      type="file"
-                      accept="images/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const binary = await readFileToBinary(file);
-                          field.onChange(binary);
-                          setImageFile(file);
-                        }
-                      }}
-                    />
-                  </Input.Root>
-                </label>
+                <UploadFileInput
+                  id={`op-start-${path}`}
+                  ref={inputRef}
+                  title="Upload image"
+                  fieldKey={path}
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const binary = await readFileToBinary(file);
+                      field.onChange(binary);
+                      setImageFile(file);
+                    }
+                  }}
+                />
               </Form.Control>
             </div>
             {imageFile ? (
-              <ImageListItem
+              <FileListItem
                 name={imageFile.name}
                 onDelete={() => {
                   setImageFile(null);
                   field.onChange(null);
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
+                  }
                 }}
               />
             ) : null}
