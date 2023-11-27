@@ -277,6 +277,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       !testModeTriggerResponse.metadata.traces[id].outputs ||
       testModeTriggerResponse.metadata.traces[id].outputs.length === 0
     ) {
+      if (isOpenBottomBarOutput) {
+        return (
+          <div className="w-full">
+            <ObjectViewer value="" />
+          </div>
+        );
+      }
       return null;
     }
 
