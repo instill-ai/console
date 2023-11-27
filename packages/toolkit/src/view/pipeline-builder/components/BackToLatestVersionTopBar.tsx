@@ -1,7 +1,12 @@
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 
-import { InstillStore, Nullable, useInstillStore } from "../../../lib";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useUserPipeline,
+} from "../../../lib";
 import {
   checkIsValidPosition,
   createGraphLayout,
@@ -10,6 +15,7 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
+import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
@@ -44,6 +50,17 @@ export const BackToLatestVersionTopBar = (
     enableQuery: pipelineIsNew ? false : enableQuery,
   });
 
+  const router = useRouter();
+
+  const { id, entity } = router.query;
+
+  const pipeline = useUserPipeline({
+    enabled: enableQuery && !!id && !pipelineIsNew,
+    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    accessToken,
+    retry: false,
+  });
+
   return currentVersion === "latest" || sortedReleases.length === 0 ? null : (
     <div className="flex h-8 w-full flex-col bg-semantic-bg-base-bg">
       <p className="m-auto">
@@ -55,7 +72,7 @@ export const BackToLatestVersionTopBar = (
         <span
           className="cursor-pointer text-semantic-accent-default product-body-text-4-medium hover:!underline"
           onClick={() => {
-            if (sortedReleases.length === 0) {
+            if (sortedReleases.length === 0 || !pipeline.isSuccess) {
               return;
             }
 
@@ -66,21 +83,21 @@ export const BackToLatestVersionTopBar = (
 
             if (
               checkIsValidPosition(
-                sortedReleases[0].recipe,
-                sortedReleases[0].metadata ?? null
+                pipeline.data.recipe,
+                pipeline.data.metadata ?? null
               )
             ) {
               const { nodes, edges } = createInitialGraphData(
-                sortedReleases[0].recipe,
+                pipeline.data.recipe,
                 {
-                  metadata: sortedReleases[0].metadata,
+                  metadata: pipeline.data.metadata,
                 }
               );
               newNodes = nodes;
               newEdges = edges;
             } else {
               const { nodes, edges } = createInitialGraphData(
-                sortedReleases[0].recipe
+                pipeline.data.recipe
               );
               newNodes = nodes;
               newEdges = edges;
