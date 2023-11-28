@@ -24,12 +24,12 @@ export const ProfileSidebar = () => {
               hightlighted={router.pathname === "/settings"}
               className="mb-2 px-3"
             />
-            <ProfileSidebarLink
+            {/* <ProfileSidebarLink
               href={`/settings/account`}
               name="Account"
               hightlighted={router.pathname.split("/")[2] === "account"}
               className="mb-2 px-3"
-            />
+            /> */}
             <ProfileSidebarLink
               href={`/settings/organizations`}
               name="Organisations"
