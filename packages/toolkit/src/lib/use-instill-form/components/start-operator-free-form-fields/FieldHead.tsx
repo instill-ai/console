@@ -78,7 +78,7 @@ export const FieldHead = ({
                           variant="lightBlue"
                           size="sm"
                           className="!rounded !px-2 !py-0.5"
-                        >{`{${path}}`}</Tag>{" "}
+                        >{`{}`}</Tag>{" "}
                         to reference this field&rsquo;s value.
                       </p>
                     </div>
@@ -94,11 +94,11 @@ export const FieldHead = ({
                           variant="lightBlue"
                           size="sm"
                           className="!rounded !px-2 !py-0.5"
-                        >{`{{${path}}}`}</Tag>{" "}
+                        >{`{{}}`}</Tag>{" "}
                         to build the template which use this value. For example
                       </p>
                       <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                        {`This is a template use this value, {{start.${title}}}`}
+                        {`This is a template use this value, {{start.${path}}}`}
                       </p>
                     </div>
                   </div>
