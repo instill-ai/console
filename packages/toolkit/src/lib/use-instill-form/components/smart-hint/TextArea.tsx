@@ -22,6 +22,7 @@ import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTempla
 
 export const TextArea = ({
   form,
+  fieldKey,
   path,
   title,
   description,
@@ -34,6 +35,7 @@ export const TextArea = ({
   size,
   isHidden,
 }: {
+  fieldKey: Nullable<string>;
   instillAcceptFormats: string[];
   shortDescription?: string;
   disabled?: boolean;
@@ -209,6 +211,7 @@ export const TextArea = ({
                 {supportReference || supportTemplate ? (
                   <React.Fragment>
                     <SmartHintInfoCard
+                      fieldKey={fieldKey}
                       title={title}
                       instillAcceptFormats={instillAcceptFormats}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
@@ -236,6 +239,7 @@ export const TextArea = ({
                   </React.Fragment>
                 ) : (
                   <SmartHintInfoCard
+                    fieldKey={fieldKey}
                     title={title}
                     instillAcceptFormats={instillAcceptFormats}
                     error={error}

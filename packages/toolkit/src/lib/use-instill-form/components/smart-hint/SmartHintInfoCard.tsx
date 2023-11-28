@@ -5,6 +5,7 @@ import { Icons, Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../type";
 
 export const SmartHintInfoCard = ({
+  fieldKey,
   title,
   instillAcceptFormats,
   className,
@@ -13,6 +14,7 @@ export const SmartHintInfoCard = ({
   supportTemplate,
   smartHintWarning,
 }: {
+  fieldKey: Nullable<string>;
   title: Nullable<string>;
   instillAcceptFormats: string[];
   supportReference: boolean;
@@ -65,7 +67,7 @@ export const SmartHintInfoCard = ({
                 to reference other value. For example:
               </p>
               <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                {`{start.${title}}`}
+                {`{start.${fieldKey}}`}
               </p>
             </div>
           </div>
@@ -86,7 +88,7 @@ export const SmartHintInfoCard = ({
                 to compose your template. For example:
               </p>
               <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                {`This is a template, {{start.${title}}}`}
+                {`This is a template, {{start.${fieldKey}}}`}
               </p>
             </div>
           </div>
