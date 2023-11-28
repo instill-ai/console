@@ -96,19 +96,18 @@ export const ModelsTable = (props: ModelsTableProps) => {
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
         const name: string = row.original.name;
+        const modelState = modelsWatchState
+          ? modelsWatchState[name]
+            ? modelsWatchState[name].state
+            : "STATE_UNSPECIFIED"
+          : "STATE_UNSPECIFIED";
         return (
           <div className="grid justify-items-center">
             <GeneralStateCell
               width={null}
-              state={
-                modelsWatchState
-                  ? modelsWatchState[name]
-                    ? modelsWatchState[name].state
-                    : "STATE_UNSPECIFIED"
-                  : "STATE_UNSPECIFIED"
-              }
+              state={modelState}
               padding="py-2"
-              label={parseStatusLabel(row.getValue("state"))}
+              label={parseStatusLabel(modelState)}
             />
           </div>
         );
