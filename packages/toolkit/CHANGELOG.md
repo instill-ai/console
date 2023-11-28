@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.74.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.73.1...@instill-ai/toolkit-v0.74.0) (2023-11-28)
+
+
+### Features
+
+* adapt new connectors breaking changes, replace connector-resources with connectors ([#725](https://github.com/instill-ai/console/issues/725)) ([1393a8b](https://github.com/instill-ai/console/commit/1393a8bc6a3e4a59972acf30c32ab20670d84f3c))
+* **general:** Update the latest naming rule ^[a-z_][-a-z_0-9]{0,31}$ ([#739](https://github.com/instill-ai/console/issues/739)) ([e3e3fef](https://github.com/instill-ai/console/commit/e3e3fefcbaa3b646d43ab3941d8f310a4157cb0e))
+* **pipeline-builder:** highlight the node when user select it ([#746](https://github.com/instill-ai/console/issues/746)) ([594ecb3](https://github.com/instill-ai/console/commit/594ecb32f37af29e1a04c0f955417c66cf9ca1b8))
+* **pipeline-builder:** update the design of image and multiple images field on start operator node ([#708](https://github.com/instill-ai/console/issues/708)) ([8a7bb80](https://github.com/instill-ai/console/commit/8a7bb80920b47fb7c6d6c201982032099a78dddf))
+* **pipeline-builder:** User can be better hinted when building field on start operator ([#734](https://github.com/instill-ai/console/issues/734)) ([a0bb166](https://github.com/instill-ai/console/commit/a0bb166261f63db5e05d3a700fd4c40e3f7bd61f))
+* **pipeline-builder:** User can edit field on connector/operator node ([#724](https://github.com/instill-ai/console/issues/724)) ([4a2e85a](https://github.com/instill-ai/console/commit/4a2e85a2825555eddd5036a74f17dc309a7f5689))
+* **pipeline-builder:** user can edit important field on operator node ([#717](https://github.com/instill-ai/console/issues/717)) ([6e7cbc0](https://github.com/instill-ai/console/commit/6e7cbc0fbae62cbf528de92232ac5cb42ef73008))
+* **pipeline-builder:** user can have a better trigger flow with new pipeline builder control ([#738](https://github.com/instill-ai/console/issues/738)) ([3d5ef4e](https://github.com/instill-ai/console/commit/3d5ef4eb80971228e6cfd81569049064de351df0))
+* **pipeline-builder:** User can have a bottom bar on the connector node to showcase output information ([#741](https://github.com/instill-ai/console/issues/741)) ([f7aa01c](https://github.com/instill-ai/console/commit/f7aa01cdebfaaf1ee5b6133ee1334420464401a2))
+* **pipeline-builder:** user can have auto-gen componentID coming from the connector they choose ([#686](https://github.com/instill-ai/console/issues/686)) ([7991fe6](https://github.com/instill-ai/console/commit/7991fe689f358de99fbf7cfdb18e9ac06a6c4389))
+* **pipeline-builder:** User can have auto-generated key coming from the field title on start operator ([#711](https://github.com/instill-ai/console/issues/711)) ([3f8abdc](https://github.com/instill-ai/console/commit/3f8abdcf32b350ae1b3b75cd883558596ea4d374))
+* **pipeline-builder:** User can have better end component node design ([#695](https://github.com/instill-ai/console/issues/695)) ([79c1248](https://github.com/instill-ai/console/commit/79c12488975658f97f5c075b56b23c3469c93df5))
+* **pipeline-builder:** user can have much explicit field design on start operator ([#706](https://github.com/instill-ai/console/issues/706)) ([2f52205](https://github.com/instill-ai/console/commit/2f5220541d1e0fc9877355ca674e279b932f8975))
+* **pipeline-builder:** User can have new formatted output text field ([#736](https://github.com/instill-ai/console/issues/736)) ([0b45707](https://github.com/instill-ai/console/commit/0b45707d66af0025a69681ef3eb24c8aea26abae))
+* **pipeline-builder:** User can have new multiple audios input ([#730](https://github.com/instill-ai/console/issues/730)) ([df4296f](https://github.com/instill-ai/console/commit/df4296f446d0c7d6d036d9c2a27cb77b54df6e2f))
+* **pipeline-builder:** user can have operator component node on the pipeline-builder ([#713](https://github.com/instill-ai/console/issues/713)) ([b94dc72](https://github.com/instill-ai/console/commit/b94dc72708f7030c76c02c5e1a8c8d7ed5bced0e))
+* **pipeline-builder:** user can have the new audio input on the start operator ([#728](https://github.com/instill-ai/console/issues/728)) ([f610bc5](https://github.com/instill-ai/console/commit/f610bc574a826fc109e2a9ee021d334c15ecba68))
+* **pipeline-builder:** User can have the output data displayed in the new Object viewer ([#742](https://github.com/instill-ai/console/issues/742)) ([64b69b7](https://github.com/instill-ai/console/commit/64b69b7774026a00636d88bfb50cc8521ddf236b))
+* **pipeline-builder:** User can re-order the field in the end component ([#693](https://github.com/instill-ai/console/issues/693)) ([d48f5f5](https://github.com/instill-ai/console/commit/d48f5f5cdf7382108799078666969fd996e95785))
+* **pipeline-builder:** User can select operator and add it into pipeline-builder ([#712](https://github.com/instill-ai/console/issues/712)) ([7ac809b](https://github.com/instill-ai/console/commit/7ac809b8ac7e4de9fc60cee560b09e04f48daad1))
+* **pipeline-builder:** User can upload file on start operator ([#731](https://github.com/instill-ai/console/issues/731)) ([32aeaf8](https://github.com/instill-ai/console/commit/32aeaf8a6a1a0dc9f3d44b772611d7c8950707ed))
+* **pipeline-builder:** User can upload multiple files on start operator ([#732](https://github.com/instill-ai/console/issues/732)) ([376b574](https://github.com/instill-ai/console/commit/376b574456a01a69e71e5c6e5026c19155427728))
+* **pipeline-builder:** User can use new array:string in start operator ([#733](https://github.com/instill-ai/console/issues/733)) ([5bccf80](https://github.com/instill-ai/console/commit/5bccf808096fc5269c205389814f93a53e91c027))
+* **pipeline-builder:** user can write their own description for start operator node input field ([#710](https://github.com/instill-ai/console/issues/710)) ([b9e6289](https://github.com/instill-ai/console/commit/b9e6289fe9ca3f964bf3993c0194106bdfb1069c))
+* **pipeline-builder:** Users can add note on component to describe it ([#701](https://github.com/instill-ai/console/issues/701)) ([8fad333](https://github.com/instill-ai/console/commit/8fad33395250b52dfc3e966f6eec31882d8fc5e0))
+* update the new rule for all the resource's ID - lowercase, digit, underscore only and 32 characters max ([#719](https://github.com/instill-ai/console/issues/719)) ([dd1ac47](https://github.com/instill-ai/console/commit/dd1ac4750dd5e91bf1a5337880ac93e47f32bd7a))
+
+
+### Bug Fixes
+
+* fix connectors/operators output and response will make console to crash issue ([#744](https://github.com/instill-ai/console/issues/744)) ([d581b03](https://github.com/instill-ai/console/commit/d581b038b1c62019f27077da0bd0843521dac044))
+* fix console not correctly handle pipeline release ([#747](https://github.com/instill-ai/console/issues/747)) ([272f8e6](https://github.com/instill-ai/console/commit/272f8e6dc3389883703c8227b50f4b34fba95a8e))
+* fix pipeline builder not correctly hide data connector's free form ([#748](https://github.com/instill-ai/console/issues/748)) ([11dcf00](https://github.com/instill-ai/console/commit/11dcf000343801df5b37f20894d513f103220668))
+* fix various bugs that will affect UI style and smart hint ([#751](https://github.com/instill-ai/console/issues/751)) ([84f52bb](https://github.com/instill-ai/console/commit/84f52bbd0ce28d7f05f6fa32bf392b7f71cb353a))
+* fix wrongly export deps cause console-cloud failed to compile ([#740](https://github.com/instill-ai/console/issues/740)) ([b83b81a](https://github.com/instill-ai/console/commit/b83b81ab62acf6f8421b05ebf8f659d5e54e3629))
+* **pipeline-builder:** fix output object viewer not correctly open when it's empty ([#745](https://github.com/instill-ai/console/issues/745)) ([54e2805](https://github.com/instill-ai/console/commit/54e280567870fffff68c564e1dc6a052d178d56c))
+* **pipeline-builder:** fix pipeline-builder not correctly handle smart hint information ([#749](https://github.com/instill-ai/console/issues/749)) ([ff3f6d5](https://github.com/instill-ai/console/commit/ff3f6d58180ac005a309113f9dd869b52c927d34))
+
 ## [0.73.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.73.0...@instill-ai/toolkit-v0.73.1) (2023-11-15)
 
 
