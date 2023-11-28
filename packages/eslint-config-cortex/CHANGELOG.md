@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.6.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.2...@instill-ai/eslint-config-cortex-v0.6.0) (2023-11-28)
+
+
+### Features
+
+* **pipeline-builder:** User can have better end component node design ([#695](https://github.com/instill-ai/console/issues/695)) ([79c1248](https://github.com/instill-ai/console/commit/79c12488975658f97f5c075b56b23c3469c93df5))
+
 ## [0.5.2](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.1...@instill-ai/eslint-config-cortex-v0.5.2) (2023-10-27)
 
 

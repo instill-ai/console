@@ -1,5 +1,40 @@
 # @instill-ai/design-system
 
+## [0.58.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.57.0...@instill-ai/design-system-v0.58.0) (2023-11-28)
+
+
+### Features
+
+* adapt new connectors breaking changes, replace connector-resources with connectors ([#725](https://github.com/instill-ai/console/issues/725)) ([1393a8b](https://github.com/instill-ai/console/commit/1393a8bc6a3e4a59972acf30c32ab20670d84f3c))
+* add AlignLeft and ImagePlus icon ([279011c](https://github.com/instill-ai/console/commit/279011c525a3e3150177ab9f8bfd34b23c979142))
+* **design-system:** add Menubar ([#737](https://github.com/instill-ai/console/issues/737)) ([09ce082](https://github.com/instill-ai/console/commit/09ce082b03c61b49262bec6291ca301943e9627d))
+* **design-system:** add Progress component ([#709](https://github.com/instill-ai/console/issues/709)) ([5028e25](https://github.com/instill-ai/console/commit/5028e2590e790bf03122013eb0e5f57719a9136b))
+* **pipeline-builder:** highlight the node when user select it ([#746](https://github.com/instill-ai/console/issues/746)) ([594ecb3](https://github.com/instill-ai/console/commit/594ecb32f37af29e1a04c0f955417c66cf9ca1b8))
+* **pipeline-builder:** user can have a better trigger flow with new pipeline builder control ([#738](https://github.com/instill-ai/console/issues/738)) ([3d5ef4e](https://github.com/instill-ai/console/commit/3d5ef4eb80971228e6cfd81569049064de351df0))
+* **pipeline-builder:** User can have the output data displayed in the new Object viewer ([#742](https://github.com/instill-ai/console/issues/742)) ([64b69b7](https://github.com/instill-ai/console/commit/64b69b7774026a00636d88bfb50cc8521ddf236b))
+
+
+### Bug Fixes
+
+* fix various bugs that will affect UI style and smart hint ([#751](https://github.com/instill-ai/console/issues/751)) ([84f52bb](https://github.com/instill-ai/console/commit/84f52bbd0ce28d7f05f6fa32bf392b7f71cb353a))
+* fix wrongly export deps cause console-cloud failed to compile ([#740](https://github.com/instill-ai/console/issues/740)) ([b83b81a](https://github.com/instill-ai/console/commit/b83b81ab62acf6f8421b05ebf8f659d5e54e3629))
+
+
+### Miscellaneous
+
+* add AlignLeft and ImagePlus icon ([#704](https://github.com/instill-ai/console/issues/704)) ([003c74b](https://github.com/instill-ai/console/commit/003c74b086d0e957329d730369cb20a3f46b151e))
+* add DragIcon ([#692](https://github.com/instill-ai/console/issues/692)) ([79ac32f](https://github.com/instill-ai/console/commit/79ac32f9c1f9f509d12953287ce6750b6f830af4))
+* add FileMinus01 icon ([#700](https://github.com/instill-ai/console/issues/700)) ([5390ed4](https://github.com/instill-ai/console/commit/5390ed42b8dae1bae5d3e78fd4b275c53b114da7))
+* add FilePlus01 icon ([#699](https://github.com/instill-ai/console/issues/699)) ([02de9f9](https://github.com/instill-ai/console/commit/02de9f99acd041d70241ef4b0ca7da442fedb10b))
+* add lightning01 icons and expose more props on Switch ([#735](https://github.com/instill-ai/console/issues/735)) ([b135376](https://github.com/instill-ai/console/commit/b1353768ee1b4c7c06aa87881b43e9fc423fb980))
+* add PauseCircle and PlayCircle icons ([#727](https://github.com/instill-ai/console/issues/727)) ([0fcf3e1](https://github.com/instill-ai/console/commit/0fcf3e14accf1aea7280669d24b738f407b9fcee))
+* add recording-03 icon ([#726](https://github.com/instill-ai/console/issues/726)) ([fa57f26](https://github.com/instill-ai/console/commit/fa57f262f88a237e2ab5be31882f5d875278eee5))
+* add start input types icon ([#729](https://github.com/instill-ai/console/issues/729)) ([5cb3d7a](https://github.com/instill-ai/console/commit/5cb3d7a360b6c36f2a48b5a1a1e3f435f3e1f760))
+* **design-system:** add Breadcrumb component ([#691](https://github.com/instill-ai/console/issues/691)) ([fced76a](https://github.com/instill-ai/console/commit/fced76ae014c26f3def55d331aadd2135f54d6b3))
+* **design-system:** add globe icon ([#715](https://github.com/instill-ai/console/issues/715)) ([69c1c35](https://github.com/instill-ai/console/commit/69c1c3519c0ff230a84b361a0feedbc00a683e13))
+* **design-system:** add user icon icon ([#689](https://github.com/instill-ai/console/issues/689)) ([8af572d](https://github.com/instill-ai/console/commit/8af572d9cd5ff1324f3f19feebfb2e4350bc73c1))
+* **design-system:** Namananand/ins 2599 create breadcrumb component ([#721](https://github.com/instill-ai/console/issues/721)) ([e375c94](https://github.com/instill-ai/console/commit/e375c941dfd36e75fbd0e44ec3bfd67550867ac3))
+
 ## [0.57.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.56.0...@instill-ai/design-system-v0.57.0) (2023-11-11)
 
 
