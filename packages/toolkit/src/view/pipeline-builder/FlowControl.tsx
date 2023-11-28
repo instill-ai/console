@@ -482,7 +482,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
   return (
     <React.Fragment>
-      <div className="absolute right-8 top-8 flex flex-row-reverse gap-x-4">
+      <div className="absolute right-8 top-8 flex h-10 flex-row-reverse gap-x-4">
         {isOwner ? (
           <React.Fragment>
             <Menubar.Root
@@ -492,7 +492,12 @@ export const FlowControl = (props: FlowControlProps) => {
             >
               <Menubar.Menu>
                 <Menubar.Trigger
-                  className="flex cursor-pointer flex-row gap-x-2 text-semantic-accent-default"
+                  className={cn(
+                    "flex cursor-pointer flex-row gap-x-2",
+                    pipelineRecipeIsDirty
+                      ? "text-[#bfbfbf]"
+                      : "!text-semantic-accent-default hover:!bg-semantic-accent-bg"
+                  )}
                   value="play"
                   type="submit"
                   form="start-operator-trigger-pipeline-form"
@@ -513,7 +518,7 @@ export const FlowControl = (props: FlowControlProps) => {
                         className={cn(
                           "my-auto h-4 w-4",
                           pipelineRecipeIsDirty
-                            ? "stroke-semantic-fg-secondary"
+                            ? "stroke-[#bfbfbf]"
                             : "stroke-semantic-accent-default"
                         )}
                       />
@@ -544,7 +549,14 @@ export const FlowControl = (props: FlowControlProps) => {
                   {isSaving ? (
                     <LoadingSpin className="!text-black" />
                   ) : (
-                    <Icons.Save01 className="h-4 w-4 stroke-semantic-fg-primary" />
+                    <Icons.Save01
+                      className={cn(
+                        "h-4 w-4",
+                        pipelineRecipeIsDirty
+                          ? "stroke-semantic-fg-primary"
+                          : "stroke-[#bfbfbf]"
+                      )}
+                    />
                   )}
                 </Menubar.Trigger>
               </Menubar.Menu>
@@ -571,7 +583,12 @@ export const FlowControl = (props: FlowControlProps) => {
                       */}
                       <span className="flex" tabIndex={0}>
                         <Menubar.Trigger
-                          className="flex cursor-pointer flex-row gap-x-2"
+                          className={cn(
+                            "flex cursor-pointer flex-row gap-x-2",
+                            pipelineRecipeIsDirty
+                              ? ""
+                              : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
+                          )}
                           value="release"
                           disabled={pipelineRecipeIsDirty}
                           onClick={() =>

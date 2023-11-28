@@ -7,6 +7,7 @@ import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
 import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
 import { transformStartOperatorMetadataToSmartHints } from "./transformStartOperatorMetadataToSmartHints";
+import { getOperatorInputOutputSchema } from "../../view/pipeline-builder/lib/getOperatorInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
   updateSmartHints: store.updateSmartHints,
@@ -48,6 +49,24 @@ export const useSmartHint = () => {
         );
 
         smartHints = [...smartHints, ...hints];
+      }
+
+      if (node.data.nodeType === "operator") {
+        const { outputSchema } = getOperatorInputOutputSchema(
+          node.data.component
+        );
+
+        if (outputSchema) {
+          const outputFormTree =
+            transformInstillJSONSchemaToFormTree(outputSchema);
+
+          const hints = transformConnectorComponentFormTreeToSmartHints(
+            outputFormTree,
+            node.id
+          );
+
+          smartHints = [...smartHints, ...hints];
+        }
       }
     }
 

@@ -59,7 +59,7 @@ export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
                     className="min-h-[288px]"
                     customStyle={{
                       borderRadius: "0.5rem",
-                      fontSize: "10px",
+                      fontSize: "14px",
                       backgroundColor: "white",
                       width: "100%",
                     }}
@@ -73,7 +73,7 @@ export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
                     wrapLongLines={true}
                     language="javascript"
                     customStyle={{
-                      fontSize: "10px",
+                      fontSize: "14px",
                       backgroundColor: "white",
                       width: "100%",
                     }}

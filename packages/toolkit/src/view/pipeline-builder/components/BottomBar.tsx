@@ -172,8 +172,6 @@ export const BottomBar = (props: BottomBarProps) => {
                         newEdges = edges;
                       }
 
-                      console.log(newNodes);
-
                       createGraphLayout(newNodes, newEdges)
                         .then((graphData) => {
                           updateNodes(() => graphData.nodes);
