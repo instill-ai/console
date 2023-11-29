@@ -9,10 +9,10 @@ import {
   useUser,
   useUserPipelines,
   useWatchUserModels,
+  BreadcrumbWithLink,
 } from "@instill-ai/toolkit";
 import {
   Logo,
-  Breadcrumb,
   Separator,
   Icons,
   Tag,
@@ -65,7 +65,7 @@ const PipelinePage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="profile" />
-      <Breadcrumb
+      <BreadcrumbWithLink
         items={[{ label: "Home", link: "/" }, { label: "Profile" }]}
       />
       <div className="w-full flex flex-row gap-x-14 mt-16">

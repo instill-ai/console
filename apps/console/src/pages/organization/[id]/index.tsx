@@ -24,8 +24,10 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const OrganizationPage: NextPageWithLayout = () => {
+  const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
 
@@ -127,7 +129,7 @@ const OrganizationPage: NextPageWithLayout = () => {
             <TeamMembersCard members={[]} />
           </div>
           <div>
-            <Link href="/organization/open-ai/settings">
+            <Link href={`/organization/${router.query.id}/settings`}>
               <Button variant="secondaryGrey" size="md">
                 Settings
               </Button>

@@ -1,7 +1,11 @@
 import * as React from "react";
 import { ConsoleCorePageHead, ProfileSidebar, Topbar } from "../../components";
-import { PageBase, OrganizationsTab } from "@instill-ai/toolkit";
-import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import {
+  PageBase,
+  OrganizationsTab,
+  BreadcrumbWithLink,
+} from "@instill-ai/toolkit";
+import { Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "../../lib/useAccessToken";
 import { useTrackToken } from "../../lib/useTrackToken";
@@ -17,7 +21,7 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
-      <Breadcrumb
+      <BreadcrumbWithLink
         items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
       />
       <div className="w-full flex mt-16 gap-x-14">

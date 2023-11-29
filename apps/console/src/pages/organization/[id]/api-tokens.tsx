@@ -12,8 +12,9 @@ import {
   PageBase,
   OrganizationSettings,
   APITokenTab,
+  BreadcrumbWithLink
 } from "@instill-ai/toolkit";
-import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import {  Logo } from "@instill-ai/design-system";
 
 const SettingsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
@@ -26,7 +27,7 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Open AI" />
-      <Breadcrumb
+      <BreadcrumbWithLink
         items={[
           { label: "Home", link: "/" },
           { label: "Organisations", link: "/settings/organizations" },

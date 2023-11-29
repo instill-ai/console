@@ -3,6 +3,7 @@ export * from "./metric";
 export * from "./mgmt";
 export * from "./model";
 export * from "./pipeline";
+export * from "./organization";
 
 /** Re export react-query to solve ESM, CJS confict issue */
 export {

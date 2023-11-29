@@ -8,11 +8,10 @@ import {
 import {
   PageBase,
   ProfileTab,
-  APITokenTab,
-  SettingsPageView,
+  BreadcrumbWithLink
 } from "@instill-ai/toolkit";
 
-import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import {  Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "../../lib/useAccessToken";
 import { useTrackToken } from "../../lib/useTrackToken";
@@ -28,7 +27,7 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
-      <Breadcrumb
+      <BreadcrumbWithLink
         items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
       />
       <div className="w-full flex mt-16 gap-x-14">

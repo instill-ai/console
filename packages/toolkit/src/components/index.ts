@@ -1,5 +1,6 @@
 export * from "./AutoresizeInput";
 export * from "./Breadcrumb";
+export * from "./BreadcrumbWithLink";
 export * from "./CopyToClipboardButton";
 export * from "./CodeBlock";
 export * from "./IconWithBackground";
