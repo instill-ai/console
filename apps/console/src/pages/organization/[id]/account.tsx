@@ -8,8 +8,8 @@ import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
-import { PageBase, OrganizationSettings } from "@instill-ai/toolkit";
-import { Breadcrumb, Logo } from "@instill-ai/design-system";
+import { PageBase, OrganizationSettings,BreadcrumbWithLink } from "@instill-ai/toolkit";
+import {  Logo } from "@instill-ai/design-system";
 
 const SettingsPage: NextPageWithLayout = () => {
   const accessToken = useAccessToken();
@@ -22,7 +22,7 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Open AI" />
-      <Breadcrumb
+      <BreadcrumbWithLink
         items={[
           { label: "Home", link: "/" },
           { label: "Organisations", link: "/settings/organizations" },
