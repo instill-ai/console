@@ -15,6 +15,8 @@ export const OrganizationSidebar = () => {
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
+  console.log(router.query);
+
   const organisation = {
     name: "open-ai",
   };
@@ -23,7 +25,7 @@ export const OrganizationSidebar = () => {
     <div className="flex w-full flex-col bg-semantic-bg-base-bg">
       <div className="px-4 flex gap-x-3 mb-6">
         <div className="my-auto">
-          <Link href={`/organization/open-ai/settings`}>
+          <Link href={`/organization/${router.query.id}/settings`}>
             <Button variant="secondaryGrey" size="lg" className="!p-3.5">
               <Logos.OpenAI className="h-7 w-7" />
             </Button>
@@ -31,7 +33,7 @@ export const OrganizationSidebar = () => {
         </div>
 
         <div className="my-auto">
-          <Link href={`/organization/open-ai/settings`}>
+          <Link href={`/organization/${router.query.id}/settings`}>
             <p className="text-semantic-fg-primary product-body-text-2-semibold">
               Open AI
             </p>
@@ -46,37 +48,37 @@ export const OrganizationSidebar = () => {
         {user.isSuccess ? (
           <React.Fragment>
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/settings`}
+              href={`/organization/${router.query.id}/settings`}
               name="Profile"
               hightlighted={router.pathname.split("/")[3] === "settings"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/account`}
+              href={`/organization/${router.query.id}/account`}
               name="Account"
               hightlighted={router.pathname.split("/")[3] === "account"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/members`}
+              href={`/organization/${router.query.id}/members`}
               name="Members"
               hightlighted={router.pathname.split("/")[3] === "members"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/permissions`}
+              href={`/organization/${router.query.id}/permissions`}
               name="Permissions"
               hightlighted={router.pathname.split("/")[3] === "permissions"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/billing`}
+              href={`/organization/${router.query.id}/billing`}
               name="Billing"
               hightlighted={router.pathname.split("/")[3] === "billing"}
               className="mb-2 px-3"
             />
             <OrganizationSidebarLink
-              href={`/organization/${organisation.name}/api-tokens`}
+              href={`/organization/${router.query.id}/api-tokens`}
               name="API Tokens"
               hightlighted={router.pathname.split("/")[3] === "api-tokens"}
               className="px-3"
