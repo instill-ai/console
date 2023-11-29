@@ -14,8 +14,10 @@ import {
   BreadcrumbWithLink,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 const SettingsPage: NextPageWithLayout = () => {
+  const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
 
@@ -42,6 +44,7 @@ const SettingsPage: NextPageWithLayout = () => {
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
             disabledAll={false}
+            organizationName={router.query.id || ""}
           />
         </div>
       </div>

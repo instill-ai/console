@@ -49,7 +49,7 @@ export async function listOrganizationsQuery({
 }
 
 export type OrganizationResponse = {
-  organization: Organization[];
+  organization: Organization;
 };
 
 export async function getOrganizationQuery({
