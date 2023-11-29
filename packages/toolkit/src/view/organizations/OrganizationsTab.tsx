@@ -82,7 +82,7 @@ export const OrganizationsTab = (props: OrganizationsTabProps) => {
               {/* Org 1 */}
 
               {organisations.data.map((organisation) => (
-                <div className="rounded-sm border border-[#E4E4E4] p-4">
+                <div className="rounded-sm border border-[#E4E4E4] p-4" key={organisation.name}>
                   <div className="flex w-full flex-row">
                     <div className="flex w-3/4 gap-x-3">
                       <div className="my-auto">

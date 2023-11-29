@@ -16,16 +16,16 @@ const BreadcrumbWithLink = ({ items }: BBreadcrumbWithLinkProps) => {
   return (
     <div className="mb-4 flex items-center gap-x-2 text-sm">
       {activeLink.map((item) => (
-        <React.Fragment>
+        <React.Fragment key={item.link}>
           {item.link ? (
-            <div className="flex gap-x-1" key={item.link}>
+            <div className="flex gap-x-1">
               <div className="my-auto text-semantic-accent-default product-body-text-4-regular">
                 <Link href={item.link}>{item.label}</Link>
               </div>
               <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
             </div>
           ) : (
-            <div className="flex gap-x-1" key={item.label}>
+            <div className="flex gap-x-1">
               <div className="my-auto text-semantic-accent-default product-body-text-4-regular">
                 <p>{item.label}</p>
               </div>
