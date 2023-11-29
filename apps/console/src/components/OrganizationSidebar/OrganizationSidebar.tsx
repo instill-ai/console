@@ -15,12 +15,6 @@ export const OrganizationSidebar = () => {
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
-  console.log(router.query);
-
-  const organisation = {
-    name: "open-ai",
-  };
-
   return (
     <div className="flex w-full flex-col bg-semantic-bg-base-bg">
       <div className="px-4 flex gap-x-3 mb-6">

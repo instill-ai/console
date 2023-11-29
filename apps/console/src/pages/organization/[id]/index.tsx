@@ -10,6 +10,7 @@ import {
   TeamMembersCard,
   useConnectorDefinitions,
   useModels,
+  useOrganization,
   useUser,
   useUserPipelines,
   useWatchUserModels,
@@ -34,6 +35,13 @@ const OrganizationPage: NextPageWithLayout = () => {
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
+
+  const organization = useOrganization({
+    organizationName: router.query.id,
+    enabled: accessToken.isSuccess,
+    accessToken: accessToken.isSuccess ? accessToken.data : null,
+    retry: false,
+  });
 
   const user = useUser({
     enabled: accessToken.isSuccess,
@@ -62,6 +70,10 @@ const OrganizationPage: NextPageWithLayout = () => {
       ? modelsWatchState.isLoading
       : false;
 
+  if (organization.isLoading) {
+    return <p className="p-3">Loading...</p>;
+  }
+
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Open AI" />
@@ -77,7 +89,9 @@ const OrganizationPage: NextPageWithLayout = () => {
         <div className="flex items-end">
           <div className="space-y-4">
             <div className="flex flex-row gap-x-3">
-              <p className="product-headings-heading-1">Open AI</p>
+              <p className="product-headings-heading-1">
+                {organization.data.org_name}
+              </p>
               <Tag size="sm" className="!my-1">
                 Company
               </Tag>

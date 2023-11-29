@@ -47,3 +47,27 @@ export async function listOrganizationsQuery({
     return Promise.reject(err);
   }
 }
+
+export type OrganizationResponse = {
+  organization: Organization[];
+};
+
+export async function getOrganizationQuery({
+  organizationName,
+  accessToken,
+}: {
+  organizationName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<OrganizationResponse>(
+      `/organizations/${organizationName}`
+    );
+
+    return Promise.resolve(data.organization);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
