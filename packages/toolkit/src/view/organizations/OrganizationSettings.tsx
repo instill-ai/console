@@ -25,7 +25,7 @@ export type OrganizationSettingsProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
   disabledAll: boolean;
-  organizationName: string;
+  organizationName: Nullable<string>;
 };
 
 const OrganisationSettingsSchema: InstillJSONSchema = {

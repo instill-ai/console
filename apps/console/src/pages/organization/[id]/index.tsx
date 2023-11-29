@@ -26,6 +26,7 @@ import {
 } from "@instill-ai/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Nullable } from "@instill-ai/design-system/dist/types/general";
 
 const OrganizationPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -37,7 +38,9 @@ const OrganizationPage: NextPageWithLayout = () => {
    * -----------------------------------------------------------------------*/
 
   const organization = useOrganization({
-    organizationName: router.query.id,
+    organizationName: router.query.id
+      ? (router.query.id as Nullable<string>)
+      : null,
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
     retry: false,
@@ -90,7 +93,7 @@ const OrganizationPage: NextPageWithLayout = () => {
           <div className="space-y-4">
             <div className="flex flex-row gap-x-3">
               <p className="product-headings-heading-1">
-                {organization.data.org_name}
+                {organization.data ? organization.data.org_name : ""}
               </p>
               <Tag size="sm" className="!my-1">
                 Company

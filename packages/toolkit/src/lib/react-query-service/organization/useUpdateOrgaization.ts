@@ -17,7 +17,7 @@ export const useUpdateOrganization = () => {
     }: {
       payload: CreateOrganizationPayload;
       accessToken: Nullable<string>;
-      organizationName: string;
+      organizationName: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));

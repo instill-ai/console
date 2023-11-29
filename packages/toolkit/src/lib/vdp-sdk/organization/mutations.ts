@@ -44,7 +44,7 @@ export async function updateOrganizationMutation({
 }: {
   payload: CreateOrganizationPayload;
   accessToken: Nullable<string>;
-  organizationName: string;
+  organizationName: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");

@@ -8,10 +8,17 @@ import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
-import { PageBase, OrganizationSettings,BreadcrumbWithLink } from "@instill-ai/toolkit";
-import {  Logo } from "@instill-ai/design-system";
+import {
+  PageBase,
+  OrganizationSettings,
+  BreadcrumbWithLink,
+} from "@instill-ai/toolkit";
+import { Logo } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
+import { Nullable } from "@instill-ai/design-system/dist/types/general";
 
 const SettingsPage: NextPageWithLayout = () => {
+  const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
 
@@ -38,6 +45,9 @@ const SettingsPage: NextPageWithLayout = () => {
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
             disabledAll={true}
+            organizationName={
+              router.query.id ? (router.query.id as Nullable<string>) : null
+            }
           />
         </div>
       </div>

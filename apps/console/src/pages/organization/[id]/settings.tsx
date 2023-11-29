@@ -15,6 +15,7 @@ import {
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { Nullable } from "@instill-ai/design-system/dist/types/general";
 
 const SettingsPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -44,7 +45,9 @@ const SettingsPage: NextPageWithLayout = () => {
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
             disabledAll={false}
-            organizationName={router.query.id || ""}
+            organizationName={
+              router.query.id ? (router.query.id as Nullable<string>) : null
+            }
           />
         </div>
       </div>
