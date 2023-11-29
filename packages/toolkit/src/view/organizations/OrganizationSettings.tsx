@@ -1,17 +1,31 @@
-import { Button, Form, Icons, Logos } from "@instill-ai/design-system";
+import {
+  Button,
+  Form,
+  Icons,
+  Input,
+  Logos,
+  toast,
+} from "@instill-ai/design-system";
 import {
   InstillJSONSchema,
   Nullable,
+  useUpdateOrganization,
   useInstillForm,
+  useOrganization,
   useUser,
 } from "../../lib";
 import { z } from "zod";
 import * as React from "react";
+import { useRouter } from "next/router";
+import { isAxiosError } from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type OrganizationSettingsProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
   disabledAll: boolean;
+  organizationName: string;
 };
 
 const OrganisationSettingsSchema: InstillJSONSchema = {
@@ -19,7 +33,7 @@ const OrganisationSettingsSchema: InstillJSONSchema = {
   type: "object",
   required: ["name", "email", "username"],
   properties: {
-    username: {
+    org_name: {
       description: "",
       instillFormat: "text",
       anyOf: [
@@ -85,22 +99,73 @@ const OrganisationSettingsSchema: InstillJSONSchema = {
   },
 };
 
+const UpdateOrganizationSchema = z.object({
+  id: z.string().nonempty(),
+  org_name: z.string().nonempty(),
+  name: z.nullable(z.string()),
+  email: z.nullable(z.string()),
+});
+
 export const OrganizationSettings = (props: OrganizationSettingsProps) => {
-  const { accessToken, enableQuery, disabledAll } = props;
+  const { accessToken, enableQuery, disabledAll, organizationName } = props;
 
-  const [data, setData] = React.useState<string | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
-
-  const user = useUser({
+  const organization = useOrganization({
+    organizationName: organizationName,
     enabled: enableQuery,
+    retry: false,
     accessToken,
   });
 
-  const { form, fields, ValidatorSchema, formTree } = useInstillForm(
-    OrganisationSettingsSchema,
-    null,
-    { disabledAll: disabledAll }
-  );
+  const updateOrganization = useUpdateOrganization();
+
+  const form = useForm<z.infer<typeof UpdateOrganizationSchema>>({
+    resolver: zodResolver(UpdateOrganizationSchema),
+    defaultValues: {
+      id: "",
+      org_name: "",
+      name: null,
+      email: null,
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof UpdateOrganizationSchema>) => {
+    if (!accessToken) return;
+
+    const payload = {
+      id: data.id,
+      org_name: data.org_name,
+      name: null,
+      email: null,
+    };
+
+    updateOrganization.mutate(
+      { payload, accessToken, organizationName },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Organization updated!",
+            variant: "alert-success",
+            size: "small",
+          });
+        },
+        onError: (err) => {
+          if (isAxiosError(err)) {
+            toast({
+              title: "Something went wrong!",
+              variant: "alert-error",
+              size: "small",
+            });
+          }
+        },
+      }
+    );
+  };
+
+  React.useEffect(() => {
+    if (organization.data) {
+      form.setValue("org_name", organization.data.org_name);
+    }
+  }, [organization.data]);
 
   return (
     <div className="flex flex-col">
@@ -115,28 +180,100 @@ export const OrganizationSettings = (props: OrganizationSettingsProps) => {
 
       <div className="flex h-full w-full flex-col">
         <Form.Root {...form}>
-          <form className="w-full">
-            <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+          <form
+            className="w-full space-y-3"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <Form.Field
+              control={form.control}
+              name="org_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item className="w-full">
+                    <Form.Label
+                      htmlFor={field.name}
+                      className=""
+                    >
+                      Organization username
+                    </Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          id={field.name}
+                          type="text"
+                          placeholder="Username"
+                          {...field}
+                          value={field.value || ""}
+                          disabled={disabledAll}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="email"
+              render={({ field }) => {
+                return (
+                  <Form.Item className="w-full">
+                    <Form.Label
+                      htmlFor={field.name}
+                      className=""
+                    >
+                      Email
+                    </Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          id={field.name}
+                          type="text"
+                          placeholder="Email"
+                          {...field}
+                          value={field.value || ""}
+                          disabled={disabledAll}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <Form.Item className="w-full">
+                    <Form.Label
+                      htmlFor={field.name}
+                      className=""
+                    >
+                      Organisation Domain Name
+                    </Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          id={field.name}
+                          type="text"
+                          placeholder="Name"
+                          {...field}
+                          value={field.value || ""}
+                          disabled={disabledAll}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                  </Form.Item>
+                );
+              }}
+            />
             {disabledAll === false ? (
-              <div className="flex flex-row-reverse">
-                <Button
-                  type="button"
-                  size="lg"
-                  variant="primary"
-                  onClick={() => {
-                    const data = form.getValues();
-
-                    try {
-                      const parsedData = ValidatorSchema.parse(data);
-                      setData(JSON.stringify(parsedData, null, 2));
-                      setError(null);
-                    } catch (err) {
-                      if (err instanceof z.ZodError) {
-                        setError(JSON.stringify(err, null, 2));
-                      }
-                    }
-                  }}
-                >
+              <div className="flex flex-row-reverse pt-1">
+                <Button type="submit" size="lg" variant="primary">
                   Submit
                 </Button>
               </div>

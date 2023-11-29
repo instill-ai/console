@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import { LoadingSpin, useUser } from "@instill-ai/toolkit";
+import { LoadingSpin, useOrganization, useUser } from "@instill-ai/toolkit";
 import { OrganizationSidebarLink } from "./OrganizationSidebarLink";
 import { useAccessToken } from "../../lib/useAccessToken";
 import Link from "next/link";
@@ -12,6 +12,13 @@ export const OrganizationSidebar = () => {
 
   const user = useUser({
     enabled: accessToken.isSuccess,
+    accessToken: accessToken.isSuccess ? accessToken.data : null,
+  });
+
+  const organization = useOrganization({
+    organizationName: router.query.id,
+    enabled: accessToken.isSuccess,
+    retry: false,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
@@ -29,7 +36,7 @@ export const OrganizationSidebar = () => {
         <div className="my-auto">
           <Link href={`/organization/${router.query.id}/settings`}>
             <p className="text-semantic-fg-primary product-body-text-2-semibold">
-              Open AI
+              {organization.data.org_name}
             </p>
           </Link>
           <p className="text-semantic-fg-disabled product-body-text-4-regular">
