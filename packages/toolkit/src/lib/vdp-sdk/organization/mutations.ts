@@ -9,7 +9,9 @@ export type CreateOrganizationPayload = {
   profile_data: Nullable<object>;
 };
 
-export type CreateOrganizationResponse = Organization;
+export type CreateOrganizationResponse = {
+  organization: Organization;
+};
 
 export async function createOrganizationMutation({
   payload,
@@ -26,7 +28,7 @@ export async function createOrganizationMutation({
       payload
     );
 
-    return Promise.resolve(data);
+    return Promise.resolve(data.organization);
   } catch (err) {
     return Promise.reject(err);
   }
