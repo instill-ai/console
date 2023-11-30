@@ -24,24 +24,6 @@ export const ProfileSidebar = () => {
               hightlighted={router.pathname === "/settings"}
               className="mb-2 px-3"
             />
-            {/* <ProfileSidebarLink
-              href={`/settings/account`}
-              name="Account"
-              hightlighted={router.pathname.split("/")[2] === "account"}
-              className="mb-2 px-3"
-            /> */}
-            <ProfileSidebarLink
-              href={`/settings/organizations`}
-              name="Organisations"
-              hightlighted={router.pathname.split("/")[2] === "organizations"}
-              className="mb-2 px-3"
-            />
-            <ProfileSidebarLink
-              href={`/settings/billings`}
-              name="Billing"
-              hightlighted={router.pathname.split("/")[2] === "billings"}
-              className="mb-2 px-3"
-            />
             <ProfileSidebarLink
               href={`/settings/api-tokens`}
               name="API Tokens"
