@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.74.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.74.0...@instill-ai/toolkit-v0.74.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* fix codemirror intervene with each other can cause performance issue ([#755](https://github.com/instill-ai/console/issues/755)) ([3f3e5d7](https://github.com/instill-ai/console/commit/3f3e5d719dfe600b924f273745708c14fd174bb8))
+* fix the start operator's title of our templates too long and break the pipeline ([#757](https://github.com/instill-ai/console/issues/757)) ([96552d4](https://github.com/instill-ai/console/commit/96552d4d9aaf3ad598ce1630a5b7dc9d1f7f7437))
+
 ## [0.74.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.73.1...@instill-ai/toolkit-v0.74.0) (2023-11-28)
 
 
