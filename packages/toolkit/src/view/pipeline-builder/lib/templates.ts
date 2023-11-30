@@ -17,7 +17,7 @@ export const templates: PipelineTemplate[] = [
           configuration: {
             metadata: {
               prompts: {
-                title: "My prompts",
+                title: "Prompts",
                 type: "array",
                 instillFormat: "array:string",
                 items: {
@@ -122,7 +122,7 @@ export const templates: PipelineTemplate[] = [
           configuration: {
             metadata: {
               prompts: {
-                title: "My prompts",
+                title: "Prompts",
                 type: "array",
                 instillFormat: "array:string",
                 items: {
@@ -246,7 +246,7 @@ export const templates: PipelineTemplate[] = [
                 instillFormat: "string",
               },
               prompts: {
-                title: "My Prompts",
+                title: "Prompts",
                 type: "array",
                 instillFormat: "array:string",
                 items: {
@@ -447,9 +447,11 @@ export const templates: PipelineTemplate[] = [
                 instillFormat: "string",
               },
               key_info: {
-                title: "Key information to extract (separate with commas)",
+                title: "Key information",
                 type: "string",
                 instillFormat: "string",
+                description:
+                  "Key information to extract (separate with commas)",
               },
             },
           },
@@ -519,15 +521,17 @@ export const templates: PipelineTemplate[] = [
                 instillFormat: "string",
               },
               format: {
-                title: "Summary format style (sentences or bullets)",
+                title: "Summary format style",
                 type: "string",
                 instillFormat: "string",
+                description: "sentences or bullets",
               },
               guideline: {
-                title:
-                  "Additional guideline for summary. e.g., focus on action points.  ",
+                title: "Guideline",
                 type: "string",
                 instillFormat: "string",
+                description:
+                  "Additional guideline for summary. e.g., focus on action points.  ",
               },
             },
           },
@@ -591,14 +595,18 @@ export const templates: PipelineTemplate[] = [
           configuration: {
             metadata: {
               keywords: {
-                title: "Generate a article optimized for this SEO Keywords",
+                title: "Keywords",
                 type: "string",
                 instillFormat: "string",
+                description:
+                  "Generate a article optimized for this SEO Keywords",
               },
               section_number: {
-                title: "How many sections would you like? (3-7 recommended)",
+                title: "Section number",
                 type: "number",
                 instillFormat: "number",
+                description:
+                  "How many sections would you like? (3-7 recommended)",
               },
             },
           },
