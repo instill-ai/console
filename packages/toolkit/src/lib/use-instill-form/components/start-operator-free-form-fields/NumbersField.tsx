@@ -50,7 +50,7 @@ export const NumbersField = ({
         }
 
         return (
-          <div className="flex flex-col gap-y-2">
+          <div className="flex w-full flex-col gap-y-2">
             <FieldHead
               form={form}
               title={title}

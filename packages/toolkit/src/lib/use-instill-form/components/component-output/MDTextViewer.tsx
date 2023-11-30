@@ -1,19 +1,10 @@
 import * as React from "react";
 import cn from "clsx";
 import { Switch } from "@instill-ai/design-system";
-import { githubLight } from "@uiw/codemirror-theme-github";
-import { EditorView } from "@codemirror/view";
 import { CopyButton } from "./CopyButton";
-import CodeMirror from "@uiw/react-codemirror";
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { Nullable } from "../../../type";
+import Markdown from "markdown-to-jsx";
 
-const fontSize = EditorView.baseTheme({
-  "&": {
-    backgroundColor: "#fff",
-    fontSize: "12px",
-  },
-});
 export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   const [enableFormattedText, setEnableFormattedText] = React.useState(false);
 
@@ -40,25 +31,12 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
       </div>
       <div>
         <div
-          className={cn("markdown-body", enableFormattedText ? "" : "hidden")}
+          className={cn(
+            "markdown-body px-1.5 py-1",
+            enableFormattedText ? "" : "hidden"
+          )}
         >
-          <CodeMirror
-            value={text ?? ""}
-            extensions={[
-              markdown({ base: markdownLanguage }),
-              EditorView.lineWrapping,
-              fontSize,
-            ]}
-            theme={githubLight}
-            editable={false}
-            minHeight="48px"
-            basicSetup={{
-              highlightActiveLineGutter: false,
-              highlightActiveLine: false,
-              lineNumbers: false,
-              foldGutter: false,
-            }}
-          />
+          <Markdown>{text ?? ""}</Markdown>
         </div>
         <pre
           className={cn(
