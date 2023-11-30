@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.33.1-alpha](https://github.com/instill-ai/console/compare/v0.33.0-alpha...v0.33.1-alpha) (2023-11-30)
+
+
+### Bug Fixes
+
+* fix codemirror intervene with each other can cause performance issue ([#755](https://github.com/instill-ai/console/issues/755)) ([3f3e5d7](https://github.com/instill-ai/console/commit/3f3e5d719dfe600b924f273745708c14fd174bb8))
+
 ## [0.33.0-alpha](https://github.com/instill-ai/console/compare/v0.32.1-alpha...v0.33.0-alpha) (2023-11-28)
 
 
