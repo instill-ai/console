@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   Icons,
   Separator,
-  Tag,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
 import { LoadingSpin, env, useUser } from "@instill-ai/toolkit";
@@ -26,7 +25,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
   const accessToken = useAccessToken();
 
   const user = useUser({
-    enabled: !!accessToken,
+    enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
 
@@ -95,7 +94,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               </React.Fragment>
             ) : (
               <div className="flex h-[217px] w-full items-center justify-center">
-                <LoadingSpin className="!text-black" />
+                {/* <LoadingSpin className="!text-black" /> */}
               </div>
             )}
           </React.Fragment>

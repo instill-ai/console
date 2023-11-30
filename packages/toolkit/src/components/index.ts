@@ -1,5 +1,3 @@
-export * from "./top-bar";
-
 export * from "./AutoresizeInput";
 export * from "./Breadcrumb";
 export * from "./BreadcrumbWithLink";
