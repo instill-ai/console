@@ -1,20 +1,15 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
+import { Organization } from "./types";
 
 export type CreateOrganizationPayload = {
   id: string;
   org_name: string;
+  profile_avatar: Nullable<string>;
+  profile_data: Nullable<object>;
 };
 
-export type CreateOrganizationResponse = {
-  name: string;
-  uid: string;
-  id: string;
-  create_time: string;
-  update_time: string;
-  org_name: string;
-  customer_id: string;
-};
+export type CreateOrganizationResponse = Organization;
 
 export async function createOrganizationMutation({
   payload,
