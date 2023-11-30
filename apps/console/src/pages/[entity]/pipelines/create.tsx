@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { Logo } from "@instill-ai/design-system";
 
-import { Sidebar, Topbar } from "../../../components";
+import { Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { PageBase } from "@instill-ai/toolkit";
 
@@ -27,7 +27,6 @@ CreatePipelinePage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>

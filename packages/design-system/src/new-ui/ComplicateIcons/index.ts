@@ -1,4 +1,5 @@
 import { Doc } from "./Doc";
+import { GitHub } from "./GitHub";
 import { ImageToImage } from "./ImageToImage";
 import { ImageToText } from "./ImageToText";
 import { Number } from "./Number";
@@ -10,6 +11,7 @@ import { Drag } from "./Drag";
 
 export const ComplicateIcons = {
   Doc,
+  GitHub,
   ImageToImage,
   ImageToText,
   Number,

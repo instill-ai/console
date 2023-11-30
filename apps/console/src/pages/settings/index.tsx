@@ -1,17 +1,8 @@
 import * as React from "react";
-import {
-  ConsoleCorePageHead,
-  ProfileSidebar,
-  Sidebar,
-  Topbar,
-} from "../../components";
-import {
-  PageBase,
-  ProfileTab,
-  BreadcrumbWithLink
-} from "@instill-ai/toolkit";
+import { ConsoleCorePageHead, ProfileSidebar, Topbar } from "../../components";
+import { PageBase, ProfileTab, BreadcrumbWithLink } from "@instill-ai/toolkit";
 
-import {  Logo } from "@instill-ai/design-system";
+import { Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "../../lib/useAccessToken";
 import { useTrackToken } from "../../lib/useTrackToken";

@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  ConsoleCorePageHead,
-  ProfileSidebar,
-  Sidebar,
-  Topbar,
-} from "../../components";
+import { ConsoleCorePageHead, ProfileSidebar, Topbar } from "../../components";
 import { PageBase, BreadcrumbWithLink } from "@instill-ai/toolkit";
 
 import { Logo } from "@instill-ai/design-system";
