@@ -38,11 +38,6 @@ export const TextareaField = ({
                 // out design-token, so we need to use the hex value
                 // here
                 className="nodrag !resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                  }
-                }}
               />
             </Form.Control>
             <Form.Description className="!text-xs" text={description} />
