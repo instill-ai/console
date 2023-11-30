@@ -8,6 +8,7 @@ import {
   Nullable,
   getHumanReadableStringFromTime,
   useInstillStore,
+  useUserPipeline,
 } from "../../../lib";
 import {
   checkIsValidPosition,
@@ -17,6 +18,7 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
+import { useRouter } from "next/router";
 
 export type BottomBarProps = {
   enableQuery: boolean;
@@ -52,6 +54,17 @@ export const BottomBar = (props: BottomBarProps) => {
     enableQuery: pipelineIsNew ? false : enableQuery,
   });
 
+  const router = useRouter();
+
+  const { id, entity } = router.query;
+
+  const pipeline = useUserPipeline({
+    enabled: enableQuery && !!id && !pipelineIsNew,
+    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    accessToken,
+    retry: false,
+  });
+
   return (
     <div className="flex h-[var(--pipeline-builder-bottom-bar-height)] w-full flex-shrink-0 flex-row">
       <Popover.Root>
@@ -82,7 +95,45 @@ export const BottomBar = (props: BottomBarProps) => {
                   id="latest"
                   currentVersion={currentVersion}
                   onClick={() => {
+                    if (!pipeline.isSuccess) {
+                      return;
+                    }
+
                     updateCurrentVersion(() => "latest");
+
+                    let newNodes: Node<NodeData>[] = [];
+                    let newEdges: Edge[] = [];
+
+                    if (
+                      checkIsValidPosition(
+                        pipeline.data.recipe,
+                        pipeline.data.metadata ?? null
+                      )
+                    ) {
+                      const { nodes, edges } = createInitialGraphData(
+                        pipeline.data.recipe,
+                        {
+                          metadata: pipeline.data.metadata,
+                        }
+                      );
+                      newNodes = nodes;
+                      newEdges = edges;
+                    } else {
+                      const { nodes, edges } = createInitialGraphData(
+                        pipeline.data.recipe
+                      );
+                      newNodes = nodes;
+                      newEdges = edges;
+                    }
+
+                    createGraphLayout(newNodes, newEdges)
+                      .then((graphData) => {
+                        updateNodes(() => graphData.nodes);
+                        updateEdges(() => graphData.edges);
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
                   }}
                 />
                 {sortedReleases.map((release) => (
@@ -101,21 +152,21 @@ export const BottomBar = (props: BottomBarProps) => {
 
                       if (
                         checkIsValidPosition(
-                          sortedReleases[0].recipe,
-                          sortedReleases[0].metadata ?? null
+                          release.recipe,
+                          release.metadata ?? null
                         )
                       ) {
                         const { nodes, edges } = createInitialGraphData(
-                          sortedReleases[0].recipe,
+                          release.recipe,
                           {
-                            metadata: sortedReleases[0].metadata,
+                            metadata: release.metadata,
                           }
                         );
                         newNodes = nodes;
                         newEdges = edges;
                       } else {
                         const { nodes, edges } = createInitialGraphData(
-                          sortedReleases[0].recipe
+                          release.recipe
                         );
                         newNodes = nodes;
                         newEdges = edges;

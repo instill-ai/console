@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ConnectorNodeFieldRoot, EndNodeFieldRoot } from "./FieldRoot";
+import { FieldRoot } from "./FieldRoot";
 import { Nullable } from "../../../type";
 
 export type ObjectArrayFieldProps = {
@@ -10,19 +10,11 @@ export type ObjectArrayFieldProps = {
 };
 
 export const ObjectArrayField = (props: ObjectArrayFieldProps) => {
-  const { nodeType, title, children, hideField } = props;
-
-  if (nodeType === "connector") {
-    return (
-      <ConnectorNodeFieldRoot title={title} fieldKey={`${title}-field`}>
-        {!hideField ? children : null}
-      </ConnectorNodeFieldRoot>
-    );
-  }
+  const { title, children, hideField } = props;
 
   return (
-    <EndNodeFieldRoot title={title} key={`${title}-field`}>
-      {!hideField ? children : null}{" "}
-    </EndNodeFieldRoot>
+    <FieldRoot title={title} fieldKey={`${title}-field`}>
+      {!hideField ? children : null}
+    </FieldRoot>
   );
 };

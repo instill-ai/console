@@ -54,7 +54,7 @@ export const SelectPipelineComponentDefinitionDialog = (
             disabled={disabled}
             className="gap-x-2"
             variant="primary"
-            size="md"
+            size="lg"
           >
             <Icons.Plus
               className={cn(

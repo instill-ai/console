@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.74.0-rc.10",
+  "version": "0.74.1",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -102,6 +102,7 @@
     "fuse.js": "^6.6.2",
     "immer": "^9.0.19",
     "lodash.isequal": "^4.5.0",
+    "markdown-to-jsx": "^7.3.2",
     "prosemirror-markdown": "^1.11.2",
     "prosemirror-model": "^1.19.3",
     "react-hook-form": "^7.45.0",

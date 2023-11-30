@@ -323,11 +323,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
           id="destination-id"
           label="ID"
           key="id"
-          description={
-            "Pick a name to help you identify this connector. The ID conforms to RFC-1034, " +
-            "which restricts to letters, numbers, and hyphen, with the first character a letter," +
-            "the last a letter or a number, and a 63 character maximum."
-          }
+          description="Pick a ID to help you identify this resource. It should be lowercase without any space or special character besides the underscore or hyphen, it can not start with number or hyphen, and should be less than 32 characters."
           required={true}
           disabled={dataResource ? true : disabledAll ? disabledAll : false}
           value={fieldValues ? (fieldValues.id as string) ?? null : null}

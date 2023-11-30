@@ -18,18 +18,13 @@ export const ObjectViewer = ({ value }: { value: Nullable<string> }) => {
       <style jsx>{`
         .cm-gutters {
           border-radius: 8px 0 0 8px;
-          width: 20px;
-        }
-        .cm-gutter {
-          width: 20px;
+          background-color: #1b1f27 !important;
         }
         .cm-editor {
           border-radius: 8px;
         }
-        .cm-gutterElement {
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
+        .cm-content {
+          background-color: #0a0d14 !important;
         }
       `}</style>
       <ReactCodeMirror
@@ -41,7 +36,7 @@ export const ObjectViewer = ({ value }: { value: Nullable<string> }) => {
         basicSetup={{
           highlightActiveLineGutter: false,
           highlightActiveLine: false,
-          lineNumbers: false,
+          lineNumbers: true,
         }}
       />
     </React.Fragment>

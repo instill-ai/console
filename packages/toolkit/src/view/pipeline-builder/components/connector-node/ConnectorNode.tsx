@@ -49,6 +49,8 @@ const selector = (store: InstillStore) => ({
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+
+  currentVersion: store.currentVersion,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -63,6 +65,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
     updateCurrentAdvancedConfigurationNodeID,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -265,6 +268,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       enableSmartHint: true,
       checkIsHidden,
       componentID: data.component.id,
+      disabledAll: currentVersion !== "latest",
     }
   );
 
@@ -279,7 +283,26 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   });
 
   const bottomBarInformation = React.useMemo(() => {
-    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+    if (
+      !testModeTriggerResponse ||
+      !testModeTriggerResponse.metadata ||
+      !testModeTriggerResponse.metadata.traces ||
+      !testModeTriggerResponse.metadata.traces[id] ||
+      !testModeTriggerResponse.metadata.traces[id].outputs ||
+      testModeTriggerResponse.metadata.traces[id].outputs.length === 0
+    ) {
+      if (isOpenBottomBarOutput) {
+        return (
+          <div className="w-full">
+            <ObjectViewer value="" />
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    const value = testModeTriggerResponse.metadata.traces[id].outputs[0];
 
     if (isOpenBottomBarOutput) {
       return (
@@ -335,14 +358,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         </div>
         <ConnectorOperatorControlPanel
           componentType={data.component.type}
-          handleEditNode={() =>
-            updateSelectedConnectorNodeId((prev) => {
-              if (prev === id) {
-                return null;
-              }
-              return id;
-            })
-          }
           handleCopyNode={handleCopyNode}
           handleDeleteNode={handleDeleteNode}
           nodeIsCollapsed={nodeIsCollapsed}
@@ -469,7 +484,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           data.component.definition_name !== "connector-definitions/pinecone" &&
           data.component.definition_name !== "connector-definitions/gcs" &&
           data.component.definition_name !==
-            "connector-definitions/google-search" ? (
+            "connector-definitions/google-search" &&
+          data.component.definition_name !== "connector-definitions/redis" &&
+          data.component.definition_name !== "connector-definitions/website" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data.component}

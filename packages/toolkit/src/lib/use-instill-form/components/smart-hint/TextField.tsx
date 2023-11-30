@@ -21,6 +21,7 @@ import { AutoFormFieldBaseProps, SmartHintWarning } from "../../type";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 
 export const TextField = ({
+  fieldKey,
   form,
   path,
   title,
@@ -34,6 +35,7 @@ export const TextField = ({
   size,
   isHidden,
 }: {
+  fieldKey: Nullable<string>;
   instillAcceptFormats: string[];
   shortDescription?: string;
   disabled?: boolean;
@@ -211,6 +213,7 @@ export const TextField = ({
                 {supportReference || supportTemplate ? (
                   <React.Fragment>
                     <SmartHintInfoCard
+                      fieldKey={fieldKey}
                       title={title}
                       instillAcceptFormats={instillAcceptFormats}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
@@ -238,6 +241,7 @@ export const TextField = ({
                   </React.Fragment>
                 ) : (
                   <SmartHintInfoCard
+                    fieldKey={fieldKey}
                     title={title}
                     instillAcceptFormats={instillAcceptFormats}
                     error={error}

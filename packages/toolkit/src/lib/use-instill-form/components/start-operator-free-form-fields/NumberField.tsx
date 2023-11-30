@@ -21,7 +21,7 @@ export const NumberField = ({
       name={path}
       render={({ field }) => {
         return (
-          <Form.Item>
+          <Form.Item className="w-full">
             <FieldHead
               form={form}
               title={title}

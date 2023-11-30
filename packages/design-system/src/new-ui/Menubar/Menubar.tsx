@@ -22,7 +22,7 @@ const MenubarRoot = React.forwardRef<
   <MenubarPrimitive.Root
     ref={ref}
     className={cn(
-      "flex h-9 items-center space-x-1 rounded border bg-semantic-bg-primary p-1 shadow-sm",
+      "flex items-center space-x-1 rounded border bg-semantic-bg-primary p-1 shadow-sm",
       className
     )}
     {...props}
@@ -37,11 +37,11 @@ const MenubarTrigger = React.forwardRef<
   <MenubarPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded px-3 py-1 text-semantic-fg-primary outline-none product-body-text-3-medium",
+      "flex cursor-default select-none items-center rounded px-3 py-2 text-semantic-fg-secondary outline-none product-button-button-2",
       "data-[state=open]:bg-semantic-accent-bg data-[state=open]:text-semantic-accent-on-bg",
       "focus:bg-semantic-accent-bg focus:text-semantic-accent-on-bg",
-      "hover:bg-semantic-accent-bg hover:text-semantic-accent-on-bg",
-      "disabled:pointer-events-none disabled:bg-semantic-bg-base-bg disabled:text-semantic-fg-secondary disabled:hover:!bg-semantic-bg-primary disabled:hover:!text-semantic-fg-primary",
+      "hover:bg-[#f5f5f5] hover:text-semantic-fg-primary",
+      "disabled:pointer-events-none disabled:text-[#bfbfbf] disabled:hover:!bg-semantic-bg-primary disabled:hover:!text-semantic-fg-primary",
       className
     )}
     {...props}

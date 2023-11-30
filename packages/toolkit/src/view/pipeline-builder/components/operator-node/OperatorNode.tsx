@@ -269,7 +269,25 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     React.useState(false);
 
   const bottomBarInformation = React.useMemo(() => {
-    const value = testModeTriggerResponse?.metadata.traces[id].outputs[0];
+    if (
+      !testModeTriggerResponse ||
+      !testModeTriggerResponse.metadata ||
+      !testModeTriggerResponse.metadata.traces ||
+      !testModeTriggerResponse.metadata.traces[id] ||
+      !testModeTriggerResponse.metadata.traces[id].outputs ||
+      testModeTriggerResponse.metadata.traces[id].outputs.length === 0
+    ) {
+      if (isOpenBottomBarOutput) {
+        return (
+          <div className="w-full">
+            <ObjectViewer value="" />
+          </div>
+        );
+      }
+      return null;
+    }
+
+    const value = testModeTriggerResponse.metadata.traces[id].outputs[0];
 
     if (isOpenBottomBarOutput) {
       return (
@@ -325,14 +343,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         </div>
         <ConnectorOperatorControlPanel
           componentType={data.component.type}
-          handleEditNode={() =>
-            updateSelectedConnectorNodeId((prev) => {
-              if (prev === id) {
-                return null;
-              }
-              return id;
-            })
-          }
           handleCopyNode={handleCopyNode}
           handleDeleteNode={handleDeleteNode}
           nodeIsCollapsed={nodeIsCollapsed}

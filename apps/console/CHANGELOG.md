@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.33.1-alpha](https://github.com/instill-ai/console/compare/v0.33.0-alpha...v0.33.1-alpha) (2023-11-30)
+
+
+### Bug Fixes
+
+* fix codemirror intervene with each other can cause performance issue ([#755](https://github.com/instill-ai/console/issues/755)) ([3f3e5d7](https://github.com/instill-ai/console/commit/3f3e5d719dfe600b924f273745708c14fd174bb8))
+
+## [0.33.0-alpha](https://github.com/instill-ai/console/compare/v0.32.1-alpha...v0.33.0-alpha) (2023-11-28)
+
+
+### Features
+
+* adapt new connectors breaking changes, replace connector-resources with connectors ([#725](https://github.com/instill-ai/console/issues/725)) ([1393a8b](https://github.com/instill-ai/console/commit/1393a8bc6a3e4a59972acf30c32ab20670d84f3c))
+* **pipeline-builder:** user can edit important field on operator node ([#717](https://github.com/instill-ai/console/issues/717)) ([6e7cbc0](https://github.com/instill-ai/console/commit/6e7cbc0fbae62cbf528de92232ac5cb42ef73008))
+* **pipeline-builder:** user can have much explicit field design on start operator ([#706](https://github.com/instill-ai/console/issues/706)) ([2f52205](https://github.com/instill-ai/console/commit/2f5220541d1e0fc9877355ca674e279b932f8975))
+* **pipeline-builder:** Users can add note on component to describe it ([#701](https://github.com/instill-ai/console/issues/701)) ([8fad333](https://github.com/instill-ai/console/commit/8fad33395250b52dfc3e966f6eec31882d8fc5e0))
+
+
+### Bug Fixes
+
+* **docker:** fix docker hostname issue ([#698](https://github.com/instill-ai/console/issues/698)) ([a966f3c](https://github.com/instill-ai/console/commit/a966f3c007cee52ba6c0f594a011600c17e6f6ef))
+
 ## [0.32.1-alpha](https://github.com/instill-ai/console/compare/v0.32.0-alpha...v0.32.1-alpha) (2023-11-15)
 
 
