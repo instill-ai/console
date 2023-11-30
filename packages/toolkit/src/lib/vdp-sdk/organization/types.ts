@@ -1,3 +1,5 @@
+import { Nullable } from "../../type";
+
 export type Organization = {
   name: string;
   uid: string;
@@ -6,4 +8,6 @@ export type Organization = {
   update_time: string;
   org_name: string;
   customer_id: string;
+  profile_avatar: Nullable<string>;
+  profile_data: Nullable<object>;
 };
