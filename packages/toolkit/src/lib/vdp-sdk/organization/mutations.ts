@@ -34,6 +34,10 @@ export async function createOrganizationMutation({
   }
 }
 
+export type UpdateOrganizationResponse = {
+  organization: Organization;
+};
+
 export async function updateOrganizationMutation({
   payload,
   accessToken,
@@ -46,12 +50,12 @@ export async function updateOrganizationMutation({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.post<CreateOrganizationResponse>(
+    const { data } = await client.post<UpdateOrganizationResponse>(
       `/organizations/${organizationName}`,
       payload
     );
 
-    return Promise.resolve(data);
+    return Promise.resolve(data.organization);
   } catch (err) {
     return Promise.reject(err);
   }
