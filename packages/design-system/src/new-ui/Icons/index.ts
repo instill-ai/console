@@ -59,6 +59,7 @@ import { LayersTwo01 } from "./LayersTwo01";
 import { Lightning01 } from "./Lightning01";
 import { Model } from "./Model";
 import { PauseCircle } from "./PauseCircle";
+import { MasterCard } from "./MasterCard";
 import { Menu01 } from "./Menu01";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
@@ -153,6 +154,7 @@ export const Icons = {
   Lightning01,
   Model,
   PauseCircle,
+  MasterCard,
   Menu01,
   Minus,
   Mail01,
