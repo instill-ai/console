@@ -59,6 +59,7 @@ import { LayersTwo01 } from "./LayersTwo01";
 import { Lightning01 } from "./Lightning01";
 import { Model } from "./Model";
 import { PauseCircle } from "./PauseCircle";
+import { MasterCard } from "./MasterCard";
 import { Menu01 } from "./Menu01";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
@@ -88,6 +89,7 @@ import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { VideoRecorder } from "./VideoRecorder";
+import { Visa } from "./Visa";
 import { X } from "./X";
 
 export const Icons = {
@@ -152,6 +154,7 @@ export const Icons = {
   Lightning01,
   Model,
   PauseCircle,
+  MasterCard,
   Menu01,
   Minus,
   Mail01,
@@ -181,5 +184,6 @@ export const Icons = {
   User01,
   User02,
   VideoRecorder,
+  Visa,
   X,
 };
