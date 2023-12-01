@@ -2,7 +2,7 @@ import cn from "clsx";
 import Link from "next/link";
 import { ReactElement } from "react";
 
-export type SidebarLinkProps = {
+export type TopbarLinkProps = {
   href: string;
   className?: string;
   icon: ReactElement;
@@ -10,23 +10,22 @@ export type SidebarLinkProps = {
   hightlighted: boolean;
 };
 
-export const SidebarLink = (props: SidebarLinkProps) => {
+export const TopbarLink = (props: TopbarLinkProps) => {
   const { href, className, icon, name, hightlighted } = props;
   return (
     <Link
       href={href}
       className={cn(
-        "flex min-w-[280px] flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg",
+        "flex flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg",
         {
-          "!border-semantic-accent-default border-opacity-100 bg-semantic-accent-bg":
-            hightlighted,
+          "border-opacity-100 bg-semantic-accent-bg": hightlighted,
         },
         className
       )}
     >
       <div className="flex flex-row items-center space-x-3">
         {icon}
-        <h4 className="text-semantic-fg-primary product-body-text-2-semibold">
+        <h4 className="text-semantic-fg-primary product-button-button-1">
           {name}
         </h4>
       </div>

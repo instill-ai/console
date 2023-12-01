@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Logo } from "@instill-ai/design-system";
-import { PageBase, PageTitle, Topbar } from "@instill-ai/toolkit";
+import { PageBase, PageTitle } from "@instill-ai/toolkit";
 
 import { NextPageWithLayout } from "./_app";
-import { OnboardingForm, Sidebar, ConsoleCorePageHead } from "../components";
+import { OnboardingForm, Topbar, ConsoleCorePageHead } from "../components";
 
 const OnBoardingPage: NextPageWithLayout = () => {
   return (
@@ -26,7 +26,6 @@ OnBoardingPage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>

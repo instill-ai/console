@@ -1,6 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ApiToken, Nullable, formatDate } from "../../../lib";
-import { SortIcon, TableError } from "../../../components";
+import {
+  ApiToken,
+  Nullable,
+  formatDate,
+  parseTriggerStatusLabel,
+} from "../../../lib";
+import { GeneralStateCell, SortIcon, TableError } from "../../../components";
 import { DeleteAPITokenDialog } from "./DeleteAPITokenDialog";
 import { Button, DataTable } from "@instill-ai/design-system";
 import { APITokenNameCell } from "./APITokenNameCell";
@@ -16,8 +21,24 @@ export const APITokenTable = (props: APITokenTableProps) => {
   const { accessToken, isError, isLoading, tokens } = props;
   const columns: ColumnDef<ApiToken>[] = [
     {
+      accessorKey: "state",
+      header: () => <div className="min-w-[180px] text-left">Status</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-left">
+            <GeneralStateCell
+              width={null}
+              state={row.getValue("state")}
+              padding="py-2"
+              label={parseTriggerStatusLabel(row.getValue("state"))}
+            />
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "id",
-      header: () => <div className="text-left min-w-[480px]">Tokens</div>,
+      header: () => <div className="min-w-[480px] text-left">Tokens</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -53,6 +74,34 @@ export const APITokenTable = (props: APITokenTableProps) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
             {formatDate(row.getValue("create_time"))}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "expire_time",
+      header: ({ column }) => {
+        return (
+          <div className="text-center">
+            <Button
+              className="gap-x-2 py-0"
+              variant="tertiaryGrey"
+              size="sm"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              <span className="min-w-[130px]">Expire Time</span>
+              <SortIcon type={column.getIsSorted()} />
+            </Button>
+          </div>
+        );
+      },
+
+      cell: ({ row }) => {
+        return (
+          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {formatDate(row.getValue("expire_time"))}
           </div>
         );
       },
@@ -104,8 +153,8 @@ export const APITokenTable = (props: APITokenTableProps) => {
         primaryText="Tokens"
         secondaryText="Check your tokens"
       >
-        <div className="min-h-[300px] flex items-center justify-center">
-          <p className="product-body-text-3-regular text-semantic-fg-primary">
+        <div className="flex min-h-[300px] items-center justify-center">
+          <p className="text-semantic-fg-primary product-body-text-3-regular">
             Create your API token
           </p>
         </div>

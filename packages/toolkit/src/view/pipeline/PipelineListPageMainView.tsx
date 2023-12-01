@@ -63,7 +63,7 @@ export const PipelineListPageMainView = (
 
   return (
     <div className="flex flex-col">
-      <div className="mb-14">
+      <div className="mb-8">
         <Button
           className="gap-x-2"
           variant="primary"

@@ -4,14 +4,13 @@ import {
   useUserModelReadme,
   ModelHubSettingPageMainView,
   PageBase,
-  Topbar,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import {
   ModelReadmeMarkdown,
-  Sidebar,
   ConsoleCorePageHead,
+  Topbar,
 } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
@@ -55,7 +54,6 @@ ModelDetailsPage.getLayout = (page) => {
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <Sidebar />
         <PageBase.Content>{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>

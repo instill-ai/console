@@ -45,4 +45,5 @@ export const Drag = React.forwardRef<
     </ComplicateIconBase>
   );
 });
+
 Drag.displayName = "DragIcon";
