@@ -1,6 +1,6 @@
 export * from "./AutoresizeInput";
 export * from "./Breadcrumb";
-export * from "./BreadcrumbWithLink";
+export * from "./breadcrumb-with-link";
 export * from "./CopyToClipboardButton";
 export * from "./CodeBlock";
 export * from "./IconWithBackground";
@@ -23,5 +23,4 @@ export * from "./PageHead";
 export * from "./PageTitle";
 export * from "./cells";
 export * from "./TableError";
-export * from "./Topbar";
 export * from "./WarnUnsavedChangesModal";

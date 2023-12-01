@@ -27,6 +27,7 @@ export const useOrganizations = ({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,
         accessToken,
+        filter: null,
       });
 
       return Promise.resolve(tokens);

@@ -12,10 +12,12 @@ export async function listOrganizationsQuery({
   pageSize,
   nextPageToken,
   accessToken,
+  filter,
 }: {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
+  filter: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
@@ -25,7 +27,7 @@ export async function listOrganizationsQuery({
       baseURL: "/organizations",
       pageSize,
       nextPageToken,
-      filter: null,
+      filter,
     });
 
     const { data } = await client.get<ListOrganizationsResponse>(queryString);
@@ -38,6 +40,7 @@ export async function listOrganizationsQuery({
           pageSize,
           accessToken,
           nextPageToken: data.next_page_token,
+          filter,
         }))
       );
     }
