@@ -88,6 +88,7 @@ import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { VideoRecorder } from "./VideoRecorder";
+import { Visa } from "./Visa";
 import { X } from "./X";
 
 export const Icons = {
@@ -181,5 +182,6 @@ export const Icons = {
   User01,
   User02,
   VideoRecorder,
+  Visa,
   X,
 };
