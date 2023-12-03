@@ -101,7 +101,14 @@ export type SmartHintSlice = {
   updateSmartHints: (fn: (prev: SmartHint[]) => SmartHint[]) => void;
 };
 
-export type InstillStore = SmartHintSlice & PipelineBuilderSlice;
+export type GeneralSlice = {
+  accessToken: Nullable<string>;
+  updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
+  enabledQuery: boolean;
+  updateEnabledQuery: (fn: (prev: boolean) => boolean) => void;
+};
+
+export type InstillStore = SmartHintSlice & PipelineBuilderSlice & GeneralSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

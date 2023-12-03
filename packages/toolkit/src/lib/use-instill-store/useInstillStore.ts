@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { InstillStore } from "./types";
 import { createSmartHintSlice } from "./smartHintSlice";
 import { createPipelineBuilderSlice } from "./pipelineBuilderSlice";
+import { createGeneralSlice } from "./generalSlice";
 import { devtools, subscribeWithSelector } from "zustand/middleware";
 
 export const useInstillStore = create<InstillStore>()(
@@ -9,6 +10,7 @@ export const useInstillStore = create<InstillStore>()(
     devtools((...a) => ({
       ...createSmartHintSlice(...a),
       ...createPipelineBuilderSlice(...a),
+      ...createGeneralSlice(...a),
     }))
   )
 );
