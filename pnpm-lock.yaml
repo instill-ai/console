@@ -753,6 +753,9 @@ importers:
       lodash.isequal:
         specifier: ^4.5.0
         version: 4.5.0
+      markdown-it:
+        specifier: ^13.0.2
+        version: 13.0.2
       markdown-to-jsx:
         specifier: ^7.3.2
         version: 7.3.2(react@18.2.0)
@@ -808,6 +811,9 @@ importers:
       '@types/json-schema':
         specifier: ^7.0.14
         version: 7.0.14
+      '@types/markdown-it':
+        specifier: ^13.0.7
+        version: 13.0.7
       '@types/node':
         specifier: ^18.14.1
         version: 18.18.6
@@ -8375,6 +8381,10 @@ packages:
       '@types/node': 20.5.1
     dev: true
 
+  /@types/linkify-it@3.0.5:
+    resolution: {integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==}
+    dev: true
+
   /@types/lodash.isequal@4.5.8:
     resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}
     dependencies:
@@ -8384,11 +8394,22 @@ packages:
   /@types/lodash@4.14.200:
     resolution: {integrity: sha512-YI/M/4HRImtNf3pJgbF+W6FrXovqj+T+/HpENLTooK9PnkacBsDpeP3IpHab40CClUfhNmdM2WTNP2sa2dni5Q==}
 
+  /@types/markdown-it@13.0.7:
+    resolution: {integrity: sha512-U/CBi2YUUcTHBt5tjO2r5QV/x0Po6nsYwQU4Y04fBS6vfoImaiZ6f8bi3CjTCxBPQSO1LMyUqkByzi8AidyxfA==}
+    dependencies:
+      '@types/linkify-it': 3.0.5
+      '@types/mdurl': 1.0.5
+    dev: true
+
   /@types/mdast@3.0.14:
     resolution: {integrity: sha512-gVZ04PGgw1qLZKsnWnyFv4ORnaJ+DXLdHTVSFbU8yX6xZ34Bjg4Q32yPkmveUP1yItXReKfB0Aknlh/3zxTKAw==}
     dependencies:
       '@types/unist': 2.0.9
     dev: false
+
+  /@types/mdurl@1.0.5:
+    resolution: {integrity: sha512-6L6VymKTzYSrEf4Nev4Xa1LCHKrlTlYCBMTlQKFuddo1CvQcE52I0mwfOJayueUC7MJuXOeHTcIU683lzd0cUA==}
+    dev: true
 
   /@types/mdx@2.0.9:
     resolution: {integrity: sha512-OKMdj17y8Cs+k1r0XFyp59ChSOwf8ODGtMQ4mnpfz5eFDk1aO41yN3pSKGuvVzmWAkFp37seubY1tzOVpwfWwg==}
