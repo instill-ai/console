@@ -8,7 +8,7 @@ import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
-const PipelinePage: NextPageWithLayout = () => {
+const PipelinesPage: NextPageWithLayout = () => {
   const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
@@ -25,7 +25,7 @@ const PipelinePage: NextPageWithLayout = () => {
   );
 };
 
-PipelinePage.getLayout = (page) => {
+PipelinesPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
@@ -36,4 +36,4 @@ PipelinePage.getLayout = (page) => {
   );
 };
 
-export default PipelinePage;
+export default PipelinesPage;

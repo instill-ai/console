@@ -9,7 +9,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import { LoadingSpin, env, useUser } from "@instill-ai/toolkit";
+import { env, useUser } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 
 export type TopbarProps = {

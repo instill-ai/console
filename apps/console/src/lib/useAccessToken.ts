@@ -1,10 +1,27 @@
-import { authValidateTokenAction, useQuery } from "@instill-ai/toolkit";
+import * as React from "react";
+import {
+  InstillStore,
+  authValidateTokenAction,
+  useInstillStore,
+  useQuery,
+  useShallow,
+} from "@instill-ai/toolkit";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+const selector = (store: InstillStore) => ({
+  updateAccessToken: store.updateAccessToken,
+  updateEnabledQuery: store.updateEnabledQuery,
+});
+
 export function useAccessToken() {
   const router = useRouter();
-  return useQuery(
+
+  const { updateAccessToken, updateEnabledQuery } = useInstillStore(
+    useShallow(selector)
+  );
+
+  const query = useQuery(
     ["accessToken"],
     async (): Promise<string> => {
       const { data } = await axios.post("/api/get-user-cookie", {
@@ -38,4 +55,15 @@ export function useAccessToken() {
       refetchOnWindowFocus: false,
     }
   );
+
+  React.useEffect(() => {
+    if (!query.isSuccess || !query.data) {
+      return;
+    }
+
+    updateAccessToken(() => query.data);
+    updateEnabledQuery(() => true);
+  }, [query.isSuccess, query.data]);
+
+  return query;
 }

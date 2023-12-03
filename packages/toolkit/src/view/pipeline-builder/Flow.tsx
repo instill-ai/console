@@ -9,14 +9,7 @@ import {
   ReactFlowInstance,
 } from "reactflow";
 
-import {
-  CustomEdge,
-  ConnectorNode,
-  EmptyNode,
-  EndOperatorNode,
-  StartOperatorNode,
-  BackToLatestVersionTopBar,
-} from "./components";
+import { BackToLatestVersionTopBar } from "./components";
 import { FlowControl } from "./FlowControl";
 
 import {
@@ -25,7 +18,7 @@ import {
   Nullable,
   useInstillStore,
 } from "../../lib";
-import { OperatorNode } from "./components";
+import { edgeTypes, nodeTypes } from "./lib";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -49,18 +42,6 @@ export type FlowProps = {
   enableQuery: boolean;
   isLoading: boolean;
   appEnv: InstillAppEnv;
-};
-
-const nodeTypes = {
-  startNode: StartOperatorNode,
-  connectorNode: ConnectorNode,
-  emptyNode: EmptyNode,
-  endNode: EndOperatorNode,
-  operatorNode: OperatorNode,
-};
-
-const edgeTypes = {
-  customEdge: CustomEdge,
 };
 
 export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(

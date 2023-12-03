@@ -7,10 +7,10 @@ import {
   PageBase,
 } from "@instill-ai/toolkit";
 
-import { ConsoleCorePageHead, Topbar } from "../../../components";
-import { NextPageWithLayout } from "../../_app";
-import { useAccessToken } from "../../../lib/useAccessToken";
-import { useTrackToken } from "../../../lib/useTrackToken";
+import { ConsoleCorePageHead, Topbar } from "../../../../components";
+import { NextPageWithLayout } from "../../../_app";
+import { useAccessToken } from "../../../../lib/useAccessToken";
+import { useTrackToken } from "../../../../lib/useTrackToken";
 
 const PipelineBuilderPage: NextPageWithLayout = () => {
   const router = useRouter();

@@ -5,15 +5,15 @@ import { Nullable, useUserPipelineReleases } from "../../../lib";
 export function useSortedReleases({
   pipelineName,
   accessToken,
-  enableQuery,
+  enabledQuery,
 }: {
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
-  enableQuery: boolean;
+  enabledQuery: boolean;
 }) {
   const pipelineReleases = useUserPipelineReleases({
     pipelineName,
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
   });
 
