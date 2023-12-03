@@ -72,7 +72,7 @@ export const PipelineListPageMainView = (
             const randomName = generateRandomReadableName();
             setPipelineId(randomName);
             setPipelineName(`users/${entity}/pipelines/${randomName}`);
-            router.push(`/${entity}/pipelines/${randomName}`);
+            router.push(`/${entity}/pipelines/${randomName}/builder`);
             updatePipelineIsNew(() => true);
           }}
         >
