@@ -91,6 +91,7 @@
     "@tiptap/extension-ordered-list": "^2.1.12",
     "@tiptap/extension-paragraph": "^2.1.12",
     "@tiptap/extension-text": "^2.1.12",
+    "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.12",
     "@types/lodash.isequal": "^4.5.8",
     "@uiw/codemirror-theme-github": "^4.21.20",

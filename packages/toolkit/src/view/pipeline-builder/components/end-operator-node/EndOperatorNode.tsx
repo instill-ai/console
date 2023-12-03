@@ -39,6 +39,7 @@ const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
+  testModeTriggerResponse: store.testModeTriggerResponse,
 });
 
 const CreateEndOperatorInputSchema: InstillJSONSchema = {
@@ -119,6 +120,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     isOwner,
     currentVersion,
     isTriggeringPipeline,
+    testModeTriggerResponse,
   } = useInstillStore(useShallow(selector));
 
   const { form, fields, ValidatorSchema } = useInstillForm(
@@ -352,6 +354,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           componentID={data.component.id}
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
+          response={testModeTriggerResponse}
         />
       ) : (
         <div className="flex flex-col">

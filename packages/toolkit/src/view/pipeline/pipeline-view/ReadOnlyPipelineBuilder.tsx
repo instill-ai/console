@@ -5,14 +5,17 @@ import ReactFlow, {
   Node,
 } from "reactflow";
 import {
+  ConnectorNode,
+  CustomEdge,
+  EmptyNode,
+  EndOperatorNode,
   NodeData,
+  OperatorNode,
+  StartOperatorNode,
   createInitialGraphData,
-  edgeTypes,
-  nodeTypes,
 } from "../../pipeline-builder";
 import {
   InstillStore,
-  Nullable,
   useInstillStore,
   useShallow,
   useUserPipeline,
@@ -24,6 +27,18 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
+
+const nodeTypes = {
+  startNode: StartOperatorNode,
+  connectorNode: ConnectorNode,
+  emptyNode: EmptyNode,
+  endNode: EndOperatorNode,
+  operatorNode: OperatorNode,
+};
+
+const edgeTypes = {
+  customEdge: CustomEdge,
+};
 
 export const ReadOnlyPipelineBuilder = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -58,7 +73,7 @@ export const ReadOnlyPipelineBuilder = () => {
         fitView={true}
         fitViewOptions={{
           includeHiddenNodes: true,
-          maxZoom: 2,
+          maxZoom: 5,
           padding: 20,
         }}
         nodeTypes={nodeTypes}

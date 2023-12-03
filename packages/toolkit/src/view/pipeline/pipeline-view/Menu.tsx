@@ -2,27 +2,26 @@ import cn from "clsx";
 import * as React from "react";
 import { Nullable } from "../../../lib";
 
-type PipelineViewMenuContextValue = {
+type MenuContextValue = {
   selectedValue: Nullable<string>;
   setSelectedValue?: (value: Nullable<string>) => void;
 };
 
-const PipelineViewMenuContext =
-  React.createContext<PipelineViewMenuContextValue>({
-    selectedValue: null,
-  });
+const MenuContext = React.createContext<MenuContextValue>({
+  selectedValue: null,
+});
 
-const usePipelineViewMenuContext = () => {
-  const context = React.useContext(PipelineViewMenuContext);
+const useMenuContext = () => {
+  const context = React.useContext(MenuContext);
   if (context === undefined) {
     throw new Error(
-      "usePipelineViewMenuContext must be used within a PipelineViewMenuProvider"
+      "useMenuContext must be used within a PipelineViewMenuProvider"
     );
   }
   return context;
 };
 
-const PipelineViewMenuRoot = ({
+const MenuRoot = ({
   children,
   defaultValue,
 }: {
@@ -33,7 +32,7 @@ const PipelineViewMenuRoot = ({
     defaultValue ?? null
   );
 
-  const context: PipelineViewMenuContextValue = React.useMemo(
+  const context: MenuContextValue = React.useMemo(
     () => ({
       selectedValue,
       setSelectedValue: (value: Nullable<string>) => {
@@ -44,13 +43,13 @@ const PipelineViewMenuRoot = ({
   );
 
   return (
-    <PipelineViewMenuContext.Provider value={context}>
+    <MenuContext.Provider value={context}>
       <div className="flex h-8 flex-row gap-x-4">{children}</div>
-    </PipelineViewMenuContext.Provider>
+    </MenuContext.Provider>
   );
 };
 
-const PipelineViewMenuItem = (
+const MenuItem = (
   props: {
     children: React.ReactNode;
     value: string;
@@ -58,7 +57,7 @@ const PipelineViewMenuItem = (
 ) => {
   const { children, value, onClick, ...passThrough } = props;
 
-  const { selectedValue, setSelectedValue } = usePipelineViewMenuContext();
+  const { selectedValue, setSelectedValue } = useMenuContext();
 
   return (
     <button
@@ -86,7 +85,7 @@ const PipelineViewMenuItem = (
   );
 };
 
-export const PipelineViewMenu = {
-  Root: PipelineViewMenuRoot,
-  Item: PipelineViewMenuItem,
+export const Menu = {
+  Root: MenuRoot,
+  Item: MenuItem,
 };

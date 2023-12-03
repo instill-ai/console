@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useSortedReleases } from "../../pipeline-builder";
 import { Button, Icons, Tag } from "@instill-ai/design-system";
-import { PipelineViewMenu } from "./PipelineViewMenu";
+import { Menu } from "./Menu";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -9,7 +9,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const PipelineViewHead = () => {
+export const Head = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { id, entity } = router.query;
@@ -44,11 +44,9 @@ export const PipelineViewHead = () => {
 
       <div className="absolute bottom-0 left-0 right-0 flex flex-row px-24">
         <div className="mr-auto">
-          <PipelineViewMenu.Root defaultValue="overview">
-            <PipelineViewMenu.Item value="overview">
-              Overview
-            </PipelineViewMenu.Item>
-          </PipelineViewMenu.Root>
+          <Menu.Root defaultValue="overview">
+            <Menu.Item value="overview">Overview</Menu.Item>
+          </Menu.Root>
         </div>
         <div className="flex flex-row">
           <Button
@@ -58,6 +56,14 @@ export const PipelineViewHead = () => {
           >
             <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
             Clone
+          </Button>
+          <Button
+            size="sm"
+            variant="secondaryColour"
+            className="flex flex-row gap-x-2"
+            onClick={() => router.push(`/${entity}/pipelines/${id}/builder`)}
+          >
+            Build
           </Button>
         </div>
       </div>

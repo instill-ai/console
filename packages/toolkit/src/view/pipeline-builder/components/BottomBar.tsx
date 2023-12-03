@@ -51,7 +51,7 @@ export const BottomBar = (props: BottomBarProps) => {
   const sortedReleases = useSortedReleases({
     pipelineName,
     accessToken,
-    enableQuery: pipelineIsNew ? false : enableQuery,
+    enabledQuery: pipelineIsNew ? false : enableQuery,
   });
 
   const router = useRouter();

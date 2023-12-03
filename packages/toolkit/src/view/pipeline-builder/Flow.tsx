@@ -9,7 +9,15 @@ import {
   ReactFlowInstance,
 } from "reactflow";
 
-import { BackToLatestVersionTopBar } from "./components";
+import {
+  BackToLatestVersionTopBar,
+  ConnectorNode,
+  CustomEdge,
+  EmptyNode,
+  EndOperatorNode,
+  OperatorNode,
+  StartOperatorNode,
+} from "./components";
 import { FlowControl } from "./FlowControl";
 
 import {
@@ -18,7 +26,18 @@ import {
   Nullable,
   useInstillStore,
 } from "../../lib";
-import { edgeTypes, nodeTypes } from "./lib";
+
+const nodeTypes = {
+  startNode: StartOperatorNode,
+  connectorNode: ConnectorNode,
+  emptyNode: EmptyNode,
+  endNode: EndOperatorNode,
+  operatorNode: OperatorNode,
+};
+
+const edgeTypes = {
+  customEdge: CustomEdge,
+};
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

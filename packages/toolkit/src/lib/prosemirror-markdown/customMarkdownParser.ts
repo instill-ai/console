@@ -6,19 +6,19 @@ import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token";
 
 /// without inline HTML, and producing a document in the basic schema.
-export const defaultMarkdownParser = new MarkdownParser(
+export const customMarkdownParser = new MarkdownParser(
   schema,
   MarkdownIt("commonmark", { html: false }),
   {
     blockquote: { block: "blockquote" },
     paragraph: { block: "paragraph" },
-    list_item: { block: "listItem" },
+    list_item: { block: "list_item" },
     bullet_list: {
-      block: "bulletList",
+      block: "bullet_list",
       getAttrs: (_, tokens, i) => ({ tight: listIsTight(tokens, i) }),
     },
     ordered_list: {
-      block: "orderedList",
+      block: "ordered_list",
       getAttrs: (tok, tokens, i) => ({
         order: +tok.attrGet("start")! || 1,
         tight: listIsTight(tokens, i),
@@ -28,13 +28,13 @@ export const defaultMarkdownParser = new MarkdownParser(
       block: "heading",
       getAttrs: (tok) => ({ level: +tok.tag.slice(1) }),
     },
-    code_block: { block: "codeBlock", noCloseToken: true },
+    code_block: { block: "code_block", noCloseToken: true },
     fence: {
-      block: "codeBlock",
+      block: "code_block",
       getAttrs: (tok) => ({ params: tok.info || "" }),
       noCloseToken: true,
     },
-    hr: { node: "horizontalRule" },
+    hr: { node: "horizontal_rule" },
     image: {
       node: "image",
       getAttrs: (tok) => ({
@@ -43,7 +43,7 @@ export const defaultMarkdownParser = new MarkdownParser(
         alt: (tok.children![0] && tok.children![0].content) || null,
       }),
     },
-    hardbreak: { node: "hardBreak" },
+    hardbreak: { node: "hard_break" },
 
     em: { mark: "em" },
     strong: { mark: "strong" },

@@ -68,12 +68,13 @@ export const PipelineListPageMainView = (
           className="gap-x-2"
           variant="primary"
           size="lg"
-          onClick={() => {
+          onClick={async () => {
             const randomName = generateRandomReadableName();
             setPipelineId(randomName);
             setPipelineName(`users/${entity}/pipelines/${randomName}`);
-            router.push(`/${entity}/pipelines/${randomName}/builder`);
             updatePipelineIsNew(() => true);
+
+            await router.push(`/${entity}/pipelines/${randomName}/builder`);
           }}
         >
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />

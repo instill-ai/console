@@ -1,2 +1,2 @@
-export * from "./customMDSerializer";
-export * from "./customMDParser";
+export * from "./customMarkdownSerializer";
+export * from "./customMarkdownParser";
