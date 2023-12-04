@@ -1,6 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
-import { Organization } from "./types";
+import { Membership, Organization } from "./types";
 
 export type ListOrganizationsResponse = {
   organizations: Organization[];
@@ -70,6 +70,56 @@ export async function getOrganizationQuery({
     );
 
     return Promise.resolve(data.organization);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetOrganizationMembershipsResponse = {
+  memberships: Membership[];
+};
+
+export async function getOrganizationMemberships({
+  organizationName,
+  accessToken,
+}: {
+  organizationName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetOrganizationMembershipsResponse>(
+      `/organizations/${organizationName}/memberships`
+    );
+
+    return Promise.resolve(data.memberships);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetOrganizationMembershipResponse = {
+  membership: Membership;
+};
+
+export async function getOrganizationMembership({
+  organizationName,
+  userName,
+  accessToken,
+}: {
+  organizationName: string;
+  userName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetOrganizationMembershipResponse>(
+      `/organizations/${organizationName}/memberships/${userName}`
+    );
+
+    return Promise.resolve(data.membership);
   } catch (err) {
     return Promise.reject(err);
   }
