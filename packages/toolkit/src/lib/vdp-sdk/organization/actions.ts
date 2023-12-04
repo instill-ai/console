@@ -30,7 +30,7 @@ export async function acceptOrganizationMembershipAction({
 
     const { data } = await client.patch<MembershipResponse>(
       `/organizations/${payload.userName}/memberships/${payload.organizationName}`,
-      { ...payload, userName: null, organizationName: null }
+      { ...payload, userName: undefined, organizationName: undefined }
     );
 
     return Promise.resolve(data.membership);

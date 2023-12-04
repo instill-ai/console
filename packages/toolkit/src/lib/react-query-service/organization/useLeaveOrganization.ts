@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { leaveOrganizationMutation } from "../../vdp-sdk";
+import { Membership, leaveOrganizationMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useLeaveOrganization = () => {
@@ -25,6 +25,14 @@ export const useLeaveOrganization = () => {
       });
 
       return Promise.resolve(organizationName);
+    },
+    {
+      onSuccess: (data, { organizationName, userName }) => {
+        queryClient.setQueryData<Membership[]>(
+          ["organizations", organizationName, "memberships", userName],
+          (old) => (old ? old.filter((e) => e.user.name !== userName) : [])
+        );
+      },
     }
   );
 };

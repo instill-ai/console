@@ -1,10 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteOrganizationMutation,
-  Membership,
-  Organization,
-  removeOrganizationUserMutation,
-} from "../../vdp-sdk";
+import { Membership, removeOrganizationUserMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useRemoveOrganizationUser = () => {
@@ -32,9 +27,10 @@ export const useRemoveOrganizationUser = () => {
       return Promise.resolve(organizationName);
     },
     {
-      onSuccess: (userName) => {
-        queryClient.setQueryData<Membership[]>(["memberships"], (old) =>
-          old ? old.filter((e) => e.user.name !== userName) : []
+      onSuccess: (data, { organizationName, userName }) => {
+        queryClient.setQueryData<Membership[]>(
+          ["organizations", organizationName, "memberships"],
+          (old) => (old ? old.filter((e) => e.user.name !== userName) : [])
         );
       },
     }

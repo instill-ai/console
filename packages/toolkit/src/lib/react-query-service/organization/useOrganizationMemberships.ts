@@ -34,12 +34,12 @@ export const useOrganizationMemberships = ({
         return Promise.reject(new Error("Organization name not provided"));
       }
 
-      const model = await getOrganizationMemberships({
+      const membership = await getOrganizationMemberships({
         organizationName,
         accessToken,
       });
 
-      return Promise.resolve(model);
+      return Promise.resolve(membership);
     },
     {
       enabled: enableQuery,
