@@ -24,7 +24,7 @@ export const Readme = () => {
   const pipeline = useUserPipeline({
     pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && !!accessToken,
   });
 
   const editor = useEditor({

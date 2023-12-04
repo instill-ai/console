@@ -511,20 +511,18 @@ export const FlowControl = (props: FlowControlProps) => {
                   }}
                 >
                   Run
-                  <div className="my-auto flex pt-0.5">
-                    {isTriggeringPipeline ? (
-                      <LoadingSpin className="!text-semantic-accent-default" />
-                    ) : (
-                      <Icons.PlayCircle
-                        className={cn(
-                          "my-auto h-4 w-4",
-                          pipelineRecipeIsDirty
-                            ? "stroke-[#bfbfbf]"
-                            : "stroke-semantic-accent-default"
-                        )}
-                      />
-                    )}
-                  </div>
+                  {isTriggeringPipeline ? (
+                    <LoadingSpin className="my-auto !text-semantic-accent-default" />
+                  ) : (
+                    <Icons.PlayCircle
+                      className={cn(
+                        "my-auto h-4 w-4",
+                        pipelineRecipeIsDirty
+                          ? "stroke-[#bfbfbf]"
+                          : "stroke-semantic-accent-default"
+                      )}
+                    />
+                  )}
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
@@ -534,9 +532,7 @@ export const FlowControl = (props: FlowControlProps) => {
                   onClick={() => setToolKitIsOpen((prev) => !prev)}
                 >
                   Toolkit
-                  <div className="my-auto flex pt-0.5">
-                    <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
-                  </div>
+                  <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
@@ -570,7 +566,7 @@ export const FlowControl = (props: FlowControlProps) => {
                   }
                 >
                   Share
-                  <Icons.Share07 className="h-4 w-4 stroke-semantic-fg-primary" />
+                  <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
