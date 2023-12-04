@@ -1,6 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { Organization } from "./types";
+import { Membership, Organization, ROLE } from "./types";
 
 export type CreateOrganizationPayload = {
   id: string;
@@ -56,6 +56,60 @@ export async function updateOrganizationMutation({
     );
 
     return Promise.resolve(data.organization);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function deleteOrganizationMutation({
+  organizationName,
+  accessToken,
+}: {
+  organizationName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    await client.delete(`/organizations/${organizationName}`);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function removeOrganizationUserMutation({
+  organizationName,
+  userName,
+  accessToken,
+}: {
+  organizationName: string;
+  userName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    await client.delete(
+      `/organizations/${organizationName}/memberships/${userName}`
+    );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function leaveOrganizationMutation({
+  organizationName,
+  userName,
+  accessToken,
+}: {
+  organizationName: string;
+  userName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    await client.delete(`/users/${userName}/memberships/${organizationName}`);
   } catch (err) {
     return Promise.reject(err);
   }
