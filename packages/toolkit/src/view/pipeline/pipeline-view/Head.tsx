@@ -21,7 +21,7 @@ export const Head = () => {
   });
 
   return (
-    <div className="relative flex flex-col bg-semantic-accent-bg">
+    <div className="relative flex flex-col bg-semantic-bg-primary">
       <div className="flex flex-col gap-y-3 px-28 py-16">
         <div className="flex flex-row gap-x-3">
           <div className="h-6 w-6 rounded-full bg-semantic-bg-secondary" />
@@ -48,7 +48,7 @@ export const Head = () => {
             <Menu.Item value="overview">Overview</Menu.Item>
           </Menu.Root>
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row gap-x-2">
           <Button
             size="sm"
             variant="secondaryColour"

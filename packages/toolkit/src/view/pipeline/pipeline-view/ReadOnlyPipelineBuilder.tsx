@@ -74,6 +74,7 @@ export const ReadOnlyPipelineBuilder = () => {
         fitViewOptions={{
           includeHiddenNodes: true,
           maxZoom: 5,
+          minZoom: 0.3,
           padding: 20,
         }}
         nodeTypes={nodeTypes}

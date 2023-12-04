@@ -12,13 +12,14 @@ import {
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
-import { Form, useToast } from "@instill-ai/design-system";
+import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
 import {
   recursiveRemoveUndefinedAndNullFromArray,
   recursiveReplaceNullAndEmptyStringWithUndefined,
 } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
+import { LoadingSpin } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -31,6 +32,9 @@ export const InOutPut = () => {
   const { id, entity } = router.query;
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
+  const [isTriggering, setIsTriggering] = React.useState(false);
+
+  const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
   const { toast } = useToast();
 
@@ -69,6 +73,8 @@ export const InOutPut = () => {
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
     );
 
+    setIsTriggering(true);
+
     try {
       const data = await triggerPipeline.mutateAsync({
         pipelineName,
@@ -80,7 +86,9 @@ export const InOutPut = () => {
       });
 
       setResponse(data);
+      setIsTriggering(false);
     } catch (error) {
+      setIsTriggering(false);
       toastInstillError({
         title: "Something went wrong when trigger the pipeline",
         error,
@@ -107,7 +115,7 @@ export const InOutPut = () => {
         </div>
         <Form.Root {...form}>
           <form
-            id="start-operator-trigger-pipeline-form"
+            id={inOutPutFormID}
             className="w-full"
             onSubmit={form.handleSubmit(onTriggerPipeline)}
           >
@@ -115,7 +123,7 @@ export const InOutPut = () => {
           </form>
         </Form.Root>
       </div>
-      <div className="flex flex-col gap-y-6">
+      <div className="mb-6 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-secondary px-3 py-2 product-body-text-1-semibold">
           Output
         </div>
@@ -125,6 +133,22 @@ export const InOutPut = () => {
           nodeType="end"
           response={response}
         />
+      </div>
+      <div className="flex flex-row-reverse">
+        <Button
+          variant="secondaryColour"
+          size="md"
+          className="flex flex-row gap-x-2"
+          type="submit"
+          form={inOutPutFormID}
+        >
+          Run
+          {isTriggering ? (
+            <LoadingSpin className="!text-semantic-accent-default" />
+          ) : (
+            <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
+          )}
+        </Button>
       </div>
     </div>
   );
