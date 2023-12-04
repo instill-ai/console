@@ -7,11 +7,11 @@ import {
   BasicProgressMessageBox,
   BasicTextField,
   ProgressMessageBoxState,
-  SingleSelectOption,
   BasicSingleSelect,
   BasicToggleField,
   SolidButton,
   FormRoot,
+  SelectOption,
 } from "@instill-ai/design-system";
 
 import {
@@ -51,7 +51,7 @@ export const OnboardingForm = () => {
   });
 
   const [selectedRoleOption, setSelectedRoleOption] = useState<
-    Nullable<SingleSelectOption>
+    Nullable<SelectOption>
   >(mgmtRoleOptions.find((e) => e.value === fieldValues.role) || null);
 
   const [messageBoxState, setMessageBoxState] =
@@ -113,29 +113,26 @@ export const OnboardingForm = () => {
     []
   );
 
-  const handleRoleChange = useCallback(
-    (option: Nullable<SingleSelectOption>) => {
-      if (!option) return;
-      setSelectedRoleOption(option);
+  const handleRoleChange = useCallback((option: Nullable<SelectOption>) => {
+    if (!option) return;
+    setSelectedRoleOption(option);
 
-      let error: Nullable<string> = null;
+    let error: Nullable<string> = null;
 
-      if (!option.value) {
-        error = "Role is required";
-      }
+    if (!option.value) {
+      error = "Role is required";
+    }
 
-      setFieldErrors((prev) => ({
-        ...prev,
-        role: error,
-      }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      role: error,
+    }));
 
-      setFieldValues((prev) => ({
-        ...prev,
-        role: option.value as string,
-      }));
-    },
-    []
-  );
+    setFieldValues((prev) => ({
+      ...prev,
+      role: option.value as string,
+    }));
+  }, []);
 
   // Validate form and deal with error handling
 

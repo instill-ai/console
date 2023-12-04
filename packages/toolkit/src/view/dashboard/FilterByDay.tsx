@@ -1,15 +1,13 @@
 import cn from "clsx";
 import * as React from "react";
 import { useRouter } from "next/router";
-import { Button, Icons, SingleSelectOption } from "@instill-ai/design-system";
+import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
 import { dashboardOptions, env } from "../../lib";
 
 export type FilterProps = {
-  setSelectedTimeOption: React.Dispatch<
-    React.SetStateAction<SingleSelectOption>
-  >;
-  selectedTimeOption: SingleSelectOption;
+  setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
+  selectedTimeOption: SelectOption;
   refetch: () => void;
 };
 

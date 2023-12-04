@@ -1,4 +1,4 @@
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 import { Nullable, useUser } from "../../lib";
 import { ConfigureProfileForm } from "../mgmt";
 import { TabBase } from "./TabBase";
@@ -8,7 +8,7 @@ export type ProfileTabProps = {
   enableQuery: boolean;
 };
 
-export const mgmtRoleOptions: SingleSelectOption[] = [
+export const mgmtRoleOptions: SelectOption[] = [
   {
     label: "Manager",
     value: "manager",

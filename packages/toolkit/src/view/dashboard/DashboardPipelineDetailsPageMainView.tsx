@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
@@ -28,7 +28,7 @@ export const DashboardPipelineDetailsPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SingleSelectOption>({
+    React.useState<SelectOption>({
       label: "24h",
       value: "24h",
     });

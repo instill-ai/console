@@ -5,7 +5,7 @@ import React from "react";
 import { isAxiosError } from "axios";
 
 import {
-  SingleSelectOption,
+  SelectOption,
   Form,
   ProgressMessageBoxState,
   Input,
@@ -35,7 +35,7 @@ export const configureProfileFormFieldSchema = z.object({
 
 export type ConfigureProfileFormProps = {
   user: Nullable<User>;
-  roles: SingleSelectOption[];
+  roles: SelectOption[];
   onConfigure: Nullable<() => void>;
   accessToken: Nullable<string>;
 };

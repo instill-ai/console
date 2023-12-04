@@ -1,6 +1,6 @@
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 
-export const mgmtRoleOptions: SingleSelectOption[] = [
+export const mgmtRoleOptions: SelectOption[] = [
   {
     label: "Manager",
     value: "manager",

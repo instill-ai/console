@@ -14,6 +14,7 @@ export * from "./Label";
 export * from "./LinkButton";
 export * from "./Logos";
 export * from "./Menubar";
+export * from "./MultiSelect";
 export * from "./ParagraphWithHTML";
 export * from "./Popover";
 export * from "./Progress";

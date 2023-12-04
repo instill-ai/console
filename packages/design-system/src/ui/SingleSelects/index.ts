@@ -7,5 +7,3 @@ export type {
   BasicSingleSelectOmitKeys,
   BasicSingleSelectConfig,
 } from "./BasicSingleSelect";
-
-export type { SingleSelectOption } from "./SingleSelectBase";
