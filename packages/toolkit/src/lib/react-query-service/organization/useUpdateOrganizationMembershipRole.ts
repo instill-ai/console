@@ -3,7 +3,7 @@ import type { Nullable } from "../../type";
 import {
   UpdateOrganizationMembershipRolePayload,
   updateOrganizationMembershipRoleAction,
-} from "../../vdp-sdk/organization/actions";
+} from "../../vdp-sdk";
 
 export const useUpdateOrganizationMembershipRole = () => {
   const queryClient = useQueryClient();

@@ -3,7 +3,7 @@ import type { Nullable } from "../../type";
 import {
   AcceptOrganizationMembershipPayload,
   acceptOrganizationMembershipAction,
-} from "../../vdp-sdk/organization/actions";
+} from "../../vdp-sdk";
 
 export const useAcceptOrganizationMembership = () => {
   const queryClient = useQueryClient();
