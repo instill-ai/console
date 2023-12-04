@@ -45,6 +45,7 @@ export type PipelineBuilderState = {
   initializedByTemplateOrClone: boolean;
   isOwner: boolean;
   isTriggeringPipeline: boolean;
+  dialogPublishPipelineIsOpen: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -92,6 +93,7 @@ export type PipelineBuilderAction = {
   updateInitializedByTemplateOrClone: (fn: (prev: boolean) => boolean) => void;
   updateIsOwner: (fn: (prev: boolean) => boolean) => void;
   updateIsTriggeringPipeline: (fn: (prev: boolean) => boolean) => void;
+  updateDialogPublishPipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

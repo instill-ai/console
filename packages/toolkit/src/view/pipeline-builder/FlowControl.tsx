@@ -19,7 +19,7 @@ import {
   generateNewComponentIndex,
 } from "./lib";
 import {
-  ReleasePipelineModal,
+  DialogPublishPipeline,
   PipelineToolkitModal,
   SelectPipelineComponentDefinitionDialog,
   CreateResourceDialog,
@@ -706,10 +706,9 @@ export const FlowControl = (props: FlowControlProps) => {
         accessToken={accessToken}
         enableQuery={enableQuery}
       />
-      <ReleasePipelineModal
+      <DialogPublishPipeline
         isOpen={releaseDialogIsOpen}
         setIsOpen={setReleaseDialogIsOpen}
-        accessToken={accessToken}
       />
     </React.Fragment>
   );
