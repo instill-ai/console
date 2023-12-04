@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import {
-  CreateOrganizationPayload,
   Organization,
+  UpdateOrganizationPayload,
   updateOrganizationMutation,
 } from "../../vdp-sdk";
 
@@ -15,7 +15,7 @@ export const useUpdateOrganization = () => {
       accessToken,
       organizationName,
     }: {
-      payload: CreateOrganizationPayload;
+      payload: UpdateOrganizationPayload;
       accessToken: Nullable<string>;
       organizationName: Nullable<string>;
     }) => {

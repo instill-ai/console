@@ -5,8 +5,6 @@ import { Organization } from "./types";
 export type CreateOrganizationPayload = {
   id: string;
   org_name: string;
-  profile_avatar: Nullable<string>;
-  profile_data: Nullable<object>;
 };
 
 export type CreateOrganizationResponse = {
@@ -34,8 +32,10 @@ export async function createOrganizationMutation({
   }
 }
 
-export type UpdateOrganizationResponse = {
-  organization: Organization;
+export type UpdateOrganizationPayload = {
+  org_name: string;
+  profile_data?: Nullable<Record<string, any>>;
+  profile_avatar?: Nullable<string>;
 };
 
 export async function updateOrganizationMutation({
@@ -43,14 +43,14 @@ export async function updateOrganizationMutation({
   accessToken,
   organizationName,
 }: {
-  payload: CreateOrganizationPayload;
+  payload: UpdateOrganizationPayload;
   accessToken: Nullable<string>;
   organizationName: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.post<UpdateOrganizationResponse>(
+    const { data } = await client.patch<CreateOrganizationResponse>(
       `/organizations/${organizationName}`,
       payload
     );
