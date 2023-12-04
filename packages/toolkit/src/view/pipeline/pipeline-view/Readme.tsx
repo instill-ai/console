@@ -6,10 +6,9 @@ import {
   useInstillStore,
   useShallow,
   useUserPipeline,
-  customMarkdownParser,
+  deserialize,
 } from "../../../lib";
 import { useRouter } from "next/router";
-import { EditorState } from "@tiptap/pm/state";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -32,7 +31,7 @@ export const Readme = () => {
     editable: false,
     editorProps: {
       attributes: {
-        class: "markdown-body",
+        class: "markdown-body h-full p-5",
       },
     },
     content: "",
@@ -41,16 +40,18 @@ export const Readme = () => {
   React.useEffect(() => {
     if (!pipeline.isSuccess || !editor) return;
 
-    const parsed = customMarkdownParser.parse(pipeline.data.description);
+    if (!pipeline.data.description) {
+      return;
+    }
 
-    if (!parsed) return;
+    const parsed = deserialize(editor.schema, pipeline.data.description);
 
-    editor.view.updateState(EditorState.create({ doc: parsed }));
+    editor.commands.setContent(parsed);
   }, [pipeline.data, pipeline.isSuccess, editor]);
 
   return (
     <div className="flex w-full flex-1">
-      <EditorContent editor={editor} />
+      <EditorContent className="h-full w-full" editor={editor} />
     </div>
   );
 };

@@ -9,13 +9,13 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
-import { ReleasePipelineFormSchema } from "./DialogPublishPipeline";
+import { PublishPipelineFormSchema } from "./DialogPublishPipeline";
 
 export const Metadata = ({
   form,
 }: {
   form: UseFormReturn<
-    z.infer<typeof ReleasePipelineFormSchema>,
+    z.infer<typeof PublishPipelineFormSchema>,
     any,
     undefined
   >;
@@ -60,7 +60,7 @@ export const Metadata = ({
             </Tooltip.Provider>
           </div>
         </div>
-        <div className="grid w-full grid-cols-3 gap-5">
+        <div className="grid w-full grid-cols-3 gap-5 px-6 py-3">
           <Form.Field
             control={form.control}
             name="tags"

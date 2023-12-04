@@ -6,10 +6,10 @@ export const Head = () => {
   const { id, entity } = router.query;
 
   return (
-    <div className="flex flex-row">
-      <div className="mr-auto flex flex-row gap-x-1 px-8 py-2">
-        <Icons.Pipeline className="h-5 w-5 stroke-semantic-accent-default" />
-        <p className="text-semantic-accent-default product-body-text-3-semibold">
+    <div className="flex flex-row px-8 py-2">
+      <div className="mr-auto flex flex-row gap-x-1">
+        <Icons.Pipeline className="my-auto h-5 w-5 stroke-semantic-accent-default" />
+        <p className="my-auto text-semantic-accent-default product-body-text-3-semibold">
           {entity}
         </p>
         <svg
@@ -18,6 +18,7 @@ export const Head = () => {
           viewBox="0 0 21 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          className="my-auto"
         >
           <path
             d="M6.45117 18.3337L14.7845 1.66699"
@@ -28,15 +29,15 @@ export const Head = () => {
             stroke-Linejoin="round"
           />
         </svg>
-        <p className="text-semantic-fg-primary product-body-text-2-regular">
+        <p className="my-auto text-semantic-fg-primary product-body-text-3-regular">
           {id}
         </p>
       </div>
       <div className="flex flex-row gap-x-4">
-        <Button variant="secondaryGrey" size="lg">
+        <Button type="button" variant="secondaryGrey" size="lg">
           Cancel
         </Button>
-        <Button variant="primary" size="lg">
+        <Button type="submit" variant="primary" size="lg">
           Publish Pipeline
         </Button>
       </div>

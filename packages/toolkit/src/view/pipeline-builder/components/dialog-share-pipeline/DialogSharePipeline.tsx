@@ -1,34 +1,20 @@
-import cn from "clsx";
-import {
-  Button,
-  Dialog,
-  Icons,
-  Switch,
-  Tooltip,
-  useToast,
-} from "@instill-ai/design-system";
+import { Dialog, useToast } from "@instill-ai/design-system";
 import * as React from "react";
 import {
   InstillStore,
   Nullable,
-  UpdateUserPipelinePayload,
-  env,
-  getInstillApiErrorMessage,
   useInstillStore,
   useShallow,
-  useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../lib";
 import { useRouter } from "next/router";
-import { isAxiosError } from "axios";
-import { LoadingSpin } from "../../../../components";
 import { Head } from "./Head";
 import { TabShare } from "./TabShare";
 import { TabPublish } from "./TabPublish";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enableQuery: store.enabledQuery,
+  enabledQuery: store.enabledQuery,
   dialogSharePipelineIsOpen: store.dialogSharePipelineIsOpen,
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
   pipelineIsNew: store.pipelineIsNew,
@@ -38,17 +24,12 @@ export const DialogSharePipeline = () => {
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("Share");
 
-  const [copied, setCopied] = React.useState(false);
   const router = useRouter();
   const { id, entity } = router.query;
-  const [isUpdatingUsersPermission, setIsUpdatingUsersPermission] =
-    React.useState(false);
-  const [isUpdatingShareCodePermission, setIsUpdatingShareCodePermission] =
-    React.useState(false);
 
   const {
     accessToken,
-    enableQuery,
+    enabledQuery,
     dialogSharePipelineIsOpen,
     updateDialogSharePipelineIsOpen,
     pipelineIsNew,
@@ -59,10 +40,8 @@ export const DialogSharePipeline = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enableQuery && !!accessToken && !pipelineIsNew,
+    enabled: enabledQuery && !!accessToken && !pipelineIsNew,
   });
-
-  const updatePipeline = useUpdateUserPipeline();
 
   const pipelineIsPublic = React.useMemo(() => {
     if (!pipeline.isSuccess) {

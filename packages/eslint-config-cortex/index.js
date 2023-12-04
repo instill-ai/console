@@ -64,6 +64,7 @@ module.exports = {
     "jsx-a11y/media-has-caption": "warn",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/no-static-element-interactions": "warn",
+    "testing-library/render-result-naming-convention": "off",
   },
   overrides: [
     {

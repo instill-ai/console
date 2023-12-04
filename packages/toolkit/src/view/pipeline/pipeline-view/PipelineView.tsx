@@ -5,10 +5,10 @@ import { ReadOnlyPipelineBuilder } from "./ReadOnlyPipelineBuilder";
 
 export const PipelineView = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <Head />
-      <div className="flex flex-row pl-8 pr-32">
-        <div className="flex w-[718px] flex-col gap-y-6 py-10 pl-4">
+      <div className="flex flex-1 flex-row pl-8 pr-32">
+        <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pl-4">
           <ReadOnlyPipelineBuilder />
           <Readme />
         </div>
