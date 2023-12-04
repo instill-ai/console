@@ -1,4 +1,4 @@
-import { Nullable } from "../../type";
+import { GeneralRecord, Nullable } from "../../type";
 
 export type Organization = {
   name: string;
@@ -9,5 +9,5 @@ export type Organization = {
   org_name: string;
   customer_id: string;
   profile_avatar: Nullable<string>;
-  profile_data: Nullable<object>;
+  profile_data: Nullable<GeneralRecord>;
 };
