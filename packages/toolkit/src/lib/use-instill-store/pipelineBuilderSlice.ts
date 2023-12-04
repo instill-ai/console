@@ -54,6 +54,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   isOwner: false,
   isTriggeringPipeline: false,
   dialogPublishPipelineIsOpen: false,
+  dialogSharePipelineIsOpen: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -257,6 +258,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         dialogPublishPipelineIsOpen: fn(state.dialogPublishPipelineIsOpen),
+      };
+    }),
+  updateDialogSharePipelineIsOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        dialogSharePipelineIsOpen: fn(state.dialogSharePipelineIsOpen),
       };
     }),
 });

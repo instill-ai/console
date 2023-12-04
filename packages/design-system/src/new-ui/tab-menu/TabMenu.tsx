@@ -21,25 +21,23 @@ const useTabMenuContext = () => {
 
 const TabMenuRoot = ({
   children,
-  defaultValue,
   className,
+  value,
+  onValueChange,
 }: {
   children: React.ReactNode;
-  defaultValue?: string;
+  value: Nullable<string>;
+  onValueChange: (value: Nullable<string>) => void;
   className?: string;
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<Nullable<string>>(
-    defaultValue ?? null
-  );
-
   const context: TabMenuContextValue = React.useMemo(
     () => ({
-      selectedValue,
+      selectedValue: value,
       setSelectedValue: (value: Nullable<string>) => {
-        setSelectedValue(value);
+        onValueChange(value);
       },
     }),
-    [selectedValue]
+    [value, onValueChange]
   );
 
   return (

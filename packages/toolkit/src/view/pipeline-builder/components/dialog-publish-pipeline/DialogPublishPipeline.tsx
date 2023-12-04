@@ -116,7 +116,7 @@ export const DialogPublishPipeline = () => {
         updateDialogPublishPipelineIsOpen(() => e);
       }}
     >
-      <Dialog.Content className="!h-[calc(100vh-var(--topbar-height))] !w-[screen] !px-0 !py-6">
+      <Dialog.Content className="!h-[calc(100vh-var(--topbar-height))] !w-screen !max-w-none !px-0 !py-6">
         <div className="flex flex-col">
           <Head />
         </div>

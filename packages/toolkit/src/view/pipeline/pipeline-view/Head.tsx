@@ -1,8 +1,13 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import { useSortedReleases } from "../../pipeline-builder";
-import { Button, Icons, Tag } from "@instill-ai/design-system";
-import { Menu } from "./Menu";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { Button, Icons, Tag, TabMenu } from "@instill-ai/design-system";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -13,6 +18,8 @@ export const Head = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { id, entity } = router.query;
+  const [selectedTab, setSelectedTab] =
+    React.useState<Nullable<string>>("overview");
 
   const releases = useSortedReleases({
     pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
@@ -44,9 +51,12 @@ export const Head = () => {
 
       <div className="absolute bottom-0 left-0 right-0 flex flex-row px-24">
         <div className="mr-auto">
-          <Menu.Root defaultValue="overview">
-            <Menu.Item value="overview">Overview</Menu.Item>
-          </Menu.Root>
+          <TabMenu.Root
+            value={selectedTab}
+            onValueChange={(value) => setSelectedTab(value)}
+          >
+            <TabMenu.Item value="overview">Overview</TabMenu.Item>
+          </TabMenu.Root>
         </div>
         <div className="flex flex-row gap-x-2">
           <Button
