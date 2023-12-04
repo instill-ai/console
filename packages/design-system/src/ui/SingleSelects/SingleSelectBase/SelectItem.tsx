@@ -2,26 +2,25 @@ import cn from "clsx";
 import * as Select from "@radix-ui/react-select";
 import * as React from "react";
 import { CheckIcon } from "../../Icons";
-import { SingleSelectOption } from "./SingleSelectBase";
-import { Nullable } from "../../../types/general";
+import { Nullable, SelectOption } from "../../../types/general";
 
 export type SelectItemProps = {
   width: Nullable<number>;
   selectItemTextIconGap: string;
-  option: SingleSelectOption;
+  option: SelectOption;
 };
 
 export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
   ({ option, width, selectItemTextIconGap }, forwardedRef) => {
     return (
       <Select.Item
-        className="relative flex w-full flex-row data-[highlighted]:bg-instillGrey05 data-[highlighted]:ring-0 data-[highlighted]:border-0 data-[highlighted]:outline-none pl-5 pr-12 py-2"
+        className="relative flex w-full flex-row py-2 pl-5 pr-12 data-[highlighted]:border-0 data-[highlighted]:bg-instillGrey05 data-[highlighted]:outline-none data-[highlighted]:ring-0"
         value={option.value}
         ref={forwardedRef}
         style={{ width: width ? `${width}px` : undefined }}
         data-testid={`select-item-${option.value}`}
       >
-        <Select.ItemIndicator className="w-6 absolute top-1/2 -translate-y-1/2 right-5">
+        <Select.ItemIndicator className="absolute right-5 top-1/2 w-6 -translate-y-1/2">
           <CheckIcon
             width="w-4"
             height="h-4"

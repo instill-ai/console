@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react";
 import { Combobox } from "./Combobox";
-import { SingleSelectOption } from "../../ui";
 import { Icons } from "../Icons";
 import * as React from "react";
 import { Button } from "../Button";
+import { SelectOption } from "../../types/general";
 
 const meta: Meta<typeof Combobox> = {
   title: "Components/NewUi/Combobox",
@@ -11,7 +11,7 @@ const meta: Meta<typeof Combobox> = {
 
 export default meta;
 
-const items: SingleSelectOption[] = [
+const items: SelectOption[] = [
   {
     value: "Convert Audio to text",
     label: "Convert Audio to text",

@@ -2,17 +2,14 @@ import * as React from "react";
 import cn from "clsx";
 import * as Select from "@radix-ui/react-select";
 
-import { BasicInputProps, Nullable } from "../../../types/general";
+import {
+  BasicInputProps,
+  Nullable,
+  SelectOption,
+} from "../../../types/general";
 import InputLabelBase from "../../InputLabels/InputLabelBase";
 import { InputDescriptionBase } from "../../InputDescriptions/InputDescriptionBase";
 import { SelectItem } from "./SelectItem";
-
-export type SingleSelectOption = {
-  label: string;
-  value: string;
-  startIcon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-};
 
 export type SingleSelectBaseProps = Omit<
   BasicInputProps,
@@ -77,14 +74,14 @@ export type SingleSelectBaseProps = Omit<
    ]
    ```
    */
-  options: SingleSelectOption[];
-  value: Nullable<SingleSelectOption>;
+  options: SelectOption[];
+  value: Nullable<SelectOption>;
 
   /**
    * The design system use actionMeta to provide additional info about the selection behavior.
    * You could access these info inside the onChnage.
    */
-  onChange?: (option: Nullable<SingleSelectOption>) => void;
+  onChange?: (option: Nullable<SelectOption>) => void;
   required?: boolean | undefined;
   disabled?: boolean | undefined;
   readOnly?: boolean | undefined;
@@ -167,7 +164,7 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
   return (
     <div className="flex flex-col">
       <div
-        className={cn("flex flex-col relative", {
+        className={cn("relative flex flex-col", {
           "mb-2.5": description,
         })}
       >
@@ -210,14 +207,14 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
             <Select.Trigger
               id={id}
               className={cn(
-                "w-full px-4 py-2 text-left flex flex-row focus:border-instillGrey50 focus:instill-input-highlight focus:instill-input-focus-shadow",
+                "flex w-full flex-row px-4 py-2 text-left focus:border-instillGrey50 focus:instill-input-focus-shadow focus:instill-input-highlight",
                 inputBorderColor,
                 inputBorderRadius,
                 inputBorderStyle,
                 inputBorderWidth,
                 inputBgColor,
                 {
-                  "bg-instillGrey90 bg-opacity-5 cursor-not-allowed": disabled,
+                  "cursor-not-allowed bg-instillGrey90 bg-opacity-5": disabled,
                 }
               )}
               aria-label="Food"
@@ -229,14 +226,14 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
                 {selectedOption ? (
                   <div className={cn("flex flex-row", selectItemTextIconGap)}>
                     {selectedOption.startIcon ? selectedOption.startIcon : null}
-                    <p className={"align-middle my-auto pt-0.5"}>
+                    <p className={"my-auto pt-0.5 align-middle"}>
                       {selectedOption.label}
                     </p>
                     {selectedOption.endIcon ? selectedOption.endIcon : null}
                   </div>
                 ) : null}
               </Select.Value>
-              <Select.Icon className="SelectIcon ml-auto my-auto">
+              <Select.Icon className="SelectIcon my-auto ml-auto">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -261,7 +258,7 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
                   selectPopoverBorderStyle,
                   selectPopoverBorderWidth,
                   selectPopoverPadding,
-                  "overflow-hidden max-h-[320px]"
+                  "max-h-[320px] overflow-hidden"
                 )}
                 position="popper"
                 sideOffset={8}

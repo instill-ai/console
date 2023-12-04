@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { Icons, SingleSelectOption, Tooltip } from "@instill-ai/design-system";
+import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 import { PipelinesChart, generateChartData } from "../../lib";
 
 type PipelineTriggerCountsLineChartProps = {
   pipelines: PipelinesChart[];
   isLoading: boolean;
-  selectedTimeOption: SingleSelectOption;
+  selectedTimeOption: SelectOption;
 };
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */

@@ -5,11 +5,10 @@ import cn from "clsx";
 import { Command } from "../Command";
 import { Popover } from "../Popover";
 import { Icons } from "../Icons";
-import { SingleSelectOption } from "../../ui";
-import { Nullable } from "../../types/general";
+import { Nullable, SelectOption } from "../../types/general";
 
 type ComboboxProps = {
-  items: SingleSelectOption[];
+  items: SelectOption[];
   placeholder: Nullable<string>;
   notFoundPlaceholder: Nullable<string>;
   value: string;
@@ -45,7 +44,7 @@ export function Combobox({
               >
                 <Icons.Check
                   className={cn(
-                    "h-4 w-4 stroke-slate-500",
+                    "h-4 w-4 stroke-semantic-fg-secondary",
                     value === item.value ? "opacity-100" : "opacity-0"
                   )}
                 />

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Select, SingleSelectOption } from "@instill-ai/design-system";
+import { Select, SelectOption } from "@instill-ai/design-system";
 import {
   dot,
   getConditionFormPath,
@@ -42,9 +42,9 @@ export const OneOfConditionSection = ({
   // the state of UI fields
 
   const [selectedConditionOption, setSelectedConditionOption] =
-    React.useState<Nullable<SingleSelectOption>>(null);
+    React.useState<Nullable<SelectOption>>(null);
 
-  const conditionOptions: SingleSelectOption[] = React.useMemo(() => {
+  const conditionOptions: SelectOption[] = React.useMemo(() => {
     // Sometimes the const field is missing, we need to find a workaround
     // TODO: Known issue: snowflake
 
@@ -210,9 +210,9 @@ export const OneOfConditionSection = ({
   );
 
   return (
-    <div className="flex w-full flex-col border border-instillGrey50 p-5">
+    <div className="border-instillGrey50 flex w-full flex-col border p-5">
       <div className="mb-5 flex w-full flex-row gap-x-5">
-        <h3 className="my-auto text-black text-instill-h3">{formTree.title}</h3>
+        <h3 className="text-instill-h3 my-auto text-black">{formTree.title}</h3>
         <div className="flex flex-1 flex-col space-y-2">
           <label className="text-semantic-fg-primary product-body-text-2-regular">
             {formTree.title ?? null}
@@ -237,11 +237,11 @@ export const OneOfConditionSection = ({
               ))}
             </Select.Content>
           </Select.Root>
-          <p className="product-body-text-3-regular text-[#1D243380]">
+          <p className="text-[#1D243380] product-body-text-3-regular">
             {formTree.description ?? ""}
           </p>
           {errors ? (
-            <p className="product-body-text-3-regular text-semantic-error-default">
+            <p className="text-semantic-error-default product-body-text-3-regular">
               {conditionPath ? errors[conditionPath] : null}
             </p>
           ) : null}

@@ -11,7 +11,7 @@ import {
   BasicUploadFileField,
   FormRoot,
   ProgressMessageBoxState,
-  SingleSelectOption,
+  SelectOption,
   SolidButton,
   getModelDefinitionToolkit,
 } from "@instill-ai/design-system";
@@ -147,7 +147,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   }, [modelDefinitions]);
 
   const [selectedModelDefinitionOption, setSelectedModelDefinitionOption] =
-    React.useState<Nullable<SingleSelectOption>>(null);
+    React.useState<Nullable<SelectOption>>(null);
 
   /* -------------------------------------------------------------------------
    * Create github/local/artivc/huggingface model

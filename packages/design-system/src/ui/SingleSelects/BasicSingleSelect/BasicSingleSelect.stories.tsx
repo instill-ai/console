@@ -2,8 +2,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
 import { BasicSingleSelect, basicSingleSelectConfig } from ".";
 import { basicInputDescriptionConfig } from "../../InputDescriptions";
-import { Nullable } from "../../../types/general";
-import { SingleSelectOption } from "../SingleSelectBase";
+import { Nullable, SelectOption } from "../../../types/general";
 
 const meta: Meta<typeof BasicSingleSelect> = {
   title: "Components/Ui/Input/BasicSingleSelect",
@@ -13,7 +12,7 @@ const meta: Meta<typeof BasicSingleSelect> = {
 export default meta;
 
 const Template: StoryFn<typeof BasicSingleSelect> = (args) => {
-  const optionsWithoutIcon: SingleSelectOption[] = [
+  const optionsWithoutIcon: SelectOption[] = [
     {
       value: "grpc",
       label: "gRPC-gRPC-gRPC-gRPC-gRPC-gRPC-gRPC-gRPC-gRPC-",
@@ -32,11 +31,11 @@ const Template: StoryFn<typeof BasicSingleSelect> = (args) => {
     },
   ];
 
-  const onChange = (option: Nullable<SingleSelectOption>) => {
+  const onChange = (option: Nullable<SelectOption>) => {
     setValue(option);
   };
 
-  const [value, setValue] = React.useState<SingleSelectOption | null>(null);
+  const [value, setValue] = React.useState<SelectOption | null>(null);
 
   return (
     <BasicSingleSelect

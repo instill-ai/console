@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
@@ -33,7 +33,7 @@ export const DashboardPipelineListPageMainView = (
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SingleSelectOption>(dashboardOptions.timeLine[0]);
+    React.useState<SelectOption>(dashboardOptions.timeLine[0]);
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =

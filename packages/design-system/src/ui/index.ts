@@ -22,10 +22,7 @@ export * from "./ProgressMessageBoxs";
 
 // SingleSelects
 export { BasicSingleSelect } from "./SingleSelects";
-export type {
-  BasicSingleSelectProps,
-  SingleSelectOption,
-} from "./SingleSelects";
+export type { BasicSingleSelectProps } from "./SingleSelects";
 
 // TextAreas
 export { BasicTextArea } from "./TextAreas";

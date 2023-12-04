@@ -1,8 +1,8 @@
 import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
-import SingleSelectBase, { type SingleSelectOption } from "./SingleSelectBase";
+import SingleSelectBase from "./SingleSelectBase";
 import { basicInputDescriptionConfig } from "../../InputDescriptions";
-import { Nullable } from "../../../types/general";
+import { Nullable, SelectOption } from "../../../types/general";
 import { basicSingleSelectConfig } from "../BasicSingleSelect";
 
 const meta: Meta<typeof SingleSelectBase> = {
@@ -13,7 +13,7 @@ const meta: Meta<typeof SingleSelectBase> = {
 export default meta;
 
 const Template: StoryFn<typeof SingleSelectBase> = (args) => {
-  const optionsWithoutIcon: SingleSelectOption[] = [
+  const optionsWithoutIcon: SelectOption[] = [
     { label: "Option 1", value: "option-1" },
     { label: "Option 2", value: "option-2" },
     { label: "Option 3", value: "option-3" },
@@ -36,11 +36,11 @@ const Template: StoryFn<typeof SingleSelectBase> = (args) => {
     { label: "Option 20", value: "option-20" },
   ];
 
-  const onChange = (option: Nullable<SingleSelectOption>) => {
+  const onChange = (option: Nullable<SelectOption>) => {
     setValue(option);
   };
 
-  const [value, setValue] = React.useState<SingleSelectOption | null>(null);
+  const [value, setValue] = React.useState<SelectOption | null>(null);
 
   return (
     <SingleSelectBase

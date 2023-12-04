@@ -354,7 +354,7 @@ export type PipelineState =
   | "STATE_ACTIVE"
   | "STATE_INACTIVE"
   | "STATE_ERROR"
-  | "STATE_DELETED"
+  | "STATE_DELETED";
 
 export type ConnectorState =
   | "STATE_UNSPECIFIED"
@@ -378,3 +378,10 @@ export type IconStyle = {
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
 export type IconStyleWithoutColor = Omit<IconStyle, "color">;
+
+export type SelectOption = {
+  label: string;
+  value: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+};

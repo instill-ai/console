@@ -1,6 +1,6 @@
-import { SingleSelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 
-const timeLineOptions: SingleSelectOption[] = [
+const timeLineOptions: SelectOption[] = [
   {
     label: "Today",
     value: "24h",
@@ -19,7 +19,7 @@ const timeLineOptions: SingleSelectOption[] = [
   },
 ];
 
-const modeOptions: SingleSelectOption[] = [
+const modeOptions: SelectOption[] = [
   {
     label: "ALL",
     value: "all",
@@ -34,7 +34,7 @@ const modeOptions: SingleSelectOption[] = [
   },
 ];
 
-const statusOptions: SingleSelectOption[] = [
+const statusOptions: SelectOption[] = [
   {
     label: "ALL",
     value: "all",
