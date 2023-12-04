@@ -11,13 +11,9 @@ export const useAcceptOrganizationMembership = () => {
     async ({
       payload,
       accessToken,
-      organizationName,
-      userName,
     }: {
       payload: AcceptOrganizationMembershipPayload;
       accessToken: Nullable<string>;
-      organizationName: string;
-      userName: string;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
@@ -26,8 +22,6 @@ export const useAcceptOrganizationMembership = () => {
       const membership = await acceptOrganizationMembershipAction({
         payload,
         accessToken,
-        organizationName,
-        userName,
       });
 
       return Promise.resolve({ membership });

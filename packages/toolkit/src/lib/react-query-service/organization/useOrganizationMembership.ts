@@ -26,7 +26,7 @@ export const useOrganizationMembership = ({
   }
 
   return useQuery(
-    ["membership", organizationName, userName],
+    ["organizations", organizationName, "memberships", userName],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("Access Token not provided"));
@@ -39,13 +39,13 @@ export const useOrganizationMembership = ({
         return Promise.reject(new Error("User name not provided"));
       }
 
-      const model = await getOrganizationMembership({
+      const membership = await getOrganizationMembership({
         organizationName,
         accessToken,
         userName,
       });
 
-      return Promise.resolve(model);
+      return Promise.resolve(membership);
     },
     {
       enabled: enableQuery,

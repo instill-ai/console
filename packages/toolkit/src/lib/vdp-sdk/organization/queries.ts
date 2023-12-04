@@ -75,7 +75,7 @@ export async function getOrganizationQuery({
   }
 }
 
-export type OrganizationMembershipsResponse = {
+export type GetOrganizationMembershipsResponse = {
   memberships: Membership[];
 };
 
@@ -89,7 +89,7 @@ export async function getOrganizationMemberships({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<OrganizationMembershipsResponse>(
+    const { data } = await client.get<GetOrganizationMembershipsResponse>(
       `/organizations/${organizationName}/memberships`
     );
 
@@ -98,6 +98,10 @@ export async function getOrganizationMemberships({
     return Promise.reject(err);
   }
 }
+
+export type GetOrganizationMembershipResponse = {
+  membership: Membership;
+};
 
 export async function getOrganizationMembership({
   organizationName,
@@ -111,11 +115,11 @@ export async function getOrganizationMembership({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<OrganizationMembershipsResponse>(
+    const { data } = await client.get<GetOrganizationMembershipResponse>(
       `/organizations/${organizationName}/memberships/${userName}`
     );
 
-    return Promise.resolve(data.memberships);
+    return Promise.resolve(data.membership);
   } catch (err) {
     return Promise.reject(err);
   }

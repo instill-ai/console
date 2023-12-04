@@ -1,5 +1,9 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
+import {
+  MembershipResponse,
+  UpdateOrganizationMembershipRolePayload,
+} from "./actions";
 import { Membership, Organization, ROLE } from "./types";
 
 export type CreateOrganizationPayload = {
@@ -69,6 +73,31 @@ export async function updateOrganizationMutation({
   }
 }
 
+export async function updateOrganizationMembershipRoleAction({
+  payload,
+  accessToken,
+}: {
+  payload: UpdateOrganizationMembershipRolePayload;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.patch<MembershipResponse>(
+      `/organizations/${payload.organizationName}/memberships/${payload.userName}`,
+      {
+        ...payload,
+        organizationName: undefined,
+        userName: undefined,
+      }
+    );
+
+    return Promise.resolve(data.membership);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
 export async function deleteOrganizationMutation({
   organizationName,
   accessToken,
@@ -80,44 +109,6 @@ export async function deleteOrganizationMutation({
     const client = createInstillAxiosClient(accessToken, "core");
 
     await client.delete(`/organizations/${organizationName}`);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-export async function removeOrganizationUserMutation({
-  organizationName,
-  userName,
-  accessToken,
-}: {
-  organizationName: string;
-  userName: string;
-  accessToken: Nullable<string>;
-}) {
-  try {
-    const client = createInstillAxiosClient(accessToken, "core");
-
-    await client.delete(
-      `/organizations/${organizationName}/memberships/${userName}`
-    );
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-export async function leaveOrganizationMutation({
-  organizationName,
-  userName,
-  accessToken,
-}: {
-  organizationName: string;
-  userName: string;
-  accessToken: Nullable<string>;
-}) {
-  try {
-    const client = createInstillAxiosClient(accessToken, "core");
-
-    await client.delete(`/users/${userName}/memberships/${organizationName}`);
   } catch (err) {
     return Promise.reject(err);
   }
