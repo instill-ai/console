@@ -8,6 +8,7 @@ export * from "./prosemirror-markdown";
 export * from "./react-query-service";
 export * from "./store";
 export * from "./table";
+export * from "./tip-tap";
 export * from "./type";
 export * from "./use-instill-form";
 export * from "./use-instill-store";

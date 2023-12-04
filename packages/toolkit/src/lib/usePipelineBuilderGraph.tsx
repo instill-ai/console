@@ -71,6 +71,8 @@ export function usePipelineBuilderGraph({
       return;
     }
 
+    console.log("hihi iniyt");
+
     updateCurrentVersion(() => "latest");
     updateIsOwner(() => true);
 
@@ -149,6 +151,8 @@ export function usePipelineBuilderGraph({
         target: "end",
       },
     ];
+
+    console.log("newNodes", newNodes);
 
     // Because the pipeline is new, we need to initialize it with our default
     // graph layout

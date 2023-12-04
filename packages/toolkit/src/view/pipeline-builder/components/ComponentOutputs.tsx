@@ -4,46 +4,46 @@ import {
   GeneralRecord,
   InstillJSONSchema,
   Nullable,
+  TriggerUserPipelineResponse,
   useComponentOutputFields,
-  useInstillStore,
 } from "../../../lib";
 
 export const ComponentOutputs = ({
   componentID,
   outputSchema,
   nodeType,
+  response,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
+  response: Nullable<TriggerUserPipelineResponse>;
 }) => {
-  const res = useInstillStore((store) => store.testModeTriggerResponse);
-
   const data = React.useMemo(() => {
     let data: Nullable<GeneralRecord> = null;
 
     if (nodeType === "connector") {
       if (
-        !res ||
-        !res.metadata.traces[componentID] ||
-        !res.metadata.traces[componentID].outputs ||
-        res.metadata.traces[componentID].outputs.length === 0
+        !response ||
+        !response.metadata.traces[componentID] ||
+        !response.metadata.traces[componentID].outputs ||
+        response.metadata.traces[componentID].outputs.length === 0
       ) {
         return data;
       }
-      data = res.metadata.traces[componentID].outputs[0];
+      data = response.metadata.traces[componentID].outputs[0];
 
       return data;
     }
 
-    if (!res || !res.outputs) {
+    if (!response || !response.outputs) {
       return data;
     }
 
-    data = res.outputs[0];
+    data = response.outputs[0];
 
     return data;
-  }, [nodeType, componentID, res]);
+  }, [nodeType, componentID, response]);
 
   const componentOutputFields = useComponentOutputFields({
     schema: outputSchema,

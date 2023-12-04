@@ -381,6 +381,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             componentID={data.component.id}
             outputSchema={outputSchema}
             nodeType="connector"
+            response={testModeTriggerResponse}
           />
         </>
       )}

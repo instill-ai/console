@@ -3,41 +3,9 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { AutoFormFieldBaseProps } from "../../type";
 import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
-import { Blockquote } from "@tiptap/extension-blockquote";
-import { BulletList } from "@tiptap/extension-bullet-list";
-import { Heading } from "@tiptap/extension-heading";
-import { OrderedList } from "@tiptap/extension-ordered-list";
-import { Paragraph } from "@tiptap/extension-paragraph";
-import { Text } from "@tiptap/extension-text";
-import { Document } from "@tiptap/extension-document";
-import { ListItem } from "@tiptap/extension-list-item";
-import { HardBreak } from "@tiptap/extension-hard-break";
 import { customMarkdownSerializer } from "../../../prosemirror-markdown";
 import { Nullable } from "../../../type";
-
-const extensions = [
-  Document,
-  Heading,
-  Paragraph.configure({
-    HTMLAttributes: {
-      class: "!my-0",
-    },
-  }),
-  ListItem,
-  OrderedList.configure({
-    HTMLAttributes: {
-      class: "!mb-0",
-    },
-  }),
-  Blockquote,
-  BulletList.configure({
-    HTMLAttributes: {
-      class: "!mb-0",
-    },
-  }),
-  Text,
-  HardBreak,
-];
+import { extensions } from "../../../tip-tap";
 
 export const LongTextField = ({
   form,

@@ -4,40 +4,37 @@ import * as z from "zod";
 import * as React from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { StartNodeData } from "../../view";
 import {
   transformStartOperatorMetadataToSuperRefineRules,
   transformStartOperatorMetadataToZod,
 } from "./transform";
 import { useForm } from "react-hook-form";
 import { pickStartOperatorFreeFormFields } from "./pick";
+import { StartOperatorMetadata } from "../vdp-sdk";
+import { Nullable } from "../type";
 
 export const useStartOperatorTriggerPipelineForm = (props: {
-  data: StartNodeData;
+  metadata: Nullable<StartOperatorMetadata>;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 }) => {
-  const { data, onDeleteField, onEditField } = props;
+  const { metadata, onDeleteField, onEditField } = props;
 
   const superRefineRules = React.useMemo(() => {
-    if (!data.component.configuration.metadata) {
+    if (!metadata) {
       return [];
     }
 
-    return transformStartOperatorMetadataToSuperRefineRules(
-      data.component.configuration.metadata
-    );
-  }, [data]);
+    return transformStartOperatorMetadataToSuperRefineRules(metadata);
+  }, [metadata]);
 
   const Schema = React.useMemo(() => {
-    if (!data.component.configuration.metadata) {
+    if (!metadata) {
       return z.object({}) as z.ZodObject<any, any, any>;
     }
 
-    return transformStartOperatorMetadataToZod(
-      data.component.configuration.metadata
-    );
-  }, [data]).superRefine((state, ctx) => {
+    return transformStartOperatorMetadataToZod(metadata);
+  }, [metadata]).superRefine((state, ctx) => {
     for (const rule of superRefineRules) {
       const result = rule.validator(state[rule.key]);
       if (!result.valid) {
@@ -56,19 +53,19 @@ export const useStartOperatorTriggerPipelineForm = (props: {
   });
 
   const fields = React.useMemo(() => {
-    if (!data.component.configuration.metadata) {
+    if (!metadata) {
       return [];
     }
 
     const fields = pickStartOperatorFreeFormFields(
-      data.component.configuration.metadata,
+      metadata,
       form,
       onEditField,
       onDeleteField
     );
 
     return fields;
-  }, [data, form, onEditField, onDeleteField]);
+  }, [metadata, form, onEditField, onDeleteField]);
 
   return {
     form,
