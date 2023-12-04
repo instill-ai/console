@@ -23,6 +23,7 @@ export * from "./Select";
 export * from "./Skeleton";
 export * from "./Separator";
 export * from "./Switch";
+export * from "./tab-menu";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";

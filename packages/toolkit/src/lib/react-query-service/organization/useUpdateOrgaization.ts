@@ -13,11 +13,9 @@ export const useUpdateOrganization = () => {
     async ({
       payload,
       accessToken,
-      organizationName,
     }: {
       payload: UpdateOrganizationPayload;
       accessToken: Nullable<string>;
-      organizationName: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
@@ -26,7 +24,6 @@ export const useUpdateOrganization = () => {
       const organization = await updateOrganizationMutation({
         payload,
         accessToken,
-        organizationName,
       });
 
       return Promise.resolve({ organization });
