@@ -16,19 +16,19 @@ import {
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
-} from "../../../lib";
+} from "../../../../lib";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
-import { LoadingSpin } from "../../../components";
+import { LoadingSpin } from "../../../../components";
 
-export type SharePipelineDialogProps = {
+export type DialogSharePipelineProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const SharePipelineDialog = (props: SharePipelineDialogProps) => {
+export const DialogSharePipeline = (props: DialogSharePipelineProps) => {
   const { accessToken, enableQuery, isOpen, setIsOpen } = props;
   const [copied, setCopied] = React.useState(false);
   const router = useRouter();

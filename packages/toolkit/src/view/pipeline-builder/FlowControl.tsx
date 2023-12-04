@@ -45,7 +45,7 @@ import {
   useUser,
 } from "../../lib";
 import { StartNodeData } from "./type";
-import { SharePipelineDialog } from "./components/SharePipelineDialog";
+import { SharePipelineDialog } from "./components/dialog-share-pipeline/SharePipelineDialog";
 import { LoadingSpin } from "../../components";
 
 const selector = (store: InstillStore) => ({

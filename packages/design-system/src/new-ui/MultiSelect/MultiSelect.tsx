@@ -12,15 +12,18 @@ import { Tag } from "../Tag";
 type ComboboxProps = {
   placeholder: React.ReactElement;
   options: SelectOption[];
+
   setOptions?: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   selectedOptions: string[];
-  onChange: React.Dispatch<React.SetStateAction<string[]>>;
+  onChange: (selectedOptions: string[]) => void;
   createOnNotFound?: boolean;
   emptyPlaceholder?: string;
+  searchInputPlaceholder?: string;
 };
 
 export function MultiSelect({
   placeholder,
+  searchInputPlaceholder,
   emptyPlaceholder,
   options,
   setOptions,
@@ -79,7 +82,7 @@ export function MultiSelect({
             onValueChange={(search) => {
               setSearchValue(search);
             }}
-            placeholder="Search..."
+            placeholder={searchInputPlaceholder ?? "Search..."}
           />
           <Command.Empty className="!p-2">
             {createOnNotFound ? (

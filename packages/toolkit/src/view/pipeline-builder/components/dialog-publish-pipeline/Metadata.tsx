@@ -1,8 +1,11 @@
+import * as React from "react";
 import * as z from "zod";
 import {
   Form,
   Icons,
+  MultiSelect,
   ParagraphWithHTML,
+  SelectOption,
   Tooltip,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
@@ -17,6 +20,9 @@ export const Metadata = ({
     undefined
   >;
 }) => {
+  const [options, setOptions] = React.useState<SelectOption[]>([]);
+  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+
   return (
     <div className="w-full px-8 py-3">
       <div className="flex w-full flex-col rounded-[12px] border border-semantic-bg-line shadow">
@@ -93,7 +99,28 @@ export const Metadata = ({
                       </Tooltip.Root>
                     </Tooltip.Provider>
                   </div>
-                  <Form.Control></Form.Control>
+                  <Form.Control>
+                    <MultiSelect
+                      options={options}
+                      setOptions={setOptions}
+                      emptyPlaceholder="Create new tag"
+                      searchInputPlaceholder="Create new tag"
+                      selectedOptions={selectedOptions}
+                      onChange={(options) => {
+                        setSelectedOptions(options);
+                        field.onChange(options);
+                      }}
+                      createOnNotFound={true}
+                      placeholder={
+                        <div className="flex flex-row gap-x-2">
+                          <Icons.Plus className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                          <p className="text-semantic-fg-secondary product-body-text-3-medium">
+                            Add tag
+                          </p>
+                        </div>
+                      }
+                    />
+                  </Form.Control>
                   <Form.Message />
                 </Form.Item>
               );
