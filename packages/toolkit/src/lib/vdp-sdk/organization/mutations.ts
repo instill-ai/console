@@ -40,6 +40,7 @@ export type UpdateOrganizationResponse = {
 
 export type UpdateOrganizationPayload = {
   id: string;
+  org_name: string;
   profile_avatar?: Nullable<string>;
   profile_data?: Nullable<object>;
 };
