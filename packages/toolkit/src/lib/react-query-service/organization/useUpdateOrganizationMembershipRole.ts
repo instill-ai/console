@@ -30,19 +30,8 @@ export const useUpdateOrganizationMembershipRole = () => {
     {
       onSuccess: ({ membership }) => {
         queryClient.setQueryData<Membership[]>(
-          [
-            "organizations",
-            membership.organization.org_name,
-            "memberships",
-            membership.user.name,
-          ],
-          (old) =>
-            old
-              ? [
-                  ...old.filter((e) => e.user.name !== membership.user.name),
-                  membership,
-                ]
-              : [membership]
+          ["organizations", membership.organization.org_name, "memberships"],
+          (old) => (old ? [...old, membership] : [membership])
         );
       },
     }
