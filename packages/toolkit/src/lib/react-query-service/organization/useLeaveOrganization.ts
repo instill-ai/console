@@ -29,7 +29,7 @@ export const useLeaveOrganization = () => {
     {
       onSuccess: (data, { organizationName, userName }) => {
         queryClient.setQueryData<Membership[]>(
-          ["organizations", organizationName, "memberships", userName],
+          ["organizations", organizationName, "memberships"],
           (old) => (old ? old.filter((e) => e.user.name !== userName) : [])
         );
       },

@@ -10,12 +10,19 @@ export const useRemoveOrganizationUser = () => {
       userName,
       accessToken,
     }: {
-      organizationName: string;
-      userName: string;
+      organizationName: Nullable<string>;
+      userName: Nullable<string>;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
+      }
+
+      if (!organizationName) {
+        return Promise.reject(new Error("Organization name not provided"));
+      }
+      if (!userName) {
+        return Promise.reject(new Error("User name not provided"));
       }
 
       await removeOrganizationUserMutation({
