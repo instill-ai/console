@@ -3,7 +3,7 @@ import { createInstillAxiosClient } from "../helper";
 import { Nullable } from "../../type";
 
 export type AcceptOrganizationMembershipPayload = {
-  role: MEMBERSHIP_STATE;
+  state: MEMBERSHIP_STATE;
   organizationName?: Nullable<string>;
   userName?: Nullable<string>;
 };
