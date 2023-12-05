@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserQuery, listUsersQuery, type User } from "../../vdp-sdk";
+import { listUsersQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 import { env } from "../../utility";
 

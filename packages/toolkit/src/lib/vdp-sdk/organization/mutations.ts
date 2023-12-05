@@ -83,7 +83,7 @@ export async function updateOrganizationMembershipRoleAction({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.patch<MembershipResponse>(
+    const { data } = await client.put<MembershipResponse>(
       `/organizations/${payload.organizationName}/memberships/${payload.userName}`,
       {
         ...payload,

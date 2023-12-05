@@ -28,7 +28,7 @@ export async function acceptOrganizationMembershipAction({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.patch<MembershipResponse>(
+    const { data } = await client.put<MembershipResponse>(
       `/organizations/${payload.userName}/memberships/${payload.organizationName}`,
       { ...payload, userName: undefined, organizationName: undefined }
     );
