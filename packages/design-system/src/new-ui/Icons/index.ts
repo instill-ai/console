@@ -88,6 +88,7 @@ import { TypePlus } from "./TypePlus";
 import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
+import { UserPlus01 } from "./UserPlus01";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { X } from "./X";
@@ -183,6 +184,7 @@ export const Icons = {
   Upload01,
   User01,
   User02,
+  UserPlus01,
   VideoRecorder,
   Visa,
   X,
