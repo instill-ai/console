@@ -1,3 +1,5 @@
+import cn from "clsx";
+import * as React from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -9,24 +11,12 @@ import {
   CustomEdge,
   EmptyNode,
   EndOperatorNode,
-  NodeData,
   OperatorNode,
   StartOperatorNode,
-  createInitialGraphData,
-} from "../../pipeline-builder";
-import {
-  InstillStore,
-  useInstillStore,
-  useShallow,
-  useUserPipeline,
-} from "../../../lib";
-import { useRouter } from "next/router";
-import * as React from "react";
-
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
-});
+} from ".";
+import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import { NodeData } from "../type";
+import { createInitialGraphData } from "../lib";
 
 const nodeTypes = {
   startNode: StartOperatorNode,
@@ -40,33 +30,38 @@ const edgeTypes = {
   customEdge: CustomEdge,
 };
 
-export const ReadOnlyPipelineBuilder = () => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const router = useRouter();
-  const { id, entity } = router.query;
+export type ReadOnlyPipelineBuilderProps = {
+  recipe: Nullable<PipelineRecipe>;
+  metadata: Nullable<GeneralRecord>;
+  className?: string;
+};
 
+export const ReadOnlyPipelineBuilder = ({
+  className,
+  recipe,
+  metadata,
+}: ReadOnlyPipelineBuilderProps) => {
   const [nodes, setNodes] = React.useState<Node<NodeData>[]>([]);
   const [edges, setEdges] = React.useState<Edge[]>([]);
 
-  const pipeline = useUserPipeline({
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
-    accessToken,
-    enabled: enabledQuery && !!id && !!accessToken,
-  });
-
   React.useEffect(() => {
-    if (!pipeline.isSuccess) return;
+    if (!recipe || !metadata) return;
 
-    const initialGraphData = createInitialGraphData(pipeline.data.recipe, {
-      metadata: pipeline.data.metadata,
+    const initialGraphData = createInitialGraphData(recipe, {
+      metadata,
     });
 
     setNodes(initialGraphData.nodes);
     setEdges(initialGraphData.edges);
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [recipe, metadata]);
 
   return (
-    <div className="flex h-[378px] w-full rounded-sm border-2 border-semantic-bg-line">
+    <div
+      className={cn(
+        "flex w-full rounded-sm border-2 border-semantic-bg-line",
+        className
+      )}
+    >
       <ReactFlow
         className="rounded-sm"
         nodes={nodes}

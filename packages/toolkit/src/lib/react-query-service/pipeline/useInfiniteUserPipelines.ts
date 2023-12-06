@@ -3,11 +3,15 @@ import { Nullable } from "../../type";
 import { env } from "../../utility";
 import { listUserPipelinesQuery } from "../../vdp-sdk";
 
-export function useInfiniteUserPipelines(
-  userName: string,
-  accessToken: Nullable<string>,
-  pageSize?: number
-) {
+export function useInfiniteUserPipelines({
+  userName,
+  accessToken,
+  pageSize,
+}: {
+  userName: string;
+  accessToken: Nullable<string>;
+  pageSize?: number;
+}) {
   const fetchUserPipelines = async (nextPageToken: Nullable<string>) => {
     const pipelines = await listUserPipelinesQuery({
       pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

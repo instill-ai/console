@@ -1,1 +1,1 @@
-export * from "./PipelineView";
+export * from "./ViewPipeline";

@@ -2,6 +2,7 @@ export * from "./useCreateUserPipeline";
 export * from "./useCreateUserPipelineRelease";
 export * from "./useDeleteUserPipeline";
 export * from "./useDeleteUserPipelineRelease";
+export * from "./useInfiniteUserPipelines";
 export * from "./useOperatorDefinition";
 export * from "./useOperatorDefinitions";
 export * from "./usePipelines";
