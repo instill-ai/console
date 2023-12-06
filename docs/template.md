@@ -15,7 +15,7 @@ For example, this is a pipeline with basic configuration
 
 ```ts
 {
-  "version": "v1alpha",
+  "version": "v1beta",
   "components": [
     {
       "id": "start",
@@ -55,7 +55,7 @@ This is the correct template after cleaning it up
 
 ```ts
 {
-  "version": "v1alpha",
+  "version": "v1beta",
   "components": [
     {
       "id": "start",

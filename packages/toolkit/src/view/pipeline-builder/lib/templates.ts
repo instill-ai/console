@@ -8,7 +8,7 @@ export const templates: PipelineTemplate[] = [
     category: "AI-generated art",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -113,7 +113,7 @@ export const templates: PipelineTemplate[] = [
     category: "AI-generated art",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -232,7 +232,7 @@ export const templates: PipelineTemplate[] = [
     category: "AI-generated art",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -337,7 +337,7 @@ export const templates: PipelineTemplate[] = [
     category: "Copywriting",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -433,7 +433,7 @@ export const templates: PipelineTemplate[] = [
     category: "Extraction",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -507,7 +507,7 @@ export const templates: PipelineTemplate[] = [
     category: "Summarization",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",
@@ -586,7 +586,7 @@ export const templates: PipelineTemplate[] = [
     category: "Copywriting",
     author: "InstillAI",
     recipe: {
-      version: "v1alpha",
+      version: "v1beta",
       components: [
         {
           id: "start",

@@ -66,7 +66,7 @@ export function constructPipelineRecipe(
   }
 
   return {
-    version: "v1alpha",
+    version: "v1beta",
     components: components,
   };
 }

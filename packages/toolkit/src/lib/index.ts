@@ -4,7 +4,6 @@ export * from "./dashboard";
 export * from "./dot";
 export * from "./github";
 export * from "./hook";
-export * from "./prosemirror-markdown";
 export * from "./react-query-service";
 export * from "./store";
 export * from "./table";

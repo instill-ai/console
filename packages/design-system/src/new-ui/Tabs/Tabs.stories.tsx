@@ -18,7 +18,7 @@ export const Regular: Story = {
       </Tabs.List>
       <Tabs.Content value="snippet">
         <div className="w-full bg-semantic-bg-primary">
-          {`curl -X POST {vdp-pipeline-base-url}/v1alpha/{pipeline-name}/trigger 
+          {`curl -X POST {vdp-pipeline-base-url}/v1beta/{pipeline-name}/trigger 
 --header 'Content-Type: application/json' 
 --data '{input-array}'
 `}
@@ -28,7 +28,7 @@ export const Regular: Story = {
         <pre className="flex w-full whitespace-pre-wrap bg-semantic-bg-primary">
           {JSON.stringify(
             {
-              version: "v1alpha",
+              version: "v1beta",
               components: [
                 {
                   id: "start",

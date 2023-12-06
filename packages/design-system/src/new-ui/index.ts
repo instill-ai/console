@@ -18,6 +18,7 @@ export * from "./MultiSelect";
 export * from "./ParagraphWithHTML";
 export * from "./Popover";
 export * from "./Progress";
+export * from "./radio-group";
 export * from "./ScrollArea";
 export * from "./Select";
 export * from "./Skeleton";

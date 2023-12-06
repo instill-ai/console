@@ -15,7 +15,7 @@ test("should check position is not valid", () => {
         configuration: {},
       },
     ],
-    version: "v1alpha",
+    version: "v1beta",
   };
 
   const isValid = checkIsValidPosition(recipe, {
@@ -45,7 +45,7 @@ test("should check position is valid", () => {
         configuration: {},
       },
     ],
-    version: "v1alpha",
+    version: "v1beta",
   };
 
   const isValid = checkIsValidPosition(recipe, {
@@ -93,7 +93,7 @@ test("should check position is not valid even there is one missing data", () => 
         configuration: {},
       },
     ],
-    version: "v1alpha",
+    version: "v1beta",
   };
 
   const isValid = checkIsValidPosition(recipe, {

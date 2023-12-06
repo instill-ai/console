@@ -57,13 +57,21 @@ export function useAccessToken() {
   );
 
   React.useEffect(() => {
+    if (query.isError) {
+      updateAccessToken(() => null);
+      updateEnabledQuery(() => false);
+      return;
+    }
+
     if (!query.isSuccess || !query.data) {
+      updateAccessToken(() => null);
+      updateEnabledQuery(() => false);
       return;
     }
 
     updateAccessToken(() => query.data);
     updateEnabledQuery(() => true);
-  }, [query.isSuccess, query.data]);
+  }, [query.isSuccess, query.data, query.isError]);
 
   return query;
 }
