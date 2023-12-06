@@ -1,12 +1,18 @@
-import Blockquote from "@tiptap/extension-blockquote";
-import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
 import Heading from "@tiptap/extension-heading";
+import Text from "@tiptap/extension-text";
+import Paragraph from "@tiptap/extension-paragraph";
+import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
+import Strike from "@tiptap/extension-strike";
+import Italic from "@tiptap/extension-italic";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import HardBreak from "@tiptap/extension-hard-break";
+import Code from "@tiptap/extension-code";
+import Bold from "@tiptap/extension-bold";
+import Blockquote from "@tiptap/extension-blockquote";
+import Link from "@tiptap/extension-link";
 import { Extensions } from "@tiptap/react";
 
 export const extensions: Extensions = [
@@ -31,4 +37,10 @@ export const extensions: Extensions = [
   }),
   Text,
   HardBreak,
+  Strike,
+  Italic,
+  HorizontalRule,
+  Code,
+  Bold,
+  Link,
 ];

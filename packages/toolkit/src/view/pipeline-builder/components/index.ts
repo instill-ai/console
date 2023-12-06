@@ -8,7 +8,7 @@ export * from "./EmptyNode";
 export * from "./end-operator-node";
 export * from "./operator-node";
 export * from "./PipelineNameForm";
-export * from "./ReleasePipelineModal";
+export * from "./dialog-publish-pipeline";
 export * from "./select-component-definition-dialog";
 export * from "./start-operator-node";
 export * from "./PipelineToolkitModal";

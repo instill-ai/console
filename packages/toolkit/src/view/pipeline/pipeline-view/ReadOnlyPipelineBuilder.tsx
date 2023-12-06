@@ -66,8 +66,9 @@ export const ReadOnlyPipelineBuilder = () => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   return (
-    <div className="flex h-[308px] w-[606px] rounded-sm border border-semantic-bg-line">
+    <div className="flex h-[378px] w-full rounded-sm border-2 border-semantic-bg-line">
       <ReactFlow
+        className="rounded-sm"
         nodes={nodes}
         edges={edges}
         fitView={true}

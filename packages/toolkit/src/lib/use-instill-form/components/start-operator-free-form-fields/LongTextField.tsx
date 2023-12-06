@@ -3,9 +3,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { AutoFormFieldBaseProps } from "../../type";
 import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
-import { customMarkdownSerializer } from "../../../prosemirror-markdown";
 import { Nullable } from "../../../type";
-import { extensions } from "../../../tip-tap";
+import { extensions, serialize } from "../../../tip-tap";
 
 export const LongTextField = ({
   form,
@@ -39,7 +38,7 @@ export const LongTextField = ({
 
       timer.current = window.setTimeout(() => {
         try {
-          const md = customMarkdownSerializer.serialize(editor.state.doc);
+          const md = serialize(editor.schema, editor.getJSON());
           form.setValue(path, md);
         } catch (err) {
           console.error(err);

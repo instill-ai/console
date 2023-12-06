@@ -43,7 +43,7 @@ export const InOutPut = () => {
   const pipeline = useUserPipeline({
     pipelineName: id ? pipelineName : null,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && !!accessToken,
   });
 
   const startComponent = React.useMemo(() => {

@@ -19,7 +19,7 @@ import {
   generateNewComponentIndex,
 } from "./lib";
 import {
-  ReleasePipelineModal,
+  DialogPublishPipeline,
   PipelineToolkitModal,
   SelectPipelineComponentDefinitionDialog,
   CreateResourceDialog,
@@ -45,8 +45,8 @@ import {
   useUser,
 } from "../../lib";
 import { StartNodeData } from "./type";
-import { SharePipelineDialog } from "./components/SharePipelineDialog";
 import { LoadingSpin } from "../../components";
+import { DialogSharePipeline } from "./components/dialog-share-pipeline/DialogSharePipeline";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -67,6 +67,7 @@ const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
+  updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
 });
 
 export type FlowControlProps = {
@@ -95,6 +96,7 @@ export const FlowControl = (props: FlowControlProps) => {
     isOwner,
     currentVersion,
     isTriggeringPipeline,
+    updateDialogSharePipelineIsOpen,
   } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { entity } = router.query;
@@ -112,7 +114,6 @@ export const FlowControl = (props: FlowControlProps) => {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isCloning, setIsCloning] = React.useState(false);
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
-  const [shareDialogIsOpen, setShareDialogIsOpen] = React.useState(false);
   const [releaseDialogIsOpen, setReleaseDialogIsOpen] = React.useState(false);
 
   async function handleSavePipeline() {
@@ -510,20 +511,18 @@ export const FlowControl = (props: FlowControlProps) => {
                   }}
                 >
                   Run
-                  <div className="my-auto flex pt-0.5">
-                    {isTriggeringPipeline ? (
-                      <LoadingSpin className="!text-semantic-accent-default" />
-                    ) : (
-                      <Icons.PlayCircle
-                        className={cn(
-                          "my-auto h-4 w-4",
-                          pipelineRecipeIsDirty
-                            ? "stroke-[#bfbfbf]"
-                            : "stroke-semantic-accent-default"
-                        )}
-                      />
-                    )}
-                  </div>
+                  {isTriggeringPipeline ? (
+                    <LoadingSpin className="my-auto !text-semantic-accent-default" />
+                  ) : (
+                    <Icons.PlayCircle
+                      className={cn(
+                        "my-auto h-4 w-4",
+                        pipelineRecipeIsDirty
+                          ? "stroke-[#bfbfbf]"
+                          : "stroke-semantic-accent-default"
+                      )}
+                    />
+                  )}
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
@@ -533,9 +532,7 @@ export const FlowControl = (props: FlowControlProps) => {
                   onClick={() => setToolKitIsOpen((prev) => !prev)}
                 >
                   Toolkit
-                  <div className="my-auto flex pt-0.5">
-                    <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
-                  </div>
+                  <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
@@ -564,10 +561,12 @@ export const FlowControl = (props: FlowControlProps) => {
                 <Menubar.Trigger
                   className="flex cursor-pointer flex-row gap-x-2"
                   value="share"
-                  onClick={() => setShareDialogIsOpen((prev) => !prev)}
+                  onClick={() =>
+                    updateDialogSharePipelineIsOpen((prev) => !prev)
+                  }
                 >
                   Share
-                  <Icons.Share07 className="h-4 w-4 stroke-semantic-fg-primary" />
+                  <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
@@ -696,21 +695,12 @@ export const FlowControl = (props: FlowControlProps) => {
         isOpen={toolKitIsOpen}
         setIsOpen={setToolKitIsOpen}
       />
-      <SharePipelineDialog
-        accessToken={accessToken}
-        enableQuery={enableQuery}
-        isOpen={shareDialogIsOpen}
-        setIsOpen={setShareDialogIsOpen}
-      />
+      <DialogSharePipeline />
       <CreateResourceDialog
         accessToken={accessToken}
         enableQuery={enableQuery}
       />
-      <ReleasePipelineModal
-        isOpen={releaseDialogIsOpen}
-        setIsOpen={setReleaseDialogIsOpen}
-        accessToken={accessToken}
-      />
+      <DialogPublishPipeline />
     </React.Fragment>
   );
 };
