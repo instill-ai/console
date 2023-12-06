@@ -41,7 +41,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   testModeEnabled: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
-  accessToken: null,
   createResourceDialogState: {
     open: false,
     connectorType: null,
@@ -205,13 +204,6 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         pipelineOpenAPIOutputSchema: fn(state.pipelineOpenAPIOutputSchema),
-      };
-    }),
-  updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) =>
-    set((state) => {
-      return {
-        ...state,
-        accessToken: fn(state.accessToken),
       };
     }),
   updateCreateResourceDialogState: (

@@ -17,10 +17,12 @@ export async function listPipelinesQuery({
   pageSize,
   nextPageToken,
   accessToken,
+  enablePagination,
 }: {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
+  enablePagination?: boolean;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
@@ -35,15 +37,20 @@ export async function listPipelinesQuery({
 
     const { data } = await client.get<ListPipelinesResponse>(queryString);
 
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
     pipelines.push(...data.pipelines);
 
     if (data.next_page_token) {
       pipelines.push(
-        ...(await listPipelinesQuery({
+        ...((await listPipelinesQuery({
           pageSize,
           nextPageToken: data.next_page_token,
           accessToken,
-        }))
+          enablePagination,
+        })) as Pipeline[])
       );
     }
 
@@ -59,17 +66,35 @@ export type ListUserPipelinesResponse = {
   total_size: number;
 };
 
-export async function listUserPipelinesQuery({
-  pageSize,
-  nextPageToken,
-  userName,
-  accessToken,
-}: {
+export type listUserPipelinesQueryParams = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
-  userName: string;
   accessToken: Nullable<string>;
-}) {
+  userName: string;
+};
+
+export function listUserPipelinesQuery(
+  props: listUserPipelinesQueryParams & {
+    enablePagination: true;
+  }
+): Promise<ListUserPipelinesResponse>;
+export function listUserPipelinesQuery(
+  props: listUserPipelinesQueryParams & {
+    enablePagination: false;
+  }
+): Promise<Pipeline[]>;
+export function listUserPipelinesQuery(
+  props: listUserPipelinesQueryParams & {
+    enablePagination: undefined;
+  }
+): Promise<Pipeline[]>;
+export async function listUserPipelinesQuery(
+  props: listUserPipelinesQueryParams & {
+    enablePagination?: boolean;
+  }
+) {
+  const { pageSize, nextPageToken, accessToken, userName, enablePagination } =
+    props;
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
     const pipelines: Pipeline[] = [];
@@ -83,6 +108,10 @@ export async function listUserPipelinesQuery({
 
     const { data } = await client.get<ListUserPipelinesResponse>(queryString);
 
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
     pipelines.push(...data.pipelines);
 
     if (data.next_page_token) {
@@ -92,6 +121,7 @@ export async function listUserPipelinesQuery({
           nextPageToken: data.next_page_token,
           accessToken,
           userName,
+          enablePagination: false,
         }))
       );
     }

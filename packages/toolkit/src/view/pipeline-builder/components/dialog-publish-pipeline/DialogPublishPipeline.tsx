@@ -85,7 +85,7 @@ export const DialogPublishPipeline = () => {
           ...pipeline.data.permission.users,
           "users/*": {
             enabled: true,
-            role: "ROLE_EXECUTOR",
+            role: "ROLE_VIEWER",
           },
         },
         share_code: pipeline.data?.permission.share_code ?? null,

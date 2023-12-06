@@ -4,7 +4,6 @@ import {
   ModelsTable,
   PageBase,
   PipelinesTable,
-  useConnectorDefinitions,
   useModels,
   useUser,
   useUserPipelines,
@@ -21,10 +20,10 @@ import {
   GitHubIcon,
 } from "@instill-ai/design-system";
 
-import { ConsoleCorePageHead, Topbar } from "../../../components";
-import { NextPageWithLayout } from "../../_app";
-import { useAccessToken } from "../../../lib/useAccessToken";
-import { useTrackToken } from "../../../lib/useTrackToken";
+import { ConsoleCorePageHead, Topbar } from "../../components";
+import { NextPageWithLayout } from "../_app";
+import { useAccessToken } from "../../lib/useAccessToken";
+import { useTrackToken } from "../../lib/useTrackToken";
 
 const PipelinePage: NextPageWithLayout = () => {
   const router = useRouter();
