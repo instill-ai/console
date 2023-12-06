@@ -3,7 +3,7 @@ import { createInstillAxiosClient } from "../helper";
 import { Nullable } from "../../type";
 
 export type AcceptOrganizationMembershipPayload = {
-  role: MEMBERSHIP_STATE;
+  state: MEMBERSHIP_STATE;
   organizationName?: Nullable<string>;
   userName?: Nullable<string>;
 };
@@ -28,7 +28,7 @@ export async function acceptOrganizationMembershipAction({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.patch<MembershipResponse>(
+    const { data } = await client.put<MembershipResponse>(
       `/organizations/${payload.userName}/memberships/${payload.organizationName}`,
       { ...payload, userName: undefined, organizationName: undefined }
     );

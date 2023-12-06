@@ -72,6 +72,12 @@ export type ListApiTokensResponse = {
   total_size: string;
 };
 
+export type ListUsersResponse = {
+  users: User[];
+  next_page_token: string;
+  total_size: string;
+};
+
 export async function listApiTokensQuery({
   pageSize,
   nextPageToken,
@@ -107,6 +113,45 @@ export async function listApiTokensQuery({
     }
 
     return Promise.resolve(tokens);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+export async function listUsersQuery({
+  pageSize,
+  nextPageToken,
+  accessToken,
+}: {
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+    const users: User[] = [];
+
+    const queryString = getQueryString({
+      baseURL: "/users",
+      pageSize,
+      nextPageToken,
+      filter: null,
+    });
+
+    const { data } = await client.get<ListUsersResponse>(queryString);
+
+    users.push(...data.users);
+
+    if (data.next_page_token) {
+      users.push(
+        ...(await listUsersQuery({
+          pageSize,
+          accessToken,
+          nextPageToken: data.next_page_token,
+        }))
+      );
+    }
+
+    return Promise.resolve(users);
   } catch (err) {
     return Promise.reject(err);
   }
