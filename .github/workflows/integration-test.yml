@@ -202,7 +202,8 @@ jobs:
         run: |
           docker build --build-arg TEST_USER='root' -f Dockerfile.playwright -t console-playwright:latest .
           docker run -t --rm \
-            -e NEXT_PUBLIC_API_VERSION=v1alpha \
+            -e NEXT_PUBLIC_GENERAL_API_VERSION=v1beta \
+            -e NEXT_PUBLIC_MODEL_API_VERSION=v1alpha \
             -e NEXT_PUBLIC_CONSOLE_EDITION=local-ce:test \
             -e NEXT_PUBLIC_CONSOLE_BASE_URL=http://console:3000 \
             -e NEXT_PUBLIC_BASE_API_GATEWAY_URL=http://api-gateway:8080  \

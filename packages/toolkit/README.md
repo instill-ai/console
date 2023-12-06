@@ -14,27 +14,9 @@ pnpm add @instill-ai/toolkit
 import "@instill-ai/toolkit/dist/index.css";
 ```
 
-
 ## Env
 
-When using this toolkit, you need to set up below environment variables
-
-- NEXT_PUBLIC_ENABLE_INSTILL_API_AUTH (boolean)
-- NEXT_PUBLIC_QUERY_PAGE_SIZE (number)
-- NEXT_PUBLIC_VALIDATE_TOKEN_API_ROUTE (string)
-- NEXT_PUBLIC_REFRESH_TOKEN_API_ROUTE (string)
-- NEXT_PUBLIC_API_VERSION (string)
-- NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE (boolean)
-- NEXT_PUBLIC_LIST_PAGE_SIZE (number)
-- NEXT_PUBLIC_AMPLITUDE_KEY (string)
-- NEXT_PUBLIC_BASE_API_GATEWAY_URL (string)
-- NEXT_SERVER_BASE_API_GATEWAY_URL (string)
-- NEXT_PUBLIC_MODEL_API_GATEWAY_URL (string)
-- NEXT_SERVER_MODEL_API_GATEWAY_URL (string)
-- NEXT_PUBLIC_VDP_API_GATEWAY_URL (string)
-- NEXT_SERVER_VDP_API_GATEWAY_URL (string)
-- CF_ACCESS_CLIENT_ID (string)
-- CF_ACCESS_CLIENT_SECRET (string)
+Please reference to [.env](../../apps/console/.env)
 
 ## About controller state
 
@@ -63,7 +45,7 @@ We are using Airbyte protocol for generating, maintaining, create our connectors
 #### How to get the condition's path
 
 We rely on the field inside of condition with const key and use its path to set correct value. e.g. Snowflake's loading method
-  
+
 ```js
 {
   title: "Data Staging Method",
@@ -94,9 +76,9 @@ We rely on the field inside of condition with const key and use its path to set 
   ]
 }
 }
-```  
+```
 
-But sometimes the const field is not there (due to some human error of Airbyte side), we 
+But sometimes the const field is not there (due to some human error of Airbyte side), we
 need to find the workaround. Normally there are multiple conditions under the conditionForm, we could loop though all the field to find the right one.
 
 #### How to remove old condition configuration when user select new one?
@@ -133,7 +115,7 @@ Take this destination for example, what if user select another tunnel_method? Ho
 }
 ```
 
-The short answer is we don't bother control the field values at the first place. Because we had built up Yup according to the user selected condition. We can use yup to help us strip un-used/not-wanted/old condition data. 
+The short answer is we don't bother control the field values at the first place. Because we had built up Yup according to the user selected condition. We can use yup to help us strip un-used/not-wanted/old condition data.
 
 ```js
 // This is the original data
@@ -167,7 +149,7 @@ The short answer is we don't bother control the field values at the first place.
   "tunnel_method.tunnel_user_password": "ewrewr343434"
 }
 
-// This is the striped data, we stripe tunnel_method.tunnel_user_password and others not used Ui 
+// This is the striped data, we stripe tunnel_method.tunnel_user_password and others not used Ui
 // data (data that is not in configuration)
 {
   "configuration": {
@@ -229,7 +211,6 @@ Now we have a OneOfCondition field tunnel_method, how can we let the initial for
 - When deal with configuration, once we get the initial value we have to map AirbyteFormTree and the configuration values to form the proper initial selectedConditionMap.
 - At OneOfConditionSection, when form is not dirty we will initialize correct selected condition.
 
-
 ### Issues
 
 - How to validate all the form, including oneOf condition and the nested oneOf
@@ -266,7 +247,7 @@ Currently, there have two long-running operations in the instill backend.
 
 #### Note
 
-- The returned object will be the operation. You need to query the operation endpoint to access the operation resource. 
+- The returned object will be the operation. You need to query the operation endpoint to access the operation resource.
 - The service will invalidate the whole data query. For example, once a model creation occur, we will invalidate the whole ["model"] key set immediately.
 - When you catch the onSuccess signal of react-query service and begin to periodically check the operation endpoint for status. You should update the whole react-query cache once you get the new resource.
 - Operation data is volatile, we don't persist it in react-query cache.

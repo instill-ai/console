@@ -27,10 +27,16 @@ export function createInstillAxiosClient(
     );
   }
 
+  let APIVersion = env("NEXT_PUBLIC_GENERAL_API_VERSION");
+
+  if (product === "model") {
+    APIVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
+  }
+
   const baseURL: Nullable<string> = `${
     process.env.NEXT_SERVER_API_GATEWAY_URL ??
     env("NEXT_PUBLIC_API_GATEWAY_URL")
-  }/${product}/${env("NEXT_PUBLIC_API_VERSION")}`;
+  }/${product}/${APIVersion}`;
 
   return axios.create({
     baseURL,

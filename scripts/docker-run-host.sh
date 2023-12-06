@@ -6,7 +6,8 @@ docker run --rm -t \
   --entrypoint ./entrypoint.sh \
   -p 3000:3000 \
   -e NEXT_PUBLIC_CONSOLE_BASE_URL='http://localhost:3000' \
-  -e NEXT_PUBLIC_API_VERSION='v1alpha' \
+  -e NEXT_PUBLIC_GENERAL_API_VERSION=v1beta \
+  -e NEXT_PUBLIC_MODEL_API_VERSION=v1alpha \
   -e NEXT_PUBLIC_API_GATEWAY_URL='http://localhost:8080' \
   -e NEXT_SERVER_API_GATEWAY_URL='http://localhost:8080' \
   -e NEXT_PUBLIC_INSTILL_AI_USER_COOKIE_NAME='instill-ai-user' \
