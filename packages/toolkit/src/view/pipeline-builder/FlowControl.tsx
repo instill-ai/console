@@ -47,6 +47,7 @@ import {
 import { StartNodeData } from "./type";
 import { LoadingSpin } from "../../components";
 import { DialogSharePipeline } from "./components/dialog-share-pipeline/DialogSharePipeline";
+import { MenuRelease } from "./components/menu-release/MenuRelease";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -115,6 +116,9 @@ export const FlowControl = (props: FlowControlProps) => {
   const [isCloning, setIsCloning] = React.useState(false);
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
   const [releaseDialogIsOpen, setReleaseDialogIsOpen] = React.useState(false);
+  const [selectedMenu, setSelectedMenu] =
+    React.useState<Nullable<string>>(null);
+  const [isReleasing, setIsReleasing] = React.useState(false);
 
   async function handleSavePipeline() {
     if (!pipelineId) {
@@ -489,7 +493,14 @@ export const FlowControl = (props: FlowControlProps) => {
             <Menubar.Root
               // We don't want to trigger menu open state when user click
               // on the menu item
-              value=""
+              value={selectedMenu ?? ""}
+              onValueChange={(value) => {
+                if (isReleasing) {
+                  return;
+                }
+
+                setSelectedMenu(value);
+              }}
             >
               <Menubar.Menu>
                 <Menubar.Trigger
@@ -570,49 +581,30 @@ export const FlowControl = (props: FlowControlProps) => {
                 </Menubar.Trigger>
               </Menubar.Menu>
               <Menubar.Menu>
-                <Tooltip.Provider>
-                  <Tooltip.Root>
-                    <Tooltip.Trigger asChild>
-                      {/* 
-                        This will make tooltip work even with a disabled button
-                        https://www.radix-ui.com/primitives/docs/components/tooltip#displaying-a-tooltip-from-a-disabled-button
-                      */}
-                      {/* 
-                        eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-                      */}
-                      <span className="flex" tabIndex={0}>
-                        <Menubar.Trigger
-                          className={cn(
-                            "flex cursor-pointer flex-row gap-x-2",
-                            pipelineRecipeIsDirty
-                              ? ""
-                              : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
-                          )}
-                          value="release"
-                          disabled={pipelineRecipeIsDirty}
-                          onClick={() =>
-                            setReleaseDialogIsOpen((prev) => !prev)
-                          }
-                        >
-                          Release
-                        </Menubar.Trigger>
-                      </span>
-                    </Tooltip.Trigger>
-                    <Tooltip.Portal>
-                      <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
-                        {pipelineRecipeIsDirty || pipelineIsNew
-                          ? "Please save the pipeline first"
-                          : "Release the pipeline"}
-                        <Tooltip.Arrow
-                          className="fill-semantic-bg-primary"
-                          offset={10}
-                          width={9}
-                          height={6}
-                        />
-                      </Tooltip.Content>
-                    </Tooltip.Portal>
-                  </Tooltip.Root>
-                </Tooltip.Provider>
+                <Menubar.Trigger
+                  className={cn(
+                    "flex cursor-pointer flex-row gap-x-2",
+                    pipelineRecipeIsDirty
+                      ? ""
+                      : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
+                  )}
+                  value="release"
+                  disabled={pipelineRecipeIsDirty}
+                >
+                  Release
+                  <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-on-default" />
+                </Menubar.Trigger>
+                <Menubar.Portal>
+                  <Menubar.Content className="rounded-[12px] p-6" align="end">
+                    <MenuRelease
+                      isReleasing={isReleasing}
+                      setIsReleasing={setIsReleasing}
+                      onRelease={() => {
+                        setSelectedMenu("");
+                      }}
+                    />
+                  </Menubar.Content>
+                </Menubar.Portal>
               </Menubar.Menu>
             </Menubar.Root>
           </React.Fragment>

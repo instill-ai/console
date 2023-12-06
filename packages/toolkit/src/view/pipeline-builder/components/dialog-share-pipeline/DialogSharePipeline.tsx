@@ -35,8 +35,6 @@ export const DialogSharePipeline = () => {
     pipelineIsNew,
   } = useInstillStore(useShallow(selector));
 
-  const { toast } = useToast();
-
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
