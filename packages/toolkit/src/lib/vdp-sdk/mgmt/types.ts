@@ -31,3 +31,10 @@ export type ApiTokenState =
   | "STATE_INACTIVE"
   | "STATE_ACTIVE"
   | "STATE_EXPIRED";
+
+export type NamespaceType =
+  | "NAMESPACE_UNSPECIFIED"
+  | "NAMESPACE_AVAILABLE"
+  | "NAMESPACE_USER"
+  | "NAMESPACE_ORGANIZATION"
+  | "NAMESPACE_RESERVED";

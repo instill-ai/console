@@ -22,28 +22,6 @@ export async function getUserQuery({
   }
 }
 
-export type CheckUserIdExistResponse = {
-  exists: boolean;
-};
-
-export async function checkUserIdExist({
-  id,
-  accessToken,
-}: {
-  id: string;
-  accessToken: Nullable<string>;
-}) {
-  try {
-    const client = createInstillAxiosClient(accessToken, "core");
-    const { data } = await client.get<CheckUserIdExistResponse>(
-      `/users/${id}/exist`
-    );
-    return Promise.resolve(data.exists);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
 export type GetApiTokenResponse = {
   token: ApiToken;
 };

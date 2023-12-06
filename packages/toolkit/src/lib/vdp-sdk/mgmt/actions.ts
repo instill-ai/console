@@ -1,5 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
+import { NamespaceType } from "./types";
 
 export async function authLogoutAction({
   accessToken,
@@ -51,6 +52,31 @@ export async function authValidateTokenAction({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
     await client.post("/auth/validate_access_token");
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type CheckNamespaceResponse = {
+  type: NamespaceType;
+};
+
+export async function checkNamespace({
+  id,
+  accessToken,
+}: {
+  id: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+    const { data } = await client.post<CheckNamespaceResponse>(
+      "/check-namespace",
+      {
+        id,
+      }
+    );
+    return Promise.resolve(data.type);
   } catch (err) {
     return Promise.reject(err);
   }
