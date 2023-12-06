@@ -85,7 +85,7 @@ export const DialogPublishPipeline = () => {
           ...pipeline.data.permission.users,
           "users/*": {
             enabled: true,
-            role: "ROLE_VIEWER",
+            role: "ROLE_EXECUTOR",
           },
         },
         share_code: pipeline.data?.permission.share_code ?? null,
@@ -138,7 +138,7 @@ export const DialogPublishPipeline = () => {
         updateDialogPublishPipelineIsOpen(() => e);
       }}
     >
-      <Dialog.Content className="!h-[calc(100vh-var(--topbar-height))] !w-screen !max-w-none !px-0 !py-6">
+      <Dialog.Content className="!bottom-0 !h-[calc(100vh-var(--topbar-height))] !w-screen !max-w-none !px-0 !py-6">
         <Form.Root {...form}>
           <form onSubmit={form.handleSubmit(handlePublish)}>
             <div className="flex h-full flex-col">

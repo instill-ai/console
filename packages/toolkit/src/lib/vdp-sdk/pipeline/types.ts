@@ -98,7 +98,10 @@ export type PermissionShareCode = {
   role: PermissionRole;
 };
 
-export type PermissionRole = "ROLE_UNSPECIFIED" | "ROLE_VIEWER";
+export type PermissionRole =
+  | "ROLE_UNSPECIFIED"
+  | "ROLE_VIEWER"
+  | "ROLE_EXECUTOR";
 
 export type PipelineRelease = {
   name: string;

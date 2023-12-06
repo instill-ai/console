@@ -60,9 +60,6 @@ export const ReadmeEditor = ({
       timer.current = window.setTimeout(() => {
         try {
           const md = serialize(editor.schema, editor.getJSON());
-
-          console.log(md, editor.getJSON());
-
           form.setValue("description", md);
         } catch (err) {
           console.error(err);

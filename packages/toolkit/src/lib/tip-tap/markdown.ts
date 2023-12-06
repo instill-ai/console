@@ -127,13 +127,8 @@ const serializerMarks = {
 const serializerNodes = {
   ...defaultMarkdownSerializer.nodes,
   [Paragraph.name]: (state: MarkdownSerializerState, node: Node) => {
-    console.log(node);
-
-    // if the content size is empty, it is a empty paragraph
-    // we need to render it as a <br> tag
-    if (node.content.size === 0) {
+    if (node.type.name === "paragraph" && node.content.size === 0) {
       state.write("<br>");
-      return;
     }
 
     state.renderInline(node);
