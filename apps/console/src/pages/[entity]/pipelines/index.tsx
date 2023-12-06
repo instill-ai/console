@@ -1,6 +1,10 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import { PageBase, PipelineListPageMainView } from "@instill-ai/toolkit";
+import {
+  PageBase,
+  PipelineListPageMainView,
+  ViewPipelines,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { ConsoleCorePageHead, Topbar } from "../../../components";
@@ -16,11 +20,12 @@ const PipelinesPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <PipelineListPageMainView
+      {/* <PipelineListPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
-      />
+      /> */}
+      <ViewPipelines />
     </React.Fragment>
   );
 };
