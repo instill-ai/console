@@ -59,7 +59,7 @@ export async function updateOrganizationMutation({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.post<UpdateOrganizationResponse>(
+    const { data } = await client.patch<UpdateOrganizationResponse>(
       `/organizations/${payload.id}`,
       {
         ...payload,
