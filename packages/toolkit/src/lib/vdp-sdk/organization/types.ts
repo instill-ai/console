@@ -20,7 +20,7 @@ export type Membership = {
   state: MEMBERSHIP_STATE;
 };
 
-export type ROLE = "admin" | "member";
+export type ROLE = "admin" | "member" | "pending_member";
 
 export type MEMBERSHIP_STATE =
   | "MEMBERSHIP_STATE_ACTIVE"
