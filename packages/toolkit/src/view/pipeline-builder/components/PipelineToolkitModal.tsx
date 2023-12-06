@@ -35,7 +35,7 @@ export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
             <div className="flex flex-col">
               <Dialog.Title>Pipeline toolkit</Dialog.Title>
               <Dialog.Description>
-                The home of useful gidgets for you to better utilitze VDP
+                The home of useful gadgets for you to better utilitze VDP
                 pipeline.
               </Dialog.Description>
             </div>
