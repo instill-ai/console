@@ -1,4 +1,5 @@
 import { LinkButton } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 export const HeadSkeleton = () => {
   return (
@@ -10,12 +11,20 @@ export const HeadSkeleton = () => {
 };
 
 export const Head = ({ ownerID }: { ownerID: string }) => {
+  const router = useRouter();
   return (
     <div className="flex flex-row gap-x-2 p-3">
       <div className="my-auto h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line" />
-      <LinkButton className="my-auto" size="md" variant="primary">
+
+      <button
+        type="button"
+        className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+        onClick={() => {
+          router.push(`/${ownerID}`);
+        }}
+      >
         {ownerID}
-      </LinkButton>
+      </button>
     </div>
   );
 };

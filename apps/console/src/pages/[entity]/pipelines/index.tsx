@@ -13,7 +13,6 @@ import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
 const PipelinesPage: NextPageWithLayout = () => {
-  const router = useRouter();
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
 
@@ -25,7 +24,9 @@ const PipelinesPage: NextPageWithLayout = () => {
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
       /> */}
-      <ViewPipelines />
+      <ViewPipelines
+        accessTokenn={accessToken.isSuccess ? accessToken.data : null}
+      />
     </React.Fragment>
   );
 };

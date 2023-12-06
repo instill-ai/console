@@ -1,10 +1,10 @@
 import { Button, Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
+  Nullable,
   useInstillStore,
   useShallow,
   useUser,
-  useUserPipelines,
 } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -12,18 +12,16 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const CardUserProfile = () => {
+export const CardUserProfile = ({
+  totalPipelines,
+}: {
+  totalPipelines: Nullable<number>;
+}) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const user = useUser({
     enabled: enabledQuery && !!accessToken,
     accessToken,
-  });
-
-  const pipelines = useUserPipelines({
-    enabled: enabledQuery && !!accessToken && user.isSuccess,
-    accessToken,
-    userName: user.data?.name ?? null,
   });
 
   return (
@@ -54,9 +52,9 @@ export const CardUserProfile = () => {
           <p className="text-semantic-fg-primary product-body-text-2-semibold">
             My active pipelines
           </p>
-          {pipelines.isSuccess ? (
+          {totalPipelines ? (
             <p className="text-semantic-accent-default product-body-text-2-semibold">
-              {pipelines.data.length}
+              {totalPipelines}
             </p>
           ) : null}
         </div>

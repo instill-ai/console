@@ -39,7 +39,6 @@ export type PipelineBuilderState = {
   testModeEnabled: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
-  accessToken: Nullable<string>;
   createResourceDialogState: PipelineBuilderCreateResourceDialogState;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
@@ -82,7 +81,6 @@ export type PipelineBuilderAction = {
   updatePipelineOpenAPIOutputSchema: (
     fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) => void;
-  updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updateCreateResourceDialogState: (
     fn: (
       prev: PipelineBuilderCreateResourceDialogState

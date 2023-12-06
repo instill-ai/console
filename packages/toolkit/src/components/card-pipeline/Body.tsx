@@ -1,8 +1,9 @@
-import { Icons, LinkButton } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 import {
   ReadOnlyPipelineBuilder,
   ReadOnlyPipelineBuilderProps,
 } from "../../view";
+import { useRouter } from "next/router";
 
 const BodySkeleton = () => {
   return (
@@ -14,22 +15,31 @@ const BodySkeleton = () => {
 };
 
 export const Body = ({
+  ownerID,
   pipelineID,
   recipe,
   metadata,
-}: { pipelineID: string } & ReadOnlyPipelineBuilderProps) => {
+}: { ownerID: string; pipelineID: string } & ReadOnlyPipelineBuilderProps) => {
+  const router = useRouter();
+
   return (
-    <div className="flex w-full flex-col px-2">
-      <div className="mb-2 flex flex-row">
-        <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-default" />
-        <LinkButton size="md" variant="primary">
+    <div className="flex w-full flex-col">
+      <div className="mb-2 flex flex-row gap-x-2 px-3">
+        <Icons.Pipeline className="my-auto h-4 w-4 stroke-semantic-accent-default" />
+        <button
+          type="button"
+          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+          onClick={() => {
+            router.push(`/${ownerID}/pipelines/${pipelineID}`);
+          }}
+        >
           {pipelineID}
-        </LinkButton>
+        </button>
       </div>
       <ReadOnlyPipelineBuilder
         recipe={recipe}
         metadata={metadata}
-        className="h-[250px] w-full"
+        className="h-[250px] w-full !border-none !px-0"
       />
     </div>
   );

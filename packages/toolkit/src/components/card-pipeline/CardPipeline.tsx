@@ -22,11 +22,23 @@ export const CardPipeline = ({
   ownerID: string;
   pipelineID: string;
 } & ReadOnlyPipelineBuilderProps) => {
+  console.log("ownerID", ownerID);
+
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
       <Head ownerID={ownerID} />
-      <Body recipe={recipe} metadata={metadata} pipelineID={pipelineID} />
-      <Footer pipelineLatestVersion="v1.0.0" isOwner={true} />
+      <Body
+        ownerID={ownerID}
+        recipe={recipe}
+        metadata={metadata}
+        pipelineID={pipelineID}
+      />
+      <Footer
+        ownerID={ownerID}
+        pipelineID={pipelineID}
+        pipelineLatestVersion="v1.0.0"
+        isOwner={true}
+      />
     </div>
   );
 };

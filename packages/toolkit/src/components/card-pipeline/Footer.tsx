@@ -1,4 +1,5 @@
 import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 export const FooterSkeleton = () => {
   return (
@@ -16,11 +17,17 @@ export const FooterSkeleton = () => {
 
 export const Footer = ({
   isOwner,
+  ownerID,
+  pipelineID,
   pipelineLatestVersion,
 }: {
   isOwner: boolean;
+  ownerID: string;
+  pipelineID: string;
   pipelineLatestVersion: string;
 }) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col px-6 pb-4">
       <div className="flex flex-row">
@@ -30,23 +37,31 @@ export const Footer = ({
       </div>
       <Separator orientation="horizontal" className="my-2" />
       <div className="flex flex-row-reverse">
-        <Button
-          className="flex flex-row gap-x-2"
-          variant="tertiaryGrey"
-          size="lg"
-        >
-          {isOwner ? (
-            <>
-              <Icons.Edit03 className="h-4 w-4 stroke-semantic-fg-secondary" />
-              Edit
-            </>
-          ) : (
-            <>
-              <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
-              Clone
-            </>
-          )}
-        </Button>
+        {isOwner ? (
+          <Button
+            className="flex flex-row gap-x-2"
+            variant="tertiaryGrey"
+            size="lg"
+            onClick={() => {
+              router.push(`/${ownerID}/pipelines/${pipelineID}/builder`);
+            }}
+          >
+            <Icons.Edit03 className="h-4 w-4 stroke-semantic-fg-secondary" />
+            Edit
+          </Button>
+        ) : (
+          <Button
+            className="flex flex-row gap-x-2"
+            variant="tertiaryGrey"
+            size="lg"
+            onClick={() => {
+              router.push(`/${ownerID}/pipelines/${pipelineID}/builder`);
+            }}
+          >
+            <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
+            Clone
+          </Button>
+        )}
       </div>
     </div>
   );
