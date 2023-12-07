@@ -113,8 +113,15 @@ export const ViewPipelines = ({
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
-          {pipelines.isSuccess
-            ? allPipelines.map((pipeline) => (
+          {pipelines.isSuccess ? (
+            allPipelines.length === 0 ? (
+              <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
+                <p className=" text-semantic-fg-secondary product-body-text-2-semibold">
+                  Let&rsquo;s build your first pipline! 🙌
+                </p>
+              </div>
+            ) : (
+              allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}
@@ -123,9 +130,12 @@ export const ViewPipelines = ({
                   metadata={pipeline.metadata}
                 />
               ))
-            : Array.from({ length: 10 }).map((_, index) => (
-                <CardSkeletonPipeline key={`card-skelton-${index}`} />
-              ))}
+            )
+          ) : (
+            Array.from({ length: 10 }).map((_, index) => (
+              <CardSkeletonPipeline key={`card-skelton-${index}`} />
+            ))
+          )}
         </div>
         {pipelines.hasNextPage ? (
           <Button

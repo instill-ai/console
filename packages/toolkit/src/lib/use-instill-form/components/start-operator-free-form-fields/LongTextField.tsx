@@ -14,6 +14,8 @@ export const LongTextField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -49,7 +51,7 @@ export const LongTextField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={() => {
@@ -61,9 +63,10 @@ export const LongTextField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
             <Form.Control>
-              <EditorContent editor={editor} />
+              <EditorContent disabled={disabled} editor={editor} />
             </Form.Control>
             <Form.Description className="!text-xs" text={description} />
             <Form.Message />

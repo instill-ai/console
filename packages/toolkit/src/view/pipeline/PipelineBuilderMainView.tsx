@@ -71,7 +71,7 @@ export const PipelineBuilderMainView = (
 
   const { confirmNavigation } = useNavigationObserver({
     shouldStopNavigation: pipelineRecipeIsDirty ? true : false,
-    onNavigate: () => {
+    onStopNavigate: () => {
       setWarnUnsaveChangesModalIsOpen(true);
     },
     router,

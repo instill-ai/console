@@ -14,6 +14,8 @@ export const AudiosField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -23,7 +25,7 @@ export const AudiosField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -35,6 +37,7 @@ export const AudiosField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
 
             <div className="flex flex-row gap-x-1">
@@ -58,6 +61,7 @@ export const AudiosField = ({
                       setAudioFiles((prev) => [...prev, ...files]);
                     }
                   }}
+                  disabled={disabled}
                 />
               </Form.Control>
               {audioFiles.length > 0 ? (

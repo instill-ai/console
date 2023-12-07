@@ -54,6 +54,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   isTriggeringPipeline: false,
   dialogPublishPipelineIsOpen: false,
   dialogSharePipelineIsOpen: false,
+  pipelineIsReadOnly: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -257,6 +258,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         dialogSharePipelineIsOpen: fn(state.dialogSharePipelineIsOpen),
+      };
+    }),
+  updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        pipelineIsReadOnly: fn(state.pipelineIsReadOnly),
       };
     }),
 });

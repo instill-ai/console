@@ -14,6 +14,8 @@ export const AudioField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -23,7 +25,7 @@ export const AudioField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -35,6 +37,7 @@ export const AudioField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
 
             <div className="flex">
@@ -52,6 +55,7 @@ export const AudioField = ({
                       field.onChange(binary);
                     }
                   }}
+                  disabled={disabled}
                 />
               </Form.Control>
             </div>

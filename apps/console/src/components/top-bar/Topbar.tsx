@@ -132,10 +132,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               <Separator orientation="horizontal" />
               <TopbarDropdownGroup>
                 <TopbarDropdownItem>
-                  <Link
-                    href={`/${user.data.id}/profile`}
-                    className="flex gap-x-2"
-                  >
+                  <Link href={`/${user.data.id}`} className="flex gap-x-2">
                     <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
                     <div className="my-auto">View profile</div>
                   </Link>

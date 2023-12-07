@@ -58,6 +58,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -77,6 +78,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     currentVersion,
     updatePipelineRecipeIsDirty,
     updateIsTriggeringPipeline,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -332,6 +334,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     metadata: data.component.configuration.metadata ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
+    disabledAll: pipelineIsReadOnly,
   });
 
   React.useEffect(() => {
@@ -410,6 +413,20 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const hasSourceEdges = React.useMemo(() => {
     return edges.some((edge) => edge.source === id);
   }, [edges, id]);
+
+  let disabledAddFieldButton = false;
+
+  if (pipelineIsReadOnly) {
+    disabledAddFieldButton = true;
+  } else {
+    if (!isOwner) {
+      disabledAddFieldButton = true;
+    } else {
+      if (currentVersion !== "latest") {
+        disabledAddFieldButton = true;
+      }
+    }
+  }
 
   return (
     <NodeWrapper
@@ -557,18 +574,16 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                   setSelectedType("string");
                   setEnableEdit(!enableEdit);
                 }}
-                disabled={
-                  isOwner ? (currentVersion === "latest" ? false : true) : true
-                }
+                disabled={disabledAddFieldButton}
                 type="button"
               >
                 <p className="my-auto pt-0.5">Add Field</p>
                 <Icons.Plus
                   className={cn(
                     "my-auto h-4 w-4 stroke-semantic-accent-default",
-                    currentVersion === "latest"
-                      ? "stroke-semantic-accent-default"
-                      : "stroke-semantic-fg-secondary"
+                    disabledAddFieldButton
+                      ? "stroke-semantic-fg-secondary"
+                      : "stroke-semantic-accent-default"
                   )}
                 />
               </Button>

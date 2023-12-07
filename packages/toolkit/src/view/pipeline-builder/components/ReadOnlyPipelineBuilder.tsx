@@ -5,6 +5,7 @@ import ReactFlow, {
   BackgroundVariant,
   Edge,
   Node,
+  ReactFlowInstance,
 } from "reactflow";
 import {
   ConnectorNode,
@@ -14,9 +15,24 @@ import {
   OperatorNode,
   StartOperatorNode,
 } from ".";
-import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import {
+  GeneralRecord,
+  InstillStore,
+  Nullable,
+  PipelineRecipe,
+  useInstillStore,
+  useNavigationObserver,
+  useShallow,
+} from "../../../lib";
 import { NodeData } from "../type";
 import { createInitialGraphData } from "../lib";
+import { useRouter } from "next/router";
+
+const selector = (store: InstillStore) => ({
+  updateCurrentVersion: store.updateCurrentVersion,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
+  updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
+});
 
 const nodeTypes = {
   startNode: StartOperatorNode,
@@ -41,8 +57,14 @@ export const ReadOnlyPipelineBuilder = ({
   recipe,
   metadata,
 }: ReadOnlyPipelineBuilderProps) => {
+  const router = useRouter();
   const [nodes, setNodes] = React.useState<Node<NodeData>[]>([]);
   const [edges, setEdges] = React.useState<Edge[]>([]);
+  const [reactFlowInstance, setReactFlowInstance] =
+    React.useState<Nullable<ReactFlowInstance>>(null);
+
+  const { updateCurrentVersion, pipelineIsReadOnly, updatePipelineIsReadOnly } =
+    useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     if (!recipe || !metadata) return;
@@ -51,9 +73,27 @@ export const ReadOnlyPipelineBuilder = ({
       metadata,
     });
 
+    updateCurrentVersion(() => "latest");
+    updatePipelineIsReadOnly(() => true);
+
+    if (reactFlowInstance) {
+      reactFlowInstance.fitView();
+    }
+
     setNodes(initialGraphData.nodes);
     setEdges(initialGraphData.edges);
-  }, [recipe, metadata]);
+  }, [recipe, metadata, reactFlowInstance]);
+
+  // Clean up the pipelineIsReadOnly state when user navigate away
+  // from the page
+  useNavigationObserver({
+    shouldStopNavigation: false,
+    onNavigate: () => {
+      console.log("re-init");
+      updatePipelineIsReadOnly(() => false);
+    },
+    router,
+  });
 
   return (
     <div
@@ -67,16 +107,20 @@ export const ReadOnlyPipelineBuilder = ({
         nodes={nodes}
         edges={edges}
         fitView={true}
-        fitViewOptions={{
-          includeHiddenNodes: true,
-          maxZoom: 5,
-          minZoom: 0.3,
-          padding: 20,
-        }}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        minZoom={0.2}
+        fitViewOptions={{
+          includeHiddenNodes: true,
+          padding: 20,
+        }}
+        onInit={setReactFlowInstance}
         proOptions={{ hideAttribution: true }}
-        selectNodesOnDrag={false}
+        selectNodesOnDrag={pipelineIsReadOnly}
+        nodesDraggable={pipelineIsReadOnly}
+        nodesConnectable={pipelineIsReadOnly}
+        elementsSelectable={pipelineIsReadOnly}
+        connectOnClick={pipelineIsReadOnly}
       >
         <Background
           variant={BackgroundVariant.Dots}

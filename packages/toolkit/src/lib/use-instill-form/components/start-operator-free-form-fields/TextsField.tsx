@@ -11,6 +11,8 @@ export const TextsField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -23,7 +25,7 @@ export const TextsField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -55,6 +57,7 @@ export const TextsField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
               <div className="w-full">
@@ -76,6 +79,7 @@ export const TextsField = ({
                         e.preventDefault();
                       }
                     }}
+                    disabled={disabled}
                   />
                 </Input.Root>
               </div>

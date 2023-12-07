@@ -11,6 +11,8 @@ export const NumbersField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -25,7 +27,7 @@ export const NumbersField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -57,6 +59,7 @@ export const NumbersField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
               {numberFieldsArray.map((_, idx) => {
@@ -83,6 +86,7 @@ export const NumbersField = ({
                             e.preventDefault();
                           }
                         }}
+                        disabled={disabled}
                       />
                     </Input.Root>
                     {numberFieldsArray.length > 1 ? (
