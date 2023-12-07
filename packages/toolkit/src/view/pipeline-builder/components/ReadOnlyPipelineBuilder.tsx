@@ -7,14 +7,7 @@ import ReactFlow, {
   Node,
   ReactFlowInstance,
 } from "reactflow";
-import {
-  ConnectorNode,
-  CustomEdge,
-  EmptyNode,
-  EndOperatorNode,
-  OperatorNode,
-  StartOperatorNode,
-} from ".";
+
 import {
   GeneralRecord,
   InstillStore,
@@ -27,6 +20,14 @@ import {
 import { NodeData } from "../type";
 import { createInitialGraphData } from "../lib";
 import { useRouter } from "next/router";
+import {
+  ConnectorNode,
+  EmptyNode,
+  EndOperatorNode,
+  OperatorNode,
+  StartOperatorNode,
+} from "./nodes";
+import { CustomEdge } from "./CustomEdge";
 
 const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,

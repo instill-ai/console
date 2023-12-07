@@ -54,7 +54,6 @@ export type Pipeline = {
   uid: string;
   id: string;
   description: string;
-  user: string;
   create_time: string;
   update_time: string;
   recipe: PipelineRecipe;
