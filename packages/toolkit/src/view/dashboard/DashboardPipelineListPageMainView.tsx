@@ -1,6 +1,6 @@
 import * as React from "react";
-import { SelectOption } from "@instill-ai/design-system";
-
+import { SelectOption, Button, Icons } from "@instill-ai/design-system";
+import SemiCircleProgressBar from "react-progressbar-semicircle";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
   DashboardAvailableTimeframe,
@@ -165,6 +165,35 @@ export const DashboardPipelineListPageMainView = (
                 pipelineTriggersSummary ? pipelineTriggersSummary.errored : null
               }
             />
+            <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">
+              <div className="my-auto w-2/3">
+                <p className=" mb-2 product-body-text-3-medium">
+                  Remaining Triggers
+                </p>
+
+                <p className="product-body-text-4-regular">
+                  You've used 50% of your available triggers. Upgrade your plan
+                  for uninterrupted workflow automation.
+                </p>
+              </div>
+
+              <div className="flex w-[130px] flex-col items-center justify-center">
+                <SemiCircleProgressBar
+                  percentage={33}
+                  showPercentValue
+                  stroke={"#316FED"}
+                  diameter={100}
+                />
+                <Button
+                  variant="secondaryGrey"
+                  size="sm"
+                  className="mt-4 gap-x-2"
+                >
+                  <Icons.Lightning01 className="font-size-[24px] h-3 w-3 stroke-slate-800" />
+                  Upgrade plan
+                </Button>
+              </div>
+            </div>
           </PipelineTriggersSummary>
         </div>
 

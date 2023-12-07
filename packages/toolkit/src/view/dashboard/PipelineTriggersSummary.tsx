@@ -83,7 +83,7 @@ export const PipelineTriggersSummary = (
 
   return (
     <Fragment>
-      <div className="grid w-[516px] grid-cols-2 gap-x-6">{children}</div>
+      <div className="grid w-[816px] grid-cols-3 gap-x-6">{children}</div>
     </Fragment>
   );
 };
