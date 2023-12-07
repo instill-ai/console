@@ -1,13 +1,14 @@
-import { Dialog, useToast } from "@instill-ai/design-system";
 import * as React from "react";
+import { Dialog } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
+
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
   useUserPipeline,
-} from "../../../../lib";
-import { useRouter } from "next/router";
+} from "../../../../../lib";
 import { Head } from "./Head";
 import { TabShare } from "./TabShare";
 import { TabPublish } from "./TabPublish";
@@ -20,7 +21,7 @@ const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
 });
 
-export const DialogSharePipeline = () => {
+export const SharePipelineDialog = () => {
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("Share");
 
@@ -68,22 +69,6 @@ export const DialogSharePipeline = () => {
       return false;
     }
   }, [pipeline.isSuccess, pipeline.data]);
-
-  const disableCopyLink = React.useMemo(() => {
-    if (!pipeline.isSuccess) {
-      return true;
-    }
-
-    if (pipelineIsPublic) {
-      return false;
-    }
-
-    if (enableShareCode) {
-      return false;
-    }
-
-    return true;
-  }, [pipeline.isSuccess, pipelineIsPublic, enableShareCode]);
 
   return (
     <Dialog.Root

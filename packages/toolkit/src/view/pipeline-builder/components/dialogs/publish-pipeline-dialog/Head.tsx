@@ -1,4 +1,4 @@
-import { Button, ComplicateIcons, Icons } from "@instill-ai/design-system";
+import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
 export const Head = () => {

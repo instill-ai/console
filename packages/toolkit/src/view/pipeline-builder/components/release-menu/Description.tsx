@@ -1,5 +1,5 @@
 import { Form, Textarea } from "@instill-ai/design-system";
-import { UseReleasePipelineFormReturn } from "./MenuRelease";
+import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
 
 export const Description = ({
   form,

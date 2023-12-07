@@ -8,7 +8,7 @@ import {
   useShallow,
   useUpdateUserPipeline,
   useUserPipeline,
-} from "../../../../lib";
+} from "../../../../../lib";
 import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({

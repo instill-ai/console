@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { Nullable, useUserConnectors } from "../../../../lib";
+import { Nullable, useUserConnectors } from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback } from "../../../../../components";
 import { Icons } from "@instill-ai/design-system";
 import { PipelineComponentDefinitionOnSelect } from "./SelectPipelineComponentDefinitionDialog";
 

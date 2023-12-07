@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TabMenu } from "@instill-ai/design-system";
-import { Nullable } from "../../../../lib";
+import { Nullable } from "../../../../../lib";
 
 export const Head = ({
   selectedTab,

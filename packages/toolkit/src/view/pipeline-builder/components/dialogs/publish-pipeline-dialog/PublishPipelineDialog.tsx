@@ -3,7 +3,6 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useShallow } from "zustand/react/shallow";
-import { isAxiosError } from "axios";
 import {
   Dialog,
   Form,
@@ -11,6 +10,7 @@ import {
   Toast,
   useToast,
 } from "@instill-ai/design-system";
+import { useRouter } from "next/router";
 
 import {
   InstillStore,
@@ -18,11 +18,10 @@ import {
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
-} from "../../../../lib";
+} from "../../../../../lib";
 import { Head } from "./Head";
 import { Metadata } from "./Metadata";
 import { ReadmeEditor } from "./ReadmeEditor";
-import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
@@ -40,7 +39,7 @@ export const PublishPipelineFormSchema = z.object({
   license: z.string().optional().nullable(),
 });
 
-export const DialogPublishPipeline = () => {
+export const PublishPipelineDialog = () => {
   const [isPublishing, setIsPublishing] = React.useState(false);
 
   const { toast } = useToast();

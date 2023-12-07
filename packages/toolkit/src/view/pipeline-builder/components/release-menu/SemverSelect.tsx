@@ -10,7 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useSortedReleases } from "../../lib";
 import { RadioGroup, Tag } from "@instill-ai/design-system";
-import { UseReleasePipelineFormReturn } from "./MenuRelease";
+import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -79,7 +79,7 @@ export const SemverSelect = ({
   }, [releases, selectedSemver, form]);
 
   return (
-    <div className="flex flex-row gap-x-3 py-2">
+    <div className="flex w-full flex-row gap-x-3 py-2">
       <div className="flex flex-row gap-x-2">
         <p className="my-auto product-body-text-3-semibold">Version</p>
         <div className="w-[50px]">
@@ -90,7 +90,7 @@ export const SemverSelect = ({
       </div>
       <RadioGroup.Root
         onValueChange={(value) => setSelectedSemver(value as Semver)}
-        className="flex-row gap-x-2"
+        className="!flex flex-row gap-x-2"
         defaultValue="major"
       >
         <div className="flex items-center space-x-2">

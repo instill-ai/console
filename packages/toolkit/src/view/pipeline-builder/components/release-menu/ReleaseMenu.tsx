@@ -34,7 +34,7 @@ const selector = (store: InstillStore) => ({
   nodes: store.nodes,
 });
 
-export const MenuRelease = ({
+export const ReleaseMenu = ({
   isReleasing,
   setIsReleasing,
   onRelease,

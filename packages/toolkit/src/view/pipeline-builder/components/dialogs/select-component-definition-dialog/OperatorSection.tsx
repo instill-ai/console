@@ -1,6 +1,6 @@
 import { Icons } from "@instill-ai/design-system";
-import { ImageWithFallback } from "../../../../components";
-import { Nullable, useOperatorDefinitions } from "../../../../lib";
+import { ImageWithFallback } from "../../../../../components";
+import { Nullable, useOperatorDefinitions } from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
 import { PipelineComponentDefinitionOnSelect } from "./SelectPipelineComponentDefinitionDialog";
 

@@ -7,7 +7,7 @@ import {
   ConnectorWithDefinition,
   Nullable,
   OperatorDefinition,
-} from "../../../../lib";
+} from "../../../../../lib";
 import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";

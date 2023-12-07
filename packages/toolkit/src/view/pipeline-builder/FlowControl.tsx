@@ -3,13 +3,7 @@ import * as React from "react";
 import { isAxiosError } from "axios";
 import { Node, Position, ReactFlowInstance } from "reactflow";
 import { useRouter } from "next/router";
-import {
-  Button,
-  Icons,
-  Menubar,
-  Tooltip,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Icons, Menubar, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import {
@@ -19,10 +13,12 @@ import {
   generateNewComponentIndex,
 } from "./lib";
 import {
-  DialogPublishPipeline,
+  PublishPipelineDialog,
   PipelineToolkitModal,
   SelectPipelineComponentDefinitionDialog,
   CreateResourceDialog,
+  SharePipelineDialog,
+  ReleaseMenu,
 } from "./components";
 import { triggerPipelineSnippets } from "./components/triggerPipelineSnippets";
 import {
@@ -46,8 +42,6 @@ import {
 } from "../../lib";
 import { StartNodeData } from "./type";
 import { LoadingSpin } from "../../components";
-import { DialogSharePipeline } from "./components/dialog-share-pipeline/DialogSharePipeline";
-import { MenuRelease } from "./components/menu-release/MenuRelease";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -595,8 +589,11 @@ export const FlowControl = (props: FlowControlProps) => {
                   <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-on-default" />
                 </Menubar.Trigger>
                 <Menubar.Portal>
-                  <Menubar.Content className="rounded-[12px] p-6" align="end">
-                    <MenuRelease
+                  <Menubar.Content
+                    className="w-[392px] rounded-[12px] p-6"
+                    align="end"
+                  >
+                    <ReleaseMenu
                       isReleasing={isReleasing}
                       setIsReleasing={setIsReleasing}
                       onRelease={() => {
@@ -687,12 +684,12 @@ export const FlowControl = (props: FlowControlProps) => {
         isOpen={toolKitIsOpen}
         setIsOpen={setToolKitIsOpen}
       />
-      <DialogSharePipeline />
+      <SharePipelineDialog />
       <CreateResourceDialog
         accessToken={accessToken}
         enableQuery={enableQuery}
       />
-      <DialogPublishPipeline />
+      <PublishPipelineDialog />
     </React.Fragment>
   );
 };

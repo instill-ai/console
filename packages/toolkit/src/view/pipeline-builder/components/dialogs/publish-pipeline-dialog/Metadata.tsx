@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
-import { PublishPipelineFormSchema } from "./DialogPublishPipeline";
+import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
 
 export const Metadata = ({
   form,

@@ -10,12 +10,11 @@ import {
   useInstillStore,
   useShallow,
   useUserPipeline,
-} from "../../../../lib";
+} from "../../../../../lib";
 import { UseFormReturn } from "react-hook-form";
-import { PublishPipelineFormSchema } from "./DialogPublishPipeline";
+import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
 import { Form } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
-import { EditorState } from "@tiptap/pm/state";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
