@@ -6,9 +6,10 @@ export const UploadFileInput = React.forwardRef<
   {
     title: string;
     fieldKey: string;
+    disabled?: boolean;
   } & React.InputHTMLAttributes<HTMLInputElement>
 >((props, ref) => {
-  const { title, fieldKey, ...passThrough } = props;
+  const { title, fieldKey, disabled, ...passThrough } = props;
   const id = `upload-file-input-${fieldKey}`;
 
   return (
@@ -18,7 +19,13 @@ export const UploadFileInput = React.forwardRef<
     >
       {title}
       <Input.Root className="hidden">
-        <Input.Core ref={ref} {...passThrough} id={id} type="file" />
+        <Input.Core
+          ref={ref}
+          {...passThrough}
+          id={id}
+          type="file"
+          disabled={disabled}
+        />
       </Input.Root>
     </label>
   );

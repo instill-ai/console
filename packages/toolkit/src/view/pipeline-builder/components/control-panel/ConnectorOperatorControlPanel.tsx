@@ -13,6 +13,7 @@ import { ControlPanel } from "./ControlPanel";
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export const ConnectorOperatorControlPanel = ({
@@ -32,7 +33,9 @@ export const ConnectorOperatorControlPanel = ({
   handleToggleNote: () => void;
   noteIsOpen: boolean;
 }) => {
-  const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
+  const { isOwner, currentVersion, pipelineIsReadOnly } = useInstillStore(
+    useShallow(selector)
+  );
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
@@ -60,6 +63,7 @@ export const ConnectorOperatorControlPanel = ({
         onTrigger={() => {
           setNodeIsCollapsed(!nodeIsCollapsed);
         }}
+        disabled={pipelineIsReadOnly}
       />
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
@@ -68,10 +72,13 @@ export const ConnectorOperatorControlPanel = ({
       >
         <NodeDropdownMenu.Item
           onClick={(e) => {
+            if (pipelineIsReadOnly) return;
+
             e.stopPropagation();
             handleToggleNote();
             setMoreOptionsIsOpen(false);
           }}
+          disabled={pipelineIsReadOnly}
         >
           {noteIsOpen ? (
             <Icons.FileMinus01 className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -84,11 +91,15 @@ export const ConnectorOperatorControlPanel = ({
         </NodeDropdownMenu.Item>
         <NodeDropdownMenu.Item
           onClick={(e) => {
+            if (pipelineIsReadOnly) return;
+
             e.stopPropagation();
             handleCopyNode();
             setMoreOptionsIsOpen(false);
           }}
-          disabled={!isOwner || currentVersion !== "latest"}
+          disabled={
+            !isOwner || currentVersion !== "latest" || pipelineIsReadOnly
+          }
         >
           <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
           <p className="text-semantic-fg-secondary product-body-text-4-medium">
@@ -97,11 +108,15 @@ export const ConnectorOperatorControlPanel = ({
         </NodeDropdownMenu.Item>
         <NodeDropdownMenu.Item
           onClick={(e) => {
+            if (pipelineIsReadOnly) return;
+
             e.stopPropagation();
             handleDeleteNode();
             setMoreOptionsIsOpen(false);
           }}
-          disabled={!isOwner || currentVersion !== "latest"}
+          disabled={
+            !isOwner || currentVersion !== "latest" || pipelineIsReadOnly
+          }
         >
           <Icons.Trash01 className="h-4 w-4 stroke-semantic-error-default" />
           <p className="text-semantic-error-default product-body-text-4-medium">

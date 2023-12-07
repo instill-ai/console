@@ -46,6 +46,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
   testModeTriggerResponse: store.testModeTriggerResponse,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -59,6 +60,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
     testModeTriggerResponse,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -252,6 +254,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       enableSmartHint: true,
       checkIsHidden,
       componentID: data.component.id,
+      disabledAll: pipelineIsReadOnly,
     }
   );
 

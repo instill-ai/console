@@ -4,7 +4,8 @@ import * as React from "react";
 export type UseNavigationObserverProps = {
   router: NextRouter;
   shouldStopNavigation: boolean;
-  onNavigate: () => void;
+  onStopNavigate?: () => void;
+  onNavigate?: () => void;
 };
 
 const errorMessage =
@@ -20,6 +21,7 @@ export function useNavigationObserver({
   router,
   shouldStopNavigation,
   onNavigate,
+  onStopNavigate,
 }: UseNavigationObserverProps) {
   const currentPath = router.asPath;
   const nextPath = React.useRef("");
@@ -39,6 +41,9 @@ export function useNavigationObserver({
         // This is needed to restore the correct url.
         // note: history.pushState does not trigger a page reload
         window.history.pushState(null, "", router.basePath + currentPath);
+        if (onNavigate) {
+          onNavigate();
+        }
       }
 
       if (
@@ -48,8 +53,10 @@ export function useNavigationObserver({
       ) {
         // removing the basePath from the url as it will be added by the router
         nextPath.current = url.replace(router.basePath, "");
-        onNavigate();
         killRouterEvent();
+        if (onStopNavigate) {
+          onStopNavigate();
+        }
       }
     };
 
@@ -63,10 +70,11 @@ export function useNavigationObserver({
   }, [
     currentPath,
     killRouterEvent,
-    onNavigate,
+    onStopNavigate,
     router.basePath,
     router.events,
     shouldStopNavigation,
+    onNavigate,
   ]);
 
   const confirmNavigation = () => {

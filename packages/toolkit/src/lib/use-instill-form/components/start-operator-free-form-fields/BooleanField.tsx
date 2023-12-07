@@ -10,13 +10,14 @@ export const BooleanField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {

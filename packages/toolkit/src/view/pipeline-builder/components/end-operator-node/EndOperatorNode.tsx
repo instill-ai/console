@@ -40,6 +40,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
   testModeTriggerResponse: store.testModeTriggerResponse,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 const CreateEndOperatorInputSchema: InstillJSONSchema = {
@@ -121,6 +122,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     currentVersion,
     isTriggeringPipeline,
     testModeTriggerResponse,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const { form, fields, ValidatorSchema } = useInstillForm(
@@ -130,6 +132,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       enableSmartHint: true,
       chooseTitleFrom: "title",
       componentID: data.component.id,
+      disabledAll: pipelineIsReadOnly,
     }
   );
 
@@ -285,6 +288,20 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     }
   }, [isTriggeringPipeline]);
 
+  let disabledAddFieldButton = false;
+
+  if (pipelineIsReadOnly) {
+    disabledAddFieldButton = true;
+  } else {
+    if (!isOwner) {
+      disabledAddFieldButton = true;
+    } else {
+      if (currentVersion !== "latest") {
+        disabledAddFieldButton = true;
+      }
+    }
+  }
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -425,18 +442,16 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             className="flex w-full flex-1 gap-x-2"
             variant="tertiaryColour"
             onClick={() => setEnableEdit(!enableEdit)}
-            disabled={
-              isOwner ? (currentVersion === "latest" ? false : true) : true
-            }
+            disabled={disabledAddFieldButton}
             type="button"
           >
             <p className="my-auto pt-0.5">Add Field</p>
             <Icons.Plus
               className={cn(
                 "my-auto h-4 w-4 stroke-semantic-accent-default",
-                currentVersion === "latest"
-                  ? "stroke-semantic-accent-default"
-                  : "stroke-semantic-fg-secondary"
+                disabledAddFieldButton
+                  ? "stroke-semantic-fg-secondary"
+                  : "stroke-semantic-accent-default"
               )}
             />
           </Button>

@@ -46,6 +46,7 @@ export type PipelineBuilderState = {
   isTriggeringPipeline: boolean;
   dialogPublishPipelineIsOpen: boolean;
   dialogSharePipelineIsOpen: boolean;
+  pipelineIsReadOnly: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -94,6 +95,7 @@ export type PipelineBuilderAction = {
   updateIsTriggeringPipeline: (fn: (prev: boolean) => boolean) => void;
   updateDialogPublishPipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateDialogSharePipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

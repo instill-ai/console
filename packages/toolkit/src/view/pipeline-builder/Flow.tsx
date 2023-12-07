@@ -50,6 +50,7 @@ const selector = (store: InstillStore) => ({
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export type FlowProps = {
@@ -83,6 +84,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       testModeEnabled,
       updateSelectedConnectorNodeId,
       updateCurrentAdvancedConfigurationNodeID,
+      pipelineIsReadOnly,
     } = useInstillStore(useShallow(selector));
 
     return (
@@ -105,18 +107,22 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               nodes={nodes}
               edges={edges}
               onNodesDelete={() => {
+                if (pipelineIsReadOnly) return;
                 updatePipelineRecipeIsDirty((prev) => {
                   if (prev) return prev;
                   return true;
                 });
               }}
               onEdgesDelete={() => {
+                if (pipelineIsReadOnly) return;
+
                 updatePipelineRecipeIsDirty((prev) => {
                   if (prev) return prev;
                   return true;
                 });
               }}
               onNodesChange={(changes) => {
+                if (pipelineIsReadOnly) return;
                 const nextChanges = changes.filter((change) => {
                   if (change.type === "remove") {
                     const node = nodes.find((node) => node.id === change.id);
@@ -135,9 +141,11 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                 onNodesChange(nextChanges);
               }}
               onEdgesChange={(changes) => {
+                if (pipelineIsReadOnly) return;
                 onEdgesChange(changes);
               }}
               onPaneClick={() => {
+                if (pipelineIsReadOnly) return;
                 updateSelectedConnectorNodeId(() => null);
                 updateCurrentAdvancedConfigurationNodeID(() => null);
               }}
@@ -147,13 +155,16 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               fitView={true}
               fitViewOptions={{
                 includeHiddenNodes: true,
-                maxZoom: 2,
                 padding: 20,
               }}
               nodeTypes={nodeTypes}
               edgeTypes={edgeTypes}
               proOptions={{ hideAttribution: true }}
               selectNodesOnDrag={false}
+              nodesDraggable={!pipelineIsReadOnly}
+              nodesConnectable={!pipelineIsReadOnly}
+              elementsSelectable={!pipelineIsReadOnly}
+              connectOnClick={!pipelineIsReadOnly}
               onError={(msgId, msg) => {
                 // Nextjs strict mode will cause react-flow to throw an unnecessary error
                 // "It looks like you have created a new nodeTypes or edgeTypes object"

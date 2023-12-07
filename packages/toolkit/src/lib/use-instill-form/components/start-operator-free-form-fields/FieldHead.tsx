@@ -18,12 +18,14 @@ export const FieldHead = ({
   path,
   onEditField,
   onDeleteField,
+  disabled,
 }: {
   form: GeneralUseFormReturn;
   title: Nullable<string>;
   path: string;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
+  disabled?: boolean;
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
   return (
@@ -114,7 +116,7 @@ export const FieldHead = ({
           </Tooltip.Root>
         </Tooltip.Provider>
       </div>
-      {currentVersion === "latest" && isOwner ? (
+      {currentVersion === "latest" && !disabled && isOwner ? (
         <div className="my-auto flex flex-row gap-x-2">
           <button
             type="button"

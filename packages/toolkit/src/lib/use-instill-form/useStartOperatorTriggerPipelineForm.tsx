@@ -17,8 +17,11 @@ export const useStartOperatorTriggerPipelineForm = (props: {
   metadata: Nullable<StartOperatorMetadata>;
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
+  disabledAll?: boolean;
+  keyPrefix?: string;
 }) => {
-  const { metadata, onDeleteField, onEditField } = props;
+  const { metadata, onDeleteField, onEditField, disabledAll, keyPrefix } =
+    props;
 
   const superRefineRules = React.useMemo(() => {
     if (!metadata) {
@@ -57,15 +60,17 @@ export const useStartOperatorTriggerPipelineForm = (props: {
       return [];
     }
 
-    const fields = pickStartOperatorFreeFormFields(
+    const fields = pickStartOperatorFreeFormFields({
       metadata,
       form,
       onEditField,
-      onDeleteField
-    );
+      onDeleteField,
+      disabledAll,
+      keyPrefix,
+    });
 
     return fields;
-  }, [metadata, form, onEditField, onDeleteField]);
+  }, [metadata, form, onEditField, onDeleteField, disabledAll]);
 
   return {
     form,

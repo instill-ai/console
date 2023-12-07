@@ -64,6 +64,7 @@ export const InOutPut = () => {
     onEditField: () => {
       console.log("onEditField");
     },
+    keyPrefix: "pipeline-details-page-trigger-pipeline-form",
   });
 
   const triggerPipeline = useTriggerUserPipeline();

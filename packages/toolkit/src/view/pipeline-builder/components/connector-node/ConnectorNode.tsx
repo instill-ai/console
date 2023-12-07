@@ -49,7 +49,7 @@ const selector = (store: InstillStore) => ({
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
-
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
 });
 
@@ -66,6 +66,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateCreateResourceDialogState,
     updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -178,6 +179,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
+    console.log("hasTargetEdges", hasTargetEdges);
   }, [edges, id]);
 
   const hasSourceEdges = React.useMemo(() => {
@@ -268,7 +270,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       enableSmartHint: true,
       checkIsHidden,
       componentID: data.component.id,
-      disabledAll: currentVersion !== "latest",
+      disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
     }
   );
 
@@ -327,6 +329,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             <NodeBottomBar.Item
               value="output"
               onClick={() => {
+                if (pipelineIsReadOnly) return;
                 setIsOpenBottomBarOutput((prev) => !prev);
               }}
             >
@@ -450,6 +453,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               },
             }));
           }}
+          disabled={pipelineIsReadOnly}
         />
       ) : (
         <>
@@ -461,6 +465,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           <div className="mb-2 flex flex-row-reverse">
             <OpenAdvancedConfigurationButton
               onClick={() => {
+                if (pipelineIsReadOnly) return;
+
                 const values = getValues();
 
                 const parsedResult = ValidatorSchema.safeParse(values);

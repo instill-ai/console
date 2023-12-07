@@ -5,6 +5,7 @@ import { Icons } from "@instill-ai/design-system";
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export const UserDefinedFieldItem = ({
@@ -18,7 +19,9 @@ export const UserDefinedFieldItem = ({
   onDeleteField: (key: string) => void;
   onEditField: (key: string) => void;
 }) => {
-  const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
+  const { isOwner, currentVersion, pipelineIsReadOnly } = useInstillStore(
+    useShallow(selector)
+  );
 
   return (
     <div className="flex w-full flex-col">
@@ -26,7 +29,7 @@ export const UserDefinedFieldItem = ({
         <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
           {fieldKey}
         </div>
-        {currentVersion === "latest" && isOwner ? (
+        {currentVersion === "latest" && !pipelineIsReadOnly && isOwner ? (
           <div className="my-auto flex flex-row gap-x-2">
             <button
               onClick={() => onEditField(fieldKey)}
