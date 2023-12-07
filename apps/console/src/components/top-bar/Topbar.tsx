@@ -37,14 +37,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           className
         )}
       >
-        <Link
-          href={
-            entity
-              ? `/${entity}/pipelines`
-              : env("NEXT_PUBLIC_CONSOLE_BASE_URL")
-          }
-          className="my-auto pr-8"
-        >
+        <Link href="/" className="my-auto pr-8">
           {logo}
         </Link>
 
@@ -70,6 +63,15 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   }
                   name="Connectors"
                   hightlighted={router.pathname.split("/")[2] === "connectors"}
+                  className="mx-1 my-2 px-4"
+                />
+                <TopbarLink
+                  href={`/hub`}
+                  icon={
+                    <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
+                  }
+                  name="Hub"
+                  hightlighted={router.pathname.split("/")[1] === "hub"}
                   className="mx-1 my-2 px-4"
                 />
                 <TopbarLink

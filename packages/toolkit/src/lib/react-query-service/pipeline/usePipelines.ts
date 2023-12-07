@@ -9,6 +9,7 @@ export async function fetchPipelines(accessToken: Nullable<string>) {
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
       nextPageToken: null,
       accessToken,
+      enablePagination: false,
     });
     return Promise.resolve(pipelines);
   } catch (err) {

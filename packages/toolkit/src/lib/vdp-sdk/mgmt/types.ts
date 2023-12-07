@@ -1,3 +1,5 @@
+import { GeneralRecord } from "../../type";
+
 export type User = {
   name: string;
   uid: string;
@@ -13,8 +15,9 @@ export type User = {
   create_time: string;
   update_time: string;
   cookie_token?: string;
+  profile_avatar: string;
+  profile_data?: GeneralRecord;
 };
-
 export type ApiToken = {
   name: string;
   uid: string;

@@ -4,11 +4,13 @@ import { Nullable } from "../../types/general";
 
 type TabMenuContextValue = {
   selectedValue: Nullable<string>;
+  disabledDeSelect: boolean;
   setSelectedValue?: (value: Nullable<string>) => void;
 };
 
 const TabMenuContext = React.createContext<TabMenuContextValue>({
   selectedValue: null,
+  disabledDeSelect: false,
 });
 
 const useTabMenuContext = () => {
@@ -24,15 +26,18 @@ const TabMenuRoot = ({
   className,
   value,
   onValueChange,
+  disabledDeSelect,
 }: {
   children: React.ReactNode;
   value: Nullable<string>;
   onValueChange: (value: Nullable<string>) => void;
   className?: string;
+  disabledDeSelect?: boolean;
 }) => {
   const context: TabMenuContextValue = React.useMemo(
     () => ({
       selectedValue: value,
+      disabledDeSelect: disabledDeSelect ?? false,
       setSelectedValue: (value: Nullable<string>) => {
         onValueChange(value);
       },
@@ -58,7 +63,8 @@ const TabMenuItem = (
 ) => {
   const { children, className, value, onClick, ...passThrough } = props;
 
-  const { selectedValue, setSelectedValue } = useTabMenuContext();
+  const { selectedValue, setSelectedValue, disabledDeSelect } =
+    useTabMenuContext();
 
   return (
     <button
@@ -73,7 +79,7 @@ const TabMenuItem = (
         onClick?.(e);
 
         if (setSelectedValue) {
-          if (selectedValue === value) {
+          if (selectedValue === value && !disabledDeSelect) {
             setSelectedValue(null);
           } else {
             setSelectedValue(value);

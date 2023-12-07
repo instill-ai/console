@@ -64,6 +64,7 @@ export const Head = () => {
             <TabMenu.Root
               value={selectedTab}
               onValueChange={(value) => setSelectedTab(value)}
+              disabledDeSelect={true}
             >
               <TabMenu.Item value="overview">Overview</TabMenu.Item>
             </TabMenu.Root>
