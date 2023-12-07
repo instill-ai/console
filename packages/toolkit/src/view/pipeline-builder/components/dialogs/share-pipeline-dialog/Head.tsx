@@ -15,6 +15,7 @@ export const Head = ({
         value={selectedTab}
         onValueChange={(value) => setSelectedTab(value)}
         className="!gap-x-4"
+        disabledDeSelect={true}
       >
         <TabMenu.Item value="Share">Share</TabMenu.Item>
         <TabMenu.Item value="Publish">Publish</TabMenu.Item>

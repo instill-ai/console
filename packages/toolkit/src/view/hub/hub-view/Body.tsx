@@ -1,50 +1,36 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import Fuse from "fuse.js";
 import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
+  InstillStore,
   Nullable,
   Pipeline,
-  generateRandomReadableName,
-  useInfiniteUserPipelines,
-  InstillStore,
+  useInfinitePipelines,
   useInstillStore,
   useShallow,
 } from "../../../lib";
 import {
   LoadingSpin,
+  UserProfileCard,
   CardPipeline,
   CardSkeletonPipeline,
-  UserProfileCard,
 } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  setPipelineId: store.setPipelineId,
-  setPipelineName: store.setPipelineName,
-  updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
-export const ViewPipelines = () => {
-  const router = useRouter();
-  const { entity } = router.query;
+export const Body = () => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
 
-  const {
-    accessToken,
-    enabledQuery,
-    setPipelineId,
-    setPipelineName,
-    updatePipelineIsNew,
-  } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const pipelines = useInfiniteUserPipelines({
-    userName: `users/${entity}`,
+  const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
-    enabledQuery: enabledQuery && !!accessToken && !!entity,
+    enabledQuery,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -70,7 +56,7 @@ export const ViewPipelines = () => {
   }, [pipelines.data, pipelines.isSuccess, searchCode]);
 
   return (
-    <div className="flex flex-row px-20">
+    <div className=" flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
         <UserProfileCard
           totalPipelines={
@@ -94,21 +80,6 @@ export const ViewPipelines = () => {
                 onChange={(event) => setSearchCode(event.target.value)}
               />
             </Input.Root>
-            <Button
-              className="gap-x-2"
-              variant="primary"
-              size="lg"
-              onClick={() => {
-                const randomName = generateRandomReadableName();
-                setPipelineId(randomName);
-                setPipelineName(`users/${entity}/pipelines/${randomName}`);
-                router.push(`/${entity}/pipelines/${randomName}/builder`);
-                updatePipelineIsNew(() => true);
-              }}
-            >
-              <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-              Create Pipeline
-            </Button>
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">

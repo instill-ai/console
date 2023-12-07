@@ -13,17 +13,34 @@ export type ListPipelinesResponse = {
   total_size: number;
 };
 
-export async function listPipelinesQuery({
-  pageSize,
-  nextPageToken,
-  accessToken,
-  enablePagination,
-}: {
+export type listPipelinesQueryParams = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
-  enablePagination?: boolean;
-}) {
+};
+
+export async function listPipelinesQuery(
+  props: listPipelinesQueryParams & {
+    enablePagination: true;
+  }
+): Promise<ListPipelinesResponse>;
+export async function listPipelinesQuery(
+  props: listPipelinesQueryParams & {
+    enablePagination: false;
+  }
+): Promise<Pipeline[]>;
+export async function listPipelinesQuery(
+  props: listPipelinesQueryParams & {
+    enablePagination: undefined;
+  }
+): Promise<Pipeline[]>;
+export async function listPipelinesQuery(
+  props: listPipelinesQueryParams & {
+    enablePagination?: boolean;
+  }
+) {
+  const { pageSize, nextPageToken, accessToken, enablePagination } = props;
+
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
     const pipelines: Pipeline[] = [];
@@ -45,12 +62,12 @@ export async function listPipelinesQuery({
 
     if (data.next_page_token) {
       pipelines.push(
-        ...((await listPipelinesQuery({
+        ...(await listPipelinesQuery({
           pageSize,
           nextPageToken: data.next_page_token,
           accessToken,
-          enablePagination,
-        })) as Pipeline[])
+          enablePagination: false,
+        }))
       );
     }
 
@@ -73,17 +90,17 @@ export type listUserPipelinesQueryParams = {
   userName: string;
 };
 
-export function listUserPipelinesQuery(
+export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryParams & {
     enablePagination: true;
   }
 ): Promise<ListUserPipelinesResponse>;
-export function listUserPipelinesQuery(
+export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryParams & {
     enablePagination: false;
   }
 ): Promise<Pipeline[]>;
-export function listUserPipelinesQuery(
+export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryParams & {
     enablePagination: undefined;
   }

@@ -1,11 +1,10 @@
 import * as React from "react";
-import { PageBase, ViewPipelines } from "@instill-ai/toolkit";
+import { HubView, PageBase, ViewPipelines } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
-
-import { ConsoleCorePageHead, Topbar } from "../../../components";
-import { NextPageWithLayout } from "../../_app";
-import { useAccessToken } from "../../../lib/useAccessToken";
-import { useTrackToken } from "../../../lib/useTrackToken";
+import { ConsoleCorePageHead, Topbar } from "components";
+import { useAccessToken } from "lib/useAccessToken";
+import { NextPageWithLayout } from "./_app";
+import { useTrackToken } from "lib/useTrackToken";
 
 const PipelinesPage: NextPageWithLayout = () => {
   useAccessToken();
@@ -13,8 +12,8 @@ const PipelinesPage: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="pipelines" />
-      <ViewPipelines />
+      <ConsoleCorePageHead title="hub" />
+      <HubView />
     </React.Fragment>
   );
 };
