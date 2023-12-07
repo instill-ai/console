@@ -12,3 +12,4 @@ export * from "./dialog-publish-pipeline";
 export * from "./select-component-definition-dialog";
 export * from "./start-operator-node";
 export * from "./PipelineToolkitModal";
+export * from "./ReadOnlyPipelineBuilder";

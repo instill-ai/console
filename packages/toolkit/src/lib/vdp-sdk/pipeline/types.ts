@@ -59,7 +59,9 @@ export type Pipeline = {
   update_time: string;
   recipe: PipelineRecipe;
   openapi_schema: OpenAPIV3.Document;
-  owner: string;
+  owner: Record<string, any>;
+  owner_name: string;
+  releases: PipelineRelease[];
   permission: PipelinePermission;
   metadata: GeneralRecord;
 };

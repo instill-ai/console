@@ -39,7 +39,6 @@ export type PipelineBuilderState = {
   testModeEnabled: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
-  accessToken: Nullable<string>;
   createResourceDialogState: PipelineBuilderCreateResourceDialogState;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
@@ -47,6 +46,7 @@ export type PipelineBuilderState = {
   isTriggeringPipeline: boolean;
   dialogPublishPipelineIsOpen: boolean;
   dialogSharePipelineIsOpen: boolean;
+  pipelineIsReadOnly: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -82,7 +82,6 @@ export type PipelineBuilderAction = {
   updatePipelineOpenAPIOutputSchema: (
     fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) => void;
-  updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updateCreateResourceDialogState: (
     fn: (
       prev: PipelineBuilderCreateResourceDialogState
@@ -96,6 +95,7 @@ export type PipelineBuilderAction = {
   updateIsTriggeringPipeline: (fn: (prev: boolean) => boolean) => void;
   updateDialogPublishPipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateDialogSharePipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

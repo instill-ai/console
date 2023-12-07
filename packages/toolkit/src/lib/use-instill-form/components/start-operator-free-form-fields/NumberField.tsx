@@ -10,13 +10,15 @@ export const NumberField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
 } & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -28,6 +30,7 @@ export const NumberField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
             <Form.Control>
               <Input.Root>
@@ -45,6 +48,7 @@ export const NumberField = ({
                       e.preventDefault();
                     }
                   }}
+                  disabled={disabled}
                 />
               </Input.Root>
             </Form.Control>

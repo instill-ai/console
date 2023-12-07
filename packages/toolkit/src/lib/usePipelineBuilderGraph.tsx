@@ -71,8 +71,6 @@ export function usePipelineBuilderGraph({
       return;
     }
 
-    console.log("hihi iniyt");
-
     updateCurrentVersion(() => "latest");
     updateIsOwner(() => true);
 
@@ -81,8 +79,6 @@ export function usePipelineBuilderGraph({
       setGraphIsInitialized(true);
       return;
     }
-
-    updateIsOwner(() => true);
 
     const initialEmptyNodeId = uuidv4();
 
@@ -198,7 +194,7 @@ export function usePipelineBuilderGraph({
     }
 
     // Check whether current user is the owner of the pipeline
-    if (pipeline.data.user !== user.data.name) {
+    if (pipeline.data.owner_name !== user.data.name) {
       updateIsOwner(() => false);
     } else {
       updateIsOwner(() => true);

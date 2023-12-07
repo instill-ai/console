@@ -41,7 +41,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   testModeEnabled: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
-  accessToken: null,
   createResourceDialogState: {
     open: false,
     connectorType: null,
@@ -55,6 +54,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   isTriggeringPipeline: false,
   dialogPublishPipelineIsOpen: false,
   dialogSharePipelineIsOpen: false,
+  pipelineIsReadOnly: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -207,13 +207,6 @@ export const createPipelineBuilderSlice: StateCreator<
         pipelineOpenAPIOutputSchema: fn(state.pipelineOpenAPIOutputSchema),
       };
     }),
-  updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) =>
-    set((state) => {
-      return {
-        ...state,
-        accessToken: fn(state.accessToken),
-      };
-    }),
   updateCreateResourceDialogState: (
     fn: (
       prev: PipelineBuilderCreateResourceDialogState
@@ -265,6 +258,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         dialogSharePipelineIsOpen: fn(state.dialogSharePipelineIsOpen),
+      };
+    }),
+  updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        pipelineIsReadOnly: fn(state.pipelineIsReadOnly),
       };
     }),
 });

@@ -37,7 +37,6 @@ const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
-  updateAccessToken: store.updateAccessToken,
 });
 
 export type PipelineBuilderMainViewProps = GeneralPageProp;
@@ -58,7 +57,6 @@ export const PipelineBuilderMainView = (
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
-    updateAccessToken,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -73,7 +71,7 @@ export const PipelineBuilderMainView = (
 
   const { confirmNavigation } = useNavigationObserver({
     shouldStopNavigation: pipelineRecipeIsDirty ? true : false,
-    onNavigate: () => {
+    onStopNavigate: () => {
       setWarnUnsaveChangesModalIsOpen(true);
     },
     router,
@@ -95,10 +93,6 @@ export const PipelineBuilderMainView = (
 
     updatePipelineOpenAPIOutputSchema(() => outputSchema);
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
-
-  React.useEffect(() => {
-    updateAccessToken(() => accessToken);
-  }, [accessToken, updateAccessToken]);
 
   /* -------------------------------------------------------------------------
    * If the pipeline is not new and we can't find it, redirect to /pipelines

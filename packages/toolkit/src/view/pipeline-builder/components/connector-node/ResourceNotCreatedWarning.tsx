@@ -2,8 +2,10 @@ import { LinkButton } from "@instill-ai/design-system";
 
 export const ResourceNotCreatedWarning = ({
   onCreate,
+  disabled,
 }: {
   onCreate: () => void;
+  disabled?: boolean;
 }) => {
   return (
     <div className="mb-3 w-full gap-y-2 rounded-sm border border-semantic-warning-default bg-semantic-warning-bg p-4">
@@ -15,6 +17,7 @@ export const ResourceNotCreatedWarning = ({
         variant="primary"
         size="sm"
         onClick={onCreate}
+        disabled={disabled}
       >
         Create connector
       </LinkButton>

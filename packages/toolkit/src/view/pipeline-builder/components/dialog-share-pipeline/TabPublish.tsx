@@ -65,7 +65,7 @@ export const TabPublish = () => {
             ...pipeline.data.permission.users,
             "users/*": {
               enabled: false,
-              role: "ROLE_EXECUTOR",
+              role: "ROLE_VIEWER",
             },
           },
         },

@@ -14,6 +14,8 @@ export const ImagesField = ({
   onEditField,
   onDeleteField,
   isHidden,
+  disabled,
+  keyPrefix,
 }: {
   onEditField: (key: string) => void;
   onDeleteField: (key: string) => void;
@@ -23,7 +25,7 @@ export const ImagesField = ({
 
   return isHidden ? null : (
     <Form.Field
-      key={path}
+      key={keyPrefix ? `${keyPrefix}-${path}` : path}
       control={form.control}
       name={path}
       render={({ field }) => {
@@ -35,6 +37,7 @@ export const ImagesField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabled={disabled}
             />
 
             <div className="grid w-full grid-flow-row grid-cols-4">
@@ -83,6 +86,7 @@ export const ImagesField = ({
                       setImageFiles((prev) => [...prev, ...files]);
                     }
                   }}
+                  disabled={disabled}
                 />
               </Form.Control>
               {imageFiles.length > 0 ? (

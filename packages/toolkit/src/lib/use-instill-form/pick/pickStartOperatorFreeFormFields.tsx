@@ -4,12 +4,21 @@ import { StartOperatorMetadata } from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
 import { StartOperatorFreeFormFieldItem } from "../type";
 
-export function pickStartOperatorFreeFormFields(
-  metadata: Nullable<StartOperatorMetadata>,
-  form: UseFormReturn<{ [k: string]: any }, any, undefined>,
-  onEditField: (key: string) => void,
-  onDeleteField: (key: string) => void
-) {
+export function pickStartOperatorFreeFormFields({
+  metadata,
+  form,
+  onEditField,
+  onDeleteField,
+  disabledAll,
+  keyPrefix,
+}: {
+  metadata: Nullable<StartOperatorMetadata>;
+  form: UseFormReturn<{ [k: string]: any }, any, undefined>;
+  onEditField: (key: string) => void;
+  onDeleteField: (key: string) => void;
+  disabledAll?: boolean;
+  keyPrefix?: string;
+}) {
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
   if (!metadata) return [];
@@ -33,6 +42,8 @@ export function pickStartOperatorFreeFormFields(
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
+                disabled={disabledAll}
+                keyPrefix={keyPrefix}
               />
             ),
           });
@@ -49,6 +60,8 @@ export function pickStartOperatorFreeFormFields(
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
+                disabled={disabledAll}
+                keyPrefix={keyPrefix}
               />
             ),
           });
@@ -67,6 +80,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -85,6 +100,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -102,6 +119,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -119,6 +138,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -136,6 +157,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -153,6 +176,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -170,6 +195,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -187,6 +214,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -204,6 +233,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });
@@ -221,6 +252,8 @@ export function pickStartOperatorFreeFormFields(
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
+              disabled={disabledAll}
+              keyPrefix={keyPrefix}
             />
           ),
         });

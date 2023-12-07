@@ -1,10 +1,6 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import {
-  PageBase,
-  PipelineListPageMainView,
-  PipelineView,
-} from "@instill-ai/toolkit";
+import { PageBase, ViewPipeline } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { ConsoleCorePageHead, Topbar } from "../../../../components";
@@ -19,7 +15,7 @@ const PipelinePage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <PipelineView />
+      <ViewPipeline />
     </React.Fragment>
   );
 };

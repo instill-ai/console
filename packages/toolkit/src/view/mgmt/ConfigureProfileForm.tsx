@@ -16,7 +16,7 @@ import {
 } from "@instill-ai/design-system";
 
 import {
-  checkUserIdExist,
+  checkNamespace,
   useUser,
   useUpdateUser,
   getInstillApiErrorMessage,
@@ -74,12 +74,12 @@ export const ConfigureProfileForm = (props: ConfigureProfileFormProps) => {
 
     if (data.id !== instillUser.data.id) {
       // Check whether user id exist
-      const userIdExist = await checkUserIdExist({
+      const namespaceType = await checkNamespace({
         id: data.id as string,
         accessToken,
       });
 
-      if (userIdExist) {
+      if (namespaceType !== "NAMESPACE_AVAILABLE") {
         form.setError(
           "id",
           {
