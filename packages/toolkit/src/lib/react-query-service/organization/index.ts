@@ -1,5 +1,6 @@
 export * from "./useCreateOrganization";
 export * from "./useOrganizations";
+export * from "./useUserOrganizations";
 export * from "./useOrganization";
 export * from "./useUpdateOrgaization";
 export * from "./useAcceptOrganizationMembership";

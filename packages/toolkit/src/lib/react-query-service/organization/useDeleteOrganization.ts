@@ -9,11 +9,14 @@ export const useDeleteOrganization = () => {
       organizationName,
       accessToken,
     }: {
-      organizationName: string;
+      organizationName: Nullable<string>;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
+      }
+      if (!organizationName) {
+        return Promise.reject(new Error("Organization Name not provided"));
       }
 
       await deleteOrganizationMutation({ organizationName, accessToken });

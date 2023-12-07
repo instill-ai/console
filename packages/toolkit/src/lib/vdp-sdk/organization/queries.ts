@@ -124,3 +124,27 @@ export async function getOrganizationMembership({
     return Promise.reject(err);
   }
 }
+
+export type GetUserOrganizationResponse = {
+  memberships: Membership[];
+};
+
+export async function getUserOrganizations({
+  userName,
+  accessToken,
+}: {
+  userName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetUserOrganizationResponse>(
+      `users/${userName}/memberships`
+    );
+
+    return Promise.resolve(data.memberships);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
