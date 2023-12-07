@@ -1,7 +1,7 @@
 import cn from "clsx";
 import * as React from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-import { Nullable, StartOperatorInputType } from "../../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../../lib";
 
 export type StartNodeInputTypeProps = {
   type: StartOperatorInputType;

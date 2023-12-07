@@ -1,4 +1,4 @@
-import { Nullable, StartOperatorInputType } from "../../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../../lib";
 
 export function pickSelectedTypeFromInstillFormat(
   instillFormat: string

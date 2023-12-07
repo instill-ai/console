@@ -1,5 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
-import { InstillStore, useInstillStore } from "../../../../lib";
+import { InstillStore, useInstillStore } from "../../../../../lib";
 import { Icons } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({

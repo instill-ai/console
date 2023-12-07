@@ -1,6 +1,6 @@
 import cn from "clsx";
 import * as React from "react";
-import { Nullable } from "../../../lib";
+import { Nullable } from "../../../../../lib";
 
 type NodeBottomBarContextValue = {
   selectedValue: Nullable<string>;

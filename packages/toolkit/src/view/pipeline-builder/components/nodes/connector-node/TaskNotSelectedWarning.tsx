@@ -1,4 +1,4 @@
-import { Nullable, PipelineComponentType } from "../../../../lib";
+import { Nullable, PipelineComponentType } from "../../../../../lib";
 
 export const TaskNotSelectedWarning = ({
   componentType,

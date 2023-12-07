@@ -17,12 +17,12 @@ import {
   Nullable,
   PipelineConnectorComponent,
   useInstillStore,
-} from "../../../../lib";
-import { PipelineComponentReference } from "../../type";
+} from "../../../../../lib";
+import { PipelineComponentReference } from "../../../type";
 import {
   composeEdgesFromReferences,
   extractReferencesFromConfiguration,
-} from "../../lib";
+} from "../../../lib";
 
 export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),

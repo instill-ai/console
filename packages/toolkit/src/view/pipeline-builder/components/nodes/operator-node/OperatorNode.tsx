@@ -6,33 +6,36 @@ import {
   NodeData,
   OperatorNodeData,
   PipelineComponentReference,
-} from "../../type";
-import { CustomHandle } from "../CustomHandle";
+} from "../../../type";
+import { CustomHandle } from "../../CustomHandle";
 import {
   extractReferencesFromConfiguration,
   composeEdgesFromReferences,
   generateNewComponentIndex,
   transformConnectorDefinitionIDToComponentIDPrefix,
-} from "../../lib";
+} from "../../../lib";
 import {
   InstillStore,
   useInstillForm,
   useInstillStore,
   validateInstillID,
-} from "../../../../lib";
-import { ImageWithFallback, ObjectViewer } from "../../../../components";
+} from "../../../../../lib";
+import { ImageWithFallback, ObjectViewer } from "../../../../../components";
 import { useShallow } from "zustand/react/shallow";
-import { NodeWrapper } from "../NodeWrapper";
-import { NodeHead } from "../NodeHead";
-import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ConnectorOperatorControlPanel } from "../control-panel";
-import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
-import { ComponentOutputs } from "../ComponentOutputs";
-import { getOperatorInputOutputSchema } from "../../lib/getOperatorInputOutputSchema";
-import { useCheckIsHidden } from "../useCheckIsHidden";
-import { useUpdaterOnNode } from "../useUpdaterOnNode";
-import { InstillErrors } from "../../../../constant/errors";
-import { NodeBottomBar } from "../NodeBottomBar";
+import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
+import { ComponentOutputs } from "../../ComponentOutputs";
+import { getOperatorInputOutputSchema } from "../../../lib/getOperatorInputOutputSchema";
+import { useCheckIsHidden } from "../../useCheckIsHidden";
+import { useUpdaterOnNode } from "../../useUpdaterOnNode";
+import { InstillErrors } from "../../../../../constant/errors";
+import {
+  NodeBottomBar,
+  NodeHead,
+  NodeIDEditor,
+  NodeWrapper,
+  useNodeIDEditorForm,
+} from "../common";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,

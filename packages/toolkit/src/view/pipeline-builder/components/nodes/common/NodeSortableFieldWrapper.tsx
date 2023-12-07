@@ -4,7 +4,7 @@ import { ComplicateIcons } from "@instill-ai/design-system";
 import { useReactFlow } from "reactflow";
 import { CSS } from "@dnd-kit/utilities";
 
-export const SortableFieldWrapper = ({
+export const NodeSortableFieldWrapper = ({
   path,
   children,
 }: {

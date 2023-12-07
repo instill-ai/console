@@ -1,6 +1,6 @@
 import cn from "clsx";
 import * as React from "react";
-import { InstillStore, Nullable, useInstillStore } from "../../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Icons } from "@instill-ai/design-system";
-import { NodeDropdownMenu } from "./NodeDropdownMenu";
 import { ControlPanel } from "./ControlPanel";
-import { useInstillStore } from "../../../../lib";
+import { useInstillStore } from "../../../../../lib";
+import { NodeDropdownMenu } from "../common";
 
 export const StartEndOperatorControlPanel = ({
   nodeIsCollapsed,

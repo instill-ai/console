@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Button, Icons, Popover, Tooltip } from "@instill-ai/design-system";
-import { InstillStore, Nullable, useInstillStore } from "../../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { useShallow } from "zustand/react/shallow";
 
 const selector = (store: InstillStore) => ({

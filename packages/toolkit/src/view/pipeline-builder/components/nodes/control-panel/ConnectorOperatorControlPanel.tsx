@@ -5,10 +5,10 @@ import {
   Nullable,
   PipelineComponentType,
   useInstillStore,
-} from "../../../../lib";
-import { NodeDropdownMenu } from "../NodeDropdownMenu";
+} from "../../../../../lib";
 import { useShallow } from "zustand/react/shallow";
 import { ControlPanel } from "./ControlPanel";
+import { NodeDropdownMenu } from "../common";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,

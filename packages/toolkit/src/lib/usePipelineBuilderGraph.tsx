@@ -148,8 +148,6 @@ export function usePipelineBuilderGraph({
       },
     ];
 
-    console.log("newNodes", newNodes);
-
     // Because the pipeline is new, we need to initialize it with our default
     // graph layout
     createGraphLayout(newNodes, newEdges)

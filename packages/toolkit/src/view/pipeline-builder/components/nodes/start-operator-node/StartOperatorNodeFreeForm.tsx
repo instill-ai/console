@@ -11,7 +11,7 @@ import {
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
-import { Nullable, StartOperatorInputType } from "../../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 
 export const StartOperatorFreeFormSchema = z.object({

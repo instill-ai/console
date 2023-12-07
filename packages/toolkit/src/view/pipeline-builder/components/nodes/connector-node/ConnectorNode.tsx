@@ -1,41 +1,44 @@
 import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
+import { useShallow } from "zustand/react/shallow";
 
 import {
   ConnectorNodeData,
   NodeData,
   PipelineComponentReference,
-} from "../../type";
-import { CustomHandle } from "../CustomHandle";
+} from "../../../type";
+import { CustomHandle } from "../../CustomHandle";
 import {
   extractReferencesFromConfiguration,
   getConnectorInputOutputSchema,
   composeEdgesFromReferences,
   transformConnectorDefinitionIDToComponentIDPrefix,
   generateNewComponentIndex,
-} from "../../lib";
+} from "../../../lib";
 import {
   InstillStore,
   useInstillForm,
   useInstillStore,
   validateInstillID,
-} from "../../../../lib";
-import { ImageWithFallback, ObjectViewer } from "../../../../components";
+} from "../../../../../lib";
+import { ImageWithFallback, ObjectViewer } from "../../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
-import { useShallow } from "zustand/react/shallow";
-import { NodeWrapper } from "../NodeWrapper";
-import { NodeHead } from "../NodeHead";
-import { NodeIDEditor, useNodeIDEditorForm } from "../NodeIDEditor";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
-import { ComponentOutputs } from "../ComponentOutputs";
-import { OpenAdvancedConfigurationButton } from "../OpenAdvancedConfigurationButton";
-import { useCheckIsHidden } from "../useCheckIsHidden";
-import { useUpdaterOnNode } from "../useUpdaterOnNode";
-import { InstillErrors } from "../../../../constant/errors";
-import { NodeBottomBar } from "../NodeBottomBar";
+import { ComponentOutputs } from "../../ComponentOutputs";
+import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
+import { useCheckIsHidden } from "../../useCheckIsHidden";
+import { useUpdaterOnNode } from "../../useUpdaterOnNode";
+import { InstillErrors } from "../../../../../constant/errors";
+import {
+  NodeBottomBar,
+  NodeHead,
+  NodeIDEditor,
+  NodeWrapper,
+  useNodeIDEditorForm,
+} from "../common";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,

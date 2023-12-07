@@ -5,8 +5,8 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import { Form, Icons, Tooltip } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
-import { AutoresizeInputWrapper } from "../../../components";
-import { InstillStore, useInstillStore } from "../../../lib";
+import { AutoresizeInputWrapper } from "../../../../../components";
+import { InstillStore, useInstillStore } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const NodeIDEditorSchema = z.object({

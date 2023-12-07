@@ -1,9 +1,10 @@
 import * as React from "react";
 import { NodeProps, Position } from "reactflow";
-import { NodeData } from "../type";
 import { Icons } from "@instill-ai/design-system";
-import { CustomHandle } from "./CustomHandle";
-import { useInstillStore } from "../../../lib";
+
+import { NodeData } from "../../type";
+import { CustomHandle } from "../CustomHandle";
+import { useInstillStore } from "../../../../lib";
 
 export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
   const updateSelectResourceDialogIsOpen = useInstillStore(

@@ -2,17 +2,19 @@ import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { PipelineComponentReference, StartNodeData } from "../../type";
 import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { PipelineComponentReference, StartNodeData } from "../../../type";
 import {
   composeEdgesFromReferences,
   extractReferencesFromConfiguration,
   recursiveRemoveUndefinedAndNullFromArray,
   recursiveReplaceNullAndEmptyStringWithUndefined,
-} from "../../lib";
-import { CustomHandle } from "../CustomHandle";
+} from "../../../lib";
+import { CustomHandle } from "../../CustomHandle";
 import {
   InstillStore,
   Nullable,
@@ -22,22 +24,19 @@ import {
   useStartOperatorTriggerPipelineForm,
   useTriggerUserPipeline,
   useTriggerUserPipelineRelease,
-} from "../../../../lib";
+  toastInstillError,
+} from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
   StartOperatorFreeFormSchema,
 } from "./StartOperatorNodeFreeForm";
-import { toastInstillError } from "../../../../lib/toastInstillError";
-import { NodeWrapper } from "../NodeWrapper";
-import { NodeHead } from "../NodeHead";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { pickSelectedTypeFromInstillFormat } from "./pickSelectedTypeFromInstillFormat";
-import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
 import { arrayMove } from "@dnd-kit/sortable";
-import { SortableFieldWrapper } from "../SortableFieldWrapper";
 import { constructFieldKey } from "./constructFieldKey";
 import { StartEndOperatorControlPanel } from "../control-panel";
+import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
+import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -540,12 +539,12 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                   >
                     <div className="flex flex-col gap-y-4">
                       {startOperatorTriggerPipelineFormfields.map((field) => (
-                        <SortableFieldWrapper
+                        <NodeSortableFieldWrapper
                           key={field.key}
                           path={field.key as string}
                         >
                           {field}
-                        </SortableFieldWrapper>
+                        </NodeSortableFieldWrapper>
                       ))}
                     </div>
                   </VerticalSortableWrapper>

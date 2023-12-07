@@ -6,12 +6,12 @@ import { Button, Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
-import { EndNodeData, PipelineComponentReference } from "../../type";
+import { EndNodeData, PipelineComponentReference } from "../../../type";
 import {
   extractReferencesFromConfiguration,
   composeEdgesFromReferences,
-} from "../../lib";
-import { CustomHandle } from "../CustomHandle";
+} from "../../../lib";
+import { CustomHandle } from "../../CustomHandle";
 import {
   InstillJSONSchema,
   InstillStore,
@@ -19,15 +19,13 @@ import {
   StartOperatorMetadata,
   useInstillForm,
   useInstillStore,
-} from "../../../../lib";
+} from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
-import { VerticalSortableWrapper } from "../VerticalSortableWrapper";
-import { NodeWrapper } from "../NodeWrapper";
-import { NodeHead } from "../NodeHead";
-import { SortableFieldWrapper } from "../SortableFieldWrapper";
+import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
 import { StartEndOperatorControlPanel } from "../control-panel";
-import { InstillErrors } from "../../../../constant/errors";
-import { ComponentOutputs } from "../ComponentOutputs";
+import { InstillErrors } from "../../../../../constant/errors";
+import { ComponentOutputs } from "../../ComponentOutputs";
+import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -426,7 +424,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           >
             <div className="mb-4 flex flex-col gap-y-4">
               {sortedItems.map((item) => (
-                <SortableFieldWrapper key={item.key} path={item.key}>
+                <NodeSortableFieldWrapper key={item.key} path={item.key}>
                   <UserDefinedFieldItem
                     key={item.key}
                     fieldKey={item.key}
@@ -434,7 +432,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
                     onEditField={onEditField}
                     onDeleteField={onDeleteField}
                   />
-                </SortableFieldWrapper>
+                </NodeSortableFieldWrapper>
               ))}
             </div>
           </VerticalSortableWrapper>
