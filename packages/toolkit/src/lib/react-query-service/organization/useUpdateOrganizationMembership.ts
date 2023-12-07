@@ -1,26 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import {
-  Membership,
-  UpdateOrganizationMembershipRolePayload,
-  updateOrganizationMembershipRoleAction,
+  OrganizationMembership,
+  UpdateOrganizationMembershipPayload,
+  updateOrganizationMembershipMutation,
 } from "../../vdp-sdk";
 
-export const useUpdateOrganizationMembershipRole = () => {
+export const useUpdateOrganizationMembership = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
       payload,
       accessToken,
     }: {
-      payload: UpdateOrganizationMembershipRolePayload;
+      payload: UpdateOrganizationMembershipPayload;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
 
-      const membership = await updateOrganizationMembershipRoleAction({
+      const membership = await updateOrganizationMembershipMutation({
         payload,
         accessToken,
       });
@@ -29,8 +29,8 @@ export const useUpdateOrganizationMembershipRole = () => {
     },
     {
       onSuccess: ({ membership }) => {
-        queryClient.setQueryData<Membership[]>(
-          ["organizations", membership.organization.org_name, "memberships"],
+        queryClient.setQueryData<OrganizationMembership[]>(
+          ["organizations", membership.organization.id, "memberships"],
           (old) => (old ? [...old, membership] : [membership])
         );
       },

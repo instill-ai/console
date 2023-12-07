@@ -1,6 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
-import { Membership, Organization } from "./types";
+import { Organization, OrganizationMembership, UserMembership } from "./types";
 
 export type ListOrganizationsResponse = {
   organizations: Organization[];
@@ -76,21 +76,21 @@ export async function getOrganizationQuery({
 }
 
 export type GetOrganizationMembershipsResponse = {
-  memberships: Membership[];
+  memberships: OrganizationMembership[];
 };
 
-export async function getOrganizationMemberships({
-  organizationName,
+export async function getOrganizationMembershipsQuery({
+  organizationID,
   accessToken,
 }: {
-  organizationName: string;
+  organizationID: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetOrganizationMembershipsResponse>(
-      `/organizations/${organizationName}/memberships`
+      `/organizations/${organizationID}/memberships`
     );
 
     return Promise.resolve(data.memberships);
@@ -100,23 +100,23 @@ export async function getOrganizationMemberships({
 }
 
 export type GetOrganizationMembershipResponse = {
-  membership: Membership;
+  membership: OrganizationMembership;
 };
 
-export async function getOrganizationMembership({
-  organizationName,
-  userName,
+export async function getOrganizationMembershipQuery({
+  organizationID,
+  userID,
   accessToken,
 }: {
-  organizationName: string;
-  userName: string;
+  organizationID: string;
+  userID: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetOrganizationMembershipResponse>(
-      `/organizations/${organizationName}/memberships/${userName}`
+      `/organizations/${organizationID}/memberships/${userID}`
     );
 
     return Promise.resolve(data.membership);
@@ -125,22 +125,48 @@ export async function getOrganizationMembership({
   }
 }
 
-export type GetUserOrganizationResponse = {
-  memberships: Membership[];
+export type GetUserMembershipsResponse = {
+  memberships: UserMembership[];
 };
 
-export async function getUserOrganizations({
-  userName,
+export async function getUserMembershipsQuery({
+  userID,
   accessToken,
 }: {
-  userName: Nullable<string>;
+  userID: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<GetUserOrganizationResponse>(
-      `users/${userName}/memberships`
+    const { data } = await client.get<GetUserMembershipsResponse>(
+      `users/${userID}/memberships`
+    );
+
+    return Promise.resolve(data.memberships);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetUserMembershipResponse = {
+  membership: UserMembership;
+};
+
+export async function getUserMembershipQuery({
+  userID,
+  organizationID,
+  accessToken,
+}: {
+  userID: string;
+  organizationID: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetUserMembershipsResponse>(
+      `users/${userID}/memberships/${organizationID}`
     );
 
     return Promise.resolve(data.memberships);
