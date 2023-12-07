@@ -798,6 +798,9 @@ importers:
       react-hook-form:
         specifier: ^7.45.0
         version: 7.47.0(react@18.2.0)
+      react-progressbar-semicircle:
+        specifier: ^1.2.1
+        version: 1.2.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
       react-syntax-highlighter:
         specifier: ^15.5.0
         version: 15.5.0(react@18.2.0)
@@ -16379,6 +16382,18 @@ packages:
       vfile: 5.3.7
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /react-progressbar-semicircle@1.2.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-idSWvbagqUo02H4nsbN6wwGAocNo/rWjRyIudhx3VPSeMg1m/vkjs7Xx4XSfuPLxP1p4DbFL7IW2JoeW9Mz4CQ==}
+    peerDependencies:
+      prop-types: ^15.5.4
+      react: ^15.0.0 || ^16.0.0
+      react-dom: ^15.0.0 || ^16.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-refresh@0.11.0:
