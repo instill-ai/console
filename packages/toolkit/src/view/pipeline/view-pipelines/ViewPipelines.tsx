@@ -108,7 +108,7 @@ export const ViewPipelines = ({
               }}
             >
               <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-              Add Pipeline
+              Create Pipeline
             </Button>
           </div>
         </div>
