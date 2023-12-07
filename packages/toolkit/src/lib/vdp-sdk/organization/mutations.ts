@@ -1,4 +1,4 @@
-import { Nullable } from "../../type";
+import { GeneralRecord, Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import {
   MembershipResponse,
@@ -10,7 +10,7 @@ export type CreateOrganizationPayload = {
   id: string;
   org_name: string;
   profile_avatar?: Nullable<string>;
-  profile_data?: Nullable<object>;
+  profile_data?: Nullable<GeneralRecord>;
 };
 
 export type CreateOrganizationResponse = {
@@ -46,7 +46,7 @@ export type UpdateOrganizationPayload = {
   id: string;
   org_name: string;
   profile_avatar?: Nullable<string>;
-  profile_data?: Nullable<object>;
+  profile_data?: Nullable<GeneralRecord>;
 };
 
 export async function updateOrganizationMutation({
