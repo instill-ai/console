@@ -12,16 +12,25 @@ export type Organization = {
   profile_avatar: Nullable<string>;
   profile_data: Nullable<GeneralRecord>;
 };
-export type Membership = {
+
+export type UserMembership = {
   user: User;
   organization: Organization;
   name: Nullable<string>;
-  role: ROLE;
-  state: MEMBERSHIP_STATE;
+  role: MembershipRole;
+  state: MembershipState;
 };
 
-export type ROLE = "admin" | "member" | "pending_member" | "owner";
+export type OrganizationMembership = {
+  user: User;
+  organization: Organization;
+  name: Nullable<string>;
+  role: MembershipRole;
+  state: MembershipState;
+};
 
-export type MEMBERSHIP_STATE =
+export type MembershipRole = "admin" | "member" | "pending_member" | "owner";
+
+export type MembershipState =
   | "MEMBERSHIP_STATE_ACTIVE"
   | "MEMBERSHIP_STATE_PENDING";

@@ -3,12 +3,12 @@ import type { Nullable } from "../../type";
 import { getOrganizationQuery } from "../../vdp-sdk";
 
 export const useOrganization = ({
-  organizationName,
+  organizationID,
   accessToken,
   enabled,
   retry,
 }: {
-  organizationName: Nullable<string>;
+  organizationID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -19,27 +19,27 @@ export const useOrganization = ({
 }) => {
   let enableQuery = false;
 
-  if (organizationName && enabled) {
+  if (organizationID && enabled) {
     enableQuery = true;
   }
 
   return useQuery(
-    ["organization", organizationName],
+    ["organization", organizationID],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!organizationName) {
-        return Promise.reject(new Error("Organization name not provided"));
+      if (!organizationID) {
+        return Promise.reject(new Error("organizationID not provided"));
       }
 
-      const model = await getOrganizationQuery({
-        organizationName,
+      const organization = await getOrganizationQuery({
+        organizationID,
         accessToken,
       });
 
-      return Promise.resolve(model);
+      return Promise.resolve(organization);
     },
     {
       enabled: enableQuery,
