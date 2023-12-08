@@ -56,17 +56,17 @@ export type OrganizationResponse = {
 };
 
 export async function getOrganizationQuery({
-  organizationName,
+  organizationID,
   accessToken,
 }: {
-  organizationName: string;
+  organizationID: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<OrganizationResponse>(
-      `/organizations/${organizationName}`
+      `/organizations/${organizationID}`
     );
 
     return Promise.resolve(data.organization);

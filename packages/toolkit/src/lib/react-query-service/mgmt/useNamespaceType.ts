@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import { checkNamespace, getUserQuery, type User } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
-import { getOrganizationQuery } from "../../vdp-sdk";
 
-export const useOrganization = ({
-  organizationID,
+export const useNamespaceType = ({
+  namespace,
   accessToken,
   enabled,
   retry,
 }: {
-  organizationID: Nullable<string>;
+  namespace: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -17,32 +17,32 @@ export const useOrganization = ({
    */
   retry?: false | number;
 }) => {
-  let enableQuery = false;
+  let enabledQuery = false;
 
-  if (organizationID && enabled) {
-    enableQuery = true;
+  if (namespace && enabled) {
+    enabledQuery = true;
   }
 
   return useQuery(
-    ["organization", organizationID],
+    ["namespaces", namespace],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
+      if (!namespace) {
+        return Promise.reject(new Error("namespace not provided"));
       }
 
-      const organization = await getOrganizationQuery({
-        organizationID,
+      const type = await checkNamespace({
+        id: namespace,
         accessToken,
       });
 
-      return Promise.resolve(organization);
+      return Promise.resolve(type);
     },
     {
-      enabled: enableQuery,
+      enabled: enabledQuery,
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
