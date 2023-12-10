@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SelectOption, Button, Icons } from "@instill-ai/design-system";
-import SemiCircleProgressBar from "react-progressbar-semicircle";
+// import SemiCircleProgressBar from "react-progressbar-semicircle";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
   DashboardAvailableTimeframe,
@@ -177,13 +177,13 @@ export const DashboardPipelineListPageMainView = (
                 </p>
               </div>
 
-              <div className="flex w-[130px] flex-col items-center justify-center">
-                <SemiCircleProgressBar
+              <div className="flex w-[130px] flex-col items-center justify-end text-center">
+                {/* <SemiCircleProgressBar
                   percentage={33}
                   showPercentValue
                   stroke={"#316FED"}
                   diameter={100}
-                />
+                /> */}
                 <Button
                   variant="secondaryGrey"
                   size="sm"
