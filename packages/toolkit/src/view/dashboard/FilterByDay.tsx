@@ -39,7 +39,7 @@ export const FilterByDay = ({
           <button
             key={timeLineOption.value}
             className={cn(
-              "flex cursor-pointer items-center justify-center self-stretch px-4 py-3 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
+              "my-auto flex !h-10 cursor-pointer items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
               timeLineOption.value === selectedTimeOption?.value
                 ? "bg-semantic-bg-line"
                 : "bg-white"
@@ -55,14 +55,14 @@ export const FilterByDay = ({
               });
             }}
           >
-            <div className="text-semantic-fg-primary product-body-text-4-semibold">
+            <p className="text-semantic-fg-primary product-body-text-4-semibold">
               {timeLineOption.label}
-            </div>
+            </p>
           </button>
         ))}
       </div>
       <Button
-        className="my-auto !p-3"
+        className="my-auto !p-3 h-10 w-10"
         variant="secondaryGrey"
         size="sm"
         onClick={() => refetch()}
