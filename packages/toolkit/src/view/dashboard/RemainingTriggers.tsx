@@ -1,5 +1,5 @@
 import { Nullable } from "../../lib";
-import SemiCircleProgressBar from "react-progressbar-semicircle";
+import SemiCircleProgress from "./SemiCircleProgress";
 import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
 import { type } from "os";
@@ -63,7 +63,7 @@ export default function RemainingTriggers({
       </div>
 
       <div className="flex w-[130px] flex-col items-center justify-center">
-        <SemiCircleProgressBar
+        <SemiCircleProgress
           percentage={subscriptions ? getPercentange(subscriptions) : 0}
           showPercentValue={true}
           stroke={"#316FED"}

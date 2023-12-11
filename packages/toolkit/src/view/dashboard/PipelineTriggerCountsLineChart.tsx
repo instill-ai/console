@@ -59,17 +59,31 @@ export const PipelineTriggerCountsLineChart = ({
           top: 10,
           bottom: 50,
         },
+        graphic: {
+          type: "image",
+          style: {
+            image: "/images/no-chart-placeholder.svg",
+            x: "45%",
+            y: "0%",
+            width: pipelines.length === 0 ? 225 : 0,
+            height: pipelines.length === 0 ? 225 : 0,
+          },
+        },
         animation: false,
         title: {
           show: pipelines.length === 0,
           textStyle: {
-            color: "#1D2433",
-            fontSize: 22,
+            color: "#1D2433A6",
+            fontSize: 14,
             fontWeight: 500,
+            fontFamily: "IBM Plex Mono",
+            fontStyle: "italic",
           },
-          text: isLoading ? "Loading..." : "No Piplelines",
+          text: isLoading
+            ? "Loading..."
+            : "No pipelines have been triggered yet",
           left: "center",
-          top: 100,
+          bottom: 100,
         },
         tooltip: {
           trigger: "item",

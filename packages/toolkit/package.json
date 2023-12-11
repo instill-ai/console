@@ -116,7 +116,6 @@
     "prosemirror-markdown": "^1.11.2",
     "prosemirror-model": "^1.19.3",
     "react-hook-form": "^7.45.0",
-    "react-progressbar-semicircle": "^1.2.1",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.8.3",
     "semver": "^7.5.4",
