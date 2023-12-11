@@ -25,7 +25,6 @@ import { ReadmeEditor } from "./ReadmeEditor";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
-  nodes: store.nodes,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   dialogPublishPipelineIsOpen: store.dialogPublishPipelineIsOpen,
@@ -46,7 +45,6 @@ export const PublishPipelineDialog = () => {
 
   const {
     pipelineName,
-    nodes,
     accessToken,
     enabledQuery,
     dialogPublishPipelineIsOpen,

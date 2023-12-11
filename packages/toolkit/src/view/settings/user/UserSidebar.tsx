@@ -4,28 +4,22 @@ import { Setting } from "..";
 export const UserSidebar = () => {
   const router = useRouter();
 
-  const { entity } = router.query;
-
-  const profileTabLink = `/${entity}/settings/profile`;
-  const accountTabLink = `/${entity}/settings/account`;
-  const apiTokensTabLink = `/${entity}/settings/api-tokens`;
-
   return (
     <Setting.SidebarRoot>
       <Setting.SidebarItem
-        href={profileTabLink}
+        href="/settings/profile"
         name="Profile"
-        highlighted={router.pathname.split("/")[3] === "profile"}
+        highlighted={router.pathname.split("/")[2] === "profile"}
       />
       <Setting.SidebarItem
-        href={accountTabLink}
+        href="/settings/account"
         name="Account"
-        highlighted={router.pathname.split("/")[3] === "account"}
+        highlighted={router.pathname.split("/")[2] === "account"}
       />
       <Setting.SidebarItem
-        href={apiTokensTabLink}
+        href="/settings/api-tokens"
         name="API Tokens"
-        highlighted={router.pathname.split("/")[3] === "api-tokens"}
+        highlighted={router.pathname.split("/")[2] === "api-tokens"}
       />
     </Setting.SidebarRoot>
   );

@@ -92,7 +92,17 @@ export const ReleaseMenu = ({
         });
       }
     },
-    []
+    [
+      accessToken,
+      entity,
+      form,
+      id,
+      nodes,
+      onRelease,
+      releasePipelineVersion,
+      setIsReleasing,
+      toast,
+    ]
   );
 
   return (

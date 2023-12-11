@@ -13,7 +13,7 @@ import {
   authLoginAction,
   changePasswordMutation,
   getInstillApiErrorMessage,
-  useUser,
+  useUserMe,
 } from "@instill-ai/toolkit";
 import { useToast } from "@instill-ai/design-system";
 import axios, { isAxiosError } from "axios";
@@ -33,7 +33,7 @@ const LoginPage: NextPageWithLayout = () => {
     enabled: !!accessToken && changePasswordIsComplete,
   });
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: !!accessToken,
     accessToken: accessToken,
   });

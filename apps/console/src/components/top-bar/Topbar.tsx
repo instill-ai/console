@@ -9,7 +9,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import { ImageWithFallback, env, useUser } from "@instill-ai/toolkit";
+import { ImageWithFallback, useUserMe } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 
 export type TopbarProps = {
@@ -23,7 +23,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
 
   const accessToken = useAccessToken();
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
@@ -98,15 +98,19 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <div className="my-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-semantic-bg-secondary">
-                <ImageWithFallback
-                  width={20}
-                  height={20}
-                  alt={`${user.data.first_name} ${user.data.last_name} avatar`}
-                  src={user.data.profile_avatar}
-                  fallbackImg={
-                    <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                  }
-                />
+                {user.data.profile_avatar === "" ? (
+                  <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                ) : (
+                  <ImageWithFallback
+                    width={20}
+                    height={20}
+                    alt={`${user.data.first_name} ${user.data.last_name} avatar`}
+                    src={user.data.profile_avatar}
+                    fallbackImg={
+                      <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                    }
+                  />
+                )}
               </div>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
@@ -141,19 +145,17 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               <TopbarDropdownGroup>
                 <TopbarDropdownItem
                   onClick={() => {
-                    router.push(`/${user.data.id}/profile`);
+                    router.push(`/${user.data.id}`);
                   }}
                 >
                   <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
                   <div className="my-auto">View profile</div>
                 </TopbarDropdownItem>
-                <TopbarDropdownItem
-                  onClick={() => {
-                    router.push(`/${user.data.id}/settings/profile`);
-                  }}
-                >
-                  <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                  <div className="my-auto">Settings</div>
+                <TopbarDropdownItem asChild>
+                  <Link href="/settings/profile" className="flex gap-x-2">
+                    <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                    <div className="my-auto">Settings</div>
+                  </Link>
                 </TopbarDropdownItem>
               </TopbarDropdownGroup>
               <Separator orientation="horizontal" />

@@ -212,7 +212,6 @@ export const TextArea = ({
                   <React.Fragment>
                     <SmartHintInfoCard
                       fieldKey={fieldKey}
-                      title={title}
                       instillAcceptFormats={instillAcceptFormats}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
                       error={error}
@@ -240,7 +239,6 @@ export const TextArea = ({
                 ) : (
                   <SmartHintInfoCard
                     fieldKey={fieldKey}
-                    title={title}
                     instillAcceptFormats={instillAcceptFormats}
                     error={error}
                     supportReference={supportReference}

@@ -100,7 +100,7 @@ export const Readme = () => {
     setIsInitialized(true);
 
     editor.commands.setContent(parsed);
-  }, [pipeline.data, pipeline.isSuccess, editor]);
+  }, [pipeline.data, pipeline.isSuccess, editor, isInitialized]);
 
   return (
     <div className="flex w-full flex-1 flex-col">

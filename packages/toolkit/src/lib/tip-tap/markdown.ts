@@ -24,7 +24,6 @@ import Link from "@tiptap/extension-link";
 
 import {
   defaultMarkdownSerializer,
-  MarkdownSerializer,
   MarkdownSerializerState,
   MarkdownSerializer as ProseMirrorMarkdownSerializer,
 } from "prosemirror-markdown";

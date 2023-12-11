@@ -5,5 +5,6 @@ export { useDeleteApiToken } from "./useDeleteApiToken";
 export { useMgmtDefinition } from "./useMgmtDefinition";
 export { useNamespaceType } from "./useNamespaceType";
 export { useUser } from "./useUser";
+export { useUserMe } from "./useUserMe";
 export { useUsers } from "./useUsers";
 export { useUpdateUser } from "./useUpdateUser";

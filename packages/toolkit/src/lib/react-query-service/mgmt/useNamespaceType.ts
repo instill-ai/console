@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { checkNamespace, getUserQuery, type User } from "../../vdp-sdk";
+import { checkNamespace } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useNamespaceType = ({
