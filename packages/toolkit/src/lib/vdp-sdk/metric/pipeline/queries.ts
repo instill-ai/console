@@ -140,3 +140,56 @@ export async function listTriggeredPipelineChartQuery({
     return Promise.reject(err);
   }
 }
+
+export type GetUsersSubscription = {
+  subscription: {
+    plan: string;
+    quota: {
+      pipeline_trigger: {
+        quota: number;
+        used: number;
+        remain: number;
+      };
+    };
+  };
+};
+
+export async function getUsersSubscription({
+  userName,
+  accessToken,
+}: {
+  userName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetUsersSubscription>(
+      `/users/${userName}/subscription`
+    );
+
+    return Promise.resolve(data.subscription);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function getOrganizationsSubscription({
+  oraganizationName,
+  accessToken,
+}: {
+  oraganizationName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetUsersSubscription>(
+      `/organizations/${oraganizationName}/subscription`
+    );
+
+    return Promise.resolve(data.subscription);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
