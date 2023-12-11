@@ -34,12 +34,12 @@ export const useUsersSubscription = ({
         return Promise.reject(new Error("User name not provided"));
       }
 
-      const model = await getUsersSubscription({
+      const subscription = await getUsersSubscription({
         userName,
         accessToken,
       });
 
-      return Promise.resolve(model);
+      return Promise.resolve(subscription);
     },
     {
       enabled: enableQuery,
