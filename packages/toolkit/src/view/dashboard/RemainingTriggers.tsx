@@ -1,13 +1,8 @@
-import { useAccessToken } from "@/lib";
-import {
-  useNamespaceType,
-  useUser,
-  useUsersSubscription,
-  useOrganizationsSubscription,
-} from "@instill-ai/toolkit";
+import { Nullable } from "../../lib";
 import SemiCircleProgressBar from "react-progressbar-semicircle";
 import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
+import { type } from "os";
 
 export type Subscription = {
   plan: string;
@@ -20,57 +15,13 @@ export type Subscription = {
   };
 };
 
-export default function RemainingTriggers() {
-  const accessToken = useAccessToken();
+export type RemainingTriggersProps = {
+  subscriptions: Nullable<Subscription>;
+};
 
-  const instillUser = useUser({
-    enabled: accessToken.isSuccess,
-    retry: false,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-
-  const namespaceType = useNamespaceType({
-    namespace: String(instillUser.data?.id) ?? null,
-    enabled: accessToken.isSuccess,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-
-  const userSubscription = useUsersSubscription({
-    userName: instillUser.isSuccess ? instillUser.data.id : null,
-    enableQuery:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_USER"
-        ? accessToken.isSuccess
-        : false,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-  const organizationSubscription = useOrganizationsSubscription({
-    userName: instillUser.isSuccess ? instillUser.data.id : null,
-    enableQuery:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_ORGANIZATION"
-        ? accessToken.isSuccess
-        : false,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-  });
-
-  const subscriptions = React.useMemo(() => {
-    if (namespaceType.data === "NAMESPACE_USER") {
-      if (userSubscription.isLoading) {
-        userSubscription.refetch();
-      }
-      if (userSubscription.data) {
-        return userSubscription;
-      }
-    }
-    if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
-      if (organizationSubscription.isLoading) {
-        organizationSubscription.refetch();
-      }
-      if (organizationSubscription.data) {
-        return organizationSubscription;
-      }
-    }
-  }, [namespaceType, userSubscription, organizationSubscription]);
-
+export default function RemainingTriggers({
+  subscriptions,
+}: RemainingTriggersProps) {
   const getPercentange = (subscription: Subscription) => {
     const alpha =
       (subscription?.quota?.pipeline_trigger.used /
@@ -107,13 +58,13 @@ export default function RemainingTriggers() {
 
         <p className="product-body-text-4-regular">
           {subscriptions &&
-            getSubscriptionMessage(getPercentange(subscriptions.data))}
+            getSubscriptionMessage(getPercentange(subscriptions))}
         </p>
       </div>
 
       <div className="flex w-[130px] flex-col items-center justify-center">
         <SemiCircleProgressBar
-          percentage={subscriptions ? getPercentange(subscriptions.data) : 0}
+          percentage={subscriptions ? getPercentange(subscriptions) : 0}
           showPercentValue={true}
           stroke={"#316FED"}
           diameter={100}
