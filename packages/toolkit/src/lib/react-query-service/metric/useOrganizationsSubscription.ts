@@ -34,12 +34,12 @@ export const useOrganizationsSubscription = ({
         return Promise.reject(new Error("oragnaization name not provided"));
       }
 
-      const model = await getOrganizationsSubscription({
+      const oraganizations = await getOrganizationsSubscription({
         oraganizationName,
         accessToken,
       });
 
-      return Promise.resolve(model);
+      return Promise.resolve(oraganizations);
     },
     {
       enabled: enableQuery,
