@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getOrganizationMembershipsQuery } from "../../vdp-sdk";
+import { getUserMembershipsQuery } from "../../vdp-sdk";
 
-export const useOrganizationMemberships = ({
-  organizationID,
+export const useUserMemberships = ({
+  userID,
   accessToken,
   enabled,
   retry,
 }: {
-  organizationID: Nullable<string>;
+  userID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -17,32 +17,32 @@ export const useOrganizationMemberships = ({
    */
   retry?: false | number;
 }) => {
-  let enableQuery = false;
+  let enabledQuery = false;
 
-  if (organizationID && enabled) {
-    enableQuery = true;
+  if (userID && enabled) {
+    enabledQuery = true;
   }
 
   return useQuery(
-    ["organizations", organizationID, "memberships"],
+    ["users", userID, "memberships"],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
+      if (!userID) {
+        return Promise.reject(new Error("userID not provided"));
       }
 
-      const membership = await getOrganizationMembershipsQuery({
-        organizationID,
+      const memberships = await getUserMembershipsQuery({
+        userID,
         accessToken,
       });
 
-      return Promise.resolve(membership);
+      return Promise.resolve(memberships);
     },
     {
-      enabled: enableQuery,
+      enabled: enabledQuery,
       retry: retry === false ? false : retry ? retry : 3,
     }
   );

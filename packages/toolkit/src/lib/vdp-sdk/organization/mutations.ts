@@ -1,10 +1,12 @@
 import { GeneralRecord, Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import {
-  MembershipResponse,
-  UpdateOrganizationMembershipRolePayload,
-} from "./actions";
-import { Membership, Organization, ROLE } from "./types";
+  Organization,
+  MembershipRole,
+  OrganizationMembership,
+  MembershipState,
+  UserMembership,
+} from "./types";
 
 export type CreateOrganizationPayload = {
   id: string;
@@ -73,22 +75,32 @@ export async function updateOrganizationMutation({
   }
 }
 
-export async function updateOrganizationMembershipRoleAction({
+export type UpdateOrganizationMembershipPayload = {
+  userID: string;
+  organizationID: string;
+  role?: MembershipRole;
+};
+
+export type UpdateOrganizationMembershipResponse = {
+  membership: OrganizationMembership;
+};
+
+export async function updateOrganizationMembershipMutation({
   payload,
   accessToken,
 }: {
-  payload: UpdateOrganizationMembershipRolePayload;
+  payload: UpdateOrganizationMembershipPayload;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.put<MembershipResponse>(
-      `/organizations/${payload.organizationName}/memberships/${payload.userName}`,
+    const { data } = await client.put<UpdateOrganizationMembershipResponse>(
+      `/organizations/${payload.organizationID}/memberships/${payload.userID}`,
       {
         ...payload,
-        organizationName: undefined,
-        userName: undefined,
+        organizationID: undefined,
+        userID: undefined,
       }
     );
 
@@ -109,6 +121,79 @@ export async function deleteOrganizationMutation({
     const client = createInstillAxiosClient(accessToken, "core");
 
     await client.delete(`/organizations/${organizationName}`);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function deleteOrganizationMembershipMutation({
+  organizationID,
+  userID,
+  accessToken,
+}: {
+  organizationID: string;
+  userID: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    await client.delete(
+      `/organizations/${organizationID}/memberships/${userID}`
+    );
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function deleteUserMembershipMutation({
+  organizationID,
+  userID,
+  accessToken,
+}: {
+  organizationID: string;
+  userID: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    await client.delete(`/users/${userID}/memberships/${organizationID}`);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type UpdateUserMembershipPayload = {
+  userID: string;
+  organizationID: string;
+  state?: MembershipState;
+};
+
+export type UpdateUserMembershipResponse = {
+  membership: UserMembership;
+};
+
+export async function updateUserMembershipMutation({
+  payload,
+  accessToken,
+}: {
+  payload: UpdateUserMembershipPayload;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.put<UpdateUserMembershipResponse>(
+      `/users/${payload.userID}/memberships/${payload.organizationID}`,
+      {
+        ...payload,
+        organizationID: undefined,
+        userID: undefined,
+      }
+    );
+
+    return Promise.resolve(data.membership);
   } catch (err) {
     return Promise.reject(err);
   }
