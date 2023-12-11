@@ -59,15 +59,6 @@ export const UserProfileCard = ({
           ) : null}
         </div>
       </div>
-      <Separator orientation="horizontal" className="my-4" />
-      <div className="flex flex-col gap-y-2">
-        <p className="py-2 text-semantic-fg-disabled product-body-text-3-medium">
-          Access exclusive tools and insights.
-        </p>
-        <Button className="!w-full" size="md" variant="secondaryColour">
-          Upgrade to Pro
-        </Button>
-      </div>
     </div>
   );
 };
