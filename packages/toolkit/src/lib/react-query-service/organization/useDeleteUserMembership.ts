@@ -30,11 +30,13 @@ export const useDeleteUserMembership = () => {
       return Promise.resolve({ organizationID, userID });
     },
     {
-      onSuccess: ({ userID }) => {
-        queryClient.setQueryData<OrganizationMembership[]>(
-          ["users", userID, "memberships"],
-          (old) => (old ? old.filter((e) => e.user.id !== userID) : [])
-        );
+      onSuccess: ({ userID, organizationID }) => {
+        queryClient.invalidateQueries([
+          "organizations",
+          organizationID,
+          "memberships",
+        ]);
+        queryClient.invalidateQueries(["users", userID, "memberships"]);
       },
     }
   );

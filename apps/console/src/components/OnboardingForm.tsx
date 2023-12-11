@@ -20,8 +20,8 @@ import {
   sendAmplitudeData,
   type User,
   type Nullable,
+  instillUserRoles,
 } from "@instill-ai/toolkit";
-import { mgmtRoleOptions } from "../lib";
 import { useAccessToken } from "../lib/useAccessToken";
 
 export type OnboardingFormValues = {
@@ -52,7 +52,7 @@ export const OnboardingForm = () => {
 
   const [selectedRoleOption, setSelectedRoleOption] = useState<
     Nullable<SelectOption>
-  >(mgmtRoleOptions.find((e) => e.value === fieldValues.role) || null);
+  >(instillUserRoles.find((e) => e.value === fieldValues.role) || null);
 
   const [messageBoxState, setMessageBoxState] =
     useState<ProgressMessageBoxState>({
@@ -271,7 +271,7 @@ export const OnboardingForm = () => {
           id="role"
           label="Your role"
           required={true}
-          options={mgmtRoleOptions}
+          options={instillUserRoles}
           value={selectedRoleOption}
           description="Pick a role closest to your job in your company"
           onChange={handleRoleChange}

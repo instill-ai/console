@@ -31,10 +31,12 @@ export const useDeleteOrganizationMembership = () => {
     },
     {
       onSuccess: ({ organizationID, userID }) => {
-        queryClient.setQueryData<OrganizationMembership[]>(
-          ["organizations", organizationID, "memberships"],
-          (old) => (old ? old.filter((e) => e.user.id !== userID) : [])
-        );
+        queryClient.invalidateQueries([
+          "organizations",
+          organizationID,
+          "memberships",
+        ]);
+        queryClient.invalidateQueries(["users", userID, "memberships"]);
       },
     }
   );

@@ -32,17 +32,20 @@ export const useUpdateUserMembership = () => {
         accessToken,
       });
 
-      return Promise.resolve({ membership, userID: payload.userID });
+      return Promise.resolve({ membership });
     },
     {
-      onSuccess: ({ membership, userID }) => {
-        queryClient.setQueryData<UserMembership[]>(
-          ["users", userID, "memberships"],
-          (old) =>
-            old
-              ? [...old.filter((e) => e.user.id !== userID), membership]
-              : [membership]
-        );
+      onSuccess: ({ membership }) => {
+        queryClient.invalidateQueries([
+          "organizations",
+          membership.organization.id,
+          "memberships",
+        ]);
+        queryClient.invalidateQueries([
+          "users",
+          membership.user.id,
+          "memberships",
+        ]);
       },
     }
   );

@@ -29,10 +29,16 @@ export const useUpdateOrganizationMembership = () => {
     },
     {
       onSuccess: ({ membership }) => {
-        queryClient.setQueryData<OrganizationMembership[]>(
-          ["organizations", membership.organization.id, "memberships"],
-          (old) => (old ? [...old, membership] : [membership])
-        );
+        queryClient.invalidateQueries([
+          "organizations",
+          membership.organization.id,
+          "memberships",
+        ]);
+        queryClient.invalidateQueries([
+          "users",
+          membership.user.id,
+          "memberships",
+        ]);
       },
     }
   );
