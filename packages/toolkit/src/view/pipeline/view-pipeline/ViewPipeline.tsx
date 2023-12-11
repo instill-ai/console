@@ -5,10 +5,7 @@ import {
   useShallow,
   useUserPipeline,
 } from "../../../lib";
-import {
-  ReadOnlyPipelineBuilder,
-  ReadOnlyPipelineBuilderProps,
-} from "../../pipeline-builder";
+import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";

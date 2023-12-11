@@ -1,17 +1,15 @@
 import * as React from "react";
-import { ConsoleCorePageHead, Topbar } from "../../../components";
+import { ConsoleCorePageHead, Topbar } from "../../components";
 import { PageBase, BreadcrumbWithLink } from "@instill-ai/toolkit";
 
 import { Logo } from "@instill-ai/design-system";
-import { NextPageWithLayout } from "../../_app";
+import { NextPageWithLayout } from "../_app";
 import { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { entity } = ctx.query;
-
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: `/${entity}/settings/profile`,
+      destination: `/settings/profile`,
       permanent: false,
     },
   };

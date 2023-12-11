@@ -52,7 +52,7 @@ export const InOutPut = () => {
     return (
       pipeline.data.recipe.components.find((c) => c.id === "start") ?? null
     );
-  }, [pipeline.isSuccess]);
+  }, [pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
     metadata: startComponent

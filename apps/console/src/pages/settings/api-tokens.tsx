@@ -4,15 +4,15 @@ import {
   BreadcrumbWithLink,
   Setting,
   UserSidebar,
-  UserProfileTab,
+  UserAPITokenTab,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { NextPageWithLayout } from "../../_app";
+import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "lib/useAccessToken";
 import { ConsoleCorePageHead, Topbar } from "components";
 
-const ProfileSettingPage: NextPageWithLayout = () => {
+const APITokenSetting: NextPageWithLayout = () => {
   useAccessToken();
 
   return (
@@ -25,13 +25,13 @@ const ProfileSettingPage: NextPageWithLayout = () => {
       </div>
       <Setting.Root>
         <UserSidebar />
-        <UserProfileTab />
+        <UserAPITokenTab />
       </Setting.Root>
     </React.Fragment>
   );
 };
 
-ProfileSettingPage.getLayout = (page) => {
+APITokenSetting.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
@@ -42,4 +42,4 @@ ProfileSettingPage.getLayout = (page) => {
   );
 };
 
-export default ProfileSettingPage;
+export default APITokenSetting;

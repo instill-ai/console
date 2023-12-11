@@ -1,8 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  OrganizationMembership,
-  deleteUserMembershipMutation,
-} from "../../vdp-sdk";
+import { deleteUserMembershipMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useDeleteUserMembership = () => {

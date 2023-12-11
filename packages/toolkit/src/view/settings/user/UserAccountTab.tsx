@@ -8,7 +8,7 @@ import {
   InstillStore,
   useInstillStore,
   useShallow,
-  useUser,
+  useUserMe,
 } from "../../../lib";
 
 const UserAccountTabSchema = z.object({
@@ -23,7 +23,7 @@ const selector = (store: InstillStore) => ({
 export const UserAccountTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: enabledQuery,
     accessToken: accessToken,
   });

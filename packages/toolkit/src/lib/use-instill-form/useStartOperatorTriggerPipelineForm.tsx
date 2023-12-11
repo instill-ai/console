@@ -70,7 +70,7 @@ export const useStartOperatorTriggerPipelineForm = (props: {
     });
 
     return fields;
-  }, [metadata, form, onEditField, onDeleteField, disabledAll]);
+  }, [metadata, form, onEditField, onDeleteField, disabledAll, keyPrefix]);
 
   return {
     form,

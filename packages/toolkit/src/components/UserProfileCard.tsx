@@ -1,10 +1,10 @@
-import { Button, Separator, Tag } from "@instill-ai/design-system";
+import { Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
-  useUser,
+  useUserMe,
 } from "../lib";
 
 const selector = (store: InstillStore) => ({
@@ -19,7 +19,7 @@ export const UserProfileCard = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: enabledQuery && !!accessToken,
     accessToken,
   });

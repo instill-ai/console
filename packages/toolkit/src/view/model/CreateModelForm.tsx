@@ -17,21 +17,21 @@ import {
 } from "@instill-ai/design-system";
 
 import {
+  type Model,
+  type Nullable,
+  type CreateResourceFormStore,
   useAmplitudeCtx,
   sendAmplitudeData,
   useCreateResourceFormStore,
   getInstillApiErrorMessage,
   useModelDefinitions,
-  type Model,
-  type Nullable,
-  type CreateResourceFormStore,
   useCreateUserModel,
   getUserModelQuery,
-  useUser,
   useDeployUserModel,
   CreateUserModelPayload,
   watchUserModel,
   validateInstillID,
+  useUserMe,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
 import { InstillErrors } from "../../constant/errors";
@@ -114,7 +114,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     modelHuggingFaceRepoUrlError,
   } = useCreateResourceFormStore(selector, shallow);
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: enabledQuery,
     accessToken,
   });

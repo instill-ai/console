@@ -20,7 +20,7 @@ import {
   useInstillStore,
   useShallow,
   useUpdateUser,
-  useUser,
+  useUserMe,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
 
@@ -50,7 +50,7 @@ export const UserProfileTab = () => {
 
   const { toast } = useToast();
 
-  const user = useUser({
+  const user = useUserMe({
     accessToken,
     enabled: enabledQuery,
   });

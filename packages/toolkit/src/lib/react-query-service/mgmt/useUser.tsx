@@ -3,10 +3,12 @@ import { getUserQuery, type User } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export const useUser = ({
+  userName,
   accessToken,
   enabled,
   retry,
 }: {
+  userName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   /**
@@ -15,19 +17,25 @@ export const useUser = ({
    */
   retry?: false | number;
 }) => {
+  let enabledQuery = false;
+
+  if (enabled && userName) {
+    enabledQuery = true;
+  }
+
   return useQuery<User>(
     ["user"],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+      if (!userName) {
+        return Promise.reject(new Error("userName not provided"));
       }
 
-      const user = await getUserQuery({ accessToken });
+      const user = await getUserQuery({ userName, accessToken });
 
       return Promise.resolve(user);
     },
     {
-      enabled,
+      enabled: enabledQuery,
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
