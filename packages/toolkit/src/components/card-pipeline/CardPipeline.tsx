@@ -1,4 +1,4 @@
-import { ReadOnlyPipelineBuilderProps } from "../../view";
+import { Pipeline } from "../../lib";
 import { Body } from "./Body";
 import { Footer } from "./Footer";
 import { Head } from "./Head";
@@ -13,32 +13,24 @@ export const CardSkeletonPipeline = () => {
   );
 };
 
-export const CardPipeline = ({
-  ownerID,
-  pipelineID,
-  recipe,
-  metadata,
-}: {
+export const CardPipeline = (props: {
   ownerID: string;
-  pipelineID: string;
-} & ReadOnlyPipelineBuilderProps) => {
-  console.log("ownerID", ownerID);
+  pipeline: Pipeline;
+  isOrg: boolean;
+  isOwner: boolean;
+}) => {
+  const { ownerID, pipeline, isOrg, isOwner } = props;
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
-      <Head ownerID={ownerID} />
-      <Body
+      <Head
+        pipeline={pipeline}
         ownerID={ownerID}
-        recipe={recipe}
-        metadata={metadata}
-        pipelineID={pipelineID}
+        isOrg={isOrg}
+        isOwner={isOwner}
       />
-      <Footer
-        ownerID={ownerID}
-        pipelineID={pipelineID}
-        pipelineLatestVersion="v1.0.0"
-        isOwner={true}
-      />
+      <Body ownerID={ownerID} pipeline={pipeline} />
+      <Footer ownerID={ownerID} pipeline={pipeline} isOwner={true} />
     </div>
   );
 };

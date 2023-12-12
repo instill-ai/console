@@ -1,9 +1,18 @@
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
+
+const selector = (store: InstillStore) => ({
+  updateDialogPublishPipelineIsOpen: store.updateDialogPublishPipelineIsOpen,
+});
 
 export const Head = () => {
   const router = useRouter();
   const { id, entity } = router.query;
+
+  const { updateDialogPublishPipelineIsOpen } = useInstillStore(
+    useShallow(selector)
+  );
 
   return (
     <div className="flex flex-row px-8 py-2">
@@ -34,7 +43,14 @@ export const Head = () => {
         </p>
       </div>
       <div className="flex flex-row gap-x-4">
-        <Button type="button" variant="secondaryGrey" size="lg">
+        <Button
+          type="button"
+          variant="secondaryGrey"
+          size="lg"
+          onClick={() => {
+            updateDialogPublishPipelineIsOpen(() => false);
+          }}
+        >
           Cancel
         </Button>
         <Button type="submit" variant="primary" size="lg">

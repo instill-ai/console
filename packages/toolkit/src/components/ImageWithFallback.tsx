@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 
 export type ImageWithFallbackProps = {
   src: string;
@@ -6,6 +7,7 @@ export type ImageWithFallbackProps = {
   alt: string;
   width: number;
   height: number;
+  className?: string;
 };
 
 export const ImageWithFallback = ({
@@ -14,6 +16,7 @@ export const ImageWithFallback = ({
   alt,
   width,
   height,
+  className,
 }: ImageWithFallbackProps) => {
   const [error, setError] = React.useState(false);
   return error ? (
@@ -28,7 +31,7 @@ export const ImageWithFallback = ({
         setError(true);
         console.error(error);
       }}
-      className="flex-shrink-0"
+      className={cn("flex-shrink-0", className)}
     />
   );
 };

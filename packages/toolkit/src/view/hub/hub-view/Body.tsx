@@ -9,6 +9,7 @@ import {
   useInfinitePipelines,
   useInstillStore,
   useShallow,
+  useUserMe,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -31,6 +32,12 @@ export const Body = () => {
     pageSize: 10,
     accessToken,
     enabledQuery,
+  });
+
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+    retry: false,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -95,9 +102,9 @@ export const Body = () => {
                 <CardPipeline
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}
-                  pipelineID={pipeline.id}
-                  recipe={pipeline.recipe}
-                  metadata={pipeline.metadata}
+                  pipeline={pipeline}
+                  isOrg={pipeline.owner_name.split("/")[0] === "organizations"}
+                  isOwner={pipeline.owner_name === me.data?.name}
                 />
               ))
             )

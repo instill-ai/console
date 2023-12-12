@@ -1,15 +1,13 @@
 import * as React from "react";
-import { Button, useToast } from "@instill-ai/design-system";
+import { Button } from "@instill-ai/design-system";
 import {
   InstillStore,
-  UpdateUserPipelinePayload,
-  toastInstillError,
   useInstillStore,
   useShallow,
-  useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
 import { useRouter } from "next/router";
+import { UnpublishPipelineDialog } from "./UnpublishPipelineDialog";
 
 const selector = (store: InstillStore) => ({
   updateDialogPublishPipelineIsOpen: store.updateDialogPublishPipelineIsOpen,
@@ -29,8 +27,6 @@ export const TabPublish = () => {
   const router = useRouter();
   const { id, entity } = router.query;
 
-  const { toast } = useToast();
-
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
@@ -42,7 +38,7 @@ export const TabPublish = () => {
       return false;
     }
 
-    const toplevelRule = pipeline.data.permission.users["users/*"];
+    const toplevelRule = pipeline.data.permission.users["*/*"];
 
     if (toplevelRule && toplevelRule.enabled) {
       return true;
@@ -50,36 +46,6 @@ export const TabPublish = () => {
       return false;
     }
   }, [pipeline.data, pipeline.isSuccess]);
-
-  const updateUserPipeline = useUpdateUserPipeline();
-
-  async function onPublishPipeline() {
-    if (!pipeline.isSuccess) return;
-
-    try {
-      const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${id}`,
-        permission: {
-          ...pipeline.data.permission,
-          users: {
-            ...pipeline.data.permission.users,
-            "users/*": {
-              enabled: false,
-              role: "ROLE_VIEWER",
-            },
-          },
-        },
-      };
-
-      await updateUserPipeline.mutateAsync({ payload, accessToken });
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when unpublishing pipeline",
-        error,
-        toast,
-      });
-    }
-  }
 
   return (
     <div className="flex w-full flex-col">
@@ -113,21 +79,20 @@ export const TabPublish = () => {
             ? "Remove your pipeline from the amazing community of builders 😔"
             : " Publish this pipeline to the Community for the public to use or clone."}
         </p>
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={async () => {
-            if (pipelineIsPublic) {
-              await onPublishPipeline();
-              return;
-            }
-
-            updateDialogSharePipelineIsOpen(() => false);
-            updateDialogPublishPipelineIsOpen(() => true);
-          }}
-        >
-          {pipelineIsPublic ? "Unpublish" : "Publish"}
-        </Button>
+        {pipelineIsPublic ? (
+          <UnpublishPipelineDialog />
+        ) : (
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={async () => {
+              updateDialogSharePipelineIsOpen(() => false);
+              updateDialogPublishPipelineIsOpen(() => true);
+            }}
+          >
+            {pipelineIsPublic ? "Unpublish" : "Publish"}
+          </Button>
+        )}
       </div>
     </div>
   );

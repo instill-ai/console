@@ -38,6 +38,9 @@ export const useCreateUserPipeline = () => {
           pipeline
         );
 
+        queryClient.invalidateQueries(["pipelines", "infinite"]);
+        queryClient.invalidateQueries(["pipelines", userName, "infinite"]);
+
         queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
           old
             ? [...old.filter((e) => e.name !== pipeline.name), pipeline]

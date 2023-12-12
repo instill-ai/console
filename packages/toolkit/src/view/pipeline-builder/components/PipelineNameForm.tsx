@@ -52,7 +52,7 @@ export const UpdatePipelineIdSchema = z.object({
 export const PipelineNameForm = (props: PipelineNameFormProps) => {
   const { accessToken } = props;
   const router = useRouter();
-  const { entity } = router.query;
+  const { entity, id } = router.query;
 
   const { toast } = useToast();
 
@@ -245,7 +245,10 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
   return (
     <div className="flex w-full pl-4">
       <div className="flex flex-row gap-x-3">
-        <Link className="flex flex-row gap-x-3" href={`/${entity}/pipelines`}>
+        <Link
+          className="flex flex-row gap-x-3"
+          href={`/${entity}/pipelines/${id}`}
+        >
           <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
           <p className="my-auto text-semantic-fg-secondary product-body-text-3-medium">
             Pipelines

@@ -2,47 +2,26 @@ import * as React from "react";
 import * as z from "zod";
 import { EditorContent, useEditor } from "@tiptap/react";
 import {
-  InstillStore,
   Nullable,
   deserialize,
   extensions,
   serialize,
-  useInstillStore,
-  useShallow,
-  useUserPipeline,
 } from "../../../../../lib";
 import { UseFormReturn } from "react-hook-form";
 import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
 import { Form } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
-
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
-  pipelineIsNew: store.pipelineIsNew,
-});
 
 export const ReadmeEditor = ({
   form,
+  readme,
 }: {
   form: UseFormReturn<
     z.infer<typeof PublishPipelineFormSchema>,
     any,
     undefined
   >;
+  readme: Nullable<string>;
 }) => {
-  const { accessToken, enabledQuery, pipelineIsNew } = useInstillStore(
-    useShallow(selector)
-  );
-  const router = useRouter();
-  const { id, entity } = router.query;
-
-  const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
-    accessToken,
-    enabled: enabledQuery && !!accessToken && !pipelineIsNew,
-  });
-
   const timer = React.useRef<Nullable<number>>(null);
   const editor = useEditor({
     extensions: extensions,
@@ -51,6 +30,7 @@ export const ReadmeEditor = ({
         class: "w-full h-full markdown-body rounded-[12px] p-6",
       },
     },
+    content: "<h2>Your Pipeline Readme</h2>",
     onUpdate: ({ editor }) => {
       if (timer.current) {
         clearTimeout(timer.current);
@@ -59,7 +39,7 @@ export const ReadmeEditor = ({
       timer.current = window.setTimeout(() => {
         try {
           const md = serialize(editor.schema, editor.getJSON());
-          form.setValue("description", md);
+          form.setValue("readme", md);
         } catch (err) {
           console.error(err);
         }
@@ -68,21 +48,17 @@ export const ReadmeEditor = ({
   });
 
   React.useEffect(() => {
-    if (!pipeline.isSuccess || !editor) return;
+    if (!readme || !editor) return;
 
-    if (!pipeline.data.description) {
-      return;
-    }
-
-    const parsed = deserialize(editor.schema, pipeline.data.description);
+    const parsed = deserialize(editor.schema, readme);
 
     editor.commands.setContent(parsed);
-  }, [pipeline.data, pipeline.isSuccess, editor]);
+  }, [readme, editor]);
 
   return (
     <Form.Field
       control={form.control}
-      name="description"
+      name="readme"
       render={() => {
         return (
           <Form.Item className="h-full w-full flex-1 px-8">
