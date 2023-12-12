@@ -20,6 +20,13 @@ import {
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
 import { LoadingSpin } from "../../../components";
+import {
+  transformStartOperatorMetadataToSuperRefineRules,
+  transformStartOperatorMetadataToZod,
+} from "../../../lib/use-instill-form/transform";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { pickStartOperatorFreeFormFields } from "../../../lib/use-instill-form/pick";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -55,9 +62,7 @@ export const InOutPut = () => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
-    metadata: startComponent
-      ? startComponent.configuration.metadata ?? null
-      : null,
+    metadata: startComponent ? startComponent.configuration.metadata : null,
     onDeleteField: () => {
       console.log("onDeleteField");
     },
@@ -65,6 +70,8 @@ export const InOutPut = () => {
       console.log("onEditField");
     },
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
+    disabledFields: false,
+    disabledFieldControls: true,
   });
 
   const triggerPipeline = useTriggerUserPipeline();

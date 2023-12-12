@@ -2,6 +2,7 @@ import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const NumbersField = ({
   form,
@@ -13,10 +14,8 @@ export const NumbersField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [numberFieldsArray, setNumberFieldsArray] = React.useState<number[]>([
     1,
   ]);
@@ -59,7 +58,7 @@ export const NumbersField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
               {numberFieldsArray.map((_, idx) => {

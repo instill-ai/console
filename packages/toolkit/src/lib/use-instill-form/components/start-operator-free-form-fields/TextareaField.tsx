@@ -1,6 +1,7 @@
 import { Form, Textarea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const TextareaField = ({
   form,
@@ -12,10 +13,8 @@ export const TextareaField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -30,7 +29,7 @@ export const TextareaField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
             <Form.Control>
               <Textarea

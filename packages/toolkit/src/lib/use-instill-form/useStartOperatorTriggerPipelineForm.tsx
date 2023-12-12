@@ -15,13 +15,20 @@ import { Nullable } from "../type";
 
 export const useStartOperatorTriggerPipelineForm = (props: {
   metadata: Nullable<StartOperatorMetadata>;
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-  disabledAll?: boolean;
+  onEditField?: (key: string) => void;
+  onDeleteField?: (key: string) => void;
+  disabledFields?: boolean;
+  disabledFieldControls?: boolean;
   keyPrefix?: string;
 }) => {
-  const { metadata, onDeleteField, onEditField, disabledAll, keyPrefix } =
-    props;
+  const {
+    metadata,
+    onDeleteField,
+    onEditField,
+    disabledFields,
+    disabledFieldControls,
+    keyPrefix,
+  } = props;
 
   const superRefineRules = React.useMemo(() => {
     if (!metadata) {
@@ -65,12 +72,21 @@ export const useStartOperatorTriggerPipelineForm = (props: {
       form,
       onEditField,
       onDeleteField,
-      disabledAll,
+      disabledFields,
+      disabledFieldControls,
       keyPrefix,
     });
 
     return fields;
-  }, [metadata, form, onEditField, onDeleteField, disabledAll, keyPrefix]);
+  }, [
+    metadata,
+    form,
+    onEditField,
+    onDeleteField,
+    disabledFieldControls,
+    disabledFields,
+    keyPrefix,
+  ]);
 
   return {
     form,

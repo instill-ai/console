@@ -18,14 +18,14 @@ export const FieldHead = ({
   path,
   onEditField,
   onDeleteField,
-  disabled,
+  disabledFieldControl,
 }: {
   form: GeneralUseFormReturn;
   title: Nullable<string>;
   path: string;
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-  disabled?: boolean;
+  onEditField?: (key: string) => void;
+  onDeleteField?: (key: string) => void;
+  disabledFieldControl?: boolean;
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
   return (
@@ -116,13 +116,13 @@ export const FieldHead = ({
           </Tooltip.Root>
         </Tooltip.Provider>
       </div>
-      {currentVersion === "latest" && !disabled && isOwner ? (
+      {currentVersion === "latest" && !disabledFieldControl && isOwner ? (
         <div className="my-auto flex flex-row gap-x-2">
           <button
             type="button"
             onClick={() => {
               form.clearErrors();
-              onEditField(path);
+              if (onEditField) onEditField(path);
             }}
             className="my-auto flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
           >
@@ -132,7 +132,9 @@ export const FieldHead = ({
           <button
             className="my-auto rounded p-1 hover:bg-semantic-error-bg-alt"
             type="button"
-            onClick={() => onDeleteField(path)}
+            onClick={() => {
+              if (onDeleteField) onDeleteField(path);
+            }}
           >
             <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
           </button>

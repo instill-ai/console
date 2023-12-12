@@ -5,6 +5,7 @@ import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
 import { Nullable } from "../../../type";
 import { extensions, serialize } from "../../../tip-tap";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const LongTextField = ({
   form,
@@ -16,10 +17,8 @@ export const LongTextField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const timer = React.useRef<Nullable<number>>(null);
 
   // We make TipTap as a uncontrolled component, and we set a timer
@@ -63,7 +62,7 @@ export const LongTextField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
             <Form.Control>
               <EditorContent disabled={disabled} editor={editor} />

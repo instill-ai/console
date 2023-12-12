@@ -5,6 +5,7 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const AudioField = ({
   form,
@@ -16,10 +17,8 @@ export const AudioField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [audioFile, setAudioFile] = React.useState<Nullable<File>>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,13 +36,14 @@ export const AudioField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
 
             <div className="flex">
               <Form.Control>
                 <UploadFileInput
                   ref={inputRef}
+                  keyPrefix={keyPrefix}
                   title="Upload audio"
                   fieldKey={path}
                   accept="audio/*"

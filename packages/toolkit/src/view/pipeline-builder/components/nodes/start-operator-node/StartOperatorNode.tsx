@@ -333,7 +333,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     metadata: data.component.configuration.metadata ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
-    disabledAll: pipelineIsReadOnly,
+    disabledFields: pipelineIsReadOnly,
+    disabledFieldControls: pipelineIsReadOnly,
   });
 
   React.useEffect(() => {
