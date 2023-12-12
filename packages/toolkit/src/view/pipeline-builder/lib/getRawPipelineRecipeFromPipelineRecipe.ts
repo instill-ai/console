@@ -8,6 +8,9 @@ export function getRawPipelineRecipeFromPipelineRecipe(
     components: recipe.components.map((component) => ({
       ...component,
       resource_name: component.resource_name ?? "",
+      connector_definition: undefined,
+      resource: undefined,
+      operator_definition: undefined,
     })),
   };
 

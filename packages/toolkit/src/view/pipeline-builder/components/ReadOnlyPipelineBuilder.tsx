@@ -77,20 +77,21 @@ export const ReadOnlyPipelineBuilder = ({
     updateCurrentVersion(() => "latest");
     updatePipelineIsReadOnly(() => true);
 
-    if (reactFlowInstance) {
-      reactFlowInstance.fitView();
-    }
-
     setNodes(initialGraphData.nodes);
     setEdges(initialGraphData.edges);
-  }, [recipe, metadata, reactFlowInstance, updateCurrentVersion]);
+  }, [
+    recipe,
+    metadata,
+    reactFlowInstance,
+    updateCurrentVersion,
+    updatePipelineIsReadOnly,
+  ]);
 
   // Clean up the pipelineIsReadOnly state when user navigate away
   // from the page
   useNavigationObserver({
     shouldStopNavigation: false,
     onNavigate: () => {
-      console.log("re-init");
       updatePipelineIsReadOnly(() => false);
     },
     router,

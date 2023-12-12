@@ -47,6 +47,7 @@ export type UpdateUserPipelinePayload = {
   recipe?: RawPipelineRecipe;
   permission?: RawPipelinePermission;
   metadata?: GeneralRecord;
+  readme?: string;
 };
 
 export type RawPipelinePermission = {

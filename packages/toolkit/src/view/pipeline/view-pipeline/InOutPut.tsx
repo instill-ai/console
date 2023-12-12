@@ -111,7 +111,7 @@ export const InOutPut = () => {
   return (
     <div className="flex flex-col">
       <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-secondary px-3 py-2 product-body-text-1-semibold">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
         </div>
         <Form.Root {...form}>
@@ -125,7 +125,7 @@ export const InOutPut = () => {
         </Form.Root>
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-secondary px-3 py-2 product-body-text-1-semibold">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Output
         </div>
         <ComponentOutputs

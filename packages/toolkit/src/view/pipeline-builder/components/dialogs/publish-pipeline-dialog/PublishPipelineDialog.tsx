@@ -3,18 +3,13 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useShallow } from "zustand/react/shallow";
-import {
-  Dialog,
-  Form,
-  LinkButton,
-  Toast,
-  useToast,
-} from "@instill-ai/design-system";
+import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 
 import {
   InstillStore,
   UpdateUserPipelinePayload,
+  toastInstillError,
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
@@ -34,6 +29,7 @@ const selector = (store: InstillStore) => ({
 
 export const PublishPipelineFormSchema = z.object({
   description: z.string().optional().nullable(),
+  readme: z.string().optional().nullable(),
   tags: z.array(z.string()).optional().nullable(),
   license: z.string().optional().nullable(),
 });
@@ -77,12 +73,13 @@ export const PublishPipelineDialog = () => {
     const payload: UpdateUserPipelinePayload = {
       name: pipelineName,
       description: formData.description ?? undefined,
+      readme: formData.readme ?? undefined,
       permission: {
         users: {
           ...pipeline.data.permission.users,
-          "users/*": {
+          "*/*": {
             enabled: true,
-            role: "ROLE_VIEWER",
+            role: "ROLE_EXECUTOR",
           },
         },
         share_code: pipeline.data?.permission.share_code ?? null,
@@ -98,6 +95,7 @@ export const PublishPipelineDialog = () => {
         accessToken,
       });
       setIsPublishing(false);
+      updateDialogPublishPipelineIsOpen(() => false);
 
       toast({
         size: "large",
@@ -106,21 +104,28 @@ export const PublishPipelineDialog = () => {
           "Hooray! Your pipeline has been successfully published to the hub and is now available to our ever-growing community. Keep up the good work! 🎉🚀",
         variant: "alert-success",
         action: (
-          <Toast.Action className="flex w-full" altText="GoToPipeline" asChild>
+          <div className="flex flex-row">
             <LinkButton
               onClick={() => {
                 router.push(`/${entity}/pipelines/${id}`);
               }}
               variant="primary"
               size="sm"
+              className="mr-auto"
             >
               Check Your Pipeline Here
             </LinkButton>
-          </Toast.Action>
+          </div>
         ),
       });
     } catch (err) {
       setIsPublishing(false);
+      updateDialogPublishPipelineIsOpen(() => false);
+      toastInstillError({
+        title: "Something went wrong when publish the pipeline",
+        error: err,
+        toast,
+      });
       console.error(err);
     }
   }
@@ -140,8 +145,16 @@ export const PublishPipelineDialog = () => {
           <form onSubmit={form.handleSubmit(handlePublish)}>
             <div className="flex h-full flex-col">
               <Head />
-              <Metadata form={form} />
-              <ReadmeEditor form={form} />
+              <Metadata
+                form={form}
+                description={
+                  pipeline.isSuccess ? pipeline.data.description : null
+                }
+              />
+              <ReadmeEditor
+                form={form}
+                readme={pipeline.isSuccess ? pipeline.data.readme : null}
+              />
             </div>
           </form>
         </Form.Root>

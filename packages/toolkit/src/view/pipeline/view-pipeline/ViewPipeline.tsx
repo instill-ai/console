@@ -1,8 +1,10 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import {
   InstillStore,
   useInstillStore,
   useShallow,
+  useUserMe,
   useUserPipeline,
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
@@ -20,15 +22,29 @@ export const ViewPipeline = () => {
   const { id, entity } = router.query;
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
+  const me = useUserMe({
+    enabled: enabledQuery && !!accessToken,
+    accessToken,
+    retry: false,
+  });
+
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
     enabled: enabledQuery && !!accessToken,
   });
 
+  const isOwner = React.useMemo(() => {
+    if (!pipeline.isSuccess || !me.isSuccess) {
+      return false;
+    }
+
+    return pipeline.data.owner_name === me.data.name;
+  }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
+
   return (
     <div className="flex h-full flex-col">
-      <Head />
+      <Head isOwner={isOwner} />
       <div className="mx-auto flex flex-1 flex-row px-8">
         <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
           <ReadOnlyPipelineBuilder
@@ -36,7 +52,13 @@ export const ViewPipeline = () => {
             metadata={pipeline.isSuccess ? pipeline.data.metadata : null}
             className="h-[378px] w-full"
           />
-          <Readme />
+          <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
+            Pipeline Readme
+          </div>
+          <Readme
+            isOwner={isOwner}
+            readme={pipeline.isSuccess ? pipeline.data.readme : null}
+          />
         </div>
         <div className="flex w-[594px] flex-col py-10 pr-4">
           <InOutPut />

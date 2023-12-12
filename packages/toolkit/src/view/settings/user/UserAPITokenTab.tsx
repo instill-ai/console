@@ -30,12 +30,14 @@ export const UserAPITokenTab = () => {
         <div className="mb-6 flex flex-row-reverse">
           <CreateAPITokenDialog accessToken={accessToken} />
         </div>
-        <APITokenTable
-          isError={apiTokens.isError}
-          isLoading={apiTokens.isLoading}
-          accessToken={accessToken}
-          tokens={apiTokens.data ?? []}
-        />
+        <div className="w-full">
+          <APITokenTable
+            isError={apiTokens.isError}
+            isLoading={apiTokens.isLoading}
+            accessToken={accessToken}
+            tokens={apiTokens.data ?? []}
+          />
+        </div>
       </div>
     </Setting.TabRoot>
   );

@@ -1,19 +1,21 @@
 import * as React from "react";
 import { Button, Dialog, DropdownMenu, Icons } from "@instill-ai/design-system";
 import { ConnectorWithDefinition, Model, Nullable, Pipeline } from "../../lib";
-import { GeneralDeleteResourceModal } from "../../components";
+import { GeneralDeleteResourceModal } from "..";
 
-export const PipelineTableDropdownMenu = ({
-  pipeline,
-  handleDuplicatePipeline,
-  handleDeletePipeline,
-}: {
+export type MenuProps = {
   pipeline: Pipeline;
   handleDuplicatePipeline: (pipeline: Pipeline) => void;
   handleDeletePipeline: (
     resource: Nullable<Pipeline | ConnectorWithDefinition | Model>
   ) => void;
-}) => {
+};
+
+export const Menu = ({
+  pipeline,
+  handleDuplicatePipeline,
+  handleDeletePipeline,
+}: MenuProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
 
   return (
@@ -25,7 +27,10 @@ export const PipelineTableDropdownMenu = ({
               <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
             </Button>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content className="w-[129px] !rounded !px-0 !py-2">
+          <DropdownMenu.Content
+            align="end"
+            className="w-[129px] !rounded !px-0 !py-2"
+          >
             <DropdownMenu.Item
               onClick={() => {
                 handleDuplicatePipeline(pipeline);

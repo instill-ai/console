@@ -43,7 +43,7 @@ export const TabShare = () => {
       return false;
     }
 
-    const toplevelRule = pipeline.data.permission.users["users/*"];
+    const toplevelRule = pipeline.data.permission.users["*/*"];
 
     if (toplevelRule && toplevelRule.enabled) {
       return true;
@@ -81,10 +81,10 @@ export const TabShare = () => {
         permission: {
           users: pipeline.data.permission.users,
           share_code: {
-            user: "users/*",
+            user: "*/*",
             role: pipeline.data.permission.share_code?.role
               ? pipeline.data.permission.share_code.role
-              : "ROLE_VIEWER",
+              : "ROLE_EXECUTOR",
             enabled: true,
           },
         },
