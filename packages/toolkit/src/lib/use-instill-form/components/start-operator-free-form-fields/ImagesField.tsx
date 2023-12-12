@@ -5,6 +5,7 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const ImagesField = ({
   form,
@@ -16,10 +17,8 @@ export const ImagesField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,7 +36,7 @@ export const ImagesField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
 
             <div className="grid w-full grid-flow-row grid-cols-4">
@@ -69,6 +68,7 @@ export const ImagesField = ({
             <div className="flex flex-row gap-x-1">
               <Form.Control>
                 <UploadFileInput
+                  keyPrefix={keyPrefix}
                   fieldKey={path}
                   title="Upload images"
                   accept="images/*"

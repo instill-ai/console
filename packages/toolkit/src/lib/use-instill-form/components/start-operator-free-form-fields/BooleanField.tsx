@@ -1,6 +1,7 @@
 import { Form, Switch } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../type";
 import { FieldHead } from "./FieldHead";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const BooleanField = ({
   form,
@@ -11,10 +12,8 @@ export const BooleanField = ({
   onDeleteField,
   isHidden,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -29,6 +28,7 @@ export const BooleanField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
+              disabledFieldControl={disabledFieldControl}
             />
             <Form.Control>
               <Switch checked={field.value} onCheckedChange={field.onChange} />

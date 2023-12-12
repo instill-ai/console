@@ -55,16 +55,10 @@ export const InOutPut = () => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
-    metadata: startComponent
-      ? startComponent.configuration.metadata ?? null
-      : null,
-    onDeleteField: () => {
-      console.log("onDeleteField");
-    },
-    onEditField: () => {
-      console.log("onEditField");
-    },
+    metadata: startComponent ? startComponent.configuration.metadata : null,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
+    disabledFields: false,
+    disabledFieldControls: true,
   });
 
   const triggerPipeline = useTriggerUserPipeline();

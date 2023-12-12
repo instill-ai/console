@@ -9,14 +9,16 @@ export function pickStartOperatorFreeFormFields({
   form,
   onEditField,
   onDeleteField,
-  disabledAll,
+  disabledFields,
+  disabledFieldControls,
   keyPrefix,
 }: {
   metadata: Nullable<StartOperatorMetadata>;
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-  disabledAll?: boolean;
+  onEditField?: (key: string) => void;
+  onDeleteField?: (key: string) => void;
+  disabledFields?: boolean;
+  disabledFieldControls?: boolean;
   keyPrefix?: string;
 }) {
   const fields: StartOperatorFreeFormFieldItem[] = [];
@@ -35,15 +37,15 @@ export function pickStartOperatorFreeFormFields({
             instillUIOrder: value.instillUiOrder,
             component: (
               <StartOperatorFreeFormFields.TextareaField
-                key={key}
                 form={form}
                 path={key}
                 title={value.title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
-                disabled={disabledAll}
+                disabled={disabledFields}
                 keyPrefix={keyPrefix}
+                disabledFieldControl={disabledFieldControls}
               />
             ),
           });
@@ -53,15 +55,15 @@ export function pickStartOperatorFreeFormFields({
             instillUIOrder: value.instillUiOrder,
             component: (
               <StartOperatorFreeFormFields.TextField
-                key={key}
                 form={form}
                 path={key}
                 title={value.title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
-                disabled={disabledAll}
+                disabled={disabledFields}
                 keyPrefix={keyPrefix}
+                disabledFieldControl={disabledFieldControls}
               />
             ),
           });
@@ -73,15 +75,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.TextsField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -93,15 +95,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.BooleanField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -112,15 +114,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumberField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -131,15 +133,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumbersField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -150,15 +152,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudioField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -169,15 +171,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudiosField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -188,15 +190,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImageField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -207,15 +209,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImagesField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -226,15 +228,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.FileField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });
@@ -245,15 +247,15 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.FilesField
-              key={key}
               form={form}
               path={key}
               title={value.title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
-              disabled={disabledAll}
+              disabled={disabledFields}
               keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
             />
           ),
         });

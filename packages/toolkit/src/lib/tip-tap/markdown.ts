@@ -7,7 +7,7 @@
 // ref2 - https://prosemirror.net/examples/markdown/
 // ref3 - https://github.com/justinmoon/tiptap-markdown-demo/tree/master
 
-/* eslint-disable no-useless-escape, @typescript-eslint/no-non-null-assertion */
+/* eslint-disable no-useless-escape, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-explicit-any */
 
 import Paragraph from "@tiptap/extension-paragraph";
 import BulletList from "@tiptap/extension-bullet-list";
