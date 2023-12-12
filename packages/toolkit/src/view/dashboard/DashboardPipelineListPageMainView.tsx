@@ -18,6 +18,7 @@ import {
   useNamespaceType,
   useUsersSubscription,
   useOrganizationsSubscription,
+  useUserMe,
 } from "../../lib";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
@@ -27,12 +28,12 @@ import RemainingTriggers from "./RemainingTriggers";
 export type DashboardPipelineListPageMainViewProps = Omit<
   GeneralPageProp,
   "router"
->;
+> & { isCloud: boolean };
 
 export const DashboardPipelineListPageMainView = (
   props: DashboardPipelineListPageMainViewProps
 ) => {
-  const { accessToken, enableQuery } = props;
+  const { accessToken, enableQuery, isCloud } = props;
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
@@ -143,56 +144,6 @@ export const DashboardPipelineListPageMainView = (
     triggeredPipelineList,
   ]);
 
-  // Remaing Triggers
-
-  const instillUser = useUser({
-    enabled: enableQuery || false,
-    retry: false,
-    accessToken,
-  });
-
-  const namespaceType = useNamespaceType({
-    namespace: String(instillUser.data?.id) ?? null,
-    enabled: enableQuery,
-    accessToken,
-  });
-
-  const userSubscription = useUsersSubscription({
-    userName: instillUser.isSuccess ? instillUser.data.id : null,
-    enabled:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_USER"
-        ? enableQuery
-        : false,
-    accessToken,
-  });
-  const organizationSubscription = useOrganizationsSubscription({
-    oraganizationName: instillUser.isSuccess ? instillUser.data.id : null,
-    enabled:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_ORGANIZATION"
-        ? true
-        : false,
-    accessToken,
-  });
-
-  const subscriptions = React.useMemo(() => {
-    if (namespaceType.data === "NAMESPACE_USER") {
-      if (userSubscription.isLoading) {
-        userSubscription.refetch();
-      }
-      if (userSubscription.data) {
-        return userSubscription;
-      }
-    }
-    if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
-      if (organizationSubscription.isLoading) {
-        organizationSubscription.refetch();
-      }
-      if (organizationSubscription.data) {
-        return organizationSubscription;
-      }
-    }
-  }, [namespaceType, userSubscription, organizationSubscription]);
-
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -206,7 +157,7 @@ export const DashboardPipelineListPageMainView = (
       {/* Status */}
 
       <div className="flex items-stretch space-x-4">
-        <div className="w-1/2">
+        <div className="w-2/3">
           <PipelineTriggersSummary>
             <PipelineTriggersSummary.Card
               summary={
@@ -220,11 +171,8 @@ export const DashboardPipelineListPageMainView = (
                 pipelineTriggersSummary ? pipelineTriggersSummary.errored : null
               }
             />
-            <RemainingTriggers
-              subscriptions={
-                subscriptions?.isSuccess ? subscriptions?.data : null
-              }
-            />
+
+            {isCloud ? <RemainingTriggers /> : null}
           </PipelineTriggersSummary>
         </div>
 
@@ -250,8 +198,8 @@ export const DashboardPipelineListPageMainView = (
 
       <div className="my-8">
         <PipelineTriggerCountsLineChart
-          isLoading={pipelinesChart.isLoading}
-          pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
+          isLoading={false}
+          pipelines={pipelinesChartList}
           selectedTimeOption={selectedTimeOption}
         />
       </div>

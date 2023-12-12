@@ -1,8 +1,8 @@
-import { Nullable } from "../../lib";
+import { Nullable, User, useUser } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
 import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
-import { type } from "os";
+import Link from "next/link";
 
 export type Subscription = {
   plan: string;
@@ -17,12 +17,17 @@ export type Subscription = {
 
 export type RemainingTriggersProps = {
   subscriptions: Nullable<Subscription>;
+  user: Nullable<User>;
 };
 
 export default function RemainingTriggers({
   subscriptions,
+  user,
 }: RemainingTriggersProps) {
-  const getPercentange = (subscription: Subscription) => {
+  const getPercentange = (subscription: Nullable<Subscription>) => {
+    if (!subscription) {
+      return 0;
+    }
     const alpha =
       (subscription?.quota?.pipeline_trigger.used /
         subscription?.quota?.pipeline_trigger.quota) *
@@ -54,26 +59,43 @@ export default function RemainingTriggers({
   return (
     <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">
       <div className="my-auto w-2/3">
-        <p className=" mb-2 product-body-text-3-medium">Remaining Triggers</p>
+        <p className=" mb-2 text-semantic-fg-secondary product-body-text-3-medium">
+          Remaining Triggers
+        </p>
 
-        <p className="product-body-text-4-regular">
-          {subscriptions &&
-            getSubscriptionMessage(getPercentange(subscriptions))}
+        <p className="text-semantic-fg-secondary product-body-text-4-regular">
+          {getSubscriptionMessage(
+            subscriptions ? getPercentange(subscriptions) : 0
+          )}
         </p>
       </div>
 
       <div className="flex w-[130px] flex-col items-center justify-center">
         <SemiCircleProgress
-          percentage={subscriptions ? getPercentange(subscriptions) : 0}
+          percentage={getPercentange(subscriptions ? subscriptions : null)}
           showPercentValue={true}
-          stroke={"#316FED"}
+          stroke={
+            getPercentange(subscriptions ? subscriptions : null) === 0
+              ? "#E02E3D"
+              : "#316FED"
+          }
+          background={
+            getPercentange(subscriptions ? subscriptions : null) === 0
+              ? "#E02E3D"
+              : "#D0D0CE"
+          }
           diameter={100}
           strokeWidth={6}
         />
-        <Button variant="secondaryGrey" size="sm" className="mt-4 gap-x-2">
-          <Icons.Lightning01 className="font-size-[24px] h-3 w-3 stroke-slate-800" />
-          Upgrade plan
-        </Button>
+
+        {user ? (
+          <Link href={`${user.id}/settings/billing`}>
+            <Button variant="secondaryGrey" size="sm" className="mt-4 gap-x-2">
+              <Icons.Lightning01 className="font-size-[24px] h-3 w-3 stroke-slate-800" />
+              Upgrade plan
+            </Button>
+          </Link>
+        ) : null}
       </div>
     </div>
   );

@@ -53,25 +53,25 @@ const SemiCircleProgress: FC<SemiCircleProgressProps> = ({
       <svg
         width={diameter}
         height={diameter / 2}
-        style={{
-          transform: rotation,
-          overflow: "hidden",
-          strokeLinecap: "round",
-        }}
+        style={{ transform: rotation, overflow: "hidden" }}
       >
         <circle
           cx={coordinateForCircle}
           cy={coordinateForCircle}
           r={radius}
+          rx="10"
+          ry="10"
           fill="none"
           stroke={background}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
+          strokeLinecap="round"
           style={{
             strokeDashoffset: circumference,
-            strokeLinecap: "round",
+            // strokeLinecap: "round", // Rounded stroke lines
           }}
         />
+
         <circle
           cx={coordinateForCircle}
           cy={coordinateForCircle}
@@ -84,7 +84,7 @@ const SemiCircleProgress: FC<SemiCircleProgressProps> = ({
             strokeDashoffset: semiCirclePercentage,
             transition:
               "stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s",
-            strokeLinecap: "round", // Make the progress bar rounded
+            // strokeLinecap: "round", // Rounded stroke lines
           }}
         />
       </svg>

@@ -27,13 +27,13 @@ export const DashboardPipelinesTable = (
       header: () => <div className="min-w-[450px] text-left">Pipeline Id</div>,
       cell: ({ row }) => {
         return (
-          <div className="flex flex-row gap-x-2">
-            <Checkbox
+          <div className="flex flex-row">
+            {/* <Checkbox
               checked={row.getIsSelected()}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               aria-label="Select row"
               className="h-5 w-5"
-            />
+            /> */}
             <Link
               href={`/${entity}/dashboard/pipeline/${row.getValue(
                 "pipeline_id"
