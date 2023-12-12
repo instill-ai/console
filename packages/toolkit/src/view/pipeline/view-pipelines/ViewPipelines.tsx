@@ -11,6 +11,7 @@ import {
   InstillStore,
   useInstillStore,
   useShallow,
+  useUserMe,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -39,6 +40,12 @@ export const ViewPipelines = () => {
     setPipelineName,
     updatePipelineIsNew,
   } = useInstillStore(useShallow(selector));
+
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+    retry: false,
+  });
 
   const pipelines = useInfiniteUserPipelines({
     userName: `users/${entity}`,
@@ -124,9 +131,11 @@ export const ViewPipelines = () => {
                 <CardPipeline
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}
-                  pipelineID={pipeline.id}
-                  recipe={pipeline.recipe}
-                  metadata={pipeline.metadata}
+                  pipeline={pipeline}
+                  isOrg={pipeline.owner_name.split("/")[0] === "organizations"}
+                  isOwner={
+                    me.isSuccess ? pipeline.owner_name === me.data.name : false
+                  }
                 />
               ))
             )

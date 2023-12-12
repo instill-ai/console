@@ -2,6 +2,7 @@ import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
+import { StartOperatorFreeFormFieldBaseProps } from "./types";
 
 export const TextsField = ({
   form,
@@ -13,10 +14,8 @@ export const TextsField = ({
   isHidden,
   disabled,
   keyPrefix,
-}: {
-  onEditField: (key: string) => void;
-  onDeleteField: (key: string) => void;
-} & AutoFormFieldBaseProps) => {
+  disabledFieldControl,
+}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [textFieldsArray, setTextFieldsArray] = React.useState<number[]>([1]);
 
   const [textFieldsValue, setTextFieldsValue] = React.useState<
@@ -57,7 +56,7 @@ export const TextsField = ({
               path={path}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
-              disabled={disabled}
+              disabledFieldControl={disabledFieldControl}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
               <div className="w-full">

@@ -5,9 +5,9 @@ export const OpenAdvancedConfigurationButton = (
     <button
       {...props}
       type="button"
-      className="text-semantic-accent-default underline product-body-text-4-semibold"
+      className="text-semantic-accent-default !underline product-body-text-4-semibold hover:text-semantic-accent-hover"
     >
-      Advanced configuration
+      More
     </button>
   );
 };

@@ -38,7 +38,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
     },
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[480px] text-left">Tokens</div>,
+      header: () => <div className="min-w-[300px] text-left">Tokens</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">

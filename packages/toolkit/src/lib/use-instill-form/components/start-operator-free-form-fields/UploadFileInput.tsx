@@ -1,5 +1,6 @@
-import { Input } from "@instill-ai/design-system";
 import * as React from "react";
+import cn from "clsx";
+import { Input } from "@instill-ai/design-system";
 
 export const UploadFileInput = React.forwardRef<
   HTMLInputElement,
@@ -7,15 +8,21 @@ export const UploadFileInput = React.forwardRef<
     title: string;
     fieldKey: string;
     disabled?: boolean;
+    keyPrefix?: string;
   } & React.InputHTMLAttributes<HTMLInputElement>
 >((props, ref) => {
-  const { title, fieldKey, disabled, ...passThrough } = props;
-  const id = `upload-file-input-${fieldKey}`;
+  const { title, fieldKey, keyPrefix, disabled, ...passThrough } = props;
+  const id = `upload-file-input-${fieldKey}-${keyPrefix}`;
 
   return (
     <label
       htmlFor={id}
-      className="flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
+      className={cn(
+        "flex rounded-full px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt",
+        disabled
+          ? "cursor-not-allowed bg-semantic-bg-secondary"
+          : "cursor-pointer bg-semantic-accent-bg"
+      )}
     >
       {title}
       <Input.Root className="hidden">

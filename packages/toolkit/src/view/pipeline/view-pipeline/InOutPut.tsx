@@ -55,16 +55,10 @@ export const InOutPut = () => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
-    metadata: startComponent
-      ? startComponent.configuration.metadata ?? null
-      : null,
-    onDeleteField: () => {
-      console.log("onDeleteField");
-    },
-    onEditField: () => {
-      console.log("onEditField");
-    },
+    metadata: startComponent ? startComponent.configuration.metadata : null,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
+    disabledFields: false,
+    disabledFieldControls: true,
   });
 
   const triggerPipeline = useTriggerUserPipeline();
@@ -111,7 +105,7 @@ export const InOutPut = () => {
   return (
     <div className="flex flex-col">
       <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-secondary px-3 py-2 product-body-text-1-semibold">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
         </div>
         <Form.Root {...form}>
@@ -125,7 +119,7 @@ export const InOutPut = () => {
         </Form.Root>
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-secondary px-3 py-2 product-body-text-1-semibold">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Output
         </div>
         <ComponentOutputs

@@ -6,7 +6,6 @@ import {
   extensions,
   useInstillStore,
   useShallow,
-  useUserPipeline,
   deserialize,
   Nullable,
   useUpdateUserPipeline,
@@ -15,25 +14,25 @@ import {
 } from "../../../lib";
 import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
+import { LoadingSpin } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
 });
 
-export const Readme = () => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+export const Readme = ({
+  isOwner,
+  readme,
+}: {
+  isOwner: boolean;
+  readme: Nullable<string>;
+}) => {
+  const { accessToken } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { id, entity } = router.query;
   const { toast } = useToast();
 
   const timer = React.useRef<Nullable<number>>(null);
-
-  const pipeline = useUserPipeline({
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
-    accessToken,
-    enabled: enabledQuery && !!accessToken,
-  });
 
   const [isInitialized, setIsInitialized] = React.useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
@@ -42,7 +41,7 @@ export const Readme = () => {
 
   const editor = useEditor({
     extensions: extensions,
-    editable: true,
+    editable: isOwner,
     editorProps: {
       attributes: {
         class:
@@ -50,7 +49,7 @@ export const Readme = () => {
       },
     },
     content: "",
-    onUpdate: ({ editor }) => {
+    onBlur: ({ editor }) => {
       if (timer.current) {
         clearTimeout(timer.current);
       }
@@ -63,8 +62,10 @@ export const Readme = () => {
 
           const payload: UpdateUserPipelinePayload = {
             name: `users/${entity}/pipelines/${id}`,
-            description: md,
+            readme: md,
           };
+
+          updateUserPipeline.mutateAsync({ payload, accessToken });
 
           toast({
             size: "small",
@@ -72,7 +73,6 @@ export const Readme = () => {
             variant: "alert-success",
           });
 
-          updateUserPipeline.mutateAsync({ payload, accessToken });
           setHasUnsavedChanges(false);
         } catch (err) {
           toast({
@@ -89,31 +89,36 @@ export const Readme = () => {
   });
 
   React.useEffect(() => {
-    if (!pipeline.isSuccess || !editor || isInitialized) return;
+    if (!editor) return;
 
-    if (!pipeline.data.description) {
-      return;
-    }
+    editor.setEditable(isOwner);
+  }, [isOwner, editor]);
 
-    const parsed = deserialize(editor.schema, pipeline.data.description);
+  React.useEffect(() => {
+    if (!readme || !editor || isInitialized) return;
+
+    const parsed = deserialize(editor.schema, readme);
 
     setIsInitialized(true);
 
     editor.commands.setContent(parsed);
-  }, [pipeline.data, pipeline.isSuccess, editor, isInitialized]);
+  }, [readme, editor, isInitialized]);
 
   return (
     <div className="flex w-full flex-1 flex-col">
       <EditorContent
         className={cn(
-          "h-full w-full bg-transparent",
+          "mb-2 h-full w-full bg-transparent",
           hasUnsavedChanges ? "rounded-sm border-2 border-semantic-bg-line" : ""
         )}
         editor={editor}
       />
       {hasUnsavedChanges ? (
-        <div className="flex w-full flex-row-reverse">
-          <p className="text-semantic-fg-disabled product-body-text-4-medium">
+        <div className="ml-auto flex gap-x-2">
+          <div>
+            <LoadingSpin className="!text-semantic-fg-disabled" />
+          </div>
+          <p className="my-auto text-semantic-fg-disabled product-body-text-4-medium">
             Have unsaved changes
           </p>
         </div>

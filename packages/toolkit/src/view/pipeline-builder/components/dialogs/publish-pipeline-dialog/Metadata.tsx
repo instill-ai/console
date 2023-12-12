@@ -3,25 +3,36 @@ import * as z from "zod";
 import {
   Form,
   Icons,
-  MultiSelect,
   ParagraphWithHTML,
-  SelectOption,
+  Textarea,
   Tooltip,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
+import { Nullable } from "../../../../../lib";
 
 export const Metadata = ({
   form,
+  description,
 }: {
   form: UseFormReturn<
     z.infer<typeof PublishPipelineFormSchema>,
     any,
     undefined
   >;
+  description: Nullable<string>;
 }) => {
-  const [options, setOptions] = React.useState<SelectOption[]>([]);
-  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+  // This is for the tags
+  // const [options, setOptions] = React.useState<SelectOption[]>([]);
+  // const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+
+  const { reset } = form;
+
+  React.useEffect(() => {
+    reset({
+      description,
+    });
+  }, [description, reset]);
 
   return (
     <div className="w-full px-8 py-3">
@@ -61,7 +72,7 @@ export const Metadata = ({
           </div>
         </div>
         <div className="grid w-full grid-cols-3 gap-5 px-6 py-3">
-          <Form.Field
+          {/* <Form.Field
             control={form.control}
             name="tags"
             render={({ field }) => {
@@ -84,7 +95,7 @@ export const Metadata = ({
                           >
                             <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
                               <ParagraphWithHTML
-                                text=""
+                                text="People can find your pipeline with these tags"
                                 className="break-all text-semantic-fg-primary product-body-text-4-semibold"
                               />
                             </div>
@@ -119,6 +130,56 @@ export const Metadata = ({
                           </p>
                         </div>
                       }
+                    />
+                  </Form.Control>
+                  <Form.Message />
+                </Form.Item>
+              );
+            }}
+          /> */}
+          <Form.Field
+            control={form.control}
+            name="description"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <div className="flex flex-row gap-x-2">
+                    <Form.Label className="!product-body-text-3-semibold">
+                      Short description
+                    </Form.Label>
+                    <Tooltip.Provider>
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                          <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
+                        </Tooltip.Trigger>
+                        <Tooltip.Portal>
+                          <Tooltip.Content
+                            className="w-[360px]"
+                            sideOffset={5}
+                            side="top"
+                          >
+                            <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
+                              <ParagraphWithHTML
+                                text="This is the short description of your pipeline. It will be displayed in the pipeline list."
+                                className="break-all text-semantic-fg-primary product-body-text-4-semibold"
+                              />
+                            </div>
+                            <Tooltip.Arrow
+                              className="fill-white"
+                              offset={5}
+                              width={9}
+                              height={6}
+                            />
+                          </Tooltip.Content>
+                        </Tooltip.Portal>
+                      </Tooltip.Root>
+                    </Tooltip.Provider>
+                  </div>
+                  <Form.Control>
+                    <Textarea
+                      {...field}
+                      className="product-body-text-3-medium"
+                      value={field.value ?? ""}
                     />
                   </Form.Control>
                   <Form.Message />

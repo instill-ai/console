@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type SuperRefineRule = {
   key: string;
   validator: (value: any) => SuperRefineRuleValidatorReturn;

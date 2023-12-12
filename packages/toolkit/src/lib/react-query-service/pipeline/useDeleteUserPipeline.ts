@@ -26,6 +26,9 @@ export const useDeleteUserPipeline = () => {
         const pipelineNameArray = pipelineName.split("/");
         const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
+        queryClient.invalidateQueries(["pipelines", "infinite"]);
+        queryClient.invalidateQueries(["pipelines", userName, "infinite"]);
+
         queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
           old ? old.filter((e) => e.name !== pipelineName) : []
         );
