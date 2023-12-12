@@ -144,6 +144,52 @@ export const DashboardPipelineListPageMainView = (
     triggeredPipelineList,
   ]);
 
+  // Remaing Triggers
+  const instillUser = useUserMe({
+    enabled: enableQuery,
+    retry: false,
+    accessToken,
+  });
+  const namespaceType = useNamespaceType({
+    namespace: String(instillUser.data?.id) ?? null,
+    enabled: enableQuery,
+    accessToken,
+  });
+  const userSubscription = useUsersSubscription({
+    userName: instillUser.isSuccess ? instillUser.data.id : null,
+    enabled:
+      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_USER"
+        ? enableQuery
+        : false,
+    accessToken,
+  });
+  const organizationSubscription = useOrganizationsSubscription({
+    oraganizationName: instillUser.isSuccess ? instillUser.data.id : null,
+    enabled:
+      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_ORGANIZATION"
+        ? true
+        : false,
+    accessToken,
+  });
+  const subscriptions = React.useMemo(() => {
+    if (namespaceType.data === "NAMESPACE_USER") {
+      if (userSubscription.isLoading) {
+        userSubscription.refetch();
+      }
+      if (userSubscription.data) {
+        return userSubscription;
+      }
+    }
+    if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
+      if (organizationSubscription.isLoading) {
+        organizationSubscription.refetch();
+      }
+      if (organizationSubscription.data) {
+        return organizationSubscription;
+      }
+    }
+  }, [namespaceType, userSubscription, organizationSubscription]);
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -172,7 +218,14 @@ export const DashboardPipelineListPageMainView = (
               }
             />
 
-            {isCloud ? <RemainingTriggers /> : null}
+            {isCloud ? (
+              <RemainingTriggers
+                subscriptions={
+                  subscriptions?.isSuccess ? subscriptions?.data : null
+                }
+                user={instillUser.isSuccess ? instillUser.data : null}
+              />
+            ) : null}
           </PipelineTriggersSummary>
         </div>
 
@@ -198,8 +251,8 @@ export const DashboardPipelineListPageMainView = (
 
       <div className="my-8">
         <PipelineTriggerCountsLineChart
-          isLoading={false}
-          pipelines={pipelinesChartList}
+          isLoading={pipelinesChart.isLoading}
+          pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
           selectedTimeOption={selectedTimeOption}
         />
       </div>
