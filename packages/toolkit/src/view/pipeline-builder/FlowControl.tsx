@@ -38,7 +38,7 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useUpdateUserPipeline,
-  useUser,
+  useUserMe,
 } from "../../lib";
 import { StartNodeData } from "./type";
 import { LoadingSpin } from "../../components";
@@ -98,7 +98,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
   const { toast } = useToast();
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: enableQuery,
     accessToken,
   });
@@ -109,7 +109,6 @@ export const FlowControl = (props: FlowControlProps) => {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isCloning, setIsCloning] = React.useState(false);
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
-  const [releaseDialogIsOpen, setReleaseDialogIsOpen] = React.useState(false);
   const [selectedMenu, setSelectedMenu] =
     React.useState<Nullable<string>>(null);
   const [isReleasing, setIsReleasing] = React.useState(false);

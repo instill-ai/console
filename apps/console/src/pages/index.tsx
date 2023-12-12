@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { parse } from "cookie";
-import { PageBase, useUser } from "@instill-ai/toolkit";
+import { PageBase, useUserMe } from "@instill-ai/toolkit";
 import { NextPageWithLayout } from "./_app";
 import { useAccessToken } from "../lib/useAccessToken";
 
@@ -23,7 +23,7 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   const router = useRouter();
   const accessToken = useAccessToken();
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
     retry: false,

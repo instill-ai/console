@@ -129,7 +129,16 @@ export const TabShare = () => {
     if (link) {
       navigator.clipboard.writeText(link);
     }
-  }, [pipeline.isSuccess, pipeline.data, pipelineIsPublic]);
+  }, [
+    pipeline.isSuccess,
+    pipeline.data,
+    pipelineIsPublic,
+    accessToken,
+    entity,
+    id,
+    updatePipeline,
+    toast,
+  ]);
 
   return (
     <div className="flex h-full w-full flex-col px-6 py-3">

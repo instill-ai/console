@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import { PageBase, ViewPipeline } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 

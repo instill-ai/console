@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import {
-  OrganizationMembership,
   UpdateOrganizationMembershipPayload,
   updateOrganizationMembershipMutation,
 } from "../../vdp-sdk";
@@ -29,10 +28,16 @@ export const useUpdateOrganizationMembership = () => {
     },
     {
       onSuccess: ({ membership }) => {
-        queryClient.setQueryData<OrganizationMembership[]>(
-          ["organizations", membership.organization.id, "memberships"],
-          (old) => (old ? [...old, membership] : [membership])
-        );
+        queryClient.invalidateQueries([
+          "organizations",
+          membership.organization.id,
+          "memberships",
+        ]);
+        queryClient.invalidateQueries([
+          "users",
+          membership.user.id,
+          "memberships",
+        ]);
       },
     }
   );

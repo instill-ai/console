@@ -83,7 +83,7 @@ export const ReadOnlyPipelineBuilder = ({
 
     setNodes(initialGraphData.nodes);
     setEdges(initialGraphData.edges);
-  }, [recipe, metadata, reactFlowInstance]);
+  }, [recipe, metadata, reactFlowInstance, updateCurrentVersion]);
 
   // Clean up the pipelineIsReadOnly state when user navigate away
   // from the page

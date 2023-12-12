@@ -7,7 +7,7 @@ import {
   createGraphLayout,
   createInitialGraphData,
 } from "../view";
-import { useUser, useUserPipeline } from "./react-query-service";
+import { useUserMe, useUserPipeline } from "./react-query-service";
 import { Nullable } from "./type";
 import { useRouter } from "next/router";
 import { InstillStore, useInstillStore } from "./use-instill-store";
@@ -52,7 +52,7 @@ export function usePipelineBuilderGraph({
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
-  const user = useUser({
+  const currentLoginUser = useUserMe({
     enabled: enableQuery,
     accessToken,
     retry: false,
@@ -67,7 +67,7 @@ export function usePipelineBuilderGraph({
 
   // Initialize the pipeline graph of new pipeline
   React.useEffect(() => {
-    if (!user.isSuccess || !pipelineIsNew || graphIsInitialized) {
+    if (!pipelineIsNew || graphIsInitialized) {
       return;
     }
 
@@ -166,19 +166,24 @@ export function usePipelineBuilderGraph({
     updateIsOwner,
     updateNodes,
     updateEdges,
-    user.isSuccess,
     updateCurrentVersion,
   ]);
 
   // Initialize the pipeline graph for existed pipeline
   React.useEffect(() => {
-    if (
-      !pipeline.isSuccess ||
-      graphIsInitialized ||
-      pipelineIsNew ||
-      !user.isSuccess
-    ) {
+    if (!pipeline.isSuccess || graphIsInitialized || pipelineIsNew) {
       return;
+    }
+
+    // Check whether current user is the owner of the pipeline
+    if (currentLoginUser.isSuccess) {
+      if (currentLoginUser.data.name == pipeline.data.owner_name) {
+        updateIsOwner(() => true);
+      } else {
+        updateIsOwner(() => false);
+      }
+    } else {
+      updateIsOwner(() => true);
     }
 
     updateCurrentVersion(() => "latest");
@@ -189,13 +194,6 @@ export function usePipelineBuilderGraph({
         setPipelineId(id.toString());
       }
       return;
-    }
-
-    // Check whether current user is the owner of the pipeline
-    if (pipeline.data.owner_name !== user.data.name) {
-      updateIsOwner(() => false);
-    } else {
-      updateIsOwner(() => true);
     }
 
     // Update pipeline information
@@ -242,8 +240,8 @@ export function usePipelineBuilderGraph({
     updateIsOwner,
     updateNodes,
     updateEdges,
-    user.data,
-    user.isSuccess,
+    currentLoginUser.data,
+    currentLoginUser.isSuccess,
     setPipelineUid,
   ]);
 

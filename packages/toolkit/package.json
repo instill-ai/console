@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.75.0-rc.39",
+  "version": "0.75.0-rc.41",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -57,7 +57,7 @@
     "tailwindcss": "^3.3.2",
     "tailwindcss-animate": "^1.0.6",
     "tsup": "^6.7.0",
-    "tsx": "^3.12.3",
+    "tsx": "^4.6.2",
     "typescript": "^5.1.0",
     "vitest": "^0.29.2"
   },

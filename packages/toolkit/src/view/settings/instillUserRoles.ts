@@ -1,6 +1,6 @@
 import { SelectOption } from "@instill-ai/design-system";
 
-export const mgmtRoleOptions: SelectOption[] = [
+export const instillUserRoles: SelectOption[] = [
   {
     label: "Manager",
     value: "manager",

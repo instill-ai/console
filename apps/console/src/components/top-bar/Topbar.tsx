@@ -9,7 +9,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import { env, useUser } from "@instill-ai/toolkit";
+import { ImageWithFallback, useUserMe } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 
 export type TopbarProps = {
@@ -20,11 +20,10 @@ export type TopbarProps = {
 
 export const Topbar = ({ logo, children, className }: TopbarProps) => {
   const router = useRouter();
-  const { entity } = router.query;
 
   const accessToken = useAccessToken();
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
@@ -66,15 +65,6 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   className="mx-1 my-2 px-4"
                 />
                 <TopbarLink
-                  href={`/hub`}
-                  icon={
-                    <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
-                  }
-                  name="Hub"
-                  hightlighted={router.pathname.split("/")[1] === "hub"}
-                  className="mx-1 my-2 px-4"
-                />
-                <TopbarLink
                   href={`/${user.data.id}/model-hub`}
                   icon={
                     <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />
@@ -108,7 +98,19 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <div className="my-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-semantic-bg-secondary">
-                <Icons.User02 className="h-5 w-5 stroke-semantic-fg-secondary" />
+                {user.data.profile_avatar === "" ? (
+                  <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                ) : (
+                  <ImageWithFallback
+                    width={20}
+                    height={20}
+                    alt={`${user.data.first_name} ${user.data.last_name} avatar`}
+                    src={user.data.profile_avatar}
+                    fallbackImg={
+                      <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                    }
+                  />
+                )}
               </div>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
@@ -119,28 +121,38 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               <div className="flex flex-col px-4 py-3">
                 <div className="flex flex-row gap-x-2">
                   <div className="my-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-semantic-bg-secondary">
-                    <Icons.User02 className="h-5 w-5 stroke-semantic-fg-secondary" />
+                    <ImageWithFallback
+                      width={20}
+                      height={20}
+                      alt={`${user.data.first_name} ${user.data.last_name} avatar`}
+                      src={user.data.profile_avatar}
+                      fallbackImg={
+                        <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                      }
+                    />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                      User Name
+                      {user.data.first_name} {user.data.last_name}
                     </h3>
                     <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      dani.sosa@instill.tech
+                      {user.data.email}
                     </p>
                   </div>
                 </div>
               </div>
               <Separator orientation="horizontal" />
               <TopbarDropdownGroup>
-                <TopbarDropdownItem>
-                  <Link href={`/${user.data.id}`} className="flex gap-x-2">
-                    <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                    <div className="my-auto">View profile</div>
-                  </Link>
+                <TopbarDropdownItem
+                  onClick={() => {
+                    router.push(`/${user.data.id}`);
+                  }}
+                >
+                  <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                  <div className="my-auto">View profile</div>
                 </TopbarDropdownItem>
-                <TopbarDropdownItem>
-                  <Link href="/settings" className="flex gap-x-2">
+                <TopbarDropdownItem asChild>
+                  <Link href="/settings/profile" className="flex gap-x-2">
                     <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
                     <div className="my-auto">Settings</div>
                   </Link>
@@ -207,14 +219,17 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
 export const TopbarDropdownItem = ({
   children,
   asChild,
+  onClick,
 }: {
   children: React.ReactNode;
   asChild?: boolean;
+  onClick?: () => void;
 }) => {
   return (
     <DropdownMenu.Item
       asChild={asChild}
       className="cursor-pointer !gap-x-2 !px-2.5 !py-[9px] !product-body-text-3-medium hover:!bg-semantic-bg-base-bg hover:!text-black"
+      onClick={onClick}
     >
       {children}
     </DropdownMenu.Item>

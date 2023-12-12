@@ -2,11 +2,11 @@ import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
 import { ApiToken, User } from "./types";
 
-export type GetUserResponse = {
+export type GetUserMeResponse = {
   user: User;
 };
 
-export async function getUserQuery({
+export async function getUserMeQuery({
   accessToken,
 }: {
   accessToken: Nullable<string>;
@@ -14,7 +14,29 @@ export async function getUserQuery({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<GetUserResponse>("/users/me");
+    const { data } = await client.get<GetUserMeResponse>("/users/me");
+
+    return Promise.resolve(data.user);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetUserResponse = {
+  user: User;
+};
+
+export async function getUserQuery({
+  userName,
+  accessToken,
+}: {
+  userName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetUserResponse>(`/${userName}`);
 
     return Promise.resolve(data.user);
   } catch (err) {

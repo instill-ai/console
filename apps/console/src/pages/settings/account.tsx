@@ -1,45 +1,45 @@
 import * as React from "react";
-import { ConsoleCorePageHead, ProfileSidebar, Topbar } from "../../components";
-import { PageBase, BreadcrumbWithLink } from "@instill-ai/toolkit";
-
+import {
+  PageBase,
+  BreadcrumbWithLink,
+  Setting,
+  UserSidebar,
+  UserAccountTab,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
+
 import { NextPageWithLayout } from "../_app";
-import { useAccessToken } from "../../lib/useAccessToken";
-import { useTrackToken } from "../../lib/useTrackToken";
+import { ConsoleCorePageHead, Topbar } from "components";
+import { useAccessToken } from "lib/useAccessToken";
 
-const SettingsPage: NextPageWithLayout = () => {
-  const accessToken = useAccessToken();
-  useTrackToken({ enabled: true });
-
-  /* -------------------------------------------------------------------------
-   * Render
-   * -----------------------------------------------------------------------*/
+const AccountSettingPage: NextPageWithLayout = () => {
+  useAccessToken();
 
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
-      <BreadcrumbWithLink
-        items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
-      />
-      <div className="w-full flex mt-16 gap-x-14">
-        <div className="w-1/6">
-          <ProfileSidebar />
-        </div>
-        <div className="w-5/6">Account</div>
+      <div className="mb-[52px] w-full px-20">
+        <BreadcrumbWithLink
+          items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
+        />
       </div>
+      <Setting.Root>
+        <UserSidebar />
+        <UserAccountTab />
+      </Setting.Root>
     </React.Fragment>
   );
 };
 
-SettingsPage.getLayout = (page) => {
+AccountSettingPage.getLayout = (page) => {
   return (
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="px-28 py-10">{page}</PageBase.Content>
+        <PageBase.Content contentPadding="!px-0 !py-8">{page}</PageBase.Content>
       </PageBase.Container>
     </PageBase>
   );
 };
 
-export default SettingsPage;
+export default AccountSettingPage;

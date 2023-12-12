@@ -1,10 +1,10 @@
-import { Button, Separator, Tag } from "@instill-ai/design-system";
+import { Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
-  useUser,
+  useUserMe,
 } from "../lib";
 
 const selector = (store: InstillStore) => ({
@@ -19,7 +19,7 @@ export const UserProfileCard = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const user = useUser({
+  const user = useUserMe({
     enabled: enabledQuery && !!accessToken,
     accessToken,
   });
@@ -58,15 +58,6 @@ export const UserProfileCard = ({
             </p>
           ) : null}
         </div>
-      </div>
-      <Separator orientation="horizontal" className="my-4" />
-      <div className="flex flex-col gap-y-2">
-        <p className="py-2 text-semantic-fg-disabled product-body-text-3-medium">
-          Access exclusive tools and insights.
-        </p>
-        <Button className="!w-full" size="md" variant="secondaryColour">
-          Upgrade to Pro
-        </Button>
       </div>
     </div>
   );

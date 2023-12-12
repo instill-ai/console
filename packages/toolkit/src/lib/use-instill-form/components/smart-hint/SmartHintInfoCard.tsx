@@ -6,7 +6,6 @@ import { SmartHintWarning } from "../../type";
 
 export const SmartHintInfoCard = ({
   fieldKey,
-  title,
   instillAcceptFormats,
   className,
   error,
@@ -15,7 +14,6 @@ export const SmartHintInfoCard = ({
   smartHintWarning,
 }: {
   fieldKey: Nullable<string>;
-  title: Nullable<string>;
   instillAcceptFormats: string[];
   supportReference: boolean;
   supportTemplate: boolean;
