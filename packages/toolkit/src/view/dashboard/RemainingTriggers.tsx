@@ -37,8 +37,6 @@ export default function RemainingTriggers({
   };
 
   const getSubscriptionMessage = (percentage: number) => {
-    console.log("percentage", percentage);
-
     if (percentage === 100) {
       return `You haven't used any triggers yet. Upgrade your plan to unlock the power of automated pipelines.`;
     }
