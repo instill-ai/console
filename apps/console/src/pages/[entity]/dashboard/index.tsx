@@ -19,6 +19,7 @@ const PipelinePage: NextPageWithLayout = () => {
       <DashboardPipelineListPageMainView
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
+        isCloud={false}
       />
     </React.Fragment>
   );
