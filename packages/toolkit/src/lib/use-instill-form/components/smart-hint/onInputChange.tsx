@@ -24,7 +24,6 @@ export function onInputChange({
   path: string;
   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   setSmartHintsPopoverIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-
   setEnableSmartHints: React.Dispatch<React.SetStateAction<boolean>>;
   smartHintEnabledPos: Nullable<number>;
   setSmartHintEnabledPos: React.Dispatch<

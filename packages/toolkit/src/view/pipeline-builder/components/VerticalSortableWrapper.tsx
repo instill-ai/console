@@ -14,10 +14,11 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { GeneralRecord } from "../../../lib";
 
 type SortableItem = {
   key: string;
-} & Record<string, any>;
+} & GeneralRecord;
 
 export const VerticalSortableWrapper = ({
   onDragEnd,

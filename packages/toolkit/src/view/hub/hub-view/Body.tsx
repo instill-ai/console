@@ -39,10 +39,8 @@ export const Body = ({
     enabledQuery,
   });
 
-  console.log(accessToken, enabledQuery, pipelines);
-
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
     retry: false,
   });

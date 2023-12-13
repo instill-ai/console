@@ -1,7 +1,6 @@
 import { UserProfileCardProps } from "../../../components";
 import { Body } from "./Body";
 import { Header } from "./Header";
-import { Tab } from "./Tab";
 
 export const HubView = ({
   visitorCta,

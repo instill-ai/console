@@ -765,7 +765,7 @@ test("should reset nested oneOf form data", () => {
 
   const selectedConditionMap = {
     task: "TASK_TEXT_GENERATION",
-    "input.foo.foo-condition": "hello",
+    "input.foo.foo-condition": "world",
   };
 
   recursivelyResetFormData(

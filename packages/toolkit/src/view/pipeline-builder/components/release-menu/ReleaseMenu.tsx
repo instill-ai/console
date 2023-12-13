@@ -25,6 +25,7 @@ export const ReleasePipelineFormSchema = z.object({
 
 export type UseReleasePipelineFormReturn = UseFormReturn<
   z.infer<typeof ReleasePipelineFormSchema>,
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   any,
   undefined
 >;
