@@ -30,10 +30,6 @@ export const useOperatorDefinition = ({
         return Promise.reject(new Error("operatorDefinitionName not provided"));
       }
 
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       const operatorDefinition = await getOperatorDefinitionQuery({
         operatorDefinitionName,
         accessToken,

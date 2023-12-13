@@ -26,10 +26,6 @@ export function useWatchUserPipelineRelease({
   return useQuery(
     ["pipelineReleases", pipelineReleaseName, "watch"],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!pipelineReleaseName) {
         return Promise.reject(new Error("pipelineReleaseName not provided"));
       }

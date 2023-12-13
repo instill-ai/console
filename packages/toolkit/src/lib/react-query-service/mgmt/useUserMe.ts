@@ -16,7 +16,7 @@ export const useUserMe = ({
   retry?: false | number;
 }) => {
   return useQuery<User>(
-    ["user"],
+    ["user", "me"],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

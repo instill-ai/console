@@ -16,6 +16,7 @@ import {
   UserProfileCard,
   CardPipeline,
   CardSkeletonPipeline,
+  UserProfileCardProps,
 } from "../../../components";
 
 const selector = (store: InstillStore) => ({
@@ -23,7 +24,11 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const Body = () => {
+export const Body = ({
+  visitorCta,
+}: {
+  visitorCta?: UserProfileCardProps["visitorCta"];
+}) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -34,8 +39,10 @@ export const Body = () => {
     enabledQuery,
   });
 
+  console.log(accessToken, enabledQuery, pipelines);
+
   const me = useUserMe({
-    enabled: enabledQuery,
+    enabled: enabledQuery && !!accessToken,
     accessToken,
     retry: false,
   });
@@ -69,6 +76,7 @@ export const Body = () => {
           totalPipelines={
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
+          visitorCta={visitorCta}
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">

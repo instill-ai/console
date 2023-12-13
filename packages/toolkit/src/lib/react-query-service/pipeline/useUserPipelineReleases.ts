@@ -32,10 +32,6 @@ export const useUserPipelineReleases = ({
   return useQuery(
     ["pipelineReleases", userName],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!pipelineName) {
         return Promise.reject(new Error("pipelineName not provided"));
       }

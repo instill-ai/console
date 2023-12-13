@@ -9,7 +9,7 @@ import {
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
-import { InOutPut } from "./InOutPut";
+import { InOutPut, InOutPutProps } from "./InOutPut";
 import { Readme } from "./Readme";
 
 const selector = (store: InstillStore) => ({
@@ -17,13 +17,17 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const ViewPipeline = () => {
+export const ViewPipeline = ({
+  visitorCta,
+}: {
+  visitorCta?: InOutPutProps["visitorCta"];
+}) => {
   const router = useRouter();
   const { id, entity } = router.query;
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
     retry: false,
   });
@@ -31,7 +35,7 @@ export const ViewPipeline = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery && !!entity && !!id,
   });
 
   const isOwner = React.useMemo(() => {
@@ -61,7 +65,7 @@ export const ViewPipeline = () => {
           />
         </div>
         <div className="flex w-[594px] flex-col py-10 pr-4">
-          <InOutPut />
+          <InOutPut visitorCta={visitorCta} />
         </div>
       </div>
     </div>

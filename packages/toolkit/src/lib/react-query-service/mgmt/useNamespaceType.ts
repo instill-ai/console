@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { checkNamespace } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
+// This is a public , we won't block unauth users from accessing this
+
 export const useNamespaceType = ({
   namespace,
   accessToken,
@@ -26,10 +28,6 @@ export const useNamespaceType = ({
   return useQuery(
     ["namespaces", namespace],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!namespace) {
         return Promise.reject(new Error("namespace not provided"));
       }

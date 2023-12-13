@@ -6,7 +6,8 @@ export const config = {
   matcher: [
     "/(.*?)/connectors/:path*",
     "/(.*?)/dashboard/:path*",
-    "/(.*?)/pipelines/:path*",
+    "/(.*?)/pipelines",
+    "/(.*?)/pipelines/(.*?)/builder",
     "/(.*?)/model-hub/:path*",
     "/settings",
   ],

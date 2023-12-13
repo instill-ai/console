@@ -81,7 +81,7 @@ export const Head = ({
   ]);
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
   });
 
