@@ -9,7 +9,7 @@ export function useInfiniteUserPipelines({
   pageSize,
   enabledQuery,
 }: {
-  userName: string;
+  userName: Nullable<string>;
   accessToken: Nullable<string>;
   pageSize?: number;
   enabledQuery: boolean;
@@ -23,6 +23,10 @@ export function useInfiniteUserPipelines({
   return useInfiniteQuery(
     ["pipelines", userName, "infinite"],
     async ({ pageParam }) => {
+      if (!userName) {
+        return Promise.reject(new Error("userName not provided"));
+      }
+
       const pipelines = await listUserPipelinesQuery({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: pageParam ?? null,

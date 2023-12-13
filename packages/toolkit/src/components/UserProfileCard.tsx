@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Separator, Tag } from "@instill-ai/design-system";
+import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
@@ -8,6 +8,7 @@ import {
   useUserMe,
 } from "../lib";
 import { useRouter } from "next/router";
+import { EntityAvatar } from "./EntityAvatar";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -16,6 +17,7 @@ const selector = (store: InstillStore) => ({
 
 export type UserProfileCardProps = {
   totalPipelines: Nullable<number>;
+  totalPublicPipelines: Nullable<number>;
   visitorCta?: {
     title: string;
     onClick: () => void;
@@ -24,6 +26,7 @@ export type UserProfileCardProps = {
 
 export const UserProfileCard = ({
   totalPipelines,
+  totalPublicPipelines,
   visitorCta,
 }: UserProfileCardProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -40,7 +43,17 @@ export const UserProfileCard = ({
       {me.isSuccess ? (
         <React.Fragment>
           <div className="flex flex-col gap-y-4">
-            <div className="mx-auto h-20 w-20 shrink-0 grow-0 rounded-full bg-semantic-bg-line"></div>
+            <EntityAvatar
+              src={me.data.profile_avatar ?? null}
+              className="mx-auto h-20 w-20"
+              entityName={me.data.name}
+              fallbackImg={
+                <div className="mx-auto flex h-20 w-20 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+                  <Icons.User02 className="m-auto h-10 w-10 stroke-semantic-fg-disabled" />
+                </div>
+              }
+            />
+
             {!me.data?.first_name || !me.data?.last_name ? (
               <h3 className="mx-auto text-center text-semantic-fg-primary product-headings-heading-3">
                 {me.data?.id}
@@ -61,16 +74,26 @@ export const UserProfileCard = ({
           </div>
           <Separator orientation="horizontal" className="my-4" />
           <div className="flex flex-col gap-y-2">
-            <div className="flex flex-row gap-x-2">
-              <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                My active pipelines
-              </p>
-              {totalPipelines ? (
+            {totalPipelines ? (
+              <div className="flex flex-row gap-x-2">
+                <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                  My active pipelines
+                </p>
                 <p className="text-semantic-accent-default product-body-text-2-semibold">
                   {totalPipelines}
                 </p>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
+            {totalPublicPipelines ? (
+              <div className="flex flex-row gap-x-2">
+                <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                  My active public pipelines
+                </p>
+                <p className="text-semantic-accent-default product-body-text-2-semibold">
+                  {totalPublicPipelines}
+                </p>
+              </div>
+            ) : null}
           </div>
         </React.Fragment>
       ) : visitorCta ? (

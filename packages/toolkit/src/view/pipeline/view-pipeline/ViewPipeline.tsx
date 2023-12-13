@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import {
   InstillStore,
+  useEntity,
   useInstillStore,
   useShallow,
   useUserMe,
@@ -22,8 +22,6 @@ export const ViewPipeline = ({
 }: {
   visitorCta?: InOutPutProps["visitorCta"];
 }) => {
-  const router = useRouter();
-  const { id, entity } = router.query;
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
@@ -32,10 +30,12 @@ export const ViewPipeline = ({
     retry: false,
   });
 
+  const entityObject = useEntity();
+
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entityObject.pipelineName,
     accessToken,
-    enabled: enabledQuery && !!entity && !!id,
+    enabled: enabledQuery && entityObject.isSuccess,
   });
 
   const isOwner = React.useMemo(() => {

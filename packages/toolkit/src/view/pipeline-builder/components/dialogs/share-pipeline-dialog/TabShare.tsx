@@ -6,6 +6,7 @@ import {
   UpdateUserPipelinePayload,
   env,
   getInstillApiErrorMessage,
+  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
@@ -32,10 +33,12 @@ export const TabShare = () => {
   const { id, entity } = router.query;
   const { toast } = useToast();
 
+  const entityObject = useEntity();
+
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entityObject.pipelineName,
+    enabled: enableQuery && entityObject.isSuccess && !pipelineIsNew,
     accessToken,
-    enabled: enableQuery && !pipelineIsNew,
   });
 
   const pipelineIsPublic = React.useMemo(() => {
@@ -55,7 +58,7 @@ export const TabShare = () => {
   const updatePipeline = useUpdateUserPipeline();
 
   const handleCopyLink = React.useCallback(async () => {
-    if (!pipeline.isSuccess) return;
+    if (!pipeline.isSuccess || !entityObject.isSuccess) return;
 
     setIsUpdatingShareCodePermission(true);
 
@@ -77,7 +80,7 @@ export const TabShare = () => {
 
     if (!enabledShareByLink) {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${id}`,
+        name: entityObject.pipelineName,
         permission: {
           users: pipeline.data.permission.users,
           share_code: {
@@ -138,6 +141,7 @@ export const TabShare = () => {
     id,
     updatePipeline,
     toast,
+    entityObject.isSuccess,
   ]);
 
   return (

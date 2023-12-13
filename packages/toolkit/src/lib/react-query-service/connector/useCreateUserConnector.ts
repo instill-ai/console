@@ -10,11 +10,11 @@ export const useCreateUserConnector = () => {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
-      userName,
+      entityName,
       payload,
       accessToken,
     }: {
-      userName: string;
+      entityName: string;
       payload: CreateUserConnectorPayload;
       accessToken: Nullable<string>;
     }) => {
@@ -23,7 +23,7 @@ export const useCreateUserConnector = () => {
       }
 
       const connector = await createUserConnectorMutation({
-        userName,
+        entityName,
         payload,
         accessToken,
       });

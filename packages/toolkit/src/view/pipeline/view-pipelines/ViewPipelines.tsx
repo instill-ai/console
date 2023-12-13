@@ -12,6 +12,7 @@ import {
   useInstillStore,
   useShallow,
   useUserMe,
+  useEntity,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -47,11 +48,13 @@ export const ViewPipelines = () => {
     retry: false,
   });
 
+  const entityObject = useEntity();
+
   const pipelines = useInfiniteUserPipelines({
-    userName: `users/${entity}`,
     pageSize: 10,
     accessToken,
-    enabledQuery: enabledQuery && !!entity,
+    userName: entityObject.entityName,
+    enabledQuery: enabledQuery && entityObject.isSuccess,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -83,6 +86,7 @@ export const ViewPipelines = () => {
           totalPipelines={
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
+          totalPublicPipelines={null}
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">
@@ -106,9 +110,15 @@ export const ViewPipelines = () => {
               variant="primary"
               size="lg"
               onClick={() => {
+                if (!entityObject.isSuccess) {
+                  return;
+                }
+
                 const randomName = generateRandomReadableName();
                 setPipelineId(randomName);
-                setPipelineName(`users/${entity}/pipelines/${randomName}`);
+                setPipelineName(
+                  `${entityObject.entityName}/pipelines/${randomName}`
+                );
                 router.push(`/${entity}/pipelines/${randomName}/builder`);
                 updatePipelineIsNew(() => true);
               }}

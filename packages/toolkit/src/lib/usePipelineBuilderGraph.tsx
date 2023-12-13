@@ -8,11 +8,11 @@ import {
   createInitialGraphData,
 } from "../view";
 import { useUserMe, useUserPipeline } from "./react-query-service";
-import { Nullable } from "./type";
 import { useRouter } from "next/router";
 import { InstillStore, useInstillStore } from "./use-instill-store";
 import { useShallow } from "zustand/react/shallow";
 import { Node } from "reactflow";
+import { useEntity } from "./usePipelineName";
 
 const selector = (store: InstillStore) => ({
   setPipelineId: store.setPipelineId,
@@ -25,15 +25,11 @@ const selector = (store: InstillStore) => ({
   updateIsOwner: store.updateIsOwner,
   updateCurrentVersion: store.updateCurrentVersion,
   initializedByTemplateOrClone: store.initializedByTemplateOrClone,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
-export function usePipelineBuilderGraph({
-  enableQuery,
-  accessToken,
-}: {
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-}) {
+export function usePipelineBuilderGraph() {
   const router = useRouter();
   const { id, entity } = router.query;
 
@@ -48,19 +44,23 @@ export function usePipelineBuilderGraph({
     updateIsOwner,
     updateCurrentVersion,
     initializedByTemplateOrClone,
+    accessToken,
+    enabledQuery,
   } = useInstillStore(useShallow(selector));
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
   const currentLoginUser = useUserMe({
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
     retry: false,
   });
 
+  const entityObject = useEntity();
+
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !!id && !pipelineIsNew,
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    enabled: enabledQuery && !pipelineIsNew && !!entityObject.isSuccess,
+    pipelineName: entityObject.pipelineName,
     accessToken,
     retry: false,
   });

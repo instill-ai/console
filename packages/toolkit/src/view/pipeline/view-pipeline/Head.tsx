@@ -18,12 +18,15 @@ import {
   generateRandomReadableName,
   toastInstillError,
   useCreateUserPipeline,
+  useEntity,
   useInstillStore,
+  useOrganization,
   useShallow,
   useUser,
+  useUserMe,
   useUserPipeline,
 } from "../../../lib";
-import { ImageWithFallback, LoadingSpin } from "../../../components";
+import { EntityAvatar, LoadingSpin } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 
 const selector = (store: InstillStore) => ({
@@ -41,22 +44,43 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
 
   const { toast } = useToast();
 
-  const releases = useSortedReleases({
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+  const entityObject = useEntity();
+
+  const me = useUserMe({
+    enabled: enabledQuery,
     accessToken,
-    enabledQuery,
   });
 
   const user = useUser({
-    userName: entity ? `users/${entity}` : null,
+    userName: entityObject.entityName,
     accessToken,
-    enabled: enabledQuery,
+    enabled:
+      enabledQuery &&
+      entityObject.namespaceType === "NAMESPACE_USER" &&
+      !!entityObject.entityName,
+  });
+
+  const organization = useOrganization({
+    organizationID: entityObject.isSuccess
+      ? entityObject.entityName.split("/")[1]
+      : null,
+    accessToken,
+    enabled:
+      enabledQuery &&
+      entityObject.isSuccess &&
+      entityObject.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
   const pipeline = useUserPipeline({
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    pipelineName: entityObject.pipelineName,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && entityObject.isSuccess,
+  });
+
+  const releases = useSortedReleases({
+    pipelineName: entityObject.pipelineName,
+    accessToken,
+    enabledQuery: enabledQuery && entityObject.isSuccess,
   });
 
   const createPipeline = useCreateUserPipeline();
@@ -76,20 +100,31 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
         <div className="flex flex-col gap-y-3 px-28 py-16">
           <div className="flex flex-row">
             <div className="mr-auto flex flex-row gap-x-3">
-              {user.isSuccess && user.data.profile_avatar !== "" ? (
-                <ImageWithFallback
-                  src={user.data.profile_avatar}
-                  alt={`${user.data.id}'s avatar`}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                  fallbackImg={
-                    <div className="h-6 w-6 rounded-full bg-semantic-bg-secondary" />
-                  }
-                />
-              ) : (
-                <div className="h-6 w-6 rounded-full bg-semantic-bg-secondary" />
-              )}
+              {entityObject.isSuccess ? (
+                entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ? (
+                  <EntityAvatar
+                    src={organization.data?.profile_avatar ?? null}
+                    entityName={organization.data?.name ?? ""}
+                    className="h-6 w-6"
+                    fallbackImg={
+                      <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                      </div>
+                    }
+                  />
+                ) : (
+                  <EntityAvatar
+                    src={user.data?.profile_avatar ?? null}
+                    entityName={user.data?.name ?? ""}
+                    className="h-6 w-6"
+                    fallbackImg={
+                      <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                      </div>
+                    }
+                  />
+                )
+              ) : null}
 
               <div className="product-headings-heading-4">
                 <span
@@ -147,7 +182,7 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
               variant="secondaryColour"
               className="flex flex-row gap-x-2"
               onClick={async () => {
-                if (!user.isSuccess || !pipeline.isSuccess || !accessToken) {
+                if (!me.isSuccess || !pipeline.isSuccess || !accessToken) {
                   return;
                 }
 
@@ -165,12 +200,12 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
                   await createPipeline.mutateAsync({
                     payload,
                     accessToken,
-                    userName: user.data.name,
+                    entityName: me.data.name,
                   });
 
                   setIsCloning(false);
 
-                  await router.push(`/${user.data.id}/pipelines/${payload.id}`);
+                  await router.push(`/${me.data.id}/pipelines/${payload.id}`);
 
                   router.reload();
 
@@ -195,9 +230,11 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
               ) : isCloning ? (
                 <LoadingSpin />
               ) : (
-                <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
+                <React.Fragment>
+                  <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
+                  Clone
+                </React.Fragment>
               )}
-              Clone
             </Button>
             {isOwner ? (
               <Button

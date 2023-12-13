@@ -56,7 +56,7 @@ export const PublishPipelineDialog = () => {
   const { id, entity } = router.query;
 
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName,
     accessToken,
     enabled: enabledQuery && !pipelineIsNew,
   });

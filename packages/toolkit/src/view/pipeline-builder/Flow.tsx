@@ -61,6 +61,7 @@ export type FlowProps = {
   accessToken: Nullable<string>;
   enableQuery: boolean;
   isLoading: boolean;
+  isError: boolean;
   appEnv: InstillAppEnv;
 };
 
@@ -72,6 +73,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       accessToken,
       enableQuery,
       isLoading,
+      isError,
       appEnv,
     } = props;
 

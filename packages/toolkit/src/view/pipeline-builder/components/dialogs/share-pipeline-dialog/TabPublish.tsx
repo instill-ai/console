@@ -2,11 +2,11 @@ import * as React from "react";
 import { Button } from "@instill-ai/design-system";
 import {
   InstillStore,
+  useEntity,
   useInstillStore,
   useShallow,
   useUserPipeline,
 } from "../../../../../lib";
-import { useRouter } from "next/router";
 import { UnpublishPipelineDialog } from "./UnpublishPipelineDialog";
 
 const selector = (store: InstillStore) => ({
@@ -24,13 +24,12 @@ export const TabPublish = () => {
     enabledQuery,
   } = useInstillStore(useShallow(selector));
 
-  const router = useRouter();
-  const { id, entity } = router.query;
+  const entityObject = useEntity();
 
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entityObject.pipelineName,
+    enabled: enabledQuery && entityObject.isSuccess,
     accessToken,
-    enabled: enabledQuery,
   });
 
   const pipelineIsPublic = React.useMemo(() => {

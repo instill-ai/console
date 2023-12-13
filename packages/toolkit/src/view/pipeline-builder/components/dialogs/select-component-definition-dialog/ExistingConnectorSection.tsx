@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { Nullable, useUserConnectors } from "../../../../../lib";
+import { Nullable, useEntity, useUserConnectors } from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
 import { ImageWithFallback } from "../../../../../components";
 import { Icons } from "@instill-ai/design-system";
@@ -14,13 +13,12 @@ export const ExistingConnectorSection = ({
   enableQuery: boolean;
   onSelect: PipelineComponentDefinitionOnSelect;
 }) => {
-  const router = useRouter();
-  const { entity } = router.query;
+  const entityObject = useEntity();
 
   const allConnector = useUserConnectors({
-    userName: `users/${entity}`,
+    userName: entityObject.entityName,
     connectorType: "all",
-    enabled: enableQuery,
+    enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
 

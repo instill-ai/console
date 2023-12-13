@@ -4,10 +4,10 @@ import * as semver from "semver";
 import {
   InstillStore,
   Nullable,
+  useEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { useRouter } from "next/router";
 import { useSortedReleases } from "../../lib";
 import { RadioGroup, Tag } from "@instill-ai/design-system";
 import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
@@ -25,15 +25,15 @@ export const SemverSelect = ({
   form: UseReleasePipelineFormReturn;
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const router = useRouter();
-  const { id, entity } = router.query;
   const [selectedSemver, setSelectedSemver] = React.useState<Semver>("major");
   const [version, setVersion] = React.useState<Nullable<string>>(null);
 
+  const entityObject = useEntity();
+
   const releases = useSortedReleases({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entityObject.pipelineName,
+    enabledQuery: enabledQuery && entityObject.isSuccess,
     accessToken,
-    enabledQuery: enabledQuery,
   });
 
   React.useEffect(() => {

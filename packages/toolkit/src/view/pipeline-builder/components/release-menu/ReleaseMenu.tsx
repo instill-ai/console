@@ -5,8 +5,10 @@ import { SemverSelect } from "./SemverSelect";
 import {
   CreateUserPipelineReleasePayload,
   InstillStore,
+  checkNamespace,
   toastInstillError,
   useCreateUserPipelineRelease,
+  useEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -55,8 +57,14 @@ export const ReleaseMenu = ({
 
   const releasePipelineVersion = useCreateUserPipelineRelease();
 
+  const entityObject = useEntity();
+
   const onSubmit = React.useCallback(
     async (data: z.infer<typeof ReleasePipelineFormSchema>) => {
+      if (!entityObject.isSuccess) {
+        return;
+      }
+
       const payload: CreateUserPipelineReleasePayload = {
         id: data.id,
         description: data.description ?? undefined,
@@ -65,7 +73,7 @@ export const ReleaseMenu = ({
 
       try {
         await releasePipelineVersion.mutateAsync({
-          pipelineName: `users/${entity}/pipelines/${id}`,
+          pipelineName: entityObject.pipelineName,
           payload,
           accessToken,
         });

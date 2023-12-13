@@ -40,7 +40,7 @@ export const useCreateUserPipelineRelease = () => {
         // At this stage the pipelineName will be
         // users/<uid>/pipelines/<pid>/releases/<version>
         const pipelineNameArray = pipelineRelease.name.split("/");
-        const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+        const entityName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
         queryClient.setQueryData<PipelineRelease>(
           ["pipelineReleases", pipelineRelease.name],
@@ -48,7 +48,7 @@ export const useCreateUserPipelineRelease = () => {
         );
 
         queryClient.setQueryData<PipelineRelease[]>(
-          ["pipelineReleases", userName],
+          ["pipelineReleases", entityName],
           (old) =>
             old
               ? [
@@ -71,7 +71,7 @@ export const useCreateUserPipelineRelease = () => {
         );
 
         queryClient.setQueryData<PipelineReleasesWatchState>(
-          ["pipelineReleases", userName, "watch"],
+          ["pipelineReleases", entityName, "watch"],
           (old) =>
             old
               ? {

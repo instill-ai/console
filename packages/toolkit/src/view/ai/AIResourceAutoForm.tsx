@@ -3,8 +3,11 @@ import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorWithDefinition,
+  CreateUserConnectorPayload,
+  NamespaceType,
   Nullable,
   UpdateUserConnectorPayload,
+  checkNamespace,
   useCreateUserConnector,
   useUpdateUserConnector,
 } from "../../lib";
@@ -34,9 +37,37 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
   const updateUserConnector = useUpdateUserConnector();
 
   async function handleSubmit(data: ResourceResourceFormData) {
+    if (!entity) {
+      return;
+    }
+
+    let namespaceType: Nullable<NamespaceType> = null;
+
+    try {
+      namespaceType = await checkNamespace({
+        accessToken,
+        id: String(entity),
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong when check namespace",
+        toast,
+        error,
+      });
+    }
+
+    if (!namespaceType) {
+      return;
+    }
+
+    const entityName =
+      namespaceType === "NAMESPACE_ORGANIZATION"
+        ? `organizations/${entity}`
+        : `users/${entity}`;
+
     if (!resource) {
       try {
-        const payload = {
+        const payload: CreateUserConnectorPayload = {
           id: data.id ?? undefined,
           connector_definition_name: definition.name,
           description: data.description ?? undefined,
@@ -45,7 +76,7 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          userName: `users/${entity}`,
+          entityName,
           accessToken,
         });
 

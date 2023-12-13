@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
 import * as z from "zod";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
@@ -15,8 +14,10 @@ import {
   Nullable,
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
+  checkNamespace,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
+  useEntity,
   useInstillStore,
   useRenameUserPipeline,
   useUpdateUserPipeline,
@@ -53,6 +54,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
   const { accessToken } = props;
   const router = useRouter();
   const { entity, id } = router.query;
+
+  const entityObject = useEntity();
 
   const { toast } = useToast();
 
@@ -98,11 +101,9 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
   const renameUserPipeline = useRenameUserPipeline();
 
   async function handleRenamePipeline(newId: string) {
-    if (!pipelineId) {
+    if (!pipelineId || !entityObject.isSuccess || !accessToken) {
       return;
     }
-
-    // If pipeline is new, we dircetly create the pipeline
 
     if (pipelineIsNew) {
       const payload: CreateUserPipelinePayload = {
@@ -113,7 +114,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
       try {
         const res = await createUserPipeline.mutateAsync({
-          userName: `users/${entity}`,
+          entityName: entityObject.entityName,
           payload,
           accessToken,
         });
@@ -163,7 +164,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
 
     if (pipelineRecipeIsDirty) {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${pipelineId}`,
+        name: entityObject.pipelineName,
         recipe: constructPipelineRecipe(nodes),
         metadata: composePipelineMetadataFromNodes(nodes),
       };

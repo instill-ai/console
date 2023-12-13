@@ -6,10 +6,12 @@ import {
   InstillStore,
   Nullable,
   Pipeline,
+  useEntity,
   useInfinitePipelines,
   useInstillStore,
   useShallow,
   useUserMe,
+  useUserPipelines,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -39,13 +41,37 @@ export const Body = ({
     enabledQuery,
   });
 
+  const entityObject = useEntity();
+
+  const allPipelines = useUserPipelines({
+    userName: entityObject.entityName,
+    accessToken,
+    enabled: enabledQuery && entityObject.isSuccess,
+  });
+
+  const publicPipelines = React.useMemo(() => {
+    if (!allPipelines.isSuccess) {
+      return [];
+    }
+
+    return allPipelines.data.filter((pipeline) => {
+      const toplevelRule = pipeline.permission.users["*/*"];
+
+      if (toplevelRule && toplevelRule.enabled) {
+        return true;
+      }
+
+      return false;
+    });
+  }, [allPipelines.data, allPipelines.isSuccess]);
+
   const me = useUserMe({
     enabled: enabledQuery,
     accessToken,
     retry: false,
   });
 
-  const allPipelines = React.useMemo(() => {
+  const searchedPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {
       return [];
     }
@@ -71,9 +97,8 @@ export const Body = ({
     <div className=" flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
         <UserProfileCard
-          totalPipelines={
-            pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
-          }
+          totalPipelines={null}
+          totalPublicPipelines={publicPipelines.length}
           visitorCta={visitorCta}
         />
       </div>
@@ -97,14 +122,14 @@ export const Body = ({
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess ? (
-            allPipelines.length === 0 ? (
+            searchedPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className=" text-semantic-fg-secondary product-body-text-2-semibold">
                   Let&rsquo;s build your first pipline! 🙌
                 </p>
               </div>
             ) : (
-              allPipelines.map((pipeline) => (
+              searchedPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}
