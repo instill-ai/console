@@ -48,7 +48,7 @@ const ProfilePage: NextPageWithLayout = () => {
             id={user.data.id}
             name={user.data.org_name}
             bio={user.data.profile_data?.bio}
-            avatar={user.data.profile_avatar}
+            avatar={user.data.profile_avatar ?? null}
             userMemberships={null}
             isOwner={user.data.id === String(entity)}
             twitterLink={user.data.profile_data?.twitter ?? null}
