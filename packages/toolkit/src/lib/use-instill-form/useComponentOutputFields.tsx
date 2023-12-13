@@ -4,12 +4,12 @@ import {
   pickComponentOutputFieldsFromInstillFormTree,
 } from "./pick";
 import { InstillJSONSchema } from "./type";
-import { Nullable } from "../type";
+import { GeneralRecord, Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 
 export type UseComponentOutputFieldsProps = {
   schema: Nullable<InstillJSONSchema>;
-  data: Nullable<Record<string, any>>;
+  data: Nullable<GeneralRecord>;
   chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];
   hideField?: PickComponentOutputFieldsFromInstillFormTreeProps["hideField"];
 };

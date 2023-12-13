@@ -31,6 +31,7 @@ export const StartOperatorNodeFreeForm = ({
 }: {
   form: UseFormReturn<
     z.infer<typeof StartOperatorFreeFormSchema>,
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     any,
     undefined
   >;

@@ -42,12 +42,12 @@ export const UserProfileCard = ({
           <div className="flex flex-col gap-y-4">
             <div className="mx-auto h-20 w-20 shrink-0 grow-0 rounded-full bg-semantic-bg-line"></div>
             {!me.data?.first_name || !me.data?.last_name ? (
-              <h3 className="mx-auto text-semantic-fg-primary product-headings-heading-3">
+              <h3 className="mx-auto text-center text-semantic-fg-primary product-headings-heading-3">
                 {me.data?.id}
               </h3>
             ) : (
               <div className="mx-auto flex flex-col gap-y-1">
-                <h3 className="text-semantic-fg-primary product-headings-heading-3">
+                <h3 className="mx-auto text-semantic-fg-primary product-headings-heading-3">
                   {`${me.data.first_name} ${me.data.last_name}`}
                 </h3>
                 <Tag className="mx-auto" variant="default" size="sm">

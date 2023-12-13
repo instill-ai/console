@@ -55,15 +55,18 @@ module.exports = {
         img: ["Image"],
       },
     ],
+    "react/jsx-no-target-blank": "off",
+
+    // We will re-visit these rules later
+    "jsx-a11y/media-has-caption": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+
     "jsx-a11y/aria-props": "warn",
     "jsx-a11y/aria-proptypes": "warn",
     "jsx-a11y/aria-unsupported-elements": "warn",
     "jsx-a11y/role-has-required-aria-props": "warn",
     "jsx-a11y/role-supports-aria-props": "warn",
-    "react/jsx-no-target-blank": "off",
-    "jsx-a11y/media-has-caption": "warn",
-    "jsx-a11y/click-events-have-key-events": "warn",
-    "jsx-a11y/no-static-element-interactions": "warn",
     "testing-library/render-result-naming-convention": "off",
   },
   overrides: [

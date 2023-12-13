@@ -6,7 +6,7 @@ import { dot } from "../../dot";
 
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
-  data: Nullable<Record<string, any>>;
+  data: Nullable<GeneralRecord>;
   chooseTitleFrom?: "title" | "path";
   hideField?: boolean;
   objectArrayIndex?: number;
@@ -26,6 +26,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process value
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   let propertyValue: any = null;
 
   if (tree._type === "formGroup") {

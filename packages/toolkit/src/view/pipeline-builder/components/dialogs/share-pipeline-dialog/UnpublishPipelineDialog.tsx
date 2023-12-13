@@ -50,13 +50,14 @@ export const UnpublishPipelineDialog = () => {
       };
 
       await updateUserPipeline.mutateAsync({ payload, accessToken });
-      updateDialogSharePipelineIsOpen(() => false);
 
       toast({
         title: "Pipeline successfully unpublished",
         variant: "alert-success",
         size: "small",
       });
+
+      updateDialogSharePipelineIsOpen(() => false);
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when unpublishing pipeline",
