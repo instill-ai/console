@@ -245,15 +245,21 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
   return (
     <div className="flex w-full pl-4">
       <div className="flex flex-row gap-x-3">
-        <Link
-          className="flex flex-row gap-x-3"
-          href={`/${entity}/pipelines/${id}`}
+        <button
+          onClick={() => {
+            if (pipelineIsNew) {
+              router.push(`/${entity}/pipelines`);
+            } else {
+              router.push(`/${entity}/pipelines/${id}`);
+            }
+          }}
+          className="flex cursor-pointer flex-row gap-x-3"
         >
           <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
           <p className="my-auto text-semantic-fg-secondary product-body-text-3-medium">
             Pipelines
           </p>
-        </Link>
+        </button>
         <p className="my-auto pb-0.5 text-semantic-fg-secondary product-headings-heading-6">
           /
         </p>
