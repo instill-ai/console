@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import { useShallow } from "zustand/react/shallow";
 import { Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  useEntity,
   useInstillStore,
   useUserConnectors,
 } from "../../../lib";
@@ -37,14 +37,14 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
     },
     updateState,
   } = useInstillStore(useShallow(selector));
-  const router = useRouter();
-  const { entity } = router.query;
+
+  const entityObject = useEntity();
 
   const existedConnectors = useUserConnectors({
-    userName: `users/${entity}`,
+    userName: entityObject.entityName,
     connectorType: connectorType ?? "all",
     accessToken,
-    enabled: enableQuery,
+    enabled: enableQuery && entityObject.isSuccess,
   });
 
   const filteredConnectors = React.useMemo(() => {

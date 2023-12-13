@@ -4,6 +4,7 @@ import {
   InstillStore,
   UpdateUserPipelinePayload,
   toastInstillError,
+  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
@@ -25,10 +26,12 @@ export const UnpublishPipelineDialog = () => {
     useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
+  const entirtyObject = useEntity();
+
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entirtyObject.pipelineName,
+    enabled: enabledQuery && entirtyObject.isSuccess,
     accessToken,
-    enabled: enabledQuery,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();

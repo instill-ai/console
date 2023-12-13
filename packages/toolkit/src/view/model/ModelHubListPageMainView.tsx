@@ -46,7 +46,7 @@ export const ModelHubListPageMainView = (
           variant="primary"
           size="lg"
           onClick={() => {
-            router.push(`/${entity}/model-hub/create`);
+            router.push(`/${entity}/model/create`);
           }}
         >
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />

@@ -81,7 +81,7 @@ export const Footer = ({
       await createPipeline.mutateAsync({
         payload,
         accessToken,
-        userName: me.data.name,
+        entityName: me.data.name,
       });
 
       setIsCloning(false);

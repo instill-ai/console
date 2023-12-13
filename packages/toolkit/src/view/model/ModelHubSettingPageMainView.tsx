@@ -101,7 +101,7 @@ export const ModelHubSettingPageMainView = (
           onConfigure={null}
           onDelete={(initStore) => {
             initStore();
-            router.push(`/${entity}/model-hub`);
+            router.push(`/${entity}/model`);
           }}
           accessToken={accessToken}
           width="w-full"
@@ -109,9 +109,9 @@ export const ModelHubSettingPageMainView = (
           disabledDelete={disabledConfigureModel}
         />
       ) : (
-        <div className="mb-[60px] h-[120px] w-full animate-pulse bg-instillGrey15 lg:h-[320px]"></div>
+        <div className="bg-instillGrey15 mb-[60px] h-[120px] w-full animate-pulse lg:h-[320px]"></div>
       )}
-      <h3 className="mb-5 text-black text-instill-h3">Setting</h3>
+      <h3 className="text-instill-h3 mb-5 text-black">Setting</h3>
       {modelReadme}
       <ModelConfigurationFields
         model={model.isSuccess ? model.data : null}

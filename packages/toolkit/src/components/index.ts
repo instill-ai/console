@@ -7,6 +7,7 @@ export * from "./CodeBlock";
 export * from "./IconWithBackground";
 export * from "./TablePlaceholderBase";
 export * from "./ImageWithFallback";
+export * from "./EntityAvatar";
 export * from "./DeleteResourceModal";
 export * from "./GeneralDeleteResourceModal";
 export * from "./StateIcon";

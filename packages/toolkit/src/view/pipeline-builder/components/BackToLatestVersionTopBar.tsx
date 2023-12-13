@@ -14,7 +14,6 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
-import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
@@ -49,13 +48,9 @@ export const BackToLatestVersionTopBar = (
     enabledQuery: pipelineIsNew ? false : enableQuery,
   });
 
-  const router = useRouter();
-
-  const { id, entity } = router.query;
-
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !!id && !pipelineIsNew,
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    enabled: enableQuery && !pipelineIsNew,
+    pipelineName,
     accessToken,
     retry: false,
   });

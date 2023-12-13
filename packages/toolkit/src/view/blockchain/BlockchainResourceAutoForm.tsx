@@ -3,8 +3,10 @@ import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorWithDefinition,
+  NamespaceType,
   Nullable,
   UpdateUserConnectorPayload,
+  checkNamespace,
   useCreateUserConnector,
   useUpdateUserConnector,
 } from "../../lib";
@@ -36,6 +38,34 @@ export const BlockchainResourceAutoForm = (
   const updateUserConnector = useUpdateUserConnector();
 
   async function handleSubmit(data: ResourceResourceFormData) {
+    if (!entity) {
+      return;
+    }
+
+    let namespaceType: Nullable<NamespaceType> = null;
+
+    try {
+      namespaceType = await checkNamespace({
+        accessToken,
+        id: String(entity),
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong when check namespace",
+        toast,
+        error,
+      });
+    }
+
+    if (!namespaceType) {
+      return;
+    }
+
+    const entityName =
+      namespaceType === "NAMESPACE_ORGANIZATION"
+        ? `organizations/${entity}`
+        : `users/${entity}`;
+
     if (!resource) {
       try {
         const payload = {
@@ -47,7 +77,7 @@ export const BlockchainResourceAutoForm = (
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          userName: `users/${entity}`,
+          entityName,
           accessToken,
         });
 

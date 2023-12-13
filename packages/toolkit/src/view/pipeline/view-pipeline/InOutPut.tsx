@@ -6,6 +6,7 @@ import {
   Nullable,
   TriggerUserPipelineResponse,
   toastInstillError,
+  useEntity,
   useInstillStore,
   useShallow,
   useStartOperatorTriggerPipelineForm,
@@ -45,12 +46,12 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
 
   const { toast } = useToast();
 
-  const pipelineName = id && entity ? `users/${entity}/pipelines/${id}` : null;
+  const entityObject = useEntity();
 
   const pipeline = useUserPipeline({
-    pipelineName,
+    pipelineName: entityObject.pipelineName,
+    enabled: enabledQuery && entityObject.isSuccess,
     accessToken,
-    enabled: enabledQuery,
   });
 
   const startComponent = React.useMemo(() => {
@@ -71,7 +72,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   const triggerPipeline = useTriggerUserPipeline();
 
   async function onTriggerPipeline(data: z.infer<typeof Schema>) {
-    if (!pipelineName) return;
+    if (!entityObject.isSuccess) return;
 
     const input = recursiveRemoveUndefinedAndNullFromArray(
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
@@ -81,7 +82,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
 
     try {
       const data = await triggerPipeline.mutateAsync({
-        pipelineName,
+        pipelineName: entityObject.pipelineName,
         accessToken,
         payload: {
           inputs: [input],
