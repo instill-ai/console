@@ -32,6 +32,7 @@ import {
   OperatorDefinition,
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
+  checkNamespace,
   env,
   generateRandomReadableName,
   getInstillApiErrorMessage,
@@ -114,7 +115,7 @@ export const FlowControl = (props: FlowControlProps) => {
   const [isReleasing, setIsReleasing] = React.useState(false);
 
   async function handleSavePipeline() {
-    if (!pipelineId) {
+    if (!pipelineId || !entity) {
       return;
     }
 
