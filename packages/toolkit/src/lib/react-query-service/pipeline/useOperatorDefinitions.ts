@@ -19,10 +19,6 @@ export const useOperatorDefinitions = ({
   return useQuery(
     ["operator-definitions"],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       const operatorDefinitions = await listOperatorDefinitionsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,

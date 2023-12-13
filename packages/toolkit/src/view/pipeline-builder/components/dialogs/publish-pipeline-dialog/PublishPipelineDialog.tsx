@@ -58,7 +58,7 @@ export const PublishPipelineDialog = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enabledQuery && !!accessToken && !pipelineIsNew,
+    enabled: enabledQuery && !pipelineIsNew,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();

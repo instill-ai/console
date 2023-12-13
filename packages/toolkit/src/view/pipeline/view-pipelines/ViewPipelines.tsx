@@ -51,7 +51,7 @@ export const ViewPipelines = () => {
     userName: `users/${entity}`,
     pageSize: 10,
     accessToken,
-    enabledQuery: enabledQuery && !!accessToken && !!entity,
+    enabledQuery: enabledQuery && !!entity,
   });
 
   const allPipelines = React.useMemo(() => {

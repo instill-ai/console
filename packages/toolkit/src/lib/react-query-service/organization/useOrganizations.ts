@@ -19,10 +19,6 @@ export const useOrganizations = ({
   return useQuery(
     ["organizations"],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       const tokens = await listOrganizationsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,

@@ -59,7 +59,7 @@ export const Footer = ({
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
   });
 

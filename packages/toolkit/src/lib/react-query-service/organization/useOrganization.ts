@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import { getOrganizationQuery } from "../../vdp-sdk";
 
+// This is a public API, we won't block unauth users from accessing this
+
 export const useOrganization = ({
   organizationID,
   accessToken,
@@ -26,10 +28,6 @@ export const useOrganization = ({
   return useQuery(
     ["organization", organizationID],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!organizationID) {
         return Promise.reject(new Error("organizationID not provided"));
       }

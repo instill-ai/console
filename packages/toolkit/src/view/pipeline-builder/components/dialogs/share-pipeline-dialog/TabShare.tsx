@@ -35,7 +35,7 @@ export const TabShare = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enableQuery && !!accessToken && !pipelineIsNew,
+    enabled: enableQuery && !pipelineIsNew,
   });
 
   const pipelineIsPublic = React.useMemo(() => {

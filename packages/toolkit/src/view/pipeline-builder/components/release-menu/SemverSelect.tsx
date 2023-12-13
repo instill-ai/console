@@ -33,7 +33,7 @@ export const SemverSelect = ({
   const releases = useSortedReleases({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabledQuery: enabledQuery && !!accessToken,
+    enabledQuery: enabledQuery,
   });
 
   React.useEffect(() => {

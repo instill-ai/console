@@ -30,7 +30,7 @@ export const TabPublish = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
   });
 
   const pipelineIsPublic = React.useMemo(() => {

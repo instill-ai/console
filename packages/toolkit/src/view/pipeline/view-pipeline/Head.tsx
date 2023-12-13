@@ -56,7 +56,7 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
   const pipeline = useUserPipeline({
     pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
   });
 
   const createPipeline = useCreateUserPipeline();
@@ -91,21 +91,31 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
                 <div className="h-6 w-6 rounded-full bg-semantic-bg-secondary" />
               )}
 
-              <p className="product-headings-heading-4">
-                <span className="text-semantic-fg-disabled">{`${entity}/`}</span>
+              <div className="product-headings-heading-4">
+                <span
+                  onClick={() => {
+                    router.push(`/${entity}`);
+                  }}
+                  className="cursor-pointer text-semantic-fg-disabled hover:!underline"
+                >
+                  {entity}
+                </span>
+                <span className="text-semantic-fg-disabled">/</span>
                 <span className="text-semantic-fg-primary">{id}</span>
-              </p>
+              </div>
               {releases[0] ? (
                 <Tag size="sm" variant="darkPurple">
                   {releases[0]?.id}
                 </Tag>
               ) : null}
             </div>
-            <EditMetadataDialog
-              description={
-                pipeline.isSuccess ? pipeline.data.description : null
-              }
-            />
+            {isOwner ? (
+              <EditMetadataDialog
+                description={
+                  pipeline.isSuccess ? pipeline.data.description : null
+                }
+              />
+            ) : null}
           </div>
           {/* <div className="flex w-full flex-row flex-wrap">
             <Tag size="sm" variant="default">
@@ -180,7 +190,9 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
                 }
               }}
             >
-              {isCloning ? (
+              {!accessToken ? (
+                "Login to Clone"
+              ) : isCloning ? (
                 <LoadingSpin />
               ) : (
                 <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />

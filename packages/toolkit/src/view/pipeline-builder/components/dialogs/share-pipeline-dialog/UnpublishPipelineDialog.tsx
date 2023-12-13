@@ -28,7 +28,7 @@ export const UnpublishPipelineDialog = () => {
   const pipeline = useUserPipeline({
     pipelineName: `users/${entity}/pipelines/${id}`,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();

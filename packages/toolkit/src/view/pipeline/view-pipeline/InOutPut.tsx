@@ -26,7 +26,14 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const InOutPut = () => {
+export type InOutPutProps = {
+  visitorCta?: {
+    onClick: () => void;
+    title: string;
+  };
+};
+
+export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { id, entity } = router.query;
@@ -38,12 +45,12 @@ export const InOutPut = () => {
 
   const { toast } = useToast();
 
-  const pipelineName = `users/${entity}/pipelines/${id}`;
+  const pipelineName = id && entity ? `users/${entity}/pipelines/${id}` : null;
 
   const pipeline = useUserPipeline({
-    pipelineName: id ? pipelineName : null,
+    pipelineName,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
   });
 
   const startComponent = React.useMemo(() => {
@@ -64,6 +71,8 @@ export const InOutPut = () => {
   const triggerPipeline = useTriggerUserPipeline();
 
   async function onTriggerPipeline(data: z.infer<typeof Schema>) {
+    if (!pipelineName) return;
+
     const input = recursiveRemoveUndefinedAndNullFromArray(
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
     );
@@ -130,20 +139,31 @@ export const InOutPut = () => {
         />
       </div>
       <div className="flex flex-row-reverse">
-        <Button
-          variant="secondaryColour"
-          size="md"
-          className="flex flex-row gap-x-2"
-          type="submit"
-          form={inOutPutFormID}
-        >
-          Run
-          {isTriggering ? (
-            <LoadingSpin className="!text-semantic-accent-default" />
-          ) : (
-            <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
-          )}
-        </Button>
+        {accessToken ? (
+          <Button
+            variant="secondaryColour"
+            size="md"
+            className="flex flex-row gap-x-2"
+            type="submit"
+            form={inOutPutFormID}
+          >
+            Run
+            {isTriggering ? (
+              <LoadingSpin className="!text-semantic-accent-default" />
+            ) : (
+              <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
+            )}
+          </Button>
+        ) : visitorCta ? (
+          <Button
+            onClick={visitorCta.onClick}
+            type="button"
+            variant="secondaryColour"
+            size="md"
+          >
+            {visitorCta.title}
+          </Button>
+        ) : null}
       </div>
     </div>
   );

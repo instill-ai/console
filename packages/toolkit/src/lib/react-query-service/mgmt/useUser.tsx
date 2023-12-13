@@ -24,7 +24,7 @@ export const useUser = ({
   }
 
   return useQuery<User>(
-    ["user"],
+    ["user", userName],
     async () => {
       if (!userName) {
         return Promise.reject(new Error("userName not provided"));

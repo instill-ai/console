@@ -14,7 +14,12 @@ const selector = (store: InstillStore) => ({
   updateEnabledQuery: store.updateEnabledQuery,
 });
 
-export function useAccessToken() {
+type UseAccessTokenProps = {
+  stopRedirectingVisitor?: boolean;
+};
+
+export function useAccessToken(props?: UseAccessTokenProps) {
+  const stopRedirectingVisitor = props?.stopRedirectingVisitor ?? false;
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
@@ -48,6 +53,10 @@ export function useAccessToken() {
         await axios.post("/api/remove-user-cookie", {
           key: "instill-auth-session",
         });
+
+        if (stopRedirectingVisitor) {
+          return;
+        }
 
         await router.push("/login");
       },
