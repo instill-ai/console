@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.75.0-rc.59",
+  "version": "0.75.0-rc.73",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -82,6 +82,7 @@
     "@tanstack/react-query": "^4.35.3",
     "@tanstack/react-query-devtools": "^4.35.3",
     "@tanstack/react-table": "^8.9.3",
+    "@tiptap/core": "^2.1.13",
     "@tiptap/extension-blockquote": "^2.1.12",
     "@tiptap/extension-bold": "^2.1.13",
     "@tiptap/extension-bullet-list": "^2.1.12",

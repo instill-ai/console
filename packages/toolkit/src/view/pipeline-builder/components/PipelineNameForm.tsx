@@ -14,7 +14,6 @@ import {
   Nullable,
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
-  checkNamespace,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
   useEntity,
@@ -199,7 +198,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     }
 
     const payload: RenameUserPipelinePayload = {
-      name: `users/${entity}/pipelines/${pipelineId}`,
+      name: entityObject.pipelineName,
       new_pipeline_id: newId,
     };
 
@@ -220,7 +219,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
       });
 
       setPipelineId(newId);
-      setPipelineName(`users/${entity}/pipelines/${newId}`);
+      setPipelineName(`${entityObject.entityName}/pipelines/${newId}`);
     } catch (error) {
       form.reset({
         pipelineId,

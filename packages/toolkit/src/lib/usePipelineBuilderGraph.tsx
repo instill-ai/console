@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { InstillStore, useInstillStore } from "./use-instill-store";
 import { useShallow } from "zustand/react/shallow";
 import { Node } from "reactflow";
-import { useEntity } from "./usePipelineName";
+import { useEntity } from "./useEntity";
 
 const selector = (store: InstillStore) => ({
   setPipelineId: store.setPipelineId,
@@ -32,7 +32,7 @@ const selector = (store: InstillStore) => ({
 
 export function usePipelineBuilderGraph() {
   const router = useRouter();
-  const { id, entity } = router.query;
+  const { id } = router.query;
 
   const {
     setPipelineId,
@@ -247,6 +247,7 @@ export function usePipelineBuilderGraph() {
     currentLoginUser.data,
     currentLoginUser.isSuccess,
     setPipelineUid,
+    updatePipelineIsReadOnly,
   ]);
 
   return { graphIsInitialized };

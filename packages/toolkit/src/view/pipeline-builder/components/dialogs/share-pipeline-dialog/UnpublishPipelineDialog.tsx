@@ -10,7 +10,6 @@ import {
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
-import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -19,8 +18,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UnpublishPipelineDialog = () => {
-  const router = useRouter();
-  const { id, entity } = router.query;
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));
@@ -36,11 +33,11 @@ export const UnpublishPipelineDialog = () => {
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function unPublishPipeline() {
-    if (!pipeline.isSuccess) return;
+    if (!pipeline.isSuccess || !entirtyObject.isSuccess) return;
 
     try {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${id}`,
+        name: entirtyObject.pipelineName,
         permission: {
           ...pipeline.data.permission,
           users: {

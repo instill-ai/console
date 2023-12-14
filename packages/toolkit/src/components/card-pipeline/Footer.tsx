@@ -113,8 +113,6 @@ export const Footer = ({
     return sortPipelineReleases(pipeline.releases)[0].id;
   }, [pipeline]);
 
-  console.log(latestRelease);
-
   return (
     <div className="flex flex-col px-6 pb-4">
       <div className="flex flex-row">

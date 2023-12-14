@@ -18,7 +18,10 @@ const PipelinesPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <ViewPipelines createPipelineDialog={<CreatePipelineDialog />} />
+      <ViewPipelines
+        createPipelineDialog={<CreatePipelineDialog />}
+        organizations={undefined}
+      />
     </React.Fragment>
   );
 };

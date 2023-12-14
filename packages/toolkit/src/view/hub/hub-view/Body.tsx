@@ -124,7 +124,7 @@ export const Body = ({
           {pipelines.isSuccess ? (
             searchedPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
-                <p className=" text-semantic-fg-secondary product-body-text-2-semibold">
+                <p className="text-semantic-fg-secondary product-body-text-2-semibold">
                   Let&rsquo;s build your first pipline! 🙌
                 </p>
               </div>
@@ -132,10 +132,10 @@ export const Body = ({
               searchedPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
-                  ownerID={pipeline.owner_name.split("/")[1]}
+                  ownerID={pipeline.owner.name.split("/")[1]}
                   pipeline={pipeline}
-                  isOrg={pipeline.owner_name.split("/")[0] === "organizations"}
-                  isOwner={pipeline.owner_name === me.data?.name}
+                  isOrg={pipeline.owner.name.split("/")[0] === "organizations"}
+                  isOwner={pipeline.owner.name === me.data?.name}
                 />
               ))
             )

@@ -1,14 +1,12 @@
-import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorWithDefinition,
   CreateUserConnectorPayload,
-  NamespaceType,
   Nullable,
   UpdateUserConnectorPayload,
-  checkNamespace,
   useCreateUserConnector,
+  useEntity,
   useUpdateUserConnector,
 } from "../../lib";
 import {
@@ -30,40 +28,16 @@ export type AIResourceAutoFormProps = {
 export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
   const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
-  const router = useRouter();
-  const { entity } = router.query;
 
   const createUserConnector = useCreateUserConnector();
   const updateUserConnector = useUpdateUserConnector();
 
+  const entityObject = useEntity();
+
   async function handleSubmit(data: ResourceResourceFormData) {
-    if (!entity) {
+    if (!entityObject.isSuccess) {
       return;
     }
-
-    let namespaceType: Nullable<NamespaceType> = null;
-
-    try {
-      namespaceType = await checkNamespace({
-        accessToken,
-        id: String(entity),
-      });
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when check namespace",
-        toast,
-        error,
-      });
-    }
-
-    if (!namespaceType) {
-      return;
-    }
-
-    const entityName =
-      namespaceType === "NAMESPACE_ORGANIZATION"
-        ? `organizations/${entity}`
-        : `users/${entity}`;
 
     if (!resource) {
       try {
@@ -76,7 +50,7 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          entityName,
+          entityName: entityObject.entityName,
           accessToken,
         });
 

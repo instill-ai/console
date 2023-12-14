@@ -16,6 +16,7 @@ export * from "./SortIcon";
 export * from "./TableLoadingProgress";
 export * from "./StateOverview";
 export * from "./TableHead";
+export * from "./InlineTextSeparator";
 export * from "./LoadingSpin";
 export * from "./ModelDefinitionLabel";
 export * from "./ModelTaskLabel";
