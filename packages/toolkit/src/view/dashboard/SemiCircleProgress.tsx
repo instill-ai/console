@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import * as React from "react";
 
 interface SemiCircleProgressProps {
   stroke?: string;
@@ -11,7 +11,7 @@ interface SemiCircleProgressProps {
   percentage: number;
 }
 
-const SemiCircleProgress: FC<SemiCircleProgressProps> = ({
+const SemiCircleProgress: React.FC<SemiCircleProgressProps> = ({
   stroke = "#02B732",
   strokeWidth = 10,
   background = "#D0D0CE",

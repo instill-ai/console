@@ -145,7 +145,7 @@ export type GetUsersSubscription = {
   subscription: {
     plan: string;
     quota: {
-      pipeline_trigger: {
+      private_pipeline_trigger: {
         quota: number;
         used: number;
         remain: number;
