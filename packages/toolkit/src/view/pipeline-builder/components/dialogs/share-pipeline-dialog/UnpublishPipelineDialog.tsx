@@ -38,8 +38,8 @@ export const UnpublishPipelineDialog = () => {
     try {
       const payload: UpdateUserPipelinePayload = {
         name: entirtyObject.pipelineName,
-        permission: {
-          ...pipeline.data.permission,
+        sharing: {
+          ...pipeline.data.sharing,
           users: {
             "*/*": {
               enabled: false,

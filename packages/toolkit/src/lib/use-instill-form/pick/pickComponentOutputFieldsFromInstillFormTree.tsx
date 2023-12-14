@@ -204,6 +204,17 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+
+      case "semi-structured": {
+        return (
+          <ComponentOutputFields.ObjectsField
+            title={title}
+            objects={propertyValue}
+            hideField={hideField}
+          />
+        );
+      }
+
       default: {
         return (
           <ComponentOutputFields.TextsField
@@ -255,6 +266,15 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         <ComponentOutputFields.TextField
           title={title}
           text={propertyValue}
+          hideField={hideField}
+        />
+      );
+    }
+    case "semi-structured": {
+      return (
+        <ComponentOutputFields.ObjectField
+          title={title}
+          object={propertyValue}
           hideField={hideField}
         />
       );

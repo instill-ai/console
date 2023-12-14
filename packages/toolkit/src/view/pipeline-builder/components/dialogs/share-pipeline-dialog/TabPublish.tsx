@@ -37,7 +37,7 @@ export const TabPublish = () => {
       return false;
     }
 
-    const toplevelRule = pipeline.data.permission.users["*/*"];
+    const toplevelRule = pipeline.data.sharing.users["*/*"];
 
     if (toplevelRule && toplevelRule.enabled) {
       return true;

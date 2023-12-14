@@ -55,7 +55,7 @@ export const Body = ({
     }
 
     return allPipelines.data.filter((pipeline) => {
-      const toplevelRule = pipeline.permission.users["*/*"];
+      const toplevelRule = pipeline.sharing.users["*/*"];
 
       if (toplevelRule && toplevelRule.enabled) {
         return true;
@@ -132,10 +132,10 @@ export const Body = ({
               searchedPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
-                  ownerID={pipeline.owner.name.split("/")[1]}
+                  ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
-                  isOrg={pipeline.owner.name.split("/")[0] === "organizations"}
-                  isOwner={pipeline.owner.name === me.data?.name}
+                  isOrg={pipeline.owner_name.split("/")[0] === "organizations"}
+                  isOwner={pipeline.owner_name === me.data?.name}
                 />
               ))
             )

@@ -144,7 +144,7 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
                 </Tag>
               ) : null}
             </div>
-            {isOwner ? (
+            {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
               <EditMetadataDialog
                 description={
                   pipeline.isSuccess ? pipeline.data.description : null
@@ -177,66 +177,68 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
             </TabMenu.Root>
           </div>
           <div className="flex flex-row gap-x-2">
-            <Button
-              size="sm"
-              variant="secondaryColour"
-              className="flex flex-row gap-x-2"
-              onClick={async () => {
-                if (!me.isSuccess || !pipeline.isSuccess || !accessToken) {
-                  return;
-                }
+            {!isOwner ? (
+              <Button
+                size="sm"
+                variant="secondaryColour"
+                className="flex flex-row gap-x-2"
+                onClick={async () => {
+                  if (!me.isSuccess || !pipeline.isSuccess || !accessToken) {
+                    return;
+                  }
 
-                setIsCloning(true);
+                  setIsCloning(true);
 
-                const payload: CreateUserPipelinePayload = {
-                  id: generateRandomReadableName(),
-                  recipe: getRawPipelineRecipeFromPipelineRecipe(
-                    pipeline.data.recipe
-                  ),
-                  metadata: pipeline.data?.metadata,
-                };
+                  const payload: CreateUserPipelinePayload = {
+                    id: generateRandomReadableName(),
+                    recipe: getRawPipelineRecipeFromPipelineRecipe(
+                      pipeline.data.recipe
+                    ),
+                    metadata: pipeline.data?.metadata,
+                  };
 
-                try {
-                  await createPipeline.mutateAsync({
-                    payload,
-                    accessToken,
-                    entityName: me.data.name,
-                  });
+                  try {
+                    await createPipeline.mutateAsync({
+                      payload,
+                      accessToken,
+                      entityName: me.data.name,
+                    });
 
-                  setIsCloning(false);
+                    setIsCloning(false);
 
-                  await router.push(`/${me.data.id}/pipelines/${payload.id}`);
+                    await router.push(`/${me.data.id}/pipelines/${payload.id}`);
 
-                  router.reload();
+                    router.reload();
 
-                  toast({
-                    title: "Successfully cloned the pipeline",
-                    variant: "alert-success",
-                    size: "small",
-                  });
-                } catch (error) {
-                  setIsCloning(false);
-                  toastInstillError({
-                    title:
-                      "Something went wrong when clone the pipeline, please try again later",
-                    error,
-                    toast,
-                  });
-                }
-              }}
-            >
-              {!accessToken ? (
-                "Login to Clone"
-              ) : isCloning ? (
-                <LoadingSpin />
-              ) : (
-                <React.Fragment>
-                  <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
-                  Clone
-                </React.Fragment>
-              )}
-            </Button>
-            {isOwner ? (
+                    toast({
+                      title: "Successfully cloned the pipeline",
+                      variant: "alert-success",
+                      size: "small",
+                    });
+                  } catch (error) {
+                    setIsCloning(false);
+                    toastInstillError({
+                      title:
+                        "Something went wrong when clone the pipeline, please try again later",
+                      error,
+                      toast,
+                    });
+                  }
+                }}
+              >
+                {!accessToken ? (
+                  "Login to Clone"
+                ) : isCloning ? (
+                  <LoadingSpin />
+                ) : (
+                  <React.Fragment>
+                    <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
+                    Clone
+                  </React.Fragment>
+                )}
+              </Button>
+            ) : null}
+            {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
               <Button
                 onClick={() => {
                   router.push(`/${entity}/pipelines/${id}/builder`);

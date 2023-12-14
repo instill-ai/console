@@ -4,8 +4,7 @@ import {
   Pipeline,
   RawPipelineRecipe,
   PipelineRelease,
-  PipelinePermission,
-  PermissionRole,
+  PipelineSharing,
 } from "./types";
 
 export type CreateUserPipelinePayload = {
@@ -13,7 +12,7 @@ export type CreateUserPipelinePayload = {
   description?: string;
   recipe: RawPipelineRecipe;
   metadata: GeneralRecord;
-  permission?: RawPipelinePermission;
+  sharing?: PipelineSharing;
 };
 
 export type CreatePipelineResponse = {
@@ -46,18 +45,9 @@ export type UpdateUserPipelinePayload = {
   name: string;
   description?: string;
   recipe?: RawPipelineRecipe;
-  permission?: RawPipelinePermission;
+  sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
-};
-
-export type RawPipelinePermission = {
-  users: PipelinePermission["users"];
-  share_code: Nullable<{
-    user: string;
-    enabled: boolean;
-    role: PermissionRole;
-  }>;
 };
 
 export type UpdateUserPipelineResponse = {

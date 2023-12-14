@@ -11,11 +11,9 @@ import {
   InstillStore,
   Nullable,
   UpdateUserPipelinePayload,
-  checkNamespace,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
   useInstillStore,
-  useNamespaceType,
   useNavigationObserver,
   usePipelineBuilderGraph,
   useEntity,
@@ -48,7 +46,6 @@ export const PipelineBuilderMainView = (
   props: PipelineBuilderMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id, entity } = router.query;
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
@@ -98,6 +95,16 @@ export const PipelineBuilderMainView = (
 
     updatePipelineOpenAPIOutputSchema(() => outputSchema);
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
+
+  React.useEffect(() => {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+
+    if (!pipeline.data.permission.can_edit) {
+      router.push("/404");
+    }
+  }, [pipeline.isSuccess, pipeline.data, router]);
 
   /* -------------------------------------------------------------------------
    * Initialize the pipeline graph

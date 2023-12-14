@@ -2,7 +2,7 @@
 
 import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, Connector } from "../connector";
-import { Spec, Visibility } from "../types";
+import { Permission, Spec, Visibility } from "../types";
 import { GeneralRecord, Nullable } from "../../type";
 import { JSONSchema7TypeName } from "json-schema";
 
@@ -62,8 +62,9 @@ export type Pipeline = {
   owner: Record<string, any>;
   owner_name: string;
   releases: PipelineRelease[];
-  permission: PipelinePermission;
+  sharing: PipelineSharing;
   metadata: GeneralRecord;
+  permission: Permission;
 };
 
 export type OperatorDefinition = {
@@ -80,12 +81,12 @@ export type OperatorDefinition = {
   icon_url: string;
 };
 
-export type PipelinePermission = {
-  users: PermissionUsers;
-  share_code: Nullable<PermissionShareCode>;
+export type PipelineSharing = {
+  users: PipelineSharingUserRules;
+  share_code: Nullable<PipelineSharingCodeRule>;
 };
 
-export type PermissionUsers = Record<
+export type PipelineSharingUserRules = Record<
   string,
   {
     enabled: boolean;
@@ -93,9 +94,9 @@ export type PermissionUsers = Record<
   }
 >;
 
-export type PermissionShareCode = {
+export type PipelineSharingCodeRule = {
   user: string;
-  code: string;
+  code?: string;
   enabled: boolean;
   role: PermissionRole;
 };

@@ -15,6 +15,8 @@ export type UseEntitySuccessReturn = {
   connectorName: string;
   entityName: string;
   namespaceType: NamespaceType;
+  entity: string;
+  id: string;
 };
 
 export type UseEntityFailedReturn = {
@@ -23,6 +25,8 @@ export type UseEntityFailedReturn = {
   connectorName: null;
   entityName: null;
   namespaceType: null;
+  entity: null;
+  id: null;
 };
 
 export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
@@ -56,7 +60,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     return namespaceType.data === "NAMESPACE_ORGANIZATION"
       ? `organizations/${entity}/connectors/${id}`
       : `users/${entity}/connectors/${id}`;
-  }, [id, entity, namespaceType.isSuccess, namespaceType.data, id]);
+  }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
 
   const entityName = React.useMemo(() => {
     if (!namespaceType.isSuccess) {
@@ -66,7 +70,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     return namespaceType.data === "NAMESPACE_ORGANIZATION"
       ? `organizations/${entity}`
       : `users/${entity}`;
-  }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
+  }, [entity, namespaceType.isSuccess, namespaceType.data]);
 
   React.useEffect(() => {
     if (
@@ -86,6 +90,8 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       namespaceType: namespaceType.data as NamespaceType,
       isSuccess,
       connectorName: connectorName as string,
+      entity: entity as string,
+      id: id as string,
     };
   } else {
     return {
@@ -94,6 +100,8 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       namespaceType: null,
       isSuccess,
       connectorName: null,
+      entity: null,
+      id: null,
     };
   }
 }

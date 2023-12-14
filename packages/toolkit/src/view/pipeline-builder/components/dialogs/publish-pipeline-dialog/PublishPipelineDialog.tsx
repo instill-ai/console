@@ -74,15 +74,15 @@ export const PublishPipelineDialog = () => {
       name: pipelineName,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
-      permission: {
+      sharing: {
         users: {
-          ...pipeline.data.permission.users,
+          ...pipeline.data.sharing.users,
           "*/*": {
             enabled: true,
             role: "ROLE_EXECUTOR",
           },
         },
-        share_code: pipeline.data?.permission.share_code ?? null,
+        share_code: pipeline.data?.sharing.share_code ?? null,
       },
       metadata: {
         license: formData.license ?? undefined,
