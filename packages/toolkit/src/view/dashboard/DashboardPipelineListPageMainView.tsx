@@ -1,6 +1,5 @@
 import * as React from "react";
-import { SelectOption, Button, Icons } from "@instill-ai/design-system";
-// import SemiCircleProgressBar from "react-progressbar-semicircle";
+import { SelectOption } from "@instill-ai/design-system";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
   DashboardAvailableTimeframe,
@@ -14,7 +13,6 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useUser,
   useNamespaceType,
   useUsersSubscription,
   useOrganizationsSubscription,
@@ -218,7 +216,7 @@ export const DashboardPipelineListPageMainView = (
               }
             />
 
-            {isCloud ? (
+            {!isCloud ? (
               <RemainingTriggers
                 subscriptions={
                   subscriptions?.isSuccess ? subscriptions?.data : null
