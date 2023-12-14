@@ -82,7 +82,13 @@ export const Readme = ({
         }
       }, 1000);
     },
-    [entityObject.isSuccess, entityObject.pipelineName, accessToken]
+    [
+      entityObject.isSuccess,
+      entityObject.pipelineName,
+      accessToken,
+      toast,
+      updateUserPipeline,
+    ]
   );
 
   const editor = useEditor({

@@ -14,7 +14,6 @@ import {
   Nullable,
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
-  checkNamespace,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
   useEntity,

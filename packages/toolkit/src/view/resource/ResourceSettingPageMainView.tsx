@@ -11,7 +11,7 @@ export const ResourceSettingPageMainView = (
   props: ResourceSettingPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id, entity } = router.query;
+  const { id } = router.query;
 
   const entirtyObject = useEntity();
 

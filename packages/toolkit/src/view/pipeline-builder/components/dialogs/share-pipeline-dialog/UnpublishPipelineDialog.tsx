@@ -10,7 +10,6 @@ import {
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
-import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -19,8 +18,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UnpublishPipelineDialog = () => {
-  const router = useRouter();
-  const { id, entity } = router.query;
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));

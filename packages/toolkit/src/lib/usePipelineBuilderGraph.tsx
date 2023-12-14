@@ -32,7 +32,7 @@ const selector = (store: InstillStore) => ({
 
 export function usePipelineBuilderGraph() {
   const router = useRouter();
-  const { id, entity } = router.query;
+  const { id } = router.query;
 
   const {
     setPipelineId,
@@ -247,6 +247,7 @@ export function usePipelineBuilderGraph() {
     currentLoginUser.data,
     currentLoginUser.isSuccess,
     setPipelineUid,
+    updatePipelineIsReadOnly,
   ]);
 
   return { graphIsInitialized };

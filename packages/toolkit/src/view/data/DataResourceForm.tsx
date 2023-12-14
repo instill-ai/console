@@ -312,6 +312,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     dataResource,
     updateData,
     isSaving,
+    entityObject.isSuccess,
+    entityObject.entityName,
   ]);
 
   return (

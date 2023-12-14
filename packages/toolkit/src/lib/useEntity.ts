@@ -56,7 +56,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     return namespaceType.data === "NAMESPACE_ORGANIZATION"
       ? `organizations/${entity}/connectors/${id}`
       : `users/${entity}/connectors/${id}`;
-  }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
+  }, [id, entity, namespaceType.isSuccess, namespaceType.data, id]);
 
   const entityName = React.useMemo(() => {
     if (!namespaceType.isSuccess) {
