@@ -49,19 +49,41 @@ export const PipelineTriggerCountsLineChart = ({
     if (chartRef.current) {
       // Dispose the previous chart instance
       echarts.dispose(chartRef.current); // eslint-disable-line
-      const myChart = echarts.init(chartRef.current); // eslint-disable-line
+      const myChart = echarts.init(chartRef.current, null, {
+        renderer: "svg",
+      }); // eslint-disable-line
       const option = {
+        grid: {
+          left: "50px",
+          right: "50px",
+          top: 10,
+          bottom: 50,
+        },
+        graphic: {
+          type: "image",
+          style: {
+            image: "/images/no-chart-placeholder.svg",
+            x: "45%",
+            y: "0%",
+            width: pipelines.length === 0 ? 225 : 0,
+            height: pipelines.length === 0 ? 225 : 0,
+          },
+        },
         animation: false,
         title: {
           show: pipelines.length === 0,
           textStyle: {
-            color: "#1D2433",
-            fontSize: 22,
+            color: "#1D2433A6",
+            fontSize: 14,
             fontWeight: 500,
+            fontFamily: "IBM Plex Mono",
+            fontStyle: "italic",
           },
-          text: isLoading ? "Loading..." : "No Piplelines",
+          text: isLoading
+            ? "Loading..."
+            : "No pipelines have been triggered yet",
           left: "center",
-          top: 100,
+          bottom: 100,
         },
         tooltip: {
           trigger: "item",
@@ -93,16 +115,30 @@ export const PipelineTriggerCountsLineChart = ({
             `;
           },
         },
-        legend: {
-          data: pipelines.map((pipeline) => pipeline.pipeline_id),
-        },
+        // legend: {
+        //   data: pipelines.map((pipeline) => pipeline.pipeline_id),
+        // },
         xAxis: {
           type: "category",
           data: xAxisData,
+          axisLabel: {
+            fontSize: "14px",
+            fontFamily: "Inter",
+            fontStyle: "normal",
+            fontWeight: "600",
+            color: "#6B7280",
+          },
         },
         yAxis: {
           type: "value",
           minInterval: 1,
+          axisLabel: {
+            fontSize: "14px",
+            fontFamily: "Inter",
+            fontStyle: "normal",
+            fontWeight: "600",
+            color: "#6B7280",
+          },
         },
         series: seriesData,
       };
@@ -172,7 +208,8 @@ export const PipelineTriggerCountsLineChart = ({
         <div
           id="main"
           ref={chartRef}
-          style={{ width: "100%", height: "400px" }}
+          style={{ width: "100%", height: "400px", paddingLeft: "0px" }}
+          className="!p-0"
         />
       </div>
     </div>
