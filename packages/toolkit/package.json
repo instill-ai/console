@@ -1,6 +1,10 @@
 {
   "name": "@instill-ai/toolkit",
+<<<<<<< Updated upstream
   "version": "0.75.0-rc.44",
+=======
+  "version": "0.75.0-rc.76",
+>>>>>>> Stashed changes
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
