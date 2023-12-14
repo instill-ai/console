@@ -20,6 +20,7 @@ import { Icons, useToast } from "@instill-ai/design-system";
 import { getRawPipelineRecipeFromPipelineRecipe } from "../../view";
 import { Menu } from "./Menu";
 import { Nullable } from "vitest";
+import { EntityAvatar } from "../EntityAvatar";
 
 export const HeadSkeleton = () => {
   return (
@@ -53,7 +54,7 @@ export const Head = ({
   const user = useUser({
     userName: `users/${ownerID}`,
     accessToken,
-    enabled: enabledQuery && !!isOrg,
+    enabled: enabledQuery && !isOrg,
   });
 
   const organization = useOrganization({
@@ -64,11 +65,11 @@ export const Head = ({
 
   const imageSrc = React.useMemo(() => {
     if (isOrg && organization.isSuccess) {
-      return organization.data.profile_avatar;
+      return organization.data.profile_avatar ?? null;
     }
 
     if (!isOrg && user.isSuccess) {
-      return user.data.profile_avatar;
+      return user.data.profile_avatar ?? null;
     }
 
     return null;
@@ -81,7 +82,7 @@ export const Head = ({
   ]);
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
   });
 
@@ -98,7 +99,7 @@ export const Head = ({
 
     try {
       await createPipeline.mutateAsync({
-        userName: me.data.name,
+        entityName: me.data.name,
         payload,
         accessToken,
       });
@@ -147,25 +148,16 @@ export const Head = ({
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
-        {imageSrc ? (
-          <ImageWithFallback
-            src={imageSrc}
-            width={32}
-            height={32}
-            alt="Pipeline owner avatar"
-            fallbackImg={
-              <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-                <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              </div>
-            }
-            className="!rounded-full"
-          />
-        ) : (
-          <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-            <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-          </div>
-        )}
-
+        <EntityAvatar
+          src={imageSrc ?? null}
+          className="h-8 w-8"
+          entityName={ownerID}
+          fallbackImg={
+            <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+              <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+            </div>
+          }
+        />
         <button
           type="button"
           className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"

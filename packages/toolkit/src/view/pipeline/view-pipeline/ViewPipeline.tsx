@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import {
   InstillStore,
+  useEntity,
   useInstillStore,
   useShallow,
   useUserMe,
@@ -9,7 +9,7 @@ import {
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
-import { InOutPut } from "./InOutPut";
+import { InOutPut, InOutPutProps } from "./InOutPut";
 import { Readme } from "./Readme";
 
 const selector = (store: InstillStore) => ({
@@ -17,21 +17,25 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const ViewPipeline = () => {
-  const router = useRouter();
-  const { id, entity } = router.query;
+export const ViewPipeline = ({
+  visitorCta,
+}: {
+  visitorCta?: InOutPutProps["visitorCta"];
+}) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
     retry: false,
   });
 
+  const entityObject = useEntity();
+
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entityObject.pipelineName,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery && entityObject.isSuccess,
   });
 
   const isOwner = React.useMemo(() => {
@@ -61,7 +65,7 @@ export const ViewPipeline = () => {
           />
         </div>
         <div className="flex w-[594px] flex-col py-10 pr-4">
-          <InOutPut />
+          <InOutPut visitorCta={visitorCta} />
         </div>
       </div>
     </div>

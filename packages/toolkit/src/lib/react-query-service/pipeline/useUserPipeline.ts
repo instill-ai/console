@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserPipelineQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
+// This is a public API, we won't block unauth users from accessing this
+
 export const useUserPipeline = ({
   pipelineName,
   accessToken,
@@ -28,10 +30,6 @@ export const useUserPipeline = ({
   return useQuery(
     ["pipelines", pipelineName],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!pipelineName) {
         return Promise.reject(new Error("invalid pipeline name"));
       }

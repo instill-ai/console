@@ -1,45 +1,40 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import Fuse from "fuse.js";
 import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
   Nullable,
   Pipeline,
-  generateRandomReadableName,
   useInfiniteUserPipelines,
   InstillStore,
   useInstillStore,
   useShallow,
   useUserMe,
+  useEntity,
 } from "../../../lib";
 import {
   LoadingSpin,
   CardPipeline,
   CardSkeletonPipeline,
   UserProfileCard,
+  UserProfileCardProps,
 } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  setPipelineId: store.setPipelineId,
-  setPipelineName: store.setPipelineName,
-  updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
-export const ViewPipelines = () => {
-  const router = useRouter();
-  const { entity } = router.query;
+export const ViewPipelines = ({
+  createPipelineDialog,
+  organizations,
+}: {
+  createPipelineDialog: React.ReactElement;
+  organizations?: UserProfileCardProps["organizations"];
+}) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
 
-  const {
-    accessToken,
-    enabledQuery,
-    setPipelineId,
-    setPipelineName,
-    updatePipelineIsNew,
-  } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
     enabled: enabledQuery,
@@ -47,11 +42,13 @@ export const ViewPipelines = () => {
     retry: false,
   });
 
+  const entityObject = useEntity();
+
   const pipelines = useInfiniteUserPipelines({
-    userName: `users/${entity}`,
     pageSize: 10,
     accessToken,
-    enabledQuery: enabledQuery && !!accessToken && !!entity,
+    userName: entityObject.entityName,
+    enabledQuery: enabledQuery && entityObject.isSuccess,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -83,6 +80,8 @@ export const ViewPipelines = () => {
           totalPipelines={
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
+          totalPublicPipelines={null}
+          organizations={organizations}
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">
@@ -101,21 +100,7 @@ export const ViewPipelines = () => {
                 onChange={(event) => setSearchCode(event.target.value)}
               />
             </Input.Root>
-            <Button
-              className="gap-x-2"
-              variant="primary"
-              size="lg"
-              onClick={() => {
-                const randomName = generateRandomReadableName();
-                setPipelineId(randomName);
-                setPipelineName(`users/${entity}/pipelines/${randomName}`);
-                router.push(`/${entity}/pipelines/${randomName}/builder`);
-                updatePipelineIsNew(() => true);
-              }}
-            >
-              <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-              Create Pipeline
-            </Button>
+            {createPipelineDialog}
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">

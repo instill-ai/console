@@ -32,6 +32,7 @@ export const NodeIDEditor = ({
   nodeID,
   handleRename,
 }: {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: UseFormReturn<z.infer<typeof NodeIDEditorSchema>, any, undefined>;
   nodeID: string;
   handleRename: (newID: string) => void;

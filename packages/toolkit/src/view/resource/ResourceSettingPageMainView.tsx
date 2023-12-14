@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PageTitle } from "../../components";
-import { GeneralPageProp, useUserConnector } from "../../lib";
+import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
 import { DataResourceForm } from "../data";
@@ -11,11 +11,13 @@ export const ResourceSettingPageMainView = (
   props: ResourceSettingPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id, entity } = router.query;
+  const { id } = router.query;
+
+  const entirtyObject = useEntity();
 
   const userConnector = useUserConnector({
-    connectorName: `users/${entity}/connectors/${id?.toString()}`,
-    enabled: enableQuery && !!id,
+    connectorName: entirtyObject.connectorName,
+    enabled: enableQuery && entirtyObject.isSuccess,
     accessToken: accessToken,
   });
 

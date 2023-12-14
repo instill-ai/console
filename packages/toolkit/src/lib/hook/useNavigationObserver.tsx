@@ -53,10 +53,12 @@ export function useNavigationObserver({
       ) {
         // removing the basePath from the url as it will be added by the router
         nextPath.current = url.replace(router.basePath, "");
-        killRouterEvent();
+
         if (onStopNavigate) {
           onStopNavigate();
         }
+
+        killRouterEvent();
       }
     };
 

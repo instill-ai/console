@@ -143,7 +143,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
       accessorKey: "uid",
       header: () => <div className="max-w-[100px] text-center"></div>,
       cell: ({ row }) => {
-        return (
+        return accessToken ? (
           <div className="flex justify-center">
             <Dialog.Root>
               <Dialog.Trigger asChild>
@@ -159,7 +159,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
               </Dialog.Content>
             </Dialog.Root>
           </div>
-        );
+        ) : null;
       },
     },
   ];

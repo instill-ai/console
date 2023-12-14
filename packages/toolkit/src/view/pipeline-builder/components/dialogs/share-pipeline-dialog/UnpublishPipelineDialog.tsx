@@ -4,12 +4,12 @@ import {
   InstillStore,
   UpdateUserPipelinePayload,
   toastInstillError,
+  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
-import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -18,26 +18,26 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UnpublishPipelineDialog = () => {
-  const router = useRouter();
-  const { id, entity } = router.query;
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
+  const entirtyObject = useEntity();
+
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName: entirtyObject.pipelineName,
+    enabled: enabledQuery && entirtyObject.isSuccess,
     accessToken,
-    enabled: enabledQuery && !!accessToken,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function unPublishPipeline() {
-    if (!pipeline.isSuccess) return;
+    if (!pipeline.isSuccess || !entirtyObject.isSuccess) return;
 
     try {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${id}`,
+        name: entirtyObject.pipelineName,
         permission: {
           ...pipeline.data.permission,
           users: {
@@ -50,13 +50,14 @@ export const UnpublishPipelineDialog = () => {
       };
 
       await updateUserPipeline.mutateAsync({ payload, accessToken });
-      updateDialogSharePipelineIsOpen(() => false);
 
       toast({
         title: "Pipeline successfully unpublished",
         variant: "alert-success",
         size: "small",
       });
+
+      updateDialogSharePipelineIsOpen(() => false);
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when unpublishing pipeline",

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
@@ -6,6 +5,7 @@ import {
   Nullable,
   UpdateUserConnectorPayload,
   useCreateUserConnector,
+  useEntity,
   useUpdateUserConnector,
 } from "../../lib";
 import {
@@ -29,13 +29,16 @@ export const BlockchainResourceAutoForm = (
 ) => {
   const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
-  const router = useRouter();
-  const { entity } = router.query;
+
+  const entityObject = useEntity();
 
   const createUserConnector = useCreateUserConnector();
   const updateUserConnector = useUpdateUserConnector();
-
   async function handleSubmit(data: ResourceResourceFormData) {
+    if (!entityObject.isSuccess) {
+      return;
+    }
+
     if (!resource) {
       try {
         const payload = {
@@ -47,7 +50,7 @@ export const BlockchainResourceAutoForm = (
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          userName: `users/${entity}`,
+          entityName: entityObject.entityName,
           accessToken,
         });
 

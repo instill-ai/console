@@ -11,11 +11,11 @@ export const useCreateUserPipeline = () => {
 
   return useMutation(
     async ({
-      userName,
+      entityName,
       payload,
       accessToken,
     }: {
-      userName: string;
+      entityName: string;
       payload: CreateUserPipelinePayload;
       accessToken: Nullable<string>;
     }) => {
@@ -24,27 +24,29 @@ export const useCreateUserPipeline = () => {
       }
 
       const pipeline = await createUserPipelineMutation({
-        userName,
+        entityName,
         payload,
         accessToken,
       });
 
-      return Promise.resolve({ pipeline, userName });
+      return Promise.resolve({ pipeline, entityName });
     },
     {
-      onSuccess: async ({ pipeline, userName }) => {
+      onSuccess: async ({ pipeline, entityName }) => {
         queryClient.setQueryData<Pipeline>(
           ["pipelines", pipeline.name],
           pipeline
         );
 
         queryClient.invalidateQueries(["pipelines", "infinite"]);
-        queryClient.invalidateQueries(["pipelines", userName, "infinite"]);
+        queryClient.invalidateQueries(["pipelines", entityName, "infinite"]);
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-          old
-            ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-            : [pipeline]
+        queryClient.setQueryData<Pipeline[]>(
+          ["pipelines", entityName],
+          (old) =>
+            old
+              ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
+              : [pipeline]
         );
 
         queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>

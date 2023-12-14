@@ -59,7 +59,7 @@ export const Footer = ({
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
-    enabled: enabledQuery && !!accessToken,
+    enabled: enabledQuery,
     accessToken,
   });
 
@@ -81,7 +81,7 @@ export const Footer = ({
       await createPipeline.mutateAsync({
         payload,
         accessToken,
-        userName: me.data.name,
+        entityName: me.data.name,
       });
 
       setIsCloning(false);
@@ -112,8 +112,6 @@ export const Footer = ({
     }
     return sortPipelineReleases(pipeline.releases)[0].id;
   }, [pipeline]);
-
-  console.log(latestRelease);
 
   return (
     <div className="flex flex-col px-6 pb-4">

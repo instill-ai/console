@@ -32,10 +32,12 @@ import {
   OperatorDefinition,
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
+  checkNamespace,
   env,
   generateRandomReadableName,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
+  useEntity,
   useInstillStore,
   useUpdateUserPipeline,
   useUserMe,
@@ -94,7 +96,6 @@ export const FlowControl = (props: FlowControlProps) => {
     updateDialogSharePipelineIsOpen,
   } = useInstillStore(useShallow(selector));
   const router = useRouter();
-  const { entity } = router.query;
 
   const { toast } = useToast();
 
@@ -102,6 +103,8 @@ export const FlowControl = (props: FlowControlProps) => {
     enabled: enableQuery,
     accessToken,
   });
+
+  const entityObject = useEntity();
 
   const createUserPipeline = useCreateUserPipeline();
   const updateUserPipeline = useUpdateUserPipeline();
@@ -114,7 +117,7 @@ export const FlowControl = (props: FlowControlProps) => {
   const [isReleasing, setIsReleasing] = React.useState(false);
 
   async function handleSavePipeline() {
-    if (!pipelineId) {
+    if (!pipelineId || !entityObject.isSuccess) {
       return;
     }
 
@@ -122,7 +125,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
     if (!pipelineIsNew && pipelineRecipeIsDirty) {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${pipelineId}`,
+        name: entityObject.pipelineName,
         description: pipelineDescription ?? undefined,
         recipe: constructPipelineRecipe(nodes),
         metadata: composePipelineMetadataFromNodes(nodes),
@@ -173,7 +176,7 @@ export const FlowControl = (props: FlowControlProps) => {
 
     try {
       const res = await createUserPipeline.mutateAsync({
-        userName: `users/${entity}`,
+        entityName: entityObject.entityName,
         payload,
         accessToken,
       });
@@ -208,6 +211,10 @@ export const FlowControl = (props: FlowControlProps) => {
   }
 
   const codeSnippte = React.useMemo(() => {
+    if (!entityObject.isSuccess) {
+      return "";
+    }
+
     const input: GeneralRecord = {};
 
     const startNode = nodes.find(
@@ -291,12 +298,19 @@ export const FlowControl = (props: FlowControlProps) => {
 
     snippet = snippet
       .replace(/\{vdp-pipeline-base-url\}/g, env("NEXT_PUBLIC_API_GATEWAY_URL"))
-      .replace(/\{pipeline-name\}/g, `users/${entity}/pipelines/${pipelineId}`)
+      .replace(/\{pipeline-name\}/g, entityObject.pipelineName)
       .replace(/\{input-array\}/g, inputsString)
       .replace(/\{trigger-endpoint\}/g, triggerEndpoint);
 
     return snippet;
-  }, [nodes, pipelineId, appEnv, entity, currentVersion]);
+  }, [
+    nodes,
+    pipelineId,
+    appEnv,
+    entityObject.isSuccess,
+    entityObject.pipelineName,
+    currentVersion,
+  ]);
 
   const canSave = React.useMemo(() => {
     if (!pipelineRecipeIsDirty) {
@@ -621,7 +635,7 @@ export const FlowControl = (props: FlowControlProps) => {
                 await createUserPipeline.mutateAsync({
                   payload,
                   accessToken,
-                  userName: user.data.name,
+                  entityName: user.data.name,
                 });
 
                 setIsCloning(false);

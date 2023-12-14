@@ -16,10 +16,10 @@ import {
   Nullable,
   UpdateUserPipelinePayload,
   toastInstillError,
+  useEntity,
   useInstillStore,
   useUpdateUserPipeline,
 } from "../../../lib";
-import { useRouter } from "next/router";
 
 const PipelineEditMetadataSchema = z.object({
   description: z.string().optional().nullable(),
@@ -42,17 +42,16 @@ export const EditMetadataDialog = ({
   }, [description, reset]);
 
   const accessToken = useInstillStore((store) => store.accessToken);
-
-  const router = useRouter();
-  const { id, entity } = router.query;
   const { toast } = useToast();
+
+  const entityObject = useEntity();
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function onSubmit(data: z.infer<typeof PipelineEditMetadataSchema>) {
-    if (!id || !entity || !accessToken) return;
+    if (!entityObject.isSuccess || !accessToken) return;
 
     const payload: UpdateUserPipelinePayload = {
-      name: `users/${entity}/pipelines/${id}`,
+      name: entityObject.pipelineName,
       description: data.description ?? undefined,
     };
 

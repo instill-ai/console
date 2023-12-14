@@ -56,9 +56,9 @@ export const PublishPipelineDialog = () => {
   const { id, entity } = router.query;
 
   const pipeline = useUserPipeline({
-    pipelineName: `users/${entity}/pipelines/${id}`,
+    pipelineName,
     accessToken,
-    enabled: enabledQuery && !!accessToken && !pipelineIsNew,
+    enabled: enabledQuery && !pipelineIsNew,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();
@@ -94,8 +94,8 @@ export const PublishPipelineDialog = () => {
         payload,
         accessToken,
       });
+
       setIsPublishing(false);
-      updateDialogPublishPipelineIsOpen(() => false);
 
       toast({
         size: "large",
@@ -118,6 +118,8 @@ export const PublishPipelineDialog = () => {
           </div>
         ),
       });
+
+      updateDialogPublishPipelineIsOpen(() => false);
     } catch (err) {
       setIsPublishing(false);
       updateDialogPublishPipelineIsOpen(() => false);

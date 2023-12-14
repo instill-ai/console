@@ -17,11 +17,11 @@ export type CreateUserConnectorResponse = {
 };
 
 export async function createUserConnectorMutation({
-  userName,
+  entityName,
   payload,
   accessToken,
 }: {
-  userName: string;
+  entityName: string;
   payload: CreateUserConnectorPayload;
   accessToken: Nullable<string>;
 }) {
@@ -29,7 +29,7 @@ export async function createUserConnectorMutation({
     const client = createInstillAxiosClient(accessToken, "vdp");
 
     const res = await client.post<CreateUserConnectorResponse>(
-      `${userName}/connectors`,
+      `${entityName}/connectors`,
       payload
     );
     return Promise.resolve(res.data.connector);

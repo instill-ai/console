@@ -24,6 +24,7 @@ import {
   useAirbyteSelectedConditionMap,
   useBuildAirbyteYup,
   useCreateUserConnector,
+  useEntity,
   useUpdateUserConnector,
   validateInstillID,
 } from "../../lib";
@@ -32,7 +33,6 @@ import {
   recursiveReplaceTargetValue,
 } from "../pipeline-builder";
 import { AirbyteDestinationFields } from "../airbyte";
-import { useRouter } from "next/router";
 import { LoadingSpin } from "../../components";
 import { InstillErrors } from "../../constant/errors";
 
@@ -65,8 +65,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
   } = props;
 
   const { toast } = useToast();
-  const router = useRouter();
-  const { entity } = router.query;
+
+  const entityObject = useEntity();
 
   const [isSaving, setIsSaving] = React.useState(false);
 
@@ -143,7 +143,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
   const updateData = useUpdateUserConnector();
 
   const handleCreateData = React.useCallback(async () => {
-    if (!fieldValues || !formYup || isSaving) {
+    if (!fieldValues || !formYup || isSaving || !entityObject.isSuccess) {
       return;
     }
 
@@ -197,7 +197,6 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     }
 
     setFieldErrors(null);
-
     setIsSaving(true);
 
     if (!dataResource) {
@@ -209,7 +208,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       };
 
       createData.mutate(
-        { userName: `users/${entity}`, payload, accessToken },
+        { entityName: entityObject.entityName, payload, accessToken },
         {
           onSuccess: ({ connector }) => {
             if (onSubmit) {
@@ -312,8 +311,9 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     toast,
     dataResource,
     updateData,
-    entity,
     isSaving,
+    entityObject.isSuccess,
+    entityObject.entityName,
   ]);
 
   return (

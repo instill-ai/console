@@ -13,6 +13,7 @@ export type CreateUserPipelinePayload = {
   description?: string;
   recipe: RawPipelineRecipe;
   metadata: GeneralRecord;
+  permission?: RawPipelinePermission;
 };
 
 export type CreatePipelineResponse = {
@@ -20,11 +21,11 @@ export type CreatePipelineResponse = {
 };
 
 export async function createUserPipelineMutation({
-  userName,
+  entityName,
   payload,
   accessToken,
 }: {
-  userName: string;
+  entityName: string;
   payload: CreateUserPipelinePayload;
   accessToken: Nullable<string>;
 }) {
@@ -32,7 +33,7 @@ export async function createUserPipelineMutation({
     const client = createInstillAxiosClient(accessToken, "vdp");
 
     const { data } = await client.post<CreatePipelineResponse>(
-      `${userName}/pipelines`,
+      `/${entityName}/pipelines`,
       payload
     );
     return Promise.resolve(data.pipeline);

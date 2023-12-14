@@ -1,11 +1,12 @@
-import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorWithDefinition,
+  CreateUserConnectorPayload,
   Nullable,
   UpdateUserConnectorPayload,
   useCreateUserConnector,
+  useEntity,
   useUpdateUserConnector,
 } from "../../lib";
 import {
@@ -27,16 +28,20 @@ export type AIResourceAutoFormProps = {
 export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
   const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
-  const router = useRouter();
-  const { entity } = router.query;
 
   const createUserConnector = useCreateUserConnector();
   const updateUserConnector = useUpdateUserConnector();
 
+  const entityObject = useEntity();
+
   async function handleSubmit(data: ResourceResourceFormData) {
+    if (!entityObject.isSuccess) {
+      return;
+    }
+
     if (!resource) {
       try {
-        const payload = {
+        const payload: CreateUserConnectorPayload = {
           id: data.id ?? undefined,
           connector_definition_name: definition.name,
           description: data.description ?? undefined,
@@ -45,7 +50,7 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          userName: `users/${entity}`,
+          entityName: entityObject.entityName,
           accessToken,
         });
 

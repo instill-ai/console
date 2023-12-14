@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { UserMembership } from "../../lib";
-import { ImageWithFallback } from "../../components";
+import { EntityAvatar } from "../../components";
 
 export const ProfileBio = ({
   name,
@@ -32,25 +32,18 @@ export const ProfileBio = ({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col gap-y-8">
+    <div className="flex w-[320px] flex-col gap-y-8">
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex w-full px-20">
-          <div className="flex h-40 w-40 items-center justify-center rounded-full bg-semantic-bg-line">
-            {avatar ? (
-              <ImageWithFallback
-                width={96}
-                height={96}
-                src={avatar}
-                alt="This user's avatar"
-                fallbackImg={
-                  <Icons.User02 className="m-auto h-20 w-20 stroke-semantic-fg-secondary" />
-                }
-              />
-            ) : (
-              <Icons.User02 className="h-20 w-20 stroke-semantic-fg-secondary" />
-            )}
-          </div>
-        </div>
+        <EntityAvatar
+          src={avatar}
+          className="mx-auto h-40 w-40"
+          fallbackImg={
+            <div className="flex h-40 w-40 bg-semantic-bg-line">
+              <Icons.User02 className="m-auto h-20 w-20 stroke-semantic-fg-secondary" />
+            </div>
+          }
+          entityName={name}
+        />
         <div className="flex w-full flex-col items-center space-y-1">
           <h3 className="text-semantic-fg-primary product-headings-heading-3">
             {name}
@@ -102,11 +95,10 @@ export const ProfileBio = ({
                 key={membership.name}
                 className="flex items-center rounded-sm border border-semantic-bg-line p-2.5"
               >
-                <ImageWithFallback
-                  width={20}
-                  height={20}
-                  src={membership.organization.profile_avatar ?? ""}
-                  alt={`${membership.organization.id}-logo`}
+                <EntityAvatar
+                  entityName={membership.organization.name}
+                  src={membership.organization.profile_avatar ?? null}
+                  className="h-5 w-5"
                   fallbackImg={
                     <Icons.User02 className="h-5 w-5 stroke-semantic-fg-secondary" />
                   }

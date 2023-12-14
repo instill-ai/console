@@ -17,6 +17,8 @@ export async function fetchPipelines(accessToken: Nullable<string>) {
   }
 }
 
+// This is a public API, we won't block unauth users from accessing this
+
 export const usePipelines = ({
   enabled,
   accessToken,
@@ -33,10 +35,6 @@ export const usePipelines = ({
   return useQuery(
     ["pipelines"],
     async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       const pipelines = await fetchPipelines(accessToken);
 
       return Promise.resolve(pipelines);

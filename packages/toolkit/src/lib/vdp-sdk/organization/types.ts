@@ -11,6 +11,7 @@ export type Organization = {
   customer_id: string;
   profile_avatar: Nullable<string>;
   profile_data: Nullable<GeneralRecord>;
+  owner: Nullable<User>;
 };
 
 export type UserMembership = {

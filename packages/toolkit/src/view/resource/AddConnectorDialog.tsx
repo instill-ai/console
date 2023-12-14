@@ -62,7 +62,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
         ) : (
           <Button className="gap-x-2" variant="primary" size="lg">
             <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-            Add connector
+            Create connector
           </Button>
         )}
       </Dialog.Trigger>
@@ -73,7 +73,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
               <Dialog.Close className="bg-semantic-bg-primary" />
               <Dialog.Header className="mb-5">
                 <Dialog.Title className="mx-auto !product-headings-heading-3">
-                  Add a connector
+                  Create a connector
                 </Dialog.Title>
                 <Dialog.Description className="mx-auto">
                   Select a connector definition to create new connector

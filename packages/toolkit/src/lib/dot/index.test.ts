@@ -109,7 +109,7 @@ describe("setter", () => {
   });
 
   // We are currently don't support bracket path
-
+  // eslint-disable-next-line vitest/no-commented-out-tests
   // it("supports bracket path", () => {
   //   const obj = { x: "y" };
   //   dot.setter(obj, "nested[0]", "value");

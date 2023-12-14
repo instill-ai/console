@@ -3,15 +3,13 @@ import { listUserPipelinesQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 import type { Nullable } from "../../type";
 
+// This is a public API, we won't block unauth users from accessing this
+
 export async function fetchUserPipelines(
   userName: string,
   accessToken: Nullable<string>
 ) {
   try {
-    if (!accessToken) {
-      return Promise.reject(new Error("accessToken not provided"));
-    }
-
     const pipelines = await listUserPipelinesQuery({
       userName,
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

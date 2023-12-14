@@ -6,6 +6,7 @@ import {
   usePipelines,
   PipelinesTable,
   Profile,
+  useEntity,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
@@ -20,10 +21,12 @@ const ProfilePage: NextPageWithLayout = () => {
 
   const accessToken = useAccessToken();
 
+  const entityObject = useEntity();
+
   const user = useUser({
-    userName: entity ? `users/${String(entity)}` : null,
+    userName: entityObject.entityName,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
-    enabled: accessToken.isSuccess && !!entity,
+    enabled: accessToken.isSuccess && entityObject.isSuccess,
   });
 
   const pipelines = usePipelines({
@@ -45,7 +48,7 @@ const ProfilePage: NextPageWithLayout = () => {
             id={user.data.id}
             name={user.data.org_name}
             bio={user.data.profile_data?.bio}
-            avatar={user.data.profile_avatar}
+            avatar={user.data.profile_avatar ?? null}
             userMemberships={null}
             isOwner={user.data.id === String(entity)}
             twitterLink={user.data.profile_data?.twitter ?? null}

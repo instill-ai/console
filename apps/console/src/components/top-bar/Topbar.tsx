@@ -9,7 +9,11 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import { ImageWithFallback, useUserMe } from "@instill-ai/toolkit";
+import {
+  EntityAvatar,
+  ImageWithFallback,
+  useUserMe,
+} from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 
 export type TopbarProps = {
@@ -23,7 +27,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
 
   const accessToken = useAccessToken();
 
-  const user = useUserMe({
+  const me = useUserMe({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
@@ -44,10 +48,10 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           <div className="flex flex-1 flex-row">{children}</div>
         ) : (
           <React.Fragment>
-            {user.isSuccess ? (
+            {me.isSuccess ? (
               <React.Fragment>
                 <TopbarLink
-                  href={`/${user.data.id}/pipelines`}
+                  href={`/${me.data.id}/pipelines`}
                   icon={
                     <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />
                   }
@@ -56,7 +60,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   className="mx-1 my-2 px-4"
                 />
                 <TopbarLink
-                  href={`/${user.data.id}/connectors`}
+                  href={`/${me.data.id}/connectors`}
                   icon={
                     <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
                   }
@@ -65,17 +69,17 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   className="mx-1 my-2 px-4"
                 />
                 <TopbarLink
-                  href={`/${user.data.id}/model-hub`}
+                  href={`/${me.data.id}/model`}
                   icon={
                     <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />
                   }
                   name="Model Hub"
-                  hightlighted={router.pathname.split("/")[2] === "model-hub"}
+                  hightlighted={router.pathname.split("/")[2] === "model"}
                   className="mx-1 my-2 px-4"
                 />
 
                 <TopbarLink
-                  href={`/${user.data.id}/dashboard`}
+                  href={`/${me.data.id}/dashboard`}
                   icon={
                     <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
                   }
@@ -94,24 +98,19 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
       </div>
 
       <div className="flex w-1/3 justify-end gap-x-4">
-        {user.isSuccess ? (
+        {me.isSuccess ? (
           <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <div className="my-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-semantic-bg-secondary">
-                {user.data.profile_avatar === "" ? (
-                  <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                ) : (
-                  <ImageWithFallback
-                    width={20}
-                    height={20}
-                    alt={`${user.data.first_name} ${user.data.last_name} avatar`}
-                    src={user.data.profile_avatar}
-                    fallbackImg={
-                      <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                    }
-                  />
-                )}
-              </div>
+            <DropdownMenu.Trigger>
+              <EntityAvatar
+                src={me.data.profile_avatar ?? null}
+                className="w-10 h-10 cursor-pointer my-auto"
+                entityName={me.data.name}
+                fallbackImg={
+                  <div className="w-10 flex h-10 bg-semantic-bg-secondary rounded-full">
+                    <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                  </div>
+                }
+              />
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
               className="w-[240px] !rounded-sm !px-0 !py-0"
@@ -120,23 +119,22 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
             >
               <div className="flex flex-col px-4 py-3">
                 <div className="flex flex-row gap-x-2">
-                  <div className="my-auto flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-semantic-bg-secondary">
-                    <ImageWithFallback
-                      width={20}
-                      height={20}
-                      alt={`${user.data.first_name} ${user.data.last_name} avatar`}
-                      src={user.data.profile_avatar}
-                      fallbackImg={
-                        <Icons.User02 className="my-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                      }
-                    />
-                  </div>
+                  <EntityAvatar
+                    src={me.data.profile_avatar ?? null}
+                    className="w-10 h-10"
+                    entityName={me.data.name}
+                    fallbackImg={
+                      <div className="w-10 flex h-10 bg-semantic-bg-secondary rounded-full">
+                        <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                      </div>
+                    }
+                  />
                   <div className="flex flex-col">
                     <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                      {user.data.first_name} {user.data.last_name}
+                      {me.data.first_name} {me.data.last_name}
                     </h3>
                     <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      {user.data.email}
+                      {me.data.email}
                     </p>
                   </div>
                 </div>
@@ -145,7 +143,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               <TopbarDropdownGroup>
                 <TopbarDropdownItem
                   onClick={() => {
-                    router.push(`/${user.data.id}`);
+                    router.push(`/${me.data.id}`);
                   }}
                 >
                   <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />

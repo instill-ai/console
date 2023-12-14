@@ -11,11 +11,14 @@ import {
   InstillStore,
   Nullable,
   UpdateUserPipelinePayload,
+  checkNamespace,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
   useInstillStore,
+  useNamespaceType,
   useNavigationObserver,
   usePipelineBuilderGraph,
+  useEntity,
   useSmartHint,
   useUpdateUserPipeline,
   useUserPipeline,
@@ -77,9 +80,11 @@ export const PipelineBuilderMainView = (
     router,
   });
 
+  const { pipelineName, entityName } = useEntity();
+
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !!id && !pipelineIsNew,
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    enabled: enableQuery && !!pipelineName && !pipelineIsNew,
+    pipelineName,
     accessToken,
     retry: false,
   });
@@ -95,23 +100,10 @@ export const PipelineBuilderMainView = (
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
   /* -------------------------------------------------------------------------
-   * If the pipeline is not new and we can't find it, redirect to /pipelines
-   * -----------------------------------------------------------------------*/
-
-  React.useEffect(() => {
-    if (!pipelineIsNew && pipeline.isError) {
-      router.push(`/${entity}/pipelines`);
-    }
-  }, [pipeline.isError, pipelineIsNew, router, entity]);
-
-  /* -------------------------------------------------------------------------
    * Initialize the pipeline graph
    * -----------------------------------------------------------------------*/
 
-  const { graphIsInitialized } = usePipelineBuilderGraph({
-    enableQuery,
-    accessToken,
-  });
+  const { graphIsInitialized } = usePipelineBuilderGraph();
 
   /* -------------------------------------------------------------------------
    * Render
@@ -132,6 +124,7 @@ export const PipelineBuilderMainView = (
           enableQuery={enableQuery}
           isLoading={graphIsInitialized ? false : true}
           appEnv="APP_ENV_CLOUD"
+          isError={!pipelineIsNew && pipeline.isError}
         />
         <div
           className={cn(
@@ -163,13 +156,13 @@ export const PipelineBuilderMainView = (
           confirmNavigation();
         }}
         onSave={async () => {
-          if (!pipelineId) {
+          if (!pipelineId || !accessToken || !entityName || !pipelineName) {
             return;
           }
 
           if (!pipelineIsNew) {
             const payload: UpdateUserPipelinePayload = {
-              name: `users/${entity}/pipelines/${pipelineId}`,
+              name: pipelineName,
               recipe: constructPipelineRecipe(nodes),
               metadata: composePipelineMetadataFromNodes(nodes),
             };
@@ -216,7 +209,7 @@ export const PipelineBuilderMainView = (
 
           try {
             await createPipeline.mutateAsync({
-              userName: `users/${entity}`,
+              entityName,
               payload,
               accessToken,
             });
