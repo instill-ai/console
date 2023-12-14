@@ -27,6 +27,7 @@ const selector = (store: InstillStore) => ({
   initializedByTemplateOrClone: store.initializedByTemplateOrClone,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
 });
 
 export function usePipelineBuilderGraph() {
@@ -46,6 +47,7 @@ export function usePipelineBuilderGraph() {
     initializedByTemplateOrClone,
     accessToken,
     enabledQuery,
+    updatePipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
@@ -195,6 +197,8 @@ export function usePipelineBuilderGraph() {
       }
       return;
     }
+
+    updatePipelineIsReadOnly(() => false);
 
     // Update pipeline information
     setPipelineUid(pipeline.data.uid);

@@ -13,6 +13,7 @@ export type CreateUserPipelinePayload = {
   description?: string;
   recipe: RawPipelineRecipe;
   metadata: GeneralRecord;
+  permission?: RawPipelinePermission;
 };
 
 export type CreatePipelineResponse = {

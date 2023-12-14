@@ -46,14 +46,6 @@ export function useNavigationObserver({
         }
       }
 
-      console.log(
-        "onRouteChange",
-        url,
-        currentPath,
-        navigationConfirmed.current,
-        shouldStopNavigation
-      );
-
       if (
         shouldStopNavigation &&
         url !== currentPath &&
@@ -63,7 +55,6 @@ export function useNavigationObserver({
         nextPath.current = url.replace(router.basePath, "");
 
         if (onStopNavigate) {
-          console.log("toyoyo");
           onStopNavigate();
         }
 
