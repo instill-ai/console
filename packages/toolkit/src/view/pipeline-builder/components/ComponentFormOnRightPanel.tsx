@@ -25,7 +25,7 @@ export const ComponentFormOnRightPanel = ({
 }: ResourceComponentFormProps) => {
   const checkIsHidden = useCheckIsHidden("onRightPanel");
 
-  const { form, fields, ValidatorSchema } = useInstillForm(
+  const { form, fields, ValidatorSchema, formTree } = useInstillForm(
     definition.spec.component_specification,
     configuration,
     {

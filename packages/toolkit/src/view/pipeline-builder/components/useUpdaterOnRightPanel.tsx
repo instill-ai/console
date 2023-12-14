@@ -71,6 +71,7 @@ export function useUpdaterOnRightPanel({
                 configuration: {
                   ...node.data.component.configuration,
                   task: parsed.data.task,
+                  condition: parsed.data.condition,
                   input: {
                     ...node.data.component.configuration.input,
                     ...parsed.data.input,
@@ -95,6 +96,7 @@ export function useUpdaterOnRightPanel({
                 configuration: {
                   ...node.data.component.configuration,
                   task: parsed.data.task,
+                  condition: parsed.data.condition,
                   input: {
                     ...node.data.component.configuration.input,
                     ...parsed.data.input,

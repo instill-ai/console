@@ -1,5 +1,6 @@
 import { GeneralRecord, Nullable } from "../../../type";
 import { FieldRoot } from "./FieldRoot";
+import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
 
 export type ObjectsFieldProps = {
   title: Nullable<string>;
@@ -15,12 +16,12 @@ export const ObjectsField = (props: ObjectsFieldProps) => {
       {objects && !hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {objects?.map((object) => (
-            <div
+            <JsonView
               key={`${title}-${JSON.stringify(object)}-field`}
-              className="flex min-h-[36px] w-full whitespace-pre-wrap break-all rounded border border-semantic-bg-line p-1 text-semantic-fg-primary product-body-text-4-regular"
-            >
-              {JSON.stringify(object, null, 4)}
-            </div>
+              data={object}
+              shouldExpandNode={allExpanded}
+              style={defaultStyles}
+            />
           ))}
         </div>
       ) : null}
