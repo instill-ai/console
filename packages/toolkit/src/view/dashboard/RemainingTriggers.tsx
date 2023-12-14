@@ -28,10 +28,24 @@ export default function RemainingTriggers({
     if (!subscription) {
       return 0;
     }
-    const alpha =
-      (subscription?.quota?.pipeline_trigger.used /
-        subscription?.quota?.pipeline_trigger.quota) *
-      100;
+
+    let alpha: number = 0;
+    if (
+      subscription?.quota?.pipeline_trigger?.used &&
+      subscription?.quota?.pipeline_trigger?.quota
+    ) {
+      alpha =
+        (subscription?.quota?.pipeline_trigger?.used /
+          subscription?.quota?.pipeline_trigger?.quota) *
+        100;
+    }
+
+    if (subscription?.quota?.pipeline_trigger?.used === 0) {
+      alpha = 100;
+    }
+    if (subscription?.quota?.pipeline_trigger?.quota === 0) {
+      return 0;
+    }
 
     return Math.round(alpha);
   };
