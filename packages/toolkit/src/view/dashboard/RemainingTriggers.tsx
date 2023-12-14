@@ -1,13 +1,12 @@
 import { Nullable, User, useUser } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
-import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
 import Link from "next/link";
 
 export type Subscription = {
   plan: string;
   quota: {
-    pipeline_trigger: {
+    private_pipeline_trigger: {
       quota: number;
       used: number;
       remain: number;
@@ -31,19 +30,19 @@ export default function RemainingTriggers({
 
     let alpha: number = 0;
     if (
-      subscription?.quota?.pipeline_trigger?.used &&
-      subscription?.quota?.pipeline_trigger?.quota
+      subscription?.quota?.private_pipeline_trigger?.used &&
+      subscription?.quota?.private_pipeline_trigger?.quota
     ) {
       alpha =
-        (subscription?.quota?.pipeline_trigger?.used /
-          subscription?.quota?.pipeline_trigger?.quota) *
+        (subscription?.quota?.private_pipeline_trigger?.used /
+          subscription?.quota?.private_pipeline_trigger?.quota) *
         100;
     }
 
-    if (subscription?.quota?.pipeline_trigger?.used === 0) {
+    if (subscription?.quota?.private_pipeline_trigger?.used === 0) {
       alpha = 100;
     }
-    if (subscription?.quota?.pipeline_trigger?.quota === 0) {
+    if (subscription?.quota?.private_pipeline_trigger?.quota === 0) {
       return 0;
     }
 
