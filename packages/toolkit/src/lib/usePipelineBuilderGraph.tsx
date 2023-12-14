@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { InstillStore, useInstillStore } from "./use-instill-store";
 import { useShallow } from "zustand/react/shallow";
 import { Node } from "reactflow";
-import { useEntity } from "./usePipelineName";
+import { useEntity } from "./useEntity";
 
 const selector = (store: InstillStore) => ({
   setPipelineId: store.setPipelineId,

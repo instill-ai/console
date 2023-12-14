@@ -12,6 +12,7 @@ const selector = (store: InstillStore) => ({
 export type UseEntitySuccessReturn = {
   isSuccess: true;
   pipelineName: string;
+  connectorName: string;
   entityName: string;
   namespaceType: NamespaceType;
 };
@@ -19,6 +20,7 @@ export type UseEntitySuccessReturn = {
 export type UseEntityFailedReturn = {
   isSuccess: false;
   pipelineName: null;
+  connectorName: null;
   entityName: null;
   namespaceType: null;
 };
@@ -46,6 +48,16 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       : `users/${entity}/pipelines/${id}`;
   }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
 
+  const connectorName = React.useMemo(() => {
+    if (!namespaceType.isSuccess) {
+      return null;
+    }
+
+    return namespaceType.data === "NAMESPACE_ORGANIZATION"
+      ? `organizations/${entity}/connectors/${id}`
+      : `users/${entity}/connectors/${id}`;
+  }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
+
   const entityName = React.useMemo(() => {
     if (!namespaceType.isSuccess) {
       return null;
@@ -57,10 +69,15 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
   }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
 
   React.useEffect(() => {
-    if (entityName && pipelineName && namespaceType.isSuccess) {
+    if (
+      entityName &&
+      pipelineName &&
+      connectorName &&
+      namespaceType.isSuccess
+    ) {
       setIsSuccess(true);
     }
-  }, [entityName, pipelineName, namespaceType.isSuccess]);
+  }, [entityName, pipelineName, connectorName, namespaceType.isSuccess]);
 
   if (isSuccess) {
     return {
@@ -68,6 +85,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       entityName: entityName as string,
       namespaceType: namespaceType.data as NamespaceType,
       isSuccess,
+      connectorName: connectorName as string,
     };
   } else {
     return {
@@ -75,6 +93,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       entityName: null,
       namespaceType: null,
       isSuccess,
+      connectorName: null,
     };
   }
 }

@@ -1,6 +1,6 @@
 import { Separator } from "@instill-ai/design-system";
 
-export const ProfileSeparator = ({
+export const InlineTextSeparator = ({
   title,
   className,
 }: {

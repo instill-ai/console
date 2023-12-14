@@ -7,6 +7,7 @@ import {
   InstillStore,
   Nullable,
   getHumanReadableStringFromTime,
+  useEntity,
   useInstillStore,
   useUserPipeline,
 } from "../../../lib";
@@ -18,7 +19,6 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
-import { useRouter } from "next/router";
 
 export type BottomBarProps = {
   enableQuery: boolean;
@@ -54,13 +54,11 @@ export const BottomBar = (props: BottomBarProps) => {
     enabledQuery: pipelineIsNew ? false : enableQuery,
   });
 
-  const router = useRouter();
-
-  const { id, entity } = router.query;
+  const entityObject = useEntity();
 
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !!id && !pipelineIsNew,
-    pipelineName: id ? `users/${entity}/pipelines/${id}` : null,
+    enabled: enableQuery && entityObject.isSuccess && !pipelineIsNew,
+    pipelineName: entityObject.pipelineName,
     accessToken,
     retry: false,
   });

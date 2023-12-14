@@ -11,10 +11,11 @@ import {
   useUpdateUserPipeline,
   serialize,
   UpdateUserPipelinePayload,
+  useEntity,
 } from "../../../lib";
-import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
+import { Editor } from "@tiptap/core";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -28,9 +29,9 @@ export const Readme = ({
   readme: Nullable<string>;
 }) => {
   const { accessToken } = useInstillStore(useShallow(selector));
-  const router = useRouter();
-  const { id, entity } = router.query;
   const { toast } = useToast();
+
+  const entityObject = useEntity();
 
   const timer = React.useRef<Nullable<number>>(null);
 
@@ -39,17 +40,12 @@ export const Readme = ({
 
   const updateUserPipeline = useUpdateUserPipeline();
 
-  const editor = useEditor({
-    extensions: extensions,
-    editable: isOwner,
-    editorProps: {
-      attributes: {
-        class:
-          "markdown-body h-full p-5 rounded-md !bg-transparent focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default",
-      },
-    },
-    content: "",
-    onBlur: ({ editor }) => {
+  const onBlur = React.useCallback(
+    (editor: Editor) => {
+      if (!entityObject.isSuccess) {
+        return;
+      }
+
       if (timer.current) {
         clearTimeout(timer.current);
       }
@@ -61,7 +57,7 @@ export const Readme = ({
           const md = serialize(editor.schema, editor.getJSON());
 
           const payload: UpdateUserPipelinePayload = {
-            name: `users/${entity}/pipelines/${id}`,
+            name: entityObject.pipelineName,
             readme: md,
           };
 
@@ -85,6 +81,22 @@ export const Readme = ({
           console.error(err);
         }
       }, 1000);
+    },
+    [entityObject.isSuccess, entityObject.pipelineName, accessToken]
+  );
+
+  const editor = useEditor({
+    extensions: extensions,
+    editable: isOwner,
+    editorProps: {
+      attributes: {
+        class:
+          "markdown-body h-full p-5 rounded-md !bg-transparent focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default",
+      },
+    },
+    content: "",
+    onBlur: ({ editor }) => {
+      onBlur(editor);
     },
   });
 

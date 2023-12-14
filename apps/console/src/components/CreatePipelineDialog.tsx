@@ -255,7 +255,7 @@ export const CreatePipelineDialog = () => {
                         Private
                       </p>
                       <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                        Anyone on the internet can see this pipeline.
+                        Only you can see this pipeline.
                       </p>
                     </div>
                   </label>

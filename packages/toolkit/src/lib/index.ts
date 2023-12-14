@@ -18,4 +18,4 @@ export * from "./fillArrayWithZero";
 export * from "./toastInstillError";
 export * from "./usePipelineBuilderGraph";
 export * from "./useResourceAdditionalForm";
-export * from "./usePipelineName";
+export * from "./useEntity";

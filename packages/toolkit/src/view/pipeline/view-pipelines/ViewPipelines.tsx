@@ -1,12 +1,10 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import Fuse from "fuse.js";
 import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
   Nullable,
   Pipeline,
-  generateRandomReadableName,
   useInfiniteUserPipelines,
   InstillStore,
   useInstillStore,
@@ -19,32 +17,24 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
   UserProfileCard,
+  UserProfileCardProps,
 } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  setPipelineId: store.setPipelineId,
-  setPipelineName: store.setPipelineName,
-  updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
 export const ViewPipelines = ({
   createPipelineDialog,
+  organizations,
 }: {
   createPipelineDialog: React.ReactElement;
+  organizations?: UserProfileCardProps["organizations"];
 }) => {
-  const router = useRouter();
-  const { entity } = router.query;
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
 
-  const {
-    accessToken,
-    enabledQuery,
-    setPipelineId,
-    setPipelineName,
-    updatePipelineIsNew,
-  } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useUserMe({
     enabled: enabledQuery,
@@ -91,6 +81,7 @@ export const ViewPipelines = ({
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
           totalPublicPipelines={null}
+          organizations={organizations}
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">

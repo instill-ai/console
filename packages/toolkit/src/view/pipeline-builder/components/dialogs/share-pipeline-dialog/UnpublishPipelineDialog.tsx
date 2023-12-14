@@ -36,11 +36,11 @@ export const UnpublishPipelineDialog = () => {
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function unPublishPipeline() {
-    if (!pipeline.isSuccess) return;
+    if (!pipeline.isSuccess || !entirtyObject.isSuccess) return;
 
     try {
       const payload: UpdateUserPipelinePayload = {
-        name: `users/${entity}/pipelines/${id}`,
+        name: entirtyObject.pipelineName,
         permission: {
           ...pipeline.data.permission,
           users: {

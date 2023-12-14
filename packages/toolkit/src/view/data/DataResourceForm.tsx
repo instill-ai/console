@@ -15,18 +15,16 @@ import {
   ConnectorDefinition,
   ConnectorWithDefinition,
   CreateUserConnectorPayload,
-  NamespaceType,
   Nullable,
   UpdateUserConnectorPayload,
-  checkNamespace,
   dot,
   getInstillApiErrorMessage,
-  toastInstillError,
   useAirbyteFieldValues,
   useAirbyteFormTree,
   useAirbyteSelectedConditionMap,
   useBuildAirbyteYup,
   useCreateUserConnector,
+  useEntity,
   useUpdateUserConnector,
   validateInstillID,
 } from "../../lib";
@@ -35,7 +33,6 @@ import {
   recursiveReplaceTargetValue,
 } from "../pipeline-builder";
 import { AirbyteDestinationFields } from "../airbyte";
-import { useRouter } from "next/router";
 import { LoadingSpin } from "../../components";
 import { InstillErrors } from "../../constant/errors";
 
@@ -68,8 +65,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
   } = props;
 
   const { toast } = useToast();
-  const router = useRouter();
-  const { entity } = router.query;
+
+  const entityObject = useEntity();
 
   const [isSaving, setIsSaving] = React.useState(false);
 
@@ -146,7 +143,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
   const updateData = useUpdateUserConnector();
 
   const handleCreateData = React.useCallback(async () => {
-    if (!fieldValues || !formYup || isSaving || !entity) {
+    if (!fieldValues || !formYup || isSaving || !entityObject.isSuccess) {
       return;
     }
 
@@ -202,30 +199,6 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     setFieldErrors(null);
     setIsSaving(true);
 
-    let namespaceType: Nullable<NamespaceType> = null;
-
-    try {
-      namespaceType = await checkNamespace({
-        accessToken,
-        id: String(entity),
-      });
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when check namespace",
-        toast,
-        error,
-      });
-    }
-
-    if (!namespaceType) {
-      return;
-    }
-
-    const entityName =
-      namespaceType === "NAMESPACE_ORGANIZATION"
-        ? `organizations/${entity}`
-        : `users/${entity}`;
-
     if (!dataResource) {
       const payload: CreateUserConnectorPayload = {
         id: fieldValues.id as string,
@@ -235,7 +208,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       };
 
       createData.mutate(
-        { entityName, payload, accessToken },
+        { entityName: entityObject.entityName, payload, accessToken },
         {
           onSuccess: ({ connector }) => {
             if (onSubmit) {
@@ -338,7 +311,6 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     toast,
     dataResource,
     updateData,
-    entity,
     isSaving,
   ]);
 

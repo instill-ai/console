@@ -3,6 +3,7 @@ import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  UserMembership,
   useInstillStore,
   useShallow,
   useUserMe,
@@ -22,12 +23,14 @@ export type UserProfileCardProps = {
     title: string;
     onClick: () => void;
   };
+  organizations?: UserMembership[];
 };
 
 export const UserProfileCard = ({
   totalPipelines,
   totalPublicPipelines,
   visitorCta,
+  organizations,
 }: UserProfileCardProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -73,6 +76,27 @@ export const UserProfileCard = ({
             </p>
           </div>
           <Separator orientation="horizontal" className="my-4" />
+          {organizations ? (
+            <React.Fragment>
+              <div className="flex flex-col gap-y-2">
+                <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                  Organizations
+                </p>
+                {organizations.map((org) => (
+                  <button
+                    key={org.organization.id}
+                    onClick={() => {
+                      router.push(`/${org.organization.id}`);
+                    }}
+                    className="flex !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+                  >
+                    {org.organization.id}
+                  </button>
+                ))}
+              </div>
+              <Separator orientation="horizontal" className="my-4" />
+            </React.Fragment>
+          ) : null}
           <div className="flex flex-col gap-y-2">
             {totalPipelines ? (
               <div className="flex flex-row gap-x-2">
