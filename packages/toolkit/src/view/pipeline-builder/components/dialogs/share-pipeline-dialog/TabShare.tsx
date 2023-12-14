@@ -46,7 +46,7 @@ export const TabShare = () => {
       return false;
     }
 
-    const toplevelRule = pipeline.data.permission.users["*/*"];
+    const toplevelRule = pipeline.data.sharing.users["*/*"];
 
     if (toplevelRule && toplevelRule.enabled) {
       return true;
@@ -72,8 +72,8 @@ export const TabShare = () => {
       return;
     }
 
-    const enabledShareByLink = pipeline.data.permission.share_code
-      ? pipeline.data.permission.share_code.enabled
+    const enabledShareByLink = pipeline.data.sharing.share_code
+      ? pipeline.data.sharing.share_code.enabled
       : false;
 
     let link: Nullable<string> = null;
@@ -81,12 +81,12 @@ export const TabShare = () => {
     if (!enabledShareByLink) {
       const payload: UpdateUserPipelinePayload = {
         name: entityObject.pipelineName,
-        permission: {
-          users: pipeline.data.permission.users,
+        sharing: {
+          users: pipeline.data.sharing.users,
           share_code: {
             user: "*/*",
-            role: pipeline.data.permission.share_code?.role
-              ? pipeline.data.permission.share_code.role
+            role: pipeline.data.sharing.share_code?.role
+              ? pipeline.data.sharing.share_code.role
               : "ROLE_EXECUTOR",
             enabled: true,
           },
@@ -100,8 +100,8 @@ export const TabShare = () => {
         });
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
-        )}/${entity}/pipelines/${id}/builder?view=${pipeline.permission
-          .share_code?.code}`;
+        )}/${entity}/pipelines/${id}/builder?view=${pipeline.sharing.share_code
+          ?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
@@ -124,7 +124,7 @@ export const TabShare = () => {
     } else {
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}/builder?view=${pipeline.data.permission
+      )}/${entity}/pipelines/${id}/builder?view=${pipeline.data.sharing
         .share_code?.code}`;
       setIsUpdatingShareCodePermission(false);
     }
@@ -142,6 +142,7 @@ export const TabShare = () => {
     updatePipeline,
     toast,
     entityObject.isSuccess,
+    entityObject.pipelineName,
   ]);
 
   return (

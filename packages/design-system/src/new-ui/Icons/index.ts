@@ -62,6 +62,7 @@ import { Model } from "./Model";
 import { PauseCircle } from "./PauseCircle";
 import { MasterCard } from "./MasterCard";
 import { Menu01 } from "./Menu01";
+import { MessageChatSquare } from "./MessageChatSquare";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
 import { MessageSmileSquare } from "./MessageSmileSquare";
@@ -159,6 +160,7 @@ export const Icons = {
   PauseCircle,
   MasterCard,
   Menu01,
+  MessageChatSquare,
   Minus,
   Mail01,
   MessageSmileSquare,

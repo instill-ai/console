@@ -30,7 +30,7 @@ export const CardPipeline = (props: {
         isOwner={isOwner}
       />
       <Body ownerID={ownerID} pipeline={pipeline} />
-      <Footer ownerID={ownerID} pipeline={pipeline} isOwner={true} />
+      <Footer ownerID={ownerID} pipeline={pipeline} isOwner={isOwner} />
     </div>
   );
 };

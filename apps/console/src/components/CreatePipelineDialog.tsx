@@ -16,7 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateUserPipelinePayload,
   InstillStore,
-  RawPipelinePermission,
   toastInstillError,
   useCreateUserPipeline,
   useInstillStore,
@@ -24,6 +23,7 @@ import {
   Nullable,
   useEntity,
   LoadingSpin,
+  PipelineSharing,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
 
@@ -68,7 +68,7 @@ export const CreatePipelineDialog = () => {
 
     setCreating(true);
 
-    const permissionLevel: RawPipelinePermission =
+    const sharing: PipelineSharing =
       permission === "public"
         ? {
             users: {
@@ -115,7 +115,7 @@ export const CreatePipelineDialog = () => {
         ],
       },
       metadata: {},
-      permission: permissionLevel,
+      sharing,
     };
 
     try {

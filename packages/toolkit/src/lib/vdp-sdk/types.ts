@@ -29,3 +29,8 @@ export type Visibility =
   | "VISIBILITY_UNSPECIFIED"
   | "VISIBILITY_PRIVATE"
   | "VISIBILITY_PUBLIC";
+
+export type Permission = {
+  can_edit: boolean;
+  can_trigger: boolean;
+};

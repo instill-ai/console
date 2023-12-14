@@ -55,7 +55,7 @@ export const Body = ({
     }
 
     return allPipelines.data.filter((pipeline) => {
-      const toplevelRule = pipeline.permission.users["*/*"];
+      const toplevelRule = pipeline.sharing.users["*/*"];
 
       if (toplevelRule && toplevelRule.enabled) {
         return true;

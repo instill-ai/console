@@ -167,7 +167,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
               variant="tertiaryColour"
               size="md"
               onClick={() => {
-                router.push(`/${entityObject.pipelineName}/builder`);
+                `/${entityObject.entity}/pipelines/${entityObject.id}/builder`;
               }}
             >
               Setup
@@ -201,7 +201,9 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
               variant="tertiaryColour"
               size="md"
               onClick={() => {
-                router.push(`/${entityObject.pipelineName}/builder`);
+                router.push(
+                  `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                );
               }}
             >
               Setup
