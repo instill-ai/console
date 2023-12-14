@@ -182,7 +182,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
-    console.log("hasTargetEdges", hasTargetEdges);
   }, [edges, id]);
 
   const hasSourceEdges = React.useMemo(() => {

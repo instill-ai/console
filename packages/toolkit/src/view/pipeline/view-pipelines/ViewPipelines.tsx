@@ -29,7 +29,11 @@ const selector = (store: InstillStore) => ({
   updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
-export const ViewPipelines = () => {
+export const ViewPipelines = ({
+  createPipelineDialog,
+}: {
+  createPipelineDialog: React.ReactElement;
+}) => {
   const router = useRouter();
   const { entity } = router.query;
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -105,27 +109,7 @@ export const ViewPipelines = () => {
                 onChange={(event) => setSearchCode(event.target.value)}
               />
             </Input.Root>
-            <Button
-              className="gap-x-2"
-              variant="primary"
-              size="lg"
-              onClick={() => {
-                if (!entityObject.isSuccess) {
-                  return;
-                }
-
-                const randomName = generateRandomReadableName();
-                setPipelineId(randomName);
-                setPipelineName(
-                  `${entityObject.entityName}/pipelines/${randomName}`
-                );
-                router.push(`/${entity}/pipelines/${randomName}/builder`);
-                updatePipelineIsNew(() => true);
-              }}
-            >
-              <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-              Create Pipeline
-            </Button>
+            {createPipelineDialog}
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
