@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button, Checkbox, DataTable } from "@instill-ai/design-system";
+import { Button, DataTable } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { TriggeredPipeline } from "../../lib";

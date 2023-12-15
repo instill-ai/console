@@ -24,13 +24,25 @@ import {
   useEntity,
   LoadingSpin,
   PipelineSharing,
+  validateInstillID,
+  InstillErrors,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
 
-const CreatePipelineSchema = z.object({
-  id: z.string(),
-  description: z.string().optional().nullable(),
-});
+const CreatePipelineSchema = z
+  .object({
+    id: z.string(),
+    description: z.string().optional().nullable(),
+  })
+  .superRefine((state, ctx) => {
+    if (!validateInstillID(state.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["id"],
+      });
+    }
+  });
 
 type Permission = "public" | "private";
 
@@ -46,7 +58,7 @@ export const CreatePipelineDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [permission, setPermission] =
-    React.useState<Nullable<Permission>>(null);
+    React.useState<Nullable<Permission>>("public");
   const router = useRouter();
   const { entity } = router.query;
 
@@ -118,6 +130,8 @@ export const CreatePipelineDialog = () => {
       sharing,
     };
 
+    console.log(payload);
+
     try {
       await createPipeline.mutateAsync({
         accessToken,
@@ -140,7 +154,16 @@ export const CreatePipelineDialog = () => {
   const formID = "create-new-pipeline-form";
 
   return (
-    <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(open) => {
+        form.reset({
+          id: "",
+          description: "",
+        });
+        setOpen(open);
+      }}
+    >
       <Dialog.Trigger asChild>
         <Button className="gap-x-2" variant="primary" size="lg">
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
@@ -228,7 +251,10 @@ export const CreatePipelineDialog = () => {
               </Form.Root>
               <Separator orientation="horizontal" className="!my-5" />
               <RadioGroup.Root
-                onValueChange={(value) => setPermission(value as Permission)}
+                onValueChange={(value) => {
+                  console.log(value);
+                  setPermission(value as Permission);
+                }}
                 className="!flex flex-col gap-x-2"
                 defaultValue="public"
               >

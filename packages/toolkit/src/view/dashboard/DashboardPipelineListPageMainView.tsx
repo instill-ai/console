@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SelectOption, Button, Icons } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 // import SemiCircleProgressBar from "react-progressbar-semicircle";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
@@ -14,7 +14,6 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useUser,
   useNamespaceType,
   useUsersSubscription,
   useOrganizationsSubscription,

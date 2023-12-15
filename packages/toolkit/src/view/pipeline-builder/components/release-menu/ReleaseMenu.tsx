@@ -5,7 +5,6 @@ import { SemverSelect } from "./SemverSelect";
 import {
   CreateUserPipelineReleasePayload,
   InstillStore,
-  checkNamespace,
   toastInstillError,
   useCreateUserPipelineRelease,
   useEntity,
@@ -111,6 +110,8 @@ export const ReleaseMenu = ({
       releasePipelineVersion,
       setIsReleasing,
       toast,
+      entityObject.isSuccess,
+      entityObject.pipelineName,
     ]
   );
 

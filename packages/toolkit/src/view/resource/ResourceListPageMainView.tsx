@@ -13,8 +13,7 @@ export type ResourceListPageMainViewProps = GeneralPageProp;
 export const ResourceListPageMainView = (
   props: ResourceListPageMainViewProps
 ) => {
-  const { enableQuery, accessToken, router } = props;
-  const { entity } = router.query;
+  const { enableQuery, accessToken } = props;
   const [addConnectorDialogIsOpen, setAddConnectorDialogIsOpen] =
     React.useState(false);
 

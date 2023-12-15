@@ -5,6 +5,7 @@ import { Nullable } from "vitest";
 import * as z from "zod";
 import { Form, Input, Textarea } from "@instill-ai/design-system";
 import { InstillErrors } from "../constant/errors";
+import { validateInstillID } from "./utility";
 
 export const ResourceAdditionalFormSchema = z
   .object({
@@ -12,8 +13,7 @@ export const ResourceAdditionalFormSchema = z
     description: z.string().nullable().optional(),
   })
   .superRefine((val, ctx) => {
-    const regexPattern = new RegExp("^[a-z_][-a-z_0-9]{0,31}$");
-    if (!regexPattern.test(val.id)) {
+    if (!validateInstillID(val.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: InstillErrors.IDInvalidError,

@@ -15,7 +15,6 @@ import {
   useUser,
   useUserMe,
 } from "../../lib";
-import { ImageWithFallback } from "../ImageWithFallback";
 import { Icons, useToast } from "@instill-ai/design-system";
 import { getRawPipelineRecipeFromPipelineRecipe } from "../../view";
 import { Menu } from "./Menu";
