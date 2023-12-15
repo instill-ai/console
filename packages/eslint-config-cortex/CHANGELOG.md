@@ -1,5 +1,17 @@
 # eslint-config-cortex
 
+## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.6.0...@instill-ai/eslint-config-cortex-v0.7.0) (2023-12-15)
+
+
+### Features
+
+* **pipeline-builder:** User can publish their pipeline to the hub  ([#770](https://github.com/instill-ai/console/issues/770)) ([0ce35d2](https://github.com/instill-ai/console/commit/0ce35d2c6be45a684622b6bedb0a96dfe15202fb))
+
+
+### Bug Fixes
+
+* fix hub not correctly fetch current user and unpublish-publish pipeline issue ([#789](https://github.com/instill-ai/console/issues/789)) ([7d6214b](https://github.com/instill-ai/console/commit/7d6214bf8824389a18cee0e238c9b44b3a967b4d))
+
 ## [0.6.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.5.2...@instill-ai/eslint-config-cortex-v0.6.0) (2023-11-28)
 
 

@@ -1,5 +1,34 @@
 # @instill-ai/design-system
 
+## [0.59.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.58.0...@instill-ai/design-system-v0.59.0) (2023-12-15)
+
+
+### Features
+
+* adapt new permission rule from backend ([#796](https://github.com/instill-ai/console/issues/796)) ([fa3d57b](https://github.com/instill-ai/console/commit/fa3d57b7e35f0e3ae60763bc912c90efed7dae81))
+* **design-system:** add MultiSelect component ([#763](https://github.com/instill-ai/console/issues/763)) ([3229af9](https://github.com/instill-ai/console/commit/3229af993a8e41bde38c9134a758471158fd7b3e))
+* **design-system:** add RadioGroup component ([#771](https://github.com/instill-ai/console/issues/771)) ([ca51e45](https://github.com/instill-ai/console/commit/ca51e45086db72a453b2db7310a3f9792ccdee86))
+* **design-system:** add TabMenu component ([#764](https://github.com/instill-ai/console/issues/764)) ([1de671f](https://github.com/instill-ai/console/commit/1de671febeffe3a6a84a55837d8ed0d455913592))
+* **general:** Adapt new backend API version ([#773](https://github.com/instill-ai/console/issues/773)) ([a7dbb41](https://github.com/instill-ai/console/commit/a7dbb416c9db67778dc40e94fa27d19a8a4d9e09))
+* **hub:** User can have new pipeline page to display various information ([#762](https://github.com/instill-ai/console/issues/762)) ([2412830](https://github.com/instill-ai/console/commit/241283051fe0a14224288d7efdc17aa063208de8))
+* **organization:** organization teams user profile dev screens ([#743](https://github.com/instill-ai/console/issues/743)) ([786ad86](https://github.com/instill-ai/console/commit/786ad861d01dc1948d6f2d068aae8f51bec84468))
+* **pipeline-builder:** User can have new advanced pipeline creation dialog ([#792](https://github.com/instill-ai/console/issues/792)) ([931bec3](https://github.com/instill-ai/console/commit/931bec38b4a63c6bcb02d7ae5fbfd3ed95fd1d68))
+* **pipeline-builder:** User can publish their pipeline to the hub  ([#770](https://github.com/instill-ai/console/issues/770)) ([0ce35d2](https://github.com/instill-ai/console/commit/0ce35d2c6be45a684622b6bedb0a96dfe15202fb))
+* User can browse other's pipelines on hub page ([#780](https://github.com/instill-ai/console/issues/780)) ([592fb51](https://github.com/instill-ai/console/commit/592fb51d180c6075ea705905aa8eeeef9dc754aa))
+
+
+### Bug Fixes
+
+* fix wrongly used entity issue ([#793](https://github.com/instill-ai/console/issues/793)) ([9238797](https://github.com/instill-ai/console/commit/9238797f264efca2dbe9645b59c46484d59bce84))
+* **general:** fix not correctly create pipeline for organization ([#791](https://github.com/instill-ai/console/issues/791)) ([d52d395](https://github.com/instill-ai/console/commit/d52d3959599b108be4eb3febb226f1da482fee56))
+* **sdk:** Fix organization related types ([#765](https://github.com/instill-ai/console/issues/765)) ([9ea1293](https://github.com/instill-ai/console/commit/9ea1293e54db17cf40ed57c54d5b877c7bc84811))
+
+
+### Miscellaneous
+
+* add visa icon ([#760](https://github.com/instill-ai/console/issues/760)) ([cc2be0c](https://github.com/instill-ai/console/commit/cc2be0ceda47043da063ad74dbb85384261ef566))
+* **design-system:** add user plus icon ([#768](https://github.com/instill-ai/console/issues/768)) ([5b5bf88](https://github.com/instill-ai/console/commit/5b5bf88a0b464569fafaaf7113d62cdc434c4775))
+
 ## [0.58.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.57.0...@instill-ai/design-system-v0.58.0) (2023-11-28)
 
 
