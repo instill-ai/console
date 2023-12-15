@@ -549,21 +549,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                       ))}
                     </div>
                   </VerticalSortableWrapper>
-                  <div className="absolute left-[6px] top-0 -translate-y-[calc(100%+2px)]">
-                    {/* <Button
-                      type="submit"
-                      variant="secondaryGrey"
-                      size="lg"
-                      className="gap-x-2"
-                    >
-                      Run
-                      {isTriggering ? (
-                        <LoadingSpin className="!text-semantic-fg-secondary" />
-                      ) : (
-                        <Icons.Play className="h-4 w-4 stroke-semantic-fg-primary" />
-                      )}
-                    </Button> */}
-                  </div>
                 </form>
               </Form.Root>
               <Button

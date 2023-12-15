@@ -20,11 +20,7 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be a string`,
               };
             }
-            if (!value)
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
+
             return {
               valid: true,
             };
@@ -41,11 +37,7 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be an array`,
               };
             }
-            if (!value)
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
+
             return {
               valid: true,
             };
@@ -62,11 +54,7 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be a boolean`,
               };
             }
-            if (!value)
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
+
             return {
               valid: true,
             };
@@ -83,11 +71,7 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be a number`,
               };
             }
-            if (!value)
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
+
             return {
               valid: true,
             };
@@ -113,11 +97,7 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 }
               }
             }
-            if (!value)
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
+
             return {
               valid: true,
             };
@@ -128,11 +108,13 @@ export function transformStartOperatorMetadataToSuperRefineRules(
         rules.push({
           key,
           validator: (value) => {
-            if (!value)
+            if (!value) {
               return {
                 valid: false,
                 error: `${key} cannot be empty`,
               };
+            }
+
             return {
               valid: true,
             };
@@ -149,11 +131,13 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be an array`,
               };
             }
-            if (!value)
+            if (!value) {
               return {
                 valid: false,
                 error: `${key} cannot be empty`,
               };
+            }
+
             return {
               valid: true,
             };
@@ -164,11 +148,13 @@ export function transformStartOperatorMetadataToSuperRefineRules(
         rules.push({
           key,
           validator: (value) => {
-            if (!value)
+            if (!value) {
               return {
                 valid: false,
                 error: `${key} cannot be empty`,
               };
+            }
+
             return {
               valid: true,
             };
@@ -185,11 +171,13 @@ export function transformStartOperatorMetadataToSuperRefineRules(
                 error: `${key} must be an array`,
               };
             }
-            if (!value)
+            if (!value) {
               return {
                 valid: false,
                 error: `${key} cannot be empty`,
               };
+            }
+
             return {
               valid: true,
             };

@@ -31,7 +31,13 @@ export const BooleanField = ({
               disabledFieldControl={disabledFieldControl}
             />
             <Form.Control>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={(e) => {
+                  console.log(e);
+                  field.onChange(e);
+                }}
+              />
             </Form.Control>
             <Form.Description className="!text-xs" text={description} />
             <Form.Message />
