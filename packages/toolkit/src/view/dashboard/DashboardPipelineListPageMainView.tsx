@@ -18,6 +18,7 @@ import {
   useUsersSubscription,
   useOrganizationsSubscription,
   useUserMe,
+  useEntity,
 } from "../../lib";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
@@ -44,9 +45,14 @@ export const DashboardPipelineListPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
+  const entityObject = useEntity();
+
   React.useEffect(() => {
-    let queryParams = "";
-    let queryParamsPrevious = "";
+    if (!entityObject.isSuccess) {
+      return;
+    }
+    let queryParams = `owner_name='${entityObject.entityName}'`;
+    let queryParamsPrevious = `owner_name='${entityObject.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -63,18 +69,13 @@ export const DashboardPipelineListPageMainView = (
         )
       );
 
-      if (queryParams) {
-        queryParams += ` AND start='${start}' AND stop='${stop}'`;
-        queryParamsPrevious += ` AND start='${stop}' AND stop='${start}'`;
-      } else {
-        queryParams += `start='${start}' AND stop='${stop}'`;
-        queryParamsPrevious += `start='${previousTime}' AND stop='${start}'`;
-      }
+      queryParams += ` AND start='${start}' AND stop='${stop}'`;
+      queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}'`;
     }
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption]);
+  }, [selectedTimeOption, entityObject.isSuccess]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data

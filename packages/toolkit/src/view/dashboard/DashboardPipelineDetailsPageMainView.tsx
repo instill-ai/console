@@ -8,6 +8,7 @@ import {
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   getTriggersSummary,
+  useEntity,
   usePipelineTriggerRecords,
 } from "../../lib";
 import { PageTitle } from "../../components";
@@ -37,9 +38,15 @@ export const DashboardPipelineDetailsPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
+  const entityObject = useEntity();
+
   React.useEffect(() => {
-    let queryParams = ``;
-    let queryParamsPrevious = "";
+    if (!entityObject.isSuccess) {
+      return;
+    }
+
+    let queryParams = `pipeline_id='${entityObject.id}' AND owner_name='${entityObject.entityName}'`;
+    let queryParamsPrevious = `pipeline_id='${entityObject.id}' AND owner_name='${entityObject.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -55,29 +62,27 @@ export const DashboardPipelineDetailsPageMainView = (
           selectedTimeOption.value as DashboardAvailableTimeframe
         )
       );
-      queryParams += `start='${start}' AND stop='${stop}' AND pipeline_id='${id?.toString()}'`;
-      queryParamsPrevious += `start='${previousTime}' AND stop='${start}' AND pipeline_id='${id?.toString()}'`;
+      queryParams += ` AND start='${start}' AND stop='${stop}' AND pipeline_id='${id?.toString()}'`;
+      queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}' AND pipeline_id='${id?.toString()}'`;
     }
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [id, selectedTimeOption]);
+  }, [id, selectedTimeOption, entityObject.isSuccess]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
   const pipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery,
-    filter: queryString ? queryString : `pipeline_id='${id?.toString()}'`,
+    enabled: enableQuery && entityObject.isSuccess,
+    filter: queryString ? queryString : null,
     accessToken,
   });
 
   const previousPipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery,
-    filter: queryStringPrevious
-      ? queryStringPrevious
-      : `pipeline_id='${id?.toString()}'`,
+    enabled: enableQuery && entityObject.isSuccess,
+    filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });
 

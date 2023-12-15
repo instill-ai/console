@@ -34,7 +34,6 @@ export const BooleanField = ({
               <Switch
                 checked={field.value}
                 onCheckedChange={(e) => {
-                  console.log(e);
                   field.onChange(e);
                 }}
               />

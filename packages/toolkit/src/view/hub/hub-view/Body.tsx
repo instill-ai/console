@@ -6,7 +6,6 @@ import {
   InstillStore,
   Nullable,
   Pipeline,
-  useEntity,
   useInfinitePipelines,
   useInstillStore,
   useShallow,
@@ -41,12 +40,16 @@ export const Body = ({
     enabledQuery,
   });
 
-  const entityObject = useEntity();
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+    retry: false,
+  });
 
   const allPipelines = useUserPipelines({
-    userName: entityObject.entityName,
+    userName: me.isSuccess ? me.data.name : null,
+    enabled: enabledQuery && me.isSuccess,
     accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
   });
 
   const publicPipelines = React.useMemo(() => {
@@ -64,12 +67,6 @@ export const Body = ({
       return false;
     });
   }, [allPipelines.data, allPipelines.isSuccess]);
-
-  const me = useUserMe({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
-  });
 
   const searchedPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {

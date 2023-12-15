@@ -130,8 +130,6 @@ export const CreatePipelineDialog = () => {
       sharing,
     };
 
-    console.log(payload);
-
     try {
       await createPipeline.mutateAsync({
         accessToken,
@@ -252,7 +250,6 @@ export const CreatePipelineDialog = () => {
               <Separator orientation="horizontal" className="!my-5" />
               <RadioGroup.Root
                 onValueChange={(value) => {
-                  console.log(value);
                   setPermission(value as Permission);
                 }}
                 className="!flex flex-col gap-x-2"
