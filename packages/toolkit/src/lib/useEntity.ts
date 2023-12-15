@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useNamespaceType } from "./react-query-service";
 import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
 import { NamespaceType } from "./vdp-sdk";
+import { Nullable } from "./type";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -15,8 +16,8 @@ export type UseEntitySuccessReturn = {
   connectorName: string;
   entityName: string;
   namespaceType: NamespaceType;
-  entity: string;
-  id: string;
+  entity: Nullable<string>;
+  id: Nullable<string>;
 };
 
 export type UseEntityFailedReturn = {

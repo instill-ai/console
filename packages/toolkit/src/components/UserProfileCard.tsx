@@ -108,7 +108,7 @@ export const UserProfileCard = ({
                 </p>
               </div>
             ) : null}
-            {totalPublicPipelines ? (
+            {totalPublicPipelines || totalPublicPipelines === 0 ? (
               <div className="flex flex-row gap-x-2">
                 <p className="text-semantic-fg-primary product-body-text-2-semibold">
                   My active public pipelines
