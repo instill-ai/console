@@ -36,11 +36,11 @@ export function useNavigationObserver({
     navigationConfirmed.current = false;
 
     const onRouteChange = (url: string) => {
-      if (currentPath !== url) {
+      if (currentPath !== url && !shouldStopNavigation) {
         // if the user clicked on the browser back button then the url displayed in the browser gets incorrectly updated
         // This is needed to restore the correct url.
         // note: history.pushState does not trigger a page reload
-        window.history.pushState(null, "", router.basePath + currentPath);
+        // window.history.pushState(null, "", router.basePath + currentPath);
         if (onNavigate) {
           onNavigate();
         }

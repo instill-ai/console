@@ -35,6 +35,7 @@ const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   pipelineId: store.pipelineId,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
@@ -57,6 +58,7 @@ export const PipelineBuilderMainView = (
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
+    updatePipelineRecipeIsDirty,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -158,8 +160,12 @@ export const PipelineBuilderMainView = (
       <WarnUnsavedChangesModal
         open={warnUnsaveChangesModalIsOpen}
         setOpen={setWarnUnsaveChangesModalIsOpen}
-        onCancel={() => setWarnUnsaveChangesModalIsOpen(false)}
+        onCancel={() => {
+          setWarnUnsaveChangesModalIsOpen(false);
+          updatePipelineRecipeIsDirty(() => false);
+        }}
         onDiscard={() => {
+          updatePipelineRecipeIsDirty(() => false);
           confirmNavigation();
         }}
         onSave={async () => {
@@ -187,6 +193,7 @@ export const PipelineBuilderMainView = (
               });
 
               setTimeout(() => {
+                updatePipelineRecipeIsDirty(() => false);
                 confirmNavigation();
               }, 1000);
             } catch (error) {
