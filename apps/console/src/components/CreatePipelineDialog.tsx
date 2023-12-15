@@ -24,13 +24,25 @@ import {
   useEntity,
   LoadingSpin,
   PipelineSharing,
+  validateInstillID,
+  InstillErrors,
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/router";
 
-const CreatePipelineSchema = z.object({
-  id: z.string(),
-  description: z.string().optional().nullable(),
-});
+const CreatePipelineSchema = z
+  .object({
+    id: z.string(),
+    description: z.string().optional().nullable(),
+  })
+  .superRefine((state, ctx) => {
+    if (!validateInstillID(state.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["id"],
+      });
+    }
+  });
 
 type Permission = "public" | "private";
 
