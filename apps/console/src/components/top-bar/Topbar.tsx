@@ -3,18 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 import {
-  Button,
   ComplicateIcons,
   DropdownMenu,
   Icons,
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import {
-  EntityAvatar,
-  ImageWithFallback,
-  useUserMe,
-} from "@instill-ai/toolkit";
+import { EntityAvatar, useUserMe } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 
 export type TopbarProps = {

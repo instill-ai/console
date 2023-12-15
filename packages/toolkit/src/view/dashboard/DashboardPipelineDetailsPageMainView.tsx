@@ -62,8 +62,8 @@ export const DashboardPipelineDetailsPageMainView = (
           selectedTimeOption.value as DashboardAvailableTimeframe
         )
       );
-      queryParams += ` AND start='${start}' AND stop='${stop}' AND pipeline_id='${id?.toString()}'`;
-      queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}' AND pipeline_id='${id?.toString()}'`;
+      queryParams += ` AND start='${start}' AND stop='${stop}'`;
+      queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}'`;
     }
 
     setQueryString(queryParams);
