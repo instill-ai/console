@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.5...@instill-ai/design-tokens-v0.4.0) (2023-12-15)
+
+
+### Features
+
+* **user:** User can have unified and improved profile configuration ([#783](https://github.com/instill-ai/console/issues/783)) ([66c3705](https://github.com/instill-ai/console/commit/66c370514a229e4e6323fc4dd4ed4752148c75c1))
+
 ## [0.3.5](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.4...@instill-ai/design-tokens-v0.3.5) (2023-11-10)
 
 

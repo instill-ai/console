@@ -1,5 +1,64 @@
 # Changelog
 
+## [0.34.0-beta](https://github.com/instill-ai/console/compare/v0.33.1-beta...v0.34.0-beta) (2023-12-15)
+
+
+### Features
+
+* adapt new connectors breaking changes, replace connector-resources with connectors ([#725](https://github.com/instill-ai/console/issues/725)) ([1393a8b](https://github.com/instill-ai/console/commit/1393a8bc6a3e4a59972acf30c32ab20670d84f3c))
+* adapt new permission rule from backend ([#796](https://github.com/instill-ai/console/issues/796)) ([fa3d57b](https://github.com/instill-ai/console/commit/fa3d57b7e35f0e3ae60763bc912c90efed7dae81))
+* **auto-gen-form:** Support instillCredentialField attribute in auto-gen-form and correctly display field ([#630](https://github.com/instill-ai/console/issues/630)) ([dd6d7bd](https://github.com/instill-ai/console/commit/dd6d7bd1b6d16930456456f31742f8cf99e4c99a))
+* **design-system:** add MultiSelect component ([#763](https://github.com/instill-ai/console/issues/763)) ([3229af9](https://github.com/instill-ai/console/commit/3229af993a8e41bde38c9134a758471158fd7b3e))
+* **general:** Adapt new backend API version ([#773](https://github.com/instill-ai/console/issues/773)) ([a7dbb41](https://github.com/instill-ai/console/commit/a7dbb416c9db67778dc40e94fa27d19a8a4d9e09))
+* **general:** add entity profile page and clean up components and queries ([#784](https://github.com/instill-ai/console/issues/784)) ([11d1b56](https://github.com/instill-ai/console/commit/11d1b5605a050947b499f063a1c200841471ccc1))
+* **hub:** Non-auth user can still access the public console ([#788](https://github.com/instill-ai/console/issues/788)) ([c4a7577](https://github.com/instill-ai/console/commit/c4a757713236726213034f8f48adc364a0b2d0bb))
+* **hub:** User can have new pipeline page to display various information ([#762](https://github.com/instill-ai/console/issues/762)) ([2412830](https://github.com/instill-ai/console/commit/241283051fe0a14224288d7efdc17aa063208de8))
+* **organization:** organization teams user profile dev screens ([#743](https://github.com/instill-ai/console/issues/743)) ([786ad86](https://github.com/instill-ai/console/commit/786ad861d01dc1948d6f2d068aae8f51bec84468))
+* **pipeline-builder:** add a flag to make pipeline-builder fully readonly ([#777](https://github.com/instill-ai/console/issues/777)) ([d190d6b](https://github.com/instill-ai/console/commit/d190d6bb3201cefd56122aefe71668c73e27e27d))
+* **pipeline-builder:** user can edit important field on operator node ([#717](https://github.com/instill-ai/console/issues/717)) ([6e7cbc0](https://github.com/instill-ai/console/commit/6e7cbc0fbae62cbf528de92232ac5cb42ef73008))
+* **pipeline-builder:** user can have more unified nodes width across pipeline builder ([#629](https://github.com/instill-ai/console/issues/629)) ([6f0d0c4](https://github.com/instill-ai/console/commit/6f0d0c4eea07f0cccf90ed7a8cc9d8d272ee8e02))
+* **pipeline-builder:** user can have much explicit field design on start operator ([#706](https://github.com/instill-ai/console/issues/706)) ([2f52205](https://github.com/instill-ai/console/commit/2f5220541d1e0fc9877355ca674e279b932f8975))
+* **pipeline-builder:** User can have new advanced pipeline creation dialog ([#792](https://github.com/instill-ai/console/issues/792)) ([931bec3](https://github.com/instill-ai/console/commit/931bec38b4a63c6bcb02d7ae5fbfd3ed95fd1d68))
+* **pipeline-builder:** User can publish their pipeline to the hub  ([#770](https://github.com/instill-ai/console/issues/770)) ([0ce35d2](https://github.com/instill-ai/console/commit/0ce35d2c6be45a684622b6bedb0a96dfe15202fb))
+* **pipeline-builder:** Users can add note on component to describe it ([#701](https://github.com/instill-ai/console/issues/701)) ([8fad333](https://github.com/instill-ai/console/commit/8fad33395250b52dfc3e966f6eec31882d8fc5e0))
+* **pipelines:** User can have more advanced pipelines page ([#776](https://github.com/instill-ai/console/issues/776)) ([f8c29df](https://github.com/instill-ai/console/commit/f8c29df18334e8d85adfffd1b16289e312f53c04))
+* rename /resources with /connectors to simplify the term on console ([#664](https://github.com/instill-ai/console/issues/664)) ([253dbdb](https://github.com/instill-ai/console/commit/253dbdb692e85f5150b8f7c2cbe4f462c0f9263e))
+* User can browse other's pipelines on hub page ([#780](https://github.com/instill-ai/console/issues/780)) ([592fb51](https://github.com/instill-ai/console/commit/592fb51d180c6075ea705905aa8eeeef9dc754aa))
+* **user:** User can have unified and improved profile configuration ([#783](https://github.com/instill-ai/console/issues/783)) ([66c3705](https://github.com/instill-ai/console/commit/66c370514a229e4e6323fc4dd4ed4752148c75c1))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto-gen form not correctly handle re-render issue ([#665](https://github.com/instill-ai/console/issues/665)) ([2363cc4](https://github.com/instill-ai/console/commit/2363cc44e6452f8f8bb5859b12dbc2086d8f1168))
+* **docker:** fix docker hostname issue ([#698](https://github.com/instill-ai/console/issues/698)) ([a966f3c](https://github.com/instill-ai/console/commit/a966f3c007cee52ba6c0f594a011600c17e6f6ef))
+* fix codemirror intervene with each other can cause performance issue ([#755](https://github.com/instill-ai/console/issues/755)) ([3f3e5d7](https://github.com/instill-ai/console/commit/3f3e5d719dfe600b924f273745708c14fd174bb8))
+* fix creating pipeline public/private issue ([#798](https://github.com/instill-ai/console/issues/798)) ([bedc294](https://github.com/instill-ai/console/commit/bedc294dc2e35b4b61a995b04634ae3af406f979))
+* fix dashboard not correctly display organization metric ([#799](https://github.com/instill-ai/console/issues/799)) ([7f15f3a](https://github.com/instill-ai/console/commit/7f15f3a09fef50f0d49a1358557813647970f764))
+* fix dashboard query issue ([263084a](https://github.com/instill-ai/console/commit/263084a17c7674a9302d677da0a6d7d9f0dc07cb))
+* fix GA issues ([ad52286](https://github.com/instill-ai/console/commit/ad52286e3243e5a202d181c34fa6ee53934d2fb9))
+* fix google search icon is missing issue ([#678](https://github.com/instill-ai/console/issues/678)) ([bf6dde0](https://github.com/instill-ai/console/commit/bf6dde00979e275466866cd7c921baee3d97bd9f))
+* fix navigation bug and start operator input issue ([#797](https://github.com/instill-ai/console/issues/797)) ([9c8aed4](https://github.com/instill-ai/console/commit/9c8aed4016b183c7dace26fcf1fe645da391d6fc))
+* fix the bug of not correctly redirecting user back to onboarding page ([#627](https://github.com/instill-ai/console/issues/627)) ([36f903a](https://github.com/instill-ai/console/commit/36f903a35dda37ca7a0e311f3549487ae5af5e54))
+* fix wrongly used entity issue ([#793](https://github.com/instill-ai/console/issues/793)) ([9238797](https://github.com/instill-ai/console/commit/9238797f264efca2dbe9645b59c46484d59bce84))
+* **general:** fix not correctly create pipeline for organization ([#791](https://github.com/instill-ai/console/issues/791)) ([d52d395](https://github.com/instill-ai/console/commit/d52d3959599b108be4eb3febb226f1da482fee56))
+* **pipeline-builder:** fix console not correctly recognize complicated reference ([#638](https://github.com/instill-ai/console/issues/638)) ([2d91ec0](https://github.com/instill-ai/console/commit/2d91ec045b9ab4cee041c291ed3c44d17d6ee21f))
+
+
+### Miscellaneous
+
+* contributors can better contribute to our frontend project (Simplify repos) ([#599](https://github.com/instill-ai/console/issues/599)) ([75d61bd](https://github.com/instill-ai/console/commit/75d61bdb857d19974d0814f876f886f39bf8bdee))
+* **dashboard:** namananand/ins 2860 rewamp dashboard update ([#782](https://github.com/instill-ai/console/issues/782)) ([3114fdd](https://github.com/instill-ai/console/commit/3114fddd6bbcdc2c20de0b4226d6bfd803239c11))
+* **docs:** update docs about scripts and cicd ([#612](https://github.com/instill-ai/console/issues/612)) ([bc5bb94](https://github.com/instill-ai/console/commit/bc5bb9438c16ca4bbfb19c11263677c0daa1f33a))
+* fix prettier not correctly initialize ([#636](https://github.com/instill-ai/console/issues/636)) ([f729990](https://github.com/instill-ai/console/commit/f7299908ae5ef1135afee05719891da84ddc58e8))
+* **general:** use unified store with slice to better control global state ([#652](https://github.com/instill-ai/console/issues/652)) ([334298c](https://github.com/instill-ai/console/commit/334298c8050ad8782f4f9165f9cc642f2be8a341))
+* release main ([#609](https://github.com/instill-ai/console/issues/609)) ([74d9fef](https://github.com/instill-ai/console/commit/74d9fef738867308a54dbd43ba201c31eb9bfed5))
+* release main ([#642](https://github.com/instill-ai/console/issues/642)) ([b78fb4f](https://github.com/instill-ai/console/commit/b78fb4f0be1c959e70ababdaa20e7d513c91eb68))
+* release main ([#645](https://github.com/instill-ai/console/issues/645)) ([66f9f3b](https://github.com/instill-ai/console/commit/66f9f3b6114ce754a1fe735c390fb7109b567f68))
+* release main ([#679](https://github.com/instill-ai/console/issues/679)) ([7dc87fc](https://github.com/instill-ai/console/commit/7dc87fcc5ef804127921bd6490d5267534c6190a))
+* release main ([#687](https://github.com/instill-ai/console/issues/687)) ([8351939](https://github.com/instill-ai/console/commit/8351939f6f3fed15b01a114887446f8063a32eb2))
+* release main ([#756](https://github.com/instill-ai/console/issues/756)) ([99c68be](https://github.com/instill-ai/console/commit/99c68bea79a55e3da43e9a4449ddd65a78005684))
+* replace &lt;&gt;</> with <React.Fragment> ([#662](https://github.com/instill-ai/console/issues/662)) ([5ec2a71](https://github.com/instill-ai/console/commit/5ec2a71cf99bd03f160075ed0f392c31cddabe76))
+
 ## [0.33.1-alpha](https://github.com/instill-ai/console/compare/v0.33.0-alpha...v0.33.1-alpha) (2023-11-30)
 
 
