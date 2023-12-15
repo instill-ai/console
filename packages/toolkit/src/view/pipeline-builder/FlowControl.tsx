@@ -32,7 +32,6 @@ import {
   OperatorDefinition,
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
-  checkNamespace,
   env,
   generateRandomReadableName,
   getInstillApiErrorMessage,
@@ -310,6 +309,7 @@ export const FlowControl = (props: FlowControlProps) => {
     entityObject.isSuccess,
     entityObject.pipelineName,
     currentVersion,
+    pipelineId,
   ]);
 
   const canSave = React.useMemo(() => {

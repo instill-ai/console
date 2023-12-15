@@ -73,7 +73,6 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       accessToken,
       enableQuery,
       isLoading,
-      isError,
       appEnv,
     } = props;
 

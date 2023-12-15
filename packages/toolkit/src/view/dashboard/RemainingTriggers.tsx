@@ -1,4 +1,4 @@
-import { Nullable, User, useUser } from "../../lib";
+import { Nullable, User } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
 import { Button, Icons } from "@instill-ai/design-system";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function RemainingTriggers({
       return 0;
     }
 
-    let alpha: number = 0;
+    let alpha = 0;
     if (
       subscription?.quota?.private_pipeline_trigger?.used &&
       subscription?.quota?.private_pipeline_trigger?.quota
