@@ -1,6 +1,6 @@
 import { Nullable, User } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Icons, Skeleton } from "@instill-ai/design-system";
 import Link from "next/link";
 
 export type Subscription = {
@@ -67,11 +67,27 @@ export default function RemainingTriggers({
     }
   };
 
+  if (!subscriptions) {
+    return (
+      <div
+        key={`cards-skeleton`}
+        className="inline-flex h-[110px] w-[362px] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-white p-6 shadow"
+      >
+        <div className="self-stretch">
+          <Skeleton className="h-5 w-full rounded" />
+        </div>
+        <div className="self-stretch">
+          <Skeleton className="h-8 w-full rounded" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">
       <div className="my-auto w-2/3">
         <p className=" mb-2 text-semantic-fg-secondary product-body-text-3-medium">
-          Remaining Triggers
+          Remaining Private Triggers
         </p>
 
         <p className="text-semantic-fg-secondary product-body-text-4-regular">
@@ -100,7 +116,7 @@ export default function RemainingTriggers({
         />
 
         {user ? (
-          <Link href={`${user.id}/settings/billing`}>
+          <Link href={`/settings/billing`}>
             <Button variant="secondaryGrey" size="sm" className="mt-4 gap-x-2">
               <Icons.Lightning01 className="font-size-[24px] h-3 w-3 stroke-slate-800" />
               Upgrade plan
