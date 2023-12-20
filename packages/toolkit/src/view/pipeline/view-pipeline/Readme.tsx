@@ -126,8 +126,8 @@ export const Readme = ({
     <div className="flex w-full flex-1 flex-col">
       <EditorContent
         className={cn(
-          "mb-2 h-full w-full bg-transparent",
-          hasUnsavedChanges ? "rounded-sm border-2 border-semantic-bg-line" : ""
+          "mb-2 h-full w-full border-2 border-transparent bg-transparent",
+          hasUnsavedChanges ? "rounded-sm border-semantic-bg-line" : ""
         )}
         editor={editor}
       />

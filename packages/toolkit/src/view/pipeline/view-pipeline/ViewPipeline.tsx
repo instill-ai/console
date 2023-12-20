@@ -57,7 +57,7 @@ export const ViewPipeline = ({
             className="h-[378px] w-full"
           />
           <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
-            Pipeline Readme
+            Pipeline Description
           </div>
           <Readme
             isOwner={isOwner}
