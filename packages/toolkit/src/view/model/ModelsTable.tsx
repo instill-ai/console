@@ -35,7 +35,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
         );
 
         const modelNameFragments = row.original.name.split("/");
-        const modelLink = `/${modelNameFragments[1]}/model/${modelNameFragments[3]}`;
+        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}`;
 
         return (
           <div className="text-left">

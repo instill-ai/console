@@ -23,7 +23,7 @@ export const ModelHubCreatePageMainView = (
         width="w-full"
         onCreate={(initStore) => {
           initStore();
-          router.push(`/${entity}/model`);
+          router.push(`/${entity}/models`);
         }}
         accessToken={accessToken}
         enabledQuery={enableQuery}

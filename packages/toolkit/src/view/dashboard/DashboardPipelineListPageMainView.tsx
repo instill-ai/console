@@ -82,13 +82,13 @@ export const DashboardPipelineListPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const triggeredPipelines = useTriggeredPipelines({
-    enabled: enableQuery,
+    enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
   const pipelinesChart = useTriggeredPipelinesChart({
-    enabled: enableQuery,
+    enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });

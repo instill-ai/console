@@ -65,7 +65,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   className="mx-1 my-2 px-4"
                 />
                 <TopbarLink
-                  href={`/${me.data.id}/model`}
+                  href={`/${me.data.id}/models`}
                   icon={
                     <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />
                   }
