@@ -122,7 +122,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
         getIcon: (iconStyle: IconStyle) => {
           return <div className={cn(iconStyle.width, iconStyle.height)} />;
         },
-        label: "Visual Qestion Answering",
+        label: "Visual Question Answering",
       };
 
     case "TASK_TEXT_GENERATION_CHAT":
