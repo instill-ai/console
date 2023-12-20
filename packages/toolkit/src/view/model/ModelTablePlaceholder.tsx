@@ -87,7 +87,7 @@ export const ModelTablePlaceholder = (props: ModelTablePlaceholderProps) => {
       placeholderItems={placeholderItems}
       placeholderTitle="No model"
       createButtonTitle="Set up your first model"
-      createButtonLink="/model/create"
+      createButtonLink="/models/create"
       marginBottom={marginBottom}
       enableCreateButton={enableCreateButton}
     />

@@ -75,13 +75,13 @@ export const DashboardPipelineDetailsPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const pipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entityObject.isSuccess,
+    enabled: enableQuery && entityObject.isSuccess && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
   const previousPipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entityObject.isSuccess,
+    enabled: enableQuery && entityObject.isSuccess && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });

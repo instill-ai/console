@@ -101,7 +101,7 @@ export const ModelHubSettingPageMainView = (
           onConfigure={null}
           onDelete={(initStore) => {
             initStore();
-            router.push(`/${entity}/model`);
+            router.push(`/${entity}/models`);
           }}
           accessToken={accessToken}
           width="w-full"

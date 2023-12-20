@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   if (env("NEXT_PUBLIC_DISABLE_CREATE_UPDATE_DELETE_RESOURCE")) {
     return {
       redirect: {
-        destination: "/model",
+        destination: "/models",
         permanent: false,
       },
     };

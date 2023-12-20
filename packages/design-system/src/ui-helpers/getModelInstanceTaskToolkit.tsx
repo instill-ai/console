@@ -117,6 +117,22 @@ export const getModelInstanceTaskToolkit = (task: string) => {
         label: "Speech Recognition",
       };
 
+    case "TASK_VISUAL_QUESTION_ANSWERING":
+      return {
+        getIcon: (iconStyle: IconStyle) => {
+          return <div className={cn(iconStyle.width, iconStyle.height)} />;
+        },
+        label: "Visual Qestion Answering",
+      };
+
+    case "TASK_TEXT_GENERATION_CHAT":
+      return {
+        getIcon: (iconStyle: IconStyle) => {
+          return <div className={cn(iconStyle.width, iconStyle.height)} />;
+        },
+        label: "Text Generation Chat",
+      };
+
     default:
       return {
         getIcon: (iconStyle: IconStyle) => {
