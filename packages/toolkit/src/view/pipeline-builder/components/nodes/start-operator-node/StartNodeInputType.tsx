@@ -101,6 +101,11 @@ export const StartNodeInputType = ({
       label = "Multiple Files";
       break;
     }
+    case "semi-structured/object": {
+      icon = null;
+      label = "JSON object";
+      break;
+    }
     default:
       break;
   }

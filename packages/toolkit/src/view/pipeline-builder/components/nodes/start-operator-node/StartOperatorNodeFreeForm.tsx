@@ -121,6 +121,11 @@ export const StartOperatorNodeFreeForm = ({
             selectedType={selectedType}
             onSelect={() => setSelectedType("boolean")}
           />
+          <StartNodeInputType
+            type="semi-structured/object"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("semi-structured/object")}
+          />
         </div>
         <div></div>
         <div className={"flex flex-col space-y-3"}>

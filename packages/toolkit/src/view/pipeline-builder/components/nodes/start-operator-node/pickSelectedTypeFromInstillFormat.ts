@@ -34,6 +34,9 @@ export function pickSelectedTypeFromInstillFormat(
     case "array:*/*": {
       return "array:*/*";
     }
+    case "semi-structured/object": {
+      return "semi-structured/object";
+    }
     default:
       return null;
   }

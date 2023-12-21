@@ -272,6 +272,27 @@ export function pickStartOperatorFreeFormFields({
           ),
         });
         break;
+      case "semi-structured/object":
+        fields.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <StartOperatorFreeFormFields.ObjectField
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+              disabled={disabledFields}
+              keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
+            />
+          ),
+        });
+
+        break;
       default:
         break;
     }

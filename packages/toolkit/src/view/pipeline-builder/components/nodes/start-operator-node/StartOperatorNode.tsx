@@ -263,6 +263,14 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "semi-structured/object": {
+        configuraton = {
+          type: "object",
+          instillFormat: "semi-structured/object",
+          title: formData.title,
+          description: formData.description,
+        };
+      }
     }
 
     const newNodes = nodes.map((node) => {

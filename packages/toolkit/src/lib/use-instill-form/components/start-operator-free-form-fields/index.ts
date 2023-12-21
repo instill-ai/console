@@ -8,6 +8,7 @@ import { ImagesField } from "./ImagesField";
 import { LongTextField } from "./LongTextField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
+import { ObjectField } from "./ObjectField";
 import { TextareaField } from "./TextareaField";
 import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
@@ -23,6 +24,7 @@ export const StartOperatorFreeFormFields = {
   LongTextField,
   NumberField,
   NumbersField,
+  ObjectField,
   TextareaField,
   TextField,
   TextsField,

@@ -144,6 +144,18 @@ export function transformInstillJSONSchemaToZod({
   if (targetSchema.type === "object") {
     const objectProperties = targetSchema.properties ?? {};
 
+    // We need to consider semi-structured object here. This kind of object
+    // accept the object input from start operator.
+    if (targetSchema.instillFormat?.includes("semi-structured")) {
+      instillZodSchema = z.string();
+
+      if (!isRequired || forceOptional || isHidden) {
+        instillZodSchema = instillZodSchema.nullable().optional();
+      }
+
+      return instillZodSchema;
+    }
+
     let objectSchema = z.object({});
 
     for (const [entryKey, entryJsonSchema] of Object.entries(
