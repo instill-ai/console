@@ -1,6 +1,5 @@
 import * as React from "react";
 import { SelectOption } from "@instill-ai/design-system";
-// import SemiCircleProgressBar from "react-progressbar-semicircle";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
   DashboardAvailableTimeframe,
@@ -14,7 +13,6 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useNamespaceType,
   useUsersSubscription,
   useOrganizationsSubscription,
   useUserMe,
@@ -144,51 +142,58 @@ export const DashboardPipelineListPageMainView = (
     triggeredPipelineList,
   ]);
 
-  // Remaing Triggers
-  const instillUser = useUserMe({
+  // Query the Remaing Triggers
+  const me = useUserMe({
     enabled: enableQuery,
     retry: false,
     accessToken,
   });
-  const namespaceType = useNamespaceType({
-    namespace: String(instillUser.data?.id) ?? null,
-    enabled: enableQuery,
-    accessToken,
-  });
+
   const userSubscription = useUsersSubscription({
-    userName: instillUser.isSuccess ? instillUser.data.id : null,
+    userName: entityObject.isSuccess ? entityObject.entityName : null,
     enabled:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_USER"
-        ? enableQuery
-        : false,
+      entityObject.isSuccess && entityObject.namespaceType === "NAMESPACE_USER",
     accessToken,
   });
+
   const organizationSubscription = useOrganizationsSubscription({
-    oraganizationName: instillUser.isSuccess ? instillUser.data.id : null,
+    oraganizationName: entityObject.isSuccess ? entityObject.entityName : null,
     enabled:
-      namespaceType.isSuccess && namespaceType.data === "NAMESPACE_ORGANIZATION"
-        ? true
-        : false,
+      entityObject.isSuccess &&
+      entityObject.namespaceType === "NAMESPACE_ORGANIZATION",
     accessToken,
   });
+
+  // Determine the subscription array by the type of current entity
+
   const subscriptions = React.useMemo(() => {
-    if (namespaceType.data === "NAMESPACE_USER") {
-      if (userSubscription.isLoading) {
-        userSubscription.refetch();
-      }
-      if (userSubscription.data) {
-        return userSubscription;
-      }
+    if (!entityObject.isSuccess) {
+      return null;
     }
-    if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
-      if (organizationSubscription.isLoading) {
-        organizationSubscription.refetch();
-      }
-      if (organizationSubscription.data) {
-        return organizationSubscription;
-      }
+
+    if (
+      entityObject.namespaceType === "NAMESPACE_USER" &&
+      userSubscription.isSuccess
+    ) {
+      return userSubscription.data;
     }
-  }, [namespaceType, userSubscription, organizationSubscription]);
+
+    if (
+      entityObject.namespaceType === "NAMESPACE_ORGANIZATION" &&
+      organizationSubscription.isSuccess
+    ) {
+      return organizationSubscription.data;
+    }
+
+    return null;
+  }, [
+    entityObject.isSuccess,
+    entityObject.namespaceType,
+    userSubscription.isSuccess,
+    userSubscription.data,
+    organizationSubscription.isSuccess,
+    organizationSubscription.data,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -220,10 +225,8 @@ export const DashboardPipelineListPageMainView = (
 
             {isCloud ? (
               <RemainingTriggers
-                subscriptions={
-                  subscriptions?.isSuccess ? subscriptions?.data : null
-                }
-                user={instillUser.isSuccess ? instillUser.data : null}
+                subscriptions={subscriptions}
+                user={me.isSuccess ? me.data : null}
               />
             ) : null}
           </PipelineTriggersSummary>

@@ -99,7 +99,7 @@ const SemiCircleProgress: React.FC<SemiCircleProgressProps> = ({
             position: "absolute",
           }}
         >
-          {percentage}
+          {`${percentage}%`}
         </span>
       )}
     </div>

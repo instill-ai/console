@@ -46,18 +46,18 @@ export const Body = ({
     retry: false,
   });
 
-  const allPipelines = useUserPipelines({
+  const userPipelines = useUserPipelines({
     userName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
     accessToken,
   });
 
-  const publicPipelines = React.useMemo(() => {
-    if (!allPipelines.isSuccess) {
+  const userPublicPipelines = React.useMemo(() => {
+    if (!userPipelines.isSuccess) {
       return [];
     }
 
-    return allPipelines.data.filter((pipeline) => {
+    return userPipelines.data.filter((pipeline) => {
       const toplevelRule = pipeline.sharing.users["*/*"];
 
       if (toplevelRule && toplevelRule.enabled) {
@@ -66,7 +66,7 @@ export const Body = ({
 
       return false;
     });
-  }, [allPipelines.data, allPipelines.isSuccess]);
+  }, [userPipelines.data, userPipelines.isSuccess]);
 
   const searchedPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {
@@ -87,15 +87,26 @@ export const Body = ({
       keys: ["id"],
     });
 
-    return fuse.search(searchCode).map((result) => result.item);
-  }, [pipelines.data, pipelines.isSuccess, searchCode]);
+    const searchedResult = fuse.search(searchCode);
+
+    // If user is logged in, we won't display user's owned public pipeline
+    // in the hub page.
+
+    if (me.isSuccess) {
+      return searchedResult
+        .map((result) => result.item)
+        .filter((pipeline) => pipeline.owner_name === me.data.name);
+    } else {
+      return searchedResult.map((result) => result.item);
+    }
+  }, [pipelines.data, pipelines.isSuccess, searchCode, me.isSuccess, me.data]);
 
   return (
     <div className=" flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
         <UserProfileCard
           totalPipelines={null}
-          totalPublicPipelines={publicPipelines.length}
+          totalPublicPipelines={userPublicPipelines.length}
           visitorCta={visitorCta}
         />
       </div>

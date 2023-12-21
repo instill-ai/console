@@ -165,7 +165,7 @@ export async function getUsersSubscription({
     const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetUsersSubscription>(
-      `/users/${userName}/subscription`
+      `/${userName}/subscription`
     );
 
     return Promise.resolve(data.subscription);
@@ -185,7 +185,7 @@ export async function getOrganizationsSubscription({
     const client = createInstillAxiosClient(accessToken, "core");
 
     const { data } = await client.get<GetUsersSubscription>(
-      `/organizations/${oraganizationName}/subscription`
+      `/${oraganizationName}/subscription`
     );
 
     return Promise.resolve(data.subscription);

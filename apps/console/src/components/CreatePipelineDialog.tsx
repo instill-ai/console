@@ -137,8 +137,7 @@ export const CreatePipelineDialog = () => {
         payload,
       });
 
-      setCreating(false);
-      router.push(`/${entity}/pipelines/${data.id}/builder`);
+      await router.push(`/${entity}/pipelines/${data.id}/builder`);
     } catch (error) {
       setCreating(false);
       toastInstillError({
