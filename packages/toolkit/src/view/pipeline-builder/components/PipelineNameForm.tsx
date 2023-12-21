@@ -126,7 +126,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
         updatePipelineIsNew(() => false);
         updatePipelineRecipeIsDirty(() => false);
 
-        await router.push(`/${entity}/pipelines/${newId}`, undefined, {
+        await router.push(`/${entity}/pipelines/${newId}/builder`, undefined, {
           shallow: true,
         });
 
@@ -208,7 +208,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
         accessToken,
       });
 
-      await router.push(`/${entity}/pipelines/${newId}`, undefined, {
+      await router.push(`/${entity}/pipelines/${newId}/builder`, undefined, {
         shallow: true,
       });
 

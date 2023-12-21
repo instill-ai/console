@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useRouter } from "next/router";
 import {
-  ConnectorWithDefinition,
   CreateUserPipelinePayload,
   InstillStore,
-  Model,
   Pipeline,
   toastInstillError,
   useCreateUserPipeline,
@@ -18,7 +16,6 @@ import {
 import { Icons, useToast } from "@instill-ai/design-system";
 import { getRawPipelineRecipeFromPipelineRecipe } from "../../view";
 import { Menu } from "./Menu";
-import { Nullable } from "vitest";
 import { EntityAvatar } from "../EntityAvatar";
 
 export const HeadSkeleton = () => {
@@ -119,14 +116,10 @@ export const Head = ({
   }
 
   const deletePipeline = useDeleteUserPipeline();
-  function handleDeletePipeline(
-    resource: Nullable<Pipeline | Model | ConnectorWithDefinition>
-  ): void {
-    if (!resource) return;
-
+  async function handleDeletePipeline() {
     try {
-      deletePipeline.mutateAsync({
-        pipelineName: resource.name,
+      await deletePipeline.mutateAsync({
+        pipelineName: pipeline.name,
         accessToken: accessToken ? accessToken : null,
       });
 

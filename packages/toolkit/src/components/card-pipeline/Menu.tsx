@@ -1,14 +1,12 @@
 import * as React from "react";
-import { Button, Dialog, DropdownMenu, Icons } from "@instill-ai/design-system";
-import { ConnectorWithDefinition, Model, Nullable, Pipeline } from "../../lib";
-import { GeneralDeleteResourceModal } from "..";
+import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
+import { Pipeline } from "../../lib";
+import { GenerateDeleteResourceDialog } from "..";
 
 export type MenuProps = {
   pipeline: Pipeline;
-  handleDuplicatePipeline: (pipeline: Pipeline) => void;
-  handleDeletePipeline: (
-    resource: Nullable<Pipeline | ConnectorWithDefinition | Model>
-  ) => void;
+  handleDuplicatePipeline: () => Promise<void>;
+  handleDeletePipeline: () => Promise<void>;
 };
 
 export const Menu = ({
@@ -33,7 +31,7 @@ export const Menu = ({
           >
             <DropdownMenu.Item
               onClick={() => {
-                handleDuplicatePipeline(pipeline);
+                handleDuplicatePipeline();
               }}
               className="!px-4 !py-2.5 !product-button-button-2"
             >
@@ -50,17 +48,15 @@ export const Menu = ({
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <Dialog.Root
+      <GenerateDeleteResourceDialog
         open={deleteDialogIsOpen}
         onOpenChange={(open) => setDeleteDialogIsOpen(open)}
-      >
-        <Dialog.Content className="!w-[512px]">
-          <GeneralDeleteResourceModal
-            resource={pipeline}
-            handleDeleteResource={handleDeletePipeline}
-          />
-        </Dialog.Content>
-      </Dialog.Root>
+        resourceID={pipeline.id}
+        title={`Delete ${pipeline.id}`}
+        description="This action cannot be undone. This will permanently delete the pipeline."
+        handleDeleteResource={handleDeletePipeline}
+        trigger={null}
+      />
     </React.Fragment>
   );
 };

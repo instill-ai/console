@@ -86,15 +86,15 @@ export default function RemainingTriggers({
   return (
     <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">
       <div className="my-auto w-2/3">
-        <p className=" mb-2 text-semantic-fg-secondary product-body-text-3-medium">
+        <p className="mb-auto text-semantic-fg-secondary product-body-text-3-medium">
           Remaining Private Triggers
         </p>
 
-        <p className="text-semantic-fg-secondary product-body-text-4-regular">
-          {getSubscriptionMessage(
-            subscriptions ? getPercentange(subscriptions) : 0
-          )}
-        </p>
+        {subscriptions ? (
+          <p className="text-semantic-fg-secondary product-body-text-4-regular">
+            {`${subscriptions.quota.private_pipeline_trigger.remain} private triggers remaining (${subscriptions.quota.private_pipeline_trigger.quota} total)`}
+          </p>
+        ) : null}
       </div>
 
       <div className="flex w-[130px] flex-col items-center justify-center">

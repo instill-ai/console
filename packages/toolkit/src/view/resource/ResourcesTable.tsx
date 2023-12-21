@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Button,
   DataTable,
@@ -7,19 +8,15 @@ import {
 } from "@instill-ai/design-system";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { isAxiosError } from "axios";
-import * as React from "react";
 import {
   ConnectorWithDefinition,
-  Model,
   Nullable,
-  Pipeline,
   formatDate,
-  getInstillApiErrorMessage,
+  toastInstillError,
   useDeleteUserConnector,
 } from "../../lib";
 import {
-  GeneralDeleteResourceModal,
+  GenerateDeleteResourceDialog,
   ImageWithFallback,
   SortIcon,
   TableCell,
@@ -35,49 +32,31 @@ export type ResourcesTableProps = {
 
 export const ResourcesTable = (props: ResourcesTableProps) => {
   const { connectors, isError, isLoading, accessToken } = props;
+  const [deleteConnectorDialogOpen, setDeleteConnectorDialogOpen] =
+    React.useState(false);
   const { toast } = useToast();
 
   const deleteUserConnector = useDeleteUserConnector();
 
-  function handleDeleteUserConnector(
-    resource: Nullable<Pipeline | Model | ConnectorWithDefinition>
-  ) {
-    if (!resource) {
-      return;
-    }
-
-    deleteUserConnector.mutate(
-      {
-        connectorName: resource.name,
+  async function handleDeleteUserConnector(connector: ConnectorWithDefinition) {
+    try {
+      await deleteUserConnector.mutateAsync({
+        connectorName: connector.name,
         accessToken,
-      },
-      {
-        onSuccess: () => {
-          toast({
-            title: "Successfully delete resource",
-            variant: "alert-success",
-            size: "small",
-          });
-        },
-        onError: (error) => {
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when delete the resource",
-              description: getInstillApiErrorMessage(error),
-              variant: "alert-error",
-              size: "large",
-            });
-          } else {
-            toast({
-              title: "Something went wrong when delete the resource",
-              description: "Please try again later",
-              variant: "alert-error",
-              size: "large",
-            });
-          }
-        },
-      }
-    );
+      });
+
+      toast({
+        title: "Successfully delete connector",
+        variant: "alert-success",
+        size: "small",
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong when delete the connector",
+        error,
+        toast,
+      });
+    }
   }
 
   const columns: ColumnDef<ConnectorWithDefinition>[] = [
@@ -145,19 +124,21 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
       cell: ({ row }) => {
         return accessToken ? (
           <div className="flex justify-center">
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
+            <GenerateDeleteResourceDialog
+              open={deleteConnectorDialogOpen}
+              onOpenChange={(open) => setDeleteConnectorDialogOpen(open)}
+              resourceID={row.original.id}
+              title={`Delete ${row.original.id}`}
+              description="This action cannot be undone. This will permanently delete the connector."
+              handleDeleteResource={() =>
+                handleDeleteUserConnector(row.original)
+              }
+              trigger={
+                <Button variant="tertiaryDanger" size="lg">
                   Delete
-                </div>
-              </Dialog.Trigger>
-              <Dialog.Content className="!w-[512px]">
-                <GeneralDeleteResourceModal
-                  resource={row.original}
-                  handleDeleteResource={handleDeleteUserConnector}
-                />
-              </Dialog.Content>
-            </Dialog.Root>
+                </Button>
+              }
+            />
           </div>
         ) : null;
       },
@@ -205,16 +186,18 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
   }
 
   return (
-    <DataTable
-      columns={columns}
-      data={connectors}
-      pageSize={6}
-      searchPlaceholder={"Search Connectors"}
-      searchKey={"id"}
-      isLoading={isLoading}
-      loadingRows={6}
-      primaryText="Connectors"
-      secondaryText="Check your connectors"
-    />
+    <React.Fragment>
+      <DataTable
+        columns={columns}
+        data={connectors}
+        pageSize={6}
+        searchPlaceholder={"Search Connectors"}
+        searchKey={"id"}
+        isLoading={isLoading}
+        loadingRows={6}
+        primaryText="Connectors"
+        secondaryText="Check your connectors"
+      />
+    </React.Fragment>
   );
 };
