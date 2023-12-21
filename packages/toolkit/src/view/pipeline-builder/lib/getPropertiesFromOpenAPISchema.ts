@@ -14,6 +14,18 @@ export function getPropertiesFromOpenAPISchema(
   let properties: InstillAIOpenAPIProperty[] = [];
 
   if (schema.type === "object") {
+    // Semi structured object although has the type of object, but we display it as a
+    // whole JSON object, so we don't need to go deeper. This kind of object won't
+    // have properties
+
+    if (schema.instillFormat?.includes("semi-structured")) {
+      properties.push({
+        path: parentKey,
+        ...schema,
+        title: schema.title ? schema.title : title,
+      });
+    }
+
     if (schema.properties) {
       Object.entries(schema.properties).map(([key, value]) => {
         const parentKeyList = parentKey ? parentKey.split(".") : [];

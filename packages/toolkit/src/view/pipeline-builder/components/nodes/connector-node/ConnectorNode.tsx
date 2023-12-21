@@ -494,7 +494,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           data.component.definition_name !==
             "connector-definitions/google-search" &&
           data.component.definition_name !== "connector-definitions/redis" &&
-          data.component.definition_name !== "connector-definitions/website" ? (
+          data.component.definition_name !== "connector-definitions/website" &&
+          data.component.definition_name !== "connector-definitions/restapi" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data.component}
