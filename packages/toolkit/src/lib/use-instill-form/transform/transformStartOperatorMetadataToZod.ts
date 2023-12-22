@@ -64,6 +64,9 @@ export function transformStartOperatorMetadataToZod(
           z.array(z.string()).nullable().optional()
         );
         break;
+      case "semi-structured/object":
+        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        break;
       default:
         break;
     }

@@ -38,6 +38,7 @@ export function useFilteredHints({
 
       if (searchCode) {
         return allHints.filter((hint) => {
+          // Hint should not hint the field on the same node
           if (componentID) {
             const hintPath = hint.path.split(".");
             if (componentID === hintPath[0]) {

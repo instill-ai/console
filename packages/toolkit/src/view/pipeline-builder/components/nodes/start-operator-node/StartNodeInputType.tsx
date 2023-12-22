@@ -101,6 +101,13 @@ export const StartNodeInputType = ({
       label = "Multiple Files";
       break;
     }
+    case "semi-structured/object": {
+      icon = (
+        <Icons.BracketSlash className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "JSON object";
+      break;
+    }
     default:
       break;
   }
