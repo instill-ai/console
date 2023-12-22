@@ -102,7 +102,9 @@ export const StartNodeInputType = ({
       break;
     }
     case "semi-structured/object": {
-      icon = null;
+      icon = (
+        <Icons.BracketSlash className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
       label = "JSON object";
       break;
     }

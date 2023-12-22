@@ -25,6 +25,7 @@ import {
   useTriggerUserPipeline,
   useTriggerUserPipelineRelease,
   toastInstillError,
+  GeneralRecord,
 } from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
@@ -363,15 +364,53 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
 
   async function onTriggerPipeline(
-    data: z.infer<typeof StartOperatorTriggerPipelineFormSchema>
+    formData: z.infer<typeof StartOperatorTriggerPipelineFormSchema>
   ) {
-    if (!pipelineName) return;
+    if (!pipelineName || !formData) return;
 
     const input = recursiveRemoveUndefinedAndNullFromArray(
-      recursiveReplaceNullAndEmptyStringWithUndefined(data)
+      recursiveReplaceNullAndEmptyStringWithUndefined(formData)
     );
 
+    // Backend need to have the encoded JSON input. So we need to double check
+    // the metadata whether this field is a semi-structured object and parse it
+
+    const semiStructuredObjectKeys: string[] = [];
+
+    if (data.component.configuration.metadata) {
+      Object.entries(data.component.configuration.metadata).forEach(
+        ([key, value]) => {
+          if (value.instillFormat === "semi-structured/object") {
+            semiStructuredObjectKeys.push(key);
+          }
+        }
+      );
+    }
+
+    const parsedStructuredData: GeneralRecord = formData;
+
+    for (const key of semiStructuredObjectKeys) {
+      if (!formData[key]) {
+        continue;
+      }
+
+      try {
+        const parsed = JSON.parse(formData[key]);
+        parsedStructuredData[key] = parsed;
+      } catch (err) {
+        console.log(err);
+        startOperatorTriggerPipelineForm.setError(key, {
+          type: "manual",
+          message: "Invalid JSON format",
+        });
+        return;
+      }
+    }
+
     updateIsTriggeringPipeline(() => true);
+
+    // The user can trigger different version of pipleine when they are
+    // pro or enterprise users
 
     if (currentVersion === "latest") {
       try {
@@ -379,7 +418,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           pipelineName,
           accessToken,
           payload: {
-            inputs: [input],
+            inputs: [parsedStructuredData],
           },
           returnTraces: true,
         });

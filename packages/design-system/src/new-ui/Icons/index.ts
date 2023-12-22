@@ -11,6 +11,7 @@ import { ArrowUpRight } from "./ArrowUpRight";
 import { BarChartSquare02 } from "./BarChartSquare02";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
+import { BracketSlash } from "./BracketSlash";
 import { Check } from "./Check";
 import { Circle } from "./Circle";
 import { CodeBrowser } from "./CodeBrowser";
@@ -109,6 +110,7 @@ export const Icons = {
   BarChartSquare02,
   BookOpen02,
   Box,
+  BracketSlash,
   Check,
   CheckCircle,
   ChevronDown,
