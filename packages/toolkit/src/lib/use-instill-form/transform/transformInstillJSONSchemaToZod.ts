@@ -146,7 +146,11 @@ export function transformInstillJSONSchemaToZod({
 
     // We need to consider semi-structured object here. This kind of object
     // accept the object input from start operator.
-    if (targetSchema.instillFormat?.includes("semi-structured")) {
+    if (
+      targetSchema.instillAcceptFormats?.some((format) =>
+        format.includes("semi-structured")
+      )
+    ) {
       instillZodSchema = z.string();
 
       if (!isRequired || forceOptional || isHidden) {
