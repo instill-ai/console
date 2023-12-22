@@ -224,10 +224,16 @@ export const DashboardPipelineListPageMainView = (
             />
 
             {isCloud ? (
-              <RemainingTriggers
-                subscriptions={subscriptions}
-                user={me.isSuccess ? me.data : null}
-              />
+              subscriptions ? (
+                subscriptions.plan === "fremium" ? (
+                  <RemainingTriggers
+                    subscriptions={subscriptions}
+                    user={me.isSuccess ? me.data : null}
+                  />
+                ) : null
+              ) : (
+                <RemainingTriggers.Skeleton />
+              )
             ) : null}
           </PipelineTriggersSummary>
         </div>

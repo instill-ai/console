@@ -28,6 +28,11 @@ export default function RemainingTriggers({
       return 0;
     }
 
+    // A safe guard to the -1 value
+    if (subscription.quota.private_pipeline_trigger.quota === -1) {
+      return 100;
+    }
+
     let alpha = 0;
     if (
       subscription?.quota?.private_pipeline_trigger?.used &&
@@ -67,22 +72,6 @@ export default function RemainingTriggers({
     }
   };
 
-  if (!subscriptions) {
-    return (
-      <div
-        key={`cards-skeleton`}
-        className="inline-flex h-[110px] w-[362px] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-white p-6 shadow"
-      >
-        <div className="self-stretch">
-          <Skeleton className="h-5 w-full rounded" />
-        </div>
-        <div className="self-stretch">
-          <Skeleton className="h-8 w-full rounded" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">
       <div className="my-auto w-2/3">
@@ -118,7 +107,7 @@ export default function RemainingTriggers({
         {user ? (
           <Link href={`/settings/billing`}>
             <Button variant="secondaryGrey" size="sm" className="mt-4 gap-x-2">
-              <Icons.Lightning01 className="font-size-[24px] h-3 w-3 stroke-slate-800" />
+              <Icons.Lightning01 className="h-3 w-3 stroke-semantic-fg-primary" />
               Upgrade plan
             </Button>
           </Link>
@@ -127,3 +116,18 @@ export default function RemainingTriggers({
     </div>
   );
 }
+
+const RemainingTriggersSkeleton = () => {
+  return (
+    <div className="inline-flex h-[110px] w-[362px] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-white p-6 shadow">
+      <div className="self-stretch">
+        <Skeleton className="h-5 w-full rounded" />
+      </div>
+      <div className="self-stretch">
+        <Skeleton className="h-8 w-full rounded" />
+      </div>
+    </div>
+  );
+};
+
+RemainingTriggers.Skeleton = RemainingTriggersSkeleton;
