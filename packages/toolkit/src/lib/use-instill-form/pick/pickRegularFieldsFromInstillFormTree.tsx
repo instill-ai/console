@@ -7,8 +7,6 @@ import { SmartHintFields } from "../components/smart-hint";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
-  checkIsHiddenByTree?: (tree: InstillFormTree) => boolean;
-
   // By default we will choose title from title field in JSON schema
   chooseTitleFrom?: "title" | "key";
   enableSmartHint?: boolean;
@@ -26,7 +24,6 @@ export function pickRegularFieldsFromInstillFormTree(
   options?: PickRegularFieldsFromInstillFormTreeOptions
 ): React.ReactNode {
   const disabledAll = options?.disabledAll ?? false;
-  const checkIsHiddenByTree = options?.checkIsHiddenByTree ?? undefined;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
@@ -39,6 +36,17 @@ export function pickRegularFieldsFromInstillFormTree(
   }
 
   if (tree._type === "formGroup") {
+    // If all the following child in this formGroup is hidden, we will not
+    // render this formGroup
+
+    const childAreAllHidden = tree.properties.every((property) => {
+      return property.isHidden;
+    });
+
+    if (childAreAllHidden) {
+      return null;
+    }
+
     return tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey}>
         <p
@@ -81,10 +89,6 @@ export function pickRegularFieldsFromInstillFormTree(
         })}
       </React.Fragment>
     );
-  }
-
-  if (checkIsHiddenByTree && checkIsHiddenByTree(tree)) {
-    return null;
   }
 
   if (tree._type === "formCondition") {

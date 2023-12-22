@@ -398,7 +398,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         const parsed = JSON.parse(formData[key]);
         parsedStructuredData[key] = parsed;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         startOperatorTriggerPipelineForm.setError(key, {
           type: "manual",
           message: "Invalid JSON format",

@@ -49,6 +49,18 @@ export function pickSmartHintsFromAcceptFormats(
           pickHints.push(hint);
         }
       }
+
+      // Deal with semi-structured. Now we have semi-structured/object
+      // and semi-structured/*, in the view of smart-hint they support the same
+      // structure
+      if (
+        type === "semi-structured" &&
+        instillAcceptFormats.some((format) =>
+          format.includes("semi-structured")
+        )
+      ) {
+        pickHints.push(hint);
+      }
     }
 
     // Deal with primitives
