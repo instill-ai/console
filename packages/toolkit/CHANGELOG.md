@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.76.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.75.0...@instill-ai/toolkit-v0.76.0) (2023-12-22)
+
+
+### Features
+
+* **pipeline-builder:** support JSON input on start operator ([#808](https://github.com/instill-ai/console/issues/808)) ([57c2c81](https://github.com/instill-ai/console/commit/57c2c8159206cd4f839401fba0ad1d28bf667ee3))
+
+
+### Bug Fixes
+
+* fix delete resource dialog close button wrongly positioned ([#809](https://github.com/instill-ai/console/issues/809)) ([73414a1](https://github.com/instill-ai/console/commit/73414a1f02f177236d4048cb5dce83cdff61bc94))
+* fix issue that will stop user from deleting the pipeline smoothly ([#805](https://github.com/instill-ai/console/issues/805)) ([cc26b6b](https://github.com/instill-ai/console/commit/cc26b6b38c0686cd630d357ab0761ba520c09ee8))
+* **pipeline-builder:** fix console not correctly parse semi-structured output object ([#806](https://github.com/instill-ai/console/issues/806)) ([eca0790](https://github.com/instill-ai/console/commit/eca0790d6df2271995a9db2a20a5bf53bdddea5e))
+
+
+### Miscellaneous
+
+* **dashboard:** update dashboard loader ([#800](https://github.com/instill-ai/console/issues/800)) ([9680313](https://github.com/instill-ai/console/commit/96803130a5833d26d3e7cb402ad74afa6a3c06ab))
+* **general:** replace model URL path with models ([#802](https://github.com/instill-ai/console/issues/802)) ([e640470](https://github.com/instill-ai/console/commit/e6404706305c113d43ed56f15f1c2498d7adfd8c))
+* replace pipeline readme with pipeline description on /pipelines/pid page ([#804](https://github.com/instill-ai/console/issues/804)) ([2d735f7](https://github.com/instill-ai/console/commit/2d735f7907b4155557fd624bde64fcd8592a8edd))
+
 ## [0.75.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.74.1...@instill-ai/toolkit-v0.75.0) (2023-12-15)
 
 

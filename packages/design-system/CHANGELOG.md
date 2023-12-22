@@ -1,5 +1,23 @@
 # @instill-ai/design-system
 
+## [0.60.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.59.0...@instill-ai/design-system-v0.60.0) (2023-12-22)
+
+
+### Features
+
+* **pipeline-builder:** support JSON input on start operator ([#808](https://github.com/instill-ai/console/issues/808)) ([57c2c81](https://github.com/instill-ai/console/commit/57c2c8159206cd4f839401fba0ad1d28bf667ee3))
+
+
+### Bug Fixes
+
+* fix delete resource dialog close button wrongly positioned ([#809](https://github.com/instill-ai/console/issues/809)) ([73414a1](https://github.com/instill-ai/console/commit/73414a1f02f177236d4048cb5dce83cdff61bc94))
+* fix TASK_VISUAL_QUESTION_ANSWERING model task typo ([#803](https://github.com/instill-ai/console/issues/803)) ([7a87735](https://github.com/instill-ai/console/commit/7a8773512c60e0678a75cbec1796777f00b12606))
+
+
+### Miscellaneous
+
+* **general:** replace model URL path with models ([#802](https://github.com/instill-ai/console/issues/802)) ([e640470](https://github.com/instill-ai/console/commit/e6404706305c113d43ed56f15f1c2498d7adfd8c))
+
 ## [0.59.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.58.0...@instill-ai/design-system-v0.59.0) (2023-12-15)
 
 

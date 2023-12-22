@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.34.1-beta](https://github.com/instill-ai/console/compare/v0.34.0-beta...v0.34.1-beta) (2023-12-22)
+
+
+### Bug Fixes
+
+* fix issue that will stop user from deleting the pipeline smoothly ([#805](https://github.com/instill-ai/console/issues/805)) ([cc26b6b](https://github.com/instill-ai/console/commit/cc26b6b38c0686cd630d357ab0761ba520c09ee8))
+
+
+### Miscellaneous
+
+* **general:** replace model URL path with models ([#802](https://github.com/instill-ai/console/issues/802)) ([e640470](https://github.com/instill-ai/console/commit/e6404706305c113d43ed56f15f1c2498d7adfd8c))
+* update operators icons ([#807](https://github.com/instill-ai/console/issues/807)) ([a690e08](https://github.com/instill-ai/console/commit/a690e081b24094f9834ef3cbc1c8a6f56cb1725a))
+
 ## [0.34.0-beta](https://github.com/instill-ai/console/compare/v0.33.1-beta...v0.34.0-beta) (2023-12-15)
 
 
