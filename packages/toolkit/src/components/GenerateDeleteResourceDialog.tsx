@@ -39,8 +39,9 @@ export const GenerateDeleteResourceDialog = ({
           </Button>
         )}
       </Dialog.Trigger>
-      <Dialog.Close />
+
       <Dialog.Content className="!w-[512px]">
+        <Dialog.Close />
         <div className="mb-6 flex flex-col">
           <h2 className="mb-1 text-center text-semantic-fg-primary product-headings-heading-3">
             {title}
