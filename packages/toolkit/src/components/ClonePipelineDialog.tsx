@@ -58,11 +58,15 @@ const selector = (store: InstillStore) => ({
 export const ClonePipelineDialog = ({
   trigger,
   pipeline,
+  open,
+  onOpenChange,
 }: {
-  trigger?: React.ReactNode;
+  trigger: Nullable<React.ReactNode>;
   pipeline: Nullable<Pipeline>;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(open ?? false);
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
     React.useState<Nullable<Permission>>("public");
@@ -141,24 +145,20 @@ export const ClonePipelineDialog = ({
 
   return (
     <Dialog.Root
-      open={open}
+      open={open !== null || open !== undefined ? open : dialogIsOpen}
       onOpenChange={(open) => {
         form.reset({
           id: "",
           description: "",
         });
-        setOpen(open);
+        if (onOpenChange) {
+          onOpenChange(open);
+        } else {
+          setDialogIsOpen(open);
+        }
       }}
     >
-      <Dialog.Trigger asChild>
-        {trigger ? (
-          trigger
-        ) : (
-          <Button className="gap-x-2" variant="primary" size="lg">
-            {pipeline?.owner_name === me.data?.name ? "Duplicate" : "Clone"}
-          </Button>
-        )}
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{trigger ? trigger : null}</Dialog.Trigger>
       <Dialog.Content className="!w-[600px] !p-0">
         <Dialog.Close className="!right-6 !top-6" />
         <div className="flex flex-col ">

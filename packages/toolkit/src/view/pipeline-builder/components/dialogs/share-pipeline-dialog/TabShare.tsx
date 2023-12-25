@@ -28,6 +28,7 @@ export const TabShare = () => {
   );
   const [isUpdatingShareCodePermission, setIsUpdatingShareCodePermission] =
     React.useState(false);
+  const [copied, setCopied] = React.useState(false);
 
   const router = useRouter();
   const { id, entity } = router.query;
@@ -65,10 +66,14 @@ export const TabShare = () => {
     if (pipelineIsPublic) {
       const link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}/builder`;
+      )}/${entity}/pipelines/${id}`;
 
       navigator.clipboard.writeText(link);
       setIsUpdatingShareCodePermission(false);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
       return;
     }
 
@@ -100,8 +105,7 @@ export const TabShare = () => {
         });
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
-        )}/${entity}/pipelines/${id}/builder?view=${pipeline.sharing.share_code
-          ?.code}`;
+        )}/${entity}/pipelines/${id}?view=${pipeline.sharing.share_code?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
@@ -124,13 +128,17 @@ export const TabShare = () => {
     } else {
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}/builder?view=${pipeline.data.sharing
-        .share_code?.code}`;
+      )}/${entity}/pipelines/${id}?view=${pipeline.data.sharing.share_code
+        ?.code}`;
       setIsUpdatingShareCodePermission(false);
     }
 
     if (link) {
       navigator.clipboard.writeText(link);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
     }
   }, [
     pipeline.isSuccess,
@@ -183,7 +191,9 @@ export const TabShare = () => {
           onClick={() => handleCopyLink()}
         >
           {isUpdatingShareCodePermission ? (
-            <LoadingSpin className="h-[14px] w-[14px] text-semantic-accent-default" />
+            <LoadingSpin className="!h-[14px] !w-[14px] !text-semantic-accent-default" />
+          ) : copied ? (
+            <Icons.Check className="h-[14px] w-[14px] stroke-semantic-accent-default" />
           ) : (
             <Icons.Link01 className="h-[14px] w-[14px] stroke-semantic-accent-default" />
           )}

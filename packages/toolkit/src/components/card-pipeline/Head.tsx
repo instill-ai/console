@@ -1,20 +1,13 @@
-import * as React from "react";
 import { useRouter } from "next/router";
 import {
-  CreateUserPipelinePayload,
   InstillStore,
   Pipeline,
   toastInstillError,
-  useCreateUserPipeline,
   useDeleteUserPipeline,
   useInstillStore,
-  useOrganization,
   useShallow,
-  useUser,
-  useUserMe,
 } from "../../lib";
 import { Icons, useToast } from "@instill-ai/design-system";
-import { getRawPipelineRecipeFromPipelineRecipe } from "../../view";
 import { Menu } from "./Menu";
 import { EntityAvatar } from "../EntityAvatar";
 
@@ -45,75 +38,7 @@ export const Head = ({
 }) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
-  const user = useUser({
-    userName: `users/${ownerID}`,
-    accessToken,
-    enabled: enabledQuery && !isOrg,
-  });
-
-  const organization = useOrganization({
-    organizationID: ownerID,
-    accessToken,
-    enabled: enabledQuery && isOrg,
-  });
-
-  const imageSrc = React.useMemo(() => {
-    if (isOrg && organization.isSuccess) {
-      return organization.data.profile_avatar ?? null;
-    }
-
-    if (!isOrg && user.isSuccess) {
-      return user.data.profile_avatar ?? null;
-    }
-
-    return null;
-  }, [
-    isOrg,
-    user.data,
-    user.isSuccess,
-    organization.data,
-    organization.isSuccess,
-  ]);
-
-  const me = useUserMe({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const createPipeline = useCreateUserPipeline();
-  async function handleDuplicatePipeline() {
-    if (!me.isSuccess || !accessToken) return;
-
-    const payload: CreateUserPipelinePayload = {
-      id: `copy-of-${pipeline.id}`,
-      description: pipeline.description,
-      recipe: getRawPipelineRecipeFromPipelineRecipe(pipeline.recipe),
-      metadata: pipeline.metadata,
-    };
-
-    try {
-      await createPipeline.mutateAsync({
-        entityName: me.data.name,
-        payload,
-        accessToken,
-      });
-
-      toast({
-        title: "Successfully duplicate the pipeline",
-        variant: "alert-success",
-        size: "small",
-      });
-    } catch (error) {
-      toastInstillError({
-        title:
-          "Something went wrong when save the pipeline, please try again later.",
-        error,
-        toast,
-      });
-    }
-  }
+  const { accessToken } = useInstillStore(useShallow(selector));
 
   const deletePipeline = useDeleteUserPipeline();
   async function handleDeletePipeline() {
@@ -141,7 +66,7 @@ export const Head = ({
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
         <EntityAvatar
-          src={imageSrc ?? null}
+          src={pipeline.owner.profile_avatar ?? null}
           className="h-8 w-8"
           entityName={ownerID}
           fallbackImg={
@@ -161,11 +86,7 @@ export const Head = ({
         </button>
       </div>
       {isOwner ? (
-        <Menu
-          pipeline={pipeline}
-          handleDuplicatePipeline={handleDuplicatePipeline}
-          handleDeletePipeline={handleDeletePipeline}
-        />
+        <Menu pipeline={pipeline} handleDeletePipeline={handleDeletePipeline} />
       ) : null}
     </div>
   );

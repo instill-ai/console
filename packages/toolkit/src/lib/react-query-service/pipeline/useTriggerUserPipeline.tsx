@@ -4,8 +4,11 @@ import {
   type TriggerUserPipelinePayload,
   triggerUserPipelineAction,
 } from "../../vdp-sdk";
+import { useRouter } from "next/router";
 
 export const useTriggerUserPipeline = () => {
+  const router = useRouter();
+
   return useMutation(
     async ({
       pipelineName,
@@ -18,14 +21,15 @@ export const useTriggerUserPipeline = () => {
       accessToken: Nullable<string>;
       returnTraces?: boolean;
     }) => {
-      const pipelineRelease = await triggerUserPipelineAction({
+      const response = await triggerUserPipelineAction({
         pipelineName,
         payload,
         accessToken,
         returnTraces,
+        shareCode: router.query.view?.toString() ?? undefined,
       });
 
-      return Promise.resolve(pipelineRelease);
+      return Promise.resolve(response);
     }
   );
 };

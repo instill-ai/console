@@ -11,6 +11,7 @@ import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
 import { InOutPut, InOutPutProps } from "./InOutPut";
 import { Readme } from "./Readme";
+import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -23,6 +24,8 @@ export const ViewPipeline = ({
   visitorCta?: InOutPutProps["visitorCta"];
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+  const router = useRouter();
 
   const me = useUserMe({
     enabled: enabledQuery,
@@ -45,6 +48,12 @@ export const ViewPipeline = ({
 
     return pipeline.data.owner_name === me.data.name;
   }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
+
+  React.useEffect(() => {
+    if (pipeline.isError) {
+      router.push("/404");
+    }
+  }, [pipeline.isError, router]);
 
   return (
     <div className="flex h-full flex-col">

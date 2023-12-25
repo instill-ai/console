@@ -1,7 +1,13 @@
 import * as React from "react";
 import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
-import { Pipeline } from "../../lib";
+import {
+  InstillStore,
+  Pipeline,
+  useInstillStore,
+  useShallow,
+  useUserMe,
+} from "../../lib";
 import { sortPipelineReleases } from "../../view";
 import { ClonePipelineDialog } from "../ClonePipelineDialog";
 
@@ -19,8 +25,15 @@ export const FooterSkeleton = () => {
   );
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
   const router = useRouter();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const latestRelease = React.useMemo(() => {
     if (pipeline.releases.length === 0) {
@@ -28,6 +41,11 @@ export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
     }
     return sortPipelineReleases(pipeline.releases)[0].id;
   }, [pipeline]);
+
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   return (
     <div className="flex flex-col px-6 pb-4">
@@ -56,7 +74,7 @@ export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
             <Icons.Edit03 className="h-4 w-4 stroke-semantic-fg-secondary" />
             Edit
           </Button>
-        ) : (
+        ) : me.isSuccess ? (
           <ClonePipelineDialog
             trigger={
               <Button
@@ -70,7 +88,7 @@ export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
             }
             pipeline={pipeline}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );
