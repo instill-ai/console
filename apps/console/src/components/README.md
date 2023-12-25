@@ -8,13 +8,13 @@ This folder is under rapidly refactoring.
 
 ### General guideline
 
-In every component we separately function with sections, this sections have several rules.
+In every component we separate function with sections, this sections have several rules.
 
-- Better to use useMemo state to control the form, reduce the complicate setState within lots of useEffect.
-- The state will be arrange at the top of each sections to benefit other maintainer.
+- Better to use useMemo state to control the form, reduce the complicated setState within lots of useEffect.
+- The state will be arranged at the top of each sections to benefit other maintainers.
 - Field on change callback will be put at the end of each section due to they usually need to use other state.
-- Each section need to be separated by divider like this one.
-- Submit the form using formik onSubmit handler and validator
+- Each section needs to be separated by divider like this one.
+- Submit the form using formik onSubmit handler and validator.
 
 // ###################################################################
 // # #
@@ -47,7 +47,7 @@ When you read though pipeline form, it now separatelt to 5 step
 
 We are using airbyte potocol to control our destination connectors, they are using quite complicated yaml to generate their form. They generate all the whole formik component by digesting the JsonSchema ([ServiceForm](https://github.com/airbytehq/airbyte/blob/8076b56f3718d6fe054b660a838f2c1c6890ffc2/airbyte-webapp/src/views/Connector/ServiceForm/ServiceForm.tsx)). In my opinion this is not flexible and our form's structure is much complicated than airbyte due to we have the pipeline concept on top of their connection.
 
-The solution will be cell-design in normal formik's form's flow. Take `CreatePipelineForm` for example, We have a giant formik form that hold the full state of the flow, each step have its own logic and upon finish the step, they will fill in the value into formik state and call it the day. Here comes a problem, if we want to validate at the end of the flow, we have to write a giant validation schema to validate every possibility when create the model or the destination connector. This is appearantly not ideal. Below are the proposal for better implementation.
+The solution will be cell-design in normal formik's form's flow. Take `CreatePipelineForm` for example, We have a giant formik form that holds the full state of the flow, each step has its own logic and upon finish the step, they will fill in the value into formik state and call it a day. Here comes a problem, if we want to validate at the end of the flow, we have to write a giant validation schema to validate every possibility when create the model or the destination connector. This is appearantly not ideal. Below are the proposal for better implementation.
 
 - We should trust the validation of every step and not validate at the end of the flow.
 - We will have a flag for every step's validation like `validModel`, at the end of the flow, it only needs to check the value of this kind of flag.
