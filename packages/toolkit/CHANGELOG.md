@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.76.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.76.0...@instill-ai/toolkit-v0.76.1) (2023-12-25)
+
+
+### Bug Fixes
+
+* fix invalid share-by-link link ([#816](https://github.com/instill-ai/console/issues/816)) ([1fa10c0](https://github.com/instill-ai/console/commit/1fa10c0521ecb417a35aa1ba0117af8d27a7810b))
+* fix run button on /pipelines/pid page not correctly align ([#811](https://github.com/instill-ai/console/issues/811)) ([ff8860e](https://github.com/instill-ai/console/commit/ff8860e59db61ff11effb27789bc7a0a2751136f))
+* fix user can not smoothly clone the pipeline and decide what is its permission level ([#813](https://github.com/instill-ai/console/issues/813)) ([dc36a9a](https://github.com/instill-ai/console/commit/dc36a9a426ad2c0c0dbe1d72468c22d6946ee26d))
+
 ## [0.76.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.75.0...@instill-ai/toolkit-v0.76.0) (2023-12-22)
 
 
