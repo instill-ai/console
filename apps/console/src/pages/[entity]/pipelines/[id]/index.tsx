@@ -6,15 +6,22 @@ import { ConsoleCorePageHead, Topbar } from "../../../../components";
 import { NextPageWithLayout } from "../../../_app";
 import { useAccessToken } from "../../../../lib/useAccessToken";
 import { useTrackToken } from "../../../../lib/useTrackToken";
+import { useRouter } from "next/router";
 
 const PipelinePage: NextPageWithLayout = () => {
   useAccessToken();
   useTrackToken({ enabled: true });
+  const router = useRouter();
 
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <ViewPipeline />
+      {/* 
+        Because we do lots of transition among this page, and nextjs won't
+        re-mount the page component, we need to re-render the pipeline view
+        when the route changes.
+      */}
+      <ViewPipeline key={router.asPath} />
     </React.Fragment>
   );
 };

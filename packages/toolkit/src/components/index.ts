@@ -1,5 +1,6 @@
 export * from "./AutoresizeInput";
 export * from "./Breadcrumb";
+export * from "./ClonePipelineDialog";
 export * from "./card-pipeline";
 export * from "./breadcrumb-with-link";
 export * from "./CopyToClipboardButton";
@@ -27,4 +28,4 @@ export * from "./PageTitle";
 export * from "./cells";
 export * from "./TableError";
 export * from "./UserProfileCard";
-export * from "./WarnUnsavedChangesModal";
+export * from "./WarnUnsavedChangesDialog";

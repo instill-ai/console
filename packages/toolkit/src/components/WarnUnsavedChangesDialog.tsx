@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 import { LoadingSpin } from "./LoadingSpin";
 
-export type WarnUnsavedChangesModalProps = {
+export type WarnUnsavedChangesDialogProps = {
   onCancel: () => void;
   onSave: () => Promise<void>;
   onDiscard: () => void;
@@ -10,27 +10,27 @@ export type WarnUnsavedChangesModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const WarnUnsavedChangesModal = ({
+export const WarnUnsavedChangesDialog = ({
   onCancel,
   onDiscard,
   onSave,
   open,
   setOpen,
-}: WarnUnsavedChangesModalProps) => {
+}: WarnUnsavedChangesDialogProps) => {
   const [isSaving, setIsSaving] = React.useState(false);
 
   return (
     <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
       <Dialog.Content className="!w-[400px]">
         <div className="flex flex-col gap-y-6">
-          <div className="w-12 h-12 mx-auto rounded-full bg-semantic-warning-bg flex items-center justify-center">
-            <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg">
+            <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
           </div>
           <div className="flex flex-col">
             <Dialog.Title className="!mx-auto !product-headings-heading-3">
               Unsaved changes
             </Dialog.Title>
-            <Dialog.Description className="!text-center !mx-auto">
+            <Dialog.Description className="!mx-auto !text-center">
               You have unsaved changes. Do you want to save the changes before
               leaving this page?
             </Dialog.Description>

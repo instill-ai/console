@@ -1,7 +1,6 @@
 export * from "./AuthPageBase";
 export * from "./ChangePasswordForm";
 export * from "./ConsoleCorePageHead";
-export * from "./CreatePipelineDialog";
 export * from "./top-bar";
 export * from "./ErrorBoundary";
 export * from "./LoginForm";

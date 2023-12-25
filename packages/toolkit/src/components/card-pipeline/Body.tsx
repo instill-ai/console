@@ -12,13 +12,7 @@ const BodySkeleton = () => {
   );
 };
 
-export const Body = ({
-  ownerID,
-  pipeline,
-}: {
-  ownerID: string;
-  pipeline: Pipeline;
-}) => {
+export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
   const router = useRouter();
 
   return (
@@ -29,7 +23,9 @@ export const Body = ({
           type="button"
           className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
           onClick={() => {
-            router.push(`/${ownerID}/pipelines/${pipeline.id}`);
+            router.push(
+              `/${pipeline.owner_name.split("/")[1]}/pipelines/${pipeline.id}`
+            );
           }}
         >
           {pipeline.id}
