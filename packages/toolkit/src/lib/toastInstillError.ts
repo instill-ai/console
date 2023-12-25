@@ -25,7 +25,6 @@ export function toastInstillError({
       title,
       variant: "alert-error",
       size: "large",
-      description: "Please try again later",
     });
   }
 }

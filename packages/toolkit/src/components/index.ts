@@ -1,5 +1,6 @@
 export * from "./AutoresizeInput";
 export * from "./Breadcrumb";
+export * from "./ClonePipelineDialog";
 export * from "./card-pipeline";
 export * from "./breadcrumb-with-link";
 export * from "./CopyToClipboardButton";

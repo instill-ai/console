@@ -2,7 +2,6 @@ import cn from "clsx";
 import * as React from "react";
 import { isAxiosError } from "axios";
 import { Node, Position, ReactFlowInstance } from "reactflow";
-import { useRouter } from "next/router";
 import { Button, Icons, Menubar, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
@@ -33,16 +32,15 @@ import {
   PipelineConnectorComponent,
   UpdateUserPipelinePayload,
   env,
-  generateRandomReadableName,
   getInstillApiErrorMessage,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
   useUpdateUserPipeline,
-  useUserMe,
+  useUserPipeline,
 } from "../../lib";
 import { StartNodeData } from "./type";
-import { LoadingSpin } from "../../components";
+import { ClonePipelineDialog, LoadingSpin } from "../../components";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -64,17 +62,17 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
+  enabledQuery: store.enabledQuery,
+  accessToken: store.accessToken,
 });
 
 export type FlowControlProps = {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
   reactFlowInstance: Nullable<ReactFlowInstance>;
   appEnv: InstillAppEnv;
 };
 
 export const FlowControl = (props: FlowControlProps) => {
-  const { accessToken, enableQuery, reactFlowInstance, appEnv } = props;
+  const { reactFlowInstance, appEnv } = props;
   const {
     nodes,
     edges,
@@ -93,15 +91,11 @@ export const FlowControl = (props: FlowControlProps) => {
     currentVersion,
     isTriggeringPipeline,
     updateDialogSharePipelineIsOpen,
+    enabledQuery,
+    accessToken,
   } = useInstillStore(useShallow(selector));
-  const router = useRouter();
 
   const { toast } = useToast();
-
-  const user = useUserMe({
-    enabled: enableQuery,
-    accessToken,
-  });
 
   const entityObject = useEntity();
 
@@ -109,11 +103,16 @@ export const FlowControl = (props: FlowControlProps) => {
   const updateUserPipeline = useUpdateUserPipeline();
 
   const [isSaving, setIsSaving] = React.useState(false);
-  const [isCloning, setIsCloning] = React.useState(false);
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
   const [selectedMenu, setSelectedMenu] =
     React.useState<Nullable<string>>(null);
   const [isReleasing, setIsReleasing] = React.useState(false);
+
+  const pipeline = useUserPipeline({
+    pipelineName: entityObject.pipelineName,
+    enabled: enabledQuery && entityObject.isSuccess,
+    accessToken,
+  });
 
   async function handleSavePipeline() {
     if (!pipelineId || !entityObject.isSuccess) {
@@ -495,191 +494,146 @@ export const FlowControl = (props: FlowControlProps) => {
   return (
     <React.Fragment>
       <div className="absolute right-8 top-8 flex h-10 flex-row-reverse gap-x-4">
-        {isOwner ? (
-          <React.Fragment>
-            <Menubar.Root
-              // We don't want to trigger menu open state when user click
-              // on the menu item
-              value={selectedMenu ?? ""}
-              onValueChange={(value) => {
-                if (isReleasing) {
-                  return;
-                }
-
-                setSelectedMenu(value);
-              }}
-            >
-              <Menubar.Menu>
-                <Menubar.Trigger
-                  className={cn(
-                    "flex cursor-pointer flex-row gap-x-2",
-                    pipelineRecipeIsDirty
-                      ? "text-[#bfbfbf]"
-                      : "!text-semantic-accent-default hover:!bg-semantic-accent-bg"
-                  )}
-                  value="play"
-                  type="submit"
-                  form="start-operator-trigger-pipeline-form"
-                  disabled={pipelineRecipeIsDirty}
-                  onClick={async (e) => {
-                    if (pipelineRecipeIsDirty) {
-                      await handleSavePipeline();
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  Run
-                  {isTriggeringPipeline ? (
-                    <LoadingSpin className="my-auto !text-semantic-accent-default" />
-                  ) : (
-                    <Icons.PlayCircle
-                      className={cn(
-                        "my-auto h-4 w-4",
-                        pipelineRecipeIsDirty
-                          ? "stroke-[#bfbfbf]"
-                          : "stroke-semantic-accent-default"
-                      )}
-                    />
-                  )}
-                </Menubar.Trigger>
-              </Menubar.Menu>
-              <Menubar.Menu>
-                <Menubar.Trigger
-                  className="flex cursor-pointer flex-row gap-x-2"
-                  value="toolkit"
-                  onClick={() => setToolKitIsOpen((prev) => !prev)}
-                >
-                  Toolkit
-                  <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
-                </Menubar.Trigger>
-              </Menubar.Menu>
-              <Menubar.Menu>
-                <Menubar.Trigger
-                  className="flex cursor-pointer flex-row gap-x-2"
-                  value="save"
-                  onClick={handleSavePipeline}
-                  disabled={canSave ? isSaving : true}
-                >
-                  Save
-                  {isSaving ? (
-                    <LoadingSpin className="!text-black" />
-                  ) : (
-                    <Icons.Save01
-                      className={cn(
-                        "h-4 w-4",
-                        pipelineRecipeIsDirty
-                          ? "stroke-semantic-fg-primary"
-                          : "stroke-[#bfbfbf]"
-                      )}
-                    />
-                  )}
-                </Menubar.Trigger>
-              </Menubar.Menu>
-              <Menubar.Menu>
-                <Menubar.Trigger
-                  className="flex cursor-pointer flex-row gap-x-2"
-                  value="share"
-                  onClick={() =>
-                    updateDialogSharePipelineIsOpen((prev) => !prev)
+        {pipeline.isSuccess ? (
+          pipeline.data.permission.can_edit ? (
+            <React.Fragment>
+              <Menubar.Root
+                // We don't want to trigger menu open state when user click
+                // on the menu item
+                value={selectedMenu ?? ""}
+                onValueChange={(value) => {
+                  if (isReleasing) {
+                    return;
                   }
-                >
-                  Share
-                  <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-                </Menubar.Trigger>
-              </Menubar.Menu>
-              <Menubar.Menu>
-                <Menubar.Trigger
-                  className={cn(
-                    "flex cursor-pointer flex-row gap-x-2",
-                    pipelineRecipeIsDirty
-                      ? ""
-                      : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
-                  )}
-                  value="release"
-                  disabled={pipelineRecipeIsDirty}
-                >
-                  Release
-                  <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-on-default" />
-                </Menubar.Trigger>
-                <Menubar.Portal>
-                  <Menubar.Content
-                    className="w-[392px] rounded-[12px] p-6"
-                    align="end"
+
+                  setSelectedMenu(value);
+                }}
+              >
+                <Menubar.Menu>
+                  <Menubar.Trigger
+                    className={cn(
+                      "flex cursor-pointer flex-row gap-x-2",
+                      pipelineRecipeIsDirty
+                        ? "text-[#bfbfbf]"
+                        : "!text-semantic-accent-default hover:!bg-semantic-accent-bg"
+                    )}
+                    value="play"
+                    type="submit"
+                    form="start-operator-trigger-pipeline-form"
+                    disabled={pipelineRecipeIsDirty}
+                    onClick={async (e) => {
+                      if (pipelineRecipeIsDirty) {
+                        await handleSavePipeline();
+                        e.preventDefault();
+                      }
+                    }}
                   >
-                    <ReleaseMenu
-                      isReleasing={isReleasing}
-                      setIsReleasing={setIsReleasing}
-                      onRelease={() => {
-                        setSelectedMenu("");
-                      }}
-                    />
-                  </Menubar.Content>
-                </Menubar.Portal>
-              </Menubar.Menu>
-            </Menubar.Root>
-          </React.Fragment>
-        ) : (
-          <Button
-            onClick={async () => {
-              if (!user.isSuccess) return;
-
-              setIsCloning(true);
-
-              const payload: CreateUserPipelinePayload = {
-                id: generateRandomReadableName(),
-                recipe: constructPipelineRecipe(nodes, true),
-                metadata: composePipelineMetadataFromNodes(nodes),
-              };
-
-              try {
-                await createUserPipeline.mutateAsync({
-                  payload,
-                  accessToken,
-                  entityName: user.data.name,
-                });
-
-                setIsCloning(false);
-
-                await router.push(`/${user.data.id}/pipelines/${payload.id}`);
-
-                router.reload();
-
-                toast({
-                  title: "Successfully cloned the pipeline",
-                  variant: "alert-success",
-                  size: "small",
-                });
-              } catch (error) {
-                setIsCloning(false);
-                if (isAxiosError(error)) {
-                  toast({
-                    title: "Something went wrong when clone the pipeline",
-                    description: getInstillApiErrorMessage(error),
-                    variant: "alert-error",
-                    size: "large",
-                  });
-                } else {
-                  toast({
-                    title: "Something went wrong when clone the pipeline",
-                    variant: "alert-error",
-                    size: "large",
-                  });
-                }
+                    Run
+                    {isTriggeringPipeline ? (
+                      <LoadingSpin className="my-auto !text-semantic-accent-default" />
+                    ) : (
+                      <Icons.PlayCircle
+                        className={cn(
+                          "my-auto h-4 w-4",
+                          pipelineRecipeIsDirty
+                            ? "stroke-[#bfbfbf]"
+                            : "stroke-semantic-accent-default"
+                        )}
+                      />
+                    )}
+                  </Menubar.Trigger>
+                </Menubar.Menu>
+                <Menubar.Menu>
+                  <Menubar.Trigger
+                    className="flex cursor-pointer flex-row gap-x-2"
+                    value="toolkit"
+                    onClick={() => setToolKitIsOpen((prev) => !prev)}
+                  >
+                    Toolkit
+                    <Icons.CodeSquare02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                  </Menubar.Trigger>
+                </Menubar.Menu>
+                <Menubar.Menu>
+                  <Menubar.Trigger
+                    className="flex cursor-pointer flex-row gap-x-2"
+                    value="save"
+                    onClick={handleSavePipeline}
+                    disabled={canSave ? isSaving : true}
+                  >
+                    Save
+                    {isSaving ? (
+                      <LoadingSpin className="!text-black" />
+                    ) : (
+                      <Icons.Save01
+                        className={cn(
+                          "h-4 w-4",
+                          pipelineRecipeIsDirty
+                            ? "stroke-semantic-fg-primary"
+                            : "stroke-[#bfbfbf]"
+                        )}
+                      />
+                    )}
+                  </Menubar.Trigger>
+                </Menubar.Menu>
+                <Menubar.Menu>
+                  <Menubar.Trigger
+                    className="flex cursor-pointer flex-row gap-x-2"
+                    value="share"
+                    onClick={() =>
+                      updateDialogSharePipelineIsOpen((prev) => !prev)
+                    }
+                  >
+                    Share
+                    <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                  </Menubar.Trigger>
+                </Menubar.Menu>
+                <Menubar.Menu>
+                  <Menubar.Trigger
+                    className={cn(
+                      "flex cursor-pointer flex-row gap-x-2",
+                      pipelineRecipeIsDirty
+                        ? ""
+                        : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
+                    )}
+                    value="release"
+                    disabled={pipelineRecipeIsDirty}
+                  >
+                    Release
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-on-default" />
+                  </Menubar.Trigger>
+                  <Menubar.Portal>
+                    <Menubar.Content
+                      className="w-[392px] rounded-[12px] p-6"
+                      align="end"
+                    >
+                      <ReleaseMenu
+                        isReleasing={isReleasing}
+                        setIsReleasing={setIsReleasing}
+                        onRelease={() => {
+                          setSelectedMenu("");
+                        }}
+                      />
+                    </Menubar.Content>
+                  </Menubar.Portal>
+                </Menubar.Menu>
+              </Menubar.Root>
+            </React.Fragment>
+          ) : (
+            <ClonePipelineDialog
+              trigger={
+                <Button className="!gap-x-2" variant="primary" size="lg">
+                  Clone
+                </Button>
               }
-            }}
-            className="!gap-x-2"
-            variant="primary"
-            size="lg"
-            disabled={isCloning}
-          >
-            {isCloning ? <LoadingSpin /> : "Clone"}
-          </Button>
-        )}
+              pipeline={pipeline.isSuccess ? pipeline.data : null}
+            />
+          )
+        ) : null}
       </div>
       <div className="absolute left-8 top-8 flex flex-row">
         {isOwner ? (
           <SelectPipelineComponentDefinitionDialog
-            enableQuery={enableQuery}
+            enableQuery={enabledQuery}
             open={selectResourceDialogIsOpen}
             onOpenChange={(open) =>
               updateSelectResourceDialogIsOpen(() => open)
@@ -700,7 +654,7 @@ export const FlowControl = (props: FlowControlProps) => {
       <SharePipelineDialog />
       <CreateResourceDialog
         accessToken={accessToken}
-        enableQuery={enableQuery}
+        enableQuery={enabledQuery}
       />
       <PublishPipelineDialog />
     </React.Fragment>

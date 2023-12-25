@@ -214,12 +214,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               </div>
             </div>
           ) : null}
-          <FlowControl
-            reactFlowInstance={reactFlowInstance}
-            accessToken={accessToken}
-            enableQuery={enableQuery}
-            appEnv={appEnv}
-          />
+          <FlowControl reactFlowInstance={reactFlowInstance} appEnv={appEnv} />
         </div>
       </div>
     );
