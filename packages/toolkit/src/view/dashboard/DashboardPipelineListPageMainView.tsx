@@ -21,7 +21,6 @@ import {
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
-import RemainingTriggers from "./RemainingTriggers";
 
 export type DashboardPipelineListPageMainViewProps = Omit<
   GeneralPageProp,
@@ -222,19 +221,6 @@ export const DashboardPipelineListPageMainView = (
                 pipelineTriggersSummary ? pipelineTriggersSummary.errored : null
               }
             />
-
-            {isCloud ? (
-              subscriptions ? (
-                subscriptions.plan === "fremium" ? (
-                  <RemainingTriggers
-                    subscriptions={subscriptions}
-                    user={me.isSuccess ? me.data : null}
-                  />
-                ) : null
-              ) : (
-                <RemainingTriggers.Skeleton />
-              )
-            ) : null}
           </PipelineTriggersSummary>
         </div>
 

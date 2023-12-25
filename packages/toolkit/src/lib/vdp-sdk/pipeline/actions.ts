@@ -19,11 +19,13 @@ export async function triggerUserPipelineAction({
   payload,
   accessToken,
   returnTraces,
+  shareCode,
 }: {
   pipelineName: string;
   payload: TriggerUserPipelinePayload;
   accessToken: Nullable<string>;
   returnTraces?: boolean;
+  shareCode?: string;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
@@ -34,7 +36,9 @@ export async function triggerUserPipelineAction({
       {
         headers: {
           "instill-return-traces": returnTraces ? "true" : "false",
-          "Access-Control-Allow-Headers": "instill-return-traces",
+          "instill-share-code": shareCode,
+          "Access-Control-Allow-Headers":
+            "instill-return-traces, instill-share-code",
           "Content-Type": "application/json",
         },
       }
