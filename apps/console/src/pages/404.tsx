@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NotFoundView, PageBase } from "@instill-ai/toolkit";
+import { NotFoundView } from "@instill-ai/toolkit";
 import { NextPageWithLayout } from "./_app";
 import { ConsoleCorePageHead } from "components";
 
