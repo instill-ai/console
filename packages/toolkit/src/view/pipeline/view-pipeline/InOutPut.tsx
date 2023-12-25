@@ -230,7 +230,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
             >
               Run
               {isTriggering ? (
-                <LoadingSpin className="!text-semantic-accent-default" />
+                <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
               ) : (
                 <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
               )}
