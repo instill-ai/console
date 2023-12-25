@@ -28,7 +28,7 @@ import {
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
 } from "../pipeline-builder";
-import { WarnUnsavedChangesModal } from "../../components";
+import { WarnUnsavedChangesDialog } from "../../components";
 import { getPipelineInputOutputSchema } from "../pipeline-builder/lib/getPipelineInputOutputSchema";
 
 const selector = (store: InstillStore) => ({
@@ -157,7 +157,7 @@ export const PipelineBuilderMainView = (
         Warn unsaved changes modal
       */}
 
-      <WarnUnsavedChangesModal
+      <WarnUnsavedChangesDialog
         open={warnUnsaveChangesModalIsOpen}
         setOpen={setWarnUnsaveChangesModalIsOpen}
         onCancel={() => {

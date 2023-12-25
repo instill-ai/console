@@ -27,4 +27,4 @@ export * from "./PageTitle";
 export * from "./cells";
 export * from "./TableError";
 export * from "./UserProfileCard";
-export * from "./WarnUnsavedChangesModal";
+export * from "./WarnUnsavedChangesDialog";
