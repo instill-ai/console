@@ -43,8 +43,8 @@ Playground.args = {
     {
       header: "Pipeline",
       content: (
-        <div className="bg-[#285863] w-full">
-          <div className="flex flex-col p-5 w-7/12">
+        <div className="w-full bg-[#285863]">
+          <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
               An end-to-end workflow that automates a sequence of sub-components
               to process unstructured data.
@@ -61,8 +61,8 @@ Playground.args = {
     {
       header: "Source",
       content: (
-        <div className="bg-[#285863] w-full">
-          <div className="flex flex-col p-5 w-7/12">
+        <div className="w-full bg-[#285863]">
+          <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
               A data connector in charge of ingesting unstructured data into a
               Pipeline.
@@ -79,8 +79,8 @@ Playground.args = {
     {
       header: "Model",
       content: (
-        <div className="bg-[#285863] w-full">
-          <div className="flex flex-col p-5 w-7/12">
+        <div className="w-full bg-[#285863]">
+          <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
               An algorithm that runs on unstructured data to solve a specific AI
               task.
@@ -97,8 +97,8 @@ Playground.args = {
     {
       header: "Destination",
       content: (
-        <div className="bg-[#285863] w-full">
-          <div className="flex flex-col p-5 w-7/12">
+        <div className="w-full bg-[#285863]">
+          <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
               A data connector to load the standardised AI task output from
               Model to the Destination.

@@ -16,7 +16,7 @@ export const PageTitle = ({
     <div className={cn("flex w-full flex-col", className)}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <div className="flex min-h-[44px] w-full flex-row">
-        <h2 className="mr-auto mt-auto text-black text-instill-h2">{title}</h2>
+        <h2 className="text-instill-h2 mr-auto mt-auto text-black">{title}</h2>
       </div>
     </div>
   );

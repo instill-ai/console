@@ -19,7 +19,7 @@ export const TableHead = ({ items, bgColor, borderColor }: TableHeadProps) => {
         {items.map((e, index) => {
           const element =
             typeof e.item === "string" ? (
-              <p className="flex text-instillGrey90 text-instill-body">
+              <p className="text-instillGrey90 text-instill-body flex">
                 {e.item}
               </p>
             ) : (

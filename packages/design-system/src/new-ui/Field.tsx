@@ -7,7 +7,7 @@ const Root = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <div
-      className={cn("flex group flex-col space-y-1", className)}
+      className={cn("group flex flex-col space-y-1", className)}
       ref={ref}
       {...props}
     >
@@ -24,7 +24,7 @@ const Description = React.forwardRef<
   return (
     <p
       className={cn(
-        "flex product-body-text-3-regular text-[#1D2433CC]",
+        "flex text-[#1D2433CC] product-body-text-3-regular",
         className
       )}
       ref={ref}
@@ -43,7 +43,7 @@ const Label = React.forwardRef<
   return (
     <label
       className={cn(
-        "flex product-body-text-2-semibold text-semantic-fg-primary",
+        "flex text-semantic-fg-primary product-body-text-2-semibold",
         className
       )}
       ref={ref}

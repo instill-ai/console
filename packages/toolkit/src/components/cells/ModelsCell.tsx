@@ -28,7 +28,7 @@ export const ModelsCell = ({ width, models, padding }: ModelsCellProps) => {
                 color="fill-black"
                 position="my-auto"
               />
-              <p className="my-auto text-black text-instill-small">
+              <p className="text-instill-small my-auto text-black">
                 {modelName}
               </p>
             </div>

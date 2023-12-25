@@ -22,7 +22,7 @@ export const ModelReadmeMarkdown = ({
       className={cn(
         "flex w-full flex-col border border-instillGrey20 bg-white p-5",
         { "min-h-[200px]": !markdown || isLoading },
-        className
+        className,
       )}
     >
       {isLoading ? (

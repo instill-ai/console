@@ -16,7 +16,7 @@ export const TemplateCard = (props: TemplateCardProps) => {
   return (
     <div
       className={cn(
-        "flex relative group hover:opacity-50 flex-col gap-y-3 cursor-pointer rounded-[4px] bg-semantic-bg-primary hover:bg-semantic-accent-bg hover:border-semantic-accent-default border border-semantic-bg-line px-2 py-3",
+        "group relative flex cursor-pointer flex-col gap-y-3 rounded-[4px] border border-semantic-bg-line bg-semantic-bg-primary px-2 py-3 hover:border-semantic-accent-default hover:bg-semantic-accent-bg hover:opacity-50",
         className
       )}
       onClick={onClick}
@@ -33,7 +33,7 @@ export const TemplateCard = (props: TemplateCardProps) => {
           <div
             key={component.id}
             className={cn(
-              "rounded-full flex justify-center items-center bg-semantic-bg-primary border border-semantic-bg-line shadow-xxs flex-shrink-0 max-w-[24px] max-h-[24px] w-6 h-6",
+              "flex h-6 max-h-[24px] w-6 max-w-[24px] flex-shrink-0 items-center justify-center rounded-full border border-semantic-bg-line bg-semantic-bg-primary shadow-xxs",
               idx !== 0 ? "-translate-x-2" : ""
             )}
           >
@@ -50,10 +50,10 @@ export const TemplateCard = (props: TemplateCardProps) => {
         ))}
       </div>
       <div className="flex flex-col gap-y-1">
-        <p className="product-body-text-4-semibold text-semantic-fg-primary">
+        <p className="text-semantic-fg-primary product-body-text-4-semibold">
           {template.id}
         </p>
-        <p className="line-clamp-2 product-body-text-4-regular text-semantic-fg-secondary">
+        <p className="line-clamp-2 text-semantic-fg-secondary product-body-text-4-regular">
           {template.description}
         </p>
       </div>
@@ -63,7 +63,7 @@ export const TemplateCard = (props: TemplateCardProps) => {
           Instill AI
         </p>
       </div> */}
-      <div className="hidden group-hover:flex absolute z-10 inset-0 justify-center items-center">
+      <div className="absolute inset-0 z-10 hidden items-center justify-center group-hover:flex">
         <Tag variant="darkBlue" size="lg">
           use template
         </Tag>

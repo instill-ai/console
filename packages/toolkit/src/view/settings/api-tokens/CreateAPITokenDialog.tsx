@@ -109,7 +109,7 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
                 className="w-full"
                 onSubmit={form.handleSubmit(handleCreateAPIToken)}
               >
-                <div className="flex flex-col mb-6">
+                <div className="mb-6 flex flex-col">
                   <Form.Field
                     control={form.control}
                     name="id"
@@ -134,10 +134,10 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
                     }}
                   />
                 </div>
-                <div className="flex flex-row w-full gap-x-2">
+                <div className="flex w-full flex-row gap-x-2">
                   <Button
                     type="button"
-                    className="flex-1 w-full"
+                    className="w-full flex-1"
                     variant="secondaryGrey"
                     size="lg"
                     onClick={() => setOpen(false)}
@@ -146,7 +146,7 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 w-full"
+                    className="w-full flex-1"
                     variant="primary"
                     size="lg"
                   >

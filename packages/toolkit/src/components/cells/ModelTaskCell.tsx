@@ -26,7 +26,7 @@ export const ModelTaskCell = ({
     <td>
       <div className={cn("flex flex-row gap-x-2", width, padding)}>
         {getIcon(iconStyle)}
-        <p className="my-auto flex text-instillGrey90 text-instill-body">
+        <p className="text-instillGrey90 text-instill-body my-auto flex">
           {label}
         </p>
       </div>

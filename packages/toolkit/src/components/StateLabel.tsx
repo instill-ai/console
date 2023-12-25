@@ -79,7 +79,7 @@ export const StateLabel = ({
           position={iconPosition}
         />
       ) : null}
-      <span className={cn("my-auto text-instill-small", textColor)}>
+      <span className={cn("text-instill-small my-auto", textColor)}>
         {stateLabelName}
       </span>
     </div>

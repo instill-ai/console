@@ -16,7 +16,7 @@ export const StateOverview = ({
     return (
       <div className="flex flex-row gap-x-[5px] py-[3px] pl-[3px] pr-[10px]">
         {icon}
-        <p className="text-black text-instill-body">{counts}</p>
+        <p className="text-instill-body text-black">{counts}</p>
       </div>
     );
   };

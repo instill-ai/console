@@ -48,8 +48,8 @@ export const WithIcon: Story = {
           <Select.Label>Fruits</Select.Label>
           <Select.Item value="Hello">
             <div className="flex flex-row space-x-2">
-              <Icons.Box className="w-5 h-5 stroke-semantic-fg-primary group-hover:stroke-semantic-bg-primary" />
-              <p className=" product-body-text-3-regular text-semantic-fg-primary group-hover:text-semantic-bg-primary">
+              <Icons.Box className="h-5 w-5 stroke-semantic-fg-primary group-hover:stroke-semantic-bg-primary" />
+              <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
                 Hello
               </p>
             </div>
@@ -57,7 +57,7 @@ export const WithIcon: Story = {
           <Select.Item value="YO">
             <div className="flex flex-row space-x-2">
               <ModelLogo variant="square" width={20} />
-              <p className=" product-body-text-3-regular text-semantic-fg-primary group-hover:text-semantic-bg-primary">
+              <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
                 YO
               </p>
             </div>

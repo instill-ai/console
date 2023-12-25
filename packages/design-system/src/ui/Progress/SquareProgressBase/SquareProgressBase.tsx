@@ -43,7 +43,7 @@ const SquareProgressBase = (props: SquareProgressBaseProps) => {
       style={{ width: `${blockSize}px`, height: `${blockSize}px` }}
     >
       <div
-        className={cn("block absolute", cubeColor, {
+        className={cn("absolute block", cubeColor, {
           "loading-animation": isLoading,
         })}
         style={{

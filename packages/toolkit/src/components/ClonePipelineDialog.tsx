@@ -116,23 +116,24 @@ export const ClonePipelineDialog = ({
       sharing,
     };
 
-    try {
-      await createPipeline.mutateAsync({
+    createPipeline.mutate(
+      {
         payload,
         accessToken,
         entityName: me.data.name,
-      });
-
-      await router.push(`/${me.data.id}/pipelines/${payload.id}`);
-    } catch (error) {
-      setCloning(false);
-      toastInstillError({
-        title:
-          "Something went wrong when clone the pipeline, please try again later",
-        error,
-        toast,
-      });
-    }
+      },
+      {
+        onSuccess: () => router.push(`/${me.data.id}/pipelines/${payload.id}`),
+        onError: (error) =>
+          toastInstillError({
+            title:
+              "Something went wrong when clone the pipeline, please try again later",
+            error,
+            toast,
+          }),
+        onSettled: () => setCloning(false),
+      }
+    );
   }
 
   // We are using formID to trigger the form submission here, due to the layout

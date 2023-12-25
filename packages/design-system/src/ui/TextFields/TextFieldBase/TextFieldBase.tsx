@@ -147,7 +147,7 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
   return (
     <div className="flex flex-col">
       <div
-        className={cn("flex flex-col relative", inputWidth, inputBorderRadius, {
+        className={cn("relative flex flex-col", inputWidth, inputBorderRadius, {
           "mb-2.5": description,
         })}
       >
@@ -177,7 +177,7 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
             messageTextColor={messageTextColor}
           />
         </div>
-        <div className="flex relative">
+        <div className="relative flex">
           <input
             {...passThrough}
             value={value ? value : ""}
@@ -223,7 +223,7 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
             }}
           />
           {enableProtectedToggle ? (
-            <div className="absolute flex transform-gpu right-5 top-1/2 -translate-y-1/2">
+            <div className="absolute right-5 top-1/2 flex -translate-y-1/2 transform-gpu">
               <button
                 className="my-auto"
                 type="button"

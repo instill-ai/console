@@ -22,7 +22,7 @@ export const NameCell = ({
   return (
     <td>
       <div className={cn("flex flex-row gap-x-2", width, padding)}>
-        <div className="flex min-h-8 min-w-8">
+        <div className="min-h-8 min-w-8 flex">
           <StateIcon
             state={state}
             width="w-[18px]"
@@ -31,7 +31,7 @@ export const NameCell = ({
           />
         </div>
         <Link className="w-4/5" href={link}>
-          <h3 className="text-instill-h3 hover:underline truncate">{name}</h3>
+          <h3 className="text-instill-h3 truncate hover:underline">{name}</h3>
         </Link>
       </div>
     </td>

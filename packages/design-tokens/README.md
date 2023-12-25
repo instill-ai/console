@@ -1,4 +1,3 @@
-
 ## Preface
 
 Normally, what big company does not necessarily mean it will fit into a small and agile startup. Design tokens are not in that category and it will benefit our developer cycle in the long run. Let’s bring some examples here
@@ -47,10 +46,8 @@ You need to digest the whole TailwindCSS configuration preset like below and set
 ```js
 module.exports = {
   presets: [require("@instill-ai/design-tokens/dist/tailwind.config.cjs")],
-  content: [
-    "src/**/*.{js,ts,jsx,tsx}",
-  ],
-}
+  content: ["src/**/*.{js,ts,jsx,tsx}"],
+};
 ```
 
 Then you can import the CSS variables file in your project at the root of the app
@@ -90,7 +87,7 @@ Toggle the theme in the app
 
 ```tsx
 <button
-  className="font-sans text-semantic-fg-primary"
+  className="text-semantic-fg-primary font-sans"
   onClick={() => {
     const currentTheme = localStorage.getItem("instill-console-theme")
       ? localStorage.getItem("instill-console-theme")
@@ -109,7 +106,7 @@ Toggle the theme in the app
 </button>
 ```
 
-## How to set up the font 
+## How to set up the font
 
 Import the Google font in the Head
 
@@ -119,7 +116,7 @@ Import the Google font in the Head
     rel="preconnect"
     href="https://fonts.googleapis.com"
     as="font"
-    crossOrigin=""
+    crossorigin=""
   />
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
@@ -136,8 +133,6 @@ Set up the CSS variables
 }
 ```
 
-
-
 ## How to use the font with Nextjs optimization
 
 You need to first check all the CSS variables related to FontFamily in the TailwindCSS preset, and add the CSS variable at the root of your Nextjs APP. Take IBM Plex Sans as an example. The TailwindCSS preset looks like
@@ -146,10 +141,10 @@ You need to first check all the CSS variables related to FontFamily in the Tailw
 module.exports = {
   theme: {
     fontFamily: {
-      "ibm-plex-sans": "var(--font-ibm-plex-sans)"
+      "ibm-plex-sans": "var(--font-ibm-plex-sans)",
     },
-  }
-}
+  },
+};
 ```
 
 You need to set the font optimization according to the identifier `--font-ibm-plex-sans`
@@ -158,14 +153,14 @@ You need to set the font optimization according to the identifier `--font-ibm-pl
 // pages/_app.tsx
 import { IBM_Plex_Sans } from "next/font/google";
 import { Inter } from 'next/font/google';
- 
+
 const ibmPlexSans = IBM_Plex_Sans({
   style: ["italic", "normal"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: '--font-ibm-plex-sans',
 });
- 
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <main className={`${inter.variable} font-sans`}>
@@ -175,13 +170,13 @@ export default function MyApp({ Component, pageProps }) {
 }
 ```
 
-## Technological details 
+## Technological details
 
 ### The Tokens Studio's token
 
 The tokens that come from Token Studio's plugin will be stored in the /tokens folder and committed into git. (The plugin will treat this repo as remote storage. So it's forbidden to directly change the tokens stored in this folder)
 
-The structure will look like this. 
+The structure will look like this.
 
 - `global.json`: This file has all the styles a designer needs to construct a proper design-tokens. Right now the owner is our designer Dani.
 - `/semantic`: This folder stores the base of the design tokens. We will construct the base TailwindCSS preset from this file
@@ -234,18 +229,18 @@ If you find out these styles are not enough. Please file issue in this repo.
 
 ### Naming agnostic
 
-We are trying to not affect the naming convention of designers by emitting additional naming rules. So we do a lot of naming transformation under the hood. 
+We are trying to not affect the naming convention of designers by emitting additional naming rules. So we do a lot of naming transformation under the hood.
 
 Takes fontFamily for example, the tokens that come from the plugin look like
 
 ```json
 {
   "fontFamilies": {
-  "ibm-plex-sans": {
-    "value": "IBM Plex Sans",
-    "type": "fontFamilies"
+    "ibm-plex-sans": {
+      "value": "IBM Plex Sans",
+      "type": "fontFamilies"
+    }
   }
-},
 }
 ```
 
@@ -253,14 +248,14 @@ The style dictionary will transform it to this and you will notice that it const
 
 ```json
 {
-  value: "IBM Plex Sans",
-  type: "fontFamilies",
-  filePath: "tokens/semantic/typography.json",
-  isSource: true,
-  original: { value: "IBM Plex Sans", type: "fontFamilies" },
-  name: "font-families-ibm-plex-sans",
-  attributes: { category: "font-families", type: "ibm-plex-sans" },
-  path: ["font-families", "ibm-plex-sans"],
+  "value": "IBM Plex Sans",
+  "type": "fontFamilies",
+  "filePath": "tokens/semantic/typography.json",
+  "isSource": true,
+  "original": { "value": "IBM Plex Sans", "type": "fontFamilies" },
+  "name": "font-families-ibm-plex-sans",
+  "attributes": { "category": "font-families", "type": "ibm-plex-sans" },
+  "path": ["font-families", "ibm-plex-sans"]
 }
 ```
 
@@ -292,9 +287,9 @@ module.exports = {
   theme: {
     colors: {
       "semantic-bg-primary": "var(--semantic-bg-primary)",
-    }
-  }
-}
+    },
+  },
+};
 ```
 
 2. We construct the css variable and import them at the root. The css file will looks like below
@@ -359,7 +354,7 @@ The letterSpacing in the Tokens Studio output may be inconsistent. But currently
 
 Be careful, due to Tokens Studio is using . as a separator for it's object's path, we can not use `0.5` but `0,5` to represent the float value. The transform we have right now can handle them correctly. But do look close to this potential issue.
 
-## Reference 
+## Reference
 
 [^1]: [W3C Design Tokens Technical Reports](https://tr.designtokens.org/)
 [^2]: [TailwindCSS - Installation](https://tailwindcss.com/docs/installation)

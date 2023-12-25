@@ -11,7 +11,7 @@ const Template: StoryFn = () => {
   return (
     <div className="grid grid-flow-row grid-cols-4 gap-x-6 gap-y-6">
       {Object.entries(Logos).map(([key, Logo]) => {
-        return <Logo key={key} className="w-[120px] m-auto" />;
+        return <Logo key={key} className="m-auto w-[120px]" />;
       })}
     </div>
   );
