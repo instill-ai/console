@@ -19,6 +19,7 @@ import {
   UserProfileCard,
   UserProfileCardProps,
 } from "../../../components";
+import { CreatePipelineDialog } from "./CreatePipelineDialog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -26,10 +27,8 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ViewPipelines = ({
-  createPipelineDialog,
   organizations,
 }: {
-  createPipelineDialog: React.ReactElement;
   organizations?: UserProfileCardProps["organizations"];
 }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -100,7 +99,7 @@ export const ViewPipelines = ({
                 onChange={(event) => setSearchCode(event.target.value)}
               />
             </Input.Root>
-            {createPipelineDialog}
+            <CreatePipelineDialog />
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">

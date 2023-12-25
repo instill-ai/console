@@ -2,11 +2,7 @@ import * as React from "react";
 import { PageBase, ViewPipelines } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import {
-  ConsoleCorePageHead,
-  CreatePipelineDialog,
-  Topbar,
-} from "../../../components";
+import { ConsoleCorePageHead, Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
@@ -18,10 +14,7 @@ const PipelinesPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <ViewPipelines
-        createPipelineDialog={<CreatePipelineDialog />}
-        organizations={undefined}
-      />
+      <ViewPipelines organizations={undefined} />
     </React.Fragment>
   );
 };

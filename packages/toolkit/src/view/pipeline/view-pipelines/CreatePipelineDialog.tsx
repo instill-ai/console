@@ -13,21 +13,22 @@ import {
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useRouter } from "next/router";
 import {
   CreateUserPipelinePayload,
   InstillStore,
+  Nullable,
+  PipelineSharing,
   toastInstillError,
   useCreateUserPipeline,
+  useEntity,
   useInstillStore,
   useShallow,
-  Nullable,
-  useEntity,
-  LoadingSpin,
-  PipelineSharing,
   validateInstillID,
-  InstillErrors,
-} from "@instill-ai/toolkit";
-import { useRouter } from "next/router";
+} from "../../../lib";
+import { InstillErrors } from "../../../constant";
+import { LoadingSpin } from "../../../components";
 
 const CreatePipelineSchema = z
   .object({
@@ -285,7 +286,7 @@ export const CreatePipelineDialog = () => {
               </RadioGroup.Root>
             </div>
 
-            <div className="pt-8 px-6 pb-6 flex flex-row-reverse">
+            <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
                 disabled={creating}
                 form={formID}
