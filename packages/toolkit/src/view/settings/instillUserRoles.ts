@@ -34,8 +34,8 @@ export const instillUserRoles: SelectOption[] = [
     value: "Manufacturing",
   },
   {
-    label: "Sales & Account Mgmt",
-    value: "Sales & Account Mgmt",
+    label: "Sales & Account Management",
+    value: "Sales & Account Management",
   },
   {
     label: "Leadership/Management",
