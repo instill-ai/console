@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Button,
-  DataTable,
-  Dialog,
-  Icons,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, DataTable, Icons, useToast } from "@instill-ai/design-system";
 
 import { ColumnDef } from "@tanstack/react-table";
 import {

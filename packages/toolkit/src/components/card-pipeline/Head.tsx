@@ -27,12 +27,10 @@ const selector = (store: InstillStore) => ({
 
 export const Head = ({
   ownerID,
-  isOrg,
   isOwner,
   pipeline,
 }: {
   ownerID: string;
-  isOrg: boolean;
   isOwner: boolean;
   pipeline: Pipeline;
 }) => {

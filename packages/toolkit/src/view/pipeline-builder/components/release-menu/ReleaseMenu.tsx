@@ -15,7 +15,6 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, useToast } from "@instill-ai/design-system";
 import { Description } from "./Description";
-import { useRouter } from "next/router";
 import { constructPipelineRecipe } from "../../lib";
 import { LoadingSpin } from "../../../../components";
 
@@ -48,9 +47,6 @@ export const ReleaseMenu = ({
   const form = useForm<z.infer<typeof ReleasePipelineFormSchema>>({
     resolver: zodResolver(ReleasePipelineFormSchema),
   });
-
-  const router = useRouter();
-  const { id, entity } = router.query;
   const { toast } = useToast();
   const { accessToken, nodes } = useInstillStore(useShallow(selector));
 
@@ -102,9 +98,7 @@ export const ReleaseMenu = ({
     },
     [
       accessToken,
-      entity,
       form,
-      id,
       nodes,
       onRelease,
       releasePipelineVersion,

@@ -13,9 +13,6 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useUsersSubscription,
-  useOrganizationsSubscription,
-  useUserMe,
   useEntity,
 } from "../../lib";
 import { FilterByDay } from "./FilterByDay";
@@ -25,12 +22,12 @@ import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 export type DashboardPipelineListPageMainViewProps = Omit<
   GeneralPageProp,
   "router"
-> & { isCloud: boolean };
+>;
 
 export const DashboardPipelineListPageMainView = (
   props: DashboardPipelineListPageMainViewProps
 ) => {
-  const { accessToken, enableQuery, isCloud } = props;
+  const { accessToken, enableQuery } = props;
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
@@ -72,7 +69,7 @@ export const DashboardPipelineListPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, entityObject.isSuccess]);
+  }, [selectedTimeOption, entityObject.isSuccess, entityObject.entityName]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data
@@ -139,59 +136,6 @@ export const DashboardPipelineListPageMainView = (
     previoustriggeredPipelines.isSuccess,
     previoustriggeredPipelines.data,
     triggeredPipelineList,
-  ]);
-
-  // Query the Remaing Triggers
-  const me = useUserMe({
-    enabled: enableQuery,
-    retry: false,
-    accessToken,
-  });
-
-  const userSubscription = useUsersSubscription({
-    userName: entityObject.isSuccess ? entityObject.entityName : null,
-    enabled:
-      entityObject.isSuccess && entityObject.namespaceType === "NAMESPACE_USER",
-    accessToken,
-  });
-
-  const organizationSubscription = useOrganizationsSubscription({
-    oraganizationName: entityObject.isSuccess ? entityObject.entityName : null,
-    enabled:
-      entityObject.isSuccess &&
-      entityObject.namespaceType === "NAMESPACE_ORGANIZATION",
-    accessToken,
-  });
-
-  // Determine the subscription array by the type of current entity
-
-  const subscriptions = React.useMemo(() => {
-    if (!entityObject.isSuccess) {
-      return null;
-    }
-
-    if (
-      entityObject.namespaceType === "NAMESPACE_USER" &&
-      userSubscription.isSuccess
-    ) {
-      return userSubscription.data;
-    }
-
-    if (
-      entityObject.namespaceType === "NAMESPACE_ORGANIZATION" &&
-      organizationSubscription.isSuccess
-    ) {
-      return organizationSubscription.data;
-    }
-
-    return null;
-  }, [
-    entityObject.isSuccess,
-    entityObject.namespaceType,
-    userSubscription.isSuccess,
-    userSubscription.data,
-    organizationSubscription.isSuccess,
-    organizationSubscription.data,
   ]);
 
   /* -------------------------------------------------------------------------

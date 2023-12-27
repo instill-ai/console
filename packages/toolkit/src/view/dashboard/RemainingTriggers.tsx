@@ -54,23 +54,24 @@ export default function RemainingTriggers({
     return Math.round(alpha);
   };
 
-  const getSubscriptionMessage = (percentage: number) => {
-    if (percentage === 100) {
-      return `You haven't used any triggers yet. Upgrade your plan to unlock the power of automated pipelines.`;
-    }
-    if (percentage === 0) {
-      return `You have used all triggers in your plan. Upgrade now to avoid disruption on your AI workflows.`;
-    }
-    if (percentage <= 25) {
-      return `You've used ${percentage}% of your available triggers. Consider upgrading your plan to keep your workflows running seamlessly.`;
-    }
-    if (percentage <= 50) {
-      return `You've used ${percentage}% of your available triggers. Upgrade your plan for uninterrupted workflow automation.`;
-    }
-    if (percentage <= 80) {
-      return `You've used ${percentage}% of your available triggers. Upgrade plan to trigger more pipelines.`;
-    }
-  };
+  // Currently, we don't need this warning
+  // const getSubscriptionMessage = (percentage: number) => {
+  //   if (percentage === 100) {
+  //     return `You haven't used any triggers yet. Upgrade your plan to unlock the power of automated pipelines.`;
+  //   }
+  //   if (percentage === 0) {
+  //     return `You have used all triggers in your plan. Upgrade now to avoid disruption on your AI workflows.`;
+  //   }
+  //   if (percentage <= 25) {
+  //     return `You've used ${percentage}% of your available triggers. Consider upgrading your plan to keep your workflows running seamlessly.`;
+  //   }
+  //   if (percentage <= 50) {
+  //     return `You've used ${percentage}% of your available triggers. Upgrade your plan for uninterrupted workflow automation.`;
+  //   }
+  //   if (percentage <= 80) {
+  //     return `You've used ${percentage}% of your available triggers. Upgrade plan to trigger more pipelines.`;
+  //   }
+  // };
 
   return (
     <div className="flex h-[110px] w-[362px] flex-row rounded-sm border border-semantic-bg-line bg-semantic-bg-primary bg-white p-6 px-5 py-3 shadow">

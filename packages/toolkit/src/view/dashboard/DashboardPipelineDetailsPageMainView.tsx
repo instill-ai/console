@@ -68,7 +68,13 @@ export const DashboardPipelineDetailsPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [id, selectedTimeOption, entityObject.isSuccess]);
+  }, [
+    id,
+    selectedTimeOption,
+    entityObject.isSuccess,
+    entityObject.entityName,
+    entityObject.id,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data

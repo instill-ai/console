@@ -57,10 +57,11 @@ export const ViewPipeline = ({
 
   return (
     <div className="flex h-full flex-col">
-      <Head isOwner={isOwner} />
+      <Head />
       <div className="mx-auto flex flex-1 flex-row px-8">
         <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
           <ReadOnlyPipelineBuilder
+            pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
             recipe={pipeline.isSuccess ? pipeline.data.recipe : null}
             metadata={pipeline.isSuccess ? pipeline.data.metadata : null}
             className="h-[378px] w-full"

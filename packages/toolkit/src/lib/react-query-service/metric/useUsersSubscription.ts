@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getOrganizationQuery, getUsersSubscription } from "../../vdp-sdk";
+import { getUsersSubscription } from "../../vdp-sdk";
 
 export const useUsersSubscription = ({
   userName,
