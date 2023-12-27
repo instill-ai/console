@@ -143,6 +143,7 @@ export const Body = ({
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
                   isOwner={pipeline.owner_name === me.data?.name}
+                  disabledPermissionLabel={true}
                 />
               ))
             )

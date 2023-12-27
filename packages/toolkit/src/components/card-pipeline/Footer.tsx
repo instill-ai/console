@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import {
   InstillStore,
   Pipeline,
+  isPublicPipeline,
   useInstillStore,
   useShallow,
   useUserMe,
@@ -30,7 +31,13 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
+export const Footer = ({
+  pipeline,
+  disabledPermissionLabel,
+}: {
+  pipeline: Pipeline;
+  disabledPermissionLabel?: boolean;
+}) => {
   const router = useRouter();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -47,11 +54,18 @@ export const Footer = ({ pipeline }: { pipeline: Pipeline }) => {
     accessToken,
   });
 
+  const isPublic = isPublicPipeline(pipeline);
+
   return (
     <div className="flex flex-col px-6 pb-4">
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-x-2">
+        {disabledPermissionLabel ? null : (
+          <Tag className="!py-0" variant="lightNeutral" size="sm">
+            {isPublic ? "Public" : "Private"}
+          </Tag>
+        )}
         {latestRelease ? (
-          <Tag variant="darkBlue" size="sm">
+          <Tag className="!py-0" variant="darkBlue" size="sm">
             {latestRelease}
           </Tag>
         ) : null}
