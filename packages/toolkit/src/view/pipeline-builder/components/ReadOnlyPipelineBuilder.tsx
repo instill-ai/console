@@ -3,6 +3,7 @@ import * as React from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
+  Controls,
   Edge,
   Node,
   ReactFlowInstance,
@@ -102,7 +103,7 @@ export const ReadOnlyPipelineBuilder = ({
   return (
     <div
       className={cn(
-        "flex w-full rounded-sm border-2 border-semantic-bg-line",
+        "group flex w-full rounded-sm border-2 border-semantic-bg-line",
         className
       )}
     >
@@ -134,6 +135,11 @@ export const ReadOnlyPipelineBuilder = ({
           color="#D2D6DB"
           className="!bg-semantic-bg-alt-primary"
           size={3}
+        />
+        <Controls
+          id={pipelineName ?? undefined}
+          showInteractive={false}
+          className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         />
       </ReactFlow>
     </div>
