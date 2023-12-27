@@ -186,7 +186,10 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                 console.warn(msg);
               }}
             >
-              <Controls />
+              <Controls
+                id={pipelineName ?? undefined}
+                showInteractive={false}
+              />
               <Background
                 id={pipelineName ?? undefined}
                 key={pipelineName}
