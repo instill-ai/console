@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   if (cookies["instill-auth-session"]) {
     const accessToken = JSON.parse(
-      cookies["instill-auth-session"]
+      cookies["instill-auth-session"],
     ).access_token;
 
     await authLogoutAction({ accessToken });

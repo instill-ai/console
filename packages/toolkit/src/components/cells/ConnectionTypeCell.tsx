@@ -47,7 +47,7 @@ export const ConnectionTypeCell = ({
             />
             <p
               className={cn(
-                "my-auto text-instillGrey90 text-instill-body line-clamp-1"
+                "text-instillGrey90 text-instill-body my-auto line-clamp-1"
               )}
             >
               {connectorDefinition.title}

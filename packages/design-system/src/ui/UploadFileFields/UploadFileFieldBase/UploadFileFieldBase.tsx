@@ -193,7 +193,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
   return (
     <div className="flex flex-col">
       <div
-        className={cn("relative flex flex-col group", {
+        className={cn("group relative flex flex-col", {
           "mb-2.5": description,
         })}
       >
@@ -225,7 +225,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
         <label
           htmlFor={id}
           className={cn(
-            "flex flex-row p-0 relative cursor-pointer",
+            "relative flex cursor-pointer flex-row p-0",
             inputWidth,
             inputHeight,
             inputBorderRadiusBottomLeft,
@@ -272,7 +272,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                 )
           )}
         >
-          <div className={"flex mr-auto pl-5 my-auto"}>
+          <div className={"my-auto mr-auto flex pl-5"}>
             {file ? (
               <div className="flex flex-row gap-x-2.5">
                 <DocIcon
@@ -315,7 +315,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
             ref={inputRef}
             key={fileInputKey}
             className={cn(
-              "opacity-0 overflow-hidden absolute cursor-pointer",
+              "absolute cursor-pointer overflow-hidden opacity-0",
               inputHeight ? inputHeight : "py-2.5",
               inputWidth,
               placeholderFontFamily,
@@ -350,7 +350,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
           <button
             type="button"
             className={cn(
-              "flex h-full ml-auto px-5",
+              "ml-auto flex h-full px-5",
               answered ? "absolute bottom-0 right-0 z-20" : "",
               inputBorderRadiusTopRight,
               inputBorderRadiusBottomRight,

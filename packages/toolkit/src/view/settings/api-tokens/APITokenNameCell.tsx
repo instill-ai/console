@@ -31,9 +31,9 @@ export const APITokenNameCell = (props: APITokenNameCellProps) => {
         className="!px-2 !py-2"
       >
         {copied ? (
-          <Icons.Check className="w-4 h-4 stroke-semantic-fg-primary" />
+          <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
         ) : (
-          <Icons.Copy06 className="w-4 h-4 stroke-semantic-fg-primary" />
+          <Icons.Copy06 className="h-4 w-4 stroke-semantic-fg-primary" />
         )}
       </Button>
     </div>

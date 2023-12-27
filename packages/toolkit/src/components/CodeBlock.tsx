@@ -14,11 +14,11 @@ export const CodeBlock = (props: CodeBlockProps) => {
   return (
     <div
       className={cn(
-        "flex flex-1 w-full h-full relative pr-4 rounded-sm bg-semantic-bg-primary",
+        "relative flex h-full w-full flex-1 rounded-sm bg-semantic-bg-primary pr-4",
         className
       )}
     >
-      <div className="absolute top-3 right-3">
+      <div className="absolute right-3 top-3">
         <CopyToClipboardButton
           className="border-0 !px-1 !py-1"
           text={codeString}

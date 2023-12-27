@@ -23,7 +23,7 @@ export function useAccessToken(props?: UseAccessTokenProps) {
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const query = useQuery(
@@ -47,7 +47,7 @@ export function useAccessToken(props?: UseAccessTokenProps) {
       onError: async (error) => {
         console.error(
           "Something went wrong when try to get accessToken",
-          error
+          error,
         );
 
         await axios.post("/api/remove-user-cookie", {
@@ -62,7 +62,7 @@ export function useAccessToken(props?: UseAccessTokenProps) {
       },
       retry: false,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   React.useEffect(() => {

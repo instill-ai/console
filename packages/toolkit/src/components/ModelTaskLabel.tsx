@@ -30,7 +30,7 @@ export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
         data-testid="model-task-label"
       >
         <div className={cn(iconStyle.width, iconStyle.height)} />
-        <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
+        <p className="text-instillGrey90 text-instill-small my-auto flex capitalize">
           Unspecified
         </p>
       </div>
@@ -45,7 +45,7 @@ export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
       data-testid="model-task-label"
     >
       {toolkit.getIcon(iconStyle)}
-      <p className="my-auto flex capitalize text-instillGrey90 text-instill-small">
+      <p className="text-instillGrey90 text-instill-small my-auto flex capitalize">
         {toolkit.label}
       </p>
     </div>

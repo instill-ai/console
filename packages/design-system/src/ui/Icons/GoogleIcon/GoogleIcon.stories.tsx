@@ -8,9 +8,7 @@ const meta: Meta<typeof GoogleIcon> = {
 
 export default meta;
 
-const Template: StoryFn<typeof GoogleIcon> = (args) => (
-  <GoogleIcon {...args} />
-);
+const Template: StoryFn<typeof GoogleIcon> = (args) => <GoogleIcon {...args} />;
 
 export const Playground: StoryFn<typeof GoogleIcon> = Template.bind({});
 

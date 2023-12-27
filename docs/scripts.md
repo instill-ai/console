@@ -31,4 +31,3 @@ Besides scripts inside the `package.json`, there are multiple scripts outside of
 ## Caveats
 
 Because we store the script within a shell script file, you need to grant permission like `sudo chmod 755 './scripts/<bash script>'` at the root.
-

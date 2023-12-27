@@ -9,12 +9,12 @@ export const TableError = (props: TableErrorProps) => {
   return (
     <div
       className={cn(
-        "flex min-h-[300px] w-full border border-instillGrey20 bg-white",
+        "border-instillGrey20 flex min-h-[300px] w-full border bg-white",
         marginBottom
       )}
     >
       <div className="m-auto flex flex-col gap-y-2.5">
-        <p className="m-auto text-instillGrey50 text-instill-small">
+        <p className="text-instillGrey50 text-instill-small m-auto">
           Something went wrong... Please try again later.
         </p>
       </div>

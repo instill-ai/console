@@ -37,7 +37,7 @@ export const TablePlaceholderBase = ({
   return (
     <div
       className={cn(
-        "flex min-h-[300px] w-full flex-row border border-instillGrey15 bg-white px-[9px] py-[18px]",
+        "border-instillGrey15 flex min-h-[300px] w-full flex-row border bg-white px-[9px] py-[18px]",
         marginBottom
       )}
     >

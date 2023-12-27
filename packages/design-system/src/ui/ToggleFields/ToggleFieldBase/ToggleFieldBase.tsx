@@ -203,14 +203,14 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
         </div>
         <label
           htmlFor={id}
-          className={cn("flex relative w-[90px] h-10", inputBgColor)}
+          className={cn("relative flex h-10 w-[90px]", inputBgColor)}
         >
           <input
             {...passThrough}
             id={id}
             aria-label={`${id}-label`}
             className={cn(
-              "peer appearance-none w-[90px] h-10",
+              "peer h-10 w-[90px] appearance-none",
               inputBorderRadius,
               inputShadow,
               disabled
@@ -281,7 +281,7 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
           />
           <div
             className={cn(
-              "absolute left-[5px] top-[5px] w-[30px] h-[30px] origin-top-left transition peer-checked:translate-x-[50px]",
+              "absolute left-[5px] top-[5px] h-[30px] w-[30px] origin-top-left transition peer-checked:translate-x-[50px]",
               disabled
                 ? cn(
                     value ? disabledCheckedDotColor : disabledDotColor,

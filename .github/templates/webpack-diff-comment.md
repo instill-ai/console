@@ -1,4 +1,5 @@
 ## Bundle size diff
+
 Between staging and main
 
 | Old size | New size | Diff                     |

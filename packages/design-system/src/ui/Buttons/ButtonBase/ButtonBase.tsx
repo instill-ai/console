@@ -198,7 +198,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
       type={type}
       data-flag={dataFlag}
       className={cn(
-        "group rounded-[1px] flex flex-row",
+        "group flex flex-row rounded-[1px]",
         startIcon ? itemGapX : endIcon ? itemGapX : "",
         disabled
           ? cn(

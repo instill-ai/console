@@ -19,7 +19,7 @@ We are undergoing a series of revamps for our design-system, which included seve
 - Because design-system relies on design-tokens, when deploy to Vercel, we need to build the package first from the root with `pnpm ci-build-storybook`
 - The output will be put into `/packages/design-system/storybook-static`, we indicate this folder in the Vercel setting
 
---- 
+---
 
 # Old design system
 
@@ -108,14 +108,14 @@ module.exports = {
 ```
 
 ```js
-<div className="p-5 w-32 rounded">
+<div className="w-32 rounded p-5">
   <div className="flex">
-    <img className="rounded w-full" src="https://bit.ly/2k1H1t6" />
-    <div className="flex flex-row mt-2">
-      <div className="rounded py-2 px-4 bg-mono-400">
+    <img className="w-full rounded" src="https://bit.ly/2k1H1t6" />
+    <div className="mt-2 flex flex-row">
+      <div className="bg-mono-400 rounded px-4 py-2">
         <div className="text-mono-100">Plus</div>
       </div>
-      <div className="text-sm font-bold text-pale-100">
+      <div className="text-pale-100 text-sm font-bold">
         VERIFIED &bull; CAPE TOWN
       </div>
     </div>

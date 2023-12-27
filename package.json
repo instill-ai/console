@@ -16,6 +16,7 @@
     "docker:prune-cache": "docker buildx prune",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "ci-build-packages": "turbo run build lint test",

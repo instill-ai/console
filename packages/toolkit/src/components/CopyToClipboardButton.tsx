@@ -13,7 +13,7 @@ export const CopyToClipboardButton = (props: CopyToClipboardButtonProps) => {
 
   return (
     <Button
-      className={cn("flex justify-center items-center", className)}
+      className={cn("flex items-center justify-center", className)}
       variant="secondaryGrey"
       size="sm"
       type="button"
@@ -26,9 +26,9 @@ export const CopyToClipboardButton = (props: CopyToClipboardButtonProps) => {
       }}
     >
       {copied ? (
-        <Icons.Check className="w-4 h-4 stroke-semantic-fg-primary" />
+        <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
       ) : (
-        <Icons.Copy06 className="w-4 h-4 stroke-semantic-fg-primary" />
+        <Icons.Copy06 className="h-4 w-4 stroke-semantic-fg-primary" />
       )}
     </Button>
   );

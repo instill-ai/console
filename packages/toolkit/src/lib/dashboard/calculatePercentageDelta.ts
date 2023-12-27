@@ -9,7 +9,7 @@ export function calculatePercentageDelta(
     return 100; // Previous count is zero, change is 100
   }
   if (currentCount === 0) {
-    return -100;  // Previous count is zero, change is -100
+    return -100; // Previous count is zero, change is -100
   }
   const delta = currentCount - previousCount;
   const percentageDelta = (delta / previousCount) * 100;

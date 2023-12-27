@@ -26,7 +26,7 @@ export const Regular: Story = {
           This is the content of the dialog
         </div>
         <Dialog.Footer>
-          <button className="px-2 flex mr-auto py-1 border" type="submit">
+          <button className="mr-auto flex border px-2 py-1" type="submit">
             Save changes
           </button>
         </Dialog.Footer>

@@ -18,7 +18,7 @@ export const PipelinesCell = ({
       <div className={cn("flex flex-col", width, padding)}>
         <div className="flex flex-row gap-x-2">
           <ModelInstanceIcon width="w-5" height="h-5" position="my-auto" />
-          <p className="my-auto text-instillGrey90 text-instill-body">
+          <p className="text-instillGrey90 text-instill-body my-auto">
             {pipelineCount}
           </p>
         </div>

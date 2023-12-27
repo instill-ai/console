@@ -28,6 +28,6 @@ export function useTrackToken({ enabled }: { enabled: boolean }) {
       retry: false,
       refetchOnWindowFocus: false,
       enabled,
-    }
+    },
   );
 }

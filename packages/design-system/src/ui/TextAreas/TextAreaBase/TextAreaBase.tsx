@@ -207,7 +207,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
     <div className="flex flex-col">
       <div
         className={cn(
-          "flex flex-col relative",
+          "relative flex flex-col",
           inputWidth,
           inputBorderRadius,
           bgColor,
@@ -240,13 +240,13 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
             messageTextColor={messageTextColor}
           />
         </div>
-        <div className="flex relative">
+        <div className="relative flex">
           <textarea
             {...passThrough}
             id={id}
             value={value ? value : ""}
             className={cn(
-              "flex px-5 min-h-[100px] resize-none",
+              "flex min-h-[100px] resize-none px-5",
               inputBgColor,
               inputWidth,
               inputHeight,
@@ -290,7 +290,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
                 counterFontFamily,
                 counterLineHeight,
                 counterTextColor,
-                "absolute right-4 bottom-2"
+                "absolute bottom-2 right-4"
               )}
             >{`${value ? value.length : 0}/${counterWordLimit}`}</div>
           ) : null}

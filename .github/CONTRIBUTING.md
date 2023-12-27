@@ -1,6 +1,7 @@
 # Contributing Guidelines
 
 We appreciate your contribution to this amazing project! Any form of engagement is welcome, including but not limiting to
+
 - feature request
 - documentation wording
 - bug report
@@ -8,7 +9,6 @@ We appreciate your contribution to this amazing project! Any form of engagement 
 - ...and so on!
 
 Please refer to the [community contributing section](https://github.com/instill-ai/community#contributing) for more details.
-
 
 ## Development and codebase contribution
 
@@ -34,14 +34,14 @@ When you are ready to send a PR, we recommend you to first open a `draft` one. T
 ### Local development environment setup
 
 - instill-ai/core
-   - Go to [instill-ai/core](https://github.com/instill-ai/core) and clone it.
-   - Spin up the services by `make latest PROFILE=all`
+  - Go to [instill-ai/core](https://github.com/instill-ai/core) and clone it.
+  - Spin up the services by `make latest PROFILE=all`
 - instill-ai/vdp
-   - Go to [instill-ai/vdp](https://github.com/instill-ai/vdp) and clone it.
-   - Spin up the services by `make latest PROFILE=all`
+  - Go to [instill-ai/vdp](https://github.com/instill-ai/vdp) and clone it.
+  - Spin up the services by `make latest PROFILE=all`
 - instill-ai/model (if you are developing model related pages)
-   - Go to [instill-ai/model]https://github.com/instill-ai/model) and clone it.
-   - Spin up the services by `make latest PROFILE=all`
+  - Go to [instill-ai/model]https://github.com/instill-ai/model) and clone it.
+  - Spin up the services by `make latest PROFILE=all`
 
 ### Spin up the console
 
@@ -52,7 +52,6 @@ When you are ready to send a PR, we recommend you to first open a `draft` one. T
 - Go to the `apps/console`, and run pnpm dev, keep this terminal running
 - You are all set, go to `http://localhost:3000` to see the console
 - The default login password is: `password`
-
 
 ## Last words
 

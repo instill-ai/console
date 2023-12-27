@@ -14,7 +14,7 @@ In order to empower users to dynamically set up environment variables (They can 
 
 We introduce the shell script `./next-env.mjs`. This script will read through the ./.env file and override it if you pass the new environment variable through docker-compose or `docker run -e` (Just as how we did it in `pnpm docker-run` command.)
 
-This script will then generate a `__env.js` under `/public` folder. Then we include this script into our HTML in the `/src/pages/_document.tsx` file. 
+This script will then generate a `__env.js` under `/public` folder. Then we include this script into our HTML in the `/src/pages/_document.tsx` file.
 
 After embedding this script into the root, this `__env.js` will inject the environment variables into the window object so we can access it in the client-side code. We have a helper function lying in the `/src/utils/config.ts` that can help us simplify the process of retrieving the variables.
 
@@ -27,4 +27,4 @@ For server-side code, we will alter the ./.env file in the image. It can also ac
 
 ### Caveats
 
-- Be careful of the env prefix. For example, if you have inlined env CONSOLE_BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the `next-env.mjs` will not find this env in `.env` file and alter it. We recommend you add `NEXT_PUBLIC_` prefix in all the env related to Next.js
+- Be careful of the env prefix. For example, if you have inlined env CONSOLE*BASE_URL, but in the env file it is written as NEXT_PUBLIC_CONSOLE_BASE_URL, the `next-env.mjs` will not find this env in `.env` file and alter it. We recommend you add `NEXT_PUBLIC*` prefix in all the env related to Next.js
