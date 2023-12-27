@@ -3,6 +3,7 @@ import {
   Button,
   ComplicateIcons,
   Icons,
+  Logos,
   Nullable,
   Tag,
 } from "@instill-ai/design-system";
@@ -16,6 +17,7 @@ export const ProfileBio = ({
   id,
   bio,
   githubLink,
+  twitterLink,
   isOwner,
   userMemberships,
   avatar,
@@ -51,7 +53,7 @@ export const ProfileBio = ({
           <Tag size="sm">{id}</Tag>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-y-2">
         <p className="text-semantic-fg-primary product-body-text-2-semibold">
           About
         </p>
@@ -69,6 +71,12 @@ export const ProfileBio = ({
                 fillAreaColor="fill-[#161514]"
               />
             }
+          />
+        ) : null}
+        {twitterLink ? (
+          <SocialMediaRow
+            url={twitterLink}
+            icon={<Logos.TwitterDark className="h-3 w-3" />}
           />
         ) : null}
       </div>
@@ -123,7 +131,7 @@ export const SocialMediaRow = ({
     <div className="flex flex-row items-center gap-x-2 px-2 py-1.5">
       {icon}
       <Link
-        className="line-clamp-1 cursor-pointer text-semantic-fg-secondary product-button-button-3 hover:!underline"
+        className="line-clamp-1 cursor-pointer !normal-case text-semantic-fg-secondary product-button-button-3 hover:!underline"
         href={url}
       >
         {url}
