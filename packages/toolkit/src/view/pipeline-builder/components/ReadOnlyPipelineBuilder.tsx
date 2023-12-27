@@ -48,12 +48,14 @@ const edgeTypes = {
 };
 
 export type ReadOnlyPipelineBuilderProps = {
+  pipelineName: Nullable<string>;
   recipe: Nullable<PipelineRecipe>;
   metadata: Nullable<GeneralRecord>;
   className?: string;
 };
 
 export const ReadOnlyPipelineBuilder = ({
+  pipelineName,
   className,
   recipe,
   metadata,
@@ -105,6 +107,7 @@ export const ReadOnlyPipelineBuilder = ({
       )}
     >
       <ReactFlow
+        id={pipelineName ?? undefined}
         className="rounded-sm"
         nodes={nodes}
         edges={edges}
@@ -125,6 +128,7 @@ export const ReadOnlyPipelineBuilder = ({
         connectOnClick={pipelineIsReadOnly}
       >
         <Background
+          id={pipelineName ?? undefined}
           variant={BackgroundVariant.Dots}
           gap={32}
           color="#D2D6DB"

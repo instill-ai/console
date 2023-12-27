@@ -16,19 +16,13 @@ export const CardSkeletonPipeline = () => {
 export const CardPipeline = (props: {
   ownerID: string;
   pipeline: Pipeline;
-  isOrg: boolean;
   isOwner: boolean;
 }) => {
-  const { ownerID, pipeline, isOrg, isOwner } = props;
+  const { ownerID, pipeline, isOwner } = props;
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
-      <Head
-        pipeline={pipeline}
-        ownerID={ownerID}
-        isOrg={isOrg}
-        isOwner={isOwner}
-      />
+      <Head pipeline={pipeline} ownerID={ownerID} isOwner={isOwner} />
       <Body pipeline={pipeline} />
       <Footer pipeline={pipeline} />
     </div>

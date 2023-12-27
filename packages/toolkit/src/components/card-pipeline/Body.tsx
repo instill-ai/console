@@ -37,6 +37,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
         </p>
       </div>
       <ReadOnlyPipelineBuilder
+        pipelineName={pipeline.name}
         recipe={pipeline.recipe}
         metadata={pipeline.metadata}
         className="h-[250px] w-full !border-none !px-0"

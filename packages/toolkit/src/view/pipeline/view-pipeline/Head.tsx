@@ -1,26 +1,15 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import {
-  getRawPipelineRecipeFromPipelineRecipe,
-  useSortedReleases,
-} from "../../pipeline-builder";
-import {
-  Button,
-  Icons,
-  Tag,
-  TabMenu,
-  useToast,
-} from "@instill-ai/design-system";
+import { useSortedReleases } from "../../pipeline-builder";
+import { Button, Icons, Tag, TabMenu } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  useCreateUserPipeline,
   useEntity,
   useInstillStore,
   useOrganization,
   useShallow,
   useUser,
-  useUserMe,
   useUserPipeline,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
@@ -31,22 +20,14 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const Head = ({ isOwner }: { isOwner: boolean }) => {
+export const Head = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const { id, entity } = router.query;
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("overview");
-  const [isCloning, setIsCloning] = React.useState(false);
-
-  const { toast } = useToast();
 
   const entityObject = useEntity();
-
-  const me = useUserMe({
-    enabled: enabledQuery,
-    accessToken,
-  });
 
   const user = useUser({
     userName: entityObject.entityName,
@@ -79,8 +60,6 @@ export const Head = ({ isOwner }: { isOwner: boolean }) => {
     accessToken,
     enabledQuery: enabledQuery && entityObject.isSuccess,
   });
-
-  const createPipeline = useCreateUserPipeline();
 
   return (
     <React.Fragment>

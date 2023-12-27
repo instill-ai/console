@@ -51,6 +51,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
+  pipelineName: store.pipelineName,
 });
 
 export type FlowProps = {
@@ -86,6 +87,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       updateSelectedConnectorNodeId,
       updateCurrentAdvancedConfigurationNodeID,
       pipelineIsReadOnly,
+      pipelineName,
     } = useInstillStore(useShallow(selector));
 
     return (
@@ -105,6 +107,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
             )}
           >
             <ReactFlow
+              key={pipelineName}
               nodes={nodes}
               edges={edges}
               onNodesDelete={() => {
@@ -124,6 +127,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               }}
               onNodesChange={(changes) => {
                 if (pipelineIsReadOnly) return;
+
+                // The start and end operator always need to be present in the pipeline
                 const nextChanges = changes.filter((change) => {
                   if (change.type === "remove") {
                     const node = nodes.find((node) => node.id === change.id);
@@ -158,6 +163,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                 includeHiddenNodes: true,
                 padding: 20,
               }}
+              // We want to position node based on their center
+              nodeOrigin={[0.5, 0.5]}
               nodeTypes={nodeTypes}
               edgeTypes={edgeTypes}
               proOptions={{ hideAttribution: true }}
@@ -169,6 +176,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               onError={(msgId, msg) => {
                 // Nextjs strict mode will cause react-flow to throw an unnecessary error
                 // "It looks like you have created a new nodeTypes or edgeTypes object"
+                // the below is a workaround to suppress the error
                 // https://github.com/wbkd/react-flow/issues/3065
 
                 if (msgId === "002") {
@@ -180,6 +188,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
             >
               <Controls />
               <Background
+                id={pipelineName ?? undefined}
+                key={pipelineName}
                 variant={BackgroundVariant.Dots}
                 gap={32}
                 color="#D2D6DB"

@@ -116,7 +116,6 @@ export const ViewPipelines = ({
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
-                  isOrg={pipeline.owner_name.split("/")[0] === "organizations"}
                   isOwner={
                     me.isSuccess ? pipeline.owner_name === me.data.name : false
                   }
