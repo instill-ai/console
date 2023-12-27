@@ -76,7 +76,7 @@ export const UserProfileCard = ({
             </p>
           </div>
           <Separator orientation="horizontal" className="my-4" />
-          {organizations ? (
+          {organizations && organizations.length !== 0 ? (
             <React.Fragment>
               <div className="flex flex-col gap-y-2">
                 <p className="text-semantic-fg-primary product-body-text-2-semibold">
