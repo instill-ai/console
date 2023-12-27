@@ -2,16 +2,14 @@
 
 ## [0.34.2-beta](https://github.com/instill-ai/console/compare/v0.34.1-beta...v0.34.2-beta) (2023-12-25)
 
-
 ### Bug Fixes
 
-* fix user can not smoothly clone the pipeline and decide what is its permission level ([#813](https://github.com/instill-ai/console/issues/813)) ([dc36a9a](https://github.com/instill-ai/console/commit/dc36a9a426ad2c0c0dbe1d72468c22d6946ee26d))
-
+- fix user can not smoothly clone the pipeline and decide what is its permission level ([#813](https://github.com/instill-ai/console/issues/813)) ([dc36a9a](https://github.com/instill-ai/console/commit/dc36a9a426ad2c0c0dbe1d72468c22d6946ee26d))
 
 ### Miscellaneous
 
-* fix typos in `components/README.md` ([#815](https://github.com/instill-ai/console/issues/815)) ([f30b650](https://github.com/instill-ai/console/commit/f30b65068d746001156587d0e8e9db175f6bd94c))
-* unused import `PageBase` ([#814](https://github.com/instill-ai/console/issues/814)) ([175b0d1](https://github.com/instill-ai/console/commit/175b0d1e6ab40c2518be8f32a92976b2646c31b7))
+- fix typos in `components/README.md` ([#815](https://github.com/instill-ai/console/issues/815)) ([f30b650](https://github.com/instill-ai/console/commit/f30b65068d746001156587d0e8e9db175f6bd94c))
+- unused import `PageBase` ([#814](https://github.com/instill-ai/console/issues/814)) ([175b0d1](https://github.com/instill-ai/console/commit/175b0d1e6ab40c2518be8f32a92976b2646c31b7))
 
 ## [0.34.1-beta](https://github.com/instill-ai/console/compare/v0.34.0-beta...v0.34.1-beta) (2023-12-22)
 
