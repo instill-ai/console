@@ -14,7 +14,7 @@ import {
 } from "../../../../../lib";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
-import { LoadingSpin } from "../../../../../components";
+import { EntityAvatar, LoadingSpin } from "../../../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -173,7 +173,16 @@ export const TabShare = () => {
       <Separator orientation="horizontal" className="my-4" />
       <div className="flex flex-row">
         <div className="mr-auto flex flex-row gap-x-2">
-          <div className="my-auto h-[30px] w-[30px] rounded-full bg-semantic-bg-line" />
+          <EntityAvatar
+            src={pipeline.data?.owner.profile_avatar ?? null}
+            entityName={pipeline.data?.owner_name ?? ""}
+            className="h-[30px] w-[30px]"
+            fallbackImg={
+              <div className="flex h-[30px] w-[30px] rounded-full bg-semantic-bg-secondary">
+                <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              </div>
+            }
+          />
           <p className="my-auto text-semantic-fg-disabled product-body-text-3-medium">
             {pipeline.data?.owner_name.split("/")[1]}
           </p>
