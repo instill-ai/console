@@ -5,7 +5,6 @@ import {
   ReactNode,
   useEffect,
   useState,
-  useLayoutEffect,
 } from "react";
 import {
   QueryCache,
