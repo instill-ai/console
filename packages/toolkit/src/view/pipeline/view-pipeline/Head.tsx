@@ -5,6 +5,7 @@ import { Button, Icons, Tag, TabMenu } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  isPublicPipeline,
   useEntity,
   useInstillStore,
   useOrganization,
@@ -114,8 +115,13 @@ export const Head = () => {
                 <span className="text-semantic-fg-disabled">/</span>
                 <span className="text-semantic-fg-primary">{id}</span>
               </div>
+              {pipeline.isSuccess ? (
+                <Tag className="!py-0" variant="default" size="sm">
+                  {isPublicPipeline(pipeline.data) ? "Public" : "Private"}
+                </Tag>
+              ) : null}
               {releases[0] ? (
-                <Tag size="sm" variant="darkPurple">
+                <Tag className="!py-0" size="sm" variant="darkPurple">
                   {releases[0]?.id}
                 </Tag>
               ) : null}

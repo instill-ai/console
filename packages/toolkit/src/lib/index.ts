@@ -15,6 +15,7 @@ export * from "./use-smart-hint";
 export * from "./utility";
 export * from "./vdp-sdk";
 export * from "./fillArrayWithZero";
+export * from "./isPublicPipeline";
 export * from "./toastInstillError";
 export * from "./usePipelineBuilderGraph";
 export * from "./useResourceAdditionalForm";
