@@ -303,12 +303,10 @@ export const FlowControl = (props: FlowControlProps) => {
     return snippet;
   }, [
     nodes,
-    pipelineId,
     appEnv,
     entityObject.isSuccess,
     entityObject.pipelineName,
     currentVersion,
-    pipelineId,
   ]);
 
   const canSave = React.useMemo(() => {
@@ -331,7 +329,38 @@ export const FlowControl = (props: FlowControlProps) => {
     const viewport = reactFlowInstance.getViewport();
     let componentType: Nullable<PipelineConnectorComponent["type"]> = null;
 
-    // Remove the empty node and edges that connect to empty node if it exists
+    // We will use these values to calculate the position of the new node
+    // Initialize the topLeftNodeXY and bottomRightNodeXY with the first node
+    const topLeftNodeXY = {
+      x: nodes[0].position.x,
+      y: nodes[0].position.y,
+    };
+    const bottomRightNodeXY = {
+      x: nodes[0].position.x,
+      y: nodes[0].position.y,
+    };
+
+    // Find the topLeftNodeXY and bottomRightNodeXY
+    nodes.forEach((node) => {
+      if (node.position.x < topLeftNodeXY.x) {
+        topLeftNodeXY.x = node.position.x;
+      }
+      if (node.position.y < topLeftNodeXY.y) {
+        topLeftNodeXY.y = node.position.y;
+      }
+      if (node.position.x > bottomRightNodeXY.x) {
+        bottomRightNodeXY.x = node.position.x;
+      }
+      if (node.position.y > bottomRightNodeXY.y) {
+        bottomRightNodeXY.y = node.position.y;
+      }
+    });
+
+    const newNodeXY = {
+      x: topLeftNodeXY.x + (bottomRightNodeXY.x - topLeftNodeXY.x) / 2,
+      y: topLeftNodeXY.y + (bottomRightNodeXY.y - topLeftNodeXY.y) / 2,
+    };
+
     const emptyNode = nodes.find((e) => e.data.nodeType === "empty");
 
     let newNodes = emptyNode
@@ -448,10 +477,7 @@ export const FlowControl = (props: FlowControlProps) => {
               },
               note: null,
             },
-            position: reactFlowInstance.project({
-              x: viewport.x,
-              y: viewport.y,
-            }),
+            position: newNodeXY,
           },
         ];
       }
@@ -477,10 +503,7 @@ export const FlowControl = (props: FlowControlProps) => {
             },
             note: null,
           },
-          position: reactFlowInstance.project({
-            x: viewport.x,
-            y: viewport.y,
-          }),
+          position: newNodeXY,
         },
       ];
     }
