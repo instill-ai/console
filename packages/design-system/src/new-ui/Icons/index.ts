@@ -85,6 +85,7 @@ import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
 import { Share07 } from "./Share07";
 import { Tag01 } from "./Tag01";
+import { TextGenerationChat } from "./TextGenerationChat";
 import { Trash01 } from "./Trash01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
@@ -94,6 +95,7 @@ import { User02 } from "./User02";
 import { UserPlus01 } from "./UserPlus01";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
+import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
 
 export const Icons = {
@@ -184,6 +186,7 @@ export const Icons = {
   SearchSm,
   Share07,
   Tag01,
+  TextGenerationChat,
   Trash01,
   Type02,
   TypePlus,
@@ -193,5 +196,6 @@ export const Icons = {
   UserPlus01,
   VideoRecorder,
   Visa,
+  VisualQuestionAnswering,
   X,
 };
