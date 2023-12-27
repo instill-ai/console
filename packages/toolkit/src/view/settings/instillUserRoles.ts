@@ -2,31 +2,67 @@ import { SelectOption } from "@instill-ai/design-system";
 
 export const instillUserRoles: SelectOption[] = [
   {
-    label: "Manager",
-    value: "manager",
+    label: "HR & Legal",
+    value: "HR & Legal",
   },
   {
-    label: "AI Researcher",
-    value: "ai-researcher",
+    label: "Product & Design",
+    value: "Product & Design",
   },
   {
-    label: "AI Engineer",
-    value: "ai-engineer",
+    label: "Creative Production",
+    value: "Creative Production",
   },
   {
-    label: "Data Engineer",
-    value: "data-engineer",
+    label: "Customer Service",
+    value: "Customer Service",
   },
   {
-    label: "Data Scientist",
-    value: "data-scientist",
+    label: "Operations",
+    value: "Operations",
   },
   {
-    label: "Analytics Engineer",
-    value: "analytics-engineer",
+    label: "Finance",
+    value: "Finance",
   },
   {
-    label: "Hobbyist",
-    value: "hobbyist",
+    label: "IT & Support",
+    value: "IT & Support",
+  },
+  {
+    label: "Manufacturing",
+    value: "Manufacturing",
+  },
+  {
+    label: "Sales & Account Mgmt",
+    value: "Sales & Account Mgmt",
+  },
+  {
+    label: "Leadership/Management",
+    value: "Leadership/Management",
+  },
+  {
+    label: "Data/AI - AI Researcher",
+    value: "Data/AI - AI Researcher",
+  },
+  {
+    label: "Data/AI - AI Engineer",
+    value: "Data/AI - AI Engineer",
+  },
+  {
+    label: "Data/AI - Data Engineer",
+    value: "Data/AI - Data Engineer",
+  },
+  {
+    label: "Data/AI - Data Scientist",
+    value: "Data/AI - Data Scientist",
+  },
+  {
+    label: "Data/AI - Analytics Engineer",
+    value: "Data/AI - Analytics Engineer",
+  },
+  {
+    label: "Data/AI - Hobbyist",
+    value: "Data/AI - Hobbyist",
   },
 ];
