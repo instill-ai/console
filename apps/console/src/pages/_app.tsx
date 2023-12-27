@@ -12,6 +12,7 @@ import {
   ReactQueryDevtools,
   useInstillStore,
   useCreateResourceFormStore,
+  DefaultOptions
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -27,8 +28,14 @@ import { ErrorBoundary } from "../components";
 import { Toaster, useToast } from "@instill-ai/design-system";
 
 export const queryCache = new QueryCache();
+export const defaultOptions: DefaultOptions = {
+  queries: {
+    retry: 2,
+    refetchOnWindowFocus: false,
+  },
+}
 
-export const queryClient = new QueryClient({ queryCache });
+export const queryClient = new QueryClient({ defaultOptions, queryCache });
 
 /* eslint-disable-next-line @typescript-eslint/ban-types */
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -108,10 +115,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <React.Fragment>
-      {/* 
-        We use this instead of setting the className on main due to we 
-        are using radix-ui Dialog. These Dialogs are created on demand 
-        and appended under body, they won't have the css variables if 
+      {/*
+        We use this instead of setting the className on main due to we
+        are using radix-ui Dialog. These Dialogs are created on demand
+        and appended under body, they won't have the css variables if
         we appends it on main
       */}
       <style jsx global>

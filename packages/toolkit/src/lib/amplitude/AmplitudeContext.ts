@@ -13,4 +13,6 @@ const defaultAmplitudeCtxValue: AmplitudeCtxValue = {
 
 export const AmplitudeCtx = React.createContext(defaultAmplitudeCtxValue);
 
+AmplitudeCtx.displayName = 'AmplitudeContext'
+
 export const useAmplitudeCtx = () => React.useContext(AmplitudeCtx);

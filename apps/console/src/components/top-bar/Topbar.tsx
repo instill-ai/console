@@ -11,6 +11,7 @@ import {
 import { TopbarLink } from "./TopbarLink";
 import { EntityAvatar, useUserMe } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
+import { tobBarData } from "./topBarData";
 
 export type TopbarProps = {
   logo: ReactElement;
@@ -46,43 +47,18 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           <React.Fragment>
             {me.isSuccess ? (
               <React.Fragment>
-                <TopbarLink
-                  href={`/${me.data.id}/pipelines`}
-                  icon={
-                    <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />
-                  }
-                  name="Pipelines"
-                  hightlighted={router.pathname.split("/")[2] === "pipelines"}
-                  className="mx-1 my-2 px-4"
-                />
-                <TopbarLink
-                  href={`/${me.data.id}/connectors`}
-                  icon={
-                    <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
-                  }
-                  name="Connectors"
-                  hightlighted={router.pathname.split("/")[2] === "connectors"}
-                  className="mx-1 my-2 px-4"
-                />
-                <TopbarLink
-                  href={`/${me.data.id}/models`}
-                  icon={
-                    <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />
-                  }
-                  name="Model Hub"
-                  hightlighted={router.pathname.split("/")[2] === "model"}
-                  className="mx-1 my-2 px-4"
-                />
-
-                <TopbarLink
-                  href={`/${me.data.id}/dashboard`}
-                  icon={
-                    <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
-                  }
-                  name="Dashboard"
-                  hightlighted={router.pathname.split("/")[2] === "dashboard"}
-                  className="mx-1 my-2 px-4"
-                />
+                {tobBarData.map(({ pathName, name, Icon }) => (
+                  <TopbarLink
+                    key={pathName}
+                    href={`/${me.data.id}/${pathName}`}
+                    icon={
+                      <Icon className="h-6 w-6 stroke-semantic-fg-primary" />
+                    }
+                    name={name}
+                    hightlighted={router.pathname.split("/")[2] === pathName}
+                    className="mx-1 my-2 px-4"
+                  />
+                ))}
               </React.Fragment>
             ) : (
               <div className="flex h-[217px] w-full items-center justify-center">
