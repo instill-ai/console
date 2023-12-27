@@ -1,0 +1,30 @@
+import * as React from "react";
+import {
+  ComplicateIconBase,
+  ComplicateIconBaseProps,
+} from "./ComplicateIconBase";
+
+export const KeypointDetection = React.forwardRef<
+  SVGSVGElement,
+  Omit<ComplicateIconBaseProps, "viewBox" | "children"> & {
+    fillAreaColor: string;
+  }
+>((props, ref) => {
+  const { className, fillAreaColor, ...passThrough } = props;
+  return (
+    <ComplicateIconBase
+      {...passThrough}
+      ref={ref}
+      viewBox="0 0 30 30"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.83205 4.46457L7.56627 4.8478L7.29965 6.18094L6.25172 5.39495L5.33318 5.40929L2.24756 7.87777L3.1846 9.04907L5.81651 6.94356L7.35169 8.095L8.53714 7.64209L8.76231 6.5162L9.30167 7.0556L10.3624 5.99497L8.83205 4.46457ZM7.6184 10.4109L6.74536 10.6651L5.76179 11.9964L5.99114 13.0922L7.11852 13.7406L13.0177 22.0831L14.1294 22.2098L14.3323 22.0288L14.3628 22.11L22.1805 19.1784L22.9023 24.6978L23.3191 25.2755L26.1498 26.6463L26.8036 25.2963L24.3372 24.1019L23.825 20.1855L25.8444 21.7389L26.7177 21.7685L28.8417 20.3525L28.0097 19.1044L26.3329 20.2223L23.5498 18.0814L23.5454 18.0472L23.3626 17.9374L20.259 15.55L19.3024 15.5848L13.7576 20.5313L10.2147 15.5211L12.7125 16.9575L13.3816 16.9967L16.7864 15.5386L16.1959 14.1597L13.1355 15.4704L7.46805 12.2112L7.61216 12.0162L10.5319 13.1419L11.0331 13.1555L14.9265 11.8924L17.5642 11.8479L17.5389 10.3482L14.7891 10.3945L14.5703 10.431L10.8233 11.6466L7.6184 10.4109ZM21.0058 18.0169L17.2511 19.4249L19.8371 17.1179L21.0058 18.0169Z"
+        className={fillAreaColor}
+      />
+    </ComplicateIconBase>
+  );
+});
+KeypointDetection.displayName = "KeypointDetectionIcon";

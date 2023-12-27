@@ -11,20 +11,13 @@ export const GeneralTaskCell = ({
   modelTask,
   className,
 }: GeneralTaskCellProps) => {
-  const iconStyle = {
-    width: "w-5",
-    height: "h-5",
-    position: "my-auto",
-    color: "fill-semantic-bg-secondary-base-bg",
-  };
-
   const { label, getIcon } = getModelInstanceTaskToolkit(modelTask);
 
   return (
     <div
       className={cn("justify-left flex flex-row gap-x-2 py-2 pr-6", className)}
     >
-      {getIcon(iconStyle)}
+      {getIcon("!w-5 !h-5 !fill-semantic-bg-secondary-base-bg")}
       <p className="text-product-body-text-3-regular my-auto flex text-semantic-bg-secondary-base-bg">
         {label}
       </p>

@@ -16,12 +16,6 @@ export type ModelTaskLabelProps = {
 
 export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
   const { task, marginBottom, position } = props;
-  const iconStyle = {
-    width: "w-[18px]",
-    height: "h-[18px]",
-    position: "my-auto",
-    color: "fill-instillGrey95",
-  };
 
   if (!task) {
     return (
@@ -29,8 +23,8 @@ export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
         className={cn("flex gap-x-2 bg-white p-2", marginBottom, position)}
         data-testid="model-task-label"
       >
-        <div className={cn(iconStyle.width, iconStyle.height)} />
-        <p className="text-instillGrey90 text-instill-small my-auto flex capitalize">
+        <div className="h-[18px] w-[18px]" />
+        <p className="my-auto flex !capitalize text-semantic-fg-primary product-body-text-4-regular">
           Unspecified
         </p>
       </div>
@@ -44,8 +38,8 @@ export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
       className={cn("flex gap-x-2 bg-white p-2", marginBottom, position)}
       data-testid="model-task-label"
     >
-      {toolkit.getIcon(iconStyle)}
-      <p className="text-instillGrey90 text-instill-small my-auto flex capitalize">
+      {toolkit.getIcon("w-[18px] h-[18px] fill-semantic-fg-primary")}
+      <p className="my-auto flex !capitalize text-semantic-fg-primary product-body-text-4-regular">
         {toolkit.label}
       </p>
     </div>

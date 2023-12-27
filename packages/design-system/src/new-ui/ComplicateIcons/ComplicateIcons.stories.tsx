@@ -89,3 +89,57 @@ export const Drag: Story = {
     />
   ),
 };
+
+export const ImageClassification: Story = {
+  render: () => (
+    <ComplicateIcons.ImageClassification
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const InstanceSegmentation: Story = {
+  render: () => (
+    <ComplicateIcons.InstanceSegmentation
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const KeypointDetection: Story = {
+  render: () => (
+    <ComplicateIcons.KeypointDetection
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const ObjectDetection: Story = {
+  render: () => (
+    <ComplicateIcons.ObjectDetection
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const SemanticSegmentation: Story = {
+  render: () => (
+    <ComplicateIcons.SemanticSegmentation
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
+
+export const OpticalCharacterRecognition: Story = {
+  render: () => (
+    <ComplicateIcons.OpticalCharacterRecognition
+      fillAreaColor="fill-semantic-fg-secondary"
+      className="h-5 w-5"
+    />
+  ),
+};
