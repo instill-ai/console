@@ -118,6 +118,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                   return true;
                 });
               }}
+              // Disabled delete nodes and edges by backespace
+              deleteKeyCode={null}
               onEdgesDelete={() => {
                 if (pipelineIsReadOnly) return;
 
