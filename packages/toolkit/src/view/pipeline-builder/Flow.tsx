@@ -5,6 +5,7 @@ import {
   Background,
   BackgroundVariant,
   Controls,
+  MiniMap,
   ReactFlow,
   ReactFlowInstance,
 } from "reactflow";
@@ -199,6 +200,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                 className="!bg-semantic-bg-alt-primary"
                 size={3}
               />
+              <MiniMap id={pipelineName ?? undefined} />
             </ReactFlow>
           </div>
           {isLoading ? (
