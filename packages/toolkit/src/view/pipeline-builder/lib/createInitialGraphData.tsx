@@ -44,6 +44,16 @@ export function createInitialGraphData(
         metadata.components.find((c) => c.id === component.id) ?? null;
     }
 
+    // Because we will recursively transform the configuration's value to string
+    // So we need to deep clone the configuration to avoid mutating the original
+    // Especially the original configuration connect back to the react-query object
+    // It will pollute other components
+    const _deepClonedConfiguration = structuredClone(component.configuration);
+
+    // The reason we need to transform all the value back to string is due to some
+    // constraint of the auto-form, most of the auto-form field value is string
+    // for example, number field. (But boolean field is using boolean)
+
     if (component.id === "start") {
       nodes.push({
         id: component.id,
@@ -53,7 +63,7 @@ export function createInitialGraphData(
           component: {
             ...component,
             id: "start",
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             operator_definition: (component as PipelineStartComponent)
               .operator_definition,
             resource_name: null,
@@ -77,7 +87,7 @@ export function createInitialGraphData(
           component: {
             ...component,
             id: "end",
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             operator_definition: (component as PipelineEndComponent)
               .operator_definition,
             resource_name: null,
@@ -99,7 +109,7 @@ export function createInitialGraphData(
           nodeType: "operator",
           component: {
             ...component,
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             operator_definition: (component as PipelineOperatorComponent)
               .operator_definition,
             resource_name: null,
@@ -121,7 +131,7 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
@@ -142,7 +152,7 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
@@ -163,7 +173,7 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(component.configuration),
+            configuration: recursiveTransformToString(_deepClonedConfiguration),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
