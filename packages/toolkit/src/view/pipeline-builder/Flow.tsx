@@ -47,7 +47,6 @@ const selector = (store: InstillStore) => ({
   onEdgesChange: store.onEdgesChange,
   onConnect: store.onConnect,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  testModeEnabled: store.testModeEnabled,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
@@ -84,7 +83,6 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
       onNodesChange,
       onEdgesChange,
       updatePipelineRecipeIsDirty,
-      testModeEnabled,
       updateSelectedConnectorNodeId,
       updateCurrentAdvancedConfigurationNodeID,
       pipelineIsReadOnly,
@@ -98,15 +96,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
           accessToken={accessToken}
         />
         <div className="relative flex h-full w-full flex-1">
-          <div
-            ref={ref}
-            className={cn(
-              "h-full w-full flex-1 border-[10px]",
-              testModeEnabled
-                ? "border-semantic-warning-bg"
-                : "border-transparent"
-            )}
-          >
+          <div ref={ref} className="h-full w-full flex-1">
             <ReactFlow
               key={pipelineName}
               nodes={nodes}
@@ -202,7 +192,10 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                 className="!bg-semantic-bg-alt-primary"
                 size={3}
               />
-              <MiniMap id={pipelineName ?? undefined} />
+              <MiniMap
+                className="h-[var(--pipeline-builder-minimap-height)]"
+                id={pipelineName ?? undefined}
+              />
             </ReactFlow>
           </div>
           {isLoading ? (
