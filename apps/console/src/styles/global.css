@@ -37,4 +37,7 @@
   --pipeline-builder-node-available-width: 332px;
   --pipeline-builder-node-padding-x: 12px;
   --pipeline-builder-node-padding-y: 10px;
+  --pipeline-builder-controller-padding: 32px;
+  --pipeline-builder-top-right-controler-height: 40px;
+  --pipeline-builder-minimap-height: 150px;
 }

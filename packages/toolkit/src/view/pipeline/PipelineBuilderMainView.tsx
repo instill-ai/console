@@ -137,8 +137,10 @@ export const PipelineBuilderMainView = (
         />
         <div
           className={cn(
-            "flex w-[456px] transform flex-col overflow-y-scroll bg-semantic-bg-primary p-6 duration-500",
-            currentAdvancedConfigurationNodeID ? "mr-0" : "-mr-[456px]"
+            "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
+            "h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
+            "top-[calc(var(--topbar-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
+            currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
           )}
         >
           <RightPanel />
