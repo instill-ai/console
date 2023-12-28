@@ -30,7 +30,6 @@ import { Toaster, useToast } from "@instill-ai/design-system";
 export const queryCache = new QueryCache();
 export const defaultOptions: DefaultOptions = {
   queries: {
-    retry: 2,
     refetchOnWindowFocus: false,
   },
 }
