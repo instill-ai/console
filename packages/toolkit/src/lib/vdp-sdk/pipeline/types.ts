@@ -88,10 +88,11 @@ export type PipelineSharing = {
 
 export type PipelineSharingUserRules = Record<
   string,
-  {
-    enabled: boolean;
-    role: PermissionRole;
-  }
+  | {
+      enabled: boolean;
+      role: PermissionRole;
+    }
+  | undefined
 >;
 
 export type PipelineSharingCodeRule = {

@@ -39,6 +39,8 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         accessToken,
       });
 
+      setDeleteConnectorDialogOpen(false);
+
       toast({
         title: "Successfully delete connector",
         variant: "alert-success",
