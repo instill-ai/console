@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Dialog, Input } from "@instill-ai/design-system";
+import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
 import { Nullable } from "../lib";
 import { LoadingSpin } from "./LoadingSpin";
 
@@ -40,8 +40,10 @@ export const GenerateDeleteResourceDialog = ({
         )}
       </Dialog.Trigger>
 
-      <Dialog.Content className="!w-[512px]">
-        <Dialog.Close />
+      <Dialog.Content className="!w-[450px]">
+        <div className="mx-auto mb-6 flex h-12 w-12 shrink-0 grow-0 rounded-full bg-semantic-warning-bg">
+          <Icons.AlertTriangle className="m-auto h-6 w-6 stroke-semantic-warning-on-bg" />
+        </div>
         <div className="mb-6 flex flex-col">
           <h2 className="mb-1 text-center text-semantic-fg-primary product-headings-heading-3">
             {title}

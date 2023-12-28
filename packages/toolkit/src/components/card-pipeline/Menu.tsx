@@ -59,7 +59,10 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
         resourceID={pipeline.id}
         title={`Delete ${pipeline.id}`}
         description="This action cannot be undone. This will permanently delete the pipeline."
-        handleDeleteResource={handleDeletePipeline}
+        handleDeleteResource={async () => {
+          await handleDeletePipeline();
+          setDeleteDialogIsOpen(false);
+        }}
         trigger={null}
       />
     </React.Fragment>

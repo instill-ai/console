@@ -8,5 +8,9 @@ export function isPublicPipeline(pipeline: Nullable<Pipeline>) {
 
   const topLevelSharing = pipeline.sharing.users["*/*"];
 
+  if (!topLevelSharing) {
+    return false;
+  }
+
   return topLevelSharing.enabled;
 }
