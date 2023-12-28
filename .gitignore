@@ -43,3 +43,6 @@ yarn-error.log*
 # Storybook
 storybook-static
 packages/design-system/public/tailwind.css
+
+# jetbrains ide
+.idea
