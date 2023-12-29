@@ -9,16 +9,20 @@ export const useAirbyteFieldValues = (
 ) => {
   const [fieldValues, setFieldValues] =
     React.useState<Nullable<AirbyteFieldValues>>(initialValue);
+  const [inialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    if (!formTree) return;
+    if (!formTree || inialized) return;
+
     if (!fieldValues) {
       setFieldValues(initialValue);
+      setInitialized(true);
       return;
     }
 
     if (!initialValue) {
       pickInitialValues(formTree, fieldValues, setFieldValues);
+      setInitialized(true);
       return;
     }
 

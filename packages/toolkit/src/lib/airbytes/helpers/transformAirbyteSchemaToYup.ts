@@ -1,6 +1,7 @@
 import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 import * as yup from "yup";
 import { Nullable } from "../../type";
+import { JSONSchema7Definition } from "json-schema";
 
 export const transformAirbyteSchemaToYup = (
   jsonSchema: AirbyteJsonSchema,
@@ -19,14 +20,40 @@ export const transformAirbyteSchemaToYup = (
 
   if (jsonSchema.oneOf) {
     // Select first oneOf path if no item selected
-    const selectedSchema =
-      selectedItemMap && propertyPath
+
+    console.log(selectedItemMap, propertyPath);
+
+    // Because airbyte schemas are merged into a giant schema, the first layer oneOf
+    // (Select the desired Destination tyoe) doesn't have the key path.
+    // The selectedMap will looks like
+    /*
+      {
+        "": {
+          "selectedItem": "Postgres"
+        }
+      }
+    */
+
+    let selectedSchema: JSONSchema7Definition | undefined;
+
+    if (selectedItemMap && !propertyPath && selectedItemMap[""]) {
+      selectedSchema = selectedItemMap
         ? jsonSchema.oneOf.find(
             (condition) =>
               typeof condition !== "boolean" &&
-              condition.title === selectedItemMap[propertyPath]?.selectedItem
+              condition.title === selectedItemMap[""]?.selectedItem
           )
         : jsonSchema.oneOf[0];
+    } else {
+      selectedSchema =
+        selectedItemMap && propertyPath
+          ? jsonSchema.oneOf.find(
+              (condition) =>
+                typeof condition !== "boolean" &&
+                condition.title === selectedItemMap[propertyPath]?.selectedItem
+            )
+          : jsonSchema.oneOf[0];
+    }
 
     if (selectedSchema && typeof selectedSchema !== "boolean") {
       return transformAirbyteSchemaToYup(
