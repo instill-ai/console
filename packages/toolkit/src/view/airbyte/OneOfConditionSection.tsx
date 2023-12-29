@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Select, SelectOption } from "@instill-ai/design-system";
+import { Icons, Select, SelectOption } from "@instill-ai/design-system";
 import {
   dot,
   getConditionFormPath,
@@ -57,6 +57,16 @@ export const OneOfConditionSection = ({
       };
     });
   }, [formTree.conditions]);
+
+  const options = Object.entries(formTree.conditions).map(([k, v]) => {
+    return {
+      label: k.toString(),
+      value:
+        ((v.properties.find((e) => "const" in e) as AirbyteFormItem)?.const as
+          | string
+          | undefined) ?? k.toString(),
+    };
+  });
 
   // We rely on the field inside of condition with const key and use its path
   // to set correct value. But sometimes Airbyte's conditionForm's condition
@@ -132,6 +142,7 @@ export const OneOfConditionSection = ({
       selectedConditionMap[formTree.path] &&
       !formIsDirty
     ) {
+      console.log("set selected condition", selectedConditionMap);
       const selectedCondition =
         conditionOptions.find(
           (e) => e.label === selectedConditionMap[formTree.path].selectedItem
@@ -142,10 +153,13 @@ export const OneOfConditionSection = ({
 
   const onConditionChange = React.useCallback(
     (value: string) => {
+      console.log("on condition change", value);
+
       const option = conditionOptions.find((e) => e.value === value) ?? null;
 
       if (option) {
         const selectedCondition = formTree.conditions[option.label];
+        console.log("picked option", option);
         setSelectedConditionOption(option);
 
         const targetConstField = selectedCondition.properties.find(
@@ -214,10 +228,45 @@ export const OneOfConditionSection = ({
       <div className="mb-5 flex w-full flex-row gap-x-5">
         <h3 className="text-instill-h3 my-auto text-black">{formTree.title}</h3>
         <div className="flex flex-1 flex-col space-y-2">
-          <label className="text-semantic-fg-primary product-body-text-2-regular">
-            {formTree.title ?? null}
-          </label>
-          <Select.Root
+          {/* 
+            The reason we don't use the regular Select structure here is due to it 
+            will cause a flashed UI issue.
+
+          */}
+          <Select.Root disabled={disableAll}>
+            <Select.Trigger className="w-full !rounded-none">
+              <p className="text-semantic-fg-primary">
+                {selectedConditionOption?.value}
+              </p>
+            </Select.Trigger>
+            <Select.Content>
+              {options.map((option) => {
+                if (!option.value || !option.label) {
+                  return;
+                }
+
+                return (
+                  <div
+                    key={option.value}
+                    onClick={() => {
+                      if (option.value) {
+                        onConditionChange(option.value);
+                      }
+                    }}
+                    className="relative cursor-pointer py-1.5 pl-8 hover:bg-semantic-accent-bg"
+                  >
+                    {selectedConditionOption?.value === option.value ? (
+                      <div className="absolute left-2 flex h-4 w-4 items-center justify-center">
+                        <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
+                      </div>
+                    ) : null}
+                    {option.label}
+                  </div>
+                );
+              })}
+            </Select.Content>
+          </Select.Root>
+          {/* <Select.Root
             onValueChange={onConditionChange}
             value={selectedConditionOption?.value}
             disabled={disableAll}
@@ -236,7 +285,7 @@ export const OneOfConditionSection = ({
                 </Select.Item>
               ))}
             </Select.Content>
-          </Select.Root>
+          </Select.Root> */}
           <p className="text-[#1D243380] product-body-text-3-regular">
             {formTree.description ?? ""}
           </p>
@@ -247,9 +296,11 @@ export const OneOfConditionSection = ({
           ) : null}
         </div>
       </div>
-      {selectedConditionOption
-        ? formTree.conditions[selectedConditionOption.label].uiFields ?? null
-        : null}
+      <div className="flex flex-col gap-y-2">
+        {selectedConditionOption
+          ? formTree.conditions[selectedConditionOption.label].uiFields ?? null
+          : null}
+      </div>
     </div>
   );
 };

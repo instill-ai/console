@@ -203,8 +203,8 @@ export const pickComponent = (
   if (formTree.type === "string" && formTree.enum && formTree.enum.length) {
     const options = formTree.enum.map((e) => {
       return {
-        label: e?.toString() ?? "",
-        value: e?.toString() ?? "",
+        label: e?.toString() ?? null,
+        value: e?.toString() ?? null,
       };
     });
 
@@ -240,15 +240,22 @@ export const pickComponent = (
             <Select.Value />
           </Select.Trigger>
           <Select.Content>
-            {options.map((option) => (
-              <Select.Item
-                className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
-                key={option.value}
-                value={option.value}
-              >
-                <p className="my-auto">{option.label}</p>
-              </Select.Item>
-            ))}
+            {options.map((option) => {
+              // Some of the Airbyte enum value is null, we need to handle it
+              if (!option.value) {
+                return null;
+              }
+
+              return (
+                <Select.Item
+                  className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
+                  key={option.value}
+                  value={option.value}
+                >
+                  <p className="my-auto">{option.label}</p>
+                </Select.Item>
+              );
+            })}
           </Select.Content>
         </Select.Root>
         <p className="text-[#1D243380] product-body-text-3-regular">
