@@ -39,7 +39,6 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   const router = useRouter();
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
-  const [isTriggering, setIsTriggering] = React.useState(false);
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
@@ -77,8 +76,6 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
       recursiveReplaceNullAndEmptyStringWithUndefined(data)
     );
 
-    setIsTriggering(true);
-
     try {
       const data = await triggerPipeline.mutateAsync({
         pipelineName: entityObject.pipelineName,
@@ -90,9 +87,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
       });
 
       setResponse(data);
-      setIsTriggering(false);
     } catch (error) {
-      setIsTriggering(false);
       toastInstillError({
         title: "Something went wrong when trigger the pipeline",
         error,
@@ -229,7 +224,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
               form={inOutPutFormID}
             >
               Run
-              {isTriggering ? (
+              {triggerPipeline.isLoading ? (
                 <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
               ) : (
                 <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
