@@ -48,8 +48,6 @@ const selector = (store: InstillStore) => ({
 
 export const UserProfileTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [isUploading, setIsUploading] = React.useState(false);
-
   const { toast } = useToast();
 
   const user = useUserMe({
@@ -72,7 +70,7 @@ export const UserProfileTab = () => {
   const updateUser = useUpdateUser();
 
   async function onSubmit(data: z.infer<typeof UserProfileTabSchema>) {
-    if (!user.isSuccess || !accessToken || isUploading) return;
+    if (!user.isSuccess || !accessToken || updateUser.isLoading) return;
 
     const payload: Partial<User> = {
       id: user.data.id,
@@ -90,17 +88,14 @@ export const UserProfileTab = () => {
     };
 
     try {
-      setIsUploading(true);
       await updateUser.mutateAsync({ payload, accessToken });
       form.reset(payload);
-      setIsUploading(false);
       toast({
         title: "Profile updated successfully",
         variant: "alert-success",
         size: "small",
       });
     } catch (error) {
-      setIsUploading(false);
       toastInstillError({
         title: "Something went wrong when updating your profile.",
         error,
@@ -437,7 +432,7 @@ export const UserProfileTab = () => {
           <Setting.TabSectionSeparator />
           <div className="flex flex-row-reverse">
             <Button type="submit" size="lg" variant="primary">
-              {isUploading ? (
+              {updateUser.isLoading ? (
                 <LoadingSpin className="!h-4 !w-4" />
               ) : (
                 "Save changes"
