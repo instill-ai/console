@@ -58,7 +58,7 @@ export const UserProfile = () => {
         {user.isSuccess ? (
           <UserProfileBio
             id={user.data.id}
-            name={user.data.org_name}
+            name={`${user.data.first_name} ${user.data.last_name}`}
             bio={user.data.profile_data?.bio}
             avatar={user.data.profile_avatar ?? null}
             userMemberships={null}
