@@ -34,6 +34,12 @@ const ProfilePage: NextPageWithLayout = () => {
     enabled: accessToken.isSuccess,
   });
 
+  React.useEffect(() => {
+    if (user.isError) {
+      router.push("/404");
+    }
+  }, [user.isError]);
+
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
