@@ -15,6 +15,7 @@ export type UseEntitySuccessReturn = {
   pipelineName: string;
   connectorName: string;
   entityName: string;
+  modelName: string;
   namespaceType: NamespaceType;
   entity: Nullable<string>;
   id: Nullable<string>;
@@ -25,6 +26,7 @@ export type UseEntityFailedReturn = {
   pipelineName: null;
   connectorName: null;
   entityName: null;
+  modelName: null;
   namespaceType: null;
   entity: null;
   id: null;
@@ -63,6 +65,16 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       : `users/${entity}/connectors/${id}`;
   }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
 
+  const modelName = React.useMemo(() => {
+    if (!namespaceType.isSuccess) {
+      return null;
+    }
+
+    return namespaceType.data === "NAMESPACE_ORGANIZATION"
+      ? `organizations/${entity}/models/${id}`
+      : `users/${entity}/models/${id}`;
+  }, [id, entity, namespaceType.isSuccess, namespaceType.data]);
+
   const entityName = React.useMemo(() => {
     if (!namespaceType.isSuccess) {
       return null;
@@ -78,16 +90,24 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
       entityName &&
       pipelineName &&
       connectorName &&
+      modelName &&
       namespaceType.isSuccess
     ) {
       setIsSuccess(true);
     }
-  }, [entityName, pipelineName, connectorName, namespaceType.isSuccess]);
+  }, [
+    entityName,
+    pipelineName,
+    modelName,
+    connectorName,
+    namespaceType.isSuccess,
+  ]);
 
   if (isSuccess) {
     return {
       pipelineName: pipelineName as string,
       entityName: entityName as string,
+      modelName: modelName as string,
       namespaceType: namespaceType.data as NamespaceType,
       isSuccess,
       connectorName: connectorName as string,
@@ -98,6 +118,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     return {
       pipelineName: null,
       entityName: null,
+      modelName: null,
       namespaceType: null,
       isSuccess,
       connectorName: null,

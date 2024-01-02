@@ -8,6 +8,7 @@ import {
 import {
   GeneralPageProp,
   useDeployUserModel,
+  useEntity,
   useUndeployUserModel,
   useUserModel,
   useWatchUserModel,
@@ -18,7 +19,6 @@ import { ModelConfigurationFields } from "./ModelConfigurationFields";
 
 export type ModelHubSettingPageMainViewProps = GeneralPageProp & {
   modelReadme: ReactElement;
-  modelNamespace: string;
   disabledConfigureModel: boolean;
 };
 
@@ -30,24 +30,25 @@ export const ModelHubSettingPageMainView = (
     enableQuery,
     router,
     modelReadme,
-    modelNamespace,
     disabledConfigureModel,
   } = props;
   const { id, entity } = router.query;
+
+  const entityObject = useEntity();
 
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
 
   const model = useUserModel({
-    modelName: id ? `users/${modelNamespace}/models/${id.toString()}` : null,
-    enabled: enableQuery,
+    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
 
   const modelWatchState = useWatchUserModel({
-    modelName: id ? `users/${modelNamespace}/models/${id.toString()}` : null,
-    enabled: enableQuery,
+    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
 
