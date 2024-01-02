@@ -17,7 +17,7 @@ export const GeneralTaskCell = ({
     <div
       className={cn("justify-left flex flex-row gap-x-2 py-2 pr-6", className)}
     >
-      {getIcon("!w-5 !h-5 !fill-semantic-bg-secondary-base-bg")}
+      {getIcon("!w-5 !h-5")}
       <p className="text-product-body-text-3-regular my-auto flex text-semantic-bg-secondary-base-bg">
         {label}
       </p>

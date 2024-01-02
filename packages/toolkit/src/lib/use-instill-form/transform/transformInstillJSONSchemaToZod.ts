@@ -142,6 +142,16 @@ export function transformInstillJSONSchemaToZod({
   }
 
   if (targetSchema.type === "object") {
+    // temporarily override Airbyte's free form schema, if it's object without
+    // any properties and have patternProperties attribute, it's indicating
+    // Airbyte free form, we need additional components to handle this case.
+
+    if (targetSchema.patternProperties && !targetSchema.properties) {
+      instillZodSchema = z.any();
+
+      return instillZodSchema;
+    }
+
     const objectProperties = targetSchema.properties ?? {};
 
     // We need to consider semi-structured object here. This kind of object

@@ -142,7 +142,6 @@ export const OneOfConditionSection = ({
       selectedConditionMap[formTree.path] &&
       !formIsDirty
     ) {
-      console.log("set selected condition", selectedConditionMap);
       const selectedCondition =
         conditionOptions.find(
           (e) => e.label === selectedConditionMap[formTree.path].selectedItem
@@ -153,13 +152,10 @@ export const OneOfConditionSection = ({
 
   const onConditionChange = React.useCallback(
     (value: string) => {
-      console.log("on condition change", value);
-
       const option = conditionOptions.find((e) => e.value === value) ?? null;
 
       if (option) {
         const selectedCondition = formTree.conditions[option.label];
-        console.log("picked option", option);
         setSelectedConditionOption(option);
 
         const targetConstField = selectedCondition.properties.find(
