@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 import { Form } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
@@ -47,13 +48,21 @@ export const ImageField = ({
                   key={`${path}-${imageFile.name}`}
                   src={URL.createObjectURL(imageFile)}
                   alt={`${path}-${imageFile.name}`}
-                  className="h-[150px] w-full object-cover"
+                  className={cn(
+                    "w-full object-contain",
+                    mode === "build" ? "h-[150px]" : "h-[360px]"
+                  )}
                 />
               ) : (
                 <div
                   key={`${path}-image-placeholder`}
-                  className="h-[150px] w-full bg-semantic-bg-secondary"
-                />
+                  className={cn(
+                    "flex w-full items-center justify-center",
+                    mode === "build"
+                      ? "h-[150px] bg-semantic-bg-secondary"
+                      : "h-[260px] rounded-sm border border-semantic-bg-line bg-transparent"
+                  )}
+                ></div>
               )}
             </div>
             <div className="flex">

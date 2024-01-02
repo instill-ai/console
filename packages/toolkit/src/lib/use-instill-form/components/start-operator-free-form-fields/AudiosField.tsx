@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 import { Form, ScrollArea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { readFileToBinary } from "../../../../view";
@@ -6,6 +7,7 @@ import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
 import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { cmp } from "semver";
 
 export const AudiosField = ({
   mode,
@@ -84,7 +86,14 @@ export const AudiosField = ({
               ) : null}
             </div>
             {audioFiles.length > 0 ? (
-              <ScrollArea.Root className="nowheel h-[216px] rounded bg-semantic-bg-secondary p-2">
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel h-[216px] rounded-sm p-2",
+                  mode === "build"
+                    ? "bg-semantic-bg-secondary"
+                    : "border border-semantic-bg-line"
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {audioFiles.map((e, i) => (
                     <AudioListItem

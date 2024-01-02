@@ -64,7 +64,7 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
           type: "string",
           instillUpstreamType: "value",
           pattern: "^[a-z_][-a-z_0-9]{0,31}$",
-          instillPatternErrorMessage: InstillErrors.IDInvalidError,
+          instillPatternErrorMessage: InstillErrors.KeyInvalidError,
         },
       ],
       instillUpstreamTypes: ["value"],
