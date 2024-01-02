@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ScrollArea } from "@instill-ai/design-system";
 import {
+  ChooseTitleFrom,
   GeneralRecord,
   InstillJSONSchema,
   Nullable,
@@ -13,11 +14,13 @@ export const ComponentOutputs = ({
   outputSchema,
   nodeType,
   response,
+  chooseTitleFrom,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
   response: Nullable<TriggerUserPipelineResponse>;
+  chooseTitleFrom: ChooseTitleFrom;
 }) => {
   const data = React.useMemo(() => {
     let data: Nullable<GeneralRecord> = null;
@@ -46,8 +49,10 @@ export const ComponentOutputs = ({
   }, [nodeType, componentID, response]);
 
   const componentOutputFields = useComponentOutputFields({
+    mode: "build",
     schema: outputSchema,
     data,
+    chooseTitleFrom,
   });
 
   return (

@@ -515,6 +515,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 outputSchema={outputSchema}
                 nodeType="connector"
                 response={testModeTriggerResponse}
+                chooseTitleFrom="key"
               />
             ) : null}
           </div>
