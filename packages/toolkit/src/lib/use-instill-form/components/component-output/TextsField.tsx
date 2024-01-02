@@ -1,12 +1,11 @@
 import { Nullable } from "../../../type";
+import { ComponentOutputFieldBaseProps } from "../../type";
 import { FieldRoot } from "./FieldRoot";
 import { MDTextViewer } from "./MDTextViewer";
 
 export type TextsFieldProps = {
-  title: Nullable<string>;
   texts: Nullable<string>[];
-  hideField?: boolean;
-};
+} & ComponentOutputFieldBaseProps;
 
 export const TextsField = (props: TextsFieldProps) => {
   const { title, texts, hideField } = props;

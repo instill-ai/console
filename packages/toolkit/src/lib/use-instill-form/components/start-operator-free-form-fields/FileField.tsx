@@ -5,9 +5,10 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const FileField = ({
+  mode,
   form,
   path,
   title,
@@ -31,6 +32,7 @@ export const FileField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

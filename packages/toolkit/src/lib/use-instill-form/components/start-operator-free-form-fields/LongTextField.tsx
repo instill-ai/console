@@ -5,9 +5,10 @@ import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
 import { Nullable } from "../../../type";
 import { extensions, serialize } from "../../../tip-tap";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const LongTextField = ({
+  mode,
   form,
   path,
   title,
@@ -57,6 +58,7 @@ export const LongTextField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

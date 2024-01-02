@@ -10,9 +10,10 @@ import { transformInstillJSONSchemaToFormTree } from "./transform";
 export type UseComponentOutputFieldsProps = {
   schema: Nullable<InstillJSONSchema>;
   data: Nullable<GeneralRecord>;
-  chooseTitleFrom?: PickComponentOutputFieldsFromInstillFormTreeProps["chooseTitleFrom"];
-  hideField?: PickComponentOutputFieldsFromInstillFormTreeProps["hideField"];
-};
+} & Pick<
+  PickComponentOutputFieldsFromInstillFormTreeProps,
+  "chooseTitleFrom" | "hideField" | "mode"
+>;
 
 export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
   const fields = React.useMemo(() => {

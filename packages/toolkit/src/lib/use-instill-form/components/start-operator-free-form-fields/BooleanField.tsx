@@ -1,9 +1,10 @@
 import { Form, Switch } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../type";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const BooleanField = ({
+  mode,
   form,
   path,
   title,
@@ -23,6 +24,7 @@ export const BooleanField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

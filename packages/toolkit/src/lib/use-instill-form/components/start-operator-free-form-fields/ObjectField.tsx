@@ -1,9 +1,10 @@
 import { Form, Textarea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const ObjectField = ({
+  mode,
   form,
   path,
   title,
@@ -24,6 +25,7 @@ export const ObjectField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

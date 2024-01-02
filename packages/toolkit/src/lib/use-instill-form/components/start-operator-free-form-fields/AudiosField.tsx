@@ -5,9 +5,10 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const AudiosField = ({
+  mode,
   form,
   path,
   title,
@@ -31,6 +32,7 @@ export const AudiosField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

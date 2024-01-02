@@ -1,11 +1,10 @@
 import { Nullable } from "../../../type";
+import { ComponentOutputFieldBaseProps } from "../../type";
 import { FieldRoot } from "./FieldRoot";
 
 export type AudiosFieldProps = {
-  title: Nullable<string>;
   audios: Nullable<string[]>;
-  hideField?: boolean;
-};
+} & ComponentOutputFieldBaseProps;
 
 export const AudiosField = (props: AudiosFieldProps) => {
   const { title, audios, hideField } = props;

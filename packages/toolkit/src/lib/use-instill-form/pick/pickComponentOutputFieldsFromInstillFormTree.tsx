@@ -1,5 +1,5 @@
 import * as React from "react";
-import { InstillFormTree } from "../type";
+import { FieldMode, InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
 import { GeneralRecord, Nullable } from "../../type";
 import { dot } from "../../dot";
@@ -7,6 +7,7 @@ import { dot } from "../../dot";
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
   data: Nullable<GeneralRecord>;
+  mode: FieldMode;
   chooseTitleFrom?: "title" | "path";
   hideField?: boolean;
   objectArrayIndex?: number;
@@ -17,7 +18,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 ) {
   // 1. Preprocess
 
-  const { tree, data, chooseTitleFrom, hideField } = props;
+  const { tree, data, chooseTitleFrom, hideField, mode } = props;
 
   let title = tree.path ?? tree.title ?? null;
 
@@ -136,6 +137,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree.instillFormat === "string" || tree.instillFormat === "boolean") {
     return (
       <ComponentOutputFields.TextField
+        mode={mode}
         title={title}
         text={propertyValue}
         hideField={hideField}
@@ -146,6 +148,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree.instillFormat === "number" || tree.instillFormat === "integer") {
     return (
       <ComponentOutputFields.NumberField
+        mode={mode}
         title={title}
         number={propertyValue}
         hideField={hideField}
@@ -161,6 +164,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "integer": {
         return (
           <ComponentOutputFields.NumbersField
+            mode={mode}
             title={title}
             numbers={propertyValue}
             hideField={hideField}
@@ -171,6 +175,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "string": {
         return (
           <ComponentOutputFields.TextsField
+            mode={mode}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -180,6 +185,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "audio": {
         return (
           <ComponentOutputFields.AudiosField
+            mode={mode}
             title={title}
             audios={propertyValue}
             hideField={hideField}
@@ -189,6 +195,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "image": {
         return (
           <ComponentOutputFields.ImagesField
+            mode={mode}
             title={title}
             images={propertyValue}
             hideField={hideField}
@@ -198,6 +205,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "text": {
         return (
           <ComponentOutputFields.TextsField
+            mode={mode}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -208,6 +216,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       case "semi-structured": {
         return (
           <ComponentOutputFields.ObjectsField
+            mode={mode}
             title={title}
             objects={propertyValue}
             hideField={hideField}
@@ -218,6 +227,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       default: {
         return (
           <ComponentOutputFields.TextsField
+            mode={mode}
             title={title}
             texts={propertyValue}
             hideField={hideField}
@@ -237,6 +247,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "string": {
       return (
         <ComponentOutputFields.TextField
+          mode={mode}
           title={title}
           text={propertyValue}
           hideField={hideField}
@@ -246,6 +257,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "audio": {
       return (
         <ComponentOutputFields.AudioField
+          mode={mode}
           title={title}
           audio={propertyValue}
           hideField={hideField}
@@ -255,6 +267,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "image": {
       return (
         <ComponentOutputFields.ImageField
+          mode={mode}
           title={title}
           image={propertyValue}
           hideField={hideField}
@@ -264,6 +277,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "text": {
       return (
         <ComponentOutputFields.TextField
+          mode={mode}
           title={title}
           text={propertyValue}
           hideField={hideField}
@@ -273,6 +287,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     case "semi-structured": {
       return (
         <ComponentOutputFields.ObjectField
+          mode={mode}
           title={title}
           object={propertyValue}
           hideField={hideField}
@@ -282,6 +297,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     default: {
       return (
         <ComponentOutputFields.TextField
+          mode={mode}
           title={title}
           text={propertyValue}
           hideField={hideField}

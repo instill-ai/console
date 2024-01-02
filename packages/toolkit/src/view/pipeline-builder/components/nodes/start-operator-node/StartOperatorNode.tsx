@@ -339,6 +339,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     fields: startOperatorTriggerPipelineFormfields,
     form: startOperatorTriggerPipelineForm,
   } = useStartOperatorTriggerPipelineForm({
+    mode: "build",
     metadata: data.component.configuration.metadata ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
