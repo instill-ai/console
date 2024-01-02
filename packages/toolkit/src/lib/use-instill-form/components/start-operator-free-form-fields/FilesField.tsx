@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 import { Form, ScrollArea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { readFileToBinary } from "../../../../view";
@@ -83,7 +84,14 @@ export const FilesField = ({
               ) : null}
             </div>
             {uploadedFiles.length > 0 ? (
-              <ScrollArea.Root className="nowheel h-[216px] rounded bg-semantic-bg-secondary p-2">
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel h-[216px] rounded-sm p-2",
+                  mode === "build"
+                    ? "bg-semantic-bg-secondary"
+                    : "border border-semantic-bg-line"
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {uploadedFiles.map((e, i) => (
                     <FileListItem
