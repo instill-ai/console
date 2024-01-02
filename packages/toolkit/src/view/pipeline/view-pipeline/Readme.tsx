@@ -52,7 +52,7 @@ export const Readme = ({
 
       setHasUnsavedChanges(true);
 
-      timer.current = window.setTimeout(() => {
+      timer.current = window.setTimeout(async () => {
         try {
           const md = serialize(editor.schema, editor.getJSON());
 
@@ -61,7 +61,7 @@ export const Readme = ({
             readme: md,
           };
 
-          updateUserPipeline.mutateAsync({ payload, accessToken });
+          await updateUserPipeline.mutateAsync({ payload, accessToken });
 
           toast({
             size: "small",

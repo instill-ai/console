@@ -130,7 +130,7 @@ export const FlowControl = (props: FlowControlProps) => {
       };
 
       try {
-        updateUserPipeline.mutateAsync({
+        await updateUserPipeline.mutateAsync({
           payload,
           accessToken,
         });

@@ -56,7 +56,7 @@ export const EditMetadataDialog = ({
     };
 
     try {
-      updateUserPipeline.mutateAsync({ payload, accessToken });
+      await updateUserPipeline.mutateAsync({ payload, accessToken });
       setOpen(false);
       toast({
         size: "small",
