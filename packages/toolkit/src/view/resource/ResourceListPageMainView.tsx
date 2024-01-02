@@ -51,7 +51,6 @@ export const ResourceListPageMainView = (
         connectors={userConnector.isSuccess ? userConnector.data : []}
         isError={userConnector.isError}
         isLoading={userConnector.isLoading}
-        accessToken={accessToken}
       />
     </div>
   );
