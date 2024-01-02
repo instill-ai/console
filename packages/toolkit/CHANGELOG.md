@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.0...@instill-ai/toolkit-v0.77.1) (2024-01-02)
+
+
+### Bug Fixes
+
+* fix not correctly handle Airbyte connectors free-form ([#847](https://github.com/instill-ai/console/issues/847)) ([0fea3c1](https://github.com/instill-ai/console/commit/0fea3c17a29799afd3a1312ca316709d4df5157d))
+
 ## [0.77.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.76.1...@instill-ai/toolkit-v0.77.0) (2024-01-02)
 
 
