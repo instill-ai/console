@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.35.0-beta](https://github.com/instill-ai/console/compare/v0.34.2-beta...v0.35.0-beta) (2024-01-02)
+
+
+### Features
+
+* add the loading state indicator for user-profile ([#845](https://github.com/instill-ai/console/issues/845)) ([914afa3](https://github.com/instill-ai/console/commit/914afa35b06bfb9350728a2c44f3f293ff6f2b51))
+* **pipeline-builder:** make right-panel float on top of canvas to have bigger working space ([#834](https://github.com/instill-ai/console/issues/834)) ([b8bc0e4](https://github.com/instill-ai/console/commit/b8bc0e476b05557ef419ff5826de336ecd0951ab))
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix not correctly add nodes at the center of the nodes ([#820](https://github.com/instill-ai/console/issues/820)) ([f6f25ba](https://github.com/instill-ai/console/commit/f6f25ba182a194783872999f262f96f64a3c36c4))
+
+
+### Miscellaneous
+
+* add ts check for unused variables, remove unused useLayoutEffect import ([#830](https://github.com/instill-ai/console/issues/830)) ([18e1f2e](https://github.com/instill-ai/console/commit/18e1f2e5fdba52ece712638a2a22c765b7a18638))
+* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+* fix format issues in `apps/console/src/pages/_app.tsx`  ([#839](https://github.com/instill-ai/console/issues/839)) ([ab6b994](https://github.com/instill-ai/console/commit/ab6b9947ed1ae37444ed67f736fb4b6f1613cb93))
+* redirect user to 404 page if the user is not found ([#841](https://github.com/instill-ai/console/issues/841)) ([39ec410](https://github.com/instill-ai/console/commit/39ec410be5b102a83fdfc566164ab6fdb45a4b80))
+
 ## [0.34.2-beta](https://github.com/instill-ai/console/compare/v0.34.1-beta...v0.34.2-beta) (2023-12-25)
 
 ### Bug Fixes

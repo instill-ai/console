@@ -1,5 +1,22 @@
 # @instill-ai/design-system
 
+## [0.61.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.60.0...@instill-ai/design-system-v0.61.0) (2024-01-02)
+
+
+### Features
+
+* **auto-gen-form:** support the action of merging Airbyte connectors into single one ([#835](https://github.com/instill-ai/console/issues/835)) ([64e3a69](https://github.com/instill-ai/console/commit/64e3a699737b23a1a92dbe5a27b4b7e6edb53c71))
+
+
+### Bug Fixes
+
+* fix model icons are not correct or missing issue ([#822](https://github.com/instill-ai/console/issues/822)) ([0b3d2ad](https://github.com/instill-ai/console/commit/0b3d2ad3db52e70ee0a870a552e0a5abdbafa643))
+
+
+### Miscellaneous
+
+* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+
 ## [0.60.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.59.0...@instill-ai/design-system-v0.60.0) (2023-12-22)
 
 ### Features
