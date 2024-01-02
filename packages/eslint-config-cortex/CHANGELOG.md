@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.7.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.0...@instill-ai/eslint-config-cortex-v0.7.1) (2024-01-02)
+
+
+### Miscellaneous
+
+* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+
 ## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.6.0...@instill-ai/eslint-config-cortex-v0.7.0) (2023-12-15)
 
 ### Features

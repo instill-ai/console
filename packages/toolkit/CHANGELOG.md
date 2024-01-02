@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.77.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.76.1...@instill-ai/toolkit-v0.77.0) (2024-01-02)
+
+
+### Features
+
+* add pipeline sharing permission label to help user recognize it ([#824](https://github.com/instill-ai/console/issues/824)) ([793afd0](https://github.com/instill-ai/console/commit/793afd03f72ae3d8e263d9c9f088538afbbc4942))
+* add the loading state indicator for user-profile ([#845](https://github.com/instill-ai/console/issues/845)) ([914afa3](https://github.com/instill-ai/console/commit/914afa35b06bfb9350728a2c44f3f293ff6f2b51))
+* **auto-gen-form:** support the action of merging Airbyte connectors into single one ([#835](https://github.com/instill-ai/console/issues/835)) ([64e3a69](https://github.com/instill-ai/console/commit/64e3a699737b23a1a92dbe5a27b4b7e6edb53c71))
+* **pipeline-builder:** display the component ouput field title as title when demo ([#843](https://github.com/instill-ai/console/issues/843)) ([d60b7ac](https://github.com/instill-ai/console/commit/d60b7ac8cd01529f872df2f01f6621f7159de880))
+* **pipeline-builder:** distinguish the start input between demo and builder page ([#842](https://github.com/instill-ai/console/issues/842)) ([cd8eab8](https://github.com/instill-ai/console/commit/cd8eab878728471d89691ffe4b5aaafab45ef8a5))
+* **pipeline-builder:** Introduce MiniMap in the pipeline-builder to improve UX ([#829](https://github.com/instill-ai/console/issues/829)) ([f2db15e](https://github.com/instill-ai/console/commit/f2db15ea721ded0e23e616a517493b335fce2832))
+* **pipeline-builder:** make right-panel float on top of canvas to have bigger working space ([#834](https://github.com/instill-ai/console/issues/834)) ([b8bc0e4](https://github.com/instill-ai/console/commit/b8bc0e476b05557ef419ff5826de336ecd0951ab))
+* **pipeline-builder:** user can now use the pipeline-builder control on preview ([#828](https://github.com/instill-ai/console/issues/828)) ([2b4a323](https://github.com/instill-ai/console/commit/2b4a323444281358970c76ef3e5efdf1136667a6))
+* support blocking user from cloning others connectors ([#846](https://github.com/instill-ai/console/issues/846)) ([9922925](https://github.com/instill-ai/console/commit/9922925ede04598210d792a2306afa291f622c47))
+* update the new user role options ([#823](https://github.com/instill-ai/console/issues/823)) ([7a66f4f](https://github.com/instill-ai/console/commit/7a66f4f477c6d85e9580f92ec650d9837788d24a))
+
+
+### Bug Fixes
+
+* `async` function(s) should be awaited ([#838](https://github.com/instill-ai/console/issues/838)) ([635dea4](https://github.com/instill-ai/console/commit/635dea44236ee4bd97819e430c84a4caf504ddf2))
+* fix delete resource dialog style is not aligned ([#831](https://github.com/instill-ai/console/issues/831)) ([e631a3f](https://github.com/instill-ai/console/commit/e631a3f58cbc5e972faf3c68370746701540b5e2))
+* fix model icons are not correct or missing issue ([#822](https://github.com/instill-ai/console/issues/822)) ([0b3d2ad](https://github.com/instill-ai/console/commit/0b3d2ad3db52e70ee0a870a552e0a5abdbafa643))
+* fix output fields not correctly style on /pipelines/pid page ([#844](https://github.com/instill-ai/console/issues/844)) ([c87f1b1](https://github.com/instill-ai/console/commit/c87f1b15fe7d31e7d8376f637c4049e07c462c7b))
+* fix pipeline-builder configuration transformation pollute to the react-query data ([#832](https://github.com/instill-ai/console/issues/832)) ([4d2eac5](https://github.com/instill-ai/console/commit/4d2eac5294446df7aee139abca461448753f12b0))
+* fix profile setting page not having correct loading flag ([#840](https://github.com/instill-ai/console/issues/840)) ([6bb6904](https://github.com/instill-ai/console/commit/6bb6904a9f752a7e100a10fa510680e41cc0ce45))
+* fix twitter link and capitalize issue ([#825](https://github.com/instill-ai/console/issues/825)) ([76f0c66](https://github.com/instill-ai/console/commit/76f0c668dcbd66e548134db2bf08e2341812770d))
+* fix wrongly display organization link when user doesnt belong to any org ([#826](https://github.com/instill-ai/console/issues/826)) ([3bc9bf7](https://github.com/instill-ai/console/commit/3bc9bf7478d01fa528c4fc1e327a521b689e042f))
+* **pipeline-builder:** disabled delete nodes and edges by clicking backspace ([#833](https://github.com/instill-ai/console/issues/833)) ([4240df8](https://github.com/instill-ai/console/commit/4240df884a4eaf00373bc8a0326a5d50047ff96c))
+* **pipeline-builder:** fix not correctly add nodes at the center of the nodes ([#820](https://github.com/instill-ai/console/issues/820)) ([f6f25ba](https://github.com/instill-ai/console/commit/f6f25ba182a194783872999f262f96f64a3c36c4))
+* **pipeline-builder:** fix pipeline-builder share tab not correctly display owner profile avatar ([#827](https://github.com/instill-ai/console/issues/827)) ([d015d9b](https://github.com/instill-ai/console/commit/d015d9bc6a31705e4707f46590caa2dc14a94435))
+
+
+### Miscellaneous
+
+* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+* remove unnecessary `error:any`, narrow to `unknown` ([#817](https://github.com/instill-ai/console/issues/817)) ([8ce1cee](https://github.com/instill-ai/console/commit/8ce1ceebbba0fbb0ac3eb91731e9398c0eaaba1f))
+* use `mutation.isLoading` instead of tracking loading state manually ([#837](https://github.com/instill-ai/console/issues/837)) ([ce430c9](https://github.com/instill-ai/console/commit/ce430c91b86cbf1cc2e1dcd60bb011e1323e3af9))
+
 ## [0.76.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.76.0...@instill-ai/toolkit-v0.76.1) (2023-12-25)
 
 ### Bug Fixes

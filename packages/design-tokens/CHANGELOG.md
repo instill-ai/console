@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.4.0...@instill-ai/design-tokens-v0.4.1) (2024-01-02)
+
+
+### Miscellaneous
+
+* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+
 ## [0.4.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.3.5...@instill-ai/design-tokens-v0.4.0) (2023-12-15)
 
 ### Features
