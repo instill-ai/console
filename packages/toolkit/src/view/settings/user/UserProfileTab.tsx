@@ -23,6 +23,7 @@ import {
   useUserMe,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
+import { LoadingSpin } from "../../../components";
 
 export const UserProfileTabSchema = z.object({
   last_name: z.string().optional().nullable(),
@@ -47,7 +48,6 @@ const selector = (store: InstillStore) => ({
 
 export const UserProfileTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
   const { toast } = useToast();
 
   const user = useUserMe({
@@ -70,7 +70,7 @@ export const UserProfileTab = () => {
   const updateUser = useUpdateUser();
 
   async function onSubmit(data: z.infer<typeof UserProfileTabSchema>) {
-    if (!user.isSuccess || !accessToken) return;
+    if (!user.isSuccess || !accessToken || updateUser.isLoading) return;
 
     const payload: Partial<User> = {
       id: user.data.id,
@@ -432,7 +432,11 @@ export const UserProfileTab = () => {
           <Setting.TabSectionSeparator />
           <div className="flex flex-row-reverse">
             <Button type="submit" size="lg" variant="primary">
-              Save changes
+              {updateUser.isLoading ? (
+                <LoadingSpin className="!h-4 !w-4" />
+              ) : (
+                "Save changes"
+              )}
             </Button>
           </div>
         </form>

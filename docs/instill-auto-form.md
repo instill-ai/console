@@ -26,9 +26,7 @@ The solution is to avoid using a literal type and instead use a string type. Thi
   <Input.Core
     {...field}
     type="text"
-    value={
-      typeof field.value === "object" ? "" : field.value ?? ""
-    }
+    value={typeof field.value === "object" ? "" : field.value ?? ""}
     autoComplete="off"
     onChange={(e) => {
       field.onChange(e);
