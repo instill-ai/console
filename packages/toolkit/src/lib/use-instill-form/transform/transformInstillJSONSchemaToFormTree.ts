@@ -208,6 +208,25 @@ export function transformInstillJSONSchemaToFormTree(
     }
   }
 
+  // temporarily override Airbyte's free form schema, if it's object without
+  // any properties and have patternProperties attribute, it's indicating
+  // Airbyte free form, we need additional components to handle this case.
+
+  if (
+    targetSchema.type === "object" &&
+    targetSchema.patternProperties &&
+    !targetSchema.properties
+  ) {
+    return {
+      _type: "formItem",
+      fieldKey: key ?? null,
+      path: (path || key) ?? null,
+      isRequired: false,
+      type: "null",
+      isHidden: true,
+    };
+  }
+
   if (targetSchema.properties) {
     const properties = Object.entries(targetSchema.properties || [])
       .map(([key, schema]) =>
@@ -276,6 +295,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillEditOnNodeFields",
   "instillUiMultiline",
   "instillPatternErrorMessage",
+  "patternProperties",
 ];
 
 function pickBaseFields(

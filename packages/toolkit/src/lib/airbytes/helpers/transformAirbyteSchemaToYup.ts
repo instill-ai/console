@@ -21,8 +21,6 @@ export const transformAirbyteSchemaToYup = (
   if (jsonSchema.oneOf) {
     // Select first oneOf path if no item selected
 
-    console.log(selectedItemMap, propertyPath);
-
     // Because airbyte schemas are merged into a giant schema, the first layer oneOf
     // (Select the desired Destination tyoe) doesn't have the key path.
     // The selectedMap will looks like

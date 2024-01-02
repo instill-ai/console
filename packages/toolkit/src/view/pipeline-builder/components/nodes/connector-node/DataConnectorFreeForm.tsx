@@ -78,10 +78,15 @@ export const DataConnectorFreeForm = ({
               ...node.data.component.configuration,
               input: {
                 ...node.data.component.configuration.input,
-                data: {
-                  ...node.data.component.configuration.input.data,
-                  [formData.key]: formData.value,
-                },
+
+                data: node.data.component.configuration.input.data
+                  ? {
+                      ...node.data.component.configuration.input.data,
+                      [formData.key]: formData.value,
+                    }
+                  : {
+                      [formData.key]: formData.value,
+                    },
               },
             },
           },
