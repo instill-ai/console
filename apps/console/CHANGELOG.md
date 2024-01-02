@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.1-beta](https://github.com/instill-ai/console/compare/v0.35.0-beta...v0.35.1-beta) (2024-01-02)
+
+
+### Bug Fixes
+
+* fix model setting page query issue ([#850](https://github.com/instill-ai/console/issues/850)) ([a5978a3](https://github.com/instill-ai/console/commit/a5978a3a879285cfb6970d7351ce7af37ebfb768))
+
 ## [0.35.0-beta](https://github.com/instill-ai/console/compare/v0.34.2-beta...v0.35.0-beta) (2024-01-02)
 
 
