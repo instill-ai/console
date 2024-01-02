@@ -42,7 +42,6 @@ const ModelDetailsPage: NextPageWithLayout = () => {
             className="mb-5"
           />
         }
-        modelNamespace="admin"
         disabledConfigureModel={false}
       />
     </React.Fragment>
