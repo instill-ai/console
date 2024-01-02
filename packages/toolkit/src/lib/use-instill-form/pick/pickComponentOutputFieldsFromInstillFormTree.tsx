@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FieldMode, InstillFormTree } from "../type";
+import { ChooseTitleFrom, FieldMode, InstillFormTree } from "../type";
 import { ComponentOutputFields } from "../components";
 import { GeneralRecord, Nullable } from "../../type";
 import { dot } from "../../dot";
@@ -8,7 +8,7 @@ export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
   data: Nullable<GeneralRecord>;
   mode: FieldMode;
-  chooseTitleFrom?: "title" | "path";
+  chooseTitleFrom?: ChooseTitleFrom;
   hideField?: boolean;
   objectArrayIndex?: number;
 };
@@ -20,10 +20,14 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
   const { tree, data, chooseTitleFrom, hideField, mode } = props;
 
-  let title = tree.path ?? tree.title ?? null;
+  let title: Nullable<string> = null;
 
   if (chooseTitleFrom === "title") {
-    title = tree.title ?? null;
+    title = tree.title ?? tree.fieldKey;
+  } else if (chooseTitleFrom === "key") {
+    title = tree.fieldKey ?? tree.title ?? null;
+  } else {
+    title = tree.path ?? tree.fieldKey ?? tree.title ?? null;
   }
 
   // Process value

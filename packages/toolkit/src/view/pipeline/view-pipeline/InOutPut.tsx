@@ -211,6 +211,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
             outputSchema={pipelineOpenAPISchema}
             nodeType="end"
             response={response}
+            chooseTitleFrom="title"
           />
         )}
       </div>

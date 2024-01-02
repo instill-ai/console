@@ -127,6 +127,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     CreateEndOperatorInputSchema,
     null,
     {
+      size: "sm",
       enableSmartHint: true,
       chooseTitleFrom: "title",
       componentID: data.component.id,
@@ -370,6 +371,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
           response={testModeTriggerResponse}
+          chooseTitleFrom="title"
         />
       ) : (
         <div className="flex flex-col">

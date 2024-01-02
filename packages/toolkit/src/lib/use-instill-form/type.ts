@@ -139,6 +139,8 @@ export type ZodAnyValidatorSchema = z.ZodType<any, any, any>;
 
 export type FieldMode = "demo" | "build";
 
+export type ChooseTitleFrom = "title" | "path" | "key";
+
 export type ComponentOutputFieldBaseProps = {
   mode: FieldMode;
   title: Nullable<string>;

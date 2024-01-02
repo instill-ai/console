@@ -1,14 +1,18 @@
 import cn from "clsx";
 import * as React from "react";
-import { InstillFormTree, SelectedConditionMap } from "../type";
+import {
+  ChooseTitleFrom,
+  InstillFormTree,
+  SelectedConditionMap,
+} from "../type";
 import { RegularFields } from "../components";
-import { GeneralUseFormReturn } from "../../type";
+import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
   // By default we will choose title from title field in JSON schema
-  chooseTitleFrom?: "title" | "key";
+  chooseTitleFrom?: ChooseTitleFrom;
   enableSmartHint?: boolean;
   componentID?: string;
   size?: "sm";
@@ -29,10 +33,14 @@ export function pickRegularFieldsFromInstillFormTree(
   const componentID = options?.componentID ?? "";
   const size = options?.size;
 
-  let title = tree.title ?? tree.fieldKey ?? null;
+  let title: Nullable<string> = null;
 
-  if (chooseTitleFrom === "key") {
-    title = tree.fieldKey ?? null;
+  if (chooseTitleFrom === "title") {
+    title = tree.title ?? tree.fieldKey;
+  } else if (chooseTitleFrom === "key") {
+    title = tree.fieldKey ?? tree.title ?? null;
+  } else {
+    title = tree.path ?? tree.fieldKey ?? tree.title ?? null;
   }
 
   if (tree._type === "formGroup") {
