@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.1...@instill-ai/toolkit-v0.77.2) (2024-01-02)
+
+
+### Bug Fixes
+
+* fix model setting page query issue ([#850](https://github.com/instill-ai/console/issues/850)) ([a5978a3](https://github.com/instill-ai/console/commit/a5978a3a879285cfb6970d7351ce7af37ebfb768))
+
 ## [0.77.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.0...@instill-ai/toolkit-v0.77.1) (2024-01-02)
 
 
