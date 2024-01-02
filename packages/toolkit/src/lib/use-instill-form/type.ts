@@ -136,3 +136,11 @@ export type AutoFormFieldBaseProps = {
 };
 
 export type ZodAnyValidatorSchema = z.ZodType<any, any, any>;
+
+export type FieldMode = "demo" | "build";
+
+export type ComponentOutputFieldBaseProps = {
+  mode: FieldMode;
+  title: Nullable<string>;
+  hideField?: boolean;
+};

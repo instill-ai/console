@@ -4,7 +4,6 @@ import { ImageField } from "./ImageField";
 import { ImagesField } from "./ImagesField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
-import { ObjectArrayField } from "./ObjectArrayField";
 import { ObjectField } from "./ObjectField";
 import { ObjectsField } from "./ObjectsField";
 import { TextField } from "./TextField";
@@ -17,7 +16,6 @@ export const ComponentOutputFields = {
   ImagesField,
   NumberField,
   NumbersField,
-  ObjectArrayField,
   ObjectField,
   ObjectsField,
   TextField,

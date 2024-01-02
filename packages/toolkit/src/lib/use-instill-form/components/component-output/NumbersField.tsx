@@ -1,11 +1,10 @@
 import { Nullable } from "../../../type";
+import { ComponentOutputFieldBaseProps } from "../../type";
 import { FieldRoot } from "./FieldRoot";
 
 export type NumbersFieldProps = {
-  title: Nullable<string>;
   numbers: Nullable<number>[];
-  hideField?: boolean;
-};
+} & ComponentOutputFieldBaseProps;
 
 export const NumbersField = (props: NumbersFieldProps) => {
   const { title, numbers, hideField } = props;

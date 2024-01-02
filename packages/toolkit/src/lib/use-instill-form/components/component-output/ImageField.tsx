@@ -1,11 +1,10 @@
 import { Nullable } from "../../../type";
+import { ComponentOutputFieldBaseProps } from "../../type";
 import { FieldRoot } from "./FieldRoot";
 
 export type ImageFieldProps = {
-  title: Nullable<string>;
   image: Nullable<string>;
-  hideField?: boolean;
-};
+} & ComponentOutputFieldBaseProps;
 
 export const ImageField = (props: ImageFieldProps) => {
   const { title, image, hideField } = props;

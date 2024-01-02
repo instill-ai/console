@@ -7,6 +7,7 @@ import { dot } from "../../dot";
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;
   data: Nullable<GeneralRecord>;
+  mode: "demo" | "build";
   chooseTitleFrom?: "title" | "path";
   hideField?: boolean;
   objectArrayIndex?: number;
@@ -17,7 +18,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 ) {
   // 1. Preprocess
 
-  const { tree, data, chooseTitleFrom, hideField } = props;
+  const { tree, data, chooseTitleFrom, hideField, mode } = props;
 
   let title = tree.path ?? tree.title ?? null;
 

@@ -1,11 +1,10 @@
 import { GeneralRecord, Nullable } from "../../../type";
+import { ComponentOutputFieldBaseProps } from "../../type";
 import { FieldRoot } from "./FieldRoot";
 
 export type ObjectsFieldProps = {
-  title: Nullable<string>;
   objects: Nullable<GeneralRecord[]>;
-  hideField?: boolean;
-};
+} & ComponentOutputFieldBaseProps;
 
 export const ObjectsField = (props: ObjectsFieldProps) => {
   const { title, objects, hideField } = props;
