@@ -5,14 +5,37 @@ import {
   Icons,
   Logos,
   Nullable,
+  Skeleton,
   Tag,
 } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { UserMembership } from "../../lib";
-import { EntityAvatar } from "../../components";
+import { UserMembership } from "../../../lib";
+import { EntityAvatar } from "../../../components";
 
-export const ProfileBio = ({
+export const UserBioSkeleton = () => {
+  return (
+    <div className="flex w-[320px] flex-col gap-y-8">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="flex h-40 w-40 rounded-full bg-semantic-bg-line">
+          <Skeleton className="m-auto h-20 w-20 rounded-full stroke-semantic-fg-secondary" />
+        </div>
+        <div className="flex w-full flex-col items-center space-y-1">
+          <Skeleton className="h-6 w-24 rounded bg-semantic-bg-line" />
+          <Skeleton className="h-6 w-16 rounded bg-semantic-bg-line" />
+        </div>
+      </div>
+      <div className="flex flex-col gap-y-2">
+        <p className="text-semantic-fg-primary product-body-text-2-semibold">
+          About
+        </p>
+        <Skeleton className="h-[60px] w-full rounded bg-semantic-bg-line" />
+      </div>
+    </div>
+  );
+};
+
+export const UserProfileBio = ({
   name,
   id,
   bio,
@@ -38,9 +61,9 @@ export const ProfileBio = ({
       <div className="flex flex-col items-center space-y-4">
         <EntityAvatar
           src={avatar}
-          className="mx-auto h-40 w-40"
+          className="mx-auto h-40 w-40 rounded-full"
           fallbackImg={
-            <div className="flex h-40 w-40 bg-semantic-bg-line">
+            <div className="flex h-40 w-40 rounded-full bg-semantic-bg-line">
               <Icons.User02 className="m-auto h-20 w-20 stroke-semantic-fg-secondary" />
             </div>
           }
@@ -119,6 +142,7 @@ export const ProfileBio = ({
     </div>
   );
 };
+UserProfileBio.Skeleton = UserBioSkeleton;
 
 export const SocialMediaRow = ({
   icon,

@@ -4,10 +4,10 @@ import { Button, DataTable, Icons, useToast } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   ConnectorWithDefinition,
-  Nullable,
   formatDate,
   toastInstillError,
   useDeleteUserConnector,
+  useInstillStore,
 } from "../../lib";
 import {
   GenerateDeleteResourceDialog,
@@ -21,14 +21,14 @@ export type ResourcesTableProps = {
   connectors: ConnectorWithDefinition[];
   isError: boolean;
   isLoading: boolean;
-  accessToken: Nullable<string>;
 };
 
 export const ResourcesTable = (props: ResourcesTableProps) => {
-  const { connectors, isError, isLoading, accessToken } = props;
+  const { connectors, isError, isLoading } = props;
   const [deleteConnectorDialogOpen, setDeleteConnectorDialogOpen] =
     React.useState(false);
   const { toast } = useToast();
+  const accessToken = useInstillStore((store) => store.accessToken);
 
   const deleteUserConnector = useDeleteUserConnector();
 
