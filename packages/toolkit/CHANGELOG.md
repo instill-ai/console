@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.2...@instill-ai/toolkit-v0.77.3) (2024-01-02)
+
+
+### Bug Fixes
+
+* fix user profile wrongly use org_name as user_name ([#852](https://github.com/instill-ai/console/issues/852)) ([8b7cf05](https://github.com/instill-ai/console/commit/8b7cf0535498520d0154da21115a74ed7bf1c140))
+
 ## [0.77.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.1...@instill-ai/toolkit-v0.77.2) (2024-01-02)
 
 
