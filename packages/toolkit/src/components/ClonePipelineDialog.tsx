@@ -115,7 +115,10 @@ export const ClonePipelineDialog = ({
 
     const payload: CreateUserPipelinePayload = {
       id: data.id,
-      recipe: getRawPipelineRecipeFromPipelineRecipe(pipeline.recipe),
+      recipe: getRawPipelineRecipeFromPipelineRecipe(
+        pipeline.recipe,
+        pipeline.owner_name === me.data.name ? false : true
+      ),
       metadata: pipeline.metadata,
       sharing,
     };
