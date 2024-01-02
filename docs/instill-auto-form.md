@@ -21,7 +21,7 @@ The solution is to avoid using a literal type and instead use a string type. Thi
 
 ## The object value filter on TextField
 
-```TypeScript
+```tsx
 <Input.Root>
   <Input.Core
     {...field}
