@@ -2,9 +2,10 @@ import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const TextsField = ({
+  mode,
   form,
   path,
   title,
@@ -51,6 +52,7 @@ export const TextsField = ({
         return (
           <Form.Item className="w-full">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

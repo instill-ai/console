@@ -61,6 +61,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
+    mode: "demo",
     metadata: startComponent ? startComponent.configuration.metadata : null,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,

@@ -2,9 +2,10 @@ import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "./types";
+import { StartOperatorFreeFormFieldBaseProps } from "../../type";
 
 export const NumbersField = ({
+  mode,
   form,
   path,
   title,
@@ -53,6 +54,7 @@ export const NumbersField = ({
         return (
           <div className="flex w-full flex-col gap-y-2">
             <FieldHead
+              mode={mode}
               form={form}
               title={title}
               path={path}

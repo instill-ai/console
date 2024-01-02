@@ -9,27 +9,31 @@ import {
   transformStartOperatorMetadataToZod,
 } from "./transform";
 import { useForm } from "react-hook-form";
-import { pickStartOperatorFreeFormFields } from "./pick";
-import { StartOperatorMetadata } from "../vdp-sdk";
-import { Nullable } from "../type";
+import {
+  PickStartOperatorFreeFormFieldsProps,
+  pickStartOperatorFreeFormFields,
+} from "./pick";
 
-export const useStartOperatorTriggerPipelineForm = (props: {
-  metadata: Nullable<StartOperatorMetadata>;
-  onEditField?: (key: string) => void;
-  onDeleteField?: (key: string) => void;
-  disabledFields?: boolean;
-  disabledFieldControls?: boolean;
-  keyPrefix?: string;
-}) => {
-  const {
-    metadata,
-    onDeleteField,
-    onEditField,
-    disabledFields,
-    disabledFieldControls,
-    keyPrefix,
-  } = props;
+export type UseStartOperatorTriggerPipelineFormProps = Pick<
+  PickStartOperatorFreeFormFieldsProps,
+  | "mode"
+  | "metadata"
+  | "onDeleteField"
+  | "onEditField"
+  | "disabledFields"
+  | "disabledFieldControls"
+  | "keyPrefix"
+>;
 
+export function useStartOperatorTriggerPipelineForm({
+  mode,
+  metadata,
+  onDeleteField,
+  onEditField,
+  disabledFields,
+  disabledFieldControls,
+  keyPrefix,
+}: UseStartOperatorTriggerPipelineFormProps) {
   const superRefineRules = React.useMemo(() => {
     if (!metadata) {
       return [];
@@ -68,6 +72,7 @@ export const useStartOperatorTriggerPipelineForm = (props: {
     }
 
     const fields = pickStartOperatorFreeFormFields({
+      mode,
       metadata,
       form,
       onEditField,
@@ -79,6 +84,7 @@ export const useStartOperatorTriggerPipelineForm = (props: {
 
     return fields;
   }, [
+    mode,
     metadata,
     form,
     onEditField,
@@ -93,4 +99,4 @@ export const useStartOperatorTriggerPipelineForm = (props: {
     Schema,
     fields,
   };
-};
+}

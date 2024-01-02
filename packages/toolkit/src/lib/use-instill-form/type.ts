@@ -144,3 +144,10 @@ export type ComponentOutputFieldBaseProps = {
   title: Nullable<string>;
   hideField?: boolean;
 };
+
+export type StartOperatorFreeFormFieldBaseProps = {
+  mode: FieldMode;
+  onEditField?: (key: string) => void;
+  onDeleteField?: (key: string) => void;
+  disabledFieldControl?: boolean;
+};

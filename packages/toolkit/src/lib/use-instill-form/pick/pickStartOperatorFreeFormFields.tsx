@@ -2,17 +2,10 @@ import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
 import { StartOperatorMetadata } from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
-import { StartOperatorFreeFormFieldItem } from "../type";
+import { FieldMode, StartOperatorFreeFormFieldItem } from "../type";
 
-export function pickStartOperatorFreeFormFields({
-  metadata,
-  form,
-  onEditField,
-  onDeleteField,
-  disabledFields,
-  disabledFieldControls,
-  keyPrefix,
-}: {
+export type PickStartOperatorFreeFormFieldsProps = {
+  mode: FieldMode;
   metadata: Nullable<StartOperatorMetadata>;
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   onEditField?: (key: string) => void;
@@ -20,7 +13,18 @@ export function pickStartOperatorFreeFormFields({
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
   keyPrefix?: string;
-}) {
+};
+
+export function pickStartOperatorFreeFormFields({
+  mode,
+  metadata,
+  form,
+  onEditField,
+  onDeleteField,
+  disabledFields,
+  disabledFieldControls,
+  keyPrefix,
+}: PickStartOperatorFreeFormFieldsProps) {
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
   if (!metadata) return [];
@@ -37,6 +41,7 @@ export function pickStartOperatorFreeFormFields({
             instillUIOrder: value.instillUiOrder,
             component: (
               <StartOperatorFreeFormFields.TextareaField
+                mode={mode}
                 key={key}
                 form={form}
                 path={key}
@@ -56,6 +61,7 @@ export function pickStartOperatorFreeFormFields({
             instillUIOrder: value.instillUiOrder,
             component: (
               <StartOperatorFreeFormFields.TextField
+                mode={mode}
                 key={key}
                 form={form}
                 path={key}
@@ -77,6 +83,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.TextsField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -98,6 +105,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.BooleanField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -118,6 +126,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumberField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -138,6 +147,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.NumbersField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -158,6 +168,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudioField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -178,6 +189,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.AudiosField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -198,6 +210,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImageField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -218,6 +231,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ImagesField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -238,6 +252,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.FileField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -258,6 +273,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.FilesField
+              mode={mode}
               key={key}
               form={form}
               path={key}
@@ -278,6 +294,7 @@ export function pickStartOperatorFreeFormFields({
           instillUIOrder: value.instillUiOrder,
           component: (
             <StartOperatorFreeFormFields.ObjectField
+              mode={mode}
               key={key}
               form={form}
               path={key}
