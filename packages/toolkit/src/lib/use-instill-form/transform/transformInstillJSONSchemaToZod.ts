@@ -280,138 +280,140 @@ export function transformInstillJSONSchemaToZod({
       and template 
     * -----------------------------------------------------------------------*/
 
-    instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
-      if (isHidden) {
-        return;
-      }
+    // Tempoarily suspend this feature for backend poc
 
-      if (val === "") {
-        return;
-      }
+    // instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
+    //   if (isHidden) {
+    //     return;
+    //   }
 
-      if (typeof val === "string") {
-        // Process regex pattern
+    //   if (val === "") {
+    //     return;
+    //   }
 
-        if (instillUpstreamValue && instillUpstreamValue.pattern) {
-          const regexPattern = new RegExp(instillUpstreamValue.pattern);
+    //   if (typeof val === "string") {
+    //     // Process regex pattern
 
-          if (!regexPattern.test(val)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: instillUpstreamValue.instillPatternErrorMessage
-                ? instillUpstreamValue.instillPatternErrorMessage
-                : `This field doesn't match the pattern ${instillUpstreamValue.pattern}`,
-            });
-          }
-        }
+    //     if (instillUpstreamValue && instillUpstreamValue.pattern) {
+    //       const regexPattern = new RegExp(instillUpstreamValue.pattern);
 
-        const referenceSet = extractTemplateReferenceSetFromString(val);
+    //       if (!regexPattern.test(val)) {
+    //         ctx.addIssue({
+    //           code: z.ZodIssueCode.custom,
+    //           message: instillUpstreamValue.instillPatternErrorMessage
+    //             ? instillUpstreamValue.instillPatternErrorMessage
+    //             : `This field doesn't match the pattern ${instillUpstreamValue.pattern}`,
+    //         });
+    //       }
+    //     }
 
-        if (
-          !acceptPrimitive &&
-          referenceSet.doubleCurlyBrace.count === 0 &&
-          referenceSet.singleCurlyBrace.count === 0
-        ) {
-          if (acceptReference && !acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts reference",
-            });
-          }
+    //     const referenceSet = extractTemplateReferenceSetFromString(val);
 
-          if (!acceptReference && acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts template",
-            });
-          }
+    //     if (
+    //       !acceptPrimitive &&
+    //       referenceSet.doubleCurlyBrace.count === 0 &&
+    //       referenceSet.singleCurlyBrace.count === 0
+    //     ) {
+    //       if (acceptReference && !acceptTemplate) {
+    //         ctx.addIssue({
+    //           code: z.ZodIssueCode.custom,
+    //           message: "This field only accepts reference",
+    //         });
+    //       }
 
-          if (acceptReference && acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts reference or template",
-            });
-          }
-        }
+    //       if (!acceptReference && acceptTemplate) {
+    //         ctx.addIssue({
+    //           code: z.ZodIssueCode.custom,
+    //           message: "This field only accepts template",
+    //         });
+    //       }
 
-        if (referenceSet.singleCurlyBrace.count > 0 && !acceptReference) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "This field doesn't accept reference `{}`",
-          });
-        }
+    //       if (acceptReference && acceptTemplate) {
+    //         ctx.addIssue({
+    //           code: z.ZodIssueCode.custom,
+    //           message: "This field only accepts reference or template",
+    //         });
+    //       }
+    //     }
 
-        if (referenceSet.doubleCurlyBrace.count > 0 && !acceptTemplate) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "This field doesn't accept template `{{}}`",
-          });
-        }
+    //     if (referenceSet.singleCurlyBrace.count > 0 && !acceptReference) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "This field doesn't accept reference `{}`",
+    //       });
+    //     }
 
-        if (
-          referenceSet.singleCurlyBrace.count === 0 &&
-          referenceSet.doubleCurlyBrace.count === 0 &&
-          instillUpstreamValue &&
-          (instillUpstreamValue.type === "integer" ||
-            instillUpstreamValue.type === "number")
-        ) {
-          if (isNaN(Number(val))) {
-            if (acceptReference) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "This field only accepts number or reference",
-              });
-            } else {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "This field only accepts number",
-              });
-            }
-          }
-        }
+    //     if (referenceSet.doubleCurlyBrace.count > 0 && !acceptTemplate) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "This field doesn't accept template `{{}}`",
+    //       });
+    //     }
 
-        if (
-          referenceSet.doubleCurlyBrace.count > 0 &&
-          referenceSet.singleCurlyBrace.count > 0
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Template {{}} can not be used with reference {}",
-          });
-        }
+    //     if (
+    //       referenceSet.singleCurlyBrace.count === 0 &&
+    //       referenceSet.doubleCurlyBrace.count === 0 &&
+    //       instillUpstreamValue &&
+    //       (instillUpstreamValue.type === "integer" ||
+    //         instillUpstreamValue.type === "number")
+    //     ) {
+    //       if (isNaN(Number(val))) {
+    //         if (acceptReference) {
+    //           ctx.addIssue({
+    //             code: z.ZodIssueCode.custom,
+    //             message: "This field only accepts number or reference",
+    //           });
+    //         } else {
+    //           ctx.addIssue({
+    //             code: z.ZodIssueCode.custom,
+    //             message: "This field only accepts number",
+    //           });
+    //         }
+    //       }
+    //     }
 
-        if (referenceSet.singleCurlyBrace.count > 0 && val.includes("{{}}")) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Template {{}} can not be used with reference {}",
-          });
-        }
+    //     if (
+    //       referenceSet.doubleCurlyBrace.count > 0 &&
+    //       referenceSet.singleCurlyBrace.count > 0
+    //     ) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "Template {{}} can not be used with reference {}",
+    //       });
+    //     }
 
-        if (referenceSet.singleCurlyBrace.count > 1) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Reference {} can only be used once",
-          });
+    //     if (referenceSet.singleCurlyBrace.count > 0 && val.includes("{{}}")) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "Template {{}} can not be used with reference {}",
+    //       });
+    //     }
 
-          return;
-        }
+    //     if (referenceSet.singleCurlyBrace.count > 1) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "Reference {} can only be used once",
+    //       });
 
-        if (
-          referenceSet.singleCurlyBrace.count > 0 &&
-          val.replace(
-            referenceSet.singleCurlyBrace.references[0].originalValue,
-            ""
-          ).length > 0
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Reference {} can only be used alone",
-          });
+    //       return;
+    //     }
 
-          return;
-        }
-      }
-    });
+    //     if (
+    //       referenceSet.singleCurlyBrace.count > 0 &&
+    //       val.replace(
+    //         referenceSet.singleCurlyBrace.references[0].originalValue,
+    //         ""
+    //       ).length > 0
+    //     ) {
+    //       ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "Reference {} can only be used alone",
+    //       });
+
+    //       return;
+    //     }
+    //   }
+    // });
 
     if (isHidden) {
       instillZodSchema = z.any();
