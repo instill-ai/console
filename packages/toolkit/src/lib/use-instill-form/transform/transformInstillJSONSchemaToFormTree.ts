@@ -293,7 +293,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillCredentialField",
   "instillUIOrder",
   "instillEditOnNodeFields",
-  "instillUiMultiline",
+  "instillUIMultiline",
   "instillPatternErrorMessage",
   "patternProperties",
 ];
