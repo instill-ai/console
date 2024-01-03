@@ -388,7 +388,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       );
     }
 
-    const parsedStructuredData: GeneralRecord = formData;
+    const parsedStructuredData: GeneralRecord = input;
 
     for (const key of semiStructuredObjectKeys) {
       if (!formData[key]) {
@@ -439,7 +439,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         const data = await useTriggerPipelineRelease.mutateAsync({
           pipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
           payload: {
-            inputs: [input],
+            inputs: [parsedStructuredData],
           },
           accessToken,
           returnTraces: true,

@@ -2,8 +2,10 @@ import * as React from "react";
 import * as z from "zod";
 import { useRouter } from "next/router";
 import {
+  GeneralRecord,
   InstillStore,
   Nullable,
+  StartOperatorMetadata,
   TriggerUserPipelineResponse,
   toastInstillError,
   useEntity,
@@ -70,19 +72,56 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
 
   const triggerPipeline = useTriggerUserPipeline();
 
-  async function onTriggerPipeline(data: z.infer<typeof Schema>) {
-    if (!entityObject.isSuccess) return;
+  async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
+    if (!entityObject.isSuccess || !pipeline.isSuccess) return;
 
     const input = recursiveRemoveUndefinedAndNullFromArray(
-      recursiveReplaceNullAndEmptyStringWithUndefined(data)
+      recursiveReplaceNullAndEmptyStringWithUndefined(formData)
     );
+
+    const startOperatorMetadata = pipeline.data.recipe.components.find(
+      (component) => component.id === "start"
+    )?.configuration.metadata as StartOperatorMetadata | undefined;
+
+    // Backend need to have the encoded JSON input. So we need to double check
+    // the metadata whether this field is a semi-structured object and parse it
+
+    const semiStructuredObjectKeys: string[] = [];
+
+    if (startOperatorMetadata) {
+      Object.entries(startOperatorMetadata).forEach(([key, value]) => {
+        if (value.instillFormat === "semi-structured/object") {
+          semiStructuredObjectKeys.push(key);
+        }
+      });
+    }
+
+    const parsedStructuredData: GeneralRecord = input;
+
+    for (const key of semiStructuredObjectKeys) {
+      if (!formData[key]) {
+        continue;
+      }
+
+      try {
+        const parsed = JSON.parse(formData[key]);
+        parsedStructuredData[key] = parsed;
+      } catch (err) {
+        console.error(err);
+        form.setError(key, {
+          type: "manual",
+          message: "Invalid JSON format",
+        });
+        return;
+      }
+    }
 
     try {
       const data = await triggerPipeline.mutateAsync({
         pipelineName: entityObject.pipelineName,
         accessToken,
         payload: {
-          inputs: [input],
+          inputs: [parsedStructuredData],
         },
         returnTraces: true,
       });
