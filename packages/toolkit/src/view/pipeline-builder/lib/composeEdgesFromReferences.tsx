@@ -291,7 +291,9 @@ function checkReferenceIsAvailable(
   const firstThreeLayersOfReferenceValueWithoutArray =
     referenceValueWithoutArray.split(".").slice(0, 3).join(".");
 
-  if (availableReference === firstThreeLayersOfReferenceValueWithoutArray) {
+  if (
+    firstThreeLayersOfReferenceValueWithoutArray.includes(availableReference)
+  ) {
     return true;
   }
 
