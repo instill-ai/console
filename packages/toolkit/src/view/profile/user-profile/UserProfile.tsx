@@ -39,8 +39,8 @@ export const UserProfile = () => {
 
   const pipelines = useUserPipelines({
     accessToken: accessToken,
-    enabled: enabledQuery,
-    userName: user.data ? user.data.id : null,
+    enabled: enabledQuery && entityObject.isSuccess,
+    userName: entityObject.isSuccess ? entityObject.entityName : null,
   });
 
   React.useEffect(() => {
