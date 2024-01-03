@@ -15,7 +15,7 @@ export type InstillCustomProps = {
   instillAcceptFormats?: string[];
   instillShortDescription?: string;
   instillUIOrder?: number;
-  instillUiMultiline?: boolean;
+  instillUIMultiline?: boolean;
   instillEditOnNodeFields?: string[];
   instillCredentialField?: boolean;
   instillPatternErrorMessage?: string;

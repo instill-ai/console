@@ -195,7 +195,7 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
-  if (tree.type === "string" && tree.instillUiMultiline) {
+  if (tree.type === "string" && tree.instillUIMultiline) {
     if (enableSmartHint) {
       return (
         <SmartHintFields.TextArea

@@ -88,7 +88,7 @@ const CreateEndOperatorInputSchema: InstillJSONSchema = {
           type: "string",
         },
       ],
-      instillUiMultiline: true,
+      instillUIMultiline: true,
       instillUpstreamTypes: ["value", "reference", "template"],
       title: "Value",
     },
