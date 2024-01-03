@@ -7,6 +7,7 @@ import {
   useShallow,
   useUser,
   useUserMe,
+  useUserPipelines,
 } from "../../../lib";
 import { useRouter } from "next/router";
 import { UserProfileBio } from "./Bio";
@@ -36,9 +37,10 @@ export const UserProfile = () => {
     enabled: enabledQuery && entityObject.isSuccess,
   });
 
-  const pipelines = usePipelines({
+  const pipelines = useUserPipelines({
     accessToken: accessToken,
     enabled: enabledQuery,
+    userName: user.data ? user.data.id : null,
   });
 
   React.useEffect(() => {

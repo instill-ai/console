@@ -117,7 +117,7 @@ export async function listUserPipelinesQuery(
     const pipelines: Pipeline[] = [];
 
     const queryString = getQueryString({
-      baseURL: `${userName}/pipelines?view=VIEW_FULL`,
+      baseURL: `/users/${userName}/pipelines?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
       filter: null,
