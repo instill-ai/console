@@ -91,14 +91,26 @@ export const Footer = ({
         ) : me.isSuccess ? (
           <ClonePipelineDialog
             trigger={
-              <Button
-                className="flex flex-row gap-x-2"
-                variant="tertiaryGrey"
-                size="lg"
-              >
-                <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
-                Clone
-              </Button>
+              me.isSuccess ? (
+                <Button
+                  className="flex flex-row gap-x-2"
+                  variant="tertiaryGrey"
+                  size="lg"
+                >
+                  <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
+                  Clone
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                  variant="primary"
+                  size="lg"
+                >
+                  Log in to Clone
+                </Button>
+              )
             }
             pipeline={pipeline}
           />

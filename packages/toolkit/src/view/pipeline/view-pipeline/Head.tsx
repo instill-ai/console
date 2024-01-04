@@ -11,6 +11,7 @@ import {
   useOrganization,
   useShallow,
   useUser,
+  useUserMe,
   useUserPipeline,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
@@ -37,6 +38,12 @@ export const Head = () => {
       enabledQuery &&
       entityObject.namespaceType === "NAMESPACE_USER" &&
       !!entityObject.entityName,
+  });
+
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+    retry: false,
   });
 
   const organization = useOrganization({
@@ -157,9 +164,23 @@ export const Head = () => {
             {pipeline.isSuccess ? (
               <ClonePipelineDialog
                 trigger={
-                  <Button size="sm" variant="secondaryColour">
-                    {!pipeline.data.permission.can_edit ? "Clone" : "Duplicate"}
-                  </Button>
+                  me.isSuccess ? (
+                    <Button size="sm" variant="secondaryColour">
+                      {!pipeline.data.permission.can_edit
+                        ? "Clone"
+                        : "Duplicate"}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        router.push("/login");
+                      }}
+                      variant="primary"
+                      size="lg"
+                    >
+                      Log in to Clone
+                    </Button>
+                  )
                 }
                 pipeline={pipeline.isSuccess ? pipeline.data : null}
               />
