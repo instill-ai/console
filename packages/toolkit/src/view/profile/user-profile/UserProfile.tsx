@@ -3,7 +3,6 @@ import {
   InstillStore,
   useEntity,
   useInstillStore,
-  usePipelines,
   useShallow,
   useUser,
   useUserMe,
@@ -47,7 +46,7 @@ export const UserProfile = () => {
     if (user.isError) {
       router.push("/404");
     }
-  }, [user.isError]);
+  }, [user.isError, router]);
 
   return (
     <React.Fragment>

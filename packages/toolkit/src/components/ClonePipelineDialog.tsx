@@ -250,7 +250,7 @@ export const ClonePipelineDialog = ({
                 setPermission(value as Permission);
               }}
               className="!flex flex-col gap-x-2"
-              defaultValue="public"
+              defaultValue="private"
             >
               <div className="flex items-center space-x-3">
                 <RadioGroup.Item value="public" id="public" />

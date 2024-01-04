@@ -7,7 +7,6 @@ import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
 import { StartOperatorFreeFormFieldBaseProps } from "../../type";
-import { cmp } from "semver";
 
 export const AudiosField = ({
   mode,

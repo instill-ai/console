@@ -68,6 +68,15 @@ module.exports = {
     "jsx-a11y/role-has-required-aria-props": "warn",
     "jsx-a11y/role-supports-aria-props": "warn",
     "testing-library/render-result-naming-convention": "off",
+
+    // For RadioGroup
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        controlComponents: ["RadioGroup"],
+        depth: 3,
+      },
+    ],
   },
   overrides: [
     {

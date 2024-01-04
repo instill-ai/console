@@ -32,7 +32,7 @@ export const useAirbyteFieldValues = (
     if (fieldValues.id !== initialValue.id) {
       setFieldValues(initialValue);
     }
-  }, [formTree, fieldValues, setFieldValues, initialValue]);
+  }, [formTree, fieldValues, setFieldValues, initialValue, inialized]);
 
   return { fieldValues, setFieldValues };
 };
