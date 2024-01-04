@@ -37,10 +37,12 @@ import {
   useEntity,
   useInstillStore,
   useUpdateUserPipeline,
+  useUserMe,
   useUserPipeline,
 } from "../../lib";
 import { StartNodeData } from "./type";
 import { ClonePipelineDialog, LoadingSpin } from "../../components";
+import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -94,7 +96,7 @@ export const FlowControl = (props: FlowControlProps) => {
     enabledQuery,
     accessToken,
   } = useInstillStore(useShallow(selector));
-
+  const router = useRouter();
   const { toast } = useToast();
 
   const entityObject = useEntity();
@@ -112,6 +114,12 @@ export const FlowControl = (props: FlowControlProps) => {
     pipelineName: entityObject.pipelineName,
     enabled: enabledQuery && entityObject.isSuccess,
     accessToken,
+  });
+
+  const me = useUserMe({
+    enabled: enabledQuery,
+    accessToken,
+    retry: false,
   });
 
   async function handleSavePipeline() {
@@ -644,9 +652,21 @@ export const FlowControl = (props: FlowControlProps) => {
           ) : (
             <ClonePipelineDialog
               trigger={
-                <Button className="!gap-x-2" variant="primary" size="lg">
-                  Clone
-                </Button>
+                me.isSuccess ? (
+                  <Button variant="primary" size="lg">
+                    Clone
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      router.push("/login");
+                    }}
+                    variant="primary"
+                    size="lg"
+                  >
+                    Log in to Clone
+                  </Button>
+                )
               }
               pipeline={pipeline.isSuccess ? pipeline.data : null}
             />
