@@ -1,4 +1,5 @@
-import { ReactElement } from "react";
+import * as React from "react";
+import cn from "clsx";
 import {
   ModelDefinitionLabel,
   ModelTaskLabel,
@@ -11,27 +12,23 @@ import {
   useEntity,
   useUndeployUserModel,
   useUserModel,
+  useUserModelReadme,
   useWatchUserModel,
 } from "../../lib";
 import { ChangeModelStateToggle } from "./ChangeModelStateToggle";
 import { ConfigureModelForm } from "./ConfigureModelForm";
 import { ModelConfigurationFields } from "./ModelConfigurationFields";
+import Markdown from "markdown-to-jsx";
+import { NoBgSquareProgress } from "@instill-ai/design-system";
 
 export type ModelHubSettingPageMainViewProps = GeneralPageProp & {
-  modelReadme: ReactElement;
   disabledConfigureModel: boolean;
 };
 
 export const ModelHubSettingPageMainView = (
   props: ModelHubSettingPageMainViewProps
 ) => {
-  const {
-    accessToken,
-    enableQuery,
-    router,
-    modelReadme,
-    disabledConfigureModel,
-  } = props;
+  const { accessToken, enableQuery, router, disabledConfigureModel } = props;
   const { id, entity } = router.query;
 
   const entityObject = useEntity();
@@ -41,6 +38,12 @@ export const ModelHubSettingPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const model = useUserModel({
+    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    enabled: enableQuery && entityObject.isSuccess,
+    accessToken,
+  });
+
+  const modelReadme = useUserModelReadme({
     modelName: entityObject.isSuccess ? entityObject.modelName : null,
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
@@ -113,7 +116,36 @@ export const ModelHubSettingPageMainView = (
         <div className="bg-instillGrey15 mb-[60px] h-[120px] w-full animate-pulse lg:h-[320px]"></div>
       )}
       <h3 className="text-instill-h3 mb-5 text-black">Setting</h3>
-      {modelReadme}
+
+      <div
+        className={cn(
+          "flex w-full flex-col border border-semantic-bg-line bg-semantic-bg-primary p-5",
+          { "min-h-[200px]": !modelReadme.isSuccess || !modelReadme.data }
+        )}
+      >
+        {modelReadme.isSuccess ? (
+          modelReadme.data ? (
+            <Markdown>{modelReadme.data}</Markdown>
+          ) : (
+            <React.Fragment>
+              <h3 className="mx-auto mb-1 mt-auto text-semantic-fg-primary product-headings-heading-4">
+                There is no Model card
+              </h3>
+              <p className="mx-auto mb-auto text-semantic-fg-secondary product-body-text-3-regular">
+                You can add a README.md to describe the model.
+              </p>
+            </React.Fragment>
+          )
+        ) : (
+          <div className="bg-instillBlue10 m-auto flex h-[72px] w-[72px]">
+            <NoBgSquareProgress
+              isLoading={true}
+              blockSize={52}
+              position="m-auto"
+            />
+          </div>
+        )}
+      </div>
       <ModelConfigurationFields
         model={model.isSuccess ? model.data : null}
         marginBottom="mb-10"

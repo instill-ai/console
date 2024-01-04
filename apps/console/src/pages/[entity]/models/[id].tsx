@@ -1,32 +1,18 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import {
-  useUserModelReadme,
-  ModelHubSettingPageMainView,
-  PageBase,
-} from "@instill-ai/toolkit";
+import { ModelHubSettingPageMainView, PageBase } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import {
-  ModelReadmeMarkdown,
-  ConsoleCorePageHead,
-  Topbar,
-} from "../../../components";
+import { ConsoleCorePageHead, Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useTrackToken } from "../../../lib/useTrackToken";
 
 const ModelDetailsPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { id, entity } = router.query;
+  const { id } = router.query;
   const accessToken = useAccessToken();
   useTrackToken({ enabled: true });
-
-  const modelReadme = useUserModelReadme({
-    modelName: id ? `users/${entity}/models/${id}` : null,
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-    enabled: accessToken.isSuccess,
-  });
 
   return (
     <React.Fragment>
@@ -35,13 +21,6 @@ const ModelDetailsPage: NextPageWithLayout = () => {
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}
-        modelReadme={
-          <ModelReadmeMarkdown
-            isLoading={modelReadme.isLoading}
-            markdown={modelReadme.isSuccess ? modelReadme.data : null}
-            className="mb-5"
-          />
-        }
         disabledConfigureModel={false}
       />
     </React.Fragment>
