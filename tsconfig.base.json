@@ -15,8 +15,6 @@
     "declaration": true,
     "sourceMap": true,
     "emitDeclarationOnly": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "strict": true
   }
 }
