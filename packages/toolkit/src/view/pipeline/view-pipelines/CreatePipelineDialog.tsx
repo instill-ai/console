@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Separator,
   Textarea,
+  Tooltip,
   useToast,
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
@@ -192,9 +193,36 @@ export const CreatePipelineDialog = () => {
                             </Form.Label>
                             <div className="group flex flex-row rounded-sm focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default">
                               <div className="rounded-l-sm border-b border-l border-r border-t border-semantic-bg-line bg-semantic-bg-primary px-4 py-2.5">
-                                <span className="text-semantic-fg-secondary product-body-text-2-regular">
-                                  {entityObject.entityName.split("/")[1]}
-                                </span>
+                                <Tooltip.Provider>
+                                  <Tooltip.Root>
+                                    <Tooltip.Trigger asChild>
+                                      <p className="max-w-[150px] truncate text-semantic-fg-secondary product-body-text-2-regular">
+                                        {entityObject.entityName.split("/")[1]}
+                                      </p>
+                                    </Tooltip.Trigger>
+                                    <Tooltip.Portal>
+                                      <Tooltip.Content
+                                        className="max-w-[360px] rounded-sm bg-semantic-bg-primary px-3 py-2"
+                                        sideOffset={5}
+                                        side="top"
+                                      >
+                                        <p className="text-semantic-fg-secondary product-body-text-2-regular">
+                                          {
+                                            entityObject.entityName.split(
+                                              "/"
+                                            )[1]
+                                          }
+                                        </p>
+                                        <Tooltip.Arrow
+                                          className="fill-white"
+                                          offset={5}
+                                          width={9}
+                                          height={6}
+                                        />
+                                      </Tooltip.Content>
+                                    </Tooltip.Portal>
+                                  </Tooltip.Root>
+                                </Tooltip.Provider>
                               </div>
                               <div className="w-full">
                                 <Form.Control>
