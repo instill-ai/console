@@ -215,8 +215,8 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
           state.status === "error"
             ? errorindicatorColumnBgColor
             : state.status === "success"
-            ? successIndicatorColumnBgColor
-            : processingIndicatorColumnBgColor
+              ? successIndicatorColumnBgColor
+              : processingIndicatorColumnBgColor
         )}
       >
         {statusIcon}

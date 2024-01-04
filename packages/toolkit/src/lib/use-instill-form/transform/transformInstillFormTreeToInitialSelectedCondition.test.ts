@@ -1218,4 +1218,8 @@ test("should select the condition in the initial data", () => {
         task: "TASK_SPEECH_RECOGNITION",
       },
     });
+
+  expect(selectedConditionMap).toStrictEqual({
+    task: "TASK_SPEECH_RECOGNITION",
+  });
 });

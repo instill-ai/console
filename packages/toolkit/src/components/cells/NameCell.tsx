@@ -22,7 +22,7 @@ export const NameCell = ({
   return (
     <td>
       <div className={cn("flex flex-row gap-x-2", width, padding)}>
-        <div className="min-h-8 min-w-8 flex">
+        <div className="flex min-h-8 min-w-8">
           <StateIcon
             state={state}
             width="w-[18px]"

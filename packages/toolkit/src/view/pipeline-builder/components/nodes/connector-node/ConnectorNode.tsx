@@ -264,7 +264,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
-  const { fields, form, ValidatorSchema, formTree } = useInstillForm(
+  const { fields, form, ValidatorSchema } = useInstillForm(
     data.component.connector_definition?.spec.component_specification ?? null,
     data.component.configuration,
     {

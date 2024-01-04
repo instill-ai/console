@@ -240,36 +240,36 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                   errorInputBgColor
                 )
               : disabled
-              ? cn(
-                  "instill-input-no-highlight",
-                  disabledInputBorderColor,
-                  disabledInputBorderStyle,
-                  disabledInputBorderWidth,
-                  disabledInputBgColor
-                )
-              : readOnly
-              ? cn(
-                  "instill-input-no-highlight",
-                  readOnlyInputBorderColor,
-                  readOnlyInputBorderStyle,
-                  readOnlyInputBorderWidth,
-                  readOnlyInputBgColor
-                )
-              : focusHighlight
-              ? cn(
-                  inputBorderWidth,
-                  inputBorderColor,
-                  inputBorderStyle,
-                  inputBgColor,
-                  "instill-input-highlight"
-                )
-              : cn(
-                  inputBorderColor,
-                  inputBorderStyle,
-                  inputBorderWidth,
-                  inputBgColor,
-                  "instill-input-no-highlight"
-                )
+                ? cn(
+                    "instill-input-no-highlight",
+                    disabledInputBorderColor,
+                    disabledInputBorderStyle,
+                    disabledInputBorderWidth,
+                    disabledInputBgColor
+                  )
+                : readOnly
+                  ? cn(
+                      "instill-input-no-highlight",
+                      readOnlyInputBorderColor,
+                      readOnlyInputBorderStyle,
+                      readOnlyInputBorderWidth,
+                      readOnlyInputBgColor
+                    )
+                  : focusHighlight
+                    ? cn(
+                        inputBorderWidth,
+                        inputBorderColor,
+                        inputBorderStyle,
+                        inputBgColor,
+                        "instill-input-highlight"
+                      )
+                    : cn(
+                        inputBorderColor,
+                        inputBorderStyle,
+                        inputBorderWidth,
+                        inputBgColor,
+                        "instill-input-no-highlight"
+                      )
           )}
         >
           <div className={"my-auto mr-auto flex pl-5"}>
@@ -283,10 +283,10 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                     error
                       ? errorInputTextColor
                       : disabled
-                      ? disabledInputTextColor
-                      : readOnly
-                      ? readOnlyInputTextColor
-                      : inputTextColor
+                        ? disabledInputTextColor
+                        : readOnly
+                          ? readOnlyInputTextColor
+                          : inputTextColor
                   }
                 />
 
@@ -298,10 +298,10 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                     error
                       ? errorInputTextColor
                       : disabled
-                      ? disabledInputTextColor
-                      : readOnly
-                      ? readOnlyInputTextColor
-                      : inputTextColor,
+                        ? disabledInputTextColor
+                        : readOnly
+                          ? readOnlyInputTextColor
+                          : inputTextColor,
                     "flex"
                   )}
                 >
@@ -359,13 +359,13 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
               disabled
                 ? "bg-instillGrey20 text-white"
                 : readOnly
-                ? "bg-instillGrey20 text-white"
-                : cn(
-                    uploadButtonBgColor,
-                    uploadButtonTextColor,
-                    uploadButtonHoverBgColor,
-                    uploadButtonHoverTextColor
-                  )
+                  ? "bg-instillGrey20 text-white"
+                  : cn(
+                      uploadButtonBgColor,
+                      uploadButtonTextColor,
+                      uploadButtonHoverBgColor,
+                      uploadButtonHoverTextColor
+                    )
             )}
             onClick={(event) => handleButtonOnClick(event)}
           >

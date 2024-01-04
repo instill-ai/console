@@ -59,7 +59,7 @@ export const CreatePipelineDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [permission, setPermission] =
-    React.useState<Nullable<Permission>>("public");
+    React.useState<Nullable<Permission>>("private");
   const router = useRouter();
   const { entity } = router.query;
 
@@ -253,11 +253,18 @@ export const CreatePipelineDialog = () => {
                   setPermission(value as Permission);
                 }}
                 className="!flex flex-col gap-x-2"
-                defaultValue="public"
+                defaultValue="private"
               >
                 <div className="flex items-center space-x-3">
-                  <RadioGroup.Item value="public" id="public" />
-                  <label htmlFor="public" className="flex flex-row gap-x-3">
+                  <label
+                    htmlFor="public-radio"
+                    className="flex flex-row gap-x-3"
+                  >
+                    <RadioGroup.Item
+                      className="my-auto"
+                      value="public"
+                      id="public-radio"
+                    />
                     <Icons.BookOpen02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
                     <div className="flex flex-col">
                       <p className="text-semantic-fg-primary product-body-text-3-semibold">
@@ -270,8 +277,13 @@ export const CreatePipelineDialog = () => {
                   </label>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <RadioGroup.Item value="private" id="private" />
                   <label htmlFor="private" className="flex flex-row gap-x-3">
+                    <RadioGroup.Item
+                      className="my-auto"
+                      value="private"
+                      id="private"
+                    />
+
                     <Icons.Lock03 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
                     <div className="flex flex-col">
                       <p className="text-semantic-fg-primary product-body-text-3-semibold">

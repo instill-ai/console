@@ -37,8 +37,8 @@ const setter = (obj: any, path: DotPath, value: any) => {
       newValue = isObject(objValue)
         ? objValue
         : isInteger(path[index + 1])
-        ? []
-        : {};
+          ? []
+          : {};
     }
 
     if (newValue === undefined) {

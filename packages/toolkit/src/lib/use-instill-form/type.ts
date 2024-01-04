@@ -37,30 +37,37 @@ export type InstillJSONSchema = {
   [Property in keyof JSONSchema7]+?: JSONSchema7[Property] extends boolean
     ? boolean
     : Property extends "enum"
-    ? string[]
-    : Property extends "if" | "then"
-    ? InstillJSONSchema
-    : Property extends "allOf"
-    ? InstillJSONSchema[] | undefined
-    : Property extends "oneOf"
-    ? InstillJSONSchema[] | undefined
-    : Property extends "anyOf"
-    ? InstillJSONSchema[] | undefined
-    : Property extends "properties" | "patternProperties" | "definitions"
-    ? Record<string, InstillJSONSchema>
-    : Property extends "items"
-    ? InstillJSONSchema
-    : JSONSchema7[Property] extends
-        | JSONSchema7Definition
-        | JSONSchema7Definition[]
-    ? InstillJSONSchemaDefinition | InstillJSONSchemaDefinition[]
-    : JSONSchema7[Property] extends InstillJSONSchema
-    ? InstillJSONSchema
-    : JSONSchema7[Property] extends InstillJSONSchema[]
-    ? InstillJSONSchema[]
-    : JSONSchema7[Property] extends InstillJSONSchema | InstillJSONSchema[]
-    ? InstillJSONSchema | InstillJSONSchema[]
-    : JSONSchema7[Property];
+      ? string[]
+      : Property extends "if" | "then"
+        ? InstillJSONSchema
+        : Property extends "allOf"
+          ? InstillJSONSchema[] | undefined
+          : Property extends "oneOf"
+            ? InstillJSONSchema[] | undefined
+            : Property extends "anyOf"
+              ? InstillJSONSchema[] | undefined
+              : Property extends
+                    | "properties"
+                    | "patternProperties"
+                    | "definitions"
+                ? Record<string, InstillJSONSchema>
+                : Property extends "items"
+                  ? InstillJSONSchema
+                  : JSONSchema7[Property] extends
+                        | JSONSchema7Definition
+                        | JSONSchema7Definition[]
+                    ?
+                        | InstillJSONSchemaDefinition
+                        | InstillJSONSchemaDefinition[]
+                    : JSONSchema7[Property] extends InstillJSONSchema
+                      ? InstillJSONSchema
+                      : JSONSchema7[Property] extends InstillJSONSchema[]
+                        ? InstillJSONSchema[]
+                        : JSONSchema7[Property] extends
+                              | InstillJSONSchema
+                              | InstillJSONSchema[]
+                          ? InstillJSONSchema | InstillJSONSchema[]
+                          : JSONSchema7[Property];
 } & InstillJsonSchemaProps;
 
 export type instillZodSchema = z.ZodTypeAny;

@@ -69,7 +69,7 @@ export const ClonePipelineDialog = ({
   const [dialogIsOpen, setDialogIsOpen] = React.useState(open ?? false);
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
-    React.useState<Nullable<Permission>>("public");
+    React.useState<Nullable<Permission>>("private");
   const router = useRouter();
   const { toast } = useToast();
 
@@ -250,7 +250,7 @@ export const ClonePipelineDialog = ({
                 setPermission(value as Permission);
               }}
               className="!flex flex-col gap-x-2"
-              defaultValue="public"
+              defaultValue="private"
             >
               <div className="flex items-center space-x-3">
                 <RadioGroup.Item value="public" id="public" />

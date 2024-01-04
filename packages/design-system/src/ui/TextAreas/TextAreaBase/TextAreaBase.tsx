@@ -174,34 +174,44 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
         "instill-input-no-highlight"
       )
     : disabled
-    ? cn(
-        disabledCursor,
-        disabledInputBgColor,
-        disabledInputBorderColor,
-        disabledInputBorderStyle,
-        disabledInputBorderWidth,
-        disabledInputTextColor,
-        "instill-input-no-highlight"
-      )
-    : readOnly
-    ? cn(
-        readOnlyCursor,
-        readOnlyInputBgColor,
-        readOnlyInputBorderColor,
-        readOnlyInputBorderStyle,
-        readOnlyInputBorderWidth,
-        readOnlyInputTextColor,
-        "instill-input-no-highlight"
-      )
-    : focusHighlight
-    ? focus
       ? cn(
-          inputBorderWidth,
-          inputBorderStyle,
-          "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text"
+          disabledCursor,
+          disabledInputBgColor,
+          disabledInputBorderColor,
+          disabledInputBorderStyle,
+          disabledInputBorderWidth,
+          disabledInputTextColor,
+          "instill-input-no-highlight"
         )
-      : cn(inputBorderColor, inputBorderStyle, inputBorderWidth, "cursor-text")
-    : cn(inputBorderColor, inputBorderStyle, inputBorderWidth, "cursor-text");
+      : readOnly
+        ? cn(
+            readOnlyCursor,
+            readOnlyInputBgColor,
+            readOnlyInputBorderColor,
+            readOnlyInputBorderStyle,
+            readOnlyInputBorderWidth,
+            readOnlyInputTextColor,
+            "instill-input-no-highlight"
+          )
+        : focusHighlight
+          ? focus
+            ? cn(
+                inputBorderWidth,
+                inputBorderStyle,
+                "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text"
+              )
+            : cn(
+                inputBorderColor,
+                inputBorderStyle,
+                inputBorderWidth,
+                "cursor-text"
+              )
+          : cn(
+              inputBorderColor,
+              inputBorderStyle,
+              inputBorderWidth,
+              "cursor-text"
+            );
 
   return (
     <div className="flex flex-col">
@@ -261,8 +271,8 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
               disabled
                 ? cn(disabledCursor, "text-instillGrey50")
                 : readOnly
-                ? cn(readOnlyCursor, "text-instillGrey50")
-                : inputTextColor,
+                  ? cn(readOnlyCursor, "text-instillGrey50")
+                  : inputTextColor,
               cn(getInputStyle, "pt-5")
             )}
             disabled={disabled}

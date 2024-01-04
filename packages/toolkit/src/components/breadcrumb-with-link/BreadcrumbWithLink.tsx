@@ -12,7 +12,7 @@ export type BBreadcrumbWithLinkProps = {
 };
 
 const BreadcrumbWithLink = ({ items }: BBreadcrumbWithLinkProps) => {
-  const activeLink = items.filter((item, index) => index != items.length - 1);
+  const activeLink = items.filter((_, index) => index != items.length - 1);
   return (
     <div className="mb-4 flex items-center gap-x-2 text-sm">
       {activeLink.map((item) => (

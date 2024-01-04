@@ -19,8 +19,8 @@ export const VisibilityCell = ({
           {visibility === "VISIBILITY_PRIVATE"
             ? "Private"
             : visibility === "VISIBILITY_PUBLIC"
-            ? "Public"
-            : "Unspecified"}
+              ? "Public"
+              : "Unspecified"}
         </p>
       </div>
     </td>

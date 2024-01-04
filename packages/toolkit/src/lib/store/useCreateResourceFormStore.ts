@@ -83,12 +83,12 @@ export type CreateResourceFormFields = z.infer<
 type ConvertToErrors<T> = T extends Array<any>
   ? string | null
   : T extends object
-  ? {
-      [K in keyof Omit<T, "type" | "modelIsSet">]: K extends "file"
-        ? string | null
-        : ConvertToErrors<T[K]>;
-    }
-  : string | null;
+    ? {
+        [K in keyof Omit<T, "type" | "modelIsSet">]: K extends "file"
+          ? string | null
+          : ConvertToErrors<T[K]>;
+      }
+    : string | null;
 
 export type CreateResourceFormState = {
   formIsDirty: boolean;

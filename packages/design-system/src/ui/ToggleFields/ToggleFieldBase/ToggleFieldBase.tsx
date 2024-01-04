@@ -216,8 +216,8 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
               disabled
                 ? "cursor-not-allowed"
                 : readOnly
-                ? "cursor-not-allowed"
-                : "cursor-pointer",
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer",
               disabled
                 ? cn(
                     disabledCursor,
@@ -229,29 +229,29 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
                       : disabledInputBorderColor
                   )
                 : readOnly
-                ? cn(
-                    readOnlyCursor,
-                    readOnlyInputBgColor,
-                    readOnlyInputBorderStyle,
-                    readOnlyInputBorderWidth,
-                    value
-                      ? readOnlyCheckedInputBorderColor
-                      : readOnlyInputBorderColor
-                  )
-                : focusHighlight
-                ? focus
                   ? cn(
-                      inputBorderWidth,
-                      inputBorderStyle,
-                      inputFocusBorderColor,
-                      inputFocusShadow
+                      readOnlyCursor,
+                      readOnlyInputBgColor,
+                      readOnlyInputBorderStyle,
+                      readOnlyInputBorderWidth,
+                      value
+                        ? readOnlyCheckedInputBorderColor
+                        : readOnlyInputBorderColor
                     )
-                  : cn(
-                      inputBorderStyle,
-                      value ? checkedInputBorderColor : inputBorderColor,
-                      inputBorderWidth
-                    )
-                : cn(inputBorderColor, inputBorderStyle, inputBorderWidth)
+                  : focusHighlight
+                    ? focus
+                      ? cn(
+                          inputBorderWidth,
+                          inputBorderStyle,
+                          inputFocusBorderColor,
+                          inputFocusShadow
+                        )
+                      : cn(
+                          inputBorderStyle,
+                          value ? checkedInputBorderColor : inputBorderColor,
+                          inputBorderWidth
+                        )
+                    : cn(inputBorderColor, inputBorderStyle, inputBorderWidth)
             )}
             checked={value}
             type="checkbox"
@@ -288,11 +288,11 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
                     "cursor-not-allowed"
                   )
                 : readOnly
-                ? cn(
-                    value ? readOnlyCheckedDotColor : readOnlyDotColor,
-                    "cursor-auto"
-                  )
-                : cn(checkedDotColor, "cursor-pointer"),
+                  ? cn(
+                      value ? readOnlyCheckedDotColor : readOnlyDotColor,
+                      "cursor-auto"
+                    )
+                  : cn(checkedDotColor, "cursor-pointer"),
               value ? checkedDotColor : dotColor,
               inputBorderRadius
             )}

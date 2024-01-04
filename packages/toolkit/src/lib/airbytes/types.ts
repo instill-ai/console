@@ -29,16 +29,16 @@ type AirbyteJsonSchema = {
   [Property in keyof JSONSchema7]+?: JSONSchema7[Property] extends boolean
     ? boolean
     : Property extends "properties" | "patternProperties" | "definitions"
-    ? Record<string, AirbyteJsonSchemaDefinition>
-    : JSONSchema7[Property] extends JSONSchema7Definition
-    ? AirbyteJsonSchemaDefinition
-    : JSONSchema7[Property] extends JSONSchema7Definition[]
-    ? AirbyteJsonSchemaDefinition[]
-    : JSONSchema7[Property] extends
-        | JSONSchema7Definition
-        | JSONSchema7Definition[]
-    ? AirbyteJsonSchemaDefinition | AirbyteJsonSchemaDefinition[]
-    : JSONSchema7[Property];
+      ? Record<string, AirbyteJsonSchemaDefinition>
+      : JSONSchema7[Property] extends JSONSchema7Definition
+        ? AirbyteJsonSchemaDefinition
+        : JSONSchema7[Property] extends JSONSchema7Definition[]
+          ? AirbyteJsonSchemaDefinition[]
+          : JSONSchema7[Property] extends
+                | JSONSchema7Definition
+                | JSONSchema7Definition[]
+            ? AirbyteJsonSchemaDefinition | AirbyteJsonSchemaDefinition[]
+            : JSONSchema7[Property];
 } & AirbyteJsonSchemaProps;
 
 type AirbyteFormBaseField = {
