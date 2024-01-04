@@ -59,7 +59,7 @@ export const CreatePipelineDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [permission, setPermission] =
-    React.useState<Nullable<Permission>>("public");
+    React.useState<Nullable<Permission>>("private");
   const router = useRouter();
   const { entity } = router.query;
 

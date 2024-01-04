@@ -69,7 +69,7 @@ export const ClonePipelineDialog = ({
   const [dialogIsOpen, setDialogIsOpen] = React.useState(open ?? false);
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
-    React.useState<Nullable<Permission>>("public");
+    React.useState<Nullable<Permission>>("private");
   const router = useRouter();
   const { toast } = useToast();
 
