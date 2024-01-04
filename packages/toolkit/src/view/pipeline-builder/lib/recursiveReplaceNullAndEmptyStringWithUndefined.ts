@@ -3,10 +3,12 @@
 type RecursiveReplaceNullAndEmptyStringWithUndefined<T> = T extends null
   ? undefined
   : T extends (infer U)[]
-  ? RecursiveReplaceNullAndEmptyStringWithUndefined<U>[]
-  : T extends Record<string, unknown>
-  ? { [K in keyof T]: RecursiveReplaceNullAndEmptyStringWithUndefined<T[K]> }
-  : T;
+    ? RecursiveReplaceNullAndEmptyStringWithUndefined<U>[]
+    : T extends Record<string, unknown>
+      ? {
+          [K in keyof T]: RecursiveReplaceNullAndEmptyStringWithUndefined<T[K]>;
+        }
+      : T;
 
 export function recursiveReplaceNullAndEmptyStringWithUndefined<T>(
   obj: T
