@@ -120,7 +120,7 @@ export const ModelHubSettingPageMainView = (
       <div
         className={cn(
           "flex w-full flex-col border border-semantic-bg-line bg-semantic-bg-primary p-5",
-          { "min-h-[200px]": !modelReadme.isSuccess }
+          { "min-h-[200px]": !modelReadme.isSuccess || !modelReadme.data }
         )}
       >
         {modelReadme.isSuccess ? (
@@ -128,7 +128,7 @@ export const ModelHubSettingPageMainView = (
             <Markdown>{modelReadme.data}</Markdown>
           ) : (
             <React.Fragment>
-              <h3 className="mx-auto mt-auto text-semantic-fg-primary product-headings-heading-3">
+              <h3 className="mx-auto mb-1 mt-auto text-semantic-fg-primary product-headings-heading-4">
                 There is no Model card
               </h3>
               <p className="mx-auto mb-auto text-semantic-fg-secondary product-body-text-3-regular">
