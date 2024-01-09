@@ -37,6 +37,17 @@ export const useSmartHint = () => {
 
           smartHints = [...smartHints, ...hints];
         }
+
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "null",
+            type: "object",
+            properties: [],
+          },
+        ];
       }
 
       if (node.data.nodeType === "start") {
@@ -67,6 +78,17 @@ export const useSmartHint = () => {
 
           smartHints = [...smartHints, ...hints];
         }
+
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "null",
+            type: "object",
+            properties: [],
+          },
+        ];
       }
     }
 
