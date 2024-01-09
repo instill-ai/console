@@ -1,5 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
+import { Visibility } from "../types";
 import {
   OperatorDefinition,
   Pipeline,
@@ -17,6 +18,7 @@ export type listPipelinesQueryParams = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
+  visibility?: Visibility;
 };
 
 export async function listPipelinesQuery(
@@ -39,7 +41,8 @@ export async function listPipelinesQuery(
     enablePagination?: boolean;
   }
 ) {
-  const { pageSize, nextPageToken, accessToken, enablePagination } = props;
+  const { pageSize, nextPageToken, accessToken, enablePagination, visibility } =
+    props;
 
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
@@ -49,7 +52,7 @@ export async function listPipelinesQuery(
       baseURL: "/pipelines?view=VIEW_FULL",
       pageSize,
       nextPageToken,
-      filter: null,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
     });
 
     const { data } = await client.get<ListPipelinesResponse>(queryString);
@@ -83,7 +86,7 @@ export type ListUserPipelinesResponse = {
   total_size: number;
 };
 
-export type listUserPipelinesQueryParams = {
+export type listUserPipelinesQueryProps = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
@@ -91,22 +94,22 @@ export type listUserPipelinesQueryParams = {
 };
 
 export async function listUserPipelinesQuery(
-  props: listUserPipelinesQueryParams & {
+  props: listUserPipelinesQueryProps & {
     enablePagination: true;
   }
 ): Promise<ListUserPipelinesResponse>;
 export async function listUserPipelinesQuery(
-  props: listUserPipelinesQueryParams & {
+  props: listUserPipelinesQueryProps & {
     enablePagination: false;
   }
 ): Promise<Pipeline[]>;
 export async function listUserPipelinesQuery(
-  props: listUserPipelinesQueryParams & {
+  props: listUserPipelinesQueryProps & {
     enablePagination: undefined;
   }
 ): Promise<Pipeline[]>;
 export async function listUserPipelinesQuery(
-  props: listUserPipelinesQueryParams & {
+  props: listUserPipelinesQueryProps & {
     enablePagination?: boolean;
   }
 ) {

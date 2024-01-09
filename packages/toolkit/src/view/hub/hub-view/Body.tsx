@@ -38,6 +38,7 @@ export const Body = ({
     pageSize: 10,
     accessToken,
     enabledQuery,
+    visibility: "VISIBILITY_PUBLIC",
   });
 
   const me = useUserMe({

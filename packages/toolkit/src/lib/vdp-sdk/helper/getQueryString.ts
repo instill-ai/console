@@ -5,11 +5,15 @@ export const getQueryString = ({
   pageSize,
   nextPageToken,
   filter,
+  queryParams,
 }: {
   baseURL: string;
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
-  filter: Nullable<string>;
+  filter?: Nullable<string>;
+
+  // Just pure query params, the function will handle tialing '&'
+  queryParams?: string;
 }) => {
   let url = baseURL;
 
@@ -32,6 +36,10 @@ export const getQueryString = ({
 
   if (filter) {
     url += `filter=${filter}&`;
+  }
+
+  if (queryParams) {
+    url += `${queryParams}&`;
   }
 
   // Remove the trailing '&' if there are any query parameters
