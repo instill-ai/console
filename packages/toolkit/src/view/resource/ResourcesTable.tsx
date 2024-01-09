@@ -72,7 +72,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
               secondaryLink={null}
               iconElement={
                 <ImageWithFallback
-                  src={`/icons/${definition.vendor}/${definition.icon}`}
+                  src={`/icons/${definition.icon}`}
                   width={16}
                   height={16}
                   alt={`${definition.title}-icon`}

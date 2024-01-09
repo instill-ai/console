@@ -99,7 +99,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                           }}
                         >
                           <ImageWithFallback
-                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            src={`/icons/${definition.icon}`}
                             width={32}
                             height={32}
                             alt={`${definition.title}-icon`}
@@ -128,7 +128,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                           }}
                         >
                           <ImageWithFallback
-                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            src={`/icons/${definition.icon}`}
                             width={32}
                             height={32}
                             alt={`${definition.title}-icon`}
@@ -157,7 +157,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                           }}
                         >
                           <ImageWithFallback
-                            src={`/icons/${definition.vendor}/${definition.icon}`}
+                            src={`/icons/${definition.icon}`}
                             width={32}
                             height={32}
                             alt={`${definition.title}-icon`}

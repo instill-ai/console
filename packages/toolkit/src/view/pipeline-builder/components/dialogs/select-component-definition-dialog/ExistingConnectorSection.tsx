@@ -34,7 +34,7 @@ export const ExistingConnectorSection = ({
                 }}
               >
                 <ImageWithFallback
-                  src={`/icons/${connector.connector_definition.vendor}/${connector.connector_definition.icon}`}
+                  src={`/icons/${connector.connector_definition.icon}`}
                   width={32}
                   height={32}
                   alt={`${connector.connector_definition.title}-icon`}
