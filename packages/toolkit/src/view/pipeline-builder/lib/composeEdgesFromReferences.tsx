@@ -95,6 +95,9 @@ export function composeEdgesFromReferences(
         }`
       );
     }
+
+    // User can also reference the whole component's output object
+    otherNodesAvailableReferences.push(`${node.id}.output`);
   });
 
   // 2. Loop throught references to compose edges
@@ -285,11 +288,13 @@ function checkReferenceIsAvailable(
 
   // If the target is a object, user can reference the key in the object, which may
   // break how we check if the reference is available. For example, if the target is
-  // "start.input.my_object", and the user reference "start.input.my_object.key1",
+  // "comp_1.output.my_object", and the user reference "comp_1.output.my_object.key1",
   // we should still allow it.
 
+  // This should also allow comp_1.output
+
   const firstThreeLayersOfReferenceValueWithoutArray =
-    referenceValueWithoutArray.split(".").slice(0, 3).join(".");
+    referenceValueWithoutArray.split(".").slice(0, 2).join(".");
 
   if (
     firstThreeLayersOfReferenceValueWithoutArray.includes(availableReference)
