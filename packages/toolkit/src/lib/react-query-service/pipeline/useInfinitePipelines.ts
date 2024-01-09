@@ -1,16 +1,18 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { env } from "../../utility";
-import { listPipelinesQuery } from "../../vdp-sdk";
+import { Visibility, listPipelinesQuery } from "../../vdp-sdk";
 
 export function useInfinitePipelines({
   accessToken,
   pageSize,
   enabledQuery,
+  visibility,
 }: {
   accessToken: Nullable<string>;
   pageSize?: number;
   enabledQuery: boolean;
+  visibility?: Visibility;
 }) {
   return useInfiniteQuery(
     ["pipelines", "infinite"],
@@ -20,6 +22,7 @@ export function useInfinitePipelines({
         nextPageToken: pageParam ?? null,
         accessToken,
         enablePagination: true,
+        visibility,
       });
 
       return Promise.resolve(pipelines);
