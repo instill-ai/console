@@ -79,7 +79,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
             <div className="mb-5 flex flex-col ">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xxs">
                 <ImageWithFallback
-                  src={`/icons/${connectorDefinition?.vendor}/${connectorDefinition?.icon}`}
+                  src={`/icons/${connectorDefinition?.icon}`}
                   width={32}
                   height={32}
                   alt={`${connectorDefinition?.title}-icon`}
@@ -112,7 +112,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                     }}
                   >
                     <ImageWithFallback
-                      src={`/icons/${connector.connector_definition.vendor}/${connector.connector_definition.icon}`}
+                      src={`/icons/${connector.connector_definition.icon}`}
                       width={32}
                       height={32}
                       alt={`${connector.connector_definition.title}-icon`}

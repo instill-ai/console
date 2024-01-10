@@ -22,7 +22,7 @@ export const ConnectionTypeCell = ({
         {connectorDefinition ? (
           <div className="flex flex-row gap-x-[5px]">
             <ImageWithFallback
-              src={`/icons/${connectorDefinition.vendor}/${connectorDefinition.icon}`}
+              src={`/icons/${connectorDefinition.icon}`}
               width={24}
               height={24}
               alt={`${connectorName}-icon`}

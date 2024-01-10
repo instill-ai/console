@@ -347,7 +347,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.connector_definition?.vendor}/${data.component?.connector_definition?.icon}`}
+            src={`/icons/${data.component?.connector_definition?.icon}`}
             width={16}
             height={16}
             alt={`${data.component?.connector_definition?.title}-icon`}
