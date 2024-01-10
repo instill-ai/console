@@ -91,3 +91,8 @@ export type PipelineComponentMetadata = {
   y: number;
   note: Nullable<string>;
 };
+
+export type InstillReference = {
+  originalValue: string;
+  referenceValue: ReferenceValueSet;
+};

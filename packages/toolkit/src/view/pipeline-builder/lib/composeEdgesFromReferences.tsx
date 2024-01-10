@@ -29,6 +29,7 @@ export function composeEdgesFromReferences(
   nodes.forEach((node) => {
     if (!node.data.component) return;
 
+    // 1.1 Start node is special, we need to get all the metadata keys as available
     if (node.data.nodeType === "start") {
       if (node.data.component.configuration.metadata) {
         for (const [key] of Object.entries(
@@ -41,11 +42,13 @@ export function composeEdgesFromReferences(
       return;
     }
 
+    // 1.2 We can ignore end node, they can not be referenced/connected
     if (node.data.nodeType === "end") return;
 
     let inputSchema: Nullable<InstillJSONSchema> = null;
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
+    // 1.3 Extract references for operator and connector
     if (node.data.nodeType === "operator") {
       const {
         inputSchema: operatorInputSchema,

@@ -92,19 +92,10 @@ export const SmartHintList = ({
                 variant="lightBlue"
                 size="sm"
                 className="!rounded !px-2 !py-0.5"
-              >{`{}`}</Tag>
+              >
+                ${`{}`}
+              </Tag>
             ) : null}{" "}
-            {instillUpstreamTypes.includes("template") ? (
-              <>
-                or{" "}
-                <Tag
-                  variant="lightBlue"
-                  size="sm"
-                  className="!rounded !px-2 !py-0.5"
-                >{`{{}}`}</Tag>
-              </>
-            ) : null}{" "}
-            to trigger smart hint
           </p>
         )}
       </div>

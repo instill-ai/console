@@ -6,7 +6,7 @@ import {
   instillZodSchema,
 } from "../type";
 import { pickConstInfoFromOneOfCondition } from "../pick";
-import { extractTemplateReferenceSetFromString } from "../../../view";
+import { getReferencesFromString } from "../../../view";
 
 export function transformInstillJSONSchemaToZod({
   parentSchema,
@@ -305,52 +305,31 @@ export function transformInstillJSONSchemaToZod({
           }
         }
 
-        const referenceSet = extractTemplateReferenceSetFromString(val);
+        const references = getReferencesFromString(val);
 
-        if (
-          !acceptPrimitive &&
-          referenceSet.doubleCurlyBrace.count === 0 &&
-          referenceSet.singleCurlyBrace.count === 0
-        ) {
-          if (acceptReference && !acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts reference",
-            });
-          }
-
-          if (!acceptReference && acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts template",
-            });
-          }
-
-          if (acceptReference && acceptTemplate) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "This field only accepts reference or template",
-            });
-          }
-        }
-
-        if (referenceSet.singleCurlyBrace.count > 0 && !acceptReference) {
+        if (!acceptPrimitive && references.length === 0) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "This field doesn't accept reference `{}`",
+            message: "This field only accepts reference",
           });
         }
 
-        if (referenceSet.doubleCurlyBrace.count > 0 && !acceptTemplate) {
+        if (references.length > 0 && !acceptReference) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "This field doesn't accept template `{{}}`",
+            message: "This field doesn't accept reference `${}`",
+          });
+        }
+
+        if (references.length > 1 && !acceptTemplate) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "This field only accepts single reference",
           });
         }
 
         if (
-          referenceSet.singleCurlyBrace.count === 0 &&
-          referenceSet.doubleCurlyBrace.count === 0 &&
+          references.length === 0 &&
           instillUpstreamValue &&
           (instillUpstreamValue.type === "integer" ||
             instillUpstreamValue.type === "number")
@@ -368,47 +347,6 @@ export function transformInstillJSONSchemaToZod({
               });
             }
           }
-        }
-
-        if (
-          referenceSet.doubleCurlyBrace.count > 0 &&
-          referenceSet.singleCurlyBrace.count > 0
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Template {{}} can not be used with reference {}",
-          });
-        }
-
-        if (referenceSet.singleCurlyBrace.count > 0 && val.includes("{{}}")) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Template {{}} can not be used with reference {}",
-          });
-        }
-
-        if (referenceSet.singleCurlyBrace.count > 1) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Reference {} can only be used once",
-          });
-
-          return;
-        }
-
-        if (
-          referenceSet.singleCurlyBrace.count > 0 &&
-          val.replace(
-            referenceSet.singleCurlyBrace.references[0].originalValue,
-            ""
-          ).length > 0
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Reference {} can only be used alone",
-          });
-
-          return;
         }
       }
     });

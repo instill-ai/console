@@ -1,15 +1,7 @@
 import { Node } from "reactflow";
 
-import {
-  NodeData,
-  PipelineComponentMetadata,
-  PipelineComponentReference,
-} from "../type";
-import {
-  extractReferencesFromConfiguration,
-  recursiveTransformToString,
-} from ".";
-import { composeEdgesFromReferences } from "./composeEdgesFromReferences";
+import { NodeData, PipelineComponentMetadata } from "../type";
+import { composeEdgesFromNodes, recursiveTransformToString } from ".";
 import {
   GeneralRecord,
   Nullable,
@@ -186,21 +178,7 @@ export function createInitialGraphData(
       continue;
     }
   }
-
-  const allReferences: PipelineComponentReference[] = [];
-
-  nodes.forEach((node) => {
-    if (node.data.component?.configuration) {
-      allReferences.push(
-        ...extractReferencesFromConfiguration(
-          node.data.component?.configuration,
-          node.id
-        )
-      );
-    }
-  });
-
-  const edges = composeEdgesFromReferences(allReferences, nodes);
+  const edges = composeEdgesFromNodes(nodes);
 
   return {
     nodes,

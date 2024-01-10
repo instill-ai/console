@@ -6,11 +6,8 @@ import { Button, Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
-import { EndNodeData, PipelineComponentReference } from "../../../type";
-import {
-  extractReferencesFromConfiguration,
-  composeEdgesFromReferences,
-} from "../../../lib";
+import { EndNodeData } from "../../../type";
+import { composeEdgesFromNodes } from "../../../lib";
 import { CustomHandle } from "../../CustomHandle";
 import {
   InstillJSONSchema,
@@ -165,26 +162,10 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-
     setEnableEdit(false);
     setPrevFieldKey(null);
     form.reset({
@@ -206,23 +187,8 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
   }

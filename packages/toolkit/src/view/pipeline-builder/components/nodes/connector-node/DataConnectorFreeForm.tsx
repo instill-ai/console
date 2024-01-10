@@ -18,11 +18,7 @@ import {
   PipelineConnectorComponent,
   useInstillStore,
 } from "../../../../../lib";
-import { PipelineComponentReference } from "../../../type";
-import {
-  composeEdgesFromReferences,
-  extractReferencesFromConfiguration,
-} from "../../../lib";
+import { composeEdgesFromNodes } from "../../../lib";
 
 export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
@@ -94,27 +90,10 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
-
     updatePipelineRecipeIsDirty(() => true);
-
     setEnableEdit(false);
     setPrevFieldKey(null);
     form.reset({
@@ -138,25 +117,10 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-    updatePipelineRecipeIsDirty(() => true);
     updateEdges(() => newEdges);
+    updatePipelineRecipeIsDirty(() => true);
   }
 
   if (testModeEnabled) {

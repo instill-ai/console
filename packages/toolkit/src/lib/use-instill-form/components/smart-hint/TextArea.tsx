@@ -166,7 +166,6 @@ export const TextArea = ({
                         path,
                         setEnableSmartHints,
                         setCurrentCursorPos,
-                        smartHintEnabledPos,
                         setSmartHintEnabledPos,
                         setSmartHintsPopoverIsOpen,
                       });

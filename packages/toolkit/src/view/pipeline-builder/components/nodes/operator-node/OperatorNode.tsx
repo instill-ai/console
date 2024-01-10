@@ -2,17 +2,12 @@ import * as React from "react";
 import { Node, NodeProps, Position } from "reactflow";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 
-import {
-  NodeData,
-  OperatorNodeData,
-  PipelineComponentReference,
-} from "../../../type";
+import { NodeData, OperatorNodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
 import {
-  extractReferencesFromConfiguration,
-  composeEdgesFromReferences,
   generateNewComponentIndex,
   transformConnectorDefinitionIDToComponentIDPrefix,
+  composeEdgesFromNodes,
 } from "../../../lib";
 import {
   InstillStore,
@@ -128,29 +123,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       }
       return node;
     });
+    const newEdges = composeEdgesFromNodes(newNodes);
+    updateNodes(() => newNodes);
+    updateEdges(() => newEdges);
 
     if (selectedConnectorNodeId === id) {
       updateSelectedConnectorNodeId(() => newID);
     }
-
-    updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
-    updateEdges(() => newEdges);
 
     toast({
       title: "Successfully update node's name",
@@ -197,50 +176,18 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         data,
       },
     ];
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
-    updatePipelineRecipeIsDirty(() => true);
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
+    updatePipelineRecipeIsDirty(() => true);
   }
 
   function handleDeleteNode() {
     const newNodes = nodes.filter((node) => node.id !== id);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
-    updatePipelineRecipeIsDirty(() => true);
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
+    updatePipelineRecipeIsDirty(() => true);
   }
 
   const { outputSchema } = React.useMemo(() => {
