@@ -9,11 +9,7 @@ import {
 } from "../../../lib";
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
-import { PipelineComponentReference } from "../type";
-import {
-  composeEdgesFromReferences,
-  extractReferencesFromConfiguration,
-} from "../lib";
+import { composeEdgesFromNodes } from "../lib";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -111,21 +107,7 @@ export function useUpdaterOnRightPanel({
       });
 
       updateNodes(() => newNodes);
-
-      const allReferences: PipelineComponentReference[] = [];
-
-      newNodes.forEach((node) => {
-        if (node.data.component?.configuration) {
-          allReferences.push(
-            ...extractReferencesFromConfiguration(
-              node.data.component?.configuration,
-              node.id
-            )
-          );
-        }
-      });
-
-      const newEdges = composeEdgesFromReferences(allReferences, newNodes);
+      const newEdges = composeEdgesFromNodes(newNodes);
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;

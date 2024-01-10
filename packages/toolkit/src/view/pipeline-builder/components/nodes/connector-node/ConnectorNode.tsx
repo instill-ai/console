@@ -3,18 +3,13 @@ import { Node, NodeProps, Position } from "reactflow";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
-import {
-  ConnectorNodeData,
-  NodeData,
-  PipelineComponentReference,
-} from "../../../type";
+import { ConnectorNodeData, NodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
 import {
-  extractReferencesFromConfiguration,
   getConnectorInputOutputSchema,
-  composeEdgesFromReferences,
   transformConnectorDefinitionIDToComponentIDPrefix,
   generateNewComponentIndex,
+  composeEdgesFromNodes,
 } from "../../../lib";
 import {
   InstillStore,
@@ -147,29 +142,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       }
       return node;
     });
+    const newEdges = composeEdgesFromNodes(newNodes);
+    updateNodes(() => newNodes);
+    updateEdges(() => newEdges);
 
     if (selectedConnectorNodeId === id) {
       updateSelectedConnectorNodeId(() => newID);
     }
-
-    updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
-    updateEdges(() => newEdges);
 
     toast({
       title: "Successfully update node's name",
@@ -216,48 +195,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         data,
       },
     ];
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
-    updatePipelineRecipeIsDirty(() => true);
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
+    updatePipelineRecipeIsDirty(() => true);
   }
 
   function handleDeleteNode() {
     const newNodes = nodes.filter((node) => node.id !== id);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
-
+    const newEdges = composeEdgesFromNodes(newNodes);
+    updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
   }
@@ -396,29 +344,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                   }
                   return node;
                 });
-
+                const newEdges = composeEdgesFromNodes(newNodes);
                 updateNodes(() => newNodes);
-
-                const allReferences: PipelineComponentReference[] = [];
-
-                newNodes.forEach((node) => {
-                  if (node.data.component?.configuration) {
-                    allReferences.push(
-                      ...extractReferencesFromConfiguration(
-                        node.data.component?.configuration,
-                        node.id
-                      )
-                    );
-                  }
-                });
-
-                const newEdges = composeEdgesFromReferences(
-                  allReferences,
-                  newNodes
-                );
-                updatePipelineRecipeIsDirty(() => true);
                 updateEdges(() => newEdges);
-
+                updatePipelineRecipeIsDirty(() => true);
                 updateCreateResourceDialogState(() => ({
                   open: false,
                   connectorType: null,

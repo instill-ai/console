@@ -87,10 +87,6 @@ export function onInputKeydown({
               if (value[smartHintEnabledPos - 1] === "{") {
                 closeBrace = "}";
               }
-
-              if (value[smartHintEnabledPos - 2] === "{") {
-                closeBrace = "}}";
-              }
             }
 
             const newValue = `${value.slice(0, smartHintEnabledPos)}${

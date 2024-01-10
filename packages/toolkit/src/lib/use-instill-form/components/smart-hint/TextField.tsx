@@ -167,7 +167,6 @@ export const TextField = ({
                           path,
                           setEnableSmartHints,
                           setCurrentCursorPos,
-                          smartHintEnabledPos,
                           setSmartHintEnabledPos,
                           setSmartHintsPopoverIsOpen,
                         });

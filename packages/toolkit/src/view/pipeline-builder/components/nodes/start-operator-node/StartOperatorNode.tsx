@@ -7,10 +7,9 @@ import { useShallow } from "zustand/react/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { PipelineComponentReference, StartNodeData } from "../../../type";
+import { StartNodeData } from "../../../type";
 import {
-  composeEdgesFromReferences,
-  extractReferencesFromConfiguration,
+  composeEdgesFromNodes,
   recursiveRemoveUndefinedAndNullFromArray,
   recursiveReplaceNullAndEmptyStringWithUndefined,
 } from "../../../lib";
@@ -123,23 +122,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
   };
@@ -296,25 +280,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       }
       return node;
     });
-
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
-
-    const allReferences: PipelineComponentReference[] = [];
-
-    newNodes.forEach((node) => {
-      if (node.data.component?.configuration) {
-        allReferences.push(
-          ...extractReferencesFromConfiguration(
-            node.data.component?.configuration,
-            node.id
-          )
-        );
-      }
-    });
-
-    const newEdges = composeEdgesFromReferences(allReferences, newNodes);
     updateEdges(() => newEdges);
-
     setEnableEdit(false);
     setSelectedType(null);
     setPrevFieldKey(null);

@@ -122,7 +122,6 @@ export type CheckIsHidden = (props: {
 export type SmartHintWarning = {
   message?: string;
   notAvailableReferences: string[];
-  notAvailableTemplates: string[];
 };
 
 export type StartOperatorFreeFormFieldItem = {
