@@ -1,4 +1,7 @@
-
+/*
+  This is the style for the placeholder of tip-tap
+  https://tiptap.dev/docs/editor/api/extensions/placeholder
+*/
 
 .tiptap p.is-editor-empty:first-child::before {
   color: #1D2433;
