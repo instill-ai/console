@@ -1,7 +1,7 @@
 import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
-import { composeEdgesFromNodes, recursiveTransformToString } from ".";
+import { composeEdgesFromNodes, recursiveHelpers } from ".";
 import {
   GeneralRecord,
   Nullable,
@@ -55,7 +55,9 @@ export function createInitialGraphData(
           component: {
             ...component,
             id: "start",
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             operator_definition: (component as PipelineStartComponent)
               .operator_definition,
             resource_name: null,
@@ -79,7 +81,9 @@ export function createInitialGraphData(
           component: {
             ...component,
             id: "end",
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             operator_definition: (component as PipelineEndComponent)
               .operator_definition,
             resource_name: null,
@@ -101,7 +105,9 @@ export function createInitialGraphData(
           nodeType: "operator",
           component: {
             ...component,
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             operator_definition: (component as PipelineOperatorComponent)
               .operator_definition,
             resource_name: null,
@@ -123,7 +129,9 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
@@ -144,7 +152,9 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },
@@ -165,7 +175,9 @@ export function createInitialGraphData(
           nodeType: "connector",
           component: {
             ...component,
-            configuration: recursiveTransformToString(_deepClonedConfiguration),
+            configuration: recursiveHelpers.parseNumberToString(
+              _deepClonedConfiguration
+            ),
             connector_definition: (component as PipelineConnectorComponent)
               .connector_definition,
           },

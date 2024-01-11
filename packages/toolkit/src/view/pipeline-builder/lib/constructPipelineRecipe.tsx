@@ -2,7 +2,6 @@ import { Node } from "reactflow";
 import { NodeData } from "../type";
 import { recursiveHelpers } from "./recursive-helpers";
 import { RawPipelineComponent } from "../../../lib";
-import { recursiveReplaceNullAndEmptyStringWithUndefined } from "./recursiveReplaceNullAndEmptyStringWithUndefined";
 
 export function constructPipelineRecipe(
   nodes: Node<NodeData>[],
@@ -15,9 +14,10 @@ export function constructPipelineRecipe(
       continue;
     }
 
-    const configuration = recursiveReplaceNullAndEmptyStringWithUndefined(
-      structuredClone(node.data.component.configuration)
-    );
+    const configuration =
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+        structuredClone(node.data.component.configuration)
+      );
 
     if (node.data.nodeType === "start") {
       components.push({
