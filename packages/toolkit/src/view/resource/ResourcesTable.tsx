@@ -10,7 +10,7 @@ import {
   useInstillStore,
 } from "../../lib";
 import {
-  GenerateDeleteResourceDialog,
+  GeneralDeleteResourceDialog,
   ImageWithFallback,
   SortIcon,
   TableCell,
@@ -25,8 +25,6 @@ export type ResourcesTableProps = {
 
 export const ResourcesTable = (props: ResourcesTableProps) => {
   const { connectors, isError, isLoading } = props;
-  const [deleteConnectorDialogOpen, setDeleteConnectorDialogOpen] =
-    React.useState(false);
   const { toast } = useToast();
   const accessToken = useInstillStore((store) => store.accessToken);
 
@@ -38,8 +36,6 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         connectorName: connector.name,
         accessToken,
       });
-
-      setDeleteConnectorDialogOpen(false);
 
       toast({
         title: "Successfully delete connector",
@@ -120,9 +116,7 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
       cell: ({ row }) => {
         return accessToken ? (
           <div className="flex justify-center">
-            <GenerateDeleteResourceDialog
-              open={deleteConnectorDialogOpen}
-              onOpenChange={(open) => setDeleteConnectorDialogOpen(open)}
+            <GeneralDeleteResourceDialog
               resourceID={row.original.id}
               title={`Delete ${row.original.id}`}
               description="This action cannot be undone. This will permanently delete the connector."
