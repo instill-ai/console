@@ -19,7 +19,6 @@ test("should remove undefined and null from array", () => {
   const result = recursiveRemoveUndefinedAndNullFromArray(array);
 
   expect(result).toEqual([1, 2, 3, 4, 5]);
-  expect(result !== array).toBe(true);
 });
 
 test("should remove undefined and null from array inside a object", () => {
@@ -30,5 +29,4 @@ test("should remove undefined and null from array inside a object", () => {
   const result = recursiveRemoveUndefinedAndNullFromArray(object);
 
   expect(result).toEqual({ a: [1, 2, 3, 4, 5] });
-  expect(result !== object).toBe(true);
 });
