@@ -13,6 +13,7 @@ import Code from "@tiptap/extension-code";
 import Bold from "@tiptap/extension-bold";
 import Blockquote from "@tiptap/extension-blockquote";
 import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 import { Extensions } from "@tiptap/react";
 
 export const extensions: Extensions = [
@@ -43,4 +44,7 @@ export const extensions: Extensions = [
   Code,
   Bold,
   Link,
+  Placeholder.configure({
+    placeholder: "Type something here...",
+  }),
 ];

@@ -17,6 +17,7 @@ import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
+import "../styles/tip-tap.css";
 
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "../components";
@@ -42,10 +43,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder,
+    (state) => state.initPipelineBuilder
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init,
+    (state) => state.init
   );
 
   const { dismiss: dismissToast } = useToast();
