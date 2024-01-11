@@ -14,6 +14,7 @@ export default defineConfig({
       "react-dom",
       "react-markdown",
       "remark-frontmatter",
+      "@mdxeditor/editor",
     ];
   },
 });

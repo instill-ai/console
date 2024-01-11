@@ -23,10 +23,12 @@ export function useAccessToken(props?: UseAccessTokenProps) {
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
-  const query = useQuery(
+  const [enabledQuery, setEnabledQuery] = React.useState(false);
+
+  const accessToken = useQuery(
     ["accessToken"],
     async (): Promise<string> => {
       const { data } = await axios.post("/api/get-user-cookie", {
@@ -47,7 +49,7 @@ export function useAccessToken(props?: UseAccessTokenProps) {
       onError: async (error) => {
         console.error(
           "Something went wrong when try to get accessToken",
-          error,
+          error
         );
 
         await axios.post("/api/remove-user-cookie", {
@@ -62,25 +64,28 @@ export function useAccessToken(props?: UseAccessTokenProps) {
       },
       retry: false,
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   React.useEffect(() => {
-    if (query.isError) {
+    if (accessToken.isError) {
       updateAccessToken(() => null);
       updateEnabledQuery(() => false);
+      setEnabledQuery(false);
       return;
     }
 
-    if (!query.isSuccess || !query.data) {
+    if (!accessToken.isSuccess || !accessToken.data) {
       updateAccessToken(() => null);
       updateEnabledQuery(() => false);
+      setEnabledQuery(false);
       return;
     }
 
-    updateAccessToken(() => query.data);
+    updateAccessToken(() => accessToken.data);
     updateEnabledQuery(() => true);
-  }, [query.isSuccess, query.data, query.isError]);
+    setEnabledQuery(true);
+  }, [accessToken.isSuccess, accessToken.data, accessToken.isError]);
 
-  return query;
+  return { accessToken, enabledQuery };
 }

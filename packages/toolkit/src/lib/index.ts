@@ -7,7 +7,6 @@ export * from "./hook";
 export * from "./react-query-service";
 export * from "./store";
 export * from "./table";
-export * from "./tip-tap";
 export * from "./type";
 export * from "./use-callback-ref";
 export * from "./use-controllable-state";

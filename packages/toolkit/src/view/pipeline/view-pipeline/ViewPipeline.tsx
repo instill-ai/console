@@ -4,13 +4,15 @@ import {
   useEntity,
   useInstillStore,
   useShallow,
-  useUserMe,
   useUserPipeline,
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
 import { InOutPut, InOutPutProps } from "./InOutPut";
-import { Readme } from "./Readme";
+import {
+  PipelineDescription,
+  PipelineDescriptionProps,
+} from "./PipelineDescription";
 import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
@@ -20,18 +22,14 @@ const selector = (store: InstillStore) => ({
 
 export const ViewPipeline = ({
   visitorCta,
+  editor,
+  hasUnsavedChanges,
 }: {
   visitorCta?: InOutPutProps["visitorCta"];
-}) => {
+} & PipelineDescriptionProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const router = useRouter();
-
-  const me = useUserMe({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
-  });
 
   const entityObject = useEntity();
 
@@ -40,14 +38,6 @@ export const ViewPipeline = ({
     accessToken,
     enabled: enabledQuery && entityObject.isSuccess,
   });
-
-  const isOwner = React.useMemo(() => {
-    if (!pipeline.isSuccess || !me.isSuccess) {
-      return false;
-    }
-
-    return pipeline.data.owner_name === me.data.name;
-  }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
 
   React.useEffect(() => {
     if (pipeline.isError) {
@@ -69,9 +59,9 @@ export const ViewPipeline = ({
           <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
             Pipeline Description
           </div>
-          <Readme
-            isOwner={isOwner}
-            readme={pipeline.isSuccess ? pipeline.data.readme : null}
+          <PipelineDescription
+            editor={editor}
+            hasUnsavedChanges={hasUnsavedChanges}
           />
         </div>
         <div className="flex w-[594px] flex-col py-10 pr-4">

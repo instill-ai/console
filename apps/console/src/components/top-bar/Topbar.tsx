@@ -21,7 +21,7 @@ export type TopbarProps = {
 export const Topbar = ({ logo, children, className }: TopbarProps) => {
   const router = useRouter();
 
-  const accessToken = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   const me = useUserMe({
     enabled: accessToken.isSuccess,
@@ -33,7 +33,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
       <div
         className={cn(
           "box-content flex h-[var(--topbar-height)] w-2/3 flex-row bg-semantic-bg-primary",
-          className,
+          className
         )}
       >
         <Link href="/" className="my-auto pr-8">

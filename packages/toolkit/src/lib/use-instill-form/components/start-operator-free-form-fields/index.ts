@@ -5,7 +5,6 @@ import { FileField } from "./FileField";
 import { FilesField } from "./FilesField";
 import { ImageField } from "./ImageField";
 import { ImagesField } from "./ImagesField";
-import { LongTextField } from "./LongTextField";
 import { NumberField } from "./NumberField";
 import { NumbersField } from "./NumbersField";
 import { ObjectField } from "./ObjectField";
@@ -21,7 +20,6 @@ export const StartOperatorFreeFormFields = {
   FilesField,
   ImageField,
   ImagesField,
-  LongTextField,
   NumberField,
   NumbersField,
   ObjectField,

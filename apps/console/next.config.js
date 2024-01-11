@@ -7,6 +7,7 @@ const BundleAnalyzerPlugin =
 module.exports = {
   swcMinify: true,
   reactStrictMode: true,
+  transpilePackages: ["@mdxeditor/editor"],
   webpack: (config, { dev }) => {
     // if (isServer) {
     //   require("./lib/generate-sitemap");
@@ -21,11 +22,14 @@ module.exports = {
       );
     }
 
+    config.experiments = { ...config.experiments, topLevelAwait: true };
+
     return config;
   },
   output: "standalone",
   outputFileTracing: true,
   experimental: {
     forceSwcTransforms: true,
+    esmExternals: true,
   },
 };
