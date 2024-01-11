@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
-import { ClonePipelineDialog, GenerateDeleteResourceDialog } from "..";
+import { ClonePipelineDialog, GeneralDeleteResourceDialog } from "..";
 
 export type MenuProps = {
   pipeline: Pipeline;
@@ -53,7 +53,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
         onOpenChange={(open) => setDuplicateDialogIsOpen(open)}
         trigger={null}
       />
-      <GenerateDeleteResourceDialog
+      <GeneralDeleteResourceDialog
         open={deleteDialogIsOpen}
         onOpenChange={(open) => setDeleteDialogIsOpen(open)}
         resourceID={pipeline.id}

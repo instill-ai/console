@@ -10,7 +10,7 @@ export * from "./TablePlaceholderBase";
 export * from "./ImageWithFallback";
 export * from "./EntityAvatar";
 export * from "./DeleteResourceModal";
-export * from "./GenerateDeleteResourceDialog";
+export * from "./GeneralDeleteResourceDialog";
 export * from "./StateIcon";
 export * from "./StateLabel";
 export * from "./SortIcon";

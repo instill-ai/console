@@ -1,35 +1,39 @@
 import * as React from "react";
 import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
-import { Nullable } from "../lib";
+import { Nullable, useControllableState } from "../lib";
 import { LoadingSpin } from "./LoadingSpin";
 
-export type GenerateDeleteResourceDialogProps = {
+export type GeneralDeleteResourceDialogProps = {
   resourceID: string;
   title: string;
   description: string;
   handleDeleteResource: () => Promise<void>;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   trigger?: React.ReactNode;
 };
 
 // You can use the children props to override the default buttons
 
-export const GenerateDeleteResourceDialog = ({
+export const GeneralDeleteResourceDialog = ({
   resourceID,
   title,
   description,
   handleDeleteResource,
-  open,
+  open: openProp,
   onOpenChange,
   trigger,
-}: GenerateDeleteResourceDialogProps) => {
+}: GeneralDeleteResourceDialogProps) => {
+  const [open = false, setOpen] = useControllableState({
+    prop: openProp,
+    onChange: onOpenChange,
+  });
   const [confirmationCode, setConfirmationCode] =
     React.useState<Nullable<string>>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         {trigger || trigger === null ? (
           trigger
@@ -72,16 +76,11 @@ export const GenerateDeleteResourceDialog = ({
           </Input.Root>
         </div>
         <div className="flex flex-row gap-x-2">
-          <Button
-            variant="secondaryGrey"
-            size="lg"
-            className="!flex-1"
-            onClick={() => {
-              onOpenChange(false);
-            }}
-          >
-            Cancel
-          </Button>
+          {/* <Dialog.Close asChild>
+            <Button variant="secondaryGrey" size="lg" className="!flex-1">
+              Cancel
+            </Button>
+          </Dialog.Close> */}
 
           <Button
             variant="danger"
@@ -90,6 +89,7 @@ export const GenerateDeleteResourceDialog = ({
               try {
                 setIsDeleting(true);
                 await handleDeleteResource();
+                setOpen(false);
                 setIsDeleting(false);
               } catch (error) {
                 console.error(error);
