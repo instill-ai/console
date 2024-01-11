@@ -28,10 +28,7 @@ import {
   useUpdateUserConnector,
   validateInstillID,
 } from "../../lib";
-import {
-  recursiveReplaceNullAndEmptyStringWithUndefined,
-  recursiveReplaceTargetValue,
-} from "../pipeline-builder";
+import { recursiveHelpers } from "../pipeline-builder";
 import { AirbyteDestinationFields } from "../airbyte";
 import { LoadingSpin } from "../../components";
 import { InstillErrors } from "../../constant/errors";
@@ -253,8 +250,8 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     const payload: UpdateUserConnectorPayload = {
       connectorName: dataResource.name,
       description: fieldValues.description as string,
-      configuration: recursiveReplaceNullAndEmptyStringWithUndefined(
-        recursiveReplaceTargetValue(
+      configuration: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+        recursiveHelpers.replaceTargetValue(
           stripValues.configuration,
           "*****MASK*****",
           undefined

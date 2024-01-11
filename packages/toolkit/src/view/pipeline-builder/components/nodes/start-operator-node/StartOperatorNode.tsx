@@ -8,11 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { StartNodeData } from "../../../type";
-import {
-  composeEdgesFromNodes,
-  recursiveRemoveUndefinedAndNullFromArray,
-  recursiveReplaceNullAndEmptyStringWithUndefined,
-} from "../../../lib";
+import { composeEdgesFromNodes, recursiveHelpers } from "../../../lib";
 import { CustomHandle } from "../../CustomHandle";
 import {
   InstillStore,
@@ -337,8 +333,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   ) {
     if (!pipelineName || !formData) return;
 
-    const input = recursiveRemoveUndefinedAndNullFromArray(
-      recursiveReplaceNullAndEmptyStringWithUndefined(formData)
+    const input = recursiveHelpers.removeUndefinedAndNullFromArray(
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
     );
 
     // Backend need to have the encoded JSON input. So we need to double check

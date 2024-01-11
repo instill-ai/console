@@ -8,10 +8,7 @@ import {
   useEntity,
   useUpdateUserConnector,
 } from "../../lib";
-import {
-  recursiveReplaceNullAndEmptyStringWithUndefined,
-  recursiveReplaceTargetValue,
-} from "../pipeline-builder";
+import { recursiveHelpers } from "../pipeline-builder";
 import { toastInstillError } from "../../lib/toastInstillError";
 import { ResourceResourceForm, ResourceResourceFormData } from "../resource";
 
@@ -45,7 +42,8 @@ export const BlockchainResourceAutoForm = (
           id: data.id ?? undefined,
           connector_definition_name: definition.name,
           description: data.description ?? undefined,
-          configuration: recursiveReplaceNullAndEmptyStringWithUndefined(data),
+          configuration:
+            recursiveHelpers.replaceNullAndEmptyStringWithUndefined(data),
         };
 
         const { connector } = await createUserConnector.mutateAsync({
@@ -81,8 +79,8 @@ export const BlockchainResourceAutoForm = (
       const payload: UpdateUserConnectorPayload = {
         connectorName: resource.name,
         description: data.description ?? undefined,
-        configuration: recursiveReplaceNullAndEmptyStringWithUndefined(
-          recursiveReplaceTargetValue(data, "*****MASK*****", undefined)
+        configuration: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+          recursiveHelpers.replaceTargetValue(data, "*****MASK*****", undefined)
         ),
       };
 

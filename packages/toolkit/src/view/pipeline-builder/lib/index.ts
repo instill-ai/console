@@ -13,11 +13,8 @@ export * from "./getConnectorInputOutputSchema";
 export * from "./getPropertiesFromOpenAPISchema";
 export * from "./getRawPipelineRecipeFromPipelineRecipe";
 export * from "./readFileToBinary";
-export * from "./recursive-helpers/recursiveParseToNum";
-export * from "./recursiveRemoveUndefinedAndNullFromArray";
-export * from "./recursiveReplaceNullAndEmptyStringWithUndefined";
-export * from "./recursiveTransformToString";
-export * from "./recursiveReplaceTargetValue";
+export * from "./recursive-helpers/recursiveParseNumberToString";
+export * from "./recursive-helpers/recursiveReplaceTargetValue";
 export * from "./transformConnectorDefinitionIDToComponentIDPrefix";
 export * from "./useSortedReleases";
 

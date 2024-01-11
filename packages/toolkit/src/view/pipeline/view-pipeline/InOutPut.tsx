@@ -16,10 +16,7 @@ import {
   useUserPipeline,
 } from "../../../lib";
 import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
-import {
-  recursiveRemoveUndefinedAndNullFromArray,
-  recursiveReplaceNullAndEmptyStringWithUndefined,
-} from "../../pipeline-builder";
+import { recursiveHelpers } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
 import { LoadingSpin } from "../../../components";
@@ -75,8 +72,8 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
     if (!entityObject.isSuccess || !pipeline.isSuccess) return;
 
-    const input = recursiveRemoveUndefinedAndNullFromArray(
-      recursiveReplaceNullAndEmptyStringWithUndefined(formData)
+    const input = recursiveHelpers.removeUndefinedAndNullFromArray(
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
     );
 
     const startOperatorMetadata = pipeline.data.recipe.components.find(
