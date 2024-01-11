@@ -19,7 +19,11 @@ import {
   useShallow,
 } from "../../../lib";
 import { NodeData } from "../type";
-import { createInitialGraphData } from "../lib";
+import {
+  checkIsValidPosition,
+  createGraphLayout,
+  createInitialGraphData,
+} from "../lib";
 import { useRouter } from "next/router";
 import {
   ConnectorNode,
@@ -73,15 +77,30 @@ export const ReadOnlyPipelineBuilder = ({
   React.useEffect(() => {
     if (!recipe || !metadata) return;
 
-    const initialGraphData = createInitialGraphData(recipe, {
-      metadata,
-    });
+    if (checkIsValidPosition(recipe, metadata)) {
+      const initialGraphData = createInitialGraphData(recipe, {
+        metadata,
+      });
 
-    updateCurrentVersion(() => "latest");
-    updatePipelineIsReadOnly(() => true);
+      setNodes(initialGraphData.nodes);
+      setEdges(initialGraphData.edges);
+      updateCurrentVersion(() => "latest");
+      updatePipelineIsReadOnly(() => true);
+      return;
+    }
 
-    setNodes(initialGraphData.nodes);
-    setEdges(initialGraphData.edges);
+    const initialGraphData = createInitialGraphData(recipe);
+
+    createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
+      .then((graphData) => {
+        setNodes(graphData.nodes);
+        setEdges(graphData.edges);
+        updateCurrentVersion(() => "latest");
+        updatePipelineIsReadOnly(() => true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [
     recipe,
     metadata,
