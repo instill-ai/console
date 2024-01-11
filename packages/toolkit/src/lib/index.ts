@@ -9,6 +9,8 @@ export * from "./store";
 export * from "./table";
 export * from "./tip-tap";
 export * from "./type";
+export * from "./use-callback-ref";
+export * from "./use-controllable-state";
 export * from "./use-instill-form";
 export * from "./use-instill-store";
 export * from "./use-smart-hint";
