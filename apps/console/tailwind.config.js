@@ -49,12 +49,16 @@ module.exports = {
         instillWarmOrange: "#FF8A00",
       },
       fontFamily: {
-        mono: ["IBM Plex Mono", ...defaultTheme.fontFamily.mono],
-        sans: [
-          "IBM Plex Sans",
-
+        mono: [
+          "IBM Plex Mono",
           // We manually cast this until design-system have mono font
           "var(--font-ibm-plex-mono)",
+          ...defaultTheme.fontFamily.mono,
+        ],
+        sans: [
+          "IBM Plex Sans",
+          // We manually cast this until design-system have mono font
+          "var(--font-ibm-plex-sans)",
           ...defaultTheme.fontFamily.sans,
         ],
         instill: ["instill", "IBM Plex Mono"],
