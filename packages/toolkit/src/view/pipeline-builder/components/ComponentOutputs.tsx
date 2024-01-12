@@ -2,6 +2,7 @@ import * as React from "react";
 import { ScrollArea } from "@instill-ai/design-system";
 import {
   ChooseTitleFrom,
+  EnabledReferenceHintOptions,
   GeneralRecord,
   InstillJSONSchema,
   Nullable,
@@ -15,13 +16,14 @@ export const ComponentOutputs = ({
   nodeType,
   response,
   chooseTitleFrom,
+  enabledReferenceHint,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
   response: Nullable<TriggerUserPipelineResponse>;
   chooseTitleFrom: ChooseTitleFrom;
-}) => {
+} & EnabledReferenceHintOptions) => {
   const data = React.useMemo(() => {
     let data: Nullable<GeneralRecord> = null;
 
@@ -53,6 +55,8 @@ export const ComponentOutputs = ({
     schema: outputSchema,
     data,
     chooseTitleFrom,
+    componentID,
+    enabledReferenceHint,
   });
 
   return (

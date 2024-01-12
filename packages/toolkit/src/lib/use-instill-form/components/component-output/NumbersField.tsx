@@ -6,11 +6,24 @@ export type NumbersFieldProps = {
   numbers: Nullable<number>[];
 } & ComponentOutputFieldBaseProps;
 
-export const NumbersField = (props: NumbersFieldProps) => {
-  const { title, numbers, hideField } = props;
-
+export const NumbersField = ({
+  title,
+  numbers,
+  hideField,
+  componentID,
+  enabledReferenceHint,
+  path,
+  instillFormat,
+}: NumbersFieldProps) => {
   return (
-    <FieldRoot title={title} fieldKey={`${title}-field`}>
+    <FieldRoot
+      title={title}
+      fieldKey={`${title}-field`}
+      componentID={componentID}
+      enabledReferenceHint={enabledReferenceHint}
+      path={path}
+      instillFormat={instillFormat}
+    >
       {numbers && !hideField ? (
         <div className="flex w-full flex-row flex-wrap gap-2">
           {numbers.map((number) => (

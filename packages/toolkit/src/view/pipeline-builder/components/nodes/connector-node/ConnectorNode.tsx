@@ -456,6 +456,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 nodeType="connector"
                 response={testModeTriggerResponse}
                 chooseTitleFrom="key"
+                enabledReferenceHint={true}
               />
             ) : null}
           </div>

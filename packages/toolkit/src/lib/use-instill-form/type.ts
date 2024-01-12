@@ -151,11 +151,18 @@ export type ComponentOutputFieldBaseProps = {
   mode: FieldMode;
   title: Nullable<string>;
   hideField?: boolean;
-};
+  instillFormat?: string;
+  path: string;
+} & EnabledReferenceHintOptions;
 
 export type StartOperatorFreeFormFieldBaseProps = {
   mode: FieldMode;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
   disabledFieldControl?: boolean;
+};
+
+export type EnabledReferenceHintOptions = {
+  enabledReferenceHint: boolean;
+  componentID: string;
 };

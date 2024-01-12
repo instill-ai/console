@@ -345,6 +345,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             nodeType="connector"
             response={testModeTriggerResponse}
             chooseTitleFrom="title"
+            enabledReferenceHint={true}
           />
         </>
       )}

@@ -7,13 +7,26 @@ export type TextFieldProps = {
   text: Nullable<string>;
 } & ComponentOutputFieldBaseProps;
 
-export const TextField = (props: TextFieldProps) => {
-  const { title, text, hideField } = props;
-
+export const TextField = ({
+  title,
+  text,
+  hideField,
+  componentID,
+  enabledReferenceHint,
+  path,
+  instillFormat,
+}: TextFieldProps) => {
   const normalizedText = text ? String(text) : null;
 
   return (
-    <FieldRoot title={title} fieldKey={`${title}-field`}>
+    <FieldRoot
+      title={title}
+      fieldKey={`${title}-field`}
+      componentID={componentID}
+      enabledReferenceHint={enabledReferenceHint}
+      path={path}
+      instillFormat={instillFormat}
+    >
       {normalizedText && !hideField ? (
         <MDTextViewer text={normalizedText} />
       ) : null}

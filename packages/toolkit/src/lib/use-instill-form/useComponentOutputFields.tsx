@@ -3,7 +3,7 @@ import {
   PickComponentOutputFieldsFromInstillFormTreeProps,
   pickComponentOutputFieldsFromInstillFormTree,
 } from "./pick";
-import { InstillJSONSchema } from "./type";
+import { EnabledReferenceHintOptions, InstillJSONSchema } from "./type";
 import { GeneralRecord, Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 
@@ -13,7 +13,8 @@ export type UseComponentOutputFieldsProps = {
 } & Pick<
   PickComponentOutputFieldsFromInstillFormTreeProps,
   "chooseTitleFrom" | "hideField" | "mode"
->;
+> &
+  EnabledReferenceHintOptions;
 
 export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
   const fields = React.useMemo(() => {

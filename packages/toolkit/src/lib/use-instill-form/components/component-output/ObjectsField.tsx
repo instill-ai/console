@@ -6,11 +6,24 @@ export type ObjectsFieldProps = {
   objects: Nullable<GeneralRecord[]>;
 } & ComponentOutputFieldBaseProps;
 
-export const ObjectsField = (props: ObjectsFieldProps) => {
-  const { title, objects, hideField } = props;
-
+export const ObjectsField = ({
+  title,
+  objects,
+  hideField,
+  componentID,
+  enabledReferenceHint,
+  path,
+  instillFormat,
+}: ObjectsFieldProps) => {
   return (
-    <FieldRoot title={title} fieldKey={`${title}-field`}>
+    <FieldRoot
+      title={title}
+      fieldKey={`${title}-field`}
+      componentID={componentID}
+      enabledReferenceHint={enabledReferenceHint}
+      path={path}
+      instillFormat={instillFormat}
+    >
       {objects && !hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {objects?.map((object) => (

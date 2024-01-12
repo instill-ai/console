@@ -338,6 +338,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           nodeType="end"
           response={testModeTriggerResponse}
           chooseTitleFrom="title"
+          enabledReferenceHint={false}
         />
       ) : (
         <div className="flex flex-col">

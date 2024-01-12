@@ -6,11 +6,24 @@ export type ImagesFieldProps = {
   images: Nullable<string>[];
 } & ComponentOutputFieldBaseProps;
 
-export const ImagesField = (props: ImagesFieldProps) => {
-  const { title, images, hideField } = props;
-
+export const ImagesField = ({
+  title,
+  images,
+  hideField,
+  componentID,
+  enabledReferenceHint,
+  path,
+  instillFormat,
+}: ImagesFieldProps) => {
   return (
-    <FieldRoot title={title} fieldKey={`${title}-field`}>
+    <FieldRoot
+      title={title}
+      fieldKey={`${title}-field`}
+      componentID={componentID}
+      enabledReferenceHint={enabledReferenceHint}
+      path={path}
+      instillFormat={instillFormat}
+    >
       {images && !hideField ? (
         <div className="flex w-full flex-wrap">
           {images?.slice(0, 5)?.map((image) => {

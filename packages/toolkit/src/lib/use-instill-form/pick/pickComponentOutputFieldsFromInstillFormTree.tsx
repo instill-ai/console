@@ -1,5 +1,10 @@
 import * as React from "react";
-import { ChooseTitleFrom, FieldMode, InstillFormTree } from "../type";
+import {
+  ChooseTitleFrom,
+  EnabledReferenceHintOptions,
+  FieldMode,
+  InstillFormTree,
+} from "../type";
 import { ComponentOutputFields } from "../components";
 import { GeneralRecord, Nullable } from "../../type";
 import { dot } from "../../dot";
@@ -11,14 +16,22 @@ export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   chooseTitleFrom?: ChooseTitleFrom;
   hideField?: boolean;
   objectArrayIndex?: number;
-};
+} & EnabledReferenceHintOptions;
 
 export function pickComponentOutputFieldsFromInstillFormTree(
   props: PickComponentOutputFieldsFromInstillFormTreeProps
 ) {
   // 1. Preprocess
 
-  const { tree, data, chooseTitleFrom, hideField, mode } = props;
+  const {
+    tree,
+    data,
+    chooseTitleFrom,
+    hideField,
+    mode,
+    enabledReferenceHint,
+    componentID,
+  } = props;
 
   let title: Nullable<string> = null;
 
@@ -145,6 +158,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         title={title}
         text={propertyValue}
         hideField={hideField}
+        componentID={componentID}
+        enabledReferenceHint={enabledReferenceHint}
+        path={tree.path}
+        instillFormat={tree.instillFormat}
       />
     );
   }
@@ -156,6 +173,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         title={title}
         number={propertyValue}
         hideField={hideField}
+        componentID={componentID}
+        enabledReferenceHint={enabledReferenceHint}
+        path={tree.path}
+        instillFormat={tree.instillFormat}
       />
     );
   }
@@ -172,6 +193,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             numbers={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -183,6 +208,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -193,6 +222,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             audios={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -203,6 +236,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             images={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -213,6 +250,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -224,6 +265,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             objects={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -235,6 +280,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            componentID={componentID}
+            enabledReferenceHint={enabledReferenceHint}
+            path={tree.path}
+            instillFormat={tree.instillFormat}
           />
         );
       }
@@ -255,6 +304,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -265,6 +318,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           audio={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -275,6 +332,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           image={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -285,6 +346,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -295,6 +360,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           object={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -305,6 +374,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          componentID={componentID}
+          enabledReferenceHint={enabledReferenceHint}
+          path={tree.path}
+          instillFormat={tree.instillFormat}
         />
       );
     }

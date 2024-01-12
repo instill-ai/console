@@ -290,6 +290,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
               nodeType="end"
               response={response}
               chooseTitleFrom="title"
+              enabledReferenceHint={false}
             />
           )
         ) : (
