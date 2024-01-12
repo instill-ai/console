@@ -15,7 +15,13 @@ import {
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
-import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
+import {
+  Button,
+  Form,
+  Icons,
+  Skeleton,
+  useToast,
+} from "@instill-ai/design-system";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
@@ -134,7 +140,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
   }
 
   const inputIsNotDefined = React.useMemo(() => {
-    if (!pipeline.isSuccess) return true;
+    if (!pipeline.isSuccess) return false;
 
     const startComponent = pipeline.data.recipe.components.find(
       (e) => e.id === "start"
@@ -183,75 +189,7 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
-          Input
-        </div>
-        {inputIsNotDefined ? (
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-row gap-x-6">
-              <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
-              <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
-                Pipeline input is not defined.
-              </p>
-            </div>
-            <Button
-              variant="tertiaryColour"
-              size="md"
-              onClick={() => {
-                `/${entityObject.entity}/pipelines/${entityObject.id}/builder`;
-              }}
-            >
-              Setup
-            </Button>
-          </div>
-        ) : (
-          <Form.Root {...form}>
-            <form
-              id={inOutPutFormID}
-              className="w-full"
-              onSubmit={form.handleSubmit(onTriggerPipeline)}
-            >
-              <div className="flex flex-col gap-y-3">{fields}</div>
-            </form>
-          </Form.Root>
-        )}
-      </div>
-      <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
-          Output
-        </div>
-        {outputIsNotDefined ? (
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-row gap-x-6">
-              <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
-              <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
-                Pipeline output is not defined.
-              </p>
-            </div>
-            <Button
-              variant="tertiaryColour"
-              size="md"
-              onClick={() => {
-                router.push(
-                  `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
-                );
-              }}
-            >
-              Setup
-            </Button>
-          </div>
-        ) : (
-          <ComponentOutputs
-            componentID="end"
-            outputSchema={pipelineOpenAPISchema}
-            nodeType="end"
-            response={response}
-            chooseTitleFrom="title"
-          />
-        )}
-      </div>
-      <div className="flex flex-row-reverse">
+      <div className="mb-6 flex flex-row-reverse">
         {accessToken ? (
           inputIsNotDefined || outputIsNotDefined ? null : (
             <Button
@@ -278,7 +216,85 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
           >
             {visitorCta.title}
           </Button>
-        ) : null}
+        ) : (
+          <Skeleton className="h-8 w-20" />
+        )}
+      </div>
+      <div className="mb-6 flex flex-col gap-y-6">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
+          Input
+        </div>
+        {pipeline.isSuccess ? (
+          inputIsNotDefined ? (
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-row gap-x-6">
+                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
+                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
+                  Pipeline input is not defined.
+                </p>
+              </div>
+              <Button
+                variant="tertiaryColour"
+                size="md"
+                onClick={() => {
+                  `/${entityObject.entity}/pipelines/${entityObject.id}/builder`;
+                }}
+              >
+                Setup
+              </Button>
+            </div>
+          ) : (
+            <Form.Root {...form}>
+              <form
+                id={inOutPutFormID}
+                className="w-full"
+                onSubmit={form.handleSubmit(onTriggerPipeline)}
+              >
+                <div className="flex flex-col gap-y-3">{fields}</div>
+              </form>
+            </Form.Root>
+          )
+        ) : (
+          <InOutputSkeleton />
+        )}
+      </div>
+      <div className="mb-6 flex flex-col gap-y-6">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
+          Output
+        </div>
+        {pipeline.isSuccess ? (
+          outputIsNotDefined ? (
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-row gap-x-6">
+                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
+                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
+                  Pipeline output is not defined.
+                </p>
+              </div>
+              <Button
+                variant="tertiaryColour"
+                size="md"
+                onClick={() => {
+                  router.push(
+                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                  );
+                }}
+              >
+                Setup
+              </Button>
+            </div>
+          ) : (
+            <ComponentOutputs
+              componentID="end"
+              outputSchema={pipelineOpenAPISchema}
+              nodeType="end"
+              response={response}
+              chooseTitleFrom="title"
+            />
+          )
+        ) : (
+          <InOutputSkeleton />
+        )}
       </div>
     </div>
   );
@@ -343,5 +359,11 @@ export const CryingFaceSVG = ({ className }: { className?: string }) => {
         strokeLinejoin="round"
       />
     </svg>
+  );
+};
+
+export const InOutputSkeleton = () => {
+  return (
+    <div className="h-8 w-full animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
 };
