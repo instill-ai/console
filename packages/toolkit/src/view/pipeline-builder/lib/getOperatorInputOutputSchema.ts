@@ -7,7 +7,8 @@ import {
 import { JSONSchema7 } from "json-schema";
 
 export function getOperatorInputOutputSchema(
-  component: PipelineOperatorComponent
+  component: PipelineOperatorComponent,
+  task?: string
 ) {
   let inputSchema: Nullable<InstillJSONSchema> = null;
   let outputSchema: Nullable<InstillJSONSchema> = null;
@@ -22,12 +23,14 @@ export function getOperatorInputOutputSchema(
     return { outputSchema, inputSchema };
   }
 
-  if (component.configuration.task) {
+  const targetTask = task ?? component.configuration.task;
+
+  if (targetTask) {
     inputSchema = (
       (
         (
           component?.operator_definition?.spec.openapi_specifications[
-            component.configuration.task
+            targetTask
           ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
         ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
       ).properties?.inputs as OpenAPIV3.ArraySchemaObject
@@ -37,7 +40,7 @@ export function getOperatorInputOutputSchema(
         (
           (
             component?.operator_definition?.spec.openapi_specifications[
-              component.configuration.task
+              targetTask
             ].paths["/execute"]?.post?.responses[
               "200"
             ] as OpenAPIV3.ResponseObject

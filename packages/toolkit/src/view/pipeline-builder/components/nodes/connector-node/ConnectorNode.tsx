@@ -87,10 +87,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   let resourceNotCreated = false;
 
-  const { outputSchema } = React.useMemo(() => {
-    return getConnectorInputOutputSchema(data.component);
-  }, [data.component]);
-
   if (!data.component.resource_name) {
     resourceNotCreated = true;
   }
@@ -212,17 +208,32 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
-  const { fields, form, ValidatorSchema } = useInstillForm(
-    data.component.connector_definition?.spec.component_specification ?? null,
-    data.component.configuration,
-    {
-      size: "sm",
-      enableSmartHint: true,
-      checkIsHidden,
-      componentID: data.component.id,
-      disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
-    }
-  );
+  const { fields, form, ValidatorSchema, selectedConditionMap } =
+    useInstillForm(
+      data.component.connector_definition?.spec.component_specification ?? null,
+      data.component.configuration,
+      {
+        size: "sm",
+        enableSmartHint: true,
+        checkIsHidden,
+        componentID: data.component.id,
+        disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
+      }
+    );
+
+  const { outputSchema } = React.useMemo(() => {
+    // The configuration stored in the node will only change when the user
+    // click on the "Save" button. Therefore, we need to use the
+    // selectedConditionMap to get the latest selected task. Due to the
+    // output schema depends on the selected task
+
+    return getConnectorInputOutputSchema(
+      data.component,
+      selectedConditionMap ? selectedConditionMap["task"] : undefined
+    );
+  }, [data, selectedConditionMap]);
+
+  console.log(selectedConditionMap);
 
   const { getValues, trigger } = form;
 
