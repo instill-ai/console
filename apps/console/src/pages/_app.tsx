@@ -43,10 +43,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder
+    (state) => state.initPipelineBuilder,
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init
+    (state) => state.init,
   );
 
   const { dismiss: dismissToast } = useToast();
