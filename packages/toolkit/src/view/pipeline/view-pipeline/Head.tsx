@@ -1,7 +1,13 @@
 import * as React from "react";
 import { useRouter } from "next/router";
 import { useSortedReleases } from "../../pipeline-builder";
-import { Button, Icons, Tag, TabMenu } from "@instill-ai/design-system";
+import {
+  Button,
+  Icons,
+  Tag,
+  TabMenu,
+  Skeleton,
+} from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
@@ -81,72 +87,92 @@ export const Head = () => {
         }
       `}</style>
       <div className="user-gradient relative flex flex-col bg-semantic-bg-primary">
-        <div className="flex flex-col gap-y-3 px-28 py-16">
-          <div className="flex flex-row">
-            <div className="mr-auto flex flex-row gap-x-3">
-              {entityObject.isSuccess ? (
-                entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ? (
-                  <EntityAvatar
-                    src={organization.data?.profile_avatar ?? null}
-                    entityName={organization.data?.name ?? ""}
-                    className="h-6 w-6"
-                    fallbackImg={
-                      <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
-                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                      </div>
-                    }
-                  />
-                ) : (
-                  <EntityAvatar
-                    src={user.data?.profile_avatar ?? null}
-                    entityName={user.data?.name ?? ""}
-                    className="h-6 w-6"
-                    fallbackImg={
-                      <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
-                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                      </div>
-                    }
-                  />
-                )
-              ) : null}
-
-              <div className="product-headings-heading-4">
-                <span
-                  onClick={() => {
-                    router.push(`/${entity}`);
-                  }}
-                  className="cursor-pointer text-semantic-fg-disabled hover:!underline"
-                >
-                  {entity}
-                </span>
-                <span className="text-semantic-fg-disabled">/</span>
-                <span className="text-semantic-fg-primary">{id}</span>
-              </div>
-              {pipeline.isSuccess ? (
-                <Tag className="!py-0" variant="default" size="sm">
-                  {isPublicPipeline(pipeline.data) ? "Public" : "Private"}
-                </Tag>
-              ) : null}
-              {releases[0] ? (
-                <Tag className="!py-0" size="sm" variant="darkPurple">
-                  {releases[0]?.id}
-                </Tag>
-              ) : null}
-            </div>
-            {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
-              <EditMetadataDialog
-                description={
-                  pipeline.isSuccess ? pipeline.data.description : null
-                }
-              />
-            ) : null}
-          </div>
-          {pipeline.isSuccess ? (
+        <div className="flex flex-row px-24 py-16">
+          <div className="mr-auto flex max-w-5xl flex-col gap-y-3 ">
             <div className="flex w-full flex-row">
-              <p className="font-mono text-xs italic text-semantic-fg-disabled">
-                {pipeline.data.description}
-              </p>
+              <div className="mr-auto flex flex-row gap-x-3">
+                {entityObject.isSuccess ? (
+                  entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ? (
+                    <EntityAvatar
+                      src={organization.data?.profile_avatar ?? null}
+                      entityName={organization.data?.name ?? ""}
+                      className="h-6 w-6"
+                      fallbackImg={
+                        <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                          <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                        </div>
+                      }
+                    />
+                  ) : (
+                    <EntityAvatar
+                      src={user.data?.profile_avatar ?? null}
+                      entityName={user.data?.name ?? ""}
+                      className="h-6 w-6"
+                      fallbackImg={
+                        <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                          <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                        </div>
+                      }
+                    />
+                  )
+                ) : (
+                  <Skeleton className="h-6 w-6 rounded-full" />
+                )}
+
+                {pipeline.isSuccess ? (
+                  <React.Fragment>
+                    <div className="product-headings-heading-4">
+                      <span
+                        onClick={() => {
+                          router.push(`/${entity}`);
+                        }}
+                        className="cursor-pointer text-semantic-fg-disabled hover:!underline"
+                      >
+                        {entity}
+                      </span>
+                      <span className="text-semantic-fg-disabled">/</span>
+                      <span className="text-semantic-fg-primary">{id}</span>
+                    </div>
+                    {pipeline.isSuccess ? (
+                      <Tag className="!py-0" variant="darkBlue" size="sm">
+                        {isPublicPipeline(pipeline.data) ? "Public" : "Private"}
+                      </Tag>
+                    ) : null}
+                  </React.Fragment>
+                ) : (
+                  <PipelineNameSkeleton />
+                )}
+                {releases[0] ? (
+                  <Tag className="!py-0" size="sm" variant="darkBlue">
+                    {releases[0]?.id}
+                  </Tag>
+                ) : null}
+              </div>
             </div>
+            {pipeline.isSuccess ? (
+              pipeline.data?.description ? (
+                <div className="flex w-full flex-row">
+                  <p className="font-mono text-xs text-semantic-fg-disabled">
+                    {pipeline.data?.description}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex w-full flex-row">
+                  <p className="font-mono text-xs italic text-semantic-fg-disabled">
+                    This is a placeholder brief of this pipeline
+                  </p>
+                </div>
+              )
+            ) : (
+              <PipelineDescriptionSkeleton />
+            )}
+          </div>
+          {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
+            <EditMetadataDialog
+              description={
+                pipeline.isSuccess ? pipeline.data.description : null
+              }
+            />
           ) : null}
         </div>
 
@@ -162,43 +188,57 @@ export const Head = () => {
           </div>
           <div className="flex flex-row gap-x-2">
             {pipeline.isSuccess ? (
-              <ClonePipelineDialog
-                trigger={
-                  me.isSuccess ? (
-                    <Button size="sm" variant="secondaryColour">
-                      {!pipeline.data.permission.can_edit
-                        ? "Clone"
-                        : "Duplicate"}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => {
-                        router.push("/login");
-                      }}
-                      variant="primary"
-                      size="lg"
-                    >
-                      Log in to Clone
-                    </Button>
-                  )
-                }
-                pipeline={pipeline.isSuccess ? pipeline.data : null}
-              />
-            ) : null}
-            {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
-              <Button
-                onClick={() => {
-                  router.push(`/${entity}/pipelines/${id}/builder`);
-                }}
-                size="sm"
-                variant="secondaryColour"
-              >
-                Build
-              </Button>
+              <React.Fragment>
+                <ClonePipelineDialog
+                  trigger={
+                    me.isSuccess ? (
+                      <Button size="sm" variant="secondaryColour">
+                        {!pipeline.data?.permission.can_edit
+                          ? "Clone"
+                          : "Duplicate"}
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          router.push("/login");
+                        }}
+                        variant="primary"
+                        size="sm"
+                      >
+                        Log in to Clone
+                      </Button>
+                    )
+                  }
+                  pipeline={pipeline.data}
+                />
+                {pipeline.data.permission.can_edit ? (
+                  <Button
+                    onClick={() => {
+                      router.push(`/${entity}/pipelines/${id}/builder`);
+                    }}
+                    size="sm"
+                    variant="secondaryColour"
+                  >
+                    Build
+                  </Button>
+                ) : null}
+              </React.Fragment>
             ) : null}
           </div>
         </div>
       </div>
     </React.Fragment>
+  );
+};
+
+const PipelineDescriptionSkeleton = () => {
+  return (
+    <div className="h-5 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+  );
+};
+
+const PipelineNameSkeleton = () => {
+  return (
+    <div className="h-5 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
 };
