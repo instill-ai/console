@@ -115,15 +115,12 @@ export const PipelineTriggerCountsLineChart = ({
             `;
           },
         },
-        // legend: {
-        //   data: pipelines.map((pipeline) => pipeline.pipeline_id),
-        // },
         xAxis: {
           type: "category",
           data: xAxisData,
           axisLabel: {
             fontSize: "14px",
-            fontFamily: "Inter",
+            fontFamily: "IBM Plex Sans",
             fontStyle: "normal",
             fontWeight: "600",
             color: "#6B7280",
@@ -134,7 +131,7 @@ export const PipelineTriggerCountsLineChart = ({
           minInterval: 1,
           axisLabel: {
             fontSize: "14px",
-            fontFamily: "Inter",
+            fontFamily: "IBM Plex Sans",
             fontStyle: "normal",
             fontWeight: "600",
             color: "#6B7280",
