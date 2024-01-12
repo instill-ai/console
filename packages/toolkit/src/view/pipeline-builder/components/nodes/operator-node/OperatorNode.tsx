@@ -76,6 +76,41 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     });
   }, [id, reset]);
 
+  const hasTargetEdges = React.useMemo(() => {
+    return edges.some((edge) => edge.target === id);
+  }, [edges, id]);
+
+  const hasSourceEdges = React.useMemo(() => {
+    return edges.some((edge) => edge.source === id);
+  }, [edges, id]);
+
+  const checkIsHidden = useCheckIsHidden("onNode");
+
+  const { fields, form, ValidatorSchema, selectedConditionMap } =
+    useInstillForm(
+      data.component.operator_definition?.spec.component_specification ?? null,
+      data.component.configuration,
+      {
+        size: "sm",
+        enableSmartHint: true,
+        checkIsHidden,
+        componentID: data.component.id,
+        disabledAll: pipelineIsReadOnly,
+      }
+    );
+
+  const { outputSchema } = React.useMemo(() => {
+    // The configuration stored in the node will only change when the user
+    // click on the "Save" button. Therefore, we need to use the
+    // selectedConditionMap to get the latest selected task. Due to the
+    // output schema depends on the selected task
+
+    return getOperatorInputOutputSchema(
+      data.component,
+      selectedConditionMap ? selectedConditionMap["task"] : undefined
+    );
+  }, [data, selectedConditionMap]);
+
   function handleRename(newID: string) {
     if (newID === id) {
       return;
@@ -140,14 +175,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updatePipelineRecipeIsDirty(() => true);
   }
 
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
-
-  const hasSourceEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.source === id);
-  }, [edges, id]);
-
   function handleCopyNode() {
     if (!data.component.operator_definition) {
       return;
@@ -189,24 +216,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
   }
-
-  const { outputSchema } = React.useMemo(() => {
-    return getOperatorInputOutputSchema(data.component);
-  }, [data]);
-
-  const checkIsHidden = useCheckIsHidden("onNode");
-
-  const { fields, form, ValidatorSchema } = useInstillForm(
-    data.component.operator_definition?.spec.component_specification ?? null,
-    data.component.configuration,
-    {
-      size: "sm",
-      enableSmartHint: true,
-      checkIsHidden,
-      componentID: data.component.id,
-      disabledAll: pipelineIsReadOnly,
-    }
-  );
 
   const { getValues, trigger } = form;
 

@@ -148,5 +148,6 @@ export function useInstillForm(
     fields,
     ValidatorSchema,
     formTree,
+    selectedConditionMap,
   };
 }
