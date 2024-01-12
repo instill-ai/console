@@ -50,7 +50,13 @@ module.exports = {
       },
       fontFamily: {
         mono: ["IBM Plex Mono", ...defaultTheme.fontFamily.mono],
-        sans: ["IBM Plex Sans", ...defaultTheme.fontFamily.sans],
+        sans: [
+          "IBM Plex Sans",
+
+          // We manually cast this until design-system have mono font
+          "var(--font-ibm-plex-mono)",
+          ...defaultTheme.fontFamily.sans,
+        ],
         instill: ["instill", "IBM Plex Mono"],
       },
       margin: {

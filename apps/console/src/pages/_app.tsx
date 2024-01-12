@@ -1,5 +1,8 @@
+import cn from "clsx";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import {
   QueryCache,
@@ -36,6 +39,20 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const ibmPlexSans = IBM_Plex_Sans({
+  style: ["italic", "normal"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-sans",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  style: ["italic", "normal"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+});
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
@@ -43,10 +60,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder,
+    (state) => state.initPipelineBuilder
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init,
+    (state) => state.init
   );
 
   const { dismiss: dismissToast } = useToast();
@@ -92,7 +109,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
       <QueryClientProvider client={queryClient}>
-        <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
+        <ErrorBoundary>
+          <main className={cn(ibmPlexMono.variable, ibmPlexSans.variable)}>
+            {getLayout(<Component {...pageProps} />)}
+          </main>
+        </ErrorBoundary>
         <div id="modal-root" />
         <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
         <ReactQueryDevtools initialIsOpen={false} />
