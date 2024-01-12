@@ -1,0 +1,17 @@
+/*
+  This is the style for the placeholder of tip-tap
+  https://tiptap.dev/docs/editor/api/extensions/placeholder
+*/
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #1D2433;
+  opacity: 0.65;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  font-family: IBM Plex Mono;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 16px;
+}
