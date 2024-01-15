@@ -116,6 +116,7 @@
     "markdown-to-jsx": "^7.3.2",
     "prosemirror-markdown": "^1.11.2",
     "prosemirror-model": "^1.19.3",
+    "react-avatar-editor": "^13.0.2",
     "react-hook-form": "^7.45.0",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.10.0",
