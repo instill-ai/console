@@ -76,6 +76,8 @@ export const TextField = ({
     setCurrentCursorPos(null);
   }
 
+  console.log(smartHints);
+
   const filteredHints = useFilteredHints({
     smartHints,
     instillAcceptFormats,

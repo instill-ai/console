@@ -37,17 +37,81 @@ export function pickSmartHintsFromAcceptFormats(
           pickHints.push(hint);
         }
       }
+
+      // Deal with array:*
+      if (instillAcceptFormats.includes("array:*")) {
+        pickHints.push(hint);
+      }
+
+      // Deal with something like array:image/png, array:image/* or array:audio/*
+
+      console.log(hint.instillFormat, instillAcceptFormats);
+
+      if (hint.instillFormat.includes("/")) {
+        const [type, subtype] = hint.instillFormat.split("/");
+
+        // If the instillFormat is array:image/* and the accept format is image/png
+        // then we should pick this hint
+        if (subtype === "*") {
+          if (instillAcceptFormats.some((format) => format.includes(type))) {
+            pickHints.push(hint);
+          }
+        }
+
+        // If the instillFormat is array:image/png and the accept format is image/*
+        // then we should pick this hint
+        if (
+          instillAcceptFormats.some((format) => {
+            if (format.includes("array")) {
+              const [formatType, formatSubtype] = format
+                .replace("array:", "")
+                .split("/");
+
+              if (formatSubtype === "*") {
+                return formatType === type;
+              }
+            }
+          })
+        ) {
+          pickHints.push(hint);
+        }
+
+        if (instillAcceptFormats.includes(`array:${hint.instillFormat}`)) {
+          pickHints.push(hint);
+        }
+      } else {
+        if (instillAcceptFormats.includes(`array:${hint.instillFormat}`)) {
+          pickHints.push(hint);
+        }
+      }
     }
 
     // Deal with <type>/<subtype>
     if (hint.instillFormat.includes("/")) {
       const [type, subtype] = hint.instillFormat.split("/");
 
-      // Deal with glob type
+      // If the instillFormat is image/* and the accept format is image/png
+      // then we should pick this hint
       if (subtype === "*") {
         if (instillAcceptFormats.includes(type)) {
           pickHints.push(hint);
         }
+      }
+
+      // If the instillFormat is image/png and the accept format is image/*
+      // then we should pick this hint
+      if (
+        instillAcceptFormats.some((format) => {
+          if (!format.includes("array")) {
+            const [formatType, formatSubtype] = format.split("/");
+
+            if (formatSubtype === "*") {
+              return formatType === type;
+            }
+          }
+        })
+      ) {
+        pickHints.push(hint);
       }
 
       // Deal with semi-structured. Now we have semi-structured/object
