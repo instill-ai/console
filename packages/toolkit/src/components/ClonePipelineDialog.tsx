@@ -23,6 +23,7 @@ import {
   Nullable,
   Pipeline,
   PipelineSharing,
+  env,
   toastInstillError,
   useCreateUserPipeline,
   useInstillStore,
@@ -122,7 +123,7 @@ export const ClonePipelineDialog = ({
       ),
       metadata: pipeline.metadata,
       readme: pipeline.readme,
-      description: data.brief ?? pipeline.description,
+      description: data.brief ? data.brief : pipeline.description,
       sharing,
     };
 
@@ -190,50 +191,29 @@ export const ClonePipelineDialog = ({
                           <Form.Label className="product-body-text-3-semibold">
                             Pipeline Name
                           </Form.Label>
-                          <div className="group flex flex-row rounded-sm focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default">
-                            <div className="rounded-l-sm border-b border-l border-r border-t border-semantic-bg-line bg-semantic-bg-primary px-4 py-2.5">
-                              <Tooltip.Provider>
-                                <Tooltip.Root>
-                                  <Tooltip.Trigger asChild>
-                                    <p className="max-w-[150px] cursor-pointer truncate text-semantic-fg-secondary product-body-text-2-regular">
-                                      {me.data?.id}
-                                    </p>
-                                  </Tooltip.Trigger>
-                                  <Tooltip.Portal>
-                                    <Tooltip.Content
-                                      className="max-w-[360px] rounded-sm bg-semantic-bg-primary px-3 py-2"
-                                      sideOffset={5}
-                                      side="top"
-                                    >
-                                      <p className="text-semantic-fg-secondary product-body-text-2-regular">
-                                        {me.data?.id}
-                                      </p>
-                                      <Tooltip.Arrow
-                                        className="fill-white"
-                                        offset={5}
-                                        width={9}
-                                        height={6}
-                                      />
-                                    </Tooltip.Content>
-                                  </Tooltip.Portal>
-                                </Tooltip.Root>
-                              </Tooltip.Provider>
-                            </div>
-                            <div className="w-full">
-                              <Form.Control>
-                                <Input.Root className="h-full !rounded-l-none !border-l-none focus-within:!border-semantic-bg-line focus-within:!outline-none">
-                                  <Input.Core
-                                    {...field}
-                                    className="pl-2 !product-body-text-2-regular"
-                                    type="text"
-                                    placeholder="Pipeline name"
-                                    required={false}
-                                    value={field.value || ""}
-                                  />
-                                </Input.Root>
-                              </Form.Control>
-                            </div>
-                          </div>
+                          <Form.Control>
+                            <Input.Root>
+                              <Input.Core
+                                {...field}
+                                className="pl-2 !product-body-text-2-regular"
+                                type="text"
+                                placeholder="Pipeline name"
+                                required={false}
+                                value={field.value || ""}
+                              />
+                            </Input.Root>
+                          </Form.Control>
+                          <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                            <span>
+                              Your pipeline URL in Instill AI will be:
+                            </span>
+                            <span className="ml-2 break-all product-body-text-3-semibold">
+                              {field.value !== "" || field.value
+                                ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${me
+                                    .data?.id}/pipelines/${field.value}`
+                                : null}
+                            </span>
+                          </p>
                           <Form.Message />
                         </Form.Item>
                       );

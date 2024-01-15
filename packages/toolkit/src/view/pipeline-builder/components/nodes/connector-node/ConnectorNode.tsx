@@ -244,8 +244,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     );
   }, [data, selectedConditionMap]);
 
-  console.log(selectedConditionMap);
-
   const { getValues, trigger } = form;
 
   useUpdaterOnNode({
