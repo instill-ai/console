@@ -96,6 +96,7 @@ export const SmartHintList = ({
                 ${`{}`}
               </Tag>
             ) : null}{" "}
+            to reference other field&apos;s value
           </p>
         )}
       </div>
