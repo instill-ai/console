@@ -183,8 +183,19 @@ export const InOutPut = () => {
   return (
     <div className="flex flex-col">
       <div className="mb-6 flex flex-row-reverse">
-        {accessToken ? (
-          inputIsNotDefined || outputIsNotDefined ? null : (
+        {pipeline.isSuccess ? (
+          !accessToken ? (
+            <Button
+              onClick={() => {
+                router.push("/login");
+              }}
+              type="button"
+              variant="secondaryColour"
+              size="md"
+            >
+              Log in to run
+            </Button>
+          ) : inputIsNotDefined || outputIsNotDefined ? null : (
             <Button
               variant="secondaryColour"
               size="md"
@@ -201,16 +212,7 @@ export const InOutPut = () => {
             </Button>
           )
         ) : (
-          <Button
-            onClick={() => {
-              router.push("/login");
-            }}
-            type="button"
-            variant="secondaryColour"
-            size="md"
-          >
-            Log in to run
-          </Button>
+          <RunButtonSkeleton />
         )}
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
@@ -359,4 +361,8 @@ export const InOutputSkeleton = () => {
   return (
     <div className="h-8 w-full animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
+};
+
+export const RunButtonSkeleton = () => {
+  return <Skeleton className="w-18 h-8 rounded" />;
 };
