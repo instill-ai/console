@@ -9,7 +9,7 @@ import {
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
-import { InOutPut, InOutPutProps } from "./InOutPut";
+import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";
 import { useRouter } from "next/router";
 
@@ -18,11 +18,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const ViewPipeline = ({
-  visitorCta,
-}: {
-  visitorCta?: InOutPutProps["visitorCta"];
-}) => {
+export const ViewPipeline = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const router = useRouter();
@@ -75,7 +71,7 @@ export const ViewPipeline = ({
           />
         </div>
         <div className="flex w-[594px] flex-col py-10 pr-4">
-          <InOutPut visitorCta={visitorCta} />
+          <InOutPut />
         </div>
       </div>
     </div>

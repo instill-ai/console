@@ -32,14 +32,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export type InOutPutProps = {
-  visitorCta?: {
-    onClick: () => void;
-    title: string;
-  };
-};
-
-export const InOutPut = ({ visitorCta }: InOutPutProps) => {
+export const InOutPut = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const [response, setResponse] =
@@ -207,17 +200,17 @@ export const InOutPut = ({ visitorCta }: InOutPutProps) => {
               )}
             </Button>
           )
-        ) : visitorCta ? (
+        ) : (
           <Button
-            onClick={visitorCta.onClick}
+            onClick={() => {
+              router.push("/login");
+            }}
             type="button"
             variant="secondaryColour"
             size="md"
           >
-            {visitorCta.title}
+            Log in to run
           </Button>
-        ) : (
-          <Skeleton className="h-8 w-20" />
         )}
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
