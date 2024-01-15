@@ -1,5 +1,51 @@
 # Changelog
 
+## [0.78.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.3...@instill-ai/toolkit-v0.78.0) (2024-01-15)
+
+
+### Features
+
+* adapt the new icon path for operators and connectors ([#867](https://github.com/instill-ai/console/issues/867)) ([7311370](https://github.com/instill-ai/console/commit/7311370b6c6da535fbab67a9c0f6d5d32da38f8f))
+* add loading state into pipelines/pid page to increase ux ([#875](https://github.com/instill-ai/console/issues/875)) ([badf238](https://github.com/instill-ai/console/commit/badf238af61bf8b6d693541c9d0894984bcab85a))
+* add the placeholder for the pipeline description editor ([#872](https://github.com/instill-ai/console/issues/872)) ([511a520](https://github.com/instill-ai/console/commit/511a52030b73da2e50f3e1b4ab1dcbcaac435ccd))
+* improve the namespace hint when clone the pipeline ([#884](https://github.com/instill-ai/console/issues/884)) ([822d36e](https://github.com/instill-ai/console/commit/822d36e8ecf5afba6e6c47423b887d2d21cc82fb))
+* **pipeline-builder:** improve the connector is not specified warning on the pipeline-builder component ([#879](https://github.com/instill-ai/console/issues/879)) ([cf8494d](https://github.com/instill-ai/console/commit/cf8494deee394d737128922bb4b197f6ca78c946))
+* **pipeline-builder:** support new ${} reference syntax ([#868](https://github.com/instill-ai/console/issues/868)) ([9a6b005](https://github.com/instill-ai/console/commit/9a6b005ebebf86f02f067b207b23e610e26ddc1f))
+* **user:** implement image crop for rectangle user portrait ([#880](https://github.com/instill-ai/console/issues/880)) ([e14af3f](https://github.com/instill-ai/console/commit/e14af3fd6c62dec736071aaae1119faaa84eefca))
+
+
+### Bug Fixes
+
+* **auto-form:** fix instillUIMultiline attribute is not working within auto-form ([#854](https://github.com/instill-ai/console/issues/854)) ([8aa47bf](https://github.com/instill-ai/console/commit/8aa47bf3f068da1df15bf7c8aa11671694c4b654))
+* fix anchor tag overflow in the component formatted output ([#881](https://github.com/instill-ai/console/issues/881)) ([1f15663](https://github.com/instill-ai/console/commit/1f1566311e0320e424f78a5bbd5e06a74f69c3ec))
+* fix console fetch the wrong model readme namespace ([#863](https://github.com/instill-ai/console/issues/863)) ([85ce0a8](https://github.com/instill-ai/console/commit/85ce0a89858f97ce2900ea557e55428c1deed15e))
+* fix duplicate pipeline didnt carry over pipeline brief ([#876](https://github.com/instill-ai/console/issues/876)) ([54752ee](https://github.com/instill-ai/console/commit/54752ee0487f0b38999204efc501abd0f98a7e79))
+* fix font not consistent on dashboard and improve the font optimization ([#873](https://github.com/instill-ai/console/issues/873)) ([18fc2c3](https://github.com/instill-ai/console/commit/18fc2c318734a7d1a4a2166adb47c00b2b46a3b7))
+* fix log in to clone not correctly redirect user to login ([#877](https://github.com/instill-ai/console/issues/877)) ([b547470](https://github.com/instill-ai/console/commit/b547470f2e863b25f015f06c07f38fe9976f78e9))
+* fix markdown editor of pipeline description can not show ol and ul ([#871](https://github.com/instill-ai/console/issues/871)) ([fb0da5a](https://github.com/instill-ai/console/commit/fb0da5aea85356b824da4afd3aa338f1b9594ec5))
+* fix start operator json input not working in /pipelines/pid page ([#858](https://github.com/instill-ai/console/issues/858)) ([3341248](https://github.com/instill-ai/console/commit/33412480b51af1b3eec965d5c47cf393533abced))
+* fix the drift of the loading state of /pipelines/pid page ([#882](https://github.com/instill-ai/console/issues/882)) ([bbf5de9](https://github.com/instill-ai/console/commit/bbf5de939347ce7522294d07d169af7b21fbc0b4))
+* fix the wrong state in ResourceTable cause the wrong behavior of delete resource dialog ([#869](https://github.com/instill-ai/console/issues/869)) ([e048116](https://github.com/instill-ai/console/commit/e048116714265bb65a52c1b4d89aa160322661fc))
+* fix wrongly wrapped line of namespace in create and clone pipeline dialog ([#862](https://github.com/instill-ai/console/issues/862)) ([6ccdac0](https://github.com/instill-ai/console/commit/6ccdac04b7feba05f3d2ca4d6da20b90ed70008f))
+* **hub:** filter out logged in user private pipeline on hub ([#865](https://github.com/instill-ai/console/issues/865)) ([5b50808](https://github.com/instill-ai/console/commit/5b50808916b7babf7abd10c42241ebf9a46a9942))
+* improve namespace hint of pipeline creation process ([#883](https://github.com/instill-ai/console/issues/883)) ([544e22b](https://github.com/instill-ai/console/commit/544e22b803b21eb4016f507c52e3b986ff42ba65))
+* **pipeline-builder:** fix can not reference comp output and form the edges ([#866](https://github.com/instill-ai/console/issues/866)) ([2a8fd68](https://github.com/instill-ai/console/commit/2a8fd683211c49dc44b4d8c742c9d6d8f314bf9d))
+* **pipeline-builder:** fix can't correctly pour in instill-model enum for connector ([#885](https://github.com/instill-ai/console/issues/885)) ([59366ea](https://github.com/instill-ai/console/commit/59366eac5d1c8b38d86c5cbc01dbd8ccb23939dc))
+* **pipeline-builder:** fix pipeline builder not correctly handle deep nested object referenced link ([#857](https://github.com/instill-ai/console/issues/857)) ([edab862](https://github.com/instill-ai/console/commit/edab862583585fc59a8cf7e914c25c5262fc3d06))
+* **pipeline-builder:** fix the component output not react to the selected task ([#874](https://github.com/instill-ai/console/issues/874)) ([c8a1473](https://github.com/instill-ai/console/commit/c8a14736c86d71a06496fffe85cc140d7b352f89))
+* **pipeline-builder:** fix wrongly position component when there only have start and end operator ([#870](https://github.com/instill-ai/console/issues/870)) ([f59b25b](https://github.com/instill-ai/console/commit/f59b25b733b8283ebcb239817ab3683d86363a40))
+
+
+### Miscellaneous
+
+* add Marketing into InstillUserRoles ([#861](https://github.com/instill-ai/console/issues/861)) ([785a0b0](https://github.com/instill-ai/console/commit/785a0b0860c5a63eae4d8804f0f0b29187603f00))
+* **deps:** bump axios from 1.5.1 to 1.6.0 ([#674](https://github.com/instill-ai/console/issues/674)) ([44d868b](https://github.com/instill-ai/console/commit/44d868bac41d701710da5eb1468a98ddaa0ac83d))
+* increase the duration of error toast notification ([#878](https://github.com/instill-ai/console/issues/878)) ([539c349](https://github.com/instill-ai/console/commit/539c349ffd4526d6999ce101400832153c13af67))
+* make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
+* remove the expire data in the API token table ([#864](https://github.com/instill-ai/console/issues/864)) ([2cbf9f2](https://github.com/instill-ai/console/commit/2cbf9f26f658f775e64b5760f8ec7ec182f6662b))
+* replace "clone" with "Log in to Clone" when the user is not logged in ([#860](https://github.com/instill-ai/console/issues/860)) ([871114a](https://github.com/instill-ai/console/commit/871114a025a2025b39477ad41509368933f926cf))
+* **user-profile:** user profile update pipeline query ([#856](https://github.com/instill-ai/console/issues/856)) ([f655d92](https://github.com/instill-ai/console/commit/f655d92a9957bbc4edf307af97c4db44ee03e707))
+
 ## [0.77.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.2...@instill-ai/toolkit-v0.77.3) (2024-01-02)
 
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.36.0-beta](https://github.com/instill-ai/console/compare/v0.35.1-beta...v0.36.0-beta) (2024-01-15)
+
+
+### Features
+
+* adapt the new icon path for operators and connectors ([#867](https://github.com/instill-ai/console/issues/867)) ([7311370](https://github.com/instill-ai/console/commit/7311370b6c6da535fbab67a9c0f6d5d32da38f8f))
+* add the placeholder for the pipeline description editor ([#872](https://github.com/instill-ai/console/issues/872)) ([511a520](https://github.com/instill-ai/console/commit/511a52030b73da2e50f3e1b4ab1dcbcaac435ccd))
+
+
+### Bug Fixes
+
+* fix console fetch the wrong model readme namespace ([#863](https://github.com/instill-ai/console/issues/863)) ([85ce0a8](https://github.com/instill-ai/console/commit/85ce0a89858f97ce2900ea557e55428c1deed15e))
+* fix duplicate pipeline didnt carry over pipeline brief ([#876](https://github.com/instill-ai/console/issues/876)) ([54752ee](https://github.com/instill-ai/console/commit/54752ee0487f0b38999204efc501abd0f98a7e79))
+* fix font not consistent on dashboard and improve the font optimization ([#873](https://github.com/instill-ai/console/issues/873)) ([18fc2c3](https://github.com/instill-ai/console/commit/18fc2c318734a7d1a4a2166adb47c00b2b46a3b7))
+* fix markdown editor of pipeline description can not show ol and ul ([#871](https://github.com/instill-ai/console/issues/871)) ([fb0da5a](https://github.com/instill-ai/console/commit/fb0da5aea85356b824da4afd3aa338f1b9594ec5))
+
+
+### Miscellaneous
+
+* **deps:** bump axios from 1.5.1 to 1.6.0 ([#674](https://github.com/instill-ai/console/issues/674)) ([44d868b](https://github.com/instill-ai/console/commit/44d868bac41d701710da5eb1468a98ddaa0ac83d))
+* **deps:** bump sharp from 0.30.7 to 0.32.6 ([#697](https://github.com/instill-ai/console/issues/697)) ([32db44a](https://github.com/instill-ai/console/commit/32db44ae9d99f56ee472a0b504cb7d715519f0b5))
+
 ## [0.35.1-beta](https://github.com/instill-ai/console/compare/v0.35.0-beta...v0.35.1-beta) (2024-01-02)
 
 

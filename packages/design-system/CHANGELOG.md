@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.61.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.0...@instill-ai/design-system-v0.61.1) (2024-01-15)
+
+
+### Miscellaneous
+
+* make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
+
 ## [0.61.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.60.0...@instill-ai/design-system-v0.61.0) (2024-01-02)
 
 
