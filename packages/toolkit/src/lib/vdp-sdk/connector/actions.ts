@@ -1,6 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { Connector, ConnectorState } from "./types";
+import { Connector, ConnectorState, ConnectorWithDefinition } from "./types";
 
 export type TestUserConnectorConnectionResponse = {
   state: ConnectorState;
@@ -25,7 +25,7 @@ export async function testUserConnectorConnectionAction({
 }
 
 export type ConnectUserConnectorResponse = {
-  connector: Connector;
+  connector: ConnectorWithDefinition;
 };
 
 export async function connectUserConnectorAction({
@@ -47,7 +47,7 @@ export async function connectUserConnectorAction({
 }
 
 export type DisconnectUserConnectorResponse = {
-  connector: Connector;
+  connector: ConnectorWithDefinition;
 };
 
 export async function disconnectUserConnectorAction({

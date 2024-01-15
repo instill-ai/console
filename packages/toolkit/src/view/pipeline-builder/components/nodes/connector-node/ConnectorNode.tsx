@@ -369,6 +369,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                           ...connector,
                           connector_definition: null,
                         },
+                        connector_definition: connector.connector_definition,
                       },
                     };
                   }

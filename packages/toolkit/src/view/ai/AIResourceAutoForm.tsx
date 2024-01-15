@@ -53,10 +53,7 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
         });
 
         if (onSubmit) {
-          onSubmit({
-            ...connector,
-            connector_definition: definition,
-          });
+          onSubmit(connector);
         }
 
         toast({
@@ -90,10 +87,7 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
       });
 
       if (onSubmit) {
-        onSubmit({
-          ...connector,
-          connector_definition: definition,
-        });
+        onSubmit(connector);
       }
 
       toast({

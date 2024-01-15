@@ -209,10 +209,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         {
           onSuccess: ({ connector }) => {
             if (onSubmit) {
-              onSubmit({
-                ...connector,
-                connector_definition: dataDefinition,
-              });
+              onSubmit(connector);
             }
 
             toast({
@@ -264,10 +261,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       {
         onSuccess: ({ connector }) => {
           if (onSubmit) {
-            onSubmit({
-              ...connector,
-              connector_definition: dataDefinition,
-            });
+            onSubmit(connector);
           }
           toast({
             title: "Successfully update ai connector",
