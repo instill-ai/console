@@ -57,7 +57,7 @@ export const UserProfileTab = () => {
   const [isOpenProfileAvatar, setIsOpenProfileAvatar] =
     React.useState<boolean>(false);
 
-  const editorRef = React.useRef(null);
+  const editorRef = React.useRef<AvatarEditor>(null);
 
   const user = useUserMe({
     accessToken,
@@ -115,17 +115,23 @@ export const UserProfileTab = () => {
     }
   }
 
-  const handleSetProfilePicture = () => {
+  function handleSetProfilePicture() {
     // Save the cropped image as a file or perform any other actions here
     // For simplicity, let's assume you have a function to handle image upload
     const croppedImage = editorRef.current
-      // @ts-ignore
       ?.getImageScaledToCanvas()
       ?.toDataURL();
-    setProfileAvatar(croppedImage);
+    setProfileAvatar(croppedImage ?? null);
     // Close the dialog or perform any other actions
     setIsOpenProfileAvatar(false);
-  };
+  }
+
+  function handleCancelCropProfile() {
+    setIsOpenProfileAvatar(false);
+    setProfileAvatar(null);
+
+    form.resetField("profile_avatar");
+  }
 
   return (
     <Setting.TabRoot>
@@ -323,7 +329,9 @@ export const UserProfileTab = () => {
                             {field.value ? (
                               <img
                                 src={
-                                  profileAvatar ? String(profileAvatar) : field.value
+                                  profileAvatar
+                                    ? String(profileAvatar)
+                                    : field.value
                                 }
                                 alt={`${user.data?.name}-profile`}
                                 className="h-[150px] rounded-full object-contain"
@@ -470,7 +478,7 @@ export const UserProfileTab = () => {
         </form>
       </Form.Root>
       <Dialog.Root open={isOpenProfileAvatar}>
-        <Dialog.Content className="w-[400px]">
+        <Dialog.Content className="!w-[400px]">
           <Dialog.Header>
             <Dialog.Title>Crop your new profile picture</Dialog.Title>
           </Dialog.Header>
@@ -483,21 +491,27 @@ export const UserProfileTab = () => {
                 height={300}
                 border={20}
                 borderRadius={9999}
-                color={[248,249,252]}
+                color={[248, 249, 252]}
                 scale={1}
               />
             ) : null}
           </div>
-          <div className="flex justify-center">
+          <div className="flex flex-row justify-between gap-x-4">
             <Button
               onClick={() => handleSetProfilePicture()}
-              variant={"primary"}
+              variant="primary"
               className="w-full"
             >
               Set new profile picture
             </Button>
+            <Button
+              onClick={() => handleCancelCropProfile()}
+              variant="secondaryGrey"
+              className="w-full"
+            >
+              Cancel
+            </Button>
           </div>
-          <Dialog.Close />
         </Dialog.Content>
       </Dialog.Root>
     </Setting.TabRoot>
