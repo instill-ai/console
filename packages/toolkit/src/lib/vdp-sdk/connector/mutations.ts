@@ -3,7 +3,7 @@
 import { AirbyteFieldValues } from "../../airbytes";
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { Connector } from "./types";
+import { Connector, ConnectorWithDefinition } from "./types";
 
 export type CreateUserConnectorPayload = {
   id: string;
@@ -13,7 +13,7 @@ export type CreateUserConnectorPayload = {
 };
 
 export type CreateUserConnectorResponse = {
-  connector: Connector;
+  connector: ConnectorWithDefinition;
 };
 
 export async function createUserConnectorMutation({
@@ -62,7 +62,7 @@ export type UpdateUserConnectorPayload = {
 };
 
 export type UpdateUserConnectorResponse = {
-  connector: Connector;
+  connector: ConnectorWithDefinition;
 };
 
 export async function updateUserConnectorMutation({

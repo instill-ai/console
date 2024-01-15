@@ -28,28 +28,28 @@ export type OnSuccessAfterDeleteConnectorProps = {
 export type OnSuccessAfterCreateConnectorProps = {
   type: "create";
   queryClient: QueryClient;
-  connector: Connector;
+  connector: ConnectorWithDefinition;
   accessToken: Nullable<string>;
 };
 
 export type OnSuccessAfterUpdateConnectorProps = {
   type: "update";
   queryClient: QueryClient;
-  connector: Connector;
+  connector: ConnectorWithDefinition;
   accessToken: Nullable<string>;
 };
 
 export type OnSuccessAfterConnectConnectorProps = {
   type: "connect";
   queryClient: QueryClient;
-  connector: Connector;
+  connector: ConnectorWithDefinition;
   accessToken: Nullable<string>;
 };
 
 export type OnSuccessAfterDisconnectConnectorProps = {
   type: "disconnect";
   queryClient: QueryClient;
-  connector: Connector;
+  connector: ConnectorWithDefinition;
   accessToken: Nullable<string>;
 };
 
