@@ -13,6 +13,7 @@ import {
 } from "../../../lib";
 import {
   InstillStore,
+  useConnectorDefinitions,
   useInstillForm,
   useInstillStore,
   validateInstillID,
@@ -49,6 +50,8 @@ const selector = (store: InstillStore) => ({
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -65,6 +68,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
     pipelineIsReadOnly,
+    accessToken,
+    enabledQuery,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -76,6 +81,12 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     React.useState(false);
 
   const nodeIDEditorForm = useNodeIDEditorForm(id);
+
+  const connectorDefinitions = useConnectorDefinitions({
+    connectorType: "all",
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const { reset } = nodeIDEditorForm;
 
@@ -278,6 +289,16 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     return null;
   }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
 
+  const targetConnectorDefinition = React.useMemo(() => {
+    if (!connectorDefinitions.isSuccess) return null;
+
+    return (
+      connectorDefinitions.data.find(
+        (e) => e.name === data.component.definition_name
+      ) ?? null
+    );
+  }, [connectorDefinitions.isSuccess, connectorDefinitions.data]);
+
   return (
     <NodeWrapper
       nodeType={data.nodeType}
@@ -396,6 +417,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             }));
           }}
           disabled={pipelineIsReadOnly}
+          connectorTitle={
+            targetConnectorDefinition ? targetConnectorDefinition.title : null
+          }
         />
       ) : (
         <>
