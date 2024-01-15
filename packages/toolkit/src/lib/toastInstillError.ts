@@ -17,12 +17,14 @@ export function toastInstillError({
       variant: "alert-error",
       size: "large",
       description: getInstillApiErrorMessage(error),
+      duration: 15000,
     });
   } else {
     toast({
       title,
       variant: "alert-error",
       size: "large",
+      duration: 15000,
     });
   }
 }
