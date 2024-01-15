@@ -25,6 +25,7 @@ import {
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin } from "../../../components";
+// @ts-ignore
 import AvatarEditor from "react-avatar-editor";
 
 export const UserProfileTabSchema = z.object({
@@ -51,9 +52,7 @@ const selector = (store: InstillStore) => ({
 export const UserProfileTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
-  const [profileAvatar, setProfileAvatar] = React.useState<
-    string | ArrayBuffer | null
-  >(null);
+  const [profileAvatar, setProfileAvatar] = React.useState<string | null>(null);
   const [isOpenProfileAvatar, setIsOpenProfileAvatar] =
     React.useState<boolean>(false);
 
@@ -119,6 +118,7 @@ export const UserProfileTab = () => {
     // Save the cropped image as a file or perform any other actions here
     // For simplicity, let's assume you have a function to handle image upload
     const croppedImage = editorRef.current
+      // @ts-ignore
       ?.getImageScaledToCanvas()
       ?.toDataURL();
     setProfileAvatar(croppedImage);
@@ -345,7 +345,7 @@ export const UserProfileTab = () => {
                                     reader.onload = () => {
                                       const result = reader.result;
                                       field.onChange(result);
-                                      setProfileAvatar(result);
+                                      setProfileAvatar(String(result));
                                     };
                                     reader.readAsDataURL(file);
                                     setIsOpenProfileAvatar(true);
