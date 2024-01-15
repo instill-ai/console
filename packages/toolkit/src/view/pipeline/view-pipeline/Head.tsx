@@ -191,28 +191,28 @@ export const Head = () => {
           <div className="flex flex-row gap-x-2">
             {pipeline.isSuccess ? (
               <React.Fragment>
-                <ClonePipelineDialog
-                  trigger={
-                    me.isSuccess ? (
+                {me.isSuccess ? (
+                  <ClonePipelineDialog
+                    trigger={
                       <Button size="sm" variant="secondaryColour">
                         {!pipeline.data?.permission.can_edit
                           ? "Clone"
                           : "Duplicate"}
                       </Button>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          router.push("/login");
-                        }}
-                        variant="primary"
-                        size="sm"
-                      >
-                        Log in to Clone
-                      </Button>
-                    )
-                  }
-                  pipeline={pipeline.data}
-                />
+                    }
+                    pipeline={pipeline.data}
+                  />
+                ) : (
+                  <Button
+                    onClick={() => {
+                      router.push("/login");
+                    }}
+                    variant="secondaryColour"
+                    size="sm"
+                  >
+                    Log in to Clone
+                  </Button>
+                )}
                 {pipeline.data.permission.can_edit ? (
                   <Button
                     onClick={() => {

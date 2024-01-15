@@ -661,7 +661,7 @@ export const FlowControl = (props: FlowControlProps) => {
                     onClick={() => {
                       router.push("/login");
                     }}
-                    variant="primary"
+                    variant="secondaryColour"
                     size="lg"
                   >
                     Log in to Clone
