@@ -25,7 +25,6 @@ import {
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin } from "../../../components";
-// @ts-ignore
 import AvatarEditor from "react-avatar-editor";
 
 export const UserProfileTabSchema = z.object({
@@ -52,7 +51,9 @@ const selector = (store: InstillStore) => ({
 export const UserProfileTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
-  const [profileAvatar, setProfileAvatar] = React.useState<string | null>(null);
+  const [profileAvatar, setProfileAvatar] = React.useState<
+    string | File | null
+  >(null);
   const [isOpenProfileAvatar, setIsOpenProfileAvatar] =
     React.useState<boolean>(false);
 
@@ -86,7 +87,7 @@ export const UserProfileTab = () => {
       last_name: data.last_name ?? undefined,
       role: data.role ?? undefined,
       profile_avatar: profileAvatar
-        ? profileAvatar
+        ? String(profileAvatar)
         : data.profile_avatar ?? undefined,
       profile_data: {
         ...user.data.profile_data,
@@ -322,10 +323,10 @@ export const UserProfileTab = () => {
                             {field.value ? (
                               <img
                                 src={
-                                  profileAvatar ? profileAvatar : field.value
+                                  profileAvatar ? String(profileAvatar) : field.value
                                 }
                                 alt={`${user.data?.name}-profile`}
-                                className="h-[150px] w-full object-contain"
+                                className="h-[150px] rounded-full object-contain"
                               />
                             ) : (
                               <p>Upload your profile test</p>
@@ -474,15 +475,18 @@ export const UserProfileTab = () => {
             <Dialog.Title>Crop your new profile picture</Dialog.Title>
           </Dialog.Header>
           <div className="flex items-center justify-center">
-            <AvatarEditor
-              ref={editorRef}
-              image={profileAvatar}
-              width={150}
-              height={150}
-              border={50}
-              color={[0, 0, 0, 0.8]}
-              scale={1}
-            />
+            {profileAvatar ? (
+              <AvatarEditor
+                ref={editorRef}
+                image={profileAvatar}
+                width={300}
+                height={300}
+                border={20}
+                borderRadius={9999}
+                color={[248,249,252]}
+                scale={1}
+              />
+            ) : null}
           </div>
           <div className="flex justify-center">
             <Button
