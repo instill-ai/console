@@ -1,4 +1,4 @@
-import cn from "clsx";
+import * as React from "react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
@@ -60,10 +60,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder,
+    (state) => state.initPipelineBuilder
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init,
+    (state) => state.init
   );
 
   const { dismiss: dismissToast } = useToast();
@@ -107,18 +107,32 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   ]);
 
   return (
-    <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
-      <QueryClientProvider client={queryClient}>
-        <ErrorBoundary>
-          <main className={cn(ibmPlexMono.variable, ibmPlexSans.variable)}>
-            {getLayout(<Component {...pageProps} />)}
-          </main>
-        </ErrorBoundary>
-        <div id="modal-root" />
-        <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </AmplitudeCtx.Provider>
+    <React.Fragment>
+      {/* 
+        We use this instead of setting the className on main due to we 
+        are using radix-ui Dialog. These Dialogs are created on demand 
+        and appended under body, they won't have the css variables if 
+        we appends it on main
+      */}
+      <style jsx global>
+        {`
+          :root {
+            --font-ibm-plex-sans: ${ibmPlexSans.style.fontFamily};
+            --font-ibm-plex-mono: ${ibmPlexMono.style.fontFamily};
+          }
+        `}
+      </style>
+      <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
+        <QueryClientProvider client={queryClient}>
+          <ErrorBoundary>
+            <main>{getLayout(<Component {...pageProps} />)}</main>
+          </ErrorBoundary>
+          <div id="modal-root" />
+          <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </AmplitudeCtx.Provider>
+    </React.Fragment>
   );
 }
 

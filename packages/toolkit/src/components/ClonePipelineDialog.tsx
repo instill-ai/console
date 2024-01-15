@@ -37,7 +37,7 @@ import { getRawPipelineRecipeFromPipelineRecipe } from "../view";
 const ClonePipelineSchema = z
   .object({
     id: z.string(),
-    description: z.string().optional().nullable(),
+    brief: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
     if (!validateInstillID(state.id)) {
@@ -121,6 +121,8 @@ export const ClonePipelineDialog = ({
         pipeline.owner_name === me.data.name ? false : true
       ),
       metadata: pipeline.metadata,
+      readme: pipeline.readme,
+      description: data.brief ?? pipeline.description,
       sharing,
     };
 
@@ -153,7 +155,7 @@ export const ClonePipelineDialog = ({
       onOpenChange={(open) => {
         form.reset({
           id: "",
-          description: "",
+          brief: "",
         });
         if (onOpenChange) {
           onOpenChange(open);
@@ -239,7 +241,7 @@ export const ClonePipelineDialog = ({
                   />
                   <Form.Field
                     control={form.control}
-                    name="description"
+                    name="brief"
                     render={({ field }) => {
                       return (
                         <Form.Item>

@@ -7,7 +7,7 @@ export const HubView = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-20">
       <Body visitorCta={visitorCta} />
     </div>
   );
