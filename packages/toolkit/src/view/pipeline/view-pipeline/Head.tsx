@@ -86,7 +86,7 @@ export const Head = () => {
           background: linear-gradient(45deg, #efe7fe, #fef1f2);
         }
       `}</style>
-      <div className="user-gradient relative flex flex-col bg-semantic-bg-primary">
+      <div className="user-gradient relative flex min-h-[180px] flex-col bg-semantic-bg-primary">
         <div className="flex flex-row px-24 py-16">
           <div className="mr-auto flex max-w-5xl flex-col gap-y-3 ">
             <div className="flex w-full flex-row">
@@ -225,7 +225,9 @@ export const Head = () => {
                   </Button>
                 ) : null}
               </React.Fragment>
-            ) : null}
+            ) : (
+              <HeaderControllerSkeleton />
+            )}
           </div>
         </div>
       </div>
@@ -235,12 +237,21 @@ export const Head = () => {
 
 const PipelineDescriptionSkeleton = () => {
   return (
-    <div className="h-5 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+    <div className="h-4 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
 };
 
 const PipelineNameSkeleton = () => {
   return (
-    <div className="h-5 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+    <div className="h-6 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+  );
+};
+
+const HeaderControllerSkeleton = () => {
+  return (
+    <React.Fragment>
+      <Skeleton className="h-8 w-14 rounded" />
+      <Skeleton className="h-8 w-14 rounded" />
+    </React.Fragment>
   );
 };
