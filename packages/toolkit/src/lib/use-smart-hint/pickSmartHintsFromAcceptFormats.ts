@@ -45,8 +45,6 @@ export function pickSmartHintsFromAcceptFormats(
 
       // Deal with something like array:image/png, array:image/* or array:audio/*
 
-      console.log(hint.instillFormat, instillAcceptFormats);
-
       if (hint.instillFormat.includes("/")) {
         const [type, subtype] = hint.instillFormat.split("/");
 
