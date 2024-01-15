@@ -13,6 +13,7 @@ export type CreateUserPipelinePayload = {
   recipe: RawPipelineRecipe;
   metadata: GeneralRecord;
   sharing?: PipelineSharing;
+  readme?: string;
 };
 
 export type CreatePipelineResponse = {

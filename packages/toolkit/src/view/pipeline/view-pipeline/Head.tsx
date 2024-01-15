@@ -168,11 +168,13 @@ export const Head = () => {
             )}
           </div>
           {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
-            <EditMetadataDialog
-              description={
-                pipeline.isSuccess ? pipeline.data.description : null
-              }
-            />
+            <div>
+              <EditMetadataDialog
+                description={
+                  pipeline.isSuccess ? pipeline.data.description : null
+                }
+              />
+            </div>
           ) : null}
         </div>
 
