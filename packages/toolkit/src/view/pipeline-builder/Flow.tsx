@@ -102,8 +102,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               edges={edges}
               onNodesDelete={() => {
                 if (pipelineIsReadOnly) return;
-                updatePipelineRecipeIsDirty((prev) => {
-                  if (prev) return prev;
+                updatePipelineRecipeIsDirty(() => {
                   return true;
                 });
               }}
@@ -112,8 +111,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               onEdgesDelete={() => {
                 if (pipelineIsReadOnly) return;
 
-                updatePipelineRecipeIsDirty((prev) => {
-                  if (prev) return prev;
+                updatePipelineRecipeIsDirty(() => {
                   return true;
                 });
               }}
