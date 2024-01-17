@@ -42,7 +42,7 @@ export const RightPanel = () => {
       <div className="relative mb-6 w-full">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-semantic-bg-primary px-2">
           <p className="text-semantic-fg-secondary product-body-text-3-medium">
-            Configration
+            Configuration
           </p>
         </div>
         <Separator orientation="horizontal" />
