@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.78.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.78.0...@instill-ai/toolkit-v0.78.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* fix operator component node icon path is not correct ([#887](https://github.com/instill-ai/console/issues/887)) ([6be4f4b](https://github.com/instill-ai/console/commit/6be4f4b0d468204da62b5ea5e4924b99589a3bea))
+
 ## [0.78.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.77.3...@instill-ai/toolkit-v0.78.0) (2024-01-15)
 
 
