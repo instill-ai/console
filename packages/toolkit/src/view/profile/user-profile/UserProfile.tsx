@@ -40,6 +40,7 @@ export const UserProfile = () => {
     accessToken: accessToken,
     enabled: enabledQuery && entityObject.isSuccess,
     userName: entityObject.isSuccess ? entityObject.entityName : null,
+    filter: null,
   });
 
   React.useEffect(() => {

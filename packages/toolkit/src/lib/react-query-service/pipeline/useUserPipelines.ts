@@ -7,7 +7,8 @@ import type { Nullable } from "../../type";
 
 export async function fetchUserPipelines(
   userName: string,
-  accessToken: Nullable<string>
+  accessToken: Nullable<string>,
+  filter: Nullable<string>
 ) {
   try {
     const pipelines = await listUserPipelinesQuery({
@@ -16,6 +17,7 @@ export async function fetchUserPipelines(
       nextPageToken: null,
       accessToken,
       enablePagination: false,
+      filter,
     });
 
     return Promise.resolve(pipelines);
@@ -29,6 +31,7 @@ export const useUserPipelines = ({
   enabled,
   accessToken,
   retry,
+  filter,
 }: {
   userName: Nullable<string>;
   enabled: boolean;
@@ -38,6 +41,7 @@ export const useUserPipelines = ({
    * - Set to false to disable retry
    */
   retry?: false | number;
+  filter: Nullable<string>;
 }) => {
   let enableQuery = false;
 
@@ -52,7 +56,7 @@ export const useUserPipelines = ({
         return Promise.reject(new Error("userName not provided"));
       }
 
-      const pipelines = await fetchUserPipelines(userName, accessToken);
+      const pipelines = await fetchUserPipelines(userName, accessToken, filter);
       return Promise.resolve(pipelines);
     },
     {

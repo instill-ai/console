@@ -8,14 +8,16 @@ export function useInfinitePipelines({
   pageSize,
   enabledQuery,
   visibility,
+  filter,
 }: {
-  accessToken: Nullable<string>;
-  pageSize?: number;
+  pageSize: number;
   enabledQuery: boolean;
-  visibility?: Visibility;
+  accessToken: Nullable<string>;
+  visibility: Nullable<Visibility>;
+  filter: Nullable<string>;
 }) {
   return useInfiniteQuery(
-    ["pipelines", "infinite"],
+    filter ? ["pipelines", "infinite", filter] : ["pipelines", "infinite"],
     async ({ pageParam }) => {
       const pipelines = await listPipelinesQuery({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
@@ -23,6 +25,7 @@ export function useInfinitePipelines({
         accessToken,
         enablePagination: true,
         visibility,
+        filter,
       });
 
       return Promise.resolve(pipelines);

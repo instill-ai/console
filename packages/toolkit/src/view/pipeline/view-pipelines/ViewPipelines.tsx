@@ -1,5 +1,4 @@
 import * as React from "react";
-import Fuse from "fuse.js";
 import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
@@ -48,6 +47,7 @@ export const ViewPipelines = ({
     accessToken,
     userName: entityObject.entityName,
     enabledQuery: enabledQuery && entityObject.isSuccess,
+    filter: searchCode ? `q="${searchCode}"` : null,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -61,15 +61,7 @@ export const ViewPipelines = ({
       all.push(...page.pipelines);
     }
 
-    if (!searchCode) {
-      return all;
-    }
-
-    const fuse = new Fuse(all, {
-      keys: ["id"],
-    });
-
-    return fuse.search(searchCode).map((result) => result.item);
+    return all;
   }, [pipelines.data, pipelines.isSuccess, searchCode]);
 
   return (

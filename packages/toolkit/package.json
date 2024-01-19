@@ -110,7 +110,6 @@
     "cookie": "^0.5.0",
     "echarts": "^5.4.2",
     "elkjs": "^0.8.2",
-    "fuse.js": "^6.6.2",
     "immer": "^9.0.19",
     "lodash.isequal": "^4.5.0",
     "markdown-it": "^13.0.2",
