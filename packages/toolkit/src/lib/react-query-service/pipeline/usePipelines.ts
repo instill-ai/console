@@ -1,15 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { listPipelinesQuery } from "../../vdp-sdk";
+import { Visibility, listPipelinesQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 import type { Nullable } from "../../type";
 
-export async function fetchPipelines(accessToken: Nullable<string>) {
+export async function fetchPipelines(
+  accessToken: Nullable<string>,
+  filter: Nullable<string>,
+  visibility: Nullable<Visibility>
+) {
   try {
     const pipelines = await listPipelinesQuery({
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
       nextPageToken: null,
       accessToken,
       enablePagination: false,
+      filter,
+      visibility,
     });
     return Promise.resolve(pipelines);
   } catch (err) {
@@ -23,9 +29,13 @@ export const usePipelines = ({
   enabled,
   accessToken,
   retry,
+  filter,
+  visibility,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
+  filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
   /**
    * - Default is 3
    * - Set to false to disable retry
@@ -35,7 +45,7 @@ export const usePipelines = ({
   return useQuery(
     ["pipelines"],
     async () => {
-      const pipelines = await fetchPipelines(accessToken);
+      const pipelines = await fetchPipelines(accessToken, filter, visibility);
 
       return Promise.resolve(pipelines);
     },

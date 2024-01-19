@@ -1,5 +1,4 @@
 import * as React from "react";
-import Fuse from "fuse.js";
 import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
@@ -39,6 +38,7 @@ export const Body = ({
     accessToken,
     enabledQuery,
     visibility: "VISIBILITY_PUBLIC",
+    filter: searchCode ? `q="${searchCode}"` : null,
   });
 
   const me = useUserMe({
@@ -51,6 +51,7 @@ export const Body = ({
     userName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
     accessToken,
+    filter: null,
   });
 
   const userPublicPipelines = React.useMemo(() => {
@@ -69,7 +70,7 @@ export const Body = ({
     });
   }, [userPipelines.data, userPipelines.isSuccess]);
 
-  const searchedPipelines = React.useMemo(() => {
+  const allPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {
       return [];
     }
@@ -80,27 +81,8 @@ export const Body = ({
       all.push(...page.pipelines);
     }
 
-    if (!searchCode) {
-      return all;
-    }
-
-    const fuse = new Fuse(all, {
-      keys: ["id"],
-    });
-
-    const searchedResult = fuse.search(searchCode);
-
-    // If user is logged in, we won't display user's owned public pipeline
-    // in the hub page.
-
-    if (me.isSuccess) {
-      return searchedResult
-        .map((result) => result.item)
-        .filter((pipeline) => pipeline.owner_name === me.data.name);
-    } else {
-      return searchedResult.map((result) => result.item);
-    }
-  }, [pipelines.data, pipelines.isSuccess, searchCode, me.isSuccess, me.data]);
+    return all;
+  }, [pipelines.data, pipelines.isSuccess]);
 
   return (
     <div className=" flex flex-row px-20">
@@ -131,14 +113,14 @@ export const Body = ({
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess ? (
-            searchedPipelines.length === 0 ? (
+            allPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
                   Let&rsquo;s build your first pipline! 🙌
                 </p>
               </div>
             ) : (
-              searchedPipelines.map((pipeline) => (
+              allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
                   ownerID={pipeline.owner_name.split("/")[1]}

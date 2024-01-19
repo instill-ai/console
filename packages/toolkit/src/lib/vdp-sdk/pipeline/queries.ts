@@ -18,7 +18,8 @@ export type listPipelinesQueryParams = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
-  visibility?: Visibility;
+  visibility: Nullable<Visibility>;
+  filter: Nullable<string>;
 };
 
 export async function listPipelinesQuery(
@@ -41,8 +42,14 @@ export async function listPipelinesQuery(
     enablePagination?: boolean;
   }
 ) {
-  const { pageSize, nextPageToken, accessToken, enablePagination, visibility } =
-    props;
+  const {
+    pageSize,
+    nextPageToken,
+    accessToken,
+    enablePagination,
+    visibility,
+    filter,
+  } = props;
 
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
@@ -53,6 +60,7 @@ export async function listPipelinesQuery(
       pageSize,
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
+      filter,
     });
 
     const { data } = await client.get<ListPipelinesResponse>(queryString);
@@ -70,6 +78,8 @@ export async function listPipelinesQuery(
           nextPageToken: data.next_page_token,
           accessToken,
           enablePagination: false,
+          filter,
+          visibility,
         }))
       );
     }
@@ -91,6 +101,7 @@ export type listUserPipelinesQueryProps = {
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
   userName: string;
+  filter: Nullable<string>;
 };
 
 export async function listUserPipelinesQuery(
@@ -113,8 +124,14 @@ export async function listUserPipelinesQuery(
     enablePagination?: boolean;
   }
 ) {
-  const { pageSize, nextPageToken, accessToken, userName, enablePagination } =
-    props;
+  const {
+    pageSize,
+    nextPageToken,
+    accessToken,
+    userName,
+    enablePagination,
+    filter,
+  } = props;
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
     const pipelines: Pipeline[] = [];
@@ -123,7 +140,7 @@ export async function listUserPipelinesQuery(
       baseURL: `${userName}/pipelines?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
-      filter: null,
+      filter,
     });
 
     const { data } = await client.get<ListUserPipelinesResponse>(queryString);
@@ -142,6 +159,7 @@ export async function listUserPipelinesQuery(
           accessToken,
           userName,
           enablePagination: false,
+          filter,
         }))
       );
     }
