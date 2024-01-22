@@ -7,7 +7,9 @@ import {
   Icons,
   Input,
   RadioGroup,
+  Select,
   Separator,
+  Tag,
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
@@ -26,6 +28,7 @@ import {
   useEntity,
   useInstillStore,
   useShallow,
+  useUserMemberships,
   validateInstillID,
 } from "../../../lib";
 import { InstillErrors } from "../../../constant";
@@ -34,6 +37,7 @@ import { LoadingSpin } from "../../../components";
 const CreatePipelineSchema = z
   .object({
     id: z.string(),
+    accountId: z.string(),
     description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
@@ -74,6 +78,28 @@ export const CreatePipelineDialog = () => {
   const { accessToken } = useInstillStore(useShallow(selector));
 
   const entityObject = useEntity();
+
+  const organizations = useUserMemberships({
+    enabled: entityObject.isSuccess,
+    userID: entityObject.isSuccess ? entityObject.entity : null,
+    accessToken,
+  });
+
+  const organizationsAndUserList = React.useMemo(() => {
+    const orgsAndUserList = [];
+    if (organizations.isSuccess && organizations.data) {
+      organizations.data.map((org) => {
+        orgsAndUserList.push(org.organization);
+      });
+    }
+    if (entityObject.isSuccess && entityObject.entity) {
+      orgsAndUserList.push({
+        id: entityObject.entity,
+        name: entityObject.entityName,
+      });
+    }
+    return orgsAndUserList;
+  }, [organizations.isSuccess, entityObject.isSuccess]);
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
@@ -133,19 +159,32 @@ export const CreatePipelineDialog = () => {
       sharing,
     };
 
-    try {
-      await createPipeline.mutateAsync({
-        accessToken,
-        entityName: entityObject.entityName,
-        payload,
-      });
+    const accountName = organizationsAndUserList.find(
+      (account) => account.id === data.accountId
+    )?.name;
 
-      await router.push(`/${entity}/pipelines/${data.id}/builder`);
-    } catch (error) {
+    if (accountName) {
+      try {
+        await createPipeline.mutateAsync({
+          accessToken,
+          entityName: accountName,
+          payload,
+        });
+
+        await router.push(`/${data.accountId}/pipelines/${data.id}/builder`);
+      } catch (error) {
+        setCreating(false);
+        toastInstillError({
+          title: "Failed to create pipeline",
+          error,
+          toast,
+        });
+      }
+    } else {
       setCreating(false);
       toastInstillError({
         title: "Failed to create pipeline",
-        error,
+        error: null,
         toast,
       });
     }
@@ -221,6 +260,77 @@ export const CreatePipelineDialog = () => {
                         );
                       }}
                     />
+
+                    <Form.Field
+                      control={form.control}
+                      name="accountId"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item className="w-full">
+                            <Form.Label className="product-body-text-3-semibold">
+                              Account Name
+                            </Form.Label>
+                            <Form.Control>
+                              <Select.Root
+                                value={field?.value || ""}
+                                onValueChange={field.onChange}
+                              >
+                                <Select.Trigger className="w-full pl-[14px]">
+                                  <Select.Value placeholder="Select Account Name" />
+                                </Select.Trigger>
+                                <Select.Content>
+                                  <Select.Group>
+                                    {organizationsAndUserList.length &&
+                                      organizationsAndUserList.map(
+                                        (accountName) => (
+                                          <Select.Item
+                                            value={accountName.id}
+                                            key={accountName.id}
+                                          >
+                                            <div className="flex flex-row gap-x-2">
+                                              <span className="my-auto">
+                                                {accountName.id}
+                                              </span>
+                                              <span className="my-auto">
+                                                {accountName.name.includes(
+                                                  "organizations"
+                                                ) ? (
+                                                  <Tag
+                                                    variant="lightBlue"
+                                                    size="sm"
+                                                    className="!py-0"
+                                                  >
+                                                    organization
+                                                  </Tag>
+                                                ) : (
+                                                  <Tag
+                                                    size="sm"
+                                                    className="!py-0"
+                                                    variant="lightNeutral"
+                                                  >
+                                                    user
+                                                  </Tag>
+                                                )}
+                                              </span>
+                                            </div>
+                                          </Select.Item>
+                                        )
+                                      )}
+                                  </Select.Group>
+                                </Select.Content>
+                              </Select.Root>
+                            </Form.Control>
+                            <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                              <span>
+                                Your account name where pipeline is created
+                              </span>
+                            </p>
+                            <Form.Message />
+                          </Form.Item>
+                        );
+                      }}
+                    />
+
                     <Form.Field
                       control={form.control}
                       name="description"

@@ -7,6 +7,7 @@ import {
   Icons,
   Input,
   RadioGroup,
+  Select,
   Separator,
   Tag,
   Textarea,
@@ -29,6 +30,7 @@ import {
   useInstillStore,
   useShallow,
   useUserMe,
+  useUserMemberships,
   validateInstillID,
 } from "../lib";
 import { InstillErrors } from "../constant";
@@ -38,6 +40,7 @@ import { getRawPipelineRecipeFromPipelineRecipe } from "../view";
 const ClonePipelineSchema = z
   .object({
     id: z.string(),
+    accountId: z.string(),
     brief: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
@@ -86,6 +89,25 @@ export const ClonePipelineDialog = ({
     accessToken,
   });
 
+  const organizations = useUserMemberships({
+    enabled: enabledQuery && me.isSuccess,
+    userID: me.isSuccess ? me.data.id : null,
+    accessToken,
+  });
+
+  const organizationsAndUserList = React.useMemo(() => {
+    const orgsAndUserList = [];
+    if (organizations.isSuccess && organizations.data) {
+      organizations.data.map((org) => {
+        orgsAndUserList.push(org.organization);
+      });
+    }
+    if (me.isSuccess && me.data) {
+      orgsAndUserList.push(me.data);
+    }
+    return orgsAndUserList;
+  }, [organizations.isSuccess, me.isSuccess]);
+
   const createPipeline = useCreateUserPipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
     if (!me.isSuccess || !accessToken || !pipeline) {
@@ -127,20 +149,36 @@ export const ClonePipelineDialog = ({
       sharing,
     };
 
-    try {
-      await createPipeline.mutateAsync({
-        payload,
-        accessToken,
-        entityName: me.data.name,
-      });
+    const accountName = organizationsAndUserList.find(
+      (account) => account.id === data.accountId
+    )?.name;
 
-      await router.push(`/${me.data.id}/pipelines/${payload.id}`);
-    } catch (error) {
+    if (accountName) {
+      try {
+        await createPipeline.mutateAsync({
+          payload,
+          accessToken,
+          entityName: accountName,
+        });
+
+        await router.push(`/${data.accountId}/pipelines/${payload.id}`);
+      } catch (error) {
+        console.log("error", error);
+
+        setCloning(false);
+        toastInstillError({
+          title:
+            "Something went wrong when clone the pipeline, please try again later",
+          error,
+          toast,
+        });
+      }
+    } else {
       setCloning(false);
       toastInstillError({
         title:
           "Something went wrong when clone the pipeline, please try again later",
-        error,
+        error: null,
         toast,
       });
     }
@@ -209,9 +247,85 @@ export const ClonePipelineDialog = ({
                             </span>
                             <span className="ml-2 break-all product-body-text-3-semibold">
                               {field.value !== "" || field.value
-                                ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${me
-                                    .data?.id}/pipelines/${field.value}`
+                                ? `${env(
+                                    "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                                  )}/${form.getValues("accountId")}/pipelines/${
+                                    field.value
+                                  }`
                                 : null}
+                            </span>
+                          </p>
+                          <Form.Message />
+                        </Form.Item>
+                      );
+                    }}
+                  />
+
+                  <Form.Field
+                    control={form.control}
+                    name="accountId"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="w-full">
+                          <Form.Label className="product-body-text-3-semibold">
+                            Account Name
+                          </Form.Label>
+                          <Form.Control>
+                            <Select.Root
+                              value={field?.value || ""}
+                              onValueChange={field.onChange}
+                            >
+                              <Select.Trigger className="w-full pl-[14px]">
+                                <Select.Value placeholder="Select Account Name" />
+                              </Select.Trigger>
+                              <Select.Content>
+                                <Select.Group>
+                                  {organizationsAndUserList.length &&
+                                    organizationsAndUserList.map(
+                                      (accountName) => (
+                                        <Select.Item
+                                          value={accountName.id}
+                                          key={accountName.id}
+                                        >
+                                          <div className="flex flex-row gap-x-2">
+                                            <span className="my-auto">
+                                              {accountName.id}
+                                            </span>
+                                            <span className="my-auto">
+                                              {accountName.name.includes(
+                                                "organizations"
+                                              ) ? (
+                                                <Tag
+                                                  variant="lightBlue"
+                                                  size="sm"
+                                                  className="!py-0"
+                                                >
+                                                  organization
+                                                </Tag>
+                                              ) : (
+                                                <Tag
+                                                  size="sm"
+                                                  className="!py-0"
+                                                  variant="lightNeutral"
+                                                >
+                                                  user
+                                                </Tag>
+                                              )}
+                                            </span>
+                                          </div>
+                                        </Select.Item>
+                                      )
+                                    )}
+                                </Select.Group>
+                              </Select.Content>
+                            </Select.Root>
+                          </Form.Control>
+                          <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                            <span>
+                              Your account name where pipeline is{" "}
+                              {pipeline?.owner_name === me.data?.name
+                                ? "Duplicated"
+                                : "Cloned"}{" "}
                             </span>
                           </p>
                           <Form.Message />
