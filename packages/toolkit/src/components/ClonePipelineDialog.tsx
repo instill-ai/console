@@ -11,7 +11,6 @@ import {
   Separator,
   Tag,
   Textarea,
-  Tooltip,
   useToast,
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
@@ -106,7 +105,7 @@ export const ClonePipelineDialog = ({
       orgsAndUserList.push(me.data);
     }
     return orgsAndUserList;
-  }, [organizations.isSuccess, me.isSuccess]);
+  }, [organizations.isSuccess, organizations.data, me.isSuccess, me.data]);
 
   const createPipeline = useCreateUserPipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
