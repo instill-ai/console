@@ -234,11 +234,49 @@ export const CreatePipelineDialog = () => {
                               </Form.Label>
                               <Form.Control>
                                 <Select.Root
-                                  value={field?.value || ""}
-                                  onValueChange={field.onChange}
+                                  value={field?.value}
+                                  onValueChange={(e) => {
+                                    field.onChange(e);
+                                    if (form.getValues("id")) {
+                                      form.trigger("id");
+                                    }
+                                  }}
                                 >
                                   <Select.Trigger className="w-full pl-[14px]">
-                                    <Select.Value placeholder="Select Account Name" />
+                                    <Select.Value placeholder="Select Account Name">
+                                      <div className="flex flex-row gap-x-2">
+                                        <span className="my-auto">
+                                          {field?.value?.length >= 10
+                                            ? field?.value?.slice(0, 10) + "..."
+                                            : field.value}
+                                        </span>
+                                        <span className="my-auto">
+                                          {organizationsAndUserList?.length &&
+                                          organizationsAndUserList
+                                            ?.find(
+                                              (accountName) =>
+                                                accountName.id === field.value
+                                            )
+                                            ?.name.includes("organizations") ? (
+                                            <Tag
+                                              variant="lightBlue"
+                                              size="sm"
+                                              className="!py-0"
+                                            >
+                                              organization
+                                            </Tag>
+                                          ) : (
+                                            <Tag
+                                              size="sm"
+                                              className="!py-0"
+                                              variant="lightNeutral"
+                                            >
+                                              user
+                                            </Tag>
+                                          )}
+                                        </span>
+                                      </div>
+                                    </Select.Value>
                                   </Select.Trigger>
                                   <Select.Content>
                                     <Select.Group>
@@ -292,6 +330,11 @@ export const CreatePipelineDialog = () => {
                           );
                         }}
                       />
+
+                      <span className="pt-[30px] text-2xl text-semantic-fg-disabled">
+                        /
+                      </span>
+
                       <Form.Field
                         control={form.control}
                         name="id"
@@ -319,9 +362,11 @@ export const CreatePipelineDialog = () => {
                                 </span>
                                 <span className="ml-2 break-all product-body-text-3-semibold">
                                   {field.value !== "" || field.value
-                                    ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
-                                        entityObject.entityName.split("/")[1]
-                                      }/pipelines/${field.value}`
+                                    ? `${env(
+                                        "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                                      )}/${form.getValues(
+                                        "entityId"
+                                      )}/pipelines/${field.value}`
                                     : null}
                                 </span>
                               </p>
