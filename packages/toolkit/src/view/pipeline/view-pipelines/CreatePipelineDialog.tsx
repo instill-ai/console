@@ -37,7 +37,7 @@ import { LoadingSpin } from "../../../components";
 const CreatePipelineSchema = z
   .object({
     id: z.string(),
-    entityId: z.string(),
+    namespaceId: z.string(),
     description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
@@ -159,19 +159,19 @@ export const CreatePipelineDialog = () => {
       sharing,
     };
 
-    const accountName = organizationsAndUserList.find(
-      (account) => account.id === data.entityId
+    const namespace = organizationsAndUserList.find(
+      (account) => account.id === data.namespaceId
     )?.name;
 
-    if (accountName) {
+    if (namespace) {
       try {
         await createPipeline.mutateAsync({
           accessToken,
-          entityName: accountName,
+          entityName: namespace,
           payload,
         });
 
-        await router.push(`/${data.entityId}/pipelines/${data.id}/builder`);
+        await router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -222,159 +222,158 @@ export const CreatePipelineDialog = () => {
               <Form.Root {...form}>
                 <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
                   <div className="flex flex-col gap-y-5">
-                    <div className="flex flex-row gap-x-4">
-                      <Form.Field
-                        control={form.control}
-                        name="entityId"
-                        render={({ field }) => {
-                          return (
-                            <Form.Item className="w-full">
-                              <Form.Label className="product-body-text-3-semibold">
-                                Account Name
-                              </Form.Label>
-                              <Form.Control>
-                                <Select.Root
-                                  value={field?.value}
-                                  onValueChange={(e) => {
-                                    field.onChange(e);
-                                    if (form.getValues("id")) {
-                                      form.trigger("id");
-                                    }
-                                  }}
-                                >
-                                  <Select.Trigger className="w-full pl-[14px]">
-                                    <Select.Value placeholder="Select Account Name">
-                                      <div className="flex flex-row gap-x-2">
-                                        <span className="my-auto">
-                                          {field?.value?.length >= 10
-                                            ? field?.value?.slice(0, 10) + "..."
-                                            : field.value}
-                                        </span>
-                                        <span className="my-auto">
-                                          {organizationsAndUserList?.length &&
-                                          organizationsAndUserList
-                                            ?.find(
-                                              (accountName) =>
-                                                accountName.id === field.value
+                    <div className="space-y-2">
+                      <div className="flex flex-row gap-x-4">
+                        <Form.Field
+                          control={form.control}
+                          name="namespaceId"
+                          render={({ field }) => {
+                            return (
+                              <Form.Item className="w-full">
+                                <Form.Label className="product-body-text-3-semibold">
+                                  Account Name
+                                </Form.Label>
+                                <Form.Control>
+                                  <Select.Root
+                                    value={field?.value}
+                                    onValueChange={(e) => {
+                                      field.onChange(e);
+                                      if (form.getValues("id")) {
+                                        form.trigger("id");
+                                      }
+                                    }}
+                                  >
+                                    <Select.Trigger className="w-full pl-[14px]">
+                                      <Select.Value placeholder="Select Account Name">
+                                        <div className="flex flex-row gap-x-2">
+                                          <span className="my-auto">
+                                            {field?.value?.length >= 10
+                                              ? field?.value?.slice(0, 10) +
+                                                "..."
+                                              : field.value}
+                                          </span>
+                                          <span className="my-auto">
+                                            {organizationsAndUserList?.length &&
+                                            organizationsAndUserList
+                                              ?.find(
+                                                (namespace) =>
+                                                  namespace.id === field.value
+                                              )
+                                              ?.name.includes(
+                                                "organizations"
+                                              ) ? (
+                                              <Tag
+                                                variant="lightBlue"
+                                                size="sm"
+                                                className="!py-0"
+                                              >
+                                                organization
+                                              </Tag>
+                                            ) : (
+                                              <Tag
+                                                size="sm"
+                                                className="!py-0"
+                                                variant="lightNeutral"
+                                              >
+                                                user
+                                              </Tag>
+                                            )}
+                                          </span>
+                                        </div>
+                                      </Select.Value>
+                                    </Select.Trigger>
+                                    <Select.Content>
+                                      <Select.Group>
+                                        {organizationsAndUserList.length &&
+                                          organizationsAndUserList.map(
+                                            (namespace) => (
+                                              <Select.Item
+                                                value={namespace.id}
+                                                key={namespace.id}
+                                              >
+                                                <div className="flex flex-row gap-x-2">
+                                                  <span className="my-auto">
+                                                    {namespace.id}
+                                                  </span>
+                                                  <span className="my-auto">
+                                                    {namespace.name.includes(
+                                                      "organizations"
+                                                    ) ? (
+                                                      <Tag
+                                                        variant="lightBlue"
+                                                        size="sm"
+                                                        className="!py-0"
+                                                      >
+                                                        organization
+                                                      </Tag>
+                                                    ) : (
+                                                      <Tag
+                                                        size="sm"
+                                                        className="!py-0"
+                                                        variant="lightNeutral"
+                                                      >
+                                                        user
+                                                      </Tag>
+                                                    )}
+                                                  </span>
+                                                </div>
+                                              </Select.Item>
                                             )
-                                            ?.name.includes("organizations") ? (
-                                            <Tag
-                                              variant="lightBlue"
-                                              size="sm"
-                                              className="!py-0"
-                                            >
-                                              organization
-                                            </Tag>
-                                          ) : (
-                                            <Tag
-                                              size="sm"
-                                              className="!py-0"
-                                              variant="lightNeutral"
-                                            >
-                                              user
-                                            </Tag>
                                           )}
-                                        </span>
-                                      </div>
-                                    </Select.Value>
-                                  </Select.Trigger>
-                                  <Select.Content>
-                                    <Select.Group>
-                                      {organizationsAndUserList.length &&
-                                        organizationsAndUserList.map(
-                                          (accountName) => (
-                                            <Select.Item
-                                              value={accountName.id}
-                                              key={accountName.id}
-                                            >
-                                              <div className="flex flex-row gap-x-2">
-                                                <span className="my-auto">
-                                                  {accountName.id}
-                                                </span>
-                                                <span className="my-auto">
-                                                  {accountName.name.includes(
-                                                    "organizations"
-                                                  ) ? (
-                                                    <Tag
-                                                      variant="lightBlue"
-                                                      size="sm"
-                                                      className="!py-0"
-                                                    >
-                                                      organization
-                                                    </Tag>
-                                                  ) : (
-                                                    <Tag
-                                                      size="sm"
-                                                      className="!py-0"
-                                                      variant="lightNeutral"
-                                                    >
-                                                      user
-                                                    </Tag>
-                                                  )}
-                                                </span>
-                                              </div>
-                                            </Select.Item>
-                                          )
-                                        )}
-                                    </Select.Group>
-                                  </Select.Content>
-                                </Select.Root>
-                              </Form.Control>
-                              <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                                <span>
-                                  Your account name where pipeline is created
-                                </span>
-                              </p>
-                              <Form.Message />
-                            </Form.Item>
-                          );
-                        }}
-                      />
+                                      </Select.Group>
+                                    </Select.Content>
+                                  </Select.Root>
+                                </Form.Control>
+                                <Form.Message />
+                              </Form.Item>
+                            );
+                          }}
+                        />
 
-                      <span className="pt-[30px] text-2xl text-semantic-fg-disabled">
-                        /
-                      </span>
+                        <span className="pt-[30px] text-2xl text-semantic-fg-disabled">
+                          /
+                        </span>
 
-                      <Form.Field
-                        control={form.control}
-                        name="id"
-                        render={({ field }) => {
-                          return (
-                            <Form.Item className="w-full">
-                              <Form.Label className="product-body-text-3-semibold">
-                                Pipeline Name
-                              </Form.Label>
-                              <Form.Control>
-                                <Input.Root>
-                                  <Input.Core
-                                    {...field}
-                                    className="pl-2 !product-body-text-2-regular"
-                                    type="text"
-                                    placeholder="Pipeline name"
-                                    required={false}
-                                    value={field.value || ""}
-                                  />
-                                </Input.Root>
-                              </Form.Control>
-                              <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                                <span>
-                                  Your pipeline URL in Instill AI will be:
-                                </span>
-                                <span className="ml-2 break-all product-body-text-3-semibold">
-                                  {field.value !== "" || field.value
-                                    ? `${env(
-                                        "NEXT_PUBLIC_CONSOLE_BASE_URL"
-                                      )}/${form.getValues(
-                                        "entityId"
-                                      )}/pipelines/${field.value}`
-                                    : null}
-                                </span>
-                              </p>
-                              <Form.Message />
-                            </Form.Item>
-                          );
-                        }}
-                      />
+                        <Form.Field
+                          control={form.control}
+                          name="id"
+                          render={({ field }) => {
+                            return (
+                              <Form.Item className="w-full">
+                                <Form.Label className="product-body-text-3-semibold">
+                                  Pipeline Name
+                                </Form.Label>
+                                <Form.Control>
+                                  <Input.Root>
+                                    <Input.Core
+                                      {...field}
+                                      className="pl-2 !product-body-text-2-regular"
+                                      type="text"
+                                      placeholder="Pipeline name"
+                                      required={false}
+                                      value={field.value || ""}
+                                    />
+                                  </Input.Root>
+                                </Form.Control>
+
+                                <Form.Message />
+                              </Form.Item>
+                            );
+                          }}
+                        />
+                      </div>
+                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                        <span>Your pipeline URL in Instill AI will be:</span>
+                        <span className="ml-2 break-all product-body-text-3-semibold">
+                          {form.getValues("id") !== "" || form.getValues("id")
+                            ? `${env(
+                                "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                              )}/${form.getValues(
+                                "namespaceId"
+                              )}/pipelines/${form.getValues("id")}`
+                            : null}
+                        </span>
+                      </p>
                     </div>
 
                     <Form.Field
