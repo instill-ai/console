@@ -14,6 +14,9 @@ export default defineConfig({
       "react-dom",
       "react-markdown",
       "remark-frontmatter",
+
+      // This is causing the bundling error
+      "#async_hooks",
     ];
   },
 });
