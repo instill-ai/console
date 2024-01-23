@@ -37,7 +37,7 @@ import { LoadingSpin } from "../../../components";
 const CreatePipelineSchema = z
   .object({
     id: z.string(),
-    accountId: z.string(),
+    entityId: z.string(),
     description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
@@ -88,7 +88,7 @@ export const CreatePipelineDialog = () => {
   const organizationsAndUserList = React.useMemo(() => {
     const orgsAndUserList = [];
     if (organizations.isSuccess && organizations.data) {
-      organizations.data.map((org) => {
+      organizations.data.forEach((org) => {
         orgsAndUserList.push(org.organization);
       });
     }
@@ -160,7 +160,7 @@ export const CreatePipelineDialog = () => {
     };
 
     const accountName = organizationsAndUserList.find(
-      (account) => account.id === data.accountId
+      (account) => account.id === data.entityId
     )?.name;
 
     if (accountName) {
@@ -171,7 +171,7 @@ export const CreatePipelineDialog = () => {
           payload,
         });
 
-        await router.push(`/${data.accountId}/pipelines/${data.id}/builder`);
+        await router.push(`/${data.entityId}/pipelines/${data.id}/builder`);
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -211,7 +211,7 @@ export const CreatePipelineDialog = () => {
       </Dialog.Trigger>
       <Dialog.Content className="!w-[600px] !p-0">
         {entityObject.isSuccess ? (
-          <div className="flex flex-col ">
+          <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">
               <h3 className=" text-semantic-fg-primary product-body-text-1-semibold">
                 Create new pipeline
@@ -222,114 +222,115 @@ export const CreatePipelineDialog = () => {
               <Form.Root {...form}>
                 <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
                   <div className="flex flex-col gap-y-5">
-                    <Form.Field
-                      control={form.control}
-                      name="id"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item className="w-full">
-                            <Form.Label className="product-body-text-3-semibold">
-                              Pipeline Name
-                            </Form.Label>
-                            <Form.Control>
-                              <Input.Root>
-                                <Input.Core
-                                  {...field}
-                                  className="pl-2 !product-body-text-2-regular"
-                                  type="text"
-                                  placeholder="Pipeline name"
-                                  required={false}
-                                  value={field.value || ""}
-                                />
-                              </Input.Root>
-                            </Form.Control>
-                            <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                              <span>
-                                Your pipeline URL in Instill AI will be:
-                              </span>
-                              <span className="ml-2 break-all product-body-text-3-semibold">
-                                {field.value !== "" || field.value
-                                  ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
-                                      entityObject.entityName.split("/")[1]
-                                    }/pipelines/${field.value}`
-                                  : null}
-                              </span>
-                            </p>
-                            <Form.Message />
-                          </Form.Item>
-                        );
-                      }}
-                    />
-
-                    <Form.Field
-                      control={form.control}
-                      name="accountId"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item className="w-full">
-                            <Form.Label className="product-body-text-3-semibold">
-                              Account Name
-                            </Form.Label>
-                            <Form.Control>
-                              <Select.Root
-                                value={field?.value || ""}
-                                onValueChange={field.onChange}
-                              >
-                                <Select.Trigger className="w-full pl-[14px]">
-                                  <Select.Value placeholder="Select Account Name" />
-                                </Select.Trigger>
-                                <Select.Content>
-                                  <Select.Group>
-                                    {organizationsAndUserList.length &&
-                                      organizationsAndUserList.map(
-                                        (accountName) => (
-                                          <Select.Item
-                                            value={accountName.id}
-                                            key={accountName.id}
-                                          >
-                                            <div className="flex flex-row gap-x-2">
-                                              <span className="my-auto">
-                                                {accountName.id}
-                                              </span>
-                                              <span className="my-auto">
-                                                {accountName.name.includes(
-                                                  "organizations"
-                                                ) ? (
-                                                  <Tag
-                                                    variant="lightBlue"
-                                                    size="sm"
-                                                    className="!py-0"
-                                                  >
-                                                    organization
-                                                  </Tag>
-                                                ) : (
-                                                  <Tag
-                                                    size="sm"
-                                                    className="!py-0"
-                                                    variant="lightNeutral"
-                                                  >
-                                                    user
-                                                  </Tag>
-                                                )}
-                                              </span>
-                                            </div>
-                                          </Select.Item>
-                                        )
-                                      )}
-                                  </Select.Group>
-                                </Select.Content>
-                              </Select.Root>
-                            </Form.Control>
-                            <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                              <span>
-                                Your account name where pipeline is created
-                              </span>
-                            </p>
-                            <Form.Message />
-                          </Form.Item>
-                        );
-                      }}
-                    />
+                    <div className="flex flex-row gap-x-4">
+                      <Form.Field
+                        control={form.control}
+                        name="entityId"
+                        render={({ field }) => {
+                          return (
+                            <Form.Item className="w-full">
+                              <Form.Label className="product-body-text-3-semibold">
+                                Account Name
+                              </Form.Label>
+                              <Form.Control>
+                                <Select.Root
+                                  value={field?.value || ""}
+                                  onValueChange={field.onChange}
+                                >
+                                  <Select.Trigger className="w-full pl-[14px]">
+                                    <Select.Value placeholder="Select Account Name" />
+                                  </Select.Trigger>
+                                  <Select.Content>
+                                    <Select.Group>
+                                      {organizationsAndUserList.length &&
+                                        organizationsAndUserList.map(
+                                          (accountName) => (
+                                            <Select.Item
+                                              value={accountName.id}
+                                              key={accountName.id}
+                                            >
+                                              <div className="flex flex-row gap-x-2">
+                                                <span className="my-auto">
+                                                  {accountName.id}
+                                                </span>
+                                                <span className="my-auto">
+                                                  {accountName.name.includes(
+                                                    "organizations"
+                                                  ) ? (
+                                                    <Tag
+                                                      variant="lightBlue"
+                                                      size="sm"
+                                                      className="!py-0"
+                                                    >
+                                                      organization
+                                                    </Tag>
+                                                  ) : (
+                                                    <Tag
+                                                      size="sm"
+                                                      className="!py-0"
+                                                      variant="lightNeutral"
+                                                    >
+                                                      user
+                                                    </Tag>
+                                                  )}
+                                                </span>
+                                              </div>
+                                            </Select.Item>
+                                          )
+                                        )}
+                                    </Select.Group>
+                                  </Select.Content>
+                                </Select.Root>
+                              </Form.Control>
+                              <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                                <span>
+                                  Your account name where pipeline is created
+                                </span>
+                              </p>
+                              <Form.Message />
+                            </Form.Item>
+                          );
+                        }}
+                      />
+                      <Form.Field
+                        control={form.control}
+                        name="id"
+                        render={({ field }) => {
+                          return (
+                            <Form.Item className="w-full">
+                              <Form.Label className="product-body-text-3-semibold">
+                                Pipeline Name
+                              </Form.Label>
+                              <Form.Control>
+                                <Input.Root>
+                                  <Input.Core
+                                    {...field}
+                                    className="pl-2 !product-body-text-2-regular"
+                                    type="text"
+                                    placeholder="Pipeline name"
+                                    required={false}
+                                    value={field.value || ""}
+                                  />
+                                </Input.Root>
+                              </Form.Control>
+                              <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                                <span>
+                                  Your pipeline URL in Instill AI will be:
+                                </span>
+                                <span className="ml-2 break-all product-body-text-3-semibold">
+                                  {field.value !== "" || field.value
+                                    ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
+                                        entityObject.entityName.split("/")[1]
+                                      }/pipelines/${field.value}`
+                                    : null}
+                                </span>
+                              </p>
+                              <Form.Message />
+                            </Form.Item>
+                          );
+                        }}
+                      />
+                    </div>
 
                     <Form.Field
                       control={form.control}
