@@ -41,6 +41,7 @@ export const UserProfile = () => {
     enabled: enabledQuery && entityObject.isSuccess,
     userName: entityObject.isSuccess ? entityObject.entityName : null,
     filter: null,
+    visibility: null,
   });
 
   React.useEffect(() => {

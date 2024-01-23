@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { listUserPipelinesQuery } from "../../vdp-sdk";
+import { Visibility, listUserPipelinesQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 import type { Nullable } from "../../type";
 
@@ -8,7 +8,8 @@ import type { Nullable } from "../../type";
 export async function fetchUserPipelines(
   userName: string,
   accessToken: Nullable<string>,
-  filter: Nullable<string>
+  filter: Nullable<string>,
+  visibility: Nullable<Visibility>
 ) {
   try {
     const pipelines = await listUserPipelinesQuery({
@@ -18,6 +19,7 @@ export async function fetchUserPipelines(
       accessToken,
       enablePagination: false,
       filter,
+      visibility,
     });
 
     return Promise.resolve(pipelines);
@@ -32,16 +34,18 @@ export const useUserPipelines = ({
   accessToken,
   retry,
   filter,
+  visibility,
 }: {
   userName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
+  filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
   /**
    * - Default is 3
    * - Set to false to disable retry
    */
   retry?: false | number;
-  filter: Nullable<string>;
 }) => {
   let enableQuery = false;
 
@@ -56,7 +60,12 @@ export const useUserPipelines = ({
         return Promise.reject(new Error("userName not provided"));
       }
 
-      const pipelines = await fetchUserPipelines(userName, accessToken, filter);
+      const pipelines = await fetchUserPipelines(
+        userName,
+        accessToken,
+        filter,
+        visibility
+      );
       return Promise.resolve(pipelines);
     },
     {
