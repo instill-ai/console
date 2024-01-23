@@ -232,7 +232,9 @@ export const InOutPut = () => {
                 variant="tertiaryColour"
                 size="md"
                 onClick={() => {
-                  `/${entityObject.entity}/pipelines/${entityObject.id}/builder`;
+                  router.push(
+                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                  );
                 }}
               >
                 Setup
