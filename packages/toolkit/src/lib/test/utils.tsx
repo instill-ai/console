@@ -35,3 +35,20 @@ export * from "@testing-library/react";
 export { userEvent } from "@testing-library/user-event";
 // override render export
 export { customRender as render };
+
+//
+//
+//
+
+/**
+ * react-testing-library has special rule for userevent.type/keyboard
+ * We need to escape the { with {{
+ * ref: https://testing-library.com/docs/user-event/keyboard
+ * @param value Instill reference value like ${user.name}
+ * @returns escaped value like ${{user.name}
+ */
+export const getEscapedReferenceValueForReactTestingLibrary = (
+  value: string
+) => {
+  return "${{" + value.replace("${", "").replace("}", "") + "}";
+};

@@ -69,6 +69,7 @@ export const TextField = ({
               <Input.Root>
                 <Input.Core
                   {...field}
+                  aria-label={title ?? undefined}
                   className={cn(
                     "nodrag",
                     size === "sm" ? "!product-body-text-4-regular" : ""
