@@ -194,6 +194,7 @@ export const ClonePipelineDialog = ({
         form.reset({
           id: "",
           brief: "",
+          namespaceId: me.data?.id,
         });
         if (onOpenChange) {
           onOpenChange(open);
@@ -228,7 +229,7 @@ export const ClonePipelineDialog = ({
                           return (
                             <Form.Item className="w-full">
                               <Form.Label className="product-body-text-3-semibold">
-                                Account Name
+                                Owner
                               </Form.Label>
                               <Form.Control>
                                 <Select.Root
@@ -360,7 +361,7 @@ export const ClonePipelineDialog = ({
                     <p className="text-semantic-fg-secondary product-body-text-3-regular">
                       <span>Your pipeline URL in Instill AI will be:</span>
                       <span className="ml-2 break-all product-body-text-3-semibold">
-                        {form.getValues("id") !== "" || form.getValues("id")
+                        {form.watch("id") !== "" && form.watch("id")
                           ? `${env(
                               "NEXT_PUBLIC_CONSOLE_BASE_URL"
                             )}/${form.getValues(
