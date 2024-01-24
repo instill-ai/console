@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   ConnectorWithDefinition,
   formatDate,
+  sendAmplitudeData,
   toastInstillError,
   useDeleteUserConnector,
   useInstillStore,
@@ -36,6 +37,8 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         connectorName: connector.name,
         accessToken,
       });
+
+      sendAmplitudeData("delete_connector");
 
       toast({
         title: "Successfully delete connector",

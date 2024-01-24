@@ -1,7 +1,7 @@
 import * as z from "zod";
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
-import { Nullable, useCreateApiToken } from "../../../lib";
+import { Nullable, sendAmplitudeData, useCreateApiToken } from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +44,9 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
       {
         onSuccess: () => {
           setIsLoading(false);
+
+          sendAmplitudeData("create_api_token");
+
           if (onCreate) {
             onCreate();
           }

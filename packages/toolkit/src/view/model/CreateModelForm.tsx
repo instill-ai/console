@@ -210,7 +210,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const createUserModel = useCreateUserModel();
 
   const prepareNewModel = React.useCallback(
-    async (modelName: string) => {
+    async (modelName: string, modelDefinitionName: string) => {
       const model = await getUserModelQuery({ modelName, accessToken });
       setModelCreated(true);
 
@@ -229,12 +229,9 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         message: "Succeed.",
       });
 
-      if (amplitudeIsInit) {
-        sendAmplitudeData("create_github_model", {
-          type: "critical_action",
-          process: "model",
-        });
-      }
+      sendAmplitudeData("create_model", {
+        model_definition_name: modelDefinitionName,
+      });
     },
     [amplitudeIsInit, accessToken, queryClient, setFieldValue]
   );
@@ -300,7 +297,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 return;
               }
 
-              await prepareNewModel(modelName);
+              await prepareNewModel(modelName, modelDefinition);
               deployUserModel.mutate({ modelName, accessToken });
 
               setCreateModelMessageBoxState({
@@ -376,7 +373,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 return;
               }
 
-              await prepareNewModel(modelName);
+              prepareNewModel(modelName, modelDefinition);
               deployUserModel.mutate({ modelName, accessToken });
 
               setCreateModelMessageBoxState({
@@ -454,7 +451,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 return;
               }
 
-              await prepareNewModel(modelName);
+              prepareNewModel(modelName, modelDefinition);
               deployUserModel.mutate({ modelName, accessToken });
 
               setCreateModelMessageBoxState({
@@ -528,7 +525,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 return;
               }
 
-              await prepareNewModel(modelName);
+              prepareNewModel(modelName, "model-definitions/huggingface");
               deployUserModel.mutate({ modelName, accessToken });
 
               setCreateModelMessageBoxState({

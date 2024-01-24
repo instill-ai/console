@@ -7,6 +7,7 @@ import {
   Nullable,
   StartOperatorMetadata,
   TriggerUserPipelineResponse,
+  sendAmplitudeData,
   toastInstillError,
   useEntity,
   useInstillStore,
@@ -121,6 +122,8 @@ export const InOutPut = () => {
         },
         returnTraces: true,
       });
+
+      sendAmplitudeData("trigger_pipeline");
 
       setResponse(data);
     } catch (error) {

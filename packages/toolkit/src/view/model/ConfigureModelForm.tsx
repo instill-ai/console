@@ -155,10 +155,7 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
           }
 
           if (amplitudeIsInit) {
-            sendAmplitudeData("update_model", {
-              type: "critical_action",
-              process: "model",
-            });
+            sendAmplitudeData("update_model");
           }
         },
         onError: (error) => {
@@ -223,10 +220,7 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
             status: "success",
           });
           if (amplitudeIsInit) {
-            sendAmplitudeData("delete_model", {
-              type: "critical_action",
-              process: "model",
-            });
+            sendAmplitudeData("delete_model");
           }
 
           if (onDelete) {

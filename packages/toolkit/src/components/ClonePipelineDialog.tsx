@@ -24,6 +24,7 @@ import {
   Pipeline,
   PipelineSharing,
   env,
+  sendAmplitudeData,
   toastInstillError,
   useCreateUserPipeline,
   useInstillStore,
@@ -159,6 +160,12 @@ export const ClonePipelineDialog = ({
           accessToken,
           entityName: namespace,
         });
+
+        if (pipeline.owner_name === me.data.name) {
+          sendAmplitudeData("duplicate_pipeline");
+        } else {
+          sendAmplitudeData("clone_pipeline");
+        }
 
         await router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
       } catch (error) {

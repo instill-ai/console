@@ -21,6 +21,7 @@ import {
   useTriggerUserPipelineRelease,
   toastInstillError,
   GeneralRecord,
+  sendAmplitudeData,
 } from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
@@ -387,6 +388,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           },
           returnTraces: true,
         });
+
+        sendAmplitudeData("trigger_pipeline");
 
         updateIsTriggeringPipeline(() => false);
         updateTestModeTriggerResponse(() => data);

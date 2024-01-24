@@ -5,6 +5,7 @@ import {
   CreateUserConnectorPayload,
   Nullable,
   UpdateUserConnectorPayload,
+  sendAmplitudeData,
   useCreateUserConnector,
   useEntity,
   useUpdateUserConnector,
@@ -52,6 +53,10 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
           accessToken,
         });
 
+        sendAmplitudeData("create_connector", {
+          connector_definition_name: definition.name,
+        });
+
         if (onSubmit) {
           onSubmit(connector);
         }
@@ -85,6 +90,8 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
         payload,
         accessToken,
       });
+
+      sendAmplitudeData("update_connector");
 
       if (onSubmit) {
         onSubmit(connector);

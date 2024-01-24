@@ -12,6 +12,7 @@ import {
   serialize,
   UpdateUserPipelinePayload,
   useEntity,
+  sendAmplitudeData,
 } from "../../../lib";
 import { useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
@@ -62,6 +63,8 @@ export const Readme = ({
           };
 
           await updateUserPipeline.mutateAsync({ payload, accessToken });
+
+          sendAmplitudeData("update_pipeline_readme");
 
           toast({
             size: "small",

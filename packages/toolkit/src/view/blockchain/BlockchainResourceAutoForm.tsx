@@ -4,6 +4,7 @@ import {
   ConnectorWithDefinition,
   Nullable,
   UpdateUserConnectorPayload,
+  sendAmplitudeData,
   useCreateUserConnector,
   useEntity,
   useUpdateUserConnector,
@@ -52,6 +53,10 @@ export const BlockchainResourceAutoForm = (
           accessToken,
         });
 
+        sendAmplitudeData("create_connector", {
+          connector_definition_name: definition.name,
+        });
+
         if (onSubmit) {
           onSubmit(connector);
         }
@@ -85,6 +90,8 @@ export const BlockchainResourceAutoForm = (
         payload,
         accessToken,
       });
+
+      sendAmplitudeData("update_connector");
 
       if (onSubmit) {
         onSubmit(connector);

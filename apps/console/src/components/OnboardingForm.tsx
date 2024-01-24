@@ -79,7 +79,7 @@ export const OnboardingForm = () => {
         } else {
           if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
-              event.target.value,
+              event.target.value
             )
           ) {
             error = "Invalid email address";
@@ -110,7 +110,7 @@ export const OnboardingForm = () => {
             : event.target.value,
       }));
     },
-    [],
+    []
   );
 
   const handleRoleChange = useCallback((option: Nullable<SelectOption>) => {
@@ -199,9 +199,7 @@ export const OnboardingForm = () => {
       {
         onSuccess: async (user) => {
           if (amplitudeIsInit) {
-            sendAmplitudeData("submit_onboarding_form", {
-              type: "critical_action",
-            });
+            sendAmplitudeData("submit_onboarding_form");
           }
 
           setMessageBoxState(() => ({
@@ -235,7 +233,7 @@ export const OnboardingForm = () => {
             }));
           }
         },
-      },
+      }
     );
   }, [
     fieldValues,

@@ -17,6 +17,7 @@ import {
 import {
   InstillStore,
   User,
+  sendAmplitudeData,
   toastInstillError,
   useInstillStore,
   useShallow,
@@ -100,6 +101,9 @@ export const UserProfileTab = () => {
 
     try {
       await updateUser.mutateAsync({ payload, accessToken });
+
+      sendAmplitudeData("update_user_profile_settings");
+
       form.reset(payload);
       toast({
         title: "Profile updated successfully",
