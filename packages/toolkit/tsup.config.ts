@@ -12,10 +12,9 @@ export default defineConfig({
     options.external = [
       "react",
       "react-dom",
-      "react-markdown",
-      "remark-frontmatter",
 
-      // This is causing the bundling error
+      // vitest is using some nodejs modules that is not available under our bundle env
+      // it will cause Could not resolve "#async_hooks" error
       "#async_hooks",
     ];
   },
