@@ -209,8 +209,9 @@ export const ClonePipelineDialog = ({
                             </span>
                             <span className="ml-2 break-all product-body-text-3-semibold">
                               {field.value !== "" || field.value
-                                ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${me
-                                    .data?.id}/pipelines/${field.value}`
+                                ? `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
+                                    me.data?.id
+                                  }/pipelines/${field.value}`
                                 : null}
                             </span>
                           </p>
