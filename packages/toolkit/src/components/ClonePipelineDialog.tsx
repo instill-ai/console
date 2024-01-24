@@ -10,7 +10,6 @@ import {
   Separator,
   Tag,
   Textarea,
-  Tooltip,
   useToast,
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
