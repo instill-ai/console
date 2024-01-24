@@ -149,6 +149,7 @@ export const TextField = ({
                   <Input.Root>
                     <Input.Core
                       {...field}
+                      aria-label={title ?? undefined}
                       ref={inputRef}
                       type="text"
                       value={
