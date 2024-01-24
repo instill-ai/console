@@ -1,5 +1,18 @@
 # @instill-ai/design-system
 
+## [0.62.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.1...@instill-ai/design-system-v0.62.0) (2024-01-24)
+
+
+### Features
+
+* implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
+* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+
+
+### Bug Fixes
+
+* Typo in component configuration ([#889](https://github.com/instill-ai/console/issues/889)) ([ec55621](https://github.com/instill-ai/console/commit/ec55621c30e9848c33155d52d9ade52c29ad94c2))
+
 ## [0.61.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.0...@instill-ai/design-system-v0.61.1) (2024-01-15)
 
 

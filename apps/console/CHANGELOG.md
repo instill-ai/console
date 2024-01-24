@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.0-beta](https://github.com/instill-ai/console/compare/v0.36.0-beta...v0.37.0-beta) (2024-01-24)
+
+
+### Features
+
+* implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
+
 ## [0.36.0-beta](https://github.com/instill-ai/console/compare/v0.35.1-beta...v0.36.0-beta) (2024-01-15)
 
 

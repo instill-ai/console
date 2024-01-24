@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.2...@instill-ai/eslint-config-cortex-v0.8.0) (2024-01-24)
+
+
+### Features
+
+* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+
 ## [0.7.2](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.1...@instill-ai/eslint-config-cortex-v0.7.2) (2024-01-15)
 
 
