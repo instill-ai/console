@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.4.1...@instill-ai/design-tokens-v0.5.0) (2024-01-24)
+
+
+### Features
+
+* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+
 ## [0.4.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.4.0...@instill-ai/design-tokens-v0.4.1) (2024-01-02)
 
 

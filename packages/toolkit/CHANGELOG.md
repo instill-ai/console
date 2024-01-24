@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.79.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.78.1...@instill-ai/toolkit-v0.79.0) (2024-01-24)
+
+
+### Features
+
+* add organization support to create, clone and duplicate pipeline ([#893](https://github.com/instill-ai/console/issues/893)) ([0c9ffee](https://github.com/instill-ai/console/commit/0c9ffee501202922d2917d6a0cdc4b31f4e541b6))
+* implement the unit test for nested auto gen form ([#896](https://github.com/instill-ai/console/issues/896)) ([51c4630](https://github.com/instill-ai/console/commit/51c46305e93372ae652e38eda0fed82545afc714))
+* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+* support backend search param for pipelines ([#891](https://github.com/instill-ai/console/issues/891)) ([c8df8e9](https://github.com/instill-ai/console/commit/c8df8e9add76045adb3ebe0ae7f40614670401ac))
+
+
+### Bug Fixes
+
+* fix empty input setup button is not working in /pipelines/pid page ([#894](https://github.com/instill-ai/console/issues/894)) ([5f3cb72](https://github.com/instill-ai/console/commit/5f3cb725107dbfac11021fe2bbe84df87108f785))
+* fix formatting issue ([61b1022](https://github.com/instill-ai/console/commit/61b10226ca8007d5930967c1a739d55cb7ecec81))
+* Typo in component configuration ([#889](https://github.com/instill-ai/console/issues/889)) ([ec55621](https://github.com/instill-ai/console/commit/ec55621c30e9848c33155d52d9ade52c29ad94c2))
+
 ## [0.78.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.78.0...@instill-ai/toolkit-v0.78.1) (2024-01-17)
 
 
