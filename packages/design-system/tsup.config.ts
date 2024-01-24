@@ -8,4 +8,14 @@ export default defineConfig({
   loader: {
     ".js": "jsx",
   },
+  esbuildOptions(options) {
+    options.external = [
+      "react",
+      "react-dom",
+
+      // vitest is using some nodejs modules that is not available under our bundle env
+      // it will cause Could not resolve "#async_hooks" error
+      "#async_hooks",
+    ];
+  },
 });

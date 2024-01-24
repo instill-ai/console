@@ -128,8 +128,9 @@ export const TabShare = () => {
     } else {
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}?view=${pipeline.data.sharing.share_code
-        ?.code}`;
+      )}/${entity}/pipelines/${id}?view=${
+        pipeline.data.sharing.share_code?.code
+      }`;
       setIsUpdatingShareCodePermission(false);
     }
 
