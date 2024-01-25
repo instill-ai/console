@@ -1,45 +1,35 @@
-export type AmplitudeEventProperties = {
-  type: "navigation" | "critical_action";
-  process?:
-    | "source"
-    | "destination"
-    | "pipeline"
-    | "model"
-    | "ai"
-    | "blockchain";
-};
-
 export type AmplitudeEvent =
   // Critical event
-  | "create_local_model"
-  | "create_github_model"
-  | "create_artivc_model"
-  | "delete_model"
-  | "update_model"
-  | "deploy_model_instance"
-  | "update_model_instance"
-  | "use_existing_model_instance"
-  | "test_model_instance"
   | "create_pipeline"
   | "delete_pipeline"
-  | "update_pipeline"
-  | "create_destination"
-  | "delete_destination"
-  | "use_existing_destination"
-  | "update_destination"
-  | "create_source"
-  | "delete_source"
-  | "update_source"
-  | "create_ai"
-  | "delete_ai"
-  | "update_ai"
-  | "create_blockchain"
-  | "delete_blockchain"
-  | "update_blockchain"
-  | "use_existing_source"
-  | "go_to_stripe_portal"
-  | "go_to_stripe_checkout"
+  | "update_pipeline_recipe"
+  | "update_pipeline_name"
+  | "update_pipeline_description"
+  | "update_pipeline_readme"
+  | "publish_pipeline"
+  | "unpublish_pipeline"
+  | "enable_pipeline_share_by_link"
+  | "disable_pipeline_share_by_link"
+  | "clone_pipeline"
+  | "duplicate_pipeline"
+  | "trigger_pipeline"
+  | "search_pipelines"
+  | "create_connector"
+  | "delete_connector"
+  | "update_connector"
   | "submit_onboarding_form"
-  | "change_user_info"
   | "create_api_token"
-  | "delete_api_token";
+  | "delete_api_token"
+  | "create_organization"
+  | "invite_user_to_organization"
+  | "remove_user_from_organization"
+  | "update_user_profile_settings"
+  | "update_organization_profile_settings"
+  | "update_model"
+  | "delete_model"
+  | "create_model";
+
+export type AmplitudeEventProperties = {
+  connector_definition_name?: string;
+  model_definition_name?: string;
+};

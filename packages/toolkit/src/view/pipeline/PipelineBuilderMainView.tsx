@@ -20,6 +20,7 @@ import {
   useSmartHint,
   useUpdateUserPipeline,
   useUserPipeline,
+  sendAmplitudeData,
 } from "../../lib";
 import {
   BottomBar,
@@ -188,6 +189,8 @@ export const PipelineBuilderMainView = (
                 accessToken,
               });
 
+              sendAmplitudeData("create_pipeline");
+
               toast({
                 title: "Pipeline is saved",
                 variant: "alert-success",
@@ -229,6 +232,8 @@ export const PipelineBuilderMainView = (
               payload,
               accessToken,
             });
+
+            sendAmplitudeData("update_pipeline_recipe");
 
             toast({
               title: "Successfully saved the pipeline",

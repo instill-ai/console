@@ -10,6 +10,7 @@ import {
 import {
   Nullable,
   getInstillApiErrorMessage,
+  sendAmplitudeData,
   useDeleteApiToken,
 } from "../../../lib";
 import { isAxiosError } from "axios";
@@ -54,6 +55,8 @@ export const DeleteAPITokenDialog = (props: DeleteAPITokenDialogProps) => {
       {
         onSuccess: () => {
           setIsLoading(false);
+
+          sendAmplitudeData("delete_api_token");
 
           if (onDelete) {
             onDelete();

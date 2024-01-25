@@ -27,7 +27,7 @@ export const setAmplitudeUserId = (userId: string) => {
 
 export const sendAmplitudeData = (
   eventType: AmplitudeEvent,
-  eventProperties: AmplitudeEventProperties
+  eventProperties?: AmplitudeEventProperties
 ) => {
   track(eventType, {
     ...eventProperties,

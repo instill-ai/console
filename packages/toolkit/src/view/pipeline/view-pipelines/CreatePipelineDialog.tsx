@@ -23,6 +23,7 @@ import {
   Nullable,
   PipelineSharing,
   env,
+  sendAmplitudeData,
   toastInstillError,
   useCreateUserPipeline,
   useEntity,
@@ -170,6 +171,8 @@ export const CreatePipelineDialog = () => {
           entityName: namespace,
           payload,
         });
+
+        sendAmplitudeData("create_pipeline");
 
         await router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
       } catch (error) {

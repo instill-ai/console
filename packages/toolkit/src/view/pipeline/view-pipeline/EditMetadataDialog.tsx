@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Nullable,
   UpdateUserPipelinePayload,
+  sendAmplitudeData,
   toastInstillError,
   useEntity,
   useInstillStore,
@@ -57,6 +58,7 @@ export const EditMetadataDialog = ({
 
     try {
       await updateUserPipeline.mutateAsync({ payload, accessToken });
+      sendAmplitudeData("update_pipeline_description");
       setOpen(false);
       toast({
         size: "small",

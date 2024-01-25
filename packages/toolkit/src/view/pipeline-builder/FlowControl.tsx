@@ -33,6 +33,7 @@ import {
   UpdateUserPipelinePayload,
   env,
   getInstillApiErrorMessage,
+  sendAmplitudeData,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -143,6 +144,8 @@ export const FlowControl = (props: FlowControlProps) => {
           accessToken,
         });
 
+        sendAmplitudeData("update_pipeline_recipe");
+
         toast({
           title: "Pipeline is saved",
           variant: "alert-success",
@@ -190,6 +193,7 @@ export const FlowControl = (props: FlowControlProps) => {
       setPipelineUid(res.pipeline.uid);
       updatePipelineRecipeIsDirty(() => false);
       updatePipelineIsNew(() => false);
+      sendAmplitudeData("create_pipeline");
 
       toast({
         title: "Successfully saved the pipeline",

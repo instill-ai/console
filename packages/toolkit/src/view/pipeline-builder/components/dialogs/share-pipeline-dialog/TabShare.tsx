@@ -6,6 +6,7 @@ import {
   UpdateUserPipelinePayload,
   env,
   getInstillApiErrorMessage,
+  sendAmplitudeData,
   useEntity,
   useInstillStore,
   useShallow,
@@ -103,6 +104,9 @@ export const TabShare = () => {
           payload,
           accessToken,
         });
+
+        sendAmplitudeData("enable_pipeline_share_by_link");
+
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
         )}/${entity}/pipelines/${id}?view=${pipeline.sharing.share_code?.code}`;

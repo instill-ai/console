@@ -15,6 +15,7 @@ import {
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
+  sendAmplitudeData,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -125,6 +126,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
         setPipelineName(res.pipeline.name);
         updatePipelineIsNew(() => false);
         updatePipelineRecipeIsDirty(() => false);
+        sendAmplitudeData("create_pipeline");
 
         await router.push(`/${entity}/pipelines/${newId}/builder`, undefined, {
           shallow: true,
@@ -173,6 +175,8 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
           payload,
           accessToken,
         });
+
+        sendAmplitudeData("update_pipeline_name");
 
         updatePipelineRecipeIsDirty(() => false);
       } catch (error) {

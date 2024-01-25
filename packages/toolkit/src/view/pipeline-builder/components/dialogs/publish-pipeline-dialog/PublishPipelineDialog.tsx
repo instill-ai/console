@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import {
   InstillStore,
   UpdateUserPipelinePayload,
+  sendAmplitudeData,
   toastInstillError,
   useInstillStore,
   useUpdateUserPipeline,
@@ -96,6 +97,7 @@ export const PublishPipelineDialog = () => {
       });
 
       setIsPublishing(false);
+      sendAmplitudeData("publish_pipeline");
 
       toast({
         size: "large",

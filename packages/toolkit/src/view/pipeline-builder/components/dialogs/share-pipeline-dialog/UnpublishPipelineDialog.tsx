@@ -3,6 +3,7 @@ import { Button, Dialog, useToast } from "@instill-ai/design-system";
 import {
   InstillStore,
   UpdateUserPipelinePayload,
+  sendAmplitudeData,
   toastInstillError,
   useEntity,
   useInstillStore,
@@ -50,6 +51,8 @@ export const UnpublishPipelineDialog = () => {
       };
 
       await updateUserPipeline.mutateAsync({ payload, accessToken });
+
+      sendAmplitudeData("unpublish_pipeline");
 
       toast({
         title: "Pipeline successfully unpublished",
