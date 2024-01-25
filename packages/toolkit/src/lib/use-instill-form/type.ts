@@ -24,6 +24,7 @@ export type InstillCustomProps = {
 type InstillJsonSchemaProps = {
   example?: string | number;
   "x-oaiTypeLabel"?: string;
+  "x-go-type"?: string;
   nullable?: boolean;
 } & InstillCustomProps;
 
