@@ -22,6 +22,7 @@ export type UseStartOperatorTriggerPipelineFormProps = Pick<
   | "onEditField"
   | "disabledFields"
   | "disabledFieldControls"
+  | "disabledReferenceHint"
   | "keyPrefix"
 >;
 
@@ -32,6 +33,7 @@ export function useStartOperatorTriggerPipelineForm({
   onEditField,
   disabledFields,
   disabledFieldControls,
+  disabledReferenceHint,
   keyPrefix,
 }: UseStartOperatorTriggerPipelineFormProps) {
   const superRefineRules = React.useMemo(() => {
@@ -79,6 +81,7 @@ export function useStartOperatorTriggerPipelineForm({
       onDeleteField,
       disabledFields,
       disabledFieldControls,
+      disabledReferenceHint,
       keyPrefix,
     });
 
@@ -90,6 +93,7 @@ export function useStartOperatorTriggerPipelineForm({
     onEditField,
     onDeleteField,
     disabledFieldControls,
+    disabledReferenceHint,
     disabledFields,
     keyPrefix,
   ]);

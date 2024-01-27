@@ -76,6 +76,8 @@ import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
 import { Recording04 } from "./Recording04";
 import { Recording05 } from "./Recording05";
+import { ReferenceIconCheck } from "./ReferenceIconCheck";
+import { ReferenceIconX } from "./ReferenceIconX";
 import { Save01 } from "./Save01";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
@@ -177,6 +179,8 @@ export const Icons = {
   Recording03,
   Recording04,
   Recording05,
+  ReferenceIconCheck,
+  ReferenceIconX,
   Save01,
   SpeechRecognition,
   Sliders01,

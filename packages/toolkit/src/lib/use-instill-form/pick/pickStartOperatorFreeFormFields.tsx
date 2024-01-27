@@ -10,9 +10,10 @@ export type PickStartOperatorFreeFormFieldsProps = {
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
+  keyPrefix?: string;
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
-  keyPrefix?: string;
+  disabledReferenceHint?: boolean;
 };
 
 export function pickStartOperatorFreeFormFields({
@@ -24,6 +25,7 @@ export function pickStartOperatorFreeFormFields({
   disabledFields,
   disabledFieldControls,
   keyPrefix,
+  disabledReferenceHint,
 }: PickStartOperatorFreeFormFieldsProps) {
   const fields: StartOperatorFreeFormFieldItem[] = [];
 
@@ -52,6 +54,7 @@ export function pickStartOperatorFreeFormFields({
                 disabled={disabledFields}
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
+                disabledReferenceHint={disabledReferenceHint}
               />
             ),
           });
@@ -72,6 +75,7 @@ export function pickStartOperatorFreeFormFields({
                 disabled={disabledFields}
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
+                disabledReferenceHint={disabledReferenceHint}
               />
             ),
           });
@@ -94,6 +98,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -116,6 +121,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -137,6 +143,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -158,6 +165,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -179,6 +187,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -200,6 +209,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -221,6 +231,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -242,6 +253,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -263,6 +275,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -284,6 +297,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });
@@ -305,6 +319,7 @@ export function pickStartOperatorFreeFormFields({
               disabled={disabledFields}
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
             />
           ),
         });

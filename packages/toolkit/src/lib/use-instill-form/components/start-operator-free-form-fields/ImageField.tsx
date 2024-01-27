@@ -20,6 +20,7 @@ export const ImageField = ({
   disabled,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -40,6 +41,7 @@ export const ImageField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
 
             <div className="w-full">

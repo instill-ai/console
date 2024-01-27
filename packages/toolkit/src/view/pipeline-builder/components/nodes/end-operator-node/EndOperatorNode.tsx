@@ -292,6 +292,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
             {isViewResultMode ? "Edit" : "See Result"}
           </button>
           <StartEndOperatorControlPanel
+            type="end"
             nodeIsCollapsed={nodeIsCollapsed}
             setNodeIsCollapsed={setNodeIsCollapsed}
             handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}

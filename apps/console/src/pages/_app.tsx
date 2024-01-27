@@ -12,7 +12,7 @@ import {
   ReactQueryDevtools,
   useInstillStore,
   useCreateResourceFormStore,
-  DefaultOptions
+  DefaultOptions,
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -32,7 +32,7 @@ export const defaultOptions: DefaultOptions = {
   queries: {
     refetchOnWindowFocus: false,
   },
-}
+};
 
 export const queryClient = new QueryClient({ defaultOptions, queryCache });
 

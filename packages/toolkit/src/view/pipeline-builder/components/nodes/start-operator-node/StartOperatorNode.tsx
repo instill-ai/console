@@ -299,6 +299,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       description: "",
     });
   }
+
+  const [disabledReferenceHint, setDisabledReferenceHint] =
+    React.useState(false);
+
   const {
     Schema: StartOperatorTriggerPipelineFormSchema,
     fields: startOperatorTriggerPipelineFormfields,
@@ -310,6 +314,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     onEditField: onEditFreeFormField,
     disabledFields: pipelineIsReadOnly,
     disabledFieldControls: pipelineIsReadOnly,
+    disabledReferenceHint,
   });
 
   React.useEffect(() => {
@@ -460,11 +465,14 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           </p>
         </div>
         <StartEndOperatorControlPanel
+          type="start"
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
           noteIsOpen={noteIsOpen}
           componentTypeName="Start"
+          disabledReferenceHint={disabledReferenceHint}
+          setDisabledReferenceHint={setDisabledReferenceHint}
         />
       </NodeHead>
       {nodeIsCollapsed ? null : (

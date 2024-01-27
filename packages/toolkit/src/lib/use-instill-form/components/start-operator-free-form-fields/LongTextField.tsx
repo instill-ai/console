@@ -19,6 +19,7 @@ export const LongTextField = ({
   disabled,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const timer = React.useRef<Nullable<number>>(null);
 
@@ -65,6 +66,7 @@ export const LongTextField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
             <Form.Control>
               <EditorContent disabled={disabled} editor={editor} />

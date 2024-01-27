@@ -14,6 +14,7 @@ export const BooleanField = ({
   isHidden,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
@@ -31,6 +32,7 @@ export const BooleanField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
             <Form.Control>
               <Switch
