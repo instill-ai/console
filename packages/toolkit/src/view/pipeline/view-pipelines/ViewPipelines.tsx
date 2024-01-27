@@ -20,6 +20,7 @@ import {
   UserProfileCardProps,
 } from "../../../components";
 import { useRouter } from "next/router";
+import { CreatePipelineDialog } from "./CreatePipelineDialog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -91,7 +92,7 @@ export const ViewPipelines = ({
             <p className="text-semantic-fg-primary product-body-text-3-semibold">
               Search Pipelines
             </p>
-            <div className="flex flex-row gap-x-4">
+            <div className="mt-auto flex flex-row gap-x-4">
               <Input.Root className="flex-1">
                 <Input.LeftIcon>
                   <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -106,7 +107,7 @@ export const ViewPipelines = ({
           </div>
           <div className="flex flex-col gap-y-2.5">
             <p className="text-semantic-fg-primary product-body-text-3-semibold">
-              Public
+              Visibility
             </p>
             <Select.Root
               value={selectedVisibilityOption}
@@ -114,17 +115,18 @@ export const ViewPipelines = ({
                 setSelectedVisibilityOption(value as Visibility);
               }}
             >
-              <Select.Trigger className="w-full">
+              <Select.Trigger className="mt-auto w-full">
                 <Select.Value />
               </Select.Trigger>
               <Select.Content>
                 <Select.Group>
                   <Select.Item value="VISIBILITY_PUBLIC">Public</Select.Item>
-                  <Select.Item value="VISIBILITY_Private">Private</Select.Item>
+                  <Select.Item value="VISIBILITY_PRIVATE">Private</Select.Item>
                 </Select.Group>
               </Select.Content>
             </Select.Root>
           </div>
+          <CreatePipelineDialog className="mt-auto" />
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess ? (
@@ -147,7 +149,7 @@ export const ViewPipelines = ({
               ))
             )
           ) : (
-            Array.from({ length: 10 }).map((_, index) => (
+            Array.from({ length: 1 }).map((_, index) => (
               <CardSkeletonPipeline key={`card-skelton-${index}`} />
             ))
           )}
