@@ -52,6 +52,7 @@ export const Body = ({
     enabled: enabledQuery && me.isSuccess,
     accessToken,
     filter: null,
+    visibility: null,
   });
 
   const userPublicPipelines = React.useMemo(() => {

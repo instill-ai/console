@@ -102,6 +102,7 @@ export type listUserPipelinesQueryProps = {
   accessToken: Nullable<string>;
   userName: string;
   filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
 };
 
 export async function listUserPipelinesQuery(
@@ -131,6 +132,7 @@ export async function listUserPipelinesQuery(
     userName,
     enablePagination,
     filter,
+    visibility,
   } = props;
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
@@ -140,6 +142,7 @@ export async function listUserPipelinesQuery(
       baseURL: `${userName}/pipelines?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
       filter,
     });
 
@@ -160,6 +163,7 @@ export async function listUserPipelinesQuery(
           userName,
           enablePagination: false,
           filter,
+          visibility,
         }))
       );
     }

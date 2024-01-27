@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 import * as z from "zod";
 import {
   Button,
@@ -61,7 +62,7 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
 });
 
-export const CreatePipelineDialog = () => {
+export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [permission, setPermission] =
@@ -208,7 +209,11 @@ export const CreatePipelineDialog = () => {
       }}
     >
       <Dialog.Trigger asChild>
-        <Button className="gap-x-2" variant="primary" size="lg">
+        <Button
+          className={cn("gap-x-2", className)}
+          variant="primary"
+          size="lg"
+        >
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
           Create Pipeline
         </Button>

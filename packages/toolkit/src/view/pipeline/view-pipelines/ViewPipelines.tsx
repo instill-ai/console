@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Icons, Input } from "@instill-ai/design-system";
+import { Button, Icons, Input, Select } from "@instill-ai/design-system";
 
 import {
   Nullable,
@@ -10,6 +10,7 @@ import {
   useShallow,
   useUserMe,
   useEntity,
+  Visibility,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -18,6 +19,7 @@ import {
   UserProfileCard,
   UserProfileCardProps,
 } from "../../../components";
+import { useRouter } from "next/router";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 
 const selector = (store: InstillStore) => ({
@@ -30,7 +32,15 @@ export const ViewPipelines = ({
 }: {
   organizations?: UserProfileCardProps["organizations"];
 }) => {
+  const router = useRouter();
+  const { visibility } = router.query;
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [selectedVisibilityOption, setSelectedVisibilityOption] =
+    React.useState<Visibility>(
+      visibility === "VISIBILITY_PUBLIC"
+        ? "VISIBILITY_PUBLIC"
+        : "VISIBILITY_UNSPECIFIED"
+    );
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -48,6 +58,7 @@ export const ViewPipelines = ({
     userName: entityObject.entityName,
     enabledQuery: enabledQuery && entityObject.isSuccess,
     filter: searchCode ? `q="${searchCode}"` : null,
+    visibility: selectedVisibilityOption ?? null,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -76,23 +87,46 @@ export const ViewPipelines = ({
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">
-        <div className="mb-4 flex flex-col">
-          <p className="mb-2.5 text-semantic-fg-primary product-body-text-3-semibold">
-            Search Pipelines
-          </p>
-          <div className="flex flex-row gap-x-4">
-            <Input.Root className="flex-1">
-              <Input.LeftIcon>
-                <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-              </Input.LeftIcon>
-              <Input.Core
-                value={searchCode ?? ""}
-                placeholder="Search..."
-                onChange={(event) => setSearchCode(event.target.value)}
-              />
-            </Input.Root>
-            <CreatePipelineDialog />
+        <div className="mb-4 grid grid-flow-row grid-cols-3 gap-x-3">
+          <div className="flex flex-col gap-y-2.5">
+            <p className="text-semantic-fg-primary product-body-text-3-semibold">
+              Search Pipelines
+            </p>
+            <div className="mt-auto flex flex-row gap-x-4">
+              <Input.Root className="flex-1">
+                <Input.LeftIcon>
+                  <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                </Input.LeftIcon>
+                <Input.Core
+                  value={searchCode ?? ""}
+                  placeholder="Search..."
+                  onChange={(event) => setSearchCode(event.target.value)}
+                />
+              </Input.Root>
+            </div>
           </div>
+          <div className="flex flex-col gap-y-2.5">
+            <p className="text-semantic-fg-primary product-body-text-3-semibold">
+              Visibility
+            </p>
+            <Select.Root
+              value={selectedVisibilityOption}
+              onValueChange={(value) => {
+                setSelectedVisibilityOption(value as Visibility);
+              }}
+            >
+              <Select.Trigger className="mt-auto w-full">
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Group>
+                  <Select.Item value="VISIBILITY_PUBLIC">Public</Select.Item>
+                  <Select.Item value="VISIBILITY_PRIVATE">Private</Select.Item>
+                </Select.Group>
+              </Select.Content>
+            </Select.Root>
+          </div>
+          <CreatePipelineDialog className="mt-auto" />
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess ? (
@@ -115,7 +149,7 @@ export const ViewPipelines = ({
               ))
             )
           ) : (
-            Array.from({ length: 10 }).map((_, index) => (
+            Array.from({ length: 1 }).map((_, index) => (
               <CardSkeletonPipeline key={`card-skelton-${index}`} />
             ))
           )}

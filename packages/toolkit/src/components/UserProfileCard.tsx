@@ -10,6 +10,7 @@ import {
 } from "../lib";
 import { useRouter } from "next/router";
 import { EntityAvatar } from "./EntityAvatar";
+import Link from "next/link";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -113,9 +114,13 @@ export const UserProfileCard = ({
                 <p className="text-semantic-fg-primary product-body-text-2-semibold">
                   My active public pipelines
                 </p>
-                <p className="text-semantic-accent-default product-body-text-2-semibold">
-                  {totalPublicPipelines}
-                </p>
+                <Link
+                  href={`/${me.data.id}/pipelines?visibility=VISIBILITY_PUBLIC`}
+                >
+                  <p className="text-semantic-accent-default product-body-text-2-semibold">
+                    {totalPublicPipelines}
+                  </p>
+                </Link>
               </div>
             ) : null}
           </div>

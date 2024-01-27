@@ -78,7 +78,7 @@ const LoginPage: NextPageWithLayout = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
     if (!accessToken) {
       return;
