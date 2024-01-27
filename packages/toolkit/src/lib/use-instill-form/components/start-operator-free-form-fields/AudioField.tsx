@@ -19,6 +19,7 @@ export const AudioField = ({
   disabled,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [audioFile, setAudioFile] = React.useState<Nullable<File>>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -39,6 +40,7 @@ export const AudioField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
 
             <div className="flex">

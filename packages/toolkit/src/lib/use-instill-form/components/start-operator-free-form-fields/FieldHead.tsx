@@ -22,6 +22,7 @@ export const FieldHead = ({
   onEditField,
   onDeleteField,
   disabledFieldControl,
+  disabledReferenceHint,
 }: {
   mode: FieldMode;
   form: GeneralUseFormReturn;
@@ -30,124 +31,110 @@ export const FieldHead = ({
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
   disabledFieldControl?: boolean;
+  disabledReferenceHint?: boolean;
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
   return (
-    <div className="flex flex-row items-center justify-between">
+    <div className="flex">
       {mode === "build" ? (
-        <React.Fragment>
-          <div className="flex w-1/2 flex-1 flex-row gap-x-2">
-            <Tooltip.Provider>
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <div className="my-auto line-clamp-1 max-w-[120px] font-sans text-sm font-semibold text-semantic-fg-primary">
-                    {title}
-                  </div>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content
-                    sideOffset={5}
-                    side="top"
-                    className="max-w-[300px] rounded-sm !border-none bg-semantic-bg-primary !px-3 !py-2"
-                  >
-                    <p className="break-words text-semantic-fg-secondary !product-body-text-4-semibold">
+        <div className="flex flex-col gap-y-2.5">
+          <div className="flex flex-row items-center justify-between">
+            <div className="flex w-1/2 flex-1 flex-row gap-x-2">
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <div className="my-auto line-clamp-1 max-w-[120px] font-sans text-sm font-semibold text-semantic-fg-primary">
                       {title}
-                    </p>
-                    <Tooltip.Arrow
-                      className="fill-semantic-bg-primary"
-                      offset={10}
-                      width={9}
-                      height={6}
-                    />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-            </Tooltip.Provider>
-            <Tooltip.Provider>
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content
-                    sideOffset={5}
-                    side="top"
-                    className="w-[300px] rounded-sm !border-none bg-semantic-bg-primary !px-3 !py-2"
-                  >
-                    <div className="flex flex-col gap-y-2">
-                      <div className="flex flex-row gap-x-2">
-                        <div className="pt-0.5">
-                          <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
-                        </div>
-                        <div className="flex flex-col gap-y-2">
-                          <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-                            You can use{" "}
-                            <Tag
-                              variant="lightBlue"
-                              size="sm"
-                              className="!rounded !px-2 !py-0.5"
-                            >{`{}`}</Tag>{" "}
-                            to reference this field&rsquo;s value.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex flex-row gap-x-2">
-                        <div className="pt-0.5">
-                          <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
-                        </div>
-                        <div className="flex flex-col gap-y-2">
-                          <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-                            You can also use{" "}
-                            <Tag
-                              variant="lightBlue"
-                              size="sm"
-                              className="!rounded !px-2 !py-0.5"
-                            >{`{{}}`}</Tag>{" "}
-                            to build the template which use this value. For
-                            example
-                          </p>
-                          <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                            {`This is a template use this value, {{start.${path}}}`}
-                          </p>
-                        </div>
-                      </div>
                     </div>
-                    <Tooltip.Arrow
-                      className="fill-semantic-bg-primary"
-                      offset={10}
-                      width={9}
-                      height={6}
-                    />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-            </Tooltip.Provider>
-          </div>
-          {currentVersion === "latest" && !disabledFieldControl && isOwner ? (
-            <div className="my-auto flex flex-row gap-x-2">
-              <button
-                type="button"
-                onClick={() => {
-                  form.clearErrors();
-                  if (onEditField) onEditField(path);
-                }}
-                className="my-auto flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
-              >
-                edit field
-                <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
-              </button>
-              <button
-                className="my-auto rounded p-1 hover:bg-semantic-error-bg-alt"
-                type="button"
-                onClick={() => {
-                  if (onDeleteField) onDeleteField(path);
-                }}
-              >
-                <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
-              </button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      sideOffset={5}
+                      side="top"
+                      className="max-w-[300px] rounded-sm !border-none bg-semantic-bg-primary !px-3 !py-2"
+                    >
+                      <p className="break-words text-semantic-fg-secondary !product-body-text-4-semibold">
+                        {title}
+                      </p>
+                      <Tooltip.Arrow
+                        className="fill-semantic-bg-primary"
+                        offset={10}
+                        width={9}
+                        height={6}
+                      />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      sideOffset={5}
+                      side="top"
+                      className="w-[300px] rounded-sm !border-none bg-semantic-bg-primary !px-3 !py-2"
+                    >
+                      <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-row gap-x-2">
+                          <div className="pt-0.5">
+                            <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                          </div>
+                          <div className="flex flex-col gap-y-2">
+                            <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
+                              You can use{" "}
+                              <Tag
+                                variant="lightBlue"
+                                size="sm"
+                                className="!rounded !px-2 !py-0.5"
+                              >
+                                ${`{start.${path}}`}
+                              </Tag>{" "}
+                              to reference this field&rsquo;s value.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <Tooltip.Arrow
+                        className="fill-semantic-bg-primary"
+                        offset={10}
+                        width={9}
+                        height={6}
+                      />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             </div>
-          ) : null}
-        </React.Fragment>
+            {currentVersion === "latest" && !disabledFieldControl && isOwner ? (
+              <div className="my-auto flex flex-row gap-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    form.clearErrors();
+                    if (onEditField) onEditField(path);
+                  }}
+                  className="my-auto flex flex-row gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg-alt"
+                >
+                  edit field
+                  <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
+                </button>
+                <button
+                  className="my-auto rounded p-1 hover:bg-semantic-error-bg-alt"
+                  type="button"
+                  onClick={() => {
+                    if (onDeleteField) onDeleteField(path);
+                  }}
+                >
+                  <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
+                </button>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex flex-row gap-x-1 bg-semantic-accent-bg px-2 py-0.5"></div>
+        </div>
       ) : (
         <div className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
           {title}
