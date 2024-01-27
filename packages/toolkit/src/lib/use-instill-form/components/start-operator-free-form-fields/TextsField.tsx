@@ -16,6 +16,7 @@ export const TextsField = ({
   disabled,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [textFieldsArray, setTextFieldsArray] = React.useState<number[]>([1]);
 
@@ -59,6 +60,7 @@ export const TextsField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
             <div className="mb-1.5 flex flex-col space-y-1">
               <div className="w-full">

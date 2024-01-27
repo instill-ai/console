@@ -15,6 +15,7 @@ export const ObjectField = ({
   disabled,
   keyPrefix,
   disabledFieldControl,
+  disabledReferenceHint,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
@@ -32,6 +33,7 @@ export const ObjectField = ({
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
+              disabledReferenceHint={disabledReferenceHint}
             />
             <Form.Control>
               <Textarea

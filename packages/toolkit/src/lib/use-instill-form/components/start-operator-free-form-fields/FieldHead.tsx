@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from "clsx";
 import { useShallow } from "zustand/react/shallow";
 import {
   FieldMode,
@@ -37,8 +38,8 @@ export const FieldHead = ({
   return (
     <div className="flex">
       {mode === "build" ? (
-        <div className="flex flex-col gap-y-2.5">
-          <div className="flex flex-row items-center justify-between">
+        <div className="flex w-full flex-col justify-between gap-y-2.5">
+          <div className="flex w-full flex-row items-center justify-between">
             <div className="flex w-1/2 flex-1 flex-row gap-x-2">
               <Tooltip.Provider>
                 <Tooltip.Root>
@@ -133,7 +134,39 @@ export const FieldHead = ({
               </div>
             ) : null}
           </div>
-          <div className="flex flex-row gap-x-1 bg-semantic-accent-bg px-2 py-0.5"></div>
+
+          {/* 
+            height animation css hack
+            ref: https://keithjgrant.com/posts/2023/04/transitioning-to-height-auto/
+         */}
+
+          <div
+            className="grid"
+            style={{
+              gridTemplateRows: disabledReferenceHint ? "0fr" : "1fr",
+              transition:
+                "grid-template-rows 0.5s ease-out, opacity 0.5s ease-out",
+              opacity: disabledReferenceHint ? 1 : 1,
+            }}
+          >
+            <div className="overflow-hidden">
+              <div className="flex">
+                <div className="flex flex-shrink flex-row items-center gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5">
+                  <div>
+                    <Icons.ReferenceIconCheck
+                      className={cn(
+                        "h-[9px] w-[18px] transition-colors duration-500",
+                        disabledReferenceHint
+                          ? "stroke-semantic-fg-secondary"
+                          : "stroke-semantic-accent-default"
+                      )}
+                    />
+                  </div>
+                  <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`start.${path}`}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
