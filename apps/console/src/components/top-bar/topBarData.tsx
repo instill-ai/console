@@ -9,7 +9,7 @@ export const tobBarData = [
     {
         pathName: 'connectors',
         Icon: Icons.IntersectSquare,
-        name: 'IntersectSquare'
+        name: 'Connectors'
     },
     {
         pathName: 'models',
