@@ -25,7 +25,7 @@ We maintain another container `Dockerfile.playwright` specifically for test usag
 
 - when build the text container, please alter `pnpm docker-build-test` to `docker build -f Dockerfile.playwright --build-arg TEST_USER='root' -t instill-console-integration .`
 - Then the user of this container will have the permission to write test-result into container.
-- you could look up the container's id by `docker cp` then copy the test-results into host folder by `docker cp <container_id>:/app/test-results .`
+- you could look up the container's id by `docker cp` then copy the test-results into host folder by `docker cp <container_id>:/app/apps/console/test-results .`
 
 ### About the manual test
 

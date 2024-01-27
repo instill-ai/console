@@ -141,7 +141,7 @@ jobs:
 
       - name: Launch Instill Base (latest)
         run: |
-          CONSOLE_PUBLIC_API_GATEWAY_HOST=api-gateway \
+          INSTILL_CORE_HOST=api-gateway \
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull

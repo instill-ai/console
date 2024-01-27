@@ -3,7 +3,7 @@
 
 docker run --rm -t \
   --network instill-network \
-  --entrypoint ./entrypoint-playwright.sh \
+  --entrypoint /bin/bash \
   -e NEXT_PUBLIC_CONSOLE_BASE_URL='http://console:3000' \
   -e NEXT_PUBLIC_GENERAL_API_VERSION=v1beta \
   -e NEXT_PUBLIC_MODEL_API_VERSION=v1alpha \

@@ -13,10 +13,9 @@ if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testMatch: "integration-test.list.ts",
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 75000,
+  timeout: 20000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -55,13 +54,19 @@ const config: PlaywrightTestConfig = {
 
   /* Configure projects for major browsers */
   projects: [
+    // Because on the first time login, we will demand user to change password,
+    // so the first time login will use the default password. And then We will
+    // use the changed password for the following test.
     {
-      name: "setup",
-      testMatch: "**/*.setup.ts",
+      name: "first-time-login",
+      testMatch: "first-time-login.test.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+      },
     },
     {
       name: "chromium",
-      dependencies: ["setup"],
+      testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Chrome"],
         storageState: "integration-test/.auth/user.json",
@@ -71,18 +76,18 @@ const config: PlaywrightTestConfig = {
     // Temp disable due to the viewport issue
     // https://github.com/microsoft/playwright/issues/22082
 
-    // {
-    //   name: "firefox",
-    //   dependencies: ["setup"],
-    //   use: {
-    //     ...devices["Desktop Firefox"],
-    //     storageState: "integration-test/.auth/user.json",
-    //   },
-    // },
+    {
+      name: "firefox",
+      testIgnore: "first-time-login.test.ts",
+      use: {
+        ...devices["Desktop Firefox"],
+        storageState: "integration-test/.auth/user.json",
+      },
+    },
 
     {
       name: "webkit",
-      dependencies: ["setup"],
+      testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Safari"],
         storageState: "integration-test/.auth/user.json",
