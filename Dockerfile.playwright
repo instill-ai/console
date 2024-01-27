@@ -11,7 +11,7 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-FROM mcr.microsoft.com/playwright:v1.39.0-focal
+FROM mcr.microsoft.com/playwright:v1.41.1-focal
 WORKDIR /app
 
 ARG TEST_USER="playwright"
