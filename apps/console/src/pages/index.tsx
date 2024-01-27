@@ -32,14 +32,13 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   useEffect(() => {
     if (!router.isReady || !cookies) return;
 
-    const cookieList = parse(cookies);
-
     if (user.isError) {
       router.push("/login");
       return;
     }
 
     if (user.isSuccess) {
+      const cookieList = parse(cookies);
       if (cookieList["instill-ai-user"]) {
         router.push(`/${user.data.id}/pipelines`);
       } else {

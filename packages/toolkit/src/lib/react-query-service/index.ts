@@ -22,4 +22,5 @@ export type {
   DehydratedState,
   UseQueryResult,
   UseMutationResult,
+  DefaultOptions,
 } from "@tanstack/react-query";
