@@ -9,6 +9,7 @@ import {
   useInstillStore,
 } from "../../..";
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
+import { ReferenceHintTag } from "../../../../components";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -151,19 +152,12 @@ export const FieldHead = ({
           >
             <div className="overflow-hidden">
               <div className="flex">
-                <div className="flex flex-shrink flex-row items-center gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-0.5">
-                  <div>
-                    <Icons.ReferenceIconCheck
-                      className={cn(
-                        "h-[9px] w-[18px] transition-colors duration-500",
-                        disabledReferenceHint
-                          ? "stroke-semantic-fg-secondary"
-                          : "stroke-semantic-accent-default"
-                      )}
-                    />
-                  </div>
-                  <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`start.${path}`}</p>
-                </div>
+                <ReferenceHintTag.Root>
+                  <ReferenceHintTag.Icon type="check" />
+                  <ReferenceHintTag.Label className="text-semantic-accent-default">
+                    {`start.${path}`}
+                  </ReferenceHintTag.Label>
+                </ReferenceHintTag.Root>
               </div>
             </div>
           </div>

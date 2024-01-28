@@ -14,11 +14,11 @@ export const ListField = ({
   description?: string;
 }) => {
   return (
-    <div className="flex flex-col">
-      <p className="mb-2 text-semantic-fg-secondary product-body-text-4-medium">
+    <div className="flex flex-col gap-y-1">
+      <p className="text-semantic-fg-secondary product-body-text-4-medium">
         {`${title} [${instillFormat}]`}
       </p>
-      <div className="mb-1 flex">
+      <div className="flex">
         <ReferenceHintTag.Root>
           <ReferenceHintTag.Label className="text-semantic-accent-default">
             {componentID ? `${componentID}.` + path : path}

@@ -1,6 +1,6 @@
 import cn from "clsx";
 import * as React from "react";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Tooltip } from "@instill-ai/design-system";
 
 export const ReferenceHintTagRoot = ({
   children,
@@ -49,9 +49,39 @@ export const ReferenceHintTagLabel = ({
   className?: string;
 }) => {
   return (
-    <p className={cn("font-sans text-[11px] font-medium", className)}>
-      {children}
-    </p>
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <p
+            className={cn(
+              "max-w-[240px] truncate font-sans text-[11px] font-medium",
+              className
+            )}
+          >
+            {children}
+          </p>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            sideOffset={5}
+            side="top"
+            className="max-w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2"
+          >
+            <div className="flex flex-col text-left">
+              <p className="bg-semantic-bg-primary product-body-text-4-semibold">
+                {children}
+              </p>
+            </div>
+            <Tooltip.Arrow
+              className="fill-semantic-bg-primary"
+              offset={10}
+              width={9}
+              height={6}
+            />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
   );
 };
 
