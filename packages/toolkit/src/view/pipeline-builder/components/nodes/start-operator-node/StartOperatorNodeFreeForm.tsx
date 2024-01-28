@@ -5,22 +5,41 @@ import {
   Form,
   Icons,
   Input,
-  Tag,
   Textarea,
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
-import { Nullable, StartOperatorInputType } from "../../../../../lib";
+import {
+  Nullable,
+  StartOperatorInputType,
+  validateInstillID,
+} from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
+import { InstillErrors } from "../../../../../constant";
 
-export const StartOperatorFreeFormSchema = z.object({
-  title: z
-    .string()
-    .min(1, { message: "Title is required" })
-    .max(32, { message: "Title must be less than 32 characters" }),
-  description: z.string().optional(),
-});
+export const StartOperatorFreeFormSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, { message: "Title is required" })
+      .max(32, { message: "Title must be less than 32 characters" }),
+    key: z
+      .string()
+      .min(1, { message: "Key is required" })
+      .max(32, { message: "Key must be less than 32 characters" }),
+
+    description: z.string().optional(),
+  })
+  .superRefine((state, ctx) => {
+    if (state.key && !validateInstillID(state.key)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["key"],
+      });
+    }
+  });
 
 export const StartOperatorNodeFreeForm = ({
   form,
@@ -44,6 +63,8 @@ export const StartOperatorNodeFreeForm = ({
   ) => void;
   onCancel: () => void;
 }) => {
+  const [isUserInputKey, setIsUserInputKey] = React.useState<boolean>(false);
+
   return (
     <Form.Root {...form}>
       <form onSubmit={form.handleSubmit(onCreateFreeFormField)}>
@@ -127,8 +148,7 @@ export const StartOperatorNodeFreeForm = ({
             onSelect={() => setSelectedType("semi-structured/object")}
           />
         </div>
-        <div></div>
-        <div className={"flex flex-col space-y-3"}>
+        <div className="flex flex-col space-y-3">
           <Form.Field
             control={form.control}
             name="title"
@@ -141,34 +161,77 @@ export const StartOperatorNodeFreeForm = ({
                   <Form.Control className="h-8">
                     <Input.Root className="!px-[9px] !py-1.5">
                       <Input.Core
-                        {...field}
                         type="text"
                         value={field.value ?? ""}
                         autoComplete="off"
                         className="!h-5 !text-sm"
                         placeholder="My prompt"
+                        onChange={(event) => {
+                          if (!isUserInputKey) {
+                            form.setValue(
+                              "key",
+                              constructFieldKey(event.target.value)
+                            );
+                          }
+                          field.onChange(event);
+                        }}
                       />
                     </Input.Root>
                   </Form.Control>
-                  {field.value ? (
-                    <>
-                      <div className="flex flex-row flex-wrap gap-x-1">
-                        <p className="my-auto mb-0.5 product-body-text-4-medium">
-                          generated key for this field: {` `}
-                        </p>
-                        <Tag
-                          className="max-w-full truncate !py-0.5"
-                          size="sm"
-                          variant="lightNeutral"
-                        >
-                          {constructFieldKey(field.value)}
-                        </Tag>
-                      </div>
-                      <Form.Description text="You will need this generated key to reference the value of this field." />
-                    </>
-                  ) : null}
-
                   <Form.Message />
+                </Form.Item>
+              );
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="key"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label className="!font-sans !text-base !font-semibold">
+                    Key
+                  </Form.Label>
+                  <Form.Control className="h-8">
+                    <Input.Root className="!px-[9px] !py-1.5">
+                      <Input.Core
+                        type="text"
+                        value={field.value ?? ""}
+                        onChange={(event) => {
+                          setIsUserInputKey(true);
+                          field.onChange(event);
+                        }}
+                        autoComplete="off"
+                        className="!h-5 !text-sm"
+                        placeholder="The key of this field"
+                      />
+                    </Input.Root>
+                  </Form.Control>
+                  <Form.Description
+                    text={
+                      isUserInputKey
+                        ? ""
+                        : "This key's value is now automatically generated based on the title of this field. You can override it by typing in the field."
+                    }
+                  />
+                  <Form.Message />
+                  <div className="flex flex-col rounded bg-semantic-accent-bg px-1 py-2">
+                    <p className="text-semantic-accent-default product-body-text-3-semibold">
+                      What is a reference?
+                    </p>
+                    <p className="mb-3 text-semantic-accent-default product-body-text-3-regular">
+                      {"A reference is a syntax help you connect to other value in given field. " +
+                        "You can use the key ${start." +
+                        `${form.watch("key") ? form.watch("key") : "my_prompt"}` +
+                        "} to reference this value"}
+                    </p>
+                    <div className="flex">
+                      <div className="mb-2 flex flex-row items-center gap-x-1 rounded-full border border-semantic-accent-default bg-semantic-accent-bg px-2 py-0.5">
+                        <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-accent-default" />
+                        <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`start.${form.watch("key") ? form.watch("key") : "my_prompt"}`}</p>
+                      </div>
+                    </div>
+                  </div>
                 </Form.Item>
               );
             }}
