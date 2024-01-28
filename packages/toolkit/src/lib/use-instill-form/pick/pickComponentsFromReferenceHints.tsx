@@ -52,6 +52,18 @@ export function pickComponentsFromReferenceHints(
         />
       );
     });
+  } else {
+    const groupedHints = groupBy(hints, (hint) => hint.instillFormat);
+
+    Object.entries(groupedHints).forEach(([instillFormat, hints]) => {
+      fields.push(
+        <ComponentOutputReferenceHints.GroupByFormatField
+          instillFormat={instillFormat}
+          hints={hints}
+          componentID={componentID}
+        />
+      );
+    });
   }
 
   return fields;
