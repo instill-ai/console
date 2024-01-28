@@ -23,7 +23,6 @@ import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
-import { ComponentOutputs } from "../../ComponentOutputs";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { useCheckIsHidden } from "../../useCheckIsHidden";
 import { useUpdaterOnNode } from "../../useUpdaterOnNode";
@@ -35,6 +34,7 @@ import {
   NodeWrapper,
   useNodeIDEditorForm,
 } from "../common";
+import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -295,7 +295,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         (e) => e.name === data.component.definition_name
       ) ?? null
     );
-  }, [connectorDefinitions.isSuccess, connectorDefinitions.data]);
+  }, [
+    connectorDefinitions.isSuccess,
+    connectorDefinitions.data,
+    data.component,
+  ]);
 
   return (
     <NodeWrapper
@@ -473,12 +477,16 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
           <div className="mb-4 w-full">
             {!resourceNotCreated && !enableEdit ? (
-              <ComponentOutputs
+              // <ComponentOutputs
+              //   componentID={data.component.id}
+              //   outputSchema={outputSchema}
+              //   nodeType="connector"
+              //   response={testModeTriggerResponse}
+              //   chooseTitleFrom="key"
+              // />
+              <ComponentOutputReferenceHints
                 componentID={data.component.id}
                 outputSchema={outputSchema}
-                nodeType="connector"
-                response={testModeTriggerResponse}
-                chooseTitleFrom="key"
               />
             ) : null}
           </div>

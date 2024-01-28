@@ -73,7 +73,7 @@ export const ViewPipelines = ({
     }
 
     return all;
-  }, [pipelines.data, pipelines.isSuccess, searchCode]);
+  }, [pipelines.data, pipelines.isSuccess]);
 
   return (
     <div className="flex flex-row px-20">

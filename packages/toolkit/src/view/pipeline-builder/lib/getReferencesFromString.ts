@@ -1,4 +1,4 @@
-import { InstillReference, ReferenceValueSet } from "../type";
+import { InstillReference } from "../type";
 
 export function getReferencesFromString(value: string): InstillReference[] {
   const dollarBraceReferences: InstillReference[] = [];

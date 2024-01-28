@@ -20,7 +20,6 @@ import {
   type Model,
   type Nullable,
   type CreateResourceFormStore,
-  useAmplitudeCtx,
   sendAmplitudeData,
   useCreateResourceFormStore,
   getInstillApiErrorMessage,
@@ -85,7 +84,6 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
    * Initialize form state
    * -----------------------------------------------------------------------*/
 
-  const { amplitudeIsInit } = useAmplitudeCtx();
   const queryClient = useQueryClient();
 
   const {
@@ -233,7 +231,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         model_definition_name: modelDefinitionName,
       });
     },
-    [amplitudeIsInit, accessToken, queryClient, setFieldValue]
+    [accessToken, queryClient, setFieldValue]
   );
 
   const deployUserModel = useDeployUserModel();
