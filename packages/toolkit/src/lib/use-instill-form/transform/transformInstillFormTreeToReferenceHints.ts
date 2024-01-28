@@ -7,7 +7,7 @@ export function transformInstillFormTreeToReferenceHints(
 ): ComponentOutoutReferenceHint[] {
   // 1. Preprocess
   const title = tree.title ?? tree.fieldKey;
-  const referenceHints: ComponentOutoutReferenceHint[] = [];
+  let referenceHints: ComponentOutoutReferenceHint[] = [];
 
   // Normall a objectArray child will be a formGroup with the same
   // path, so we only need to pass the isObjectArrayChild flag and
