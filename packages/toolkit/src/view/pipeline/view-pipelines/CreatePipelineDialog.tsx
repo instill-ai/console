@@ -68,7 +68,6 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const [permission, setPermission] =
     React.useState<Nullable<Permission>>("private");
   const router = useRouter();
-  const { entity } = router.query;
 
   const { toast } = useToast();
 
@@ -101,7 +100,13 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       });
     }
     return orgsAndUserList;
-  }, [organizations.isSuccess, entityObject.isSuccess]);
+  }, [
+    organizations.isSuccess,
+    organizations.data,
+    entityObject.isSuccess,
+    entityObject.entity,
+    entityObject.entityName,
+  ]);
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {

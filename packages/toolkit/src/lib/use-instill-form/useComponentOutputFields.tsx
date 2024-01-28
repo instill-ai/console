@@ -23,6 +23,8 @@ export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
 
     const outputFormTree = transformInstillJSONSchemaToFormTree(props.schema);
 
+    console.log(outputFormTree);
+
     const fields = pickComponentOutputFieldsFromInstillFormTree({
       ...props,
       tree: outputFormTree,

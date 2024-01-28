@@ -6,6 +6,7 @@ export * from "./CustomHandle";
 export * from "./PipelineNameForm";
 export * from "./PipelineToolkitModal";
 export * from "./ReadOnlyPipelineBuilder";
+export * from "./ComponentOutputReferenceHints";
 
 export * from "./dialogs";
 export * from "./nodes";

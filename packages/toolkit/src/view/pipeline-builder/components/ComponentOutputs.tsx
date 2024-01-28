@@ -58,7 +58,9 @@ export const ComponentOutputs = ({
   return (
     <div className="flex flex-col">
       {nodeType === "connector" ? (
-        <div className="mb-2 product-body-text-4-medium">output</div>
+        <div className="mb-2 text-semantic-fg-secondary product-body-text-4-medium">
+          Output
+        </div>
       ) : null}
       <ScrollArea.Root
         className="nodrag nowheel h-full"

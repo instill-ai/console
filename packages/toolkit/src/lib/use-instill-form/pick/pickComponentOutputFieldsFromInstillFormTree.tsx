@@ -93,7 +93,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process objectArray
-  // Becase we don't know the index of the output objectArray, we need to user
+  // Becase we don't know the index of the output objectArray, we need to use
   // the data as a hint here
 
   if (tree._type === "objectArray") {

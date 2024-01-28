@@ -1,6 +1,6 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { Connector, ConnectorState, ConnectorWithDefinition } from "./types";
+import { ConnectorState, ConnectorWithDefinition } from "./types";
 
 export type TestUserConnectorConnectionResponse = {
   state: ConnectorState;

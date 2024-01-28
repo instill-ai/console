@@ -9,7 +9,6 @@ import {
 import { useInstillForm } from "./useInstillForm";
 import { InstillJSONSchema } from "./type";
 import { Form } from "@instill-ai/design-system";
-import exp from "constants";
 
 const SimpleFormSchema: InstillJSONSchema = {
   title: "Simple Form JSON",

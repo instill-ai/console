@@ -30,7 +30,6 @@ import {
 
 import { pickSelectedTypeFromInstillFormat } from "./pickSelectedTypeFromInstillFormat";
 import { arrayMove } from "@dnd-kit/sortable";
-import { constructFieldKey } from "./constructFieldKey";
 import { StartEndOperatorControlPanel } from "../control-panel";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";

@@ -19,7 +19,6 @@ import { ImageWithFallback, ObjectViewer } from "../../../../../components";
 import { useShallow } from "zustand/react/shallow";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
-import { ComponentOutputs } from "../../ComponentOutputs";
 import { getOperatorInputOutputSchema } from "../../../lib/getOperatorInputOutputSchema";
 import { useCheckIsHidden } from "../../useCheckIsHidden";
 import { useUpdaterOnNode } from "../../useUpdaterOnNode";
@@ -31,6 +30,7 @@ import {
   NodeWrapper,
   useNodeIDEditorForm,
 } from "../common";
+import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -339,12 +339,9 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
             />
           </div>
 
-          <ComponentOutputs
+          <ComponentOutputReferenceHints
             componentID={data.component.id}
             outputSchema={outputSchema}
-            nodeType="connector"
-            response={testModeTriggerResponse}
-            chooseTitleFrom="title"
           />
         </>
       )}

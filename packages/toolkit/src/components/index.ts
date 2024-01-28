@@ -25,6 +25,7 @@ export * from "./ObjectViewer";
 export * from "./PageBase";
 export * from "./PageHead";
 export * from "./PageTitle";
+export * from "./ReferenceHintTag";
 export * from "./cells";
 export * from "./TableError";
 export * from "./UserProfileCard";
