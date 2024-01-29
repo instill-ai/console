@@ -23,11 +23,13 @@ export function useUpdaterOnRightPanel({
   nodeType,
   form,
   ValidatorSchema,
+  configuration,
 }: {
   id: string;
   nodeType: "connector" | "operator";
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
+  configuration: GeneralRecord;
 }) {
   const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
     useInstillStore(useShallow(selector));
@@ -38,6 +40,8 @@ export function useUpdaterOnRightPanel({
 
   const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
 
+  const timer = React.useRef<NodeJS.Timeout>();
+
   // We don't rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
@@ -47,11 +51,20 @@ export function useUpdaterOnRightPanel({
       return;
     }
 
+    if (isEqual(configuration, parsed.data)) {
+      return;
+    }
+
     if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
       return;
     }
 
-    const timer = setTimeout(() => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+
+    timer.current = setTimeout(() => {
+      console.log("update");
       const newNodes = nodes.map((node) => {
         if (
           nodeType === "connector" &&
@@ -111,9 +124,9 @@ export function useUpdaterOnRightPanel({
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;
-    }, 1);
+    }, 300);
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer.current);
     };
   }, [
     values,
@@ -124,5 +137,6 @@ export function useUpdaterOnRightPanel({
     updatePipelineRecipeIsDirty,
     nodes,
     updateEdges,
+    configuration,
   ]);
 }

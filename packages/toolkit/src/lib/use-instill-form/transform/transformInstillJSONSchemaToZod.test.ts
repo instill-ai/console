@@ -497,6 +497,7 @@ test("should transform isHidden", () => {
 
   const testedObj = {
     model: "text-embedding-ada-002",
+    test: "foo",
   };
 
   const parsedObj = zodSchema.safeParse(testedObj);
