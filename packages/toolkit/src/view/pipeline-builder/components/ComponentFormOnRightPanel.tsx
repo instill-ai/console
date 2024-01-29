@@ -42,6 +42,7 @@ export const ComponentFormOnRightPanel = ({
     form,
     ValidatorSchema,
     nodeType,
+    configuration,
   });
 
   return (

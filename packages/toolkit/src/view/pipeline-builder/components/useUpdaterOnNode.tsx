@@ -47,6 +47,8 @@ export function useUpdaterOnNode({
 
   const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
 
+  const timer = React.useRef<NodeJS.Timeout>();
+
   // We don't rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
@@ -68,7 +70,11 @@ export function useUpdaterOnNode({
       return;
     }
 
-    const timer = setTimeout(() => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+
+    timer.current = setTimeout(() => {
       const newNodes = nodes.map((node) => {
         if (
           nodeType === "connector" &&
@@ -140,9 +146,10 @@ export function useUpdaterOnNode({
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;
-    }, 1);
+    }, 300);
+
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer.current);
     };
   }, [
     values,
