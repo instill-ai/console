@@ -2,7 +2,7 @@ import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
 import { NodeProps, Position } from "reactflow";
-import { Button, Form, Icons } from "@instill-ai/design-system";
+import { Button, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -10,19 +10,22 @@ import { EndNodeData } from "../../../type";
 import { composeEdgesFromNodes } from "../../../lib";
 import { CustomHandle } from "../../CustomHandle";
 import {
-  InstillJSONSchema,
   InstillStore,
   Nullable,
   StartOperatorMetadata,
-  useInstillForm,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
 import { StartEndOperatorControlPanel } from "../control-panel";
-import { InstillErrors } from "../../../../../constant/errors";
 import { ComponentOutputs } from "../../ComponentOutputs";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
+import {
+  EndOperatorFreeFormSchema,
+  EndOperatorNodeFreeForm,
+} from "./EndOperatorNodeFreeForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -37,60 +40,6 @@ const selector = (store: InstillStore) => ({
   testModeTriggerResponse: store.testModeTriggerResponse,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
-
-const CreateEndOperatorInputSchema: InstillJSONSchema = {
-  title: "End node operator intput schema",
-  type: "object",
-  required: ["title", "key", "value"],
-  properties: {
-    title: {
-      instillAcceptFormats: ["string"],
-      anyOf: [
-        {
-          type: "string",
-          instillUpstreamType: "value",
-        },
-      ],
-      instillUpstreamTypes: ["value"],
-      title: "Title",
-    },
-    key: {
-      instillAcceptFormats: ["string"],
-      anyOf: [
-        {
-          type: "string",
-          instillUpstreamType: "value",
-          pattern: "^[a-z_][-a-z_0-9]{0,31}$",
-          instillPatternErrorMessage: InstillErrors.KeyInvalidError,
-        },
-      ],
-      instillUpstreamTypes: ["value"],
-      title: "Key",
-    },
-    value: {
-      instillAcceptFormats: ["*/*"],
-      anyOf: [
-        {
-          instillUpstreamType: "value",
-          type: "string",
-          maximum: 2048,
-        },
-        {
-          instillUpstreamType: "reference",
-          pattern: "^\\{.*\\}$",
-          type: "string",
-        },
-        {
-          instillUpstreamType: "template",
-          type: "string",
-        },
-      ],
-      instillUIMultiline: true,
-      instillUpstreamTypes: ["value", "reference", "template"],
-      title: "Value",
-    },
-  },
-};
 
 export type EndOperatorNodeFieldItem = {
   key: string;
@@ -116,23 +65,18 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     isOwner,
     currentVersion,
     isTriggeringPipeline,
-    testModeTriggerResponse,
     pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
-  const { form, fields, ValidatorSchema } = useInstillForm(
-    CreateEndOperatorInputSchema,
-    null,
-    {
-      size: "sm",
-      enableSmartHint: true,
-      chooseTitleFrom: "title",
-      componentID: data.component.id,
-      disabledAll: pipelineIsReadOnly,
-    }
-  );
+  const form = useForm<z.infer<typeof EndOperatorFreeFormSchema>>({
+    resolver: zodResolver(EndOperatorFreeFormSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
 
-  const onSubmit = (formData: z.infer<typeof ValidatorSchema>) => {
+  const onCreateFreeFormField = (
+    formData: z.infer<typeof EndOperatorFreeFormSchema>
+  ) => {
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
         if (prevFieldKey) {
@@ -172,6 +116,16 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       title: "",
       value: "",
       key: "",
+    });
+  };
+
+  const onCancel = () => {
+    setEnableEdit(!enableEdit);
+    setPrevFieldKey(null);
+    form.reset({
+      title: "",
+      key: "",
+      value: "",
     });
   };
 
@@ -303,35 +257,11 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       </NodeHead>
 
       {nodeIsCollapsed ? null : enableEdit ? (
-        <Form.Root {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="mb-3 flex flex-row justify-between">
-              <Button
-                variant="tertiaryGrey"
-                size="sm"
-                className="!px-2 !py-2"
-                type="button"
-                onClick={() => {
-                  setEnableEdit(!enableEdit);
-                  setPrevFieldKey(null);
-                  form.reset({
-                    title: "",
-                    key: "",
-                    value: "",
-                  });
-                }}
-              >
-                <Icons.ArrowLeft className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
-              </Button>
-              <div>
-                <Button variant="primary" type="submit" size="sm">
-                  Save
-                </Button>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-3">{fields}</div>
-          </form>
-        </Form.Root>
+        <EndOperatorNodeFreeForm
+          form={form}
+          onCreateFreeFormField={onCreateFreeFormField}
+          onCancel={onCancel}
+        />
       ) : isViewResultMode ? (
         <ComponentOutputs
           componentID={data.component.id}

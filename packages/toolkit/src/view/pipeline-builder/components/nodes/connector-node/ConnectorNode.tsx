@@ -46,7 +46,6 @@ const selector = (store: InstillStore) => ({
   edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
-  testModeTriggerResponse: store.testModeTriggerResponse,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
@@ -67,7 +66,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     edges,
     updateNodes,
     updateEdges,
-    testModeTriggerResponse,
     updatePipelineRecipeIsDirty,
     updateCreateResourceDialogState,
     updateCurrentAdvancedConfigurationNodeID,
@@ -82,8 +80,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
-  const [bottomBarOption, setBottomBarOption] =
-    React.useState<Nullable<BottomBarOption>>(null);
 
   const nodeIDEditorForm = useNodeIDEditorForm(id);
 
