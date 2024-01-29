@@ -54,7 +54,7 @@ export const DeleteAPITokenDialog = (props: DeleteAPITokenDialogProps) => {
         accessToken: accessToken,
       });
       setIsLoading(false);
-      
+
       sendAmplitudeData("delete_api_token");
 
       if (onDelete) {
