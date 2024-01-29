@@ -201,9 +201,7 @@ export const OnboardingForm = () => {
       });
 
       if (amplitudeIsInit) {
-        sendAmplitudeData("submit_onboarding_form", {
-          type: "critical_action",
-        });
+        sendAmplitudeData("submit_onboarding_form");
       }
 
       setMessageBoxState(() => ({

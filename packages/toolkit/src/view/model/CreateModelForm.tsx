@@ -268,7 +268,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           setCreateModelMessageBoxState(() => ({
             activate: true,
             status: "error",
-            description: "Something went wrong when create the model",
+            description: "Something went wrong when creating the model",
             message: "Create Model Failed",
           }));
           return;

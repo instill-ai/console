@@ -213,10 +213,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         });
 
         if (onSubmit) {
-          onSubmit({
-            ...connector,
-            connector_definition: dataDefinition,
-          });
+          onSubmit(connector);
         }
 
         sendAmplitudeData("create_connector", {
@@ -263,10 +260,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       });
 
       if (onSubmit) {
-        onSubmit({
-          ...connector,
-          connector_definition: dataDefinition,
-        });
+        onSubmit(connector);
       }
 
       sendAmplitudeData("update_connector");
