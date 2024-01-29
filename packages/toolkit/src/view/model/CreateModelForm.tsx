@@ -236,8 +236,79 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   const deployUserModel = useDeployUserModel();
 
-  const handelCreateModel = React.useCallback(async () => {
+  const handleCreateModel = React.useCallback(async () => {
     if (!modelId || !user.isSuccess) return;
+
+    const handleCreateModelMutation = async (
+      payload: CreateUserModelPayload
+    ) => {
+      try {
+        const { operation } = await createUserModel.mutateAsync({
+          userName: user.data.name,
+          payload,
+          accessToken,
+        });
+
+        if (!modelId) return;
+
+        const operationIsDone = await checkUntilOperationIsDoen({
+          operationName: operation.name,
+          accessToken,
+        });
+
+        if (!operationIsDone) return;
+
+        const modelName = `${user.data.name}/models/${modelId.trim()}`;
+        const modelState = await watchUserModel({
+          modelName,
+          accessToken,
+        });
+
+        if (modelState.state === "STATE_ERROR") {
+          setCreateModelMessageBoxState(() => ({
+            activate: true,
+            status: "error",
+            description: "Something went wrong when create the model",
+            message: "Create Model Failed",
+          }));
+          return;
+        }
+
+        await prepareNewModel(modelName, payload.model_definition);
+        deployUserModel.mutate({ modelName, accessToken });
+
+        setCreateModelMessageBoxState({
+          activate: true,
+          status: "success",
+          description: null,
+          message: "Succeed.",
+        });
+
+        if (onCreate) {
+          onCreate(init);
+        }
+      } catch (error) {
+        const isAxiosError = axios.isAxiosError(error);
+
+        const description = isAxiosError
+          ? getInstillApiErrorMessage(error)
+          : null;
+
+        const modelName = payload.type === "Local" ? "local" : payload.type;
+
+        const message = isAxiosError
+          ? error.message
+          : `Something went wrong when creating the ${modelName} model`;
+
+        setCreateModelMessageBoxState(() => ({
+          activate: true,
+          status: "error",
+          description,
+          message,
+        }));
+      }
+    };
+
 
     // We don't validate the rest of the field if the ID is incorrect
     if (!validateInstillID(modelId as string)) {
@@ -268,67 +339,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         },
       };
 
-      createUserModel.mutate(
-        { userName: user.data.name, payload, accessToken },
-        {
-          onSuccess: async ({ operation }) => {
-            if (!modelId) return;
-            const operationIsDone = await checkUntilOperationIsDoen({
-              operationName: operation.name,
-              accessToken,
-            });
-
-            if (operationIsDone) {
-              const modelName = `${user.data.name}/models/${modelId.trim()}`;
-              const modelState = await watchUserModel({
-                modelName,
-                accessToken,
-              });
-
-              if (modelState.state === "STATE_ERROR") {
-                setCreateModelMessageBoxState(() => ({
-                  activate: true,
-                  status: "error",
-                  description: "Something went wrong when create the model",
-                  message: "Create Model Failed",
-                }));
-                return;
-              }
-
-              await prepareNewModel(modelName, modelDefinition);
-              deployUserModel.mutate({ modelName, accessToken });
-
-              setCreateModelMessageBoxState({
-                activate: true,
-                status: "success",
-                description: null,
-                message: "Succeed.",
-              });
-
-              if (onCreate) {
-                onCreate(init);
-              }
-            }
-          },
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: getInstillApiErrorMessage(error),
-                message: error.message,
-              }));
-            } else {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: "Something went wrong when create the GitHub model",
-              }));
-            }
-          },
-        }
-      );
+      await handleCreateModelMutation(payload)
     } else if (modelDefinition === "model-definitions/local") {
       if (!modelId || !modelLocalFile) {
         return;
@@ -344,67 +355,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         },
       };
 
-      createUserModel.mutate(
-        { userName: user.data.name, payload, accessToken },
-        {
-          onSuccess: async ({ operation }) => {
-            if (!modelId) return;
-            const operationIsDone = await checkUntilOperationIsDoen({
-              operationName: operation.name,
-              accessToken,
-            });
-
-            if (operationIsDone) {
-              const modelName = `${user.data.name}/models/${modelId.trim()}`;
-              const modelState = await watchUserModel({
-                modelName,
-                accessToken,
-              });
-
-              if (modelState.state === "STATE_ERROR") {
-                setCreateModelMessageBoxState(() => ({
-                  activate: true,
-                  status: "error",
-                  description: "Something went wrong when create the model",
-                  message: "Create Model Failed",
-                }));
-                return;
-              }
-
-              prepareNewModel(modelName, modelDefinition);
-              deployUserModel.mutate({ modelName, accessToken });
-
-              setCreateModelMessageBoxState({
-                activate: true,
-                status: "success",
-                description: null,
-                message: "Succeed.",
-              });
-
-              if (onCreate) {
-                onCreate(init);
-              }
-            }
-          },
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: getInstillApiErrorMessage(error),
-                message: error.message,
-              }));
-            } else {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: "Something went wrong when create the local model",
-              }));
-            }
-          },
-        }
-      );
+      await handleCreateModelMutation(payload)
     } else if (modelDefinition === "model-definitions/artivc") {
       if (!modelArtivcGcsBucketPath || !modelArtivcTag) return;
 
@@ -422,67 +373,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         },
       };
 
-      createUserModel.mutate(
-        { userName: user.data.name, payload, accessToken },
-        {
-          onSuccess: async ({ operation }) => {
-            if (!modelId) return;
-            const operationIsDone = await checkUntilOperationIsDoen({
-              operationName: operation.name,
-              accessToken,
-            });
-
-            if (operationIsDone) {
-              const modelName = `${user.data.name}/models/${modelId.trim()}`;
-              const modelState = await watchUserModel({
-                modelName,
-                accessToken,
-              });
-
-              if (modelState.state === "STATE_ERROR") {
-                setCreateModelMessageBoxState(() => ({
-                  activate: true,
-                  status: "error",
-                  description: "Something went wrong when create the model",
-                  message: "Create Model Failed",
-                }));
-                return;
-              }
-
-              prepareNewModel(modelName, modelDefinition);
-              deployUserModel.mutate({ modelName, accessToken });
-
-              setCreateModelMessageBoxState({
-                activate: true,
-                status: "success",
-                description: null,
-                message: "Succeed.",
-              });
-
-              if (onCreate) {
-                onCreate(init);
-              }
-            }
-          },
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: getInstillApiErrorMessage(error),
-                message: error.message,
-              }));
-            } else {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message: "Something went wrong when create the ArtiVC model",
-              }));
-            }
-          },
-        }
-      );
+      await handleCreateModelMutation(payload)
     } else {
       if (!modelHuggingFaceRepoUrl) return;
 
@@ -496,68 +387,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         },
       };
 
-      createUserModel.mutate(
-        { userName: user.data.name, payload, accessToken },
-        {
-          onSuccess: async ({ operation }) => {
-            if (!modelId) return;
-            const operationIsDone = await checkUntilOperationIsDoen({
-              operationName: operation.name,
-              accessToken,
-            });
-
-            if (operationIsDone) {
-              const modelName = `${user.data.name}/models/${modelId.trim()}`;
-              const modelState = await watchUserModel({
-                modelName,
-                accessToken,
-              });
-
-              if (modelState.state === "STATE_ERROR") {
-                setCreateModelMessageBoxState(() => ({
-                  activate: true,
-                  status: "error",
-                  description: "Something went wrong when create the model",
-                  message: "Create Model Failed",
-                }));
-                return;
-              }
-
-              prepareNewModel(modelName, "model-definitions/huggingface");
-              deployUserModel.mutate({ modelName, accessToken });
-
-              setCreateModelMessageBoxState({
-                activate: true,
-                status: "success",
-                description: null,
-                message: "Succeed.",
-              });
-
-              if (onCreate) {
-                onCreate(init);
-              }
-            }
-          },
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: getInstillApiErrorMessage(error),
-                message: error.message,
-              }));
-            } else {
-              setCreateModelMessageBoxState(() => ({
-                activate: true,
-                status: "error",
-                description: null,
-                message:
-                  "Something went wrong when create the HuggingFace model",
-              }));
-            }
-          },
-        }
-      );
+      await handleCreateModelMutation(payload)
     }
   }, [
     createUserModel,
@@ -790,7 +620,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         />
         <SolidButton
           disabled={canCreateModel ? false : true}
-          onClickHandler={() => handelCreateModel()}
+          onClickHandler={() => handleCreateModel()}
           position="ml-auto my-auto"
           type="button"
           data-testid="set-up-model-button"
