@@ -55,60 +55,36 @@ export const ChangeModelStateToggle = ({
     }
   }, [modelWatchState]);
 
-  const changeModelInstanceStateHandler = React.useCallback(() => {
+  const changeModelInstanceStateHandler = React.useCallback(async () => {
     if (!model || !modelWatchState || modelWatchState === "STATE_UNSPECIFIED") {
       return;
     }
-    if (modelWatchState === "STATE_ONLINE") {
-      setIsChangingState(true);
-      switchOff.mutate(
-        {
-          modelName: model.name,
-          accessToken,
-        },
-        {
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setError(
-                error.response?.data.message ??
-                  "There is an error. Please try again."
-              );
-            } else {
-              setError("There is an error. Please try again.");
-            }
-          },
-          onSuccess: () => {
-            setTimeout(() => {
-              setIsChangingState(false);
-            }, 3000);
-          },
-        }
-      );
-    } else {
-      setIsChangingState(true);
-      switchOn.mutate(
-        {
-          modelName: model.name,
-          accessToken,
-        },
-        {
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setError(
-                error.response?.data.message ??
-                  "There is an error. Please try again."
-              );
-            } else {
-              setError("There is an error. Please try again.");
-            }
-          },
-          onSuccess: () => {
-            setTimeout(() => {
-              setIsChangingState(false);
-            }, 3000);
-          },
-        }
-      );
+
+    setIsChangingState(true);
+
+    try {
+      const payload = {
+        modelName: model.name,
+        accessToken,
+      }
+
+      if(modelWatchState === "STATE_ONLINE") {
+        await switchOff.mutateAsync(payload);
+      } else {
+        await switchOn.mutateAsync(payload);
+      }
+
+      setTimeout(() => {
+        setIsChangingState(false);
+      }, 3000);
+
+    } catch (error) {
+      const axiosErrorMessage = axios.isAxiosError(error) && error.response?.data.message;
+      if(!axiosErrorMessage) {
+        setError("There is an error. Please try again.");
+        return;
+      }
+      setError(axiosErrorMessage);
     }
   }, [switchOn, switchOff, model, accessToken, modelWatchState]);
 
