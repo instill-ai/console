@@ -5,10 +5,11 @@ import { Button, Icons } from "@instill-ai/design-system";
 export type CopyToClipboardButtonProps = {
   text: string;
   className?: string;
+  iconClassName?: string;
 };
 
 export const CopyToClipboardButton = (props: CopyToClipboardButtonProps) => {
-  const { className, text } = props;
+  const { className, iconClassName, text } = props;
   const [copied, setCopied] = React.useState(false);
 
   return (
@@ -26,9 +27,13 @@ export const CopyToClipboardButton = (props: CopyToClipboardButtonProps) => {
       }}
     >
       {copied ? (
-        <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Check
+          className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
+        />
       ) : (
-        <Icons.Copy06 className="h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Copy06
+          className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
+        />
       )}
     </Button>
   );

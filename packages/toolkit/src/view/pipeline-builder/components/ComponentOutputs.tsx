@@ -15,39 +15,44 @@ export const ComponentOutputs = ({
   outputSchema,
   nodeType,
   chooseTitleFrom,
+  response,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
   chooseTitleFrom: ChooseTitleFrom;
+  response?: Nullable<TriggerUserPipelineResponse>;
 }) => {
-  const response = useInstillStore((store) => store.testModeTriggerResponse);
+  const testModeTriggerResponse = useInstillStore(
+    (store) => store.testModeTriggerResponse
+  );
 
   const data = React.useMemo(() => {
     let data: Nullable<GeneralRecord> = null;
+    const targetResponse = response ? response : testModeTriggerResponse;
 
     if (nodeType === "connector") {
       if (
-        !response ||
-        !response.metadata.traces[componentID] ||
-        !response.metadata.traces[componentID].outputs ||
-        response.metadata.traces[componentID].outputs.length === 0
+        !targetResponse ||
+        !targetResponse.metadata.traces[componentID] ||
+        !targetResponse.metadata.traces[componentID].outputs ||
+        targetResponse.metadata.traces[componentID].outputs.length === 0
       ) {
         return data;
       }
-      data = response.metadata.traces[componentID].outputs[0];
+      data = targetResponse.metadata.traces[componentID].outputs[0];
 
       return data;
     }
 
-    if (!response || !response.outputs) {
+    if (!targetResponse || !targetResponse.outputs) {
       return data;
     }
 
-    data = response.outputs[0];
+    data = targetResponse.outputs[0];
 
     return data;
-  }, [nodeType, componentID, response]);
+  }, [nodeType, componentID, response, testModeTriggerResponse]);
 
   const componentOutputFields = useComponentOutputFields({
     mode: "build",

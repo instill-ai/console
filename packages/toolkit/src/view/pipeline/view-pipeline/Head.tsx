@@ -150,30 +150,40 @@ export const Head = () => {
               </div>
             </div>
             {pipeline.isSuccess ? (
-              pipeline.data?.description ? (
-                <div className="flex w-full flex-row">
-                  <p className="font-mono text-xs text-semantic-fg-disabled">
-                    {pipeline.data?.description}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex w-full flex-row">
-                  <p className="font-mono text-xs italic text-semantic-fg-disabled">
-                    This is a placeholder brief of this pipeline
-                  </p>
-                </div>
-              )
+              <React.Fragment>
+                {pipeline.data?.description ? (
+                  <div className="flex w-full flex-row">
+                    <p className="font-mono text-xs text-semantic-fg-disabled">
+                      {pipeline.data?.description}
+                    </p>
+                    <EditMetadataDialog
+                      description={pipeline.data.description}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex w-full flex-row items-center gap-x-2">
+                    <p className="font-mono text-xs italic text-semantic-fg-disabled">
+                      This is a placeholder brief of this pipeline
+                    </p>
+                    {pipeline.data.permission.can_edit ? (
+                      <EditMetadataDialog
+                        description={pipeline.data.description}
+                      />
+                    ) : null}
+                  </div>
+                )}
+              </React.Fragment>
             ) : (
               <PipelineDescriptionSkeleton />
             )}
           </div>
           {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
             <div>
-              <EditMetadataDialog
+              {/* <EditMetadataDialog
                 description={
                   pipeline.isSuccess ? pipeline.data.description : null
                 }
-              />
+              /> */}
             </div>
           ) : null}
         </div>
@@ -188,16 +198,19 @@ export const Head = () => {
               <TabMenu.Item value="overview">Overview</TabMenu.Item>
             </TabMenu.Root>
           </div>
-          <div className="flex flex-row gap-x-2">
+          <div className="mt-auto flex flex-row gap-x-2 pb-1">
             {pipeline.isSuccess ? (
               <React.Fragment>
                 {me.isSuccess ? (
                   <ClonePipelineDialog
                     trigger={
-                      <Button size="sm" variant="secondaryColour">
-                        {!pipeline.data?.permission.can_edit
-                          ? "Clone"
-                          : "Duplicate"}
+                      <Button
+                        className="items-center gap-x-2"
+                        size="sm"
+                        variant="secondaryGrey"
+                      >
+                        <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                        Clone
                       </Button>
                     }
                     pipeline={pipeline.data}
@@ -207,7 +220,7 @@ export const Head = () => {
                     onClick={() => {
                       router.push("/login");
                     }}
-                    variant="secondaryColour"
+                    variant="secondaryGrey"
                     size="sm"
                   >
                     Log in to Clone

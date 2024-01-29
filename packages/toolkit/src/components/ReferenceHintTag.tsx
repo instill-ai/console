@@ -42,24 +42,48 @@ export const ReferenceHintTagIcon = ({
   );
 };
 export const ReferenceHintTagLabel = ({
-  children,
+  label,
   className,
 }: {
-  children: React.ReactNode;
+  label: string;
   className?: string;
 }) => {
+  const [open, setOpen] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+
   return (
     <Tooltip.Provider>
-      <Tooltip.Root>
+      <Tooltip.Root
+        open={open}
+        onOpenChange={(open) => {
+          if (copied) {
+            return;
+          }
+          setOpen(open);
+        }}
+      >
         <Tooltip.Trigger asChild>
-          <p
-            className={cn(
-              "max-w-[240px] truncate font-sans text-[11px] font-medium",
-              className
-            )}
+          <button
+            onClick={async (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              await navigator.clipboard.writeText(label);
+              setCopied(true);
+              setOpen(true);
+              setTimeout(() => {
+                setCopied(false);
+              }, 1500);
+            }}
           >
-            {children}
-          </p>
+            <p
+              className={cn(
+                "max-w-[240px] truncate font-sans text-[11px] font-medium",
+                className
+              )}
+            >
+              {label}
+            </p>
+          </button>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
@@ -69,7 +93,7 @@ export const ReferenceHintTagLabel = ({
           >
             <div className="flex flex-col text-left">
               <p className="bg-semantic-bg-primary product-body-text-4-semibold">
-                {children}
+                {copied ? "Copied to clipboard" : label}
               </p>
             </div>
             <Tooltip.Arrow

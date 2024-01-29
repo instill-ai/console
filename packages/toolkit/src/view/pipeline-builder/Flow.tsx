@@ -192,6 +192,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               <MiniMap
                 className="h-[var(--pipeline-builder-minimap-height)]"
                 id={pipelineName ?? undefined}
+                pannable={true}
               />
             </ReactFlow>
           </div>
