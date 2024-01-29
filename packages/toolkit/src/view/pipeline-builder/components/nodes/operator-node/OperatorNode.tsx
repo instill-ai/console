@@ -10,6 +10,7 @@ import {
   composeEdgesFromNodes,
 } from "../../../lib";
 import {
+  GeneralRecord,
   InstillStore,
   useInstillForm,
   useInstillStore,
@@ -237,6 +238,9 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         <NodeBottomBarContent
           componentID={data.component.id}
           outputSchema={outputSchema}
+          componentSchema={
+            (data.component.operator_definition?.spec as GeneralRecord) ?? null
+          }
         />
       )}
     >

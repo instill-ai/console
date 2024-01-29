@@ -12,6 +12,7 @@ import {
   composeEdgesFromNodes,
 } from "../../../lib";
 import {
+  GeneralRecord,
   InstillStore,
   Nullable,
   useConnectorDefinitions,
@@ -283,6 +284,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         <NodeBottomBarContent
           componentID={data.component.id}
           outputSchema={outputSchema}
+          componentSchema={
+            (data.component.connector_definition?.spec as GeneralRecord) ?? null
+          }
         />
       )}
     >
