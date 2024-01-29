@@ -20,6 +20,7 @@ export const LongTextField = ({
   keyPrefix,
   disabledFieldControl,
   disabledReferenceHint,
+  instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const timer = React.useRef<Nullable<number>>(null);
 
@@ -63,6 +64,7 @@ export const LongTextField = ({
               form={form}
               title={title}
               path={path}
+              instillFormat={instillFormat}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}

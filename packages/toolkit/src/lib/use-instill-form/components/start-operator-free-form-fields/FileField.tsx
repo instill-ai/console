@@ -20,6 +20,7 @@ export const FileField = ({
   keyPrefix,
   disabledFieldControl,
   disabledReferenceHint,
+  instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [uploadedFile, setUploadedFiles] = React.useState<Nullable<File>>();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -37,6 +38,7 @@ export const FileField = ({
               form={form}
               title={title}
               path={path}
+              instillFormat={instillFormat}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}

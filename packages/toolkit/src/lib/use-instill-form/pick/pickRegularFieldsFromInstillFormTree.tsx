@@ -65,7 +65,7 @@ export function pickRegularFieldsFromInstillFormTree(
               : "product-body-text-3-medium"
           )}
         >
-          {tree.fieldKey || tree.path}
+          {title}
         </p>
         <div
           className={cn(

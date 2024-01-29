@@ -95,6 +95,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     setPrevFieldKey(key);
     form.reset({
       title: data.component.configuration.metadata[key].title,
+      key,
       description: data.component.configuration.metadata[key].description,
     });
     setEnableEdit(true);

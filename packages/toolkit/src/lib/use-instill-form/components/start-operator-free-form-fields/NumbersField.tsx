@@ -17,6 +17,7 @@ export const NumbersField = ({
   keyPrefix,
   disabledFieldControl,
   disabledReferenceHint,
+  instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [numberFieldsArray, setNumberFieldsArray] = React.useState<number[]>([
     1,
@@ -59,6 +60,7 @@ export const NumbersField = ({
               form={form}
               title={title}
               path={path}
+              instillFormat={instillFormat}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}

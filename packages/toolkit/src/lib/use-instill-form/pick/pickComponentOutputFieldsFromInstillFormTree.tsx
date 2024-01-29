@@ -62,7 +62,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2"
       >
         <p className="text-semantic-fg-secondary product-body-text-4-semibold">
-          {tree.fieldKey || tree.path}
+          {title}
         </p>
         {tree.properties.map((property) => {
           return pickComponentOutputFieldsFromInstillFormTree({

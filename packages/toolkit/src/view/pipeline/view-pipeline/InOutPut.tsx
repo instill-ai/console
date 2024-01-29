@@ -288,7 +288,6 @@ export const InOutPut = () => {
               componentID="end"
               outputSchema={pipelineOpenAPISchema}
               nodeType="end"
-              response={response}
               chooseTitleFrom="title"
             />
           )

@@ -21,6 +21,7 @@ export const AudiosField = ({
   keyPrefix,
   disabledFieldControl,
   disabledReferenceHint,
+  instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [audioFiles, setAudioFiles] = React.useState<File[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -38,6 +39,7 @@ export const AudiosField = ({
               form={form}
               title={title}
               path={path}
+              instillFormat={instillFormat}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}

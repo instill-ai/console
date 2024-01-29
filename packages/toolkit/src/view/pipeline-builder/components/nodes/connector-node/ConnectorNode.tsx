@@ -13,12 +13,13 @@ import {
 } from "../../../lib";
 import {
   InstillStore,
+  Nullable,
   useConnectorDefinitions,
   useInstillForm,
   useInstillStore,
   validateInstillID,
 } from "../../../../../lib";
-import { ImageWithFallback, ObjectViewer } from "../../../../../components";
+import { ImageWithFallback } from "../../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
@@ -28,7 +29,8 @@ import { useCheckIsHidden } from "../../useCheckIsHidden";
 import { useUpdaterOnNode } from "../../useUpdaterOnNode";
 import { InstillErrors } from "../../../../../constant/errors";
 import {
-  NodeBottomBar,
+  NodeBottomBarContent,
+  NodeBottomBarMenu,
   NodeHead,
   NodeIDEditor,
   NodeWrapper,
@@ -54,6 +56,8 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
+type BottomBarOption = "output" | "schema";
+
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
     selectedConnectorNodeId,
@@ -77,8 +81,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
-  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
-    React.useState(false);
+  const [bottomBarOption, setBottomBarOption] =
+    React.useState<Nullable<BottomBarOption>>(null);
 
   const nodeIDEditorForm = useNodeIDEditorForm(id);
 
@@ -254,39 +258,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     configuration: data.component.configuration,
   });
 
-  const bottomBarInformation = React.useMemo(() => {
-    if (
-      !testModeTriggerResponse ||
-      !testModeTriggerResponse.metadata ||
-      !testModeTriggerResponse.metadata.traces ||
-      !testModeTriggerResponse.metadata.traces[id] ||
-      !testModeTriggerResponse.metadata.traces[id].outputs ||
-      testModeTriggerResponse.metadata.traces[id].outputs.length === 0
-    ) {
-      if (isOpenBottomBarOutput) {
-        return (
-          <div className="w-full">
-            <ObjectViewer value="" />
-          </div>
-        );
-      }
-
-      return null;
-    }
-
-    const value = testModeTriggerResponse.metadata.traces[id].outputs[0];
-
-    if (isOpenBottomBarOutput) {
-      return (
-        <div className="w-full">
-          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
-        </div>
-      );
-    }
-
-    return null;
-  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
-
   const targetConnectorDefinition = React.useMemo(() => {
     if (!connectorDefinitions.isSuccess) return null;
 
@@ -307,22 +278,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
-      renderNodeBottomBar={() => {
-        return (
-          <NodeBottomBar.Root>
-            <NodeBottomBar.Item
-              value="output"
-              onClick={() => {
-                if (pipelineIsReadOnly) return;
-                setIsOpenBottomBarOutput((prev) => !prev);
-              }}
-            >
-              Output
-            </NodeBottomBar.Item>
-          </NodeBottomBar.Root>
-        );
-      }}
-      renderBottomBarInformation={() => bottomBarInformation}
+      renderNodeBottomBar={() => <NodeBottomBarMenu />}
+      renderBottomBarInformation={() => (
+        <NodeBottomBarContent
+          componentID={data.component.id}
+          outputSchema={outputSchema}
+        />
+      )}
     >
       {/* The header of node */}
 

@@ -7,21 +7,22 @@ import {
   Nullable,
   TriggerUserPipelineResponse,
   useComponentOutputFields,
+  useInstillStore,
 } from "../../../lib";
 
 export const ComponentOutputs = ({
   componentID,
   outputSchema,
   nodeType,
-  response,
   chooseTitleFrom,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
-  response: Nullable<TriggerUserPipelineResponse>;
   chooseTitleFrom: ChooseTitleFrom;
 }) => {
+  const response = useInstillStore((store) => store.testModeTriggerResponse);
+
   const data = React.useMemo(() => {
     let data: Nullable<GeneralRecord> = null;
 

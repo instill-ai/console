@@ -55,6 +55,7 @@ export function pickStartOperatorFreeFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
+                instillFormat={value.instillFormat}
               />
             ),
           });
@@ -76,6 +77,7 @@ export function pickStartOperatorFreeFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
+                instillFormat={value.instillFormat}
               />
             ),
           });
@@ -99,6 +101,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -122,6 +125,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -144,6 +148,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -166,6 +171,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -188,6 +194,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -210,6 +217,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -232,6 +240,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -254,6 +263,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -276,6 +286,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -298,6 +309,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -320,6 +332,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
             />
           ),
         });

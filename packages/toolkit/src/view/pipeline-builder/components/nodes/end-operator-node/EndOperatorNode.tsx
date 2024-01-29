@@ -337,7 +337,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           componentID={data.component.id}
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
-          response={testModeTriggerResponse}
           chooseTitleFrom="title"
         />
       ) : (
@@ -397,6 +396,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
                   <UserDefinedFieldItem
                     key={item.key}
                     fieldKey={item.key}
+                    fieldTitle={item.title}
                     fieldValue={item.value}
                     onEditField={onEditField}
                     onDeleteField={onDeleteField}
