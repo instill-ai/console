@@ -114,6 +114,20 @@ export const DataConnectorFreeForm = ({
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "connector" && node.id === nodeID) {
         delete node.data.component.configuration.input.data[key];
+        // update the value deep clone
+        node.data = {
+          ...node.data,
+          component: {
+            ...node.data.component,
+            configuration: {
+              ...node.data.component.configuration,
+              input: {
+                ...node.data.component.configuration.input,
+                data: { ...node.data.component.configuration.input.data },
+              },
+            },
+          },
+        };
       }
       return node;
     });
