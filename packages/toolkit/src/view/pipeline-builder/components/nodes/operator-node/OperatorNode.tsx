@@ -15,7 +15,7 @@ import {
   useInstillStore,
   validateInstillID,
 } from "../../../../../lib";
-import { ImageWithFallback, ObjectViewer } from "../../../../../components";
+import { ImageWithFallback } from "../../../../../components";
 import { useShallow } from "zustand/react/shallow";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
@@ -24,7 +24,8 @@ import { useCheckIsHidden } from "../../useCheckIsHidden";
 import { useUpdaterOnNode } from "../../useUpdaterOnNode";
 import { InstillErrors } from "../../../../../constant/errors";
 import {
-  NodeBottomBar,
+  NodeBottomBarContent,
+  NodeBottomBarMenu,
   NodeHead,
   NodeIDEditor,
   NodeWrapper,
@@ -43,7 +44,6 @@ const selector = (store: InstillStore) => ({
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
-  testModeTriggerResponse: store.testModeTriggerResponse,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
@@ -57,7 +57,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateEdges,
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
-    testModeTriggerResponse,
     pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
@@ -227,62 +226,19 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     configuration: data.component.configuration,
   });
 
-  const [isOpenBottomBarOutput, setIsOpenBottomBarOutput] =
-    React.useState(false);
-
-  const bottomBarInformation = React.useMemo(() => {
-    if (
-      !testModeTriggerResponse ||
-      !testModeTriggerResponse.metadata ||
-      !testModeTriggerResponse.metadata.traces ||
-      !testModeTriggerResponse.metadata.traces[id] ||
-      !testModeTriggerResponse.metadata.traces[id].outputs ||
-      testModeTriggerResponse.metadata.traces[id].outputs.length === 0
-    ) {
-      if (isOpenBottomBarOutput) {
-        return (
-          <div className="w-full">
-            <ObjectViewer value="" />
-          </div>
-        );
-      }
-      return null;
-    }
-
-    const value = testModeTriggerResponse.metadata.traces[id].outputs[0];
-
-    if (isOpenBottomBarOutput) {
-      return (
-        <div className="w-full">
-          <ObjectViewer value={value ? JSON.stringify(value, null, 2) : null} />
-        </div>
-      );
-    }
-
-    return null;
-  }, [isOpenBottomBarOutput, testModeTriggerResponse, id]);
-
   return (
     <NodeWrapper
       nodeType={data.nodeType}
       id={id}
       note={data.note}
       noteIsOpen={noteIsOpen}
-      renderNodeBottomBar={() => {
-        return (
-          <NodeBottomBar.Root>
-            <NodeBottomBar.Item
-              value="output"
-              onClick={() => {
-                setIsOpenBottomBarOutput((prev) => !prev);
-              }}
-            >
-              Output
-            </NodeBottomBar.Item>
-          </NodeBottomBar.Root>
-        );
-      }}
-      renderBottomBarInformation={() => bottomBarInformation}
+      renderNodeBottomBar={() => <NodeBottomBarMenu />}
+      renderBottomBarInformation={() => (
+        <NodeBottomBarContent
+          componentID={data.component.id}
+          outputSchema={outputSchema}
+        />
+      )}
     >
       {/* The header of node */}
 

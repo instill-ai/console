@@ -3,6 +3,7 @@ import * as React from "react";
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
+import { NodeBottomBarProvider } from "./node-bottom-bar";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
@@ -81,26 +82,28 @@ export const NodeWrapper = ({
           }}
         />
       </div>
-      <div
-        className={cn(
-          "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
-          {
-            "outline outline-2 outline-offset-1 outline-semantic-accent-default":
-              id === selectedConnectorNodeId,
-          }
-        )}
-      >
-        <div className="flex flex-col px-3 py-2.5">{children}</div>
-        {renderNodeBottomBar ? renderNodeBottomBar() : null}
-      </div>
-      {renderBottomBarInformation ? (
+      <NodeBottomBarProvider>
         <div
-          id={`${id}-node-bottom-information-container`}
-          className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)]"
+          className={cn(
+            "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
+            {
+              "outline outline-2 outline-offset-1 outline-semantic-accent-default":
+                id === selectedConnectorNodeId,
+            }
+          )}
         >
-          {renderBottomBarInformation()}
+          <div className="flex flex-col px-3 py-2.5">{children}</div>
+          {renderNodeBottomBar ? renderNodeBottomBar() : null}
         </div>
-      ) : null}
+        {renderBottomBarInformation ? (
+          <div
+            id={`${id}-node-bottom-information-container`}
+            className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)] rounded-sm bg-semantic-bg-base-bg shadow-md"
+          >
+            {renderBottomBarInformation()}
+          </div>
+        ) : null}
+      </NodeBottomBarProvider>
     </div>
   );
 };

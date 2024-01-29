@@ -160,6 +160,7 @@ export type StartOperatorFreeFormFieldBaseProps = {
   onDeleteField?: (key: string) => void;
   disabledFieldControl?: boolean;
   disabledReferenceHint?: boolean;
+  instillFormat: string;
 };
 
 export type ComponentOutoutReferenceHint =

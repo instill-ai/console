@@ -10,11 +10,13 @@ const selector = (store: InstillStore) => ({
 
 export const UserDefinedFieldItem = ({
   fieldKey,
+  fieldTitle,
   fieldValue,
   onDeleteField,
   onEditField,
 }: {
   fieldKey: string;
+  fieldTitle: string;
   fieldValue: string;
   onDeleteField: (key: string) => void;
   onEditField: (key: string) => void;
@@ -27,7 +29,7 @@ export const UserDefinedFieldItem = ({
     <div className="flex w-full flex-col">
       <div className="mb-2 flex flex-row items-center justify-between">
         <div className="my-auto font-sans text-base font-semibold text-semantic-fg-primary">
-          {fieldKey}
+          {fieldTitle}
         </div>
         {currentVersion === "latest" && !pipelineIsReadOnly && isOwner ? (
           <div className="my-auto flex flex-row gap-x-2">

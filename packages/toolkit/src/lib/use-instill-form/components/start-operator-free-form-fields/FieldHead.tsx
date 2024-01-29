@@ -21,6 +21,7 @@ export const FieldHead = ({
   form,
   title,
   path,
+  instillFormat,
   onEditField,
   onDeleteField,
   disabledFieldControl,
@@ -30,6 +31,7 @@ export const FieldHead = ({
   form: GeneralUseFormReturn;
   title: Nullable<string>;
   path: string;
+  instillFormat: string;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
   disabledFieldControl?: boolean;
@@ -151,19 +153,22 @@ export const FieldHead = ({
             }}
           >
             <div className="overflow-hidden">
-              <div className="flex">
+              <div className="flex flex-row items-center gap-x-2">
                 <ReferenceHintTag.Root>
                   <ReferenceHintTag.Icon type="check" />
                   <ReferenceHintTag.Label className="text-semantic-accent-default">
                     {`start.${path}`}
                   </ReferenceHintTag.Label>
                 </ReferenceHintTag.Root>
+                <p className="text-semantic-fg-secondary product-body-text-4-medium">
+                  {`[${instillFormat}]`}
+                </p>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
+        <div className="my-auto text-semantic-fg-primary product-body-text-4-semibold">
           {title}
         </div>
       )}

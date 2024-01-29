@@ -17,6 +17,7 @@ export const TextsField = ({
   keyPrefix,
   disabledFieldControl,
   disabledReferenceHint,
+  instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
   const [textFieldsArray, setTextFieldsArray] = React.useState<number[]>([1]);
 
@@ -57,6 +58,7 @@ export const TextsField = ({
               form={form}
               title={title}
               path={path}
+              instillFormat={instillFormat}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               disabledFieldControl={disabledFieldControl}
