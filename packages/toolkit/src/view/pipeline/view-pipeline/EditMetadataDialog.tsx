@@ -80,7 +80,6 @@ export const EditMetadataDialog = ({
       <Dialog.Trigger asChild>
         <Button variant="tertiaryGrey" size="sm" className="gap-x-2">
           <Icons.Edit05 className="h-3 w-3 stroke-semantic-fg-primary" />
-          Edit
         </Button>
       </Dialog.Trigger>
       <Dialog.Content

@@ -10,8 +10,7 @@ export type MenuProps = {
 
 export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
-  const [duplicateDialogIsOpen, setDuplicateDialogIsOpen] =
-    React.useState(false);
+  const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
   return (
     <React.Fragment>
@@ -29,11 +28,11 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
           >
             <DropdownMenu.Item
               onClick={() => {
-                setDuplicateDialogIsOpen(true);
+                setCloneDialogIsOpen(true);
               }}
               className="!px-4 !py-2.5 !product-button-button-2"
             >
-              Duplicate
+              Clone
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
@@ -49,8 +48,8 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
       </div>
       <ClonePipelineDialog
         pipeline={pipeline}
-        open={duplicateDialogIsOpen}
-        onOpenChange={(open) => setDuplicateDialogIsOpen(open)}
+        open={cloneDialogIsOpen}
+        onOpenChange={(open) => setCloneDialogIsOpen(open)}
         trigger={null}
       />
       <GeneralDeleteResourceDialog

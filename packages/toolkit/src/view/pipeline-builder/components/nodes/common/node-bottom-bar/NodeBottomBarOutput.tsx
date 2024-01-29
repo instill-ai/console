@@ -9,6 +9,7 @@ import {
   Nullable,
 } from "../../../../../../lib";
 import { ComponentOutputs } from "../../../ComponentOutputs";
+import { CopyToClipboardButton } from "../../../../../../components";
 
 export const NodeBottomBarOutput = ({
   componentID,
@@ -17,23 +18,13 @@ export const NodeBottomBarOutput = ({
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
-  outputData: GeneralRecord;
+  outputData: Nullable<GeneralRecord>;
 }) => {
   const [mode, setMode] = React.useState<"preview" | "raw">("preview");
 
   return (
     <div className="flex w-full flex-col p-4">
-      <div
-        className={cn(
-          "mb-2 flex flex-row items-center",
-          mode === "raw" ? "justify-between" : "justify-end"
-        )}
-      >
-        {mode === "raw" ? (
-          <p className="stroke-semantic-fg-secondary product-body-text-4-semibold">
-            Output
-          </p>
-        ) : null}
+      <div className="mb-2 flex flex-row items-center justify-end">
         <button
           onClick={() => {
             setMode((prev) => {
@@ -43,7 +34,7 @@ export const NodeBottomBarOutput = ({
               return "preview";
             });
           }}
-          className="rounded px-2 py-0.5 text-semantic-fg-secondary product-body-text-4-medium hover:bg-semantic-bg-base-bg hover:underline"
+          className="rounded px-2 py-0.5 text-semantic-fg-secondary !underline product-body-text-4-medium hover:text-semantic-fg-primary"
         >
           {mode}
         </button>
@@ -57,23 +48,35 @@ export const NodeBottomBarOutput = ({
         />
       ) : (
         <div className="w-full rounded">
-          <JsonView
-            value={outputData}
-            style={{
-              ...customTheme,
-              padding: "12px",
-              borderRadius: "8px",
-              fontSize: "12px",
-              overflow: "scroll",
-              maxHeight: "400px",
-            }}
-            enableClipboard={false}
-            displayObjectSize={false}
-            indentWidth={8}
-            shortenTextAfterLength={0}
-            displayDataTypes={false}
-            collapsed={3}
-          />
+          <p className="mb-2 text-semantic-fg-secondary product-body-text-4-medium">
+            Output
+          </p>
+          <div className="relative w-full">
+            {outputData ? (
+              <CopyToClipboardButton
+                className="absolute right-3 top-3 !border-none !bg-transparent"
+                iconClassName="!stroke-semantic-bg-primary"
+                text={JSON.stringify(outputData, null, 2)}
+              />
+            ) : null}
+            <JsonView
+              value={outputData ?? {}}
+              style={{
+                ...customTheme,
+                padding: "12px",
+                borderRadius: "8px",
+                fontSize: "12px",
+                overflow: "auto",
+                maxHeight: "400px",
+              }}
+              enableClipboard={false}
+              displayObjectSize={false}
+              indentWidth={8}
+              shortenTextAfterLength={0}
+              displayDataTypes={false}
+              collapsed={3}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -34,7 +34,10 @@ export function useUpdaterOnRightPanel({
   const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
     useInstillStore(useShallow(selector));
 
-  const { getValues } = form;
+  const {
+    getValues,
+    formState: { isDirty },
+  } = form;
 
   const values = getValues();
 
@@ -42,7 +45,7 @@ export function useUpdaterOnRightPanel({
 
   const timer = React.useRef<NodeJS.Timeout>();
 
-  // We don't rely on the react-hook-form isValid and isDirty state
+  // We don't fully rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
@@ -51,7 +54,9 @@ export function useUpdaterOnRightPanel({
       return;
     }
 
-    if (isEqual(configuration, parsed.data)) {
+    // We use the isDirty only for the initial render. After that we rely on the
+    // isEqual to check if the configuration has changed.
+    if (isEqual(configuration, parsed.data) || !isDirty) {
       return;
     }
 
@@ -138,5 +143,6 @@ export function useUpdaterOnRightPanel({
     nodes,
     updateEdges,
     configuration,
+    isDirty,
   ]);
 }

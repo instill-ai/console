@@ -72,10 +72,10 @@ export const Footer = ({
       </div>
       <Separator orientation="horizontal" className="my-2" />
       <div className="flex flex-row-reverse">
-        {pipeline.permission.can_edit ? (
+        {!pipeline.permission.can_edit ? (
           <Button
             className="flex flex-row gap-x-2"
-            variant="tertiaryGrey"
+            variant="secondaryColour"
             size="lg"
             onClick={() => {
               router.push(
@@ -85,8 +85,7 @@ export const Footer = ({
               );
             }}
           >
-            <Icons.Edit03 className="h-4 w-4 stroke-semantic-fg-secondary" />
-            Edit
+            Build
           </Button>
         ) : me.isSuccess ? (
           <ClonePipelineDialog
@@ -94,7 +93,7 @@ export const Footer = ({
               me.isSuccess ? (
                 <Button
                   className="flex flex-row gap-x-2"
-                  variant="tertiaryGrey"
+                  variant="secondaryColour"
                   size="lg"
                 >
                   <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />

@@ -20,9 +20,10 @@ export const ListField = ({
       </p>
       <div className="flex">
         <ReferenceHintTag.Root>
-          <ReferenceHintTag.Label className="text-semantic-accent-default">
-            {componentID ? `${componentID}.` + path : path}
-          </ReferenceHintTag.Label>
+          <ReferenceHintTag.Label
+            label={componentID ? `${componentID}.` + path : path}
+            className="text-semantic-accent-default"
+          />
         </ReferenceHintTag.Root>
       </div>
       {description ? (

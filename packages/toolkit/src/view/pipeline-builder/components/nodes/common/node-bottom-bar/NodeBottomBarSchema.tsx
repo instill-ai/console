@@ -1,6 +1,7 @@
 import JsonView from "@uiw/react-json-view";
 import { GeneralRecord, Nullable } from "../../../../../../lib";
 import { customTheme } from "../../../../../../lib/react-json-view";
+import { CopyToClipboardButton } from "../../../../../../components";
 
 export const NodeBottomBarSchema = ({
   componentSchema,
@@ -8,7 +9,12 @@ export const NodeBottomBarSchema = ({
   componentSchema: Nullable<GeneralRecord>;
 }) => {
   return (
-    <div className="flex w-full flex-col p-4">
+    <div className="relative flex w-full flex-col p-4">
+      <CopyToClipboardButton
+        className="absolute right-6 top-6 !border-none !bg-transparent"
+        iconClassName="!stroke-semantic-bg-primary"
+        text={JSON.stringify(componentSchema, null, 2)}
+      />
       <JsonView
         value={componentSchema ?? {}}
         style={{
@@ -16,7 +22,7 @@ export const NodeBottomBarSchema = ({
           padding: "12px",
           borderRadius: "8px",
           fontSize: "12px",
-          overflow: "scroll",
+          overflow: "auto",
           maxHeight: "400px",
         }}
         enableClipboard={false}

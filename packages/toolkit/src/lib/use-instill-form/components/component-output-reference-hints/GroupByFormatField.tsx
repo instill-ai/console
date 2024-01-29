@@ -18,17 +18,20 @@ export const GroupByFormatField = ({
       <div className="flex w-full flex-row flex-wrap gap-2">
         {hints.map((hint) => (
           <ReferenceHintTag.Root key={hint.path}>
-            <ReferenceHintTag.Label className="!text-semantic-accent-default">
-              {componentID
-                ? hint.isObjectArrayChild
-                  ? `${componentID}.` +
-                    hint.path.replace(
-                      hint.objectArrayParentPath,
-                      `${hint.objectArrayParentPath}[index]`
-                    )
-                  : `${componentID}.` + hint.path
-                : hint.path}
-            </ReferenceHintTag.Label>
+            <ReferenceHintTag.Label
+              label={
+                componentID
+                  ? hint.isObjectArrayChild
+                    ? `${componentID}.` +
+                      hint.path.replace(
+                        hint.objectArrayParentPath,
+                        `${hint.objectArrayParentPath}[index]`
+                      )
+                    : `${componentID}.` + hint.path
+                  : hint.path
+              }
+              className="!text-semantic-accent-default"
+            />
           </ReferenceHintTag.Root>
         ))}
       </div>

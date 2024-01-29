@@ -216,8 +216,7 @@ export const ClonePipelineDialog = ({
         <div className="flex flex-col ">
           <div className="flex flex-row gap-x-2 border-b border-semantic-bg-line p-6">
             <h3 className="my-auto text-semantic-fg-primary product-body-text-1-semibold">
-              {pipeline?.owner_name === me.data?.name ? "Duplicate" : "Clone"}{" "}
-              this pipeline
+              Clone this pipeline
             </h3>
             <Tag className="my-auto" variant="default" size="md">
               {pipeline?.id}
@@ -458,8 +457,6 @@ export const ClonePipelineDialog = ({
             >
               {cloning ? (
                 <LoadingSpin className="!text-semantic-fg-secondary" />
-              ) : pipeline?.owner_name === me.data?.name ? (
-                "Duplicate"
               ) : (
                 "Clone"
               )}

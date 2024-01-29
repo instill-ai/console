@@ -17,7 +17,7 @@ export const ComponentOutputReferenceHints = ({
 }) => {
   const [mode, setMode] =
     React.useState<Required<PickComponentsFromReferenceHintsOptions["mode"]>>(
-      "list"
+      "groupByFormat"
     );
 
   const hintFields = useComponentOutputReferenceHintFields(outputSchema, {
@@ -42,11 +42,12 @@ export const ComponentOutputReferenceHints = ({
                 type="check"
                 className="!stroke-semantic-fg-disabled"
               />
-              <ReferenceHintTag.Label className="!text-semantic-fg-disabled">
-                references
-              </ReferenceHintTag.Label>
+              <ReferenceHintTag.Label
+                label="references"
+                className="!text-semantic-fg-disabled"
+              />
             </ReferenceHintTag.Root>
-            <button
+            {/* <button
               className="rounded px-1.5 py-0.5 text-xs font-medium text-semantic-fg-disabled hover:bg-semantic-bg-base-bg"
               onClick={() =>
                 setMode((prev) => {
@@ -58,7 +59,7 @@ export const ComponentOutputReferenceHints = ({
               }
             >
               {mode === "list" ? "list" : "group"}
-            </button>
+            </button> */}
           </div>
           <div className="flex flex-col gap-y-4">{hintFields}</div>
         </div>
