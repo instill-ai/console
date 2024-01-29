@@ -1,7 +1,7 @@
 import * as React from "react";
 import cn from "clsx";
 import JsonView from "@uiw/react-json-view";
-import { darkTheme } from "@uiw/react-json-view/dark";
+import { customTheme } from "../../../../../../lib/react-json-view";
 
 import {
   GeneralRecord,
@@ -9,7 +9,6 @@ import {
   Nullable,
 } from "../../../../../../lib";
 import { ComponentOutputs } from "../../../ComponentOutputs";
-import { ScrollArea } from "@instill-ai/design-system";
 
 export const NodeBottomBarOutput = ({
   componentID,
@@ -58,28 +57,23 @@ export const NodeBottomBarOutput = ({
         />
       ) : (
         <div className="w-full rounded">
-          <ScrollArea.Root
-            className="nodrag nowheel h-full"
-            viewPortClassName="max-h-[400px] rounded"
-          >
-            <div className="w-[calc(var(--pipeline-builder-node-available-width)-32px)]">
-              <JsonView
-                value={outputData}
-                style={{
-                  ...darkTheme,
-                  padding: "12px",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  overflowWrap: "break-word",
-                }}
-                enableClipboard={false}
-                displayObjectSize={false}
-                indentWidth={8}
-                shortenTextAfterLength={18}
-                displayDataTypes={false}
-              />
-            </div>
-          </ScrollArea.Root>
+          <JsonView
+            value={outputData}
+            style={{
+              ...customTheme,
+              padding: "12px",
+              borderRadius: "8px",
+              fontSize: "12px",
+              overflow: "scroll",
+              maxHeight: "400px",
+            }}
+            enableClipboard={false}
+            displayObjectSize={false}
+            indentWidth={8}
+            shortenTextAfterLength={0}
+            displayDataTypes={false}
+            collapsed={3}
+          />
         </div>
       )}
     </div>

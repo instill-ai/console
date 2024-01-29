@@ -1,17 +1,21 @@
 import {
+  GeneralRecord,
   InstillJSONSchema,
   Nullable,
   useInstillStore,
 } from "../../../../../../lib";
 import { useNodeBottomBarContext } from "./NodeBottomBarContext";
 import { NodeBottomBarOutput } from "./NodeBottomBarOutput";
+import { NodeBottomBarSchema } from "./NodeBottomBarSchema";
 
 export const NodeBottomBarContent = ({
   componentID,
   outputSchema,
+  componentSchema,
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
+  componentSchema: Nullable<GeneralRecord>;
 }) => {
   const { selectedValue } = useNodeBottomBarContext();
 
@@ -49,7 +53,7 @@ export const NodeBottomBarContent = ({
       );
     }
     case "schema": {
-      return null;
+      return <NodeBottomBarSchema componentSchema={componentSchema} />;
     }
     default: {
       return null;
