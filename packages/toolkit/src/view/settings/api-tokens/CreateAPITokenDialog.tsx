@@ -29,7 +29,9 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
   });
 
   const createAPIToken = useCreateApiToken();
-  const handleCreateAPIToken = async (data: z.infer<typeof CreateTokenSchema>) => {
+  const handleCreateAPIToken = async (
+    data: z.infer<typeof CreateTokenSchema>
+  ) => {
     if (!accessToken) return;
 
     const payload = {

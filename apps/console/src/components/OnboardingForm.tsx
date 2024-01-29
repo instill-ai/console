@@ -220,14 +220,16 @@ export const OnboardingForm = () => {
         }),
       });
       await router.push(`/${user.id}/pipelines`);
-      
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Something went wrong when uploading the form"
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong when uploading the form";
       setMessageBoxState(() => ({
         activate: true,
         status: "error",
         description: null,
-        message
+        message,
       }));
     }
   }, [

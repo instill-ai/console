@@ -156,18 +156,15 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
       if (amplitudeIsInit) {
         sendAmplitudeData("update_model");
       }
-
     } catch (error) {
       const isAxiosError = axios.isAxiosError(error);
       setMessageBoxState(() => ({
         activate: true,
         status: "error",
-        description: isAxiosError
-        ? getInstillApiErrorMessage(error)
-        : null,
+        description: isAxiosError ? getInstillApiErrorMessage(error) : null,
         message: isAxiosError
-        ? error.message
-        : "Something went wrong when update the model",
+          ? error.message
+          : "Something went wrong when update the model",
       }));
     }
   }, [
@@ -229,9 +226,7 @@ export const ConfigureModelForm = (props: ConfigureModelFormProps) => {
         activate: true,
         status: "error",
         message,
-        description: isAxiosError
-        ? getInstillApiErrorMessage(error)
-        : null,
+        description: isAxiosError ? getInstillApiErrorMessage(error) : null,
       });
     }
   }, [

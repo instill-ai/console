@@ -66,9 +66,9 @@ export const ChangeModelStateToggle = ({
       const payload = {
         modelName: model.name,
         accessToken,
-      }
+      };
 
-      if(modelWatchState === "STATE_ONLINE") {
+      if (modelWatchState === "STATE_ONLINE") {
         await switchOff.mutateAsync(payload);
       } else {
         await switchOn.mutateAsync(payload);
@@ -77,10 +77,10 @@ export const ChangeModelStateToggle = ({
       setTimeout(() => {
         setIsChangingState(false);
       }, 3000);
-
     } catch (error) {
-      const axiosErrorMessage = axios.isAxiosError(error) && error.response?.data.message;
-      if(!axiosErrorMessage) {
+      const axiosErrorMessage =
+        axios.isAxiosError(error) && error.response?.data.message;
+      if (!axiosErrorMessage) {
         setError("There is an error. Please try again.");
         return;
       }

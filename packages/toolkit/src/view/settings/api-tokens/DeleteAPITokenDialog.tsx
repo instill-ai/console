@@ -62,7 +62,6 @@ export const DeleteAPITokenDialog = (props: DeleteAPITokenDialogProps) => {
       }
 
       setOpen(false);
-      
     } catch (error) {
       const description = isAxiosError(error)
         ? getInstillApiErrorMessage(error)
