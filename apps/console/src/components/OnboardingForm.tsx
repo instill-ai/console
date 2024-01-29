@@ -142,7 +142,7 @@ export const OnboardingForm = () => {
     role: null,
   });
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (!accessToken.isSuccess) {
       return;
     }
@@ -194,47 +194,42 @@ export const OnboardingForm = () => {
       message: "Uploading...",
     }));
 
-    updateUser.mutate(
-      { payload, accessToken: accessToken.data },
-      {
-        onSuccess: async (user) => {
-          if (amplitudeIsInit) {
-            sendAmplitudeData("submit_onboarding_form");
-          }
+    try {
+      const user = await updateUser.mutateAsync({
+        payload,
+        accessToken: accessToken.data,
+      });
 
-          setMessageBoxState(() => ({
-            activate: true,
-            status: "success",
-            description: null,
-            message: "Succeed.",
-          }));
-          await axios.post("/api/set-user-cookie", {
-            key: "instill-ai-user",
-            value: JSON.stringify({
-              cookie_token: token,
-            }),
-          });
-          await router.push(`/${user.id}/pipelines`);
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: error.message,
-            }));
-          } else {
-            setMessageBoxState(() => ({
-              activate: true,
-              status: "error",
-              description: null,
-              message: "Something went wrong when upload the form",
-            }));
-          }
-        },
-      },
-    );
+      if (amplitudeIsInit) {
+        sendAmplitudeData("submit_onboarding_form", {
+          type: "critical_action",
+        });
+      }
+
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "success",
+        description: null,
+        message: "Succeed.",
+      }));
+
+      await axios.post("/api/set-user-cookie", {
+        key: "instill-ai-user",
+        value: JSON.stringify({
+          cookie_token: token,
+        }),
+      });
+      await router.push(`/${user.id}/pipelines`);
+      
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Something went wrong when uploading the form"
+      setMessageBoxState(() => ({
+        activate: true,
+        status: "error",
+        description: null,
+        message
+      }));
+    }
   }, [
     fieldValues,
     amplitudeIsInit,
