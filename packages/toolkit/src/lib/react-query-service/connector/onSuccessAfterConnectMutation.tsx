@@ -1,6 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
 import {
-  Connector,
   ConnectorWatchState,
   ConnectorWithDefinition,
   ConnectorsWatchState,
