@@ -205,47 +205,39 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         configuration: stripValues.configuration,
       };
 
-      createData.mutate(
-        { entityName: entityObject.entityName, payload, accessToken },
-        {
-          onSuccess: ({ connector }) => {
-            if (onSubmit) {
-              onSubmit(connector);
-            }
+      try {
+        const { connector } = await createData.mutateAsync({
+          entityName: entityObject.entityName,
+          payload,
+          accessToken,
+        });
 
-            sendAmplitudeData("create_connector", {
-              connector_definition_name: dataDefinition.name,
-            });
-
-            toast({
-              title: "Successfully create data connector",
-              variant: "alert-success",
-              size: "small",
-            });
-
-            setIsSaving(false);
-          },
-          onError: (error) => {
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when create the data connector",
-                variant: "alert-error",
-                size: "large",
-                description: getInstillApiErrorMessage(error),
-              });
-            } else {
-              toast({
-                title: "Something went wrong when create the data connector",
-                variant: "alert-error",
-                size: "large",
-                description: "Please try again later",
-              });
-            }
-
-            setIsSaving(false);
-          },
+        if (onSubmit) {
+          onSubmit(connector);
         }
-      );
+
+        sendAmplitudeData("create_connector", {
+          connector_definition_name: dataDefinition.name,
+        });
+
+        toast({
+          title: "Successfully created data connector",
+          variant: "alert-success",
+          size: "small",
+        });
+      } catch (error) {
+        toast({
+          title: "Something went wrong when creating the data connector",
+          variant: "alert-error",
+          size: "large",
+          description: isAxiosError(error)
+            ? getInstillApiErrorMessage(error)
+            : "Please try again later",
+        });
+      } finally {
+        setIsSaving(false);
+      }
+
       return;
     }
 
@@ -261,45 +253,35 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
       ),
     };
 
-    updateData.mutate(
-      { payload, accessToken },
-      {
-        onSuccess: ({ connector }) => {
-          if (onSubmit) {
-            onSubmit(connector);
-          }
+    try {
+      const { connector } = await updateData.mutateAsync({
+        payload,
+        accessToken,
+      });
 
-          sendAmplitudeData("update_connector");
-
-          toast({
-            title: "Successfully update ai connector",
-            variant: "alert-success",
-            size: "small",
-          });
-
-          setIsSaving(false);
-        },
-        onError: (error) => {
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when update the ai connector",
-              variant: "alert-error",
-              size: "large",
-              description: getInstillApiErrorMessage(error),
-            });
-          } else {
-            toast({
-              title: "Something went wrong when update the ai connector",
-              variant: "alert-error",
-              size: "large",
-              description: "Please try again later",
-            });
-          }
-
-          setIsSaving(false);
-        },
+      if (onSubmit) {
+        onSubmit(connector);
       }
-    );
+
+      sendAmplitudeData("update_connector");
+
+      toast({
+        title: "Successfully update ai connector",
+        variant: "alert-success",
+        size: "small",
+      });
+    } catch (error) {
+      toast({
+        title: "Something went wrong when updating the ai connector",
+        variant: "alert-error",
+        size: "large",
+        description: isAxiosError(error)
+          ? getInstillApiErrorMessage(error)
+          : "Please try again later",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   }, [
     createData,
     formYup,

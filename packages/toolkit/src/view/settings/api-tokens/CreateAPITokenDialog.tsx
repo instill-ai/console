@@ -29,7 +29,9 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
   });
 
   const createAPIToken = useCreateApiToken();
-  const handleCreateAPIToken = (data: z.infer<typeof CreateTokenSchema>) => {
+  const handleCreateAPIToken = async (
+    data: z.infer<typeof CreateTokenSchema>
+  ) => {
     if (!accessToken) return;
 
     const payload = {
@@ -39,38 +41,34 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
 
     setIsLoading(true);
 
-    createAPIToken.mutate(
-      { payload, accessToken },
-      {
-        onSuccess: () => {
-          setIsLoading(false);
+    try {
+      await createAPIToken.mutateAsync({ payload, accessToken });
+      setIsLoading(false);
 
-          sendAmplitudeData("create_api_token");
+      sendAmplitudeData("create_api_token");
 
-          if (onCreate) {
-            onCreate();
-          }
-
-          setOpen(false);
-        },
-        onError: (err) => {
-          setIsLoading(false);
-          if (isAxiosError(err)) {
-            if (err.response?.status === 409) {
-              form.setError("id", {
-                type: "manual",
-                message: "Token name already exists",
-              });
-              return;
-            }
-            form.setError("id", {
-              type: "manual",
-              message: err.response?.data.message,
-            });
-          }
-        },
+      if (onCreate) {
+        onCreate();
       }
-    );
+
+      setOpen(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (!isAxiosError(error)) return;
+
+      if (error.response?.status === 409) {
+        form.setError("id", {
+          type: "manual",
+          message: "Token name already exists",
+        });
+        return;
+      }
+
+      form.setError("id", {
+        type: "manual",
+        message: error.response?.data.message,
+      });
+    }
   };
 
   return (
