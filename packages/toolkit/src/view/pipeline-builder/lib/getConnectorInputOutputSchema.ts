@@ -25,7 +25,12 @@ export function getConnectorInputOutputSchema(
 
   const targetTask = task ?? component.configuration.task;
 
-  if (targetTask) {
+  // We need to support the breaking changes that maybe the previous selected task's
+  // definition is not support anymore. Console need to check this.
+  if (
+    targetTask &&
+    component?.connector_definition?.spec.openapi_specifications[targetTask]
+  ) {
     inputSchema = (
       (
         (
