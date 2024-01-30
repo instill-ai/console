@@ -12,7 +12,7 @@ export const ReferenceHintTagRoot = ({
   return (
     <div
       className={cn(
-        "flex h-5 flex-row items-center gap-x-1 rounded-full bg-semantic-accent-bg px-2 py-1",
+        "flex h-5 flex-row items-center gap-x-1 rounded bg-semantic-accent-bg px-2 py-1",
         className
       )}
     >

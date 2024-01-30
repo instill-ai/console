@@ -14,7 +14,10 @@ import {
   Tag,
   Tooltip,
 } from "@instill-ai/design-system";
-import { ReferenceHintTag } from "../../../../components";
+import {
+  ReferenceHintDataTypeTag,
+  ReferenceHintTag,
+} from "../../../../components";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -229,9 +232,7 @@ export const FieldHead = ({
                     className="!max-w-[160px] text-semantic-accent-default"
                   />
                 </ReferenceHintTag.Root>
-                <p className="text-semantic-fg-secondary product-body-text-4-medium">
-                  {`[${instillFormat}]`}
-                </p>
+                <ReferenceHintDataTypeTag label={instillFormat} />
               </div>
             </div>
           </div>

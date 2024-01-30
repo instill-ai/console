@@ -58,7 +58,7 @@ export function StartEndOperatorControlPanel({
                 >
                   <Icons.ReferenceIconCheck
                     className={cn(
-                      "h-4 w-8 transition-colors duration-500",
+                      "h-3 w-6 transition-colors duration-500",
                       disabledReferenceHint
                         ? "stroke-semantic-fg-secondary"
                         : "stroke-semantic-accent-default"
