@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.80.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.79.0...@instill-ai/toolkit-v0.80.0) (2024-01-30)
+
+
+### Features
+
+* **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
+* **pipeline-builder:** add the what is a reference section when create start input field ([#904](https://github.com/instill-ai/console/issues/904)) ([7b395d8](https://github.com/instill-ai/console/commit/7b395d8632b20fa0ca6a45072dbce7a7d1faa3da))
+* **pipeline-builder:** hide edit/delete button of start input into dropdown ([#910](https://github.com/instill-ai/console/issues/910)) ([bf0bfa7](https://github.com/instill-ai/console/commit/bf0bfa76de2c8e5d62a123f1cfa0c21deff36a7d))
+* **pipeline-builder:** implement the new component output reference hint design ([#905](https://github.com/instill-ai/console/issues/905)) ([4a7bb67](https://github.com/instill-ai/console/commit/4a7bb6791fb98694dc29e28dce0f0e5cd71d63a8))
+* **pipeline-builder:** make end operator free form field be consistent with start operator ([#916](https://github.com/instill-ai/console/issues/916)) ([bf39477](https://github.com/instill-ai/console/commit/bf39477695f4845402f08b108fc790ad2be337e7))
+* **pipeline-builder:** move the component output data section to bottom bar ([#907](https://github.com/instill-ai/console/issues/907)) ([90587c1](https://github.com/instill-ai/console/commit/90587c1c43ad0134516e5ae6690c63d63bb49122))
+* **pipeline-builder:** support group by format for component output reference hints ([#906](https://github.com/instill-ai/console/issues/906)) ([537c6f6](https://github.com/instill-ai/console/commit/537c6f647ee5a05a20bc2d88081345d3fb0e4e7c))
+* **pipeline-builder:** update the style of reference tag and data type tag ([#919](https://github.com/instill-ai/console/issues/919)) ([010fa45](https://github.com/instill-ai/console/commit/010fa45d92eddff51ced6765e80be2defe5f03c3))
+* **pipeline-builder:** User can better debug their component by using the new schema and data output view ([#908](https://github.com/instill-ai/console/issues/908)) ([591d7be](https://github.com/instill-ai/console/commit/591d7be4f4b80eb7aaa9fcd0904023e7f73082c5))
+* support filtering the visibility of pipelines ([#903](https://github.com/instill-ai/console/issues/903)) ([57fd548](https://github.com/instill-ai/console/commit/57fd5488105108c549b9fa386596925586a81c2c))
+* **testing:** add real-world unit test case for useInstillForm ([#899](https://github.com/instill-ai/console/issues/899)) ([2eef748](https://github.com/instill-ai/console/commit/2eef74859bf19beadf126b1fbbaf4dc4c3767fc3))
+* **tracking:** add isAmplitudeInit guard before send the amplitude event ([#917](https://github.com/instill-ai/console/issues/917)) ([fda54fc](https://github.com/instill-ai/console/commit/fda54fcf570897cdbcffb1db3360e349bada0318))
+* **tracking:** add subscription related amplitude event ([#915](https://github.com/instill-ai/console/issues/915)) ([2e7a0fc](https://github.com/instill-ai/console/commit/2e7a0fc46f77d8d3434897d312ead95205c07b9b))
+* update the amplitude action type ([#897](https://github.com/instill-ai/console/issues/897)) ([40cb1c2](https://github.com/instill-ai/console/commit/40cb1c2962fbb649dd8320ee8dc93e07dc26d1d1))
+
+
+### Bug Fixes
+
+* **connector:** cannot delete connector free-form field ([#912](https://github.com/instill-ai/console/issues/912)) ([b8113a7](https://github.com/instill-ai/console/commit/b8113a7c10c368ccd19d846078be064fcc16b92c))
+* fix /pipelines/pid head page description and button not align issue ([#913](https://github.com/instill-ai/console/issues/913)) ([32d4d4c](https://github.com/instill-ai/console/commit/32d4d4c48014d6a2d83ac64f581c52f05c009df2))
+* **pipeline-builder:** fix pipeline-builder updater update the form on every input ([#909](https://github.com/instill-ai/console/issues/909)) ([d8551f4](https://github.com/instill-ai/console/commit/d8551f4fd52549d7602a548d8923b6b30785a16b))
+* **pipeline-builder:** support the potential breaking changes of connector task ([#914](https://github.com/instill-ai/console/issues/914)) ([8c54b80](https://github.com/instill-ai/console/commit/8c54b800a224bf53128b725f2e1c1999a53e07c2))
+
+
+### Miscellaneous
+
+* refactor top bar navigation to make it dry, add default query options for react-query ([#821](https://github.com/instill-ai/console/issues/821)) ([0e5decd](https://github.com/instill-ai/console/commit/0e5decdb6bd920aad14d4c655e54bd636f63a6f8))
+
 ## [0.79.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.78.1...@instill-ai/toolkit-v0.79.0) (2024-01-24)
 
 
