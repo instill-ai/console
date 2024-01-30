@@ -1,7 +1,12 @@
 import * as z from "zod";
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
-import { Nullable, sendAmplitudeData, useCreateApiToken } from "../../../lib";
+import {
+  Nullable,
+  sendAmplitudeData,
+  useAmplitudeCtx,
+  useCreateApiToken,
+} from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +22,7 @@ const CreateTokenSchema = z.object({
 });
 
 export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const { accessToken, onCreate } = props;
   const [isLoading, setIsLoading] = React.useState(false);
@@ -45,7 +51,9 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
       await createAPIToken.mutateAsync({ payload, accessToken });
       setIsLoading(false);
 
-      sendAmplitudeData("create_api_token");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("create_api_token");
+      }
 
       if (onCreate) {
         onCreate();

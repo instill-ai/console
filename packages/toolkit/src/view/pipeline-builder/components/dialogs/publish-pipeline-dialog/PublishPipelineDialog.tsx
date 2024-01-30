@@ -11,6 +11,7 @@ import {
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
@@ -36,6 +37,7 @@ export const PublishPipelineFormSchema = z.object({
 });
 
 export const PublishPipelineDialog = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [isPublishing, setIsPublishing] = React.useState(false);
 
   const { toast } = useToast();
@@ -97,7 +99,10 @@ export const PublishPipelineDialog = () => {
       });
 
       setIsPublishing(false);
-      sendAmplitudeData("publish_pipeline");
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("publish_pipeline");
+      }
 
       toast({
         size: "large",

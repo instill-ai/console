@@ -5,6 +5,7 @@ import {
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useEntity,
   useInstillStore,
   useShallow,
@@ -19,6 +20,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UnpublishPipelineDialog = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));
@@ -52,7 +54,9 @@ export const UnpublishPipelineDialog = () => {
 
       await updateUserPipeline.mutateAsync({ payload, accessToken });
 
-      sendAmplitudeData("unpublish_pipeline");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("unpublish_pipeline");
+      }
 
       toast({
         title: "Pipeline successfully unpublished",

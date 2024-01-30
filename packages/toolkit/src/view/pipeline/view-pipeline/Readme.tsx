@@ -13,6 +13,7 @@ import {
   UpdateUserPipelinePayload,
   useEntity,
   sendAmplitudeData,
+  useAmplitudeCtx,
 } from "../../../lib";
 import { useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
@@ -29,6 +30,7 @@ export const Readme = ({
   isOwner: boolean;
   readme: Nullable<string>;
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
@@ -64,7 +66,9 @@ export const Readme = ({
 
           await updateUserPipeline.mutateAsync({ payload, accessToken });
 
-          sendAmplitudeData("update_pipeline_readme");
+          if (amplitudeIsInit) {
+            sendAmplitudeData("update_pipeline_readme");
+          }
 
           toast({
             size: "small",
@@ -91,6 +95,7 @@ export const Readme = ({
       accessToken,
       toast,
       updateUserPipeline,
+      amplitudeIsInit,
     ]
   );
 

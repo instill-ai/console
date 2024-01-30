@@ -11,6 +11,7 @@ import {
   Nullable,
   getInstillApiErrorMessage,
   sendAmplitudeData,
+  useAmplitudeCtx,
   useDeleteApiToken,
 } from "../../../lib";
 import { isAxiosError } from "axios";
@@ -29,6 +30,7 @@ const DeleteTokenSchema = z.object({
 });
 
 export const DeleteAPITokenDialog = (props: DeleteAPITokenDialogProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { deleteTokenName, accessToken, onDelete } = props;
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -55,7 +57,9 @@ export const DeleteAPITokenDialog = (props: DeleteAPITokenDialogProps) => {
       });
       setIsLoading(false);
 
-      sendAmplitudeData("delete_api_token");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("delete_api_token");
+      }
 
       if (onDelete) {
         onDelete();

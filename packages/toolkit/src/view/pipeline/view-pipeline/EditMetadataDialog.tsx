@@ -17,6 +17,7 @@ import {
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useEntity,
   useInstillStore,
   useUpdateUserPipeline,
@@ -31,6 +32,7 @@ export const EditMetadataDialog = ({
 }: {
   description: Nullable<string>;
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const form = useForm<z.infer<typeof PipelineEditMetadataSchema>>({
     resolver: zodResolver(PipelineEditMetadataSchema),
@@ -58,7 +60,11 @@ export const EditMetadataDialog = ({
 
     try {
       await updateUserPipeline.mutateAsync({ payload, accessToken });
-      sendAmplitudeData("update_pipeline_description");
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("update_pipeline_description");
+      }
+
       setOpen(false);
       toast({
         size: "small",

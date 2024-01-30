@@ -19,6 +19,7 @@ import {
   User,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useInstillStore,
   useShallow,
   useUpdateUser,
@@ -50,6 +51,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UserProfileTab = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
   const [profileAvatar, setProfileAvatar] = React.useState<
@@ -102,7 +104,9 @@ export const UserProfileTab = () => {
     try {
       await updateUser.mutateAsync({ payload, accessToken });
 
-      sendAmplitudeData("update_user_profile_settings");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("update_user_profile_settings");
+      }
 
       form.reset(payload);
       toast({

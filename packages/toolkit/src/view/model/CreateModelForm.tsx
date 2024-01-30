@@ -31,6 +31,7 @@ import {
   watchUserModel,
   validateInstillID,
   useUserMe,
+  useAmplitudeCtx,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
 import { InstillErrors } from "../../constant/errors";
@@ -71,6 +72,7 @@ const selector = (state: CreateResourceFormStore) => ({
 });
 
 export const CreateModelForm = (props: CreateModelFormProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const {
     accessToken,
     enabledQuery,
@@ -227,11 +229,13 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         message: "Succeed.",
       });
 
-      sendAmplitudeData("create_model", {
-        model_definition_name: modelDefinitionName,
-      });
+      if (amplitudeIsInit) {
+        sendAmplitudeData("create_model", {
+          model_definition_name: modelDefinitionName,
+        });
+      }
     },
-    [accessToken, queryClient, setFieldValue]
+    [accessToken, queryClient, setFieldValue, amplitudeIsInit]
   );
 
   const deployUserModel = useDeployUserModel();

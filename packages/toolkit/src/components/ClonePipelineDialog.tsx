@@ -26,6 +26,7 @@ import {
   env,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useCreateUserPipeline,
   useInstillStore,
   useShallow,
@@ -71,6 +72,7 @@ export const ClonePipelineDialog = ({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [dialogIsOpen, setDialogIsOpen] = React.useState(open ?? false);
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
@@ -161,10 +163,12 @@ export const ClonePipelineDialog = ({
           entityName: namespace,
         });
 
-        if (pipeline.owner_name === me.data.name) {
-          sendAmplitudeData("duplicate_pipeline");
-        } else {
-          sendAmplitudeData("clone_pipeline");
+        if (amplitudeIsInit) {
+          if (pipeline.owner_name === me.data.name) {
+            sendAmplitudeData("duplicate_pipeline");
+          } else {
+            sendAmplitudeData("clone_pipeline");
+          }
         }
 
         await router.push(`/${data.namespaceId}/pipelines/${payload.id}`);

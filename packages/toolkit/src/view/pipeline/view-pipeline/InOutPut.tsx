@@ -9,6 +9,7 @@ import {
   TriggerUserPipelineResponse,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useEntity,
   useInstillStore,
   useShallow,
@@ -34,6 +35,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const InOutPut = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const [response, setResponse] =
@@ -123,7 +125,9 @@ export const InOutPut = () => {
         returnTraces: true,
       });
 
-      sendAmplitudeData("trigger_pipeline");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("trigger_pipeline");
+      }
 
       setResponse(data);
     } catch (error) {

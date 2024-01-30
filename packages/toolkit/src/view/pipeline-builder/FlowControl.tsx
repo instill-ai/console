@@ -34,6 +34,7 @@ import {
   env,
   getInstillApiErrorMessage,
   sendAmplitudeData,
+  useAmplitudeCtx,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -75,6 +76,7 @@ export type FlowControlProps = {
 };
 
 export const FlowControl = (props: FlowControlProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { reactFlowInstance, appEnv } = props;
   const {
     nodes,
@@ -144,7 +146,9 @@ export const FlowControl = (props: FlowControlProps) => {
           accessToken,
         });
 
-        sendAmplitudeData("update_pipeline_recipe");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("update_pipeline_recipe");
+        }
 
         toast({
           title: "Pipeline is saved",
@@ -193,7 +197,10 @@ export const FlowControl = (props: FlowControlProps) => {
       setPipelineUid(res.pipeline.uid);
       updatePipelineRecipeIsDirty(() => false);
       updatePipelineIsNew(() => false);
-      sendAmplitudeData("create_pipeline");
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("create_pipeline");
+      }
 
       toast({
         title: "Successfully saved the pipeline",

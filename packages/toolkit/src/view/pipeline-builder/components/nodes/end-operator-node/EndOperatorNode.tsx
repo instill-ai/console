@@ -37,7 +37,6 @@ const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
-  testModeTriggerResponse: store.testModeTriggerResponse,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 

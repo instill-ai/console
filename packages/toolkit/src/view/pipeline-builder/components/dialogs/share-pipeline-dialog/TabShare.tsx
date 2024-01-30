@@ -7,6 +7,7 @@ import {
   env,
   getInstillApiErrorMessage,
   sendAmplitudeData,
+  useAmplitudeCtx,
   useEntity,
   useInstillStore,
   useShallow,
@@ -24,6 +25,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const TabShare = () => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enableQuery, pipelineIsNew } = useInstillStore(
     useShallow(selector)
   );
@@ -105,7 +107,9 @@ export const TabShare = () => {
           accessToken,
         });
 
-        sendAmplitudeData("enable_pipeline_share_by_link");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("enable_pipeline_share_by_link");
+        }
 
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
@@ -156,6 +160,7 @@ export const TabShare = () => {
     toast,
     entityObject.isSuccess,
     entityObject.pipelineName,
+    amplitudeIsInit,
   ]);
 
   return (
