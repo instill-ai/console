@@ -26,6 +26,7 @@ import {
   env,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -63,6 +64,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const CreatePipelineDialog = ({ className }: { className?: string }) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [permission, setPermission] =
@@ -178,7 +180,9 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           payload,
         });
 
-        sendAmplitudeData("create_pipeline");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_pipeline");
+        }
 
         await router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
       } catch (error) {

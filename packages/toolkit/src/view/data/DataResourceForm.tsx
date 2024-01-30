@@ -23,6 +23,7 @@ import {
   useAirbyteFieldValues,
   useAirbyteFormTree,
   useAirbyteSelectedConditionMap,
+  useAmplitudeCtx,
   useBuildAirbyteYup,
   useCreateUserConnector,
   useEntity,
@@ -53,6 +54,7 @@ type BackButtonProps =
     };
 
 export const DataResourceForm = (props: DataResourceFormProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const {
     disabledAll,
     dataResource,
@@ -216,9 +218,11 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
           onSubmit(connector);
         }
 
-        sendAmplitudeData("create_connector", {
-          connector_definition_name: dataDefinition.name,
-        });
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_connector", {
+            connector_definition_name: dataDefinition.name,
+          });
+        }
 
         toast({
           title: "Successfully created data connector",
@@ -263,7 +267,9 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
         onSubmit(connector);
       }
 
-      sendAmplitudeData("update_connector");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("update_connector");
+      }
 
       toast({
         title: "Successfully update ai connector",
@@ -295,6 +301,7 @@ export const DataResourceForm = (props: DataResourceFormProps) => {
     isSaving,
     entityObject.isSuccess,
     entityObject.entityName,
+    amplitudeIsInit,
   ]);
 
   return (

@@ -14,7 +14,6 @@ import {
 import {
   GeneralRecord,
   InstillStore,
-  Nullable,
   useConnectorDefinitions,
   useInstillForm,
   useInstillStore,
@@ -55,8 +54,6 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
-
-type BottomBarOption = "output" | "schema";
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {

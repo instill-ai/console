@@ -21,6 +21,7 @@ import {
   useUpdateUserPipeline,
   useUserPipeline,
   sendAmplitudeData,
+  useAmplitudeCtx,
 } from "../../lib";
 import {
   BottomBar,
@@ -47,6 +48,7 @@ export type PipelineBuilderMainViewProps = GeneralPageProp;
 export const PipelineBuilderMainView = (
   props: PipelineBuilderMainViewProps
 ) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enableQuery, router } = props;
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
@@ -189,7 +191,9 @@ export const PipelineBuilderMainView = (
                 accessToken,
               });
 
-              sendAmplitudeData("create_pipeline");
+              if (amplitudeIsInit) {
+                sendAmplitudeData("create_pipeline");
+              }
 
               toast({
                 title: "Pipeline is saved",
@@ -233,7 +237,9 @@ export const PipelineBuilderMainView = (
               accessToken,
             });
 
-            sendAmplitudeData("update_pipeline_recipe");
+            if (amplitudeIsInit) {
+              sendAmplitudeData("update_pipeline_recipe");
+            }
 
             toast({
               title: "Successfully saved the pipeline",

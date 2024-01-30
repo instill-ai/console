@@ -7,6 +7,7 @@ import {
   formatDate,
   sendAmplitudeData,
   toastInstillError,
+  useAmplitudeCtx,
   useDeleteUserConnector,
   useInstillStore,
 } from "../../lib";
@@ -25,6 +26,7 @@ export type ResourcesTableProps = {
 };
 
 export const ResourcesTable = (props: ResourcesTableProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { connectors, isError, isLoading } = props;
   const { toast } = useToast();
   const accessToken = useInstillStore((store) => store.accessToken);
@@ -38,7 +40,9 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
         accessToken,
       });
 
-      sendAmplitudeData("delete_connector");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("delete_connector");
+      }
 
       toast({
         title: "Successfully delete connector",

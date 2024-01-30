@@ -6,6 +6,7 @@ import {
   Nullable,
   UpdateUserConnectorPayload,
   sendAmplitudeData,
+  useAmplitudeCtx,
   useCreateUserConnector,
   useEntity,
   useUpdateUserConnector,
@@ -24,6 +25,7 @@ export type AIResourceAutoFormProps = {
 };
 
 export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { definition, resource, accessToken, onSubmit } = props;
   const { toast } = useToast();
 
@@ -53,9 +55,11 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
           accessToken,
         });
 
-        sendAmplitudeData("create_connector", {
-          connector_definition_name: definition.name,
-        });
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_connector", {
+            connector_definition_name: definition.name,
+          });
+        }
 
         if (onSubmit) {
           onSubmit(connector);
@@ -91,7 +95,9 @@ export const AIResourceAutoForm = (props: AIResourceAutoFormProps) => {
         accessToken,
       });
 
-      sendAmplitudeData("update_connector");
+      if (amplitudeIsInit) {
+        sendAmplitudeData("update_connector");
+      }
 
       if (onSubmit) {
         onSubmit(connector);

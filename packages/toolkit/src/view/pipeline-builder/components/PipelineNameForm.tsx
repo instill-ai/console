@@ -16,6 +16,7 @@ import {
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
   sendAmplitudeData,
+  useAmplitudeCtx,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -51,6 +52,7 @@ export const UpdatePipelineIdSchema = z.object({
 });
 
 export const PipelineNameForm = (props: PipelineNameFormProps) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = props;
   const router = useRouter();
   const { entity, id } = router.query;
@@ -126,7 +128,10 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
         setPipelineName(res.pipeline.name);
         updatePipelineIsNew(() => false);
         updatePipelineRecipeIsDirty(() => false);
-        sendAmplitudeData("create_pipeline");
+
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_pipeline");
+        }
 
         await router.push(`/${entity}/pipelines/${newId}/builder`, undefined, {
           shallow: true,
@@ -176,7 +181,9 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
           accessToken,
         });
 
-        sendAmplitudeData("update_pipeline_name");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("update_pipeline_name");
+        }
 
         updatePipelineRecipeIsDirty(() => false);
       } catch (error) {

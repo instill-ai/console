@@ -22,6 +22,7 @@ import {
   toastInstillError,
   GeneralRecord,
   sendAmplitudeData,
+  useAmplitudeCtx,
 } from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
@@ -57,6 +58,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
+  const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
 
@@ -394,7 +396,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           returnTraces: true,
         });
 
-        sendAmplitudeData("trigger_pipeline");
+        if (amplitudeIsInit) {
+          sendAmplitudeData("trigger_pipeline");
+        }
 
         updateIsTriggeringPipeline(() => false);
         updateTestModeTriggerResponse(() => data);
