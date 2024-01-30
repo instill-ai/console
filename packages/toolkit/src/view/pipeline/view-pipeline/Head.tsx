@@ -152,7 +152,7 @@ export const Head = () => {
             {pipeline.isSuccess ? (
               <React.Fragment>
                 {pipeline.data?.description ? (
-                  <div className="flex w-full flex-row">
+                  <div className="flex w-full flex-row items-center gap-x-2">
                     <p className="font-mono text-xs text-semantic-fg-disabled">
                       {pipeline.data?.description}
                     </p>
@@ -177,15 +177,6 @@ export const Head = () => {
               <PipelineDescriptionSkeleton />
             )}
           </div>
-          {pipeline.isSuccess && pipeline.data.permission.can_edit ? (
-            <div>
-              {/* <EditMetadataDialog
-                description={
-                  pipeline.isSuccess ? pipeline.data.description : null
-                }
-              /> */}
-            </div>
-          ) : null}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 flex flex-row px-24">
