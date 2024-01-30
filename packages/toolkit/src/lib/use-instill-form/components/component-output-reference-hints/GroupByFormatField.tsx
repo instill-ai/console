@@ -1,4 +1,7 @@
-import { ReferenceHintTag } from "../../../../components";
+import {
+  ReferenceHintDataTypeTag,
+  ReferenceHintTag,
+} from "../../../../components";
 import { ComponentOutoutReferenceHint } from "../../type";
 
 export const GroupByFormatField = ({
@@ -11,10 +14,10 @@ export const GroupByFormatField = ({
   componentID?: string;
 }) => {
   return (
-    <div className="flex w-full flex-col">
-      <p className="mb-1 text-semantic-fg-secondary product-body-text-4-medium">
-        {`[${instillFormat}]`}
-      </p>
+    <div className="flex w-full flex-col gap-y-2">
+      <div className="flex">
+        <ReferenceHintDataTypeTag label={instillFormat} />
+      </div>
       <div className="flex w-full flex-row flex-wrap gap-2">
         {hints.map((hint) => (
           <ReferenceHintTag.Root key={hint.path}>
