@@ -1,5 +1,13 @@
 # @instill-ai/design-system
 
+## [0.63.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.62.0...@instill-ai/design-system-v0.63.0) (2024-01-30)
+
+
+### Features
+
+* **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
+* **pipeline-builder:** hide edit/delete button of start input into dropdown ([#910](https://github.com/instill-ai/console/issues/910)) ([bf0bfa7](https://github.com/instill-ai/console/commit/bf0bfa76de2c8e5d62a123f1cfa0c21deff36a7d))
+
 ## [0.62.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.61.1...@instill-ai/design-system-v0.62.0) (2024-01-24)
 
 
