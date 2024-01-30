@@ -27,7 +27,11 @@ export type AmplitudeEvent =
   | "update_organization_profile_settings"
   | "update_model"
   | "delete_model"
-  | "create_model";
+  | "create_model"
+  | "enter_subscription_pro_flow"
+  | "subscribe_to_pro"
+  | "enter_subscription_team_flow"
+  | "subscribe_to_team";
 
 export type AmplitudeEventProperties = {
   connector_definition_name?: string;
