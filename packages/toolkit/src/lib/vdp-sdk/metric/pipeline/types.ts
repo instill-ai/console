@@ -20,8 +20,8 @@ export type TriggeredPipeline = {
 export type PipelinesChart = {
   pipeline_id: string;
   pipeline_uid: string;
-  trigger_mode: "MODE_SYNC" | "MODE_ASYNC";
-  status: PipelineReleaseState;
+  trigger_mode: PipelineMode;
+  status: PipelineTriggerStatus;
   time_buckets: string[];
   trigger_counts: number[] | string[];
   compute_time_duration: number[] | string[];
