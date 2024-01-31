@@ -26,11 +26,12 @@ export const GroupByFormatField = ({
                 componentID
                   ? hint.isObjectArrayChild
                     ? `${componentID}.` +
+                      "output." +
                       hint.path.replace(
                         hint.objectArrayParentPath,
                         `${hint.objectArrayParentPath}[index]`
                       )
-                    : `${componentID}.` + hint.path
+                    : `${componentID}.` + "output." + hint.path
                   : hint.path
               }
               className="!text-semantic-accent-default"

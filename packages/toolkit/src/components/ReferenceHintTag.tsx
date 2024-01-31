@@ -92,7 +92,7 @@ export const ReferenceHintTagLabel = ({
             className="max-w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2"
           >
             <div className="flex flex-col text-left">
-              <p className="bg-semantic-bg-primary product-body-text-4-semibold">
+              <p className="break-all bg-semantic-bg-primary product-body-text-4-semibold">
                 {copied ? "Copied to clipboard" : label}
               </p>
             </div>
