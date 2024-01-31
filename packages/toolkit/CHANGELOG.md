@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.80.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.0...@instill-ai/toolkit-v0.80.1) (2024-01-31)
+
+
+### Bug Fixes
+
+* **dashboard:** update pipeline chart status type ([#920](https://github.com/instill-ai/console/issues/920)) ([b5869b7](https://github.com/instill-ai/console/commit/b5869b787bcef46682e3e90013c7234ac3d32e9c))
+* fix reference hint tag style and wrong reference path ([#923](https://github.com/instill-ai/console/issues/923)) ([113b400](https://github.com/instill-ai/console/commit/113b400507064e78c310bad8e25d6575f1567cd6))
+
 ## [0.80.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.79.0...@instill-ai/toolkit-v0.80.0) (2024-01-30)
 
 
