@@ -72,7 +72,7 @@ export const Footer = ({
       </div>
       <Separator orientation="horizontal" className="my-2" />
       <div className="flex flex-row-reverse">
-        {!pipeline.permission.can_edit ? (
+        {pipeline.permission.can_edit ? (
           <Button
             className="flex flex-row gap-x-2"
             variant="secondaryColour"
