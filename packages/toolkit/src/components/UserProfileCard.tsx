@@ -72,7 +72,7 @@ export const UserProfileCard = ({
                 </Tag>
               </div>
             )}
-            <p className="py-2 text-center text-semantic-fg-primary product-body-text-3-regular">
+            <p className="py-2 text-left text-semantic-fg-primary product-body-text-3-regular">
               {me.data?.profile_data?.bio}
             </p>
           </div>
