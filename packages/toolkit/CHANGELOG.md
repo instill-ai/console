@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.80.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.2...@instill-ai/toolkit-v0.80.3) (2024-01-31)
+
+
+### Bug Fixes
+
+* fix log in to clone button on /hub ([#927](https://github.com/instill-ai/console/issues/927)) ([f8d675c](https://github.com/instill-ai/console/commit/f8d675c00596a4ae18433b43edaab784f2ba73ae))
+
 ## [0.80.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.1...@instill-ai/toolkit-v0.80.2) (2024-01-31)
 
 
