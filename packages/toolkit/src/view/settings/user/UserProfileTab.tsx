@@ -33,6 +33,7 @@ export const UserProfileTabSchema = z.object({
   last_name: z.string().optional().nullable(),
   first_name: z.string().optional().nullable(),
   id: z.string().min(1, "User name is required"),
+  org_name: z.nullable(z.string()),
   role: z.string().optional().nullable(),
   profile_avatar: z.string().optional().nullable(),
   newsletter_subscription: z.boolean(),
@@ -89,6 +90,7 @@ export const UserProfileTab = () => {
       first_name: data.first_name ?? undefined,
       last_name: data.last_name ?? undefined,
       role: data.role ?? undefined,
+      org_name: data.org_name ?? undefined,
       profile_avatar: profileAvatar
         ? String(profileAvatar)
         : data.profile_avatar ?? undefined,
@@ -236,6 +238,33 @@ export const UserProfileTab = () => {
                           </Form.Control>
                         </div>
                       </div>
+                      <Form.Message />
+                    </Form.Item>
+                  );
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="org_name"
+                render={({ field }) => {
+                  return (
+                    <Form.Item className="w-full">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Organization Name
+                      </Form.Label>
+                      <Form.Control>
+                        <Input.Root>
+                          <Input.Core
+                            {...field}
+                            className="pl-2"
+                            disabled={false}
+                            type="text"
+                            placeholder=""
+                            required={false}
+                            value={field.value || ""}
+                          />
+                        </Input.Root>
+                      </Form.Control>
                       <Form.Message />
                     </Form.Item>
                   );
