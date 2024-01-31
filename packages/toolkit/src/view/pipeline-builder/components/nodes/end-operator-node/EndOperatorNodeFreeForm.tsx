@@ -156,8 +156,6 @@ export const EndOperatorNodeFreeForm = ({
                       componentID="end"
                     />
                   </Form.Control>
-                  <Form.Description text="The description of this field" />
-                  <Form.Message />
                 </Form.Item>
               );
             }}

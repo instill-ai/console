@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.38.0-beta](https://github.com/instill-ai/console/compare/v0.37.0-beta...v0.38.0-beta) (2024-01-30)
+
+
+### Features
+
+* add Archetype AI logo ([#900](https://github.com/instill-ai/console/issues/900)) ([f06b9e2](https://github.com/instill-ai/console/commit/f06b9e205a43ac31613dc1c1011fe87940897672))
+* **pipeline-builder:** add reference hint at the start operator ([#902](https://github.com/instill-ai/console/issues/902)) ([d87de86](https://github.com/instill-ai/console/commit/d87de86845e385465279e995e78c9c4bb4d0d3c0))
+* **pipeline-builder:** support group by format for component output reference hints ([#906](https://github.com/instill-ai/console/issues/906)) ([537c6f6](https://github.com/instill-ai/console/commit/537c6f647ee5a05a20bc2d88081345d3fb0e4e7c))
+* support filtering the visibility of pipelines ([#903](https://github.com/instill-ai/console/issues/903)) ([57fd548](https://github.com/instill-ai/console/commit/57fd5488105108c549b9fa386596925586a81c2c))
+* **test:** adapt new page object model and new playwright ([#901](https://github.com/instill-ai/console/issues/901)) ([f716870](https://github.com/instill-ai/console/commit/f7168705b219ee52bb9953291bcc95126107f57e))
+* update the amplitude action type ([#897](https://github.com/instill-ai/console/issues/897)) ([40cb1c2](https://github.com/instill-ai/console/commit/40cb1c2962fbb649dd8320ee8dc93e07dc26d1d1))
+
+
+### Miscellaneous
+
+* refactor top bar navigation to make it dry, add default query options for react-query ([#821](https://github.com/instill-ai/console/issues/821)) ([0e5decd](https://github.com/instill-ai/console/commit/0e5decdb6bd920aad14d4c655e54bd636f63a6f8))
+* **testing:** add placeholder test ([#918](https://github.com/instill-ai/console/issues/918)) ([2d74924](https://github.com/instill-ai/console/commit/2d74924513df955fc998349bff42eeba0310e307))
+
 ## [0.37.0-beta](https://github.com/instill-ai/console/compare/v0.36.0-beta...v0.37.0-beta) (2024-01-24)
 
 
