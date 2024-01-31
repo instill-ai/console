@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.80.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.1...@instill-ai/toolkit-v0.80.2) (2024-01-31)
+
+
+### Bug Fixes
+
+* fix pipeline card wrongly put build button for user without permission ([#925](https://github.com/instill-ai/console/issues/925)) ([9179087](https://github.com/instill-ai/console/commit/917908736755cb791f39697679c23d332b615d39))
+
 ## [0.80.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.0...@instill-ai/toolkit-v0.80.1) (2024-01-31)
 
 
