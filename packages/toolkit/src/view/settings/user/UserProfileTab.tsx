@@ -289,7 +289,10 @@ export const UserProfileTab = () => {
                   return (
                     <Form.Item>
                       <div className="flex flex-row justify-between">
-                        <Form.Label className="product-body-text-3-semibold">
+                        <Form.Label
+                          className="product-body-text-3-semibold"
+                          id="user-proifle-bio"
+                        >
                           Bio
                         </Form.Label>
                         <p className=" text-semantic-fg-secondary product-body-text-4-regular">
