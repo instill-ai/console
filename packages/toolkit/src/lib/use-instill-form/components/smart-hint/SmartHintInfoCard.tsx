@@ -1,102 +1,37 @@
 import cn from "clsx";
 import { FieldError } from "react-hook-form";
 import { Nullable } from "../../../type";
-import { Icons, Tag } from "@instill-ai/design-system";
+import { Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../type";
+import { SmartHint } from "../../../use-smart-hint";
 
 export const SmartHintInfoCard = ({
-  fieldKey,
-  instillAcceptFormats,
   className,
   error,
-  supportReference,
-  supportTemplate,
   smartHintWarning,
+  highlightedHint,
+  enableSmartHints,
 }: {
-  fieldKey: Nullable<string>;
-  instillAcceptFormats: string[];
-  supportReference: boolean;
-  supportTemplate: boolean;
   className?: string;
   error?: FieldError;
   smartHintWarning: Nullable<SmartHintWarning>;
+  highlightedHint: Nullable<SmartHint>;
+  enableSmartHints: boolean;
 }) => {
-  return (
-    <div className={cn("flex w-full flex-col", className)}>
-      <div className="flex flex-col gap-y-4 p-2">
-        {instillAcceptFormats.length > 0 ? (
-          <div className="flex flex-row gap-x-2">
-            <div className="pt-0.5">
-              <Icons.HelpCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <p className="text-semantic-fg-secondary product-body-text-3-semibold">
-                This field accept following formats:
-              </p>
-              <div className="flex flex-row flex-wrap gap-x-2">
-                {instillAcceptFormats.map((format) => (
-                  <Tag
-                    key={format}
-                    variant="lightBlue"
-                    size="sm"
-                    className="!rounded !px-2 !py-0.5"
-                  >
-                    {format}
-                  </Tag>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : null}
+  if (!enableSmartHints) {
+    return;
+  }
 
-        {supportReference ? (
-          <div className="flex flex-row gap-x-2">
-            <div className="pt-0.5">
-              <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-                This field support reference, you can use{" "}
-                <Tag
-                  variant="lightBlue"
-                  size="sm"
-                  className="!rounded !px-2 !py-0.5"
-                >
-                  ${`{}`}
-                </Tag>{" "}
-                to reference other value. For example:
-              </p>
-              <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                ${`{start.${fieldKey}}`}
-              </p>
-            </div>
-          </div>
-        ) : null}
-        {supportTemplate ? (
-          <div className="flex flex-row gap-x-2">
-            <div className="pt-0.5">
-              <Icons.InfoCircle className="mb-auto h-4 w-4 stroke-semantic-fg-secondary" />
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-                This field support multiple references, you can use multiple{" "}
-                {` `}
-                <Tag
-                  variant="lightBlue"
-                  size="sm"
-                  className="!rounded !px-2 !py-0.5"
-                >
-                  ${`{}`}
-                </Tag>{" "}
-                to compose your value. For example:
-              </p>
-              <p className="rounded border border-semantic-bg-line bg-semantic-bg-base-bg px-2 py-1 text-semantic-fg-secondary product-body-text-3-regular">
-                {`This is a value with multiple references, `} $
-                {`{start.${fieldKey}}`} {`and`} ${`{start.${fieldKey}}`}
-              </p>
-            </div>
-          </div>
-        ) : null}
+  if (!highlightedHint && !error && !smartHintWarning) {
+    return;
+  }
+
+  return (
+    <div className={cn("flex min-h-8 w-full flex-col", className)}>
+      <div className="flex flex-col gap-y-4 p-2">
+        <p className="text-semantic-fg-secondary product-body-text-3-semibold">
+          {highlightedHint ? ` type:${highlightedHint.instillFormat}` : null}
+        </p>
       </div>
       {error ? (
         <div className="flex w-full flex-col gap-y-1 bg-semantic-error-bg p-2">

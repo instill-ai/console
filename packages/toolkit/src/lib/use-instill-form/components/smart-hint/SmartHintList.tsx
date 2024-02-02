@@ -5,6 +5,7 @@ import { SmartHint } from "../../../use-smart-hint";
 import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 export const SmartHintList = ({
   form,
@@ -19,6 +20,7 @@ export const SmartHintList = ({
   inputRef,
   smartHintEnabledPos,
   instillUpstreamTypes,
+  instillAcceptFormats,
 }: {
   field: ControllerRenderProps<
     {
@@ -37,17 +39,37 @@ export const SmartHintList = ({
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
   instillUpstreamTypes: string[];
+  instillAcceptFormats: string[];
 }) => {
+  const humanReadableAcceptFormatString = React.useMemo(() => {
+    const formats = instillAcceptFormats.map((format) => {
+      return transformInstillFormatToHumanReadableFormat(format);
+    });
+
+    const arrayFormats = formats.filter((f) => f.isArray);
+    const nonArrayFormats = formats.filter((f) => !f.isArray);
+
+    const arrayString =
+      arrayFormats.length > 0
+        ? `Array [${arrayFormats.map((e) => e.format).join(", ")}]`
+        : null;
+    const nonArrayString =
+      nonArrayFormats.length > 0
+        ? nonArrayFormats.map((e) => e.format).join(", ")
+        : null;
+
+    if (arrayString && nonArrayString) {
+      return `${arrayString}, ${nonArrayString}`;
+    }
+
+    return arrayString || nonArrayString;
+  }, [instillAcceptFormats]);
+
   return (
     <ScrollArea.Root viewPortRef={smartHintsScrollAreaViewportRef}>
-      <div
-        className={cn(
-          "flex !max-h-[224px] flex-col gap-y-2",
-          enableSmartHints ? "h-[224px]" : "p-4"
-        )}
-      >
-        {enableSmartHints ? (
-          filteredHints.length > 0 ? (
+      {enableSmartHints ? (
+        <div className="flex h-[224px] flex-col gap-y-2 rounded">
+          {filteredHints.length > 0 ? (
             filteredHints.map((hint, index) => {
               return (
                 <button
@@ -83,23 +105,15 @@ export const SmartHintList = ({
             <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
               No available hints
             </p>
-          )
-        ) : (
-          <p className="m-auto text-semantic-fg-secondary product-body-text-3-semibold">
-            You can use{" "}
-            {instillUpstreamTypes.includes("reference") ? (
-              <Tag
-                variant="lightBlue"
-                size="sm"
-                className="!rounded !px-2 !py-0.5"
-              >
-                ${`{}`}
-              </Tag>
-            ) : null}{" "}
-            to reference other field&apos;s value
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col rounded border border-semantic-accent-default bg-[#F0F5FF] p-2">
+          <p className="text-semantic-accent-default product-body-text-3-semibold">
+            {humanReadableAcceptFormatString}
           </p>
-        )}
-      </div>
+        </div>
+      )}
     </ScrollArea.Root>
   );
 };
