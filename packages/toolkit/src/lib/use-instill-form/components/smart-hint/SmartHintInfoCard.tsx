@@ -4,6 +4,7 @@ import { Nullable } from "../../../type";
 import { Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../type";
 import { SmartHint } from "../../../use-smart-hint";
+import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 export const SmartHintInfoCard = ({
   className,
@@ -28,11 +29,13 @@ export const SmartHintInfoCard = ({
 
   return (
     <div className={cn("flex min-h-8 w-full flex-col", className)}>
-      <div className="flex flex-col gap-y-4 p-2">
-        <p className="text-semantic-fg-secondary product-body-text-3-semibold">
-          {highlightedHint ? ` type:${highlightedHint.instillFormat}` : null}
-        </p>
-      </div>
+      {highlightedHint ? (
+        <div className="flex flex-col gap-y-4 p-2">
+          <p className="text-semantic-fg-secondary product-body-text-3-semibold">
+            {`type: ${highlightedHint.instillFormat}`}
+          </p>
+        </div>
+      ) : null}
       {error ? (
         <div className="flex w-full flex-col gap-y-1 bg-semantic-error-bg p-2">
           <p className="text-semantic-error-default product-body-text-3-semibold">
