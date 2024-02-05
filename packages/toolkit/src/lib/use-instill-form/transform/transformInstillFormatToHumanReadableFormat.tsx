@@ -17,6 +17,10 @@ export function transformInstillFormatToHumanReadableFormat(
 }
 
 function transformPrimitive(primitive: string) {
+  if (primitive === "*/*") {
+    return "any";
+  }
+
   if (!primitive.includes("/")) {
     return primitive;
   }
