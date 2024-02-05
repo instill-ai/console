@@ -1,12 +1,7 @@
 import cn from "clsx";
-import {
-  Form,
-  Icons,
-  Input,
-  ParagraphWithHTML,
-  Tooltip,
-} from "@instill-ai/design-system";
+import { Form, Input } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../type";
+import { FieldDescriptionTooltip } from "../common";
 
 export const TextField = ({
   form,
@@ -35,35 +30,7 @@ export const TextField = ({
               >
                 {title}
               </Form.Label>
-              {description ? (
-                <Tooltip.Provider>
-                  <Tooltip.Root>
-                    <Tooltip.Trigger asChild>
-                      <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />
-                    </Tooltip.Trigger>
-                    <Tooltip.Portal>
-                      <Tooltip.Content
-                        className="w-[360px]"
-                        sideOffset={5}
-                        side="top"
-                      >
-                        <div className="!rounded-sm !bg-semantic-bg-primary !px-3 !py-2">
-                          <ParagraphWithHTML
-                            text={description}
-                            className="break-all text-semantic-fg-primary product-body-text-4-semibold"
-                          />
-                        </div>
-                        <Tooltip.Arrow
-                          className="fill-white"
-                          offset={5}
-                          width={9}
-                          height={6}
-                        />
-                      </Tooltip.Content>
-                    </Tooltip.Portal>
-                  </Tooltip.Root>
-                </Tooltip.Provider>
-              ) : null}
+              <FieldDescriptionTooltip description={description} />
             </div>
             <Form.Control>
               <Input.Root>
