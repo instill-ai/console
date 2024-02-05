@@ -42,8 +42,13 @@ export function generateChartData(
     ].entries()) {
       const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
       if (xAxisIndex !== -1) {
-        yAxis[pipelineIndex]["data"][xAxisIndex] =
-          pipeline.trigger_counts[bucketIndex];
+        if (yAxis[pipelineIndex]["data"][xAxisIndex]) {
+          yAxis[pipelineIndex]["data"][xAxisIndex] +=
+            pipeline.trigger_counts[bucketIndex];
+        } else {
+          yAxis[pipelineIndex]["data"][xAxisIndex] +=
+            pipeline.trigger_counts[bucketIndex];
+        }
       }
     }
   });
