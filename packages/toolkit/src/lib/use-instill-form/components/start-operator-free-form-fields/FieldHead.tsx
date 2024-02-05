@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import {
   FieldMode,
@@ -7,13 +6,7 @@ import {
   Nullable,
   useInstillStore,
 } from "../../..";
-import {
-  Button,
-  Icons,
-  Popover,
-  Tag,
-  Tooltip,
-} from "@instill-ai/design-system";
+import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
 import {
   ReferenceHintDataTypeTag,
   ReferenceHintTag,
@@ -46,7 +39,6 @@ export const FieldHead = ({
   disabledReferenceHint?: boolean;
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
-  const [open, setOpen] = React.useState(false);
   return (
     <div className="flex">
       {mode === "build" ? (
@@ -122,90 +114,72 @@ export const FieldHead = ({
               </Tooltip.Provider>
             </div>
             {currentVersion === "latest" && !disabledFieldControl && isOwner ? (
-              <>
-                <Popover.Root
-                  open={open}
-                  onOpenChange={(open) => setOpen(open)}
-                >
-                  <Popover.Trigger>
-                    <Tooltip.Provider>
-                      <Tooltip.Root>
-                        <Tooltip.Trigger asChild>
-                          {/* 
-                            eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-                          */}
-                          <span className="flex" tabIndex={0}>
-                            <Button
-                              className="!my-auto !px-1 !py-1 hover:!bg-semantic-bg-secondary"
-                              size="sm"
-                              variant="tertiaryGrey"
-                              type="button"
-                              onClick={() => {
-                                setOpen((prev) => !prev);
-                              }}
-                            >
-                              <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />
-                            </Button>
-                          </span>
-                        </Tooltip.Trigger>
-                        <Tooltip.Portal>
-                          <Tooltip.Content className="rounded-sm bg-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
-                            More control options
-                            <Tooltip.Arrow
-                              className="fill-semantic-bg-primary"
-                              offset={10}
-                              width={9}
-                              height={6}
-                            />
-                          </Tooltip.Content>
-                        </Tooltip.Portal>
-                      </Tooltip.Root>
-                    </Tooltip.Provider>
-                  </Popover.Trigger>
-
-                  <Popover.Content
-                    side="bottom"
-                    sideOffset={4}
-                    align="end"
-                    className="flex w-[200px] flex-col !rounded-sm !border !border-semantic-bg-line !p-0"
-                  >
-                    <div className="flex flex-col">
-                      <div className="flex h-6 gap-x-3 rounded-t-sm border-b border-semantic-bg-line bg-semantic-bg-base-bg px-2">
-                        <p className="my-auto text-[10px] font-semibold text-semantic-fg-disabled">
-                          {title}
-                        </p>
-                      </div>
-                      <div className="flex flex-col py-1">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            form.clearErrors();
-                            if (onEditField) onEditField(path);
-                          }}
-                          className="flex flex-row items-center gap-x-2 px-2 py-1 hover:bg-semantic-accent-bg-alt"
-                        >
-                          <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
-                          <p className="text-semantic-accent-default product-body-text-4-medium">
-                            edit field
+              <div className="my-auto flex flex-row gap-x-2">
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      <button
+                        onClick={() => {
+                          if (onEditField) onEditField(path);
+                        }}
+                      >
+                        <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
+                      </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content
+                        sideOffset={5}
+                        side="top"
+                        className="max-w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2"
+                      >
+                        <div className="flex flex-col gap-y-1 text-left">
+                          <p className="bg-semantic-bg-primary product-body-text-4-semibold">
+                            Edit this field
                           </p>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (onDeleteField) onDeleteField(path);
-                          }}
-                          className="flex flex-row items-center gap-x-2 px-2 py-1 hover:bg-semantic-error-bg-alt"
-                        >
-                          <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
-                          <p className="text-semantic-error-default product-body-text-4-medium">
-                            delete field
+                        </div>
+                        <Tooltip.Arrow
+                          className="fill-semantic-bg-primary"
+                          offset={10}
+                          width={9}
+                          height={6}
+                        />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      <button
+                        onClick={() => {
+                          if (onDeleteField) onDeleteField(path);
+                        }}
+                      >
+                        <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
+                      </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content
+                        sideOffset={5}
+                        side="top"
+                        className="max-w-[300px] rounded-sm bg-semantic-bg-primary !px-3 !py-2"
+                      >
+                        <div className="flex flex-col gap-y-1 text-left">
+                          <p className="bg-semantic-bg-primary product-body-text-4-semibold">
+                            Delete this field
                           </p>
-                        </button>
-                      </div>
-                    </div>
-                  </Popover.Content>
-                </Popover.Root>
-              </>
+                        </div>
+                        <Tooltip.Arrow
+                          className="fill-semantic-bg-primary"
+                          offset={10}
+                          width={9}
+                          height={6}
+                        />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+              </div>
             ) : null}
           </div>
 
