@@ -19,6 +19,7 @@ import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
 import { AutoFormFieldBaseProps, SmartHintWarning } from "../../type";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
+import { getFieldPlaceholder } from "./getFieldPlaceholder";
 
 export const TextArea = ({
   form,
@@ -89,6 +90,14 @@ export const TextArea = ({
   const supportTemplate = instillUpstreamTypes.includes("template");
   const supportReference = instillUpstreamTypes.includes("reference");
 
+  const placeholder = React.useMemo(() => {
+    return getFieldPlaceholder(instillUpstreamTypes);
+  }, [instillUpstreamTypes]);
+
+  const highlightedHint = React.useMemo(() => {
+    return filteredHints[highlightedHintIndex];
+  }, [filteredHints, highlightedHintIndex]);
+
   return isHidden ? null : (
     <Form.Field
       key={path}
@@ -96,7 +105,7 @@ export const TextArea = ({
       name={path}
       render={({ field }) => {
         return (
-          <Form.Item className="w-full">
+          <Form.Item className="group w-full">
             <div className="flex flex-row gap-x-2">
               <Form.Label
                 className={size === "sm" ? "!product-body-text-4-semibold" : ""}
@@ -150,7 +159,7 @@ export const TextArea = ({
                   <Textarea
                     {...field}
                     className={cn(
-                      "nodrag",
+                      "nodrag placeholder:text-semantic-fg-disabled",
                       size === "sm" ? "!product-body-text-4-regular" : ""
                     )}
                     ref={inputRef}
@@ -170,6 +179,7 @@ export const TextArea = ({
                         setSmartHintsPopoverIsOpen,
                       });
                     }}
+                    placeholder={placeholder}
                     onFocus={() => {
                       setSmartHintsPopoverIsOpen(true);
                     }}
@@ -210,13 +220,11 @@ export const TextArea = ({
                 {supportReference || supportTemplate ? (
                   <React.Fragment>
                     <SmartHintInfoCard
-                      fieldKey={fieldKey}
-                      instillAcceptFormats={instillAcceptFormats}
                       className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
                       error={error}
-                      supportReference={supportReference}
-                      supportTemplate={supportTemplate}
                       smartHintWarning={smartHintWarning}
+                      highlightedHint={highlightedHint}
+                      enableSmartHints={enableSmartHints}
                     />
                     <SmartHintList
                       form={form}
@@ -233,18 +241,10 @@ export const TextArea = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillUpstreamTypes={instillUpstreamTypes}
+                      instillAcceptFormats={instillAcceptFormats}
                     />
                   </React.Fragment>
-                ) : (
-                  <SmartHintInfoCard
-                    fieldKey={fieldKey}
-                    instillAcceptFormats={instillAcceptFormats}
-                    error={error}
-                    supportReference={supportReference}
-                    supportTemplate={supportTemplate}
-                    smartHintWarning={smartHintWarning}
-                  />
-                )}
+                ) : null}
               </Popover.Content>
             </Popover.Root>
             <Form.Description

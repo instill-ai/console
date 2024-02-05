@@ -19,6 +19,7 @@ import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
 import { AutoFormFieldBaseProps, SmartHintWarning } from "../../type";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
+import { getFieldPlaceholder } from "./getFieldPlaceholder";
 
 export const TextField = ({
   fieldKey,
@@ -88,6 +89,14 @@ export const TextField = ({
   const supportTemplate = instillUpstreamTypes.includes("template");
   const supportReference = instillUpstreamTypes.includes("reference");
 
+  const placeholder = React.useMemo(() => {
+    return getFieldPlaceholder(instillUpstreamTypes);
+  }, [instillUpstreamTypes]);
+
+  const highlightedHint = React.useMemo(() => {
+    return filteredHints[highlightedHintIndex];
+  }, [filteredHints, highlightedHintIndex]);
+
   return isHidden ? null : (
     <Form.Field
       key={path}
@@ -95,7 +104,7 @@ export const TextField = ({
       name={path}
       render={({ field }) => {
         return (
-          <Form.Item className="w-full">
+          <Form.Item className="group w-full">
             {title || shortDescription ? (
               <div className="flex flex-row gap-x-2">
                 <Form.Label
@@ -161,9 +170,10 @@ export const TextField = ({
                         typeof field.value === "object" ? "" : field.value ?? ""
                       }
                       className={cn(
-                        "nodrag",
+                        "nodrag placeholder:text-semantic-fg-disabled",
                         size === "sm" ? "!product-body-text-4-regular" : ""
                       )}
+                      placeholder={placeholder}
                       autoComplete="off"
                       onChange={(e) => {
                         onInputChange({
@@ -218,13 +228,11 @@ export const TextField = ({
                 {supportReference || supportTemplate ? (
                   <React.Fragment>
                     <SmartHintInfoCard
-                      fieldKey={fieldKey}
-                      instillAcceptFormats={instillAcceptFormats}
-                      className="absolute left-0 top-0 w-[var(--radix-popover-trigger-width)] -translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
+                      className="absolute right-0 top-0 w-[var(--radix-popover-trigger-width)] translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
                       error={error}
-                      supportReference={supportReference}
-                      supportTemplate={supportTemplate}
                       smartHintWarning={smartHintWarning}
+                      highlightedHint={highlightedHint}
+                      enableSmartHints={enableSmartHints}
                     />
                     <SmartHintList
                       field={field}
@@ -241,18 +249,10 @@ export const TextField = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillUpstreamTypes={instillUpstreamTypes}
+                      instillAcceptFormats={instillAcceptFormats}
                     />
                   </React.Fragment>
-                ) : (
-                  <SmartHintInfoCard
-                    fieldKey={fieldKey}
-                    instillAcceptFormats={instillAcceptFormats}
-                    error={error}
-                    supportReference={supportReference}
-                    supportTemplate={supportTemplate}
-                    smartHintWarning={smartHintWarning}
-                  />
-                )}
+                ) : null}
               </Popover.Content>
             </Popover.Root>
             <Form.Description

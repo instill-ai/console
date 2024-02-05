@@ -179,3 +179,8 @@ export type ComponentOutoutReferenceHint =
       isObjectArrayChild: true;
       objectArrayParentPath: string;
     };
+
+export type InstillHumanReadableFormat = {
+  isArray: boolean;
+  format: string;
+};
