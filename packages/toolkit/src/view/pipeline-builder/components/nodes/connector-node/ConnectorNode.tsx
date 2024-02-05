@@ -359,6 +359,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                         component: {
                           ...node.data.component,
                           resource_name: connector.name,
+
+                          // Some dynamic generated connector definition like instill_model's modelName enum
+                          // will only be returned from connectors endpoint. Therefore, we need to update the
+                          // connector definition here
+                          connector_definition: connector.connector_definition,
                         },
                       };
                     }
