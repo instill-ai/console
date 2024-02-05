@@ -443,6 +443,8 @@ export const FlowControl = (props: FlowControlProps) => {
         throw new Error("Component type is not defined");
       }
 
+      console.log(resource);
+
       if ("configuration" in resource) {
         // Create a new array to let reactflow rerender the component
         newNodes = [

@@ -35,7 +35,7 @@ export const UserDefinedFieldItem = ({
           <div className="my-auto flex flex-row gap-x-2">
             <Tooltip.Provider>
               <Tooltip.Root>
-                <Tooltip.Trigger>
+                <Tooltip.Trigger asChild>
                   <button onClick={() => onEditField(fieldKey)}>
                     <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
                   </button>
@@ -63,7 +63,7 @@ export const UserDefinedFieldItem = ({
             </Tooltip.Provider>
             <Tooltip.Provider>
               <Tooltip.Root>
-                <Tooltip.Trigger>
+                <Tooltip.Trigger asChild>
                   <button onClick={() => onDeleteField(fieldKey)}>
                     <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
                   </button>

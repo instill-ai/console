@@ -34,6 +34,7 @@ export function pickComponentsFromReferenceHints(
     nonObjectArrayHints.forEach((hint) => {
       fields.push(
         <ComponentOutputReferenceHints.ListField
+          key={hint.path}
           title={hint.title}
           path={hint.path}
           instillFormat={hint.instillFormat}
@@ -46,6 +47,7 @@ export function pickComponentsFromReferenceHints(
     Object.entries(groupedObjectArrayHints).forEach(([parentPath, hints]) => {
       fields.push(
         <ComponentOutputReferenceHints.ObjectArrayField
+          key={parentPath}
           parentPath={parentPath}
           hints={hints}
           componentID={componentID}
@@ -58,6 +60,7 @@ export function pickComponentsFromReferenceHints(
     Object.entries(groupedHints).forEach(([instillFormat, hints]) => {
       fields.push(
         <ComponentOutputReferenceHints.GroupByFormatField
+          key={instillFormat}
           instillFormat={instillFormat}
           hints={hints}
           componentID={componentID}

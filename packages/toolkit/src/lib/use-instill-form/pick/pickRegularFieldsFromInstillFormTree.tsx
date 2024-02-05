@@ -251,6 +251,7 @@ export function pickRegularFieldsFromInstillFormTree(
   if (enableSmartHint) {
     return (
       <SmartHintFields.TextField
+        key={tree.path}
         fieldKey={tree.fieldKey}
         path={tree.path}
         form={form}
