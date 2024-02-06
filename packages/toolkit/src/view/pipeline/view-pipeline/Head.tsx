@@ -1,16 +1,26 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import { useSortedReleases } from "../../pipeline-builder";
+import {
+  NodeData,
+  checkIsValidPosition,
+  createGraphLayout,
+  createInitialGraphData,
+  useSortedReleases,
+} from "../../pipeline-builder";
 import {
   Button,
   Icons,
   Tag,
   TabMenu,
   Skeleton,
+  Select,
+  Popover,
+  ScrollArea,
 } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  getHumanReadableStringFromTime,
   isPublicPipeline,
   useEntity,
   useInstillStore,
@@ -22,18 +32,42 @@ import {
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
+import cn from "clsx";
+import { Edge, Node } from "reactflow";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  pipelineName: store.pipelineName,
+  pipelineIsNew: store.pipelineIsNew,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  nodes: store.nodes,
+  currentVersion: store.currentVersion,
+  updateCurrentVersion: store.updateCurrentVersion,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const Head = () => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const {
+    accessToken,
+    enabledQuery,
+    updateNodes,
+    updateEdges,
+    currentVersion,
+    nodes,
+    updateCurrentVersion,
+    updateSelectedConnectorNodeId,
+  } = useInstillStore(useShallow(selector));
+
+  console.log("nodes", nodes);
+
   const router = useRouter();
   const { id, entity } = router.query;
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("overview");
+
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   const entityObject = useEntity();
 
@@ -96,7 +130,7 @@ export const Head = () => {
                     <EntityAvatar
                       src={organization.data?.profile?.avatar ?? null}
                       entityName={organization.data?.name ?? ""}
-                      className="h-6 w-6"
+                      className="my-auto h-6 w-6"
                       fallbackImg={
                         <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
                           <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -107,7 +141,7 @@ export const Head = () => {
                     <EntityAvatar
                       src={user.data?.profile?.avatar ?? null}
                       entityName={user.data?.name ?? ""}
-                      className="h-6 w-6"
+                      className="my-auto h-6 w-6"
                       fallbackImg={
                         <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
                           <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -121,7 +155,7 @@ export const Head = () => {
 
                 {pipeline.isSuccess ? (
                   <React.Fragment>
-                    <div className="product-headings-heading-4">
+                    <div className="my-auto product-headings-heading-4">
                       <span
                         onClick={() => {
                           router.push(`/${entity}`);
@@ -134,19 +168,159 @@ export const Head = () => {
                       <span className="text-semantic-fg-primary">{id}</span>
                     </div>
                     {pipeline.isSuccess ? (
-                      <Tag className="!py-0" variant="darkBlue" size="sm">
+                      <Tag
+                        className="my-auto h-[24px] !py-0"
+                        variant="darkBlue"
+                        size="sm"
+                      >
                         {isPublicPipeline(pipeline.data) ? "Public" : "Private"}
                       </Tag>
+                    ) : null}
+
+                    {pipeline.isSuccess ? (
+                      <Popover.Root open={isOpen}>
+                        <Popover.Trigger asChild={true} className="my-auto">
+                          <Button
+                            className="gap-x-1"
+                            size="sm"
+                            variant="tertiaryColour"
+                            type="button"
+                            onClick={() => setIsOpen(true)}
+                          >
+                            <Tag
+                              size="sm"
+                              variant="darkPurple"
+                              className="h-[24px] gap-x-2"
+                            >
+                              Version {currentVersion}
+                            </Tag>
+                            <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+                          </Button>
+                        </Popover.Trigger>
+                        <Popover.Content
+                          side="top"
+                          sideOffset={4}
+                          align="start"
+                          className="flex h-[200px] w-[160px] flex-col !p-0"
+                        >
+                          <ScrollArea.Root>
+                            <div className="flex flex-col gap-y-1 p-0.5">
+                              {releases.length > 0 ? (
+                                <React.Fragment>
+                                  <VersionButton
+                                    id="latest"
+                                    currentVersion={currentVersion}
+                                    onClick={() => {
+                                      if (!pipeline.isSuccess) {
+                                        return;
+                                      }
+
+                                      updateCurrentVersion(() => "latest");
+
+                                      let newNodes: Node<NodeData>[] = [];
+                                      let newEdges: Edge[] = [];
+
+                                      if (
+                                        checkIsValidPosition(
+                                          pipeline.data.recipe,
+                                          pipeline.data.metadata ?? null
+                                        )
+                                      ) {
+                                        const { nodes, edges } =
+                                          createInitialGraphData(
+                                            pipeline.data.recipe,
+                                            {
+                                              metadata: pipeline.data.metadata,
+                                            }
+                                          );
+                                        newNodes = nodes;
+                                        newEdges = edges;
+                                      } else {
+                                        const { nodes, edges } =
+                                          createInitialGraphData(
+                                            pipeline.data.recipe
+                                          );
+                                        newNodes = nodes;
+                                        newEdges = edges;
+                                      }
+
+                                      createGraphLayout(newNodes, newEdges)
+                                        .then((graphData) => {
+                                          updateNodes(() => graphData.nodes);
+                                          updateEdges(() => graphData.edges);
+                                        })
+                                        .catch((err) => {
+                                          console.error(err);
+                                        });
+                                    }}
+                                  />
+                                  {releases.map((release) => (
+                                    <VersionButton
+                                      key={release.id}
+                                      id={release.id}
+                                      currentVersion={currentVersion}
+                                      createTime={release.create_time}
+                                      onClick={() => {
+                                        updateSelectedConnectorNodeId(
+                                          () => null
+                                        );
+
+                                        updateCurrentVersion(() => release.id);
+
+                                        let newNodes: Node<NodeData>[] = [];
+                                        let newEdges: Edge[] = [];
+
+                                        if (
+                                          checkIsValidPosition(
+                                            release.recipe,
+                                            release.metadata ?? null
+                                          )
+                                        ) {
+                                          const { nodes, edges } =
+                                            createInitialGraphData(
+                                              release.recipe,
+                                              {
+                                                metadata: release.metadata,
+                                              }
+                                            );
+                                          newNodes = nodes;
+                                          newEdges = edges;
+                                        } else {
+                                          const { nodes, edges } =
+                                            createInitialGraphData(
+                                              release.recipe
+                                            );
+                                          newNodes = nodes;
+                                          newEdges = edges;
+                                        }
+
+                                        createGraphLayout(newNodes, newEdges)
+                                          .then((graphData) => {
+                                            updateNodes(() => graphData.nodes);
+                                            updateEdges(() => graphData.edges);
+                                          })
+                                          .catch((err) => {
+                                            console.error(err);
+                                          });
+                                        setIsOpen(false);
+                                      }}
+                                    />
+                                  ))}
+                                </React.Fragment>
+                              ) : (
+                                <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
+                                  This pipeline has no released versions.
+                                </div>
+                              )}
+                            </div>
+                          </ScrollArea.Root>
+                        </Popover.Content>
+                      </Popover.Root>
                     ) : null}
                   </React.Fragment>
                 ) : (
                   <PipelineNameSkeleton />
                 )}
-                {releases[0] ? (
-                  <Tag className="!py-0" size="sm" variant="darkBlue">
-                    {releases[0]?.id}
-                  </Tag>
-                ) : null}
               </div>
             </div>
             {pipeline.isSuccess ? (
@@ -161,7 +335,7 @@ export const Head = () => {
                     />
                   </div>
                 ) : (
-                  <div className="flex w-full flex-row items-center gap-x-2">
+                  <div className="flex w-full flex-row items-center gap-x-2 p-1">
                     <p className="font-mono text-xs italic text-semantic-fg-disabled">
                       This is a placeholder brief of this pipeline
                     </p>
@@ -257,5 +431,43 @@ const HeaderControllerSkeleton = () => {
       <Skeleton className="h-8 w-14 rounded" />
       <Skeleton className="h-8 w-14 rounded" />
     </React.Fragment>
+  );
+};
+
+const VersionButton = ({
+  id,
+  currentVersion,
+  onClick,
+  createTime,
+}: {
+  id: string;
+  currentVersion: Nullable<string>;
+  createTime?: string;
+  onClick: () => void;
+}) => {
+  return (
+    <Button
+      key={id}
+      className={cn(
+        "w-full",
+        currentVersion === id ? "hover:!bg-semantic-accent-default" : ""
+      )}
+      variant={currentVersion === id ? "primary" : "tertiaryColour"}
+      onClick={onClick}
+    >
+      <div className="flex w-full flex-row gap-x-2">
+        <div className="my-auto h-2 w-2 rounded-full bg-semantic-secondary-default"></div>
+        <p
+          className={cn(
+            "w-full text-left product-body-text-3-medium",
+            currentVersion === id
+              ? "text-semantic-fg-on-default"
+              : "text-semantic-fg-secondary"
+          )}
+        >
+          Version {id}
+        </p>
+      </div>
+    </Button>
   );
 };

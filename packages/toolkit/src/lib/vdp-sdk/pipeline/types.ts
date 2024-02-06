@@ -118,6 +118,7 @@ export type PipelineRelease = {
   visibility: Visibility;
   openapi_schema: OpenAPIV3.Document;
   metadata: GeneralRecord;
+  alias?: string;
 };
 
 export type PipelineTrace = {

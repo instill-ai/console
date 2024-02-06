@@ -12,6 +12,7 @@ import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";
 import { useRouter } from "next/router";
+import { ReadOnlyPipelineBuilderWithVersion } from "../../pipeline-builder/components/ReadOnlyPipelineBuilderWithVersion";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -56,7 +57,7 @@ export const ViewPipeline = () => {
       <Head />
       <div className="mx-auto flex flex-1 flex-row px-8">
         <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
-          <ReadOnlyPipelineBuilder
+          <ReadOnlyPipelineBuilderWithVersion
             pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
             recipe={pipeline.isSuccess ? pipeline.data.recipe : null}
             metadata={pipeline.isSuccess ? pipeline.data.metadata : null}

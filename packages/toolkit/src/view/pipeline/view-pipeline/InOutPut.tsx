@@ -24,7 +24,7 @@ import {
   Skeleton,
   useToast,
 } from "@instill-ai/design-system";
-import { recursiveHelpers } from "../../pipeline-builder";
+import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
 import { LoadingSpin } from "../../../components";
@@ -32,11 +32,14 @@ import { LoadingSpin } from "../../../components";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  currentVersion: store.currentVersion,
 });
 
 export const InOutPut = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, currentVersion } = useInstillStore(
+    useShallow(selector)
+  );
   const router = useRouter();
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
@@ -53,13 +56,21 @@ export const InOutPut = () => {
     accessToken,
   });
 
-  const startComponent = React.useMemo(() => {
-    if (!pipeline.isSuccess) return null;
+  const releases = useSortedReleases({
+    pipelineName: entityObject.pipelineName,
+    accessToken,
+    enabledQuery: enabledQuery && entityObject.isSuccess,
+  });
 
-    return (
-      pipeline.data.recipe.components.find((c) => c.id === "start") ?? null
+  const startComponent = React.useMemo(() => {
+    const pipelineVersion = releases.find(
+      (release) =>
+        release.id === currentVersion || release.alias === currentVersion
     );
-  }, [pipeline.isSuccess, pipeline.data]);
+    return (
+      pipelineVersion?.recipe.components.find((c) => c.id === "start") ?? null
+    );
+  }, [releases, currentVersion]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
     mode: "demo",
