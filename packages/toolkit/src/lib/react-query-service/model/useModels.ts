@@ -3,19 +3,15 @@ import { env } from "../../utility";
 import { listModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useModels = ({
+export function useModels({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["models"],
     async () => {
@@ -36,4 +32,4 @@ export const useModels = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

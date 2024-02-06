@@ -1,20 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { listRepoFileContent } from "../../github";
 
-export const useMgmtDefinition = ({
+export function useMgmtDefinition({
   enabled,
   retry,
 }: {
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["mgmt", "encoded-definition"],
-    async (): Promise<string> => {
+    async () => {
       const { content } = await listRepoFileContent(
         "instill-ai",
         "mgmt-backend",
@@ -29,4 +25,4 @@ export const useMgmtDefinition = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

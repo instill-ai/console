@@ -6,7 +6,7 @@ import {
 } from "../../vdp-sdk";
 import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
-export const useCreateUserConnector = () => {
+export function useCreateUserConnector() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -41,4 +41,4 @@ export const useCreateUserConnector = () => {
       },
     }
   );
-};
+}

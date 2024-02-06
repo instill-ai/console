@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import { getUserModelQuery } from "../../vdp-sdk";
 
-export const useUserModel = ({
+export function useUserModel({
   modelName,
   accessToken,
   enabled,
@@ -11,12 +11,8 @@ export const useUserModel = ({
   modelName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (modelName && enabled) {
@@ -43,4 +39,4 @@ export const useUserModel = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

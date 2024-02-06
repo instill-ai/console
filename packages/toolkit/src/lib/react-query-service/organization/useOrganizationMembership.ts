@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import { getOrganizationMembershipQuery } from "../../vdp-sdk";
 
-export const useOrganizationMembership = ({
+export function useOrganizationMembership({
   organizationID,
   userID,
   accessToken,
@@ -13,12 +13,9 @@ export const useOrganizationMembership = ({
   userID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
+
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (organizationID && userID && enabled) {
@@ -52,4 +49,4 @@ export const useOrganizationMembership = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

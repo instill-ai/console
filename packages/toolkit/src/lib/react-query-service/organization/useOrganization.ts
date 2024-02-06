@@ -2,9 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import { getOrganizationQuery } from "../../vdp-sdk";
 
-// This is a public API, we won't block unauth users from accessing this
-
-export const useOrganization = ({
+export function useOrganization({
   organizationID,
   accessToken,
   enabled,
@@ -13,12 +11,8 @@ export const useOrganization = ({
   organizationID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (organizationID && enabled) {
@@ -44,4 +38,4 @@ export const useOrganization = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

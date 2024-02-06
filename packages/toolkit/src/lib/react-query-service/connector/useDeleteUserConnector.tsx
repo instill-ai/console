@@ -7,7 +7,7 @@ import {
 } from "../../vdp-sdk";
 import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
-export const useDeleteUserConnector = () => {
+export function useDeleteUserConnector() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -48,4 +48,4 @@ export const useDeleteUserConnector = () => {
       },
     }
   );
-};
+}

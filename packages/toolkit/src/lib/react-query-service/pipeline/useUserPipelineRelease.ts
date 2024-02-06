@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserPipelineReleaseQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useUserPipelineRelease = ({
+export function useUserPipelineRelease({
   pipelineReleaseName,
   enabled,
   accessToken,
@@ -11,12 +11,8 @@ export const useUserPipelineRelease = ({
   pipelineReleaseName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (pipelineReleaseName && enabled) {
@@ -42,4 +38,4 @@ export const useUserPipelineRelease = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

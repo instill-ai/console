@@ -3,7 +3,7 @@ import { deleteUserModelMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
-export const useDeleteModel = () => {
+export function useDeleteModel() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -32,4 +32,4 @@ export const useDeleteModel = () => {
       },
     }
   );
-};
+}

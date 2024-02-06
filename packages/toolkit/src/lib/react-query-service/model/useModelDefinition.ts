@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getModelDefinitionQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useModelDefinition = ({
+export function useModelDefinition({
   modelDefinitionName,
   accessToken,
   enabled,
@@ -11,12 +11,8 @@ export const useModelDefinition = ({
   modelDefinitionName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (modelDefinitionName && enabled) {
@@ -43,4 +39,4 @@ export const useModelDefinition = ({
     },
     { enabled: enableQuery, retry: retry === false ? false : retry ? retry : 3 }
   );
-};
+}

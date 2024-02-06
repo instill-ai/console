@@ -6,7 +6,7 @@ import {
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useCreateApiToken = () => {
+export function useCreateApiToken() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -36,4 +36,4 @@ export const useCreateApiToken = () => {
       },
     }
   );
-};
+}

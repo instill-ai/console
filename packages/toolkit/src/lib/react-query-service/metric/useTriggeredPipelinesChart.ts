@@ -3,7 +3,7 @@ import { Nullable } from "../../type";
 import { listTriggeredPipelineChartQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 
-export const useTriggeredPipelinesChart = ({
+export function useTriggeredPipelinesChart({
   enabled,
   accessToken,
   filter,
@@ -12,12 +12,8 @@ export const useTriggeredPipelinesChart = ({
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["charts", filter],
     async () => {
@@ -39,4 +35,4 @@ export const useTriggeredPipelinesChart = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

@@ -5,7 +5,7 @@ import {
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useDeleteUserPipelineRelease = () => {
+export function useDeleteUserPipelineRelease() {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -53,4 +53,4 @@ export const useDeleteUserPipelineRelease = () => {
       },
     }
   );
-};
+}

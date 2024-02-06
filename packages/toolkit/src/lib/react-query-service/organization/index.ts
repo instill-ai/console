@@ -6,6 +6,7 @@ export * from "./useOrganization";
 export * from "./useOrganizationMembership";
 export * from "./useOrganizationMemberships";
 export * from "./useOrganizations";
+export * from "./useOrganizationSubscription";
 export * from "./useUpdateOrganization";
 export * from "./useUpdateOrganizationMembership";
 export * from "./useUpdateUserMembership";

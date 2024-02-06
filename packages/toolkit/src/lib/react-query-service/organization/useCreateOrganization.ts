@@ -7,7 +7,7 @@ import {
   createOrganizationMutation,
 } from "../../vdp-sdk";
 
-export const useCreateOrganization = () => {
+export function useCreateOrganization() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -40,4 +40,4 @@ export const useCreateOrganization = () => {
       },
     }
   );
-};
+}

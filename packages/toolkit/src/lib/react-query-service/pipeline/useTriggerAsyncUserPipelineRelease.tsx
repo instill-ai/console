@@ -5,7 +5,7 @@ import {
   triggerAsyncUserPipelineReleaseAction,
 } from "../../vdp-sdk";
 
-export const useTriggerAsyncUserPipelineRelease = () => {
+export function useTriggerAsyncUserPipelineRelease() {
   return useMutation(
     async ({
       pipelineReleaseName,
@@ -32,4 +32,4 @@ export const useTriggerAsyncUserPipelineRelease = () => {
       return Promise.resolve(pipelineRelease);
     }
   );
-};
+}

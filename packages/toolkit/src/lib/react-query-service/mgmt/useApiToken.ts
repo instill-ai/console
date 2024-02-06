@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getApiTokenQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useApiToken = ({
+export function useApiToken({
   tokenName,
   accessToken,
   enabled,
@@ -11,12 +11,9 @@ export const useApiToken = ({
   tokenName: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
+
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["api-tokens", tokenName],
     async () => {
@@ -36,4 +33,4 @@ export const useApiToken = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

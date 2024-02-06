@@ -3,19 +3,15 @@ import { listApiTokensQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 import type { Nullable } from "../../type";
 
-export const useApiTokens = ({
+export function useApiTokens({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["api-tokens"],
     async () => {
@@ -36,4 +32,4 @@ export const useApiTokens = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

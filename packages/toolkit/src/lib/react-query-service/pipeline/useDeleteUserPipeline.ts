@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteUserPipelineMutation, type Pipeline } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useDeleteUserPipeline = () => {
+export function useDeleteUserPipeline() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -46,4 +46,4 @@ export const useDeleteUserPipeline = () => {
       },
     }
   );
-};
+}

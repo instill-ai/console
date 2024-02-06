@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
 import { getUserMembershipsQuery } from "../../vdp-sdk";
 
-export const useUserMemberships = ({
+export function useUserMemberships({
   userID,
   accessToken,
   enabled,
@@ -11,12 +11,8 @@ export const useUserMemberships = ({
   userID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enabledQuery = false;
 
   if (userID && enabled) {
@@ -46,4 +42,4 @@ export const useUserMemberships = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

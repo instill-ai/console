@@ -3,19 +3,15 @@ import { listUsersQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 import { env } from "../../utility";
 
-export const useUsers = ({
+export function useUsers({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["users"],
     async () => {
@@ -36,4 +32,4 @@ export const useUsers = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}
