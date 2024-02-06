@@ -7,7 +7,7 @@ import {
   isPublicPipeline,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
 } from "../../lib";
 import { sortPipelineReleases } from "../../view";
 import { ClonePipelineDialog } from "../ClonePipelineDialog";
@@ -49,7 +49,7 @@ export const Footer = ({
     return sortPipelineReleases(pipeline.releases)[0].id;
   }, [pipeline]);
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });

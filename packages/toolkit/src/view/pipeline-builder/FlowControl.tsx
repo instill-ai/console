@@ -39,7 +39,7 @@ import {
   useEntity,
   useInstillStore,
   useUpdateUserPipeline,
-  useUserMe,
+  useAuthenticatedUser,
   useUserPipeline,
 } from "../../lib";
 import { StartNodeData } from "./type";
@@ -119,7 +119,7 @@ export const FlowControl = (props: FlowControlProps) => {
     accessToken,
   });
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
     retry: false,

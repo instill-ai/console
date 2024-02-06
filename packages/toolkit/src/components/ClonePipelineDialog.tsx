@@ -30,7 +30,7 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
   useUserMemberships,
   validateInstillID,
 } from "../lib";
@@ -86,7 +86,7 @@ export const ClonePipelineDialog = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });

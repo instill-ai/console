@@ -8,7 +8,7 @@ import {
   InstillStore,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
 } from "../../../lib";
 
 const UserAccountTabSchema = z.object({
@@ -23,7 +23,7 @@ const selector = (store: InstillStore) => ({
 export const UserAccountTab = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const user = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken: accessToken,
   });
@@ -35,12 +35,12 @@ export const UserAccountTab = () => {
   const { reset } = form;
 
   React.useEffect(() => {
-    if (!user.isSuccess) return;
+    if (!me.isSuccess) return;
 
     reset({
-      email: user.data?.email ?? "",
+      email: me.data?.profile?.public_email ?? "",
     });
-  }, [user.data, user.isSuccess, reset]);
+  }, [me.data, me.isSuccess, reset]);
 
   return (
     <Setting.TabRoot>

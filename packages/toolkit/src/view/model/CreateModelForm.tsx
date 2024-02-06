@@ -30,7 +30,7 @@ import {
   CreateUserModelPayload,
   watchUserModel,
   validateInstillID,
-  useUserMe,
+  useAuthenticatedUser,
   useAmplitudeCtx,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
@@ -114,7 +114,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     modelHuggingFaceRepoUrlError,
   } = useCreateResourceFormStore(selector, shallow);
 
-  const user = useUserMe({
+  const user = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });

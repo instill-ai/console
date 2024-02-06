@@ -1,23 +1,52 @@
-import { GeneralRecord } from "../../type";
+import { StripeSubscriptionDetail } from "../types";
+
+export type UserProfile = {
+  display_name?: string;
+  bio?: string;
+  public_email?: string;
+  company_name?: string;
+  avatar?: string;
+  social_profiles: {
+    webiste?: string;
+    x?: string;
+    github?: string;
+  };
+};
+
+export type AuthenticatedUser = {
+  name: string;
+  uid: string;
+  id: string;
+  create_time: string;
+  update_time: string;
+  customer_id: string;
+  email: string;
+  newsletter_subscription: boolean;
+  role: string;
+  onboarding_status: OnboardingStatus;
+  cookie_token?: string;
+  profile?: UserProfile;
+};
 
 export type User = {
   name: string;
   uid: string;
-  email: string;
   id: string;
-  first_name: string;
-  last_name: string;
-  customer_id: string;
-  org_name: string;
-  role: string;
-  newsletter_subscription: boolean;
-  type: string;
   create_time: string;
   update_time: string;
-  cookie_token?: string;
-  profile_avatar?: string;
-  profile_data?: GeneralRecord;
+  profile?: UserProfile;
 };
+
+export type UserSubscriptionPlan =
+  | "PLAN_UNSPECIFIED"
+  | "PLAN_FREEMIUM"
+  | "PLAN_PRO";
+
+export type UserSubscription = {
+  plan: UserSubscriptionPlan;
+  detail: StripeSubscriptionDetail;
+};
+
 export type ApiToken = {
   name: string;
   uid: string;
@@ -41,3 +70,8 @@ export type NamespaceType =
   | "NAMESPACE_USER"
   | "NAMESPACE_ORGANIZATION"
   | "NAMESPACE_RESERVED";
+
+export type OnboardingStatus =
+  | "ONBOARDING_STATUS_UNSPECIFIED"
+  | "ONBOARDING_STATUS_IN_PROGRESS"
+  | "ONBOARDING_STATUS_COMPLETED";

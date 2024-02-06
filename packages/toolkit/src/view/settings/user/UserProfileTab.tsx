@@ -15,19 +15,19 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import {
+  AuthenticatedUser,
   InstillStore,
-  User,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   useShallow,
-  useUpdateUser,
-  useUserMe,
+  useAuthenticatedUser,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin } from "../../../components";
 import AvatarEditor from "react-avatar-editor";
+import { useUpdateAuthenticatedUser } from "../../../lib/react-query-service/mgmt/useUpdateAuthenticatedUser";
 
 export const UserProfileTabSchema = z.object({
   last_name: z.string().optional().nullable(),
@@ -62,7 +62,7 @@ export const UserProfileTab = () => {
 
   const editorRef = React.useRef<AvatarEditor>(null);
 
-  const user = useUserMe({
+  const user = useAuthenticatedUser({
     accessToken,
     enabled: enabledQuery,
   });
@@ -79,25 +79,14 @@ export const UserProfileTab = () => {
     reset(user.data);
   }, [user.data, user.isSuccess, reset]);
 
-  const updateUser = useUpdateUser();
+  const updateUser = useUpdateAuthenticatedUser();
 
   async function onSubmit(data: z.infer<typeof UserProfileTabSchema>) {
     if (!user.isSuccess || !accessToken || updateUser.isLoading) return;
 
-    const payload: Partial<User> = {
+    const payload: Partial<AuthenticatedUser> = {
       id: user.data.id,
-      first_name: data.first_name ?? undefined,
-      last_name: data.last_name ?? undefined,
-      role: data.role ?? undefined,
-      profile_avatar: profileAvatar
-        ? String(profileAvatar)
-        : data.profile_avatar ?? undefined,
-      profile_data: {
-        ...user.data.profile_data,
-        bio: data.profile_data?.bio ?? undefined,
-        github: data.profile_data?.github ?? undefined,
-        twitter: data.profile_data?.twitter ?? undefined,
-      },
+
       newsletter_subscription: data.newsletter_subscription,
     };
 

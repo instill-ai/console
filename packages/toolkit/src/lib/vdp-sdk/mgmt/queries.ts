@@ -1,12 +1,12 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
-import { ApiToken, User } from "./types";
+import { ApiToken, AuthenticatedUser, User, UserSubscription } from "./types";
 
-export type GetUserMeResponse = {
-  user: User;
+export type GetAuthenticatedResponse = {
+  user: AuthenticatedUser;
 };
 
-export async function getUserMeQuery({
+export async function getAuthenticatedUserQuery({
   accessToken,
 }: {
   accessToken: Nullable<string>;
@@ -14,9 +14,32 @@ export async function getUserMeQuery({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<GetUserMeResponse>("/users/me");
+    const { data } = await client.get<GetAuthenticatedResponse>("/user");
 
     return Promise.resolve(data.user);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetAuthenticatedUserSubscriptionsResponse = {
+  subscription: UserSubscription;
+};
+
+export async function getAuthenticatedUserSubscriptionsQuery({
+  accessToken,
+}: {
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } =
+      await client.get<GetAuthenticatedUserSubscriptionsResponse>(
+        "/user/subscription"
+      );
+
+    return Promise.resolve(data.subscription);
   } catch (err) {
     return Promise.reject(err);
   }

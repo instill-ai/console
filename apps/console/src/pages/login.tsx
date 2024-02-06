@@ -13,7 +13,7 @@ import {
   authLoginAction,
   changePasswordMutation,
   getInstillApiErrorMessage,
-  useUserMe,
+  useAuthenticatedUser,
 } from "@instill-ai/toolkit";
 import { useToast } from "@instill-ai/design-system";
 import axios, { isAxiosError } from "axios";
@@ -33,7 +33,7 @@ const LoginPage: NextPageWithLayout = () => {
     enabled: !!accessToken && changePasswordIsComplete,
   });
 
-  const user = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: !!accessToken,
     accessToken: accessToken,
   });
@@ -78,7 +78,7 @@ const LoginPage: NextPageWithLayout = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
     if (!accessToken) {
       return;
@@ -122,12 +122,12 @@ const LoginPage: NextPageWithLayout = () => {
       return;
     }
 
-    if (!user.isSuccess) {
+    if (!me.isSuccess) {
       return;
     }
 
     if (trackToken.isSuccess) {
-      router.push(`/${user.data.id}/pipelines`);
+      router.push(`/${me.data.id}/pipelines`);
     }
   }, [
     trackToken.data,
@@ -135,8 +135,8 @@ const LoginPage: NextPageWithLayout = () => {
     isDefaultPWD,
     loginIsComplete,
     changePasswordIsComplete,
-    user.data,
-    user.isSuccess,
+    me.data,
+    me.isSuccess,
     router,
   ]);
 

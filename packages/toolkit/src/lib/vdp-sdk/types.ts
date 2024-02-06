@@ -34,3 +34,12 @@ export type Permission = {
   can_edit: boolean;
   can_trigger: boolean;
 };
+
+export type StripeSubscriptionDetail = {
+  customer_id: string;
+  product_name: string;
+  id: string;
+  item_id: string;
+  price: number;
+  canceled_at?: number;
+};

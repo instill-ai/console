@@ -1,25 +1,22 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { ApiToken, User } from "./types";
+import { ApiToken, AuthenticatedUser } from "./types";
 
 export type UpdateUserResponse = {
-  user: User;
+  user: AuthenticatedUser;
 };
 
-export async function updateUserMutation({
+export async function updateAuthenticatedUserMutation({
   payload,
   accessToken,
 }: {
-  payload: Partial<User>;
+  payload: Partial<AuthenticatedUser>;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.patch<UpdateUserResponse>(
-      "/users/me",
-      payload
-    );
+    const { data } = await client.patch<UpdateUserResponse>("/user", payload);
 
     return Promise.resolve(data.user);
   } catch (err) {

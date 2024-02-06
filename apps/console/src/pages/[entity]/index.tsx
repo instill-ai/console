@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PageBase, UserProfile } from "@instill-ai/toolkit";
+import { PageBase, UserProfileView } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { NextPageWithLayout } from "../_app";
@@ -9,7 +9,7 @@ const ProfilePage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="Settings" />
-      <UserProfile />
+      <UserProfileView />
     </React.Fragment>
   );
 };

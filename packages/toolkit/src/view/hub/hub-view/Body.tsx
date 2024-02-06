@@ -8,7 +8,7 @@ import {
   useInfinitePipelines,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
   useUserPipelines,
 } from "../../../lib";
 import {
@@ -41,7 +41,7 @@ export const Body = ({
     filter: searchCode ? `q="${searchCode}"` : null,
   });
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
     retry: false,
