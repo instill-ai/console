@@ -76,7 +76,7 @@ export const SmartHintList = ({
                   key={hint.path}
                   id={`${path.split(".").join("")}-${index}`}
                   className={cn(
-                    "flex rounded p-2 product-body-text-4-semibold",
+                    "flex rounded p-2 text-left product-body-text-4-semibold",
                     {
                       "bg-semantic-accent-bg text-semantic-accent-hover":
                         highlightedHintIndex === index,
