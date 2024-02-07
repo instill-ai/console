@@ -1,4 +1,4 @@
-import { InstillHumanReadableFormat } from "../type";
+import { InstillHumanReadableFormat } from "../types";
 
 export function transformInstillFormatToHumanReadableFormat(
   format: string

@@ -1,7 +1,7 @@
 import { Form, Textarea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const TextareaField = ({
   mode,

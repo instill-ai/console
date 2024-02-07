@@ -4,7 +4,7 @@ import {
   ChooseTitleFrom,
   InstillFormTree,
   SelectedConditionMap,
-} from "../type";
+} from "../types";
 import { RegularFields } from "../components";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";

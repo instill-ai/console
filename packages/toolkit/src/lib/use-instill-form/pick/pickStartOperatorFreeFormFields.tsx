@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
 import { StartOperatorMetadata } from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
-import { FieldMode, StartOperatorFreeFormFieldItem } from "../type";
+import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
 
 export type PickStartOperatorFreeFormFieldsProps = {
   mode: FieldMode;

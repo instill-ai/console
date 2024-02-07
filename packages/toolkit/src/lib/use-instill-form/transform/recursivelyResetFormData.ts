@@ -1,5 +1,5 @@
 import { GeneralRecord } from "../../type";
-import { InstillFormTree, SelectedConditionMap } from "../type";
+import { InstillFormTree, SelectedConditionMap } from "../types";
 import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";
 
 export function recursivelyResetFormData(

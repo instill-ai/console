@@ -1,7 +1,7 @@
 import { Form, Switch } from "@instill-ai/design-system";
-import { AutoFormFieldBaseProps } from "../../type";
+import { AutoFormFieldBaseProps } from "../../types";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const BooleanField = ({
   mode,

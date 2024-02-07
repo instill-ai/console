@@ -1,5 +1,5 @@
 import { ComponentOutputReferenceHints } from ".";
-import { ComponentOutoutReferenceHint } from "../../type";
+import { ComponentOutoutReferenceHint } from "../../types";
 
 export const ObjectArrayField = ({
   hints,

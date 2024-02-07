@@ -2,7 +2,7 @@ import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const NumbersField = ({
   mode,

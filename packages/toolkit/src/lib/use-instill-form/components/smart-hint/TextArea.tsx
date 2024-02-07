@@ -10,7 +10,7 @@ import { useFilteredHints } from "./useFilteredHints";
 import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
 import { SmartHintList } from "./SmartHintList";
-import { AutoFormFieldBaseProps, SmartHintWarning } from "../../type";
+import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";

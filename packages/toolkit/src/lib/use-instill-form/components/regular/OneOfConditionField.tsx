@@ -7,7 +7,7 @@ import {
   AutoFormFieldBaseProps,
   InstillFormTree,
   SelectedConditionMap,
-} from "../../type";
+} from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 
 export const OneOfConditionField = ({

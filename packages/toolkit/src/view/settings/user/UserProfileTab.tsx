@@ -9,7 +9,6 @@ import {
   Dialog,
   Form,
   Input,
-  Select,
   Switch,
   Textarea,
   useToast,
@@ -27,20 +26,26 @@ import {
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin } from "../../../components";
 import AvatarEditor from "react-avatar-editor";
-import { useUpdateAuthenticatedUser } from "../../../lib/react-query-service/mgmt/useUpdateAuthenticatedUser";
+import { useUpdateAuthenticatedUser } from "../../../lib";
 
 export const UserProfileTabSchema = z.object({
-  last_name: z.string().optional().nullable(),
-  first_name: z.string().optional().nullable(),
   id: z.string().min(1, "User name is required"),
-  role: z.string().optional().nullable(),
-  profile_avatar: z.string().optional().nullable(),
+  profile_avatar: z.string().optional(),
   newsletter_subscription: z.boolean(),
-  profile_data: z
+
+  profile: z
     .object({
-      bio: z.string().optional().nullable(),
-      github: z.string().optional().nullable(),
-      twitter: z.string().optional().nullable(),
+      display_name: z.string().optional(),
+      company_name: z.string().optional(),
+      bio: z.string().optional(),
+      public_email: z.string().optional(),
+      social_profile_links: z
+        .object({
+          github: z.string().optional(),
+          x: z.string().optional(),
+          website: z.string().optional(),
+        })
+        .optional(),
     })
     .optional(),
 });
@@ -62,7 +67,7 @@ export const UserProfileTab = () => {
 
   const editorRef = React.useRef<AvatarEditor>(null);
 
-  const user = useAuthenticatedUser({
+  const me = useAuthenticatedUser({
     accessToken,
     enabled: enabledQuery,
   });
@@ -74,24 +79,24 @@ export const UserProfileTab = () => {
   const { reset } = form;
 
   React.useEffect(() => {
-    if (!user.isSuccess) return;
+    if (!me.isSuccess) return;
 
-    reset(user.data);
-  }, [user.data, user.isSuccess, reset]);
+    reset(me.data);
+  }, [me.data, me.isSuccess, reset]);
 
-  const updateUser = useUpdateAuthenticatedUser();
+  const updateAuthenticatedUser = useUpdateAuthenticatedUser();
 
   async function onSubmit(data: z.infer<typeof UserProfileTabSchema>) {
-    if (!user.isSuccess || !accessToken || updateUser.isLoading) return;
+    if (!me.isSuccess || !accessToken || updateAuthenticatedUser.isLoading)
+      return;
 
     const payload: Partial<AuthenticatedUser> = {
-      id: user.data.id,
-
-      newsletter_subscription: data.newsletter_subscription,
+      ...data,
+      id: me.data.id,
     };
 
     try {
-      await updateUser.mutateAsync({ payload, accessToken });
+      await updateAuthenticatedUser.mutateAsync({ payload, accessToken });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("update_user_profile_settings");
@@ -146,12 +151,12 @@ export const UserProfileTab = () => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="first_name"
+                name="profile.display_name"
                 render={({ field }) => {
                   return (
                     <Form.Item>
                       <Form.Label className="product-body-text-3-semibold">
-                        First name
+                        Display name
                       </Form.Label>
                       <Form.Control>
                         <Input.Root>
@@ -169,31 +174,7 @@ export const UserProfileTab = () => {
                   );
                 }}
               />
-              <Form.Field
-                control={form.control}
-                name="last_name"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label className="product-body-text-3-semibold">
-                        Last name
-                      </Form.Label>
-                      <Form.Control>
-                        <Input.Root>
-                          <Input.Core
-                            {...field}
-                            type="text"
-                            className="!product-body-text-2-regular"
-                            value={field.value ?? ""}
-                            autoComplete="off"
-                          />
-                        </Input.Root>
-                      </Form.Control>
-                      <Form.Message />
-                    </Form.Item>
-                  );
-                }}
-              />
+
               <Form.Field
                 control={form.control}
                 name="id"
@@ -230,50 +211,36 @@ export const UserProfileTab = () => {
                   );
                 }}
               />
+
               <Form.Field
                 control={form.control}
-                name="role"
+                name="profile.company_name"
                 render={({ field }) => {
                   return (
-                    <Form.Item className="w-full">
-                      <div className="flex flex-row justify-between">
-                        <Form.Label className="product-body-text-3-semibold">
-                          Role
-                        </Form.Label>
-                        <p className=" text-semantic-fg-secondary product-body-text-4-regular">
-                          optional
-                        </p>
-                      </div>
+                    <Form.Item>
+                      <Form.Label className="product-body-text-3-semibold">
+                        Company name
+                      </Form.Label>
                       <Form.Control>
-                        <Select.Root
-                          value={field?.value || ""}
-                          onValueChange={field.onChange}
-                        >
-                          <Select.Trigger className="w-full">
-                            <Select.Value placeholder="Select Role" />
-                          </Select.Trigger>
-                          <Select.Content>
-                            <Select.Group>
-                              {instillUserRoles.map((role) => (
-                                <Select.Item
-                                  value={role.value}
-                                  key={role.value}
-                                >
-                                  {role.label}
-                                </Select.Item>
-                              ))}
-                            </Select.Group>
-                          </Select.Content>
-                        </Select.Root>
+                        <Input.Root>
+                          <Input.Core
+                            {...field}
+                            type="text"
+                            className="!product-body-text-2-regular"
+                            value={field.value ?? ""}
+                            autoComplete="off"
+                          />
+                        </Input.Root>
                       </Form.Control>
                       <Form.Message />
                     </Form.Item>
                   );
                 }}
               />
+
               <Form.Field
                 control={form.control}
-                name="profile_data.bio"
+                name="profile.bio"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -333,7 +300,7 @@ export const UserProfileTab = () => {
                                     ? String(profileAvatar)
                                     : field.value
                                 }
-                                alt={`${user.data?.name}-profile`}
+                                alt={`${me.data?.name}-profile`}
                                 className="h-[150px] rounded-full object-contain"
                               />
                             ) : (
@@ -419,7 +386,7 @@ export const UserProfileTab = () => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="profile_data.github"
+                name="profile.social_profile_links.github"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -442,7 +409,7 @@ export const UserProfileTab = () => {
               />
               <Form.Field
                 control={form.control}
-                name="profile_data.twitter"
+                name="profile.social_profile_links.x"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -468,7 +435,7 @@ export const UserProfileTab = () => {
           <Setting.TabSectionSeparator />
           <div className="flex flex-row-reverse">
             <Button type="submit" size="lg" variant="primary">
-              {updateUser.isLoading ? (
+              {updateAuthenticatedUser.isLoading ? (
                 <LoadingSpin className="!h-4 !w-4" />
               ) : (
                 "Save changes"

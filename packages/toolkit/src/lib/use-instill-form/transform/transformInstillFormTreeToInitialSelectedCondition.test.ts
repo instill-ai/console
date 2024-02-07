@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { InstillFormTree } from "../type";
+import { InstillFormTree } from "../types";
 import { transformInstillFormTreeToInitialSelectedCondition } from "./transformInstillFormTreeToInitialSelectedCondition";
 
 test("should transform formCondition", () => {

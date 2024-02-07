@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { InstillJSONSchema } from "../type";
+import { InstillJSONSchema } from "../types";
 import { transformInstillJSONSchemaToZod } from ".";
 
 test("should transform basic json schema to zod schema", () => {

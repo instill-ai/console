@@ -1,5 +1,5 @@
 import { Nullable } from "../../../type";
-import { ComponentOutputFieldBaseProps } from "../../type";
+import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
 
 export type AudiosFieldProps = {

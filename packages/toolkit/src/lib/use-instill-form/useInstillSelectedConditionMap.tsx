@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { InstillFormTree, SelectedConditionMap } from "./type";
+import { InstillFormTree, SelectedConditionMap } from "./types";
 import { pickSelectedConditionMap } from "./pick";
 import { GeneralRecord, Nullable, UseCustomHookResult } from "../type";
 

@@ -4,7 +4,7 @@ import {
   InstillFormItem,
   InstillFormTree,
   SelectedConditionMap,
-} from "../type";
+} from "../types";
 
 export type TransformInstillFormTreeToInitialSelectedConditionOptions = {
   initialData?: GeneralRecord;

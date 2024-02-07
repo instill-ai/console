@@ -3,7 +3,7 @@ import {
   PickComponentOutputFieldsFromInstillFormTreeProps,
   pickComponentOutputFieldsFromInstillFormTree,
 } from "./pick";
-import { InstillJSONSchema } from "./type";
+import { InstillJSONSchema } from "./types";
 import { GeneralRecord, Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 

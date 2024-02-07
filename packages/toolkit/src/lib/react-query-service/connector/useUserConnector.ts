@@ -15,7 +15,6 @@ export function useUserConnector({
   connectorName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-
   retry?: false | number;
 }) {
   let enableQuery = false;
