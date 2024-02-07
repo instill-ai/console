@@ -290,6 +290,18 @@ export const FlowControl = (props: FlowControlProps) => {
           ];
           break;
         }
+        case "video/*": {
+          input[key] = "Please put your video base64 encoded string";
+          break;
+        }
+        case "array:video/*": {
+          input[key] = [
+            "Please put your first video base64 encoded string",
+            "Please put your second video base64 encoded string",
+            "...",
+          ];
+          break;
+        }
         case "boolean": {
           input[key] = true;
           break;
