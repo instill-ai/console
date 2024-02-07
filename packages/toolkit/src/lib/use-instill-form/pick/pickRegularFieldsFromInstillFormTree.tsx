@@ -117,27 +117,45 @@ export function pickRegularFieldsFromInstillFormTree(
 
     // We will use the const path as the OneOfConditionField's path
 
-    const constField = tree.conditions[
+    const defaultConstField = tree.conditions[
       Object.keys(tree.conditions)[0]
     ].properties.find((e) => "const" in e);
 
-    if (!constField?.path) {
+    if (!defaultConstField?.path) {
       return null;
+    }
+
+    const selectedCondition = selectedConditionMap?.[defaultConstField?.path];
+
+    let selectedConstField: InstillFormTree | undefined;
+
+    if (selectedCondition) {
+      selectedConstField = tree.conditions[selectedCondition].properties.find(
+        (e) => "const" in e
+      );
     }
 
     return (
       <RegularFields.OneOfConditionField
         form={form}
-        path={constField.path}
+        path={defaultConstField.path}
         tree={tree}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
-        key={constField.path}
+        key={defaultConstField.path}
         conditionComponentsMap={conditionComponents}
         title={title}
-        shortDescription={tree.instillShortDescription}
+        shortDescription={
+          selectedConstField
+            ? selectedConstField.instillShortDescription
+            : defaultConstField.instillShortDescription
+        }
         disabled={disabledAll}
-        description={tree.description ?? null}
+        description={
+          selectedConstField
+            ? selectedConstField.description ?? null
+            : defaultConstField.description ?? null
+        }
         size={size}
         isHidden={tree.isHidden}
       />
