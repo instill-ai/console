@@ -268,6 +268,53 @@ export function pickStartOperatorFreeFormFields({
           ),
         });
         break;
+
+      case "video/*":
+        fields.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <StartOperatorFreeFormFields.VideoField
+              mode={mode}
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+              disabled={disabledFields}
+              keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
+            />
+          ),
+        });
+        break;
+      case "array:video/*":
+        fields.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <StartOperatorFreeFormFields.VideosField
+              mode={mode}
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+              disabled={disabledFields}
+              keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
+            />
+          ),
+        });
+        break;
       case "*/*":
         fields.push({
           key,

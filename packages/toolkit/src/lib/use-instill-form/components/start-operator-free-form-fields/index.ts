@@ -12,6 +12,8 @@ import { ObjectField } from "./ObjectField";
 import { TextareaField } from "./TextareaField";
 import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
+import { VideoField } from "./VideoField";
+import { VideosField } from "./VideosField";
 
 export const StartOperatorFreeFormFields = {
   AudioField,
@@ -28,4 +30,6 @@ export const StartOperatorFreeFormFields = {
   TextareaField,
   TextField,
   TextsField,
+  VideoField,
+  VideosField,
 };

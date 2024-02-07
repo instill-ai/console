@@ -203,4 +203,6 @@ export type StartOperatorInputType =
   | "*/*"
   | "array:*/*"
   | "semi-structured/object"
+  | "video/*"
+  | "array:video/*"
   | JSONSchema7TypeName;
