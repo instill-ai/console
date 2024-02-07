@@ -33,7 +33,11 @@ export const UserProfileView = () => {
   const user = useUser({
     userName: entityObject.entityName,
     accessToken: accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
+    enabled:
+      enabledQuery &&
+      entityObject.isSuccess &&
+      (entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ||
+        entityObject.namespaceType === "NAMESPACE_USER"),
   });
 
   const pipelines = useUserPipelines({
