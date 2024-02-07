@@ -294,7 +294,7 @@ export const Head = () => {
                     ) : null}
                     {pipeline.isSuccess ? (
                       <Tag
-                        className="my-auto h-[24px] !py-0 !border-0"
+                        className="my-auto h-[24px] !border-0 !py-0"
                         variant="lightNeutral"
                         size="sm"
                       >
@@ -449,20 +449,17 @@ const VersionButton = ({
     <Button
       key={id}
       className={cn(
-        "w-full",
-        currentVersion === id ? "hover:!bg-semantic-accent-default" : ""
+        "w-full !py-1.5",
+        currentVersion === id ? "!bg-semantic-bg-secondary" : ""
       )}
-      variant={currentVersion === id ? "primary" : "tertiaryColour"}
+      variant={"tertiaryColour"}
       onClick={onClick}
     >
       <div className="flex w-full flex-row gap-x-2">
-        <div className="my-auto h-2 w-2 rounded-full bg-semantic-secondary-default"></div>
+        <div className="my-auto h-[6px] w-[6px] rounded-full bg-semantic-secondary-default"></div>
         <p
           className={cn(
-            "w-full text-left product-body-text-3-medium",
-            currentVersion === id
-              ? "text-semantic-fg-on-default"
-              : "text-semantic-fg-secondary"
+            "w-full text-left text-semantic-fg-secondary product-body-text-3-medium"
           )}
         >
           Version {id}
