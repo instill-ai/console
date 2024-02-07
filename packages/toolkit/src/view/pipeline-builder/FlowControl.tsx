@@ -443,8 +443,6 @@ export const FlowControl = (props: FlowControlProps) => {
         throw new Error("Component type is not defined");
       }
 
-      console.log(resource);
-
       if ("configuration" in resource) {
         // Create a new array to let reactflow rerender the component
         newNodes = [
@@ -474,6 +472,7 @@ export const FlowControl = (props: FlowControlProps) => {
               x: viewport.x,
               y: viewport.y,
             }),
+            zIndex: 20,
           },
         ];
       } else {
@@ -499,6 +498,7 @@ export const FlowControl = (props: FlowControlProps) => {
               note: null,
             },
             position: newNodeXY,
+            zIndex: 20,
           },
         ];
       }
@@ -525,6 +525,7 @@ export const FlowControl = (props: FlowControlProps) => {
             note: null,
           },
           position: newNodeXY,
+          zIndex: 20,
         },
       ];
     }

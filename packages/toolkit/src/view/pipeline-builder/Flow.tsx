@@ -175,6 +175,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
 
                 console.warn(msg);
               }}
+              elevateNodesOnSelect={true}
+              selectionOnDrag={true}
             >
               <Controls
                 id={pipelineName ?? undefined}
