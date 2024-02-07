@@ -34,7 +34,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
       <div
         className={cn(
           "box-content flex h-[var(--topbar-height)] w-2/3 flex-row bg-semantic-bg-primary",
-          className
+          className,
         )}
       >
         <Link href="/" className="my-auto pr-8">
