@@ -13,8 +13,6 @@ import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";
 import { useRouter } from "next/router";
-import { ReadOnlyPipelineBuilderWithVersion } from "../../pipeline-builder/components/ReadOnlyPipelineBuilderWithVersion";
-import { release, version } from "os";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -44,7 +42,7 @@ export const ViewPipeline = () => {
     if (!pipeline.isSuccess || !me.isSuccess) {
       return false;
     }
-    setCurrentVersion(pipeline.data?.releases[0]?.id || "latest");
+    setCurrentVersion(pipeline.data?.releases[0]?.id);
 
     return pipeline.data.owner_name === me.data.name;
   }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
@@ -56,11 +54,12 @@ export const ViewPipeline = () => {
   }, [pipeline.isError, router]);
 
   const pipelineRelease = React.useMemo(() => {
-    if (pipeline.data) {
+    if (pipeline.data?.releases && currentVersion) {
       return pipeline.data.releases.find(
         (release) => release.id === currentVersion
       );
     }
+    return pipeline.data;
   }, [pipeline.isSuccess, pipeline.data, currentVersion]);
 
   return (
