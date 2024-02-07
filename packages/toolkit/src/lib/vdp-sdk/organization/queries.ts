@@ -1,6 +1,11 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../helper";
-import { Organization, OrganizationMembership, UserMembership } from "./types";
+import {
+  Organization,
+  OrganizationMembership,
+  OrganizationSubscription,
+  UserMembership,
+} from "./types";
 
 export type ListOrganizationsResponse = {
   organizations: Organization[];
@@ -51,7 +56,7 @@ export async function listOrganizationsQuery({
   }
 }
 
-export type OrganizationResponse = {
+export type GetOrganizationResponse = {
   organization: Organization;
 };
 
@@ -65,11 +70,35 @@ export async function getOrganizationQuery({
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    const { data } = await client.get<OrganizationResponse>(
+    const { data } = await client.get<GetOrganizationResponse>(
       `/organizations/${organizationID}`
     );
 
     return Promise.resolve(data.organization);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetOrganizationSubscriptionResponse = {
+  subscription: OrganizationSubscription;
+};
+
+export async function getOrganizationSubscriptionQuery({
+  organizationID,
+  accessToken,
+}: {
+  organizationID: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "core");
+
+    const { data } = await client.get<GetOrganizationSubscriptionResponse>(
+      `/organizations/${organizationID}/subscription`
+    );
+
+    return Promise.resolve(data.subscription);
   } catch (err) {
     return Promise.reject(err);
   }

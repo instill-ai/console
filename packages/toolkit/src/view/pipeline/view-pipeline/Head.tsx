@@ -17,7 +17,7 @@ import {
   useOrganization,
   useShallow,
   useUser,
-  useUserMe,
+  useAuthenticatedUser,
   useUserPipeline,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
@@ -46,7 +46,7 @@ export const Head = () => {
       !!entityObject.entityName,
   });
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
     retry: false,
@@ -105,7 +105,7 @@ export const Head = () => {
                     />
                   ) : (
                     <EntityAvatar
-                      src={user.data?.profile_avatar ?? null}
+                      src={user.data?.profile?.avatar ?? null}
                       entityName={user.data?.name ?? ""}
                       className="h-6 w-6"
                       fallbackImg={

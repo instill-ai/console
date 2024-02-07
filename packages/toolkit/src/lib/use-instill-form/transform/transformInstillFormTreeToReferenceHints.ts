@@ -1,4 +1,4 @@
-import { ComponentOutoutReferenceHint, InstillFormTree } from "../type";
+import { ComponentOutoutReferenceHint, InstillFormTree } from "../types";
 
 export function transformInstillFormTreeToReferenceHints(
   tree: InstillFormTree,

@@ -2,7 +2,7 @@ import {
   ReferenceHintDataTypeTag,
   ReferenceHintTag,
 } from "../../../../components";
-import { ComponentOutoutReferenceHint } from "../../type";
+import { ComponentOutoutReferenceHint } from "../../types";
 
 export const GroupByFormatField = ({
   hints,

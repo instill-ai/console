@@ -1,4 +1,4 @@
-import { InstillJSONSchema } from "../type";
+import { InstillJSONSchema } from "../types";
 
 export function pickConstInfoFromOneOfCondition(
   properties: Record<string, InstillJSONSchema>

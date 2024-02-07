@@ -3,7 +3,7 @@ import { env } from "../../utility";
 import { listUserModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useUserModels = ({
+export function useUserModels({
   userName,
   accessToken,
   enabled,
@@ -12,12 +12,9 @@ export const useUserModels = ({
   userName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
+
   retry?: false | number;
-}) => {
+}) {
   let enableQuery = false;
 
   if (userName && enabled) {
@@ -49,4 +46,4 @@ export const useUserModels = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

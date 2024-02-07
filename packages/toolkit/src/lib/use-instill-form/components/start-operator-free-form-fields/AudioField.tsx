@@ -5,7 +5,7 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
 import { AudioListItem } from "./AudioListItem";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const AudioField = ({
   mode,

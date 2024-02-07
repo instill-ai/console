@@ -8,7 +8,7 @@ import {
   InstillStore,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
   useEntity,
   Visibility,
 } from "../../../lib";
@@ -44,7 +44,7 @@ export const ViewPipelines = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
     retry: false,

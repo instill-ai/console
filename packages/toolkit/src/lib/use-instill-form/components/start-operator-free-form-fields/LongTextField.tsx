@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { AutoFormFieldBaseProps } from "../../type";
+import { AutoFormFieldBaseProps } from "../../types";
 import { Form } from "@instill-ai/design-system";
 import { FieldHead } from "./FieldHead";
 import { Nullable } from "../../../type";
 import { extensions, serialize } from "../../../tip-tap";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const LongTextField = ({
   mode,

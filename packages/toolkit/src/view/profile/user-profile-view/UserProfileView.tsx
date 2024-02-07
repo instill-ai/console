@@ -5,7 +5,7 @@ import {
   useInstillStore,
   useShallow,
   useUser,
-  useUserMe,
+  useAuthenticatedUser,
   useUserPipelines,
 } from "../../../lib";
 import { useRouter } from "next/router";
@@ -19,13 +19,13 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const UserProfile = () => {
+export const UserProfileView = () => {
   const router = useRouter();
   const entityObject = useEntity();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
@@ -61,17 +61,17 @@ export const UserProfile = () => {
         {user.isSuccess ? (
           <UserProfileBio
             id={user.data.id}
-            name={`${user.data.first_name} ${user.data.last_name}`}
-            bio={user.data.profile_data?.bio}
-            avatar={user.data.profile_avatar ?? null}
+            name={user.data?.profile?.display_name ?? user.data.id}
+            bio={user.data.profile?.bio ?? null}
+            avatar={user.data.profile?.avatar ?? null}
             userMemberships={null}
             isOwner={
               me.isSuccess &&
               entityObject.isSuccess &&
               me.data.id === String(entityObject.entity)
             }
-            twitterLink={user.data.profile_data?.twitter ?? null}
-            githubLink={user.data.profile_data?.github ?? null}
+            twitterLink={user.data.profile?.social_profiles?.x ?? null}
+            githubLink={user.data.profile?.social_profiles?.github ?? null}
           />
         ) : (
           <UserProfileBio.Skeleton />

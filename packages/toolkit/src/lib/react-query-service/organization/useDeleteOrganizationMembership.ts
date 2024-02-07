@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteOrganizationMembershipMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useDeleteOrganizationMembership = () => {
+export function useDeleteOrganizationMembership() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -37,4 +37,4 @@ export const useDeleteOrganizationMembership = () => {
       },
     }
   );
-};
+}

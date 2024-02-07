@@ -7,7 +7,7 @@ import {
   within,
 } from "../test/utils";
 import { useInstillForm } from "./useInstillForm";
-import { InstillJSONSchema } from "./type";
+import { InstillJSONSchema } from "./types";
 import { Form } from "@instill-ai/design-system";
 
 const SimpleFormSchema: InstillJSONSchema = {

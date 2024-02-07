@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { InstillJSONSchema } from "./type";
+import { InstillJSONSchema } from "./types";
 import { Nullable } from "../type";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
 import {

@@ -1,34 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserMeQuery, type User } from "../../vdp-sdk";
+import { getAuthenticatedUserSubscriptionsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useUserMe = ({
+export function useAuthenticatedUserSubscription({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
-  return useQuery<User>(
-    ["user", "me"],
+}) {
+  return useQuery(
+    ["authenticated-user", "subscription"],
     async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const user = await getUserMeQuery({ accessToken });
+      const subscription = await getAuthenticatedUserSubscriptionsQuery({
+        accessToken,
+      });
 
-      return Promise.resolve(user);
+      return Promise.resolve(subscription);
     },
     {
       enabled,
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

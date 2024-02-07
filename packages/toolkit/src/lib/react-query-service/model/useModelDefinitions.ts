@@ -3,19 +3,15 @@ import { env } from "../../utility";
 import { listModelDefinitionsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useModelDefinitions = ({
+export function useModelDefinitions({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["model-definitions"],
     async () => {
@@ -36,4 +32,4 @@ export const useModelDefinitions = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

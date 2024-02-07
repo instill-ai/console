@@ -3,7 +3,7 @@ import { CreateUserModelPayload, createUserModelMutation } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
-export const useCreateUserModel = () => {
+export function useCreateUserModel() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -42,4 +42,4 @@ export const useCreateUserModel = () => {
       },
     }
   );
-};
+}

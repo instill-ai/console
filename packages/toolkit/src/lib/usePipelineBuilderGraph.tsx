@@ -7,7 +7,7 @@ import {
   createGraphLayout,
   createInitialGraphData,
 } from "../view";
-import { useUserMe, useUserPipeline } from "./react-query-service";
+import { useUserPipeline } from "./react-query-service";
 import { useRouter } from "next/router";
 import { InstillStore, useInstillStore } from "./use-instill-store";
 import { useShallow } from "zustand/react/shallow";
@@ -51,12 +51,6 @@ export function usePipelineBuilderGraph() {
   } = useInstillStore(useShallow(selector));
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
-
-  const currentLoginUser = useUserMe({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
-  });
 
   const entityObject = useEntity();
 
@@ -238,8 +232,6 @@ export function usePipelineBuilderGraph() {
     updateIsOwner,
     updateNodes,
     updateEdges,
-    currentLoginUser.data,
-    currentLoginUser.isSuccess,
     setPipelineUid,
     updatePipelineIsReadOnly,
   ]);

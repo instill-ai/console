@@ -5,7 +5,7 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const FileField = ({
   mode,

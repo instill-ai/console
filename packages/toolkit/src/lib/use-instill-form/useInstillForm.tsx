@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as z from "zod";
-import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "./type";
+import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "./types";
 import {
   transformInstillJSONSchemaToFormTree,
   transformInstillJSONSchemaToZod,

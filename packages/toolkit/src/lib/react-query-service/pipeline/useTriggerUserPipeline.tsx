@@ -6,7 +6,7 @@ import {
 } from "../../vdp-sdk";
 import { useRouter } from "next/router";
 
-export const useTriggerUserPipeline = () => {
+export function useTriggerUserPipeline() {
   const router = useRouter();
 
   return useMutation(
@@ -32,4 +32,4 @@ export const useTriggerUserPipeline = () => {
       return Promise.resolve(response);
     }
   );
-};
+}

@@ -5,7 +5,7 @@ import type { Nullable } from "../../type";
 
 // This is a public API, we won't block unauth users from accessing this
 
-export const useUserPipeline = ({
+export function useUserPipeline({
   pipelineName,
   accessToken,
   enabled,
@@ -14,12 +14,8 @@ export const useUserPipeline = ({
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   const router = useRouter();
   let enableQuery = false;
 
@@ -47,4 +43,4 @@ export const useUserPipeline = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

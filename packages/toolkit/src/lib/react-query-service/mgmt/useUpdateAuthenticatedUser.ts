@@ -1,8 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUserMutation, type User } from "../../vdp-sdk";
+import {
+  AuthenticatedUser,
+  updateAuthenticatedUserMutation,
+  type User,
+} from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useUpdateUser = () => {
+export function useUpdateAuthenticatedUser() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -16,14 +20,20 @@ export const useUpdateUser = () => {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const user = await updateUserMutation({ payload, accessToken });
+      const user = await updateAuthenticatedUserMutation({
+        payload,
+        accessToken,
+      });
 
       return Promise.resolve(user);
     },
     {
       onSuccess: (newUser) => {
-        queryClient.setQueryData<User>(["user", newUser.name], newUser);
+        queryClient.setQueryData<AuthenticatedUser>(
+          ["authenticated-user"],
+          newUser
+        );
       },
     }
   );
-};
+}

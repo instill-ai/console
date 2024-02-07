@@ -47,7 +47,7 @@ export const UserProfileBio = ({
 }: {
   name: string;
   id: string;
-  bio: string;
+  bio: Nullable<string>;
   githubLink: Nullable<string>;
   twitterLink: Nullable<string>;
   isOwner: boolean;

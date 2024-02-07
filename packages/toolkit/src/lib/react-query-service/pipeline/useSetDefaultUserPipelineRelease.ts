@@ -9,7 +9,7 @@ import {
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useSetDefaultUserPipelineRelease = () => {
+export function useSetDefaultUserPipelineRelease() {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -79,4 +79,4 @@ export const useSetDefaultUserPipelineRelease = () => {
       },
     }
   );
-};
+}

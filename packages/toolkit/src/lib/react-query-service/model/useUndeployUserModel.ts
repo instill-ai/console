@@ -3,7 +3,7 @@ import type { Nullable } from "../../type";
 import { undeployUserModeleAction } from "../../vdp-sdk";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
-export const useUndeployUserModel = () => {
+export function useUndeployUserModel() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -35,4 +35,4 @@ export const useUndeployUserModel = () => {
       },
     }
   );
-};
+}

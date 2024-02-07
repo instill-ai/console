@@ -9,7 +9,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
-import { EntityAvatar, useUserMe } from "@instill-ai/toolkit";
+import { EntityAvatar, useAuthenticatedUser } from "@instill-ai/toolkit";
 import { useAccessToken } from "lib/useAccessToken";
 import { tobBarData } from "./topBarData";
 
@@ -24,7 +24,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
 
   const accessToken = useAccessToken();
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
   });
@@ -74,7 +74,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <EntityAvatar
-                src={me.data.profile_avatar ?? null}
+                src={me.data.profile?.avatar ?? null}
                 className="w-10 h-10 cursor-pointer my-auto"
                 entityName={me.data.name}
                 fallbackImg={
@@ -92,7 +92,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
               <div className="flex flex-col px-4 py-3">
                 <div className="flex flex-row gap-x-2">
                   <EntityAvatar
-                    src={me.data.profile_avatar ?? null}
+                    src={me.data.profile?.avatar ?? null}
                     className="w-10 h-10"
                     entityName={me.data.name}
                     fallbackImg={
@@ -103,10 +103,10 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
                   />
                   <div className="flex flex-col">
                     <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                      {me.data.first_name} {me.data.last_name}
+                      {me.data.profile?.display_name}
                     </h3>
                     <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      {me.data.email}
+                      {me.data.profile?.public_email}
                     </p>
                   </div>
                 </div>

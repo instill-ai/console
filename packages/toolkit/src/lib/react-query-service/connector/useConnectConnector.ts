@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { connectUserConnectorAction } from "../../vdp-sdk";
 import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
-export const useConnectConnector = () => {
+export function useConnectConnector() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -35,4 +35,4 @@ export const useConnectConnector = () => {
       },
     }
   );
-};
+}

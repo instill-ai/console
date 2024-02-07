@@ -4,7 +4,7 @@ import {
   InstillJSONSchema,
   SelectedConditionMap,
   instillZodSchema,
-} from "../type";
+} from "../types";
 import { pickConstInfoFromOneOfCondition } from "../pick";
 import { getReferencesFromString } from "../../../view";
 

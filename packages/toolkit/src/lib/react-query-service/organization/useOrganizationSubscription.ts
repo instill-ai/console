@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getOrganizationQuery } from "../../vdp-sdk";
+import { getOrganizationSubscriptionQuery } from "../../vdp-sdk";
 
-export function useOrganization({
+export function useOrganizationSubscription({
   organizationID,
   accessToken,
   enabled,
@@ -20,18 +20,18 @@ export function useOrganization({
   }
 
   return useQuery(
-    ["organization", organizationID],
+    ["organization", organizationID, "subscription"],
     async () => {
       if (!organizationID) {
         return Promise.reject(new Error("organizationID not provided"));
       }
 
-      const organization = await getOrganizationQuery({
+      const subscription = await getOrganizationSubscriptionQuery({
         organizationID,
         accessToken,
       });
 
-      return Promise.resolve(organization);
+      return Promise.resolve(subscription);
     },
     {
       enabled: enableQuery,

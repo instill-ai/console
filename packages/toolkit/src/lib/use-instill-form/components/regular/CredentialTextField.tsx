@@ -1,7 +1,7 @@
 import cn from "clsx";
 import * as React from "react";
 import { Form, Input } from "@instill-ai/design-system";
-import { AutoFormFieldBaseProps } from "../../type";
+import { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 
 export const CredentialTextField = ({

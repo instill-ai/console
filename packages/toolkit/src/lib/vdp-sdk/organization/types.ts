@@ -1,5 +1,6 @@
 import { GeneralRecord, Nullable } from "../../type";
 import { User } from "../mgmt";
+import { StripeSubscriptionDetail } from "../types";
 
 export type Organization = {
   name: string;
@@ -12,6 +13,19 @@ export type Organization = {
   profile_avatar: Nullable<string>;
   profile_data: Nullable<GeneralRecord>;
   owner: Nullable<User>;
+};
+
+export type OrganizationSubscriptionPlan =
+  | "PLAN_UNSPECIFIED"
+  | "PLAN_FREEMIUM"
+  | "PLAN_TEAM"
+  | "PLAN_ENTERPRISE";
+
+export type OrganizationSubscription = {
+  plan: OrganizationSubscriptionPlan;
+  detail: StripeSubscriptionDetail;
+  max_seats: number;
+  used_seats: number;
 };
 
 export type UserMembership = {

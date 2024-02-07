@@ -1,5 +1,5 @@
 import { Form, Switch } from "@instill-ai/design-system";
-import type { AutoFormFieldBaseProps } from "../../type";
+import type { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 
 export const BooleanField = ({

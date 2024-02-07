@@ -3,19 +3,15 @@ import { env } from "../../utility";
 import { listOperatorDefinitionsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useOperatorDefinitions = ({
+export function useOperatorDefinitions({
   accessToken,
   enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["operator-definitions"],
     async () => {
@@ -33,4 +29,4 @@ export const useOperatorDefinitions = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

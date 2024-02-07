@@ -3,7 +3,7 @@ import * as React from "react";
 import { Nullable } from "../../../type";
 import { getReferencesFromString } from "../../../../view";
 import { SmartHint } from "../../../use-smart-hint";
-import { SmartHintWarning } from "../../type";
+import { SmartHintWarning } from "../../types";
 
 export function useValidateReferenceAndTemplate({
   hints,

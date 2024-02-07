@@ -6,7 +6,7 @@ import {
   InstillJSONSchema,
   InstillJSONSchemaDefinition,
   CheckIsHidden,
-} from "../type";
+} from "../types";
 
 export type TransformInstillJSONSchemaToFormTreeOptions = {
   key?: string;

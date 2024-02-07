@@ -4,7 +4,7 @@ import type { Nullable } from "../../type";
 import { env } from "../../utility";
 import { useRouter } from "next/router";
 
-export const useUserPipelineReleases = ({
+export function useUserPipelineReleases({
   pipelineName,
   enabled,
   accessToken,
@@ -13,12 +13,8 @@ export const useUserPipelineReleases = ({
   pipelineName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   const router = useRouter();
   let enableQuery = false;
 
@@ -51,4 +47,4 @@ export const useUserPipelineReleases = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

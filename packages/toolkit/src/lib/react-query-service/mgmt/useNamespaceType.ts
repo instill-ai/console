@@ -2,9 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { checkNamespace } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-// This is a public , we won't block unauth users from accessing this
-
-export const useNamespaceType = ({
+export function useNamespaceType({
   namespace,
   accessToken,
   enabled,
@@ -13,12 +11,8 @@ export const useNamespaceType = ({
   namespace: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   let enabledQuery = false;
 
   if (namespace && enabled) {
@@ -44,4 +38,4 @@ export const useNamespaceType = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

@@ -2,7 +2,7 @@ import cn from "clsx";
 import { FieldError } from "react-hook-form";
 import { Nullable } from "../../../type";
 import { Tag } from "@instill-ai/design-system";
-import { SmartHintWarning } from "../../type";
+import { SmartHintWarning } from "../../types";
 import { SmartHint } from "../../../use-smart-hint";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 

@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { InstillFormTree } from "../type";
+import { InstillFormTree } from "../types";
 import { pickSelectedConditionMap } from "./pickSelectedConditionMap";
 
 test("should select one condition", () => {

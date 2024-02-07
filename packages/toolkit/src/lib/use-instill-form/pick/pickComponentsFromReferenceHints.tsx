@@ -1,6 +1,6 @@
 import { groupBy } from "../../utility";
 import { ComponentOutputReferenceHints } from "../components/component-output-reference-hints";
-import { ComponentOutoutReferenceHint } from "../type";
+import { ComponentOutoutReferenceHint } from "../types";
 
 export type PickComponentsFromReferenceHintsOptions = {
   mode?: "groupByFormat" | "list";

@@ -3,7 +3,7 @@ import { Nullable } from "../../type";
 import { listTriggeredPipelineQuery } from "../../vdp-sdk";
 import { env } from "../../utility";
 
-export const useTriggeredPipelines = ({
+export function useTriggeredPipelines({
   enabled,
   accessToken,
   filter,
@@ -12,12 +12,9 @@ export const useTriggeredPipelines = ({
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
+
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["tables", filter],
     async () => {
@@ -39,4 +36,4 @@ export const useTriggeredPipelines = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

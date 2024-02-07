@@ -1,4 +1,4 @@
-import { InstillFormTree } from "../type";
+import { InstillFormTree } from "../types";
 import { test, expect } from "vitest";
 import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";
 

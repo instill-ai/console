@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { parse } from "cookie";
-import { PageBase, useUserMe } from "@instill-ai/toolkit";
+import { PageBase, useAuthenticatedUser } from "@instill-ai/toolkit";
 import { NextPageWithLayout } from "./_app";
 import { useAccessToken } from "../lib/useAccessToken";
 
@@ -23,7 +23,7 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   const router = useRouter();
   const accessToken = useAccessToken();
 
-  const user = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: accessToken.isSuccess,
     accessToken: accessToken.isSuccess ? accessToken.data : null,
     retry: false,
@@ -32,20 +32,20 @@ const MainPage: NextPageWithLayout<MainPageProps> = ({ cookies }) => {
   useEffect(() => {
     if (!router.isReady || !cookies) return;
 
-    if (user.isError) {
+    if (me.isError) {
       router.push("/login");
       return;
     }
 
-    if (user.isSuccess) {
+    if (me.isSuccess) {
       const cookieList = parse(cookies);
       if (cookieList["instill-ai-user"]) {
-        router.push(`/${user.data.id}/pipelines`);
+        router.push(`/${me.data.id}/pipelines`);
       } else {
         router.push("/onboarding");
       }
     }
-  }, [router, cookies, user.isSuccess, user.data, user.isError]);
+  }, [router, cookies, me.isSuccess, me.data, me.isError]);
 
   return <div />;
 };

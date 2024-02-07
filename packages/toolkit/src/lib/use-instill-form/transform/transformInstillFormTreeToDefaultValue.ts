@@ -1,6 +1,6 @@
 import { dot } from "../../dot";
 import { GeneralRecord, Nullable } from "../../type";
-import { InstillFormTree, SelectedConditionMap } from "../type";
+import { InstillFormTree, SelectedConditionMap } from "../types";
 
 export type TransformInstillFormTreeToDefaultValueOptions = {
   initialData?: GeneralRecord;

@@ -1,7 +1,7 @@
 import { Form, Input } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const NumberField = ({
   mode,

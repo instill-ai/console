@@ -4,7 +4,7 @@ import {
   useEntity,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
   useUserPipeline,
 } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
@@ -23,7 +23,7 @@ export const ViewPipeline = () => {
 
   const router = useRouter();
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
     retry: false,

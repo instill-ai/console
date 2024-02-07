@@ -6,7 +6,7 @@ import {
   UserMembership,
   useInstillStore,
   useShallow,
-  useUserMe,
+  useAuthenticatedUser,
 } from "../lib";
 import { useRouter } from "next/router";
 import { EntityAvatar } from "./EntityAvatar";
@@ -37,7 +37,7 @@ export const UserProfileCard = ({
 
   const router = useRouter();
 
-  const me = useUserMe({
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
@@ -48,7 +48,7 @@ export const UserProfileCard = ({
         <React.Fragment>
           <div className="flex flex-col gap-y-4">
             <EntityAvatar
-              src={me.data.profile_avatar ?? null}
+              src={me.data.profile?.avatar ?? null}
               className="mx-auto h-20 w-20"
               entityName={me.data.name}
               fallbackImg={
@@ -58,23 +58,25 @@ export const UserProfileCard = ({
               }
             />
 
-            {!me.data?.first_name || !me.data?.last_name ? (
+            {!me.data.profile?.display_name ? (
               <h3 className="mx-auto text-center text-semantic-fg-primary product-headings-heading-3">
                 {me.data?.id}
               </h3>
             ) : (
               <div className="mx-auto flex flex-col gap-y-1">
                 <h3 className="mx-auto text-semantic-fg-primary product-headings-heading-3">
-                  {`${me.data.first_name} ${me.data.last_name}`}
+                  {me.data.profile?.display_name}
                 </h3>
                 <Tag className="mx-auto" variant="default" size="sm">
                   {me.data.id}
                 </Tag>
               </div>
             )}
-            <p className="py-2 text-center text-semantic-fg-primary product-body-text-3-regular">
-              {me.data?.profile_data?.bio}
-            </p>
+            {me.data.profile?.bio ? (
+              <p className="py-2 text-center text-semantic-fg-primary product-body-text-3-regular">
+                {me.data.profile.bio}
+              </p>
+            ) : null}
           </div>
           <Separator orientation="horizontal" className="my-4" />
           {organizations && organizations.length !== 0 ? (

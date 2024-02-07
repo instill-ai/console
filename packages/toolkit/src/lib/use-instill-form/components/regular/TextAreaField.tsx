@@ -1,6 +1,6 @@
 import cn from "clsx";
 import { Form, Textarea } from "@instill-ai/design-system";
-import { AutoFormFieldBaseProps } from "../../type";
+import { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 
 export const TextAreaField = ({

@@ -3,7 +3,7 @@ import { env } from "../../utility";
 import { ConnectorType, listConnectorDefinitionsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export const useConnectorDefinitions = ({
+export function useConnectorDefinitions({
   connectorType,
   accessToken,
   enabled,
@@ -12,12 +12,8 @@ export const useConnectorDefinitions = ({
   connectorType: ConnectorType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
   retry?: false | number;
-}) => {
+}) {
   return useQuery(
     ["connector-definitions", connectorType],
     async () => {
@@ -39,4 +35,4 @@ export const useConnectorDefinitions = ({
       retry: retry === false ? false : retry ? retry : 3,
     }
   );
-};
+}

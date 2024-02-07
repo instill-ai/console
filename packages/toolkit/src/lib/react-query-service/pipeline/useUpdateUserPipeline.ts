@@ -6,7 +6,7 @@ import {
   type UpdateUserPipelinePayload,
 } from "../../vdp-sdk";
 
-export const useUpdateUserPipeline = () => {
+export function useUpdateUserPipeline() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
@@ -52,4 +52,4 @@ export const useUpdateUserPipeline = () => {
       },
     }
   );
-};
+}
