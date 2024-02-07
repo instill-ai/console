@@ -59,6 +59,7 @@ import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
 import { LayersTwo01 } from "./LayersTwo01";
 import { Lightning01 } from "./Lightning01";
+import { MultipleVideo } from "./MultipleVideo";
 import { Model } from "./Model";
 import { PauseCircle } from "./PauseCircle";
 import { MasterCard } from "./MasterCard";
@@ -95,6 +96,7 @@ import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { UserPlus01 } from "./UserPlus01";
+import { Video } from "./Video";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
@@ -163,6 +165,7 @@ export const Icons = {
   LayersTwo01,
   Lightning01,
   Model,
+  MultipleVideo,
   PauseCircle,
   MasterCard,
   Menu01,
@@ -198,6 +201,7 @@ export const Icons = {
   User01,
   User02,
   UserPlus01,
+  Video,
   VideoRecorder,
   Visa,
   VisualQuestionAnswering,

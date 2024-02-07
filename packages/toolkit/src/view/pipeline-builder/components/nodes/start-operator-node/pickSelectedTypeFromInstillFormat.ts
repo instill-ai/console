@@ -25,6 +25,12 @@ export function pickSelectedTypeFromInstillFormat(
     case "array:image/*": {
       return "array:image/*";
     }
+    case "video/*": {
+      return "video/*";
+    }
+    case "array:video/*": {
+      return "array:video/*";
+    }
     case "number": {
       return "number";
     }

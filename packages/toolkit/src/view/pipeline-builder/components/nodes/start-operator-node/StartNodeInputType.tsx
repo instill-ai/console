@@ -77,6 +77,20 @@ export const StartNodeInputType = ({
       label = "Multiple Images";
       break;
     }
+    case "video/*": {
+      icon = (
+        <Icons.Video className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Video";
+      break;
+    }
+    case "array:video/*": {
+      icon = (
+        <Icons.MultipleVideo className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      );
+      label = "Multiple Videos";
+      break;
+    }
     case "number": {
       icon = (
         <ComplicateIcons.Number

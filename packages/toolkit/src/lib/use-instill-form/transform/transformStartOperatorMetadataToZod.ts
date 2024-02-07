@@ -55,6 +55,15 @@ export function transformStartOperatorMetadataToZod(
           z.array(z.string()).nullable().optional()
         );
         break;
+      case "video/*":
+        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        break;
+      case "array:video/*":
+        zodSchema = zodSchema.setKey(
+          key,
+          z.array(z.string()).nullable().optional()
+        );
+        break;
       case "*/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;

@@ -138,6 +138,16 @@ export const StartOperatorNodeFreeForm = ({
             onSelect={() => setSelectedType("array:*/*")}
           />
           <StartNodeInputType
+            type="video/*"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("video/*")}
+          />
+          <StartNodeInputType
+            type="array:video/*"
+            selectedType={selectedType}
+            onSelect={() => setSelectedType("array:video/*")}
+          />
+          <StartNodeInputType
             type="boolean"
             selectedType={selectedType}
             onSelect={() => setSelectedType("boolean")}

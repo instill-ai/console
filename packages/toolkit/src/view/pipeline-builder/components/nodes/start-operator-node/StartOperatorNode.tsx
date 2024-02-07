@@ -217,6 +217,27 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+      case "video/*": {
+        configuraton = {
+          type: "string",
+          instillFormat: "video/*",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
+      case "array:video/*": {
+        configuraton = {
+          type: "array",
+          items: {
+            type: "string",
+          },
+          instillFormat: "array:video/*",
+          title: formData.title,
+          description: formData.description,
+        };
+        break;
+      }
       case "number": {
         configuraton = {
           type: "number",
