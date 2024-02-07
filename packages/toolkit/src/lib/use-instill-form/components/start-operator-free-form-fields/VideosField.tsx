@@ -6,8 +6,8 @@ import { readFileToBinary } from "../../../../view";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "../../type";
-import { VideoPreview } from "./VideoPreview";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { VideoPreview } from "../common";
 
 export const VideosField = ({
   mode,
@@ -63,7 +63,6 @@ export const VideosField = ({
                         <VideoPreview
                           key={`${path}-${file.name}`}
                           src={URL.createObjectURL(file)}
-                          mode={mode}
                           className={
                             mode === "build"
                               ? "h-[55px] object-cover"

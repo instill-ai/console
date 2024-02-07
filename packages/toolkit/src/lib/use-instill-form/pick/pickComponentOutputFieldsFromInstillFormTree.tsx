@@ -206,6 +206,16 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+      case "video": {
+        return (
+          <ComponentOutputFields.VideosField
+            mode={mode}
+            title={title}
+            videos={propertyValue}
+            hideField={hideField}
+          />
+        );
+      }
       case "text": {
         return (
           <ComponentOutputFields.TextsField
@@ -264,6 +274,16 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           mode={mode}
           title={title}
           audio={propertyValue}
+          hideField={hideField}
+        />
+      );
+    }
+    case "video": {
+      return (
+        <ComponentOutputFields.VideoField
+          mode={mode}
+          title={title}
+          video={propertyValue}
           hideField={hideField}
         />
       );

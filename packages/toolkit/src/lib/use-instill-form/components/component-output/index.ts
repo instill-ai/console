@@ -8,6 +8,8 @@ import { ObjectField } from "./ObjectField";
 import { ObjectsField } from "./ObjectsField";
 import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
+import { VideoField } from "./VideoField";
+import { VideosField } from "./VideosField";
 
 export const ComponentOutputFields = {
   AudioField,
@@ -20,4 +22,6 @@ export const ComponentOutputFields = {
   ObjectsField,
   TextField,
   TextsField,
+  VideoField,
+  VideosField,
 };
