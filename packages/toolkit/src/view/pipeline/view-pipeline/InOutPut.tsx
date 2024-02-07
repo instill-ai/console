@@ -32,14 +32,15 @@ import { LoadingSpin } from "../../../components";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  currentVersion: store.currentVersion,
 });
 
-export const InOutPut = () => {
+type InOutPutProps = {
+  currentVersion: string;
+};
+
+export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enabledQuery, currentVersion } = useInstillStore(
-    useShallow(selector)
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);

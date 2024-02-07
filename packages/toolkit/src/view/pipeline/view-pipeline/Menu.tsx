@@ -34,7 +34,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
       <div className="flex justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <Button className="!px-2 !py-2" variant="secondaryGrey">
+            <Button className="!px-2 !py-2 !h-8" variant="secondaryGrey">
               <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
             </Button>
           </DropdownMenu.Trigger>

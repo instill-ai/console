@@ -42,26 +42,17 @@ import { Menu } from "./Menu";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  pipelineName: store.pipelineName,
-  pipelineIsNew: store.pipelineIsNew,
-  updateNodes: store.updateNodes,
-  updateEdges: store.updateEdges,
-  nodes: store.nodes,
-  currentVersion: store.currentVersion,
-  updateCurrentVersion: store.updateCurrentVersion,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
-export const Head = () => {
-  const {
-    accessToken,
-    enabledQuery,
-    updateNodes,
-    updateEdges,
-    currentVersion,
-    updateCurrentVersion,
-    updateSelectedConnectorNodeId,
-  } = useInstillStore(useShallow(selector));
+type HeadProps = {
+  handleVersion: (version: string) => void;
+  currentVersion: string;
+};
+
+export const Head = (props: HeadProps) => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+  const { currentVersion, handleVersion } = props;
 
   const router = useRouter();
   const { id, entity } = router.query;
@@ -236,48 +227,7 @@ export const Head = () => {
                                       }
                                       createTime={release.create_time}
                                       onClick={() => {
-                                        updateSelectedConnectorNodeId(
-                                          () => null
-                                        );
-
-                                        updateCurrentVersion(() => release.id);
-
-                                        let newNodes: Node<NodeData>[] = [];
-                                        let newEdges: Edge[] = [];
-
-                                        if (
-                                          checkIsValidPosition(
-                                            release.recipe,
-                                            release.metadata ?? null
-                                          )
-                                        ) {
-                                          const { nodes, edges } =
-                                            createInitialGraphData(
-                                              release.recipe,
-                                              {
-                                                metadata: release.metadata,
-                                              }
-                                            );
-                                          newNodes = nodes;
-                                          newEdges = edges;
-                                        } else {
-                                          const { nodes, edges } =
-                                            createInitialGraphData(
-                                              release.recipe
-                                            );
-                                          newNodes = nodes;
-                                          newEdges = edges;
-                                        }
-
-                                        createGraphLayout(newNodes, newEdges)
-                                          .then((graphData) => {
-                                            updateNodes(() => graphData.nodes);
-                                            updateEdges(() => graphData.edges);
-                                          })
-                                          .catch((err) => {
-                                            console.error(err);
-                                          });
-                                        setIsOpen(false);
+                                        handleVersion(release.id);
                                       }}
                                     />
                                   ))}
