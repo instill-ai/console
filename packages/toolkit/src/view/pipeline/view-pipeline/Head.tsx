@@ -59,7 +59,6 @@ export const Head = () => {
     updateNodes,
     updateEdges,
     currentVersion,
-
     updateCurrentVersion,
     updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
@@ -124,6 +123,7 @@ export const Head = () => {
         variant: "alert-success",
         size: "large",
       });
+      router.push(`/${entityObject.entity}/pipelines`);
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
@@ -191,21 +191,12 @@ export const Head = () => {
                       <span className="text-semantic-fg-disabled">/</span>
                       <span className="text-semantic-fg-primary">{id}</span>
                     </div>
-                    {pipeline.isSuccess ? (
-                      <Tag
-                        className="my-auto h-[24px] !py-0"
-                        variant="darkBlue"
-                        size="sm"
-                      >
-                        {isPublicPipeline(pipeline.data) ? "Public" : "Private"}
-                      </Tag>
-                    ) : null}
 
-                    {releases && pipeline.isSuccess ? (
-                      <Popover.Root open={isOpen}>
+                    {releases.length && pipeline.isSuccess ? (
+                      <Popover.Root>
                         <Popover.Trigger asChild={true} className="my-auto">
                           <Button
-                            className="gap-x-1"
+                            className="gap-x-1 !rounded-[8px] !py-0.5 px-3"
                             size="sm"
                             variant="tertiaryColour"
                             type="button"
@@ -228,10 +219,10 @@ export const Head = () => {
                           side="top"
                           sideOffset={4}
                           align="start"
-                          className="flex h-[200px] w-[160px] flex-col !p-0"
+                          className="flex h-[180px] w-[160px] flex-col !rounded-[8px] !p-0"
                         >
                           <ScrollArea.Root>
-                            <div className="flex flex-col gap-y-1 p-0.5">
+                            <div className="flex flex-col gap-y-1 px-1.5 py-1">
                               {releases.length > 0 ? (
                                 <React.Fragment>
                                   {releases.map((release) => (
@@ -300,6 +291,24 @@ export const Head = () => {
                           </ScrollArea.Root>
                         </Popover.Content>
                       </Popover.Root>
+                    ) : null}
+                    {pipeline.isSuccess ? (
+                      <Tag
+                        className="my-auto h-[24px] !py-0 !border-0"
+                        variant="lightNeutral"
+                        size="sm"
+                      >
+                        {isPublicPipeline(pipeline.data) ? (
+                          <div className="flex flex-row gap-x-1">
+                            <span className="my-auto">Public</span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-row gap-x-1">
+                            <span className="my-auto">Private</span>
+                            <Icons.Lock03 className="my-auto h-3 w-3 stroke-semantic-fg-primary" />
+                          </div>
+                        )}
+                      </Tag>
                     ) : null}
                   </React.Fragment>
                 ) : (
