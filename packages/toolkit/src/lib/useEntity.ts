@@ -86,13 +86,16 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
   }, [entity, namespaceType.isSuccess, namespaceType.data]);
 
   React.useEffect(() => {
+    if (!namespaceType.isSuccess) return;
+
     if (
-      entityName &&
-      pipelineName &&
-      connectorName &&
-      modelName &&
-      namespaceType.isSuccess
+      namespaceType.data === "NAMESPACE_RESERVED" ||
+      namespaceType.data === "NAMESPACE_AVAILABLE"
     ) {
+      setIsSuccess(true);
+    }
+
+    if (entityName && pipelineName && connectorName && modelName) {
       setIsSuccess(true);
     }
   }, [
