@@ -1,9 +1,9 @@
 import { Icons } from "@instill-ai/design-system";
 import Link from "next/link";
-import React from "react";
+import React, { ReactElement } from "react";
 
 export type BreadcrumbWithLinkItem = {
-  label: string;
+  label: ReactElement | string;
   link?: string;
 };
 
