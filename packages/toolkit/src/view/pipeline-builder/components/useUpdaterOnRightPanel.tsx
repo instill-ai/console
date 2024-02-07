@@ -69,7 +69,6 @@ export function useUpdaterOnRightPanel({
     }
 
     timer.current = setTimeout(() => {
-      console.log("update");
       const newNodes = nodes.map((node) => {
         if (
           nodeType === "connector" &&
