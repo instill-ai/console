@@ -16,12 +16,15 @@ import {
   Select,
   Popover,
   ScrollArea,
+  toast,
 } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
   getHumanReadableStringFromTime,
   isPublicPipeline,
+  toastInstillError,
+  useDeleteUserPipeline,
   useEntity,
   useInstillStore,
   useOrganization,
@@ -34,6 +37,7 @@ import { ClonePipelineDialog, EntityAvatar } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 import cn from "clsx";
 import { Edge, Node } from "reactflow";
+import { Menu } from "./Menu";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -108,6 +112,28 @@ export const Head = () => {
     accessToken,
     enabledQuery: enabledQuery && entityObject.isSuccess,
   });
+
+  const deletePipeline = useDeleteUserPipeline();
+  async function handleDeletePipeline() {
+    try {
+      await deletePipeline.mutateAsync({
+        pipelineName: pipeline.data?.name || "",
+        accessToken: accessToken ? accessToken : null,
+      });
+
+      toast({
+        title: "Pipeline deleted",
+        variant: "alert-success",
+        size: "large",
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong when delete the pipeline",
+        error,
+        toast,
+      });
+    }
+  }
 
   return (
     <React.Fragment>
@@ -364,6 +390,13 @@ export const Head = () => {
             </TabMenu.Root>
           </div>
           <div className="mt-auto flex flex-row gap-x-2 pb-1">
+            {pipeline.isSuccess ? (
+              <Menu
+                pipeline={pipeline.data}
+                handleDeletePipeline={handleDeletePipeline}
+              />
+            ) : null}
+
             {pipeline.isSuccess ? (
               <React.Fragment>
                 {me.isSuccess ? (
