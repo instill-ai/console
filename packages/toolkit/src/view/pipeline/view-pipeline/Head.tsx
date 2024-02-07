@@ -59,12 +59,10 @@ export const Head = () => {
     updateNodes,
     updateEdges,
     currentVersion,
-    nodes,
+
     updateCurrentVersion,
     updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
-
-  console.log("nodes", nodes);
 
   const router = useRouter();
   const { id, entity } = router.query;
@@ -179,7 +177,7 @@ export const Head = () => {
                   <Skeleton className="h-6 w-6 rounded-full" />
                 )}
 
-                {pipeline.isSuccess ? (
+                {releases && pipeline.isSuccess ? (
                   <React.Fragment>
                     <div className="my-auto product-headings-heading-4">
                       <span
@@ -203,7 +201,7 @@ export const Head = () => {
                       </Tag>
                     ) : null}
 
-                    {pipeline.isSuccess ? (
+                    {releases && pipeline.isSuccess ? (
                       <Popover.Root open={isOpen}>
                         <Popover.Trigger asChild={true} className="my-auto">
                           <Button
@@ -218,7 +216,10 @@ export const Head = () => {
                               variant="darkPurple"
                               className="h-[24px] gap-x-2"
                             >
-                              Version {currentVersion}
+                              Version{" "}
+                              {currentVersion === "latest"
+                                ? releases[0]?.id
+                                : currentVersion}
                             </Tag>
                             <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
                           </Button>
@@ -233,58 +234,15 @@ export const Head = () => {
                             <div className="flex flex-col gap-y-1 p-0.5">
                               {releases.length > 0 ? (
                                 <React.Fragment>
-                                  <VersionButton
-                                    id="latest"
-                                    currentVersion={currentVersion}
-                                    onClick={() => {
-                                      if (!pipeline.isSuccess) {
-                                        return;
-                                      }
-
-                                      updateCurrentVersion(() => "latest");
-
-                                      let newNodes: Node<NodeData>[] = [];
-                                      let newEdges: Edge[] = [];
-
-                                      if (
-                                        checkIsValidPosition(
-                                          pipeline.data.recipe,
-                                          pipeline.data.metadata ?? null
-                                        )
-                                      ) {
-                                        const { nodes, edges } =
-                                          createInitialGraphData(
-                                            pipeline.data.recipe,
-                                            {
-                                              metadata: pipeline.data.metadata,
-                                            }
-                                          );
-                                        newNodes = nodes;
-                                        newEdges = edges;
-                                      } else {
-                                        const { nodes, edges } =
-                                          createInitialGraphData(
-                                            pipeline.data.recipe
-                                          );
-                                        newNodes = nodes;
-                                        newEdges = edges;
-                                      }
-
-                                      createGraphLayout(newNodes, newEdges)
-                                        .then((graphData) => {
-                                          updateNodes(() => graphData.nodes);
-                                          updateEdges(() => graphData.edges);
-                                        })
-                                        .catch((err) => {
-                                          console.error(err);
-                                        });
-                                    }}
-                                  />
                                   {releases.map((release) => (
                                     <VersionButton
                                       key={release.id}
                                       id={release.id}
-                                      currentVersion={currentVersion}
+                                      currentVersion={
+                                        currentVersion === "latest"
+                                          ? releases[0].id
+                                          : currentVersion
+                                      }
                                       createTime={release.create_time}
                                       onClick={() => {
                                         updateSelectedConnectorNodeId(
