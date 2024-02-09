@@ -2,6 +2,7 @@ export * from "./Button";
 export * from "./Breadcrumb";
 export * from "./Checkbox";
 export * from "./Combobox";
+export * from "./Color";
 export * from "./Command";
 export * from "./ComplicateIcons";
 export * from "./Dialog";
