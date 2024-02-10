@@ -184,7 +184,7 @@ export const TabShare = () => {
       <div className="flex flex-row">
         <div className="mr-auto flex flex-row gap-x-2">
           <EntityAvatar
-            src={pipeline.data?.owner.profile_avatar ?? null}
+            src={pipeline.data?.owner?.profile.avatar ?? null}
             entityName={pipeline.data?.owner_name ?? ""}
             className="h-[30px] w-[30px]"
             fallbackImg={

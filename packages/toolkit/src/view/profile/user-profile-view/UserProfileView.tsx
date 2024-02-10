@@ -74,8 +74,10 @@ export const UserProfileView = () => {
               entityObject.isSuccess &&
               me.data.id === String(entityObject.entity)
             }
-            twitterLink={user.data.profile?.social_profiles?.x ?? null}
-            githubLink={user.data.profile?.social_profiles?.github ?? null}
+            twitterLink={user.data.profile?.social_profiles_links?.x ?? null}
+            githubLink={
+              user.data.profile?.social_profiles_links?.github ?? null
+            }
           />
         ) : (
           <UserProfileBio.Skeleton />

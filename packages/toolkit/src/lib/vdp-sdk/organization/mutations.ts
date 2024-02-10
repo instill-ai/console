@@ -6,13 +6,12 @@ import {
   OrganizationMembership,
   MembershipState,
   UserMembership,
+  OrganizationProfile,
 } from "./types";
 
 export type CreateOrganizationPayload = {
   id: string;
-  org_name: string;
-  profile_avatar?: Nullable<string>;
-  profile_data?: Nullable<GeneralRecord>;
+  profile?: OrganizationProfile;
 };
 
 export type CreateOrganizationResponse = {
@@ -46,9 +45,7 @@ export type UpdateOrganizationResponse = {
 
 export type UpdateOrganizationPayload = {
   id: string;
-  org_name: string;
-  profile_avatar?: Nullable<string>;
-  profile_data?: Nullable<GeneralRecord>;
+  profile?: Partial<OrganizationProfile>;
 };
 
 export async function updateOrganizationMutation({

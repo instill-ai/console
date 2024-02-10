@@ -30,11 +30,11 @@ import { useUpdateAuthenticatedUser } from "../../../lib";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),
-  profile_avatar: z.string().optional(),
   newsletter_subscription: z.boolean(),
 
   profile: z
     .object({
+      avatar: z.string().optional(),
       display_name: z.string().optional(),
       company_name: z.string().optional(),
       bio: z.string().optional(),
@@ -132,7 +132,7 @@ export const UserProfileTab = () => {
     setIsOpenProfileAvatar(false);
     setProfileAvatar(null);
 
-    form.resetField("profile_avatar");
+    form.resetField("profile.avatar");
   }
 
   return (
@@ -279,7 +279,7 @@ export const UserProfileTab = () => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="profile_avatar"
+                name="profile.avatar"
                 render={({ field }) => {
                   return (
                     <Form.Item className="w-full">
