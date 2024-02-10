@@ -6,7 +6,7 @@ export type UserProfile = {
   public_email?: string;
   company_name?: string;
   avatar?: string;
-  social_profiles?: {
+  social_profiles_links?: {
     webiste?: string;
     x?: string;
     github?: string;

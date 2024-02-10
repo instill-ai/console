@@ -94,7 +94,7 @@ export const Head = () => {
                 {entityObject.isSuccess ? (
                   entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ? (
                     <EntityAvatar
-                      src={organization.data?.profile_avatar ?? null}
+                      src={organization.data?.profile?.avatar ?? null}
                       entityName={organization.data?.name ?? ""}
                       className="h-6 w-6"
                       fallbackImg={

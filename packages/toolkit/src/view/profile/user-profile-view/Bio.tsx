@@ -128,7 +128,7 @@ export const UserProfileBio = ({
               >
                 <EntityAvatar
                   entityName={membership.organization.name}
-                  src={membership.organization.profile_avatar ?? null}
+                  src={membership.organization.profile?.avatar ?? null}
                   className="h-5 w-5"
                   fallbackImg={
                     <Icons.User02 className="h-5 w-5 stroke-semantic-fg-secondary" />

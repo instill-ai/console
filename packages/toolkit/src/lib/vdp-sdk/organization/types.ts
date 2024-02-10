@@ -2,17 +2,26 @@ import { GeneralRecord, Nullable } from "../../type";
 import { User } from "../mgmt";
 import { StripeSubscriptionDetail } from "../types";
 
+export type OrganizationProfile = {
+  display_name?: string;
+  bio?: string;
+  public_email?: string;
+  avatar?: string;
+  social_profiles_links?: {
+    webiste?: string;
+    x?: string;
+    github?: string;
+  };
+};
+
 export type Organization = {
   name: string;
   uid: string;
   id: string;
   create_time: string;
   update_time: string;
-  org_name: string;
-  customer_id: string;
-  profile_avatar: Nullable<string>;
-  profile_data: Nullable<GeneralRecord>;
-  owner: Nullable<User>;
+  owner: User;
+  profile?: OrganizationProfile;
 };
 
 export type OrganizationSubscriptionPlan =
