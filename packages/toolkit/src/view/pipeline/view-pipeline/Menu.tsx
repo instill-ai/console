@@ -10,7 +10,10 @@ import {
   ClonePipelineDialog,
   GeneralDeleteResourceDialog,
 } from "./../../../components";
-import { PublishPipelineDialog, SharePipelineDialog } from "../../pipeline-builder";
+import {
+  PublishPipelineDialog,
+  SharePipelineDialog,
+} from "../../pipeline-builder";
 
 const selector = (store: InstillStore) => ({
   dialogSharePipelineIsOpen: store.dialogSharePipelineIsOpen,
@@ -34,7 +37,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
       <div className="flex justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <Button className="!px-2 !py-2 !h-8" variant="secondaryGrey">
+            <Button className="!h-8 !px-2 !py-2" variant="secondaryGrey">
               <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
             </Button>
           </DropdownMenu.Trigger>
@@ -46,6 +49,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
             <DropdownMenu.Item
               onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
               className="gap-x-2 !px-4 !py-2.5 !product-button-button-2"
+              key="share"
             >
               <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
               Share
@@ -56,6 +60,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
                 setDeleteDialogIsOpen(true);
               }}
               className="gap-x-2 !px-4 !py-2.5 !text-semantic-error-default !product-button-button-2"
+              key="delete"
             >
               <Icons.Trash01 className="my-auto h-4 w-4 stroke-semantic-error-default" />
               Delete
