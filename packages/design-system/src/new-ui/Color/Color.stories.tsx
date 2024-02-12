@@ -72,7 +72,6 @@ export const Default: Story = {
 
       <Color color="bg-semantic-info-bg" />
       <Color color="bg-semantic-info-icon-on-bg" />
-      <Color color="bg-semantic-info-bg-alt" />
       <Color color="bg-semantic-secondary-primary-text-on-bg" />
       <Color color="bg-semantic-secondary-secondary-text-on-bg" />
 
