@@ -321,13 +321,6 @@ export function transformInstillJSONSchemaToZod({
           });
         }
 
-        if (references.length > 1 && !acceptTemplate) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "This field only accepts single reference",
-          });
-        }
-
         if (
           references.length === 0 &&
           instillUpstreamValue &&
