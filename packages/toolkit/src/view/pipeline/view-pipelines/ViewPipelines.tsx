@@ -120,6 +120,7 @@ export const ViewPipelines = ({
               </Select.Trigger>
               <Select.Content>
                 <Select.Group>
+                  <Select.Item value="VISIBILITY_UNSPECIFIED">All</Select.Item>
                   <Select.Item value="VISIBILITY_PUBLIC">Public</Select.Item>
                   <Select.Item value="VISIBILITY_PRIVATE">Private</Select.Item>
                 </Select.Group>
