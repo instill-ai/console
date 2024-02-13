@@ -15,6 +15,61 @@ export function pickSmartHintsFromAcceptFormats(
     return hints;
   }
 
+  // If the the field's instillAcceptFormats is string, we will automatically
+  // convert the hint's field value to string. So we also need to pick
+  // various other types
+
+  // These are the value that can be stringified
+  // bool
+  // number
+  // integer
+  // string
+  // object
+  // semi-structured/*
+  // structured/*
+
+  // These are the value that can't be stringified
+  // image/*
+  // audio/*
+  // video/*
+
+  if (
+    instillAcceptFormats.length === 1 &&
+    instillAcceptFormats[0] === "string"
+  ) {
+    const allowStringifyTypes = [
+      "boolean",
+      "array:boolean",
+      "number",
+      "array:number",
+      "integer",
+      "array:integer",
+      "string",
+      "array:string",
+      "object",
+      "array:object",
+    ];
+
+    for (const hint of hints) {
+      if (allowStringifyTypes.includes(hint.instillFormat)) {
+        pickHints.push(hint);
+      }
+
+      if (hint.instillFormat.includes("/")) {
+        // We will include both array and non-array semi-structured and structured
+        const [type] = hint.instillFormat.replaceAll("array:", "").split("/");
+
+        if (type === "semi-structured") {
+          pickHints.push(hint);
+        }
+
+        if (type === "structured") {
+          pickHints.push(hint);
+        }
+      }
+    }
+  }
+
   for (const hint of hints) {
     // Deal with array
     if (hint.type === "array") {

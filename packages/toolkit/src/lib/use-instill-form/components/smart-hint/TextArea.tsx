@@ -29,6 +29,7 @@ export const TextArea = ({
   componentID,
   size,
   isHidden,
+  instillFormat,
 }: {
   fieldKey: Nullable<string>;
   instillAcceptFormats: string[];
@@ -37,6 +38,7 @@ export const TextArea = ({
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
+  instillFormat?: string;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
