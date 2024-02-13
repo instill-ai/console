@@ -231,6 +231,7 @@ export function pickRegularFieldsFromInstillFormTree(
           componentID={componentID}
           size={size}
           isHidden={tree.isHidden}
+          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -283,6 +284,7 @@ export function pickRegularFieldsFromInstillFormTree(
         componentID={componentID}
         size={size}
         isHidden={tree.isHidden}
+        instillFormat={tree.instillFormat}
       />
     );
   }

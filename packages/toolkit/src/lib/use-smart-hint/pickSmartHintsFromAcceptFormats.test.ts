@@ -17,7 +17,7 @@ test("should pick hints from non-array hints", () => {
     },
   ];
 
-  const instillAcceptFormats = ["text/plain", "image/png"];
+  const instillAcceptFormats = ["text/plain"];
 
   const pickHints = pickSmartHintsFromAcceptFormats(
     hints,
