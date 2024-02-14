@@ -198,7 +198,10 @@ export const FieldHead = ({
                     className="!max-w-[160px] text-semantic-accent-default"
                   />
                 </ReferenceHintTag.Root>
-                <ReferenceHintDataTypeTag label={instillFormat} />
+                <ReferenceHintDataTypeTag
+                  isArray={instillFormat.includes("array:")}
+                  label={instillFormat.replace("array:", "")}
+                />
               </div>
             </div>
           </div>

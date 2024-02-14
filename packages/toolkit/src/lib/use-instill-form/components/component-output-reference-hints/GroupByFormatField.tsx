@@ -16,7 +16,10 @@ export const GroupByFormatField = ({
   return (
     <div className="flex w-full flex-col gap-y-2">
       <div className="flex">
-        <ReferenceHintDataTypeTag label={instillFormat} />
+        <ReferenceHintDataTypeTag
+          isArray={instillFormat.includes("array:")}
+          label={instillFormat.replace("array:", "")}
+        />
       </div>
       <div className="flex w-full flex-row flex-wrap gap-2">
         {hints.map((hint) => (
