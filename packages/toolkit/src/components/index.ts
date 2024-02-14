@@ -28,5 +28,6 @@ export * from "./ReferenceHintTag";
 export * from "./ReferenceHintDataTypeTag";
 export * from "./cells";
 export * from "./TableError";
+export * from "./UploadAvatarFieldWithCrop";
 export * from "./UserProfileCard";
 export * from "./WarnUnsavedChangesDialog";
