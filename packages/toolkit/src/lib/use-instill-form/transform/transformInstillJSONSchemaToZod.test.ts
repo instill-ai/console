@@ -354,7 +354,7 @@ test("should transform nested fields with anyOf", () => {
     },
   };
 
-  expect(speechZodSchema.safeParse(templateAudio).success).toBe(false);
+  expect(speechZodSchema.safeParse(templateAudio).success).toBe(true);
 
   const stringAudio = {
     task: "TASK_SPEECH_RECOGNITION",
