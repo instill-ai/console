@@ -88,11 +88,14 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
   React.useEffect(() => {
     if (!namespaceType.isSuccess) return;
 
+    // checknamespace endpoint will only return NAMESPACE_RESERVED or NAMESPACE_AVAILABLE
+    // when the namespace is not registered yet, which mean the entity is not exist.
     if (
       namespaceType.data === "NAMESPACE_RESERVED" ||
       namespaceType.data === "NAMESPACE_AVAILABLE"
     ) {
-      setIsSuccess(true);
+      router.push("/404");
+      return;
     }
 
     if (entityName && pipelineName && connectorName && modelName) {
@@ -104,6 +107,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     modelName,
     connectorName,
     namespaceType.isSuccess,
+    router,
   ]);
 
   if (isSuccess) {
