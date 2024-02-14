@@ -108,16 +108,16 @@ export async function updateOrganizationMembershipMutation({
 }
 
 export async function deleteOrganizationMutation({
-  organizationName,
+  organizationID,
   accessToken,
 }: {
-  organizationName: string;
+  organizationID: string;
   accessToken: Nullable<string>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, "core");
 
-    await client.delete(`/organizations/${organizationName}`);
+    await client.delete(`/organizations/${organizationID}`);
   } catch (err) {
     return Promise.reject(err);
   }
