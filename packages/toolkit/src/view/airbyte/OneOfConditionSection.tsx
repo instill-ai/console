@@ -41,6 +41,7 @@ export const OneOfConditionSection = ({
   // We store the uiFields in formTree and pass it to this component to preserve
   // the state of UI fields
 
+  const [open, setOpen] = React.useState(false);
   const [selectedConditionOption, setSelectedConditionOption] =
     React.useState<Nullable<SelectOption>>(null);
 
@@ -207,6 +208,8 @@ export const OneOfConditionSection = ({
       if (setFormIsDirty) {
         setFormIsDirty(true);
       }
+
+      setOpen(false);
     },
     [
       formTree.path,
@@ -229,7 +232,11 @@ export const OneOfConditionSection = ({
             will cause a flashed UI issue.
 
           */}
-          <Select.Root disabled={disableAll}>
+          <Select.Root
+            open={open}
+            onOpenChange={(open) => setOpen(open)}
+            disabled={disableAll}
+          >
             <Select.Trigger className="w-full !rounded-none">
               <p className="text-semantic-fg-primary">
                 {selectedConditionOption?.value}

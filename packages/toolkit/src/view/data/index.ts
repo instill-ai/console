@@ -1,1 +1,2 @@
-export * from "./DataResourceForm";
+export * from "./AirbyteDataResourceForm";
+export * from "./DataResourceAutoForm";

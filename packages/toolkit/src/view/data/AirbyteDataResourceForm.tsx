@@ -35,7 +35,7 @@ import { AirbyteDestinationFields } from "../airbyte";
 import { LoadingSpin } from "../../components";
 import { InstillErrors } from "../../constant/errors";
 
-export type DataResourceFormProps = {
+export type AirbyteDataResourceFormProps = {
   dataResource: Nullable<ConnectorWithDefinition>;
   dataDefinition: ConnectorDefinition;
   accessToken: Nullable<string>;
@@ -53,7 +53,9 @@ type BackButtonProps =
       enableBackButton: false;
     };
 
-export const DataResourceForm = (props: DataResourceFormProps) => {
+export const AirbyteDataResourceForm = (
+  props: AirbyteDataResourceFormProps
+) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const {
     disabledAll,
