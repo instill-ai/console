@@ -167,7 +167,7 @@ export function pickSmartHintsFromAcceptFormats(
         pickHints.push(hint);
       }
 
-      // Deal with semi-structured. Now we have semi-structured/object
+      // Deal with semi-structured. Now we have semi-structured/json
       // and semi-structured/*, in the view of smart-hint they support the same
       // structure
       if (

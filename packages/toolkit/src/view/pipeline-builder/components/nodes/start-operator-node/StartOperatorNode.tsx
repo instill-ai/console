@@ -268,10 +268,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
-      case "semi-structured/object": {
+      case "semi-structured/json": {
         configuraton = {
           type: "object",
-          instillFormat: "semi-structured/object",
+          instillFormat: "semi-structured/json",
           title: formData.title,
           description: formData.description,
         };
@@ -374,7 +374,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     if (data.component.configuration.metadata) {
       Object.entries(data.component.configuration.metadata).forEach(
         ([key, value]) => {
-          if (value.instillFormat === "semi-structured/object") {
+          if (value.instillFormat === "semi-structured/json") {
             semiStructuredObjectKeys.push(key);
           }
         }

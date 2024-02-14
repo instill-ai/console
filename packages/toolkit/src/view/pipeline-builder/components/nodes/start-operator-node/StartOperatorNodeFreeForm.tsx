@@ -153,9 +153,9 @@ export const StartOperatorNodeFreeForm = ({
             onSelect={() => setSelectedType("boolean")}
           />
           <StartNodeInputType
-            type="semi-structured/object"
+            type="semi-structured/json"
             selectedType={selectedType}
-            onSelect={() => setSelectedType("semi-structured/object")}
+            onSelect={() => setSelectedType("semi-structured/json")}
           />
         </div>
         <div className="flex flex-col space-y-3">
