@@ -44,9 +44,13 @@ export const ReferenceHintTagIcon = ({
 export const ReferenceHintTagLabel = ({
   label,
   className,
+  disabledTooltip,
+  disabledCopy,
 }: {
   label: string;
   className?: string;
+  disabledTooltip?: boolean;
+  disabledCopy?: boolean;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -56,6 +60,11 @@ export const ReferenceHintTagLabel = ({
       <Tooltip.Root
         open={open}
         onOpenChange={(open) => {
+          if (disabledTooltip) {
+            setOpen(false);
+            return;
+          }
+
           if (copied) {
             return;
           }
@@ -65,6 +74,10 @@ export const ReferenceHintTagLabel = ({
         <Tooltip.Trigger asChild>
           <button
             onClick={async (e) => {
+              if (disabledCopy) {
+                return;
+              }
+
               e.stopPropagation();
               e.preventDefault();
               await navigator.clipboard.writeText(label);
