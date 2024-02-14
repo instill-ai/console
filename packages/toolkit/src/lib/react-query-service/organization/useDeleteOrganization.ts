@@ -6,27 +6,27 @@ export function useDeleteOrganization() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({
-      organizationName,
+      organizationID,
       accessToken,
     }: {
-      organizationName: Nullable<string>;
+      organizationID: Nullable<string>;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
-      if (!organizationName) {
-        return Promise.reject(new Error("Organization Name not provided"));
+      if (!organizationID) {
+        return Promise.reject(new Error("organizationID not provided"));
       }
 
-      await deleteOrganizationMutation({ organizationName, accessToken });
+      await deleteOrganizationMutation({ organizationID, accessToken });
 
-      return Promise.resolve(organizationName);
+      return Promise.resolve(organizationID);
     },
     {
-      onSuccess: (organizationName) => {
+      onSuccess: (organizationID) => {
         queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
-          old ? old.filter((e) => e.id !== organizationName) : []
+          old ? old.filter((e) => e.id !== organizationID) : []
         );
       },
     }
