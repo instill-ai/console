@@ -76,7 +76,7 @@ export const PipelineTriggerCountsLineChart = ({
             color: "#1D2433A6",
             fontSize: 14,
             fontWeight: 500,
-            fontFamily: "IBM Plex Mono",
+            fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "italic",
           },
           text: isLoading
@@ -120,7 +120,7 @@ export const PipelineTriggerCountsLineChart = ({
           data: xAxisData,
           axisLabel: {
             fontSize: "14px",
-            fontFamily: "IBM Plex Sans",
+            fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "600",
             color: "#6B7280",
@@ -131,7 +131,7 @@ export const PipelineTriggerCountsLineChart = ({
           minInterval: 1,
           axisLabel: {
             fontSize: "14px",
-            fontFamily: "IBM Plex Sans",
+            fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "600",
             color: "#6B7280",
