@@ -217,7 +217,6 @@ export function pickRegularFieldsFromInstillFormTree(
     if (enableSmartHint) {
       return (
         <SmartHintFields.TextArea
-          fieldKey={tree.fieldKey}
           key={tree.path}
           path={tree.path}
           form={form}
@@ -231,7 +230,6 @@ export function pickRegularFieldsFromInstillFormTree(
           componentID={componentID}
           size={size}
           isHidden={tree.isHidden}
-          instillFormat={tree.instillFormat}
         />
       );
     }
@@ -271,7 +269,6 @@ export function pickRegularFieldsFromInstillFormTree(
     return (
       <SmartHintFields.TextField
         key={tree.path}
-        fieldKey={tree.fieldKey}
         path={tree.path}
         form={form}
         title={title}
@@ -284,7 +281,6 @@ export function pickRegularFieldsFromInstillFormTree(
         componentID={componentID}
         size={size}
         isHidden={tree.isHidden}
-        instillFormat={tree.instillFormat}
       />
     );
   }

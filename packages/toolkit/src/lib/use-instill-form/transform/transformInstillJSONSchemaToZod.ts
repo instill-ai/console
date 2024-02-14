@@ -218,10 +218,6 @@ export function transformInstillJSONSchemaToZod({
       (e) => e.instillUpstreamType === "reference"
     );
 
-    const acceptTemplate = targetSchema.anyOf.some(
-      (e) => e.instillUpstreamType === "template"
-    );
-
     if (instillUpstreamValue) {
       if (instillUpstreamValue.enum) {
         const enumValues = instillUpstreamValue.enum as [string, ...string[]];

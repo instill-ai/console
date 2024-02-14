@@ -1,6 +1,6 @@
 import * as React from "react";
 import cn from "clsx";
-import { ScrollArea, Tag } from "@instill-ai/design-system";
+import { ScrollArea } from "@instill-ai/design-system";
 import { SmartHint } from "../../../use-smart-hint";
 import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
@@ -19,7 +19,6 @@ export const SmartHintList = ({
   setHighlightedHintIndex,
   inputRef,
   smartHintEnabledPos,
-  instillUpstreamTypes,
   instillAcceptFormats,
 }: {
   field: ControllerRenderProps<
@@ -38,7 +37,6 @@ export const SmartHintList = ({
   setHighlightedHintIndex: React.Dispatch<React.SetStateAction<number>>;
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
-  instillUpstreamTypes: string[];
   instillAcceptFormats: string[];
 }) => {
   const humanReadableAcceptFormatString = React.useMemo(() => {

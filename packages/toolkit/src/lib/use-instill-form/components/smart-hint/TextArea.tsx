@@ -17,7 +17,6 @@ import { FieldDescriptionTooltip } from "../common";
 
 export const TextArea = ({
   form,
-  fieldKey,
   path,
   title,
   description,
@@ -29,16 +28,13 @@ export const TextArea = ({
   componentID,
   size,
   isHidden,
-  instillFormat,
 }: {
-  fieldKey: Nullable<string>;
   instillAcceptFormats: string[];
   shortDescription?: string;
   disabled?: boolean;
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
-  instillFormat?: string;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -208,7 +204,6 @@ export const TextArea = ({
                       setHighlightedHintIndex={setHighlightedHintIndex}
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
-                      instillUpstreamTypes={instillUpstreamTypes}
                       instillAcceptFormats={instillAcceptFormats}
                     />
                   </React.Fragment>

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
-import { GeneralUseFormReturn } from "../lib";
 import { FormLabel } from "../view/settings/FormLabel";
 import AvatarEditor from "react-avatar-editor";
 import { UseFormReturn } from "react-hook-form";

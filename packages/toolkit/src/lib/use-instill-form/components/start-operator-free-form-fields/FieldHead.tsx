@@ -1,11 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
-import {
-  FieldMode,
-  GeneralUseFormReturn,
-  InstillStore,
-  Nullable,
-  useInstillStore,
-} from "../../..";
+import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
 import {
   ReferenceHintDataTypeTag,
@@ -19,7 +13,6 @@ const selector = (store: InstillStore) => ({
 
 export const FieldHead = ({
   mode,
-  form,
   title,
   path,
   instillFormat,
@@ -29,7 +22,6 @@ export const FieldHead = ({
   disabledReferenceHint,
 }: {
   mode: FieldMode;
-  form: GeneralUseFormReturn;
   title: Nullable<string>;
   path: string;
   instillFormat: string;

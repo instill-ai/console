@@ -1,4 +1,4 @@
-import { GeneralRecord, Nullable } from "../../type";
+import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import {
   Organization,

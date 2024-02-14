@@ -16,7 +16,6 @@ import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
 
 export const TextField = ({
-  fieldKey,
   form,
   path,
   title,
@@ -29,16 +28,13 @@ export const TextField = ({
   componentID,
   size,
   isHidden,
-  instillFormat,
 }: {
-  fieldKey: Nullable<string>;
   instillAcceptFormats: string[];
   shortDescription?: string;
   disabled?: boolean;
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
-  instillFormat?: string;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -216,7 +212,6 @@ export const TextField = ({
                       setHighlightedHintIndex={setHighlightedHintIndex}
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
-                      instillUpstreamTypes={instillUpstreamTypes}
                       instillAcceptFormats={instillAcceptFormats}
                     />
                   </React.Fragment>

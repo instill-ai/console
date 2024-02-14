@@ -4,7 +4,6 @@ import { Nullable } from "../../../type";
 import { Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../types";
 import { SmartHint } from "../../../use-smart-hint";
-import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 export const SmartHintInfoCard = ({
   className,
