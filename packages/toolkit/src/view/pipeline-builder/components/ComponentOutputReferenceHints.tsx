@@ -45,6 +45,8 @@ export const ComponentOutputReferenceHints = ({
               <ReferenceHintTag.Label
                 label="references"
                 className="!text-semantic-fg-disabled"
+                disabledCopy={true}
+                disabledTooltip={true}
               />
             </ReferenceHintTag.Root>
             {/* <button
