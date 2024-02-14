@@ -1,19 +1,12 @@
 import * as React from "react";
 import { useRouter } from "next/router";
-import {
-  NodeData,
-  checkIsValidPosition,
-  createGraphLayout,
-  createInitialGraphData,
-  useSortedReleases,
-} from "../../pipeline-builder";
+import { useSortedReleases } from "../../pipeline-builder";
 import {
   Button,
   Icons,
   Tag,
   TabMenu,
   Skeleton,
-  Select,
   Popover,
   ScrollArea,
   toast,
@@ -21,7 +14,6 @@ import {
 import {
   InstillStore,
   Nullable,
-  getHumanReadableStringFromTime,
   isPublicPipeline,
   toastInstillError,
   useDeleteUserPipeline,
@@ -36,7 +28,6 @@ import {
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 import cn from "clsx";
-import { Edge, Node } from "reactflow";
 import { Menu } from "./Menu";
 
 const selector = (store: InstillStore) => ({
@@ -184,10 +175,16 @@ export const Head = (props: HeadProps) => {
                     </div>
 
                     {releases.length && pipeline.isSuccess ? (
-                      <Popover.Root>
+                      <Popover.Root
+                        onOpenChange={() => setIsOpen(!isOpen)}
+                        open={isOpen}
+                      >
                         <Popover.Trigger asChild={true} className="my-auto">
                           <Button
-                            className="gap-x-1 !rounded-[8px] !py-0.5 px-3"
+                            className={cn(
+                              "gap-x-1 !rounded-[8px] !py-0.5 px-3",
+                              isOpen ? "!bg-semantic-accent-bg" : ""
+                            )}
                             size="sm"
                             variant="tertiaryColour"
                             type="button"
@@ -210,7 +207,7 @@ export const Head = (props: HeadProps) => {
                           side="top"
                           sideOffset={4}
                           align="start"
-                          className="flex h-[180px] w-[160px] flex-col !rounded-[8px] !p-0"
+                          className="PopoverContent flex h-[180px] w-[145px] flex-col !rounded-[8px] !p-0"
                         >
                           <ScrollArea.Root>
                             <div className="flex flex-col gap-y-1 px-1.5 py-1">
@@ -228,6 +225,7 @@ export const Head = (props: HeadProps) => {
                                       createTime={release.create_time}
                                       onClick={() => {
                                         handleVersion(release.id);
+                                        setIsOpen(false);
                                       }}
                                     />
                                   ))}
@@ -399,14 +397,14 @@ const VersionButton = ({
     <Button
       key={id}
       className={cn(
-        "w-full !py-1.5",
+        "w-full !px-2 !py-1.5",
         currentVersion === id ? "!bg-semantic-bg-secondary" : ""
       )}
       variant={"tertiaryColour"}
       onClick={onClick}
     >
       <div className="flex w-full flex-row gap-x-2">
-        <div className="my-auto h-[6px] w-[6px] rounded-full bg-semantic-secondary-default"></div>
+        <div className="my-auto h-2 w-2 rounded-full bg-semantic-secondary-default"></div>
         <p
           className={cn(
             "w-full text-left text-semantic-fg-secondary product-body-text-3-medium"
