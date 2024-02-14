@@ -3,7 +3,7 @@ import { PageTitle } from "../../components";
 import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { BlockchainResourceAutoForm } from "../blockchain";
-import { DataResourceForm } from "../data";
+import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
 
 export type ResourceSettingPageMainViewProps = GeneralPageProp;
 
@@ -49,13 +49,22 @@ export const ResourceSettingPageMainView = (
             />
           ) : null}
           {userConnector.data.type === "CONNECTOR_TYPE_DATA" ? (
-            <DataResourceForm
-              dataDefinition={userConnector.data.connector_definition}
-              dataResource={userConnector.data}
-              accessToken={accessToken}
-              enableBackButton={false}
-              enableQuery={enableQuery}
-            />
+            userConnector.data.connector_definition.id ===
+            "airbyte-destination" ? (
+              <AirbyteDataResourceForm
+                dataDefinition={userConnector.data.connector_definition}
+                dataResource={userConnector.data}
+                accessToken={accessToken}
+                enableBackButton={false}
+                enableQuery={enableQuery}
+              />
+            ) : (
+              <DataResourceAutoForm
+                definition={userConnector.data.connector_definition}
+                resource={userConnector.data}
+                accessToken={accessToken}
+              />
+            )
           ) : null}
         </React.Fragment>
       ) : (

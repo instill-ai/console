@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAuthenticatedUserQuery, type User } from "../../vdp-sdk";
+import { getAuthenticatedUserQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
 export function useAuthenticatedUser({

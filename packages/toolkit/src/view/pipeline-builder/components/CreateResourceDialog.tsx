@@ -8,7 +8,7 @@ import {
   useInstillStore,
   useUserConnectors,
 } from "../../../lib";
-import { DataResourceForm } from "../../data";
+import { AirbyteDataResourceForm, DataResourceAutoForm } from "../../data";
 
 import { ImageWithFallback } from "../../../components";
 import { AIResourceAutoForm } from "../../ai";
@@ -170,23 +170,41 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
               ) : null}
               {connectorType === "CONNECTOR_TYPE_DATA" &&
               connectorDefinition ? (
-                <DataResourceForm
-                  dataDefinition={connectorDefinition}
-                  dataResource={null}
-                  accessToken={accessToken}
-                  enableBackButton={true}
-                  onSubmit={onCreated ? onCreated : undefined}
-                  onBack={() => {
-                    updateState(() => ({
-                      open: false,
-                      connectorType: null,
-                      connectorDefinition: null,
-                      onCreated: null,
-                      onSelectedExistingResource: null,
-                    }));
-                  }}
-                  enableQuery={enableQuery}
-                />
+                connectorDefinition.id === "airbyte-destination" ? (
+                  <AirbyteDataResourceForm
+                    dataDefinition={connectorDefinition}
+                    dataResource={null}
+                    accessToken={accessToken}
+                    enableBackButton={true}
+                    onSubmit={onCreated ? onCreated : undefined}
+                    onBack={() => {
+                      updateState(() => ({
+                        open: false,
+                        connectorType: null,
+                        connectorDefinition: null,
+                        onCreated: null,
+                        onSelectedExistingResource: null,
+                      }));
+                    }}
+                    enableQuery={enableQuery}
+                  />
+                ) : (
+                  <DataResourceAutoForm
+                    definition={connectorDefinition}
+                    resource={null}
+                    accessToken={accessToken}
+                    onSubmit={onCreated ? onCreated : undefined}
+                    onBack={() => {
+                      updateState(() => ({
+                        open: false,
+                        connectorType: null,
+                        connectorDefinition: null,
+                        onCreated: null,
+                        onSelectedExistingResource: null,
+                      }));
+                    }}
+                  />
+                )
               ) : null}
             </div>
           </div>

@@ -36,7 +36,6 @@ export const ImagesField = ({
           <Form.Item className="w-full">
             <FieldHead
               mode={mode}
-              form={form}
               title={title}
               path={path}
               instillFormat={instillFormat}

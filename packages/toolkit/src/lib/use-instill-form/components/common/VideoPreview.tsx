@@ -1,7 +1,5 @@
 import cn from "clsx";
 import * as React from "react";
-import { FieldMode } from "../../types";
-import { Icons } from "@instill-ai/design-system";
 
 export const VideoPreview = ({
   src,

@@ -145,7 +145,6 @@ export const EndOperatorNodeFreeForm = ({
                   </Form.Label>
                   <Form.Control>
                     <SmartHintFields.TextArea
-                      fieldKey="value"
                       path="value"
                       form={form}
                       title={null}

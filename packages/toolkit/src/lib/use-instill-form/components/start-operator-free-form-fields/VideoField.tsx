@@ -37,7 +37,6 @@ export const VideoField = ({
           <Form.Item className="w-full">
             <FieldHead
               mode={mode}
-              form={form}
               title={title}
               path={path}
               instillFormat={instillFormat}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
-import { DataResourceForm } from "../data";
+import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
 import {
   ConnectorDefinition,
   ConnectorType,
@@ -216,18 +216,31 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
               ) : null}
               {newConnectorType === "CONNECTOR_TYPE_DATA" &&
               newConnectorDefinition ? (
-                <DataResourceForm
-                  dataDefinition={newConnectorDefinition}
-                  dataResource={null}
-                  onSubmit={props.onSubmit}
-                  accessToken={accessToken}
-                  enableBackButton={true}
-                  onBack={() => {
-                    setNewConnectorDefinition(null);
-                    setNewConnectorType(null);
-                  }}
-                  enableQuery={enableQuery}
-                />
+                newConnectorDefinition.id === "airbyte-destination" ? (
+                  <AirbyteDataResourceForm
+                    dataDefinition={newConnectorDefinition}
+                    dataResource={null}
+                    onSubmit={props.onSubmit}
+                    accessToken={accessToken}
+                    enableBackButton={true}
+                    onBack={() => {
+                      setNewConnectorDefinition(null);
+                      setNewConnectorType(null);
+                    }}
+                    enableQuery={enableQuery}
+                  />
+                ) : (
+                  <DataResourceAutoForm
+                    definition={newConnectorDefinition}
+                    resource={null}
+                    onSubmit={props.onSubmit}
+                    accessToken={accessToken}
+                    onBack={() => {
+                      setNewConnectorDefinition(null);
+                      setNewConnectorType(null);
+                    }}
+                  />
+                )
               ) : null}
             </div>
           )}

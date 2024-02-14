@@ -108,6 +108,7 @@ export function useEntity(): UseEntitySuccessReturn | UseEntityFailedReturn {
     connectorName,
     namespaceType.isSuccess,
     router,
+    namespaceType.data,
   ]);
 
   if (isSuccess) {
