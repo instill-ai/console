@@ -27,6 +27,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useAuthenticatedUser,
   useCreateUserPipeline,
   useEntity,
   useInstillStore,
@@ -61,6 +62,7 @@ export type CreatePipelineDialogProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
 export const CreatePipelineDialog = ({ className }: { className?: string }) => {
@@ -78,13 +80,18 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     mode: "onChange",
   });
 
-  const { accessToken } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const entityObject = useEntity();
 
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
   const organizations = useUserMemberships({
     enabled: entityObject.isSuccess,
-    userID: entityObject.isSuccess ? entityObject.entity : null,
+    userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
