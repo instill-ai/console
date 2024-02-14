@@ -89,7 +89,7 @@ export const InOutPut = () => {
 
     if (startOperatorMetadata) {
       Object.entries(startOperatorMetadata).forEach(([key, value]) => {
-        if (value.instillFormat === "semi-structured/object") {
+        if (value.instillFormat === "semi-structured/json") {
           semiStructuredObjectKeys.push(key);
         }
       });

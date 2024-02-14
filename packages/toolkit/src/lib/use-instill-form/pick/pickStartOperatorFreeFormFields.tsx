@@ -361,7 +361,7 @@ export function pickStartOperatorFreeFormFields({
           ),
         });
         break;
-      case "semi-structured/object":
+      case "semi-structured/json":
         fields.push({
           key,
           instillUIOrder: value.instillUiOrder,
