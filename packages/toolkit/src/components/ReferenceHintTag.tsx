@@ -80,7 +80,7 @@ export const ReferenceHintTagLabel = ({
 
               e.stopPropagation();
               e.preventDefault();
-              await navigator.clipboard.writeText(label);
+              await navigator.clipboard.writeText("${" + label + "}");
               setCopied(true);
               setOpen(true);
               setTimeout(() => {
