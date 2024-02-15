@@ -182,7 +182,7 @@ export const Head = (props: HeadProps) => {
                         <Popover.Trigger asChild={true} className="my-auto">
                           <Button
                             className={cn(
-                              "!h-[32px] !w-[145px] gap-x-1 !rounded-[8px] !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
+                              "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
                               isOpen
                                 ? "border-opacity-100 !bg-semantic-accent-bg "
                                 : "border-opacity-0"
@@ -195,7 +195,7 @@ export const Head = (props: HeadProps) => {
                             <Tag
                               size="sm"
                               variant="darkPurple"
-                              className="h-[24px] gap-x-2"
+                              className="h-6 gap-x-2"
                             >
                               Version{" "}
                               {currentVersion === "latest"
@@ -209,7 +209,7 @@ export const Head = (props: HeadProps) => {
                           side="top"
                           sideOffset={4}
                           align="start"
-                          className="flex h-[180px] w-[145px] flex-col !rounded-[8px] !p-0"
+                          className="flex h-[180px] w-[145px] flex-col !rounded-sm !p-0"
                         >
                           <ScrollArea.Root>
                             <div className="flex flex-col gap-y-1 px-1.5 py-1">
@@ -244,7 +244,7 @@ export const Head = (props: HeadProps) => {
                     ) : null}
                     {pipeline.isSuccess ? (
                       <Tag
-                        className="my-auto h-[24px] !border-0 !py-0"
+                        className="my-auto h-6 !border-0 !py-0"
                         variant="lightNeutral"
                         size="sm"
                       >
