@@ -21,8 +21,13 @@ const selector = (store: InstillStore) => ({
 
 export const ViewPipeline = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const [currentVersion, setCurrentVersion] = React.useState<string>("latest");
 
   const router = useRouter();
+
+  function handleVersion(version: string) {
+    setCurrentVersion(version);
+  }
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
