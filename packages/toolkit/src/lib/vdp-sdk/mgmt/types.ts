@@ -1,3 +1,4 @@
+import { Nullable } from "../../type";
 import { StripeSubscriptionDetail } from "../types";
 
 export type UserProfile = {
@@ -44,7 +45,7 @@ export type UserSubscriptionPlan =
 
 export type UserSubscription = {
   plan: UserSubscriptionPlan;
-  detail: StripeSubscriptionDetail;
+  detail: Nullable<StripeSubscriptionDetail>;
 };
 
 export type ApiToken = {

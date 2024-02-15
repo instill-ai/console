@@ -32,7 +32,7 @@ export type OrganizationSubscriptionPlan =
 
 export type OrganizationSubscription = {
   plan: OrganizationSubscriptionPlan;
-  detail: StripeSubscriptionDetail;
+  detail: Nullable<StripeSubscriptionDetail>;
   max_seats: number;
   used_seats: number;
 };
