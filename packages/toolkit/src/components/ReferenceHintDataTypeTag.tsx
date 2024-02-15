@@ -16,7 +16,7 @@ export const ReferenceHintDataTypeTag = ({
         className
       )}
     >
-      <p className="my-auto align-middle font-sans text-[11px] font-medium text-semantic-success-default	">
+      <p className="my-auto align-middle font-sans text-[9px] font-medium text-semantic-success-default	">
         Array
       </p>
       <div className="flex flex-row items-center rounded bg-semantic-success-bg	px-[6px] py-[1.5px]">

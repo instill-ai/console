@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
@@ -5,6 +6,7 @@ import {
   ReferenceHintDataTypeTag,
   ReferenceHintTag,
 } from "../../../../components";
+import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -31,6 +33,11 @@ export const FieldHead = ({
   disabledReferenceHint?: boolean;
 }) => {
   const { isOwner, currentVersion } = useInstillStore(useShallow(selector));
+
+  const humanReadableInstillFormat = React.useMemo(() => {
+    return transformInstillFormatToHumanReadableFormat(instillFormat);
+  }, [instillFormat]);
+
   return (
     <div className="flex">
       {mode === "build" ? (
@@ -199,8 +206,8 @@ export const FieldHead = ({
                   />
                 </ReferenceHintTag.Root>
                 <ReferenceHintDataTypeTag
-                  isArray={instillFormat.includes("array:")}
-                  label={instillFormat.replace("array:", "")}
+                  isArray={humanReadableInstillFormat.isArray}
+                  label={humanReadableInstillFormat.format}
                 />
               </div>
             </div>
