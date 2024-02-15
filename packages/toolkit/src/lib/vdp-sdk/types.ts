@@ -42,4 +42,16 @@ export type StripeSubscriptionDetail = {
   item_id: string;
   price: number;
   canceled_at?: number;
+  status: StripeSubscriptionStatus;
 };
+
+export type StripeSubscriptionStatus =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_INCOMPLETE"
+  | "STATUS_INCOMPLETE_EXPIRED"
+  | "STATUS_TRIALING"
+  | "STATUS_ACTIVE"
+  | "STATUS_PAST_DUE"
+  | "STATUS_CANCELED"
+  | "STATUS_UNPAID"
+  | "STATUS_PAUSED";
