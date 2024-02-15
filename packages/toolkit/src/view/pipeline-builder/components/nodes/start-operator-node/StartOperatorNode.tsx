@@ -129,10 +129,21 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     updatePipelineRecipeIsDirty(() => true);
   };
 
-  const onCreateFreeFormField = (
+  function onCreateFreeFormField(
     formData: z.infer<typeof StartOperatorFreeFormSchema>
-  ) => {
+  ) {
     let configuraton: Nullable<StartOperatorInput> = null;
+
+    if (
+      data.component.configuration.metadata &&
+      Object.keys(data.component.configuration.metadata).includes(formData.key)
+    ) {
+      form.setError("key", {
+        type: "manual",
+        message: "Key already exists",
+      });
+      return;
+    }
 
     switch (selectedType) {
       case "string": {
@@ -313,7 +324,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       title: "",
       description: "",
     });
-  };
+  }
 
   function onCancelFreeForm() {
     setEnableEdit((prev) => !prev);
