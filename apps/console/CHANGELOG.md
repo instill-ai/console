@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.39.0-beta](https://github.com/instill-ai/console/compare/v0.38.0-beta...v0.39.0-beta) (2024-02-15)
+
+
+### Features
+
+* adapt new backend breaking changes about mgmt backend ([#940](https://github.com/instill-ai/console/issues/940)) ([3351262](https://github.com/instill-ai/console/commit/3351262b0768a47166e57d42ca81cff53deb29aa))
+* support the backend breaking changes of icon path ([#959](https://github.com/instill-ai/console/issues/959)) ([e7d7ad3](https://github.com/instill-ai/console/commit/e7d7ad39e80588bacb4b524c151a622d1ddaf26a))
+
+
+### Bug Fixes
+
+* fix pinecone svg padding is too small issue ([#968](https://github.com/instill-ai/console/issues/968)) ([cfbc703](https://github.com/instill-ai/console/commit/cfbc70309fee33f4c6fb1bb28497a145a68f3f2d))
+
 ## [0.38.0-beta](https://github.com/instill-ai/console/compare/v0.37.0-beta...v0.38.0-beta) (2024-01-30)
 
 

@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.64.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.63.0...@instill-ai/design-system-v0.64.0) (2024-02-15)
+
+
+### Features
+
+* **pipeline-builder:** support video/multiple-video in pipeline builder ([#943](https://github.com/instill-ai/console/issues/943)) ([2680f70](https://github.com/instill-ai/console/commit/2680f70162dbf22eed143ad455f87cd305e51826))
+
+
+### Miscellaneous
+
+* **design-system:** add storybook stories for colors ([#945](https://github.com/instill-ai/console/issues/945)) ([f4d52d8](https://github.com/instill-ai/console/commit/f4d52d8cbca1f8b11cc5a722c9d0b812891e4a96))
+
 ## [0.63.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.62.0...@instill-ai/design-system-v0.63.0) (2024-01-30)
 
 

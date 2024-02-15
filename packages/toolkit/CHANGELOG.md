@@ -1,5 +1,55 @@
 # Changelog
 
+## [0.81.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.3...@instill-ai/toolkit-v0.81.0) (2024-02-15)
+
+
+### Features
+
+* adapt new backend breaking changes about mgmt backend ([#940](https://github.com/instill-ai/console/issues/940)) ([3351262](https://github.com/instill-ai/console/commit/3351262b0768a47166e57d42ca81cff53deb29aa))
+* add SubscriptionStatus to sdk ([#964](https://github.com/instill-ai/console/issues/964)) ([f5e67ba](https://github.com/instill-ai/console/commit/f5e67ba87a3ff467f88e15568b445f1e186b3f27))
+* add trial_end field into StripeSubscriptionDetail ([#965](https://github.com/instill-ai/console/issues/965)) ([7b7324b](https://github.com/instill-ai/console/commit/7b7324bed8b29e7850fd2415bcf362ce3e7a884a))
+* **auto-gen-form:** handle Airbyte form and instill data form separately ([#956](https://github.com/instill-ai/console/issues/956)) ([23ce0eb](https://github.com/instill-ai/console/commit/23ce0eb194b645344177e572f3d5b37db0ad5277))
+* componentize the UploadAvatarFieldWithCrop ([#953](https://github.com/instill-ai/console/issues/953)) ([62cbb1b](https://github.com/instill-ai/console/commit/62cbb1bde6f0e768ad5e909740282822f8d9ab12))
+* namananand/ins 3605 add realease switch dropdown, share and delete button to view pipeline page ([#942](https://github.com/instill-ai/console/issues/942)) ([a96bf9f](https://github.com/instill-ai/console/commit/a96bf9feb1c2ffa5be7b2d60306ea5450a0515aa))
+* **pipeline-builder:** copy & paste full reference with ${} instead of path only ([#967](https://github.com/instill-ai/console/issues/967)) ([231ac2f](https://github.com/instill-ai/console/commit/231ac2f86ee65eb3e785a354765bde79512bfc37))
+* **pipeline-builder:** implement the layered flow of smart hint ([#934](https://github.com/instill-ai/console/issues/934)) ([69dc912](https://github.com/instill-ai/console/commit/69dc912fbdc3bb7c4baad83900e86ce494e3fece))
+* **pipeline-builder:** implement the new array data type label design ([#957](https://github.com/instill-ai/console/issues/957)) ([0c6ef4e](https://github.com/instill-ai/console/commit/0c6ef4eaada75e47af236f30828f01d49ad0b70e))
+* **pipeline-builder:** replace semi-structured/object with semi-structured/json on start operator ([#954](https://github.com/instill-ai/console/issues/954)) ([df71434](https://github.com/instill-ai/console/commit/df71434d80e82848a258ecf20c68496e03072b9c))
+* **pipeline-builder:** support hinting other type that can be stringified ([#949](https://github.com/instill-ai/console/issues/949)) ([c0c8892](https://github.com/instill-ai/console/commit/c0c8892992a5116ccf66a9b3d22ea506c6e38ee6))
+* **pipeline-builder:** support video/multiple-video in pipeline builder ([#943](https://github.com/instill-ai/console/issues/943)) ([2680f70](https://github.com/instill-ai/console/commit/2680f70162dbf22eed143ad455f87cd305e51826))
+* **pipeline-builder:** unify the onEdit and onDelete item on both start and end operator ([#936](https://github.com/instill-ai/console/issues/936)) ([d70120f](https://github.com/instill-ai/console/commit/d70120f6dd9c347d08f4fb1786be1272e781fa41))
+* support the backend breaking changes of icon path ([#959](https://github.com/instill-ai/console/issues/959)) ([e7d7ad3](https://github.com/instill-ai/console/commit/e7d7ad39e80588bacb4b524c151a622d1ddaf26a))
+
+
+### Bug Fixes
+
+* **dashboard:** chart yAxis calculation ([#929](https://github.com/instill-ai/console/issues/929)) ([56e9d11](https://github.com/instill-ai/console/commit/56e9d113393fd6a988b82c0a09b1656c6fd5857b))
+* fix connector definition not correctly update after user picking up the existing connector ([#935](https://github.com/instill-ai/console/issues/935)) ([08ef854](https://github.com/instill-ai/console/commit/08ef854aa7bd42e8b75b3df6eb1065cb99befc06))
+* fix console wrongly warn field not supporting multiple references ([#948](https://github.com/instill-ai/console/issues/948)) ([3c029e4](https://github.com/instill-ai/console/commit/3c029e46d8cbfe06f3827fcbf4f368f8b6c8c984))
+* fix create pipeline dialog use the wrong entity as query param ([#951](https://github.com/instill-ai/console/issues/951)) ([20d0793](https://github.com/instill-ai/console/commit/20d0793aec8d95619e5cc76ff108fd0719687bff))
+* fix dashboard font-family issue ([#955](https://github.com/instill-ai/console/issues/955)) ([4028d53](https://github.com/instill-ai/console/commit/4028d53fc3b5f702d45bed521921b92d3de94a6a))
+* fix not correctly redirect user to 404 page when the entity is not found ([#950](https://github.com/instill-ai/console/issues/950)) ([898acba](https://github.com/instill-ai/console/commit/898acba5122ef9de7634822a4c4c6ead001efc5b))
+* fix not redirect non exist user page to 404 ([#941](https://github.com/instill-ai/console/issues/941)) ([86a823f](https://github.com/instill-ai/console/commit/86a823f3dc94c2d13654a79c3a874b69be2ba61c))
+* fix reference data type tags are not human readable issue ([#960](https://github.com/instill-ai/console/issues/960)) ([55d315c](https://github.com/instill-ai/console/commit/55d315ccfee62d3be0a106bc6c61637faf8bc78f))
+* fix stripe subscription detail is not nullable issue ([#966](https://github.com/instill-ai/console/issues/966)) ([78d903b](https://github.com/instill-ai/console/commit/78d903b1dd5b252008188d7eefea873dbe128802))
+* fix the button title for multiple videos uploader at start operator ([#961](https://github.com/instill-ai/console/issues/961)) ([29a25ab](https://github.com/instill-ai/console/commit/29a25abb476e9d5e7e8760813fd3e6fa139aa637))
+* fix the wrong delete organization function parameter ([#952](https://github.com/instill-ai/console/issues/952)) ([8e2d89f](https://github.com/instill-ai/console/commit/8e2d89f7e8ea9e2bc4d8974afc06cb5ec0839a74))
+* fix the wrong organization profile object ([#946](https://github.com/instill-ai/console/issues/946)) ([1f9780b](https://github.com/instill-ai/console/commit/1f9780b365d1c8501757f561bdae6397d6632dab))
+* fix useInstillForm field's description tooltip break words issue ([#937](https://github.com/instill-ai/console/issues/937)) ([6e43839](https://github.com/instill-ai/console/commit/6e43839d2992ad21a5eb34e126d5c1138349c34a))
+* **pipeline-builder:** fix newly added nodes is behind old nodes ([#939](https://github.com/instill-ai/console/issues/939)) ([6824bb1](https://github.com/instill-ai/console/commit/6824bb190fffe4d3bd819742ec6142e4b62be14a))
+* **pipeline-builder:** fix semi-structured/json at start operator not obey the protocol ([#962](https://github.com/instill-ai/console/issues/962)) ([bd624a6](https://github.com/instill-ai/console/commit/bd624a6591fc79d45c09b3d4c4349bf0d14d25b9))
+* **pipeline-builder:** fix smart-hint list not align to left when the key is too long ([#938](https://github.com/instill-ai/console/issues/938)) ([31ea1c6](https://github.com/instill-ai/console/commit/31ea1c616c214101369eb4a322a4ea6b661ebbc5))
+* **pipeline-builder:** fix task description not react to the selected task ([#944](https://github.com/instill-ai/console/issues/944)) ([7e600f8](https://github.com/instill-ai/console/commit/7e600f89dec3e7ae61ee02fccc9841a44a1a1b8a))
+* **pipeline-builder:** fix the reference header title have tooltip and is able to copy ([#958](https://github.com/instill-ai/console/issues/958)) ([6214838](https://github.com/instill-ai/console/commit/6214838b4e5ec98d9eaa1f30af206fbd2a72b3d0))
+* **pipeline-builder:** prevent user create duplicated field on start and end operator ([#963](https://github.com/instill-ai/console/issues/963)) ([a96b0a0](https://github.com/instill-ai/console/commit/a96b0a0fc5bf2d766a7013e055a03f893c7ff643))
+
+
+### Miscellaneous
+
+* add the missing return button in the subscription form (They are already in the design handover) ([#932](https://github.com/instill-ai/console/issues/932)) ([03ef163](https://github.com/instill-ai/console/commit/03ef16329b11e8dc8e45b9c2a66df5579302182f))
+* **instill-hub:** add visibility all label to dropdown ([#947](https://github.com/instill-ai/console/issues/947)) ([1ba36a0](https://github.com/instill-ai/console/commit/1ba36a0d21230efeacc192cc60982b306690066c))
+* **user-profile:** add id to user profile bio for better URL navigation ([#931](https://github.com/instill-ai/console/issues/931)) ([3bcd905](https://github.com/instill-ai/console/commit/3bcd9055c56cddba36c212abbb321cf01f82c5e8))
+
 ## [0.80.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.2...@instill-ai/toolkit-v0.80.3) (2024-01-31)
 
 
