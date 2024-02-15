@@ -38,7 +38,7 @@ export const OperatorSection = ({
                   }}
                 >
                   <ImageWithFallback
-                    src={`/icons/${definition.icon}`}
+                    src={`/icons/${definition.id}.svg`}
                     width={32}
                     height={32}
                     alt={`${definition.title}-icon`}

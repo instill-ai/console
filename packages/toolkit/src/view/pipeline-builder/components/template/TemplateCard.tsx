@@ -38,7 +38,7 @@ export const TemplateCard = (props: TemplateCardProps) => {
             )}
           >
             <ImageWithFallback
-              src={`/icons/${component.connector_definition?.icon}`}
+              src={`/icons/${component.connector_definition?.id}.svg`}
               width={12}
               height={12}
               alt={`${component.connector_definition?.title}-icon`}

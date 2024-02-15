@@ -249,7 +249,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.operator_definition?.icon}`}
+            src={`/icons/${data.component?.operator_definition?.id}.svg`}
             width={16}
             height={16}
             alt={`${data.component?.operator_definition?.title}-icon`}
