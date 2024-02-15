@@ -183,7 +183,7 @@ export const Head = (props: HeadProps) => {
                           <Button
                             className={cn(
                               "gap-x-1 !rounded-[8px] !py-0.5 px-3",
-                              isOpen ? "!bg-semantic-accent-bg" : ""
+                              isOpen ? "!bg-semantic-accent-bg !border" : ""
                             )}
                             size="sm"
                             variant="tertiaryColour"
@@ -207,7 +207,7 @@ export const Head = (props: HeadProps) => {
                           side="top"
                           sideOffset={4}
                           align="start"
-                          className="PopoverContent flex h-[180px] w-[145px] flex-col !rounded-[8px] !p-0"
+                          className="PopoverContent flex h-[180px] w-[142px] flex-col !rounded-[8px] !p-0"
                         >
                           <ScrollArea.Root>
                             <div className="flex flex-col gap-y-1 px-1.5 py-1">
@@ -404,7 +404,7 @@ const VersionButton = ({
       onClick={onClick}
     >
       <div className="flex w-full flex-row gap-x-2">
-        <div className="my-auto h-2 w-2 rounded-full bg-semantic-secondary-default"></div>
+        <div className="my-auto h-2 w-[9px] rounded-full bg-semantic-secondary-default"></div>
         <p
           className={cn(
             "w-full text-left text-semantic-fg-secondary product-body-text-3-medium"
