@@ -119,7 +119,7 @@ export const StartNodeInputType = ({
       icon = (
         <Icons.BracketSlash className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
       );
-      label = "JSON object";
+      label = "JSON";
       break;
     }
     default:

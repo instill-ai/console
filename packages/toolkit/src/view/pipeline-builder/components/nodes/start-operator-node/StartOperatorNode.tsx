@@ -268,9 +268,11 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         };
         break;
       }
+
+      // This is the special case. We use this input to store arbitrary JSON
+      // By protocol, it don't have a type
       case "semi-structured/json": {
         configuraton = {
-          type: "object",
           instillFormat: "semi-structured/json",
           title: formData.title,
           description: formData.description,
