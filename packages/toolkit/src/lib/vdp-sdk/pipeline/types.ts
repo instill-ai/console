@@ -183,7 +183,7 @@ export type StartOperatorMetadata = Record<string, StartOperatorInput>;
 
 export type StartOperatorInput = {
   title: string;
-  type: StartOperatorInputType;
+  type?: StartOperatorInputType;
   instillFormat: string;
   items?: {
     type: string;
