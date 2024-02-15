@@ -97,7 +97,7 @@ export const VideosField = ({
                 <UploadFileInput
                   keyPrefix={keyPrefix}
                   fieldKey={path}
-                  title="Upload images"
+                  title="Upload videos"
                   accept="video/*"
                   multiple={true}
                   onChange={async (e) => {
