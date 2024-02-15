@@ -182,10 +182,10 @@ export const Head = (props: HeadProps) => {
                         <Popover.Trigger asChild={true} className="my-auto">
                           <Button
                             className={cn(
-                              "!h-[32px] !w-[145px] gap-x-1 !rounded-[8px] !py-1 px-3",
+                              "!h-[32px] !w-[145px] gap-x-1 !rounded-[8px] !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
                               isOpen
-                                ? "!border !bg-semantic-accent-bg !transition !duration-300 !ease-in-out"
-                                : ""
+                                ? "border-opacity-100 !bg-semantic-accent-bg "
+                                : "border-opacity-0"
                             )}
                             size="sm"
                             variant="tertiaryColour"
@@ -209,7 +209,7 @@ export const Head = (props: HeadProps) => {
                           side="top"
                           sideOffset={4}
                           align="start"
-                          className="PopoverContent flex h-[180px] w-[145px] flex-col !rounded-[8px] !p-0"
+                          className="flex h-[180px] w-[145px] flex-col !rounded-[8px] !p-0"
                         >
                           <ScrollArea.Root>
                             <div className="flex flex-col gap-y-1 px-1.5 py-1">
