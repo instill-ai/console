@@ -76,6 +76,17 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   const onCreateFreeFormField = (
     formData: z.infer<typeof EndOperatorFreeFormSchema>
   ) => {
+    if (
+      data.component.configuration.metadata &&
+      Object.keys(data.component.configuration.metadata).includes(formData.key)
+    ) {
+      form.setError("key", {
+        type: "manual",
+        message: "Key already exists",
+      });
+      return;
+    }
+
     const newNodes = nodes.map((node) => {
       if (node.data.nodeType === "end") {
         if (prevFieldKey) {
