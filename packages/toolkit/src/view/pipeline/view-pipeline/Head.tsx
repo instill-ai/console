@@ -37,7 +37,7 @@ const selector = (store: InstillStore) => ({
 
 type HeadProps = {
   handleVersion: (version: string) => void;
-  currentVersion: string;
+  currentVersion: Nullable<string>;
 };
 
 export const Head = (props: HeadProps) => {
@@ -224,7 +224,6 @@ export const Head = (props: HeadProps) => {
                                           ? releases[0].id
                                           : currentVersion
                                       }
-                                      createTime={release.create_time}
                                       onClick={() => {
                                         handleVersion(release.id);
                                         setIsOpen(false);
@@ -388,11 +387,9 @@ const VersionButton = ({
   id,
   currentVersion,
   onClick,
-  createTime,
 }: {
   id: string;
   currentVersion: Nullable<string>;
-  createTime?: string;
   onClick: () => void;
 }) => {
   return (
