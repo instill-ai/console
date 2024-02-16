@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.81.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.1...@instill-ai/toolkit-v0.81.2) (2024-02-16)
+
+
+### Bug Fixes
+
+* fix the navigation problem on organization profile and dashboard page ([#972](https://github.com/instill-ai/console/issues/972)) ([facbb03](https://github.com/instill-ai/console/commit/facbb0346dc7e672dee825378513eebe344305b2))
+
 ## [0.81.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.0...@instill-ai/toolkit-v0.81.1) (2024-02-16)
 
 
