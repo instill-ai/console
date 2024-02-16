@@ -18,6 +18,7 @@ import {
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
+import { useRouter } from "next/router";
 
 export type DashboardPipelineListPageMainViewProps = Omit<
   GeneralPageProp,
@@ -28,6 +29,7 @@ export const DashboardPipelineListPageMainView = (
   props: DashboardPipelineListPageMainViewProps
 ) => {
   const { accessToken, enableQuery } = props;
+  const router = useRouter();
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
@@ -92,6 +94,23 @@ export const DashboardPipelineListPageMainView = (
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });
+
+  // Guard this page
+
+  React.useEffect(() => {
+    if (
+      triggeredPipelines.isError ||
+      pipelinesChart.isError ||
+      previoustriggeredPipelines.isError
+    ) {
+      router.push("/404");
+    }
+  }, [
+    router,
+    triggeredPipelines.isError,
+    pipelinesChart.isError,
+    previoustriggeredPipelines.isError,
+  ]);
 
   const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
     if (!pipelinesChart.isSuccess) {

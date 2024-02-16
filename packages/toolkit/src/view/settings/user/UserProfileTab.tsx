@@ -25,6 +25,7 @@ import {
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin, UploadAvatarFieldWithCrop } from "../../../components";
 import { useUpdateAuthenticatedUser } from "../../../lib";
+import { useRouter } from "next/router";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),
@@ -54,6 +55,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UserProfileTab = () => {
+  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
@@ -70,10 +72,14 @@ export const UserProfileTab = () => {
   const { reset } = form;
 
   React.useEffect(() => {
+    if (me.isError) {
+      router.push("/404");
+      return;
+    }
     if (!me.isSuccess) return;
 
     reset(me.data);
-  }, [me.data, me.isSuccess, reset]);
+  }, [me.data, me.isSuccess, me.isError, reset]);
 
   const updateAuthenticatedUser = useUpdateAuthenticatedUser();
 
