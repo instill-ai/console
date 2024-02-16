@@ -82,7 +82,7 @@ export const PipelineTriggerCountsLineChart = ({
           text: isLoading
             ? "Loading..."
             : "No pipelines have been triggered yet",
-          left: "center",
+          left: `${isLoading ? "49.5%" : "44.5%"}`,
           bottom: 100,
         },
         tooltip: {
