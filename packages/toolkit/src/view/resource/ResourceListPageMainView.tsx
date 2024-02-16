@@ -2,6 +2,7 @@ import * as React from "react";
 import { AddConnectorDialog } from "./AddConnectorDialog";
 import { GeneralPageProp, useEntity, useUserConnectors } from "../../lib";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 const ResourcesTable = dynamic(
   () => import("./ResourcesTable").then((mod) => mod.ResourcesTable),
@@ -13,6 +14,7 @@ export type ResourceListPageMainViewProps = GeneralPageProp;
 export const ResourceListPageMainView = (
   props: ResourceListPageMainViewProps
 ) => {
+  const router = useRouter();
   const { enableQuery, accessToken } = props;
   const [addConnectorDialogIsOpen, setAddConnectorDialogIsOpen] =
     React.useState(false);
@@ -29,6 +31,13 @@ export const ResourceListPageMainView = (
     connectorType: "all",
     accessToken,
   });
+
+  // Guard this page
+  React.useEffect(() => {
+    if (userConnector.isError) {
+      router.push("/404");
+    }
+  }, [userConnector.isError, router]);
 
   /* -------------------------------------------------------------------------
    * Render

@@ -21,6 +21,13 @@ export const ResourceSettingPageMainView = (
     accessToken: accessToken,
   });
 
+  // Guard this page
+  React.useEffect(() => {
+    if (userConnector.isError) {
+      router.push("/404");
+    }
+  }, [userConnector.isError, router]);
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/

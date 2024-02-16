@@ -10,6 +10,7 @@ import {
   useShallow,
   useAuthenticatedUser,
 } from "../../../lib";
+import { useRouter } from "next/router";
 
 const UserAccountTabSchema = z.object({
   email: z.string(),
@@ -21,6 +22,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UserAccountTab = () => {
+  const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -35,12 +37,16 @@ export const UserAccountTab = () => {
   const { reset } = form;
 
   React.useEffect(() => {
+    if (me.isError) {
+      router.push("/404");
+      return;
+    }
     if (!me.isSuccess) return;
 
     reset({
-      email: me.data?.profile?.public_email ?? "",
+      email: me.data?.email ?? "",
     });
-  }, [me.data, me.isSuccess, reset]);
+  }, [me.data, me.isError, router, me.isSuccess, reset]);
 
   return (
     <Setting.TabRoot>

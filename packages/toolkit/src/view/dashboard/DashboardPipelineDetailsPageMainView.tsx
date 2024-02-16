@@ -92,6 +92,20 @@ export const DashboardPipelineDetailsPageMainView = (
     accessToken,
   });
 
+  // Guard this page
+  React.useEffect(() => {
+    if (
+      pipelineTriggerRecords.isError ||
+      previousPipelineTriggerRecords.isError
+    ) {
+      router.push("/404");
+    }
+  }, [
+    router,
+    pipelineTriggerRecords.isError,
+    previousPipelineTriggerRecords.isError,
+  ]);
+
   const pipelineTriggersSummary = React.useMemo(() => {
     if (
       !pipelineTriggerRecords.isSuccess ||

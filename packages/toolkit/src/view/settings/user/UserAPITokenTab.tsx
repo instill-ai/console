@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Setting } from "..";
 import {
   InstillStore,
@@ -6,6 +7,7 @@ import {
   useShallow,
 } from "../../../lib";
 import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
+import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -13,12 +15,19 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UserAPITokenTab = () => {
+  const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const apiTokens = useApiTokens({
     accessToken,
     enabled: enabledQuery,
   });
+
+  React.useEffect(() => {
+    if (apiTokens.isError) {
+      router.push("/404");
+    }
+  }, [apiTokens.error, router]);
 
   return (
     <Setting.TabRoot>
