@@ -35,7 +35,7 @@ const selector = (store: InstillStore) => ({
 });
 
 type InOutPutProps = {
-  currentVersion: string;
+  currentVersion: Nullable<string>;
 };
 
 export const InOutPut = ({ currentVersion }: InOutPutProps) => {
@@ -64,6 +64,14 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   });
 
   const startComponent = React.useMemo(() => {
+    if (!pipeline.isSuccess) return null;
+
+    if (!currentVersion || releases.length === 0) {
+      return (
+        pipeline.data?.recipe.components.find((c) => c.id === "start") ?? null
+      );
+    }
+
     const pipelineVersion = releases.find(
       (release) =>
         release.id === currentVersion || release.alias === currentVersion
@@ -71,7 +79,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     return (
       pipelineVersion?.recipe.components.find((c) => c.id === "start") ?? null
     );
-  }, [releases, currentVersion]);
+  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
   const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
     mode: "demo",

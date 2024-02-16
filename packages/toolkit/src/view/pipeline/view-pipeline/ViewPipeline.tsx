@@ -21,13 +21,10 @@ const selector = (store: InstillStore) => ({
 
 export const ViewPipeline = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [currentVersion, setCurrentVersion] = React.useState<string>("latest");
+  const [currentVersion, setCurrentVersion] =
+    React.useState<Nullable<string>>(null);
 
   const router = useRouter();
-
-  function handleVersion(version: string) {
-    setCurrentVersion(version);
-  }
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -69,7 +66,12 @@ export const ViewPipeline = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <Head handleVersion={handleVersion} currentVersion={currentVersion} />
+      <Head
+        handleVersion={(version) => {
+          setCurrentVersion(version);
+        }}
+        currentVersion={currentVersion}
+      />
       <div className="mx-auto flex flex-1 flex-row px-8">
         <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
           <ReadOnlyPipelineBuilder
