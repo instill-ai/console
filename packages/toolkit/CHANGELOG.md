@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.81.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.0...@instill-ai/toolkit-v0.81.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* fix pipelines/pid pipeline input not correctly displayed ([#970](https://github.com/instill-ai/console/issues/970)) ([982e6ca](https://github.com/instill-ai/console/commit/982e6ca06c6c518d65a58b86b312348a75befdf6))
+
+
+### Miscellaneous
+
+* **dashbaord:** no pipeline message text center  ([#969](https://github.com/instill-ai/console/issues/969)) ([a9e7537](https://github.com/instill-ai/console/commit/a9e753794b3e1592cfcaaed4d624ab2d0bf837b7))
+
 ## [0.81.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.80.3...@instill-ai/toolkit-v0.81.0) (2024-02-15)
 
 
