@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.81.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.2...@instill-ai/toolkit-v0.81.3) (2024-02-17)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix user can not edit start operator field ([#974](https://github.com/instill-ai/console/issues/974)) ([10e0ba1](https://github.com/instill-ai/console/commit/10e0ba1bcc04e806912233cc04c563b8b6123db5))
+
 ## [0.81.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.1...@instill-ai/toolkit-v0.81.2) (2024-02-16)
 
 
