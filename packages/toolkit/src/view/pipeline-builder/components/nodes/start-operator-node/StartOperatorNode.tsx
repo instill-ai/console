@@ -84,6 +84,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     React.useState<Nullable<StartOperatorInputType>>(null);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
+  const [enableEdit, setEnableEdit] = React.useState(false);
 
   const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
     resolver: zodResolver(StartOperatorFreeFormSchema),
@@ -136,7 +137,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
     if (
       data.component.configuration.metadata &&
-      Object.keys(data.component.configuration.metadata).includes(formData.key)
+      Object.keys(data.component.configuration.metadata).includes(
+        formData.key
+      ) &&
+      !enableEdit
     ) {
       form.setError("key", {
         type: "manual",
@@ -366,7 +370,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     updateIsTriggeringPipeline,
   ]);
 
-  const [enableEdit, setEnableEdit] = React.useState(false);
   const useTriggerPipeline = useTriggerUserPipeline();
   const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
 
