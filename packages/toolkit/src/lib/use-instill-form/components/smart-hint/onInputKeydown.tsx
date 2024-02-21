@@ -74,8 +74,8 @@ export function onInputKeydown({
       break;
     }
     case "Enter": {
-      event.preventDefault();
       if (enableSmartHints) {
+        event.preventDefault();
         if (filteredHints.length > 0) {
           if (inputRef.current) {
             const cursorPosition = inputRef.current.selectionStart;
