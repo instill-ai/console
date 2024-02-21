@@ -123,7 +123,7 @@ export const TextArea = ({
                   <Textarea
                     {...field}
                     className={cn(
-                      "nodrag placeholder:text-semantic-fg-disabled",
+                      "nodrag nowheel placeholder:text-semantic-fg-disabled",
                       size === "sm" ? "!product-body-text-4-regular" : ""
                     )}
                     ref={inputRef}

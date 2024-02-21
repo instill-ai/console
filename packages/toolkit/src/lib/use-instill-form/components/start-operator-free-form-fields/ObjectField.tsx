@@ -41,7 +41,7 @@ export const ObjectField = ({
                 {...field}
                 value={field.value ?? ""}
                 autoComplete="off"
-                className="nodrag !resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
+                className="nodrag nowheel !resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular focus-visible:!ring-1"
                 disabled={disabled}
               />
             </Form.Control>

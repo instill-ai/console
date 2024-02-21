@@ -38,7 +38,7 @@ export const TextField = ({
                   {...field}
                   aria-label={title ?? undefined}
                   className={cn(
-                    "nodrag",
+                    "nodrag nowheel",
                     size === "sm" ? "!product-body-text-4-regular" : ""
                   )}
                   type="text"

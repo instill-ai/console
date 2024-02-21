@@ -70,7 +70,7 @@ export const TextsField = ({
                     type="text"
                     value={textFieldsValue[0] ?? undefined}
                     autoComplete="off"
-                    className="nodrag text-semantic-fg-primary product-body-text-4-regular"
+                    className="nodrag nowheel text-semantic-fg-primary product-body-text-4-regular"
                     onChange={(e) => {
                       const newTextFieldsValue = [...textFieldsValue];
                       newTextFieldsValue[0] = e.target.value;
@@ -98,7 +98,7 @@ export const TextsField = ({
                         type="text"
                         value={textFieldsValue[idx + 1] ?? undefined}
                         autoComplete="off"
-                        className="nodrag text-semantic-fg-primary product-body-text-4-regular"
+                        className="nodrag nowheel text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newTextFieldsValue = [...textFieldsValue];
                           newTextFieldsValue[idx + 1] = e.target.value;

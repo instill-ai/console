@@ -517,7 +517,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
         />
       </NodeHead>
       {nodeIsCollapsed ? null : (
-        <div className="nodrag flex flex-col">
+        <div className="nodrag nowheel flex flex-col">
           {enableEdit ? (
             <StartOperatorNodeFreeForm
               form={form}

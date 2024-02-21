@@ -134,7 +134,7 @@ export const TextField = ({
                         typeof field.value === "object" ? "" : field.value ?? ""
                       }
                       className={cn(
-                        "nodrag placeholder:text-semantic-fg-disabled",
+                        "nodrag nowheel placeholder:text-semantic-fg-disabled",
                         size === "sm" ? "!product-body-text-4-regular" : ""
                       )}
                       placeholder={placeholder}
