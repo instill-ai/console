@@ -21,76 +21,83 @@ export const useSmartHint = () => {
     let smartHints: SmartHint[] = [];
 
     for (const node of nodes) {
-      if (node.data.nodeType === "connector") {
-        const { outputSchema } = getConnectorInputOutputSchema(
-          node.data.component
-        );
-
-        if (outputSchema) {
-          const outputFormTree =
-            transformInstillJSONSchemaToFormTree(outputSchema);
-
-          const hints = transformConnectorComponentFormTreeToSmartHints(
-            outputFormTree,
-            node.id
+      switch (node.data.nodeType) {
+        case "connector": {
+          const { outputSchema } = getConnectorInputOutputSchema(
+            node.data.component
           );
 
-          smartHints = [...smartHints, ...hints];
-        }
+          if (outputSchema) {
+            const outputFormTree =
+              transformInstillJSONSchemaToFormTree(outputSchema);
 
-        smartHints = [
-          ...smartHints,
-          {
-            path: `${node.id}.output`,
-            key: "output",
-            instillFormat: "null",
-            type: "object",
-            properties: [],
-          },
-        ];
-      }
+            const hints = transformConnectorComponentFormTreeToSmartHints(
+              outputFormTree,
+              node.id
+            );
 
-      if (node.data.nodeType === "start") {
-        if (!node.data.component.configuration.metadata) {
+            smartHints = [...smartHints, ...hints];
+          }
+
+          smartHints = [
+            ...smartHints,
+            {
+              path: `${node.id}.output`,
+              key: "output",
+              instillFormat: "null",
+              type: "object",
+              properties: [],
+            },
+          ];
           continue;
         }
+        case "start": {
+          if (!node.data.component.configuration.metadata) {
+            continue;
+          }
 
-        const hints = transformStartOperatorMetadataToSmartHints(
-          node.data.component.configuration.metadata
-        );
-
-        smartHints = [...smartHints, ...hints];
-      }
-
-      if (node.data.nodeType === "operator") {
-        const { outputSchema } = getOperatorInputOutputSchema(
-          node.data.component
-        );
-
-        if (outputSchema) {
-          const outputFormTree =
-            transformInstillJSONSchemaToFormTree(outputSchema);
-
-          const hints = transformConnectorComponentFormTreeToSmartHints(
-            outputFormTree,
-            node.id
+          const hints = transformStartOperatorMetadataToSmartHints(
+            node.data.component.configuration.metadata
           );
 
           smartHints = [...smartHints, ...hints];
-        }
 
-        smartHints = [
-          ...smartHints,
-          {
-            path: `${node.id}.output`,
-            key: "output",
-            instillFormat: "null",
-            type: "object",
-            properties: [],
-          },
-        ];
+          continue;
+        }
+        case "operator": {
+          const { outputSchema } = getOperatorInputOutputSchema(
+            node.data.component
+          );
+
+          if (outputSchema) {
+            const outputFormTree =
+              transformInstillJSONSchemaToFormTree(outputSchema);
+
+            const hints = transformConnectorComponentFormTreeToSmartHints(
+              outputFormTree,
+              node.id
+            );
+
+            smartHints = [...smartHints, ...hints];
+          }
+
+          smartHints = [
+            ...smartHints,
+            {
+              path: `${node.id}.output`,
+              key: "output",
+              instillFormat: "null",
+              type: "object",
+              properties: [],
+            },
+          ];
+
+          continue;
+        }
       }
     }
+
+    console.log("smartHints", smartHints);
 
     updateSmartHints(() => smartHints);
   }, [nodes, updateSmartHints]);
