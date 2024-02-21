@@ -40,7 +40,7 @@ export const CredentialTextField = ({
                 <Input.Core
                   {...field}
                   className={cn(
-                    "nodrag",
+                    "nodrag nowheel",
                     size === "sm" ? "!product-body-text-4-regular" : ""
                   )}
                   type="text"

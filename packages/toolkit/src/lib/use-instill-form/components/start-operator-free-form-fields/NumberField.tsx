@@ -46,7 +46,7 @@ export const NumberField = ({
                   // AlphaValueIssue: We still have alpha value issue in
                   // out design-token, so we need to use the hex value
                   // here
-                  className="nodrag appearance-none !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
+                  className="nodrag nowheel appearance-none !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();

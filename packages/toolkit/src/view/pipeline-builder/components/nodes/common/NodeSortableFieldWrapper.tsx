@@ -47,7 +47,7 @@ export const NodeSortableFieldWrapper = ({
       style={style}
       key={path}
       className={cn(
-        "nodrag group relative flex cursor-default flex-row gap-x-2 bg-semantic-bg-base-bg",
+        "nodrag nowheel group relative flex cursor-default flex-row gap-x-2 bg-semantic-bg-base-bg",
         isDragging ? "z-10" : ""
       )}
     >

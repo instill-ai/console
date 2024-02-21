@@ -43,7 +43,7 @@ export const TextField = ({
                   type="text"
                   value={field.value ?? ""}
                   autoComplete="off"
-                  className="nodrag !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
+                  className="nodrag nowheel !text-[#1D2433] !text-opacity-80 !product-body-text-3-regular"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();

@@ -35,7 +35,7 @@ export const TextAreaField = ({
               <Textarea
                 {...field}
                 className={cn(
-                  "nodrag",
+                  "nodrag nowheel",
                   size === "sm" ? "!product-body-text-4-regular" : ""
                 )}
                 // At some moment the value maybe a object

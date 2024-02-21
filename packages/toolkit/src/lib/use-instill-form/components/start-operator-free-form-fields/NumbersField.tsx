@@ -77,7 +77,7 @@ export const NumbersField = ({
                         type="number"
                         value={numberFieldsValue[idx] ?? undefined}
                         autoComplete="off"
-                        className="nodrag appearance-none text-semantic-fg-primary product-body-text-4-regular"
+                        className="nodrag nowheel appearance-none text-semantic-fg-primary product-body-text-4-regular"
                         onChange={(e) => {
                           const newNumberFieldsValue = [...numberFieldsValue];
                           newNumberFieldsValue[idx] = e.target.value;

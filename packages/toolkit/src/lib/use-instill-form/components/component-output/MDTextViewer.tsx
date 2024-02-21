@@ -16,7 +16,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
           word-break: break-all !important;
         }
       `}</style>
-      <div className="nodrag flex flex-col rounded-sm border border-semantic-bg-line">
+      <div className="nodrag nowheel flex flex-col rounded-sm border border-semantic-bg-line">
         <div className="flex flex-row rounded-t-sm border-b border-semantic-bg-line bg-semantic-bg-secondary px-2 py-1">
           <div className="flex flex-row gap-x-1">
             <p className="my-auto text-semantic-fg-primary product-body-text-4-medium">
