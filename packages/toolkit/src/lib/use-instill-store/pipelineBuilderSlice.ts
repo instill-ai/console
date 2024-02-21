@@ -37,7 +37,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   connectorFormIsDirty: false,
   selectResourceDialogIsOpen: false,
   currentAdvancedConfigurationNodeID: null,
-  expandAllNodes: false,
+  collapseAllNodes: false,
   testModeEnabled: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
@@ -172,11 +172,11 @@ export const createPipelineBuilderSlice: StateCreator<
         selectResourceDialogIsOpen: fn(state.selectResourceDialogIsOpen),
       };
     }),
-  updateExpandAllNodes: (fn: (prev: boolean) => boolean) =>
+  updateCollapseAllNodes: (fn: (prev: boolean) => boolean) =>
     set((state) => {
       return {
         ...state,
-        expandAllNodes: fn(state.expandAllNodes),
+        collapseAllNodes: fn(state.collapseAllNodes),
       };
     }),
   updateTestModeEnabled: (fn: (prev: boolean) => boolean) =>
