@@ -16,7 +16,6 @@ import {
 } from "../../pipeline-builder";
 
 const selector = (store: InstillStore) => ({
-  dialogSharePipelineIsOpen: store.dialogSharePipelineIsOpen,
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
 });
 
@@ -29,8 +28,9 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
-  const { dialogSharePipelineIsOpen, updateDialogSharePipelineIsOpen } =
-    useInstillStore(useShallow(selector));
+  const { updateDialogSharePipelineIsOpen } = useInstillStore(
+    useShallow(selector)
+  );
 
   return (
     <React.Fragment>

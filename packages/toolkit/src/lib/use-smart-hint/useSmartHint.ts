@@ -97,8 +97,6 @@ export const useSmartHint = () => {
       }
     }
 
-    console.log("smartHints", smartHints);
-
     updateSmartHints(() => smartHints);
   }, [nodes, updateSmartHints]);
 };

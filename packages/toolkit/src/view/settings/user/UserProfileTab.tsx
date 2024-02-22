@@ -79,7 +79,7 @@ export const UserProfileTab = () => {
     if (!me.isSuccess) return;
 
     reset(me.data);
-  }, [me.data, me.isSuccess, me.isError, reset]);
+  }, [me.data, me.isSuccess, me.isError, reset, router]);
 
   const updateAuthenticatedUser = useUpdateAuthenticatedUser();
 

@@ -1,14 +1,10 @@
 import * as React from "react";
-import { Node, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 
-import { NodeData, OperatorNodeData } from "../../../type";
+import { OperatorNodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
-import {
-  generateNewComponentIndex,
-  transformConnectorDefinitionIDToComponentIDPrefix,
-  composeEdgesFromNodes,
-} from "../../../lib";
+import { composeEdgesFromNodes } from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
@@ -180,48 +176,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updatePipelineRecipeIsDirty(() => true);
   }
 
-  function handleCopyNode() {
-    if (!data.component.operator_definition) {
-      return;
-    }
-
-    const nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-      data.component.operator_definition.id
-    );
-
-    // Generate a new component index
-    const nodeIndex = generateNewComponentIndex(
-      nodes.map((e) => e.id),
-      nodePrefix
-    );
-
-    const nodeID = `${nodePrefix}_${nodeIndex}`;
-
-    const newNodes: Node<NodeData>[] = [
-      ...nodes,
-      {
-        id: nodeID,
-        type: "operatorNode",
-        sourcePosition: Position.Left,
-        targetPosition: Position.Right,
-        position: { x: 0, y: 0 },
-        data,
-      },
-    ];
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-    updatePipelineRecipeIsDirty(() => true);
-  }
-
-  function handleDeleteNode() {
-    const newNodes = nodes.filter((node) => node.id !== id);
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-    updatePipelineRecipeIsDirty(() => true);
-  }
-
   const { getValues, trigger } = form;
 
   useUpdaterOnNode({
@@ -269,9 +223,9 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           />
         </div>
         <ConnectorOperatorControlPanel
+          nodeID={id}
+          nodeData={data}
           componentType={data.component.type}
-          handleCopyNode={handleCopyNode}
-          handleDeleteNode={handleDeleteNode}
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen((prev) => !prev)}

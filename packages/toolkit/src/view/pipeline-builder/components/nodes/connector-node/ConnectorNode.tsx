@@ -178,49 +178,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     return edges.some((edge) => edge.source === id);
   }, [edges, id]);
 
-  function handleCopyNode() {
-    if (!data.component.connector_definition) {
-      return;
-    }
-
-    const nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-      data.component.connector_definition.id
-    );
-
-    // Generate a new component index
-    const nodeIndex = generateNewComponentIndex(
-      nodes.map((e) => e.id),
-      nodePrefix
-    );
-
-    const nodeID = `${nodePrefix}_${nodeIndex}`;
-
-    const newNodes: Node<NodeData>[] = [
-      ...nodes,
-      {
-        id: nodeID,
-        type: "connectorNode",
-        sourcePosition: Position.Left,
-        targetPosition: Position.Right,
-        position: { x: 0, y: 0 },
-        data,
-      },
-    ];
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-    updatePipelineRecipeIsDirty(() => true);
-  }
-
-  function handleDeleteNode() {
-    const newNodes = nodes.filter((node) => node.id !== id);
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateEdges(() => newEdges);
-    updatePipelineRecipeIsDirty(() => true);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-  }
-
   const checkIsHidden = useCheckIsHidden("onNode");
 
   const { fields, form, ValidatorSchema, selectedConditionMap } =
@@ -309,9 +266,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           />
         </div>
         <ConnectorOperatorControlPanel
+          nodeID={id}
+          nodeData={data}
           componentType={data.component.type}
-          handleCopyNode={handleCopyNode}
-          handleDeleteNode={handleDeleteNode}
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen((prev) => !prev)}
