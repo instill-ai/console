@@ -35,7 +35,7 @@ export type PipelineBuilderState = {
   currentAdvancedConfigurationNodeID: Nullable<string>;
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
-  expandAllNodes: boolean;
+  collapseAllNodes: boolean;
   testModeEnabled: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
@@ -72,7 +72,7 @@ export type PipelineBuilderAction = {
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
-  updateExpandAllNodes: (fn: (prev: boolean) => boolean) => void;
+  updateCollapseAllNodes: (fn: (prev: boolean) => boolean) => void;
   updateTestModeEnabled: (fn: (prev: boolean) => boolean) => void;
   updateTestModeTriggerResponse: (
     fn: (

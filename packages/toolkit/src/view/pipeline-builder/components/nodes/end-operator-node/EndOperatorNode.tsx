@@ -38,6 +38,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   isTriggeringPipeline: store.isTriggeringPipeline,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export type EndOperatorNodeFieldItem = {
@@ -65,7 +66,12 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     currentVersion,
     isTriggeringPipeline,
     pipelineIsReadOnly,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   const form = useForm<z.infer<typeof EndOperatorFreeFormSchema>>({
     resolver: zodResolver(EndOperatorFreeFormSchema),

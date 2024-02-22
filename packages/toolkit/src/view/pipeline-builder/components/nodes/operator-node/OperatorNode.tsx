@@ -46,6 +46,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -59,14 +60,18 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
-
   const nodeIDEditorForm = useNodeIDEditorForm(id);
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   const { reset } = nodeIDEditorForm;
 

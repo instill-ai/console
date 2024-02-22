@@ -53,6 +53,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -70,6 +71,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     pipelineIsReadOnly,
     accessToken,
     enabledQuery,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -85,6 +87,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     enabled: enabledQuery,
     accessToken,
   });
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   const { reset } = nodeIDEditorForm;
 

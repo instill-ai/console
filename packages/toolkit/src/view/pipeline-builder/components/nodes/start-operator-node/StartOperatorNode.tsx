@@ -55,6 +55,7 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
@@ -76,6 +77,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     updatePipelineRecipeIsDirty,
     updateIsTriggeringPipeline,
     pipelineIsReadOnly,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -91,6 +93,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     mode: "onChange",
     reValidateMode: "onChange",
   });
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   // When edit field, the input key is already the auto generated key
   const onEditFreeFormField = (key: string) => {
