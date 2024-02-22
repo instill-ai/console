@@ -15,7 +15,7 @@ export const ComponentOutputReferenceHints = ({
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
 }) => {
-  const [mode, setMode] =
+  const [mode] =
     React.useState<Required<PickComponentsFromReferenceHintsOptions["mode"]>>(
       "groupByFormat"
     );

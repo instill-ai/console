@@ -56,12 +56,16 @@ export const ViewPipeline = () => {
   }, [pipeline.isError, router]);
 
   const pipelineRelease = React.useMemo(() => {
-    if (pipeline.data?.releases && currentVersion) {
-      return pipeline.data.releases.find(
-        (release) => release.id === currentVersion
-      );
+    if (
+      !pipeline.isSuccess ||
+      !currentVersion ||
+      pipeline.data.releases.length === 0
+    ) {
+      return null;
     }
-    return pipeline.data;
+    return pipeline.data.releases.find(
+      (release) => release.id === currentVersion
+    );
   }, [pipeline.isSuccess, pipeline.data, currentVersion]);
 
   return (
@@ -76,15 +80,9 @@ export const ViewPipeline = () => {
         <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
           <ReadOnlyPipelineBuilder
             pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
-            recipe={
-              pipeline.isSuccess && pipelineRelease
-                ? pipelineRelease.recipe
-                : null
-            }
+            recipe={pipelineRelease?.recipe || pipeline.data?.recipe || null}
             metadata={
-              pipeline.isSuccess && pipelineRelease
-                ? pipelineRelease.metadata
-                : null
+              pipelineRelease?.metadata || pipeline.data?.metadata || null
             }
             className="h-[378px] w-full"
           />

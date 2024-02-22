@@ -131,8 +131,6 @@ export function pickSmartHintsFromAcceptFormats(
         continue;
       }
 
-      console.log(instillAcceptFormats, hint.instillFormat, "here");
-
       // Deal with direct match
       if (instillAcceptFormats.includes(hint.instillFormat)) {
         pickHints.push(hint);

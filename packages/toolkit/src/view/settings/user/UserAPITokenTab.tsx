@@ -27,7 +27,7 @@ export const UserAPITokenTab = () => {
     if (apiTokens.isError) {
       router.push("/404");
     }
-  }, [apiTokens.error, router]);
+  }, [apiTokens.isError, router]);
 
   return (
     <Setting.TabRoot>
