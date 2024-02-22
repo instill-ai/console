@@ -84,7 +84,10 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   ) => {
     if (
       data.component.configuration.metadata &&
-      Object.keys(data.component.configuration.metadata).includes(formData.key)
+      Object.keys(data.component.configuration.metadata).includes(
+        formData.key
+      ) &&
+      !enableEdit
     ) {
       form.setError("key", {
         type: "manual",
