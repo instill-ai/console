@@ -4,6 +4,8 @@ import { ModelState } from "./model";
 import { OpenAPIV3 } from "openapi-types";
 import { PipelineReleaseState } from "./pipeline";
 import { InstillJSONSchema } from "../use-instill-form";
+import { User } from "./mgmt";
+import { Organization } from "./organization";
 
 export type ErrorDetails = {
   "@type": string;
@@ -55,3 +57,13 @@ export type StripeSubscriptionStatus =
   | "STATUS_CANCELED"
   | "STATUS_UNPAID"
   | "STATUS_PAUSED";
+
+export type UserOwner = {
+  user: User;
+};
+
+export type OrganizationOwner = {
+  organization: Organization;
+};
+
+export type Owner = UserOwner | OrganizationOwner;
