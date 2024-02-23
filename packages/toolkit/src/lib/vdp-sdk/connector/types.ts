@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { Spec } from "../types";
+import { Owner, Spec } from "../types";
 
 export type ConnectorState =
   | "STATE_CONNECTED"
@@ -36,6 +36,7 @@ export type Connector = {
   create_time: string;
   update_time: string;
   visibility: ConnectorVisibility;
+  owner: Owner;
 };
 
 export type ConnectorWithDefinition = Omit<

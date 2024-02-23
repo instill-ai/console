@@ -64,7 +64,7 @@ export const Head = ({
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
         <EntityAvatar
-          src={pipeline.owner?.profile_avatar ?? null}
+          src={pipeline.owner?.profile?.avatar ?? null}
           className="h-8 w-8"
           entityName={ownerID}
           fallbackImg={

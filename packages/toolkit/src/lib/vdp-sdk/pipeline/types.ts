@@ -2,9 +2,11 @@
 
 import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, Connector } from "../connector";
-import { Permission, Spec, Visibility } from "../types";
+import { Owner, Permission, Spec, Visibility } from "../types";
 import { GeneralRecord, Nullable } from "../../type";
 import { JSONSchema7TypeName } from "json-schema";
+import { User } from "../mgmt";
+import { Organization } from "../organization";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -59,7 +61,7 @@ export type Pipeline = {
   update_time: string;
   recipe: PipelineRecipe;
   openapi_schema: OpenAPIV3.Document;
-  owner: Record<string, any>;
+  owner: Owner;
   owner_name: string;
   releases: PipelineRelease[];
   sharing: PipelineSharing;
