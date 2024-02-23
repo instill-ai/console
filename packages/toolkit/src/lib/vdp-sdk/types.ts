@@ -58,4 +58,12 @@ export type StripeSubscriptionStatus =
   | "STATUS_UNPAID"
   | "STATUS_PAUSED";
 
-export type Owner = User | Organization;
+export type UserOwner = {
+  user: User;
+};
+
+export type OrganizationOwner = {
+  organization: Organization;
+};
+
+export type Owner = UserOwner | OrganizationOwner;

@@ -1,7 +1,10 @@
+import * as React from "react";
 import { useRouter } from "next/router";
 import {
   InstillStore,
+  OrganizationOwner,
   Pipeline,
+  UserOwner,
   toastInstillError,
   useDeleteUserPipeline,
   useInstillStore,
@@ -60,11 +63,26 @@ export const Head = ({
     }
   }
 
+  const pipelineAvatar = React.useMemo(() => {
+    if (pipeline.owner_name.split("/")[0] === "users") {
+      return (pipeline.owner as UserOwner).user.profile?.avatar ?? null;
+    }
+
+    if (pipeline.owner_name.split("/")[0] === "organizations") {
+      return (
+        (pipeline.owner as OrganizationOwner).organization.profile?.avatar ??
+        null
+      );
+    }
+
+    return null;
+  }, [pipeline]);
+
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
         <EntityAvatar
-          src={pipeline.owner?.profile?.avatar ?? null}
+          src={pipelineAvatar}
           className="h-8 w-8"
           entityName={ownerID}
           fallbackImg={

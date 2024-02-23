@@ -3,7 +3,9 @@ import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  OrganizationOwner,
   UpdateUserPipelinePayload,
+  UserOwner,
   env,
   getInstillApiErrorMessage,
   sendAmplitudeData,
@@ -163,6 +165,25 @@ export const TabShare = () => {
     amplitudeIsInit,
   ]);
 
+  const pipelineAvatar = React.useMemo(() => {
+    if (!pipeline.isSuccess) {
+      return null;
+    }
+
+    if (pipeline.data.owner_name.split("/")[0] === "users") {
+      return (pipeline.data.owner as UserOwner).user.profile?.avatar ?? null;
+    }
+
+    if (pipeline.data.owner_name.split("/")[0] === "organizations") {
+      return (
+        (pipeline.data.owner as OrganizationOwner).organization.profile
+          ?.avatar ?? null
+      );
+    }
+
+    return null;
+  }, [pipeline.isSuccess, pipeline.data]);
+
   return (
     <div className="flex h-full w-full flex-col px-6 py-3">
       <div className="flex flex-row">
@@ -184,7 +205,7 @@ export const TabShare = () => {
       <div className="flex flex-row">
         <div className="mr-auto flex flex-row gap-x-2">
           <EntityAvatar
-            src={pipeline.data?.owner?.profile?.avatar ?? null}
+            src={pipelineAvatar}
             entityName={pipeline.data?.owner_name ?? ""}
             className="h-[30px] w-[30px]"
             fallbackImg={
