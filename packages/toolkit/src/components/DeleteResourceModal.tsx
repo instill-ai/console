@@ -57,10 +57,10 @@ export const DeleteResourceModal = ({
         title = "Delete This AI";
         description =
           "This action cannot be undone. This will permanently delete the AI.";
-      } else if (resource.type === "CONNECTOR_TYPE_BLOCKCHAIN") {
-        title = "Delete This Blockchain";
+      } else if (resource.type === "CONNECTOR_TYPE_APPLICATION") {
+        title = "Delete This Application";
         description =
-          "This action cannot be undone. This will permanently delete the blockchain.";
+          "This action cannot be undone. This will permanently delete the application.";
       } else {
         title = "Delete This Connector";
         description =
@@ -79,7 +79,7 @@ export const DeleteResourceModal = ({
       description =
         "Something went wrong when try to activate the flow of deleting resource, please contact our support.";
       console.error(
-        "You have passed resource not included in Pipeline, Model, Connector, BlockChain and AI"
+        "You have passed resource not included in Pipeline, Model, Connector, Application and AI"
       );
     }
 

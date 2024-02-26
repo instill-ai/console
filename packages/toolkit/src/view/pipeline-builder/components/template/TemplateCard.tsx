@@ -26,7 +26,7 @@ export const TemplateCard = (props: TemplateCardProps) => {
           template.recipe.components.filter(
             (component) =>
               component.type === "COMPONENT_TYPE_CONNECTOR_AI" ||
-              component.type === "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN" ||
+              component.type === "COMPONENT_TYPE_CONNECTOR_APPLICATION" ||
               component.type === "COMPONENT_TYPE_CONNECTOR_DATA"
           ) as PipelineConnectorComponent[]
         ).map((component, idx) => (

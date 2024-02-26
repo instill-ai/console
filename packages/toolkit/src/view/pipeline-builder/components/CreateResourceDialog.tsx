@@ -12,7 +12,7 @@ import { AirbyteDataResourceForm, DataResourceAutoForm } from "../../data";
 
 import { ImageWithFallback } from "../../../components";
 import { AIResourceAutoForm } from "../../ai";
-import { BlockchainResourceAutoForm } from "../../blockchain";
+import { ApplicationResourceAutoForm } from "../../application";
 import { SelectConnectorDialogItem } from "./SelectConnectorDialogItem";
 
 export type CreateResourceDialogProps = {
@@ -150,9 +150,9 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                   }}
                 />
               ) : null}
-              {connectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
+              {connectorType === "CONNECTOR_TYPE_APPLICATION" &&
               connectorDefinition ? (
-                <BlockchainResourceAutoForm
+                <ApplicationResourceAutoForm
                   definition={connectorDefinition}
                   resource={null}
                   accessToken={accessToken}

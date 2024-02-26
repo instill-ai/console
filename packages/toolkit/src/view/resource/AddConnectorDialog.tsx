@@ -10,7 +10,7 @@ import {
 } from "../../lib";
 import { ImageWithFallback } from "../../components";
 import { AIResourceAutoForm } from "../ai";
-import { BlockchainResourceAutoForm } from "../blockchain";
+import { ApplicationResourceAutoForm } from "../application";
 
 export type AddConnectorDialogProps = {
   open: boolean;
@@ -35,8 +35,8 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
     accessToken,
   });
 
-  const blockchainDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+  const applicationDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_APPLICATION",
     enabled: enableQuery,
     accessToken,
   });
@@ -115,16 +115,16 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                     : null}
                 </div>
                 <div className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-                  Blockchain
+                  Application
                 </div>
                 <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-                  {blockchainDefinitions.isSuccess
-                    ? blockchainDefinitions.data.map((definition) => (
+                  {applicationDefinitions.isSuccess
+                    ? applicationDefinitions.data.map((definition) => (
                         <AddConnectorDialogItem
                           key={definition.id}
                           onClick={() => {
                             setNewConnectorDefinition(definition);
-                            setNewConnectorType("CONNECTOR_TYPE_BLOCKCHAIN");
+                            setNewConnectorType("CONNECTOR_TYPE_APPLICATION");
                           }}
                         >
                           <ImageWithFallback
@@ -201,9 +201,9 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                   }}
                 />
               ) : null}
-              {newConnectorType === "CONNECTOR_TYPE_BLOCKCHAIN" &&
+              {newConnectorType === "CONNECTOR_TYPE_APPLICATION" &&
               newConnectorDefinition ? (
-                <BlockchainResourceAutoForm
+                <ApplicationResourceAutoForm
                   definition={newConnectorDefinition}
                   resource={null}
                   onSubmit={props.onSubmit}

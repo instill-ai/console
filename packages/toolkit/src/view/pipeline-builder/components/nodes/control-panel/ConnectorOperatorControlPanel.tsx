@@ -72,8 +72,8 @@ export const ConnectorOperatorControlPanel = ({
     case "COMPONENT_TYPE_CONNECTOR_DATA":
       componentTypeName = "Data Component";
       break;
-    case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
-      componentTypeName = "Blockchain Component";
+    case "COMPONENT_TYPE_CONNECTOR_APPLICATION":
+      componentTypeName = "Application Component";
       break;
     case "COMPONENT_TYPE_OPERATOR":
       componentTypeName = "Operator Component";

@@ -1,6 +1,6 @@
 export * from "./ai";
 export * from "./airbyte";
-export * from "./blockchain";
+export * from "./application";
 export * from "./dashboard";
 export * from "./data";
 export * from "./hub";

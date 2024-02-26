@@ -439,9 +439,9 @@ export const FlowControl = (props: FlowControlProps) => {
           componentType = "COMPONENT_TYPE_CONNECTOR_AI";
           break;
         }
-        case "CONNECTOR_TYPE_BLOCKCHAIN": {
+        case "CONNECTOR_TYPE_APPLICATION": {
           configuration = {};
-          componentType = "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN";
+          componentType = "COMPONENT_TYPE_CONNECTOR_APPLICATION";
           break;
         }
         case "CONNECTOR_TYPE_DATA": {

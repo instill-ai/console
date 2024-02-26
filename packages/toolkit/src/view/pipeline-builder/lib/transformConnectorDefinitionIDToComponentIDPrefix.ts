@@ -7,7 +7,7 @@ export function transformConnectorDefinitionIDToComponentIDPrefix(id: string) {
         item === "data" ||
         item === "destination" ||
         item === "airbyte" ||
-        item === "blockchain" ||
+        item === "application" ||
         item === "op"
       ) {
         return false;

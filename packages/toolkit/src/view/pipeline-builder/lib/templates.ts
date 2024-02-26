@@ -228,7 +228,7 @@ export const templates: PipelineTemplate[] = [
   {
     id: "Turn your AI art into Web3 asset",
     description:
-      "Want to trace the journey of your AI art and how it comes to life? Transform it into a Web3 masterpiece with Numbers Protocol's blockchain tech. We've put together a cool example of a Web3 asset using this template: https://nftsearch.site/asset-profile?cid=bafybeidxjcsorh26sjx6qqfxlcw535vrnafq4dz4wvsg4edry2g3iwktse",
+      "Want to trace the journey of your AI art and how it comes to life? Transform it into a Web3 masterpiece with Numbers Protocol's application tech. We've put together a cool example of a Web3 asset using this template: https://nftsearch.site/asset-profile?cid=bafybeidxjcsorh26sjx6qqfxlcw535vrnafq4dz4wvsg4edry2g3iwktse",
     category: "AI-generated art",
     author: "InstillAI",
     recipe: {
@@ -265,7 +265,7 @@ export const templates: PipelineTemplate[] = [
           resource: null,
           configuration: {
             input: {
-              asset_urls: "{blockchain_1.output.asset_urls}",
+              asset_urls: "{application_1.output.asset_urls}",
               images: "{ai_1.output.images}",
             },
             metadata: {
@@ -301,7 +301,7 @@ export const templates: PipelineTemplate[] = [
           connector_definition: null,
         },
         {
-          id: "blockchain_1",
+          id: "application_1",
           resource_name: null,
           resource: null,
           configuration: {
@@ -323,7 +323,7 @@ export const templates: PipelineTemplate[] = [
             },
             task: "TASK_COMMIT",
           },
-          type: "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN",
+          type: "COMPONENT_TYPE_CONNECTOR_APPLICATION",
           definition_name: "connector-definitions/numbers",
           connector_definition: null,
         },

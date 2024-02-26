@@ -14,8 +14,8 @@ export const TaskNotSelectedWarning = ({
     case "COMPONENT_TYPE_CONNECTOR_DATA":
       label = "Data";
       break;
-    case "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN":
-      label = "Blockchain";
+    case "COMPONENT_TYPE_CONNECTOR_APPLICATION":
+      label = "Application";
       break;
   }
 
