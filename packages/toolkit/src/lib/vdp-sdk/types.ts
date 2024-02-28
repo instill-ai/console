@@ -45,6 +45,7 @@ export type StripeSubscriptionDetail = {
   canceled_at?: number;
   trial_end?: number;
   status: StripeSubscriptionStatus;
+  description: string;
 };
 
 export type StripeSubscriptionStatus =
