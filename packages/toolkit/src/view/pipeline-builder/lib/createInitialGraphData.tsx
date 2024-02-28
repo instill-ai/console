@@ -121,7 +121,7 @@ export function createInitialGraphData(
       continue;
     }
 
-    if (component.type === "COMPONENT_TYPE_CONNECTOR_BLOCKCHAIN") {
+    if (component.type === "COMPONENT_TYPE_CONNECTOR_APPLICATION") {
       nodes.push({
         id: component.id,
         type: "connectorNode",

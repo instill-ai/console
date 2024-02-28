@@ -19,8 +19,8 @@ export const NewConnectorSection = ({
     accessToken,
   });
 
-  const blockchainDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_BLOCKCHAIN",
+  const applicationDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_APPLICATION",
     enabled: enableQuery,
     accessToken,
   });
@@ -59,10 +59,10 @@ export const NewConnectorSection = ({
             ))
           : null}
       </DialogSection.Grid>
-      <DialogSection.SubTitle>Blockchain</DialogSection.SubTitle>
+      <DialogSection.SubTitle>Application</DialogSection.SubTitle>
       <DialogSection.Grid>
-        {blockchainDefinitions.isSuccess
-          ? blockchainDefinitions.data.map((definition) => (
+        {applicationDefinitions.isSuccess
+          ? applicationDefinitions.data.map((definition) => (
               <DialogSection.Item
                 key={definition.id}
                 onClick={() => {

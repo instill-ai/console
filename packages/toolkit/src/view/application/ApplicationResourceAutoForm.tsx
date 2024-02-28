@@ -14,7 +14,7 @@ import { recursiveHelpers } from "../pipeline-builder";
 import { toastInstillError } from "../../lib/toastInstillError";
 import { ResourceResourceForm, ResourceResourceFormData } from "../resource";
 
-export type BlockchainResourceAutoFormProps = {
+export type ApplicationResourceAutoFormProps = {
   resource: Nullable<ConnectorWithDefinition>;
   definition: ConnectorDefinition;
   accessToken: Nullable<string>;
@@ -23,8 +23,8 @@ export type BlockchainResourceAutoFormProps = {
   onBack?: () => void;
 };
 
-export const BlockchainResourceAutoForm = (
-  props: BlockchainResourceAutoFormProps
+export const ApplicationResourceAutoForm = (
+  props: ApplicationResourceAutoFormProps
 ) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { definition, resource, accessToken, onSubmit } = props;
@@ -66,13 +66,13 @@ export const BlockchainResourceAutoForm = (
         }
 
         toast({
-          title: "Successfully create blockchain connector",
+          title: "Successfully create application connector",
           variant: "alert-success",
           size: "small",
         });
       } catch (error) {
         toastInstillError({
-          title: "Something went wrong when create the blockchain connector",
+          title: "Something went wrong when create the application connector",
           toast,
           error,
         });
@@ -104,13 +104,13 @@ export const BlockchainResourceAutoForm = (
       }
 
       toast({
-        title: "Successfully update blockchain connector",
+        title: "Successfully update application connector",
         variant: "alert-success",
         size: "small",
       });
     } catch (error) {
       toastInstillError({
-        title: "Something went wrong when update the blockchain connector",
+        title: "Something went wrong when update the application connector",
         toast,
         error,
       });

@@ -2,7 +2,7 @@ import * as React from "react";
 import { PageTitle } from "../../components";
 import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
-import { BlockchainResourceAutoForm } from "../blockchain";
+import { ApplicationResourceAutoForm } from "../application";
 import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
 
 export type ResourceSettingPageMainViewProps = GeneralPageProp;
@@ -48,8 +48,8 @@ export const ResourceSettingPageMainView = (
               accessToken={accessToken}
             />
           ) : null}
-          {userConnector.data.type === "CONNECTOR_TYPE_BLOCKCHAIN" ? (
-            <BlockchainResourceAutoForm
+          {userConnector.data.type === "CONNECTOR_TYPE_APPLICATION" ? (
+            <ApplicationResourceAutoForm
               definition={userConnector.data.connector_definition}
               resource={userConnector.data}
               accessToken={accessToken}
