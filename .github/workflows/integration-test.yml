@@ -181,14 +181,12 @@ jobs:
       - name: Launch Instill Model (latest)
         run: |
           ITMODE_ENABLED=true \
-          TRITON_CONDA_ENV_PLATFORM=cpu \
-          RAY_PLATFORM=cpu \
+          RAY_LATEST_TAG=latest \
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
           ITMODE_ENABLED=true \
-          TRITON_CONDA_ENV_PLATFORM=cpu \
-          RAY_PLATFORM=cpu \
+          RAY_LATEST_TAG=latest \
           COMPOSE_PROFILES=all \
           EDITION=local-ce:test \
           docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
