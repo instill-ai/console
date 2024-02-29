@@ -44,7 +44,7 @@ export const useSmartHint = () => {
             {
               path: `${node.id}.output`,
               key: "output",
-              instillFormat: "null",
+              instillFormat: "semi-structured/json",
               type: "object",
               properties: [],
             },
@@ -86,7 +86,7 @@ export const useSmartHint = () => {
             {
               path: `${node.id}.output`,
               key: "output",
-              instillFormat: "null",
+              instillFormat: "semi-structured/json",
               type: "object",
               properties: [],
             },
