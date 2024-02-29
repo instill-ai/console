@@ -47,10 +47,10 @@ export const CustomEdge = ({
       id={id}
       style={style}
       className={cn(
-        "fill-none stroke-[4px]",
+        "fill-none",
         isSelected
-          ? "stroke-semantic-accent-default"
-          : "stroke-semantic-bg-line"
+          ? "stroke-semantic-accent-default stroke-[3px]"
+          : "stroke-semantic-bg-line stroke-[2px]"
       )}
       d={edgePath}
       markerEnd={markerEnd}

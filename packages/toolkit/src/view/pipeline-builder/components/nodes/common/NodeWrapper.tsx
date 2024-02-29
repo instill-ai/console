@@ -4,9 +4,11 @@ import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { NodeBottomBarProvider } from "./node-bottom-bar";
+import { Edge } from "reactflow";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
@@ -31,6 +33,7 @@ export const NodeWrapper = ({
 }) => {
   const {
     updateNodes,
+    updateEdges,
     updatePipelineRecipeIsDirty,
     selectedConnectorNodeId,
     updateSelectedConnectorNodeId,
@@ -43,6 +46,22 @@ export const NodeWrapper = ({
       className="relative"
       onClick={() => {
         updateSelectedConnectorNodeId(() => id);
+
+        // We reorder the edges so that the selected edge is on top of the unselected edges
+        updateEdges((edges) => {
+          const selectedEdges: Edge[] = [];
+          const unSelectedEdges: Edge[] = [];
+
+          edges.forEach((edge) => {
+            if (edge.source === id || edge.target === id) {
+              selectedEdges.push(edge);
+            } else {
+              unSelectedEdges.push(edge);
+            }
+          });
+
+          return [...unSelectedEdges, ...selectedEdges];
+        });
       }}
     >
       <div
