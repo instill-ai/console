@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.40.0-beta](https://github.com/instill-ai/console/compare/v0.39.0-beta...v0.40.0-beta) (2024-02-29)
+
+
+### Features
+
+* prepare for console 0.40.0-beta release ([#993](https://github.com/instill-ai/console/issues/993)) ([92a3e97](https://github.com/instill-ai/console/commit/92a3e97620ec5ba4ff62fba6281642df4b254a32))
+
 ## [0.39.0-beta](https://github.com/instill-ai/console/compare/v0.38.0-beta...v0.39.0-beta) (2024-02-15)
 
 
