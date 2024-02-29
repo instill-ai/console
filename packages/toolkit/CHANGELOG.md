@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.82.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.3...@instill-ai/toolkit-v0.82.0) (2024-02-29)
+
+
+### Features
+
+* add subscription detail field into StripeSubscriptionDetail type ([#988](https://github.com/instill-ai/console/issues/988)) ([c215a14](https://github.com/instill-ai/console/commit/c215a14ccbc25866356f235301f052db07ba9f88))
+* **pipeline-builder:** add collapseAllNodes pipeline-builder flag ([#983](https://github.com/instill-ai/console/issues/983)) ([e67a1c4](https://github.com/instill-ai/console/commit/e67a1c43fc2360eb583cb169602cf586862ff5d0))
+* **pipeline-builder:** close advanced configuration right panel after delete current node ([#984](https://github.com/instill-ai/console/issues/984)) ([e03c298](https://github.com/instill-ai/console/commit/e03c2984ec4a587bda310df96dcb21ffbeaa7eea))
+* **pipeline-builder:** support the optimized connection line style ([#985](https://github.com/instill-ai/console/issues/985)) ([ba079f0](https://github.com/instill-ai/console/commit/ba079f0c7522b1d6906d6253ba6e969fa9360763))
+
+
+### Bug Fixes
+
+* error message fix ([#977](https://github.com/instill-ai/console/issues/977)) ([2bc5ad9](https://github.com/instill-ai/console/commit/2bc5ad9e6ff655513c98d82da52d1d7cec91c9f8))
+* fix can not keydown enter on the TextArea field in pipeline builder ([#982](https://github.com/instill-ai/console/issues/982)) ([53a5825](https://github.com/instill-ai/console/commit/53a58256562b98d6f55bbb786227482a533b32e2))
+* fix smart hint didn't correctly filter hints ([#980](https://github.com/instill-ai/console/issues/980)) ([208d930](https://github.com/instill-ai/console/commit/208d93073397f06f9e2176a4e560416efd7c105e))
+* fix user can not wheel scroll up and down on TextArea ([#981](https://github.com/instill-ai/console/issues/981)) ([5a0557c](https://github.com/instill-ai/console/commit/5a0557cb3791386e08c2d7a236af099658b6428b))
+* fix user profile card bio not left-align ([#978](https://github.com/instill-ai/console/issues/978)) ([89599ab](https://github.com/instill-ai/console/commit/89599ab50a46858e4be86842526b9011bc032f93))
+* **pipeline-builder:** fix component output hint's type is not correct ([#990](https://github.com/instill-ai/console/issues/990)) ([d15bfba](https://github.com/instill-ai/console/commit/d15bfba87c40ebe05bef3c2e6c691b8cd22b2c02))
+* **pipeline-builder:** fix selected edges is covered on top of node ([#991](https://github.com/instill-ai/console/issues/991)) ([26c632f](https://github.com/instill-ai/console/commit/26c632fb641376f4a38bf06860d54f79d055f4af))
+
+
+### Miscellaneous
+
+* adapt new pipeline.owner and connector.owner data format ([#986](https://github.com/instill-ai/console/issues/986)) ([1073c1e](https://github.com/instill-ai/console/commit/1073c1e116e5374a3ac94164698ae358ec2e8ddf))
+* rename blockchain connector to Application connector ([#987](https://github.com/instill-ai/console/issues/987)) ([f182d81](https://github.com/instill-ai/console/commit/f182d818630b63acae1874124c3721788b2c851e))
+
 ## [0.81.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.2...@instill-ai/toolkit-v0.81.3) (2024-02-17)
 
 
