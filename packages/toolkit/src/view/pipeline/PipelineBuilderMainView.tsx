@@ -1,13 +1,12 @@
 import cn from "clsx";
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
-import { useToast } from "@instill-ai/design-system";
+import { Logo, useToast } from "@instill-ai/design-system";
 import { ReactFlowInstance } from "reactflow";
 import { isAxiosError } from "axios";
 
 import {
   CreateUserPipelinePayload,
-  GeneralPageProp,
   InstillStore,
   Nullable,
   UpdateUserPipelinePayload,
@@ -26,12 +25,14 @@ import {
 import {
   BottomBar,
   Flow,
+  PipelineNameForm,
   RightPanel,
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
 } from "../pipeline-builder";
-import { WarnUnsavedChangesDialog } from "../../components";
+import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
 import { getPipelineInputOutputSchema } from "../pipeline-builder/lib/getPipelineInputOutputSchema";
+import { useRouter } from "next/router";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -41,15 +42,13 @@ const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
-export type PipelineBuilderMainViewProps = GeneralPageProp;
-
-export const PipelineBuilderMainView = (
-  props: PipelineBuilderMainViewProps
-) => {
+export const PipelineBuilderMainView = () => {
+  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enableQuery, router } = props;
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
@@ -62,6 +61,8 @@ export const PipelineBuilderMainView = (
     currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
     updatePipelineRecipeIsDirty,
+    accessToken,
+    enabledQuery,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -85,7 +86,7 @@ export const PipelineBuilderMainView = (
   const { pipelineName, entityName } = useEntity();
 
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !!pipelineName && !pipelineIsNew,
+    enabled: enabledQuery && !!pipelineName && !pipelineIsNew,
     pipelineName,
     accessToken,
     retry: false,
@@ -122,148 +123,155 @@ export const PipelineBuilderMainView = (
    * -----------------------------------------------------------------------*/
 
   return (
-    <div className="flex w-full flex-col">
-      {/* 
-        Pipeline builder main canvas
-      */}
-
-      <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
-        <Flow
-          ref={reactFlowWrapper}
-          reactFlowInstance={reactFlowInstance}
-          setReactFlowInstance={setReactFlowInstance}
-          accessToken={accessToken}
-          enableQuery={enableQuery}
-          isLoading={graphIsInitialized ? false : true}
-          appEnv="APP_ENV_CLOUD"
-          isError={!pipelineIsNew && pipeline.isError}
-        />
-        <div
-          className={cn(
-            "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
-            "h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
-            "top-[calc(var(--topbar-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
-            currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
-          )}
-        >
-          <RightPanel />
+    <PageBase>
+      <Topbar logo={<Logo variant="colourLogomark" width={38} />}>
+        <div className="flex px-6 py-2">
+          <PipelineNameForm />
         </div>
-      </div>
+      </Topbar>
+      <PageBase.Container>
+        <div className="flex w-full flex-col">
+          {/* 
+            Pipeline builder main canvas
+          */}
 
-      {/* 
-        Pipeline builder bottom bar
-      */}
+          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+            <Flow
+              ref={reactFlowWrapper}
+              reactFlowInstance={reactFlowInstance}
+              setReactFlowInstance={setReactFlowInstance}
+              isLoading={graphIsInitialized ? false : true}
+              appEnv="APP_ENV_CLOUD"
+              isError={!pipelineIsNew && pipeline.isError}
+            />
+            <div
+              className={cn(
+                "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
+                "h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
+                "top-[calc(var(--topbar-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
+                currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
+              )}
+            >
+              <RightPanel />
+            </div>
+          </div>
 
-      <div className="h-[var(--pipeline-builder-bottom-bar-height)]">
-        <BottomBar enableQuery={enableQuery} accessToken={accessToken} />
-      </div>
+          {/* 
+            Pipeline builder bottom bar
+          */}
 
-      {/* 
-        Warn unsaved changes modal
-      */}
+          <div className="h-[var(--pipeline-builder-bottom-bar-height)]">
+            <BottomBar />
+          </div>
 
-      <WarnUnsavedChangesDialog
-        open={warnUnsaveChangesModalIsOpen}
-        setOpen={setWarnUnsaveChangesModalIsOpen}
-        onCancel={() => {
-          setWarnUnsaveChangesModalIsOpen(false);
-          updatePipelineRecipeIsDirty(() => false);
-        }}
-        onDiscard={() => {
-          updatePipelineRecipeIsDirty(() => false);
-          confirmNavigation();
-        }}
-        onSave={async () => {
-          if (!pipelineId || !accessToken || !entityName || !pipelineName) {
-            return;
-          }
+          {/* 
+            Warn unsaved changes modal
+          */}
 
-          if (!pipelineIsNew) {
-            const payload: UpdateUserPipelinePayload = {
-              name: pipelineName,
-              recipe: constructPipelineRecipe(nodes),
-              metadata: composePipelineMetadataFromNodes(nodes),
-            };
-
-            try {
-              await updatePipeline.mutateAsync({
-                payload,
-                accessToken,
-              });
-
-              if (amplitudeIsInit) {
-                sendAmplitudeData("create_pipeline");
+          <WarnUnsavedChangesDialog
+            open={warnUnsaveChangesModalIsOpen}
+            setOpen={setWarnUnsaveChangesModalIsOpen}
+            onCancel={() => {
+              setWarnUnsaveChangesModalIsOpen(false);
+              updatePipelineRecipeIsDirty(() => false);
+            }}
+            onDiscard={() => {
+              updatePipelineRecipeIsDirty(() => false);
+              confirmNavigation();
+            }}
+            onSave={async () => {
+              if (!pipelineId || !accessToken || !entityName || !pipelineName) {
+                return;
               }
 
-              toast({
-                title: "Pipeline is saved",
-                variant: "alert-success",
-                size: "small",
-              });
+              if (!pipelineIsNew) {
+                const payload: UpdateUserPipelinePayload = {
+                  name: pipelineName,
+                  recipe: constructPipelineRecipe(nodes),
+                  metadata: composePipelineMetadataFromNodes(nodes),
+                };
 
-              setTimeout(() => {
-                updatePipelineRecipeIsDirty(() => false);
-                confirmNavigation();
-              }, 1000);
-            } catch (error) {
-              if (isAxiosError(error)) {
-                toast({
-                  title: "Something went wrong when save the pipeline",
-                  description: getInstillApiErrorMessage(error),
-                  variant: "alert-error",
-                  size: "large",
-                });
-              } else {
-                toast({
-                  title: "Something went wrong when save the pipeline",
-                  variant: "alert-error",
-                  size: "large",
-                });
+                try {
+                  await updatePipeline.mutateAsync({
+                    payload,
+                    accessToken,
+                  });
+
+                  if (amplitudeIsInit) {
+                    sendAmplitudeData("create_pipeline");
+                  }
+
+                  toast({
+                    title: "Pipeline is saved",
+                    variant: "alert-success",
+                    size: "small",
+                  });
+
+                  setTimeout(() => {
+                    updatePipelineRecipeIsDirty(() => false);
+                    confirmNavigation();
+                  }, 1000);
+                } catch (error) {
+                  if (isAxiosError(error)) {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      description: getInstillApiErrorMessage(error),
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  } else {
+                    toast({
+                      title: "Something went wrong when save the pipeline",
+                      variant: "alert-error",
+                      size: "large",
+                    });
+                  }
+                }
+                return;
               }
-            }
-            return;
-          }
 
-          const payload: CreateUserPipelinePayload = {
-            id: pipelineId,
-            recipe: constructPipelineRecipe(nodes),
-            metadata: composePipelineMetadataFromNodes(nodes),
-          };
+              const payload: CreateUserPipelinePayload = {
+                id: pipelineId,
+                recipe: constructPipelineRecipe(nodes),
+                metadata: composePipelineMetadataFromNodes(nodes),
+              };
 
-          try {
-            await createPipeline.mutateAsync({
-              entityName,
-              payload,
-              accessToken,
-            });
+              try {
+                await createPipeline.mutateAsync({
+                  entityName,
+                  payload,
+                  accessToken,
+                });
 
-            if (amplitudeIsInit) {
-              sendAmplitudeData("update_pipeline_recipe");
-            }
+                if (amplitudeIsInit) {
+                  sendAmplitudeData("update_pipeline_recipe");
+                }
 
-            toast({
-              title: "Successfully saved the pipeline",
-              variant: "alert-success",
-              size: "small",
-            });
-          } catch (error) {
-            if (isAxiosError(error)) {
-              toast({
-                title: "Something went wrong when save the pipeline",
-                description: getInstillApiErrorMessage(error),
-                variant: "alert-error",
-                size: "large",
-              });
-            } else {
-              toast({
-                title: "Something went wrong when save the pipeline",
-                variant: "alert-error",
-                size: "large",
-              });
-            }
-          }
-        }}
-      />
-    </div>
+                toast({
+                  title: "Successfully saved the pipeline",
+                  variant: "alert-success",
+                  size: "small",
+                });
+              } catch (error) {
+                if (isAxiosError(error)) {
+                  toast({
+                    title: "Something went wrong when save the pipeline",
+                    description: getInstillApiErrorMessage(error),
+                    variant: "alert-error",
+                    size: "large",
+                  });
+                } else {
+                  toast({
+                    title: "Something went wrong when save the pipeline",
+                    variant: "alert-error",
+                    size: "large",
+                  });
+                }
+              }
+            }}
+          />
+        </div>
+      </PageBase.Container>
+    </PageBase>
   );
 };

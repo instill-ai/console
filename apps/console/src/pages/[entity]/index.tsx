@@ -1,9 +1,9 @@
 import * as React from "react";
-import { PageBase, UserProfileView } from "@instill-ai/toolkit";
+import { PageBase, UserProfileView, Topbar } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { NextPageWithLayout } from "../_app";
-import { ConsoleCorePageHead, Topbar } from "components";
+import { ConsoleCorePageHead } from "components";
 
 const ProfilePage: NextPageWithLayout = () => {
   return (

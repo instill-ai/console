@@ -22,17 +22,11 @@ const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   currentVersion: store.currentVersion,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
-export type BackToLatestVersionTopBarProps = {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-};
-
-export const BackToLatestVersionTopBar = (
-  props: BackToLatestVersionTopBarProps
-) => {
-  const { accessToken, enableQuery } = props;
+export const BackToLatestVersionTopBar = () => {
   const {
     pipelineName,
     pipelineIsNew,
@@ -40,16 +34,18 @@ export const BackToLatestVersionTopBar = (
     updateNodes,
     updateEdges,
     currentVersion,
+    accessToken,
+    enabledQuery,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
     pipelineName,
     accessToken,
-    enabledQuery: pipelineIsNew ? false : enableQuery,
+    enabledQuery: pipelineIsNew ? false : enabledQuery,
   });
 
   const pipeline = useUserPipeline({
-    enabled: enableQuery && !pipelineIsNew,
+    enabled: enabledQuery && !pipelineIsNew,
     pipelineName,
     accessToken,
     retry: false,

@@ -1,8 +1,12 @@
 import * as React from "react";
-import { PageBase, ResourceListPageMainView } from "@instill-ai/toolkit";
+import {
+  PageBase,
+  ResourceListPageMainView,
+  Topbar,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
-import { ConsoleCorePageHead, Topbar } from "../../../components";
+import { ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
 import { useAccessToken } from "../../../lib/useAccessToken";
 import { useRouter } from "next/router";

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ConsoleCorePageHead, Topbar } from "../../components";
-import { PageBase, BreadcrumbWithLink } from "@instill-ai/toolkit";
+import { ConsoleCorePageHead } from "../../components";
+import { PageBase, BreadcrumbWithLink, Topbar } from "@instill-ai/toolkit";
 
 import { Logo } from "@instill-ai/design-system";
 import { NextPageWithLayout } from "../_app";
