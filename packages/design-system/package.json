@@ -119,7 +119,7 @@
     "class-variance-authority": "^0.6.0",
     "cmdk": "^0.2.0",
     "react-hook-form": "^7.45.0",
-    "sanitize-html": "^2.11.0",
+    "sanitize-html": "^2.12.1",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.21.4"
   },
