@@ -60,13 +60,11 @@ export type FlowProps = {
   >;
   isLoading: boolean;
   isError: boolean;
-  appEnv: InstillAppEnv;
 };
 
 export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
   (props, ref) => {
-    const { reactFlowInstance, setReactFlowInstance, isLoading, appEnv } =
-      props;
+    const { reactFlowInstance, setReactFlowInstance, isLoading } = props;
 
     const {
       nodes,
@@ -214,7 +212,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               </div>
             </div>
           ) : null}
-          <FlowControl reactFlowInstance={reactFlowInstance} appEnv={appEnv} />
+          <FlowControl reactFlowInstance={reactFlowInstance} />
         </div>
       </div>
     );

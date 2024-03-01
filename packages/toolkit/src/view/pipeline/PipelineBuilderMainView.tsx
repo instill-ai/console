@@ -141,7 +141,6 @@ export const PipelineBuilderMainView = () => {
               reactFlowInstance={reactFlowInstance}
               setReactFlowInstance={setReactFlowInstance}
               isLoading={graphIsInitialized ? false : true}
-              appEnv="APP_ENV_CLOUD"
               isError={!pipelineIsNew && pipeline.isError}
             />
             <div
