@@ -5,12 +5,13 @@ import {
   Setting,
   UserSidebar,
   UserProfileTab,
+  Topbar,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { NextPageWithLayout } from "../_app";
 import { useAccessToken } from "lib/useAccessToken";
-import { ConsoleCorePageHead, Topbar } from "components";
+import { ConsoleCorePageHead } from "components";
 
 const ProfileSettingPage: NextPageWithLayout = () => {
   useAccessToken();

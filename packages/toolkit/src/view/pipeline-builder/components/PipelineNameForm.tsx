@@ -40,20 +40,15 @@ const selector = (store: InstillStore) => ({
   updatePipelineIsNew: store.updatePipelineIsNew,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  accessToken: store.accessToken,
 });
-
-export type PipelineNameFormProps = {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-};
 
 export const UpdatePipelineIdSchema = z.object({
   pipelineId: z.string().nullable().optional(),
 });
 
-export const PipelineNameForm = (props: PipelineNameFormProps) => {
+export const PipelineNameForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken } = props;
   const router = useRouter();
   const { entity, id } = router.query;
 
@@ -83,6 +78,7 @@ export const PipelineNameForm = (props: PipelineNameFormProps) => {
     updatePipelineIsNew,
     pipelineRecipeIsDirty,
     updatePipelineRecipeIsDirty,
+    accessToken,
   } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {

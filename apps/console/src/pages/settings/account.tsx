@@ -5,11 +5,12 @@ import {
   Setting,
   UserSidebar,
   UserAccountTab,
+  Topbar,
 } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { NextPageWithLayout } from "../_app";
-import { ConsoleCorePageHead, Topbar } from "components";
+import { ConsoleCorePageHead } from "components";
 import { useAccessToken } from "lib/useAccessToken";
 
 const AccountSettingPage: NextPageWithLayout = () => {

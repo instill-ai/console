@@ -27,6 +27,7 @@ export * from "./PageTitle";
 export * from "./ReferenceHintTag";
 export * from "./ReferenceHintDataTypeTag";
 export * from "./cells";
+export * from "./top-bar";
 export * from "./TableError";
 export * from "./UploadAvatarFieldWithCrop";
 export * from "./UserProfileCard";

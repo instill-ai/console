@@ -20,11 +20,6 @@ import {
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
 
-export type BottomBarProps = {
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-};
-
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
   pipelineIsNew: store.pipelineIsNew,
@@ -33,11 +28,11 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   updateCurrentVersion: store.updateCurrentVersion,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
-export const BottomBar = (props: BottomBarProps) => {
-  const { enableQuery, accessToken } = props;
-
+export const BottomBar = () => {
   const {
     pipelineIsNew,
     pipelineName,
@@ -46,19 +41,21 @@ export const BottomBar = (props: BottomBarProps) => {
     currentVersion,
     updateCurrentVersion,
     updateSelectedConnectorNodeId,
+    accessToken,
+    enabledQuery,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
     pipelineName,
     accessToken,
-    enabledQuery: pipelineIsNew ? false : enableQuery,
+    enabledQuery: pipelineIsNew ? false : enabledQuery,
   });
 
-  const entityObject = useEntity();
+  const entity = useEntity();
 
   const pipeline = useUserPipeline({
-    enabled: enableQuery && entityObject.isSuccess && !pipelineIsNew,
-    pipelineName: entityObject.pipelineName,
+    enabled: enabledQuery && entity.isSuccess && !pipelineIsNew,
+    pipelineName: entity.pipelineName,
     accessToken,
     retry: false,
   });

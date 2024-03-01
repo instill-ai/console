@@ -72,12 +72,11 @@ const selector = (store: InstillStore) => ({
 
 export type FlowControlProps = {
   reactFlowInstance: Nullable<ReactFlowInstance>;
-  appEnv: InstillAppEnv;
 };
 
 export const FlowControl = (props: FlowControlProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { reactFlowInstance, appEnv } = props;
+  const { reactFlowInstance } = props;
   const {
     nodes,
     edges,
@@ -316,7 +315,7 @@ export const FlowControl = (props: FlowControlProps) => {
     const inputsString = JSON.stringify({ inputs: [input] }, null, "\t");
 
     let snippet =
-      appEnv === "APP_ENV_CLOUD"
+      env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
         ? triggerPipelineSnippets.cloud
         : triggerPipelineSnippets.core;
 
@@ -334,7 +333,6 @@ export const FlowControl = (props: FlowControlProps) => {
     return snippet;
   }, [
     nodes,
-    appEnv,
     entityObject.isSuccess,
     entityObject.pipelineName,
     currentVersion,

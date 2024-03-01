@@ -58,23 +58,13 @@ export type FlowProps = {
   setReactFlowInstance: React.Dispatch<
     React.SetStateAction<Nullable<ReactFlowInstance>>
   >;
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
   isLoading: boolean;
   isError: boolean;
-  appEnv: InstillAppEnv;
 };
 
 export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
   (props, ref) => {
-    const {
-      reactFlowInstance,
-      setReactFlowInstance,
-      accessToken,
-      enableQuery,
-      isLoading,
-      appEnv,
-    } = props;
+    const { reactFlowInstance, setReactFlowInstance, isLoading } = props;
 
     const {
       nodes,
@@ -90,10 +80,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
 
     return (
       <div className="relative flex flex-1 flex-col">
-        <BackToLatestVersionTopBar
-          enableQuery={enableQuery}
-          accessToken={accessToken}
-        />
+        <BackToLatestVersionTopBar />
         <div className="relative flex h-full w-full flex-1">
           <div ref={ref} className="h-full w-full flex-1">
             <ReactFlow
@@ -225,7 +212,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               </div>
             </div>
           ) : null}
-          <FlowControl reactFlowInstance={reactFlowInstance} appEnv={appEnv} />
+          <FlowControl reactFlowInstance={reactFlowInstance} />
         </div>
       </div>
     );

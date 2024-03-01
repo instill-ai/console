@@ -1,9 +1,8 @@
 import { GetServerSideProps } from "next";
 import { Logo } from "@instill-ai/design-system";
+import { PageBase, Topbar } from "@instill-ai/toolkit";
 
-import { Topbar } from "../../../components";
 import { NextPageWithLayout } from "../../_app";
-import { PageBase } from "@instill-ai/toolkit";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
