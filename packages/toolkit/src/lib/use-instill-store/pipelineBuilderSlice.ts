@@ -63,13 +63,13 @@ export const createPipelineBuilderSlice: StateCreator<
 > = (set, get) => ({
   ...pipelineBuilderInitialState,
   initPipelineBuilder: () => set(() => pipelineBuilderInitialState),
-  setPipelineId: (pipelineId: Nullable<string>) =>
+  updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
     set((state) => {
-      return { ...state, pipelineId };
+      return { ...state, pipelineId: fn(state.pipelineId) };
     }),
-  setPipelineName: (pipelineName: Nullable<string>) =>
+  updatePipelineName: (fn: (prev: Nullable<string>) => Nullable<string>) =>
     set((state) => {
-      return { ...state, pipelineName };
+      return { ...state, pipelineName: fn(state.pipelineName) };
     }),
   updateRightPanelIsOpen: (fn: (prev: boolean) => boolean) =>
     set((state) => {

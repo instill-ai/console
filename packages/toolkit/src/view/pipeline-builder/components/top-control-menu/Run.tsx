@@ -1,7 +1,7 @@
 import cn from "clsx";
 import { Button, Icons } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
-import { useHandleSavePipeline } from "../../lib/hooks/useHandleSavePipeline";
+import { useSavePipeline } from "../../lib";
 import { LoadingSpin } from "../../../../components";
 
 const selector = (store: InstillStore) => ({
@@ -18,7 +18,7 @@ export const Run = ({
     useShallow(selector)
   );
 
-  const handleSavePipeline = useHandleSavePipeline({ setIsSaving });
+  const savePipeline = useSavePipeline({ setIsSaving });
 
   return (
     <Button
@@ -29,7 +29,7 @@ export const Run = ({
       className="!h-8 gap-x-2"
       onClick={async (e) => {
         if (pipelineRecipeIsDirty) {
-          await handleSavePipeline();
+          await savePipeline();
           e.preventDefault();
         }
       }}

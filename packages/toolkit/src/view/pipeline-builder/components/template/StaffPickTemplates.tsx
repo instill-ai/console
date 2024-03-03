@@ -20,8 +20,8 @@ import {
 import { FullTemplatesCommand } from "./FullTemplatesCommand";
 
 const selector = (store: InstillStore) => ({
-  setPipelineId: store.setPipelineId,
-  setPipelineName: store.setPipelineName,
+  updatePipelineId: store.updatePipelineId,
+  updatePipelineName: store.updatePipelineName,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updateInitializedByTemplateOrClone: store.updateInitializedByTemplateOrClone,
@@ -53,8 +53,8 @@ export const StaffPickTemplates = ({
   });
 
   const {
-    setPipelineId,
-    setPipelineName,
+    updatePipelineId,
+    updatePipelineName,
     updateNodes,
     updateEdges,
     updateInitializedByTemplateOrClone,
@@ -156,8 +156,8 @@ export const StaffPickTemplates = ({
       (graphData) => {
         updateNodes(() => graphData.nodes);
         updateEdges(() => graphData.edges);
-        setPipelineId(randomName);
-        setPipelineName(`users/${entity}/pipelines/${randomName}`);
+        updatePipelineId(() => randomName);
+        updatePipelineName(() => `users/${entity}/pipelines/${randomName}`);
         updatePipelineRecipeIsDirty(() => true);
         updateInitializedByTemplateOrClone(() => true);
         updatePipelineIsNew(() => true);

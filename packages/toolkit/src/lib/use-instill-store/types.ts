@@ -49,8 +49,10 @@ export type PipelineBuilderState = {
 
 export type PipelineBuilderAction = {
   initPipelineBuilder: () => void;
-  setPipelineId: (pipelineId: Nullable<string>) => void;
-  setPipelineName: (pipelineName: Nullable<string>) => void;
+  updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
+  updatePipelineName: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
   onNodesChange: OnNodesChange;

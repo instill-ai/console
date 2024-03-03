@@ -3,7 +3,7 @@ import cn from "clsx";
 import { Button, Icons } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { LoadingSpin } from "../../../../components";
-import { useHandleSavePipeline } from "../../lib/hooks/useHandleSavePipeline";
+import { useSavePipeline } from "../../lib";
 
 const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
@@ -20,7 +20,7 @@ export const Save = ({
   const { pipelineRecipeIsDirty, currentVersion } = useInstillStore(
     useShallow(selector)
   );
-  const handleSavePipeline = useHandleSavePipeline({
+  const savePipeline = useSavePipeline({
     setIsSaving,
   });
 
@@ -40,7 +40,7 @@ export const Save = ({
     <Button
       size="md"
       className="flex !h-8 cursor-pointer flex-row gap-x-2"
-      onClick={handleSavePipeline}
+      onClick={savePipeline}
       disabled={canSave ? isSaving : true}
       variant="tertiaryColour"
     >

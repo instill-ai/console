@@ -22,11 +22,11 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
-export const useConstructNode = ({
+export function useConstructNode({
   reactFlowInstance,
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
-}) => {
+}) {
   const {
     nodes,
     updateNodes,
@@ -242,4 +242,4 @@ export const useConstructNode = ({
       updatePipelineRecipeIsDirty,
     ]
   );
-};
+}
