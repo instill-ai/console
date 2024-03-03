@@ -16,6 +16,6 @@ export * from "./readFileToBinary";
 export * from "./recursive-helpers/recursiveParseNumberToString";
 export * from "./recursive-helpers/recursiveReplaceTargetValue";
 export * from "./transformConnectorDefinitionIDToComponentIDPrefix";
-export * from "./useSortedReleases";
 
 export * from "./recursive-helpers";
+export * from "./hooks";

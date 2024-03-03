@@ -11,7 +11,6 @@ import { useShallow } from "zustand/react/shallow";
 import {
   CreateUserPipelinePayload,
   InstillStore,
-  Nullable,
   RenameUserPipelinePayload,
   UpdateUserPipelinePayload,
   getInstillApiErrorMessage,
@@ -32,7 +31,6 @@ import { AutoresizeInputWrapper } from "../../../components";
 const selector = (store: InstillStore) => ({
   pipelineId: store.pipelineId,
   setPipelineId: store.setPipelineId,
-  setPipelineUid: store.setPipelineUid,
   setPipelineName: store.setPipelineName,
   nodes: store.nodes,
   pipelineIsNew: store.pipelineIsNew,
@@ -50,7 +48,7 @@ export const UpdatePipelineIdSchema = z.object({
 export const PipelineNameForm = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
-  const { entity, id } = router.query;
+  const { entity } = router.query;
 
   const entityObject = useEntity();
 
@@ -70,7 +68,6 @@ export const PipelineNameForm = () => {
   const {
     pipelineId,
     setPipelineId,
-    setPipelineUid,
     setPipelineName,
     pipelineIsNew,
     testModeEnabled,
@@ -120,7 +117,6 @@ export const PipelineNameForm = () => {
         // We should change all the state before pushing to the new route
 
         setPipelineId(newId);
-        setPipelineUid(res.pipeline.uid);
         setPipelineName(res.pipeline.name);
         updatePipelineIsNew(() => false);
         updatePipelineRecipeIsDirty(() => false);
@@ -252,24 +248,6 @@ export const PipelineNameForm = () => {
   return (
     <div className="flex w-full pl-4">
       <div className="flex flex-row gap-x-3">
-        <button
-          onClick={() => {
-            if (pipelineIsNew) {
-              router.push(`/${entity}/pipelines`);
-            } else {
-              router.push(`/${entity}/pipelines/${id}`);
-            }
-          }}
-          className="flex cursor-pointer flex-row gap-x-3"
-        >
-          <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
-          <p className="my-auto text-semantic-fg-secondary product-body-text-3-medium">
-            Pipelines
-          </p>
-        </button>
-        <p className="my-auto pb-0.5 text-semantic-fg-secondary product-headings-heading-6">
-          /
-        </p>
         <Form.Root {...form}>
           <form className="my-auto flex flex-1 flex-row items-center justify-center">
             <Form.Field

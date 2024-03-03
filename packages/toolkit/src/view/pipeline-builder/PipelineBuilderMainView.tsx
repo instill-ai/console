@@ -25,14 +25,14 @@ import {
 import {
   BottomBar,
   Flow,
-  PipelineNameForm,
   RightPanel,
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
-} from "../pipeline-builder";
+} from ".";
 import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
-import { getPipelineInputOutputSchema } from "../pipeline-builder/lib/getPipelineInputOutputSchema";
+import { getPipelineInputOutputSchema } from "./lib/getPipelineInputOutputSchema";
 import { useRouter } from "next/router";
+import { TopControlMenu } from "./components/top-control-menu";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -118,6 +118,97 @@ export const PipelineBuilderMainView = () => {
 
   const { graphIsInitialized } = usePipelineBuilderGraph();
 
+  const onSavePipeline = React.useCallback(async () => {
+    if (!pipelineId || !accessToken || !entityName || !pipelineName) {
+      return;
+    }
+
+    if (!pipelineIsNew) {
+      const payload: UpdateUserPipelinePayload = {
+        name: pipelineName,
+        recipe: constructPipelineRecipe(nodes),
+        metadata: composePipelineMetadataFromNodes(nodes),
+      };
+
+      try {
+        await updatePipeline.mutateAsync({
+          payload,
+          accessToken,
+        });
+
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_pipeline");
+        }
+
+        toast({
+          title: "Pipeline is saved",
+          variant: "alert-success",
+          size: "small",
+        });
+
+        setTimeout(() => {
+          updatePipelineRecipeIsDirty(() => false);
+          confirmNavigation();
+        }, 1000);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          toast({
+            title: "Something went wrong when save the pipeline",
+            description: getInstillApiErrorMessage(error),
+            variant: "alert-error",
+            size: "large",
+          });
+        } else {
+          toast({
+            title: "Something went wrong when save the pipeline",
+            variant: "alert-error",
+            size: "large",
+          });
+        }
+      }
+      return;
+    }
+
+    const payload: CreateUserPipelinePayload = {
+      id: pipelineId,
+      recipe: constructPipelineRecipe(nodes),
+      metadata: composePipelineMetadataFromNodes(nodes),
+    };
+
+    try {
+      await createPipeline.mutateAsync({
+        entityName,
+        payload,
+        accessToken,
+      });
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("update_pipeline_recipe");
+      }
+
+      toast({
+        title: "Successfully saved the pipeline",
+        variant: "alert-success",
+        size: "small",
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast({
+          title: "Something went wrong when save the pipeline",
+          description: getInstillApiErrorMessage(error),
+          variant: "alert-error",
+          size: "large",
+        });
+      } else {
+        toast({
+          title: "Something went wrong when save the pipeline",
+          variant: "alert-error",
+          size: "large",
+        });
+      }
+    }
+  }, []);
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -125,9 +216,7 @@ export const PipelineBuilderMainView = () => {
   return (
     <PageBase>
       <Topbar logo={<Logo variant="colourLogomark" width={38} />}>
-        <div className="flex px-6 py-2">
-          <PipelineNameForm />
-        </div>
+        <TopControlMenu reactFlowInstance={reactFlowInstance} />
       </Topbar>
       <PageBase.Container>
         <div className="flex w-full flex-col">
@@ -138,7 +227,6 @@ export const PipelineBuilderMainView = () => {
           <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
             <Flow
               ref={reactFlowWrapper}
-              reactFlowInstance={reactFlowInstance}
               setReactFlowInstance={setReactFlowInstance}
               isLoading={graphIsInitialized ? false : true}
               isError={!pipelineIsNew && pipeline.isError}
@@ -178,96 +266,7 @@ export const PipelineBuilderMainView = () => {
               updatePipelineRecipeIsDirty(() => false);
               confirmNavigation();
             }}
-            onSave={async () => {
-              if (!pipelineId || !accessToken || !entityName || !pipelineName) {
-                return;
-              }
-
-              if (!pipelineIsNew) {
-                const payload: UpdateUserPipelinePayload = {
-                  name: pipelineName,
-                  recipe: constructPipelineRecipe(nodes),
-                  metadata: composePipelineMetadataFromNodes(nodes),
-                };
-
-                try {
-                  await updatePipeline.mutateAsync({
-                    payload,
-                    accessToken,
-                  });
-
-                  if (amplitudeIsInit) {
-                    sendAmplitudeData("create_pipeline");
-                  }
-
-                  toast({
-                    title: "Pipeline is saved",
-                    variant: "alert-success",
-                    size: "small",
-                  });
-
-                  setTimeout(() => {
-                    updatePipelineRecipeIsDirty(() => false);
-                    confirmNavigation();
-                  }, 1000);
-                } catch (error) {
-                  if (isAxiosError(error)) {
-                    toast({
-                      title: "Something went wrong when save the pipeline",
-                      description: getInstillApiErrorMessage(error),
-                      variant: "alert-error",
-                      size: "large",
-                    });
-                  } else {
-                    toast({
-                      title: "Something went wrong when save the pipeline",
-                      variant: "alert-error",
-                      size: "large",
-                    });
-                  }
-                }
-                return;
-              }
-
-              const payload: CreateUserPipelinePayload = {
-                id: pipelineId,
-                recipe: constructPipelineRecipe(nodes),
-                metadata: composePipelineMetadataFromNodes(nodes),
-              };
-
-              try {
-                await createPipeline.mutateAsync({
-                  entityName,
-                  payload,
-                  accessToken,
-                });
-
-                if (amplitudeIsInit) {
-                  sendAmplitudeData("update_pipeline_recipe");
-                }
-
-                toast({
-                  title: "Successfully saved the pipeline",
-                  variant: "alert-success",
-                  size: "small",
-                });
-              } catch (error) {
-                if (isAxiosError(error)) {
-                  toast({
-                    title: "Something went wrong when save the pipeline",
-                    description: getInstillApiErrorMessage(error),
-                    variant: "alert-error",
-                    size: "large",
-                  });
-                } else {
-                  toast({
-                    title: "Something went wrong when save the pipeline",
-                    variant: "alert-error",
-                    size: "large",
-                  });
-                }
-              }
-            }}
+            onSave={onSavePipeline}
           />
         </div>
       </PageBase.Container>

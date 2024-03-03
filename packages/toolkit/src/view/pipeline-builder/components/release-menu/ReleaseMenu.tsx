@@ -35,28 +35,21 @@ const selector = (store: InstillStore) => ({
   nodes: store.nodes,
 });
 
-export const ReleaseMenu = ({
-  isReleasing,
-  setIsReleasing,
-  onRelease,
-}: {
-  isReleasing: boolean;
-  setIsReleasing: (isReleasing: boolean) => void;
-  onRelease: () => void;
-}) => {
+export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
+  const { toast } = useToast();
+  const entity = useEntity();
+  const [isReleasing, setIsReleasing] = React.useState(false);
   const form = useForm<z.infer<typeof ReleasePipelineFormSchema>>({
     resolver: zodResolver(ReleasePipelineFormSchema),
   });
-  const { toast } = useToast();
+
   const { accessToken, nodes } = useInstillStore(useShallow(selector));
 
   const releasePipelineVersion = useCreateUserPipelineRelease();
 
-  const entityObject = useEntity();
-
   const onSubmit = React.useCallback(
     async (data: z.infer<typeof ReleasePipelineFormSchema>) => {
-      if (!entityObject.isSuccess) {
+      if (!entity.isSuccess) {
         return;
       }
 
@@ -68,7 +61,7 @@ export const ReleaseMenu = ({
 
       try {
         await releasePipelineVersion.mutateAsync({
-          pipelineName: entityObject.pipelineName,
+          pipelineName: entity.pipelineName,
           payload,
           accessToken,
         });
@@ -85,7 +78,10 @@ export const ReleaseMenu = ({
         });
 
         setIsReleasing(false);
-        onRelease();
+
+        if (onRelease) {
+          onRelease();
+        }
       } catch (error) {
         setIsReleasing(false);
         toastInstillError({
@@ -104,8 +100,8 @@ export const ReleaseMenu = ({
       releasePipelineVersion,
       setIsReleasing,
       toast,
-      entityObject.isSuccess,
-      entityObject.pipelineName,
+      entity.isSuccess,
+      entity.pipelineName,
     ]
   );
 

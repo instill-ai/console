@@ -1,20 +1,28 @@
 import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
-import { Nullable, useOperatorDefinitions } from "../../../../../lib";
+import {
+  InstillStore,
+  useInstillStore,
+  useOperatorDefinitions,
+  useShallow,
+} from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
-import { PipelineComponentDefinitionOnSelect } from "./SelectPipelineComponentDefinitionDialog";
+import { OnSelectComponent } from "./SelectComponentDialog";
+
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
 export const OperatorSection = ({
-  accessToken,
-  enableQuery,
   onSelect,
 }: {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-  onSelect: PipelineComponentDefinitionOnSelect;
+  onSelect: OnSelectComponent;
 }) => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
   const operatorDefinitions = useOperatorDefinitions({
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
   });
 

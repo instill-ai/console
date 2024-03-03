@@ -3,7 +3,6 @@ import { useShallow } from "zustand/react/shallow";
 import { Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
-  Nullable,
   useEntity,
   useInstillStore,
   useUserConnectors,
@@ -15,18 +14,15 @@ import { AIResourceAutoForm } from "../../ai";
 import { ApplicationResourceAutoForm } from "../../application";
 import { SelectConnectorDialogItem } from "./SelectConnectorDialogItem";
 
-export type CreateResourceDialogProps = {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-};
-
 const selector = (store: InstillStore) => ({
   state: store.createResourceDialogState,
   updateState: store.updateCreateResourceDialogState,
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
-export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
-  const { accessToken, enableQuery } = props;
+export const CreateResourceDialog = () => {
+  const entity = useEntity();
   const {
     state: {
       open,
@@ -35,16 +31,16 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
       onCreated,
       onSelectedExistingResource,
     },
+    accessToken,
+    enabledQuery,
     updateState,
   } = useInstillStore(useShallow(selector));
 
-  const entityObject = useEntity();
-
   const existedConnectors = useUserConnectors({
-    userName: entityObject.entityName,
+    userName: entity.entityName,
     connectorType: connectorType ?? "all",
     accessToken,
-    enabled: enableQuery && entityObject.isSuccess,
+    enabled: enabledQuery && entity.isSuccess,
   });
 
   const filteredConnectors = React.useMemo(() => {
@@ -186,7 +182,7 @@ export const CreateResourceDialog = (props: CreateResourceDialogProps) => {
                         onSelectedExistingResource: null,
                       }));
                     }}
-                    enableQuery={enableQuery}
+                    enableQuery={enabledQuery}
                   />
                 ) : (
                   <DataResourceAutoForm

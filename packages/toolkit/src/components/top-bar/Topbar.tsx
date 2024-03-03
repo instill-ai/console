@@ -19,12 +19,6 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 
-export type TopbarProps = {
-  logo: ReactElement;
-  children?: React.ReactNode;
-  className?: string;
-};
-
 export const ceTopbarItems = [
   {
     pathName: "pipelines",
@@ -81,7 +75,17 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const Topbar = ({ logo, children, className }: TopbarProps) => {
+export const Topbar = ({
+  logo,
+  children,
+  className,
+  disabledUserDropdown,
+}: {
+  logo: ReactElement;
+  children?: React.ReactNode;
+  className?: string;
+  disabledUserDropdown?: boolean;
+}) => {
   const router = useRouter();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -92,10 +96,10 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
   });
 
   return (
-    <div className="flex border-b border-semantic-bg-line px-8">
+    <div className="flex w-full border-b border-semantic-bg-line px-8">
       <div
         className={cn(
-          "box-content flex h-[var(--topbar-height)] w-2/3 flex-row bg-semantic-bg-primary",
+          "box-content flex h-[var(--topbar-height)] w-full flex-row bg-semantic-bg-primary",
           className
         )}
       >
@@ -104,7 +108,7 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
         </Link>
 
         {children ? (
-          <div className="flex flex-1 flex-row">{children}</div>
+          <div className="flex w-full flex-1 flex-row">{children}</div>
         ) : (
           <React.Fragment>
             {me.isSuccess ? (
@@ -144,13 +148,15 @@ export const Topbar = ({ logo, children, className }: TopbarProps) => {
         )}
       </div>
 
-      <div className="flex w-1/3 justify-end gap-x-4">
-        {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-          <CloudTopbarDropdown />
-        ) : (
-          <CETopbarDropdown />
-        )}
-      </div>
+      {disabledUserDropdown ? null : (
+        <div className="ml-4 flex">
+          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+            <CloudTopbarDropdown />
+          ) : (
+            <CETopbarDropdown />
+          )}
+        </div>
+      )}
     </div>
   );
 };
