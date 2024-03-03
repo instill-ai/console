@@ -16,9 +16,7 @@ import { useEntity } from "./useEntity";
 
 const selector = (store: InstillStore) => ({
   setPipelineId: store.setPipelineId,
-  setPipelineUid: store.setPipelineUid,
   setPipelineName: store.setPipelineName,
-  setPipelineDescription: store.setPipelineDescription,
   pipelineIsNew: store.pipelineIsNew,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
@@ -36,9 +34,7 @@ export function usePipelineBuilderGraph() {
 
   const {
     setPipelineId,
-    setPipelineUid,
     setPipelineName,
-    setPipelineDescription,
     pipelineIsNew,
     updateNodes,
     updateEdges,
@@ -52,14 +48,16 @@ export function usePipelineBuilderGraph() {
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
-  const entityObject = useEntity();
+  const entity = useEntity();
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && !pipelineIsNew && !!entityObject.isSuccess,
-    pipelineName: entityObject.pipelineName,
+    enabled: enabledQuery && !pipelineIsNew && entity.isSuccess,
+    pipelineName: entity.pipelineName,
     accessToken,
     retry: false,
   });
+
+  console.log(pipeline);
 
   // Initialize the pipeline graph of new pipeline
   React.useEffect(() => {
@@ -171,6 +169,8 @@ export function usePipelineBuilderGraph() {
       return;
     }
 
+    console.log(pipeline.data);
+
     // Check whether current user is the owner of the pipeline
     if (pipeline.data.permission.can_trigger) {
       updateIsOwner(() => true);
@@ -189,10 +189,8 @@ export function usePipelineBuilderGraph() {
     updatePipelineIsReadOnly(() => false);
 
     // Update pipeline information
-    setPipelineUid(pipeline.data.uid);
     setPipelineId(pipeline.data.id);
     setPipelineName(pipeline.data.name);
-    setPipelineDescription(pipeline.data.description);
 
     // If the node position data is valid, we can initialize the graph with
     // the node position data. Or we need to initialize the graph with our
@@ -223,7 +221,6 @@ export function usePipelineBuilderGraph() {
     id,
     graphIsInitialized,
     pipelineIsNew,
-    setPipelineDescription,
     pipeline.data,
     pipeline.isSuccess,
     setPipelineId,
@@ -232,7 +229,6 @@ export function usePipelineBuilderGraph() {
     updateIsOwner,
     updateNodes,
     updateEdges,
-    setPipelineUid,
     updatePipelineIsReadOnly,
   ]);
 

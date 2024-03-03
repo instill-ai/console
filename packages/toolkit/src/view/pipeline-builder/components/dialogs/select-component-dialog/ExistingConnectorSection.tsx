@@ -1,24 +1,33 @@
-import { Nullable, useEntity, useUserConnectors } from "../../../../../lib";
+import {
+  InstillStore,
+  Nullable,
+  useEntity,
+  useInstillStore,
+  useShallow,
+  useUserConnectors,
+} from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
 import { ImageWithFallback } from "../../../../../components";
 import { Icons } from "@instill-ai/design-system";
-import { PipelineComponentDefinitionOnSelect } from "./SelectPipelineComponentDefinitionDialog";
+import { OnSelectComponent } from "./SelectComponentDialog";
+
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
 export const ExistingConnectorSection = ({
-  accessToken,
-  enableQuery,
   onSelect,
 }: {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-  onSelect: PipelineComponentDefinitionOnSelect;
+  onSelect: OnSelectComponent;
 }) => {
-  const entityObject = useEntity();
+  const entity = useEntity();
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const allConnector = useUserConnectors({
-    userName: entityObject.entityName,
+    userName: entity.entityName,
     connectorType: "all",
-    enabled: enableQuery && entityObject.isSuccess,
+    enabled: entity.isSuccess && enabledQuery,
     accessToken,
   });
 
@@ -30,7 +39,7 @@ export const ExistingConnectorSection = ({
               <DialogSection.Item
                 key={connector.id}
                 onClick={() => {
-                  onSelect(connector);
+                  onSelect(connector.connector_definition);
                 }}
               >
                 <ImageWithFallback

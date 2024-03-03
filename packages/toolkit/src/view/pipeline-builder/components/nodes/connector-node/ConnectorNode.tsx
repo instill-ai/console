@@ -1,14 +1,12 @@
 import * as React from "react";
-import { Node, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { Form, Icons, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
-import { ConnectorNodeData, NodeData } from "../../../type";
+import { ConnectorNodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
 import {
   getConnectorInputOutputSchema,
-  transformConnectorDefinitionIDToComponentIDPrefix,
-  generateNewComponentIndex,
   composeEdgesFromNodes,
 } from "../../../lib";
 import {

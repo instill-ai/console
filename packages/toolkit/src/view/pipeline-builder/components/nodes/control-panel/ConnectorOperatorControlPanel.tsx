@@ -26,7 +26,6 @@ const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  updateSelectResourceDialogIsOpen: store.updateSelectResourceDialogIsOpen,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
@@ -152,14 +151,7 @@ export const ConnectorOperatorControlPanel = ({
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-  }, [
-    nodeID,
-    nodeData,
-    nodes,
-    updateEdges,
-    updateNodes,
-    updatePipelineRecipeIsDirty,
-  ]);
+  }, [nodeData, nodes, updateEdges, updateNodes, updatePipelineRecipeIsDirty]);
 
   return (
     <ControlPanel.Root>

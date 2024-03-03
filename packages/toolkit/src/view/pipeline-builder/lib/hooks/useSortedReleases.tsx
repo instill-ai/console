@@ -4,7 +4,7 @@ import {
   Nullable,
   PipelineRelease,
   useUserPipelineReleases,
-} from "../../../lib";
+} from "../../../../lib";
 
 export function sortPipelineReleases(releases: PipelineRelease[]) {
   return releases.sort((a, b) => {

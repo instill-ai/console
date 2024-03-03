@@ -1,11 +1,6 @@
 import { useShallow } from "zustand/react/shallow";
 
-import {
-  InstillStore,
-  Nullable,
-  useInstillStore,
-  useUserPipeline,
-} from "../../../lib";
+import { InstillStore, useInstillStore, useUserPipeline } from "../../../lib";
 import {
   checkIsValidPosition,
   createGraphLayout,

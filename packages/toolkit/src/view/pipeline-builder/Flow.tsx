@@ -18,7 +18,6 @@ import {
   OperatorNode,
   StartOperatorNode,
 } from "./components";
-import { FlowControl } from "./FlowControl";
 
 import {
   InstillAppEnv,
@@ -54,7 +53,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export type FlowProps = {
-  reactFlowInstance: Nullable<ReactFlowInstance>;
   setReactFlowInstance: React.Dispatch<
     React.SetStateAction<Nullable<ReactFlowInstance>>
   >;
@@ -64,7 +62,7 @@ export type FlowProps = {
 
 export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
   (props, ref) => {
-    const { reactFlowInstance, setReactFlowInstance, isLoading } = props;
+    const { setReactFlowInstance, isLoading } = props;
 
     const {
       nodes,
@@ -212,7 +210,6 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               </div>
             </div>
           ) : null}
-          <FlowControl reactFlowInstance={reactFlowInstance} />
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import { CodeBlock } from "../../../components";
 import { constructPipelineRecipe } from "../lib";
 import { useInstillStore } from "../../../lib";
 
-export type PipelineToolkitModalModalProps = {
+export type PipelineToolkitDialogProps = {
   snippet: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +15,7 @@ const tabTriggerStyle =
 const tabContentStyle =
   "h-full w-full rounded-sm border border-semantic-bg-line bg-semantic-accent-bg p-2";
 
-export const PipelineToolkitModal = (props: PipelineToolkitModalModalProps) => {
+export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
   const { snippet, isOpen, setIsOpen } = props;
 
   const nodes = useInstillStore((state) => state.nodes);

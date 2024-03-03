@@ -21,10 +21,8 @@ export type PipelineBuilderCreateResourceDialogState = {
 };
 
 export type PipelineBuilderState = {
-  pipelineUid: Nullable<string>;
   pipelineId: Nullable<string>;
   pipelineName: Nullable<string>;
-  pipelineDescription: Nullable<string>;
   nodes: Node<NodeData>[];
   edges: Edge[];
   rightPanelIsOpen: boolean;
@@ -51,10 +49,8 @@ export type PipelineBuilderState = {
 
 export type PipelineBuilderAction = {
   initPipelineBuilder: () => void;
-  setPipelineUid: (pipelineUid: Nullable<string>) => void;
   setPipelineId: (pipelineId: Nullable<string>) => void;
   setPipelineName: (pipelineName: Nullable<string>) => void;
-  setPipelineDescription: (pipelineDescription: Nullable<string>) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
   onNodesChange: OnNodesChange;

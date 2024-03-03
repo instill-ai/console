@@ -1,33 +1,41 @@
 import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
-import { Nullable, useConnectorDefinitions } from "../../../../../lib";
+import {
+  InstillStore,
+  useConnectorDefinitions,
+  useInstillStore,
+  useShallow,
+} from "../../../../../lib";
 import { DialogSection } from "./DialogSection";
-import { PipelineComponentDefinitionOnSelect } from "./SelectPipelineComponentDefinitionDialog";
+import { OnSelectComponent } from "./SelectComponentDialog";
+
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
 export const NewConnectorSection = ({
-  accessToken,
-  enableQuery,
   onSelect,
 }: {
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
-  onSelect: PipelineComponentDefinitionOnSelect;
+  onSelect: OnSelectComponent;
 }) => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
   const aiDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_AI",
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
   });
 
   const applicationDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_APPLICATION",
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
   });
 
   const dataDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_DATA",
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken,
   });
 

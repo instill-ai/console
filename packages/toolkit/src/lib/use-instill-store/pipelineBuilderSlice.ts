@@ -25,8 +25,6 @@ import { InstillJSONSchema } from "../use-instill-form";
 export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineId: null,
   pipelineName: null,
-  pipelineUid: null,
-  pipelineDescription: null,
   nodes: [],
   edges: [],
   isSavingPipeline: false,
@@ -69,17 +67,9 @@ export const createPipelineBuilderSlice: StateCreator<
     set((state) => {
       return { ...state, pipelineId };
     }),
-  setPipelineUid: (pipelineUid: Nullable<string>) =>
-    set((state) => {
-      return { ...state, pipelineUid };
-    }),
   setPipelineName: (pipelineName: Nullable<string>) =>
     set((state) => {
       return { ...state, pipelineName };
-    }),
-  setPipelineDescription: (pipelineDescription: Nullable<string>) =>
-    set((state) => {
-      return { ...state, pipelineDescription };
     }),
   updateRightPanelIsOpen: (fn: (prev: boolean) => boolean) =>
     set((state) => {
