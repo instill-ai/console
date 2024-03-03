@@ -20,7 +20,7 @@ export const TopbarLink = (props: TopbarLinkProps) => {
         {
           "border-opacity-100 bg-semantic-accent-bg": hightlighted,
         },
-        className,
+        className
       )}
     >
       <div className="flex flex-row items-center space-x-3">
