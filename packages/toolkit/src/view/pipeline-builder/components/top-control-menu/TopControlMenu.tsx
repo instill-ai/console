@@ -6,12 +6,12 @@ import { Share } from "./Share";
 import { Release } from "./Release";
 import { CreateResourceDialog } from "../CreateResourceDialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
-import { PipelineNameForm } from "../PipelineNameForm";
 import { Nullable, useInstillStore } from "../../../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { useConstructNode } from "../../lib";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
+import { PipelineName } from "./PipelineName";
 
 export const TopControlMenu = ({
   reactFlowInstance,
@@ -51,8 +51,8 @@ export const TopControlMenu = ({
             }}
           />
         </div>
-        <div className="w-full flex-1 items-center justify-center">
-          <PipelineNameForm />
+        <div className="flex w-full flex-1 items-center justify-center">
+          <PipelineName />
         </div>
         <div className="flex flex-row items-center gap-x-2">
           <Run setIsSaving={setIsSaving} />

@@ -26,11 +26,11 @@ const selector = (store: InstillStore) => ({
   updatePipelineIsNew: store.updatePipelineIsNew,
 });
 
-export const useHandleSavePipeline = ({
+export function useSavePipeline({
   setIsSaving,
 }: {
   setIsSaving: (value: boolean) => void;
-}) => {
+}) {
   const entity = useEntity();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -161,4 +161,4 @@ export const useHandleSavePipeline = ({
       setIsSaving,
     ]
   );
-};
+}

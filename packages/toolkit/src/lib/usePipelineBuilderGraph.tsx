@@ -15,8 +15,8 @@ import { Node } from "reactflow";
 import { useEntity } from "./useEntity";
 
 const selector = (store: InstillStore) => ({
-  setPipelineId: store.setPipelineId,
-  setPipelineName: store.setPipelineName,
+  updatePipelineId: store.updatePipelineId,
+  updatePipelineName: store.updatePipelineName,
   pipelineIsNew: store.pipelineIsNew,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
@@ -33,8 +33,8 @@ export function usePipelineBuilderGraph() {
   const { id } = router.query;
 
   const {
-    setPipelineId,
-    setPipelineName,
+    updatePipelineId,
+    updatePipelineName,
     pipelineIsNew,
     updateNodes,
     updateEdges,
@@ -56,8 +56,6 @@ export function usePipelineBuilderGraph() {
     accessToken,
     retry: false,
   });
-
-  console.log(pipeline);
 
   // Initialize the pipeline graph of new pipeline
   React.useEffect(() => {
@@ -169,8 +167,6 @@ export function usePipelineBuilderGraph() {
       return;
     }
 
-    console.log(pipeline.data);
-
     // Check whether current user is the owner of the pipeline
     if (pipeline.data.permission.can_trigger) {
       updateIsOwner(() => true);
@@ -181,7 +177,7 @@ export function usePipelineBuilderGraph() {
     // Set the pipelineID before the graph is initialized
     if (!pipeline.isSuccess) {
       if (id) {
-        setPipelineId(id.toString());
+        updatePipelineId(() => id.toString());
       }
       return;
     }
@@ -189,8 +185,8 @@ export function usePipelineBuilderGraph() {
     updatePipelineIsReadOnly(() => false);
 
     // Update pipeline information
-    setPipelineId(pipeline.data.id);
-    setPipelineName(pipeline.data.name);
+    updatePipelineId(() => pipeline.data.id);
+    updatePipelineName(() => pipeline.data.name);
 
     // If the node position data is valid, we can initialize the graph with
     // the node position data. Or we need to initialize the graph with our
@@ -223,8 +219,8 @@ export function usePipelineBuilderGraph() {
     pipelineIsNew,
     pipeline.data,
     pipeline.isSuccess,
-    setPipelineId,
-    setPipelineName,
+    updatePipelineId,
+    updatePipelineName,
     updateCurrentVersion,
     updateIsOwner,
     updateNodes,
