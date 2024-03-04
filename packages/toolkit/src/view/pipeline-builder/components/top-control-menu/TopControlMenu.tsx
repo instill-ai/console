@@ -8,7 +8,7 @@ import { CreateResourceDialog } from "../CreateResourceDialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import { Nullable, useInstillStore } from "../../../../lib";
 import { ReactFlowInstance } from "reactflow";
-import { useConstructNode } from "../../lib";
+import { useConstructNodeFromDefinition } from "../../lib";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
@@ -22,7 +22,7 @@ export const TopControlMenu = ({
   const { id, entity } = router.query;
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
-  const constructNode = useConstructNode({ reactFlowInstance });
+  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
   const pipelineIsNew = useInstillStore((store) => store.pipelineIsNew);
 
   return (
@@ -45,8 +45,8 @@ export const TopControlMenu = ({
           <SelectComponentDialog
             open={open}
             onOpenChange={setOpen}
-            onSelect={(definition) => {
-              constructNode(definition);
+            onSelect={(definition, connector) => {
+              constructNode(definition, connector);
               setOpen(false);
             }}
           />

@@ -6,10 +6,20 @@ import {
   Nullable,
   ZodAnyValidatorSchema,
   useInstillStore,
-} from "../../../lib";
+} from "../../../../lib";
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
-import { composeEdgesFromNodes } from "../lib";
+import {
+  composeEdgesFromNodes,
+  getConnectorOperatorComponentConfiguration,
+} from "..";
+import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
+import {
+  isConnectorComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+} from "../checkComponentType";
+import { Node } from "reactflow";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -19,17 +29,13 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useUpdaterOnRightPanel({
-  id,
-  nodeType,
   form,
   ValidatorSchema,
-  configuration,
+  currentNodeData,
 }: {
-  id: string;
-  nodeType: "connector" | "operator";
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
-  configuration: GeneralRecord;
+  currentNodeData: ConnectorNodeData | OperatorNodeData;
 }) {
   const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
     useInstillStore(useShallow(selector));
@@ -49,6 +55,8 @@ export function useUpdaterOnRightPanel({
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
+    const configuration =
+      getConnectorOperatorComponentConfiguration(currentNodeData);
 
     if (!parsed.success) {
       return;
@@ -69,26 +77,23 @@ export function useUpdaterOnRightPanel({
     }
 
     timer.current = setTimeout(() => {
-      const newNodes = nodes.map((node) => {
+      const newNodes: Node<NodeData>[] = nodes.map((node) => {
         if (
-          nodeType === "connector" &&
-          node.data.nodeType === "connector" &&
-          node.id === id
+          isConnectorComponent(currentNodeData) &&
+          isConnectorComponent(node.data) &&
+          node.id === currentNodeData.id
         ) {
           return {
             ...node,
             data: {
               ...node.data,
-              component: {
-                ...node.data.component,
-                configuration: {
-                  ...node.data.component.configuration,
-                  task: parsed.data.task,
-                  condition: parsed.data.condition,
-                  input: {
-                    ...node.data.component.configuration.input,
-                    ...parsed.data.input,
-                  },
+              connector_component: {
+                ...node.data.connector_component,
+                task: parsed.data.task,
+                condition: parsed.data.condition,
+                input: {
+                  ...node.data.connector_component.input,
+                  ...parsed.data.input,
                 },
               },
             },
@@ -96,28 +101,32 @@ export function useUpdaterOnRightPanel({
         }
 
         if (
-          nodeType === "operator" &&
-          node.data.nodeType === "operator" &&
-          node.id === id
+          isOperatorComponent(currentNodeData) &&
+          isOperatorComponent(node.data) &&
+          node.id === currentNodeData.id
         ) {
           return {
             ...node,
             data: {
               ...node.data,
-              component: {
-                ...node.data.component,
-                configuration: {
-                  ...node.data.component.configuration,
-                  task: parsed.data.task,
-                  condition: parsed.data.condition,
-                  input: {
-                    ...node.data.component.configuration.input,
-                    ...parsed.data.input,
-                  },
+              operator_component: {
+                ...node.data.operator_component,
+                task: parsed.data.task,
+                condition: parsed.data.condition,
+                input: {
+                  ...node.data.operator_component.input,
+                  ...parsed.data.input,
                 },
               },
             },
           };
+        }
+
+        if (
+          isIteratorComponent(currentNodeData) &&
+          isIteratorComponent(node.data)
+        ) {
+          return node;
         }
 
         return node;
@@ -135,13 +144,11 @@ export function useUpdaterOnRightPanel({
   }, [
     values,
     ValidatorSchema,
-    nodeType,
-    id,
     updateNodes,
     updatePipelineRecipeIsDirty,
     nodes,
     updateEdges,
-    configuration,
+    currentNodeData,
     isDirty,
   ]);
 }

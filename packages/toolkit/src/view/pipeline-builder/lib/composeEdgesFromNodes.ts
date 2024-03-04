@@ -10,6 +10,13 @@ import {
   InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from "./getPropertiesFromOpenAPISchema";
+import { getConnectorOperatorComponentConfiguration } from "./getConnectorOperatorComponentConfiguration";
+import {
+  isEndComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+  isStartComponent,
+} from "./checkComponentType";
 
 type ReferenceWithNodeInfo = {
   nodeID: string;
@@ -20,9 +27,9 @@ export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
   let edges: Edge[] = [];
 
   for (const node of nodes) {
-    if (node.data.component?.configuration) {
+    if (isStartComponent(node.data)) {
       const referencesOfThisNode = getReferenceFromComponentConfiguration(
-        node.data.component.configuration
+        node.data.start_component.fields
       );
 
       references = [
@@ -32,11 +39,46 @@ export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
           ...reference,
         })),
       ];
+      continue;
     }
+
+    if (isEndComponent(node.data)) {
+      const referencesOfThisNode = getReferenceFromComponentConfiguration(
+        node.data.end_component.fields
+      );
+
+      references = [
+        ...references,
+        ...referencesOfThisNode.map((reference) => ({
+          nodeID: node.id,
+          ...reference,
+        })),
+      ];
+      continue;
+    }
+
+    if (isIteratorComponent(node.data)) {
+      continue;
+    }
+
+    const configuration = getConnectorOperatorComponentConfiguration(node.data);
+
+    const referencesOfThisNode =
+      getReferenceFromComponentConfiguration(configuration);
+
+    references = [
+      ...references,
+      ...referencesOfThisNode.map((reference) => ({
+        nodeID: node.id,
+        ...reference,
+      })),
+    ];
   }
 
   const { otherNodesAvailableReferences, startNodeAvailableRefernces } =
     getAvailableReferences(nodes);
+
+  console.log(otherNodesAvailableReferences, startNodeAvailableRefernces);
 
   for (const reference of references) {
     const newEdges = composeEdgeForReference({
@@ -60,38 +102,34 @@ function getAvailableReferences(nodes: Node<NodeData>[]) {
   const startNodeAvailableRefernces: string[] = [];
 
   for (const node of nodes) {
-    if (!node.data.component) {
-      continue;
-    }
-
     // 1. Start node is special, we need to get all the metadata keys as available
-    if (node.data.nodeType === "start") {
-      if (node.data.component.configuration.metadata) {
-        for (const [key] of Object.entries(
-          node.data.component.configuration.metadata
-        )) {
-          startNodeAvailableRefernces.push(`${node.id}.${key}`);
-        }
+    if (isStartComponent(node.data)) {
+      for (const [key] of Object.entries(node.data.start_component.fields)) {
+        startNodeAvailableRefernces.push(`${node.id}.${key}`);
       }
 
       continue;
     }
 
     // 2. We can ignore end node, they can not be referenced/connected
-    if (node.data.nodeType === "end") {
+    if (isEndComponent(node.data)) {
+      continue;
+    }
+
+    if (isIteratorComponent(node.data)) {
       continue;
     }
 
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
     // 3. Extract output properties for operator and connector
-    if (node.data.nodeType === "operator") {
+    if (isOperatorComponent(node.data)) {
       const { outputSchema: operatorOutputSchema } =
-        getOperatorInputOutputSchema(node.data.component);
+        getOperatorInputOutputSchema(node.data);
       outputSchema = operatorOutputSchema;
     } else {
       const { outputSchema: connectorOutputSchema } =
-        getConnectorInputOutputSchema(node.data.component);
+        getConnectorInputOutputSchema(node.data);
       outputSchema = connectorOutputSchema;
     }
     let outputProperties: InstillAIOpenAPIProperty[] = [];

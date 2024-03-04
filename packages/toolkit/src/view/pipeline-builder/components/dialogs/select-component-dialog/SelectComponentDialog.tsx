@@ -1,14 +1,18 @@
 import cn from "clsx";
-import * as React from "react";
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
-import { ConnectorDefinition, OperatorDefinition } from "../../../../../lib";
+import {
+  ConnectorDefinition,
+  ConnectorWithDefinition,
+  OperatorDefinition,
+} from "../../../../../lib";
 import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
 
 export type OnSelectComponent = (
-  definition: ConnectorDefinition | OperatorDefinition
+  definition: ConnectorDefinition | OperatorDefinition,
+  connector?: ConnectorWithDefinition
 ) => void;
 
 export const SelectComponentDialog = ({

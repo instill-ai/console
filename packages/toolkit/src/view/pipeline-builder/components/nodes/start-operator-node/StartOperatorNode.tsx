@@ -23,6 +23,7 @@ import {
   GeneralRecord,
   sendAmplitudeData,
   useAmplitudeCtx,
+  PipelineStartComponentField,
 } from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
@@ -34,6 +35,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { StartEndOperatorControlPanel } from "../control-panel";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
+import { isStartComponent } from "../../../lib/checkComponentType";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -100,18 +102,17 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   // When edit field, the input key is already the auto generated key
   const onEditFreeFormField = (key: string) => {
-    if (!data.component.configuration.metadata) return;
     setPrevFieldKey(key);
     form.reset({
-      title: data.component.configuration.metadata[key].title,
+      title: data.start_component.fields[key].title,
       key,
-      description: data.component.configuration.metadata[key].description,
+      description: data.start_component.fields[key].description,
     });
     setEnableEdit(true);
 
     setSelectedType(
       pickSelectedTypeFromInstillFormat(
-        data.component.configuration.metadata[key].instillFormat
+        data.start_component.fields[key].instill_format
       )
     );
   };
@@ -119,10 +120,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   // When delete field, the input key is already the auto generated key
   const onDeleteFreeFormField = (key: string) => {
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "start") {
-        if (node.data.component.configuration.metadata) {
-          delete node.data.component.configuration.metadata[key];
-        }
+      if (isStartComponent(node.data)) {
+        delete node.data.start_component.fields[key];
 
         node.data = {
           ...node.data,
@@ -139,13 +138,10 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   function onCreateFreeFormField(
     formData: z.infer<typeof StartOperatorFreeFormSchema>
   ) {
-    let configuraton: Nullable<StartOperatorInput> = null;
+    let field: Nullable<PipelineStartComponentField> = null;
 
     if (
-      data.component.configuration.metadata &&
-      Object.keys(data.component.configuration.metadata).includes(
-        formData.key
-      ) &&
+      Object.keys(data.start_component.fields).includes(formData.key) &&
       !enableEdit
     ) {
       form.setError("key", {
@@ -157,133 +153,105 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
     switch (selectedType) {
       case "string": {
-        configuraton = {
-          type: "string",
-          instillFormat: "string",
+        field = {
+          instill_format: "string",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "array:string": {
-        configuraton = {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          instillFormat: "array:string",
+        field = {
+          instill_format: "array:string",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "long_string": {
-        configuraton = {
-          type: "string",
-          instillFormat: "string",
-          instillUIMultiline: true,
+        field = {
+          instill_format: "string",
+          instill_ui_multiline: true,
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "audio/*": {
-        configuraton = {
-          type: "string",
-          instillFormat: "audio/*",
+        field = {
+          instill_format: "audio/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "array:audio/*": {
-        configuraton = {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          instillFormat: "array:audio/*",
+        field = {
+          instill_format: "array:audio/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "boolean": {
-        configuraton = {
-          type: "boolean",
-          instillFormat: "boolean",
+        field = {
+          instill_format: "boolean",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "image/*": {
-        configuraton = {
-          type: "string",
-          instillFormat: "image/*",
+        field = {
+          instill_format: "image/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "array:image/*": {
-        configuraton = {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          instillFormat: "array:image/*",
+        field = {
+          instill_format: "array:image/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "video/*": {
-        configuraton = {
-          type: "string",
-          instillFormat: "video/*",
+        field = {
+          instill_format: "video/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "array:video/*": {
-        configuraton = {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          instillFormat: "array:video/*",
+        field = {
+          instill_format: "array:video/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "number": {
-        configuraton = {
-          type: "number",
-          instillFormat: "number",
+        field = {
+          instill_format: "number",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "*/*": {
-        configuraton = {
-          type: "string",
-          instillFormat: "*/*",
+        field = {
+          instill_format: "*/*",
           title: formData.title,
           description: formData.description,
         };
         break;
       }
       case "array:*/*": {
-        configuraton = {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          instillFormat: "array:*/*",
+        field = {
+          instill_format: "array:*/*",
           title: formData.title,
           description: formData.description,
         };
@@ -293,8 +261,8 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       // This is the special case. We use this input to store arbitrary JSON
       // By protocol, it don't have a type
       case "semi-structured/json": {
-        configuraton = {
-          instillFormat: "semi-structured/json",
+        field = {
+          instill_format: "semi-structured/json",
           title: formData.title,
           description: formData.description,
         };
@@ -302,21 +270,17 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "start" && configuraton) {
-        if (prevFieldKey && node.data.component.configuration.metadata) {
-          delete node.data.component.configuration.metadata[prevFieldKey];
+      if (isStartComponent(node.data) && field) {
+        if (prevFieldKey) {
+          delete node.data.start_component.fields[prevFieldKey];
         }
 
         node.data = {
           ...node.data,
-          component: {
-            ...node.data.component,
-            configuration: {
-              ...node.data.component.configuration,
-              metadata: {
-                ...node.data.component.configuration.metadata,
-                [formData.key]: configuraton,
-              },
+          start_component: {
+            fields: {
+              ...node.data.start_component.fields,
+              [formData.key]: field,
             },
           },
         };
@@ -351,11 +315,11 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
   const {
     Schema: StartOperatorTriggerPipelineFormSchema,
-    fields: startOperatorTriggerPipelineFormfields,
+    fieldItems: startOperatorTriggerPipelineFormfieldItems,
     form: startOperatorTriggerPipelineForm,
   } = useStartOperatorTriggerPipelineForm({
     mode: "build",
-    metadata: data.component.configuration.metadata ?? null,
+    fields: data.start_component.fields ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
     disabledFields: pipelineIsReadOnly,
@@ -393,15 +357,11 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
 
     const semiStructuredObjectKeys: string[] = [];
 
-    if (data.component.configuration.metadata) {
-      Object.entries(data.component.configuration.metadata).forEach(
-        ([key, value]) => {
-          if (value.instillFormat === "semi-structured/json") {
-            semiStructuredObjectKeys.push(key);
-          }
-        }
-      );
-    }
+    Object.entries(data.start_component.fields).forEach(([key, value]) => {
+      if (value.instill_format === "semi-structured/json") {
+        semiStructuredObjectKeys.push(key);
+      }
+    });
 
     const parsedStructuredData: GeneralRecord = input;
 
@@ -496,12 +456,7 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   }
 
   return (
-    <NodeWrapper
-      nodeType={data.nodeType}
-      id={id}
-      note={data.note}
-      noteIsOpen={noteIsOpen}
-    >
+    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
@@ -545,57 +500,59 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                   <VerticalSortableWrapper
                     // we directly use the key as the id, because the key is guarded
                     // but our auto-form, it should be always present
-                    items={startOperatorTriggerPipelineFormfields.map((e) => ({
-                      key: e.key as string,
-                    }))}
+                    items={startOperatorTriggerPipelineFormfieldItems.map(
+                      (e) => ({
+                        key: e.key as string,
+                      })
+                    )}
                     onDragEnd={(event) => {
                       const { active, over } = event;
 
                       if (over && active.id !== over.id) {
                         const oldIndex =
-                          startOperatorTriggerPipelineFormfields.findIndex(
+                          startOperatorTriggerPipelineFormfieldItems.findIndex(
                             (e) => e.key === active.id
                           );
                         const newIndex =
-                          startOperatorTriggerPipelineFormfields.findIndex(
+                          startOperatorTriggerPipelineFormfieldItems.findIndex(
                             (e) => e.key === over.id
                           );
 
                         const newFieldItems = arrayMove(
-                          startOperatorTriggerPipelineFormfields,
+                          startOperatorTriggerPipelineFormfieldItems,
                           oldIndex,
                           newIndex
                         );
 
                         if (newFieldItems.length > 0) {
-                          const newMetadata: Record<
-                            string,
-                            StartOperatorInput
-                          > = {};
-
-                          newFieldItems.forEach((item, index) => {
-                            if (data.component.configuration.metadata) {
-                              if (item.key) {
-                                newMetadata[item.key] = {
-                                  ...data.component.configuration.metadata[
-                                    item.key
-                                  ],
-                                  instillUiOrder: index,
-                                };
-                              }
-                            }
-                          });
-
                           const newNodes = nodes.map((node) => {
-                            if (node.data.nodeType === "start") {
+                            if (isStartComponent(node.data)) {
+                              const newFields = Object.fromEntries(
+                                Object.entries(
+                                  node.data.start_component.fields
+                                ).map(([key, value]) => {
+                                  const newFieldIndex = newFieldItems.findIndex(
+                                    (e) => e.key === key
+                                  );
+
+                                  if (newFieldIndex !== -1) {
+                                    return [
+                                      key,
+                                      {
+                                        ...value,
+                                        instill_ui_order: newFieldIndex,
+                                      },
+                                    ];
+                                  }
+
+                                  return [key, value];
+                                })
+                              );
+
                               node.data = {
                                 ...node.data,
-                                component: {
-                                  ...node.data.component,
-                                  configuration: {
-                                    ...node.data.component.configuration,
-                                    metadata: newMetadata,
-                                  },
+                                start_component: {
+                                  fields: newFields,
                                 },
                               };
                             }
@@ -609,14 +566,16 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
-                      {startOperatorTriggerPipelineFormfields.map((field) => (
-                        <NodeSortableFieldWrapper
-                          key={field.key}
-                          path={field.key as string}
-                        >
-                          {field}
-                        </NodeSortableFieldWrapper>
-                      ))}
+                      {startOperatorTriggerPipelineFormfieldItems.map(
+                        (item) => (
+                          <NodeSortableFieldWrapper
+                            key={item.key}
+                            path={item.key as string}
+                          >
+                            {item}
+                          </NodeSortableFieldWrapper>
+                        )
+                      )}
                     </div>
                   </VerticalSortableWrapper>
                 </form>

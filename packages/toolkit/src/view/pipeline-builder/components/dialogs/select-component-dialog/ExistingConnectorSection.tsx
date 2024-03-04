@@ -39,7 +39,7 @@ export const ExistingConnectorSection = ({
               <DialogSection.Item
                 key={connector.id}
                 onClick={() => {
-                  onSelect(connector.connector_definition);
+                  onSelect(connector.connector_definition, connector);
                 }}
               >
                 <ImageWithFallback

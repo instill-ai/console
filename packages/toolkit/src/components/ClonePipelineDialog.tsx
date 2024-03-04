@@ -36,7 +36,7 @@ import {
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
-import { getRawPipelineRecipeFromPipelineRecipe } from "../view";
+import { removeSensitiveDataInPipelineRecipe } from "../view";
 
 const ClonePipelineSchema = z
   .object({
@@ -141,7 +141,7 @@ export const ClonePipelineDialog = ({
 
     const payload: CreateUserPipelinePayload = {
       id: data.id,
-      recipe: getRawPipelineRecipeFromPipelineRecipe(
+      recipe: removeSensitiveDataInPipelineRecipe(
         pipeline.recipe,
         pipeline.owner_name === me.data.name ? false : true
       ),

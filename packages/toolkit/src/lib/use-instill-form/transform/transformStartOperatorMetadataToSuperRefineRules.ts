@@ -1,15 +1,15 @@
 import { Nullable, SuperRefineRule } from "../../type";
-import { StartOperatorMetadata } from "../../vdp-sdk";
+import { PipelineStartComponentFields } from "../../vdp-sdk";
 
-export function transformStartOperatorMetadataToSuperRefineRules(
-  metadata: Nullable<StartOperatorMetadata>
+export function transformStartOperatorFieldsToSuperRefineRules(
+  fields: Nullable<PipelineStartComponentFields>
 ) {
   const rules: SuperRefineRule[] = [];
 
-  if (!metadata) return rules;
+  if (!fields) return rules;
 
-  for (const [key, value] of Object.entries(metadata)) {
-    switch (value.instillFormat) {
+  for (const [key, value] of Object.entries(fields)) {
+    switch (value.instill_format) {
       case "string":
         rules.push({
           key,

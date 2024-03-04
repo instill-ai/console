@@ -1,7 +1,11 @@
 import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore } from "../../lib";
-import { ComponentFormOnRightPanel } from "./components/ComponentFormOnRightPanel";
+import { InstillStore, useInstillStore } from "../../../../lib";
+import { ComponentFormOnRightPanel } from "./ComponentFormOnRightPanel";
+import {
+  isConnectorComponent,
+  isOperatorComponent,
+} from "../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -55,28 +59,14 @@ export const RightPanel = () => {
 
       <div className="flex w-full pb-10">
         {selectedConnectorNode &&
-        selectedConnectorNode.data.nodeType === "connector" &&
-        selectedConnectorNode.data.component.connector_definition ? (
-          <ComponentFormOnRightPanel
-            componentID={selectedConnectorNode.data.component.id}
-            definition={
-              selectedConnectorNode.data.component.connector_definition
-            }
-            configuration={selectedConnectorNode.data.component.configuration}
-            nodeType="connector"
-          />
+        isConnectorComponent(selectedConnectorNode.data) &&
+        selectedConnectorNode.data.connector_component.definition ? (
+          <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
         ) : null}
         {selectedConnectorNode &&
-        selectedConnectorNode.data.nodeType === "operator" &&
-        selectedConnectorNode.data.component.operator_definition ? (
-          <ComponentFormOnRightPanel
-            componentID={selectedConnectorNode.data.component.id}
-            definition={
-              selectedConnectorNode.data.component.operator_definition
-            }
-            configuration={selectedConnectorNode.data.component.configuration}
-            nodeType="operator"
-          />
+        isOperatorComponent(selectedConnectorNode.data) &&
+        selectedConnectorNode.data.operator_component.definition ? (
+          <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
         ) : null}
       </div>
     </div>

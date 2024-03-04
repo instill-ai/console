@@ -14,29 +14,31 @@ export function getConnectorInputOutputSchema(
   let outputSchema: Nullable<InstillJSONSchema> = null;
 
   // Sometime the component don't have complete data (Like the response of mutating the pipeline)
-  if (!component.connector_definition) {
+  if (!component.connector_component) {
     return { outputSchema, inputSchema };
   }
 
   // Additional guard
-  if (!component.configuration) {
+  if (!component.connector_component.input) {
     return { outputSchema, inputSchema };
   }
 
-  const targetTask = task ?? component.configuration.task;
+  const targetTask = task ?? component.connector_component.task;
 
   // We need to support the breaking changes that maybe the previous selected task's
   // definition is not support anymore. Console need to check this.
   if (
     targetTask &&
-    component?.connector_definition?.spec.openapi_specifications[targetTask]
+    component?.connector_component.definition?.spec.openapi_specifications[
+      targetTask
+    ]
   ) {
     inputSchema = (
       (
         (
-          component?.connector_definition?.spec.openapi_specifications[
-            targetTask
-          ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
+          component?.connector_component.definition?.spec
+            .openapi_specifications[targetTask].paths["/execute"]?.post
+            ?.requestBody as OpenAPIV3.RequestBodyObject
         ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
       ).properties?.inputs as OpenAPIV3.ArraySchemaObject
     ).items as InstillJSONSchema;
@@ -44,24 +46,24 @@ export function getConnectorInputOutputSchema(
       (
         (
           (
-            component?.connector_definition?.spec.openapi_specifications[
-              targetTask
-            ].paths["/execute"]?.post?.responses[
-              "200"
-            ] as OpenAPIV3.ResponseObject
+            component?.connector_component.definition?.spec
+              .openapi_specifications[targetTask].paths["/execute"]?.post
+              ?.responses["200"] as OpenAPIV3.ResponseObject
           ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
         )["application/json"]?.schema as OpenAPIV3.SchemaObject
       ).properties?.outputs as OpenAPIV3.ArraySchemaObject
     ).items as InstillJSONSchema;
   } else if (
-    component.connector_definition.spec.component_specification.oneOf &&
-    component.connector_definition.spec.component_specification.oneOf.length > 0
+    component.connector_component.definition?.spec.component_specification
+      .oneOf &&
+    component.connector_component.definition.spec.component_specification.oneOf
+      .length > 0
   ) {
     const defaultTask =
       ((
         (
-          component.connector_definition.spec.component_specification
-            .oneOf[0] as JSONSchema7
+          component?.connector_component.definition?.spec
+            .component_specification.oneOf[0] as JSONSchema7
         )?.properties?.task as JSONSchema7
       )?.const as string) ?? null;
 
@@ -72,9 +74,9 @@ export function getConnectorInputOutputSchema(
     inputSchema = (
       (
         (
-          component?.connector_definition?.spec.openapi_specifications[
-            defaultTask
-          ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
+          component?.connector_component.definition?.spec
+            .openapi_specifications[defaultTask].paths["/execute"]?.post
+            ?.requestBody as OpenAPIV3.RequestBodyObject
         ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
       ).properties?.inputs as OpenAPIV3.ArraySchemaObject
     ).items as InstillJSONSchema;
@@ -82,11 +84,9 @@ export function getConnectorInputOutputSchema(
       (
         (
           (
-            component?.connector_definition?.spec.openapi_specifications[
-              defaultTask
-            ].paths["/execute"]?.post?.responses[
-              "200"
-            ] as OpenAPIV3.ResponseObject
+            component?.connector_component.definition?.spec
+              .openapi_specifications[defaultTask].paths["/execute"]?.post
+              ?.responses["200"] as OpenAPIV3.ResponseObject
           ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
         )["application/json"]?.schema as OpenAPIV3.SchemaObject
       ).properties?.outputs as OpenAPIV3.ArraySchemaObject

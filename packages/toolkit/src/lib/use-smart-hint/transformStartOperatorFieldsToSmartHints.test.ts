@@ -1,78 +1,68 @@
 import { test, expect } from "vitest";
-import { StartOperatorMetadata } from "../vdp-sdk";
-import { transformStartOperatorMetadataToSmartHints } from "./transformStartOperatorMetadataToSmartHints";
+import { PipelineStartComponentFields } from "../vdp-sdk";
+import { transformStartOperatorFieldsToSmartHints } from "./transformStartOperatorFieldsToSmartHints";
 
 test("should transform start operator metadata to smart hints", () => {
-  const metadata: StartOperatorMetadata = {
+  const fields: PipelineStartComponentFields = {
     text: {
-      type: "string",
-      instillFormat: "string",
+      instill_format: "string",
       title: "Foo",
     },
     audio: {
-      type: "string",
-      instillFormat: "audio/*",
+      instill_format: "audio/*",
       title: "Audio",
     },
   };
 
-  const hints = transformStartOperatorMetadataToSmartHints(metadata);
+  const hints = transformStartOperatorFieldsToSmartHints(fields);
 
   expect(hints).toStrictEqual([
     {
       path: "start.text",
       key: "text",
       instillFormat: "string",
-      type: "string",
+      type: "null",
     },
     {
       path: "start.audio",
       key: "audio",
       instillFormat: "audio/*",
-      type: "string",
+      type: "null",
     },
   ]);
 });
 
 test("should transform start operator metadata to smart hints with empty metadata", () => {
-  const hints = transformStartOperatorMetadataToSmartHints({});
+  const hints = transformStartOperatorFieldsToSmartHints({});
   expect(hints).toStrictEqual([]);
 });
 
 test("should transform array metadata to smart hints", () => {
-  const metadata: StartOperatorMetadata = {
+  const fields: PipelineStartComponentFields = {
     text: {
-      type: "array",
-      instillFormat: "array:string",
-      items: {
-        type: "string",
-      },
+      instill_format: "array:string",
       title: "Text",
     },
     images: {
-      type: "array",
-      instillFormat: "array:image/*",
-      items: {
-        type: "string",
-      },
+      instill_format: "array:image/*",
       title: "Images",
     },
   };
 
-  const hints = transformStartOperatorMetadataToSmartHints(metadata);
+  const hints = transformStartOperatorFieldsToSmartHints(fields);
 
   expect(hints).toStrictEqual([
     {
       path: "start.text",
       key: "text",
       instillFormat: "array:string",
-      type: "array",
+      type: "null",
     },
     {
       path: "start.images",
       key: "images",
       instillFormat: "array:image/*",
-      type: "array",
+      type: "null",
     },
   ]);
 });

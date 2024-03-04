@@ -4,7 +4,6 @@ export * from "./GeneralStateCell";
 export * from "./GeneralTaskCell";
 export * from "./ModelDefinitionCell";
 export * from "./ModelCountsCell";
-export * from "./ModelsCell";
 export * from "./ModelTaskCell";
 export * from "./NameCell";
 export * from "./PipelinesCell";

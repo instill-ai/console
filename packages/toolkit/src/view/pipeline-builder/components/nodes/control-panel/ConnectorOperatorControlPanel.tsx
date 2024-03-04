@@ -2,12 +2,7 @@ import * as React from "react";
 import { Icons } from "@instill-ai/design-system";
 import { Node, Position } from "reactflow";
 
-import {
-  InstillStore,
-  Nullable,
-  PipelineComponentType,
-  useInstillStore,
-} from "../../../../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { useShallow } from "zustand/react/shallow";
 import { ControlPanel } from "./ControlPanel";
 import { NodeDropdownMenu } from "../common";
@@ -17,6 +12,11 @@ import {
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
 import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../../type";
+import {
+  isConnectorComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+} from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -33,7 +33,7 @@ const selector = (store: InstillStore) => ({
 
 export const ConnectorOperatorControlPanel = ({
   nodeID,
-  componentType,
+
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,
@@ -41,7 +41,6 @@ export const ConnectorOperatorControlPanel = ({
   nodeData,
 }: {
   nodeID: string;
-  componentType: PipelineComponentType;
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
@@ -64,19 +63,10 @@ export const ConnectorOperatorControlPanel = ({
 
   let componentTypeName: Nullable<string> = null;
 
-  switch (componentType) {
-    case "COMPONENT_TYPE_CONNECTOR_AI":
-      componentTypeName = "AI Component";
-      break;
-    case "COMPONENT_TYPE_CONNECTOR_DATA":
-      componentTypeName = "Data Component";
-      break;
-    case "COMPONENT_TYPE_CONNECTOR_APPLICATION":
-      componentTypeName = "Application Component";
-      break;
-    case "COMPONENT_TYPE_OPERATOR":
-      componentTypeName = "Operator Component";
-      break;
+  if (isOperatorComponent(nodeData)) {
+    componentTypeName = "Operator Component";
+  } else {
+    componentTypeName = "Connector Component";
   }
 
   const handelDeleteNode = React.useCallback(() => {
@@ -101,25 +91,32 @@ export const ConnectorOperatorControlPanel = ({
 
   const handleCopyNode = React.useCallback(() => {
     let nodePrefix: Nullable<string> = null;
+    let nodeType = "connectorNode";
 
-    if (nodeData.nodeType === "connector") {
-      if (!nodeData.component.connector_definition) {
+    if (isOperatorComponent(nodeData)) {
+      if (!nodeData.operator_component.definition) {
         return;
       }
 
       nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        nodeData.component.connector_definition.id
+        nodeData.operator_component.definition.id
+      );
+
+      nodeType = "operatorNode";
+    }
+
+    if (isConnectorComponent(nodeData)) {
+      if (!nodeData.connector_component.definition) {
+        return;
+      }
+
+      nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
+        nodeData.connector_component.definition.id
       );
     }
 
-    if (nodeData.nodeType === "operator") {
-      if (!nodeData.component.operator_definition) {
-        return;
-      }
-
-      nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        nodeData.component.operator_definition.id
-      );
+    if (isIteratorComponent(nodeData)) {
+      return;
     }
 
     if (!nodePrefix) {
@@ -138,8 +135,7 @@ export const ConnectorOperatorControlPanel = ({
       ...nodes,
       {
         id: nodeID,
-        type:
-          nodeData.nodeType === "connector" ? "connectorNode" : "operatorNode",
+        type: nodeType,
         sourcePosition: Position.Left,
         targetPosition: Position.Right,
         position: { x: 0, y: 0 },

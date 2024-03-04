@@ -2,17 +2,17 @@
 
 import * as z from "zod";
 import { Nullable } from "../../type";
-import { StartOperatorMetadata } from "../../vdp-sdk";
+import { PipelineStartComponentFields } from "../../vdp-sdk";
 
-export function transformStartOperatorMetadataToZod(
-  metadata: Nullable<StartOperatorMetadata>
+export function transformStartOperatorFieldsToZod(
+  fields: Nullable<PipelineStartComponentFields>
 ) {
   let zodSchema: z.ZodObject<any, any, any> = z.object({});
 
-  if (!metadata) return zodSchema;
+  if (!fields) return zodSchema;
 
-  for (const [key, value] of Object.entries(metadata)) {
-    switch (value.instillFormat) {
+  for (const [key, value] of Object.entries(fields)) {
+    switch (value.instill_format) {
       case "string":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;

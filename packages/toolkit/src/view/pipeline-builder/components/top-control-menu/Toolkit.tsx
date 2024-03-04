@@ -31,17 +31,17 @@ export const Toolkit = () => {
     const input: GeneralRecord = {};
 
     const startNode = nodes.find(
-      (e) => e.data.nodeType === "start"
+      (e) => (e.data.id = "start")
     ) as Node<StartNodeData>;
 
-    if (!startNode || !startNode.data.component.configuration.metadata) {
+    if (!startNode || !startNode.data.start_component.fields) {
       return "";
     }
 
-    for (const [key, metadata] of Object.entries(
-      startNode.data.component.configuration.metadata
+    for (const [key, value] of Object.entries(
+      startNode.data.start_component.fields
     )) {
-      switch (metadata.instillFormat) {
+      switch (value.instill_format) {
         case "string": {
           input[key] = "Please put your value here";
           break;

@@ -7,44 +7,35 @@ import {
   PipelineRecipe,
   PipelineStartComponent,
   PipelineOperatorComponent,
+  PipelineIteratorComponent,
 } from "../../lib";
 
 export type ConnectorNodeData = {
-  nodeType: "connector";
-  component: PipelineConnectorComponent;
   note: Nullable<string>;
-};
-
-export type EmptyNodeData = {
-  nodeType: "empty";
-  component: null;
-  note: null;
-};
+} & PipelineConnectorComponent;
 
 export type StartNodeData = {
-  nodeType: "start";
-  component: PipelineStartComponent;
   note: Nullable<string>;
-};
+} & PipelineStartComponent;
 
 export type EndNodeData = {
-  nodeType: "end";
-  component: PipelineEndComponent;
   note: Nullable<string>;
-};
+} & PipelineEndComponent;
 
 export type OperatorNodeData = {
-  nodeType: "operator";
-  component: PipelineOperatorComponent;
   note: Nullable<string>;
-};
+} & PipelineOperatorComponent;
+
+export type IteratorNodeData = {
+  note: Nullable<string>;
+} & PipelineIteratorComponent;
 
 export type NodeData =
   | ConnectorNodeData
-  | EmptyNodeData
   | StartNodeData
   | EndNodeData
-  | OperatorNodeData;
+  | OperatorNodeData
+  | IteratorNodeData;
 
 export type PipelineComponentReference =
   | DoubleCurlyBraceReference

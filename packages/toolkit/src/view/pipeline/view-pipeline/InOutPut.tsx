@@ -5,6 +5,8 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  PipelineEndComponent,
+  PipelineStartComponent,
   StartOperatorMetadata,
   TriggerUserPipelineResponse,
   sendAmplitudeData,
@@ -67,23 +69,23 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     if (!pipeline.isSuccess) return null;
 
     if (!currentVersion || releases.length === 0) {
-      return (
-        pipeline.data?.recipe.components.find((c) => c.id === "start") ?? null
-      );
+      return (pipeline.data?.recipe.components.find((c) => c.id === "start") ??
+        null) as Nullable<PipelineStartComponent>;
     }
 
     const pipelineVersion = releases.find(
       (release) =>
         release.id === currentVersion || release.alias === currentVersion
     );
-    return (
-      pipelineVersion?.recipe.components.find((c) => c.id === "start") ?? null
-    );
+    return (pipelineVersion?.recipe.components.find((c) => c.id === "start") ??
+      null) as Nullable<PipelineStartComponent>;
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
-  const { fields, form, Schema } = useStartOperatorTriggerPipelineForm({
+  const { fieldItems, form, Schema } = useStartOperatorTriggerPipelineForm({
     mode: "demo",
-    metadata: startComponent ? startComponent.configuration.metadata : null,
+    fields: startComponent
+      ? startComponent.start_component.fields ?? null
+      : null,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,
     disabledFieldControls: true,
@@ -100,7 +102,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     const startOperatorMetadata = pipeline.data.recipe.components.find(
       (component) => component.id === "start"
-    )?.configuration.metadata as StartOperatorMetadata | undefined;
+    )?.metadata as StartOperatorMetadata | undefined;
 
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
@@ -164,13 +166,12 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     const startComponent = pipeline.data.recipe.components.find(
       (e) => e.id === "start"
-    );
+    ) as PipelineStartComponent | undefined;
 
     if (
       startComponent &&
-      startComponent.configuration &&
-      startComponent.configuration.metadata &&
-      Object.keys(startComponent.configuration.metadata).length > 0
+      startComponent.start_component.fields &&
+      Object.keys(startComponent.start_component.fields).length > 0
     ) {
       return false;
     }
@@ -183,13 +184,12 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     const endComponent = pipeline.data.recipe.components.find(
       (e) => e.id === "end"
-    );
+    ) as PipelineEndComponent | undefined;
 
     if (
       endComponent &&
-      endComponent.configuration &&
-      endComponent.configuration.metadata &&
-      Object.keys(endComponent.configuration.metadata).length > 0
+      endComponent.end_component.fields &&
+      Object.keys(endComponent.end_component.fields).length > 0
     ) {
       return false;
     }
@@ -274,7 +274,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 className="w-full"
                 onSubmit={form.handleSubmit(onTriggerPipeline)}
               >
-                <div className="flex flex-col gap-y-3">{fields}</div>
+                <div className="flex flex-col gap-y-3">{fieldItems}</div>
               </form>
             </Form.Root>
           )

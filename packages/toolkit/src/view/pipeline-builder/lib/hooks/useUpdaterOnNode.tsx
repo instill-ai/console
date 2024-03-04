@@ -6,10 +6,18 @@ import {
   Nullable,
   ZodAnyValidatorSchema,
   useInstillStore,
-} from "../../../lib";
+} from "../../../../lib";
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
-import { composeEdgesFromNodes } from "../lib";
+import {
+  composeEdgesFromNodes,
+  getConnectorOperatorComponentConfiguration,
+} from "..";
+import { ConnectorNodeData, OperatorNodeData } from "../../type";
+import {
+  isConnectorComponent,
+  isOperatorComponent,
+} from "../checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -21,17 +29,13 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useUpdaterOnNode({
-  id,
-  nodeType,
+  currentNodeData,
   form,
   ValidatorSchema,
-  configuration,
 }: {
-  id: string;
-  nodeType: "connector" | "operator";
+  currentNodeData: OperatorNodeData | ConnectorNodeData;
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
-  configuration: GeneralRecord;
 }) {
   const {
     nodes,
@@ -53,8 +57,15 @@ export function useUpdaterOnNode({
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
+    const configuration =
+      getConnectorOperatorComponentConfiguration(currentNodeData);
 
-    if (values.task !== configuration.task) {
+    if (
+      (isConnectorComponent(currentNodeData) &&
+        values.task !== currentNodeData.connector_component.task) ||
+      (isOperatorComponent(currentNodeData) &&
+        values.task !== currentNodeData.operator_component.task)
+    ) {
       updateCurrentAdvancedConfigurationNodeID(() => null);
     }
 
@@ -74,65 +85,47 @@ export function useUpdaterOnNode({
       clearTimeout(timer.current);
     }
 
+    console.log(parsed.data);
+
     timer.current = setTimeout(() => {
       const newNodes = nodes.map((node) => {
         if (
-          nodeType === "connector" &&
-          node.data.nodeType === "connector" &&
-          node.id === id
+          isConnectorComponent(node.data) &&
+          isConnectorComponent(currentNodeData) &&
+          node.id === currentNodeData.id
         ) {
           return {
             ...node,
             data: {
               ...node.data,
-              component: {
-                ...node.data.component,
-                configuration:
-                  parsed.data.task === node.data.component.configuration.task
-                    ? {
-                        ...node.data.component.configuration,
-                        task: parsed.data.task,
-                        input: {
-                          ...node.data.component.configuration.input,
-                          ...parsed.data.input,
-                        },
-                      }
-                    : {
-                        ...node.data.component.configuration,
-                        task: parsed.data.task,
-                        input: parsed.data.input,
-                      },
+              connector_component: {
+                ...node.data.connector_component,
+                input: {
+                  ...node.data.connector_component.input,
+                  ...parsed.data.input,
+                },
+                task: parsed.data.task,
               },
             },
           };
         }
 
         if (
-          nodeType === "operator" &&
-          node.data.nodeType === "operator" &&
-          node.id === id
+          isOperatorComponent(node.data) &&
+          isOperatorComponent(currentNodeData) &&
+          node.id === currentNodeData.id
         ) {
           return {
             ...node,
             data: {
               ...node.data,
-              component: {
-                ...node.data.component,
-                configuration:
-                  parsed.data.task === node.data.component.configuration.task
-                    ? {
-                        ...node.data.component.configuration,
-                        task: parsed.data.task,
-                        input: {
-                          ...node.data.component.configuration.input,
-                          ...parsed.data.input,
-                        },
-                      }
-                    : {
-                        ...node.data.component.configuration,
-                        task: parsed.data.task,
-                        input: parsed.data.input,
-                      },
+              operator_component: {
+                ...node.data.operator_component,
+                input: {
+                  ...node.data.operator_component.input,
+                  ...parsed.data.input,
+                },
+                task: parsed.data.task,
               },
             },
           };
@@ -154,12 +147,10 @@ export function useUpdaterOnNode({
   }, [
     values,
     ValidatorSchema,
-    id,
-    nodeType,
     updateNodes,
     updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
-    configuration,
+    currentNodeData,
     nodes,
     updateEdges,
   ]);

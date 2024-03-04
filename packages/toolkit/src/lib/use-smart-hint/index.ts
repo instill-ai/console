@@ -1,4 +1,4 @@
 export * from "./types";
 export * from "./useSmartHint";
 export * from "./pickSmartHintsFromAcceptFormats";
-export * from "./transformStartOperatorMetadataToSmartHints";
+export * from "./transformStartOperatorFieldsToSmartHints";

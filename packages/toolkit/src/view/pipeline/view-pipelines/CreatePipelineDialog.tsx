@@ -154,20 +154,15 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         components: [
           {
             id: "start",
-            resource_name: "",
-            configuration: {
-              metadata: {},
+            start_component: {
+              fields: {},
             },
-            definition_name: "operator-definitions/start",
           },
           {
             id: "end",
-            resource_name: "",
-            configuration: {
-              metadata: {},
-              input: {},
+            end_component: {
+              fields: {},
             },
-            definition_name: "operator-definitions/end",
           },
         ],
       },

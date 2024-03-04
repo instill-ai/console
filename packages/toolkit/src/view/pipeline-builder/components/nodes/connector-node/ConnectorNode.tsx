@@ -8,6 +8,7 @@ import { CustomHandle } from "../../CustomHandle";
 import {
   getConnectorInputOutputSchema,
   composeEdgesFromNodes,
+  getConnectorOperatorComponentConfiguration,
 } from "../../../lib";
 import {
   GeneralRecord,
@@ -23,8 +24,7 @@ import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
-import { useCheckIsHidden } from "../../useCheckIsHidden";
-import { useUpdaterOnNode } from "../../useUpdaterOnNode";
+import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
 import { InstillErrors } from "../../../../../constant/errors";
 import {
   NodeBottomBarContent,
@@ -35,6 +35,7 @@ import {
   useNodeIDEditorForm,
 } from "../common";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
+import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -100,7 +101,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   let resourceNotCreated = false;
 
-  if (!data.component.resource_name) {
+  if (!data.connector_component.connector_name) {
     resourceNotCreated = true;
   }
 
@@ -136,16 +137,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.id === id && node.data.nodeType === "connector") {
+      if (node.id === id && isConnectorComponent(node.data)) {
         return {
           ...node,
           id: newID,
           data: {
             ...node.data,
-            component: {
-              ...node.data.component,
-              id: newID,
-            },
+            id: newID,
           },
         };
       }
@@ -180,13 +178,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
-      data.component.connector_definition?.spec.component_specification ?? null,
-      data.component.configuration,
+      data.connector_component.definition?.spec.component_specification ?? null,
+      data.connector_component,
       {
         size: "sm",
         enableSmartHint: true,
         checkIsHidden,
-        componentID: data.component.id,
+        componentID: data.id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
       }
     );
@@ -198,7 +196,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     // output schema depends on the selected task
 
     return getConnectorInputOutputSchema(
-      data.component,
+      data,
       selectedConditionMap ? selectedConditionMap["task"] : undefined
     );
   }, [data, selectedConditionMap]);
@@ -206,11 +204,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const { getValues, trigger } = form;
 
   useUpdaterOnNode({
-    id,
-    nodeType: "connector",
+    currentNodeData: data,
     form,
     ValidatorSchema,
-    configuration: data.component.configuration,
   });
 
   const targetConnectorDefinition = React.useMemo(() => {
@@ -218,28 +214,22 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
     return (
       connectorDefinitions.data.find(
-        (e) => e.name === data.component.definition_name
+        (e) => e.name === data.connector_component.definition_name
       ) ?? null
     );
-  }, [
-    connectorDefinitions.isSuccess,
-    connectorDefinitions.data,
-    data.component,
-  ]);
+  }, [connectorDefinitions.isSuccess, connectorDefinitions.data, data]);
 
   return (
     <NodeWrapper
-      nodeType={data.nodeType}
-      id={id}
-      note={data.note}
+      nodeData={data}
       noteIsOpen={noteIsOpen}
       renderNodeBottomBar={() => <NodeBottomBarMenu />}
       renderBottomBarInformation={() => (
         <NodeBottomBarContent
-          componentID={data.component.id}
+          componentID={data.id}
           outputSchema={outputSchema}
           componentSchema={
-            (data.component.connector_definition?.spec as GeneralRecord) ?? null
+            (data.connector_component.definition?.spec as GeneralRecord) ?? null
           }
         />
       )}
@@ -249,10 +239,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.connector_definition?.id}.svg`}
+            src={`/icons/${data.connector_component.definition?.id}.svg`}
             width={16}
             height={16}
-            alt={`${data.component?.connector_definition?.title}-icon`}
+            alt={`${data.connector_component.definition?.title}-icon`}
             fallbackImg={
               <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
@@ -266,7 +256,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         <ConnectorOperatorControlPanel
           nodeID={id}
           nodeData={data}
-          componentType={data.component.type}
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen((prev) => !prev)}
@@ -279,21 +268,21 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           onCreate={() => {
             updateCreateResourceDialogState(() => ({
               open: true,
-              connectorType: data.component.connector_definition?.type ?? null,
-              connectorDefinition: data.component.connector_definition ?? null,
+              connectorType: data.connector_component.definition?.type ?? null,
+              connectorDefinition: data.connector_component.definition ?? null,
               onCreated: (connector) => {
                 const newNodes = nodes.map((node) => {
-                  if (node.data.nodeType === "connector" && node.id === id) {
+                  if (isConnectorComponent(node.data) && node.id === id) {
                     node.data = {
                       ...node.data,
-                      component: {
-                        ...node.data.component,
-                        resource_name: connector.name,
-                        resource: {
+                      connector_component: {
+                        ...node.data.connector_component,
+                        connector_name: connector.name,
+                        connector: {
                           ...connector,
                           connector_definition: null,
                         },
-                        connector_definition: connector.connector_definition,
+                        definition: connector.connector_definition,
                       },
                     };
                   }
@@ -314,17 +303,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               onSelectedExistingResource: (connector) => {
                 updateNodes((prev) => {
                   return prev.map((node) => {
-                    if (node.data.nodeType === "connector" && node.id === id) {
+                    if (isConnectorComponent(node.data) && node.id === id) {
                       node.data = {
                         ...node.data,
-                        component: {
-                          ...node.data.component,
-                          resource_name: connector.name,
+                        connector_component: {
+                          ...node.data.connector_component,
+                          connector_name: connector.name,
 
                           // Some dynamic generated connector definition like instill_model's modelName enum
                           // will only be returned from connectors endpoint. Therefore, we need to update the
                           // connector definition here
-                          connector_definition: connector.connector_definition,
+                          definition: connector.connector_definition,
                         },
                       };
                     }
@@ -380,17 +369,23 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             Data connector free form
           */}
 
-          {data.component.type === "COMPONENT_TYPE_CONNECTOR_DATA" &&
-          data.component.definition_name !== "connector-definitions/pinecone" &&
-          data.component.definition_name !== "connector-definitions/gcs" &&
-          data.component.definition_name !==
+          {isConnectorComponent(data) &&
+          data.connector_component.definition?.type === "CONNECTOR_TYPE_DATA" &&
+          data.connector_component.definition_name !==
+            "connector-definitions/pinecone" &&
+          data.connector_component.definition_name !==
+            "connector-definitions/gcs" &&
+          data.connector_component.definition_name !==
             "connector-definitions/google-search" &&
-          data.component.definition_name !== "connector-definitions/redis" &&
-          data.component.definition_name !== "connector-definitions/website" &&
-          data.component.definition_name !== "connector-definitions/restapi" ? (
+          data.connector_component.definition_name !==
+            "connector-definitions/redis" &&
+          data.connector_component.definition_name !==
+            "connector-definitions/website" &&
+          data.connector_component.definition_name !==
+            "connector-definitions/restapi" ? (
             <DataConnectorFreeForm
               nodeID={id}
-              component={data.component}
+              component={data}
               enableEdit={enableEdit}
               setEnableEdit={setEnableEdit}
             />
@@ -402,15 +397,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
           <div className="mb-4 w-full">
             {!resourceNotCreated && !enableEdit ? (
-              // <ComponentOutputs
-              //   componentID={data.component.id}
-              //   outputSchema={outputSchema}
-              //   nodeType="connector"
-              //   response={testModeTriggerResponse}
-              //   chooseTitleFrom="key"
-              // />
               <ComponentOutputReferenceHints
-                componentID={data.component.id}
+                componentID={data.id}
                 outputSchema={outputSchema}
               />
             ) : null}
@@ -419,8 +407,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           <div className="mb-3 flex flex-row-reverse">
             <ConnectorIDTag
               connectorID={
-                data.component.resource_name
-                  ? data.component.resource_name.split("/")[3]
+                data.connector_component.connector_name
+                  ? data.connector_component.connector_name.split("/")[3]
                   : null
               }
             />

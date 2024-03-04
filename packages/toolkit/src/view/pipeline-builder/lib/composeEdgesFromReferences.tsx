@@ -14,6 +14,12 @@ import {
 } from "../type";
 import { InstillJSONSchema, Nullable } from "../../../lib";
 import { getOperatorInputOutputSchema } from "./getOperatorInputOutputSchema";
+import {
+  isEndComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+  isStartComponent,
+} from "./checkComponentType";
 
 export function composeEdgesFromReferences(
   references: PipelineComponentReference[],
@@ -27,14 +33,10 @@ export function composeEdgesFromReferences(
   // 1. loop through nodes to get all available references
 
   nodes.forEach((node) => {
-    if (!node.data.component) return;
-
     // 1.1 Start node is special, we need to get all the metadata keys as available
-    if (node.data.nodeType === "start") {
-      if (node.data.component.configuration.metadata) {
-        for (const [key] of Object.entries(
-          node.data.component.configuration.metadata
-        )) {
+    if (isStartComponent(node.data)) {
+      if (node.data.metadata) {
+        for (const [key] of Object.entries(node.data.metadata)) {
           startNodeAvailableRefernces.push(`${node.id}.${key}`);
         }
       }
@@ -43,24 +45,24 @@ export function composeEdgesFromReferences(
     }
 
     // 1.2 We can ignore end node, they can not be referenced/connected
-    if (node.data.nodeType === "end") return;
+    if (isEndComponent(node.data) || isIteratorComponent(node.data)) return;
 
     let inputSchema: Nullable<InstillJSONSchema> = null;
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
     // 1.3 Extract references for operator and connector
-    if (node.data.nodeType === "operator") {
+    if (isOperatorComponent(node.data)) {
       const {
         inputSchema: operatorInputSchema,
         outputSchema: operatorOutputSchema,
-      } = getOperatorInputOutputSchema(node.data.component);
+      } = getOperatorInputOutputSchema(node.data);
       inputSchema = operatorInputSchema;
       outputSchema = operatorOutputSchema;
     } else {
       const {
         inputSchema: connectorInputSchema,
         outputSchema: connectorOutputSchema,
-      } = getConnectorInputOutputSchema(node.data.component);
+      } = getConnectorInputOutputSchema(node.data);
       inputSchema = connectorInputSchema;
       outputSchema = connectorOutputSchema;
     }
