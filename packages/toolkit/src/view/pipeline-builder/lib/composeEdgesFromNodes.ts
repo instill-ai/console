@@ -78,8 +78,6 @@ export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
   const { otherNodesAvailableReferences, startNodeAvailableRefernces } =
     getAvailableReferences(nodes);
 
-  console.log(otherNodesAvailableReferences, startNodeAvailableRefernces);
-
   for (const reference of references) {
     const newEdges = composeEdgeForReference({
       reference,

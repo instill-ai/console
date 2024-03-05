@@ -112,10 +112,10 @@ export function createInitialGraphData(
     if (isConnectorComponent(component)) {
       nodes.push({
         id: component.id,
-        type: "operatorNode",
+        type: "connectorNode",
         data: {
           id: component.id,
-          operator_component: {
+          connector_component: {
             ...component.connector_component,
             input: recursiveHelpers.parseNumberToString(
               component.connector_component.input
@@ -130,6 +130,7 @@ export function createInitialGraphData(
       continue;
     }
   }
+
   const edges = composeEdgesFromNodes(nodes);
 
   return {

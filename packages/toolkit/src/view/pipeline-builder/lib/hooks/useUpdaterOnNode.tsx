@@ -85,8 +85,6 @@ export function useUpdaterOnNode({
       clearTimeout(timer.current);
     }
 
-    console.log(parsed.data);
-
     timer.current = setTimeout(() => {
       const newNodes = nodes.map((node) => {
         if (
