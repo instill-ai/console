@@ -18,6 +18,7 @@ import {
   CardSkeletonPipeline,
   UserProfileCardProps,
 } from "../../../components";
+import debounce from "lodash.debounce";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -30,6 +31,7 @@ export const Body = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [searchValue, setSearchValue] = React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -91,6 +93,14 @@ export const Body = ({
     }
   }, [searchCode]);
 
+  const debouncedSetSearchCode = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchCode(value);
+      }, 300),
+    []
+  );
+
   return (
     <div className=" flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
@@ -111,9 +121,12 @@ export const Body = ({
                 <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
               </Input.LeftIcon>
               <Input.Core
-                value={searchCode ?? ""}
+                value={searchValue ?? ""}
                 placeholder="Search..."
-                onChange={(event) => setSearchCode(event.target.value)}
+                onChange={(event) => {
+                  setSearchValue(event.target.value);
+                  debouncedSetSearchCode(event.target.value);
+                }}
               />
             </Input.Root>
           </div>

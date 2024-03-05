@@ -112,6 +112,7 @@
     "echarts": "^5.4.2",
     "elkjs": "^0.8.2",
     "immer": "^9.0.19",
+    "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "markdown-it": "^13.0.2",
     "markdown-to-jsx": "^7.3.2",
