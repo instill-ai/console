@@ -85,6 +85,12 @@ export const Body = ({
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  React.useEffect(() => {
+    if (searchCode) {
+      pipelines.refetch();
+    }
+  }, [searchCode]);
+
   return (
     <div className=" flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
@@ -113,7 +119,7 @@ export const Body = ({
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
-          {pipelines.isSuccess ? (
+          {pipelines.isSuccess && !pipelines.isFetching ? (
             allPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
@@ -121,14 +127,17 @@ export const Body = ({
                 </p>
               </div>
             ) : (
+              allPipelines.length &&
               allPipelines.map((pipeline) => (
-                <CardPipeline
-                  key={pipeline.id}
-                  ownerID={pipeline.owner_name.split("/")[1]}
-                  pipeline={pipeline}
-                  isOwner={pipeline.owner_name === me.data?.name}
-                  disabledPermissionLabel={true}
-                />
+                <React.Fragment>
+                  <CardPipeline
+                    key={pipeline.id}
+                    ownerID={pipeline.owner_name.split("/")[1]}
+                    pipeline={pipeline}
+                    isOwner={pipeline.owner_name === me.data?.name}
+                    disabledPermissionLabel={true}
+                  />
+                </React.Fragment>
               ))
             )
           ) : (
