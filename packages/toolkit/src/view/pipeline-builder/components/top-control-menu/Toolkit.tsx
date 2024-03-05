@@ -30,11 +30,15 @@ export const Toolkit = () => {
 
     const input: GeneralRecord = {};
 
-    const startNode = nodes.find(
-      (e) => (e.data.id = "start")
-    ) as Node<StartNodeData>;
+    const startNode = nodes.find((e) => e.data.id === "start") as
+      | Node<StartNodeData>
+      | undefined;
 
-    if (!startNode || !startNode.data.start_component.fields) {
+    if (!startNode) {
+      return "";
+    }
+
+    if (!startNode.data.start_component.fields) {
       return "";
     }
 

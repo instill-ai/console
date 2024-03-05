@@ -5,10 +5,30 @@ import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
 import { ImageWithFallback } from "../../../../../components";
 import { Button, Icons } from "@instill-ai/design-system";
 import { ConnectorOperatorControlPanel } from "../control-panel";
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
+import {
+  checkIsValidPosition,
+  createGraphLayout,
+  createInitialGraphData,
+} from "../../../lib";
+
+const selector = (store: InstillStore) => ({
+  updateIsEditingIterator: store.updateIsEditingIterator,
+  updateCurrentEditingIterator: store.updateCurrentEditingIterator,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+});
 
 export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
+
+  const {
+    updateIsEditingIterator,
+    updateCurrentEditingIterator,
+    updateEdges,
+    updateNodes,
+  } = useInstillStore(useShallow(selector));
 
   return (
     <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
@@ -53,7 +73,53 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
               </div>
             </div>
           </div>
-          <Button variant="tertiaryColour" className="w-full">
+          <Button
+            variant="tertiaryColour"
+            className="w-full"
+            onClick={() => {
+              updateIsEditingIterator(() => true);
+              updateCurrentEditingIterator(() => data);
+
+              if (
+                checkIsValidPosition(
+                  data.iterator_component.components,
+                  data.metadata ?? null
+                )
+              ) {
+                const initialGraphData = createInitialGraphData(
+                  data.iterator_component.components,
+                  {
+                    metadata: data.metadata,
+                  }
+                );
+                console.log(initialGraphData);
+
+                updateNodes(() => initialGraphData.nodes);
+                updateEdges(() => initialGraphData.edges);
+
+                return;
+              } else {
+                const initialGraphData = createInitialGraphData(
+                  data.iterator_component.components
+                );
+
+                updateNodes(() => initialGraphData.nodes);
+                updateEdges(() => initialGraphData.edges);
+
+                createGraphLayout(
+                  initialGraphData.nodes,
+                  initialGraphData.edges
+                )
+                  .then((graphData) => {
+                    updateNodes(() => graphData.nodes);
+                    updateEdges(() => graphData.edges);
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
+              }
+            }}
+          >
             Edit Iterator
           </Button>
         </React.Fragment>

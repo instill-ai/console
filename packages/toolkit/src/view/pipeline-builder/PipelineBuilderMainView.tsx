@@ -225,6 +225,7 @@ export const PipelineBuilderMainView = () => {
           <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
             <Flow
               ref={reactFlowWrapper}
+              reactFlowInstance={reactFlowInstance}
               setReactFlowInstance={setReactFlowInstance}
               isLoading={graphIsInitialized ? false : true}
               isError={!pipelineIsNew && pipeline.isError}

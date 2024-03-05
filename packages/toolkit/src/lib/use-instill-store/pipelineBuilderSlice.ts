@@ -11,7 +11,10 @@ import {
 import { Nullable } from "../type";
 
 import { NodeData } from "../../view";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import {
+  PipelineIteratorComponent,
+  TriggerUserPipelineResponse,
+} from "../vdp-sdk/pipeline";
 import { StateCreator } from "zustand";
 import {
   InstillStore,
@@ -52,6 +55,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   dialogPublishPipelineIsOpen: false,
   dialogSharePipelineIsOpen: false,
   pipelineIsReadOnly: false,
+  isEditingIterator: false,
+  currentEditingIterator: null,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -247,6 +252,24 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         pipelineIsReadOnly: fn(state.pipelineIsReadOnly),
+      };
+    }),
+  updateIsEditingIterator: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isEditingIterator: fn(state.isEditingIterator),
+      };
+    }),
+  updateCurrentEditingIterator: (
+    fn: (
+      prev: Nullable<PipelineIteratorComponent>
+    ) => Nullable<PipelineIteratorComponent>
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentEditingIterator: fn(state.currentEditingIterator),
       };
     }),
 });

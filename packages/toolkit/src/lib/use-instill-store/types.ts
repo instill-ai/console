@@ -6,7 +6,10 @@ import {
   ConnectorWithDefinition,
 } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import {
+  PipelineIteratorComponent,
+  TriggerUserPipelineResponse,
+} from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
 
@@ -44,6 +47,8 @@ export type PipelineBuilderState = {
   dialogPublishPipelineIsOpen: boolean;
   dialogSharePipelineIsOpen: boolean;
   pipelineIsReadOnly: boolean;
+  isEditingIterator: boolean;
+  currentEditingIterator: Nullable<PipelineIteratorComponent>;
 };
 
 export type PipelineBuilderAction = {
@@ -92,6 +97,12 @@ export type PipelineBuilderAction = {
   updateDialogPublishPipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateDialogSharePipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
+  updateIsEditingIterator: (fn: (prev: boolean) => boolean) => void;
+  updateCurrentEditingIterator: (
+    fn: (
+      prev: Nullable<PipelineIteratorComponent>
+    ) => Nullable<PipelineIteratorComponent>
+  ) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

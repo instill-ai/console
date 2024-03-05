@@ -35,37 +35,44 @@ export function useConstructNodeFromDefinition({
     ) => {
       if (!reactFlowInstance) return;
 
-      // We will use these values to calculate the position of the new node
-      // Initialize the topLeftNodeXY and bottomRightNodeXY with the first node
-      const topLeftNodeXY = {
-        x: nodes[0].position.x,
-        y: nodes[0].position.y,
-      };
-      const bottomRightNodeXY = {
-        x: nodes[0].position.x,
-        y: nodes[0].position.y,
+      let newNodeXY = {
+        x: 0,
+        y: 0,
       };
 
-      // Find the topLeftNodeXY and bottomRightNodeXY
-      nodes.forEach((node) => {
-        if (node.position.x < topLeftNodeXY.x) {
-          topLeftNodeXY.x = node.position.x;
-        }
-        if (node.position.y < topLeftNodeXY.y) {
-          topLeftNodeXY.y = node.position.y;
-        }
-        if (node.position.x > bottomRightNodeXY.x) {
-          bottomRightNodeXY.x = node.position.x;
-        }
-        if (node.position.y > bottomRightNodeXY.y) {
-          bottomRightNodeXY.y = node.position.y;
-        }
-      });
+      if (nodes[0]) {
+        // We will use these values to calculate the position of the new node
+        // Initialize the topLeftNodeXY and bottomRightNodeXY with the first node
+        const topLeftNodeXY = {
+          x: nodes[0].position.x,
+          y: nodes[0].position.y,
+        };
+        const bottomRightNodeXY = {
+          x: nodes[0].position.x,
+          y: nodes[0].position.y,
+        };
 
-      const newNodeXY = {
-        x: topLeftNodeXY.x + (bottomRightNodeXY.x - topLeftNodeXY.x) / 2,
-        y: topLeftNodeXY.y + (bottomRightNodeXY.y - topLeftNodeXY.y) / 2,
-      };
+        // Find the topLeftNodeXY and bottomRightNodeXY
+        nodes.forEach((node) => {
+          if (node.position.x < topLeftNodeXY.x) {
+            topLeftNodeXY.x = node.position.x;
+          }
+          if (node.position.y < topLeftNodeXY.y) {
+            topLeftNodeXY.y = node.position.y;
+          }
+          if (node.position.x > bottomRightNodeXY.x) {
+            bottomRightNodeXY.x = node.position.x;
+          }
+          if (node.position.y > bottomRightNodeXY.y) {
+            bottomRightNodeXY.y = node.position.y;
+          }
+        });
+
+        newNodeXY = {
+          x: topLeftNodeXY.x + (bottomRightNodeXY.x - topLeftNodeXY.x) / 2,
+          y: topLeftNodeXY.y + (bottomRightNodeXY.y - topLeftNodeXY.y) / 2,
+        };
+      }
 
       // Construct the default component ID prefix. For example, if the definition
       // is `connector-definitions/instill_ai`, the prefix will be `instill_ai`
@@ -160,6 +167,8 @@ export function useConstructNodeFromDefinition({
           },
         ];
       }
+
+      console.log("newNodes", newNodes);
 
       updatePipelineRecipeIsDirty(() => true);
       updateNodes(() => newNodes);

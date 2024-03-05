@@ -2,7 +2,12 @@ import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { composeEdgesFromNodes, recursiveHelpers } from ".";
-import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import {
+  GeneralRecord,
+  Nullable,
+  PipelineComponent,
+  PipelineRecipe,
+} from "../../../lib";
 import {
   isConnectorComponent,
   isEndComponent,
@@ -16,14 +21,14 @@ export type CreateInitialGraphDataOptions = {
 };
 
 export function createInitialGraphData(
-  recipe: PipelineRecipe,
+  components: PipelineComponent[],
   options?: CreateInitialGraphDataOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
   const metadata = options ? options.metadata : null;
 
-  for (const component of recipe.components) {
+  for (const component of components) {
     let componentMetadata: Nullable<PipelineComponentMetadata> = null;
 
     if (

@@ -102,12 +102,12 @@ export const BottomBar = () => {
 
                       if (
                         checkIsValidPosition(
-                          pipeline.data.recipe,
+                          pipeline.data.recipe.components,
                           pipeline.data.metadata ?? null
                         )
                       ) {
                         const { nodes, edges } = createInitialGraphData(
-                          pipeline.data.recipe,
+                          pipeline.data.recipe.components,
                           {
                             metadata: pipeline.data.metadata,
                           }
@@ -116,7 +116,7 @@ export const BottomBar = () => {
                         newEdges = edges;
                       } else {
                         const { nodes, edges } = createInitialGraphData(
-                          pipeline.data.recipe
+                          pipeline.data.recipe.components
                         );
                         newNodes = nodes;
                         newEdges = edges;
@@ -148,12 +148,12 @@ export const BottomBar = () => {
 
                         if (
                           checkIsValidPosition(
-                            release.recipe,
+                            release.recipe.components,
                             release.metadata ?? null
                           )
                         ) {
                           const { nodes, edges } = createInitialGraphData(
-                            release.recipe,
+                            release.recipe.components,
                             {
                               metadata: release.metadata,
                             }
@@ -162,7 +162,7 @@ export const BottomBar = () => {
                           newEdges = edges;
                         } else {
                           const { nodes, edges } = createInitialGraphData(
-                            release.recipe
+                            release.recipe.components
                           );
                           newNodes = nodes;
                           newEdges = edges;
