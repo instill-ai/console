@@ -4,14 +4,16 @@ import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,
   ConnectorWithDefinition,
+  IteratorDefinition,
   OperatorDefinition,
 } from "../../../../../lib";
 import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
+import { IteratorSection } from "./IteratorSection";
 
 export type OnSelectComponent = (
-  definition: ConnectorDefinition | OperatorDefinition,
+  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
   connector?: ConnectorWithDefinition
 ) => void;
 
@@ -57,6 +59,7 @@ export const SelectComponentDialog = ({
               Select a connector to add to your pipeline
             </Dialog.Description>
           </Dialog.Header>
+          <IteratorSection onSelect={onSelect} />
           <OperatorSection onSelect={onSelect} />
           <ExistingConnectorSection onSelect={onSelect} />
           <NewConnectorSection onSelect={onSelect} />

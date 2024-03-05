@@ -2,59 +2,131 @@ import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { Form, Icons, Tooltip } from "@instill-ai/design-system";
+import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { AutoresizeInputWrapper } from "../../../../../components";
-import { InstillStore, useInstillStore } from "../../../../../lib";
+import {
+  InstillStore,
+  useInstillStore,
+  validateInstillID,
+} from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InstillErrors } from "../../../../../constant";
+import { composeEdgesFromNodes } from "../../../lib";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
 });
 
 const selector = (store: InstillStore) => ({
-  testModeEnabled: store.testModeEnabled,
+  nodes: store.nodes,
+  updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
-export function useNodeIDEditorForm(nodeID: string) {
-  return useForm<z.infer<typeof NodeIDEditorSchema>>({
+export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
+  const nodeIDInputRef = React.useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof NodeIDEditorSchema>>({
     resolver: zodResolver(NodeIDEditorSchema),
     mode: "onBlur",
     defaultValues: {
-      nodeID,
+      nodeID: currentNodeID,
     },
   });
-}
 
-export const NodeIDEditor = ({
-  form,
-  nodeID,
-  handleRename,
-}: {
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  form: UseFormReturn<z.infer<typeof NodeIDEditorSchema>, any, undefined>;
-  nodeID: string;
-  handleRename: (newID: string) => void;
-}) => {
-  const nodeIDInputRef = React.useRef<HTMLInputElement>(null);
+  const {
+    nodes,
+    updateEdges,
+    updateNodes,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
+    updatePipelineRecipeIsDirty,
+    pipelineIsReadOnly,
+  } = useInstillStore(useShallow(selector));
 
-  const { testModeEnabled } = useInstillStore(useShallow(selector));
+  const { reset } = form;
 
-  function handleSubmit() {
+  React.useEffect(() => {
+    reset({
+      nodeID: currentNodeID,
+    });
+  }, [currentNodeID, reset]);
+
+  const handleSubmit = React.useCallback(function handleSubmit() {
     form.handleSubmit((data) => {
-      if (!data.nodeID || data.nodeID === "") {
+      const newID = data.nodeID;
+
+      if (!newID || newID === "") {
         form.reset({
-          nodeID,
+          nodeID: currentNodeID,
         });
         return;
       }
 
-      if (data.nodeID) {
-        handleRename(data.nodeID);
+      if (newID) {
+        if (newID === currentNodeID) {
+          return;
+        }
+
+        if (!validateInstillID(newID)) {
+          toast({
+            title: InstillErrors.IDInvalidError,
+            variant: "alert-error",
+            size: "small",
+          });
+          form.reset({
+            nodeID: currentNodeID,
+          });
+          return;
+        }
+
+        const existingNodeID = nodes.map((node) => node.id);
+
+        if (existingNodeID.includes(newID)) {
+          toast({
+            title: "Component ID already exists",
+            variant: "alert-error",
+            size: "small",
+          });
+          form.reset({
+            nodeID: currentNodeID,
+          });
+          return;
+        }
+
+        const newNodes = nodes.map((node) => {
+          if (node.id === currentNodeID) {
+            return {
+              ...node,
+              id: newID,
+            };
+          }
+          return node;
+        });
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateNodes(() => newNodes);
+        updateEdges(() => newEdges);
+
+        if (selectedConnectorNodeId === currentNodeID) {
+          updateSelectedConnectorNodeId(() => newID);
+        }
+
+        toast({
+          title: "Successfully update node's name",
+          variant: "alert-success",
+          size: "small",
+        });
+
+        updatePipelineRecipeIsDirty(() => true);
       }
     })();
-  }
+  }, []);
 
   return (
     <div className="flex flex-row">
@@ -83,7 +155,7 @@ export const NodeIDEditor = ({
                     value={field.value ?? ""}
                     type="text"
                     autoComplete="off"
-                    disabled={testModeEnabled}
+                    disabled={pipelineIsReadOnly}
                     onBlur={() => handleSubmit()}
                     onClick={(e) => {
                       e.stopPropagation();

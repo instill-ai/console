@@ -15,6 +15,7 @@ import {
   CustomEdge,
   EmptyNode,
   EndOperatorNode,
+  IteratorNode,
   OperatorNode,
   StartOperatorNode,
 } from "./components";
@@ -28,6 +29,7 @@ const nodeTypes = {
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,
   operatorNode: OperatorNode,
+  iteratorNode: IteratorNode,
 };
 
 const edgeTypes = {

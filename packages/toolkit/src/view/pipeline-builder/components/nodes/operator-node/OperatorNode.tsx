@@ -1,16 +1,14 @@
 import * as React from "react";
 import { NodeProps, Position } from "reactflow";
-import { Form, Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons } from "@instill-ai/design-system";
 
 import { OperatorNodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
-import { composeEdgesFromNodes } from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
   useInstillForm,
   useInstillStore,
-  validateInstillID,
 } from "../../../../../lib";
 import { ImageWithFallback } from "../../../../../components";
 import { useShallow } from "zustand/react/shallow";
@@ -18,26 +16,17 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { getOperatorInputOutputSchema } from "../../../lib/getOperatorInputOutputSchema";
 import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
-import { InstillErrors } from "../../../../../constant/errors";
 import {
   NodeBottomBarContent,
   NodeBottomBarMenu,
   NodeHead,
   NodeIDEditor,
   NodeWrapper,
-  useNodeIDEditorForm,
 } from "../common";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
-import { isOperatorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
-  selectedConnectorNodeId: store.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
-  nodes: store.nodes,
   edges: store.edges,
-  updateNodes: store.updateNodes,
-  updateEdges: store.updateEdges,
-  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
@@ -47,35 +36,18 @@ const selector = (store: InstillStore) => ({
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   const {
-    selectedConnectorNodeId,
-    updateSelectedConnectorNodeId,
-    nodes,
     edges,
-    updateNodes,
-    updateEdges,
-    updatePipelineRecipeIsDirty,
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
     collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
-  const { toast } = useToast();
-
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
-  const nodeIDEditorForm = useNodeIDEditorForm(id);
 
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
-
-  const { reset } = nodeIDEditorForm;
-
-  React.useEffect(() => {
-    reset({
-      nodeID: id,
-    });
-  }, [id, reset]);
 
   const hasTargetEdges = React.useMemo(() => {
     return edges.some((edge) => edge.target === id);
@@ -111,67 +83,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       selectedConditionMap ? selectedConditionMap["task"] : undefined
     );
   }, [data, selectedConditionMap]);
-
-  function handleRename(newID: string) {
-    if (newID === id) {
-      return;
-    }
-
-    if (!validateInstillID(newID)) {
-      toast({
-        title: InstillErrors.IDInvalidError,
-        variant: "alert-error",
-        size: "small",
-      });
-      nodeIDEditorForm.reset({
-        nodeID: id,
-      });
-      return;
-    }
-
-    const existingNodeID = nodes.map((node) => node.id);
-
-    if (existingNodeID.includes(newID)) {
-      toast({
-        title: "Component ID already exists",
-        variant: "alert-error",
-        size: "small",
-      });
-      nodeIDEditorForm.reset({
-        nodeID: id,
-      });
-      return;
-    }
-
-    const newNodes = nodes.map((node) => {
-      if (node.id === id && isOperatorComponent(node.data)) {
-        return {
-          ...node,
-          id: newID,
-          data: {
-            ...node.data,
-            id: newID,
-          },
-        };
-      }
-      return node;
-    });
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-
-    if (selectedConnectorNodeId === id) {
-      updateSelectedConnectorNodeId(() => newID);
-    }
-
-    toast({
-      title: "Successfully update node's name",
-      variant: "alert-success",
-      size: "small",
-    });
-
-    updatePipelineRecipeIsDirty(() => true);
-  }
 
   const { getValues, trigger } = form;
 
@@ -209,11 +120,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
               <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
           />
-          <NodeIDEditor
-            form={nodeIDEditorForm}
-            nodeID={id}
-            handleRename={handleRename}
-          />
+          <NodeIDEditor currentNodeID={id} />
         </div>
         <ConnectorOperatorControlPanel
           nodeID={id}
