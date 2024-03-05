@@ -1,7 +1,7 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { UseFormReturn, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 

@@ -1,12 +1,6 @@
 import * as React from "react";
-
 import { Button, Icons, Popover, Tooltip } from "@instill-ai/design-system";
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
-import { useShallow } from "zustand/react/shallow";
-
-const selector = (store: InstillStore) => ({
-  testModeEnabled: store.testModeEnabled,
-});
 
 const NodeDropdownMenuRoot = ({
   componentTypeName,
@@ -19,7 +13,9 @@ const NodeDropdownMenuRoot = ({
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { testModeEnabled } = useInstillStore(useShallow(selector));
+  const pipelineIsReadOnly = useInstillStore(
+    (store: InstillStore) => store.pipelineIsReadOnly
+  );
 
   return (
     <Popover.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
@@ -36,7 +32,7 @@ const NodeDropdownMenuRoot = ({
                   size="sm"
                   variant="tertiaryGrey"
                   type="button"
-                  disabled={testModeEnabled}
+                  disabled={pipelineIsReadOnly}
                   onClick={() => {
                     setIsOpen(!isOpen);
                   }}

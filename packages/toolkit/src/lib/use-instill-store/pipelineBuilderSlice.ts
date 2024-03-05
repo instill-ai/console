@@ -36,7 +36,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   selectResourceDialogIsOpen: false,
   currentAdvancedConfigurationNodeID: null,
   collapseAllNodes: false,
-  testModeEnabled: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
   createResourceDialogState: {
@@ -167,13 +166,6 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         collapseAllNodes: fn(state.collapseAllNodes),
-      };
-    }),
-  updateTestModeEnabled: (fn: (prev: boolean) => boolean) =>
-    set((state) => {
-      return {
-        ...state,
-        testModeEnabled: fn(state.testModeEnabled),
       };
     }),
   updateTestModeTriggerResponse: (
