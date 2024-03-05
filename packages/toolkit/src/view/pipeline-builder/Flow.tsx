@@ -19,12 +19,8 @@ import {
   StartOperatorNode,
 } from "./components";
 
-import {
-  InstillAppEnv,
-  InstillStore,
-  Nullable,
-  useInstillStore,
-} from "../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../lib";
+import { isEndComponent, isStartComponent } from "./lib/checkComponentType";
 
 const nodeTypes = {
   startNode: StartOperatorNode,
@@ -108,8 +104,8 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                   if (change.type === "remove") {
                     const node = nodes.find((node) => node.id === change.id);
                     if (
-                      node?.data.nodeType === "start" ||
-                      node?.data.nodeType === "end"
+                      node?.data &&
+                      (isStartComponent(node.data) || isEndComponent(node.data))
                     ) {
                       return false;
                     } else {

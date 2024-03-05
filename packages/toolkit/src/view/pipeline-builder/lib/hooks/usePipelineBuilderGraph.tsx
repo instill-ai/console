@@ -6,13 +6,16 @@ import {
   checkIsValidPosition,
   createGraphLayout,
   createInitialGraphData,
-} from "../view";
-import { useUserPipeline } from "./react-query-service";
+} from "../../..";
+import { useUserPipeline } from "../../../../lib/react-query-service";
 import { useRouter } from "next/router";
-import { InstillStore, useInstillStore } from "./use-instill-store";
+import {
+  InstillStore,
+  useInstillStore,
+} from "../../../../lib/use-instill-store";
 import { useShallow } from "zustand/react/shallow";
 import { Node } from "reactflow";
-import { useEntity } from "./useEntity";
+import { useEntity } from "../../../../lib/useEntity";
 
 const selector = (store: InstillStore) => ({
   updatePipelineId: store.updatePipelineId,
@@ -79,46 +82,22 @@ export function usePipelineBuilderGraph() {
         id: "start",
         type: "startNode",
         data: {
-          nodeType: "start",
-          component: {
-            id: "start",
-            type: "COMPONENT_TYPE_OPERATOR",
-            configuration: { metadata: {} },
-            resource_name: null,
-            resource: null,
-            definition_name: "operator-definitions/start",
-            operator_definition: null,
+          id: "start",
+          start_component: {
+            fields: {},
           },
           note: null,
         },
         position: { x: 0, y: 0 },
       },
-      {
-        id: initialEmptyNodeId,
-        type: "emptyNode",
-        data: {
-          nodeType: "empty",
-          component: null,
-          note: null,
-        },
-        position: { x: 0, y: 0 },
-      },
+
       {
         id: "end",
         type: "endNode",
         data: {
-          nodeType: "end",
-          component: {
-            id: "end",
-            type: "COMPONENT_TYPE_OPERATOR",
-            configuration: {
-              metadata: {},
-              input: {},
-            },
-            resource_name: null,
-            resource: null,
-            definition_name: "operator-definitions/end",
-            operator_definition: null,
+          id: "end",
+          end_component: {
+            fields: {},
           },
           note: null,
         },

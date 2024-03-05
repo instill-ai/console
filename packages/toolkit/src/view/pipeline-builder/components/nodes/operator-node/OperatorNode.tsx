@@ -17,8 +17,7 @@ import { useShallow } from "zustand/react/shallow";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { getOperatorInputOutputSchema } from "../../../lib/getOperatorInputOutputSchema";
-import { useCheckIsHidden } from "../../useCheckIsHidden";
-import { useUpdaterOnNode } from "../../useUpdaterOnNode";
+import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
 import { InstillErrors } from "../../../../../constant/errors";
 import {
   NodeBottomBarContent,
@@ -29,6 +28,7 @@ import {
   useNodeIDEditorForm,
 } from "../common";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
+import { isOperatorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -89,13 +89,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
 
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
-      data.component.operator_definition?.spec.component_specification ?? null,
-      data.component.configuration,
+      data.operator_component.definition?.spec.component_specification ?? null,
+      data.operator_component,
       {
         size: "sm",
         enableSmartHint: true,
         checkIsHidden,
-        componentID: data.component.id,
+        componentID: data.id,
         disabledAll: pipelineIsReadOnly,
       }
     );
@@ -107,7 +107,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     // output schema depends on the selected task
 
     return getOperatorInputOutputSchema(
-      data.component,
+      data,
       selectedConditionMap ? selectedConditionMap["task"] : undefined
     );
   }, [data, selectedConditionMap]);
@@ -144,16 +144,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.id === id && node.data.nodeType === "operator") {
+      if (node.id === id && isOperatorComponent(node.data)) {
         return {
           ...node,
           id: newID,
           data: {
             ...node.data,
-            component: {
-              ...node.data.component,
-              id: newID,
-            },
+            id: newID,
           },
         };
       }
@@ -179,26 +176,22 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   const { getValues, trigger } = form;
 
   useUpdaterOnNode({
-    id,
-    nodeType: "operator",
+    currentNodeData: data,
     form,
     ValidatorSchema,
-    configuration: data.component.configuration,
   });
 
   return (
     <NodeWrapper
-      nodeType={data.nodeType}
-      id={id}
-      note={data.note}
+      nodeData={data}
       noteIsOpen={noteIsOpen}
       renderNodeBottomBar={() => <NodeBottomBarMenu />}
       renderBottomBarInformation={() => (
         <NodeBottomBarContent
-          componentID={data.component.id}
+          componentID={data.id}
           outputSchema={outputSchema}
           componentSchema={
-            (data.component.operator_definition?.spec as GeneralRecord) ?? null
+            (data.operator_component.definition?.spec as GeneralRecord) ?? null
           }
         />
       )}
@@ -208,10 +201,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.component?.operator_definition?.id}.svg`}
+            src={`/icons/${data?.operator_component.definition?.id}.svg`}
             width={16}
             height={16}
-            alt={`${data.component?.operator_definition?.title}-icon`}
+            alt={`${data?.operator_component.definition?.title}-icon`}
             fallbackImg={
               <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
@@ -225,7 +218,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         <ConnectorOperatorControlPanel
           nodeID={id}
           nodeData={data}
-          componentType={data.component.type}
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen((prev) => !prev)}
@@ -259,7 +251,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           </div>
 
           <ComponentOutputReferenceHints
-            componentID={data.component.id}
+            componentID={data.id}
             outputSchema={outputSchema}
           />
         </>

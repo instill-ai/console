@@ -12,15 +12,15 @@ test("should compose initial pipeline metadata", () => {
         y: 0,
       },
       data: {
-        nodeType: "connector",
-        component: {
-          id: "ai_0",
-          resource_name: "stability-dev",
-          resource: null,
+        id: "ai_0",
+        connector_component: {
+          connector_name: "stability-dev",
+          connector: null,
           definition_name: "connector-definitions/stability-ai",
-          connector_definition: null,
-          type: "COMPONENT_TYPE_CONNECTOR_AI",
-          configuration: {},
+          definition: null,
+          task: "",
+          input: {},
+          condition: null,
         },
         note: null,
       },
@@ -32,15 +32,9 @@ test("should compose initial pipeline metadata", () => {
         y: 100,
       },
       data: {
-        nodeType: "start",
-        component: {
-          id: "start",
-          resource: null,
-          resource_name: null,
-          definition_name: "connector-definitions/start",
-          operator_definition: null,
-          type: "COMPONENT_TYPE_OPERATOR",
-          configuration: {},
+        id: "start",
+        start_component: {
+          fields: {},
         },
         note: "hello-world",
       },
@@ -52,15 +46,9 @@ test("should compose initial pipeline metadata", () => {
         y: 300,
       },
       data: {
-        nodeType: "end",
-        component: {
-          id: "end",
-          resource: null,
-          resource_name: null,
-          definition_name: "connector-definitions/end",
-          operator_definition: null,
-          type: "COMPONENT_TYPE_OPERATOR",
-          configuration: {},
+        id: "end",
+        end_component: {
+          fields: {},
         },
         note: null,
       },

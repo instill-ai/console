@@ -4,31 +4,31 @@ import * as z from "zod";
 import * as React from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  transformStartOperatorMetadataToSuperRefineRules,
-  transformStartOperatorMetadataToZod,
-} from "./transform";
 import { useForm } from "react-hook-form";
 import {
-  PickStartOperatorFreeFormFieldsProps,
-  pickStartOperatorFreeFormFields,
+  PickStartOperatorFreeFormFieldItemsProps,
+  pickStartOperatorFreeFormFieldItems,
 } from "./pick";
+import {
+  transformStartOperatorFieldsToSuperRefineRules,
+  transformStartOperatorFieldsToZod,
+} from "./transform";
 
 export type UseStartOperatorTriggerPipelineFormProps = Pick<
-  PickStartOperatorFreeFormFieldsProps,
+  PickStartOperatorFreeFormFieldItemsProps,
   | "mode"
-  | "metadata"
   | "onDeleteField"
   | "onEditField"
   | "disabledFields"
   | "disabledFieldControls"
   | "disabledReferenceHint"
   | "keyPrefix"
+  | "fields"
 >;
 
 export function useStartOperatorTriggerPipelineForm({
   mode,
-  metadata,
+  fields,
   onDeleteField,
   onEditField,
   disabledFields,
@@ -37,20 +37,20 @@ export function useStartOperatorTriggerPipelineForm({
   keyPrefix,
 }: UseStartOperatorTriggerPipelineFormProps) {
   const superRefineRules = React.useMemo(() => {
-    if (!metadata) {
+    if (!fields) {
       return [];
     }
 
-    return transformStartOperatorMetadataToSuperRefineRules(metadata);
-  }, [metadata]);
+    return transformStartOperatorFieldsToSuperRefineRules(fields);
+  }, [fields]);
 
   const Schema = React.useMemo(() => {
-    if (!metadata) {
+    if (!fields) {
       return z.object({}) as z.ZodObject<any, any, any>;
     }
 
-    return transformStartOperatorMetadataToZod(metadata);
-  }, [metadata]).superRefine((state, ctx) => {
+    return transformStartOperatorFieldsToZod(fields);
+  }, [fields]).superRefine((state, ctx) => {
     for (const rule of superRefineRules) {
       const result = rule.validator(state[rule.key]);
       if (!result.valid) {
@@ -68,14 +68,14 @@ export function useStartOperatorTriggerPipelineForm({
     mode: "onChange",
   });
 
-  const fields = React.useMemo(() => {
-    if (!metadata) {
+  const fieldItems = React.useMemo(() => {
+    if (!fields) {
       return [];
     }
 
-    const fields = pickStartOperatorFreeFormFields({
+    return pickStartOperatorFreeFormFieldItems({
       mode,
-      metadata,
+      fields,
       form,
       onEditField,
       onDeleteField,
@@ -84,11 +84,9 @@ export function useStartOperatorTriggerPipelineForm({
       disabledReferenceHint,
       keyPrefix,
     });
-
-    return fields;
   }, [
     mode,
-    metadata,
+    fields,
     form,
     onEditField,
     onDeleteField,
@@ -101,6 +99,6 @@ export function useStartOperatorTriggerPipelineForm({
   return {
     form,
     Schema,
-    fields,
+    fieldItems,
   };
 }

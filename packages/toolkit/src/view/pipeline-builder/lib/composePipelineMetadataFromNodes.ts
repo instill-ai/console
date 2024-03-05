@@ -5,8 +5,6 @@ export function composePipelineMetadataFromNodes(nodes: Node<NodeData>[]) {
   const componentMetadatas: PipelineComponentMetadata[] = [];
 
   for (const node of nodes) {
-    if (!node.data.component) continue;
-
     componentMetadatas.push({
       id: node.id,
       note: node.data.note,

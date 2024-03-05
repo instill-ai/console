@@ -5,8 +5,6 @@ import { ConnectorDefinition, Connector } from "../connector";
 import { Owner, Permission, Spec, Visibility } from "../types";
 import { GeneralRecord, Nullable } from "../../type";
 import { JSONSchema7TypeName } from "json-schema";
-import { User } from "../mgmt";
-import { Organization } from "../organization";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -20,18 +18,6 @@ export type PipelineReleaseState =
 export type PipelineRecipe = {
   version: string;
   components: PipelineComponent[];
-};
-
-export type RawPipelineRecipe = {
-  version: string;
-  components: RawPipelineComponent[];
-};
-
-export type RawPipelineComponent = {
-  id: string;
-  resource_name: string;
-  configuration: Record<string, any>;
-  definition_name: string;
 };
 
 export type PipelineReleaseWatchState = {
@@ -135,52 +121,90 @@ export type PipelineTriggerMetadata = {
   traces: Record<string, PipelineTrace>;
 };
 
-export type PipelineStartComponent = {
-  id: "start";
-  resource_name: Nullable<string>;
-  resource: Nullable<Connector>;
-  type: PipelineComponentType;
-  definition_name: string;
-  operator_definition: Nullable<OperatorDefinition>;
-  configuration: {
-    metadata?: StartOperatorMetadata;
-  } & GeneralRecord;
+export type PipelineStartComponentField = {
+  title: string;
+  description?: string;
+  instill_format: string;
+  instill_ui_order?: number;
+  instill_ui_multiline?: boolean;
 };
 
-export type PipelineOperatorComponent = {
-  id: string;
-  resource_name: Nullable<string>;
-  resource: Nullable<Connector>;
-  type: PipelineComponentType;
-  definition_name: string;
-  operator_definition: Nullable<OperatorDefinition>;
-  configuration: GeneralRecord;
+export type PipelineStartComponentFields = Record<
+  string,
+  PipelineStartComponentField
+>;
+
+export type PipelineStartComponent = {
+  id: "start";
+  metadata?: GeneralRecord;
+  start_component: {
+    fields: PipelineStartComponentFields;
+  };
 };
+
+export type PipelineEndComponentField = {
+  title: string;
+  description?: string;
+  value: string;
+  instill_ui_order?: number;
+};
+
+export type PipelineEndComponentFields = Record<
+  string,
+  PipelineEndComponentField
+>;
 
 export type PipelineEndComponent = {
   id: "end";
-  resource_name: Nullable<string>;
-  resource: Nullable<Connector>;
-  type: PipelineComponentType;
-  definition_name: string;
-  operator_definition: Nullable<OperatorDefinition>;
-  configuration: Record<string, GeneralRecord>;
+  metadata?: GeneralRecord;
+  end_component: {
+    fields: PipelineEndComponentFields;
+  };
 };
 
 export type PipelineConnectorComponent = {
   id: string;
-  resource_name: Nullable<string>;
-  resource: Nullable<Connector>;
-  type: PipelineComponentType;
-  definition_name: string;
-  connector_definition: Nullable<ConnectorDefinition>;
-  configuration: GeneralRecord;
+  metadata?: GeneralRecord;
+  connector_component: {
+    definition_name: string;
+    definition: Nullable<ConnectorDefinition>;
+    connector_name: Nullable<string>;
+    connector: Nullable<Connector>;
+    task: string;
+    input: GeneralRecord;
+    condition: Nullable<string>;
+  };
+};
+
+export type PipelineOperatorComponent = {
+  id: string;
+  metadata?: GeneralRecord;
+  operator_component: {
+    definition_name: string;
+    definition: Nullable<OperatorDefinition>;
+    task: string;
+    input: GeneralRecord;
+    condition: Nullable<string>;
+  };
+};
+
+export type PipelineIteratorComponent = {
+  id: string;
+  metadata?: GeneralRecord;
+  iterator_component: {
+    input_array: string;
+    output_elements: Record<string, string>;
+    components: PipelineComponent[];
+    condition: Nullable<string>;
+  };
 };
 
 export type PipelineComponent =
   | PipelineStartComponent
   | PipelineEndComponent
-  | PipelineConnectorComponent;
+  | PipelineConnectorComponent
+  | PipelineOperatorComponent
+  | PipelineIteratorComponent;
 
 export type StartOperatorMetadata = Record<string, StartOperatorInput>;
 

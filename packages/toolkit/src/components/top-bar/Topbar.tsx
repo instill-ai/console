@@ -2,12 +2,7 @@ import cn from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
-import {
-  ComplicateIcons,
-  DropdownMenu,
-  Icons,
-  Separator,
-} from "@instill-ai/design-system";
+import { DropdownMenu, Icons } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
 import {
   InstillStore,

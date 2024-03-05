@@ -15,21 +15,30 @@ export type UseComponentOutputFieldsProps = {
   "chooseTitleFrom" | "hideField" | "mode"
 >;
 
-export function useComponentOutputFields(props: UseComponentOutputFieldsProps) {
+export function useComponentOutputFields({
+  schema,
+  data,
+  chooseTitleFrom,
+  hideField,
+  mode,
+}: UseComponentOutputFieldsProps) {
   const fields = React.useMemo(() => {
-    if (!props.schema) {
+    if (!schema) {
       return null;
     }
 
-    const outputFormTree = transformInstillJSONSchemaToFormTree(props.schema);
+    const outputFormTree = transformInstillJSONSchemaToFormTree(schema);
 
     const fields = pickComponentOutputFieldsFromInstillFormTree({
-      ...props,
       tree: outputFormTree,
+      data,
+      chooseTitleFrom,
+      hideField,
+      mode,
     });
 
     return fields;
-  }, [props]);
+  }, [schema, data, chooseTitleFrom, hideField, mode]);
 
   return fields;
 }

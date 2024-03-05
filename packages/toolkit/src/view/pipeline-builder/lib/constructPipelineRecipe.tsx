@@ -1,67 +1,69 @@
 import { Node } from "reactflow";
 import { NodeData } from "../type";
 import { recursiveHelpers } from "./recursive-helpers";
-import { RawPipelineComponent } from "../../../lib";
+import { PipelineComponent } from "../../../lib";
+import {
+  isConnectorComponent,
+  isEndComponent,
+  isIteratorComponent,
+  isStartComponent,
+} from "./checkComponentType";
 
 export function constructPipelineRecipe(
   nodes: Node<NodeData>[],
-  removeResourceName?: boolean
+  removeConnectorName?: boolean
 ) {
-  const components: RawPipelineComponent[] = [];
+  const components: PipelineComponent[] = [];
 
   for (const node of nodes) {
-    if (!node.data.component) {
-      continue;
-    }
-
-    const configuration =
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-        structuredClone(node.data.component.configuration)
-      );
-
-    if (node.data.nodeType === "start") {
+    if (isStartComponent(node.data)) {
       components.push({
         id: "start",
-        resource_name: "",
-        configuration: {
-          ...recursiveHelpers.parseToNum(configuration),
-          connector_definition_name: undefined,
+        start_component: {
+          fields: node.data.start_component.fields,
         },
-        definition_name: node.data.component.definition_name,
       });
       continue;
     }
 
-    if (node.data.nodeType === "end") {
+    if (isEndComponent(node.data)) {
       components.push({
         id: "end",
-        resource_name: "",
-        configuration: {
-          ...recursiveHelpers.parseToNum(configuration),
-          connector_definition_name: undefined,
+        end_component: {
+          fields: node.data.end_component.fields,
         },
-        definition_name: node.data.component.definition_name,
       });
       continue;
     }
 
-    const parsedIntConfiguration = recursiveHelpers.parseToNum(configuration);
+    if (isIteratorComponent(node.data)) {
+      continue;
+    }
+
+    if (isConnectorComponent(node.data)) {
+      components.push({
+        id: node.id,
+        connector_component: {
+          ...node.data.connector_component,
+          connector_name: removeConnectorName
+            ? ""
+            : node.data.connector_component.connector_name,
+          input: recursiveHelpers.parseToNum(
+            structuredClone(node.data.connector_component.input)
+          ),
+        },
+      });
+      continue;
+    }
 
     components.push({
       id: node.id,
-
-      // Backend accept resource_name with empty string
-      resource_name: removeResourceName
-        ? ""
-        : node.data.component.resource_name ?? "",
-      configuration: {
-        ...parsedIntConfiguration,
-        input: {
-          ...parsedIntConfiguration.input,
-          connector_definition_name: undefined,
-        },
+      operator_component: {
+        ...node.data.operator_component,
+        input: recursiveHelpers.parseToNum(
+          structuredClone(node.data.operator_component.input)
+        ),
       },
-      definition_name: node.data.component.definition_name,
     });
   }
 

@@ -19,6 +19,7 @@ import {
   useInstillStore,
 } from "../../../../../lib";
 import { composeEdgesFromNodes } from "../../../lib";
+import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
@@ -61,29 +62,25 @@ export const DataConnectorFreeForm = ({
 
   function onSubmitDataConnectorInput(formData: z.infer<typeof Schema>) {
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "connector" && node.id === nodeID) {
+      if (isConnectorComponent(node.data) && node.id === nodeID) {
         if (prevFieldKey) {
-          delete node.data.component.configuration.input.data[prevFieldKey];
+          delete node.data.connector_component.input.data[prevFieldKey];
         }
 
         node.data = {
           ...node.data,
-          component: {
-            ...node.data.component,
-            configuration: {
-              ...node.data.component.configuration,
-              input: {
-                ...node.data.component.configuration.input,
-
-                data: node.data.component.configuration.input.data
-                  ? {
-                      ...node.data.component.configuration.input.data,
-                      [formData.key]: formData.value,
-                    }
-                  : {
-                      [formData.key]: formData.value,
-                    },
-              },
+          connector_component: {
+            ...node.data.connector_component,
+            input: {
+              ...node.data.connector_component.input,
+              data: node.data.connector_component.input.data
+                ? {
+                    ...node.data.connector_component.input.data,
+                    [formData.key]: formData.value,
+                  }
+                : {
+                    [formData.key]: formData.value,
+                  },
             },
           },
         };
@@ -104,7 +101,7 @@ export const DataConnectorFreeForm = ({
 
   function onEditDataConnectorInput(key: string) {
     form.reset({
-      value: component.configuration.input.data[key],
+      value: component.connector_component.input.data[key],
       key: key,
     });
     setEnableEdit(true);
@@ -112,19 +109,16 @@ export const DataConnectorFreeForm = ({
 
   function onDeleteDataConnectorInput(key: string) {
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "connector" && node.id === nodeID) {
-        delete node.data.component.configuration.input.data[key];
+      if (isConnectorComponent(node.data) && node.id === nodeID) {
+        delete node.data.connector_component.input.data[key];
         // update the value deep clone
         node.data = {
           ...node.data,
-          component: {
-            ...node.data.component,
-            configuration: {
-              ...node.data.component.configuration,
-              input: {
-                ...node.data.component.configuration.input,
-                data: { ...node.data.component.configuration.input.data },
-              },
+          connector_component: {
+            ...node.data.connector_component,
+            input: {
+              ...node.data.connector_component.input,
+              data: { ...node.data.connector_component.input.data },
             },
           },
         };
@@ -140,9 +134,9 @@ export const DataConnectorFreeForm = ({
   if (testModeEnabled) {
     return (
       <div className="mb-3 flex flex-col space-y-3">
-        {component.configuration?.input?.data
+        {component.connector_component.input?.data
           ? Object.entries(
-              component.configuration.input.data as Record<string, string>
+              component.connector_component.input.data as Record<string, string>
             ).map(([key, value]) => {
               return (
                 <div
@@ -248,9 +242,9 @@ export const DataConnectorFreeForm = ({
   return (
     <div className="mb-3 flex flex-col">
       <div className="mb-3 flex flex-col space-y-4">
-        {component.configuration?.input?.data
+        {component.connector_component.input?.data
           ? Object.entries(
-              component.configuration.input.data as GeneralRecord
+              component.connector_component.input.data as GeneralRecord
             ).map(([key]) => {
               return (
                 <div key={key} className="flex flex-col">

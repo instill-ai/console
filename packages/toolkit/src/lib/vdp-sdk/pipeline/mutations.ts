@@ -2,7 +2,7 @@ import { GeneralRecord, Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import {
   Pipeline,
-  RawPipelineRecipe,
+  PipelineRecipe,
   PipelineRelease,
   PipelineSharing,
 } from "./types";
@@ -10,7 +10,7 @@ import {
 export type CreateUserPipelinePayload = {
   id: string;
   description?: string;
-  recipe: RawPipelineRecipe;
+  recipe: PipelineRecipe;
   metadata: GeneralRecord;
   sharing?: PipelineSharing;
   readme?: string;
@@ -45,7 +45,7 @@ export async function createUserPipelineMutation({
 export type UpdateUserPipelinePayload = {
   name: string;
   description?: string;
-  recipe?: RawPipelineRecipe;
+  recipe?: PipelineRecipe;
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
@@ -128,7 +128,7 @@ export async function renameUserPipelineMutation({
 export type CreateUserPipelineReleasePayload = {
   id: string;
   description?: string;
-  recipe: RawPipelineRecipe;
+  recipe: PipelineRecipe;
 };
 
 export type CreateUserPipelineReleaseResponse = {
@@ -160,7 +160,7 @@ export async function createUserPipelineReleaseMutation({
 
 export type UpdateUserPipelineReleasePayload = {
   description?: string;
-  recipe: RawPipelineRecipe;
+  recipe: PipelineRecipe;
 };
 
 export type UpdateUserPipelineReleaseResponse = {

@@ -1,12 +1,14 @@
 import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
-import { StartOperatorMetadata } from "../../vdp-sdk";
+import {
+  PipelineStartComponentFields,
+  StartOperatorMetadata,
+} from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
 
-export type PickStartOperatorFreeFormFieldsProps = {
+export type PickStartOperatorFreeFormFieldItemsProps = {
   mode: FieldMode;
-  metadata: Nullable<StartOperatorMetadata>;
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
@@ -14,11 +16,12 @@ export type PickStartOperatorFreeFormFieldsProps = {
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
   disabledReferenceHint?: boolean;
+  fields: Nullable<PipelineStartComponentFields>;
 };
 
-export function pickStartOperatorFreeFormFields({
+export function pickStartOperatorFreeFormFieldItems({
   mode,
-  metadata,
+  fields,
   form,
   onEditField,
   onDeleteField,
@@ -26,21 +29,21 @@ export function pickStartOperatorFreeFormFields({
   disabledFieldControls,
   keyPrefix,
   disabledReferenceHint,
-}: PickStartOperatorFreeFormFieldsProps) {
-  const fields: StartOperatorFreeFormFieldItem[] = [];
+}: PickStartOperatorFreeFormFieldItemsProps) {
+  const items: StartOperatorFreeFormFieldItem[] = [];
 
-  if (!metadata) return [];
+  if (!fields) return [];
 
   // The reason we don't directly return the components at the item of the array
   // is we want to sort the fields by the order of `instillUIOrder` property.
 
-  for (const [key, value] of Object.entries(metadata)) {
-    switch (value.instillFormat) {
+  for (const [key, value] of Object.entries(fields)) {
+    switch (value.instill_format) {
       case "string":
-        if (value.instillUIMultiline) {
-          fields.push({
+        if (value.instill_ui_multiline) {
+          items.push({
             key,
-            instillUIOrder: value.instillUiOrder,
+            instillUIOrder: value.instill_ui_order,
             component: (
               <StartOperatorFreeFormFields.TextareaField
                 mode={mode}
@@ -55,14 +58,14 @@ export function pickStartOperatorFreeFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
-                instillFormat={value.instillFormat}
+                instillFormat={value.instill_format}
               />
             ),
           });
         } else {
-          fields.push({
+          items.push({
             key,
-            instillUIOrder: value.instillUiOrder,
+            instillUIOrder: value.instill_ui_order,
             component: (
               <StartOperatorFreeFormFields.TextField
                 mode={mode}
@@ -77,16 +80,16 @@ export function pickStartOperatorFreeFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
-                instillFormat={value.instillFormat}
+                instillFormat={value.instill_format}
               />
             ),
           });
         }
         break;
       case "array:string": {
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.TextsField
               mode={mode}
@@ -101,16 +104,16 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       }
       case "boolean":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.BooleanField
               mode={mode}
@@ -125,15 +128,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "number":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.NumberField
               mode={mode}
@@ -148,15 +151,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "array:number":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.NumbersField
               mode={mode}
@@ -171,15 +174,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "audio/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.AudioField
               mode={mode}
@@ -194,15 +197,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "array:audio/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.AudiosField
               mode={mode}
@@ -217,15 +220,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "image/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.ImageField
               mode={mode}
@@ -240,15 +243,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "array:image/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.ImagesField
               mode={mode}
@@ -263,16 +266,16 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
 
       case "video/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.VideoField
               mode={mode}
@@ -287,15 +290,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "array:video/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.VideosField
               mode={mode}
@@ -310,15 +313,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "*/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.FileField
               mode={mode}
@@ -333,15 +336,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "array:*/*":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.FilesField
               mode={mode}
@@ -356,15 +359,15 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
         break;
       case "semi-structured/json":
-        fields.push({
+        items.push({
           key,
-          instillUIOrder: value.instillUiOrder,
+          instillUIOrder: value.instill_ui_order,
           component: (
             <StartOperatorFreeFormFields.ObjectField
               mode={mode}
@@ -379,7 +382,7 @@ export function pickStartOperatorFreeFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
+              instillFormat={value.instill_format}
             />
           ),
         });
@@ -390,7 +393,7 @@ export function pickStartOperatorFreeFormFields({
     }
   }
 
-  return fields
+  return items
     .sort((a, b) => {
       if (typeof a.instillUIOrder === "undefined") {
         return 1;

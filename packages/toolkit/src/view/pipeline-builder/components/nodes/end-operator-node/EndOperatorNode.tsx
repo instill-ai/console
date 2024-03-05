@@ -12,6 +12,7 @@ import { CustomHandle } from "../../CustomHandle";
 import {
   InstillStore,
   Nullable,
+  PipelineEndComponentField,
   StartOperatorMetadata,
   useInstillStore,
 } from "../../../../../lib";
@@ -26,6 +27,7 @@ import {
 } from "./EndOperatorNodeFreeForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isEndComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -45,6 +47,10 @@ export type EndOperatorNodeFieldItem = {
   key: string;
   value: string;
   title: string;
+};
+
+export type PipelineEndComponentFieldSortedItem = PipelineEndComponentField & {
+  key: string;
 };
 
 export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
@@ -83,10 +89,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     formData: z.infer<typeof EndOperatorFreeFormSchema>
   ) => {
     if (
-      data.component.configuration.metadata &&
-      Object.keys(data.component.configuration.metadata).includes(
-        formData.key
-      ) &&
+      Object.keys(data.end_component.fields).includes(formData.key) &&
       !enableEdit
     ) {
       form.setError("key", {
@@ -97,27 +100,20 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "end") {
+      if (isEndComponent(node.data)) {
         if (prevFieldKey) {
-          delete node.data.component.configuration.metadata[prevFieldKey];
-          delete node.data.component.configuration.input[prevFieldKey];
+          delete node.data.end_component.fields[prevFieldKey];
         }
 
         node.data = {
           ...node.data,
-          component: {
-            ...node.data.component,
-            configuration: {
-              ...node.data.component.configuration,
-              metadata: {
-                ...node.data.component.configuration.metadata,
-                [formData.key]: {
-                  title: formData.title,
-                },
-              },
-              input: {
-                ...node.data.component.configuration.input,
-                [formData.key]: formData.value,
+          end_component: {
+            ...node.data.end_component,
+            fields: {
+              ...node.data.end_component.fields,
+              [formData.key]: {
+                title: formData.title,
+                value: formData.value,
               },
             },
           },
@@ -150,9 +146,8 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   function onDeleteField(key: string) {
     const newNodes = nodes.map((node) => {
-      if (node.data.nodeType === "end") {
-        delete node.data.component.configuration.metadata[key];
-        delete node.data.component.configuration.input[key];
+      if (isEndComponent(node.data)) {
+        delete node.data.end_component.fields[key];
 
         node.data = {
           ...node.data,
@@ -168,8 +163,8 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   function onEditField(key: string) {
     form.reset({
-      title: data.component.configuration.metadata[key].title,
-      value: data.component.configuration.input[key],
+      title: data.end_component.fields[key].title,
+      value: data.end_component.fields[key].value,
       key: key,
     });
     setEnableEdit(true);
@@ -181,27 +176,20 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }, [edges, id]);
 
   const [sortedItems, setSortedItems] = React.useState<
-    EndOperatorNodeFieldItem[]
+    PipelineEndComponentFieldSortedItem[]
   >([]);
 
   React.useEffect(() => {
-    const endOperatorInputItems = Object.entries(
-      data.component.configuration.input
-    )
+    const endOperatorInputItems = Object.entries(data.end_component.fields)
       .map(([key, value]) => {
-        const title = data.component.configuration.metadata[key].title;
-
         return {
           key,
-          value,
-          title,
+          ...value,
         };
       })
       .sort((a, b) => {
-        const aOrder =
-          data.component.configuration.metadata[a.key].instillUiOrder;
-        const bOrder =
-          data.component.configuration.metadata[b.key].instillUiOrder;
+        const aOrder = a.instill_ui_order;
+        const bOrder = b.instill_ui_order;
 
         if (typeof aOrder === "undefined") {
           return 1;
@@ -241,12 +229,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }
 
   return (
-    <NodeWrapper
-      nodeType={data.nodeType}
-      id={id}
-      note={data.note}
-      noteIsOpen={noteIsOpen}
-    >
+    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
@@ -283,7 +266,7 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
         />
       ) : isViewResultMode ? (
         <ComponentOutputs
-          componentID={data.component.id}
+          componentID={data.id}
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
           chooseTitleFrom="title"
@@ -308,25 +291,23 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
                 });
 
                 if (newSortedItems.length > 0) {
-                  const newMetadata: Record<string, StartOperatorMetadata> = {};
-
-                  newSortedItems.forEach((item, index) => {
-                    newMetadata[item.key] = {
-                      ...data.component.configuration.metadata[item.key],
-                      instillUiOrder: index,
-                    };
-                  });
-
                   const newNodes = nodes.map((node) => {
-                    if (node.data.nodeType === "end") {
+                    if (isEndComponent(node.data)) {
+                      const newFields = Object.fromEntries(
+                        newSortedItems.map((item, index) => [
+                          item.key,
+                          {
+                            title: item.title,
+                            value: item.value,
+                            instill_ui_order: index,
+                          },
+                        ])
+                      );
+
                       node.data = {
                         ...node.data,
-                        component: {
-                          ...node.data.component,
-                          configuration: {
-                            ...node.data.component.configuration,
-                            metadata: newMetadata,
-                          },
+                        end_component: {
+                          fields: newFields,
                         },
                       };
                     }

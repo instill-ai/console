@@ -10,3 +10,4 @@ export * from "./ComponentOutputReferenceHints";
 export * from "./dialogs";
 export * from "./nodes";
 export * from "./release-menu";
+export * from "./right-panel";

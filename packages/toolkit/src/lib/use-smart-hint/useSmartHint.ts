@@ -6,8 +6,13 @@ import { getConnectorInputOutputSchema } from "../../view";
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
 import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
-import { transformStartOperatorMetadataToSmartHints } from "./transformStartOperatorMetadataToSmartHints";
+import { transformStartOperatorFieldsToSmartHints } from "./transformStartOperatorFieldsToSmartHints";
 import { getOperatorInputOutputSchema } from "../../view/pipeline-builder/lib/getOperatorInputOutputSchema";
+import {
+  isConnectorComponent,
+  isOperatorComponent,
+  isStartComponent,
+} from "../../view/pipeline-builder/lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   updateSmartHints: store.updateSmartHints,
@@ -21,79 +26,71 @@ export const useSmartHint = () => {
     let smartHints: SmartHint[] = [];
 
     for (const node of nodes) {
-      switch (node.data.nodeType) {
-        case "connector": {
-          const { outputSchema } = getConnectorInputOutputSchema(
-            node.data.component
-          );
+      if (isStartComponent(node.data)) {
+        const hints = transformStartOperatorFieldsToSmartHints(
+          node.data.start_component.fields
+        );
 
-          if (outputSchema) {
-            const outputFormTree =
-              transformInstillJSONSchemaToFormTree(outputSchema);
+        smartHints = [...smartHints, ...hints];
 
-            const hints = transformConnectorComponentFormTreeToSmartHints(
-              outputFormTree,
-              node.id
-            );
+        continue;
+      }
 
-            smartHints = [...smartHints, ...hints];
-          }
+      if (isConnectorComponent(node.data)) {
+        const { outputSchema } = getConnectorInputOutputSchema(node.data);
 
-          smartHints = [
-            ...smartHints,
-            {
-              path: `${node.id}.output`,
-              key: "output",
-              instillFormat: "semi-structured/json",
-              type: "object",
-              properties: [],
-            },
-          ];
-          continue;
-        }
-        case "start": {
-          if (!node.data.component.configuration.metadata) {
-            continue;
-          }
+        if (outputSchema) {
+          const outputFormTree =
+            transformInstillJSONSchemaToFormTree(outputSchema);
 
-          const hints = transformStartOperatorMetadataToSmartHints(
-            node.data.component.configuration.metadata
+          const hints = transformConnectorComponentFormTreeToSmartHints(
+            outputFormTree,
+            node.id
           );
 
           smartHints = [...smartHints, ...hints];
-
-          continue;
         }
-        case "operator": {
-          const { outputSchema } = getOperatorInputOutputSchema(
-            node.data.component
+
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "semi-structured/json",
+            type: "object",
+            properties: [],
+          },
+        ];
+        continue;
+      }
+
+      if (isOperatorComponent(node.data)) {
+        const { outputSchema } = getOperatorInputOutputSchema(node.data);
+
+        if (outputSchema) {
+          const outputFormTree =
+            transformInstillJSONSchemaToFormTree(outputSchema);
+
+          const hints = transformConnectorComponentFormTreeToSmartHints(
+            outputFormTree,
+            node.id
           );
 
-          if (outputSchema) {
-            const outputFormTree =
-              transformInstillJSONSchemaToFormTree(outputSchema);
-
-            const hints = transformConnectorComponentFormTreeToSmartHints(
-              outputFormTree,
-              node.id
-            );
-
-            smartHints = [...smartHints, ...hints];
-          }
-
-          smartHints = [
-            ...smartHints,
-            {
-              path: `${node.id}.output`,
-              key: "output",
-              instillFormat: "semi-structured/json",
-              type: "object",
-              properties: [],
-            },
-          ];
-
-          continue;
+          smartHints = [...smartHints, ...hints];
         }
+
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "semi-structured/json",
+            type: "object",
+            properties: [],
+          },
+        ];
+
+        continue;
       }
     }
 

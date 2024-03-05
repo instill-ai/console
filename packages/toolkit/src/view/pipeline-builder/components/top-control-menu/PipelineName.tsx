@@ -1,7 +1,7 @@
 import * as z from "zod";
 import * as React from "react";
 import { Form, Input, Popover } from "@instill-ai/design-system";
-import { useRenamePipeline } from "../../lib/hooks/useRenamePipeline";
+import { useRenamePipeline } from "../../lib";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,7 +41,6 @@ export const PipelineName = () => {
   }, [pipelineId, form]);
 
   const handleRename = async (formData: z.infer<typeof pipelineNameSchema>) => {
-    console.log(pipelineId);
     if (!pipelineId) {
       return;
     }

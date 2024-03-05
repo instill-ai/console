@@ -5,6 +5,7 @@ import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { NodeBottomBarProvider } from "./node-bottom-bar";
 import { Edge } from "reactflow";
+import { NodeData } from "../../../type";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
@@ -15,19 +16,15 @@ const selector = (store: InstillStore) => ({
 });
 
 export const NodeWrapper = ({
-  nodeType,
-  id,
+  nodeData,
   children,
   noteIsOpen,
-  note,
   renderBottomBarInformation,
   renderNodeBottomBar,
 }: {
-  nodeType: "start" | "end" | "connector" | "operator";
-  id: string;
+  nodeData: NodeData;
   children: React.ReactNode;
   noteIsOpen: boolean;
-  note: Nullable<string>;
   renderBottomBarInformation?: () => React.ReactNode;
   renderNodeBottomBar?: () => React.ReactNode;
 }) => {
@@ -39,13 +36,13 @@ export const NodeWrapper = ({
     updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
   const timer = React.useRef<Nullable<number>>(null);
-  const [noteValue, setNoteValue] = React.useState(note);
+  const [noteValue, setNoteValue] = React.useState(nodeData.note);
 
   return (
     <div
       className="relative"
       onClick={() => {
-        updateSelectedConnectorNodeId(() => id);
+        updateSelectedConnectorNodeId(() => nodeData.id);
 
         // We reorder the edges so that the selected edge is on top of the unselected edges
         updateEdges((edges) => {
@@ -53,7 +50,7 @@ export const NodeWrapper = ({
           const unSelectedEdges: Edge[] = [];
 
           edges.forEach((edge) => {
-            if (edge.source === id || edge.target === id) {
+            if (edge.source === nodeData.id || edge.target === nodeData.id) {
               selectedEdges.push(edge);
             } else {
               unSelectedEdges.push(edge);
@@ -82,7 +79,7 @@ export const NodeWrapper = ({
             timer.current = window.setTimeout(() => {
               updateNodes((nodes) =>
                 nodes.map((node) => {
-                  if (node.id === id && node.data.nodeType === nodeType) {
+                  if (node.id === nodeData.id) {
                     node.data = {
                       ...node.data,
                       note: e.target.value,
@@ -107,7 +104,7 @@ export const NodeWrapper = ({
             "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
             {
               "outline outline-2 outline-offset-1 outline-semantic-accent-default":
-                id === selectedConnectorNodeId,
+                nodeData.id === selectedConnectorNodeId,
             }
           )}
         >
@@ -116,7 +113,7 @@ export const NodeWrapper = ({
         </div>
         {renderBottomBarInformation ? (
           <div
-            id={`${id}-node-bottom-information-container`}
+            id={`${nodeData.id}-node-bottom-information-container`}
             className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)] rounded-sm bg-semantic-bg-base-bg shadow-md"
           >
             {renderBottomBarInformation()}

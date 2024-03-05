@@ -14,7 +14,6 @@ import {
   useCreateUserPipeline,
   useInstillStore,
   useNavigationObserver,
-  usePipelineBuilderGraph,
   useEntity,
   useSmartHint,
   useUpdateUserPipeline,
@@ -28,6 +27,7 @@ import {
   RightPanel,
   composePipelineMetadataFromNodes,
   constructPipelineRecipe,
+  usePipelineBuilderGraph,
 } from ".";
 import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
 import { getPipelineInputOutputSchema } from "./lib/getPipelineInputOutputSchema";

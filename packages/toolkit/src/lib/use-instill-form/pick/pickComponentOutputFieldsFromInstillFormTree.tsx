@@ -160,7 +160,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     );
   }
 
-  if (tree.type === "array") {
+  if (tree.instillFormat.includes("array:")) {
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
 
     switch (arrayType) {
