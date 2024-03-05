@@ -34,5 +34,5 @@ export function isOperatorComponent(
 export function isIteratorComponent(
   component: PipelineComponent
 ): component is PipelineIteratorComponent {
-  return "input_array" in component && "output_elements" in component;
+  return "iterator_component" in component;
 }

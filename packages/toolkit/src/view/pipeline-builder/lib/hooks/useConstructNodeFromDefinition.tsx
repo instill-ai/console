@@ -4,6 +4,7 @@ import {
   ConnectorDefinition,
   ConnectorWithDefinition,
   InstillStore,
+  IteratorDefinition,
   Nullable,
   OperatorDefinition,
   useInstillStore,
@@ -29,7 +30,7 @@ export function useConstructNodeFromDefinition({
 
   return React.useCallback(
     (
-      definition: ConnectorDefinition | OperatorDefinition,
+      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
       connector?: ConnectorWithDefinition
     ) => {
       if (!reactFlowInstance) return;
@@ -82,8 +83,30 @@ export function useConstructNodeFromDefinition({
 
       let newNodes = nodes;
 
-      // Process the connectors
-      if ("type" in definition) {
+      if (definition.id === "iterator") {
+        // Process the iterators
+        newNodes = [
+          ...newNodes,
+          {
+            id: nodeID,
+            type: "iteratorNode",
+            sourcePosition: Position.Left,
+            targetPosition: Position.Right,
+            data: {
+              id: nodeID,
+              iterator_component: {
+                input: "",
+                output_elements: {},
+                components: [],
+                condition: null,
+              },
+              note: null,
+            },
+            position: newNodeXY,
+            zIndex: 20,
+          },
+        ];
+      } else if ("type" in definition) {
         newNodes = [
           ...newNodes,
           {
@@ -114,7 +137,6 @@ export function useConstructNodeFromDefinition({
           },
         ];
       } else {
-        // Process the operators
         newNodes = [
           ...newNodes,
           {
@@ -126,7 +148,7 @@ export function useConstructNodeFromDefinition({
               id: nodeID,
               operator_component: {
                 definition_name: definition.name,
-                definition,
+                definition: definition as OperatorDefinition,
                 input: {},
                 task: "",
                 condition: null,

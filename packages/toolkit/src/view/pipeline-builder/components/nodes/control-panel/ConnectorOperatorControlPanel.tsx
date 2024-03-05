@@ -11,7 +11,12 @@ import {
   generateNewComponentIndex,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
-import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../../type";
+import {
+  ConnectorNodeData,
+  IteratorNodeData,
+  NodeData,
+  OperatorNodeData,
+} from "../../../type";
 import {
   isConnectorComponent,
   isIteratorComponent,
@@ -45,7 +50,7 @@ export const ConnectorOperatorControlPanel = ({
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
   noteIsOpen: boolean;
-  nodeData: ConnectorNodeData | OperatorNodeData;
+  nodeData: ConnectorNodeData | OperatorNodeData | IteratorNodeData;
 }) => {
   const {
     isOwner,
@@ -61,13 +66,21 @@ export const ConnectorOperatorControlPanel = ({
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
-  let componentTypeName: Nullable<string> = null;
+  const componentTypeName = React.useMemo(() => {
+    if (isOperatorComponent(nodeData)) {
+      return "Operator Component";
+    }
 
-  if (isOperatorComponent(nodeData)) {
-    componentTypeName = "Operator Component";
-  } else {
-    componentTypeName = "Connector Component";
-  }
+    if (isConnectorComponent(nodeData)) {
+      return "Connector Component";
+    }
+
+    if (isIteratorComponent(nodeData)) {
+      return "Iterator Component";
+    }
+
+    return null;
+  }, [nodeData]);
 
   const handelDeleteNode = React.useCallback(() => {
     const newNodes = nodes.filter((node) => node.id !== nodeID);

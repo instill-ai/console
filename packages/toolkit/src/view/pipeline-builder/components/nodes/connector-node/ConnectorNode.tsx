@@ -32,14 +32,11 @@ import {
   NodeHead,
   NodeIDEditor,
   NodeWrapper,
-  useNodeIDEditorForm,
 } from "../common";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
-  selectedConnectorNodeId: store.selectedConnectorNodeId,
-  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   nodes: store.nodes,
   edges: store.edges,
   updateNodes: store.updateNodes,
@@ -57,8 +54,6 @@ const selector = (store: InstillStore) => ({
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
-    selectedConnectorNodeId,
-    updateSelectedConnectorNodeId,
     nodes,
     edges,
     updateNodes,
@@ -73,13 +68,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
-  const { toast } = useToast();
-
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
-
-  const nodeIDEditorForm = useNodeIDEditorForm(id);
 
   const connectorDefinitions = useConnectorDefinitions({
     connectorType: "all",
@@ -91,79 +82,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
 
-  const { reset } = nodeIDEditorForm;
-
-  React.useEffect(() => {
-    reset({
-      nodeID: id,
-    });
-  }, [id, reset]);
-
   let resourceNotCreated = false;
 
   if (!data.connector_component.connector_name) {
     resourceNotCreated = true;
-  }
-
-  function handleRename(newID: string) {
-    if (newID === id) {
-      return;
-    }
-
-    if (!validateInstillID(newID)) {
-      toast({
-        title: InstillErrors.IDInvalidError,
-        variant: "alert-error",
-        size: "small",
-      });
-      nodeIDEditorForm.reset({
-        nodeID: id,
-      });
-      return;
-    }
-
-    const existingNodeID = nodes.map((node) => node.id);
-
-    if (existingNodeID.includes(newID)) {
-      toast({
-        title: "Component ID already exists",
-        variant: "alert-error",
-        size: "small",
-      });
-      nodeIDEditorForm.reset({
-        nodeID: id,
-      });
-      return;
-    }
-
-    const newNodes = nodes.map((node) => {
-      if (node.id === id && isConnectorComponent(node.data)) {
-        return {
-          ...node,
-          id: newID,
-          data: {
-            ...node.data,
-            id: newID,
-          },
-        };
-      }
-      return node;
-    });
-    const newEdges = composeEdgesFromNodes(newNodes);
-    updateNodes(() => newNodes);
-    updateEdges(() => newEdges);
-
-    if (selectedConnectorNodeId === id) {
-      updateSelectedConnectorNodeId(() => newID);
-    }
-
-    toast({
-      title: "Successfully update node's name",
-      variant: "alert-success",
-      size: "small",
-    });
-
-    updatePipelineRecipeIsDirty(() => true);
   }
 
   const hasTargetEdges = React.useMemo(() => {
@@ -247,11 +169,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
           />
-          <NodeIDEditor
-            form={nodeIDEditorForm}
-            nodeID={id}
-            handleRename={handleRename}
-          />
+          <NodeIDEditor currentNodeID={id} />
         </div>
         <ConnectorOperatorControlPanel
           nodeID={id}

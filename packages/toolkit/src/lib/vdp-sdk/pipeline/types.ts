@@ -192,7 +192,7 @@ export type PipelineIteratorComponent = {
   id: string;
   metadata?: GeneralRecord;
   iterator_component: {
-    input_array: string;
+    input: string;
     output_elements: Record<string, string>;
     components: PipelineComponent[];
     condition: Nullable<string>;
@@ -233,3 +233,11 @@ export type StartOperatorInputType =
   | "video/*"
   | "array:video/*"
   | JSONSchema7TypeName;
+
+export type IteratorDefinition = {
+  name: "iterator/iterator";
+  uid: "uid";
+  id: "iterator";
+  title: "Iterator";
+  icon: "iterator.svg";
+};
