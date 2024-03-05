@@ -34,7 +34,6 @@ export type PipelineBuilderState = {
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
   collapseAllNodes: boolean;
-  testModeEnabled: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
   createResourceDialogState: PipelineBuilderCreateResourceDialogState;
@@ -71,7 +70,6 @@ export type PipelineBuilderAction = {
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateCollapseAllNodes: (fn: (prev: boolean) => boolean) => void;
-  updateTestModeEnabled: (fn: (prev: boolean) => boolean) => void;
   updateTestModeTriggerResponse: (
     fn: (
       prev: Nullable<TriggerUserPipelineResponse>

@@ -13,7 +13,6 @@ import { CustomHandle } from "../../CustomHandle";
 import {
   InstillStore,
   Nullable,
-  StartOperatorInput,
   StartOperatorInputType,
   useInstillStore,
   useStartOperatorTriggerPipelineForm,
@@ -49,7 +48,6 @@ const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   edges: store.edges,
   updateEdges: store.updateEdges,
-  testModeEnabled: store.testModeEnabled,
   updateTestModeTriggerResponse: store.updateTestModeTriggerResponse,
   accessToken: store.accessToken,
   isOwner: store.isOwner,
@@ -71,7 +69,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     updateNodes,
     edges,
     updateEdges,
-    testModeEnabled,
     updateTestModeTriggerResponse,
     accessToken,
     isOwner,
@@ -326,19 +323,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     disabledFieldControls: pipelineIsReadOnly,
     disabledReferenceHint,
   });
-
-  React.useEffect(() => {
-    if (!testModeEnabled) {
-      updateIsTriggeringPipeline(() => false);
-    }
-    updateTestModeTriggerResponse(() => null);
-    startOperatorTriggerPipelineForm.reset();
-  }, [
-    testModeEnabled,
-    startOperatorTriggerPipelineForm,
-    updateTestModeTriggerResponse,
-    updateIsTriggeringPipeline,
-  ]);
 
   const useTriggerPipeline = useTriggerUserPipeline();
   const useTriggerPipelineRelease = useTriggerUserPipelineRelease();

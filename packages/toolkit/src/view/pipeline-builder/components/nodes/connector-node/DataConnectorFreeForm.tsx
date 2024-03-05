@@ -27,11 +27,11 @@ export const Schema = z.object({
 });
 
 const selector = (store: InstillStore) => ({
-  testModeEnabled: store.testModeEnabled,
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export const DataConnectorFreeForm = ({
@@ -53,11 +53,11 @@ export const DataConnectorFreeForm = ({
   });
 
   const {
-    testModeEnabled,
     nodes,
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   function onSubmitDataConnectorInput(formData: z.infer<typeof Schema>) {
@@ -131,7 +131,7 @@ export const DataConnectorFreeForm = ({
     updatePipelineRecipeIsDirty(() => true);
   }
 
-  if (testModeEnabled) {
+  if (pipelineIsReadOnly) {
     return (
       <div className="mb-3 flex flex-col space-y-3">
         {component.connector_component.input?.data
