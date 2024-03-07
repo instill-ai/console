@@ -20,6 +20,7 @@ import {
   useUserPipeline,
   sendAmplitudeData,
   useAmplitudeCtx,
+  InstillJSONSchema,
 } from "../../lib";
 import {
   BottomBar,
@@ -30,7 +31,6 @@ import {
   usePipelineBuilderGraph,
 } from ".";
 import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
-import { getPipelineInputOutputSchema } from "./lib/getPipelineInputOutputSchema";
 import { useRouter } from "next/router";
 import { TopControlMenu } from "./components/top-control-menu";
 
@@ -95,11 +95,9 @@ export const PipelineBuilderMainView = () => {
   React.useEffect(() => {
     if (!pipeline.isSuccess) return;
 
-    const { outputSchema } = getPipelineInputOutputSchema(
-      pipeline.data.openapi_schema
+    updatePipelineOpenAPIOutputSchema(
+      () => pipeline.data.data_specification.output as InstillJSONSchema
     );
-
-    updatePipelineOpenAPIOutputSchema(() => outputSchema);
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
   React.useEffect(() => {
