@@ -56,6 +56,7 @@ test("should extract hints from formGroup", () => {
       key: "texts",
       instillFormat: "text/plain",
       type: "array",
+      description: "",
     },
   ]);
 });
@@ -274,18 +275,23 @@ test("should extract hints from objectArray", () => {
           key: "label",
           instillFormat: "string",
           type: "null",
+          description: "The label for the class (model specific) of a segment.",
         },
         {
           path: "root.output.segments.mask",
           key: "mask",
           instillFormat: "image/jpeg",
           type: "null",
+          description:
+            "A str (base64 str of a single channel black-and-white img) representing the mask of a segment.",
         },
         {
           path: "root.output.segments.score",
           key: "score",
           instillFormat: "number",
           type: "null",
+          description:
+            "A float that represents how likely it is that the segment belongs to the given class.",
         },
       ],
     },

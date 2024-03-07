@@ -6,7 +6,6 @@ export function transformInstillFormTreeToReferenceHints(
   objectArrayParentPath?: string
 ): ComponentOutoutReferenceHint[] {
   // 1. Preprocess
-  const title = tree.title ?? tree.fieldKey;
   let referenceHints: ComponentOutoutReferenceHint[] = [];
 
   // Normall a objectArray child will be a formGroup with the same
@@ -56,24 +55,17 @@ export function transformInstillFormTreeToReferenceHints(
     return referenceHints;
   }
 
-  // We don't need to hint a field that is lacking title and key
-  if (!title) {
-    return referenceHints;
-  }
-
   // Process a normal field
 
   const hint: ComponentOutoutReferenceHint =
     isObjectArrayChild && objectArrayParentPath
       ? {
-          title,
           path: tree.path,
           instillFormat: tree.instillFormat,
           isObjectArrayChild: isObjectArrayChild ?? false,
           objectArrayParentPath,
         }
       : {
-          title,
           path: tree.path,
           instillFormat: tree.instillFormat,
           isObjectArrayChild: false,

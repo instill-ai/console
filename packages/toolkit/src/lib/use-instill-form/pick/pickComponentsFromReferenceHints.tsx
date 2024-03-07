@@ -35,7 +35,6 @@ export function pickComponentsFromReferenceHints(
       fields.push(
         <ComponentOutputReferenceHints.ListField
           key={hint.path}
-          title={hint.title}
           path={hint.path}
           instillFormat={hint.instillFormat}
           description={hint.description}
