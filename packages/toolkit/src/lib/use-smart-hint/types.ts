@@ -4,4 +4,5 @@ export type SmartHint = {
   instillFormat: string;
   type: string;
   properties?: SmartHint[];
+  description?: string;
 };

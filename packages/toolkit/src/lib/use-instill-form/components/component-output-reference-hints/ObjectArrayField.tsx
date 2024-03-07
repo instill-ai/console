@@ -30,7 +30,6 @@ export const ObjectArrayField = ({
             <ComponentOutputReferenceHints.ListField
               key={componentID + hint.path}
               componentID={componentID}
-              title={hint.title}
               path={hint.path.replace(parentPath, `${parentPath}[index]`)}
               instillFormat={hint.instillFormat}
               description={hint.description}

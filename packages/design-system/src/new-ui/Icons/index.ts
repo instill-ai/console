@@ -54,6 +54,7 @@ import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { InfoCircle } from "./InfoCircle";
+import { InfoSquare } from "./InfoSquare";
 import { Image01 } from "./Image01";
 import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
@@ -159,6 +160,7 @@ export const Icons = {
   Lock03,
   LockUnlocked03,
   InfoCircle,
+  InfoSquare,
   Image01,
   ImagePlus,
   Logout01,

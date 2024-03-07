@@ -59,6 +59,7 @@ export function transformConnectorComponentFormTreeToSmartHints(
       key: tree.fieldKey ?? "null",
       instillFormat: tree.instillFormat ?? "null",
       type: tree.type ?? "null",
+      description: tree.description,
     });
   }
 

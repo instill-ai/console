@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  ReferenceHintDataTypeTag,
-  ReferenceHintTag,
-} from "../../../../components";
+import { ReferenceHintTag } from "../../../../components";
 import { ComponentOutoutReferenceHint } from "../../types";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
@@ -21,33 +18,21 @@ export const GroupByFormatField = ({
 
   return (
     <div className="flex w-full flex-col gap-y-2">
-      <div className="flex">
-        <ReferenceHintDataTypeTag
+      <ReferenceHintTag.Root>
+        <ReferenceHintTag.InstillFormat
           isArray={humanReadableInstillFormat.isArray}
-          label={humanReadableInstillFormat.format}
+          instillFormat={humanReadableInstillFormat.format}
         />
-      </div>
-      <div className="flex w-full flex-row flex-wrap gap-2">
-        {hints.map((hint) => (
-          <ReferenceHintTag.Root key={hint.path}>
-            <ReferenceHintTag.Label
-              label={
-                componentID
-                  ? hint.isObjectArrayChild
-                    ? `${componentID}.` +
-                      "output." +
-                      hint.path.replace(
-                        hint.objectArrayParentPath,
-                        `${hint.objectArrayParentPath}[index]`
-                      )
-                    : `${componentID}.` + "output." + hint.path
-                  : hint.path
-              }
-              className="!text-semantic-accent-default"
-            />
-          </ReferenceHintTag.Root>
+        {hints.map((hint, index) => (
+          <ReferenceHintTag.Path
+            key={hint.path}
+            icon={<ReferenceHintTag.Icon type="check" />}
+            path={hint.path}
+            description={hint.description}
+            className={index === hints.length - 1 ? "" : "!rounded-bl-none"}
+          />
         ))}
-      </div>
+      </ReferenceHintTag.Root>
     </div>
   );
 };

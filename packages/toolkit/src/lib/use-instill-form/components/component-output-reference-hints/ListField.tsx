@@ -1,36 +1,33 @@
+import * as React from "react";
 import { ReferenceHintTag } from "../../../../components";
+import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 export const ListField = ({
   componentID,
   path,
-  title,
   instillFormat,
   description,
 }: {
   componentID?: string;
   path: string;
-  title: string;
   instillFormat: string;
   description?: string;
 }) => {
+  const humanReadableInstillFormat = React.useMemo(() => {
+    return transformInstillFormatToHumanReadableFormat(instillFormat);
+  }, [instillFormat]);
+
   return (
-    <div className="flex flex-col gap-y-1">
-      <p className="text-semantic-fg-secondary product-body-text-4-medium">
-        {`${title} [${instillFormat}]`}
-      </p>
-      <div className="flex">
-        <ReferenceHintTag.Root>
-          <ReferenceHintTag.Label
-            label={componentID ? `${componentID}.` + path : path}
-            className="text-semantic-accent-default"
-          />
-        </ReferenceHintTag.Root>
-      </div>
-      {description ? (
-        <p className="text-[#1D243380] product-body-text-4-regular">
-          {description}
-        </p>
-      ) : null}
-    </div>
+    <ReferenceHintTag.Root>
+      <ReferenceHintTag.InstillFormat
+        isArray={humanReadableInstillFormat.isArray}
+        instillFormat={humanReadableInstillFormat.format}
+      />
+      <ReferenceHintTag.Path
+        icon={<ReferenceHintTag.Icon type="check" />}
+        path={`start.${path}`}
+        description={description}
+      />
+    </ReferenceHintTag.Root>
   );
 };

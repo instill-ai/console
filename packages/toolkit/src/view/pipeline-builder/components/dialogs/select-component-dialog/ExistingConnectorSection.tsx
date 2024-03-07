@@ -1,6 +1,5 @@
 import {
   InstillStore,
-  Nullable,
   useEntity,
   useInstillStore,
   useShallow,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NodeProps, Position } from "reactflow";
-import { Form, Icons, useToast } from "@instill-ai/design-system";
+import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { ConnectorNodeData } from "../../../type";
@@ -8,7 +8,6 @@ import { CustomHandle } from "../../CustomHandle";
 import {
   getConnectorInputOutputSchema,
   composeEdgesFromNodes,
-  getConnectorOperatorComponentConfiguration,
 } from "../../../lib";
 import {
   GeneralRecord,
@@ -16,7 +15,6 @@ import {
   useConnectorDefinitions,
   useInstillForm,
   useInstillStore,
-  validateInstillID,
 } from "../../../../../lib";
 import { ImageWithFallback } from "../../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
@@ -25,7 +23,6 @@ import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
-import { InstillErrors } from "../../../../../constant/errors";
 import {
   NodeBottomBarContent,
   NodeBottomBarMenu,
