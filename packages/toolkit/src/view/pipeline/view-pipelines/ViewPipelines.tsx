@@ -21,6 +21,7 @@ import {
 } from "../../../components";
 import { useRouter } from "next/router";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
+import debounce from "lodash.debounce";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -35,6 +36,9 @@ export const ViewPipelines = ({
   const router = useRouter();
   const { visibility } = router.query;
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [searchInputValue, setSearchInputValue] =
+    React.useState<Nullable<string>>(null);
+
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
       visibility === "VISIBILITY_PUBLIC"
@@ -75,6 +79,14 @@ export const ViewPipelines = ({
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const debouncedSetSearchCode = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchCode(value);
+      }, 300),
+    []
+  );
+
   return (
     <div className="flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
@@ -98,9 +110,12 @@ export const ViewPipelines = ({
                   <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                 </Input.LeftIcon>
                 <Input.Core
-                  value={searchCode ?? ""}
+                  value={searchInputValue ?? ""}
                   placeholder="Search..."
-                  onChange={(event) => setSearchCode(event.target.value)}
+                  onChange={(event) => {
+                    setSearchInputValue(event.target.value);
+                    debouncedSetSearchCode(event.target.value);
+                  }}
                 />
               </Input.Root>
             </div>
