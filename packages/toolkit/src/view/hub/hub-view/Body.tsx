@@ -143,9 +143,8 @@ export const Body = ({
             ) : (
               allPipelines.length &&
               allPipelines.map((pipeline) => (
-                <React.Fragment>
+                <React.Fragment key={pipeline.id}>
                   <CardPipeline
-                    key={pipeline.id}
                     ownerID={pipeline.owner_name.split("/")[1]}
                     pipeline={pipeline}
                     isOwner={pipeline.owner_name === me.data?.name}
