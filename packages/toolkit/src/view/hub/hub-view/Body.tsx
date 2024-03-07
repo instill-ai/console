@@ -31,7 +31,8 @@ export const Body = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const [searchValue, setSearchValue] = React.useState<Nullable<string>>(null);
+  const [searchInputValue, setSearchInputValue] =
+    React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -121,10 +122,10 @@ export const Body = ({
                 <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
               </Input.LeftIcon>
               <Input.Core
-                value={searchValue ?? ""}
+                value={searchInputValue ?? ""}
                 placeholder="Search..."
                 onChange={(event) => {
-                  setSearchValue(event.target.value);
+                  setSearchInputValue(event.target.value);
                   debouncedSetSearchCode(event.target.value);
                 }}
               />
