@@ -94,13 +94,13 @@ const Item = React.forwardRef<
     )}
     {...props}
   >
-    {disabledCheck ? (
+    {disabledCheck ? null : (
       <span className="absolute left-2 flex h-4 w-4 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <Icons.Check className="h-4 w-4" />
         </SelectPrimitive.ItemIndicator>
       </span>
-    ) : null}
+    )}
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ));

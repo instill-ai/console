@@ -91,6 +91,7 @@ import { Share07 } from "./Share07";
 import { Tag01 } from "./Tag01";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { Trash01 } from "./Trash01";
+import { Trash03 } from "./Trash03";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Upload01 } from "./Upload01";
@@ -197,6 +198,7 @@ export const Icons = {
   Tag01,
   TextGenerationChat,
   Trash01,
+  Trash03,
   Type02,
   TypePlus,
   Upload01,

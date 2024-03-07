@@ -1,13 +1,7 @@
 import * as React from "react";
 
 import { Button, Icons, Select, Separator } from "@instill-ai/design-system";
-import {
-  InstillStore,
-  Nullable,
-  PipelineIteratorComponent,
-  useInstillStore,
-  useShallow,
-} from "../../lib";
+import { InstillStore, Nullable, useInstillStore, useShallow } from "../../lib";
 import { SelectComponentDialog } from "./components";
 import {
   composeEdgesFromNodes,
@@ -19,6 +13,7 @@ import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
 import { isIteratorComponent } from "./lib/checkComponentType";
 import { ReferenceHintTag } from "../../components";
 import { IteratorNodeData } from "./type";
+import { transformInstillFormatToHumanReadableFormat } from "../../lib/use-instill-form/transform";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -38,6 +33,7 @@ const selector = (store: InstillStore) => ({
 type InputOption = {
   path: string;
   instill_format: string;
+  description?: string;
 };
 
 export const IteratorEditor = ({
@@ -63,6 +59,7 @@ export const IteratorEditor = ({
     smartHints,
     updatePipelineRecipeIsDirty,
   } = useInstillStore(useShallow(selector));
+
   const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
   const [selectedInputOption, setSelectedInputOption] =
     React.useState<Nullable<InputOption>>(null);
@@ -73,6 +70,7 @@ export const IteratorEditor = ({
       .map((hint) => ({
         path: hint.path,
         instill_format: hint.instillFormat,
+        description: hint.description,
       }));
   }, [smartHints]);
 
@@ -97,6 +95,22 @@ export const IteratorEditor = ({
     editingIteratorID,
     tempSavedNodesForEditingIteratorFlow,
   ]);
+
+  const humanReadableInstillFormat = React.useMemo(() => {
+    if (!selectedInputOption || !selectedInputOption?.instill_format) {
+      return null;
+    }
+    return transformInstillFormatToHumanReadableFormat(
+      selectedInputOption.instill_format
+    );
+  }, [selectedInputOption]);
+
+  const targetIteratorNode = React.useMemo(() => {
+    return tempSavedNodesForEditingIteratorFlow.find(
+      (node) =>
+        node.data.id === editingIteratorID && isIteratorComponent(node.data)
+    ) as Node<IteratorNodeData> | undefined;
+  }, [editingIteratorID, tempSavedNodesForEditingIteratorFlow]);
 
   return (
     <div className="flex h-full flex-col bg-semantic-bg-secondary p-4">
@@ -211,18 +225,12 @@ export const IteratorEditor = ({
                 ))}
               </Select.Content>
             </Select.Root>
-            <ReferenceHintTag.Root className="!bg-semantic-bg-primary !px-0">
-              <ReferenceHintTag.Icon
-                type="check"
-                className="!stroke-semantic-fg-disabled"
-              />
-              <ReferenceHintTag.Label
-                label="references"
-                className="!text-semantic-fg-disabled"
-                disabledCopy={true}
-                disabledTooltip={true}
-              />
-            </ReferenceHintTag.Root>
+            <div className="flex flex-row items-center gap-x-1 px-2 py-px">
+              <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-fg-disabled" />
+              <p className="font-sans text-[11px] font-medium leading-[14.5px] text-semantic-fg-disabled">
+                references
+              </p>
+            </div>
 
             <div className="flex flex-row gap-x-2">
               <div className="rounded bg-semantic-accent-bg px-2 py-px">
@@ -234,6 +242,20 @@ export const IteratorEditor = ({
                 in
               </p>
             </div>
+
+            {humanReadableInstillFormat?.format && selectedInputOption?.path ? (
+              <ReferenceHintTag.Root>
+                <ReferenceHintTag.InstillFormat
+                  isArray={humanReadableInstillFormat.isArray}
+                  instillFormat={humanReadableInstillFormat.format}
+                />
+                <ReferenceHintTag.Path
+                  icon={<ReferenceHintTag.Icon type="check" />}
+                  path={selectedInputOption.path}
+                  description={selectedInputOption.description}
+                />
+              </ReferenceHintTag.Root>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col gap-y-1">
@@ -242,16 +264,38 @@ export const IteratorEditor = ({
               Output
             </p>
           </div>
-          <div className="flex flex-row gap-x-3">
-            <p className="text-semantic-fg-primary product-body-text-3-semibold">
-              Result
-            </p>
-            <div className="flex flex-row gap-x-2">
-              <p className="text-semantic-fg-secondary product-body-text-4-semibold">
-                array of
-              </p>
-            </div>
-          </div>
+          {targetIteratorNode?.data.iterator_component.output_elements
+            ? Object.entries(
+                targetIteratorNode?.data.iterator_component.output_elements
+              ).map(([element]) => (
+                <div
+                  key={element}
+                  className="flex flex-row items-center gap-x-3"
+                >
+                  <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                    Result
+                  </p>
+                  <div className="flex flex-row gap-x-2">
+                    <p className="text-semantic-fg-secondary product-body-text-4-semibold">
+                      array of
+                    </p>
+                  </div>
+                  <Button
+                    variant="tertiaryGrey"
+                    className="!p-2"
+                    onClick={() => {
+                      updateTempSavedNodesForEditingIteratorFlow((nodes) =>
+                        nodes.map((node) => {
+                          return node;
+                        })
+                      );
+                    }}
+                  >
+                    <Icons.Trash03 className="h-4 w-4 stroke-semantic-error-default" />
+                  </Button>
+                </div>
+              ))
+            : null}
         </div>
       </div>
       <div className="relative mb-4 flex">
