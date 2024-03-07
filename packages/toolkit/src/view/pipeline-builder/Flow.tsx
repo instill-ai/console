@@ -2,16 +2,7 @@ import { useShallow } from "zustand/react/shallow";
 import * as React from "react";
 import { ReactFlowInstance } from "reactflow";
 
-import {
-  BackToLatestVersionTopBar,
-  ConnectorNode,
-  CustomEdge,
-  EmptyNode,
-  EndOperatorNode,
-  IteratorNode,
-  OperatorNode,
-  StartOperatorNode,
-} from "./components";
+import { BackToLatestVersionTopBar } from "./components";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";

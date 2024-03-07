@@ -168,8 +168,6 @@ export function useConstructNodeFromDefinition({
         ];
       }
 
-      console.log("newNodes", newNodes);
-
       updatePipelineRecipeIsDirty(() => true);
       updateNodes(() => newNodes);
     },

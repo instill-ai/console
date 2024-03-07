@@ -29,6 +29,7 @@ import {
   ConnectorNode,
   EmptyNode,
   EndOperatorNode,
+  IteratorNode,
   OperatorNode,
   StartOperatorNode,
 } from "./nodes";
@@ -46,6 +47,7 @@ const nodeTypes = {
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,
   operatorNode: OperatorNode,
+  iteratorNode: IteratorNode,
 };
 
 const edgeTypes = {

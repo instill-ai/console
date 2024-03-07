@@ -17,15 +17,21 @@ import {
 const selector = (store: InstillStore) => ({
   updateSmartHints: store.updateSmartHints,
   nodes: store.nodes,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
 });
 
 export const useSmartHint = () => {
-  const { updateSmartHints, nodes } = useInstillStore(useShallow(selector));
+  const { updateSmartHints, nodes, tempSavedNodesForEditingIteratorFlow } =
+    useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     let smartHints: SmartHint[] = [];
 
-    for (const node of nodes) {
+    // User can reference nodes outside of the iterator flow
+    const targetNodes = [...tempSavedNodesForEditingIteratorFlow, ...nodes];
+
+    for (const node of targetNodes) {
       if (isStartComponent(node.data)) {
         const hints = transformStartOperatorFieldsToSmartHints(
           node.data.start_component.fields

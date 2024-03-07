@@ -11,12 +11,16 @@ import {
   createGraphLayout,
   createInitialGraphData,
 } from "../../../lib";
+import { IteratorComponentLabel } from "./IteratorComponentLable";
 
 const selector = (store: InstillStore) => ({
   updateIsEditingIterator: store.updateIsEditingIterator,
-  updateCurrentEditingIterator: store.updateCurrentEditingIterator,
+  nodes: store.nodes,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
+  updateTempSavedNodesForEditingIteratorFlow:
+    store.updateTempSavedNodesForEditingIteratorFlow,
+  updateEditingIteratorID: store.updateEditingIteratorID,
 });
 
 export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
@@ -25,9 +29,11 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
 
   const {
     updateIsEditingIterator,
-    updateCurrentEditingIterator,
-    updateEdges,
+    nodes,
     updateNodes,
+    updateEdges,
+    updateTempSavedNodesForEditingIteratorFlow,
+    updateEditingIteratorID,
   } = useInstillStore(useShallow(selector));
 
   return (
@@ -63,13 +69,29 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                   Iteration Input
                 </p>
               </div>
-              <div className="w-full rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5"></div>
+              <div className="flex">
+                <div className="flex min-h-8 w-full rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5">
+                  {data.iterator_component.input ? (
+                    <p className="rounded bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-medium">
+                      {"$" + `{${data.iterator_component.input}}`}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
             </div>
             <div className="flex flex-col gap-y-2">
               <div className="flex flex-row">
                 <p className="text-semantic-fg-secondary product-body-text-4-medium">
                   Iteration components
                 </p>
+              </div>
+              <div className="flex flex-col gap-y-2">
+                {data.iterator_component.components.map((component) => (
+                  <IteratorComponentLabel
+                    key={component.id}
+                    component={component}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -78,7 +100,8 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
             className="w-full"
             onClick={() => {
               updateIsEditingIterator(() => true);
-              updateCurrentEditingIterator(() => data);
+              updateEditingIteratorID(() => data.id);
+              updateTempSavedNodesForEditingIteratorFlow(() => nodes);
 
               if (
                 checkIsValidPosition(
@@ -92,7 +115,6 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                     metadata: data.metadata,
                   }
                 );
-                console.log(initialGraphData);
 
                 updateNodes(() => initialGraphData.nodes);
                 updateEdges(() => initialGraphData.edges);

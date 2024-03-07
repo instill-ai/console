@@ -12,15 +12,26 @@ import {
 import { StartNodeData } from "../../type";
 import { Node } from "reactflow";
 import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
+import { isIteratorComponent } from "../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   nodes: store.nodes,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
+  isEditingIterator: store.isEditingIterator,
+  editingIteratorID: store.editingIteratorID,
 });
 
 export const Toolkit = () => {
   const entity = useEntity();
-  const { currentVersion, nodes } = useInstillStore(useShallow(selector));
+  const {
+    currentVersion,
+    nodes,
+    isEditingIterator,
+    editingIteratorID,
+    tempSavedNodesForEditingIteratorFlow,
+  } = useInstillStore(useShallow(selector));
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
 
   const codeSnippte = React.useMemo(() => {
@@ -28,9 +39,13 @@ export const Toolkit = () => {
       return "";
     }
 
+    const targetNodes = isEditingIterator
+      ? nodes
+      : tempSavedNodesForEditingIteratorFlow;
+
     const input: GeneralRecord = {};
 
-    const startNode = nodes.find((e) => e.data.id === "start") as
+    const startNode = targetNodes.find((e) => e.data.id === "start") as
       | Node<StartNodeData>
       | undefined;
 
@@ -132,7 +147,15 @@ export const Toolkit = () => {
       .replace(/\{trigger-endpoint\}/g, triggerEndpoint);
 
     return snippet;
-  }, [nodes, entity.isSuccess, entity.pipelineName, currentVersion]);
+  }, [
+    nodes,
+    entity.isSuccess,
+    entity.pipelineName,
+    currentVersion,
+    isEditingIterator,
+    tempSavedNodesForEditingIteratorFlow,
+    editingIteratorID,
+  ]);
 
   return (
     <React.Fragment>

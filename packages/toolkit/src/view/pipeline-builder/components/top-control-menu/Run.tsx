@@ -7,6 +7,7 @@ import { LoadingSpin } from "../../../../components";
 const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   isTriggeringPipeline: store.isTriggeringPipeline,
+  isEditingIterator: store.isEditingIterator,
 });
 
 export const Run = ({
@@ -14,9 +15,8 @@ export const Run = ({
 }: {
   setIsSaving: (value: boolean) => void;
 }) => {
-  const { pipelineRecipeIsDirty, isTriggeringPipeline } = useInstillStore(
-    useShallow(selector)
-  );
+  const { pipelineRecipeIsDirty, isTriggeringPipeline, isEditingIterator } =
+    useInstillStore(useShallow(selector));
 
   const savePipeline = useSavePipeline({ setIsSaving });
 
@@ -25,7 +25,7 @@ export const Run = ({
       size="md"
       variant="tertiaryColour"
       form="start-operator-trigger-pipeline-form"
-      disabled={pipelineRecipeIsDirty}
+      disabled={pipelineRecipeIsDirty || isEditingIterator}
       className="!h-8 gap-x-2"
       onClick={async (e) => {
         if (pipelineRecipeIsDirty) {

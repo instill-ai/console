@@ -21,7 +21,11 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
   const nodes = useInstillStore((state) => state.nodes);
 
   const recipeString = React.useMemo(() => {
-    return JSON.stringify(constructPipelineRecipe(nodes), null, 2);
+    return JSON.stringify(
+      constructPipelineRecipe(nodes.map((node) => node.data)),
+      null,
+      2
+    );
   }, [nodes]);
 
   return (

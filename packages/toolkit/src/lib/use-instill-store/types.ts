@@ -48,7 +48,8 @@ export type PipelineBuilderState = {
   dialogSharePipelineIsOpen: boolean;
   pipelineIsReadOnly: boolean;
   isEditingIterator: boolean;
-  currentEditingIterator: Nullable<PipelineIteratorComponent>;
+  tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
+  editingIteratorID: Nullable<string>;
 };
 
 export type PipelineBuilderAction = {
@@ -98,10 +99,11 @@ export type PipelineBuilderAction = {
   updateDialogSharePipelineIsOpen: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
   updateIsEditingIterator: (fn: (prev: boolean) => boolean) => void;
-  updateCurrentEditingIterator: (
-    fn: (
-      prev: Nullable<PipelineIteratorComponent>
-    ) => Nullable<PipelineIteratorComponent>
+  updateTempSavedNodesForEditingIteratorFlow: (
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
+  ) => void;
+  updateEditingIteratorID: (
+    fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
 };
 

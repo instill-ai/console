@@ -2,12 +2,7 @@ import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { composeEdgesFromNodes, recursiveHelpers } from ".";
-import {
-  GeneralRecord,
-  Nullable,
-  PipelineComponent,
-  PipelineRecipe,
-} from "../../../lib";
+import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
 import {
   isConnectorComponent,
   isEndComponent,
@@ -56,6 +51,7 @@ export function createInitialGraphData(
             ),
           },
           note: componentMetadata ? componentMetadata.note : null,
+          metadata: component.metadata,
         },
         position: componentMetadata
           ? { x: componentMetadata.x, y: componentMetadata.y }
@@ -75,6 +71,7 @@ export function createInitialGraphData(
               component.end_component.fields
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata
@@ -85,6 +82,19 @@ export function createInitialGraphData(
     }
 
     if (isIteratorComponent(component)) {
+      nodes.push({
+        id: component.id,
+        type: "iteratorNode",
+        data: {
+          id: component.id,
+          iterator_component: component.iterator_component,
+          note: componentMetadata ? componentMetadata.note : null,
+          metadata: component.metadata,
+        },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
+      });
       continue;
     }
 
@@ -105,6 +115,7 @@ export function createInitialGraphData(
               component.operator_component.input
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata
@@ -126,6 +137,7 @@ export function createInitialGraphData(
               component.connector_component.input
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata

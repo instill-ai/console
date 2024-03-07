@@ -10,58 +10,57 @@ import {
 } from "./checkComponentType";
 
 export function constructPipelineRecipe(
-  nodes: Node<NodeData>[],
+  components: PipelineComponent[],
   removeConnectorName?: boolean
 ) {
-  const components: PipelineComponent[] = [];
+  const recipeComponents: PipelineComponent[] = [];
 
-  for (const node of nodes) {
-    if (isStartComponent(node.data)) {
-      components.push({
-        id: "start",
-        start_component: {
-          fields: node.data.start_component.fields,
+  for (const component of components) {
+    if (isStartComponent(component)) {
+      recipeComponents.push(component);
+      continue;
+    }
+
+    if (isEndComponent(component)) {
+      recipeComponents.push(component);
+      continue;
+    }
+
+    if (isIteratorComponent(component)) {
+      recipeComponents.push({
+        id: component.id,
+        iterator_component: {
+          ...component.iterator_component,
+          components: constructPipelineRecipe(
+            component.iterator_component.components
+          ).components,
         },
       });
       continue;
     }
 
-    if (isEndComponent(node.data)) {
-      components.push({
-        id: "end",
-        end_component: {
-          fields: node.data.end_component.fields,
-        },
-      });
-      continue;
-    }
-
-    if (isIteratorComponent(node.data)) {
-      continue;
-    }
-
-    if (isConnectorComponent(node.data)) {
-      components.push({
-        id: node.id,
+    if (isConnectorComponent(component)) {
+      recipeComponents.push({
+        id: component.id,
         connector_component: {
-          ...node.data.connector_component,
+          ...component.connector_component,
           connector_name: removeConnectorName
             ? ""
-            : node.data.connector_component.connector_name,
+            : component.connector_component.connector_name,
           input: recursiveHelpers.parseToNum(
-            structuredClone(node.data.connector_component.input)
+            structuredClone(component.connector_component.input)
           ),
         },
       });
       continue;
     }
 
-    components.push({
-      id: node.id,
+    recipeComponents.push({
+      id: component.id,
       operator_component: {
-        ...node.data.operator_component,
+        ...component.operator_component,
         input: recursiveHelpers.parseToNum(
-          structuredClone(node.data.operator_component.input)
+          structuredClone(component.operator_component.input)
         ),
       },
     });

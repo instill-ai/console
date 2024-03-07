@@ -56,7 +56,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   dialogSharePipelineIsOpen: false,
   pipelineIsReadOnly: false,
   isEditingIterator: false,
-  currentEditingIterator: null,
+  tempSavedNodesForEditingIteratorFlow: [],
+  editingIteratorID: null,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -261,15 +262,22 @@ export const createPipelineBuilderSlice: StateCreator<
         isEditingIterator: fn(state.isEditingIterator),
       };
     }),
-  updateCurrentEditingIterator: (
-    fn: (
-      prev: Nullable<PipelineIteratorComponent>
-    ) => Nullable<PipelineIteratorComponent>
+  updateTempSavedNodesForEditingIteratorFlow: (
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
   ) =>
     set((state) => {
       return {
         ...state,
-        currentEditingIterator: fn(state.currentEditingIterator),
+        tempSavedNodesForEditingIteratorFlow: fn(
+          state.tempSavedNodesForEditingIteratorFlow
+        ),
+      };
+    }),
+  updateEditingIteratorID: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+    set((state) => {
+      return {
+        ...state,
+        editingIteratorID: fn(state.editingIteratorID),
       };
     }),
 });

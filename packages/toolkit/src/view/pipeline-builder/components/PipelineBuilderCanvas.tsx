@@ -54,6 +54,7 @@ export const PipelineBuilderCanvas = ({
   disabledControls,
   disabledMinimap,
   bgColor,
+  disabledBackground,
 }: {
   setReactFlowInstance: React.Dispatch<
     React.SetStateAction<Nullable<ReactFlowInstance>>
@@ -61,6 +62,7 @@ export const PipelineBuilderCanvas = ({
   disabledControls?: boolean;
   disabledMinimap?: boolean;
   bgColor?: string;
+  disabledBackground?: boolean;
 }) => {
   const {
     nodes,
@@ -99,7 +101,6 @@ export const PipelineBuilderCanvas = ({
 
         // The start and end operator always need to be present in the pipeline
         const nextChanges = changes.filter((change) => {
-          console.log(change);
           if (change.type === "remove") {
             const node = nodes.find((node) => node.id === change.id);
             if (
@@ -159,25 +160,27 @@ export const PipelineBuilderCanvas = ({
       elevateEdgesOnSelect={false}
       selectionOnDrag={true}
     >
-      {disabledControls ? (
+      {disabledControls ? null : (
         <Controls id={pipelineName ?? undefined} showInteractive={false} />
-      ) : null}
-      {disabledMinimap ? (
+      )}
+      {disabledMinimap ? null : (
         <MiniMap
           className="h-[var(--pipeline-builder-minimap-height)]"
           id={pipelineName ?? undefined}
           pannable={true}
         />
-      ) : null}
-      <Background
-        id={pipelineName ?? undefined}
-        key={pipelineName}
-        variant={BackgroundVariant.Dots}
-        gap={32}
-        color={bgColor ? bgColor : "#D2D6DB"}
-        className="!bg-semantic-bg-alt-primary"
-        size={3}
-      />
+      )}
+      {disabledBackground ? null : (
+        <Background
+          id={pipelineName ?? undefined}
+          key={pipelineName}
+          variant={BackgroundVariant.Dots}
+          gap={32}
+          color={bgColor ? bgColor : "#D2D6DB"}
+          className="!bg-semantic-bg-alt-primary"
+          size={3}
+        />
+      )}
     </ReactFlow>
   );
 };

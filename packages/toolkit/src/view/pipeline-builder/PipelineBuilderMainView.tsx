@@ -1,42 +1,31 @@
 import cn from "clsx";
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
-import { Logo, useToast } from "@instill-ai/design-system";
+import { Logo } from "@instill-ai/design-system";
 import { ReactFlowInstance } from "reactflow";
-import { isAxiosError } from "axios";
 
 import {
-  CreateUserPipelinePayload,
   InstillStore,
   Nullable,
-  UpdateUserPipelinePayload,
-  getInstillApiErrorMessage,
-  useCreateUserPipeline,
   useInstillStore,
   useNavigationObserver,
   useEntity,
   useSmartHint,
-  useUpdateUserPipeline,
   useUserPipeline,
-  sendAmplitudeData,
-  useAmplitudeCtx,
   InstillJSONSchema,
 } from "../../lib";
 import {
   BottomBar,
   Flow,
   RightPanel,
-  composePipelineMetadataFromNodes,
-  constructPipelineRecipe,
   usePipelineBuilderGraph,
+  useSavePipeline,
 } from ".";
 import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
 import { useRouter } from "next/router";
 import { TopControlMenu } from "./components/top-control-menu";
 
 const selector = (store: InstillStore) => ({
-  nodes: store.nodes,
-  pipelineId: store.pipelineId,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
@@ -44,18 +33,16 @@ const selector = (store: InstillStore) => ({
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  updateIsEditingIterator: store.updateIsEditingIterator,
 });
 
 export const PipelineBuilderMainView = () => {
   const router = useRouter();
-  const { amplitudeIsInit } = useAmplitudeCtx();
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
 
   const {
-    nodes,
-    pipelineId,
     pipelineRecipeIsDirty,
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
@@ -63,17 +50,13 @@ export const PipelineBuilderMainView = () => {
     updatePipelineRecipeIsDirty,
     accessToken,
     enabledQuery,
+    updateIsEditingIterator,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
 
   const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
     React.useState(false);
-
-  const { toast } = useToast();
-
-  const createPipeline = useCreateUserPipeline();
-  const updatePipeline = useUpdateUserPipeline();
 
   const { confirmNavigation } = useNavigationObserver({
     shouldStopNavigation: pipelineRecipeIsDirty ? true : false,
@@ -83,7 +66,7 @@ export const PipelineBuilderMainView = () => {
     router,
   });
 
-  const { pipelineName, entityName } = useEntity();
+  const { pipelineName } = useEntity();
 
   const pipeline = useUserPipeline({
     enabled: enabledQuery && !!pipelineName && !pipelineIsNew,
@@ -116,96 +99,7 @@ export const PipelineBuilderMainView = () => {
 
   const { graphIsInitialized } = usePipelineBuilderGraph();
 
-  const onSavePipeline = React.useCallback(async () => {
-    if (!pipelineId || !accessToken || !entityName || !pipelineName) {
-      return;
-    }
-
-    if (!pipelineIsNew) {
-      const payload: UpdateUserPipelinePayload = {
-        name: pipelineName,
-        recipe: constructPipelineRecipe(nodes),
-        metadata: composePipelineMetadataFromNodes(nodes),
-      };
-
-      try {
-        await updatePipeline.mutateAsync({
-          payload,
-          accessToken,
-        });
-
-        if (amplitudeIsInit) {
-          sendAmplitudeData("create_pipeline");
-        }
-
-        toast({
-          title: "Pipeline is saved",
-          variant: "alert-success",
-          size: "small",
-        });
-
-        setTimeout(() => {
-          updatePipelineRecipeIsDirty(() => false);
-          confirmNavigation();
-        }, 1000);
-      } catch (error) {
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when save the pipeline",
-            description: getInstillApiErrorMessage(error),
-            variant: "alert-error",
-            size: "large",
-          });
-        } else {
-          toast({
-            title: "Something went wrong when save the pipeline",
-            variant: "alert-error",
-            size: "large",
-          });
-        }
-      }
-      return;
-    }
-
-    const payload: CreateUserPipelinePayload = {
-      id: pipelineId,
-      recipe: constructPipelineRecipe(nodes),
-      metadata: composePipelineMetadataFromNodes(nodes),
-    };
-
-    try {
-      await createPipeline.mutateAsync({
-        entityName,
-        payload,
-        accessToken,
-      });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("update_pipeline_recipe");
-      }
-
-      toast({
-        title: "Successfully saved the pipeline",
-        variant: "alert-success",
-        size: "small",
-      });
-    } catch (error) {
-      if (isAxiosError(error)) {
-        toast({
-          title: "Something went wrong when save the pipeline",
-          description: getInstillApiErrorMessage(error),
-          variant: "alert-error",
-          size: "large",
-        });
-      } else {
-        toast({
-          title: "Something went wrong when save the pipeline",
-          variant: "alert-error",
-          size: "large",
-        });
-      }
-    }
-  }, []);
+  const savePipeline = useSavePipeline();
 
   /* -------------------------------------------------------------------------
    * Render
@@ -263,9 +157,10 @@ export const PipelineBuilderMainView = () => {
             }}
             onDiscard={() => {
               updatePipelineRecipeIsDirty(() => false);
+              updateIsEditingIterator(() => false);
               confirmNavigation();
             }}
-            onSave={onSavePipeline}
+            onSave={savePipeline}
           />
         </div>
       </PageBase.Container>

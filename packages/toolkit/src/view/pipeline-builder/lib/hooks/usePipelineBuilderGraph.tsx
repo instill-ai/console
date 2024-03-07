@@ -77,8 +77,6 @@ export function usePipelineBuilderGraph() {
 
     const initialEmptyNodeId = uuidv4();
 
-    console.log("new pipeline initialized");
-
     const newNodes: Node<NodeData>[] = [
       {
         id: "start",

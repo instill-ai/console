@@ -30,6 +30,7 @@ const selector = (store: InstillStore) => ({
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  isEditingIterator: store.isEditingIterator,
 });
 
 export const BottomBar = () => {
@@ -43,6 +44,7 @@ export const BottomBar = () => {
     updateSelectedConnectorNodeId,
     accessToken,
     enabledQuery,
+    isEditingIterator,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
@@ -62,107 +64,62 @@ export const BottomBar = () => {
 
   return (
     <div className="flex h-[var(--pipeline-builder-bottom-bar-height)] w-full flex-shrink-0 flex-row">
-      <Popover.Root>
-        <Popover.Trigger asChild={true}>
-          <Button
-            className="gap-x-2"
-            size="sm"
-            variant="tertiaryColour"
-            type="button"
+      {isEditingIterator ? null : (
+        <Popover.Root>
+          <Popover.Trigger asChild={true}>
+            <Button
+              className="gap-x-2"
+              size="sm"
+              variant="tertiaryColour"
+              type="button"
+            >
+              <Icons.Tag01 className="h-3 w-3 stroke-semantic-accent-default" />
+              Releases
+            </Button>
+          </Popover.Trigger>
+          <Popover.Content
+            side="top"
+            sideOffset={4}
+            align="start"
+            className="flex h-[386px] w-[220px] flex-col !rounded-none p-2"
           >
-            <Icons.Tag01 className="h-3 w-3 stroke-semantic-accent-default" />
-            Releases
-          </Button>
-        </Popover.Trigger>
-        <Popover.Content
-          side="top"
-          sideOffset={4}
-          align="start"
-          className="flex h-[386px] w-[220px] flex-col !rounded-none p-2"
-        >
-          <p className="mb-[18px] text-semantic-fg-primary product-body-text-3-semibold">
-            Releases
-          </p>
-          <ScrollArea.Root>
-            <div className="flex flex-col gap-y-4">
-              {sortedReleases.length > 0 ? (
-                <React.Fragment>
-                  <VersionButton
-                    id="latest"
-                    currentVersion={currentVersion}
-                    onClick={() => {
-                      if (!pipeline.isSuccess) {
-                        return;
-                      }
-
-                      updateCurrentVersion(() => "latest");
-
-                      let newNodes: Node<NodeData>[] = [];
-                      let newEdges: Edge[] = [];
-
-                      if (
-                        checkIsValidPosition(
-                          pipeline.data.recipe.components,
-                          pipeline.data.metadata ?? null
-                        )
-                      ) {
-                        const { nodes, edges } = createInitialGraphData(
-                          pipeline.data.recipe.components,
-                          {
-                            metadata: pipeline.data.metadata,
-                          }
-                        );
-                        newNodes = nodes;
-                        newEdges = edges;
-                      } else {
-                        const { nodes, edges } = createInitialGraphData(
-                          pipeline.data.recipe.components
-                        );
-                        newNodes = nodes;
-                        newEdges = edges;
-                      }
-
-                      createGraphLayout(newNodes, newEdges)
-                        .then((graphData) => {
-                          updateNodes(() => graphData.nodes);
-                          updateEdges(() => graphData.edges);
-                        })
-                        .catch((err) => {
-                          console.error(err);
-                        });
-                    }}
-                  />
-                  {sortedReleases.map((release) => (
+            <p className="mb-[18px] text-semantic-fg-primary product-body-text-3-semibold">
+              Releases
+            </p>
+            <ScrollArea.Root>
+              <div className="flex flex-col gap-y-4">
+                {sortedReleases.length > 0 ? (
+                  <React.Fragment>
                     <VersionButton
-                      key={release.id}
-                      id={release.id}
+                      id="latest"
                       currentVersion={currentVersion}
-                      createTime={release.create_time}
                       onClick={() => {
-                        updateSelectedConnectorNodeId(() => null);
+                        if (!pipeline.isSuccess) {
+                          return;
+                        }
 
-                        updateCurrentVersion(() => release.id);
+                        updateCurrentVersion(() => "latest");
 
                         let newNodes: Node<NodeData>[] = [];
                         let newEdges: Edge[] = [];
 
                         if (
                           checkIsValidPosition(
-                            release.recipe.components,
-                            release.metadata ?? null
+                            pipeline.data.recipe.components,
+                            pipeline.data.metadata ?? null
                           )
                         ) {
                           const { nodes, edges } = createInitialGraphData(
-                            release.recipe.components,
+                            pipeline.data.recipe.components,
                             {
-                              metadata: release.metadata,
+                              metadata: pipeline.data.metadata,
                             }
                           );
                           newNodes = nodes;
                           newEdges = edges;
                         } else {
                           const { nodes, edges } = createInitialGraphData(
-                            release.recipe.components
+                            pipeline.data.recipe.components
                           );
                           newNodes = nodes;
                           newEdges = edges;
@@ -178,17 +135,64 @@ export const BottomBar = () => {
                           });
                       }}
                     />
-                  ))}
-                </React.Fragment>
-              ) : (
-                <div className="text-semantic-fg-disabled product-body-text-4-medium">
-                  This pipeline has no released versions.
-                </div>
-              )}
-            </div>
-          </ScrollArea.Root>
-        </Popover.Content>
-      </Popover.Root>
+                    {sortedReleases.map((release) => (
+                      <VersionButton
+                        key={release.id}
+                        id={release.id}
+                        currentVersion={currentVersion}
+                        createTime={release.create_time}
+                        onClick={() => {
+                          updateSelectedConnectorNodeId(() => null);
+
+                          updateCurrentVersion(() => release.id);
+
+                          let newNodes: Node<NodeData>[] = [];
+                          let newEdges: Edge[] = [];
+
+                          if (
+                            checkIsValidPosition(
+                              release.recipe.components,
+                              release.metadata ?? null
+                            )
+                          ) {
+                            const { nodes, edges } = createInitialGraphData(
+                              release.recipe.components,
+                              {
+                                metadata: release.metadata,
+                              }
+                            );
+                            newNodes = nodes;
+                            newEdges = edges;
+                          } else {
+                            const { nodes, edges } = createInitialGraphData(
+                              release.recipe.components
+                            );
+                            newNodes = nodes;
+                            newEdges = edges;
+                          }
+
+                          createGraphLayout(newNodes, newEdges)
+                            .then((graphData) => {
+                              updateNodes(() => graphData.nodes);
+                              updateEdges(() => graphData.edges);
+                            })
+                            .catch((err) => {
+                              console.error(err);
+                            });
+                        }}
+                      />
+                    ))}
+                  </React.Fragment>
+                ) : (
+                  <div className="text-semantic-fg-disabled product-body-text-4-medium">
+                    This pipeline has no released versions.
+                  </div>
+                )}
+              </div>
+            </ScrollArea.Root>
+          </Popover.Content>
+        </Popover.Root>
+      )}
       <div className="my-auto flex flex-1 flex-row justify-center gap-x-2">
         <p className="text-semantic-fg-secondary product-body-text-4-medium">
           Pipeline {currentVersion ? `(${currentVersion})` : null}
