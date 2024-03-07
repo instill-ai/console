@@ -62,7 +62,7 @@ export const ComponentOutputs = ({
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ml-3">
       {nodeType === "connector" ? (
         <div className="mb-2 text-semantic-fg-secondary product-body-text-4-medium">
           Output
