@@ -2,7 +2,13 @@
 
 import { OpenAPIV3 } from "openapi-types";
 import { ConnectorDefinition, Connector } from "../connector";
-import { Owner, Permission, Spec, Visibility } from "../types";
+import {
+  DataSpecification,
+  Owner,
+  Permission,
+  Spec,
+  Visibility,
+} from "../types";
 import { GeneralRecord, Nullable } from "../../type";
 import { JSONSchema7TypeName } from "json-schema";
 
@@ -46,7 +52,7 @@ export type Pipeline = {
   create_time: string;
   update_time: string;
   recipe: PipelineRecipe;
-  openapi_schema: OpenAPIV3.Document;
+  data_specification: DataSpecification;
   owner: Owner;
   owner_name: string;
   releases: PipelineRelease[];

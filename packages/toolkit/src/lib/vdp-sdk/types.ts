@@ -21,10 +21,15 @@ export type Violation = {
 
 export type ResourceState = ModelState | PipelineReleaseState | ConnectorState;
 
+export type DataSpecification = {
+  input: OpenAPIV3.Document;
+  output: OpenAPIV3.Document;
+};
+
 export type Spec = {
   resource_specification: InstillJSONSchema;
   component_specification: InstillJSONSchema;
-  openapi_specifications: Record<string, OpenAPIV3.Document>;
+  data_specifications: Record<string, DataSpecification>;
 };
 
 export type Visibility =
