@@ -115,36 +115,46 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
         <React.Fragment>
           <div className="mb-2 flex flex-col gap-y-2">
             <div className="flex flex-col gap-y-2">
-              <div className="flex flex-row">
-                <p className="text-semantic-fg-secondary product-body-text-4-medium">
-                  Iteration Input
+              {data.iterator_component.input ? null : (
+                <p className="rounded bg-semantic-accent-bg px-1 py-2 text-semantic-fg-disabled product-body-text-4-medium">
+                  Loop through an array and filter based on multiple criteria
                 </p>
-              </div>
-              <div className="flex">
-                <div className="flex min-h-8 w-full rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5">
-                  {data.iterator_component.input ? (
-                    <p className="rounded bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-medium">
-                      {data.iterator_component.input}
+              )}
+
+              {data.iterator_component.input ? (
+                <React.Fragment>
+                  <div className="flex flex-row">
+                    <p className="text-semantic-fg-secondary product-body-text-4-medium">
+                      Iteration Input
                     </p>
-                  ) : null}
+                  </div>
+                  <div className="flex">
+                    <div className="flex min-h-8 w-full rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5">
+                      <p className="rounded bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-medium">
+                        {data.iterator_component.input}
+                      </p>
+                    </div>
+                  </div>
+                </React.Fragment>
+              ) : null}
+            </div>
+            {data.iterator_component.components.length > 0 ? (
+              <div className="flex flex-col gap-y-2">
+                <div className="flex flex-row">
+                  <p className="text-semantic-fg-secondary product-body-text-4-medium">
+                    Iteration components
+                  </p>
+                </div>
+                <div className="flex flex-col gap-y-2">
+                  {data.iterator_component.components.map((component) => (
+                    <IteratorComponentLabel
+                      key={component.id}
+                      component={component}
+                    />
+                  ))}
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <div className="flex flex-row">
-                <p className="text-semantic-fg-secondary product-body-text-4-medium">
-                  Iteration components
-                </p>
-              </div>
-              <div className="flex flex-col gap-y-2">
-                {data.iterator_component.components.map((component) => (
-                  <IteratorComponentLabel
-                    key={component.id}
-                    component={component}
-                  />
-                ))}
-              </div>
-            </div>
+            ) : null}
           </div>
           <Button
             variant="tertiaryColour"

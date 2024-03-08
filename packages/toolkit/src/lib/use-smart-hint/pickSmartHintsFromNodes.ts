@@ -31,7 +31,12 @@ export function pickSmartHintsFromNodes({
 }) {
   let smartHints: SmartHint[] = [];
 
-  for (const node of nodes) {
+  const targetNodes =
+    isEditingIterator && tempSavedNodesForEditingIteratorFlow
+      ? [...nodes, ...tempSavedNodesForEditingIteratorFlow]
+      : nodes;
+
+  for (const node of targetNodes) {
     if (isStartComponent(node.data)) {
       const hints = transformStartOperatorFieldsToSmartHints(
         node.data.start_component.fields
@@ -137,7 +142,11 @@ export function pickSmartHintsFromNodes({
 
     if (targetIteratorNode) {
       const targetHints = smartHints.find(
-        (hint) => hint.path === targetIteratorNode.data.iterator_component.input
+        (hint) =>
+          hint.path ===
+          targetIteratorNode.data.iterator_component.input
+            .replace("${", "")
+            .replace("}", "")
       );
 
       if (targetHints) {

@@ -56,13 +56,19 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetNodes) {
-      const outputOption = availableOutputOptions.find(
-        (option) =>
+      const outputOption = availableOutputOptions.find((option) => {
+        if (
+          targetNodes?.data.iterator_component.output_elements[outputKey] &&
           option.path ===
-          targetNodes?.data.iterator_component.output_elements[outputKey]
-            .replace("${", "")
-            .replace("}", "")
-      );
+            targetNodes?.data.iterator_component.output_elements[outputKey]
+              .replace("${", "")
+              .replace("}", "")
+        ) {
+          return true;
+        }
+
+        return false;
+      });
 
       setSelectedOutputOption(outputOption ?? null);
     }

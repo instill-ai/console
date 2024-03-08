@@ -32,26 +32,41 @@ export const IteratorOutput = () => {
         </p>
       </div>
       <div className="mb-2 flex flex-col gap-y-2">
+        <OutputSet outputKey="result_0" disabledDeleteButton={true} />
         {targetIteratorNode?.data.iterator_component.output_elements
           ? Object.entries(
               targetIteratorNode?.data.iterator_component.output_elements
-            ).map(([key], index) => (
-              <div key={key} className="flex flex-row items-center gap-x-3">
-                <p className="text-semantic-fg-primary product-body-text-3-semibold">
-                  {key}
-                </p>
-                <div className="flex flex-row gap-x-2">
-                  <p className="text-semantic-fg-secondary product-body-text-4-semibold">
-                    array of
-                  </p>
-                </div>
-                <OutputValueSelect outputKey={key} />
-                {index !== 0 ? <DeleteOutputButton outputKey={key} /> : null}
-              </div>
-            ))
+            )
+              .filter(([key]) => key !== "result_0")
+              .map(([key]) => <OutputSet key={key} outputKey={key} />)
           : null}
       </div>
       <AddOutputButton targetIteratorNode={targetIteratorNode} />
+    </div>
+  );
+};
+
+export const OutputSet = ({
+  outputKey,
+  disabledDeleteButton,
+}: {
+  outputKey: string;
+  disabledDeleteButton?: boolean;
+}) => {
+  return (
+    <div key={outputKey} className="flex flex-row items-center gap-x-3">
+      <p className="text-semantic-fg-primary product-body-text-3-semibold">
+        {outputKey}
+      </p>
+      <div className="flex flex-row gap-x-2">
+        <p className="text-semantic-fg-secondary product-body-text-4-semibold">
+          array of
+        </p>
+      </div>
+      <OutputValueSelect outputKey={outputKey} />
+      {disabledDeleteButton ? null : (
+        <DeleteOutputButton outputKey={outputKey} />
+      )}
     </div>
   );
 };

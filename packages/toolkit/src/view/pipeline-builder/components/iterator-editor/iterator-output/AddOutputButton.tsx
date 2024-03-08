@@ -29,18 +29,7 @@ export const AddOutputButton = ({
         onClick={() => {
           let newOutputElements = {};
 
-          if (!targetIteratorNode?.data.iterator_component.output_elements) {
-            newOutputElements = {
-              result_0: "",
-            };
-          } else {
-            // const newIdx = generateUniqueIndex(
-            //   Object.entries(
-            //     targetIteratorNode?.data.iterator_component.output_elements
-            //   ).map(([key]) => key),
-            //   "result_"
-            // );
-
+          if (targetIteratorNode?.data.iterator_component.output_elements) {
             const currentIndexArray = Object.keys(
               targetIteratorNode?.data.iterator_component.output_elements
             )
@@ -50,10 +39,10 @@ export const AddOutputButton = ({
 
             newOutputElements = {
               ...targetIteratorNode?.data.iterator_component.output_elements,
-              [`result_${currentIndexArray[0] + 1}`]: "",
+              [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
+                "",
             };
           }
-
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
               if (

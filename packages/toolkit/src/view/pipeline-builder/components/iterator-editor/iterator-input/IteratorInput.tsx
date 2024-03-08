@@ -4,6 +4,7 @@ import { Select } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  pickSmartHintsFromNodes,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
@@ -14,7 +15,6 @@ import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
 
 const selector = (store: InstillStore) => ({
-  smartHints: store.smartHints,
   editingIteratorID: store.editingIteratorID,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   tempSavedNodesForEditingIteratorFlow:
@@ -25,7 +25,6 @@ const selector = (store: InstillStore) => ({
 
 export const IteratorInput = ({ className }: { className?: string }) => {
   const {
-    smartHints,
     editingIteratorID,
     updatePipelineRecipeIsDirty,
     tempSavedNodesForEditingIteratorFlow,
@@ -35,14 +34,22 @@ export const IteratorInput = ({ className }: { className?: string }) => {
     React.useState<Nullable<InOutputOption>>(null);
 
   const availableInputOptions = React.useMemo(() => {
-    return smartHints
+    if (!tempSavedNodesForEditingIteratorFlow) {
+      return [];
+    }
+
+    const hints = pickSmartHintsFromNodes({
+      nodes: tempSavedNodesForEditingIteratorFlow,
+    });
+
+    return hints
       .filter((hint) => hint.instillFormat.includes("array:"))
       .map((hint) => ({
         path: hint.path,
         instill_format: hint.instillFormat,
         description: hint.description,
       }));
-  }, [smartHints]);
+  }, [tempSavedNodesForEditingIteratorFlow]);
 
   React.useEffect(() => {
     if (editingIteratorID && tempSavedNodesForEditingIteratorFlow) {
