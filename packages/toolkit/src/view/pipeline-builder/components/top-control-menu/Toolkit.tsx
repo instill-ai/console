@@ -12,7 +12,7 @@ import {
 import { StartNodeData } from "../../type";
 import { Node } from "reactflow";
 import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
-import { isIteratorComponent } from "../../lib/checkComponentType";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
@@ -39,9 +39,15 @@ export const Toolkit = () => {
       return "";
     }
 
-    const targetNodes = isEditingIterator
-      ? nodes
-      : tempSavedNodesForEditingIteratorFlow;
+    let targetNodes = nodes;
+
+    if (isEditingIterator && editingIteratorID) {
+      targetNodes = composeCompleteNodesUnderEditingIteratorMode({
+        editingIteratorID,
+        iteratorComponents: nodes.map((node) => node.data),
+        allNodes: tempSavedNodesForEditingIteratorFlow,
+      });
+    }
 
     const input: GeneralRecord = {};
 

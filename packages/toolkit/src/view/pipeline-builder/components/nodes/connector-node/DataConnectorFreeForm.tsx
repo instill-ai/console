@@ -18,7 +18,7 @@ import {
   PipelineConnectorComponent,
   useInstillStore,
 } from "../../../../../lib";
-import { composeEdgesFromNodes } from "../../../lib";
+import { composeEdgesFromComponents } from "../../../lib";
 import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 export const Schema = z.object({
@@ -87,7 +87,9 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -125,7 +127,9 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);

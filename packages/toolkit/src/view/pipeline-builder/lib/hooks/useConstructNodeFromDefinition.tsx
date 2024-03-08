@@ -11,7 +11,7 @@ import {
   useShallow,
 } from "../../../../lib";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
-import { generateNewComponentIndex } from "../generateNewComponentIndex";
+import { generateUniqueIndex } from "../generateUniqueIndex";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -81,7 +81,7 @@ export function useConstructNodeFromDefinition({
       );
 
       // Generate a new component index
-      const nodeIndex = generateNewComponentIndex(
+      const nodeIndex = generateUniqueIndex(
         nodes.map((e) => e.id),
         nodePrefix
       );

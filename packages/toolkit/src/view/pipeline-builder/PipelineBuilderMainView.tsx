@@ -34,6 +34,7 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   updateIsEditingIterator: store.updateIsEditingIterator,
+  initPipelineBuilder: store.initPipelineBuilder,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -51,6 +52,7 @@ export const PipelineBuilderMainView = () => {
     accessToken,
     enabledQuery,
     updateIsEditingIterator,
+    initPipelineBuilder,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -156,8 +158,7 @@ export const PipelineBuilderMainView = () => {
               updatePipelineRecipeIsDirty(() => false);
             }}
             onDiscard={() => {
-              updatePipelineRecipeIsDirty(() => false);
-              updateIsEditingIterator(() => false);
+              initPipelineBuilder();
               confirmNavigation();
             }}
             onSave={savePipeline}

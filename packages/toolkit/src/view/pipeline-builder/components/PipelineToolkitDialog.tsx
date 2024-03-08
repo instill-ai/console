@@ -2,13 +2,22 @@ import * as React from "react";
 import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";
 import { constructPipelineRecipe } from "../lib";
-import { useInstillStore } from "../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../lib/composeCompleteNodesUnderEditingIteratorMode";
 
 export type PipelineToolkitDialogProps = {
   snippet: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+const selector = (store: InstillStore) => ({
+  nodes: store.nodes,
+  isEditingIterator: store.isEditingIterator,
+  editingIteratorID: store.editingIteratorID,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
+});
 
 const tabTriggerStyle =
   "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";
@@ -18,15 +27,35 @@ const tabContentStyle =
 export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
   const { snippet, isOpen, setIsOpen } = props;
 
-  const nodes = useInstillStore((state) => state.nodes);
+  const {
+    nodes,
+    isEditingIterator,
+    editingIteratorID,
+    tempSavedNodesForEditingIteratorFlow,
+  } = useInstillStore(useShallow(selector));
 
   const recipeString = React.useMemo(() => {
+    let targetNodes = nodes;
+
+    if (isEditingIterator && editingIteratorID) {
+      targetNodes = composeCompleteNodesUnderEditingIteratorMode({
+        editingIteratorID,
+        iteratorComponents: nodes.map((node) => node.data),
+        allNodes: tempSavedNodesForEditingIteratorFlow,
+      });
+    }
+
     return JSON.stringify(
-      constructPipelineRecipe(nodes.map((node) => node.data)),
+      constructPipelineRecipe(targetNodes.map((node) => node.data)),
       null,
       2
     );
-  }, [nodes]);
+  }, [
+    nodes,
+    isEditingIterator,
+    editingIteratorID,
+    tempSavedNodesForEditingIteratorFlow,
+  ]);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>

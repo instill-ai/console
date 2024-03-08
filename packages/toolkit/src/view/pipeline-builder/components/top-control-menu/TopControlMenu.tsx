@@ -6,12 +6,22 @@ import { Share } from "./Share";
 import { Release } from "./Release";
 import { CreateResourceDialog } from "../CreateResourceDialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
-import { Nullable, useInstillStore } from "../../../../lib";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { useConstructNodeFromDefinition } from "../../lib";
 import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
+
+const selector = (store: InstillStore) => ({
+  pipelineIsNew: store.pipelineIsNew,
+  isEditingIterator: store.isEditingIterator,
+});
 
 export const TopControlMenu = ({
   reactFlowInstance,
@@ -23,7 +33,9 @@ export const TopControlMenu = ({
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
-  const pipelineIsNew = useInstillStore((store) => store.pipelineIsNew);
+  const { pipelineIsNew, isEditingIterator } = useInstillStore(
+    useShallow(selector)
+  );
 
   return (
     <React.Fragment>
@@ -42,14 +54,16 @@ export const TopControlMenu = ({
           >
             <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
           </Button>
-          <SelectComponentDialog
-            open={open}
-            onOpenChange={setOpen}
-            onSelect={(definition, connector) => {
-              constructNode(definition, connector);
-              setOpen(false);
-            }}
-          />
+          {isEditingIterator ? null : (
+            <SelectComponentDialog
+              open={open}
+              onOpenChange={setOpen}
+              onSelect={(definition, connector) => {
+                constructNode(definition, connector);
+                setOpen(false);
+              }}
+            />
+          )}
         </div>
         <div className="flex w-full flex-1 items-center justify-center">
           <PipelineName />

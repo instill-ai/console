@@ -3,7 +3,6 @@ import { NodeProps, Position } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 
 import { OperatorNodeData } from "../../../type";
-import { CustomHandle } from "../../CustomHandle";
 import {
   GeneralRecord,
   InstillStore,
@@ -163,19 +162,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           />
         </>
       )}
-
-      <CustomHandle
-        className={hasTargetEdges ? "" : "!opacity-0"}
-        type="target"
-        position={Position.Left}
-        id={id}
-      />
-      <CustomHandle
-        className={hasSourceEdges ? "" : "!opacity-0"}
-        type="source"
-        position={Position.Right}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

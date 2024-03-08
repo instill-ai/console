@@ -1,5 +1,3 @@
-import { Node } from "reactflow";
-import { NodeData } from "../type";
 import { recursiveHelpers } from "./recursive-helpers";
 import { PipelineComponent } from "../../../lib";
 import {
@@ -50,8 +48,11 @@ export function constructPipelineRecipe(
           input: recursiveHelpers.parseToNum(
             structuredClone(component.connector_component.input)
           ),
+          definition: null,
+          connector: null,
         },
       });
+
       continue;
     }
 
@@ -62,12 +63,13 @@ export function constructPipelineRecipe(
         input: recursiveHelpers.parseToNum(
           structuredClone(component.operator_component.input)
         ),
+        definition: null,
       },
     });
   }
 
   return {
     version: "v1beta",
-    components: components,
+    components: recipeComponents,
   };
 }

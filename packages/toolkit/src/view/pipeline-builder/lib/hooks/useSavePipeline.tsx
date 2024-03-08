@@ -15,7 +15,7 @@ import {
 import { composePipelineMetadataFromNodes, constructPipelineRecipe } from "..";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
-import { isIteratorComponent } from "../checkComponentType";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -69,28 +69,11 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       let targetNodes = nodes;
 
-      if (isEditingIterator) {
-        targetNodes = tempSavedNodesForEditingIteratorFlow.map((node) => {
-          if (
-            node.data.id === editingIteratorID &&
-            isIteratorComponent(node.data)
-          ) {
-            const components = nodes.map((node) => node.data);
-
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                iterator_component: {
-                  ...node.data.iterator_component,
-                  components,
-                },
-                metadata: composePipelineMetadataFromNodes(nodes),
-              },
-            };
-          }
-
-          return node;
+      if (isEditingIterator && editingIteratorID) {
+        targetNodes = composeCompleteNodesUnderEditingIteratorMode({
+          editingIteratorID,
+          iteratorComponents: nodes.map((node) => node.data),
+          allNodes: tempSavedNodesForEditingIteratorFlow,
         });
       }
 

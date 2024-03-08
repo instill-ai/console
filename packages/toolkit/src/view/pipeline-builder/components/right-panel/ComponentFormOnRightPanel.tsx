@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Form } from "@instill-ai/design-system";
 
 import { useInstillForm } from "../../../../lib/use-instill-form";
@@ -15,12 +16,21 @@ export const ComponentFormOnRightPanel = ({
 }) => {
   const checkIsHidden = useCheckIsHidden("onRightPanel");
 
-  const configuration = getConnectorOperatorComponentConfiguration(nodeData);
+  const definition = React.useMemo(() => {
+    if (isConnectorComponent(nodeData)) {
+      return nodeData.connector_component.definition;
+    }
+    return nodeData.operator_component.definition;
+  }, [nodeData]);
+
+  const configuration = React.useMemo(() => {
+    return getConnectorOperatorComponentConfiguration(nodeData);
+  }, [nodeData]);
+
+  console.log(definition, configuration);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
-    isConnectorComponent(nodeData)
-      ? nodeData.connector_component.definition
-      : nodeData.operator_component.definition,
+    definition?.spec.component_specification ?? null,
     configuration,
     {
       disabledAll,

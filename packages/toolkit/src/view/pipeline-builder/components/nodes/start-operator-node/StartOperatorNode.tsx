@@ -1,15 +1,14 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { StartNodeData } from "../../../type";
-import { composeEdgesFromNodes, recursiveHelpers } from "../../../lib";
-import { CustomHandle } from "../../CustomHandle";
+import { composeEdgesFromComponents, recursiveHelpers } from "../../../lib";
 import {
   InstillStore,
   Nullable,
@@ -126,7 +125,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -284,7 +285,9 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     setEnableEdit(false);
@@ -440,7 +443,11 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
   }
 
   return (
-    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
+    <NodeWrapper
+      nodeData={data}
+      noteIsOpen={noteIsOpen}
+      disabledTargetHandler={true}
+    >
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
@@ -589,12 +596,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
           )}
         </div>
       )}
-      <CustomHandle
-        className={hasSourceEdges ? "" : "!opacity-0"}
-        type="source"
-        position={Position.Right}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

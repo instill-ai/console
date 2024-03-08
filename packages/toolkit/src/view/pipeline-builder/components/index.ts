@@ -8,6 +8,7 @@ export * from "./ReadOnlyPipelineBuilder";
 export * from "./ComponentOutputReferenceHints";
 
 export * from "./dialogs";
+export * from "./iterator-editor";
 export * from "./nodes";
 export * from "./release-menu";
 export * from "./right-panel";

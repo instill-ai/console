@@ -6,6 +6,7 @@ import { PipelineReleaseState } from "./pipeline";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";
 import { Organization } from "./organization";
+import { Nullable } from "../type";
 
 export type ErrorDetails = {
   "@type": string;
@@ -22,8 +23,8 @@ export type Violation = {
 export type ResourceState = ModelState | PipelineReleaseState | ConnectorState;
 
 export type DataSpecification = {
-  input: OpenAPIV3.Document;
-  output: OpenAPIV3.Document;
+  input: Nullable<InstillJSONSchema>;
+  output: Nullable<InstillJSONSchema>;
 };
 
 export type Spec = {

@@ -1,4 +1,4 @@
-import { PipelineRecipe } from "../../../lib";
+import { PipelineComponent } from "../../../lib";
 import {
   isEndComponent,
   isIteratorComponent,
@@ -7,35 +7,40 @@ import {
 } from "./checkComponentType";
 
 export function removeSensitiveDataInPipelineRecipe(
-  recipe: PipelineRecipe,
+  components: PipelineComponent[],
   removeConnectorName = false
-): PipelineRecipe {
-  const raw: PipelineRecipe = {
-    ...recipe,
-    components: recipe.components.map((component) => {
-      if (
-        isStartComponent(component) ||
-        isEndComponent(component) ||
-        isOperatorComponent(component)
-      ) {
-        return component;
-      }
+): PipelineComponent[] {
+  return components.map((component) => {
+    if (
+      isStartComponent(component) ||
+      isEndComponent(component) ||
+      isOperatorComponent(component)
+    ) {
+      return component;
+    }
 
-      if (isIteratorComponent(component)) {
-        return component;
-      }
+    if (isIteratorComponent(component)) {
       return {
         ...component,
-        connector_component: {
-          ...component.connector_component,
-          connector: null,
-          connector_name: removeConnectorName
-            ? ""
-            : component.connector_component.connector_name,
+        iterator_component: {
+          ...component.iterator_component,
+          components: removeSensitiveDataInPipelineRecipe(
+            component.iterator_component.components,
+            removeConnectorName
+          ),
         },
       };
-    }),
-  };
+    }
 
-  return raw;
+    return {
+      ...component,
+      connector_component: {
+        ...component.connector_component,
+        connector: null,
+        connector_name: removeConnectorName
+          ? ""
+          : component.connector_component.connector_name,
+      },
+    };
+  });
 }

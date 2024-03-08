@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore } from "../../../../lib";
@@ -21,9 +22,9 @@ export const RightPanel = () => {
     updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
-  const selectedConnectorNode = nodes.find(
-    (node) => node.id === currentAdvancedConfigurationNodeID
-  );
+  const selectedConnectorNode = React.useMemo(() => {
+    return nodes.find((node) => node.id === currentAdvancedConfigurationNodeID);
+  }, [nodes, currentAdvancedConfigurationNodeID]);
 
   return (
     <div className="flex h-full w-full flex-col">

@@ -2,11 +2,10 @@ import { useShallow } from "zustand/react/shallow";
 import * as React from "react";
 import { ReactFlowInstance } from "reactflow";
 
-import { BackToLatestVersionTopBar } from "./components";
+import { BackToLatestVersionTopBar, IteratorEditor } from "./components";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
-import { IteratorEditor } from "./IteratorEditor";
 
 const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,

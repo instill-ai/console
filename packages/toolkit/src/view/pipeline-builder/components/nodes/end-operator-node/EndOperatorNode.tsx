@@ -1,19 +1,17 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
 import { EndNodeData } from "../../../type";
-import { composeEdgesFromNodes } from "../../../lib";
-import { CustomHandle } from "../../CustomHandle";
+import { composeEdgesFromComponents } from "../../../lib";
 import {
   InstillStore,
   Nullable,
   PipelineEndComponentField,
-  StartOperatorMetadata,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
@@ -121,7 +119,9 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -155,7 +155,9 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -229,7 +231,11 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }
 
   return (
-    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
+    <NodeWrapper
+      nodeData={data}
+      noteIsOpen={noteIsOpen}
+      disabledSourceHandler={true}
+    >
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
@@ -354,12 +360,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           </Button>
         </div>
       )}
-      <CustomHandle
-        className={hasTargetEdges ? "" : "!opacity-0"}
-        type="target"
-        position={Position.Left}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

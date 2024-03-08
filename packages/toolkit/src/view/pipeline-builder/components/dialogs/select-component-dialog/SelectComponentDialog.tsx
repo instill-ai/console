@@ -6,6 +6,7 @@ import {
   ConnectorWithDefinition,
   IteratorDefinition,
   OperatorDefinition,
+  useInstillStore,
 } from "../../../../../lib";
 import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
@@ -30,6 +31,8 @@ export const SelectComponentDialog = ({
   disabled?: boolean;
   disabledTrigger?: boolean;
 }) => {
+  const isEditingIterator = useInstillStore((store) => store.isEditingIterator);
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {disabledTrigger ? null : (
@@ -63,7 +66,7 @@ export const SelectComponentDialog = ({
               Select a connector to add to your pipeline
             </Dialog.Description>
           </Dialog.Header>
-          <IteratorSection onSelect={onSelect} />
+          {isEditingIterator ? null : <IteratorSection onSelect={onSelect} />}
           <OperatorSection onSelect={onSelect} />
           <ExistingConnectorSection onSelect={onSelect} />
           <NewConnectorSection onSelect={onSelect} />

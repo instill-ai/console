@@ -7,8 +7,8 @@ import { useShallow } from "zustand/react/shallow";
 import { ControlPanel } from "./ControlPanel";
 import { NodeDropdownMenu } from "../common";
 import {
-  composeEdgesFromNodes,
-  generateNewComponentIndex,
+  composeEdgesFromComponents,
+  generateUniqueIndex,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
 import {
@@ -84,7 +84,9 @@ export const ConnectorOperatorControlPanel = ({
 
   const handelDeleteNode = React.useCallback(() => {
     const newNodes = nodes.filter((node) => node.id !== nodeID);
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
     updateNodes(() => newNodes);
@@ -137,7 +139,7 @@ export const ConnectorOperatorControlPanel = ({
     }
 
     // Generate a new component index
-    const nodeIndex = generateNewComponentIndex(
+    const nodeIndex = generateUniqueIndex(
       nodes.map((e) => e.id),
       nodePrefix
     );
@@ -156,7 +158,9 @@ export const ConnectorOperatorControlPanel = ({
         data: nodeData,
       },
     ];
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);

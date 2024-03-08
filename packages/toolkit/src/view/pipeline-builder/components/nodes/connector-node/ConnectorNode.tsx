@@ -4,10 +4,9 @@ import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { ConnectorNodeData } from "../../../type";
-import { CustomHandle } from "../../CustomHandle";
 import {
   getConnectorInputOutputSchema,
-  composeEdgesFromNodes,
+  composeEdgesFromComponents,
 } from "../../../lib";
 import {
   GeneralRecord,
@@ -203,7 +202,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                   }
                   return node;
                 });
-                const newEdges = composeEdgesFromNodes(newNodes);
+                const newEdges = composeEdgesFromComponents(
+                  newNodes.map((node) => node.data)
+                );
                 updateNodes(() => newNodes);
                 updateEdges(() => newEdges);
                 updatePipelineRecipeIsDirty(() => true);
@@ -330,18 +331,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
         </>
       )}
-      <CustomHandle
-        className={hasTargetEdges ? "" : "!opacity-0"}
-        type="target"
-        position={Position.Left}
-        id={id}
-      />
-      <CustomHandle
-        className={hasSourceEdges ? "" : "!opacity-0"}
-        type="source"
-        position={Position.Right}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

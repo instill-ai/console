@@ -1,7 +1,7 @@
 import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
-import { composeEdgesFromNodes, recursiveHelpers } from ".";
+import { composeEdgesFromComponents, recursiveHelpers } from ".";
 import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
 import {
   isConnectorComponent,
@@ -148,7 +148,7 @@ export function createInitialGraphData(
     }
   }
 
-  const edges = composeEdgesFromNodes(nodes);
+  const edges = composeEdgesFromComponents(nodes.map((node) => node.data));
 
   return {
     nodes,
