@@ -91,7 +91,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         isPipelineBuilderPage(previousURL) &&
         !isPipelineBuilderPage(window.history.state.url)
       ) {
-        console.log("init");
         initPipelineBuilder();
       }
 

@@ -8,6 +8,7 @@ export * from "./extractPipelineComponentReferenceFromString";
 export * from "./extractReferencesFromConfiguration";
 export * from "./getReferencesFromString";
 export * from "./generateUniqueIndex";
+export * from "./getAllComponentID";
 export * from "./getConnectorInputOutputSchema";
 export * from "./getConnectorOperatorComponentConfiguration";
 export * from "./getPropertiesFromOpenAPISchema";

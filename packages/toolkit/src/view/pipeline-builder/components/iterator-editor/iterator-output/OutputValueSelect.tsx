@@ -64,8 +64,6 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
             .replace("}", "")
       );
 
-      console.log(availableOutputOptions, targetNodes);
-
       setSelectedOutputOption(outputOption ?? null);
     }
   }, [

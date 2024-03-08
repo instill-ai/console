@@ -72,8 +72,6 @@ export function useUpdaterOnRightPanel({
       return;
     }
 
-    console.log("Updating the node", parsed.data, updatedValue.current);
-
     if (timer.current) {
       clearTimeout(timer.current);
     }

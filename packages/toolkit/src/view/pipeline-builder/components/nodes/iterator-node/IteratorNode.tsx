@@ -99,15 +99,9 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
     <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
-          <ImageWithFallback
-            src="/icons/iterator.svg"
-            width={16}
-            height={16}
-            alt="iterator-icon"
-            fallbackImg={
-              <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-            }
-          />
+          <div className="my-auto flex h-6 w-6 rounded bg-semantic-accent-bg">
+            <Icons.Repeat04 className="m-auto h-4 w-4 stroke-semantic-accent-default" />
+          </div>
           <NodeIDEditor currentNodeID={id} />
         </div>
         <ConnectorOperatorControlPanel

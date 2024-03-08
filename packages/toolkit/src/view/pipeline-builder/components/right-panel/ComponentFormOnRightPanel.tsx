@@ -27,8 +27,6 @@ export const ComponentFormOnRightPanel = ({
     return getConnectorOperatorComponentConfiguration(nodeData);
   }, [nodeData]);
 
-  console.log(definition, configuration);
-
   const { form, fields, ValidatorSchema } = useInstillForm(
     definition?.spec.component_specification ?? null,
     configuration,

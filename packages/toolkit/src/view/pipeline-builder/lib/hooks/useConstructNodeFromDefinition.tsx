@@ -12,11 +12,15 @@ import {
 } from "../../../../lib";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 import { generateUniqueIndex } from "../generateUniqueIndex";
+import { getAllComponentID } from "../getAllComponentID";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
+  isEditingIterator: store.isEditingIterator,
 });
 
 export function useConstructNodeFromDefinition({
@@ -24,9 +28,13 @@ export function useConstructNodeFromDefinition({
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
 }) {
-  const { nodes, updateNodes, updatePipelineRecipeIsDirty } = useInstillStore(
-    useShallow(selector)
-  );
+  const {
+    nodes,
+    tempSavedNodesForEditingIteratorFlow,
+    updateNodes,
+    updatePipelineRecipeIsDirty,
+    isEditingIterator,
+  } = useInstillStore(useShallow(selector));
 
   return React.useCallback(
     (
@@ -81,8 +89,14 @@ export function useConstructNodeFromDefinition({
       );
 
       // Generate a new component index
+      // Because all the nodes' ID need to be unique, included the components in the
+      // iterator, so we need to group the two set of nodes together. Under the
+      // editing iterator mode, nodes will be the nodes in the iterator, and
+      // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
       const nodeIndex = generateUniqueIndex(
-        nodes.map((e) => e.id),
+        isEditingIterator
+          ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
+          : getAllComponentID(nodes.map((node) => node.data)),
         nodePrefix
       );
 
@@ -106,6 +120,10 @@ export function useConstructNodeFromDefinition({
                 output_elements: {},
                 components: [],
                 condition: null,
+                data_specification: {
+                  input: null,
+                  output: null,
+                },
               },
               note: null,
             },
@@ -171,6 +189,13 @@ export function useConstructNodeFromDefinition({
       updatePipelineRecipeIsDirty(() => true);
       updateNodes(() => newNodes);
     },
-    [nodes, updateNodes, reactFlowInstance, updatePipelineRecipeIsDirty]
+    [
+      nodes,
+      updateNodes,
+      reactFlowInstance,
+      updatePipelineRecipeIsDirty,
+      isEditingIterator,
+      tempSavedNodesForEditingIteratorFlow,
+    ]
   );
 }

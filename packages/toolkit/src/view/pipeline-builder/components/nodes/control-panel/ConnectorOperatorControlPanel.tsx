@@ -9,6 +9,7 @@ import { NodeDropdownMenu } from "../common";
 import {
   composeEdgesFromComponents,
   generateUniqueIndex,
+  getAllComponentID,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
 import {
@@ -34,6 +35,9 @@ const selector = (store: InstillStore) => ({
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+  isEditingIterator: store.isEditingIterator,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
 });
 
 export const ConnectorOperatorControlPanel = ({
@@ -62,6 +66,8 @@ export const ConnectorOperatorControlPanel = ({
     updatePipelineRecipeIsDirty,
     currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
+    tempSavedNodesForEditingIteratorFlow,
+    isEditingIterator,
   } = useInstillStore(useShallow(selector));
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
@@ -131,7 +137,9 @@ export const ConnectorOperatorControlPanel = ({
     }
 
     if (isIteratorComponent(nodeData)) {
-      return;
+      nodePrefix =
+        transformConnectorDefinitionIDToComponentIDPrefix("iterator");
+      nodeType = "iteratorNode";
     }
 
     if (!nodePrefix) {
@@ -140,7 +148,9 @@ export const ConnectorOperatorControlPanel = ({
 
     // Generate a new component index
     const nodeIndex = generateUniqueIndex(
-      nodes.map((e) => e.id),
+      isEditingIterator
+        ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
+        : getAllComponentID(nodes.map((node) => node.data)),
       nodePrefix
     );
 
@@ -164,7 +174,15 @@ export const ConnectorOperatorControlPanel = ({
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-  }, [nodeData, nodes, updateEdges, updateNodes, updatePipelineRecipeIsDirty]);
+  }, [
+    nodeData,
+    nodes,
+    updateEdges,
+    updateNodes,
+    updatePipelineRecipeIsDirty,
+    isEditingIterator,
+    tempSavedNodesForEditingIteratorFlow,
+  ]);
 
   return (
     <ControlPanel.Root>

@@ -98,6 +98,34 @@ export function pickSmartHintsFromNodes({
 
       continue;
     }
+
+    if (isIteratorComponent(node.data)) {
+      const outputSchema =
+        node.data.iterator_component.data_specification.output;
+
+      if (outputSchema) {
+        const outputFormTree =
+          transformInstillJSONSchemaToFormTree(outputSchema);
+
+        const hints = transformConnectorComponentFormTreeToSmartHints(
+          outputFormTree,
+          node.id
+        );
+
+        smartHints = [...smartHints, ...hints];
+      }
+
+      smartHints = [
+        ...smartHints,
+        {
+          path: `${node.id}.output`,
+          key: "output",
+          instillFormat: "semi-structured/json",
+          type: "object",
+          properties: [],
+        },
+      ];
+    }
   }
 
   // Add the iterator element into the hints

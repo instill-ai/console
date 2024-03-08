@@ -74,6 +74,7 @@ import { Plus } from "./Plus";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { RefreshCw05 } from "./RefreshCw05";
+import { Repeat04 } from "./Repeat04";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
 import { Recording04 } from "./Recording04";
@@ -181,6 +182,7 @@ export const Icons = {
   PlayCircle,
   Plus,
   RefreshCw05,
+  Repeat04,
   Recording02,
   Recording03,
   Recording04,
