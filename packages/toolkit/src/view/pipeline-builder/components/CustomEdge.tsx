@@ -40,7 +40,7 @@ export const CustomEdge = ({
     }
 
     return false;
-  }, [id, selectedConnectorNodeId]);
+  }, [selectedConnectorNodeId, source, target]);
 
   return (
     <path

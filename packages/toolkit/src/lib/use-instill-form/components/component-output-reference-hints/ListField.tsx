@@ -3,12 +3,10 @@ import { ReferenceHintTag } from "../../../../components";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 export const ListField = ({
-  componentID,
   path,
   instillFormat,
   description,
 }: {
-  componentID?: string;
   path: string;
   instillFormat: string;
   description?: string;

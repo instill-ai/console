@@ -45,7 +45,6 @@ const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
   nodes: store.nodes,
   updateNodes: store.updateNodes,
-  edges: store.edges,
   updateEdges: store.updateEdges,
   updateTestModeTriggerResponse: store.updateTestModeTriggerResponse,
   accessToken: store.accessToken,
@@ -57,7 +56,7 @@ const selector = (store: InstillStore) => ({
   collapseAllNodes: store.collapseAllNodes,
 });
 
-export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
+export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -66,7 +65,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
     pipelineName,
     nodes,
     updateNodes,
-    edges,
     updateEdges,
     updateTestModeTriggerResponse,
     accessToken,
@@ -423,10 +421,6 @@ export const StartOperatorNode = ({ data, id }: NodeProps<StartNodeData>) => {
       }
     }
   }
-
-  const hasSourceEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.source === id);
-  }, [edges, id]);
 
   let disabledAddFieldButton = false;
 

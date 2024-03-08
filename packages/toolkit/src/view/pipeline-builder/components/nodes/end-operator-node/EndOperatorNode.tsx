@@ -29,7 +29,6 @@ import { isEndComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
@@ -51,7 +50,7 @@ export type PipelineEndComponentFieldSortedItem = PipelineEndComponentField & {
   key: string;
 };
 
-export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
+export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
@@ -61,7 +60,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   const {
     nodes,
-    edges,
     updateNodes,
     updateEdges,
     pipelineOpenAPIOutputSchema,
@@ -172,10 +170,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setEnableEdit(true);
     setPrevFieldKey(key);
   }
-
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
 
   const [sortedItems, setSortedItems] = React.useState<
     PipelineEndComponentFieldSortedItem[]

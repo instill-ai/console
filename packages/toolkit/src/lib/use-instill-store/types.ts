@@ -6,10 +6,7 @@ import {
   ConnectorWithDefinition,
 } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import {
-  PipelineIteratorComponent,
-  TriggerUserPipelineResponse,
-} from "../vdp-sdk/pipeline";
+import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
 

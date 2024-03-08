@@ -33,7 +33,6 @@ const selector = (store: InstillStore) => ({
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  updateIsEditingIterator: store.updateIsEditingIterator,
   initPipelineBuilder: store.initPipelineBuilder,
 });
 
@@ -51,7 +50,6 @@ export const PipelineBuilderMainView = () => {
     updatePipelineRecipeIsDirty,
     accessToken,
     enabledQuery,
-    updateIsEditingIterator,
     initPipelineBuilder,
   } = useInstillStore(useShallow(selector));
 

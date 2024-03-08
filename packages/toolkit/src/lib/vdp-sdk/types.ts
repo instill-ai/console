@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectorState } from "./connector";
 import { ModelState } from "./model";
-import { OpenAPIV3 } from "openapi-types";
 import { PipelineReleaseState } from "./pipeline";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";

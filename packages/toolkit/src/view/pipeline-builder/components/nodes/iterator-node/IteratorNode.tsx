@@ -2,7 +2,6 @@ import * as React from "react";
 import { NodeProps } from "reactflow";
 import { IteratorNodeData } from "../../../type";
 import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
-import { ImageWithFallback } from "../../../../../components";
 import { Button, Icons } from "@instill-ai/design-system";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import {
@@ -15,7 +14,6 @@ import {
   checkIsValidPosition,
   createGraphLayout,
   createInitialGraphData,
-  getConnectorInputOutputSchema,
 } from "../../../lib";
 import { IteratorComponentLabel } from "./IteratorComponentLable";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";

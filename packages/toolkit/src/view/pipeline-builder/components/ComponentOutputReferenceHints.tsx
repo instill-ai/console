@@ -5,7 +5,6 @@ import {
   Nullable,
   useComponentOutputReferenceHintFields,
 } from "../../../lib";
-import { ReferenceHintTag } from "../../../components";
 import { PickComponentsFromReferenceHintsOptions } from "../../../lib/use-instill-form/pick/pickComponentsFromReferenceHints";
 
 export const ComponentOutputReferenceHints = ({

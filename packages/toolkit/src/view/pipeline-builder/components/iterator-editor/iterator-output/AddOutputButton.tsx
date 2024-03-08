@@ -6,7 +6,6 @@ import {
   useShallow,
 } from "../../../../../lib";
 import { IteratorNodeData } from "../../../type";
-import { generateUniqueIndex } from "../../../lib";
 import { Button } from "@instill-ai/design-system";
 import { isIteratorComponent } from "../../../lib/checkComponentType";
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 
 import { OperatorNodeData } from "../../../type";
@@ -25,8 +25,6 @@ import {
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 
 const selector = (store: InstillStore) => ({
-  edges: store.edges,
-  updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
@@ -35,7 +33,6 @@ const selector = (store: InstillStore) => ({
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   const {
-    edges,
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
     collapseAllNodes,
@@ -47,14 +44,6 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
-
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
-
-  const hasSourceEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.source === id);
-  }, [edges, id]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 

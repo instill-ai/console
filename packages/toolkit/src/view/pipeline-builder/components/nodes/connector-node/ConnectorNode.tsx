@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
@@ -34,7 +34,6 @@ import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
@@ -51,7 +50,6 @@ const selector = (store: InstillStore) => ({
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
     nodes,
-    edges,
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
@@ -83,14 +81,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   if (!data.connector_component.connector_name) {
     resourceNotCreated = true;
   }
-
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
-
-  const hasSourceEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.source === id);
-  }, [edges, id]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 

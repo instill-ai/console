@@ -71,6 +71,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
     outputKey,
     nodes,
     tempSavedNodesForEditingIteratorFlow,
+    editingIteratorID,
   ]);
 
   return (

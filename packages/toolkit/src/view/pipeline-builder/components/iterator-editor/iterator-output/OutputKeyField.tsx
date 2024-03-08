@@ -55,7 +55,13 @@ export const OutputKeyField = ({
         })
       );
     }, 1000);
-  }, [keyInput]);
+  }, [
+    keyInput,
+    outputValue,
+    editingIteratorID,
+    outputKey,
+    updateTempSavedNodesForEditingIteratorFlow,
+  ]);
 
   return (
     <Input.Root className="!h-10">

@@ -11,10 +11,7 @@ import {
 import { Nullable } from "../type";
 
 import { NodeData } from "../../view";
-import {
-  PipelineIteratorComponent,
-  TriggerUserPipelineResponse,
-} from "../vdp-sdk/pipeline";
+import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { StateCreator } from "zustand";
 import {
   InstillStore,
