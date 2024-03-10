@@ -4,8 +4,8 @@ import type { Nullable } from "../../type";
 
 export function useDeleteApiToken() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       tokenName,
       accessToken,
     }: {
@@ -19,13 +19,14 @@ export function useDeleteApiToken() {
       await deleteApiTokenMutation({ tokenName, accessToken });
       return Promise.resolve(tokenName);
     },
-    {
-      onSuccess: (tokenName) => {
-        queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-          old ? old.filter((e) => e.name !== tokenName) : []
-        );
-        queryClient.removeQueries(["api-tokens", tokenName], { exact: true });
-      },
-    }
-  );
+    onSuccess: (tokenName) => {
+      queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
+        old ? old.filter((e) => e.name !== tokenName) : []
+      );
+      queryClient.removeQueries({
+        queryKey: ["api-tokens", tokenName],
+        exact: true,
+      });
+    },
+  });
 }

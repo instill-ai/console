@@ -12,9 +12,9 @@ export function useModelDefinitions({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["model-definitions"],
-    async () => {
+  return useQuery({
+    queryKey: ["model-definitions"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -27,9 +27,7 @@ export function useModelDefinitions({
 
       return Promise.resolve(definitions);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

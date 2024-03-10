@@ -221,7 +221,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
               form={inOutPutFormID}
             >
               Run
-              {triggerPipeline.isLoading ? (
+              {triggerPipeline.isPending ? (
                 <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
               ) : (
                 <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />

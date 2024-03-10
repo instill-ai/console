@@ -5,8 +5,8 @@ import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
 export function useDisonnectUserConnector() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       connectorName,
       accessToken,
     }: {
@@ -24,15 +24,13 @@ export function useDisonnectUserConnector() {
 
       return Promise.resolve({ connector, accessToken });
     },
-    {
-      onSuccess: async ({ connector, accessToken }) => {
-        await onSuccessAfterConnectMutation({
-          type: "disconnect",
-          queryClient,
-          connector,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ connector, accessToken }) => {
+      await onSuccessAfterConnectMutation({
+        type: "disconnect",
+        queryClient,
+        connector,
+        accessToken,
+      });
+    },
+  });
 }

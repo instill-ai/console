@@ -9,8 +9,8 @@ import { useRouter } from "next/router";
 export function useTriggerUserPipeline() {
   const router = useRouter();
 
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       pipelineName,
       payload,
       accessToken,
@@ -30,6 +30,6 @@ export function useTriggerUserPipeline() {
       });
 
       return Promise.resolve(response);
-    }
-  );
+    },
+  });
 }

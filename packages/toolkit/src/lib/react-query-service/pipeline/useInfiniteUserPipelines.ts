@@ -1,7 +1,15 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  UseInfiniteQueryResult,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { env } from "../../utility";
-import { Visibility, listUserPipelinesQuery } from "../../vdp-sdk";
+import {
+  ListPipelinesResponse,
+  Visibility,
+  listUserPipelinesQuery,
+} from "../../vdp-sdk";
 
 export function useInfiniteUserPipelines({
   userName,
@@ -17,26 +25,26 @@ export function useInfiniteUserPipelines({
   enabledQuery: boolean;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-}) {
+}): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
   let enabled = false;
 
   if (userName && enabledQuery) {
     enabled = true;
   }
 
-  const queryKeys = ["pipelines", userName, "infinite"];
+  const queryKey = ["pipelines", userName, "infinite"];
 
   if (filter) {
-    queryKeys.push(filter);
+    queryKey.push(filter);
   }
 
   if (visibility) {
-    queryKeys.push(visibility);
+    queryKey.push(visibility);
   }
 
-  return useInfiniteQuery(
-    queryKeys,
-    async ({ pageParam }) => {
+  return useInfiniteQuery({
+    queryKey,
+    queryFn: async ({ pageParam }) => {
       if (!userName) {
         return Promise.reject(new Error("userName not provided"));
       }
@@ -53,15 +61,14 @@ export function useInfiniteUserPipelines({
 
       return Promise.resolve(pipelines);
     },
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.next_page_token === "") {
-          return null;
-        }
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => {
+      if (lastPage.next_page_token === "") {
+        return null;
+      }
 
-        return lastPage.next_page_token;
-      },
-      enabled,
-    }
-  );
+      return lastPage.next_page_token;
+    },
+    enabled,
+  });
 }

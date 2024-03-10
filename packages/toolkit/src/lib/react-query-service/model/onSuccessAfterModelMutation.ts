@@ -71,7 +71,9 @@ export async function onSuccessAfterModelMutation(
     );
 
     // Invalidate readme
-    queryClient.invalidateQueries(["models", model.name, "readme"]);
+    queryClient.invalidateQueries({
+      queryKey: ["models", model.name, "readme"],
+    });
 
     // process watch state
     const watch = await watchUserModel({
@@ -106,10 +108,10 @@ export async function onSuccessAfterModelMutation(
   // decision to the user.
 
   setTimeout(() => {
-    queryClient.invalidateQueries(["models"]);
-    queryClient.invalidateQueries(["models", userName]);
-    queryClient.invalidateQueries(["models", modelName]);
-    queryClient.invalidateQueries(["models", "watch"]);
-    queryClient.invalidateQueries(["models", modelName, "watch"]);
+    queryClient.invalidateQueries({ queryKey: ["models"] });
+    queryClient.invalidateQueries({ queryKey: ["models", userName] });
+    queryClient.invalidateQueries({ queryKey: ["models", modelName] });
+    queryClient.invalidateQueries({ queryKey: ["models", "watch"] });
+    queryClient.invalidateQueries({ queryKey: ["models", modelName, "watch"] });
   }, 3000);
 }

@@ -8,8 +8,8 @@ import {
 
 export function useUpdateUserPipeline() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -27,29 +27,27 @@ export function useUpdateUserPipeline() {
 
       return Promise.resolve({ pipeline });
     },
-    {
-      onSuccess: async ({ pipeline }) => {
-        // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
-        const pipelineNameArray = pipeline.name.split("/");
-        const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+    onSuccess: async ({ pipeline }) => {
+      // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
+      const pipelineNameArray = pipeline.name.split("/");
+      const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
-        queryClient.setQueryData<Pipeline>(
-          ["pipelines", pipeline.name],
-          pipeline
-        );
+      queryClient.setQueryData<Pipeline>(
+        ["pipelines", pipeline.name],
+        pipeline
+      );
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-          old
-            ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-            : [pipeline]
-        );
+      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
+        old
+          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
+          : [pipeline]
+      );
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-          old
-            ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-            : [pipeline]
-        );
-      },
-    }
-  );
+      queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
+        old
+          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
+          : [pipeline]
+      );
+    },
+  });
 }

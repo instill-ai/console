@@ -19,9 +19,9 @@ export function useOrganizationSubscription({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["organization", organizationID, "subscription"],
-    async () => {
+  return useQuery({
+    queryKey: ["organization", organizationID, "subscription"],
+    queryFn: async () => {
       if (!organizationID) {
         return Promise.reject(new Error("organizationID not provided"));
       }
@@ -33,9 +33,7 @@ export function useOrganizationSubscription({
 
       return Promise.resolve(subscription);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

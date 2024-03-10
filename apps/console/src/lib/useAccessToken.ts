@@ -23,47 +23,46 @@ export function useAccessToken(props?: UseAccessTokenProps) {
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
-  const query = useQuery(
-    ["accessToken"],
-    async (): Promise<string> => {
-      const { data } = await axios.post("/api/get-user-cookie", {
-        key: "instill-auth-session",
-      });
+  const query = useQuery({
+    queryKey: ["accessToken"],
+    queryFn: async (): Promise<string> => {
+      try {
+        const { data } = await axios.post("/api/get-user-cookie", {
+          key: "instill-auth-session",
+        });
 
-      const accessToken = JSON.parse(data).access_token;
+        const accessToken = JSON.parse(data).access_token;
 
-      if (!accessToken) {
-        throw new Error("No accessToken in response");
-      }
+        if (!accessToken) {
+          throw new Error("No accessToken in response");
+        }
 
-      await authValidateTokenAction({ accessToken });
+        await authValidateTokenAction({ accessToken });
 
-      return Promise.resolve(accessToken);
-    },
-    {
-      onError: async (error) => {
+        return Promise.resolve(accessToken);
+      } catch (error) {
         console.error(
           "Something went wrong when try to get accessToken",
-          error,
+          error
         );
 
         await axios.post("/api/remove-user-cookie", {
           key: "instill-auth-session",
         });
 
-        if (stopRedirectingVisitor) {
-          return;
+        if (!stopRedirectingVisitor) {
+          await router.push("/login");
         }
 
-        await router.push("/login");
-      },
-      retry: false,
-      refetchOnWindowFocus: false,
+        return Promise.reject(error);
+      }
     },
-  );
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
 
   React.useEffect(() => {
     if (query.isError) {

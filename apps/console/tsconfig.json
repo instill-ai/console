@@ -3,10 +3,16 @@
     "baseUrl": "./src",
     "target": "es5",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "downlevelIteration": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "jsx": "preserve",
     "strict": true,
@@ -21,7 +27,12 @@
     "isolatedModules": true,
     "incremental": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -30,7 +41,12 @@
     "**/*.js",
     "**/*.jsx",
     "**/*.mjs",
-    "**/*.json"
+    "**/*.json",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["**/node_modules", "**/.*/", ".next"]
+  "exclude": [
+    "**/node_modules",
+    "**/.*/",
+    ".next"
+  ]
 }

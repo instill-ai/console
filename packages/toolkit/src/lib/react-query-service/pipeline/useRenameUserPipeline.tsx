@@ -8,8 +8,8 @@ import {
 
 export function useRenameUserPipeline() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -31,25 +31,23 @@ export function useRenameUserPipeline() {
         oldPipelineName: payload.name,
       });
     },
-    {
-      onSuccess: async ({ pipeline, oldPipelineName }) => {
-        // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
-        const pipelineNameArray = pipeline.name.split("/");
-        const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+    onSuccess: async ({ pipeline, oldPipelineName }) => {
+      // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
+      const pipelineNameArray = pipeline.name.split("/");
+      const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
-        queryClient.removeQueries(["pipelines", oldPipelineName]);
+      queryClient.removeQueries({ queryKey: ["pipelines", oldPipelineName] });
 
-        queryClient.setQueryData<Pipeline>(
-          ["pipelines", pipeline.name],
-          pipeline
-        );
+      queryClient.setQueryData<Pipeline>(
+        ["pipelines", pipeline.name],
+        pipeline
+      );
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-          old
-            ? [...old.filter((e) => e.name !== oldPipelineName), pipeline]
-            : [pipeline]
-        );
-      },
-    }
-  );
+      queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
+        old
+          ? [...old.filter((e) => e.name !== oldPipelineName), pipeline]
+          : [pipeline]
+      );
+    },
+  });
 }

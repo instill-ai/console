@@ -19,9 +19,9 @@ export function useOperatorDefinition({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["operator-definitions", operatorDefinitionName],
-    async () => {
+  return useQuery({
+    queryKey: ["operator-definitions", operatorDefinitionName],
+    queryFn: async () => {
       if (!operatorDefinitionName) {
         return Promise.reject(new Error("operatorDefinitionName not provided"));
       }
@@ -33,9 +33,7 @@ export function useOperatorDefinition({
 
       return Promise.resolve(operatorDefinition);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

@@ -8,8 +8,8 @@ import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
 export function useUpdateUserConnector() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -27,15 +27,13 @@ export function useUpdateUserConnector() {
 
       return Promise.resolve({ connector, accessToken });
     },
-    {
-      onSuccess: async ({ connector, accessToken }) => {
-        await onSuccessAfterConnectMutation({
-          type: "update",
-          queryClient,
-          connector,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ connector, accessToken }) => {
+      await onSuccessAfterConnectMutation({
+        type: "update",
+        queryClient,
+        connector,
+        accessToken,
+      });
+    },
+  });
 }

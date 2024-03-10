@@ -13,8 +13,8 @@ import type { Nullable } from "../../type";
 export function useCreateUserPipelineRelease() {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       pipelineName,
       payload,
       accessToken,
@@ -35,52 +35,50 @@ export function useCreateUserPipelineRelease() {
 
       return Promise.resolve({ pipelineRelease, accessToken });
     },
-    {
-      onSuccess: async ({ pipelineRelease, accessToken }) => {
-        // At this stage the pipelineName will be
-        // users/<uid>/pipelines/<pid>/releases/<version>
-        const pipelineNameArray = pipelineRelease.name.split("/");
-        const entityName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+    onSuccess: async ({ pipelineRelease, accessToken }) => {
+      // At this stage the pipelineName will be
+      // users/<uid>/pipelines/<pid>/releases/<version>
+      const pipelineNameArray = pipelineRelease.name.split("/");
+      const entityName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
-        queryClient.setQueryData<PipelineRelease>(
-          ["pipelineReleases", pipelineRelease.name],
-          pipelineRelease
-        );
+      queryClient.setQueryData<PipelineRelease>(
+        ["pipelineReleases", pipelineRelease.name],
+        pipelineRelease
+      );
 
-        queryClient.setQueryData<PipelineRelease[]>(
-          ["pipelineReleases", entityName],
-          (old) =>
-            old
-              ? [
-                  ...old.filter((e) => e.name !== pipelineRelease.name),
-                  pipelineRelease,
-                ]
-              : [pipelineRelease]
-        );
+      queryClient.setQueryData<PipelineRelease[]>(
+        ["pipelineReleases", entityName],
+        (old) =>
+          old
+            ? [
+                ...old.filter((e) => e.name !== pipelineRelease.name),
+                pipelineRelease,
+              ]
+            : [pipelineRelease]
+      );
 
-        // process watch state
+      // process watch state
 
-        const watch = await watchUserPipelineReleaseQuery({
-          pipelineReleaseName: pipelineRelease.name,
-          accessToken,
-        });
+      const watch = await watchUserPipelineReleaseQuery({
+        pipelineReleaseName: pipelineRelease.name,
+        accessToken,
+      });
 
-        queryClient.setQueryData<PipelineReleaseWatchState>(
-          ["pipelineReleases", pipelineRelease.name, "watch"],
-          watch
-        );
+      queryClient.setQueryData<PipelineReleaseWatchState>(
+        ["pipelineReleases", pipelineRelease.name, "watch"],
+        watch
+      );
 
-        queryClient.setQueryData<PipelineReleasesWatchState>(
-          ["pipelineReleases", entityName, "watch"],
-          (old) =>
-            old
-              ? {
-                  ...removeObjKey(old, pipelineRelease.name),
-                  [pipelineRelease.name]: watch,
-                }
-              : { [pipelineRelease.name]: watch }
-        );
-      },
-    }
-  );
+      queryClient.setQueryData<PipelineReleasesWatchState>(
+        ["pipelineReleases", entityName, "watch"],
+        (old) =>
+          old
+            ? {
+                ...removeObjKey(old, pipelineRelease.name),
+                [pipelineRelease.name]: watch,
+              }
+            : { [pipelineRelease.name]: watch }
+      );
+    },
+  });
 }

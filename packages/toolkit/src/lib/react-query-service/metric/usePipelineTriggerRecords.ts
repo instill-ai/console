@@ -15,9 +15,9 @@ export function usePipelineTriggerRecords({
 
   retry?: false | number;
 }) {
-  return useQuery(
-    ["metrics", "pipelines", "triggers", filter],
-    async () => {
+  return useQuery({
+    queryKey: ["metrics", "pipelines", "triggers", filter],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -31,9 +31,7 @@ export function usePipelineTriggerRecords({
 
       return Promise.resolve(triggers);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

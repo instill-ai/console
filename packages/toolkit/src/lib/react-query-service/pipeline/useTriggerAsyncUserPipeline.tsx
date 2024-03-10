@@ -6,8 +6,8 @@ import {
 } from "../../vdp-sdk";
 
 export function useTriggerAsyncUserPipeline() {
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       pipelineName,
       payload,
       accessToken,
@@ -30,6 +30,6 @@ export function useTriggerAsyncUserPipeline() {
       });
 
       return Promise.resolve(pipelineRelease);
-    }
-  );
+    },
+  });
 }
