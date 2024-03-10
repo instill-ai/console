@@ -170,10 +170,18 @@ export function usePipelineBuilderGraph() {
     // If the node position data is valid, we can initialize the graph with
     // the node position data. Or we need to initialize the graph with our
     // default graph layout
-    if (checkIsValidPosition(pipeline.data.recipe, pipeline.data.metadata)) {
-      const initialGraphData = createInitialGraphData(pipeline.data.recipe, {
-        metadata: pipeline.data.metadata,
-      });
+    if (
+      checkIsValidPosition(
+        pipeline.data.recipe.components,
+        pipeline.data.metadata
+      )
+    ) {
+      const initialGraphData = createInitialGraphData(
+        pipeline.data.recipe.components,
+        {
+          metadata: pipeline.data.metadata,
+        }
+      );
 
       updateNodes(() => initialGraphData.nodes);
       updateEdges(() => initialGraphData.edges);
@@ -181,7 +189,9 @@ export function usePipelineBuilderGraph() {
       return;
     }
 
-    const initialGraphData = createInitialGraphData(pipeline.data.recipe);
+    const initialGraphData = createInitialGraphData(
+      pipeline.data.recipe.components
+    );
 
     createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
       .then((graphData) => {

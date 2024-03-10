@@ -56,7 +56,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
       const payload: CreateUserPipelineReleasePayload = {
         id: data.id,
         description: data.description ?? undefined,
-        recipe: constructPipelineRecipe(nodes),
+        recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
       };
 
       try {

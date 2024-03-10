@@ -38,7 +38,6 @@ export function pickComponentsFromReferenceHints(
           path={hint.path}
           instillFormat={hint.instillFormat}
           description={hint.description}
-          componentID={componentID}
         />
       );
     });
@@ -62,7 +61,6 @@ export function pickComponentsFromReferenceHints(
           key={instillFormat}
           instillFormat={instillFormat}
           hints={hints}
-          componentID={componentID}
         />
       );
     });

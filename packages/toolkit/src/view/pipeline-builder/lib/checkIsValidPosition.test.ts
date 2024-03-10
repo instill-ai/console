@@ -21,7 +21,7 @@ test("should check position is not valid", () => {
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe, {
+  const isValid = checkIsValidPosition(recipe.components, {
     components: [
       {
         id: "ai_1",
@@ -54,7 +54,7 @@ test("should check position is valid", () => {
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe, {
+  const isValid = checkIsValidPosition(recipe.components, {
     components: [
       {
         id: "ai_0",
@@ -111,7 +111,7 @@ test("should check position is not valid even there is one missing data", () => 
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe, {
+  const isValid = checkIsValidPosition(recipe.components, {
     components: [
       {
         id: "ai_1",

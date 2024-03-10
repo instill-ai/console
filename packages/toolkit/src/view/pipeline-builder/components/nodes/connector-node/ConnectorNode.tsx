@@ -1,13 +1,12 @@
 import * as React from "react";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { ConnectorNodeData } from "../../../type";
-import { CustomHandle } from "../../CustomHandle";
 import {
   getConnectorInputOutputSchema,
-  composeEdgesFromNodes,
+  composeEdgesFromComponents,
 } from "../../../lib";
 import {
   GeneralRecord,
@@ -35,7 +34,6 @@ import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
@@ -52,7 +50,6 @@ const selector = (store: InstillStore) => ({
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
     nodes,
-    edges,
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
@@ -84,14 +81,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   if (!data.connector_component.connector_name) {
     resourceNotCreated = true;
   }
-
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
-
-  const hasSourceEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.source === id);
-  }, [edges, id]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
@@ -203,7 +192,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                   }
                   return node;
                 });
-                const newEdges = composeEdgesFromNodes(newNodes);
+                const newEdges = composeEdgesFromComponents(
+                  newNodes.map((node) => node.data)
+                );
                 updateNodes(() => newNodes);
                 updateEdges(() => newEdges);
                 updatePipelineRecipeIsDirty(() => true);
@@ -330,18 +321,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           </div>
         </>
       )}
-      <CustomHandle
-        className={hasTargetEdges ? "" : "!opacity-0"}
-        type="target"
-        position={Position.Left}
-        id={id}
-      />
-      <CustomHandle
-        className={hasSourceEdges ? "" : "!opacity-0"}
-        type="source"
-        position={Position.Right}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

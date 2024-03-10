@@ -141,10 +141,14 @@ export const ClonePipelineDialog = ({
 
     const payload: CreateUserPipelinePayload = {
       id: data.id,
-      recipe: removeSensitiveDataInPipelineRecipe(
-        pipeline.recipe,
-        pipeline.owner_name === me.data.name ? false : true
-      ),
+      recipe: {
+        version: pipeline.recipe.version,
+        components: removeSensitiveDataInPipelineRecipe(
+          pipeline.recipe.components,
+          pipeline.owner_name === me.data.name ? false : true
+        ),
+      },
+
       metadata: pipeline.metadata,
       readme: pipeline.readme,
       description: data.brief ? data.brief : pipeline.description,

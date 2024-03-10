@@ -52,6 +52,9 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   dialogPublishPipelineIsOpen: false,
   dialogSharePipelineIsOpen: false,
   pipelineIsReadOnly: false,
+  isEditingIterator: false,
+  tempSavedNodesForEditingIteratorFlow: [],
+  editingIteratorID: null,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -247,6 +250,31 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         pipelineIsReadOnly: fn(state.pipelineIsReadOnly),
+      };
+    }),
+  updateIsEditingIterator: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isEditingIterator: fn(state.isEditingIterator),
+      };
+    }),
+  updateTempSavedNodesForEditingIteratorFlow: (
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        tempSavedNodesForEditingIteratorFlow: fn(
+          state.tempSavedNodesForEditingIteratorFlow
+        ),
+      };
+    }),
+  updateEditingIteratorID: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+    set((state) => {
+      return {
+        ...state,
+        editingIteratorID: fn(state.editingIteratorID),
       };
     }),
 });

@@ -13,7 +13,7 @@ import {
 } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
-import { composeEdgesFromNodes } from "../../../lib";
+import { composeEdgesFromComponents } from "../../../lib";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -110,7 +110,9 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
             }
             return node;
           });
-          const newEdges = composeEdgesFromNodes(newNodes);
+          const newEdges = composeEdgesFromComponents(
+            newNodes.map((node) => node.data)
+          );
           updateNodes(() => newNodes);
           updateEdges(() => newEdges);
 

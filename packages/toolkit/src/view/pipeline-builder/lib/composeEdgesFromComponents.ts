@@ -1,9 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
-import { Edge, Node } from "reactflow";
+import { Edge } from "reactflow";
 
-import type { InstillReference, NodeData } from "../type";
-import type { InstillJSONSchema, Nullable } from "../../../lib";
-import { getReferenceFromComponentConfiguration } from "./getReferenceFromComponentConfiguration";
+import type { InstillReference } from "../type";
+import type {
+  InstillJSONSchema,
+  Nullable,
+  PipelineComponent,
+} from "../../../lib";
+import { getReferencesFromAny } from "./getReferencesFromAny";
 import { getOperatorInputOutputSchema } from "./getOperatorInputOutputSchema";
 import { getConnectorInputOutputSchema } from "./getConnectorInputOutputSchema";
 import {
@@ -12,6 +16,7 @@ import {
 } from "./getPropertiesFromOpenAPISchema";
 import { getConnectorOperatorComponentConfiguration } from "./getConnectorOperatorComponentConfiguration";
 import {
+  isConnectorComponent,
   isEndComponent,
   isIteratorComponent,
   isOperatorComponent,
@@ -22,61 +27,12 @@ type ReferenceWithNodeInfo = {
   nodeID: string;
 } & InstillReference;
 
-export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
-  let references: ReferenceWithNodeInfo[] = [];
+export function composeEdgesFromComponents(components: PipelineComponent[]) {
   let edges: Edge[] = [];
-
-  for (const node of nodes) {
-    if (isStartComponent(node.data)) {
-      const referencesOfThisNode = getReferenceFromComponentConfiguration(
-        node.data.start_component.fields
-      );
-
-      references = [
-        ...references,
-        ...referencesOfThisNode.map((reference) => ({
-          nodeID: node.id,
-          ...reference,
-        })),
-      ];
-      continue;
-    }
-
-    if (isEndComponent(node.data)) {
-      const referencesOfThisNode = getReferenceFromComponentConfiguration(
-        node.data.end_component.fields
-      );
-
-      references = [
-        ...references,
-        ...referencesOfThisNode.map((reference) => ({
-          nodeID: node.id,
-          ...reference,
-        })),
-      ];
-      continue;
-    }
-
-    if (isIteratorComponent(node.data)) {
-      continue;
-    }
-
-    const configuration = getConnectorOperatorComponentConfiguration(node.data);
-
-    const referencesOfThisNode =
-      getReferenceFromComponentConfiguration(configuration);
-
-    references = [
-      ...references,
-      ...referencesOfThisNode.map((reference) => ({
-        nodeID: node.id,
-        ...reference,
-      })),
-    ];
-  }
+  const references = getConnectedReferences(components);
 
   const { otherNodesAvailableReferences, startNodeAvailableRefernces } =
-    getAvailableReferences(nodes);
+    getAvailableReferences(components);
 
   for (const reference of references) {
     const newEdges = composeEdgeForReference({
@@ -92,44 +48,123 @@ export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
   return edges;
 }
 
+function getConnectedReferences(
+  components: PipelineComponent[],
+  overwriteNodeID?: string
+) {
+  let references: ReferenceWithNodeInfo[] = [];
+  for (const component of components) {
+    if (isStartComponent(component)) {
+      const referencesOfThisNode = getReferencesFromAny(
+        component.start_component.fields
+      );
+
+      references = [
+        ...references,
+        ...referencesOfThisNode.map((reference) => ({
+          nodeID: overwriteNodeID ?? component.id,
+          ...reference,
+        })),
+      ];
+      continue;
+    }
+
+    if (isEndComponent(component)) {
+      const referencesOfThisNode = getReferencesFromAny(
+        component.end_component.fields
+      );
+
+      references = [
+        ...references,
+        ...referencesOfThisNode.map((reference) => ({
+          nodeID: component.id,
+          ...reference,
+        })),
+      ];
+      continue;
+    }
+
+    if (isIteratorComponent(component)) {
+      const inputReference = getReferencesFromAny(
+        component.iterator_component.input
+      );
+
+      // All the components inside the iterator will belong to the iterator itself
+      const componentsReferences = getConnectedReferences(
+        component.iterator_component.components,
+        component.id
+      );
+
+      references = [
+        ...references,
+        ...inputReference.map((reference) => ({
+          nodeID: overwriteNodeID ?? component.id,
+          ...reference,
+        })),
+        ...componentsReferences,
+      ];
+
+      continue;
+    }
+
+    const configuration = getConnectorOperatorComponentConfiguration(component);
+
+    const referencesOfThisNode = getReferencesFromAny(configuration);
+
+    references = [
+      ...references,
+      ...referencesOfThisNode.map((reference) => ({
+        nodeID: overwriteNodeID ?? component.id,
+        ...reference,
+      })),
+    ];
+  }
+
+  return references;
+}
+
 // Hepler function to get all the available reference target, Take start
 // operator for example, something like start.foo or start.bar. And for
 // other nodes, something like comp_1.output.foo or comp_1.output.bar
-function getAvailableReferences(nodes: Node<NodeData>[]) {
+function getAvailableReferences(components: PipelineComponent[]) {
   const otherNodesAvailableReferences: string[] = [];
   const startNodeAvailableRefernces: string[] = [];
 
-  for (const node of nodes) {
+  for (const component of components) {
     // 1. Start node is special, we need to get all the metadata keys as available
-    if (isStartComponent(node.data)) {
-      for (const [key] of Object.entries(node.data.start_component.fields)) {
-        startNodeAvailableRefernces.push(`${node.id}.${key}`);
+    if (isStartComponent(component)) {
+      for (const [key] of Object.entries(component.start_component.fields)) {
+        startNodeAvailableRefernces.push(`${component.id}.${key}`);
       }
 
       continue;
     }
 
     // 2. We can ignore end node, they can not be referenced/connected
-    if (isEndComponent(node.data)) {
+    if (isEndComponent(component)) {
       continue;
     }
 
-    if (isIteratorComponent(node.data)) {
-      continue;
-    }
+    // 3. Extract output properties for operator, connector and iterator
 
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
-    // 3. Extract output properties for operator and connector
-    if (isOperatorComponent(node.data)) {
+    if (isIteratorComponent(component)) {
+      outputSchema = component.iterator_component.data_specification.output;
+    }
+
+    if (isOperatorComponent(component)) {
       const { outputSchema: operatorOutputSchema } =
-        getOperatorInputOutputSchema(node.data);
+        getOperatorInputOutputSchema(component);
       outputSchema = operatorOutputSchema;
-    } else {
+    }
+
+    if (isConnectorComponent(component)) {
       const { outputSchema: connectorOutputSchema } =
-        getConnectorInputOutputSchema(node.data);
+        getConnectorInputOutputSchema(component);
       outputSchema = connectorOutputSchema;
     }
+
     let outputProperties: InstillAIOpenAPIProperty[] = [];
 
     if (outputSchema) {
@@ -141,7 +176,7 @@ function getAvailableReferences(nodes: Node<NodeData>[]) {
 
     for (const outputProperty of outputProperties) {
       otherNodesAvailableReferences.push(
-        `${node.id}.output.${
+        `${component.id}.output.${
           outputProperty.path?.includes(".")
             ? outputProperty.path?.split(".").pop()
             : outputProperty.path
@@ -150,7 +185,7 @@ function getAvailableReferences(nodes: Node<NodeData>[]) {
     }
 
     // User can also reference the whole component's output object
-    otherNodesAvailableReferences.push(`${node.id}.output`);
+    otherNodesAvailableReferences.push(`${component.id}.output`);
   }
 
   return {

@@ -33,31 +33,39 @@ Trigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const Content = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = "popper", ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      className={cn(
-        "relative z-50 max-h-[320px] min-w-[8rem] overflow-y-scroll rounded-sm border bg-semantic-bg-primary text-semantic-fg-primary shadow-md animate-in fade-in-80",
-        position === "popper" && "translate-y-1",
-        className
-      )}
-      position={position}
-      {...props}
-    >
-      <SelectPrimitive.Viewport
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & {
+    viewportClassName?: string;
+  }
+>(
+  (
+    { className, viewportClassName, children, position = "popper", ...props },
+    ref
+  ) => (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        ref={ref}
         className={cn(
-          "p-1",
-          position === "popper" &&
-            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+          "relative z-50 max-h-[320px] min-w-[8rem] overflow-y-scroll rounded-sm border bg-semantic-bg-primary text-semantic-fg-primary shadow-md animate-in fade-in-80",
+          position === "popper" && "translate-y-1",
+          className
         )}
+        position={position}
+        {...props}
       >
-        {children}
-      </SelectPrimitive.Viewport>
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
-));
+        <SelectPrimitive.Viewport
+          className={cn(
+            "p-1",
+            position === "popper" &&
+              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+            viewportClassName
+          )}
+        >
+          {children}
+        </SelectPrimitive.Viewport>
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  )
+);
 Content.displayName = SelectPrimitive.Content.displayName;
 
 const Label = React.forwardRef<
@@ -74,8 +82,10 @@ Label.displayName = SelectPrimitive.Label.displayName;
 
 const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
+    disabledCheck?: boolean;
+  }
+>(({ className, disabledCheck, children, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -84,11 +94,13 @@ const Item = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-4 w-4 items-center justify-center">
-      <SelectPrimitive.ItemIndicator>
-        <Icons.Check className="h-4 w-4" />
-      </SelectPrimitive.ItemIndicator>
-    </span>
+    {disabledCheck ? null : (
+      <span className="absolute left-2 flex h-4 w-4 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <Icons.Check className="h-4 w-4" />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+    )}
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ));

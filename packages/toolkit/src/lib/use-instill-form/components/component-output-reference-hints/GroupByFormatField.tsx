@@ -6,11 +6,9 @@ import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 export const GroupByFormatField = ({
   hints,
   instillFormat,
-  componentID,
 }: {
   hints: ComponentOutoutReferenceHint[];
   instillFormat: string;
-  componentID?: string;
 }) => {
   const humanReadableInstillFormat = React.useMemo(() => {
     return transformInstillFormatToHumanReadableFormat(instillFormat);

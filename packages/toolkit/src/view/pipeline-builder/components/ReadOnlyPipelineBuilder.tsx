@@ -29,6 +29,7 @@ import {
   ConnectorNode,
   EmptyNode,
   EndOperatorNode,
+  IteratorNode,
   OperatorNode,
   StartOperatorNode,
 } from "./nodes";
@@ -46,6 +47,7 @@ const nodeTypes = {
   emptyNode: EmptyNode,
   endNode: EndOperatorNode,
   operatorNode: OperatorNode,
+  iteratorNode: IteratorNode,
 };
 
 const edgeTypes = {
@@ -77,8 +79,8 @@ export const ReadOnlyPipelineBuilder = ({
   React.useEffect(() => {
     if (!recipe || !metadata) return;
 
-    if (checkIsValidPosition(recipe, metadata)) {
-      const initialGraphData = createInitialGraphData(recipe, {
+    if (checkIsValidPosition(recipe.components, metadata)) {
+      const initialGraphData = createInitialGraphData(recipe.components, {
         metadata,
       });
 
@@ -89,7 +91,7 @@ export const ReadOnlyPipelineBuilder = ({
       return;
     }
 
-    const initialGraphData = createInitialGraphData(recipe);
+    const initialGraphData = createInitialGraphData(recipe.components);
 
     createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
       .then((graphData) => {
