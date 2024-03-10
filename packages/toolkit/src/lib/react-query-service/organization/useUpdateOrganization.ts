@@ -8,8 +8,8 @@ import {
 
 export function useUpdateOrganization() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -27,16 +27,14 @@ export function useUpdateOrganization() {
 
       return Promise.resolve({ organization });
     },
-    {
-      onSuccess: ({ organization }) => {
-        queryClient.setQueryData<Organization[]>(["organization"], (old) =>
-          old ? [...old, organization] : [organization]
-        );
-        queryClient.setQueryData<Organization>(
-          ["organization", organization],
-          organization
-        );
-      },
-    }
-  );
+    onSuccess: ({ organization }) => {
+      queryClient.setQueryData<Organization[]>(["organization"], (old) =>
+        old ? [...old, organization] : [organization]
+      );
+      queryClient.setQueryData<Organization>(
+        ["organization", organization],
+        organization
+      );
+    },
+  });
 }

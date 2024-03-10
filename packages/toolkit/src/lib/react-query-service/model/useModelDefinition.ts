@@ -19,9 +19,9 @@ export function useModelDefinition({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["model-definitions", modelDefinitionName],
-    async () => {
+  return useQuery({
+    queryKey: ["model-definitions", modelDefinitionName],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -37,6 +37,7 @@ export function useModelDefinition({
 
       return Promise.resolve(definition);
     },
-    { enabled: enableQuery, retry: retry === false ? false : retry ? retry : 3 }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

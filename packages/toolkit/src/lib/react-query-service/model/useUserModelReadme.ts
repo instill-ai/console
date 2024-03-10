@@ -19,9 +19,9 @@ export function useUserModelReadme({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["models", modelName, "readme"],
-    async () => {
+  return useQuery({
+    queryKey: ["models", modelName, "readme"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -37,9 +37,7 @@ export function useUserModelReadme({
 
       return Promise.resolve(window.atob(modelReadme.content));
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

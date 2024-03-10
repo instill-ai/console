@@ -8,8 +8,8 @@ import type { Nullable } from "../../type";
 
 export function useUpdateAuthenticatedUser() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -27,13 +27,11 @@ export function useUpdateAuthenticatedUser() {
 
       return Promise.resolve(user);
     },
-    {
-      onSuccess: (newUser) => {
-        queryClient.setQueryData<AuthenticatedUser>(
-          ["authenticated-user"],
-          newUser
-        );
-      },
-    }
-  );
+    onSuccess: (newUser) => {
+      queryClient.setQueryData<AuthenticatedUser>(
+        ["authenticated-user"],
+        newUser
+      );
+    },
+  });
 }

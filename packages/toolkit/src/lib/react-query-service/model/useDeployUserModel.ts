@@ -5,8 +5,8 @@ import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useDeployUserModel() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       modelName,
       accessToken,
     }: {
@@ -28,15 +28,13 @@ export function useDeployUserModel() {
         return Promise.reject(err);
       }
     },
-    {
-      onSuccess: async ({ modelName, accessToken }) => {
-        await onSuccessAfterModelMutation({
-          type: "deploy",
-          queryClient,
-          modelName,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ modelName, accessToken }) => {
+      await onSuccessAfterModelMutation({
+        type: "deploy",
+        queryClient,
+        modelName,
+        accessToken,
+      });
+    },
+  });
 }

@@ -9,8 +9,8 @@ import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
 export function useDeleteUserConnector() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       accessToken,
       connectorName,
     }: {
@@ -36,16 +36,14 @@ export function useDeleteUserConnector() {
         accessToken,
       });
     },
-    {
-      onSuccess: async ({ connectorName, connector, accessToken }) => {
-        await onSuccessAfterConnectMutation({
-          type: "delete",
-          queryClient,
-          connectorName,
-          connector,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ connectorName, connector, accessToken }) => {
+      await onSuccessAfterConnectMutation({
+        type: "delete",
+        queryClient,
+        connectorName,
+        connector,
+        accessToken,
+      });
+    },
+  });
 }

@@ -23,9 +23,9 @@ export function useUserConnector({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["connectors", connectorName],
-    async () => {
+  return useQuery({
+    queryKey: ["connectors", connectorName],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -51,9 +51,7 @@ export function useUserConnector({
 
       return Promise.resolve(connectorWithDefinition);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

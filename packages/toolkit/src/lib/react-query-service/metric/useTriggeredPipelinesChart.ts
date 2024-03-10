@@ -14,9 +14,9 @@ export function useTriggeredPipelinesChart({
   filter: Nullable<string>;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["charts", filter],
-    async () => {
+  return useQuery({
+    queryKey: ["charts", filter],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -30,9 +30,7 @@ export function useTriggeredPipelinesChart({
 
       return Promise.resolve(triggers);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

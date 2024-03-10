@@ -23,9 +23,9 @@ export function useUserPipeline({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["pipelines", pipelineName],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelines", pipelineName],
+    queryFn: async () => {
       if (!pipelineName) {
         return Promise.reject(new Error("invalid pipeline name"));
       }
@@ -38,9 +38,7 @@ export function useUserPipeline({
 
       return Promise.resolve(pipeline);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

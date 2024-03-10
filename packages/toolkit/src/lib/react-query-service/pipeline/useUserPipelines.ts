@@ -53,9 +53,9 @@ export const useUserPipelines = ({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["pipelines", userName],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelines", userName],
+    queryFn: async () => {
       if (!userName) {
         return Promise.reject(new Error("userName not provided"));
       }
@@ -68,9 +68,7 @@ export const useUserPipelines = ({
       );
       return Promise.resolve(pipelines);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 };

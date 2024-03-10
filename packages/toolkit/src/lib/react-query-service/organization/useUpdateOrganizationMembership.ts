@@ -7,8 +7,8 @@ import {
 
 export function useUpdateOrganizationMembership() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -26,19 +26,13 @@ export function useUpdateOrganizationMembership() {
 
       return Promise.resolve({ membership });
     },
-    {
-      onSuccess: ({ membership }) => {
-        queryClient.invalidateQueries([
-          "organizations",
-          membership.organization.id,
-          "memberships",
-        ]);
-        queryClient.invalidateQueries([
-          "users",
-          membership.user.id,
-          "memberships",
-        ]);
-      },
-    }
-  );
+    onSuccess: ({ membership }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["organizations", membership.organization.id, "memberships"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["users", membership.user.id, "memberships"],
+      });
+    },
+  });
 }

@@ -22,9 +22,9 @@ export function useWatchUserPipelineReleases({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["pipelineReleases", "watch"],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelineReleases", "watch"],
+    queryFn: async () => {
       if (!pipelineReleaseNames || pipelineReleaseNames.length === 0) {
         return Promise.reject(new Error("pipelineReleaseNames not provided"));
       }
@@ -41,9 +41,7 @@ export function useWatchUserPipelineReleases({
 
       return Promise.resolve(watches);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

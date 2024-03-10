@@ -19,9 +19,9 @@ export function useWatchUserConnector({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["connectors", connectorName, "watch"],
-    async () => {
+  return useQuery({
+    queryKey: ["connectors", connectorName, "watch"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -37,9 +37,7 @@ export function useWatchUserConnector({
 
       return Promise.resolve(watch);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

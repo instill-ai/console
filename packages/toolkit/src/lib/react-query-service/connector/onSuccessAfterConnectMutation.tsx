@@ -61,7 +61,8 @@ export async function onSuccessAfterConnectMutation(
     const connectorNameArray = props.connectorName.split("/");
     const userName = `${connectorNameArray[0]}/${connectorNameArray[1]}`;
 
-    queryClient.removeQueries(["connectors", props.connectorName], {
+    queryClient.removeQueries({
+      queryKey: ["connectors", props.connectorName],
       exact: true,
     });
 
@@ -80,7 +81,8 @@ export async function onSuccessAfterConnectMutation(
     );
 
     // Process watch state
-    queryClient.removeQueries(["connectors", "watch"], {
+    queryClient.removeQueries({
+      queryKey: ["connectors", "watch"],
       exact: true,
     });
 

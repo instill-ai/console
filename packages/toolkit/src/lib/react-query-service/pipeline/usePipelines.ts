@@ -42,16 +42,14 @@ export const usePipelines = ({
    */
   retry?: false | number;
 }) => {
-  return useQuery(
-    ["pipelines"],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelines"],
+    queryFn: async () => {
       const pipelines = await fetchPipelines(accessToken, filter, visibility);
 
       return Promise.resolve(pipelines);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 };

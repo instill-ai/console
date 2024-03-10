@@ -1,7 +1,15 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  UseInfiniteQueryResult,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { env } from "../../utility";
-import { Visibility, listPipelinesQuery } from "../../vdp-sdk";
+import {
+  ListPipelinesResponse,
+  Visibility,
+  listPipelinesQuery,
+} from "../../vdp-sdk";
 
 export function useInfinitePipelines({
   accessToken,
@@ -15,10 +23,12 @@ export function useInfinitePipelines({
   accessToken: Nullable<string>;
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
-}) {
-  return useInfiniteQuery(
-    filter ? ["pipelines", "infinite", filter] : ["pipelines", "infinite"],
-    async ({ pageParam }) => {
+}): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
+  return useInfiniteQuery({
+    queryKey: filter
+      ? ["pipelines", "infinite", filter]
+      : ["pipelines", "infinite"],
+    queryFn: async ({ pageParam }) => {
       const pipelines = await listPipelinesQuery({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
         nextPageToken: pageParam ?? null,
@@ -30,15 +40,14 @@ export function useInfinitePipelines({
 
       return Promise.resolve(pipelines);
     },
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.next_page_token === "") {
-          return null;
-        }
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => {
+      if (lastPage.next_page_token === "") {
+        return null;
+      }
 
-        return lastPage.next_page_token;
-      },
-      enabled: enabledQuery,
-    }
-  );
+      return lastPage.next_page_token;
+    },
+    enabled: enabledQuery,
+  });
 }

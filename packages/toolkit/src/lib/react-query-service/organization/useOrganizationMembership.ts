@@ -22,9 +22,9 @@ export function useOrganizationMembership({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["organizations", organizationID, "memberships", userID],
-    async () => {
+  return useQuery({
+    queryKey: ["organizations", organizationID, "memberships", userID],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("Access Token not provided"));
       }
@@ -44,9 +44,7 @@ export function useOrganizationMembership({
 
       return Promise.resolve(membership);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

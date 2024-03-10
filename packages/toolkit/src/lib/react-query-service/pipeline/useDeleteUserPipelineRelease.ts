@@ -8,8 +8,8 @@ import type { Nullable } from "../../type";
 export function useDeleteUserPipelineRelease() {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       pipelineReleaseName,
       accessToken,
     }: {
@@ -27,30 +27,26 @@ export function useDeleteUserPipelineRelease() {
 
       return Promise.resolve({ pipelineReleaseName, accessToken });
     },
-    {
-      onSuccess: async ({ pipelineReleaseName }) => {
-        // At this stage the pipelineName will be
-        // users/<uid>/pipelines/<pid>/releases/<version>
-        const pipelineReleaseNameArray = pipelineReleaseName.split("/");
-        const userName = `${pipelineReleaseNameArray[0]}/${pipelineReleaseNameArray[1]}`;
+    onSuccess: async ({ pipelineReleaseName }) => {
+      // At this stage the pipelineName will be
+      // users/<uid>/pipelines/<pid>/releases/<version>
+      const pipelineReleaseNameArray = pipelineReleaseName.split("/");
+      const userName = `${pipelineReleaseNameArray[0]}/${pipelineReleaseNameArray[1]}`;
 
-        queryClient.setQueryData<PipelineRelease[]>(
-          ["pipelineReleases", userName],
-          (old) =>
-            old ? old.filter((e) => e.name !== pipelineReleaseName) : []
-        );
-        queryClient.removeQueries(["pipelineReleases", pipelineReleaseName], {
-          exact: true,
-        });
+      queryClient.setQueryData<PipelineRelease[]>(
+        ["pipelineReleases", userName],
+        (old) => (old ? old.filter((e) => e.name !== pipelineReleaseName) : [])
+      );
+      queryClient.removeQueries({
+        queryKey: ["pipelineReleases", pipelineReleaseName],
+        exact: true,
+      });
 
-        // Process watch state
-        queryClient.removeQueries(
-          ["pipelineReleases", pipelineReleaseName, "watch"],
-          {
-            exact: true,
-          }
-        );
-      },
-    }
-  );
+      // Process watch state
+      queryClient.removeQueries({
+        queryKey: ["pipelineReleases", pipelineReleaseName, "watch"],
+        exact: true,
+      });
+    },
+  });
 }

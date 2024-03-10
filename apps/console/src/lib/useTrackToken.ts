@@ -4,30 +4,30 @@ import { useRouter } from "next/router";
 
 export function useTrackToken({ enabled }: { enabled: boolean }) {
   const router = useRouter();
-  return useQuery(
-    ["trackToken"],
-    async (): Promise<string> => {
-      const { data } = await axios.post("/api/get-user-cookie", {
-        key: "instill-ai-user",
-      });
+  return useQuery({
+    queryKey: ["trackToken"],
+    queryFn: async (): Promise<string> => {
+      try {
+        const { data } = await axios.post("/api/get-user-cookie", {
+          key: "instill-ai-user",
+        });
 
-      const trackToken = JSON.parse(data).cookie_token;
+        const trackToken = JSON.parse(data).cookie_token;
 
-      if (!trackToken) {
-        throw new Error("No trackToken in response");
-      }
+        if (!trackToken) {
+          throw new Error("No trackToken in response");
+        }
 
-      return Promise.resolve(trackToken);
-    },
-    {
-      onError: (error) => {
+        return Promise.resolve(trackToken);
+      } catch (error) {
         console.error("Something went wrong when try to get trackToken", error);
 
-        router.push("/onboarding");
-      },
-      retry: false,
-      refetchOnWindowFocus: false,
-      enabled,
+        await router.push("/onboarding");
+        return Promise.reject(error);
+      }
     },
-  );
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled,
+  });
 }
