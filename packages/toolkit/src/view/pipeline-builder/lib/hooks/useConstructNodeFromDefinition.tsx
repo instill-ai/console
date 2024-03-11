@@ -117,7 +117,10 @@ export function useConstructNodeFromDefinition({
               id: nodeID,
               iterator_component: {
                 input: "",
-                output_elements: {},
+                output_elements: {
+                  // This is the default output element
+                  result_0: "",
+                },
                 components: [],
                 condition: null,
                 data_specification: {

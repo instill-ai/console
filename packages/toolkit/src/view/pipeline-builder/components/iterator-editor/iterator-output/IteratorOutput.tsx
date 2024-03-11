@@ -32,13 +32,16 @@ export const IteratorOutput = () => {
         </p>
       </div>
       <div className="mb-2 flex flex-col gap-y-2">
-        <OutputSet outputKey="result_0" disabledDeleteButton={true} />
         {targetIteratorNode?.data.iterator_component.output_elements
           ? Object.entries(
               targetIteratorNode?.data.iterator_component.output_elements
-            )
-              .filter(([key]) => key !== "result_0")
-              .map(([key]) => <OutputSet key={key} outputKey={key} />)
+            ).map(([key]) => (
+              <OutputSet
+                key={key}
+                outputKey={key}
+                disabledDeleteButton={key === "result_0"}
+              />
+            ))
           : null}
       </div>
       <AddOutputButton targetIteratorNode={targetIteratorNode} />
