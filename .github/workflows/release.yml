@@ -50,11 +50,11 @@ jobs:
           git push origin v${{ steps.release.outputs.major }}
           git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 18.x
         if: ${{ steps.release.outputs.releases_created }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18
 
       - uses: pnpm/action-setup@v2.0.1
         if: ${{ steps.release.outputs.releases_created }}
