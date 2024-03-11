@@ -40,10 +40,15 @@ export const IteratorInput = ({ className }: { className?: string }) => {
 
     const hints = pickSmartHintsFromNodes({
       nodes: tempSavedNodesForEditingIteratorFlow,
+      isEditingIterator: true,
     });
 
     return hints
-      .filter((hint) => hint.instillFormat.includes("array:"))
+      .filter(
+        (hint) =>
+          hint.instillFormat.includes("array:") ||
+          hint.instillFormat.includes("semi-structured")
+      )
       .map((hint) => ({
         path: hint.path,
         instill_format: hint.instillFormat,
