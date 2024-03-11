@@ -2,10 +2,7 @@ import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
-import {
-  ReferenceHintDataTypeTag,
-  ReferenceHintTag,
-} from "../../../../components";
+import { ReferenceHintTag } from "../../../../components";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 
 const selector = (store: InstillStore) => ({
@@ -197,19 +194,16 @@ export const FieldHead = ({
             }}
           >
             <div className="overflow-hidden">
-              <div className="flex flex-row items-center gap-x-2">
-                <ReferenceHintTag.Root>
-                  <ReferenceHintTag.Icon type="check" />
-                  <ReferenceHintTag.Label
-                    label={`start.${path}`}
-                    className="!max-w-[160px] text-semantic-accent-default"
-                  />
-                </ReferenceHintTag.Root>
-                <ReferenceHintDataTypeTag
+              <ReferenceHintTag.Root>
+                <ReferenceHintTag.InstillFormat
                   isArray={humanReadableInstillFormat.isArray}
-                  label={humanReadableInstillFormat.format}
+                  instillFormat={humanReadableInstillFormat.format}
                 />
-              </div>
+                <ReferenceHintTag.Path
+                  icon={<ReferenceHintTag.Icon type="check" />}
+                  path={`start.${path}`}
+                />
+              </ReferenceHintTag.Root>
             </div>
           </div>
         </div>

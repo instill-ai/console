@@ -13,7 +13,7 @@ import {
 } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
-import { composeEdgesFromNodes } from "../../../lib";
+import { composeEdgesFromComponents } from "../../../lib";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -58,75 +58,90 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
     });
   }, [currentNodeID, reset]);
 
-  const handleSubmit = React.useCallback(function handleSubmit() {
-    form.handleSubmit((data) => {
-      const newID = data.nodeID;
+  const handleSubmit = React.useCallback(
+    function handleSubmit() {
+      form.handleSubmit((data) => {
+        const newID = data.nodeID;
 
-      if (!newID || newID === "") {
-        form.reset({
-          nodeID: currentNodeID,
-        });
-        return;
-      }
-
-      if (newID) {
-        if (newID === currentNodeID) {
-          return;
-        }
-
-        if (!validateInstillID(newID)) {
-          toast({
-            title: InstillErrors.IDInvalidError,
-            variant: "alert-error",
-            size: "small",
-          });
+        if (!newID || newID === "") {
           form.reset({
             nodeID: currentNodeID,
           });
           return;
         }
 
-        const existingNodeID = nodes.map((node) => node.id);
-
-        if (existingNodeID.includes(newID)) {
-          toast({
-            title: "Component ID already exists",
-            variant: "alert-error",
-            size: "small",
-          });
-          form.reset({
-            nodeID: currentNodeID,
-          });
-          return;
-        }
-
-        const newNodes = nodes.map((node) => {
-          if (node.id === currentNodeID) {
-            return {
-              ...node,
-              id: newID,
-            };
+        if (newID) {
+          if (newID === currentNodeID) {
+            return;
           }
-          return node;
-        });
-        const newEdges = composeEdgesFromNodes(newNodes);
-        updateNodes(() => newNodes);
-        updateEdges(() => newEdges);
 
-        if (selectedConnectorNodeId === currentNodeID) {
-          updateSelectedConnectorNodeId(() => newID);
+          if (!validateInstillID(newID)) {
+            toast({
+              title: InstillErrors.IDInvalidError,
+              variant: "alert-error",
+              size: "small",
+            });
+            form.reset({
+              nodeID: currentNodeID,
+            });
+            return;
+          }
+
+          const existingNodeID = nodes.map((node) => node.id);
+
+          if (existingNodeID.includes(newID)) {
+            toast({
+              title: "Component ID already exists",
+              variant: "alert-error",
+              size: "small",
+            });
+            form.reset({
+              nodeID: currentNodeID,
+            });
+            return;
+          }
+
+          const newNodes = nodes.map((node) => {
+            if (node.id === currentNodeID) {
+              return {
+                ...node,
+                id: newID,
+              };
+            }
+            return node;
+          });
+          const newEdges = composeEdgesFromComponents(
+            newNodes.map((node) => node.data)
+          );
+          updateNodes(() => newNodes);
+          updateEdges(() => newEdges);
+
+          if (selectedConnectorNodeId === currentNodeID) {
+            updateSelectedConnectorNodeId(() => newID);
+          }
+
+          toast({
+            title: "Successfully update node's name",
+            variant: "alert-success",
+            size: "small",
+          });
+
+          updatePipelineRecipeIsDirty(() => true);
         }
-
-        toast({
-          title: "Successfully update node's name",
-          variant: "alert-success",
-          size: "small",
-        });
-
-        updatePipelineRecipeIsDirty(() => true);
-      }
-    })();
-  }, []);
+      })();
+    },
+    [
+      currentNodeID,
+      form,
+      nodes,
+      toast,
+      updateEdges,
+      updateNodes,
+      updatePipelineRecipeIsDirty,
+      selectedConnectorNodeId,
+      updateSelectedConnectorNodeId,
+    ]
+  );
 
   return (
     <div className="flex flex-row">

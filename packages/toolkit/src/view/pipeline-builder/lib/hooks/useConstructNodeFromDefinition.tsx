@@ -11,12 +11,16 @@ import {
   useShallow,
 } from "../../../../lib";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
-import { generateNewComponentIndex } from "../generateNewComponentIndex";
+import { generateUniqueIndex } from "../generateUniqueIndex";
+import { getAllComponentID } from "../getAllComponentID";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
+  isEditingIterator: store.isEditingIterator,
 });
 
 export function useConstructNodeFromDefinition({
@@ -24,9 +28,13 @@ export function useConstructNodeFromDefinition({
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
 }) {
-  const { nodes, updateNodes, updatePipelineRecipeIsDirty } = useInstillStore(
-    useShallow(selector)
-  );
+  const {
+    nodes,
+    tempSavedNodesForEditingIteratorFlow,
+    updateNodes,
+    updatePipelineRecipeIsDirty,
+    isEditingIterator,
+  } = useInstillStore(useShallow(selector));
 
   return React.useCallback(
     (
@@ -35,37 +43,44 @@ export function useConstructNodeFromDefinition({
     ) => {
       if (!reactFlowInstance) return;
 
-      // We will use these values to calculate the position of the new node
-      // Initialize the topLeftNodeXY and bottomRightNodeXY with the first node
-      const topLeftNodeXY = {
-        x: nodes[0].position.x,
-        y: nodes[0].position.y,
-      };
-      const bottomRightNodeXY = {
-        x: nodes[0].position.x,
-        y: nodes[0].position.y,
+      let newNodeXY = {
+        x: 0,
+        y: 0,
       };
 
-      // Find the topLeftNodeXY and bottomRightNodeXY
-      nodes.forEach((node) => {
-        if (node.position.x < topLeftNodeXY.x) {
-          topLeftNodeXY.x = node.position.x;
-        }
-        if (node.position.y < topLeftNodeXY.y) {
-          topLeftNodeXY.y = node.position.y;
-        }
-        if (node.position.x > bottomRightNodeXY.x) {
-          bottomRightNodeXY.x = node.position.x;
-        }
-        if (node.position.y > bottomRightNodeXY.y) {
-          bottomRightNodeXY.y = node.position.y;
-        }
-      });
+      if (nodes[0]) {
+        // We will use these values to calculate the position of the new node
+        // Initialize the topLeftNodeXY and bottomRightNodeXY with the first node
+        const topLeftNodeXY = {
+          x: nodes[0].position.x,
+          y: nodes[0].position.y,
+        };
+        const bottomRightNodeXY = {
+          x: nodes[0].position.x,
+          y: nodes[0].position.y,
+        };
 
-      const newNodeXY = {
-        x: topLeftNodeXY.x + (bottomRightNodeXY.x - topLeftNodeXY.x) / 2,
-        y: topLeftNodeXY.y + (bottomRightNodeXY.y - topLeftNodeXY.y) / 2,
-      };
+        // Find the topLeftNodeXY and bottomRightNodeXY
+        nodes.forEach((node) => {
+          if (node.position.x < topLeftNodeXY.x) {
+            topLeftNodeXY.x = node.position.x;
+          }
+          if (node.position.y < topLeftNodeXY.y) {
+            topLeftNodeXY.y = node.position.y;
+          }
+          if (node.position.x > bottomRightNodeXY.x) {
+            bottomRightNodeXY.x = node.position.x;
+          }
+          if (node.position.y > bottomRightNodeXY.y) {
+            bottomRightNodeXY.y = node.position.y;
+          }
+        });
+
+        newNodeXY = {
+          x: topLeftNodeXY.x + (bottomRightNodeXY.x - topLeftNodeXY.x) / 2,
+          y: topLeftNodeXY.y + (bottomRightNodeXY.y - topLeftNodeXY.y) / 2,
+        };
+      }
 
       // Construct the default component ID prefix. For example, if the definition
       // is `connector-definitions/instill_ai`, the prefix will be `instill_ai`
@@ -74,8 +89,14 @@ export function useConstructNodeFromDefinition({
       );
 
       // Generate a new component index
-      const nodeIndex = generateNewComponentIndex(
-        nodes.map((e) => e.id),
+      // Because all the nodes' ID need to be unique, included the components in the
+      // iterator, so we need to group the two set of nodes together. Under the
+      // editing iterator mode, nodes will be the nodes in the iterator, and
+      // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
+      const nodeIndex = generateUniqueIndex(
+        isEditingIterator
+          ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
+          : getAllComponentID(nodes.map((node) => node.data)),
         nodePrefix
       );
 
@@ -96,9 +117,16 @@ export function useConstructNodeFromDefinition({
               id: nodeID,
               iterator_component: {
                 input: "",
-                output_elements: {},
+                output_elements: {
+                  // This is the default output element
+                  result_0: "",
+                },
                 components: [],
                 condition: null,
+                data_specification: {
+                  input: null,
+                  output: null,
+                },
               },
               note: null,
             },
@@ -164,6 +192,13 @@ export function useConstructNodeFromDefinition({
       updatePipelineRecipeIsDirty(() => true);
       updateNodes(() => newNodes);
     },
-    [nodes, updateNodes, reactFlowInstance, updatePipelineRecipeIsDirty]
+    [
+      nodes,
+      updateNodes,
+      reactFlowInstance,
+      updatePipelineRecipeIsDirty,
+      isEditingIterator,
+      tempSavedNodesForEditingIteratorFlow,
+    ]
   );
 }

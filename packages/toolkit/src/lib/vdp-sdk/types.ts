@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectorState } from "./connector";
 import { ModelState } from "./model";
-import { OpenAPIV3 } from "openapi-types";
 import { PipelineReleaseState } from "./pipeline";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";
 import { Organization } from "./organization";
+import { Nullable } from "../type";
 
 export type ErrorDetails = {
   "@type": string;
@@ -21,10 +21,15 @@ export type Violation = {
 
 export type ResourceState = ModelState | PipelineReleaseState | ConnectorState;
 
+export type DataSpecification = {
+  input: Nullable<InstillJSONSchema>;
+  output: Nullable<InstillJSONSchema>;
+};
+
 export type Spec = {
   resource_specification: InstillJSONSchema;
   component_specification: InstillJSONSchema;
-  openapi_specifications: Record<string, OpenAPIV3.Document>;
+  data_specifications: Record<string, DataSpecification>;
 };
 
 export type Visibility =

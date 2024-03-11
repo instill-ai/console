@@ -12,9 +12,9 @@ export function useUsers({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["users"],
-    async () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -27,9 +27,7 @@ export function useUsers({
 
       return Promise.resolve(users);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

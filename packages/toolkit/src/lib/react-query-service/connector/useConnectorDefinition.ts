@@ -19,9 +19,9 @@ export function useConnectorDefinition({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["connector-definitions", connectorDefinitionName],
-    async () => {
+  return useQuery({
+    queryKey: ["connector-definitions", connectorDefinitionName],
+    queryFn: async () => {
       if (!connectorDefinitionName) {
         return Promise.reject(
           new Error("connectorDefinitionName not provided")
@@ -39,9 +39,7 @@ export function useConnectorDefinition({
 
       return Promise.resolve(connectorDefinition);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

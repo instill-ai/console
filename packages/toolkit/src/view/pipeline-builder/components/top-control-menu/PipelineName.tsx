@@ -45,6 +45,10 @@ export const PipelineName = () => {
       return;
     }
 
+    if (pipelineId === formData.id) {
+      return;
+    }
+
     setSaving(true);
 
     try {

@@ -1,8 +1,8 @@
 import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
-import { composeEdgesFromNodes, recursiveHelpers } from ".";
-import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import { composeEdgesFromComponents, recursiveHelpers } from ".";
+import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
 import {
   isConnectorComponent,
   isEndComponent,
@@ -16,14 +16,14 @@ export type CreateInitialGraphDataOptions = {
 };
 
 export function createInitialGraphData(
-  recipe: PipelineRecipe,
+  components: PipelineComponent[],
   options?: CreateInitialGraphDataOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
   const metadata = options ? options.metadata : null;
 
-  for (const component of recipe.components) {
+  for (const component of components) {
     let componentMetadata: Nullable<PipelineComponentMetadata> = null;
 
     if (
@@ -51,6 +51,7 @@ export function createInitialGraphData(
             ),
           },
           note: componentMetadata ? componentMetadata.note : null,
+          metadata: component.metadata,
         },
         position: componentMetadata
           ? { x: componentMetadata.x, y: componentMetadata.y }
@@ -70,6 +71,7 @@ export function createInitialGraphData(
               component.end_component.fields
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata
@@ -80,6 +82,19 @@ export function createInitialGraphData(
     }
 
     if (isIteratorComponent(component)) {
+      nodes.push({
+        id: component.id,
+        type: "iteratorNode",
+        data: {
+          id: component.id,
+          iterator_component: component.iterator_component,
+          note: componentMetadata ? componentMetadata.note : null,
+          metadata: component.metadata,
+        },
+        position: componentMetadata
+          ? { x: componentMetadata.x, y: componentMetadata.y }
+          : { x: 0, y: 0 },
+      });
       continue;
     }
 
@@ -100,6 +115,7 @@ export function createInitialGraphData(
               component.operator_component.input
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata
@@ -121,6 +137,7 @@ export function createInitialGraphData(
               component.connector_component.input
             ),
           },
+          metadata: component.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata
@@ -131,7 +148,7 @@ export function createInitialGraphData(
     }
   }
 
-  const edges = composeEdgesFromNodes(nodes);
+  const edges = composeEdgesFromComponents(nodes.map((node) => node.data));
 
   return {
     nodes,

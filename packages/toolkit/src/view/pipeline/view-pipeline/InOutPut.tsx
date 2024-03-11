@@ -3,6 +3,7 @@ import * as z from "zod";
 import { useRouter } from "next/router";
 import {
   GeneralRecord,
+  InstillJSONSchema,
   InstillStore,
   Nullable,
   PipelineEndComponent,
@@ -28,7 +29,6 @@ import {
 } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
-import { getPipelineInputOutputSchema } from "../../pipeline-builder/lib/getPipelineInputOutputSchema";
 import { LoadingSpin } from "../../../components";
 
 const selector = (store: InstillStore) => ({
@@ -197,16 +197,6 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     return true;
   }, [pipeline.isSuccess, pipeline.data]);
 
-  const pipelineOpenAPISchema = React.useMemo(() => {
-    if (!pipeline.isSuccess) return null;
-
-    const { outputSchema } = getPipelineInputOutputSchema(
-      pipeline.data.openapi_schema
-    );
-
-    return outputSchema;
-  }, [pipeline.isSuccess, pipeline.data]);
-
   return (
     <div className="flex flex-col">
       <div className="mb-6 flex flex-row-reverse">
@@ -231,7 +221,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
               form={inOutPutFormID}
             >
               Run
-              {triggerPipeline.isLoading ? (
+              {triggerPipeline.isPending ? (
                 <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
               ) : (
                 <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
@@ -310,7 +300,9 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           ) : (
             <ComponentOutputs
               componentID="end"
-              outputSchema={pipelineOpenAPISchema}
+              outputSchema={
+                pipeline.data.data_specification.output as InstillJSONSchema
+              }
               nodeType="end"
               chooseTitleFrom="title"
               response={response}

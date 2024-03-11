@@ -1,4 +1,4 @@
-export function generateNewComponentIndex(
+export function generateUniqueIndex(
   componentIDs: string[],
   initialPrefix: string
 ) {

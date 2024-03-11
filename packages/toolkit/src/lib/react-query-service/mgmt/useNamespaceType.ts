@@ -19,9 +19,9 @@ export function useNamespaceType({
     enabledQuery = true;
   }
 
-  return useQuery(
-    ["namespaces", namespace],
-    async () => {
+  return useQuery({
+    queryKey: ["namespaces", namespace],
+    queryFn: async () => {
       if (!namespace) {
         return Promise.reject(new Error("namespace not provided"));
       }
@@ -33,9 +33,7 @@ export function useNamespaceType({
 
       return Promise.resolve(type);
     },
-    {
-      enabled: enabledQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enabledQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

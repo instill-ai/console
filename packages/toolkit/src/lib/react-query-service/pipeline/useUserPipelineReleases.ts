@@ -25,9 +25,9 @@ export function useUserPipelineReleases({
   const pipelineNameFragment = pipelineName ? pipelineName.split("/") : [];
   const userName = `${pipelineNameFragment[0]}/${pipelineNameFragment[1]}`;
 
-  return useQuery(
-    ["pipelineReleases", userName],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelineReleases", userName],
+    queryFn: async () => {
       if (!pipelineName) {
         return Promise.reject(new Error("pipelineName not provided"));
       }
@@ -42,9 +42,7 @@ export function useUserPipelineReleases({
 
       return Promise.resolve(pipelineReleases);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

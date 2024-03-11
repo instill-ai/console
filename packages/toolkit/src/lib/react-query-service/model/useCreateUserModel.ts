@@ -5,8 +5,8 @@ import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useCreateUserModel() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       userName,
       payload,
       accessToken,
@@ -31,15 +31,13 @@ export function useCreateUserModel() {
         modelName: `${userName}/models/${payload.id}`,
       });
     },
-    {
-      onSuccess: async ({ modelName, accessToken }) => {
-        await onSuccessAfterModelMutation({
-          type: "create",
-          queryClient,
-          modelName,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ modelName, accessToken }) => {
+      await onSuccessAfterModelMutation({
+        type: "create",
+        queryClient,
+        modelName,
+        accessToken,
+      });
+    },
+  });
 }

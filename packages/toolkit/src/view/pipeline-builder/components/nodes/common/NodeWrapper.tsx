@@ -4,11 +4,13 @@ import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { NodeBottomBarProvider } from "./node-bottom-bar";
-import { Edge } from "reactflow";
+import { Edge, Position } from "reactflow";
 import { NodeData } from "../../../type";
+import { CustomHandle } from "../../CustomHandle";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
+  edges: store.edges,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
@@ -21,15 +23,20 @@ export const NodeWrapper = ({
   noteIsOpen,
   renderBottomBarInformation,
   renderNodeBottomBar,
+  disabledSourceHandler,
+  disabledTargetHandler,
 }: {
   nodeData: NodeData;
   children: React.ReactNode;
   noteIsOpen: boolean;
   renderBottomBarInformation?: () => React.ReactNode;
   renderNodeBottomBar?: () => React.ReactNode;
+  disabledSourceHandler?: boolean;
+  disabledTargetHandler?: boolean;
 }) => {
   const {
     updateNodes,
+    edges,
     updateEdges,
     updatePipelineRecipeIsDirty,
     selectedConnectorNodeId,
@@ -37,6 +44,14 @@ export const NodeWrapper = ({
   } = useInstillStore(useShallow(selector));
   const timer = React.useRef<Nullable<number>>(null);
   const [noteValue, setNoteValue] = React.useState(nodeData.note);
+
+  const hasTargetEdges = React.useMemo(() => {
+    return edges.some((edge) => edge.target === nodeData.id);
+  }, [edges, nodeData.id]);
+
+  const hasSourceEdges = React.useMemo(() => {
+    return edges.some((edge) => edge.source === nodeData.id);
+  }, [edges, nodeData.id]);
 
   return (
     <div
@@ -119,6 +134,22 @@ export const NodeWrapper = ({
             {renderBottomBarInformation()}
           </div>
         ) : null}
+        {disabledTargetHandler ? null : (
+          <CustomHandle
+            className={hasTargetEdges ? "" : "!opacity-0"}
+            type="target"
+            position={Position.Left}
+            id={nodeData.id}
+          />
+        )}
+        {disabledSourceHandler ? null : (
+          <CustomHandle
+            className={hasSourceEdges ? "" : "!opacity-0"}
+            type="source"
+            position={Position.Right}
+            id={nodeData.id}
+          />
+        )}
       </NodeBottomBarProvider>
     </div>
   );

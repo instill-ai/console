@@ -11,9 +11,9 @@ export function useAuthenticatedUserSubscription({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["authenticated-user", "subscription"],
-    async () => {
+  return useQuery({
+    queryKey: ["authenticated-user", "subscription"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -24,9 +24,7 @@ export function useAuthenticatedUserSubscription({
 
       return Promise.resolve(subscription);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

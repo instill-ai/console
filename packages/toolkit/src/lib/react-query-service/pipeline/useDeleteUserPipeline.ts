@@ -4,8 +4,8 @@ import type { Nullable } from "../../type";
 
 export function useDeleteUserPipeline() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       pipelineName,
       accessToken,
     }: {
@@ -20,30 +20,34 @@ export function useDeleteUserPipeline() {
 
       return Promise.resolve(pipelineName);
     },
-    {
-      onSuccess: (pipelineName) => {
-        // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
-        const pipelineNameArray = pipelineName.split("/");
-        const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+    onSuccess: (pipelineName) => {
+      // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
+      const pipelineNameArray = pipelineName.split("/");
+      const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
 
-        queryClient.invalidateQueries(["pipelines", "infinite"]);
-        queryClient.invalidateQueries(["pipelines", userName, "infinite"]);
+      queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
+      queryClient.invalidateQueries({
+        queryKey: ["pipelines", userName, "infinite"],
+      });
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-          old ? old.filter((e) => e.name !== pipelineName) : []
-        );
+      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
+        old ? old.filter((e) => e.name !== pipelineName) : []
+      );
 
-        queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-          old ? old.filter((e) => e.name !== pipelineName) : []
-        );
+      queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
+        old ? old.filter((e) => e.name !== pipelineName) : []
+      );
 
-        queryClient.removeQueries(["pipelines", pipelineName], { exact: true });
+      queryClient.removeQueries({
+        queryKey: ["pipelines", pipelineName],
+        exact: true,
+      });
 
-        // Process watch state
-        queryClient.removeQueries(["pipelines", pipelineName, "watch"], {
-          exact: true,
-        });
-      },
-    }
-  );
+      // Process watch state
+      queryClient.removeQueries({
+        queryKey: ["pipelines", pipelineName, "watch"],
+        exact: true,
+      });
+    },
+  });
 }

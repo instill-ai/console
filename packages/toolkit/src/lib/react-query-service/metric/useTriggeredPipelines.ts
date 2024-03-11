@@ -15,9 +15,9 @@ export function useTriggeredPipelines({
 
   retry?: false | number;
 }) {
-  return useQuery(
-    ["tables", filter],
-    async () => {
+  return useQuery({
+    queryKey: ["tables", filter],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -31,9 +31,7 @@ export function useTriggeredPipelines({
 
       return Promise.resolve(triggers);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

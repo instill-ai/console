@@ -4,8 +4,8 @@ import type { Nullable } from "../../type";
 
 export function useDeleteOrganizationMembership() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       organizationID,
       userID,
       accessToken,
@@ -26,15 +26,13 @@ export function useDeleteOrganizationMembership() {
 
       return Promise.resolve({ organizationID, userID });
     },
-    {
-      onSuccess: ({ organizationID, userID }) => {
-        queryClient.invalidateQueries([
-          "organizations",
-          organizationID,
-          "memberships",
-        ]);
-        queryClient.invalidateQueries(["users", userID, "memberships"]);
-      },
-    }
-  );
+    onSuccess: ({ organizationID, userID }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["organizations", organizationID, "memberships"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["users", userID, "memberships"],
+      });
+    },
+  });
 }

@@ -1,9 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
-import {
-  PipelineStartComponentFields,
-  StartOperatorMetadata,
-} from "../../vdp-sdk";
+import { PipelineStartComponentFields } from "../../vdp-sdk";
 import { StartOperatorFreeFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
 

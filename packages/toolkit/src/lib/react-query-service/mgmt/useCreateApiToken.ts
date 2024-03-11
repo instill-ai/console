@@ -8,8 +8,8 @@ import type { Nullable } from "../../type";
 
 export function useCreateApiToken() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -27,13 +27,11 @@ export function useCreateApiToken() {
 
       return Promise.resolve({ token });
     },
-    {
-      onSuccess: ({ token }) => {
-        queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-          old ? [...old, token] : [token]
-        );
-        queryClient.setQueryData<ApiToken>(["api-tokens", token.name], token);
-      },
-    }
-  );
+    onSuccess: ({ token }) => {
+      queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
+        old ? [...old, token] : [token]
+      );
+      queryClient.setQueryData<ApiToken>(["api-tokens", token.name], token);
+    },
+  });
 }

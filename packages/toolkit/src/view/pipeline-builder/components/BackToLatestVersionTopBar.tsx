@@ -68,12 +68,12 @@ export const BackToLatestVersionTopBar = () => {
 
             if (
               checkIsValidPosition(
-                pipeline.data.recipe,
+                pipeline.data.recipe.components,
                 pipeline.data.metadata ?? null
               )
             ) {
               const { nodes, edges } = createInitialGraphData(
-                pipeline.data.recipe,
+                pipeline.data.recipe.components,
                 {
                   metadata: pipeline.data.metadata,
                 }
@@ -82,7 +82,7 @@ export const BackToLatestVersionTopBar = () => {
               newEdges = edges;
             } else {
               const { nodes, edges } = createInitialGraphData(
-                pipeline.data.recipe
+                pipeline.data.recipe.components
               );
               newNodes = nodes;
               newEdges = edges;

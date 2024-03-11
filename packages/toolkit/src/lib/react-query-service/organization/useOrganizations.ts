@@ -12,9 +12,9 @@ export function useOrganizations({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["organizations"],
-    async () => {
+  return useQuery({
+    queryKey: ["organizations"],
+    queryFn: async () => {
       const tokens = await listOrganizationsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,
@@ -24,9 +24,7 @@ export function useOrganizations({
 
       return Promise.resolve(tokens);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

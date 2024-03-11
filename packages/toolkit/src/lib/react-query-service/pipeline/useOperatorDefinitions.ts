@@ -12,9 +12,9 @@ export function useOperatorDefinitions({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["operator-definitions"],
-    async () => {
+  return useQuery({
+    queryKey: ["operator-definitions"],
+    queryFn: async () => {
       const operatorDefinitions = await listOperatorDefinitionsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: null,
@@ -24,9 +24,7 @@ export function useOperatorDefinitions({
 
       return Promise.resolve(operatorDefinitions);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

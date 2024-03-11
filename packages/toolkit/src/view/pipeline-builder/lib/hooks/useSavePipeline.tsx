@@ -15,6 +15,7 @@ import {
 import { composePipelineMetadataFromNodes, constructPipelineRecipe } from "..";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -24,13 +25,19 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updatePipelineIsNew: store.updatePipelineIsNew,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
+  isEditingIterator: store.isEditingIterator,
+  editingIteratorID: store.editingIteratorID,
 });
 
-export function useSavePipeline({
-  setIsSaving,
-}: {
-  setIsSaving: (value: boolean) => void;
-}) {
+export type UseSavePipelineProps =
+  | {
+      setIsSaving?: (value: boolean) => void;
+    }
+  | undefined;
+
+export function useSavePipeline(props: UseSavePipelineProps = {}) {
   const entity = useEntity();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -45,6 +52,9 @@ export function useSavePipeline({
     accessToken,
     updatePipelineRecipeIsDirty,
     updatePipelineIsNew,
+    tempSavedNodesForEditingIteratorFlow,
+    isEditingIterator,
+    editingIteratorID,
   } = useInstillStore(useShallow(selector));
 
   return React.useCallback(
@@ -53,13 +63,25 @@ export function useSavePipeline({
         return;
       }
 
-      setIsSaving(true);
+      if (props?.setIsSaving) {
+        props.setIsSaving(true);
+      }
+
+      let targetNodes = nodes;
+
+      if (isEditingIterator && editingIteratorID) {
+        targetNodes = composeCompleteNodesUnderEditingIteratorMode({
+          editingIteratorID,
+          iteratorComponents: nodes.map((node) => node.data),
+          allNodes: tempSavedNodesForEditingIteratorFlow,
+        });
+      }
 
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.pipelineName,
-          recipe: constructPipelineRecipe(nodes),
-          metadata: composePipelineMetadataFromNodes(nodes),
+          recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+          metadata: composePipelineMetadataFromNodes(targetNodes),
         };
 
         try {
@@ -95,7 +117,11 @@ export function useSavePipeline({
             });
           }
         }
-        setIsSaving(false);
+
+        if (props?.setIsSaving) {
+          props.setIsSaving(false);
+        }
+
         return;
       }
 
@@ -103,8 +129,8 @@ export function useSavePipeline({
 
       const payload: CreateUserPipelinePayload = {
         id: pipelineId,
-        recipe: constructPipelineRecipe(nodes),
-        metadata: composePipelineMetadataFromNodes(nodes),
+        recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+        metadata: composePipelineMetadataFromNodes(targetNodes),
       };
 
       try {
@@ -143,7 +169,9 @@ export function useSavePipeline({
         }
       }
 
-      setIsSaving(false);
+      if (props?.setIsSaving) {
+        props.setIsSaving(false);
+      }
     },
     [
       accessToken,
@@ -158,7 +186,10 @@ export function useSavePipeline({
       updatePipelineIsNew,
       updatePipelineRecipeIsDirty,
       updateUserPipeline,
-      setIsSaving,
+      props.setIsSaving,
+      isEditingIterator,
+      editingIteratorID,
+      tempSavedNodesForEditingIteratorFlow,
     ]
   );
 }
