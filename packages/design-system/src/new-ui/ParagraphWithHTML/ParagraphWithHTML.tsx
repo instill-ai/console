@@ -1,4 +1,5 @@
-import cn from "clsx";
+"use client";
+
 import * as React from "react";
 import sanitizeHtml from "sanitize-html";
 import { Nullable } from "../../types/general";
