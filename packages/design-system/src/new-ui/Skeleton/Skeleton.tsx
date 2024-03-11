@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 
 function Skeleton({

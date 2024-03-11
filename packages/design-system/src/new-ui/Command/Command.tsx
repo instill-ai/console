@@ -6,7 +6,6 @@ import { Command as CommandPrimitive } from "cmdk";
 import cn from "clsx";
 
 import { Dialog } from "../Dialog";
-import { Icons } from "../Icons";
 
 const CommandRoot = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PageBase, ViewPipelines, Topbar } from "@instill-ai/toolkit";
+import { PageBase, PipelinesView, Topbar } from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
 
 import { ConsoleCorePageHead } from "../../../components";
@@ -14,7 +14,7 @@ const PipelinesPage: NextPageWithLayout = () => {
   return (
     <React.Fragment>
       <ConsoleCorePageHead title="pipelines" />
-      <ViewPipelines organizations={undefined} />
+      <PipelinesView organizations={undefined} />
     </React.Fragment>
   );
 };

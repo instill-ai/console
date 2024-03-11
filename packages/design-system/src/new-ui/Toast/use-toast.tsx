@@ -1,5 +1,6 @@
 // Inspired by react-hot-toast library
 // ref: https://ui.shadcn.com/docs/components/toast
+"use client";
 
 import * as React from "react";
 

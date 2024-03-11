@@ -9,11 +9,11 @@ import {
   LoginFormSchema,
 } from "../components";
 import {
-  Nullable,
   authLoginAction,
   changePasswordMutation,
   getInstillApiErrorMessage,
   useAuthenticatedUser,
+  Nullable,
 } from "@instill-ai/toolkit";
 import { useToast } from "@instill-ai/design-system";
 import axios, { isAxiosError } from "axios";
@@ -78,7 +78,7 @@ const LoginPage: NextPageWithLayout = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
     if (!accessToken) {
       return;

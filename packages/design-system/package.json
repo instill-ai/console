@@ -97,7 +97,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.1.1",
+    "@hookform/resolvers": "^3.3.4",
     "@instill-ai/design-tokens": "workspace:*",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.4",
@@ -118,7 +118,7 @@
     "@tanstack/react-table": "^8.9.3",
     "class-variance-authority": "^0.6.0",
     "cmdk": "^0.2.0",
-    "react-hook-form": "^7.45.0",
+    "react-hook-form": "^7.51.0",
     "sanitize-html": "^2.11.0",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.21.4"

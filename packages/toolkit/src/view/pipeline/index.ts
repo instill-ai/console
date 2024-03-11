@@ -1,4 +1,4 @@
-export * from "./view-pipeline";
-export * from "./view-pipelines";
+export * from "./pipeline-view";
+export * from "./pipelines-view";
 export * from "./PipelineTablePlaceholder";
 export * from "./PipelinesTable";

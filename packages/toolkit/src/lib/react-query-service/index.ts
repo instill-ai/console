@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./connector";
 export * from "./metric";
 export * from "./mgmt";

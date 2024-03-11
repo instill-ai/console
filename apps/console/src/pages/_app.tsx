@@ -73,10 +73,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder,
+    (state) => state.initPipelineBuilder
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init,
+    (state) => state.init
   );
 
   const { dismiss: dismissToast } = useToast();
@@ -123,8 +123,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <style jsx global>
         {`
           :root {
-            --font-ibm-plex-sans: ${ibmPlexSans.style.fontFamily};
-            --font-ibm-plex-mono: ${ibmPlexMono.style.fontFamily};
+            --font-ibm-plex-sans: ${ibmPlexSans.style?.fontFamily};
+            --font-ibm-plex-mono: ${ibmPlexMono.style?.fontFamily};
           }
         `}
       </style>
