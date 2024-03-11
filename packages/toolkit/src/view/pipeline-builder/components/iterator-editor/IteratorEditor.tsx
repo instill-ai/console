@@ -109,7 +109,7 @@ export const IteratorEditor = ({
         </Button>
         <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-disabled" />
         <Button size="md" variant="secondaryColour">
-          Iterator
+          {editingIteratorID}
         </Button>
       </div>
       <Separator className="mb-2" orientation="horizontal" />
