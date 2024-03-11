@@ -43,7 +43,7 @@ export const SelectComponentDialog = ({
             variant="primary"
             size="lg"
           >
-            Connector
+            Component
             <Icons.Plus
               className={cn(
                 "h-4 w-4",

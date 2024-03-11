@@ -45,8 +45,10 @@ export function constructPipelineRecipe(
           connector_name: removeConnectorName
             ? ""
             : component.connector_component.connector_name,
-          input: recursiveHelpers.parseToNum(
-            structuredClone(component.connector_component.input)
+          input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+            recursiveHelpers.parseToNum(
+              structuredClone(component.connector_component.input)
+            )
           ),
           definition: null,
           connector: null,
@@ -60,8 +62,10 @@ export function constructPipelineRecipe(
       id: component.id,
       operator_component: {
         ...component.operator_component,
-        input: recursiveHelpers.parseToNum(
-          structuredClone(component.operator_component.input)
+        input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+          recursiveHelpers.parseToNum(
+            structuredClone(component.operator_component.input)
+          )
         ),
         definition: null,
       },

@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-type RecursiveReplaceNullAndEmptyStringWithUndefined<T> = T extends null
+export type RecursiveReplaceNullAndEmptyStringWithUndefined<T> = T extends null
   ? undefined
   : T extends (infer U)[]
     ? RecursiveReplaceNullAndEmptyStringWithUndefined<U>[]
