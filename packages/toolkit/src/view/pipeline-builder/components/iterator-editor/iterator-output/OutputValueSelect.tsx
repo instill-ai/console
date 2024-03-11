@@ -35,18 +35,16 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
   const availableOutputOptions = React.useMemo(() => {
     // User can only set the output from the iterator's components
-    const smartHints = pickSmartHintsFromNodes({
+    const hints = pickSmartHintsFromNodes({
       nodes,
       includeEditorElement: false,
     });
 
-    return smartHints
-      .filter((hint) => hint.instillFormat.includes("array:"))
-      .map((hint) => ({
-        path: hint.path,
-        instill_format: hint.instillFormat,
-        description: hint.description,
-      }));
+    return hints.map((hint) => ({
+      path: hint.path,
+      instill_format: hint.instillFormat,
+      description: hint.description,
+    }));
   }, [nodes]);
 
   React.useEffect(() => {
