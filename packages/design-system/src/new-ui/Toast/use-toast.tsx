@@ -1,3 +1,5 @@
+"use client";
+
 // Inspired by react-hot-toast library
 // ref: https://ui.shadcn.com/docs/components/toast
 

@@ -31,7 +31,7 @@ export const ImageWithFallback = ({
         setError(true);
         console.error(error);
       }}
-      className={cn("flex-shrink-0", className)}
+      className={cn("shrink-0 grow-0", className)}
     />
   );
 };

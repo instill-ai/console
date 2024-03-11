@@ -19,9 +19,9 @@ export function useUserPipelineRelease({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["pipelineReleases", pipelineReleaseName],
-    async () => {
+  return useQuery({
+    queryKey: ["pipelineReleases", pipelineReleaseName],
+    queryFn: async () => {
       if (!pipelineReleaseName) {
         return Promise.reject(new Error("pipelineReleaseName not provided"));
       }
@@ -33,9 +33,7 @@ export function useUserPipelineRelease({
 
       return Promise.resolve(pipelineRelease);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

@@ -7,8 +7,9 @@ import { useShallow } from "zustand/react/shallow";
 import { ControlPanel } from "./ControlPanel";
 import { NodeDropdownMenu } from "../common";
 import {
-  composeEdgesFromNodes,
-  generateNewComponentIndex,
+  composeEdgesFromComponents,
+  generateUniqueIndex,
+  getAllComponentID,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
 import {
@@ -34,6 +35,9 @@ const selector = (store: InstillStore) => ({
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+  isEditingIterator: store.isEditingIterator,
+  tempSavedNodesForEditingIteratorFlow:
+    store.tempSavedNodesForEditingIteratorFlow,
 });
 
 export const ConnectorOperatorControlPanel = ({
@@ -62,6 +66,8 @@ export const ConnectorOperatorControlPanel = ({
     updatePipelineRecipeIsDirty,
     currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
+    tempSavedNodesForEditingIteratorFlow,
+    isEditingIterator,
   } = useInstillStore(useShallow(selector));
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
@@ -84,7 +90,9 @@ export const ConnectorOperatorControlPanel = ({
 
   const handelDeleteNode = React.useCallback(() => {
     const newNodes = nodes.filter((node) => node.id !== nodeID);
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
     updateNodes(() => newNodes);
@@ -129,7 +137,9 @@ export const ConnectorOperatorControlPanel = ({
     }
 
     if (isIteratorComponent(nodeData)) {
-      return;
+      nodePrefix =
+        transformConnectorDefinitionIDToComponentIDPrefix("iterator");
+      nodeType = "iteratorNode";
     }
 
     if (!nodePrefix) {
@@ -137,8 +147,10 @@ export const ConnectorOperatorControlPanel = ({
     }
 
     // Generate a new component index
-    const nodeIndex = generateNewComponentIndex(
-      nodes.map((e) => e.id),
+    const nodeIndex = generateUniqueIndex(
+      isEditingIterator
+        ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
+        : getAllComponentID(nodes.map((node) => node.data)),
       nodePrefix
     );
 
@@ -156,11 +168,21 @@ export const ConnectorOperatorControlPanel = ({
         data: nodeData,
       },
     ];
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-  }, [nodeData, nodes, updateEdges, updateNodes, updatePipelineRecipeIsDirty]);
+  }, [
+    nodeData,
+    nodes,
+    updateEdges,
+    updateNodes,
+    updatePipelineRecipeIsDirty,
+    isEditingIterator,
+    tempSavedNodesForEditingIteratorFlow,
+  ]);
 
   return (
     <ControlPanel.Root>

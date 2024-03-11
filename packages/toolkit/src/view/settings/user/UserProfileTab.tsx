@@ -84,7 +84,7 @@ export const UserProfileTab = () => {
   const updateAuthenticatedUser = useUpdateAuthenticatedUser();
 
   async function onSubmit(data: z.infer<typeof UserProfileTabSchema>) {
-    if (!me.isSuccess || !accessToken || updateAuthenticatedUser.isLoading)
+    if (!me.isSuccess || !accessToken || updateAuthenticatedUser.isPending)
       return;
 
     const payload: Partial<AuthenticatedUser> = {
@@ -358,7 +358,7 @@ export const UserProfileTab = () => {
           <Setting.TabSectionSeparator />
           <div className="flex flex-row-reverse">
             <Button type="submit" size="lg" variant="primary">
-              {updateAuthenticatedUser.isLoading ? (
+              {updateAuthenticatedUser.isPending ? (
                 <LoadingSpin className="!h-4 !w-4" />
               ) : (
                 "Save changes"

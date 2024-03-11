@@ -8,9 +8,9 @@ export function useMgmtDefinition({
   enabled: boolean;
   retry?: false | number;
 }) {
-  return useQuery(
-    ["mgmt", "encoded-definition"],
-    async () => {
+  return useQuery({
+    queryKey: ["mgmt", "encoded-definition"],
+    queryFn: async () => {
       const { content } = await listRepoFileContent(
         "instill-ai",
         "mgmt-backend",
@@ -20,9 +20,7 @@ export function useMgmtDefinition({
       const decode = window.atob(content);
       return Promise.resolve(decode);
     },
-    {
-      enabled: enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

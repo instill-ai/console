@@ -19,9 +19,9 @@ export function useOrganizationMemberships({
     enableQuery = true;
   }
 
-  return useQuery(
-    ["organizations", organizationID, "memberships"],
-    async () => {
+  return useQuery({
+    queryKey: ["organizations", organizationID, "memberships"],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -37,9 +37,7 @@ export function useOrganizationMemberships({
 
       return Promise.resolve(membership);
     },
-    {
-      enabled: enableQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enableQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

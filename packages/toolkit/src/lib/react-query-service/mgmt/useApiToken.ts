@@ -14,9 +14,9 @@ export function useApiToken({
 
   retry?: false | number;
 }) {
-  return useQuery(
-    ["api-tokens", tokenName],
-    async () => {
+  return useQuery({
+    queryKey: ["api-tokens", tokenName],
+    queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
@@ -28,9 +28,7 @@ export function useApiToken({
 
       return Promise.resolve(token);
     },
-    {
-      enabled,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

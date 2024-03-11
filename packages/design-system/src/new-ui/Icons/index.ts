@@ -54,6 +54,7 @@ import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { InfoCircle } from "./InfoCircle";
+import { InfoSquare } from "./InfoSquare";
 import { Image01 } from "./Image01";
 import { ImagePlus } from "./ImagePlus";
 import { Logout01 } from "./Logout01";
@@ -73,6 +74,7 @@ import { Plus } from "./Plus";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { RefreshCw05 } from "./RefreshCw05";
+import { Repeat04 } from "./Repeat04";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
 import { Recording04 } from "./Recording04";
@@ -90,6 +92,7 @@ import { Share07 } from "./Share07";
 import { Tag01 } from "./Tag01";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { Trash01 } from "./Trash01";
+import { Trash03 } from "./Trash03";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Upload01 } from "./Upload01";
@@ -159,6 +162,7 @@ export const Icons = {
   Lock03,
   LockUnlocked03,
   InfoCircle,
+  InfoSquare,
   Image01,
   ImagePlus,
   Logout01,
@@ -178,6 +182,7 @@ export const Icons = {
   PlayCircle,
   Plus,
   RefreshCw05,
+  Repeat04,
   Recording02,
   Recording03,
   Recording04,
@@ -195,6 +200,7 @@ export const Icons = {
   Tag01,
   TextGenerationChat,
   Trash01,
+  Trash03,
   Type02,
   TypePlus,
   Upload01,

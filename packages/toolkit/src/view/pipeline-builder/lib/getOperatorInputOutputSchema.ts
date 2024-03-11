@@ -1,4 +1,3 @@
-import { OpenAPIV3 } from "openapi-types";
 import {
   InstillJSONSchema,
   Nullable,
@@ -29,30 +28,14 @@ export function getOperatorInputOutputSchema(
   // definition is not support anymore. Console need to check this.
   if (
     targetTask &&
-    component?.operator_component.definition?.spec.openapi_specifications[
+    component?.operator_component.definition?.spec.data_specifications[
       targetTask
     ]
   ) {
-    inputSchema = (
-      (
-        (
-          component?.operator_component.definition?.spec.openapi_specifications[
-            targetTask
-          ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
-        ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
-      ).properties?.inputs as OpenAPIV3.ArraySchemaObject
-    ).items as InstillJSONSchema;
-    outputSchema = (
-      (
-        (
-          (
-            component?.operator_component.definition?.spec
-              .openapi_specifications[targetTask].paths["/execute"]?.post
-              ?.responses["200"] as OpenAPIV3.ResponseObject
-          ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
-        )["application/json"]?.schema as OpenAPIV3.SchemaObject
-      ).properties?.outputs as OpenAPIV3.ArraySchemaObject
-    ).items as InstillJSONSchema;
+    inputSchema = component?.operator_component.definition?.spec
+      .data_specifications[targetTask].input as InstillJSONSchema;
+    outputSchema = component?.operator_component.definition?.spec
+      .data_specifications[targetTask].output as InstillJSONSchema;
   } else if (
     component.operator_component.definition?.spec.component_specification
       .oneOf &&
@@ -71,26 +54,10 @@ export function getOperatorInputOutputSchema(
       return { outputSchema, inputSchema };
     }
 
-    inputSchema = (
-      (
-        (
-          component?.operator_component.definition?.spec.openapi_specifications[
-            defaultTask
-          ].paths["/execute"]?.post?.requestBody as OpenAPIV3.RequestBodyObject
-        ).content["application/json"]?.schema as OpenAPIV3.SchemaObject
-      ).properties?.inputs as OpenAPIV3.ArraySchemaObject
-    ).items as InstillJSONSchema;
-    outputSchema = (
-      (
-        (
-          (
-            component?.operator_component.definition?.spec
-              .openapi_specifications[defaultTask].paths["/execute"]?.post
-              ?.responses["200"] as OpenAPIV3.ResponseObject
-          ).content as { [key: string]: OpenAPIV3.MediaTypeObject }
-        )["application/json"]?.schema as OpenAPIV3.SchemaObject
-      ).properties?.outputs as OpenAPIV3.ArraySchemaObject
-    ).items as InstillJSONSchema;
+    inputSchema = component?.operator_component.definition?.spec
+      .data_specifications[defaultTask].input as InstillJSONSchema;
+    outputSchema = component?.operator_component.definition?.spec
+      .data_specifications[defaultTask].output as InstillJSONSchema;
   }
 
   return { outputSchema, inputSchema };

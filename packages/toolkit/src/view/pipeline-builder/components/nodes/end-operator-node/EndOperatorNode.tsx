@@ -1,19 +1,17 @@
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
-import { NodeProps, Position } from "reactflow";
+import { NodeProps } from "reactflow";
 import { Button, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
 import { EndNodeData } from "../../../type";
-import { composeEdgesFromNodes } from "../../../lib";
-import { CustomHandle } from "../../CustomHandle";
+import { composeEdgesFromComponents } from "../../../lib";
 import {
   InstillStore,
   Nullable,
   PipelineEndComponentField,
-  StartOperatorMetadata,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
@@ -31,7 +29,6 @@ import { isEndComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
-  edges: store.edges,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
@@ -53,7 +50,7 @@ export type PipelineEndComponentFieldSortedItem = PipelineEndComponentField & {
   key: string;
 };
 
-export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
+export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
@@ -63,7 +60,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
 
   const {
     nodes,
-    edges,
     updateNodes,
     updateEdges,
     pipelineOpenAPIOutputSchema,
@@ -121,7 +117,9 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -155,7 +153,9 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromNodes(newNodes);
+    const newEdges = composeEdgesFromComponents(
+      newNodes.map((node) => node.data)
+    );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -170,10 +170,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
     setEnableEdit(true);
     setPrevFieldKey(key);
   }
-
-  const hasTargetEdges = React.useMemo(() => {
-    return edges.some((edge) => edge.target === id);
-  }, [edges, id]);
 
   const [sortedItems, setSortedItems] = React.useState<
     PipelineEndComponentFieldSortedItem[]
@@ -229,7 +225,11 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
   }
 
   return (
-    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
+    <NodeWrapper
+      nodeData={data}
+      noteIsOpen={noteIsOpen}
+      disabledSourceHandler={true}
+    >
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-2">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-bg-line">
@@ -354,12 +354,6 @@ export const EndOperatorNode = ({ data, id }: NodeProps<EndNodeData>) => {
           </Button>
         </div>
       )}
-      <CustomHandle
-        className={hasTargetEdges ? "" : "!opacity-0"}
-        type="target"
-        position={Position.Left}
-        id={id}
-      />
     </NodeWrapper>
   );
 };

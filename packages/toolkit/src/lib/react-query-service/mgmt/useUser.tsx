@@ -19,9 +19,9 @@ export function useUser({
     enabledQuery = true;
   }
 
-  return useQuery(
-    ["users", userName],
-    async () => {
+  return useQuery({
+    queryKey: ["users", userName],
+    queryFn: async () => {
       if (!userName) {
         return Promise.reject(new Error("userName not provided"));
       }
@@ -30,9 +30,7 @@ export function useUser({
 
       return Promise.resolve(user);
     },
-    {
-      enabled: enabledQuery,
-      retry: retry === false ? false : retry ? retry : 3,
-    }
-  );
+    enabled: enabledQuery,
+    retry: retry === false ? false : retry ? retry : 3,
+  });
 }

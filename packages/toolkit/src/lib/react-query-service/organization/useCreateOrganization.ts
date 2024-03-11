@@ -9,8 +9,8 @@ import {
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -28,16 +28,14 @@ export function useCreateOrganization() {
 
       return Promise.resolve({ organization });
     },
-    {
-      onSuccess: ({ organization }) => {
-        queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
-          old ? [...old, organization] : [organization]
-        );
-        queryClient.setQueryData<Organization>(
-          ["organizations", organization],
-          organization
-        );
-      },
-    }
-  );
+    onSuccess: ({ organization }) => {
+      queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
+        old ? [...old, organization] : [organization]
+      );
+      queryClient.setQueryData<Organization>(
+        ["organizations", organization],
+        organization
+      );
+    },
+  });
 }

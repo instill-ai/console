@@ -1,3 +1,5 @@
+"use client";
+
 // ref: https://ui.shadcn.com/docs/components/toast
 
 import cn from "clsx";

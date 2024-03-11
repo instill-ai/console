@@ -1,13 +1,10 @@
-import { GeneralRecord } from "../../../lib";
 import { InstillReference } from "../type";
 import { getReferencesFromString } from "./getReferencesFromString";
 
-export function getReferenceFromComponentConfiguration(
-  configuration: GeneralRecord
-) {
-  return getReferences(configuration);
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export function getReferencesFromAny(value: any) {
+  return getReferences(value);
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   function getReferences(
     value: any,
     references: InstillReference[] = []

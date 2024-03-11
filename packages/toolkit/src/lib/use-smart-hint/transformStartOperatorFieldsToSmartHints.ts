@@ -1,8 +1,4 @@
-import {
-  PipelineStartComponent,
-  PipelineStartComponentFields,
-  StartOperatorMetadata,
-} from "../vdp-sdk";
+import { PipelineStartComponentFields } from "../vdp-sdk";
 import { SmartHint } from "./types";
 
 export function transformStartOperatorFieldsToSmartHints(

@@ -9,7 +9,7 @@ export const IteratorSection = ({
   onSelect: OnSelectComponent;
 }) => {
   return (
-    <DialogSection.Root title="Operators">
+    <DialogSection.Root title="Iterators">
       <DialogSection.Grid>
         <DialogSection.Item
           onClick={() => {

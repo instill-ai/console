@@ -59,6 +59,13 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
 });
 
+function isPipelineBuilderPage(path: string) {
+  if (path.split("/")[2] === "pipelines" && path.split("/")[4] === "builder") {
+    return true;
+  }
+  return false;
+}
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [amplitudeIsInit, setAmplitudeIsInit] = useState(false);
@@ -74,13 +81,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const { dismiss: dismissToast } = useToast();
 
-  function isPipelineDetailPage(path: string) {
-    if (path.split("/")[2] === "pipelines" && path.split("/")[3]) {
-      return true;
-    }
-    return false;
-  }
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -88,8 +88,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       // We will only init the pipeline builder when user is previously on the
       // pipeline builder page
       if (
-        isPipelineDetailPage(previousURL) &&
-        !isPipelineDetailPage(window.history.state.url)
+        isPipelineBuilderPage(previousURL) &&
+        !isPipelineBuilderPage(window.history.state.url)
       ) {
         initPipelineBuilder();
       }

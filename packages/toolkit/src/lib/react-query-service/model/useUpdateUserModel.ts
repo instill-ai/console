@@ -5,8 +5,8 @@ import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useUpdateUserModel() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       payload,
       accessToken,
     }: {
@@ -21,15 +21,13 @@ export function useUpdateUserModel() {
 
       return Promise.resolve({ model, accessToken });
     },
-    {
-      onSuccess: async ({ model, accessToken }) => {
-        await onSuccessAfterModelMutation({
-          type: "update",
-          queryClient,
-          model,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ model, accessToken }) => {
+      await onSuccessAfterModelMutation({
+        type: "update",
+        queryClient,
+        model,
+        accessToken,
+      });
+    },
+  });
 }

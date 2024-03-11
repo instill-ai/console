@@ -167,14 +167,12 @@ export type ComponentOutoutReferenceHint =
   | {
       instillFormat: string;
       path: string;
-      title: string;
       description?: string;
       isObjectArrayChild: false;
     }
   | {
       instillFormat: string;
       path: string;
-      title: string;
       description?: string;
       isObjectArrayChild: true;
       objectArrayParentPath: string;

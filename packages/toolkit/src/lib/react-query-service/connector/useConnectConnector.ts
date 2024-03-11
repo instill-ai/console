@@ -5,8 +5,8 @@ import { onSuccessAfterConnectMutation } from "./onSuccessAfterConnectMutation";
 
 export function useConnectConnector() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       connectorName,
       accessToken,
     }: {
@@ -24,15 +24,13 @@ export function useConnectConnector() {
 
       return Promise.resolve({ connector, accessToken });
     },
-    {
-      onSuccess: async ({ connector, accessToken }) => {
-        await onSuccessAfterConnectMutation({
-          type: "connect",
-          queryClient,
-          connector,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ connector, accessToken }) => {
+      await onSuccessAfterConnectMutation({
+        type: "connect",
+        queryClient,
+        connector,
+        accessToken,
+      });
+    },
+  });
 }

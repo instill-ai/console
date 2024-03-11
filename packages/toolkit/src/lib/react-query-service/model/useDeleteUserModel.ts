@@ -5,8 +5,8 @@ import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useDeleteModel() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       modelName,
       accessToken,
     }: {
@@ -21,15 +21,13 @@ export function useDeleteModel() {
 
       return Promise.resolve({ modelName, accessToken });
     },
-    {
-      onSuccess: async ({ modelName, accessToken }) => {
-        await onSuccessAfterModelMutation({
-          type: "create",
-          queryClient,
-          modelName,
-          accessToken,
-        });
-      },
-    }
-  );
+    onSuccess: async ({ modelName, accessToken }) => {
+      await onSuccessAfterModelMutation({
+        type: "create",
+        queryClient,
+        modelName,
+        accessToken,
+      });
+    },
+  });
 }
