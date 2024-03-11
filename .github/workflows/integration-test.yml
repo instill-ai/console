@@ -86,28 +86,24 @@ jobs:
     name: PR head branch
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.0
+
       # mono occupies port 8084 which conflicts with mgmt-backend
       - name: Stop mono service
         run: |
           sudo kill -9 `sudo lsof -t -i:8084`
           sudo lsof -i -P -n | grep LISTEN
 
-      - name: Pre Free Disk Space (Ubuntu)
-        run: |
-          df --human-readable
-          sudo apt clean
-          rm --recursive --force "$AGENT_TOOLSDIRECTORY"
-
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
         with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
+          overprovision-lvm: "true"
+          remove-dotnet: "true"
+          build-mount-path: "/var/lib/docker/"
+
+      - name: Restart docker
+        run: sudo service docker restart
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -129,67 +125,19 @@ jobs:
           load: true
           tags: instill/console:latest
 
-      - name: Checkout repo (base)
+      - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          repository: instill-ai/base
+          repository: instill-ai/instill-core
 
-      - name: Load .env file (base)
+      - name: Load .env file
         uses: cardinalby/export-env-action@v2
         with:
           envFile: .env
 
-      - name: Launch Instill Base (latest)
+      - name: Launch Instill Core (latest)
         run: |
-          INSTILL_CORE_HOST=api-gateway \
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
-
-      - name: Checkout repo (vdp)
-        uses: actions/checkout@v3
-        with:
-          repository: instill-ai/vdp
-
-      - name: Load .env file (vdp)
-        uses: cardinalby/export-env-action@v2
-        with:
-          envFile: .env
-
-      - name: Launch Instill VDP (latest)
-        run: |
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
-
-      - name: Checkout repo (model)
-        uses: actions/checkout@v3
-        with:
-          repository: instill-ai/model
-
-      - name: Load .env file (model)
-        uses: cardinalby/export-env-action@v2
-        with:
-          envFile: .env
-
-      - name: Launch Instill Model (latest)
-        run: |
-          ITMODE_ENABLED=true \
-          RAY_LATEST_TAG=latest \
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml up -d --quiet-pull
-          ITMODE_ENABLED=true \
-          RAY_LATEST_TAG=latest \
-          COMPOSE_PROFILES=all \
-          EDITION=local-ce:test \
-          docker compose -f docker-compose.yml -f docker-compose.latest.yml rm -f
+          make latest BUILD=true EDITION=local-ce:test ITMODE_ENABLED=true
 
       - name: Checkout
         uses: actions/checkout@v3
