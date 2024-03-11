@@ -62,16 +62,19 @@ export function pickSmartHintsFromNodes({
         smartHints = [...smartHints, ...hints];
       }
 
-      smartHints = [
-        ...smartHints,
-        {
-          path: `${node.id}.output`,
-          key: "output",
-          instillFormat: "semi-structured/json",
-          type: "object",
-          properties: [],
-        },
-      ];
+      if (!isEditingIterator) {
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "semi-structured/json",
+            type: "object",
+            properties: [],
+          },
+        ];
+      }
+
       continue;
     }
 
@@ -90,16 +93,18 @@ export function pickSmartHintsFromNodes({
         smartHints = [...smartHints, ...hints];
       }
 
-      smartHints = [
-        ...smartHints,
-        {
-          path: `${node.id}.output`,
-          key: "output",
-          instillFormat: "semi-structured/json",
-          type: "object",
-          properties: [],
-        },
-      ];
+      if (!isEditingIterator) {
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "semi-structured/json",
+            type: "object",
+            properties: [],
+          },
+        ];
+      }
 
       continue;
     }
@@ -120,21 +125,23 @@ export function pickSmartHintsFromNodes({
         smartHints = [...smartHints, ...hints];
       }
 
-      smartHints = [
-        ...smartHints,
-        {
-          path: `${node.id}.output`,
-          key: "output",
-          instillFormat: "semi-structured/json",
-          type: "object",
-          properties: [],
-        },
-      ];
+      if (!isEditingIterator) {
+        smartHints = [
+          ...smartHints,
+          {
+            path: `${node.id}.output`,
+            key: "output",
+            instillFormat: "semi-structured/json",
+            type: "object",
+            properties: [],
+          },
+        ];
+      }
     }
   }
 
   // Add the iterator element into the hints
-  if (isEditingIterator && includeEditorElement) {
+  if (isEditingIterator && includeEditorElement && editingIteratorID) {
     const targetIteratorNode = tempSavedNodesForEditingIteratorFlow?.find(
       (node) =>
         node.data.id === editingIteratorID && isIteratorComponent(node.data)
@@ -153,7 +160,7 @@ export function pickSmartHintsFromNodes({
         smartHints = [
           ...smartHints,
           {
-            path: "element",
+            path: `${editingIteratorID}.element`,
             key: "element",
             instillFormat: targetHints.instillFormat.replace("array:", ""),
             type: "null",
