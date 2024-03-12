@@ -4,12 +4,7 @@ import { IteratorNodeData } from "../../../type";
 import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
 import { Button, Icons } from "@instill-ai/design-system";
 import { ConnectorOperatorControlPanel } from "../control-panel";
-import {
-  InstillJSONSchema,
-  InstillStore,
-  useInstillStore,
-  useShallow,
-} from "../../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import {
   checkIsValidPosition,
   createGraphLayout,
@@ -164,13 +159,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
             Edit Iterator
           </Button>
           <div className="mb-4 w-full">
-            <ComponentOutputReferenceHints
-              componentID={data.id}
-              outputSchema={
-                data.iterator_component.data_specification
-                  .output as InstillJSONSchema
-              }
-            />
+            <ComponentOutputReferenceHints component={data} />
           </div>
         </React.Fragment>
       )}

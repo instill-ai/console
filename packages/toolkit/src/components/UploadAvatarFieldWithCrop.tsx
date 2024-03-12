@@ -10,6 +10,8 @@ export const UploadAvatarFieldWithCrop = ({
   placeholder,
 }: {
   fieldName: string;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: UseFormReturn<any>;
   placeholder?: React.ReactNode;
 }) => {

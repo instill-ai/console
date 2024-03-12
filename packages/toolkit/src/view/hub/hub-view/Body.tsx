@@ -92,7 +92,7 @@ export const Body = ({
     if (searchCode) {
       pipelines.refetch();
     }
-  }, [searchCode]);
+  }, [searchCode, pipelines]);
 
   const debouncedSetSearchCode = React.useMemo(
     () =>

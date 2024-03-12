@@ -1,13 +1,13 @@
 import * as React from "react";
 import { ReferenceHintTag } from "../../../../components";
-import { ComponentOutoutReferenceHint } from "../../types";
-import { transformInstillFormatToHumanReadableFormat } from "../../transform";
+import { transformInstillFormatToHumanReadableFormat } from "../../../use-instill-form/transform";
+import { SmartHint } from "../..";
 
 export const GroupByFormatField = ({
   hints,
   instillFormat,
 }: {
-  hints: ComponentOutoutReferenceHint[];
+  hints: SmartHint[];
   instillFormat: string;
 }) => {
   const humanReadableInstillFormat = React.useMemo(() => {

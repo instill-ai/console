@@ -34,7 +34,10 @@ export const EndOperatorNodeFreeForm = ({
   onCreateFreeFormField,
   onCancel,
 }: {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: any;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onCreateFreeFormField: (formData: any) => void;
   onCancel: () => void;
 }) => {

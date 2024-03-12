@@ -304,8 +304,12 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           <div className="mb-4 w-full">
             {!resourceNotCreated && !enableEdit ? (
               <ComponentOutputReferenceHints
-                componentID={data.id}
-                outputSchema={outputSchema}
+                component={data}
+                task={
+                  selectedConditionMap
+                    ? selectedConditionMap["task"]
+                    : undefined
+                }
               />
             ) : null}
           </div>

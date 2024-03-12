@@ -45,7 +45,6 @@ module.exports = {
   // needs too
   rules: {
     "react/no-unknown-property": "off",
-    "jsx-a11y/media-has-caption": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "jsx-a11y/alt-text": [

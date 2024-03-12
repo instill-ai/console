@@ -1,14 +1,14 @@
 import { InstillFormTree } from "../use-instill-form";
 import { SmartHint } from "./types";
 
-export function transformConnectorComponentFormTreeToSmartHints(
+export function transformFormTreeToSmartHints(
   tree: InstillFormTree,
   componentNodeID: string
 ): SmartHint[] {
   let hints: SmartHint[] = [];
   if (tree._type === "formGroup") {
     tree.properties.map((property) => {
-      const childHints = transformConnectorComponentFormTreeToSmartHints(
+      const childHints = transformFormTreeToSmartHints(
         property,
         componentNodeID
       );
@@ -19,7 +19,7 @@ export function transformConnectorComponentFormTreeToSmartHints(
   }
 
   if (tree._type === "objectArray") {
-    const objectHints = transformConnectorComponentFormTreeToSmartHints(
+    const objectHints = transformFormTreeToSmartHints(
       tree.properties,
       componentNodeID
     );

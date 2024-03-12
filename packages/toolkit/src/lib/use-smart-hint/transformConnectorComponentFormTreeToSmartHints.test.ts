@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { InstillFormTree } from "../use-instill-form";
-import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
+import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
 
 test("should extract hints from formGroup", () => {
   const tree: InstillFormTree = {
@@ -48,7 +48,7 @@ test("should extract hints from formGroup", () => {
     ],
   };
 
-  const hints = transformConnectorComponentFormTreeToSmartHints(tree, "root");
+  const hints = transformFormTreeToSmartHints(tree, "root");
 
   expect(hints).toStrictEqual([
     {
@@ -261,7 +261,7 @@ test("should extract hints from objectArray", () => {
     ],
   };
 
-  const hints = transformConnectorComponentFormTreeToSmartHints(tree, "root");
+  const hints = transformFormTreeToSmartHints(tree, "root");
 
   expect(hints).toStrictEqual([
     {

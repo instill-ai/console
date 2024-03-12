@@ -1,5 +1,5 @@
 import { ComponentOutputReferenceHints } from ".";
-import { ComponentOutoutReferenceHint } from "../../types";
+import { ComponentOutoutReferenceHint } from "../../../use-instill-form/types";
 
 export const ObjectArrayField = ({
   hints,

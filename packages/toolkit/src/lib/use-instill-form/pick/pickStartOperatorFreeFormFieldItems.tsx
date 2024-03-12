@@ -6,6 +6,8 @@ import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
 
 export type PickStartOperatorFreeFormFieldItemsProps = {
   mode: FieldMode;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: UseFormReturn<{ [k: string]: any }, any, undefined>;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
