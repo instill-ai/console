@@ -199,39 +199,6 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-6 flex flex-row-reverse">
-        {pipeline.isSuccess ? (
-          !accessToken ? (
-            <Button
-              onClick={() => {
-                router.push("/login");
-              }}
-              type="button"
-              variant="secondaryColour"
-              size="md"
-            >
-              Log in to run
-            </Button>
-          ) : inputIsNotDefined || outputIsNotDefined ? null : (
-            <Button
-              variant="secondaryColour"
-              size="md"
-              className="flex flex-row gap-x-2"
-              type="submit"
-              form={inOutPutFormID}
-            >
-              Run
-              {triggerPipeline.isPending ? (
-                <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
-              ) : (
-                <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
-              )}
-            </Button>
-          )
-        ) : (
-          <RunButtonSkeleton />
-        )}
-      </div>
       <div className="mb-6 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
@@ -270,6 +237,39 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           )
         ) : (
           <InOutputSkeleton />
+        )}
+      </div>
+      <div className="mb-6 flex flex-row-reverse">
+        {pipeline.isSuccess ? (
+          !accessToken ? (
+            <Button
+              onClick={() => {
+                router.push("/login");
+              }}
+              type="button"
+              variant="secondaryColour"
+              size="md"
+            >
+              Log in to run
+            </Button>
+          ) : inputIsNotDefined || outputIsNotDefined ? null : (
+            <Button
+              variant="secondaryColour"
+              size="md"
+              className="flex flex-row gap-x-2"
+              type="submit"
+              form={inOutPutFormID}
+            >
+              Run
+              {triggerPipeline.isPending ? (
+                <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
+              ) : (
+                <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
+              )}
+            </Button>
+          )
+        ) : (
+          <RunButtonSkeleton />
         )}
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
