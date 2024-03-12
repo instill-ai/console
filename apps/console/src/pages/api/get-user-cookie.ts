@@ -1,3 +1,4 @@
+import { Nullable } from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,8 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const targetCookie = cookies[body.key];
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  let responseBody: null | any = null;
+  let responseBody: Nullable<string> = null;
 
   if (targetCookie) {
     responseBody = targetCookie;

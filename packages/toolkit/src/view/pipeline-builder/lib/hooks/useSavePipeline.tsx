@@ -38,6 +38,7 @@ export type UseSavePipelineProps =
   | undefined;
 
 export function useSavePipeline(props: UseSavePipelineProps = {}) {
+  const { setIsSaving } = props;
   const entity = useEntity();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -63,8 +64,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         return;
       }
 
-      if (props?.setIsSaving) {
-        props.setIsSaving(true);
+      if (setIsSaving) {
+        setIsSaving(true);
       }
 
       let targetNodes = nodes;
@@ -118,8 +119,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           }
         }
 
-        if (props?.setIsSaving) {
-          props.setIsSaving(false);
+        if (setIsSaving) {
+          setIsSaving(false);
         }
 
         return;
@@ -169,8 +170,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         }
       }
 
-      if (props?.setIsSaving) {
-        props.setIsSaving(false);
+      if (setIsSaving) {
+        setIsSaving(false);
       }
     },
     [
@@ -186,7 +187,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       updatePipelineIsNew,
       updatePipelineRecipeIsDirty,
       updateUserPipeline,
-      props.setIsSaving,
+      setIsSaving,
       isEditingIterator,
       editingIteratorID,
       tempSavedNodesForEditingIteratorFlow,

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { test, expect, vi } from "vitest";
 import {
   getEscapedReferenceValueForReactTestingLibrary,
@@ -127,6 +129,8 @@ function InstillForm({
   schema,
 }: {
   schema: InstillJSONSchema;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onSubmit: (data: any) => void;
 }) {
   const { fields, form } = useInstillForm(schema, null);

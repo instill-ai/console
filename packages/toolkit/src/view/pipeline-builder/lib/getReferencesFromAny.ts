@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { InstillReference } from "../type";
 import { getReferencesFromString } from "./getReferencesFromString";
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export function getReferencesFromAny(value: any) {
   return getReferences(value);
 

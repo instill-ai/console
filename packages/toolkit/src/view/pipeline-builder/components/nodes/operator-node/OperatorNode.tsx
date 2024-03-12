@@ -146,8 +146,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           </div>
 
           <ComponentOutputReferenceHints
-            componentID={data.id}
-            outputSchema={outputSchema}
+            component={data}
+            task={
+              selectedConditionMap ? selectedConditionMap["task"] : undefined
+            }
           />
         </>
       )}
