@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { listTriggeredPipelineChartQuery } from "../../vdp-sdk";
-import { env } from "../../utility";
+import { env } from "../../../server";
 
 export function useTriggeredPipelinesChart({
   enabled,

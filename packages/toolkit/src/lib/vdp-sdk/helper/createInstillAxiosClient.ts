@@ -1,5 +1,5 @@
 import axios from "axios";
-import { env } from "../../utility";
+import { env } from "../../../server";
 import { Nullable } from "../../type";
 
 export function createInstillAxiosClient(

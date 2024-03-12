@@ -1,4 +1,4 @@
-import { env } from "../utility";
+import { env } from "../../server";
 import * as React from "react";
 
 export function useCreateUpdateDeleteResourceGuard() {

@@ -8,14 +8,11 @@ import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { AutoresizeInputWrapper } from "../../../../../components";
-import {
-  InstillStore,
-  useInstillStore,
-  validateInstillID,
-} from "../../../../../lib";
+import { InstillStore, useInstillStore } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
 import { composeEdgesFromComponents } from "../../../lib";
+import { validateInstillID } from "../../../../../server";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),

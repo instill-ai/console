@@ -3,11 +3,11 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { Logo } from "@instill-ai/design-system";
 import {
-  env,
   ModelHubCreatePageMainView,
   PageBase,
   Topbar,
-} from "@instill-ai/toolkit";
+} from "@instill-ai/toolkit/";
+import { env } from "@instill-ai/toolkit/server";
 
 import { ConsoleCorePageHead } from "../../../components";
 import { NextPageWithLayout } from "../../_app";

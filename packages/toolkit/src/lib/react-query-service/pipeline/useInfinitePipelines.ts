@@ -4,7 +4,7 @@ import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
 import { Nullable } from "../../type";
-import { env } from "../../utility";
+import { env } from "../../../server";
 import {
   ListPipelinesResponse,
   Visibility,

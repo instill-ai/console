@@ -8,13 +8,13 @@ import { DropdownMenu, Icons } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
 import {
   InstillStore,
-  env,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../lib";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
+import { env } from "../../server";
 
 export const topbarItems = [
   {

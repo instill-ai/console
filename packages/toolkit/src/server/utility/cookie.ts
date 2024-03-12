@@ -2,7 +2,7 @@ import { NextApiResponse } from "next";
 import { serialize } from "cookie";
 import { ServerResponse } from "http";
 
-import { Nullable } from "../type";
+import { Nullable } from "../../lib/type";
 
 export type SetCookiePayload = {
   res: NextApiResponse | ServerResponse;

@@ -12,13 +12,10 @@ import {
 import { UseFormReturn } from "react-hook-form";
 
 import { StartNodeInputType } from "./StartNodeInputType";
-import {
-  Nullable,
-  StartOperatorInputType,
-  validateInstillID,
-} from "../../../../../lib";
+import { Nullable, StartOperatorInputType } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
+import { validateInstillID } from "../../../../../server";
 
 export const StartOperatorFreeFormSchema = z
   .object({

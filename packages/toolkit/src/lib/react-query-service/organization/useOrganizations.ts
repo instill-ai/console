@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { listOrganizationsQuery } from "../../vdp-sdk";
-import { env } from "../../utility";
+import { env } from "../../../server";
 import type { Nullable } from "../../type";
 
 export function useOrganizations({

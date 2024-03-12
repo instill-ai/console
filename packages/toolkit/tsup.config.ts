@@ -1,6 +1,6 @@
-import { defineConfig } from "tsup";
+import { Options, defineConfig } from "tsup";
 
-export default defineConfig({
+const cfg: Options = {
   sourcemap: false,
   minify: false,
   dts: false,
@@ -8,6 +8,7 @@ export default defineConfig({
   loader: {
     ".js": "jsx",
   },
+  splitting: false,
   esbuildOptions(options) {
     options.external = [
       "react",
@@ -18,4 +19,21 @@ export default defineConfig({
       "#async_hooks",
     ];
   },
-});
+};
+
+export default defineConfig([
+  {
+    ...cfg,
+    entry: {
+      index: "src/server/index.ts",
+    },
+    outDir: "dist/server",
+  },
+  {
+    ...cfg,
+    entry: {
+      index: "src/index.ts",
+    },
+    outDir: "dist",
+  },
+]);

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Visibility, listUserPipelinesQuery } from "../../vdp-sdk";
-import { env } from "../../utility";
+import { env } from "../../../server";
 import type { Nullable } from "../../type";
 
 // This is a public API, we won't block unauth users from accessing this
