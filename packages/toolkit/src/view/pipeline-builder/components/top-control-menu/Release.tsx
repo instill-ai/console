@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { Button, Icons, Popover } from "@instill-ai/design-system";
 import { useInstillStore } from "../../../../lib";

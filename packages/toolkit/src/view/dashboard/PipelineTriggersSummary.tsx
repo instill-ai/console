@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 import { Fragment, ReactNode } from "react";
 import { Nullable, PipelineTriggersStatusSummaryItem } from "../../lib";

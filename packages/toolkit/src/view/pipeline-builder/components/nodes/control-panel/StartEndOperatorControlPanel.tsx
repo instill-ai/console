@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { Icons, Tooltip } from "@instill-ai/design-system";

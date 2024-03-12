@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
 import { Nullable, useControllableState } from "../lib";

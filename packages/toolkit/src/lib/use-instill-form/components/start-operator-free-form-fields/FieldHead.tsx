@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";

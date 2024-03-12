@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentOutputReferenceHints } from ".";
 import { ComponentOutoutReferenceHint } from "../../../use-instill-form/types";
 

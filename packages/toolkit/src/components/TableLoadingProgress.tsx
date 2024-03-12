@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
 

@@ -1,9 +1,9 @@
 import cn from "clsx";
-import { BreadcrumbProps, Breadcrumb } from "./Breadcrumb";
+import { Breadcrumb } from "./Breadcrumb";
 
 export type PageTitleProps = {
   title: string;
-  breadcrumbs: BreadcrumbProps["breadcrumbs"];
+  breadcrumbs: string[];
   className?: string;
 };
 

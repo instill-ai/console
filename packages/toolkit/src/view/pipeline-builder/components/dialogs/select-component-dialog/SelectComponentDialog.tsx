@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 

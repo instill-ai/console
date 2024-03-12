@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 import { FormLabel } from "../view/settings/FormLabel";

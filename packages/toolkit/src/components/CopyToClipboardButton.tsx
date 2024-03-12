@@ -1,15 +1,18 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { Button, Icons } from "@instill-ai/design-system";
 
-export type CopyToClipboardButtonProps = {
+export const CopyToClipboardButton = ({
+  className,
+  iconClassName,
+  text,
+}: {
   text: string;
   className?: string;
   iconClassName?: string;
-};
-
-export const CopyToClipboardButton = (props: CopyToClipboardButtonProps) => {
-  const { className, iconClassName, text } = props;
+}) => {
   const [copied, setCopied] = React.useState(false);
 
   return (

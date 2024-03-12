@@ -1,3 +1,5 @@
+"use client";
+
 import { UserProfileCardProps } from "../../../components";
 import { Body } from "./Body";
 

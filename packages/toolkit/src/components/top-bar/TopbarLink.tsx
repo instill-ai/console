@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import Link from "next/link";
 import { ReactElement } from "react";

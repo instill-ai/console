@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons, ParagraphWithHTML, Tooltip } from "@instill-ai/design-system";
 import { Nullable } from "../../../type";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";

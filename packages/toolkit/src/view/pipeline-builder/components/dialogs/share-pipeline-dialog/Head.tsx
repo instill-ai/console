@@ -1,3 +1,5 @@
+"use client";
+
 import { TabMenu } from "@instill-ai/design-system";
 import { Nullable } from "../../../../../lib";
 

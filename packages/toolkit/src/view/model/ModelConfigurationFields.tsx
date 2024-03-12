@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { BasicTextArea, BasicTextField } from "@instill-ai/design-system";

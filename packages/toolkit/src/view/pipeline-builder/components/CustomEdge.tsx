@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { EdgeProps, getSmoothStepPath } from "reactflow";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";

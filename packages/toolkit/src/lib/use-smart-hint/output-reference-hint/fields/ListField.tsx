@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ReferenceHintTag } from "../../../../components";
 import { transformInstillFormatToHumanReadableFormat } from "../../../use-instill-form/transform";

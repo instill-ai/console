@@ -1,3 +1,5 @@
+"use client";
+
 import { useToast } from "@instill-ai/design-system";
 import {
   ConnectorDefinition,

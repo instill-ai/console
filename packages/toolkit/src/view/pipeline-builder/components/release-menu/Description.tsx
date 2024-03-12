@@ -1,3 +1,5 @@
+"use client";
+
 import { Form, Textarea } from "@instill-ai/design-system";
 import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
 

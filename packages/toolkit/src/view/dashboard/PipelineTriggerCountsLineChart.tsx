@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";

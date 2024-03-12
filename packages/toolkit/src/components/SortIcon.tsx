@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@instill-ai/design-system";
 
 export type SortIconsProps = {

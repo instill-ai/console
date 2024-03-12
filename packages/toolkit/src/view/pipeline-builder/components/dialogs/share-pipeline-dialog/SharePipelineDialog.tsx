@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Dialog } from "@instill-ai/design-system";
 

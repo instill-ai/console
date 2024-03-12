@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { SelectOption } from "@instill-ai/design-system";
 
