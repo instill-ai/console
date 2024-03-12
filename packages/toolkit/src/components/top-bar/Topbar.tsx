@@ -14,35 +14,7 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 
-export const ceTopbarItems = [
-  {
-    pathName: "pipelines",
-    Icon: Icons.Pipeline,
-    name: "Pipelines",
-  },
-  {
-    pathName: "connectors",
-    Icon: Icons.IntersectSquare,
-    name: "Connectors",
-  },
-  {
-    pathName: "models",
-    Icon: Icons.Cube01,
-    name: "Model Hub",
-  },
-  {
-    pathName: "dashboard",
-    Icon: Icons.BarChartSquare02,
-    name: "Dashboard",
-  },
-];
-
-export const cloudTopbarItems = [
-  {
-    pathName: "hub",
-    Icon: Icons.CubeOutline,
-    name: "Hub",
-  },
+export const topbarItems = [
   {
     pathName: "pipelines",
     Icon: Icons.Pipeline,
@@ -108,35 +80,30 @@ export const Topbar = ({
           <React.Fragment>
             {me.isSuccess ? (
               <React.Fragment>
-                {env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
-                  ? cloudTopbarItems.map(({ pathName, name, Icon }) => (
-                      <TopbarLink
-                        key={pathName}
-                        href={`/${me.data.id}/${pathName}`}
-                        icon={
-                          <Icon className="h-6 w-6 stroke-semantic-fg-primary" />
-                        }
-                        name={name}
-                        hightlighted={
-                          router.pathname.split("/")[2] === pathName
-                        }
-                        className="mx-1 my-2 px-4"
-                      />
-                    ))
-                  : ceTopbarItems.map(({ pathName, name, Icon }) => (
-                      <TopbarLink
-                        key={pathName}
-                        href={`/${me.data.id}/${pathName}`}
-                        icon={
-                          <Icon className="h-6 w-6 stroke-semantic-fg-primary" />
-                        }
-                        name={name}
-                        hightlighted={
-                          router.pathname.split("/")[2] === pathName
-                        }
-                        className="mx-1 my-2 px-4"
-                      />
-                    ))}
+                {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+                  <TopbarLink
+                    key="hub"
+                    href="/hub"
+                    icon={
+                      <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
+                    }
+                    name="Hub"
+                    hightlighted={router.pathname.split("/")[1] === "hub"}
+                    className="mx-1 my-2 px-4"
+                  />
+                ) : null}
+                {topbarItems.map(({ pathName, name, Icon }) => (
+                  <TopbarLink
+                    key={pathName}
+                    href={`/${me.data.id}/${pathName}`}
+                    icon={
+                      <Icon className="h-6 w-6 stroke-semantic-fg-primary" />
+                    }
+                    name={name}
+                    hightlighted={router.pathname.split("/")[2] === pathName}
+                    className="mx-1 my-2 px-4"
+                  />
+                ))}
               </React.Fragment>
             ) : null}
           </React.Fragment>
