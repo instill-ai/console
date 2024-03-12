@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { ComplicateIcons } from "@instill-ai/design-system";

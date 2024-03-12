@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Dialog, useToast } from "@instill-ai/design-system";
 import {

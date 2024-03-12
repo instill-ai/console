@@ -1,3 +1,5 @@
+"use client";
+
 import { useShallow } from "zustand/react/shallow";
 import { InstillStore, useInstillStore } from "../../../../../lib";
 import { Icons, Tooltip } from "@instill-ai/design-system";

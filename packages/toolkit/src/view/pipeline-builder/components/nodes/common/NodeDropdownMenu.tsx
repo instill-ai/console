@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Icons, Popover, Tooltip } from "@instill-ai/design-system";
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";

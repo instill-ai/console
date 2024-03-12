@@ -1,3 +1,5 @@
+"use client";
+
 import { Pipeline } from "../../lib";
 import { Body } from "./Body";
 import { Footer } from "./Footer";

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { PageTitle } from "../../components";
 import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";

@@ -1,10 +1,6 @@
-import { FC } from "react";
+"use client";
 
-export type BreadcrumbProps = {
-  breadcrumbs: string[];
-};
-
-export const Breadcrumb: FC<BreadcrumbProps> = ({ breadcrumbs }) => {
+export const Breadcrumb = ({ breadcrumbs }: { breadcrumbs: string[] }) => {
   return (
     <div className="flex flex-row">
       {breadcrumbs.map((e, index) => {

@@ -1,21 +1,18 @@
+"use client";
+
 import cn from "clsx";
 import { getModelDefinitionToolkit } from "@instill-ai/design-system";
 import { Nullable } from "../lib";
 
-export type ModelDefinitionLabelProps = {
+export const ModelDefinitionLabel = ({
+  modelDefinition,
+  marginBottom,
+  position,
+}: {
   modelDefinition: Nullable<string>;
-  /**
-   * - Default is undefined
-   */
   position?: string;
-  /**
-   * - Default is undefined
-   */
   marginBottom?: string;
-};
-
-export const ModelDefinitionLabel = (props: ModelDefinitionLabelProps) => {
-  const { modelDefinition, marginBottom, position } = props;
+}) => {
   const iconStyle = {
     width: "w-[18px]",
     height: "h-[18px]",

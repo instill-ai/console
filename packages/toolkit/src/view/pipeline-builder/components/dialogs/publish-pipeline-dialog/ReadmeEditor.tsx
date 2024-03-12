@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import * as z from "zod";
 import { EditorContent, useEditor } from "@tiptap/react";

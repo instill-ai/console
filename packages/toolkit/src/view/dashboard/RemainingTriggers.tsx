@@ -1,3 +1,5 @@
+"use client";
+
 import { Nullable, User } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
 import { Button, Icons, Skeleton } from "@instill-ai/design-system";

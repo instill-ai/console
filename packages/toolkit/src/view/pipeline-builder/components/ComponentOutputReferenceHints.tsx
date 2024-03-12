@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons, ScrollArea } from "@instill-ai/design-system";
 import { PipelineComponent, useOutputReferenceHintFields } from "../../../lib";
 

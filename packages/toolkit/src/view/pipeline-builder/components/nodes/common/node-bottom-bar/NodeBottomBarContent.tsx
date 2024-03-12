@@ -1,3 +1,5 @@
+"use client";
+
 import {
   GeneralRecord,
   InstillJSONSchema,

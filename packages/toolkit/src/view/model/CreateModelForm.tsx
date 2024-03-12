@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import axios from "axios";
 import * as React from "react";

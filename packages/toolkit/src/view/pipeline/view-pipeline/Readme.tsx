@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import { EditorContent, useEditor } from "@tiptap/react";

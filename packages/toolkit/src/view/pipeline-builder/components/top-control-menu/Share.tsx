@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
 import { SharePipelineDialog } from "../dialogs";

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Icons } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
