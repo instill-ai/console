@@ -23,7 +23,7 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
       hint.properties.forEach((property) => {
         normalizeObjectArrayHints.push({
           ...property,
-          path: `${hint.path}.[index].${property.key}`,
+          path: `${hint.path}[index].${property.key}`,
         });
       });
     }
