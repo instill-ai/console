@@ -170,7 +170,9 @@ export function transformInstillJSONSchemaToFormTree(
   if (
     targetSchema.type === "array" &&
     typeof targetSchema.items === "object" &&
-    !Array.isArray(targetSchema.items)
+    !Array.isArray(targetSchema.items) &&
+    targetSchema.items.properties &&
+    !targetSchema.items.instillFormat
   ) {
     if (targetSchema.items.type === "object") {
       const itemsFormTree = transformInstillJSONSchemaToFormTree(
@@ -206,6 +208,35 @@ export function transformInstillJSONSchemaToFormTree(
           : [],
       };
     }
+  }
+
+  if (
+    targetSchema.type === "array" &&
+    typeof targetSchema.items === "object" &&
+    !Array.isArray(targetSchema.items) &&
+    !targetSchema.items.properties &&
+    targetSchema.items.instillFormat &&
+    targetSchema.items.instillFormat.includes("array:")
+  ) {
+    const itemsFormTree = transformInstillJSONSchemaToFormTree(
+      targetSchema.items,
+      {
+        parentSchema: targetSchema,
+        key,
+        path,
+        checkIsHidden,
+      }
+    );
+
+    return {
+      ...baseFields,
+      items: itemsFormTree,
+      jsonSchema: targetSchema,
+      _type: "arrayArray",
+      fieldKey: key ?? null,
+      path: (path || key) ?? null,
+      isRequired,
+    };
   }
 
   // temporarily override Airbyte's free form schema, if it's object without

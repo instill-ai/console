@@ -45,6 +45,10 @@ export function transformInstillFormTreeToReferenceHints(
     return referenceHints;
   }
 
+  if (tree._type === "arrayArray") {
+    return referenceHints;
+  }
+
   // Process const field
   if (tree.const || !tree.path) {
     return referenceHints;

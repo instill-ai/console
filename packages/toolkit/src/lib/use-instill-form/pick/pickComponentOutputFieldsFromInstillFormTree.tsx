@@ -19,6 +19,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   // 1. Preprocess
 
   const { tree, data, chooseTitleFrom, hideField, mode } = props;
+  console.log(tree);
 
   let title: Nullable<string> = null;
 
@@ -48,7 +49,17 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     }
   } else if (tree._type === "formItem") {
     if (tree.path) {
-      propertyValue = data ? dot.getter(data, tree.path) ?? null : null;
+      if (tree.instillFormat?.includes("array:")) {
+        propertyValue = data;
+      } else {
+        propertyValue = data ? dot.getter(data, tree.path) ?? null : null;
+      }
+    }
+  } else if (tree._type === "arrayArray") {
+    if (tree.fieldKey) {
+      propertyValue = data ? data[tree.fieldKey] : null;
+    } else {
+      propertyValue = null;
     }
   }
 
@@ -128,6 +139,25 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     );
   }
 
+  if (tree._type === "arrayArray") {
+    const arrayArrayData = propertyValue as GeneralRecord[];
+
+    console.log(tree, propertyValue);
+
+    return arrayArrayData ? (
+      <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
+        {arrayArrayData.map((data, idx) => {
+          return pickComponentOutputFieldsFromInstillFormTree({
+            ...props,
+            tree: tree.items,
+            data: data,
+            objectArrayIndex: idx,
+          });
+        })}
+      </div>
+    ) : null;
+  }
+
   // Process const field
   if (tree.const || !tree.path) {
     return null;
@@ -166,6 +196,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     switch (arrayType) {
       case "number":
       case "integer": {
+        console.log("inner", tree, propertyValue);
         return (
           <ComponentOutputFields.NumbersField
             mode={mode}
