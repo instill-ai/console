@@ -268,7 +268,7 @@ test("should extract hints from objectArray", () => {
       path: "root.output.segments",
       key: "segments",
       instillFormat: "null",
-      type: "array",
+      type: "objectArray",
       properties: [
         {
           path: "root.output.segments.label",

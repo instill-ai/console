@@ -98,8 +98,6 @@ export function pickOutputReferenceHintsFromComponent({
           outputFormTree,
           component.id
         );
-
-        console.log("outputFormTree", outputFormTree, iteratorHints);
       }
     }
 

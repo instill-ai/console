@@ -28,7 +28,7 @@ export const Run = ({
       variant="tertiaryColour"
       form="start-operator-trigger-pipeline-form"
       disabled={pipelineRecipeIsDirty || isEditingIterator}
-      className="!h-8 gap-x-2"
+      className="!h-8 !items-center gap-x-2"
       onClick={async (e) => {
         if (pipelineRecipeIsDirty) {
           await savePipeline();
@@ -38,11 +38,11 @@ export const Run = ({
     >
       Run
       {isTriggeringPipeline ? (
-        <LoadingSpin className="my-auto !text-semantic-accent-default" />
+        <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
       ) : (
         <Icons.PlayCircle
           className={cn(
-            "my-auto h-4 w-4",
+            "h-4 w-4",
             pipelineRecipeIsDirty
               ? "stroke-[#bfbfbf]"
               : "stroke-semantic-accent-default"

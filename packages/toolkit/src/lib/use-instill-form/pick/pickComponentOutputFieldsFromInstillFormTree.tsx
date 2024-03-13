@@ -19,7 +19,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   // 1. Preprocess
 
   const { tree, data, chooseTitleFrom, hideField, mode } = props;
-  console.log(tree);
 
   let title: Nullable<string> = null;
 
@@ -142,8 +141,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree._type === "arrayArray") {
     const arrayArrayData = propertyValue as GeneralRecord[];
 
-    console.log(tree, propertyValue);
-
     return arrayArrayData ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
         {arrayArrayData.map((data, idx) => {
@@ -196,7 +193,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     switch (arrayType) {
       case "number":
       case "integer": {
-        console.log("inner", tree, propertyValue);
         return (
           <ComponentOutputFields.NumbersField
             mode={mode}
