@@ -1,5 +1,24 @@
 # @instill-ai/design-system
 
+## [0.65.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.64.0...@instill-ai/design-system-v0.65.0) (2024-03-13)
+
+
+### Features
+
+* add the new design for reference hint ([#1004](https://github.com/instill-ai/console/issues/1004)) ([7b7b41e](https://github.com/instill-ai/console/commit/7b7b41e1253b1ab6395e4a27728ad98f58286cd6))
+* bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
+* **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
+
+
+### Bug Fixes
+
+* fix docker node version ([#1014](https://github.com/instill-ai/console/issues/1014)) ([d3127e4](https://github.com/instill-ai/console/commit/d3127e4a22076be3e5f0f0ab4aa807b43108518c))
+
+
+### Miscellaneous
+
+* add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
+
 ## [0.64.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.63.0...@instill-ai/design-system-v0.64.0) (2024-02-15)
 
 

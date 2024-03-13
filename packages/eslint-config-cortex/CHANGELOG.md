@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.9.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.8.0...@instill-ai/eslint-config-cortex-v0.9.0) (2024-03-13)
+
+
+### Features
+
+* **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
+
 ## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.2...@instill-ai/eslint-config-cortex-v0.8.0) (2024-01-24)
 
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.41.0-beta](https://github.com/instill-ai/console/compare/v0.40.0-beta...v0.41.0-beta) (2024-03-13)
+
+
+### Features
+
+* bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
+* migrate react-query from v4 to v5 ([#1007](https://github.com/instill-ai/console/issues/1007)) ([f0399aa](https://github.com/instill-ai/console/commit/f0399aa6b9cc42df8ff13331e4b82df89c1ab6e8))
+* migrate the topbar component back to toolkit ([#994](https://github.com/instill-ai/console/issues/994)) ([056cc78](https://github.com/instill-ai/console/commit/056cc785552497099cabf1455797bb22b3892090))
+* **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
+* **pipeline-builder:** revamp and adapt the new topbar navigation on pipeline builder ([#997](https://github.com/instill-ai/console/issues/997)) ([774aa92](https://github.com/instill-ai/console/commit/774aa92902f77e2ebc1404984f0da0cd23694ddc))
+* **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
+
+
+### Miscellaneous
+
+* add missing use client in design-system ([#1009](https://github.com/instill-ai/console/issues/1009)) ([7b01eeb](https://github.com/instill-ai/console/commit/7b01eeb22cfb33ad0cb160068fcdd31ab03ad87d))
+
 ## [0.40.0-beta](https://github.com/instill-ai/console/compare/v0.39.0-beta...v0.40.0-beta) (2024-02-29)
 
 
