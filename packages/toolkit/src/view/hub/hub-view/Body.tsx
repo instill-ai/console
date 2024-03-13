@@ -90,12 +90,6 @@ export const Body = ({
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
-  React.useEffect(() => {
-    if (searchCode) {
-      pipelines.refetch();
-    }
-  }, [searchCode, pipelines]);
-
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {

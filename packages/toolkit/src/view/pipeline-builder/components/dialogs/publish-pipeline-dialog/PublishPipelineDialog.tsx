@@ -14,6 +14,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useEntity,
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
@@ -58,7 +59,7 @@ export const PublishPipelineDialog = () => {
   });
 
   const router = useRouter();
-  const { id, entity } = router.query;
+  const entity = useEntity();
 
   const pipeline = useUserPipeline({
     pipelineName,
@@ -71,12 +72,12 @@ export const PublishPipelineDialog = () => {
   async function handlePublish(
     formData: z.infer<typeof PublishPipelineFormSchema>
   ) {
-    if (!pipelineName || isPublishing || !pipeline.isSuccess) return;
+    if (isPublishing || !pipeline.isSuccess || !entity.isSuccess) return;
 
     setIsPublishing(true);
 
     const payload: UpdateUserPipelinePayload = {
-      name: pipelineName,
+      name: entity.pipelineName,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
       sharing: {
@@ -116,7 +117,7 @@ export const PublishPipelineDialog = () => {
           <div className="flex flex-row">
             <LinkButton
               onClick={() => {
-                router.push(`/${entity}/pipelines/${id}`);
+                router.push(`/${entity.entity}/pipelines/${entity.id}`);
               }}
               variant="primary"
               size="sm"

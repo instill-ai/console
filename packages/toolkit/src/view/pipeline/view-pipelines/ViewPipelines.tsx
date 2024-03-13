@@ -84,6 +84,7 @@ export const ViewPipelines = ({
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
+        console.log("weird");
         setSearchCode(value);
       }, 300),
     []
