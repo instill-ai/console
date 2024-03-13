@@ -13,10 +13,11 @@ import { SmartHint } from "../types";
 export function pickOutputReferenceHintsFromComponent({
   component,
   task,
+  iteratorRecipeIsDirty,
 }: {
   component: PipelineComponent;
-  includeComponentOutput?: boolean;
   task?: string;
+  iteratorRecipeIsDirty?: boolean;
 }) {
   let outputReferenceHints: SmartHint[] = [];
 
@@ -43,47 +44,63 @@ export function pickOutputReferenceHintsFromComponent({
   }
 
   if (isIteratorComponent(component)) {
-    const iteratorHints: SmartHint[] = [];
+    let iteratorHints: SmartHint[] = [];
 
-    Object.entries(component.iterator_component.output_elements).forEach(
-      ([key, value]) => {
-        const referencePathArray = value
-          .replace("${", "")
-          .replace("}", "")
-          .split(".");
+    if (iteratorRecipeIsDirty) {
+      Object.entries(component.iterator_component.output_elements).forEach(
+        ([key, value]) => {
+          const referencePathArray = value
+            .replace("${", "")
+            .replace("}", "")
+            .split(".");
 
-        const componentKey = referencePathArray[0];
-        const targetComponent = component.iterator_component.components.find(
-          (e) => e.id === componentKey
-        );
-
-        if (targetComponent) {
-          const componentHints = pickOutputReferenceHintsFromComponent({
-            component: targetComponent,
-          });
-
-          const targetHint = componentHints.find(
-            (hint) => hint.path === value.replace("${", "").replace("}", "")
+          const componentKey = referencePathArray[0];
+          const targetComponent = component.iterator_component.components.find(
+            (e) => e.id === componentKey
           );
 
-          if (targetHint) {
-            iteratorHints.push(targetHint);
-          }
-
-          // Deal with user directly reference the whole output of specific component in
-          // the iterator
-          if (value === "${" + targetComponent.id + ".output" + "}") {
-            iteratorHints.push({
-              path: `${component.id}.output.${key}`,
-              key,
-              instillFormat: "null",
-              type: "array",
-              properties: componentHints,
+          if (targetComponent) {
+            const componentHints = pickOutputReferenceHintsFromComponent({
+              component: targetComponent,
             });
+
+            const targetHint = componentHints.find(
+              (hint) => hint.path === value.replace("${", "").replace("}", "")
+            );
+
+            if (targetHint) {
+              iteratorHints.push(targetHint);
+            }
+
+            // Deal with user directly reference the whole output of specific component in
+            // the iterator
+            if (value === "${" + targetComponent.id + ".output" + "}") {
+              iteratorHints.push({
+                path: `${component.id}.output.${key}`,
+                key,
+                instillFormat: "null",
+                type: "array",
+                properties: componentHints,
+              });
+            }
           }
         }
+      );
+    } else {
+      const outputSchema =
+        component.iterator_component.data_specification.output;
+
+      if (outputSchema) {
+        const outputFormTree =
+          transformInstillJSONSchemaToFormTree(outputSchema);
+        iteratorHints = transformFormTreeToSmartHints(
+          outputFormTree,
+          component.id
+        );
       }
-    );
+
+      console.log(iteratorHints);
+    }
 
     outputReferenceHints = [...outputReferenceHints, ...iteratorHints];
   }

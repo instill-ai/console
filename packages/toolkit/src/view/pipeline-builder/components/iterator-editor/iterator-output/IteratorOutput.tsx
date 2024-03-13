@@ -3,9 +3,9 @@ import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import { isIteratorComponent } from "../../../lib/checkComponentType";
 import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
-import { OutputValueSelect } from "./OutputValueSelect";
 import { DeleteOutputButton } from "./DeleteOutputButton";
 import { AddOutputButton } from "./AddOutputButton";
+import { OutputValueInput } from "./OutputValueInput";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
@@ -66,7 +66,7 @@ export const OutputSet = ({
           array of
         </p>
       </div>
-      <OutputValueSelect outputKey={outputKey} />
+      <OutputValueInput outputKey={outputKey} />
       {disabledDeleteButton ? null : (
         <DeleteOutputButton outputKey={outputKey} />
       )}

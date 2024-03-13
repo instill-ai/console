@@ -6,11 +6,15 @@ const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
   updateTempSavedNodesForEditingIteratorFlow:
     store.updateTempSavedNodesForEditingIteratorFlow,
+  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
 export const DeleteOutputButton = ({ outputKey }: { outputKey: string }) => {
-  const { editingIteratorID, updateTempSavedNodesForEditingIteratorFlow } =
-    useInstillStore(useShallow(selector));
+  const {
+    editingIteratorID,
+    updateTempSavedNodesForEditingIteratorFlow,
+    updatePipelineRecipeIsDirty,
+  } = useInstillStore(useShallow(selector));
 
   return (
     <Button
@@ -42,6 +46,8 @@ export const DeleteOutputButton = ({ outputKey }: { outputKey: string }) => {
             return node;
           })
         );
+
+        updatePipelineRecipeIsDirty(() => true);
       }}
     >
       <Icons.Trash03 className="h-4 w-4 stroke-semantic-error-default" />
