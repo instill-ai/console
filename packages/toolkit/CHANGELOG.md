@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.83.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.0...@instill-ai/toolkit-v0.83.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix render bug caused by mis-align of smart hint and output rendering ([#1024](https://github.com/instill-ai/console/issues/1024)) ([e61d3fa](https://github.com/instill-ai/console/commit/e61d3fa237dd29bc4d18567f6a9b43828dd41309))
+
 ## [0.83.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.82.0...@instill-ai/toolkit-v0.83.0) (2024-03-13)
 
 
