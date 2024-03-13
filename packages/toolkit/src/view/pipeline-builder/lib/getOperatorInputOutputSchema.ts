@@ -28,6 +28,7 @@ export function getOperatorInputOutputSchema(
   // definition is not support anymore. Console need to check this.
   if (
     targetTask &&
+    component?.operator_component.definition?.spec.data_specifications &&
     component?.operator_component.definition?.spec.data_specifications[
       targetTask
     ]
@@ -54,10 +55,12 @@ export function getOperatorInputOutputSchema(
       return { outputSchema, inputSchema };
     }
 
-    inputSchema = component?.operator_component.definition?.spec
-      .data_specifications[defaultTask].input as InstillJSONSchema;
-    outputSchema = component?.operator_component.definition?.spec
-      .data_specifications[defaultTask].output as InstillJSONSchema;
+    if (component?.operator_component.definition?.spec.data_specifications) {
+      inputSchema = component?.operator_component.definition?.spec
+        .data_specifications[defaultTask].input as InstillJSONSchema;
+      outputSchema = component?.operator_component.definition?.spec
+        .data_specifications[defaultTask].output as InstillJSONSchema;
+    }
   }
 
   return { outputSchema, inputSchema };

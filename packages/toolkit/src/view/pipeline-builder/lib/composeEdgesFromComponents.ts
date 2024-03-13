@@ -150,7 +150,8 @@ function getAvailableReferences(components: PipelineComponent[]) {
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
     if (isIteratorComponent(component)) {
-      outputSchema = component.iterator_component.data_specification.output;
+      outputSchema =
+        component.iterator_component.data_specification?.output ?? null;
     }
 
     if (isOperatorComponent(component)) {

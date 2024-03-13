@@ -88,7 +88,7 @@ export function pickOutputReferenceHintsFromComponent({
       );
     } else {
       const outputSchema =
-        component.iterator_component.data_specification.output;
+        component.iterator_component.data_specification?.output;
 
       if (outputSchema) {
         const outputFormTree =

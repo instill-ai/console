@@ -302,9 +302,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           ) : (
             <ComponentOutputs
               componentID="end"
-              outputSchema={
-                pipeline.data.data_specification.output as InstillJSONSchema
-              }
+              outputSchema={pipeline.data.data_specification?.output ?? null}
               nodeType="end"
               chooseTitleFrom="title"
               response={response}

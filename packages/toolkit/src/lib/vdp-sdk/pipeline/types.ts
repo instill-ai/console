@@ -202,7 +202,7 @@ export type PipelineIteratorComponent = {
     output_elements: Record<string, string>;
     components: PipelineComponent[];
     condition: Nullable<string>;
-    data_specification: DataSpecification;
+    data_specification: Nullable<DataSpecification>;
   };
 };
 
