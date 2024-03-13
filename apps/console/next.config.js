@@ -7,6 +7,7 @@ const BundleAnalyzerPlugin =
 module.exports = {
   swcMinify: true,
   reactStrictMode: true,
+  transpilePackages: ["@mdxeditor/editor"],
   webpack: (config, { dev }) => {
     // if (isServer) {
     //   require("./lib/generate-sitemap");

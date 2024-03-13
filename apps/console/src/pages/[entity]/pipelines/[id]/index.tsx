@@ -1,17 +1,32 @@
 import * as React from "react";
-import { PageBase, ViewPipeline, Topbar } from "@instill-ai/toolkit";
+import {
+  PageBase,
+  ViewPipeline,
+  Topbar,
+  MDXEditorMethods,
+} from "@instill-ai/toolkit";
 import { Logo } from "@instill-ai/design-system";
+
+const Editor = dynamic(
+  () => import("@instill-ai/toolkit").then((mod) => mod.InitializedMDXEditor),
+  {
+    // Make sure we turn SSR off
+    ssr: false,
+  }
+);
 
 import { ConsoleCorePageHead } from "../../../../components";
 import { NextPageWithLayout } from "../../../_app";
 import { useAccessToken } from "../../../../lib/useAccessToken";
 import { useTrackToken } from "../../../../lib/useTrackToken";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
 const PipelinePage: NextPageWithLayout = () => {
   useAccessToken();
   useTrackToken({ enabled: true });
   const router = useRouter();
+  const ref = React.useRef<MDXEditorMethods>(null);
 
   return (
     <React.Fragment>
@@ -22,6 +37,7 @@ const PipelinePage: NextPageWithLayout = () => {
         when the route changes.
       */}
       <ViewPipeline key={router.asPath} />
+      <Editor editorRef={ref} markdown="hello world" />
     </React.Fragment>
   );
 };

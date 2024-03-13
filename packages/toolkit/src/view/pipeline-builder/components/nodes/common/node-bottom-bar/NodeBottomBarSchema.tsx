@@ -1,6 +1,6 @@
 "use client";
 
-import JsonView from "@uiw/react-json-view";
+// import JsonView from "@uiw/react-json-view";
 import { GeneralRecord, Nullable } from "../../../../../../lib";
 import { customTheme } from "../../../../../../lib/react-json-view";
 import { CopyToClipboardButton } from "../../../../../../components";
@@ -17,7 +17,7 @@ export const NodeBottomBarSchema = ({
         iconClassName="!stroke-semantic-bg-primary"
         text={JSON.stringify(componentSchema, null, 2)}
       />
-      <JsonView
+      {/* <JsonView
         value={componentSchema ?? {}}
         style={{
           ...customTheme,
@@ -33,7 +33,7 @@ export const NodeBottomBarSchema = ({
         shortenTextAfterLength={0}
         displayDataTypes={false}
         collapsed={3}
-      />
+      /> */}
     </div>
   );
 };

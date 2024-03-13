@@ -1,14 +1,15 @@
 import { GetServerSideProps } from "next";
 import { NextPageWithLayout } from "./_app";
 import { AuthPageBase } from "../components";
-import { authLogoutAction, removeCookie } from "@instill-ai/toolkit";
+import { authLogoutAction } from "@instill-ai/toolkit";
+import { removeCookie } from "@instill-ai/toolkit/server";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const { cookies } = req;
 
   if (cookies["instill-auth-session"]) {
     const accessToken = JSON.parse(
-      cookies["instill-auth-session"],
+      cookies["instill-auth-session"]
     ).access_token;
 
     await authLogoutAction({ accessToken });

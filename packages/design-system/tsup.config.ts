@@ -4,6 +4,7 @@ export default defineConfig({
   sourcemap: false,
   minify: false,
   dts: false,
+  splitting: false,
   format: ["esm", "cjs"],
   loader: {
     ".js": "jsx",
