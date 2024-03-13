@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.83.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.1...@instill-ai/toolkit-v0.83.2) (2024-03-13)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** adapt backend return data_specification can be null ([#1026](https://github.com/instill-ai/console/issues/1026)) ([858433d](https://github.com/instill-ai/console/commit/858433d37610ac1e49ac876c1e863e18bd8c5529))
+
 ## [0.83.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.0...@instill-ai/toolkit-v0.83.1) (2024-03-13)
 
 
