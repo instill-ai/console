@@ -29,6 +29,8 @@ export function useComponentOutputFields({
 
     const outputFormTree = transformInstillJSONSchemaToFormTree(schema);
 
+    console.log(outputFormTree);
+
     const fields = pickComponentOutputFieldsFromInstillFormTree({
       tree: outputFormTree,
       data,
