@@ -35,13 +35,29 @@ export function transformFormTreeToSmartHints(
           path: pathArray.join("."),
           key: tree.fieldKey ?? "null",
           instillFormat: tree.instillFormat ?? "null",
-          type: "array",
+          type: "objectArray",
           properties: objectHints,
         },
       ];
     }
 
     return [];
+  }
+
+  if (tree._type === "arrayArray") {
+    const pathArray = [tree.path];
+    pathArray.unshift("output");
+    pathArray.unshift(componentNodeID);
+
+    return [
+      ...hints,
+      {
+        path: pathArray.join("."),
+        key: tree.fieldKey ?? "null",
+        instillFormat: tree.items.instillFormat ?? "null",
+        type: "arrayArray",
+      },
+    ];
   }
 
   // There is no need to extract hints from formCondition

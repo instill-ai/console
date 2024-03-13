@@ -13,11 +13,11 @@ import { SmartHint } from "../types";
 export function pickOutputReferenceHintsFromComponent({
   component,
   task,
-  iteratorRecipeIsDirty,
+  consoleComposedIteratorSchema,
 }: {
   component: PipelineComponent;
   task?: string;
-  iteratorRecipeIsDirty?: boolean;
+  consoleComposedIteratorSchema?: boolean;
 }) {
   let outputReferenceHints: SmartHint[] = [];
 
@@ -46,7 +46,7 @@ export function pickOutputReferenceHintsFromComponent({
   if (isIteratorComponent(component)) {
     let iteratorHints: SmartHint[] = [];
 
-    if (iteratorRecipeIsDirty) {
+    if (consoleComposedIteratorSchema) {
       Object.entries(component.iterator_component.output_elements).forEach(
         ([key, value]) => {
           const referencePathArray = value
@@ -93,13 +93,12 @@ export function pickOutputReferenceHintsFromComponent({
       if (outputSchema) {
         const outputFormTree =
           transformInstillJSONSchemaToFormTree(outputSchema);
+
         iteratorHints = transformFormTreeToSmartHints(
           outputFormTree,
           component.id
         );
       }
-
-      console.log(iteratorHints);
     }
 
     outputReferenceHints = [...outputReferenceHints, ...iteratorHints];

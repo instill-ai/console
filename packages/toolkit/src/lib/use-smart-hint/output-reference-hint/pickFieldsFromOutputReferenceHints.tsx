@@ -6,13 +6,18 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
   const fields: React.ReactNode[] = [];
 
   const nonObjectArrayHints: SmartHint[] = [];
+  const arrayArrayHints: SmartHint[] = [];
   const objectArrayHints: SmartHint[] = [];
 
   hints.forEach((hint) => {
     if (hint.properties && hint.properties.length > 0) {
       objectArrayHints.push(hint);
     } else {
-      nonObjectArrayHints.push(hint);
+      if (hint.type === "arrayArray") {
+        arrayArrayHints.push(hint);
+      } else {
+        nonObjectArrayHints.push(hint);
+      }
     }
   });
 
@@ -43,6 +48,24 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
       />
     );
   });
+
+  const arrayArrayHintsGroupByFormat = groupBy(
+    arrayArrayHints,
+    (hint) => hint.instillFormat
+  );
+
+  Object.entries(arrayArrayHintsGroupByFormat).forEach(
+    ([instillFormat, hints]) => {
+      fields.push(
+        <ComponentOutputReferenceHints.GroupByFormatField
+          key={instillFormat}
+          instillFormat={instillFormat}
+          hints={hints}
+          arrayInArray={true}
+        />
+      );
+    }
+  );
 
   return fields;
 }

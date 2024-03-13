@@ -8,13 +8,18 @@ import { SmartHint } from "../..";
 export const GroupByFormatField = ({
   hints,
   instillFormat,
+  arrayInArray,
 }: {
   hints: SmartHint[];
   instillFormat: string;
+  arrayInArray?: boolean;
 }) => {
   const humanReadableInstillFormat = React.useMemo(() => {
-    return transformInstillFormatToHumanReadableFormat(instillFormat);
-  }, [instillFormat]);
+    return transformInstillFormatToHumanReadableFormat(
+      instillFormat,
+      arrayInArray
+    );
+  }, [instillFormat, arrayInArray]);
 
   return (
     <div className="flex w-full flex-col gap-y-2">

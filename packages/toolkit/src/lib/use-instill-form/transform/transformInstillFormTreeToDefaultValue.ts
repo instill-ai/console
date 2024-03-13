@@ -91,6 +91,12 @@ export function transformInstillFormTreeToDefaultValue(
     }
     return initialData;
   }
+  if (tree._type === "arrayArray") {
+    if (tree.path) {
+      dot.setter(initialData, tree.path, []);
+    }
+    return initialData;
+  }
 
   let defaultValue: Nullable<string> = null;
 

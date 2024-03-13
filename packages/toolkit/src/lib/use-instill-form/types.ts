@@ -101,6 +101,12 @@ export type InstillFormConditionItem = {
   jsonSchema: InstillJSONSchema;
 } & InstillFormBaseFields;
 
+export type InstillArrayArrayItem = {
+  _type: "arrayArray";
+  items: InstillFormTree;
+  jsonSchema: InstillJSONSchema;
+} & InstillFormBaseFields;
+
 export type InstillObjectArrayItem = {
   _type: "objectArray";
   properties: InstillFormTree;
@@ -111,7 +117,8 @@ export type InstillFormTree =
   | InstillFormItem
   | InstillFormGroupItem
   | InstillFormConditionItem
-  | InstillObjectArrayItem;
+  | InstillObjectArrayItem
+  | InstillArrayArrayItem;
 
 export type CheckIsHidden = (props: {
   parentSchema: Nullable<InstillJSONSchema>;
