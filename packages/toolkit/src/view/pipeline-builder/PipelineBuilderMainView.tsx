@@ -81,7 +81,7 @@ export const PipelineBuilderMainView = () => {
     if (!pipeline.isSuccess) return;
 
     updatePipelineOpenAPIOutputSchema(
-      () => pipeline.data.data_specification.output as InstillJSONSchema
+      () => pipeline.data.data_specification?.output ?? null
     );
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
