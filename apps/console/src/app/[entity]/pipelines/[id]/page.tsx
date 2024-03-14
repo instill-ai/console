@@ -1,4 +1,4 @@
-import { NamespaceType, Nullable, Pipeline } from "@instill-ai/toolkit";
+import { NamespaceType, Nullable } from "@instill-ai/toolkit";
 import {
   prefetchAuthenticatedUser,
   QueryClient,
@@ -7,71 +7,12 @@ import {
   fetchNamespaceType,
   prefetchUserPipeline,
   prefetchNamespaceType,
-  prefetchOrganization,
-  env,
-  fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
+import {
+  fetchAccessToken,
+  prefetchAccessToken,
+} from "lib/use-access-token/server";
 import { PipelineViewPageRender } from "./render";
-import { Metadata } from "next";
-import { cookies } from "next/headers";
-
-type Props = {
-  params: { id: string; entity: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cookieStore = cookies();
-  const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
-
-  let accessToken: Nullable<string> = null;
-
-  if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
-  }
-
-  const entity = params.entity;
-  const id = params.id;
-
-  try {
-    const namespaceType = await fetchNamespaceType({
-      namespace: entity,
-      accessToken,
-    });
-
-    let pipeline: Nullable<Pipeline> = null;
-
-    console.log(
-      "namespaceType",
-      namespaceType,
-      env("NEXT_SERVER_API_GATEWAY_URL")
-    );
-
-    if (namespaceType === "NAMESPACE_USER") {
-      pipeline = await fetchUserPipeline({
-        pipelineName: `users/${entity}/pipelines/${id}`,
-        accessToken,
-      });
-    }
-
-    if (namespaceType === "NAMESPACE_ORGANIZATION") {
-      pipeline = await fetchUserPipeline({
-        pipelineName: `organizations/${entity}/pipelines/${id}`,
-        accessToken,
-      });
-    }
-
-    return Promise.resolve({
-      title: `${pipeline?.id} | Pipeline`,
-      description: pipeline?.readme,
-      openGraph: {
-        images: ["/instill-open-graph.png"],
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return Promise.reject(error);
-  }
-}
 
 export default async function Page({
   params: { entity, id },
@@ -83,13 +24,16 @@ export default async function Page({
 }) {
   const queryClient = new QueryClient();
 
-  const cookieStore = cookies();
-  const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
+  await prefetchAccessToken({
+    queryClient,
+  });
 
   let accessToken: Nullable<string> = null;
 
-  if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
+  try {
+    accessToken = await fetchAccessToken();
+  } catch (error) {
+    console.log(error);
   }
 
   await prefetchAuthenticatedUser({
@@ -117,12 +61,6 @@ export default async function Page({
   if (namespaceType === "NAMESPACE_USER") {
     await prefetchUserPipeline({
       pipelineName: `users/${entity}/pipelines/${id}`,
-      accessToken,
-      queryClient,
-    });
-  } else if (namespaceType === "NAMESPACE_ORGANIZATION") {
-    await prefetchOrganization({
-      organizationID: entity,
       accessToken,
       queryClient,
     });

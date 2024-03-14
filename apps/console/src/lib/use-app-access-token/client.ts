@@ -43,7 +43,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
         });
 
         if (!disabledRedirectingVisitor) {
-          await router.push("/login");
+          router.push("/login");
         }
 
         return Promise.reject(error);
