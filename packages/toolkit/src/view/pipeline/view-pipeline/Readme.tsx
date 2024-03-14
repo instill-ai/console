@@ -13,9 +13,9 @@ import {
   useUpdateUserPipeline,
   serialize,
   UpdateUserPipelinePayload,
-  useEntity,
   sendAmplitudeData,
   useAmplitudeCtx,
+  useAppEntity,
 } from "../../../lib";
 import { useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
@@ -36,7 +36,7 @@ export const Readme = ({
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const timer = React.useRef<Nullable<number>>(null);
 
@@ -47,7 +47,7 @@ export const Readme = ({
 
   const onBlur = React.useCallback(
     (editor: Editor) => {
-      if (!entityObject.isSuccess) {
+      if (!entity.isSuccess || !accessToken) {
         return;
       }
 
@@ -58,11 +58,15 @@ export const Readme = ({
       setHasUnsavedChanges(true);
 
       timer.current = window.setTimeout(async () => {
+        if (!entity.data.pipelineName) {
+          return;
+        }
+
         try {
           const md = serialize(editor.schema, editor.getJSON());
 
           const payload: UpdateUserPipelinePayload = {
-            name: entityObject.pipelineName,
+            name: entity.data.pipelineName,
             readme: md,
           };
 
@@ -92,8 +96,8 @@ export const Readme = ({
       }, 1000);
     },
     [
-      entityObject.isSuccess,
-      entityObject.pipelineName,
+      entity.isSuccess,
+      entity.data?.pipelineName,
       accessToken,
       toast,
       updateUserPipeline,

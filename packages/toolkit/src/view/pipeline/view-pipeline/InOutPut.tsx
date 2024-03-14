@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as z from "zod";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   GeneralRecord,
   InstillStore,
@@ -13,6 +13,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useAppEntity,
   useEntity,
   useInstillStore,
   useShallow,
@@ -42,27 +43,31 @@ type InOutPutProps = {
 
 export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const shareCode = searchParams.get("shareCode");
+  const { toast } = useToast();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
-  const { toast } = useToast();
-
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
-    enabled: enabledQuery && entityObject.isSuccess,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    enabled: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entityObject.pipelineName,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    enabledQuery: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
-    enabledQuery: enabledQuery && entityObject.isSuccess,
   });
 
   const startComponent = React.useMemo(() => {
@@ -94,7 +99,8 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const triggerPipeline = useTriggerUserPipeline();
 
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
-    if (!entityObject.isSuccess || !pipeline.isSuccess) return;
+    if (!entity.isSuccess || !entity.data?.pipelineName || !pipeline.isSuccess)
+      return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
@@ -141,12 +147,13 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     try {
       const data = await triggerPipeline.mutateAsync({
-        pipelineName: entityObject.pipelineName,
+        pipelineName: entity.data.pipelineName,
         accessToken,
         payload: {
           inputs: [parsedStructuredData],
         },
         returnTraces: true,
+        shareCode: shareCode ?? undefined,
       });
 
       if (amplitudeIsInit) {
@@ -252,7 +259,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
                   );
                 }}
               >
@@ -292,7 +299,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
                   );
                 }}
               >

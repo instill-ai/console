@@ -11,7 +11,6 @@ export function useApiToken({
   tokenName: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-
   retry?: false | number;
 }) {
   return useQuery({

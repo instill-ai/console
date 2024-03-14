@@ -17,7 +17,6 @@ import {
   Nullable,
   PipelineRecipe,
   useInstillStore,
-  useNavigationObserver,
   useShallow,
 } from "../../../lib";
 import { NodeData } from "../type";
@@ -26,7 +25,6 @@ import {
   createGraphLayout,
   createInitialGraphData,
 } from "../lib";
-import { useRouter } from "next/router";
 import {
   ConnectorNode,
   EmptyNode,
@@ -69,7 +67,6 @@ export const ReadOnlyPipelineBuilder = ({
   recipe,
   metadata,
 }: ReadOnlyPipelineBuilderProps) => {
-  const router = useRouter();
   const [nodes, setNodes] = React.useState<Node<NodeData>[]>([]);
   const [edges, setEdges] = React.useState<Edge[]>([]);
   const [reactFlowInstance, setReactFlowInstance] =
@@ -115,13 +112,12 @@ export const ReadOnlyPipelineBuilder = ({
 
   // Clean up the pipelineIsReadOnly state when user navigate away
   // from the page
-  useNavigationObserver({
-    shouldStopNavigation: false,
-    onNavigate: () => {
+  React.useEffect(() => {
+    updatePipelineIsReadOnly(() => true);
+    return () => {
       updatePipelineIsReadOnly(() => false);
-    },
-    router,
-  });
+    };
+  }, []);
 
   return (
     <div

@@ -33,15 +33,18 @@ export function useSortedReleases({
   pipelineName,
   accessToken,
   enabledQuery,
+  shareCode,
 }: {
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   enabledQuery: boolean;
+  shareCode?: string;
 }) {
   const pipelineReleases = useUserPipelineReleases({
     pipelineName,
     enabled: enabledQuery,
     accessToken,
+    shareCode,
   });
 
   const sortedReleases = React.useMemo(() => {

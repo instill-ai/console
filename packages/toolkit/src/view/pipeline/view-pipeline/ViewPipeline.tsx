@@ -4,17 +4,17 @@ import * as React from "react";
 import {
   InstillStore,
   Nullable,
-  useEntity,
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
   useUserPipeline,
+  useAppEntity,
 } from "../../../lib";
-import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -34,12 +34,12 @@ export const ViewPipeline = () => {
     retry: false,
   });
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    enabled: enabledQuery && entity.isSuccess,
     accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
   });
 
   const isOwner = React.useMemo(() => {

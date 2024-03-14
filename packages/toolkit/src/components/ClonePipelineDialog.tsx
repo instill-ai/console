@@ -18,7 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useRouter } from "next/router";
+import { NextRouter } from "next/router";
 import {
   CreateUserPipelinePayload,
   InstillStore,
@@ -38,6 +38,7 @@ import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
 import { removeSensitiveDataInPipelineRecipe } from "../view";
 import { env, validateInstillID } from "../server";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const ClonePipelineSchema = z
   .object({
@@ -67,18 +68,19 @@ export const ClonePipelineDialog = ({
   pipeline,
   open,
   onOpenChange,
+  router,
 }: {
   trigger: Nullable<React.ReactNode>;
   pipeline: Nullable<Pipeline>;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  router: NextRouter | AppRouterInstance;
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [dialogIsOpen, setDialogIsOpen] = React.useState(open ?? false);
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
     React.useState<Nullable<Permission>>("private");
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof ClonePipelineSchema>>({
