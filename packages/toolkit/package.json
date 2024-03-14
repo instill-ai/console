@@ -38,7 +38,7 @@
         "types": "./dist/server/index.d.ts",
         "default": "./dist/server/index.mjs"
       },
-      "require":{
+      "require": {
         "types": "./dist/server/index.d.ts",
         "default": "./dist/server/index.js"
       }

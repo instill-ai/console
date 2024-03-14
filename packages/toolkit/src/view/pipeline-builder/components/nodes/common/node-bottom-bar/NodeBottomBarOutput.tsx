@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-// import JsonView from "@uiw/react-json-view";
+import JsonView from "@uiw/react-json-view";
 import { customTheme } from "../../../../../../lib/react-json-view";
 
 import {
@@ -60,7 +60,7 @@ export const NodeBottomBarOutput = ({
                 text={JSON.stringify(outputData, null, 2)}
               />
             ) : null}
-            {/* <JsonView
+            <JsonView
               value={outputData ?? {}}
               style={{
                 ...customTheme,
@@ -76,7 +76,7 @@ export const NodeBottomBarOutput = ({
               shortenTextAfterLength={0}
               displayDataTypes={false}
               collapsed={3}
-            /> */}
+            />
           </div>
         </div>
       )}
