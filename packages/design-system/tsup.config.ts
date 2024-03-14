@@ -18,5 +18,9 @@ export default defineConfig({
       // it will cause Could not resolve "#async_hooks" error
       "#async_hooks",
     ];
+
+    options.banner = {
+      js: '"use client";',
+    };
   },
 });

@@ -16,7 +16,7 @@ import {
 } from "@instill-ai/toolkit";
 import "../styles/global.css";
 import "../styles/github-markdown.css";
-import "@instill-ai/design-system/dist/index.css";
+import "@instill-ai/design-system/index.css";
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
@@ -73,10 +73,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
   const initPipelineBuilder = useInstillStore(
-    (state) => state.initPipelineBuilder,
+    (state) => state.initPipelineBuilder
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (state) => state.init,
+    (state) => state.init
   );
 
   const { dismiss: dismissToast } = useToast();

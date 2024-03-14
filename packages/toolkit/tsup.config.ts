@@ -9,16 +9,6 @@ const cfg: Options = {
     ".js": "jsx",
   },
   splitting: false,
-  esbuildOptions(options) {
-    options.external = [
-      "react",
-      "react-dom",
-
-      // vitest is using some nodejs modules that is not available under our bundle env
-      // it will cause Could not resolve "#async_hooks" error
-      "#async_hooks",
-    ];
-  },
 };
 
 export default defineConfig([
@@ -28,6 +18,16 @@ export default defineConfig([
       index: "src/server/index.ts",
     },
     outDir: "dist/server",
+    esbuildOptions(options) {
+      options.external = [
+        "react",
+        "react-dom",
+
+        // vitest is using some nodejs modules that is not available under our bundle env
+        // it will cause Could not resolve "#async_hooks" error
+        "#async_hooks",
+      ];
+    },
   },
   {
     ...cfg,
@@ -35,5 +35,20 @@ export default defineConfig([
       index: "src/index.ts",
     },
     outDir: "dist",
+    esbuildOptions(options) {
+      options.external = [
+        "react",
+        "react-dom",
+
+        // vitest is using some nodejs modules that is not available under our bundle env
+        // it will cause Could not resolve "#async_hooks" error
+        "#async_hooks",
+      ];
+
+      // use client side code
+      options.banner = {
+        js: '"use client";',
+      };
+    },
   },
 ]);
