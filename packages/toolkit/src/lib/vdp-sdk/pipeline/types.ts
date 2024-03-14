@@ -25,7 +25,6 @@ export type PipelineRecipe = {
   version: string;
   components: PipelineComponent[];
 };
-
 export type PipelineReleaseWatchState = {
   state: PipelineReleaseState;
   progress: number;

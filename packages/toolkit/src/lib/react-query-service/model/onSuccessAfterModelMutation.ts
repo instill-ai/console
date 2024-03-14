@@ -1,5 +1,5 @@
 import { Nullable } from "../../type";
-import { removeObjKey } from "../../utility";
+import { removeObjKey } from "../../../server";
 import {
   Model,
   ModelWatchState,

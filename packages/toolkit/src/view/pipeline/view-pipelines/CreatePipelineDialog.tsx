@@ -25,7 +25,6 @@ import {
   InstillStore,
   Nullable,
   PipelineSharing,
-  env,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -35,10 +34,10 @@ import {
   useInstillStore,
   useShallow,
   useUserMemberships,
-  validateInstillID,
 } from "../../../lib";
 import { InstillErrors } from "../../../constant";
 import { LoadingSpin } from "../../../components";
+import { env, validateInstillID } from "../../../server";
 
 const CreatePipelineSchema = z
   .object({

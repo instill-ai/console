@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { listPipelineTriggerRecordsQuery } from "../../vdp-sdk/metric";
-import { env } from "../../utility";
+import { env } from "../../../server";
 
 export function usePipelineTriggerRecords({
   enabled,

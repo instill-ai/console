@@ -1,4 +1,4 @@
-import { Model, ModelState } from "../vdp-sdk";
+import { Model, ModelState } from "../../lib/vdp-sdk";
 
 export function determineModelState(models: Model[]): ModelState {
   if (models.some((e) => e.state === "STATE_ERROR")) {

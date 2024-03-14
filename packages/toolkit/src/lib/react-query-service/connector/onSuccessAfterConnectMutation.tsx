@@ -7,7 +7,7 @@ import {
   watchUserConnector,
 } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import { removeObjKey } from "../../utility";
+import { removeObjKey } from "../../../server";
 
 export type OnSuccessAfterConnectorMutationProps =
   | OnSuccessAfterDeleteConnectorProps

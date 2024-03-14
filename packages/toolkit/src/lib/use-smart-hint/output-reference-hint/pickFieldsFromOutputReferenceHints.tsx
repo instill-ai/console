@@ -1,5 +1,5 @@
 import { SmartHint } from "..";
-import { groupBy } from "../../utility";
+import { groupBy } from "../../../server/utility";
 import { ComponentOutputReferenceHints } from "./fields";
 
 export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {

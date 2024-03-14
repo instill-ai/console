@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 const ResourcesTable = dynamic(
-  () => import("./ResourcesTable").then((mod) => mod.ResourcesTable),
+  () => import("./ResourcesTable.js").then((mod) => mod.ResourcesTable),
   { ssr: false }
 );
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ListUserPipelineReleasesQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
-import { env } from "../../utility";
+import { env } from "../../../server";
 import { useRouter } from "next/router";
 
 export function useUserPipelineReleases({

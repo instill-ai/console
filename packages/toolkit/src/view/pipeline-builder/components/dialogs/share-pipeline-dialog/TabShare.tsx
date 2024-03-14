@@ -8,7 +8,6 @@ import {
   OrganizationOwner,
   UpdateUserPipelinePayload,
   UserOwner,
-  env,
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
@@ -21,6 +20,7 @@ import {
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 import { EntityAvatar, LoadingSpin } from "../../../../../components";
+import { env } from "../../../../../server";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

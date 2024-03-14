@@ -25,7 +25,6 @@ import {
   Nullable,
   Pipeline,
   PipelineSharing,
-  env,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -34,11 +33,11 @@ import {
   useShallow,
   useAuthenticatedUser,
   useUserMemberships,
-  validateInstillID,
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
 import { removeSensitiveDataInPipelineRecipe } from "../view";
+import { env, validateInstillID } from "../server";
 
 const ClonePipelineSchema = z
   .object({

@@ -8,7 +8,6 @@ import { Button, Icons, Popover, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  getHumanReadableStringFromTime,
   useEntity,
   useInstillStore,
   useUserPipeline,
@@ -21,6 +20,7 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
+import { getHumanReadableStringFromTime } from "../../../server";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,

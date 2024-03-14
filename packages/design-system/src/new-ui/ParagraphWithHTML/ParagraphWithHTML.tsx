@@ -8,11 +8,10 @@ import { Nullable } from "../../types/general";
  * This component will allow some default attribute plus "a" and "rel"
  * ref:
  *   - https://stackoverflow.com/a/69940844
- *   - https://github.com/airbytehq/airbyte/blob/59e20f20de73ced59ae2c782612fa7554fc1fced/airbyte-webapp/src/components/TextWithHTML/TextWithHTML.tsx
  */
 
 const allowedAttributes = {
-  a: [...sanitizeHtml.defaults.allowedAttributes["a"], "rel", "class"],
+  a: ["href", "rel", "class"],
   strong: ["class"],
   em: ["class"],
   code: ["class"],

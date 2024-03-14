@@ -4,6 +4,7 @@ export default defineConfig({
   sourcemap: false,
   minify: false,
   dts: false,
+  splitting: false,
   format: ["esm", "cjs"],
   loader: {
     ".js": "jsx",
@@ -17,5 +18,9 @@ export default defineConfig({
       // it will cause Could not resolve "#async_hooks" error
       "#async_hooks",
     ];
+
+    options.banner = {
+      js: '"use client";',
+    };
   },
 });

@@ -31,12 +31,12 @@ import {
   useDeployUserModel,
   CreateUserModelPayload,
   watchUserModel,
-  validateInstillID,
   useAuthenticatedUser,
   useAmplitudeCtx,
 } from "../../lib";
 import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
 import { InstillErrors } from "../../constant/errors";
+import { validateInstillID } from "../../server";
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;

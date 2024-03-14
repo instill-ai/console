@@ -6,7 +6,6 @@ import { Button, Icons } from "@instill-ai/design-system";
 import {
   GeneralRecord,
   InstillStore,
-  env,
   useEntity,
   useInstillStore,
   useShallow,
@@ -15,6 +14,7 @@ import { StartNodeData } from "../../type";
 import { Node } from "reactflow";
 import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
+import { env } from "../../../../server";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,

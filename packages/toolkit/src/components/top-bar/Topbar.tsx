@@ -8,33 +8,37 @@ import { DropdownMenu, Icons } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
 import {
   InstillStore,
-  env,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../lib";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
+import { env } from "../../server";
 
 export const topbarItems = [
   {
     pathName: "pipelines",
-    Icon: Icons.Pipeline,
+    icon: <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Pipelines",
   },
   {
     pathName: "connectors",
-    Icon: Icons.IntersectSquare,
+    icon: (
+      <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
+    ),
     name: "Connectors",
   },
   {
     pathName: "models",
-    Icon: Icons.Cube01,
+    icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Model Hub",
   },
   {
     pathName: "dashboard",
-    Icon: Icons.BarChartSquare02,
+    icon: (
+      <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
+    ),
     name: "Dashboard",
   },
 ];
@@ -94,13 +98,11 @@ export const Topbar = ({
                     className="mx-1 my-2 px-4"
                   />
                 ) : null}
-                {topbarItems.map(({ pathName, name, Icon }) => (
+                {topbarItems.map(({ pathName, name, icon }) => (
                   <TopbarLink
                     key={pathName}
                     href={`/${me.data.id}/${pathName}`}
-                    icon={
-                      <Icon className="h-6 w-6 stroke-semantic-fg-primary" />
-                    }
+                    icon={icon}
                     name={name}
                     hightlighted={router.pathname.split("/")[2] === pathName}
                     className="mx-1 my-2 px-4"

@@ -30,12 +30,12 @@ import {
   useCreateUserConnector,
   useEntity,
   useUpdateUserConnector,
-  validateInstillID,
 } from "../../lib";
 import { recursiveHelpers } from "../pipeline-builder";
 import { AirbyteDestinationFields } from "../airbyte";
 import { LoadingSpin } from "../../components";
 import { InstillErrors } from "../../constant/errors";
+import { validateInstillID } from "../../server";
 
 export type AirbyteDataResourceFormProps = {
   dataResource: Nullable<ConnectorWithDefinition>;
