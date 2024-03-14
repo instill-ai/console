@@ -6,15 +6,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useShallow } from "zustand/react/shallow";
 import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
+import { NextRouter } from "next/router";
 
 import {
   InstillStore,
+  Nullable,
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useEntity,
   useInstillStore,
   useUpdateUserPipeline,
   useUserPipeline,
@@ -22,9 +22,9 @@ import {
 import { Head } from "./Head";
 import { Metadata } from "./Metadata";
 import { ReadmeEditor } from "./ReadmeEditor";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const selector = (store: InstillStore) => ({
-  pipelineName: store.pipelineName,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   dialogPublishPipelineIsOpen: store.dialogPublishPipelineIsOpen,
@@ -39,14 +39,23 @@ export const PublishPipelineFormSchema = z.object({
   license: z.string().optional().nullable(),
 });
 
-export const PublishPipelineDialog = () => {
+export const PublishPipelineDialog = ({
+  router,
+  pipelineName,
+  entity,
+  id,
+}: {
+  router: NextRouter | AppRouterInstance;
+  pipelineName: Nullable<string>;
+  entity: Nullable<string>;
+  id: Nullable<string>;
+}) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isPublishing, setIsPublishing] = React.useState(false);
 
   const { toast } = useToast();
 
   const {
-    pipelineName,
     accessToken,
     enabledQuery,
     dialogPublishPipelineIsOpen,
@@ -58,13 +67,10 @@ export const PublishPipelineDialog = () => {
     resolver: zodResolver(PublishPipelineFormSchema),
   });
 
-  const router = useRouter();
-  const entity = useEntity();
-
   const pipeline = useUserPipeline({
     pipelineName,
     accessToken,
-    enabled: enabledQuery && !pipelineIsNew,
+    enabled: enabledQuery && !pipelineIsNew && !!pipelineName,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();
@@ -72,12 +78,12 @@ export const PublishPipelineDialog = () => {
   async function handlePublish(
     formData: z.infer<typeof PublishPipelineFormSchema>
   ) {
-    if (isPublishing || !pipeline.isSuccess || !entity.isSuccess) return;
+    if (isPublishing || !pipeline.isSuccess || !pipelineName) return;
 
     setIsPublishing(true);
 
     const payload: UpdateUserPipelinePayload = {
-      name: entity.pipelineName,
+      name: pipelineName,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
       sharing: {
@@ -117,7 +123,7 @@ export const PublishPipelineDialog = () => {
           <div className="flex flex-row">
             <LinkButton
               onClick={() => {
-                router.push(`/${entity.entity}/pipelines/${entity.id}`);
+                router.push(`/${entity}/pipelines/${id}`);
               }}
               variant="primary"
               size="sm"
@@ -156,7 +162,7 @@ export const PublishPipelineDialog = () => {
         <Form.Root {...form}>
           <form onSubmit={form.handleSubmit(handlePublish)}>
             <div className="flex h-full flex-col">
-              <Head />
+              <Head entity={entity} id={id} />
               <Metadata
                 form={form}
                 description={

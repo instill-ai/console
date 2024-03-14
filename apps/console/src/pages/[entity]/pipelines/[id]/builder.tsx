@@ -4,7 +4,7 @@ import { PipelineBuilderMainView } from "@instill-ai/toolkit";
 import { ConsoleCorePageHead } from "../../../../components";
 import { NextPageWithLayout } from "../../../_app";
 import { useTrackToken } from "../../../../lib/useTrackToken";
-import { useAccessToken } from "lib/useAccessToken";
+import { useAccessToken } from "lib/use-access-token/client";
 
 const PipelineBuilderPage: NextPageWithLayout = () => {
   useAccessToken();

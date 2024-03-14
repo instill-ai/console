@@ -10,7 +10,7 @@ import {
 import { Logo } from "@instill-ai/design-system";
 
 import { NextPageWithLayout } from "../_app";
-import { useAccessToken } from "lib/useAccessToken";
+import { useAccessToken } from "lib/use-access-token/client";
 import { ConsoleCorePageHead } from "components";
 
 const APITokenSetting: NextPageWithLayout = () => {

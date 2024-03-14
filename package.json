@@ -32,7 +32,8 @@
     "prettier": "latest",
     "prettier-plugin-tailwindcss": "latest",
     "@instill-ai/prettier-config-cortex": "workspace:*",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^5.4.2"
   },
   "engines": {
     "node": ">=16.0.0"

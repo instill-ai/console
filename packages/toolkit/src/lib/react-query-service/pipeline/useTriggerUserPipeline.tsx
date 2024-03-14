@@ -4,29 +4,28 @@ import {
   type TriggerUserPipelinePayload,
   triggerUserPipelineAction,
 } from "../../vdp-sdk";
-import { useRouter } from "next/router";
 
 export function useTriggerUserPipeline() {
-  const router = useRouter();
-
   return useMutation({
     mutationFn: async ({
       pipelineName,
       payload,
       accessToken,
       returnTraces,
+      shareCode,
     }: {
       pipelineName: string;
       payload: TriggerUserPipelinePayload;
       accessToken: Nullable<string>;
       returnTraces?: boolean;
+      shareCode?: string;
     }) => {
       const response = await triggerUserPipelineAction({
         pipelineName,
         payload,
         accessToken,
         returnTraces,
-        shareCode: router.query.view?.toString() ?? undefined,
+        shareCode,
       });
 
       return Promise.resolve(response);

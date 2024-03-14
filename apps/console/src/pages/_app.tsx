@@ -6,7 +6,6 @@ import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import {
   QueryCache,
-  QueryClient,
   QueryClientProvider,
   AmplitudeCtx,
   ReactQueryDevtools,
@@ -14,6 +13,9 @@ import {
   useCreateResourceFormStore,
   DefaultOptions,
 } from "@instill-ai/toolkit";
+
+import { QueryClient } from "@instill-ai/toolkit/server";
+
 import "../styles/global.css";
 import "../styles/github-markdown.css";
 import "@instill-ai/design-system/index.css";

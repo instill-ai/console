@@ -1,17 +1,24 @@
 "use client";
 
 import { Button, Icons } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
-import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../../../../lib";
 
 const selector = (store: InstillStore) => ({
   updateDialogPublishPipelineIsOpen: store.updateDialogPublishPipelineIsOpen,
 });
 
-export const Head = () => {
-  const router = useRouter();
-  const { id, entity } = router.query;
-
+export const Head = ({
+  entity,
+  id,
+}: {
+  entity: Nullable<string>;
+  id: Nullable<string>;
+}) => {
   const { updateDialogPublishPipelineIsOpen } = useInstillStore(
     useShallow(selector)
   );
