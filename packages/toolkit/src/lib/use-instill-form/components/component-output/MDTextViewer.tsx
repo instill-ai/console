@@ -13,7 +13,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   return (
     <React.Fragment>
       {/* The anchor in the MD viewer will overflow */}
-      <style jsx>{`
+      <style jsx={true}>{`
         .markdown-body a {
           word-break: break-all !important;
         }
