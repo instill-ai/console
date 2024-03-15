@@ -7829,7 +7829,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash: 4.17.21
       redent: 3.0.0
-      vitest: 1.2.1(@types/node@20.11.5)(jsdom@21.1.2)
+      vitest: 1.2.1(@types/node@18.19.8)
     dev: true
 
   /@testing-library/react@14.1.2(react-dom@18.2.0)(react@18.2.0):
@@ -8979,7 +8979,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.7)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.0.12(@types/node@20.11.5)
+      vite: 5.0.12(@types/node@18.19.8)
     transitivePeerDependencies:
       - supports-color
     dev: true

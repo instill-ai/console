@@ -81,8 +81,6 @@ export const Head = (props: HeadProps) => {
       entity.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
-  console.log("entity", entity);
-
   const pipeline = useUserPipeline({
     pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
     accessToken,
