@@ -1,4 +1,4 @@
-import { env } from "../../../../server";
+import { QueryClient, env } from "../../../../server";
 import { Nullable } from "../../../type";
 import { ListUserPipelineReleasesQuery } from "../../../vdp-sdk";
 
@@ -40,7 +40,7 @@ export function prefetchUserPipelineReleases({
 }: {
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
-  queryClient: any;
+  queryClient: QueryClient;
   shareCode?: string;
 }) {
   const queryKey = getUseUserPipelineReleasesQueryKey(pipelineName);

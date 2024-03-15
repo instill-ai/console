@@ -9,7 +9,6 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,

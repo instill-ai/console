@@ -19,7 +19,6 @@ import {
   isPublicPipeline,
   toastInstillError,
   useDeleteUserPipeline,
-  useEntity,
   useInstillStore,
   useOrganization,
   useShallow,
