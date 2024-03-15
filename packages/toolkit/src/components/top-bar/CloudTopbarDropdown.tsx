@@ -16,17 +16,21 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
 import Link from "next/link";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const CloudTopbarDropdown = () => {
-  const router = useRouter();
+export const CloudTopbarDropdown = ({
+  router,
+}: {
+  router: NextRouter | AppRouterInstance;
+}) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -116,9 +120,7 @@ export const CloudTopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              router.push({
-                pathname: "/settings/organizations/new",
-              });
+              router.push("/settings/organizations/new");
             }}
             asChild
           >
@@ -208,9 +210,7 @@ export const CloudTopbarDropdown = () => {
                 <Button
                   className="flex w-full items-center"
                   onClick={() => {
-                    router.push({
-                      pathname: "/settings/billing/plan",
-                    });
+                    router.push("/settings/billing/plan");
                   }}
                   variant="secondaryColour"
                 >

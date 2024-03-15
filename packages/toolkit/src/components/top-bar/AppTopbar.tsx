@@ -2,9 +2,8 @@
 
 import cn from "clsx";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
-import { DropdownMenu, Icons } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 import { TopbarLink } from "./TopbarLink";
 import {
   InstillStore,
@@ -15,8 +14,9 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
+import { usePathname, useRouter } from "next/navigation";
 
-export const topbarItems = [
+const topbarItems = [
   {
     pathName: "pipelines",
     icon: <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />,
@@ -48,7 +48,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const Topbar = ({
+export const AppTopbar = ({
   logo,
   children,
   className,
@@ -60,6 +60,7 @@ export const Topbar = ({
   disabledUserDropdown?: boolean;
 }) => {
   const router = useRouter();
+  const pathName = usePathname();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -84,32 +85,28 @@ export const Topbar = ({
           <div className="flex w-full flex-1 flex-row">{children}</div>
         ) : (
           <React.Fragment>
-            {me.isSuccess ? (
-              <React.Fragment>
-                {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-                  <TopbarLink
-                    key="hub"
-                    href="/hub"
-                    icon={
-                      <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
-                    }
-                    name="Hub"
-                    hightlighted={router.pathname.split("/")[1] === "hub"}
-                    className="mx-1 my-2 px-4"
-                  />
-                ) : null}
-                {topbarItems.map(({ pathName, name, icon }) => (
-                  <TopbarLink
-                    key={pathName}
-                    href={`/${me.data.id}/${pathName}`}
-                    icon={icon}
-                    name={name}
-                    hightlighted={router.pathname.split("/")[2] === pathName}
-                    className="mx-1 my-2 px-4"
-                  />
-                ))}
-              </React.Fragment>
+            {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+              <TopbarLink
+                key="hub"
+                href="/hub"
+                icon={
+                  <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
+                }
+                name="Hub"
+                hightlighted={pathName.split("/")[1] === "hub"}
+                className="mx-1 my-2 px-4"
+              />
             ) : null}
+            {topbarItems.map(({ pathName, name, icon }) => (
+              <TopbarLink
+                key={pathName}
+                href={`/${me.data?.id}/${pathName}`}
+                icon={icon}
+                name={name}
+                hightlighted={pathName.split("/")[2] === pathName}
+                className="mx-1 my-2 px-4"
+              />
+            ))}
           </React.Fragment>
         )}
       </div>
@@ -125,32 +122,4 @@ export const Topbar = ({
       )}
     </div>
   );
-};
-
-export const TopbarDropdownItem = ({
-  children,
-  asChild,
-  onClick,
-}: {
-  children: React.ReactNode;
-  asChild?: boolean;
-  onClick?: () => void;
-}) => {
-  return (
-    <DropdownMenu.Item
-      asChild={asChild}
-      className="cursor-pointer !gap-x-2 !px-2.5 !py-[9px] !product-body-text-3-medium hover:!bg-semantic-bg-base-bg hover:!text-black"
-      onClick={onClick}
-    >
-      {children}
-    </DropdownMenu.Item>
-  );
-};
-
-export const TopbarDropdownGroup = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return <DropdownMenu.Group className="!p-1.5">{children}</DropdownMenu.Group>;
 };

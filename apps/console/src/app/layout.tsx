@@ -1,3 +1,4 @@
+import cn from "clsx";
 import { env } from "@instill-ai/toolkit/server";
 import { ReactQueryProvider } from "./react-query-client-provider";
 import { AmplitudeProvider } from "./amplitude-client-provider";
@@ -10,6 +11,21 @@ import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
 import "../styles/tip-tap.css";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+
+const ibmPlexSans = IBM_Plex_Sans({
+  style: ["italic", "normal"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-sans",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  style: ["italic", "normal"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+});
 
 export default function RootLayout({
   children,
@@ -17,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn(ibmPlexSans.variable, ibmPlexMono.variable)}>
       <head>
         <meta
           property="og:image"
@@ -34,7 +50,7 @@ export default function RootLayout({
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="/__env.js" />
       </head>
-      <body>
+      <body className="overflow-y-hidden">
         <ReactQueryProvider>
           <AmplitudeProvider>{children}</AmplitudeProvider>
         </ReactQueryProvider>

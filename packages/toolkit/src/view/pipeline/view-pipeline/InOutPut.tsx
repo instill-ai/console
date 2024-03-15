@@ -31,6 +31,7 @@ import {
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { LoadingSpin } from "../../../components";
+import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -209,37 +210,12 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   return (
     <div className="flex flex-col">
       <div className="mb-6 flex flex-row-reverse">
-        {pipeline.isSuccess ? (
-          !accessToken ? (
-            <Button
-              onClick={() => {
-                router.push("/login");
-              }}
-              type="button"
-              variant="secondaryColour"
-              size="md"
-            >
-              Log in to run
-            </Button>
-          ) : inputIsNotDefined || outputIsNotDefined ? null : (
-            <Button
-              variant="secondaryColour"
-              size="md"
-              className="flex flex-row gap-x-2"
-              type="submit"
-              form={inOutPutFormID}
-            >
-              Run
-              {triggerPipeline.isPending ? (
-                <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
-              ) : (
-                <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
-              )}
-            </Button>
-          )
-        ) : (
-          <RunButtonSkeleton />
-        )}
+        <RunButton
+          inOutPutFormID={inOutPutFormID}
+          inputIsNotDefined={inputIsNotDefined}
+          outputIsNotDefined={outputIsNotDefined}
+          isTriggeringPipeline={triggerPipeline.isPending}
+        />
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
@@ -389,8 +365,4 @@ export const InOutputSkeleton = () => {
   return (
     <div className="h-8 w-full animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
-};
-
-export const RunButtonSkeleton = () => {
-  return <Skeleton className="w-18 h-8 rounded" />;
 };

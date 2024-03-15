@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.83.2",
+  "version": "0.84.0-rc.0",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -138,6 +138,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.10.0",
     "semver": "^7.5.4",
+    "server-only": "^0.0.1",
     "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.0",
     "yup": "^0.32.11",

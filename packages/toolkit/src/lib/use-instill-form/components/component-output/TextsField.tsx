@@ -11,9 +11,6 @@ export type TextsFieldProps = {
 
 export const TextsField = (props: TextsFieldProps) => {
   const { title, texts, hideField } = props;
-
-  console.log(props.texts);
-
   const normalizedTexts = texts?.map((text) => String(text));
 
   return (

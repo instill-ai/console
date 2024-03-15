@@ -18,7 +18,7 @@ type UseAccessTokenProps = {
   disabledRedirectingVisitor?: boolean;
 };
 
-export function useAccessToken(props?: UseAccessTokenProps) {
+export function useAppAccessToken(props?: UseAccessTokenProps) {
   const disabledRedirectingVisitor = props?.disabledRedirectingVisitor ?? false;
   const router = useRouter();
 

@@ -82,8 +82,6 @@ export const Head = (props: HeadProps) => {
       entity.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
-  console.log("entity", entity);
-
   const pipeline = useUserPipeline({
     pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
     accessToken,
@@ -123,7 +121,7 @@ export const Head = (props: HeadProps) => {
 
   return (
     <React.Fragment>
-      <style jsx>{`
+      <style jsx={true}>{`
         .org-gradient {
           background: linear-gradient(45deg, #dce7fe, #fef1f2);
         }

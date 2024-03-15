@@ -4,9 +4,7 @@ import axios from "axios";
 
 export async function fetchAccessToken() {
   try {
-    const { data } = await axios.post("/api/get-user-cookie", {
-      key: "instill-auth-session",
-    });
+    const { data } = await axios.get("/api/access-token");
 
     const accessToken = JSON.parse(data).access_token;
 
