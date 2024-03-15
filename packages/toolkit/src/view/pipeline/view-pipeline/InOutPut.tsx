@@ -14,23 +14,15 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useAppEntity,
-  useEntity,
   useInstillStore,
   useShallow,
   useStartOperatorTriggerPipelineForm,
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
-import {
-  Button,
-  Form,
-  Icons,
-  Skeleton,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Form, useToast } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
-import { LoadingSpin } from "../../../components";
 import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({

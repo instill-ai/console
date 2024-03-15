@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import { Nullable } from "../../../type";
 import { getOrganizationQuery } from "../../../vdp-sdk";
 
@@ -35,7 +36,7 @@ export function prefetchOrganization({
 }: {
   organizationID: Nullable<string>;
   accessToken: Nullable<string>;
-  queryClient: any;
+  queryClient: QueryClient;
 }) {
   const queryKey = getUseOrganizationQueryKey(organizationID);
 

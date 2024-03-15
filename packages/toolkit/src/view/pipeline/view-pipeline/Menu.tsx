@@ -9,7 +9,10 @@ import {
   useInstillStore,
   useShallow,
 } from "./../../../lib";
-import { ClonePipelineDialog } from "./../../../components";
+import {
+  ClonePipelineDialog,
+  GeneralDeleteResourceDialog,
+} from "./../../../components";
 import {
   PublishPipelineDialog,
   SharePipelineDialog,
@@ -98,7 +101,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
           />
         </React.Fragment>
       ) : null}
-      {/* <GeneralDeleteResourceDialog
+      <GeneralDeleteResourceDialog
         open={deleteDialogIsOpen}
         onOpenChange={(open) => setDeleteDialogIsOpen(open)}
         resourceID={pipeline.id}
@@ -109,7 +112,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
           setDeleteDialogIsOpen(false);
         }}
         trigger={null}
-      /> */}
+      />
     </React.Fragment>
   );
 };

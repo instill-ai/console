@@ -117,7 +117,7 @@ export const ReadOnlyPipelineBuilder = ({
     return () => {
       updatePipelineIsReadOnly(() => false);
     };
-  }, []);
+  }, [updatePipelineIsReadOnly]);
 
   return (
     <div

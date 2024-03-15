@@ -16,7 +16,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { NextRouter, useRouter } from "next/router";
+import { NextRouter } from "next/router";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
 import Link from "next/link";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
