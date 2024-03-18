@@ -9,8 +9,9 @@ import {
   useUser,
   useAuthenticatedUser,
   useUserPipelines,
+  useAppEntity,
 } from "../../../lib";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { UserProfileBio } from "./Bio";
 import { ProfileSeparator } from "../ProfileSeparator";
 import { PipelinesTable } from "../../pipeline";
@@ -23,7 +24,7 @@ const selector = (store: InstillStore) => ({
 
 export const UserProfileView = () => {
   const router = useRouter();
-  const entityObject = useEntity();
+  const entityObject = useAppEntity();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -33,19 +34,19 @@ export const UserProfileView = () => {
   });
 
   const user = useUser({
-    userName: entityObject.entityName,
+    userName: entityObject.data.entityName,
     accessToken: accessToken,
     enabled:
       enabledQuery &&
       entityObject.isSuccess &&
-      (entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ||
-        entityObject.namespaceType === "NAMESPACE_USER"),
+      (entityObject.data.namespaceType === "NAMESPACE_ORGANIZATION" ||
+        entityObject.data.namespaceType === "NAMESPACE_USER"),
   });
 
   const pipelines = useUserPipelines({
     accessToken: accessToken,
     enabled: enabledQuery && entityObject.isSuccess,
-    userName: entityObject.isSuccess ? entityObject.entityName : null,
+    userName: entityObject.isSuccess ? entityObject.data.entityName : null,
     filter: null,
     visibility: null,
   });
@@ -74,7 +75,7 @@ export const UserProfileView = () => {
             isOwner={
               me.isSuccess &&
               entityObject.isSuccess &&
-              me.data.id === String(entityObject.entity)
+              me.data.id === String(entityObject.data.entity)
             }
             twitterLink={user.data.profile?.social_profiles_links?.x ?? null}
             githubLink={

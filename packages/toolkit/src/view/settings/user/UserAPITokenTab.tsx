@@ -9,7 +9,7 @@ import {
   useShallow,
 } from "../../../lib";
 import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
