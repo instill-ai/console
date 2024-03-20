@@ -9,6 +9,7 @@ export * from "./utility";
 // different folder, so we separately expose them
 
 export * from "../lib/react-query-service/pipeline/use-user-pipeline/server";
+export * from "../lib/react-query-service/pipeline/use-user-pipelines/server";
 export * from "../lib/react-query-service/pipeline/use-user-pipeline-releases/server";
 export * from "../lib/react-query-service/mgmt/use-authenticated-user/server";
 export * from "../lib/react-query-service/mgmt/use-namespace-type/server";

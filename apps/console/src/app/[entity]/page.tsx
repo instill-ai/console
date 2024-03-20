@@ -4,6 +4,7 @@ import {
   dehydrate,
   fetchUser,
   prefetchUser,
+  prefetchUserPipelines,
 } from "@instill-ai/toolkit/server";
 import { ProfileViewPageRender } from "./render";
 import { Metadata } from "next";
@@ -17,8 +18,6 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cookieStore = cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
-
-  console.log("params", params.entity);
 
   let accessToken: Nullable<string> = null;
 
@@ -59,13 +58,19 @@ export default async function Page({ params }: Props) {
     accessToken = JSON.parse(authSessionCookie).access_token;
   }
 
-  if (params.entity) {
-  }
+  console.log({ accessToken });
 
   await prefetchUser({
     userName: "users/" + params.entity,
-    accessToken: accessToken,
+    accessToken: accessToken ?? null,
     queryClient: queryClient,
+  });
+
+  await prefetchUserPipelines({
+    userName: "users/" + params.entity,
+    accessToken: accessToken ?? null,
+    queryClient: queryClient,
+    filter: null,
   });
 
   return (

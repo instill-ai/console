@@ -17,9 +17,9 @@ export * from "./useTriggerUserPipelineRelease";
 export * from "./useUpdateUserPipeline";
 export * from "./useUpdateUserPipelineRelease";
 export * from "./useUserPipelineRelease";
-export * from "./useUserPipelines";
 export * from "./useWatchUserPipelineRelease";
 export * from "./useWatchUserPipelineReleases";
 
 export * from "./use-user-pipeline";
+export * from "./use-user-pipelines";
 export * from "./use-user-pipeline-releases";
