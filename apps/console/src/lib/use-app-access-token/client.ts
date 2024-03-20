@@ -38,9 +38,9 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
           error
         );
 
-        await axios.post("/api/remove-user-cookie", {
-          key: "instill-auth-session",
-        });
+        // await axios.post("/api/remove-user-cookie", {
+        //   key: "instill-auth-session",
+        // });
 
         if (!disabledRedirectingVisitor) {
           router.push("/login");
