@@ -29,7 +29,7 @@ export function getUseApiTokensQueryKey() {
   return ["api-tokens"];
 }
 
-export function prefetchUser({
+export function prefetchApiTokens({
   accessToken,
   queryClient,
 }: {

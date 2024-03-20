@@ -20,7 +20,7 @@ export function AccountViewPageRender() {
     <PageBase>
       <AppTopbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="!px-0 !py-8">
+        <PageBase.Content contentPadding="!px-0 py-8">
           <div className="mb-[52px] w-full px-20">
             <BreadcrumbWithLink
               items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
