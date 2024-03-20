@@ -27,7 +27,7 @@ import {
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin, UploadAvatarFieldWithCrop } from "../../../components";
 import { useUpdateAuthenticatedUser } from "../../../lib";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),

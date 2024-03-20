@@ -12,7 +12,7 @@ import {
   useShallow,
   useAuthenticatedUser,
 } from "../../../lib";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const UserAccountTabSchema = z.object({
   email: z.string(),
