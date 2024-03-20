@@ -40,12 +40,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     let pipeline: Nullable<Pipeline> = null;
 
-    console.log(
-      "namespaceType",
-      namespaceType,
-      env("NEXT_SERVER_API_GATEWAY_URL")
-    );
-
     if (namespaceType === "NAMESPACE_USER") {
       pipeline = await fetchUserPipeline({
         pipelineName: `users/${entity}/pipelines/${id}`,

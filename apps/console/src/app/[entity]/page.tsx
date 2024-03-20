@@ -5,6 +5,7 @@ import {
   fetchUser,
   prefetchUser,
   prefetchUserPipelines,
+  prefetchAuthenticatedUser,
 } from "@instill-ai/toolkit/server";
 import { ProfileViewPageRender } from "./render";
 import { Metadata } from "next";
@@ -58,7 +59,10 @@ export default async function Page({ params }: Props) {
     accessToken = JSON.parse(authSessionCookie).access_token;
   }
 
-  console.log({ accessToken });
+  await prefetchAuthenticatedUser({
+    accessToken: accessToken ?? null,
+    queryClient,
+  });
 
   await prefetchUser({
     userName: "users/" + params.entity,
