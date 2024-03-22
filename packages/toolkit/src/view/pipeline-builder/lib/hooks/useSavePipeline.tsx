@@ -87,12 +87,23 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         });
       }
 
+      console.log("targetNodes", targetNodes);
+
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.pipelineName,
-          recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+          recipe: constructPipelineRecipe(
+            targetNodes.map((node) => {
+              return {
+                component: node.data,
+                id: node.id,
+              };
+            })
+          ),
           metadata: composePipelineMetadataFromNodes(targetNodes),
         };
+
+        console.log({ payload });
 
         try {
           const { pipeline: newPipeline } =
@@ -155,7 +166,14 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       const payload: CreateUserPipelinePayload = {
         id: pipelineId,
-        recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+        recipe: constructPipelineRecipe(
+          targetNodes.map((node) => {
+            return {
+              component: node.data,
+              id: node.id,
+            };
+          })
+        ),
         metadata: composePipelineMetadataFromNodes(targetNodes),
       };
 

@@ -28,6 +28,30 @@ const selector = (store: InstillStore) => ({
   pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
+// Function to recursively update currentNodeID with newID
+const updateNodeIDs = (obj: any, currentNodeID: any, newID: any) => {
+  // If obj is an array, iterate over its elements
+  if (Array.isArray(obj)) {
+    obj.forEach((item) => updateNodeIDs(item, currentNodeID, newID));
+  } else if (typeof obj === "object" && obj !== null) {
+    // If obj is an object, iterate over its key-value pairs
+    Object.keys(obj).forEach((key) => {
+      // Check if the value is a string and matches currentNodeID
+      if (typeof obj[key] === "string" && obj[key].includes(currentNodeID)) {
+        // Replace currentNodeID with newID
+        obj[key] = obj[key].replace(currentNodeID, newID);
+      } else {
+        // Recursively call updateNodeIDs for nested objects/arrays
+        updateNodeIDs(obj[key], currentNodeID, newID);
+      }
+    });
+  }
+
+  // console.log("objobjobjobjobjobj", obj);
+
+  return obj;
+};
+
 export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
   const nodeIDInputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -88,6 +112,10 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
           const existingNodeID = nodes.map((node) => node.id);
 
+          const tttt = updateNodeIDs(nodes, currentNodeID, newID);
+
+          console.log("ttttttttttttttttt", tttt);
+
           if (existingNodeID.includes(newID)) {
             toast({
               title: "Component ID already exists",
@@ -100,18 +128,15 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
             return;
           }
 
-          const newNodes = nodes.map((node) => {
-            if (node.id === currentNodeID) {
-              return {
-                ...node,
-                id: newID,
-              };
-            }
-            return node;
-          });
+          const newNodes = updateNodeIDs(nodes, currentNodeID, newID);
+
+          console.log({ newNodes });
           const newEdges = composeEdgesFromComponents(
+            // @ts-ignore
             newNodes.map((node) => node.data)
           );
+
+          // @ts-ignore
           updateNodes(() => newNodes);
           updateEdges(() => newEdges);
 

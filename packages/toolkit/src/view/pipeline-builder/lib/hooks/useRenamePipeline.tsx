@@ -61,7 +61,14 @@ export function useRenamePipeline() {
       if (pipelineIsNew) {
         const payload: CreateUserPipelinePayload = {
           id: newId,
-          recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
+          recipe: constructPipelineRecipe(
+            nodes.map((node) => {
+              return {
+                component: node.data,
+                id: node.id,
+              };
+            })
+          ),
           metadata: composePipelineMetadataFromNodes(nodes),
         };
 
@@ -124,7 +131,14 @@ export function useRenamePipeline() {
       if (pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.pipelineName,
-          recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
+          recipe: constructPipelineRecipe(
+            nodes.map((node) => {
+              return {
+                component: node.data,
+                id: node.id,
+              };
+            })
+          ),
           metadata: composePipelineMetadataFromNodes(nodes),
         };
 

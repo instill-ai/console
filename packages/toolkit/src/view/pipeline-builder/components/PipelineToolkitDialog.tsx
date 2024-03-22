@@ -48,7 +48,14 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
     }
 
     return JSON.stringify(
-      constructPipelineRecipe(targetNodes.map((node) => node.data)),
+      constructPipelineRecipe(
+        targetNodes.map((node) => {
+          return {
+            component: node.data,
+            id: node.id,
+          };
+        })
+      ),
       null,
       2
     );
