@@ -35,7 +35,7 @@ import {
   useShallow,
   useUserMemberships,
 } from "../../../lib";
-import { InstillErrors } from "../../../constant";
+import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
 import { env, validateInstillID } from "../../../server";
 
@@ -231,7 +231,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         </Button>
       </Dialog.Trigger>
       <Dialog.Content
-        data-testid="create-pipeline-dialog"
+        data-testid={DataTestID.createPipelineDialog}
         className="!w-[600px] !p-0"
       >
         {entityObject.isSuccess ? (

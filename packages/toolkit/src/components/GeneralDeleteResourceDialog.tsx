@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
 import { Nullable, useControllableState } from "../lib";
 import { LoadingSpin } from "./LoadingSpin";
+import { DataTestID } from "../constant";
 
 export type GeneralDeleteResourceDialogProps = {
   resourceID: string;
@@ -47,7 +48,7 @@ export const GeneralDeleteResourceDialog = ({
       </Dialog.Trigger>
 
       <Dialog.Content
-        data-testid="delete-pipeline-dialog"
+        data-testid={DataTestID.deleteResourceDialog}
         className="!w-[450px]"
       >
         <div className="mx-auto mb-6 flex h-12 w-12 shrink-0 grow-0 rounded-full bg-semantic-warning-bg">

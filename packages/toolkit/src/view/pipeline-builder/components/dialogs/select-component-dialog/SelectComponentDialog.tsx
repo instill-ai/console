@@ -14,6 +14,7 @@ import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
 import { IteratorSection } from "./IteratorSection";
+import { DataTestID } from "../../../../../constant";
 
 export type OnSelectComponent = (
   definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
@@ -57,12 +58,15 @@ export const SelectComponentDialog = ({
           </Button>
         </Dialog.Trigger>
       )}
-      <Dialog.Content className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0">
+      <Dialog.Content
+        data-testid={DataTestID.SelectComponentDialog}
+        className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0"
+      >
         <ScrollArea.Root className="h-[700px] p-6">
           <Dialog.Close className="bg-semantic-bg-primary" />
           <Dialog.Header className="mb-4">
             <Dialog.Title className="mx-auto !product-headings-heading-3">
-              Add a connector
+              Select a component
             </Dialog.Title>
             <Dialog.Description className="mx-auto">
               Select a connector to add to your pipeline

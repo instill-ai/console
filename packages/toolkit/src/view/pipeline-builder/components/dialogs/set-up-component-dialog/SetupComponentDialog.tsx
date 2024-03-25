@@ -8,13 +8,17 @@ import {
   useEntity,
   useInstillStore,
   useUserConnectors,
-} from "../../../lib";
-import { AirbyteDataResourceForm, DataResourceAutoForm } from "../../data";
+} from "../../../../../lib";
+import {
+  AirbyteDataResourceForm,
+  DataResourceAutoForm,
+} from "../../../../data";
 
-import { ImageWithFallback } from "../../../components";
-import { AIResourceAutoForm } from "../../ai";
-import { ApplicationResourceAutoForm } from "../../application";
-import { SelectConnectorDialogItem } from "./SelectConnectorDialogItem";
+import { ImageWithFallback } from "../../../../../components";
+import { AIResourceAutoForm } from "../../../../ai";
+import { ApplicationResourceAutoForm } from "../../../../application";
+import { SelectConnectorDialogItem } from "../../SelectConnectorDialogItem";
+import { DataTestID } from "../../../../../constant";
 
 const selector = (store: InstillStore) => ({
   state: store.createResourceDialogState,
@@ -23,7 +27,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const CreateResourceDialog = () => {
+export const SetupComponentDialog = () => {
   const entity = useEntity();
   const {
     state: {
@@ -70,7 +74,10 @@ export const CreateResourceDialog = () => {
         }));
       }}
     >
-      <Dialog.Content className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0">
+      <Dialog.Content
+        data-testid={DataTestID.setupComponentDialog}
+        className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0"
+      >
         <ScrollArea.Root className="h-[700px] p-6">
           <Dialog.Close className="bg-semantic-bg-primary" />
           <div className="flex flex-col">

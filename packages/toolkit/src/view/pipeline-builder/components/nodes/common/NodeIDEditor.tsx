@@ -13,6 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
 import { composeEdgesFromComponents } from "../../../lib";
 import { validateInstillID } from "../../../../../server";
+import {
+  isConnectorComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+} from "../../../lib/checkComponentType";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -59,8 +64,8 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
   const handleSubmit = React.useCallback(
     function handleSubmit() {
-      form.handleSubmit((data) => {
-        const newID = data.nodeID;
+      form.handleSubmit((formData) => {
+        const newID = formData.nodeID;
 
         if (!newID || newID === "") {
           form.reset({
@@ -102,10 +107,38 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
           const newNodes = nodes.map((node) => {
             if (node.id === currentNodeID) {
-              return {
-                ...node,
-                id: newID,
-              };
+              if (isConnectorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
+
+              if (isOperatorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
+
+              if (isIteratorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
             }
             return node;
           });
