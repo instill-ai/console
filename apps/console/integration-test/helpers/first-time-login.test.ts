@@ -1,12 +1,12 @@
 import { test } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
 import { OnboardingPage } from "../pages/onboarding.page";
-import { PipelinesPage } from "../pages/pipelines.page";
+import { PipelineListPage } from "../pages/pipeline-list";
 
 test("should log in for the first time", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const onboardingPage = new OnboardingPage(page);
-  const pipelinesPage = new PipelinesPage(page);
+  const pipelineListPage = new PipelineListPage(page);
 
   await loginPage.goto();
 
@@ -22,7 +22,10 @@ test("should log in for the first time", async ({ page }) => {
   // Fill in onboarding form
   await onboardingPage.goto();
   await onboardingPage.fillInOnboardingForm();
-  await Promise.all([pipelinesPage.expectOnIt(), onboardingPage.submitForm()]);
+  await Promise.all([
+    pipelineListPage.expectOnIt(),
+    onboardingPage.submitForm(),
+  ]);
 
   await page
     .context()

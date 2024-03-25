@@ -129,7 +129,7 @@ export const StartNodeInputType = ({
   }
 
   return (
-    <div
+    <button
       onClick={() => {
         // We can't use checkbox because of this issue
         // https://github.com/radix-ui/primitives/issues/2291
@@ -150,9 +150,9 @@ export const StartNodeInputType = ({
         ) : null}
       </div>
       <div className="my-auto flex h-6 w-6 shrink-0">{icon}</div>
-      <span className="my-auto inline-block flex-1 align-middle product-body-text-4-semibold">
+      <span className="my-auto inline-block flex-1 text-left align-middle product-body-text-4-semibold">
         {label}
       </span>
-    </div>
+    </button>
   );
 };

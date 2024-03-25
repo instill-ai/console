@@ -102,21 +102,23 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
     );
 
-    const startOperatorMetadata = pipeline.data.recipe.components.find(
+    const startOperator = pipeline.data.recipe.components.find(
       (component) => component.id === "start"
-    )?.metadata as StartOperatorMetadata | undefined;
+    ) as PipelineStartComponent | undefined;
 
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
 
     const semiStructuredObjectKeys: string[] = [];
 
-    if (startOperatorMetadata) {
-      Object.entries(startOperatorMetadata).forEach(([key, value]) => {
-        if (value.instillFormat === "semi-structured/json") {
-          semiStructuredObjectKeys.push(key);
+    if (startOperator) {
+      Object.entries(startOperator.start_component.fields).forEach(
+        ([key, value]) => {
+          if (value.instill_format === "semi-structured/json") {
+            semiStructuredObjectKeys.push(key);
+          }
         }
-      });
+      );
     }
 
     const parsedStructuredData: GeneralRecord = input;
