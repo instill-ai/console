@@ -143,7 +143,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
     return propertyValue && Array.isArray(arrayArrayData) ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
-        {arrayArrayData.map((data, idx) => {
+        {arrayArrayData.map((data) => {
           console.log("datas", data, tree);
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
