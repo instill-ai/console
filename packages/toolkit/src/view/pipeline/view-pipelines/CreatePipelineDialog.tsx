@@ -230,7 +230,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           Create Pipeline
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="!w-[600px] !p-0">
+      <Dialog.Content
+        data-testid="create-pipeline-dialog"
+        className="!w-[600px] !p-0"
+      >
         {entityObject.isSuccess ? (
           <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">

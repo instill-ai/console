@@ -46,7 +46,10 @@ export const GeneralDeleteResourceDialog = ({
         )}
       </Dialog.Trigger>
 
-      <Dialog.Content className="!w-[450px]">
+      <Dialog.Content
+        data-testid="delete-pipeline-dialog"
+        className="!w-[450px]"
+      >
         <div className="mx-auto mb-6 flex h-12 w-12 shrink-0 grow-0 rounded-full bg-semantic-warning-bg">
           <Icons.AlertTriangle className="m-auto h-6 w-6 stroke-semantic-warning-on-bg" />
         </div>

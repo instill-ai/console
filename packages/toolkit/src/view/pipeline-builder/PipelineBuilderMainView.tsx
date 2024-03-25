@@ -14,7 +14,6 @@ import {
   useEntity,
   useSmartHint,
   useUserPipeline,
-  InstillJSONSchema,
 } from "../../lib";
 import {
   BottomBar,
