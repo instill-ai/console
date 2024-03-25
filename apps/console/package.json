@@ -18,7 +18,7 @@
     "lint": "next lint",
     "download-airbyte-icons": "node ./downloadAirbyteIcons.js",
     "e2e:env": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs",
-    "e2e:local": "pnpm e2e:env && npx playwright test --project=chromium --debug",
+    "e2e:local": "pnpm e2e:env && npx playwright test --project=chromium",
     "e2e:first-time-login": "pnpm e2e:env && npx playwright test --project=first-time-login",
     "e2e:ci": "pnpm e2e:env && pnpm e2e:first-time-login && npx playwright test --project=chromium --project=firefox --project=webkit"
   },

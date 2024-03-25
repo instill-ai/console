@@ -11,6 +11,7 @@ export class PipelineBuilderPage {
   readonly endNode: Locator;
   readonly mainSaveButton: Locator;
   readonly mainRunButton: Locator;
+  readonly selectComponentDialogTrigger: Locator;
 
   constructor(page: Page, pipelineID: string) {
     this.page = page;
@@ -31,6 +32,9 @@ export class PipelineBuilderPage {
     });
     this.mainSaveButton = page.getByRole("button", { name: "Save" });
     this.mainRunButton = page.getByRole("button", { name: "Run" });
+    this.selectComponentDialogTrigger = page.getByRole("button", {
+      name: "Component",
+    });
   }
 
   async goto() {

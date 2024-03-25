@@ -1,9 +1,9 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { PipelineOverviewPage } from "../pages/pipeline-overview.page";
 import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
 import { PipelineListPage } from "../pages/pipeline-list";
-import { getDropdownContent } from "../helpers/dropdown";
-import { TestID } from "../constant/test-id";
+import { getDropdownContent } from "../helpers/component-helpers/dropdown";
+import { DataTestID } from "../data-testid";
 
 test("should unmarshal payload for start operator json field", async ({
   page,
@@ -80,12 +80,13 @@ test("should unmarshal payload for start operator json field", async ({
   await pipelineOverviewPage.moreOptionsButton.click();
   const moreOptionsContent = await getDropdownContent(
     page,
-    pipelineOverviewPage.moreOptionsButton,
+    pipelineOverviewPage.moreOptionsButton
   );
   await moreOptionsContent.waitFor({ state: "visible" });
-
   await moreOptionsContent.getByText("Delete").click();
-  const deletePipelineDialog = page.getByTestId(TestID.deletePipelineDialog);
+  const deletePipelineDialog = page.getByTestId(
+    DataTestID.deleteResourceDialog
+  );
   await deletePipelineDialog.locator("input#confirmationCode").fill(pipelineID);
 
   await Promise.all([

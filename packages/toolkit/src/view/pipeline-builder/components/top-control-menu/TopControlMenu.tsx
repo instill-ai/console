@@ -6,7 +6,7 @@ import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
 import { Share } from "./Share";
 import { Release } from "./Release";
-import { CreateResourceDialog } from "../CreateResourceDialog";
+import { SetupComponentDialog } from "../dialogs/set-up-component-dialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
@@ -78,7 +78,7 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <CreateResourceDialog />
+      <SetupComponentDialog />
       <PublishPipelineDialog />
     </React.Fragment>
   );
