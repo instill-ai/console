@@ -80,7 +80,7 @@ test("should unmarshal payload for start operator json field", async ({
   await pipelineOverviewPage.moreOptionsButton.click();
   const moreOptionsContent = await getDropdownContent(
     page,
-    pipelineOverviewPage.moreOptionsButton
+    pipelineOverviewPage.moreOptionsButton,
   );
   await moreOptionsContent.waitFor({ state: "visible" });
 

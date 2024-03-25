@@ -18,7 +18,7 @@ export class PipelineListPage {
       this.createPipelineDialog.getByPlaceholder("Pipeline Name");
     this.createPipelineDialogCreateButton = this.createPipelineDialog.getByRole(
       "button",
-      { name: "Create" }
+      { name: "Create" },
     );
   }
 
