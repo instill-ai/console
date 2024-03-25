@@ -51,7 +51,7 @@ test("should change component ID correctly in pipeline-builder", async ({
   const stComponent = page.locator(`[data-id='${oldSTComponentID}']`);
   await stComponent.getByRole("button", { name: "Create connector" }).click();
   const setupComponentDialog = page.getByTestId(
-    DataTestID.setupComponentDialog
+    DataTestID.setupComponentDialog,
   );
   await setupComponentDialog.locator("input[name='id']").fill(stConnectorID);
   await setupComponentDialog
@@ -88,10 +88,10 @@ test("should change component ID correctly in pipeline-builder", async ({
 
   // expect conection line is on pipeline-builder
   await expect(
-    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`)
+    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`),
   ).toHaveCount(1);
   await expect(
-    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`)
+    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`),
   ).toHaveCount(1);
 
   // Change the component's ID
@@ -101,29 +101,29 @@ test("should change component ID correctly in pipeline-builder", async ({
 
   // expect connection line is not on pipeline-builder
   await expect(
-    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`)
+    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`),
   ).toHaveCount(0);
   await expect(
-    page.locator(`g[aria-label='Edge from start to ${newSTComponentID}']`)
+    page.locator(`g[aria-label='Edge from start to ${newSTComponentID}']`),
   ).toHaveCount(1);
   await expect(
-    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`)
+    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`),
   ).toHaveCount(0);
 
   // expect connection line is not on pipeline-builder after save
   await pipelineBuilderPage.mainSaveButton.click();
   await page.reload();
   await expect(
-    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`)
+    page.locator(`g[aria-label='Edge from start to ${oldSTComponentID}']`),
   ).toHaveCount(0);
   await expect(
-    page.locator(`g[aria-label='Edge from start to ${newSTComponentID}']`)
+    page.locator(`g[aria-label='Edge from start to ${newSTComponentID}']`),
   ).toHaveCount(1);
   await expect(
-    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`)
+    page.locator(`g[aria-label='Edge from ${oldSTComponentID} to end']`),
   ).toHaveCount(0);
   await expect(newStComponent.locator("input[name='nodeID']")).toHaveValue(
-    newSTComponentID
+    newSTComponentID,
   );
 
   // go to pipeline overview page
@@ -132,7 +132,7 @@ test("should change component ID correctly in pipeline-builder", async ({
   // Delete this pipeline
   const moreOptionsContent = await getDropdownContent(
     page,
-    pipelineOverviewPage.moreOptionsButton
+    pipelineOverviewPage.moreOptionsButton,
   );
   await Promise.all([
     moreOptionsContent.waitFor({ state: "visible" }),
@@ -140,7 +140,7 @@ test("should change component ID correctly in pipeline-builder", async ({
   ]);
   await moreOptionsContent.getByText("Delete").click();
   const deletePipelineDialog = page.getByTestId(
-    DataTestID.deleteResourceDialog
+    DataTestID.deleteResourceDialog,
   );
   await deletePipelineDialog.locator("input#confirmationCode").fill(pipelineID);
 
@@ -153,7 +153,7 @@ test("should change component ID correctly in pipeline-builder", async ({
   await connectorListPage.goto();
   await page.getByTestId(`${stConnectorID}-delete-button`).click();
   const deleteConnectorDialog = page.getByTestId(
-    DataTestID.deleteResourceDialog
+    DataTestID.deleteResourceDialog,
   );
   await deleteConnectorDialog
     .locator("input#confirmationCode")
