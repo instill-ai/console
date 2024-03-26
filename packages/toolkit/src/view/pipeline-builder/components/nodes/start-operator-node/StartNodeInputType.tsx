@@ -136,6 +136,7 @@ export const StartNodeInputType = ({
         onSelect();
       }}
       className="group flex w-[151px] cursor-pointer flex-row gap-x-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 hover:border-semantic-accent-default"
+      type="button"
     >
       <div
         className={cn(

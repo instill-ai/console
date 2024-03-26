@@ -19,6 +19,7 @@ export class PipelineBuilderPage {
     this.startNode = page.locator("[data-id='start']");
     this.startNodeAddFieldButton = this.startNode.getByRole("button", {
       name: "Add Field",
+      exact: true,
     });
     this.startNodeSaveFieldButton = this.startNode.getByRole("button", {
       name: "Save",
@@ -26,6 +27,7 @@ export class PipelineBuilderPage {
     this.endNode = page.locator("[data-id='end']");
     this.endNodeAddFieldButton = this.endNode.getByRole("button", {
       name: "Add Field",
+      exact: true,
     });
     this.endNodeSaveFieldButton = this.endNode.getByRole("button", {
       name: "Save",
@@ -43,5 +45,14 @@ export class PipelineBuilderPage {
 
   async expectOnIt() {
     await this.page.waitForURL(this.pipelineBuilderPagePath);
+  }
+
+  async expectToSave() {
+    await Promise.all([
+      this.page
+        .getByText("Pipeline is saved", { exact: true })
+        .waitFor({ state: "visible" }),
+      this.mainSaveButton.click(),
+    ]);
   }
 }
