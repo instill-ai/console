@@ -66,6 +66,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "chromium",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Chrome"],
@@ -78,6 +79,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "firefox",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Firefox"],
@@ -87,6 +89,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "webkit",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Safari"],
