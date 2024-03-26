@@ -5,7 +5,6 @@ import {
   useQuery,
   useShallow,
 } from "@instill-ai/toolkit";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { fetchAccessToken } from "./server";
 

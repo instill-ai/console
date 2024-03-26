@@ -1,8 +1,11 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 
 import { env } from "../../../../server";
 import { Nullable } from "../../../type";
 import { listApiTokensQuery } from "../../../vdp-sdk";
+import { getUseApiTokensQueryKey } from "./server";
 
 export function useApiTokens({
   accessToken,
@@ -13,8 +16,9 @@ export function useApiTokens({
   enabled: boolean;
   retry?: false | number;
 }) {
+  const queryKey = getUseApiTokensQueryKey();
   return useQuery({
-    queryKey: ["api-tokens"],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

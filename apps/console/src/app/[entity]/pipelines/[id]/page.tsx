@@ -8,10 +8,9 @@ import {
   prefetchUserPipeline,
   prefetchNamespaceType,
   prefetchOrganization,
-  env,
   fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
-import { PipelineViewPageRender } from "./render";
+import { PipelineOverviewPageRender } from "./render";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -124,7 +123,7 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <PipelineViewPageRender />
+      <PipelineOverviewPageRender />
     </HydrationBoundary>
   );
 }

@@ -5,9 +5,8 @@ import {
   fetchUser,
   prefetchUser,
   prefetchUserPipelines,
-  prefetchAuthenticatedUser,
 } from "@instill-ai/toolkit/server";
-import { ProfileViewPageRender } from "./render";
+import { ProfilePageRender } from "./render";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Nullable, User } from "@instill-ai/toolkit";
@@ -70,11 +69,12 @@ export default async function Page({ params }: Props) {
     accessToken: accessToken ?? null,
     queryClient: queryClient,
     filter: null,
+    visibility: null,
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfileViewPageRender />
+      <ProfilePageRender />
     </HydrationBoundary>
   );
 }

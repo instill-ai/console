@@ -4,7 +4,7 @@ import { Logo } from "@instill-ai/design-system";
 import { AppTopbar, PageBase, ViewPipeline } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "lib/use-app-access-token";
 
-export function PipelineViewPageRender() {
+export function PipelineOverviewPageRender() {
   useAppAccessToken({
     disabledRedirectingVisitor: true,
   });

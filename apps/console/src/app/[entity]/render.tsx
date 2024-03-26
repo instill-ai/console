@@ -4,7 +4,7 @@ import { Logo } from "@instill-ai/design-system";
 import { AppTopbar, PageBase, UserProfileView } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "lib/use-app-access-token";
 
-export function ProfileViewPageRender() {
+export function ProfilePageRender() {
   useAppAccessToken({
     disabledRedirectingVisitor: true,
   });
