@@ -19,10 +19,13 @@ import { useRouter } from "next/router";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  updatePipelineId: store.updatePipelineId,
+  updatePipelineName: store.updatePipelineName,
 });
 
 export const ViewPipeline = () => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, updatePipelineId, updatePipelineName } =
+    useInstillStore(useShallow(selector));
   const [currentVersion, setCurrentVersion] =
     React.useState<Nullable<string>>(null);
 
@@ -47,6 +50,9 @@ export const ViewPipeline = () => {
       return false;
     }
     setCurrentVersion(pipeline.data?.releases[0]?.id);
+
+    updatePipelineId(() => pipeline.data.id);
+    updatePipelineName(() => pipeline.data.name);
 
     return pipeline.data.owner_name === me.data.name;
   }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
