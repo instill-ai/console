@@ -39,20 +39,20 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await pipelineBuilderPage.startNodeSaveFieldButton.click();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.mainSaveButton.click();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -73,7 +73,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -83,7 +83,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
       const editTextsFieldButton = pipelineBuilderPage.startNode.locator(
-        `button[aria-label='Edit start operator ${textsFieldID} field']`
+        `button[aria-label='Edit start operator ${textsFieldID} field']`,
       );
       await editTextsFieldButton.click();
 
@@ -92,7 +92,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         .getByRole("button", { name: "Save" })
         .click();
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
@@ -107,7 +107,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -116,7 +116,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await pipelineBuilderPage.goto();
 
       const editTextsFieldButton = pipelineBuilderPage.startNode.locator(
-        `button[aria-label='Edit start operator ${textsFieldID} field']`
+        `button[aria-label='Edit start operator ${textsFieldID} field']`,
       );
       await editTextsFieldButton.click();
       await pipelineBuilderPage.startNode.getByPlaceholder("My prompt").clear();
@@ -128,14 +128,18 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         .click();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(promptsFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(promptsFieldID, {
+          exact: true,
+        }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(promptsFieldID, { exact: true })
+        pipelineBuilderPage.startNode.getByText(promptsFieldID, {
+          exact: true,
+        }),
       ).toHaveCount(1);
     });
 
@@ -162,20 +166,20 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await pipelineBuilderPage.endNodeSaveFieldButton.click();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.mainSaveButton.click();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -196,7 +200,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -206,7 +210,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
       const editFooFieldButton = pipelineBuilderPage.endNode.locator(
-        `button[aria-label='Edit end operator ${resultFooID} field']`
+        `button[aria-label='Edit end operator ${resultFooID} field']`,
       );
       await editFooFieldButton.click();
 
@@ -215,7 +219,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         .getByRole("button", { name: "Save" })
         .click();
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
@@ -231,7 +235,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -240,7 +244,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await pipelineBuilderPage.goto();
 
       const editFooFieldButton = pipelineBuilderPage.endNode.locator(
-        `button[aria-label='Edit end operator ${resultFooID} field']`
+        `button[aria-label='Edit end operator ${resultFooID} field']`,
       );
       await editFooFieldButton.click();
       await pipelineBuilderPage.endNode.getByPlaceholder("My prompt").clear();
@@ -252,14 +256,14 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         .click();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true }),
       ).toHaveCount(1);
     });
 

@@ -7,7 +7,7 @@ export async function deleteConnector(page: Page, connectorID: string) {
   await connectorListPage.goto();
   await page.getByTestId(`${connectorID}-delete-button`).click();
   const deleteConnectorDialog = page.getByTestId(
-    DataTestID.deleteResourceDialog
+    DataTestID.deleteResourceDialog,
   );
   await deleteConnectorDialog
     .locator("input#confirmationCode")
