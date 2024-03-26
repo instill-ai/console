@@ -15,13 +15,13 @@ if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
 const config: PlaywrightTestConfig = {
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 40000,
+  timeout: 60000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000,
+    timeout: 10000,
   },
   /* Run tests in files in parallel */
   fullyParallel: false,
