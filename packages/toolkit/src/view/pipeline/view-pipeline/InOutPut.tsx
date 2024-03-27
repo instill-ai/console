@@ -201,7 +201,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-6 flex flex-col gap-y-6">
+      <div className="mb-3 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
         </div>
