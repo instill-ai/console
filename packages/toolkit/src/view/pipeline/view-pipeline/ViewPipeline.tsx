@@ -51,11 +51,15 @@ export const ViewPipeline = () => {
     }
     setCurrentVersion(pipeline.data?.releases[0]?.id);
 
-    updatePipelineId(() => pipeline.data.id);
-    updatePipelineName(() => pipeline.data.name);
-
     return pipeline.data.owner_name === me.data.name;
   }, [pipeline.isSuccess, pipeline.data, me.isSuccess, me.data]);
+
+  React.useEffect(() => {
+    if (pipeline.data) {
+      updatePipelineId(() => pipeline.data.id);
+      updatePipelineName(() => pipeline.data.name);
+    }
+  }, [pipeline.data]);
 
   React.useEffect(() => {
     if (pipeline.isError) {
