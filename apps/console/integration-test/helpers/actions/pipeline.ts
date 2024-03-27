@@ -12,7 +12,7 @@ export async function createPipeline(page: Page, pipelineID: string) {
   await pipelineListPage.createPipelineButton.click({ force: true });
   await pipelineListPage.createPipelineDialogIDField.fill(pipelineID);
   await Promise.all([
-    pipelineBuilderPage.expectOnIt(),
+    pipelineBuilderPage.startNode.waitFor({ state: "visible" }),
     pipelineListPage.createPipelineDialogCreateButton.click(),
   ]);
 }
