@@ -209,8 +209,12 @@ function composeEdgeForReference({
 }) {
   const newEdges: Edge[] = [];
 
+  console.log(reference);
+
   // check whether the referenced target is available for start operator
-  if (reference.referenceValue.withoutCurlyBraces.split(".")[0] === "start") {
+  if (
+    reference.referenceValue.withoutCurlyBraces.split(".")[0].includes("start")
+  ) {
     const referenceIsAvailable = startNodeAvailableRefernces.some(
       (availableReference) =>
         checkReferenceIsAvailable(
@@ -236,6 +240,7 @@ function composeEdgeForReference({
 
     // Here is for other nodes
   } else {
+    console.log("otherNodesAvailableReferences", otherNodesAvailableReferences);
     const referenceIsAvailable = otherNodesAvailableReferences.some(
       (availableReference) =>
         checkReferenceIsAvailable(
@@ -270,6 +275,19 @@ function checkReferenceIsAvailable(
   availableReference: string
 ): boolean {
   const referenceValueWithoutArray = value.replaceAll(/\[[^\]]+\]/g, "");
+
+  // Once a value includes [], we will loosely check the reference.
+  // For example, we will connect st_1.output["Foo"], even st_1 don't have
+  // Foo field
+  if (value.includes("[") || value.includes("]")) {
+    const valueComponentID = referenceValueWithoutArray.split(".")[0];
+    const avaiableReferenceComponentID = availableReference.split(".")[0];
+    if (valueComponentID === avaiableReferenceComponentID) {
+      return true;
+    }
+
+    return false;
+  }
 
   if (availableReference === referenceValueWithoutArray) {
     return true;
