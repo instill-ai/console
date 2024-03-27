@@ -32,7 +32,7 @@ export const topbarItems = [
   {
     pathName: "models",
     icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
-    name: "Model",
+    name: "Models",
   },
   {
     pathName: "dashboard",
