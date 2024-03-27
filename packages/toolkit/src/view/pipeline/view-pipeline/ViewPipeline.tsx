@@ -59,7 +59,7 @@ export const ViewPipeline = () => {
       updatePipelineId(() => pipeline.data.id);
       updatePipelineName(() => pipeline.data.name);
     }
-  }, [pipeline.data]);
+  }, [pipeline.data, updatePipelineId, updatePipelineName]);
 
   React.useEffect(() => {
     if (pipeline.isError) {
