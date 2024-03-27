@@ -2,7 +2,7 @@
 
 import { Html, Head, Main, NextScript } from "next/document";
 import { FC } from "react";
-import { env } from "@instill-ai/toolkit";
+import { env } from "@instill-ai/toolkit/server";
 
 export const Document: FC = () => {
   return (

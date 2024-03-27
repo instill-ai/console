@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
@@ -80,9 +82,10 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
 
   const [selectedType, setSelectedType] =
     React.useState<Nullable<StartOperatorInputType>>(null);
-  const [prevFieldKey, setPrevFieldKey] =
+  const [currentEditingFieldKey, setCurrentEditingFieldKey] =
     React.useState<Nullable<string>>(null);
-  const [enableEdit, setEnableEdit] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [isCreating, setIsCreating] = React.useState(false);
 
   const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
     resolver: zodResolver(StartOperatorFreeFormSchema),
@@ -96,13 +99,13 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
 
   // When edit field, the input key is already the auto generated key
   const onEditFreeFormField = (key: string) => {
-    setPrevFieldKey(key);
+    setCurrentEditingFieldKey(key);
     form.reset({
       title: data.start_component.fields[key].title,
       key,
       description: data.start_component.fields[key].description,
     });
-    setEnableEdit(true);
+    setIsEditing(true);
 
     setSelectedType(
       pickSelectedTypeFromInstillFormat(
@@ -136,15 +139,22 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   ) {
     let field: Nullable<PipelineStartComponentField> = null;
 
-    if (
-      Object.keys(data.start_component.fields).includes(formData.key) &&
-      !enableEdit
-    ) {
-      form.setError("key", {
-        type: "manual",
-        message: "Key already exists",
-      });
-      return;
+    if (Object.keys(data.start_component.fields).includes(formData.key)) {
+      if (isEditing) {
+        if (formData.key !== currentEditingFieldKey) {
+          form.setError("key", {
+            type: "manual",
+            message: "Key already exists",
+          });
+          return;
+        }
+      } else {
+        form.setError("key", {
+          type: "manual",
+          message: "Key already exists",
+        });
+        return;
+      }
     }
 
     switch (selectedType) {
@@ -267,8 +277,8 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
 
     const newNodes = nodes.map((node) => {
       if (isStartComponent(node.data) && field) {
-        if (prevFieldKey) {
-          delete node.data.start_component.fields[prevFieldKey];
+        if (currentEditingFieldKey) {
+          delete node.data.start_component.fields[currentEditingFieldKey];
         }
 
         node.data = {
@@ -288,9 +298,10 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     );
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
-    setEnableEdit(false);
+    setIsCreating(false);
+    setIsEditing(false);
     setSelectedType(null);
-    setPrevFieldKey(null);
+    setCurrentEditingFieldKey(null);
     updatePipelineRecipeIsDirty(() => true);
     form.reset({
       title: "",
@@ -299,9 +310,10 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   }
 
   function onCancelFreeForm() {
-    setEnableEdit((prev) => !prev);
+    setIsCreating(false);
+    setIsEditing(false);
     setSelectedType(null);
-    setPrevFieldKey(null);
+    setCurrentEditingFieldKey(null);
     form.reset({
       title: "",
       description: "",
@@ -464,7 +476,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
       </NodeHead>
       {nodeIsCollapsed ? null : (
         <div className="nodrag nowheel flex flex-col">
-          {enableEdit ? (
+          {isCreating || isEditing ? (
             <StartOperatorNodeFreeForm
               form={form}
               selectedType={selectedType}
@@ -571,7 +583,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
                 onClick={() => {
                   // Set the default selected type to string
                   setSelectedType("string");
-                  setEnableEdit(!enableEdit);
+                  setIsCreating(true);
                 }}
                 disabled={disabledAddFieldButton}
                 type="button"

@@ -19,6 +19,7 @@ export function onClickSmartHint({
   >;
   field: ControllerRenderProps<
     {
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       [k: string]: any;
     },
     string

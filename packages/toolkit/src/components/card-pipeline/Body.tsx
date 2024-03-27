@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@instill-ai/design-system";
 import { ReadOnlyPipelineBuilder } from "../../view";
 import { useRouter } from "next/router";

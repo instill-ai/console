@@ -176,6 +176,20 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
+  if (tree._type === "arrayArray") {
+    return (
+      <React.Fragment key={tree.path || tree.fieldKey}>
+        {pickRegularFieldsFromInstillFormTree(
+          tree.items,
+          form,
+          selectedConditionMap,
+          setSelectedConditionMap,
+          options
+        )}
+      </React.Fragment>
+    );
+  }
+
   if (tree.const || !tree.path) {
     return null;
   }

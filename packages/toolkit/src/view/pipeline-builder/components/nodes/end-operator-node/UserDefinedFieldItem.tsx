@@ -1,3 +1,5 @@
+"use client";
+
 import { useShallow } from "zustand/react/shallow";
 import { InstillStore, useInstillStore } from "../../../../../lib";
 import { Icons, Tooltip } from "@instill-ai/design-system";
@@ -36,7 +38,10 @@ export const UserDefinedFieldItem = ({
             <Tooltip.Provider>
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
-                  <button onClick={() => onEditField(fieldKey)}>
+                  <button
+                    onClick={() => onEditField(fieldKey)}
+                    aria-label={`Edit end operator ${fieldKey} field`}
+                  >
                     <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
                   </button>
                 </Tooltip.Trigger>
@@ -64,7 +69,10 @@ export const UserDefinedFieldItem = ({
             <Tooltip.Provider>
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
-                  <button onClick={() => onDeleteField(fieldKey)}>
+                  <button
+                    onClick={() => onDeleteField(fieldKey)}
+                    aria-label={`Delete end operator ${fieldKey} field`}
+                  >
                     <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
                   </button>
                 </Tooltip.Trigger>

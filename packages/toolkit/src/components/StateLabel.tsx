@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 
 import type { Nullable, ResourceState } from "../lib";

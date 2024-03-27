@@ -1,3 +1,5 @@
+"use client";
+
 import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
 import { AutoFormFieldBaseProps } from "../../..";

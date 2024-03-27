@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeObjKey } from "../../utility";
+import { removeObjKey } from "../../../server";
 import {
   type PipelineRelease,
   type PipelineReleaseWatchState,

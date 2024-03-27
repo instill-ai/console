@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -12,7 +14,6 @@ import {
   useEntity,
   useSmartHint,
   useUserPipeline,
-  InstillJSONSchema,
 } from "../../lib";
 import {
   BottomBar,
@@ -79,7 +80,7 @@ export const PipelineBuilderMainView = () => {
     if (!pipeline.isSuccess) return;
 
     updatePipelineOpenAPIOutputSchema(
-      () => pipeline.data.data_specification.output as InstillJSONSchema
+      () => pipeline.data.data_specification?.output ?? null
     );
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 

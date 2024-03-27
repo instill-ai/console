@@ -1,22 +1,18 @@
+"use client";
+
 import cn from "clsx";
 import { getModelInstanceTaskToolkit } from "@instill-ai/design-system";
 import { Nullable } from "../lib";
 
-export type ModelTaskLabelProps = {
+export const ModelTaskLabel = ({
+  task,
+  marginBottom,
+  position,
+}: {
   task: Nullable<string>;
-  /**
-   * - Default is undefined
-   */
   marginBottom?: string;
-  /**
-   * - Default is undefined
-   */
   position?: string;
-};
-
-export const ModelTaskLabel = (props: ModelTaskLabelProps) => {
-  const { task, marginBottom, position } = props;
-
+}) => {
   if (!task) {
     return (
       <div

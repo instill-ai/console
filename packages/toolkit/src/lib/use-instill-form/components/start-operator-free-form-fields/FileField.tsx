@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Form } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, Nullable } from "../../..";

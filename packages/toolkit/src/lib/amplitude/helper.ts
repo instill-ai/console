@@ -1,6 +1,6 @@
 import { Nullable } from "../type";
 import { init, setUserId, track } from "@amplitude/analytics-browser";
-import { env } from "../utility";
+import { env } from "../../server";
 import { AmplitudeEvent, AmplitudeEventProperties } from "./type";
 
 export const initAmplitude = (

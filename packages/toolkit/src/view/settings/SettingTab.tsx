@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { Separator } from "@instill-ai/design-system";
 

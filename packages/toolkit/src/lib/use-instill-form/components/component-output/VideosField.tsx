@@ -1,3 +1,5 @@
+"use client";
+
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { VideoPreview } from "../common";

@@ -1,9 +1,17 @@
 import { InstillHumanReadableFormat } from "../types";
 
 export function transformInstillFormatToHumanReadableFormat(
-  format: string
+  format: string,
+  arrayInArray?: boolean
 ): InstillHumanReadableFormat {
   if (format.includes("array:")) {
+    if (arrayInArray) {
+      return {
+        isArray: true,
+        format: "array:" + transformPrimitive(format.replace("array:", "")),
+      };
+    }
+
     return {
       isArray: true,
       format: transformPrimitive(format.replace("array:", "")),

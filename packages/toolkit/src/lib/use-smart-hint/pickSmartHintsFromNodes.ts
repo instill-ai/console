@@ -12,7 +12,7 @@ import {
 } from "../../view/pipeline-builder/lib/checkComponentType";
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
-import { transformConnectorComponentFormTreeToSmartHints } from "./transformConnectorComponentFormTreeToSmartHints";
+import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
 import { transformStartOperatorFieldsToSmartHints } from "./transformStartOperatorFieldsToSmartHints";
 import { getOperatorInputOutputSchema } from "../../view/pipeline-builder/lib/getOperatorInputOutputSchema";
 import { PipelineIteratorComponent } from "../vdp-sdk";
@@ -55,10 +55,7 @@ export function pickSmartHintsFromNodes({
         const outputFormTree =
           transformInstillJSONSchemaToFormTree(outputSchema);
 
-        const hints = transformConnectorComponentFormTreeToSmartHints(
-          outputFormTree,
-          node.id
-        );
+        const hints = transformFormTreeToSmartHints(outputFormTree, node.id);
 
         smartHints = [...smartHints, ...hints];
       }
@@ -86,10 +83,7 @@ export function pickSmartHintsFromNodes({
         const outputFormTree =
           transformInstillJSONSchemaToFormTree(outputSchema);
 
-        const hints = transformConnectorComponentFormTreeToSmartHints(
-          outputFormTree,
-          node.id
-        );
+        const hints = transformFormTreeToSmartHints(outputFormTree, node.id);
 
         smartHints = [...smartHints, ...hints];
       }
@@ -111,40 +105,24 @@ export function pickSmartHintsFromNodes({
     }
 
     if (isIteratorComponent(node.data)) {
-      const outputSchema =
-        node.data.iterator_component.data_specification.output;
+      // Fragile Point:
+      // Because the iterator output's generated depends on the user action
+      // The data_specification.output may not be ready due to user haven't
+      // save the changes.
 
-      if (outputSchema) {
-        const outputFormTree =
-          transformInstillJSONSchemaToFormTree(outputSchema);
+      // The current solution is treating the iterator.output_elements as
+      // the source of truth instead of its data_specification.output
 
-        const hints = transformConnectorComponentFormTreeToSmartHints(
-          outputFormTree,
-          node.id
-        );
+      /*
+       * output_elements = {
+       *  result_0: "${connector_1.output.result}",
+       * }
+       */
 
-        // Fragile Point:
-        // Because the iterator output's generated depends on the user action
-        // The data_specification.output may not be ready due to user haven't
-        // save the changes. So we need to take a look at the unsaved
-        // output_elements and generate the hint from it.
+      const consoleGeneratedHints: SmartHint[] = [];
 
-        /*
-         * output_elements = {
-         *  result_0: "${connector_1.output.result}",
-         * }
-         */
-
-        /*
-         * unsavedIteratorOutput = [["result_0", "${connector_1.output.result}"]]
-         */
-        const unsavedIteratorOutput = Object.entries(
-          node.data.iterator_component.output_elements
-        ).filter(([key]) => hints.some((hint) => hint.key !== key));
-
-        const unsavedOutputHints: SmartHint[] = [];
-
-        unsavedIteratorOutput.forEach(([key, value]) => {
+      Object.entries(node.data.iterator_component.output_elements).forEach(
+        ([key, value]) => {
           const componentKey = value
             .replace("${", "")
             .replace("}", "")
@@ -163,7 +141,7 @@ export function pickSmartHintsFromNodes({
               if (outputSchema) {
                 const outputFormTree =
                   transformInstillJSONSchemaToFormTree(outputSchema);
-                const hints = transformConnectorComponentFormTreeToSmartHints(
+                const hints = transformFormTreeToSmartHints(
                   outputFormTree,
                   component.id
                 );
@@ -176,7 +154,7 @@ export function pickSmartHintsFromNodes({
                 if (targetHint) {
                   // Iterator exposed output format will be similar to
                   // iterator_0.output.result_0
-                  unsavedOutputHints.push({
+                  consoleGeneratedHints.push({
                     key,
                     path: `${node.id}.output.${key}`,
                     instillFormat: targetHint.instillFormat,
@@ -192,7 +170,7 @@ export function pickSmartHintsFromNodes({
               if (outputSchema) {
                 const outputFormTree =
                   transformInstillJSONSchemaToFormTree(outputSchema);
-                const hints = transformConnectorComponentFormTreeToSmartHints(
+                const hints = transformFormTreeToSmartHints(
                   outputFormTree,
                   component.id
                 );
@@ -203,7 +181,7 @@ export function pickSmartHintsFromNodes({
                 );
 
                 if (targetHint) {
-                  unsavedOutputHints.push({
+                  consoleGeneratedHints.push({
                     key,
                     path: `${node.id}.output.${key}`,
                     instillFormat: targetHint.instillFormat,
@@ -214,17 +192,10 @@ export function pickSmartHintsFromNodes({
               }
             }
           }
-        });
+        }
+      );
 
-        console.log(
-          hints,
-          unsavedIteratorOutput,
-          node.data.iterator_component.output_elements,
-          unsavedOutputHints
-        );
-
-        smartHints = [...smartHints, ...hints, ...unsavedOutputHints];
-      }
+      smartHints = [...smartHints, ...consoleGeneratedHints];
 
       if (!isEditingIterator) {
         smartHints = [

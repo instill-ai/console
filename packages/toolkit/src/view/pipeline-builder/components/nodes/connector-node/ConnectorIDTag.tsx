@@ -1,3 +1,5 @@
+"use client";
+
 import { Tag, Tooltip } from "@instill-ai/design-system";
 import { Nullable } from "../../../../../lib";
 

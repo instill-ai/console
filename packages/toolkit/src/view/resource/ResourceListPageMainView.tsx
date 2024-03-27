@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { AddConnectorDialog } from "./AddConnectorDialog";
 import { GeneralPageProp, useEntity, useUserConnectors } from "../../lib";
@@ -5,7 +7,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 const ResourcesTable = dynamic(
-  () => import("./ResourcesTable").then((mod) => mod.ResourcesTable),
+  () => import("./ResourcesTable.js").then((mod) => mod.ResourcesTable),
   { ssr: false }
 );
 

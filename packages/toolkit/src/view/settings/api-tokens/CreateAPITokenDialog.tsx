@@ -1,3 +1,5 @@
+"use client";
+
 import * as z from "zod";
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";

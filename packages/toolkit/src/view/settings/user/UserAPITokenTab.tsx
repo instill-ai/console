@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Setting } from "..";
 import {
@@ -8,7 +10,6 @@ import {
 } from "../../../lib";
 import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
 import { useRouter } from "next/router";
-
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,

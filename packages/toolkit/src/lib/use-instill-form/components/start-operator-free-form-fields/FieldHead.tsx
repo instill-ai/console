@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
@@ -118,6 +120,7 @@ export const FieldHead = ({
                         onClick={() => {
                           if (onEditField) onEditField(path);
                         }}
+                        aria-label={`Edit start operator ${path} field`}
                       >
                         <Icons.Edit03 className="my-auto h-3 w-3 stroke-semantic-accent-on-bg" />
                       </button>
@@ -150,6 +153,7 @@ export const FieldHead = ({
                         onClick={() => {
                           if (onDeleteField) onDeleteField(path);
                         }}
+                        aria-label={`Delete start operator ${path} field`}
                       >
                         <Icons.Trash01 className="h-3 w-3 stroke-semantic-error-on-bg" />
                       </button>

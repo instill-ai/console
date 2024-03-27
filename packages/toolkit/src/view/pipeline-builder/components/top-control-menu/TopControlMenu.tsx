@@ -1,14 +1,17 @@
+"use client";
+
 import * as React from "react";
 import { Run } from "./Run";
 import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
 import { Share } from "./Share";
 import { Release } from "./Release";
-import { CreateResourceDialog } from "../CreateResourceDialog";
+import { SetupComponentDialog } from "../dialogs/set-up-component-dialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
+  useEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -29,13 +32,14 @@ export const TopControlMenu = ({
   reactFlowInstance: Nullable<ReactFlowInstance>;
 }) => {
   const router = useRouter();
-  const { id, entity } = router.query;
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
   const { pipelineIsNew, isEditingIterator } = useInstillStore(
     useShallow(selector)
   );
+
+  const entity = useEntity();
 
   return (
     <React.Fragment>
@@ -45,9 +49,9 @@ export const TopControlMenu = ({
             variant="tertiaryGrey"
             onClick={() => {
               if (pipelineIsNew) {
-                router.push(`/${entity}/pipelines`);
+                router.push(`/${entity.entity}/pipelines`);
               } else {
-                router.push(`/${entity}/pipelines/${id}`);
+                router.push(`/${entity.entity}/pipelines/${entity.id}`);
               }
             }}
             className="flex cursor-pointer"
@@ -76,8 +80,13 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <CreateResourceDialog />
-      <PublishPipelineDialog />
+      <SetupComponentDialog />
+      <PublishPipelineDialog
+        router={router}
+        pipelineName={entity.pipelineName}
+        entity={entity.entity}
+        id={entity.id}
+      />
     </React.Fragment>
   );
 };

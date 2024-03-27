@@ -1,9 +1,12 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import { useRouter } from "next/router";
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
-import { dashboardOptions, env } from "../../lib";
+import { dashboardOptions } from "../../lib";
+import { env } from "../../server";
 
 export type FilterProps = {
   setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;

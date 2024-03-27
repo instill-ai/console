@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
@@ -146,8 +148,10 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
           </div>
 
           <ComponentOutputReferenceHints
-            componentID={data.id}
-            outputSchema={outputSchema}
+            component={data}
+            task={
+              selectedConditionMap ? selectedConditionMap["task"] : undefined
+            }
           />
         </>
       )}

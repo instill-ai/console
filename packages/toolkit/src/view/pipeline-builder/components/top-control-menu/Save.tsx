@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { Button, Icons } from "@instill-ai/design-system";
@@ -39,14 +41,14 @@ export const Save = ({
   return (
     <Button
       size="md"
-      className="flex !h-8 cursor-pointer flex-row gap-x-2"
+      className="flex !h-8 cursor-pointer flex-row !items-center gap-x-2"
       onClick={savePipeline}
       disabled={canSave ? isSaving : true}
       variant="tertiaryColour"
     >
       Save
       {isSaving ? (
-        <LoadingSpin className="!text-black" />
+        <LoadingSpin className="!h-4 !w-4 !text-black" />
       ) : (
         <Icons.Save01
           className={cn(

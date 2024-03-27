@@ -22,7 +22,7 @@ import {
   instillUserRoles,
   useUpdateAuthenticatedUser,
 } from "@instill-ai/toolkit";
-import { useAccessToken } from "../lib/useAccessToken";
+import { useAccessToken } from "../lib/use-access-token/client";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;

@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
@@ -6,14 +8,16 @@ import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { AutoresizeInputWrapper } from "../../../../../components";
-import {
-  InstillStore,
-  useInstillStore,
-  validateInstillID,
-} from "../../../../../lib";
+import { InstillStore, useInstillStore } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
 import { composeEdgesFromComponents } from "../../../lib";
+import { validateInstillID } from "../../../../../server";
+import {
+  isConnectorComponent,
+  isIteratorComponent,
+  isOperatorComponent,
+} from "../../../lib/checkComponentType";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -60,8 +64,8 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
   const handleSubmit = React.useCallback(
     function handleSubmit() {
-      form.handleSubmit((data) => {
-        const newID = data.nodeID;
+      form.handleSubmit((formData) => {
+        const newID = formData.nodeID;
 
         if (!newID || newID === "") {
           form.reset({
@@ -103,10 +107,38 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
           const newNodes = nodes.map((node) => {
             if (node.id === currentNodeID) {
-              return {
-                ...node,
-                id: newID,
-              };
+              if (isConnectorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
+
+              if (isOperatorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
+
+              if (isIteratorComponent(node.data)) {
+                return {
+                  ...node,
+                  id: newID,
+                  data: {
+                    ...node.data,
+                    id: newID,
+                  },
+                };
+              }
             }
             return node;
           });

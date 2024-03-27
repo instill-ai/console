@@ -1,27 +1,18 @@
-import * as React from "react";
+"use client";
+
 import { Icons, ScrollArea } from "@instill-ai/design-system";
-import {
-  InstillJSONSchema,
-  Nullable,
-  useComponentOutputReferenceHintFields,
-} from "../../../lib";
-import { PickComponentsFromReferenceHintsOptions } from "../../../lib/use-instill-form/pick/pickComponentsFromReferenceHints";
+import { PipelineComponent, useOutputReferenceHintFields } from "../../../lib";
 
 export const ComponentOutputReferenceHints = ({
-  componentID,
-  outputSchema,
+  component,
+  task,
 }: {
-  componentID: string;
-  outputSchema: Nullable<InstillJSONSchema>;
+  component: PipelineComponent;
+  task?: string;
 }) => {
-  const [mode] =
-    React.useState<Required<PickComponentsFromReferenceHintsOptions["mode"]>>(
-      "groupByFormat"
-    );
-
-  const hintFields = useComponentOutputReferenceHintFields(outputSchema, {
-    componentID,
-    mode,
+  const fields = useOutputReferenceHintFields({
+    component,
+    task,
   });
 
   return (
@@ -41,7 +32,7 @@ export const ComponentOutputReferenceHints = ({
               references
             </p>
           </div>
-          <div className="flex flex-col gap-y-4">{hintFields}</div>
+          <div className="flex flex-col gap-y-4">{fields}</div>
         </div>
       </ScrollArea.Root>
     </div>

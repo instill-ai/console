@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, DataTable, Icons, useToast } from "@instill-ai/design-system";
 
@@ -131,7 +133,11 @@ export const ResourcesTable = (props: ResourcesTableProps) => {
                 handleDeleteUserConnector(row.original)
               }
               trigger={
-                <Button variant="tertiaryDanger" size="lg">
+                <Button
+                  data-testid={`${row.original.id}-delete-button`}
+                  variant="tertiaryDanger"
+                  size="lg"
+                >
                   Delete
                 </Button>
               }

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";

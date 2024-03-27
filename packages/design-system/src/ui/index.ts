@@ -44,11 +44,8 @@ export * from "./UploadFileFields";
 // Buttons
 export * from "./Buttons";
 
-import TextWithHtml from "./TextWithHtml/TextWithHtml";
-import type { TextWithHtmlProps } from "./TextWithHtml/TextWithHtml";
-
-export { TextWithHtml, BasicInputDescription };
-export type { TextWithHtmlProps, BasicInputDescriptionProps };
+export { BasicInputDescription };
+export type { BasicInputDescriptionProps };
 
 export * from "./FormRoot";
 export * from "./ModalRoot";

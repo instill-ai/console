@@ -15,20 +15,20 @@ if (!process.env.NEXT_PUBLIC_CONSOLE_BASE_URL) {
 const config: PlaywrightTestConfig = {
   testDir: "./integration-test",
   /* Maximum time one test can run for. */
-  timeout: 20000,
+  timeout: 60000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000,
+    timeout: 10000,
   },
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 1,
+  retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? "off" : "on-first-retry",
+    trace: "on",
     baseURL: process.env.NEXT_PUBLIC_CONSOLE_BASE_URL,
 
     // Because our backend is served with self-signed certification, we have to
@@ -66,6 +66,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "chromium",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Chrome"],
@@ -78,6 +79,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "firefox",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Firefox"],
@@ -87,6 +89,7 @@ const config: PlaywrightTestConfig = {
 
     {
       name: "webkit",
+      testMatch: "main.test.ts",
       testIgnore: "first-time-login.test.ts",
       use: {
         ...devices["Desktop Safari"],

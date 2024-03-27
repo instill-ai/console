@@ -5,7 +5,7 @@ import { Nullable } from "vitest";
 import * as z from "zod";
 import { Form, Input, Textarea } from "@instill-ai/design-system";
 import { InstillErrors } from "../constant/errors";
-import { validateInstillID } from "./utility";
+import { validateInstillID } from "../server";
 
 export const ResourceAdditionalFormSchema = z
   .object({

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { Form, ScrollArea } from "@instill-ai/design-system";
@@ -146,17 +148,20 @@ export const VideosField = ({
                     <FileListItem
                       key={`${path}-${e.name}-item`}
                       name={e.name}
-                      onDelete={() => {
+                      onDelete={async () => {
                         const newFiles = videosFiles.filter(
                           (_, index) => index !== i
                         );
 
+                        const newBinaries: string[] = [];
+
+                        for (const file of newFiles) {
+                          const binary = await readFileToBinary(file);
+                          newBinaries.push(binary);
+                        }
+
+                        field.onChange(newBinaries);
                         setVideoFiles(newFiles);
-                        field.onChange(
-                          newFiles.map((file) => {
-                            return readFileToBinary(file);
-                          })
-                        );
 
                         // We directly remove the browser input value, we don't need it
                         // and it may cause some surprise when user reupload the same file

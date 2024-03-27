@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import * as z from "zod";
@@ -51,8 +53,9 @@ export type PipelineEndComponentFieldSortedItem = PipelineEndComponentField & {
 };
 
 export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
-  const [enableEdit, setEnableEdit] = React.useState(false);
-  const [prevFieldKey, setPrevFieldKey] =
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [isCreating, setIsCreating] = React.useState(false);
+  const [currentEditingFieldKey, setCurrentEditingFieldKey] =
     React.useState<Nullable<string>>(null);
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -84,21 +87,28 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
   const onCreateFreeFormField = (
     formData: z.infer<typeof EndOperatorFreeFormSchema>
   ) => {
-    if (
-      Object.keys(data.end_component.fields).includes(formData.key) &&
-      !enableEdit
-    ) {
-      form.setError("key", {
-        type: "manual",
-        message: "Key already exists",
-      });
-      return;
+    if (Object.keys(data.end_component.fields).includes(formData.key)) {
+      if (isEditing) {
+        if (formData.key !== currentEditingFieldKey) {
+          form.setError("key", {
+            type: "manual",
+            message: "Key already exists",
+          });
+          return;
+        }
+      } else {
+        form.setError("key", {
+          type: "manual",
+          message: "Key already exists",
+        });
+        return;
+      }
     }
 
     const newNodes = nodes.map((node) => {
       if (isEndComponent(node.data)) {
-        if (prevFieldKey) {
-          delete node.data.end_component.fields[prevFieldKey];
+        if (currentEditingFieldKey) {
+          delete node.data.end_component.fields[currentEditingFieldKey];
         }
 
         node.data = {
@@ -123,8 +133,9 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
-    setEnableEdit(false);
-    setPrevFieldKey(null);
+    setIsCreating(false);
+    setIsEditing(false);
+    setCurrentEditingFieldKey(null);
     form.reset({
       title: "",
       value: "",
@@ -133,8 +144,9 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
   };
 
   const onCancel = () => {
-    setEnableEdit(!enableEdit);
-    setPrevFieldKey(null);
+    setIsCreating(false);
+    setIsEditing(false);
+    setCurrentEditingFieldKey(null);
     form.reset({
       title: "",
       key: "",
@@ -167,8 +179,8 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
       value: data.end_component.fields[key].value,
       key: key,
     });
-    setEnableEdit(true);
-    setPrevFieldKey(key);
+    setIsEditing(true);
+    setCurrentEditingFieldKey(key);
   }
 
   const [sortedItems, setSortedItems] = React.useState<
@@ -258,7 +270,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
         </div>
       </NodeHead>
 
-      {nodeIsCollapsed ? null : enableEdit ? (
+      {nodeIsCollapsed ? null : isEditing || isCreating ? (
         <EndOperatorNodeFreeForm
           form={form}
           onCreateFreeFormField={onCreateFreeFormField}
@@ -338,7 +350,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
           <Button
             className="flex w-full flex-1 gap-x-2"
             variant="tertiaryColour"
-            onClick={() => setEnableEdit(!enableEdit)}
+            onClick={() => setIsCreating(true)}
             disabled={disabledAddFieldButton}
             type="button"
           >

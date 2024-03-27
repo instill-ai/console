@@ -29,7 +29,7 @@ export type DataSpecification = {
 export type Spec = {
   resource_specification: InstillJSONSchema;
   component_specification: InstillJSONSchema;
-  data_specifications: Record<string, DataSpecification>;
+  data_specifications: Nullable<Record<string, DataSpecification>>;
 };
 
 export type Visibility =

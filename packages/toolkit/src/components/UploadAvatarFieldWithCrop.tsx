@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 import { FormLabel } from "../view/settings/FormLabel";
@@ -10,6 +12,8 @@ export const UploadAvatarFieldWithCrop = ({
   placeholder,
 }: {
   fieldName: string;
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: UseFormReturn<any>;
   placeholder?: React.ReactNode;
 }) => {

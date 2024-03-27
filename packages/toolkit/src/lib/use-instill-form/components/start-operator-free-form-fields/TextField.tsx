@@ -1,3 +1,5 @@
+"use client";
+
 import { Form, Input } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../..";
 import { FieldHead } from "./FieldHead";

@@ -1,5 +1,7 @@
+"use client";
+
 import * as React from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSortedReleases } from "../../pipeline-builder";
 import {
   Button,
@@ -17,13 +19,13 @@ import {
   isPublicPipeline,
   toastInstillError,
   useDeleteUserPipeline,
-  useEntity,
   useInstillStore,
   useOrganization,
   useShallow,
   useUser,
   useAuthenticatedUser,
   useUserPipeline,
+  useAppEntity,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
@@ -41,26 +43,27 @@ type HeadProps = {
 };
 
 export const Head = (props: HeadProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const shareCode = searchParams.get("shareCode");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const { currentVersion, handleVersion } = props;
 
-  const router = useRouter();
-  const { id, entity } = router.query;
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("overview");
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const user = useUser({
-    userName: entityObject.entityName,
+    userName: entity.isSuccess ? entity.data.entityName : null,
     accessToken,
     enabled:
       enabledQuery &&
-      entityObject.namespaceType === "NAMESPACE_USER" &&
-      !!entityObject.entityName,
+      entity.isSuccess &&
+      entity.data.namespaceType === "NAMESPACE_USER",
   });
 
   const me = useAuthenticatedUser({
@@ -70,26 +73,26 @@ export const Head = (props: HeadProps) => {
   });
 
   const organization = useOrganization({
-    organizationID: entityObject.isSuccess
-      ? entityObject.entityName.split("/")[1]
-      : null,
+    organizationID: entity.isSuccess ? entity.data.entity : null,
     accessToken,
     enabled:
       enabledQuery &&
-      entityObject.isSuccess &&
-      entityObject.namespaceType === "NAMESPACE_ORGANIZATION",
+      entity.isSuccess &&
+      entity.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
     accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
+    enabled: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entityObject.pipelineName,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
     accessToken,
-    enabledQuery: enabledQuery && entityObject.isSuccess,
+    enabledQuery: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
   });
 
   const deletePipeline = useDeleteUserPipeline();
@@ -105,7 +108,7 @@ export const Head = (props: HeadProps) => {
         variant: "alert-success",
         size: "large",
       });
-      router.push(`/${entityObject.entity}/pipelines`);
+      router.push(`/${entity.data.entity}/pipelines`);
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
@@ -117,7 +120,7 @@ export const Head = (props: HeadProps) => {
 
   return (
     <React.Fragment>
-      <style jsx>{`
+      <style jsx={true}>{`
         .org-gradient {
           background: linear-gradient(45deg, #dce7fe, #fef1f2);
         }
@@ -131,8 +134,8 @@ export const Head = (props: HeadProps) => {
           <div className="mr-auto flex max-w-5xl flex-col gap-y-3 ">
             <div className="flex w-full flex-row">
               <div className="mr-auto flex flex-row gap-x-3">
-                {entityObject.isSuccess ? (
-                  entityObject.namespaceType === "NAMESPACE_ORGANIZATION" ? (
+                {entity.isSuccess ? (
+                  entity.data.namespaceType === "NAMESPACE_ORGANIZATION" ? (
                     <EntityAvatar
                       src={organization.data?.profile?.avatar ?? null}
                       entityName={organization.data?.name ?? ""}
@@ -164,14 +167,16 @@ export const Head = (props: HeadProps) => {
                     <div className="my-auto product-headings-heading-4">
                       <span
                         onClick={() => {
-                          router.push(`/${entity}`);
+                          router.push(`/${entity.data.entity}`);
                         }}
                         className="cursor-pointer text-semantic-fg-disabled hover:!underline"
                       >
-                        {entity}
+                        {entity.data.entity}
                       </span>
                       <span className="text-semantic-fg-disabled">/</span>
-                      <span className="text-semantic-fg-primary">{id}</span>
+                      <span className="text-semantic-fg-primary">
+                        {entity.data.id}
+                      </span>
                     </div>
 
                     {releases.length && pipeline.isSuccess ? (
@@ -328,6 +333,7 @@ export const Head = (props: HeadProps) => {
                       </Button>
                     }
                     pipeline={pipeline.data}
+                    router={router}
                   />
                 ) : (
                   <Button
@@ -343,7 +349,9 @@ export const Head = (props: HeadProps) => {
                 {pipeline.data.permission.can_edit ? (
                   <Button
                     onClick={() => {
-                      router.push(`/${entity}/pipelines/${id}/builder`);
+                      router.push(
+                        `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                      );
                     }}
                     size="sm"
                     variant="secondaryColour"

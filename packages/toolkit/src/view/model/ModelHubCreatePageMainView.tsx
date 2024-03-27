@@ -1,3 +1,5 @@
+"use client";
+
 import { PageTitle } from "../../components";
 import { GeneralPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";

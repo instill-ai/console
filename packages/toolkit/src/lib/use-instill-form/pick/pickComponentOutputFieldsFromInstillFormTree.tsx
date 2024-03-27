@@ -50,6 +50,16 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     if (tree.path) {
       propertyValue = data ? dot.getter(data, tree.path) ?? null : null;
     }
+  } else if (tree._type === "arrayArray") {
+    if (tree.fieldKey) {
+      propertyValue = data
+        ? Array.isArray(data[tree.fieldKey])
+          ? data[tree.fieldKey]
+          : null
+        : null;
+    } else {
+      propertyValue = null;
+    }
   }
 
   // 2. Main process
@@ -126,6 +136,24 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         })}
       </React.Fragment>
     );
+  }
+
+  if (tree._type === "arrayArray") {
+    const arrayArrayData = propertyValue as GeneralRecord[];
+
+    return propertyValue && Array.isArray(arrayArrayData) ? (
+      <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
+        {arrayArrayData.map((data) => {
+          return pickComponentOutputFieldsFromInstillFormTree({
+            ...props,
+            tree: tree.items,
+            data: {
+              [tree.fieldKey as string]: data,
+            },
+          });
+        })}
+      </div>
+    ) : null;
   }
 
   // Process const field

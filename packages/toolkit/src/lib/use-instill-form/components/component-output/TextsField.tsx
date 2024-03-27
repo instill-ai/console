@@ -1,3 +1,5 @@
+"use client";
+
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
@@ -9,7 +11,6 @@ export type TextsFieldProps = {
 
 export const TextsField = (props: TextsFieldProps) => {
   const { title, texts, hideField } = props;
-
   const normalizedTexts = texts?.map((text) => String(text));
 
   return (

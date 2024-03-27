@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, DataTable } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
 import {

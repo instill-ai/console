@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import { useShallow } from "zustand/react/shallow";
@@ -6,7 +8,6 @@ import { Button, Icons, Popover, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  getHumanReadableStringFromTime,
   useEntity,
   useInstillStore,
   useUserPipeline,
@@ -19,6 +20,7 @@ import {
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
+import { getHumanReadableStringFromTime } from "../../../server";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,

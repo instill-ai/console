@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import axios from "axios";
 import { StatefulToggleField } from "@instill-ai/design-system";

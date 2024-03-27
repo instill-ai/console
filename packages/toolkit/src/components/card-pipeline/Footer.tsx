@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import { useRouter } from "next/router";
@@ -100,6 +102,7 @@ export const Footer = ({
               </Button>
             }
             pipeline={pipeline}
+            router={router}
           />
         ) : (
           <Button

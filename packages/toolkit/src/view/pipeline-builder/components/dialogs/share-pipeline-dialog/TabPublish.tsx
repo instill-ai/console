@@ -1,8 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { Button } from "@instill-ai/design-system";
 import {
   InstillStore,
-  useEntity,
+  Nullable,
   useInstillStore,
   useShallow,
   useUserPipeline,
@@ -16,7 +18,11 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const TabPublish = () => {
+export const TabPublish = ({
+  pipelineName,
+}: {
+  pipelineName: Nullable<string>;
+}) => {
   const {
     updateDialogPublishPipelineIsOpen,
     updateDialogSharePipelineIsOpen,
@@ -24,11 +30,9 @@ export const TabPublish = () => {
     enabledQuery,
   } = useInstillStore(useShallow(selector));
 
-  const entityObject = useEntity();
-
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
-    enabled: enabledQuery && entityObject.isSuccess,
+    pipelineName: pipelineName,
+    enabled: enabledQuery && !!pipelineName,
     accessToken,
   });
 
@@ -79,7 +83,7 @@ export const TabPublish = () => {
             : " Publish this pipeline to the Community for the public to use or clone."}
         </p>
         {pipelineIsPublic ? (
-          <UnpublishPipelineDialog />
+          <UnpublishPipelineDialog pipelineName={pipelineName} />
         ) : (
           <Button
             variant="primary"

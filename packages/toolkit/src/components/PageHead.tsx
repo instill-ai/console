@@ -1,7 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { env } from "../lib";
+import { env } from "../server";
 
 export type PageHeadProps = {
   meta: {

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
@@ -304,8 +306,12 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           <div className="mb-4 w-full">
             {!resourceNotCreated && !enableEdit ? (
               <ComponentOutputReferenceHints
-                componentID={data.id}
-                outputSchema={outputSchema}
+                component={data}
+                task={
+                  selectedConditionMap
+                    ? selectedConditionMap["task"]
+                    : undefined
+                }
               />
             ) : null}
           </div>

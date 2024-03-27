@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Nullable } from "../../../../../lib";
 import { InOutputOption } from "../IteratorEditor";

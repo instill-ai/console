@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ComplicateIcons,
   DropdownMenu,
@@ -6,7 +8,6 @@ import {
 } from "@instill-ai/design-system";
 import { EntityAvatar } from "../EntityAvatar";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   InstillStore,
@@ -14,14 +15,19 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const CETopbarDropdown = () => {
-  const router = useRouter();
+export const CETopbarDropdown = ({
+  router,
+}: {
+  router: NextRouter | AppRouterInstance;
+}) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({

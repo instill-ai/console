@@ -3,7 +3,7 @@ import {
   env,
   removeCookie,
   type SetCookiePayload,
-} from "@instill-ai/toolkit";
+} from "@instill-ai/toolkit/server";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

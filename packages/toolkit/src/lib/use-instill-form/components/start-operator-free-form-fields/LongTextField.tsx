@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { AutoFormFieldBaseProps } from "../../types";

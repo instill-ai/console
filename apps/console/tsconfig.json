@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "target": "es5",
+    "target": "ES2022",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"],
     },
     "downlevelIteration": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
     "jsx": "preserve",
     "strict": true,
     "useUnknownInCatchVariables": true,
@@ -22,17 +16,17 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
+    "incremental": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "plugins": [
       {
-        "name": "next"
-      }
-    ]
+        "name": "next",
+      },
+    ],
   },
   "include": [
     "next-env.d.ts",
@@ -42,11 +36,7 @@
     "**/*.jsx",
     "**/*.mjs",
     "**/*.json",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
   ],
-  "exclude": [
-    "**/node_modules",
-    "**/.*/",
-    ".next"
-  ]
+  "exclude": ["**/node_modules", "**/.*/", ".next"],
 }

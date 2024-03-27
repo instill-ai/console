@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { Form, Textarea } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps } from "../../types";

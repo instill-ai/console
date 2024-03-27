@@ -37,39 +37,15 @@ jobs:
           cache-from: type=registry,ref=instill/console:buildcache
           cache-to: type=registry,ref=instill/console:buildcache,mode=max
 
-  base:
+  backends:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
-    name: Base Backends
+    name: Backends
     strategy:
       fail-fast: false
       matrix:
-        component: [mgmt-backend]
-    uses: instill-ai/base/.github/workflows/integration-test-backend.yml@main
-    with:
-      component: ${{ matrix.component }}
-      target: latest
-  vdp:
-    needs: build-push-image
-    if: github.ref == 'refs/heads/main'
-    name: VDP Backends
-    strategy:
-      fail-fast: false
-      matrix:
-        component: [pipeline-backend, controller-vdp]
-    uses: instill-ai/vdp/.github/workflows/integration-test-backend.yml@main
-    with:
-      component: ${{ matrix.component }}
-      target: latest
-  model:
-    needs: build-push-image
-    if: github.ref == 'refs/heads/main'
-    name: Model Backends
-    strategy:
-      fail-fast: false
-      matrix:
-        component: [model-backend, controller-model]
-    uses: instill-ai/model/.github/workflows/integration-test-backend.yml@main
+        component: [pipeline-backend]
+    uses: instill-ai/instill-core/.github/workflows/integration-test-backend.yml@main
     with:
       component: ${{ matrix.component }}
       target: latest
@@ -77,7 +53,7 @@ jobs:
     needs: build-push-image
     if: github.ref == 'refs/heads/main'
     name: Console
-    uses: instill-ai/base/.github/workflows/integration-test-console.yml@main
+    uses: instill-ai/instill-core/.github/workflows/integration-test-console.yml@main
     with:
       target: latest
 
@@ -137,7 +113,7 @@ jobs:
 
       - name: Launch Instill Core (latest)
         run: |
-          make latest BUILD=true EDITION=local-ce:test ITMODE_ENABLED=true
+          make latest EDITION=local-ce:test RAY_LATEST_TAG=latest ITMODE_ENABLED=true INSTILL_CORE_HOST=api-gateway
 
       - name: Checkout
         uses: actions/checkout@v3

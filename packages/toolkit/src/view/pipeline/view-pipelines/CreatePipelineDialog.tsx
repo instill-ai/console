@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import cn from "clsx";
 import * as z from "zod";
@@ -23,7 +25,6 @@ import {
   InstillStore,
   Nullable,
   PipelineSharing,
-  env,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -33,10 +34,10 @@ import {
   useInstillStore,
   useShallow,
   useUserMemberships,
-  validateInstillID,
 } from "../../../lib";
-import { InstillErrors } from "../../../constant";
+import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
+import { env, validateInstillID } from "../../../server";
 
 const CreatePipelineSchema = z
   .object({
@@ -229,7 +230,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           Create Pipeline
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="!w-[600px] !p-0">
+      <Dialog.Content
+        data-testid={DataTestID.createPipelineDialog}
+        className="!w-[600px] !p-0"
+      >
         {entityObject.isSuccess ? (
           <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">

@@ -1,3 +1,5 @@
+"use client";
+
 import JsonView from "@uiw/react-json-view";
 import { GeneralRecord, Nullable } from "../../../../../../lib";
 import { customTheme } from "../../../../../../lib/react-json-view";

@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
 import { Nullable, useControllableState } from "../lib";
 import { LoadingSpin } from "./LoadingSpin";
+import { DataTestID } from "../constant";
 
 export type GeneralDeleteResourceDialogProps = {
   resourceID: string;
@@ -44,7 +47,10 @@ export const GeneralDeleteResourceDialog = ({
         )}
       </Dialog.Trigger>
 
-      <Dialog.Content className="!w-[450px]">
+      <Dialog.Content
+        data-testid={DataTestID.deleteResourceDialog}
+        className="!w-[450px]"
+      >
         <div className="mx-auto mb-6 flex h-12 w-12 shrink-0 grow-0 rounded-full bg-semantic-warning-bg">
           <Icons.AlertTriangle className="m-auto h-6 w-6 stroke-semantic-warning-on-bg" />
         </div>
@@ -76,12 +82,6 @@ export const GeneralDeleteResourceDialog = ({
           </Input.Root>
         </div>
         <div className="flex flex-row gap-x-2">
-          {/* <Dialog.Close asChild>
-            <Button variant="secondaryGrey" size="lg" className="!flex-1">
-              Cancel
-            </Button>
-          </Dialog.Close> */}
-
           <Button
             variant="danger"
             size="lg"

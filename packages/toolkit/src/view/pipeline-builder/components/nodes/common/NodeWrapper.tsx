@@ -1,10 +1,12 @@
+"use client";
+
 import cn from "clsx";
 import * as React from "react";
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { Textarea } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { NodeBottomBarProvider } from "./node-bottom-bar";
-import { Edge, Position } from "reactflow";
+import { Edge, Position, useEdges } from "reactflow";
 import { NodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
 
@@ -45,11 +47,23 @@ export const NodeWrapper = ({
   const timer = React.useRef<Nullable<number>>(null);
   const [noteValue, setNoteValue] = React.useState(nodeData.note);
 
+  // ReadOnlyPipelineBuilder won't update the global zustand state of nodes
+  // and edges, we need to make sure it get correct edges
+
+  const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
+    if (edges.length === 0 && reactflowEdges.length !== 0) {
+      return reactflowEdges.some((edge) => edge.target === nodeData.id);
+    }
+
     return edges.some((edge) => edge.target === nodeData.id);
-  }, [edges, nodeData.id]);
+  }, [edges, reactflowEdges, nodeData.id]);
 
   const hasSourceEdges = React.useMemo(() => {
+    if (edges.length === 0 && reactflowEdges.length !== 0) {
+      return reactflowEdges.some((edge) => edge.source === nodeData.id);
+    }
+
     return edges.some((edge) => edge.source === nodeData.id);
   }, [edges, nodeData.id]);
 

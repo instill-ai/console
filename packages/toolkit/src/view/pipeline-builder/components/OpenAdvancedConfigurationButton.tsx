@@ -1,3 +1,5 @@
+"use client";
+
 export const OpenAdvancedConfigurationButton = (
   props: React.ButtonHTMLAttributes<HTMLButtonElement>
 ) => {

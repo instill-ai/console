@@ -12,13 +12,18 @@ import {
   useShallow,
   useUpdateUserPipeline,
 } from "../../../../lib";
-import { composePipelineMetadataFromNodes, constructPipelineRecipe } from "..";
+import {
+  composePipelineMetadataFromNodes,
+  constructPipelineRecipe,
+  createInitialGraphData,
+} from "..";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
+  updateNodes: store.updateNodes,
   pipelineId: store.pipelineId,
   pipelineIsNew: store.pipelineIsNew,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
@@ -27,6 +32,8 @@ const selector = (store: InstillStore) => ({
   updatePipelineIsNew: store.updatePipelineIsNew,
   tempSavedNodesForEditingIteratorFlow:
     store.tempSavedNodesForEditingIteratorFlow,
+  updateTempSavedNodesForEditingIteratorFlow:
+    store.updateTempSavedNodesForEditingIteratorFlow,
   isEditingIterator: store.isEditingIterator,
   editingIteratorID: store.editingIteratorID,
 });
@@ -38,6 +45,7 @@ export type UseSavePipelineProps =
   | undefined;
 
 export function useSavePipeline(props: UseSavePipelineProps = {}) {
+  const { setIsSaving } = props;
   const entity = useEntity();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -46,6 +54,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
   const {
     nodes,
+    updateNodes,
     pipelineId,
     pipelineIsNew,
     pipelineRecipeIsDirty,
@@ -53,6 +62,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
     updatePipelineRecipeIsDirty,
     updatePipelineIsNew,
     tempSavedNodesForEditingIteratorFlow,
+    updateTempSavedNodesForEditingIteratorFlow,
     isEditingIterator,
     editingIteratorID,
   } = useInstillStore(useShallow(selector));
@@ -63,8 +73,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         return;
       }
 
-      if (props?.setIsSaving) {
-        props.setIsSaving(true);
+      if (setIsSaving) {
+        setIsSaving(true);
       }
 
       let targetNodes = nodes;
@@ -85,13 +95,29 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         };
 
         try {
-          await updateUserPipeline.mutateAsync({
-            payload,
-            accessToken,
-          });
+          const { pipeline: newPipeline } =
+            await updateUserPipeline.mutateAsync({
+              payload,
+              accessToken,
+            });
 
           if (amplitudeIsInit) {
             sendAmplitudeData("update_pipeline_recipe");
+          }
+
+          const initialGraphData = createInitialGraphData(
+            newPipeline.recipe.components,
+            {
+              metadata: newPipeline.metadata,
+            }
+          );
+
+          if (isEditingIterator) {
+            updateTempSavedNodesForEditingIteratorFlow(
+              () => initialGraphData.nodes
+            );
+          } else {
+            updateNodes(() => initialGraphData.nodes);
           }
 
           toast({
@@ -118,8 +144,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           }
         }
 
-        if (props?.setIsSaving) {
-          props.setIsSaving(false);
+        if (setIsSaving) {
+          setIsSaving(false);
         }
 
         return;
@@ -134,11 +160,26 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       };
 
       try {
-        await createUserPipeline.mutateAsync({
+        const { pipeline: newPipeline } = await createUserPipeline.mutateAsync({
           entityName: entity.entityName,
           payload,
           accessToken,
         });
+
+        const initialGraphData = createInitialGraphData(
+          newPipeline.recipe.components,
+          {
+            metadata: newPipeline.metadata,
+          }
+        );
+
+        if (isEditingIterator) {
+          updateTempSavedNodesForEditingIteratorFlow(
+            () => initialGraphData.nodes
+          );
+        } else {
+          updateNodes(() => initialGraphData.nodes);
+        }
 
         updatePipelineRecipeIsDirty(() => false);
         updatePipelineIsNew(() => false);
@@ -169,8 +210,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
         }
       }
 
-      if (props?.setIsSaving) {
-        props.setIsSaving(false);
+      if (setIsSaving) {
+        setIsSaving(false);
       }
     },
     [
@@ -186,10 +227,12 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       updatePipelineIsNew,
       updatePipelineRecipeIsDirty,
       updateUserPipeline,
-      props.setIsSaving,
+      setIsSaving,
       isEditingIterator,
       editingIteratorID,
       tempSavedNodesForEditingIteratorFlow,
+      updateNodes,
+      updateTempSavedNodesForEditingIteratorFlow,
     ]
   );
 }

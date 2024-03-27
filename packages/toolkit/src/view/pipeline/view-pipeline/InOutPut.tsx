@@ -1,35 +1,29 @@
+"use client";
+
 import * as React from "react";
 import * as z from "zod";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   GeneralRecord,
-  InstillJSONSchema,
   InstillStore,
   Nullable,
   PipelineEndComponent,
   PipelineStartComponent,
-  StartOperatorMetadata,
   TriggerUserPipelineResponse,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useShallow,
   useStartOperatorTriggerPipelineForm,
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
-import {
-  Button,
-  Form,
-  Icons,
-  Skeleton,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Form, useToast } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
-import { LoadingSpin } from "../../../components";
+import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -42,27 +36,31 @@ type InOutPutProps = {
 
 export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const shareCode = searchParams.get("shareCode");
+  const { toast } = useToast();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
-  const { toast } = useToast();
-
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
-    enabled: enabledQuery && entityObject.isSuccess,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    enabled: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entityObject.pipelineName,
+    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    enabledQuery: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
-    enabledQuery: enabledQuery && entityObject.isSuccess,
   });
 
   const startComponent = React.useMemo(() => {
@@ -94,27 +92,30 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const triggerPipeline = useTriggerUserPipeline();
 
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
-    if (!entityObject.isSuccess || !pipeline.isSuccess) return;
+    if (!entity.isSuccess || !entity.data?.pipelineName || !pipeline.isSuccess)
+      return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
     );
 
-    const startOperatorMetadata = pipeline.data.recipe.components.find(
+    const startOperator = pipeline.data.recipe.components.find(
       (component) => component.id === "start"
-    )?.metadata as StartOperatorMetadata | undefined;
+    ) as PipelineStartComponent | undefined;
 
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
 
     const semiStructuredObjectKeys: string[] = [];
 
-    if (startOperatorMetadata) {
-      Object.entries(startOperatorMetadata).forEach(([key, value]) => {
-        if (value.instillFormat === "semi-structured/json") {
-          semiStructuredObjectKeys.push(key);
+    if (startOperator) {
+      Object.entries(startOperator.start_component.fields).forEach(
+        ([key, value]) => {
+          if (value.instill_format === "semi-structured/json") {
+            semiStructuredObjectKeys.push(key);
+          }
         }
-      });
+      );
     }
 
     const parsedStructuredData: GeneralRecord = input;
@@ -139,12 +140,13 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     try {
       const data = await triggerPipeline.mutateAsync({
-        pipelineName: entityObject.pipelineName,
+        pipelineName: entity.data.pipelineName,
         accessToken,
         payload: {
           inputs: [parsedStructuredData],
         },
         returnTraces: true,
+        shareCode: shareCode ?? undefined,
       });
 
       if (amplitudeIsInit) {
@@ -217,7 +219,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
                   );
                 }}
               >
@@ -240,36 +242,51 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
         )}
       </div>
       <div className="mb-6 flex flex-row-reverse">
+        <RunButton
+          inOutPutFormID={inOutPutFormID}
+          inputIsNotDefined={inputIsNotDefined}
+          outputIsNotDefined={outputIsNotDefined}
+          isTriggeringPipeline={triggerPipeline.isPending}
+        />
+      </div>
+      <div className="mb-6 flex flex-col gap-y-6">
+        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
+          Input
+        </div>
         {pipeline.isSuccess ? (
-          !accessToken ? (
-            <Button
-              onClick={() => {
-                router.push("/login");
-              }}
-              type="button"
-              variant="secondaryColour"
-              size="md"
-            >
-              Log in to run
-            </Button>
-          ) : inputIsNotDefined || outputIsNotDefined ? null : (
-            <Button
-              variant="secondaryColour"
-              size="md"
-              className="flex flex-row gap-x-2"
-              type="submit"
-              form={inOutPutFormID}
-            >
-              Run
-              {triggerPipeline.isPending ? (
-                <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
-              ) : (
-                <Icons.Play className="h-4 w-4 stroke-semantic-accent-default" />
-              )}
-            </Button>
+          inputIsNotDefined ? (
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-row gap-x-6">
+                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
+                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
+                  Pipeline input is not defined.
+                </p>
+              </div>
+              <Button
+                variant="tertiaryColour"
+                size="md"
+                onClick={() => {
+                  router.push(
+                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                  );
+                }}
+              >
+                Setup
+              </Button>
+            </div>
+          ) : (
+            <Form.Root {...form}>
+              <form
+                id={inOutPutFormID}
+                className="w-full"
+                onSubmit={form.handleSubmit(onTriggerPipeline)}
+              >
+                <div className="flex flex-col gap-y-3">{fieldItems}</div>
+              </form>
+            </Form.Root>
           )
         ) : (
-          <RunButtonSkeleton />
+          <InOutputSkeleton />
         )}
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
@@ -290,7 +307,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entityObject.entity}/pipelines/${entityObject.id}/builder`
+                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
                   );
                 }}
               >
@@ -300,9 +317,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           ) : (
             <ComponentOutputs
               componentID="end"
-              outputSchema={
-                pipeline.data.data_specification.output as InstillJSONSchema
-              }
+              outputSchema={pipeline.data.data_specification?.output ?? null}
               nodeType="end"
               chooseTitleFrom="title"
               response={response}
@@ -382,8 +397,4 @@ export const InOutputSkeleton = () => {
   return (
     <div className="h-8 w-full animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
-};
-
-export const RunButtonSkeleton = () => {
-  return <Skeleton className="w-18 h-8 rounded" />;
 };

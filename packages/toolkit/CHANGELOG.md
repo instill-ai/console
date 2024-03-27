@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.83.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.1...@instill-ai/toolkit-v0.83.2) (2024-03-13)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** adapt backend return data_specification can be null ([#1026](https://github.com/instill-ai/console/issues/1026)) ([858433d](https://github.com/instill-ai/console/commit/858433d37610ac1e49ac876c1e863e18bd8c5529))
+
+## [0.83.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.0...@instill-ai/toolkit-v0.83.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix render bug caused by mis-align of smart hint and output rendering ([#1024](https://github.com/instill-ai/console/issues/1024)) ([e61d3fa](https://github.com/instill-ai/console/commit/e61d3fa237dd29bc4d18567f6a9b43828dd41309))
+
+## [0.83.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.82.0...@instill-ai/toolkit-v0.83.0) (2024-03-13)
+
+
+### Features
+
+* adapt new pipeline recipe ([#999](https://github.com/instill-ai/console/issues/999)) ([d45ceb1](https://github.com/instill-ai/console/commit/d45ceb1a0ebd0f68023ee644fd5c36e8d175ee2f))
+* add "use client" to Client Components ([#1019](https://github.com/instill-ai/console/issues/1019)) ([4185b75](https://github.com/instill-ai/console/commit/4185b75d06ac57e7eb465095f9e17e9e2241873d))
+* add the new design for reference hint ([#1004](https://github.com/instill-ai/console/issues/1004)) ([7b7b41e](https://github.com/instill-ai/console/commit/7b7b41e1253b1ab6395e4a27728ad98f58286cd6))
+* bump nextjs version to 14 and update react-hook-form ([#1008](https://github.com/instill-ai/console/issues/1008)) ([235847f](https://github.com/instill-ai/console/commit/235847f1a3b57e9f340040320ddcdc7789dafe2d))
+* fix search render issue Hub page and add deboucing to search ([#1002](https://github.com/instill-ai/console/issues/1002)) ([68534f0](https://github.com/instill-ai/console/commit/68534f0c8e561cce4d131e8b0b7db59348ea0fa4))
+* migrate react-query from v4 to v5 ([#1007](https://github.com/instill-ai/console/issues/1007)) ([f0399aa](https://github.com/instill-ai/console/commit/f0399aa6b9cc42df8ff13331e4b82df89c1ab6e8))
+* migrate the topbar component back to toolkit ([#994](https://github.com/instill-ai/console/issues/994)) ([056cc78](https://github.com/instill-ai/console/commit/056cc785552497099cabf1455797bb22b3892090))
+* **pipeline-builder:** adapt the breaking changes of replacing openapi_specification with data specification  ([#1003](https://github.com/instill-ai/console/issues/1003)) ([0ea92d1](https://github.com/instill-ai/console/commit/0ea92d1607b1479ecbf3a13894f75717aee3aba8))
+* **pipeline-builder:** adapt the new default edge color ([#1022](https://github.com/instill-ai/console/issues/1022)) ([c97a6eb](https://github.com/instill-ai/console/commit/c97a6ebfd79d2772cd71604d9d271139fec157d0))
+* **pipeline-builder:** add iterator node for pipeline-builder ([#1000](https://github.com/instill-ai/console/issues/1000)) ([6b5ef01](https://github.com/instill-ai/console/commit/6b5ef01b8f12ba0d7185ec192f5e689b4da0bbf8))
+* **pipeline-builder:** implement the iterator editor ([#1006](https://github.com/instill-ai/console/issues/1006)) ([8a57837](https://github.com/instill-ai/console/commit/8a57837fb62fb22d700c86c32af6253939fe085a))
+* **pipeline-builder:** implement the new pipeline name edit input ([#998](https://github.com/instill-ai/console/issues/998)) ([7b1e370](https://github.com/instill-ai/console/commit/7b1e370dee480f4cea541773c43ddee09991e9c7))
+* **pipeline-builder:** introduce arrayArray type in InstillFormTree to handle array in array ([#1021](https://github.com/instill-ai/console/issues/1021)) ([3c237cc](https://github.com/instill-ai/console/commit/3c237ccc84710c67e7583c2babbf2cd61a431623))
+* **pipeline-builder:** revamp and adapt the new topbar navigation on pipeline builder ([#997](https://github.com/instill-ai/console/issues/997)) ([774aa92](https://github.com/instill-ai/console/commit/774aa92902f77e2ebc1404984f0da0cd23694ddc))
+* **pipeline-builder:** support directly input reference value in iterator ([#1020](https://github.com/instill-ai/console/issues/1020)) ([1169b33](https://github.com/instill-ai/console/commit/1169b339b3f10fccf75af87b2c922145db807b38))
+* **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
+* **pipeline-builder:** user can use iterator_a's output as iterator_b's input ([#1015](https://github.com/instill-ai/console/issues/1015)) ([bb023ff](https://github.com/instill-ai/console/commit/bb023ffb5f71adb00cd96c4140a115b067700075))
+
+
+### Bug Fixes
+
+* fix docker node version ([#1014](https://github.com/instill-ai/console/issues/1014)) ([d3127e4](https://github.com/instill-ai/console/commit/d3127e4a22076be3e5f0f0ab4aa807b43108518c))
+* fix how we hint the iterator element ([#1012](https://github.com/instill-ai/console/issues/1012)) ([969341b](https://github.com/instill-ai/console/commit/969341be77ed31ff80451af86732a423c392c49b))
+* fix hub link is not working on Topbar ([#1018](https://github.com/instill-ai/console/issues/1018)) ([aed14a4](https://github.com/instill-ai/console/commit/aed14a48af38efc64ae22bd29e160ca67a8cb87b))
+* fix iterator not correctly hint the output user can select ([#1010](https://github.com/instill-ai/console/issues/1010)) ([71b3c0a](https://github.com/instill-ai/console/commit/71b3c0a9354ad4a51b866e21a8d5a71e9685500c))
+* fix the search function cause re-render issue on the hub page ([#1023](https://github.com/instill-ai/console/issues/1023)) ([f0da309](https://github.com/instill-ai/console/commit/f0da309a8fc91b5b258bdea504b75e2dd60fcd1f))
+* hint semi-structured as input on iterator ([#1013](https://github.com/instill-ai/console/issues/1013)) ([77d4ffd](https://github.com/instill-ai/console/commit/77d4ffd7c5e5bd99a9e4b1ec1c6ec3d57dfb26f7))
+* **pipeline-builder:** fix console not correctly replace null with undefined when update the recipe ([#1016](https://github.com/instill-ai/console/issues/1016)) ([c1142e4](https://github.com/instill-ai/console/commit/c1142e4e894b3d7e3d4993504bf602cd313f73f0))
+
+
+### Miscellaneous
+
+* remove the testModeEnabled flag ([#1001](https://github.com/instill-ai/console/issues/1001)) ([02ac7ea](https://github.com/instill-ai/console/commit/02ac7eaefe23ba9ab6bddae567f41616995df387))
+
 ## [0.82.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.81.3...@instill-ai/toolkit-v0.82.0) (2024-02-29)
 
 

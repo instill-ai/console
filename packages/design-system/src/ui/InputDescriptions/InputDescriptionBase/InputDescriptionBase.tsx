@@ -1,5 +1,4 @@
-import * as React from "react";
-import TextWithHtml from "../../TextWithHtml";
+import cn from "clsx";
 
 export type InputDescriptionBaseProps = {
   /** Description of the input */
@@ -63,20 +62,19 @@ export const InputDescriptionBase = (props: InputDescriptionBaseProps) => {
   } = props;
 
   return (
-    <TextWithHtml
-      text={description}
-      width={descriptionWidth}
-      fontFamily={descriptionFontFamily}
-      fontSize={descriptionFontSize}
-      fontWeight={descriptionFontWeight}
-      lineHeight={descriptionLineHeight}
-      textColor={descriptionTextColor}
-      linkFontFamily={descriptionFontFamily}
-      linkFontSize={descriptionFontSize}
-      linkFontWeight={descriptionFontWeight}
-      linkLineHeight={descriptionLineHeight}
-      linkTextColor={descriptionLinkTextColor}
-      linkTextDecoration={descriptionLinkTextDecoration}
-    />
+    <p
+      className={cn(
+        descriptionWidth,
+        descriptionFontFamily,
+        descriptionFontSize,
+        descriptionFontWeight,
+        descriptionLineHeight,
+        descriptionTextColor,
+        descriptionLinkTextColor,
+        descriptionLinkTextDecoration
+      )}
+    >
+      {description}
+    </p>
   );
 };

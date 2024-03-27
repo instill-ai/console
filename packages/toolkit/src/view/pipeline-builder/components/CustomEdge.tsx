@@ -1,3 +1,5 @@
+"use client";
+
 import cn from "clsx";
 import { EdgeProps, getSmoothStepPath } from "reactflow";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
@@ -50,7 +52,7 @@ export const CustomEdge = ({
         "fill-none",
         isSelected
           ? "stroke-semantic-accent-default stroke-[3px]"
-          : "stroke-semantic-bg-line stroke-[2px]"
+          : "stroke-[#CBD2E1] stroke-[2px]"
       )}
       d={edgePath}
       markerEnd={markerEnd}
