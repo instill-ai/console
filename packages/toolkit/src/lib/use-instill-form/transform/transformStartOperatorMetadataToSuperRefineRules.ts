@@ -104,23 +104,6 @@ export function transformStartOperatorFieldsToSuperRefineRules(
           },
         });
         break;
-      case "audio/*":
-        rules.push({
-          key,
-          validator: (value) => {
-            if (!value) {
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
-            }
-
-            return {
-              valid: true,
-            };
-          },
-        });
-        break;
       case "array:audio/*":
         rules.push({
           key,
@@ -131,30 +114,6 @@ export function transformStartOperatorFieldsToSuperRefineRules(
                 error: `${key} must be an array`,
               };
             }
-            if (!value) {
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
-            }
-
-            return {
-              valid: true,
-            };
-          },
-        });
-        break;
-      case "image/*":
-        rules.push({
-          key,
-          validator: (value) => {
-            if (!value) {
-              return {
-                valid: false,
-                error: `${key} cannot be empty`,
-              };
-            }
-
             return {
               valid: true,
             };
@@ -171,10 +130,21 @@ export function transformStartOperatorFieldsToSuperRefineRules(
                 error: `${key} must be an array`,
               };
             }
-            if (!value) {
+
+            return {
+              valid: true,
+            };
+          },
+        });
+        break;
+      case "array:*/*":
+        rules.push({
+          key,
+          validator: (value) => {
+            if (!Array.isArray(value)) {
               return {
                 valid: false,
-                error: `${key} cannot be empty`,
+                error: `${key} must be an array`,
               };
             }
 

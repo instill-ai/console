@@ -43,7 +43,7 @@ export function transformStartOperatorFieldsToZod(
       case "array:audio/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional()
         );
         break;
       case "image/*":
@@ -52,7 +52,7 @@ export function transformStartOperatorFieldsToZod(
       case "array:image/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional()
         );
         break;
       case "video/*":
@@ -61,7 +61,7 @@ export function transformStartOperatorFieldsToZod(
       case "array:video/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional()
         );
         break;
       case "*/*":
@@ -70,7 +70,7 @@ export function transformStartOperatorFieldsToZod(
       case "array:*/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional()
         );
         break;
       case "semi-structured/json":
