@@ -11,6 +11,7 @@ import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
+  useEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -31,13 +32,14 @@ export const TopControlMenu = ({
   reactFlowInstance: Nullable<ReactFlowInstance>;
 }) => {
   const router = useRouter();
-  const { id, entity } = router.query;
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
   const { pipelineIsNew, isEditingIterator } = useInstillStore(
     useShallow(selector)
   );
+
+  const entity = useEntity();
 
   return (
     <React.Fragment>
@@ -47,9 +49,9 @@ export const TopControlMenu = ({
             variant="tertiaryGrey"
             onClick={() => {
               if (pipelineIsNew) {
-                router.push(`/${entity}/pipelines`);
+                router.push(`/${entity.entity}/pipelines`);
               } else {
-                router.push(`/${entity}/pipelines/${id}`);
+                router.push(`/${entity.entity}/pipelines/${entity.id}`);
               }
             }}
             className="flex cursor-pointer"
@@ -79,7 +81,12 @@ export const TopControlMenu = ({
         </div>
       </div>
       <SetupComponentDialog />
-      <PublishPipelineDialog />
+      <PublishPipelineDialog
+        router={router}
+        pipelineName={entity.pipelineName}
+        entity={entity.entity}
+        id={entity.id}
+      />
     </React.Fragment>
   );
 };

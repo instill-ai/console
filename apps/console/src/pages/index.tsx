@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { parse } from "cookie";
 import { PageBase, useAuthenticatedUser } from "@instill-ai/toolkit";
 import { NextPageWithLayout } from "./_app";
-import { useAccessToken } from "../lib/useAccessToken";
+import { useAccessToken } from "../lib/use-access-token/client";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = context.req.headers.cookie;

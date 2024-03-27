@@ -102,6 +102,7 @@ export const Footer = ({
               </Button>
             }
             pipeline={pipeline}
+            router={router}
           />
         ) : (
           <Button

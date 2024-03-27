@@ -5,6 +5,7 @@ import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 import {
   InstillStore,
   Pipeline,
+  useAppEntity,
   useInstillStore,
   useShallow,
 } from "./../../../lib";
@@ -16,6 +17,7 @@ import {
   PublishPipelineDialog,
   SharePipelineDialog,
 } from "../../pipeline-builder";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
@@ -27,12 +29,15 @@ export type MenuProps = {
 };
 
 export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
+  const router = useRouter();
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
   const { updateDialogSharePipelineIsOpen } = useInstillStore(
     useShallow(selector)
   );
+
+  const entity = useAppEntity();
 
   return (
     <React.Fragment>
@@ -74,14 +79,28 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <SharePipelineDialog />
-      <PublishPipelineDialog />
-      <ClonePipelineDialog
-        pipeline={pipeline}
-        open={cloneDialogIsOpen}
-        onOpenChange={(open) => setCloneDialogIsOpen(open)}
-        trigger={null}
-      />
+      {entity.isSuccess ? (
+        <React.Fragment>
+          <SharePipelineDialog
+            pipelineName={entity.data.pipelineName}
+            entity={entity.data.entity}
+            id={entity.data.id}
+          />
+          <PublishPipelineDialog
+            router={router}
+            pipelineName={entity.data.pipelineName}
+            entity={entity.data.entity}
+            id={entity.data.id}
+          />
+          <ClonePipelineDialog
+            pipeline={pipeline}
+            open={cloneDialogIsOpen}
+            onOpenChange={(open) => setCloneDialogIsOpen(open)}
+            trigger={null}
+            router={router}
+          />
+        </React.Fragment>
+      ) : null}
       <GeneralDeleteResourceDialog
         open={deleteDialogIsOpen}
         onOpenChange={(open) => setDeleteDialogIsOpen(open)}

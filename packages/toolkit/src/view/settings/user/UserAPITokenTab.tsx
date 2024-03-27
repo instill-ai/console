@@ -10,7 +10,6 @@ import {
 } from "../../../lib";
 import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
 import { useRouter } from "next/router";
-
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,

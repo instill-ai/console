@@ -1,6 +1,8 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import { checkNamespace } from "../../vdp-sdk";
-import type { Nullable } from "../../type";
+import type { Nullable } from "../../../type";
+import { fetchNamespaceType, getUseNamespaceTypeQueryKey } from "./server";
 
 export function useNamespaceType({
   namespace,
@@ -19,19 +21,15 @@ export function useNamespaceType({
     enabledQuery = true;
   }
 
-  return useQuery({
-    queryKey: ["namespaces", namespace],
-    queryFn: async () => {
-      if (!namespace) {
-        return Promise.reject(new Error("namespace not provided"));
-      }
+  const queryKey = getUseNamespaceTypeQueryKey(namespace);
 
-      const type = await checkNamespace({
-        id: namespace,
+  return useQuery({
+    queryKey,
+    queryFn: async () => {
+      return fetchNamespaceType({
+        namespace,
         accessToken,
       });
-
-      return Promise.resolve(type);
     },
     enabled: enabledQuery,
     retry: retry === false ? false : retry ? retry : 3,

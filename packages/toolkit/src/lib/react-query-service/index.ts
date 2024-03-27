@@ -8,18 +8,14 @@ export * from "./organization";
 /** Re export react-query to solve ESM, CJS confict issue */
 export {
   QueryCache,
-  QueryClient,
   QueryClientProvider,
   useQueries,
   useQuery,
   useQueryClient,
   useMutation,
-  hydrate,
-  dehydrate,
 } from "@tanstack/react-query";
 export { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 export type {
-  DehydratedState,
   UseQueryResult,
   UseMutationResult,
   DefaultOptions,

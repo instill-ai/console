@@ -82,12 +82,6 @@ export const GeneralDeleteResourceDialog = ({
           </Input.Root>
         </div>
         <div className="flex flex-row gap-x-2">
-          {/* <Dialog.Close asChild>
-            <Button variant="secondaryGrey" size="lg" className="!flex-1">
-              Cancel
-            </Button>
-          </Dialog.Close> */}
-
           <Button
             variant="danger"
             size="lg"

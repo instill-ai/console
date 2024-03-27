@@ -1,13 +1,12 @@
 import * as React from "react";
 import {
   InstillStore,
-  authValidateTokenAction,
   useInstillStore,
   useQuery,
   useShallow,
 } from "@instill-ai/toolkit";
-import axios from "axios";
 import { useRouter } from "next/router";
+import { fetchAccessToken } from "./server";
 
 const selector = (store: InstillStore) => ({
   updateAccessToken: store.updateAccessToken,
@@ -15,11 +14,11 @@ const selector = (store: InstillStore) => ({
 });
 
 type UseAccessTokenProps = {
-  stopRedirectingVisitor?: boolean;
+  disabledRedirectingVisitor?: boolean;
 };
 
 export function useAccessToken(props?: UseAccessTokenProps) {
-  const stopRedirectingVisitor = props?.stopRedirectingVisitor ?? false;
+  const disabledRedirectingVisitor = props?.disabledRedirectingVisitor ?? false;
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
@@ -30,18 +29,7 @@ export function useAccessToken(props?: UseAccessTokenProps) {
     queryKey: ["accessToken"],
     queryFn: async (): Promise<string> => {
       try {
-        const { data } = await axios.post("/api/get-user-cookie", {
-          key: "instill-auth-session",
-        });
-
-        const accessToken = JSON.parse(data).access_token;
-
-        if (!accessToken) {
-          throw new Error("No accessToken in response");
-        }
-
-        await authValidateTokenAction({ accessToken });
-
+        const accessToken = await fetchAccessToken();
         return Promise.resolve(accessToken);
       } catch (error) {
         console.error(
@@ -49,11 +37,11 @@ export function useAccessToken(props?: UseAccessTokenProps) {
           error,
         );
 
-        await axios.post("/api/remove-user-cookie", {
-          key: "instill-auth-session",
-        });
+        // await axios.post("/api/remove-user-cookie", {
+        //   key: "instill-auth-session",
+        // });
 
-        if (!stopRedirectingVisitor) {
+        if (!disabledRedirectingVisitor) {
           await router.push("/login");
         }
 

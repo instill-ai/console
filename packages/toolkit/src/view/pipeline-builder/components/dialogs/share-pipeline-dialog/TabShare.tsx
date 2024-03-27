@@ -11,13 +11,11 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
-import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 import { EntityAvatar, LoadingSpin } from "../../../../../components";
 import { env } from "../../../../../server";
@@ -28,7 +26,15 @@ const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
 });
 
-export const TabShare = () => {
+export const TabShare = ({
+  pipelineName,
+  entity,
+  id,
+}: {
+  pipelineName: Nullable<string>;
+  entity: Nullable<string>;
+  id: Nullable<string>;
+}) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enableQuery, pipelineIsNew } = useInstillStore(
     useShallow(selector)
@@ -37,15 +43,11 @@ export const TabShare = () => {
     React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
-  const router = useRouter();
-  const { id, entity } = router.query;
   const { toast } = useToast();
 
-  const entityObject = useEntity();
-
   const pipeline = useUserPipeline({
-    pipelineName: entityObject.pipelineName,
-    enabled: enableQuery && entityObject.isSuccess && !pipelineIsNew,
+    pipelineName,
+    enabled: enableQuery && !!pipelineName && !pipelineIsNew,
     accessToken,
   });
 
@@ -66,7 +68,7 @@ export const TabShare = () => {
   const updatePipeline = useUpdateUserPipeline();
 
   const handleCopyLink = React.useCallback(async () => {
-    if (!pipeline.isSuccess || !entityObject.isSuccess) return;
+    if (!pipeline.isSuccess || !pipelineName) return;
 
     setIsUpdatingShareCodePermission(true);
 
@@ -92,7 +94,7 @@ export const TabShare = () => {
 
     if (!enabledShareByLink) {
       const payload: UpdateUserPipelinePayload = {
-        name: entityObject.pipelineName,
+        name: pipelineName,
         sharing: {
           users: pipeline.data.sharing.users,
           share_code: {
@@ -162,9 +164,8 @@ export const TabShare = () => {
     id,
     updatePipeline,
     toast,
-    entityObject.isSuccess,
-    entityObject.pipelineName,
     amplitudeIsInit,
+    pipelineName,
   ]);
 
   const pipelineAvatar = React.useMemo(() => {

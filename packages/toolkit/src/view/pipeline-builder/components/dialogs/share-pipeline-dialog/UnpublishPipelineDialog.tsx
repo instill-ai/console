@@ -4,11 +4,11 @@ import * as React from "react";
 import { Button, Dialog, useToast } from "@instill-ai/design-system";
 import {
   InstillStore,
+  Nullable,
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
@@ -21,28 +21,30 @@ const selector = (store: InstillStore) => ({
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
 });
 
-export const UnpublishPipelineDialog = () => {
+export const UnpublishPipelineDialog = ({
+  pipelineName,
+}: {
+  pipelineName: Nullable<string>;
+}) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
-  const entirtyObject = useEntity();
-
   const pipeline = useUserPipeline({
-    pipelineName: entirtyObject.pipelineName,
-    enabled: enabledQuery && entirtyObject.isSuccess,
+    pipelineName,
+    enabled: enabledQuery && !!pipelineName,
     accessToken,
   });
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function unPublishPipeline() {
-    if (!pipeline.isSuccess || !entirtyObject.isSuccess) return;
+    if (!pipeline.isSuccess || !pipelineName) return;
 
     try {
       const payload: UpdateUserPipelinePayload = {
-        name: entirtyObject.pipelineName,
+        name: pipelineName,
         sharing: {
           ...pipeline.data.sharing,
           users: {

@@ -117,9 +117,9 @@ export const Topbar = ({
       {disabledUserDropdown ? null : (
         <div className="ml-4 flex">
           {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-            <CloudTopbarDropdown />
+            <CloudTopbarDropdown router={router} />
           ) : (
-            <CETopbarDropdown />
+            <CETopbarDropdown router={router} />
           )}
         </div>
       )}
