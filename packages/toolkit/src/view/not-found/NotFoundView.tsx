@@ -54,7 +54,7 @@ export const NotFoundView = () => {
           title="Documentation"
           description="Dive in to learn all about our product."
           cta={{
-            link: "https://www.instill.tech/docs/v0.6.0-alpha/welcome",
+            link: "https://www.instill.tech/docs/welcome",
             text: "Start Learning",
           }}
         />
