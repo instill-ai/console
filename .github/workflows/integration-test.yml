@@ -57,7 +57,7 @@ jobs:
     with:
       target: latest
 
-  pr-head:z
+  pr-head:
     if: github.event_name == 'pull_request'
     name: PR head branch
     runs-on: ubuntu-latest
