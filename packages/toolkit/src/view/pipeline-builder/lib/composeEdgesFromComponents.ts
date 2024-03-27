@@ -209,8 +209,6 @@ function composeEdgeForReference({
 }) {
   const newEdges: Edge[] = [];
 
-  console.log(reference);
-
   // check whether the referenced target is available for start operator
   if (
     reference.referenceValue.withoutCurlyBraces.split(".")[0].includes("start")
@@ -240,7 +238,6 @@ function composeEdgeForReference({
 
     // Here is for other nodes
   } else {
-    console.log("otherNodesAvailableReferences", otherNodesAvailableReferences);
     const referenceIsAvailable = otherNodesAvailableReferences.some(
       (availableReference) =>
         checkReferenceIsAvailable(
