@@ -6,6 +6,7 @@ import { Button, DataTable } from "@instill-ai/design-system";
 import { formatDate, type Pipeline } from "../../lib";
 import { SortIcon, TableCell, TableError } from "../../components";
 import { PipelineTablePlaceholder } from "./PipelineTablePlaceholder";
+import { env } from "../../server";
 
 export type PipelinesTableProps = {
   pipelines: Pipeline[];
@@ -22,7 +23,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
       header: () => <div className="min-w-[650px] text-left">Pipelines</div>,
       cell: ({ row }) => {
         const pipelineNameFragments = row.original.name.split("/");
-        const pipelineLink = `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`;
+        const pipelineLink = `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`;
 
         return (
           <div className="text-left">
