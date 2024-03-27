@@ -241,52 +241,16 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           <InOutputSkeleton />
         )}
       </div>
-      <div className="mb-6 flex flex-row-reverse">
-        <RunButton
-          inOutPutFormID={inOutPutFormID}
-          inputIsNotDefined={inputIsNotDefined}
-          outputIsNotDefined={outputIsNotDefined}
-          isTriggeringPipeline={triggerPipeline.isPending}
-        />
-      </div>
-      <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
-          Input
-        </div>
+      <div className="mb-3 flex flex-row-reverse">
         {pipeline.isSuccess ? (
-          inputIsNotDefined ? (
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-row gap-x-6">
-                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
-                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
-                  Pipeline input is not defined.
-                </p>
-              </div>
-              <Button
-                variant="tertiaryColour"
-                size="md"
-                onClick={() => {
-                  router.push(
-                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
-                  );
-                }}
-              >
-                Setup
-              </Button>
-            </div>
-          ) : (
-            <Form.Root {...form}>
-              <form
-                id={inOutPutFormID}
-                className="w-full"
-                onSubmit={form.handleSubmit(onTriggerPipeline)}
-              >
-                <div className="flex flex-col gap-y-3">{fieldItems}</div>
-              </form>
-            </Form.Root>
-          )
+          <RunButton
+            inOutPutFormID={inOutPutFormID}
+            inputIsNotDefined={inputIsNotDefined}
+            outputIsNotDefined={outputIsNotDefined}
+            isTriggeringPipeline={triggerPipeline.isPending}
+          />
         ) : (
-          <InOutputSkeleton />
+          <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
         )}
       </div>
       <div className="mb-6 flex flex-col gap-y-6">
