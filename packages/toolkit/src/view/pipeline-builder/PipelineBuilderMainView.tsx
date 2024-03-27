@@ -160,7 +160,10 @@ export const PipelineBuilderMainView = () => {
               initPipelineBuilder();
               confirmNavigation();
             }}
-            onSave={savePipeline}
+            onSave={async () => {
+              await savePipeline();
+              confirmNavigation();
+            }}
           />
         </div>
       </PageBase.Container>
