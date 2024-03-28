@@ -57,7 +57,7 @@ jobs:
     with:
       target: latest
 
-   pr-head:
+  pr-head:
     if: github.event_name == 'pull_request'
     name: PR head branch
     runs-on: ubuntu-latest
@@ -139,7 +139,7 @@ jobs:
 
       - name: Copy the test-result to host
         run: docker cp console-integration-test:/app/apps/console/test-results ./test-results
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
