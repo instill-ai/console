@@ -97,9 +97,11 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
 
       // Should block user from using duplicated key
       await editTextsFieldButton.click();
-      await pipelineBuilderPage.startNode.getByPlaceholder("My prompt").clear();
       await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
+        .getByPlaceholder("The key of this field")
+        .clear();
+      await pipelineBuilderPage.startNode
+        .getByPlaceholder("The key of this field")
         .fill(jsonFieldID);
       await pipelineBuilderPage.startNode
         .getByRole("button", { name: "Save" })
@@ -224,9 +226,11 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
 
       // Should block user from using duplicated key
       await editFooFieldButton.click();
-      await pipelineBuilderPage.endNode.getByPlaceholder("My prompt").clear();
       await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
+        .getByPlaceholder("The key of this field")
+        .clear();
+      await pipelineBuilderPage.endNode
+        .getByPlaceholder("The key of this field")
         .fill(resultBarID);
       await pipelineBuilderPage.endNode
         .getByRole("button", { name: "Save" })

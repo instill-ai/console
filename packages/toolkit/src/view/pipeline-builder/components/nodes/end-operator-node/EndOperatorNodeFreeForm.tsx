@@ -35,6 +35,7 @@ export const EndOperatorNodeFreeForm = ({
   form,
   onCreateFreeFormField,
   onCancel,
+  isEditing,
 }: {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: any;
@@ -42,6 +43,7 @@ export const EndOperatorNodeFreeForm = ({
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   onCreateFreeFormField: (formData: any) => void;
   onCancel: () => void;
+  isEditing: boolean;
 }) => {
   const [isUserInputKey, setIsUserInputKey] = React.useState<boolean>(false);
 
@@ -86,7 +88,7 @@ export const EndOperatorNodeFreeForm = ({
                         className="!h-5 !text-sm"
                         placeholder="My prompt"
                         onChange={(event) => {
-                          if (!isUserInputKey) {
+                          if (!isUserInputKey && !isEditing) {
                             form.setValue(
                               "key",
                               constructFieldKey(event.target.value)
