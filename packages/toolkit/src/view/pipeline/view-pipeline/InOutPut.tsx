@@ -82,7 +82,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const { fieldItems, form, Schema } = useStartOperatorTriggerPipelineForm({
     mode: "demo",
     fields: startComponent
-      ? startComponent.start_component.fields ?? null
+      ? startComponent.start_component?.fields ?? null
       : null,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,
@@ -172,8 +172,8 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     if (
       startComponent &&
-      startComponent.start_component.fields &&
-      Object.keys(startComponent.start_component.fields).length > 0
+      startComponent.start_component?.fields &&
+      Object.keys(startComponent.start_component?.fields).length > 0
     ) {
       return false;
     }
@@ -190,8 +190,8 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     if (
       endComponent &&
-      endComponent.end_component.fields &&
-      Object.keys(endComponent.end_component.fields).length > 0
+      endComponent.end_component?.fields &&
+      Object.keys(endComponent.end_component?.fields).length > 0
     ) {
       return false;
     }
@@ -201,21 +201,13 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-6 flex flex-row-reverse">
-        <RunButton
-          inOutPutFormID={inOutPutFormID}
-          inputIsNotDefined={inputIsNotDefined}
-          outputIsNotDefined={outputIsNotDefined}
-          isTriggeringPipeline={triggerPipeline.isPending}
-        />
-      </div>
-      <div className="mb-6 flex flex-col gap-y-6">
+      <div className="mb-3 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
         </div>
         {pipeline.isSuccess ? (
           inputIsNotDefined ? (
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between pl-3">
               <div className="flex flex-row gap-x-6">
                 <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
                 <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
@@ -238,7 +230,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
             <Form.Root {...form}>
               <form
                 id={inOutPutFormID}
-                className="w-full"
+                className="w-full pl-3"
                 onSubmit={form.handleSubmit(onTriggerPipeline)}
               >
                 <div className="flex flex-col gap-y-3">{fieldItems}</div>
@@ -249,13 +241,25 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           <InOutputSkeleton />
         )}
       </div>
+      <div className="mb-3 flex flex-row-reverse">
+        {pipeline.isSuccess ? (
+          <RunButton
+            inOutPutFormID={inOutPutFormID}
+            inputIsNotDefined={inputIsNotDefined}
+            outputIsNotDefined={outputIsNotDefined}
+            isTriggeringPipeline={triggerPipeline.isPending}
+          />
+        ) : (
+          <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+        )}
+      </div>
       <div className="mb-6 flex flex-col gap-y-6">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Output
         </div>
         {pipeline.isSuccess ? (
           outputIsNotDefined ? (
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between pl-3">
               <div className="flex flex-row gap-x-6">
                 <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
                 <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">

@@ -295,7 +295,9 @@ export const Head = (props: HeadProps) => {
                 )}
               </React.Fragment>
             ) : (
-              <PipelineDescriptionSkeleton />
+              <div className="h-8">
+                <PipelineDescriptionSkeleton />
+              </div>
             )}
           </div>
         </div>
