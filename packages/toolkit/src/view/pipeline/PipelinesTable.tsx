@@ -4,9 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, DataTable } from "@instill-ai/design-system";
 
 import { formatDate, type Pipeline } from "../../lib";
-import { SortIcon, TableCell, TableError } from "../../components";
+import { SortIcon, TableError } from "../../components";
 import { PipelineTablePlaceholder } from "./PipelineTablePlaceholder";
 import { env } from "../../server";
+import { useRouter } from "next/navigation";
 
 export type PipelinesTableProps = {
   pipelines: Pipeline[];
@@ -16,6 +17,7 @@ export type PipelinesTableProps = {
 
 export const PipelinesTable = (props: PipelinesTableProps) => {
   const { pipelines, isError, isLoading } = props;
+  const router = useRouter();
 
   const columns: ColumnDef<Pipeline>[] = [
     {
@@ -23,17 +25,21 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
       header: () => <div className="min-w-[650px] text-left">Pipelines</div>,
       cell: ({ row }) => {
         const pipelineNameFragments = row.original.name.split("/");
-        const pipelineLink = `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`;
 
         return (
           <div className="text-left">
-            <TableCell
-              primaryLink={pipelineLink}
-              primaryText={row.getValue("id")}
-              secondaryLink={null}
-              secondaryText={null}
-              iconElement={null}
-            />
+            <button
+              onClick={() => {
+                router.push(
+                  `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`
+                );
+              }}
+              className="hover:underline"
+            >
+              <h3 className="text-semantic-fg-primary product-body-text-3-semibold">
+                {row.getValue("id")}
+              </h3>
+            </button>
           </div>
         );
       },
