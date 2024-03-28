@@ -483,6 +483,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
               setSelectedType={setSelectedType}
               onCreateFreeFormField={onCreateFreeFormField}
               onCancel={onCancelFreeForm}
+              isEditing={isEditing}
             />
           ) : (
             <div className="flex flex-col gap-y-3">

@@ -46,6 +46,7 @@ export const StartOperatorNodeFreeForm = ({
   setSelectedType,
   onCreateFreeFormField,
   onCancel,
+  isEditing,
 }: {
   form: UseFormReturn<
     z.infer<typeof StartOperatorFreeFormSchema>,
@@ -61,6 +62,7 @@ export const StartOperatorNodeFreeForm = ({
     formData: z.infer<typeof StartOperatorFreeFormSchema>
   ) => void;
   onCancel: () => void;
+  isEditing: boolean;
 }) => {
   const [isUserInputKey, setIsUserInputKey] = React.useState<boolean>(false);
 
@@ -176,7 +178,7 @@ export const StartOperatorNodeFreeForm = ({
                         className="!h-5 !text-sm"
                         placeholder="My prompt"
                         onChange={(event) => {
-                          if (!isUserInputKey) {
+                          if (!isUserInputKey && !isEditing) {
                             form.setValue(
                               "key",
                               constructFieldKey(event.target.value)

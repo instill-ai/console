@@ -275,6 +275,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
           form={form}
           onCreateFreeFormField={onCreateFreeFormField}
           onCancel={onCancel}
+          isEditing={isEditing}
         />
       ) : isViewResultMode ? (
         <ComponentOutputs
