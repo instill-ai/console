@@ -140,6 +140,7 @@ export const Body = ({
               allPipelines.length &&
               allPipelines.map((pipeline) => (
                 <CardPipeline
+                  key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
                   isOwner={pipeline.owner_name === me.data?.name}
