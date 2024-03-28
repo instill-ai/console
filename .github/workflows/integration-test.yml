@@ -113,7 +113,7 @@ jobs:
 
       - name: Launch Instill Core (latest)
         run: |
-          make latest EDITION=local-ce:test RAY_LATEST_TAG=latest ITMODE_ENABLED=true INSTILL_CORE_HOST=api-gateway
+          make latest EDITION=local-ce:test BUILD=true RAY_LATEST_TAG=latest ITMODE_ENABLED=true INSTILL_CORE_HOST=api-gateway
 
       - name: Checkout
         uses: actions/checkout@v3
