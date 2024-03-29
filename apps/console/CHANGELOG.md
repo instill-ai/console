@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.42.0-beta](https://github.com/instill-ai/console/compare/v0.41.0-beta...v0.42.0-beta) (2024-03-29)
+
+
+### Features
+
+* migrate /pipelines/pid from page-route to app-route ([#1030](https://github.com/instill-ai/console/issues/1030)) ([1c6d5da](https://github.com/instill-ai/console/commit/1c6d5da50530998347ce492f6ab87426622f2d85))
+* **pipeline-builder QoL:** stop automatically generating key when editing start/end field ([#1045](https://github.com/instill-ai/console/issues/1045)) ([eb925fd](https://github.com/instill-ai/console/commit/eb925fd7a316a5b866f2cfff58d27bad4041d85d))
+
+
+### Bug Fixes
+
+* fix missing toaster instance in app route ([#1041](https://github.com/instill-ai/console/issues/1041)) ([6402c0e](https://github.com/instill-ai/console/commit/6402c0ebaca48852454b37062c3ff1d3d3d0fb25))
+* **pipeline-builder, test:** fix json is not being unmarshalled on the pipelinespid page ([#1033](https://github.com/instill-ai/console/issues/1033)) ([0093c05](https://github.com/instill-ai/console/commit/0093c05a834d275998bf8e05243b6c3e1f2a856b))
+* **pipeline-builder, test:** fix not correctly guard duplicated start/end operator field ([#1036](https://github.com/instill-ai/console/issues/1036)) ([5760dc2](https://github.com/instill-ai/console/commit/5760dc2a53835033d78b9679a4001e2494910647))
+* **pipeline-builder, test:** fix pipeline-builder not correctly update component id ([#1034](https://github.com/instill-ai/console/issues/1034)) ([4000425](https://github.com/instill-ai/console/commit/4000425f8dec39a870e11312899b5204f00955c5))
+
+
+### Miscellaneous
+
+* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+
 ## [0.41.0-beta](https://github.com/instill-ai/console/compare/v0.40.0-beta...v0.41.0-beta) (2024-03-13)
 
 

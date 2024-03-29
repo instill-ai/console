@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.65.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.65.0...@instill-ai/design-system-v0.65.1) (2024-03-29)
+
+
+### Miscellaneous
+
+* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+
 ## [0.65.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.64.0...@instill-ai/design-system-v0.65.0) (2024-03-13)
 
 

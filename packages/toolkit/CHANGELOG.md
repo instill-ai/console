@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.84.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.2...@instill-ai/toolkit-v0.84.0) (2024-03-29)
+
+
+### Features
+
+* migrate /pipelines/pid from page-route to app-route ([#1030](https://github.com/instill-ai/console/issues/1030)) ([1c6d5da](https://github.com/instill-ai/console/commit/1c6d5da50530998347ce492f6ab87426622f2d85))
+* **pipeline-builder QoL:** stop automatically generating key when editing start/end field ([#1045](https://github.com/instill-ai/console/issues/1045)) ([eb925fd](https://github.com/instill-ai/console/commit/eb925fd7a316a5b866f2cfff58d27bad4041d85d))
+* **pipeline-builder:** support connecting edges for reference with square brace ([#1040](https://github.com/instill-ai/console/issues/1040)) ([2f30e45](https://github.com/instill-ai/console/commit/2f30e45ee2f969c4b418d92f9a85260cc6e8f761))
+
+
+### Bug Fixes
+
+* docs url and navbar update ([#1042](https://github.com/instill-ai/console/issues/1042)) ([ed67569](https://github.com/instill-ai/console/commit/ed67569b06ab04ea78d087197274cc93ac1537d0))
+* fix alignment between input and output fields on the pipeline overview page ([#1005](https://github.com/instill-ai/console/issues/1005)) ([73eb41a](https://github.com/instill-ai/console/commit/73eb41abf5e0c7c9ec6357025414a267cc313f47))
+* fix missing toaster instance in app route ([#1041](https://github.com/instill-ai/console/issues/1041)) ([6402c0e](https://github.com/instill-ai/console/commit/6402c0ebaca48852454b37062c3ff1d3d3d0fb25))
+* fix pipelines table navigation issue on user/organization profile page ([#1044](https://github.com/instill-ai/console/issues/1044)) ([4f71ca6](https://github.com/instill-ai/console/commit/4f71ca6cce264f27ceceab3c0fe20a98d00127bf))
+* fix unsaved guard of pipeline-builder didnt navigate user to the page they want to go ([#1043](https://github.com/instill-ai/console/issues/1043)) ([48e9b45](https://github.com/instill-ai/console/commit/48e9b457497f33d3e20b48a8cb05296bde1378fb))
+* **hub:** clear rendered card after next call ([#1046](https://github.com/instill-ai/console/issues/1046)) ([15e202e](https://github.com/instill-ai/console/commit/15e202e9d6762e004b57756d9abe69cec34bfd4a))
+* **pipeline-builder, test:** fix json is not being unmarshalled on the pipelinespid page ([#1033](https://github.com/instill-ai/console/issues/1033)) ([0093c05](https://github.com/instill-ai/console/commit/0093c05a834d275998bf8e05243b6c3e1f2a856b))
+* **pipeline-builder, test:** fix not correctly guard duplicated start/end operator field ([#1036](https://github.com/instill-ai/console/issues/1036)) ([5760dc2](https://github.com/instill-ai/console/commit/5760dc2a53835033d78b9679a4001e2494910647))
+* **pipeline-builder, test:** fix pipeline-builder not correctly update component id ([#1034](https://github.com/instill-ai/console/issues/1034)) ([4000425](https://github.com/instill-ai/console/commit/4000425f8dec39a870e11312899b5204f00955c5))
+* **pipeline-builder:** fix not correctly generate node handler on ReadOnlyPipelineBuilder ([#1035](https://github.com/instill-ai/console/issues/1035)) ([ce293e7](https://github.com/instill-ai/console/commit/ce293e7a52d22cb899d02b53cc7f7cfef8b56c7c))
+* **pipeline-builder:** fix wrongly validate start operator form when delete array type items ([#1038](https://github.com/instill-ai/console/issues/1038)) ([8c5fb08](https://github.com/instill-ai/console/commit/8c5fb0897998c4dba94c5b94ac56e3b446ff6fcc))
+
+
+### Miscellaneous
+
+* refactor how we bundle toolkit and design system ([#1028](https://github.com/instill-ai/console/issues/1028)) ([1bc0628](https://github.com/instill-ai/console/commit/1bc0628aee9e93749ed04bb956f58884ba7a0a4c))
+
 ## [0.83.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.1...@instill-ai/toolkit-v0.83.2) (2024-03-13)
 
 
