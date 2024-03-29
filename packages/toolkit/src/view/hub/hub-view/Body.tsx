@@ -139,14 +139,13 @@ export const Body = ({
             ) : (
               allPipelines.length &&
               allPipelines.map((pipeline) => (
-                <React.Fragment key={pipeline.id}>
-                  <CardPipeline
-                    ownerID={pipeline.owner_name.split("/")[1]}
-                    pipeline={pipeline}
-                    isOwner={pipeline.owner_name === me.data?.name}
-                    disabledPermissionLabel={true}
-                  />
-                </React.Fragment>
+                <CardPipeline
+                  key={pipeline.uid}
+                  ownerID={pipeline.owner_name.split("/")[1]}
+                  pipeline={pipeline}
+                  isOwner={pipeline.owner_name === me.data?.name}
+                  disabledPermissionLabel={true}
+                />
               ))
             )
           ) : (
