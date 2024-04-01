@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.42.1-beta](https://github.com/instill-ai/console/compare/v0.42.0-beta...v0.42.1-beta) (2024-04-01)
+
+
+### Bug Fixes
+
+* fix non login user can not access profile page ([#1049](https://github.com/instill-ai/console/issues/1049)) ([93a0b45](https://github.com/instill-ai/console/commit/93a0b45771e2ff3ed96d6df00f1b36d13fc96337))
+
+
+### Miscellaneous
+
+* enable e2e testing ([#1047](https://github.com/instill-ai/console/issues/1047)) ([22170dc](https://github.com/instill-ai/console/commit/22170dc0cae4d37185ac766ce3bceea91367a4f5))
+
 ## [0.42.0-beta](https://github.com/instill-ai/console/compare/v0.41.0-beta...v0.42.0-beta) (2024-03-29)
 
 
