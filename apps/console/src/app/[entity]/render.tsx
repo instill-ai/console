@@ -7,6 +7,7 @@ import { useAppAccessToken } from "lib/use-app-access-token";
 export function ProfilePageRender() {
   useAppAccessToken({
     disabledRedirectingVisitor: true,
+    forceQueryWithoutAccessToken: true,
   });
 
   return (
