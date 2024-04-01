@@ -7,6 +7,7 @@ import { useAppAccessToken } from "lib/use-app-access-token";
 export function PipelineOverviewPageRender() {
   useAppAccessToken({
     disabledRedirectingVisitor: true,
+    forceQueryWithoutAccessToken: true,
   });
 
   return (

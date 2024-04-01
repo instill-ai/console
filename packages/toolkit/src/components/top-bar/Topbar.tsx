@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 import { DropdownMenu, Icons } from "@instill-ai/design-system";
-import { TopbarLink } from "./TopbarLink";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -15,33 +14,7 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
-
-export const topbarItems = [
-  {
-    pathName: "pipelines",
-    icon: <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />,
-    name: "Pipelines",
-  },
-  {
-    pathName: "connectors",
-    icon: (
-      <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
-    ),
-    name: "Connectors",
-  },
-  {
-    pathName: "models",
-    icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
-    name: "Models",
-  },
-  {
-    pathName: "dashboard",
-    icon: (
-      <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
-    ),
-    name: "Dashboard",
-  },
-];
+import { TopbarLinks } from "./TopbarLinks";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -85,30 +58,7 @@ export const Topbar = ({
         ) : (
           <React.Fragment>
             {me.isSuccess ? (
-              <React.Fragment>
-                {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-                  <TopbarLink
-                    key="hub"
-                    href="/hub"
-                    icon={
-                      <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
-                    }
-                    name="Hub"
-                    hightlighted={router.pathname.split("/")[1] === "hub"}
-                    className="mx-1 my-2 px-4"
-                  />
-                ) : null}
-                {topbarItems.map(({ pathName, name, icon }) => (
-                  <TopbarLink
-                    key={pathName}
-                    href={`/${me.data.id}/${pathName}`}
-                    icon={icon}
-                    name={name}
-                    hightlighted={router.pathname.split("/")[2] === pathName}
-                    className="mx-1 my-2 px-4"
-                  />
-                ))}
-              </React.Fragment>
+              <TopbarLinks pathname={router.pathname} entity={me.data.id} />
             ) : null}
           </React.Fragment>
         )}

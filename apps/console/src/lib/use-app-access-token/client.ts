@@ -7,6 +7,7 @@ import {
 } from "@instill-ai/toolkit";
 import { useRouter } from "next/navigation";
 import { fetchAccessToken } from "./server";
+import axios from "axios";
 
 const selector = (store: InstillStore) => ({
   updateAccessToken: store.updateAccessToken,
@@ -15,14 +16,17 @@ const selector = (store: InstillStore) => ({
 
 type UseAccessTokenProps = {
   disabledRedirectingVisitor?: boolean;
+  forceQueryWithoutAccessToken?: boolean;
 };
 
 export function useAppAccessToken(props?: UseAccessTokenProps) {
   const disabledRedirectingVisitor = props?.disabledRedirectingVisitor ?? false;
+  const forceQueryWithoutAccessToken =
+    props?.forceQueryWithoutAccessToken ?? false;
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const query = useQuery({
@@ -34,14 +38,13 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
       } catch (error) {
         console.error(
           "Something went wrong when try to get accessToken",
-          error,
+          error
         );
 
-        // await axios.post("/api/remove-user-cookie", {
-        //   key: "instill-auth-session",
-        // });
-
         if (!disabledRedirectingVisitor) {
+          await axios.post("/api/remove-user-cookie", {
+            key: "instill-auth-session",
+          });
           router.push("/login");
         }
 
@@ -54,6 +57,12 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
 
   React.useEffect(() => {
     if (query.isError) {
+      if (forceQueryWithoutAccessToken) {
+        updateAccessToken(() => null);
+        updateEnabledQuery(() => true);
+        return;
+      }
+
       updateAccessToken(() => null);
       updateEnabledQuery(() => false);
       return;

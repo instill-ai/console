@@ -16,26 +16,19 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cookieStore = cookies();
-  const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
-
-  let accessToken: Nullable<string> = null;
-
-  if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
-  }
-
-  let authenticatedUser: Nullable<User> = null;
-
   try {
-    authenticatedUser = await fetchUser({
+    let user: Nullable<User> = null;
+
+    user = await fetchUser({
       userName: "users/" + params.entity,
-      accessToken: accessToken,
+
+      // This is a public route, we don't need to request it with access token
+      accessToken: null,
     });
 
     return Promise.resolve({
-      title: `${authenticatedUser.id} | User`,
-      description: authenticatedUser.profile?.bio,
+      title: `${user.id} | User`,
+      description: user.profile?.bio,
       openGraph: {
         images: ["/instill-open-graph.png"],
       },
@@ -49,24 +42,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const queryClient = new QueryClient();
 
-  const cookieStore = cookies();
-  const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
-
   let accessToken: Nullable<string> = null;
 
-  if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
+  try {
+    const cookieStore = cookies();
+    const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
+
+    if (authSessionCookie) {
+      accessToken = JSON.parse(authSessionCookie).access_token;
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   await prefetchUser({
     userName: "users/" + params.entity,
-    accessToken: accessToken ?? null,
+    accessToken: accessToken,
     queryClient: queryClient,
   });
 
   await prefetchUserPipelines({
     userName: "users/" + params.entity,
-    accessToken: accessToken ?? null,
+    accessToken: accessToken,
     queryClient: queryClient,
     filter: null,
     visibility: null,
