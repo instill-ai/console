@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.84.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.0...@instill-ai/toolkit-v0.84.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* fix non login user can not access profile page ([#1049](https://github.com/instill-ai/console/issues/1049)) ([93a0b45](https://github.com/instill-ai/console/commit/93a0b45771e2ff3ed96d6df00f1b36d13fc96337))
+
 ## [0.84.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.83.2...@instill-ai/toolkit-v0.84.0) (2024-03-29)
 
 
