@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.84.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.1...@instill-ai/toolkit-v0.84.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **app-migration:** fix app route issue in organization related components ([#1050](https://github.com/instill-ai/console/issues/1050)) ([aff205d](https://github.com/instill-ai/console/commit/aff205d25d0ea3536e35ab9bd7063c29ea95c2a0))
+
 ## [0.84.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.0...@instill-ai/toolkit-v0.84.1) (2024-04-01)
 
 
