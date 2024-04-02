@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.2-beta](https://github.com/instill-ai/console/compare/v0.42.1-beta...v0.42.2-beta) (2024-04-02)
+
+
+### Bug Fixes
+
+* **app-migration:** fix app route issue in organization related components ([#1050](https://github.com/instill-ai/console/issues/1050)) ([aff205d](https://github.com/instill-ai/console/commit/aff205d25d0ea3536e35ab9bd7063c29ea95c2a0))
+
 ## [0.42.1-beta](https://github.com/instill-ai/console/compare/v0.42.0-beta...v0.42.1-beta) (2024-04-01)
 
 
