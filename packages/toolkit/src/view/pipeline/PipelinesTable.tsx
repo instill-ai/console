@@ -6,7 +6,6 @@ import { Button, DataTable } from "@instill-ai/design-system";
 import { formatDate, type Pipeline } from "../../lib";
 import { SortIcon, TableError } from "../../components";
 import { PipelineTablePlaceholder } from "./PipelineTablePlaceholder";
-import { env } from "../../server";
 import { useRouter } from "next/navigation";
 
 export type PipelinesTableProps = {

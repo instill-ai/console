@@ -10,7 +10,6 @@ import {
   sendAmplitudeData,
   useAmplitudeCtx,
   useCreateUserConnector,
-  useEntity,
   useUpdateUserConnector,
 } from "../../lib";
 import { recursiveHelpers } from "../pipeline-builder";
@@ -24,20 +23,19 @@ export type DataResourceAutoFormProps = {
   disabledAll?: boolean;
   onSubmit?: (connector: ConnectorWithDefinition) => void;
   onBack?: () => void;
+  entityName: Nullable<string>;
 };
 
 export const DataResourceAutoForm = (props: DataResourceAutoFormProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { definition, resource, accessToken, onSubmit } = props;
+  const { definition, resource, accessToken, onSubmit, entityName } = props;
   const { toast } = useToast();
 
   const createUserConnector = useCreateUserConnector();
   const updateUserConnector = useUpdateUserConnector();
 
-  const entityObject = useEntity();
-
   async function handleSubmit(data: ResourceResourceFormData) {
-    if (!entityObject.isSuccess) {
+    if (!entityName) {
       return;
     }
 
@@ -53,7 +51,7 @@ export const DataResourceAutoForm = (props: DataResourceAutoFormProps) => {
 
         const { connector } = await createUserConnector.mutateAsync({
           payload,
-          entityName: entityObject.entityName,
+          entityName,
           accessToken,
         });
 

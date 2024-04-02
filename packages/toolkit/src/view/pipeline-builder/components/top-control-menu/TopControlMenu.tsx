@@ -80,7 +80,7 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <SetupComponentDialog />
+      <SetupComponentDialog entityName={entity.entityName} />
       <PublishPipelineDialog
         router={router}
         pipelineName={entity.pipelineName}

@@ -28,7 +28,6 @@ import {
   useAmplitudeCtx,
   useBuildAirbyteYup,
   useCreateUserConnector,
-  useEntity,
   useUpdateUserConnector,
 } from "../../lib";
 import { recursiveHelpers } from "../pipeline-builder";
@@ -44,6 +43,7 @@ export type AirbyteDataResourceFormProps = {
   disabledAll?: boolean;
   onSubmit?: (connector: ConnectorWithDefinition) => void;
   enableQuery: boolean;
+  entityName: Nullable<string>;
 } & BackButtonProps;
 
 type BackButtonProps =
@@ -66,11 +66,10 @@ export const AirbyteDataResourceForm = (
     onSubmit,
     accessToken,
     enableBackButton,
+    entityName,
   } = props;
 
   const { toast } = useToast();
-
-  const entityObject = useEntity();
 
   const [isSaving, setIsSaving] = React.useState(false);
 
@@ -147,7 +146,7 @@ export const AirbyteDataResourceForm = (
   const updateData = useUpdateUserConnector();
 
   const handleCreateData = React.useCallback(async () => {
-    if (!fieldValues || !formYup || isSaving || !entityObject.isSuccess) {
+    if (!fieldValues || !formYup || isSaving || !entityName) {
       return;
     }
 
@@ -213,7 +212,7 @@ export const AirbyteDataResourceForm = (
 
       try {
         const { connector } = await createData.mutateAsync({
-          entityName: entityObject.entityName,
+          entityName,
           payload,
           accessToken,
         });
@@ -303,9 +302,8 @@ export const AirbyteDataResourceForm = (
     dataResource,
     updateData,
     isSaving,
-    entityObject.isSuccess,
-    entityObject.entityName,
     amplitudeIsInit,
+    entityName,
   ]);
 
   return (

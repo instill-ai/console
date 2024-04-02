@@ -1,6 +1,11 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import type { Nullable } from "../../type";
-import { getOrganizationMembershipsQuery } from "../../vdp-sdk";
+import type { Nullable } from "../../../type";
+import {
+  fetchOrganizationMemberships,
+  getUseOrganizationMembershipsQueryKey,
+} from "./server";
 
 export function useOrganizationMemberships({
   organizationID,
@@ -19,23 +24,15 @@ export function useOrganizationMemberships({
     enableQuery = true;
   }
 
+  const queryKey = getUseOrganizationMembershipsQueryKey(organizationID);
+
   return useQuery({
-    queryKey: ["organizations", organizationID, "memberships"],
+    queryKey,
     queryFn: async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
-      }
-
-      const membership = await getOrganizationMembershipsQuery({
+      return await fetchOrganizationMemberships({
         organizationID,
         accessToken,
       });
-
-      return Promise.resolve(membership);
     },
     enabled: enableQuery,
     retry: retry === false ? false : retry ? retry : 3,

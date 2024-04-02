@@ -5,7 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
-  useEntity,
+  Nullable,
   useInstillStore,
   useUserConnectors,
 } from "../../../../../lib";
@@ -27,8 +27,11 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const SetupComponentDialog = () => {
-  const entity = useEntity();
+export const SetupComponentDialog = ({
+  entityName,
+}: {
+  entityName: Nullable<string>;
+}) => {
   const {
     state: {
       open,
@@ -43,10 +46,10 @@ export const SetupComponentDialog = () => {
   } = useInstillStore(useShallow(selector));
 
   const existedConnectors = useUserConnectors({
-    userName: entity.entityName,
+    userName: entityName,
     connectorType: connectorType ?? "all",
     accessToken,
-    enabled: enabledQuery && entity.isSuccess,
+    enabled: enabledQuery && !!entityName,
   });
 
   const filteredConnectors = React.useMemo(() => {
@@ -153,6 +156,7 @@ export const SetupComponentDialog = () => {
                       onSelectedExistingResource: null,
                     }));
                   }}
+                  entityName={entityName}
                 />
               ) : null}
               {connectorType === "CONNECTOR_TYPE_APPLICATION" &&
@@ -171,6 +175,7 @@ export const SetupComponentDialog = () => {
                       onSelectedExistingResource: null,
                     }));
                   }}
+                  entityName={entityName}
                 />
               ) : null}
               {connectorType === "CONNECTOR_TYPE_DATA" &&
@@ -192,6 +197,7 @@ export const SetupComponentDialog = () => {
                       }));
                     }}
                     enableQuery={enabledQuery}
+                    entityName={entityName}
                   />
                 ) : (
                   <DataResourceAutoForm
@@ -208,6 +214,7 @@ export const SetupComponentDialog = () => {
                         onSelectedExistingResource: null,
                       }));
                     }}
+                    entityName={entityName}
                   />
                 )
               ) : null}
