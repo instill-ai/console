@@ -43,7 +43,7 @@ export function shouldUnmarshalJSONInput() {
         .locator(`textarea[name='value']`)
         .fill(endFieldValue);
       await pipelineBuilderPage.endNodeSaveFieldButton.click();
-      await pipelineBuilderPage.mainSaveButton.click();
+      await pipelineBuilderPage.expectToSave();
 
       // Fill in value in the start operator JSON field
       await pipelineBuilderPage.startNode
