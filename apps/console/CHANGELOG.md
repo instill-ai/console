@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.3-beta](https://github.com/instill-ai/console/compare/v0.42.2-beta...v0.42.3-beta) (2024-04-02)
+
+
+### Miscellaneous
+
+* stabilize test related to save pipeline action ([#1052](https://github.com/instill-ai/console/issues/1052)) ([02557ec](https://github.com/instill-ai/console/commit/02557ec5298eb4d96f8fdafa8e6b466de85cbf97))
+
 ## [0.42.2-beta](https://github.com/instill-ai/console/compare/v0.42.1-beta...v0.42.2-beta) (2024-04-02)
 
 
