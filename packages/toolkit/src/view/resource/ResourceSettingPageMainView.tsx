@@ -48,6 +48,7 @@ export const ResourceSettingPageMainView = (
               definition={userConnector.data.connector_definition}
               resource={userConnector.data}
               accessToken={accessToken}
+              entityName={entirtyObject.entityName}
             />
           ) : null}
           {userConnector.data.type === "CONNECTOR_TYPE_APPLICATION" ? (
@@ -55,6 +56,7 @@ export const ResourceSettingPageMainView = (
               definition={userConnector.data.connector_definition}
               resource={userConnector.data}
               accessToken={accessToken}
+              entityName={entirtyObject.entityName}
             />
           ) : null}
           {userConnector.data.type === "CONNECTOR_TYPE_DATA" ? (
@@ -66,12 +68,14 @@ export const ResourceSettingPageMainView = (
                 accessToken={accessToken}
                 enableBackButton={false}
                 enableQuery={enableQuery}
+                entityName={entirtyObject.entityName}
               />
             ) : (
               <DataResourceAutoForm
                 definition={userConnector.data.connector_definition}
                 resource={userConnector.data}
                 accessToken={accessToken}
+                entityName={entirtyObject.entityName}
               />
             )
           ) : null}

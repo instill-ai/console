@@ -21,10 +21,12 @@ export type AddConnectorDialogProps = {
   accessToken: Nullable<string>;
   onSubmit: () => void;
   enableQuery: boolean;
+  entityName: Nullable<string>;
 };
 
 export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
-  const { open, onOpenChange, trigger, accessToken, enableQuery } = props;
+  const { open, onOpenChange, trigger, accessToken, enableQuery, entityName } =
+    props;
 
   const [newConnectorDefinition, setNewConnectorDefinition] =
     React.useState<Nullable<ConnectorDefinition>>(null);
@@ -201,6 +203,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                     setNewConnectorDefinition(null);
                     setNewConnectorType(null);
                   }}
+                  entityName={entityName}
                 />
               ) : null}
               {newConnectorType === "CONNECTOR_TYPE_APPLICATION" &&
@@ -214,6 +217,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                     setNewConnectorDefinition(null);
                     setNewConnectorType(null);
                   }}
+                  entityName={entityName}
                 />
               ) : null}
               {newConnectorType === "CONNECTOR_TYPE_DATA" &&
@@ -230,6 +234,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                       setNewConnectorType(null);
                     }}
                     enableQuery={enableQuery}
+                    entityName={entityName}
                   />
                 ) : (
                   <DataResourceAutoForm
@@ -241,6 +246,7 @@ export const AddConnectorDialog = (props: AddConnectorDialogProps) => {
                       setNewConnectorDefinition(null);
                       setNewConnectorType(null);
                     }}
+                    entityName={entityName}
                   />
                 )
               ) : null}

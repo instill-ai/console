@@ -56,6 +56,7 @@ export const ResourceListPageMainView = (
             setAddConnectorDialogIsOpen(false);
           }}
           enableQuery={enableQuery}
+          entityName={entityObject.entityName}
         />
       </div>
       <ResourcesTable
