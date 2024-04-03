@@ -4,7 +4,7 @@ import cn from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
-import { DropdownMenu, Icons } from "@instill-ai/design-system";
+import { DropdownMenu } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
