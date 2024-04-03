@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props) {
     }
 
     const metadata: Metadata = {
-      title: `${pipeline?.id} | Pipeline`,
+      title: `Instill Core | ${id}`,
       description: pipeline?.readme,
       openGraph: {
         images: ["/instill-open-graph.png"],

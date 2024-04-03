@@ -19,7 +19,7 @@ const ResourceDetailsPage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title={`resources/${id}`} />
+      <ConsoleCorePageHead title={`connectors/${id}`} />
       <ResourceSettingPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}

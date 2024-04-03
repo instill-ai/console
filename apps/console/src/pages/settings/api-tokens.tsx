@@ -18,7 +18,7 @@ const APITokenSetting: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="Settings" />
+      <ConsoleCorePageHead title="API Tokens" />
       <div className="mb-[52px] w-full px-20">
         <BreadcrumbWithLink
           items={[{ label: "Home", link: "/" }, { label: "Settings" }]}

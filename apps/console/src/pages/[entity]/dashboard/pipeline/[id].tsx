@@ -19,7 +19,7 @@ const PipelinePage: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="Dashboard pipeline details" />
+      <ConsoleCorePageHead title="Dashboard Pipeline Details" />
       <DashboardPipelineDetailsPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}

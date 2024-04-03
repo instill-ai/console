@@ -12,7 +12,7 @@ const PipelineBuilderPage: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="Pipeline builder" />
+      <ConsoleCorePageHead title="Pipeline Builder" />
       <PipelineBuilderMainView />
     </React.Fragment>
   );

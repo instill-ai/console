@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
 
     const metadata: Metadata = {
-      title: `${user.id} | User`,
+      title: `Instill Core | ${params.entity}`,
       description: user.profile?.bio,
       openGraph: {
         images: ["/instill-open-graph.png"],
