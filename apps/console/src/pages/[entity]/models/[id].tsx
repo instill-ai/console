@@ -20,7 +20,7 @@ const ModelDetailsPage: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title={`models/${id}`} />
+      <ConsoleCorePageHead title={id ? id.toString() : null} />
       <ModelHubSettingPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
