@@ -30,20 +30,20 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       });
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true })
+        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true })
+        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -59,7 +59,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -74,7 +74,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         key: textsFieldKey,
       });
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true })
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
@@ -85,7 +85,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -101,7 +101,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText(promptsFieldKey, {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
@@ -110,7 +110,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.startNode.getByText(promptsFieldKey, {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -123,7 +123,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         value: "foo",
       });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.createEndComponentField({
@@ -131,17 +131,17 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         value: "bar",
       });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -159,7 +159,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -174,7 +174,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         key: resultFooKey,
       });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
@@ -185,7 +185,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
           exact: true,
-        })
+        }),
       ).toHaveCount(1);
     });
 
@@ -198,14 +198,14 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
         newTitle: resultTestKey,
       });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true })
+        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true }),
       ).toHaveCount(1);
     });
 
