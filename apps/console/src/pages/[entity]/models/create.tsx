@@ -36,7 +36,7 @@ const CreateModelPage: NextPageWithLayout = () => {
 
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="Create model" />
+      <ConsoleCorePageHead title="Create Model" />
       <ModelHubCreatePageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}

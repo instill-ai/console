@@ -10,7 +10,9 @@ export const ConsoleCorePageHead = ({ title }: ConsoleCorePageHeadProps) => {
       meta={{
         type: "website",
         siteName: "Instill AI - Versatile Data Pipeline (VDP)",
-        title: title ? title : "Instill AI - Versatile Data Pipeline (VDP)",
+        title: title
+          ? `Instill Core | ${title}`
+          : "Instill Core | Build unstructured data pipelines 10x faster",
         pageDescription:
           "Versatile Data Pipeline (VDP) is a data ETL tool to streamline the end-to-end unstructured data processing pipeline",
       }}

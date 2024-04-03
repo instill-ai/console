@@ -6,7 +6,7 @@ import { ConsoleCorePageHead } from "components";
 const Custom404Page: NextPageWithLayout = () => {
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="Not found" />
+      <ConsoleCorePageHead title="Not Found" />
       <NotFoundView />;
     </React.Fragment>
   );

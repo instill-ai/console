@@ -18,7 +18,7 @@ const PipelinePage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="pipelines" />
+      <ConsoleCorePageHead title="Connectors" />
       <ResourceListPageMainView
         accessToken={accessToken.isSuccess ? accessToken.data : null}
         enableQuery={accessToken.isSuccess}

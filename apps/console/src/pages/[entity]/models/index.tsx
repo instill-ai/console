@@ -18,7 +18,7 @@ const ModelPage: NextPageWithLayout = () => {
   useTrackToken({ enabled: true });
   return (
     <React.Fragment>
-      <ConsoleCorePageHead title="models" />
+      <ConsoleCorePageHead title="Models" />
       <ModelHubListPageMainView
         router={router}
         accessToken={accessToken.isSuccess ? accessToken.data : null}
