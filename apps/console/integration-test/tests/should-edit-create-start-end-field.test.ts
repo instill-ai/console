@@ -4,12 +4,12 @@ import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
 
 export function shouldEditAndCreateStartAndEndOperatorField() {
   const pipelineID = "start_field_test";
-  const textsFieldID = "texts";
-  const promptsFieldID = "prompts";
-  const jsonFieldID = "json";
-  const resultFooID = "result_foo";
-  const resultBarID = "result_bar";
-  const resultTestID = "result_test";
+  const textsFieldKey = "texts";
+  const promptsFieldKey = "prompts";
+  const jsonFieldKey = "json";
+  const resultFooKey = "result_foo";
+  const resultBarKey = "result_bar";
+  const resultTestKey = "result_test";
 
   test.describe.serial("Start Operator create/edit field test", () => {
     test("should create pipeline", async ({ page }) => {
@@ -20,39 +20,30 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
 
-      await pipelineBuilderPage.startNodeAddFieldButton.click();
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "Multiple Texts" })
-        .click();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
-        .fill(textsFieldID);
-      await pipelineBuilderPage.startNodeSaveFieldButton.click();
-
-      await pipelineBuilderPage.startNodeAddFieldButton.click();
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "JSON" })
-        .click();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
-        .fill(jsonFieldID);
-      await pipelineBuilderPage.startNodeSaveFieldButton.click();
+      await pipelineBuilderPage.createStartComponentField({
+        inputType: "Multiple Texts",
+        key: textsFieldKey,
+      });
+      await pipelineBuilderPage.createStartComponentField({
+        inputType: "JSON",
+        key: jsonFieldKey,
+      });
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true }),
+        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.startNode.getByText(jsonFieldID, { exact: true }),
+        pipelineBuilderPage.startNode.getByText(jsonFieldKey, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -61,15 +52,10 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
     }) => {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
-      await pipelineBuilderPage.startNodeAddFieldButton.click();
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "Multiple Texts" })
-        .click();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
-        .fill(textsFieldID);
-      await pipelineBuilderPage.startNodeSaveFieldButton.click();
-
+      await pipelineBuilderPage.createStartComponentField({
+        inputType: "Multiple Texts",
+        key: textsFieldKey,
+      });
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
@@ -82,30 +68,20 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
     }) => {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
-      const editTextsFieldButton = pipelineBuilderPage.startNode.locator(
-        `button[aria-label='Edit start operator ${textsFieldID} field']`,
-      );
-      await editTextsFieldButton.click();
 
       // Can save without any change
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "Save" })
-        .click();
+      await pipelineBuilderPage.editStartComponentField({
+        key: textsFieldKey,
+      });
       await expect(
-        pipelineBuilderPage.startNode.getByText(textsFieldID, { exact: true }),
+        pipelineBuilderPage.startNode.getByText(textsFieldKey, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
-      await editTextsFieldButton.click();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("The key of this field")
-        .clear();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("The key of this field")
-        .fill(jsonFieldID);
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "Save" })
-        .click();
+      await pipelineBuilderPage.editStartComponentField({
+        key: textsFieldKey,
+        newKey: jsonFieldKey,
+      });
       await expect(
         pipelineBuilderPage.startNode.getByText("Key already exists", {
           exact: true,
@@ -117,20 +93,13 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
 
-      const editTextsFieldButton = pipelineBuilderPage.startNode.locator(
-        `button[aria-label='Edit start operator ${textsFieldID} field']`,
-      );
-      await editTextsFieldButton.click();
-      await pipelineBuilderPage.startNode.getByPlaceholder("My prompt").clear();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
-        .fill(promptsFieldID);
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "Save" })
-        .click();
+      await pipelineBuilderPage.editStartComponentField({
+        key: textsFieldKey,
+        newTitle: promptsFieldKey,
+      });
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(promptsFieldID, {
+        pipelineBuilderPage.startNode.getByText(promptsFieldKey, {
           exact: true,
         }),
       ).toHaveCount(1);
@@ -139,7 +108,7 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.startNode.getByText(promptsFieldID, {
+        pipelineBuilderPage.startNode.getByText(promptsFieldKey, {
           exact: true,
         }),
       ).toHaveCount(1);
@@ -149,39 +118,30 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
 
-      await pipelineBuilderPage.endNodeAddFieldButton.click();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
-        .fill(resultFooID);
-      await pipelineBuilderPage.endNode
-        .locator(`textarea[name='value']`)
-        .fill("foo");
-      await pipelineBuilderPage.endNodeSaveFieldButton.click();
-
-      await pipelineBuilderPage.endNodeAddFieldButton.click();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
-        .fill(resultBarID);
-      await pipelineBuilderPage.endNode
-        .locator(`textarea[name='value']`)
-        .fill("bar");
-      await pipelineBuilderPage.endNodeSaveFieldButton.click();
-
+      await pipelineBuilderPage.createEndComponentField({
+        key: resultFooKey,
+        value: "foo",
+      });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
+
+      await pipelineBuilderPage.createEndComponentField({
+        key: resultBarKey,
+        value: "bar",
+      });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultBarID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultBarKey, { exact: true }),
       ).toHaveCount(1);
     });
 
@@ -190,14 +150,11 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
     }) => {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
-      await pipelineBuilderPage.endNodeAddFieldButton.click();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
-        .fill(resultBarID);
-      await pipelineBuilderPage.endNode
-        .locator(`textarea[name='value']`)
-        .fill("bar");
-      await pipelineBuilderPage.endNodeSaveFieldButton.click();
+
+      await pipelineBuilderPage.createEndComponentField({
+        key: resultBarKey,
+        value: "bar",
+      });
 
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
@@ -211,31 +168,20 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
     }) => {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
-      const editFooFieldButton = pipelineBuilderPage.endNode.locator(
-        `button[aria-label='Edit end operator ${resultFooID} field']`,
-      );
-      await editFooFieldButton.click();
 
       // Can save without any change
-      await pipelineBuilderPage.endNode
-        .getByRole("button", { name: "Save" })
-        .click();
+      await pipelineBuilderPage.editEndComponentField({
+        key: resultFooKey,
+      });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultFooID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultFooKey, { exact: true }),
       ).toHaveCount(1);
 
       // Should block user from using duplicated key
-      await editFooFieldButton.click();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("The key of this field")
-        .clear();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("The key of this field")
-        .fill(resultBarID);
-      await pipelineBuilderPage.endNode
-        .getByRole("button", { name: "Save" })
-        .click();
-      await pipelineBuilderPage.endNodeSaveFieldButton.click();
+      await pipelineBuilderPage.editEndComponentField({
+        key: resultFooKey,
+        newKey: resultBarKey,
+      });
       await expect(
         pipelineBuilderPage.endNode.getByText("Key already exists", {
           exact: true,
@@ -247,27 +193,19 @@ export function shouldEditAndCreateStartAndEndOperatorField() {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);
       await pipelineBuilderPage.goto();
 
-      const editFooFieldButton = pipelineBuilderPage.endNode.locator(
-        `button[aria-label='Edit end operator ${resultFooID} field']`,
-      );
-      await editFooFieldButton.click();
-      await pipelineBuilderPage.endNode.getByPlaceholder("My prompt").clear();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
-        .fill(resultTestID);
-      await pipelineBuilderPage.endNode
-        .getByRole("button", { name: "Save" })
-        .click();
-
+      await pipelineBuilderPage.editEndComponentField({
+        key: resultFooKey,
+        newTitle: resultTestKey,
+      });
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true }),
       ).toHaveCount(1);
 
       await pipelineBuilderPage.expectToSave();
       await page.reload();
 
       await expect(
-        pipelineBuilderPage.endNode.getByText(resultTestID, { exact: true }),
+        pipelineBuilderPage.endNode.getByText(resultTestKey, { exact: true }),
       ).toHaveCount(1);
     });
 

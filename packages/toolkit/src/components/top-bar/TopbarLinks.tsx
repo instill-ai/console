@@ -3,8 +3,6 @@ import cn from "clsx";
 import Link from "next/link";
 import * as React from "react";
 import { env } from "../../server";
-import { NextRouter } from "next/router";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const topbarItems = [
   {

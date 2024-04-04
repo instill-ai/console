@@ -212,20 +212,6 @@ export type PipelineComponent =
   | PipelineOperatorComponent
   | PipelineIteratorComponent;
 
-export type StartOperatorMetadata = Record<string, StartOperatorInput>;
-
-export type StartOperatorInput = {
-  title: string;
-  type?: StartOperatorInputType;
-  instillFormat: string;
-  items?: {
-    type: string;
-  };
-  instillUiOrder?: number;
-  instillUIMultiline?: boolean;
-  description?: string;
-};
-
 export type StartOperatorInputType =
   | "audio/*"
   | "image/*"

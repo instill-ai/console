@@ -14,7 +14,6 @@ import { composeEdgesFromComponents, recursiveHelpers } from "../../../lib";
 import {
   InstillStore,
   Nullable,
-  StartOperatorInputType,
   useInstillStore,
   useStartOperatorTriggerPipelineForm,
   useTriggerUserPipeline,
@@ -23,19 +22,18 @@ import {
   GeneralRecord,
   sendAmplitudeData,
   useAmplitudeCtx,
-  PipelineStartComponentField,
 } from "../../../../../lib";
 import {
   StartOperatorNodeFreeForm,
   StartOperatorFreeFormSchema,
 } from "./StartOperatorNodeFreeForm";
 
-import { pickSelectedTypeFromInstillFormat } from "./pickSelectedTypeFromInstillFormat";
 import { arrayMove } from "@dnd-kit/sortable";
 import { StartEndOperatorControlPanel } from "../control-panel";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
 import { isStartComponent } from "../../../lib/checkComponentType";
+import { StartComponentFields } from "./StartComponentFields";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -56,6 +54,8 @@ const selector = (store: InstillStore) => ({
   updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   collapseAllNodes: store.collapseAllNodes,
+  updateRecentlyUsedStartComponentFieldTypes:
+    store.updateRecentlyUsedStartComponentFieldTypes,
 });
 
 export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
@@ -76,12 +76,13 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     updateIsTriggeringPipeline,
     pipelineIsReadOnly,
     collapseAllNodes,
+    updateRecentlyUsedStartComponentFieldTypes,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
 
   const [selectedType, setSelectedType] =
-    React.useState<Nullable<StartOperatorInputType>>(null);
+    React.useState<Nullable<string>>(null);
   const [currentEditingFieldKey, setCurrentEditingFieldKey] =
     React.useState<Nullable<string>>(null);
   const [isEditing, setIsEditing] = React.useState(false);
@@ -107,11 +108,16 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     });
     setIsEditing(true);
 
-    setSelectedType(
-      pickSelectedTypeFromInstillFormat(
-        data.start_component.fields[key].instill_format
-      )
-    );
+    const newSelectedType = data.start_component.fields[key].instill_format;
+
+    setSelectedType(newSelectedType);
+
+    updateRecentlyUsedStartComponentFieldTypes((prev) => {
+      if (!prev.includes(newSelectedType)) {
+        return [...prev, newSelectedType];
+      }
+      return prev;
+    });
   };
 
   // When delete field, the input key is already the auto generated key
@@ -137,7 +143,9 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   function onCreateFreeFormField(
     formData: z.infer<typeof StartOperatorFreeFormSchema>
   ) {
-    let field: Nullable<PipelineStartComponentField> = null;
+    if (!selectedType) {
+      return;
+    }
 
     if (Object.keys(data.start_component.fields).includes(formData.key)) {
       if (isEditing) {
@@ -157,123 +165,21 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
       }
     }
 
-    switch (selectedType) {
-      case "string": {
-        field = {
-          instill_format: "string",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "array:string": {
-        field = {
-          instill_format: "array:string",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "long_string": {
-        field = {
-          instill_format: "string",
-          instill_ui_multiline: true,
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "audio/*": {
-        field = {
-          instill_format: "audio/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "array:audio/*": {
-        field = {
-          instill_format: "array:audio/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "boolean": {
-        field = {
-          instill_format: "boolean",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "image/*": {
-        field = {
-          instill_format: "image/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "array:image/*": {
-        field = {
-          instill_format: "array:image/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "video/*": {
-        field = {
-          instill_format: "video/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "array:video/*": {
-        field = {
-          instill_format: "array:video/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "number": {
-        field = {
-          instill_format: "number",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "*/*": {
-        field = {
-          instill_format: "*/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-      case "array:*/*": {
-        field = {
-          instill_format: "array:*/*",
-          title: formData.title,
-          description: formData.description,
-        };
-        break;
-      }
-
-      // This is the special case. We use this input to store arbitrary JSON
-      // By protocol, it don't have a type
-      case "semi-structured/json": {
-        field = {
-          instill_format: "semi-structured/json",
-          title: formData.title,
-          description: formData.description,
-        };
-      }
+    if (!StartComponentFields[selectedType]) {
+      return;
     }
+
+    const field = StartComponentFields[selectedType].getFieldConfiguration(
+      formData.title,
+      formData.description
+    );
+
+    updateRecentlyUsedStartComponentFieldTypes((prev) => {
+      if (!prev.includes(selectedType)) {
+        return [...prev, selectedType];
+      }
+      return prev;
+    });
 
     const newNodes = nodes.map((node) => {
       if (isStartComponent(node.data) && field) {

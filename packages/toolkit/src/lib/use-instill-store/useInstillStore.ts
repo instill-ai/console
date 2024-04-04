@@ -3,6 +3,7 @@ import { InstillStore } from "./types";
 import { createSmartHintSlice } from "./smartHintSlice";
 import { createPipelineBuilderSlice } from "./pipelineBuilderSlice";
 import { createGeneralSlice } from "./generalSlice";
+import { createRecentlyUsedSlice } from "./recentlyUsedSlice";
 import { devtools, subscribeWithSelector } from "zustand/middleware";
 
 export const useInstillStore = create<InstillStore>()(
@@ -11,6 +12,7 @@ export const useInstillStore = create<InstillStore>()(
       ...createSmartHintSlice(...a),
       ...createPipelineBuilderSlice(...a),
       ...createGeneralSlice(...a),
+      ...createRecentlyUsedSlice(...a),
     }))
   )
 );

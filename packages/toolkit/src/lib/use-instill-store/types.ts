@@ -118,7 +118,17 @@ export type GeneralSlice = {
   updateEnabledQuery: (fn: (prev: boolean) => boolean) => void;
 };
 
-export type InstillStore = SmartHintSlice & PipelineBuilderSlice & GeneralSlice;
+export type RecentlyUsedSlice = {
+  recentlyUsedStartComponentFieldTypes: string[];
+  updateRecentlyUsedStartComponentFieldTypes: (
+    fn: (prev: string[]) => string[]
+  ) => void;
+};
+
+export type InstillStore = SmartHintSlice &
+  PipelineBuilderSlice &
+  GeneralSlice &
+  RecentlyUsedSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],
