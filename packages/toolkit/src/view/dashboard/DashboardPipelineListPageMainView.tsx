@@ -16,22 +16,19 @@ import {
   useTriggeredPipelinesChart,
   dashboardOptions,
   useEntity,
+  useAppEntity,
+  GeneralAppPageProp,
 } from "../../lib";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
-import { useRouter } from "next/router";
 
-export type DashboardPipelineListPageMainViewProps = Omit<
-  GeneralPageProp,
-  "router"
->;
+export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
 export const DashboardPipelineListPageMainView = (
   props: DashboardPipelineListPageMainViewProps
 ) => {
-  const { accessToken, enableQuery } = props;
-  const router = useRouter();
+  const { accessToken, enableQuery, router } = props;
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
@@ -43,14 +40,14 @@ export const DashboardPipelineListPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entityObject = useEntity();
+  const entityObject = useAppEntity();
 
   React.useEffect(() => {
     if (!entityObject.isSuccess) {
       return;
     }
-    let queryParams = `owner_name='${entityObject.entityName}'`;
-    let queryParamsPrevious = `owner_name='${entityObject.entityName}'`;
+    let queryParams = `owner_name='${entityObject.data.entityName}'`;
+    let queryParamsPrevious = `owner_name='${entityObject.data.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -73,7 +70,11 @@ export const DashboardPipelineListPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, entityObject.isSuccess, entityObject.entityName]);
+  }, [
+    selectedTimeOption,
+    entityObject.isSuccess,
+    entityObject.data.entityName,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data

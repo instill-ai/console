@@ -2,7 +2,12 @@
 
 import cn from "clsx";
 import * as React from "react";
-import { useRouter } from "next/router";
+import {
+  useParams,
+  useRouter,
+  usePathname,
+  useSearchParams,
+} from "next/navigation";
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
 import { dashboardOptions } from "../../lib";
@@ -20,7 +25,9 @@ export const FilterByDay = ({
   setSelectedTimeOption,
 }: FilterProps) => {
   const router = useRouter();
-  const { days } = router.query;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const days = searchParams.get("days");
 
   React.useEffect(() => {
     if (days) {
@@ -49,13 +56,12 @@ export const FilterByDay = ({
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);
-              router.push({
-                pathname: new URL(
-                  router.asPath,
-                  env("NEXT_PUBLIC_CONSOLE_BASE_URL")
-                ).pathname,
-                query: { days: timeLineOption.value },
-              });
+              router.push(
+                `${
+                  new URL(pathname, env("NEXT_PUBLIC_CONSOLE_BASE_URL"))
+                    .pathname
+                }?days=${timeLineOption.value}`
+              );
             }}
           >
             <p className="text-semantic-fg-primary product-body-text-4-semibold">
