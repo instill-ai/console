@@ -11,7 +11,7 @@ import {
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
-  useEntity,
+  useAppEntity,
   Visibility,
 } from "../../../lib";
 import {
@@ -21,9 +21,9 @@ import {
   UserProfileCard,
   UserProfileCardProps,
 } from "../../../components";
-import { useRouter } from "next/router";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 import debounce from "lodash.debounce";
+import { useParams } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -35,8 +35,8 @@ export const ViewPipelines = ({
 }: {
   organizations?: UserProfileCardProps["organizations"];
 }) => {
-  const router = useRouter();
-  const { visibility } = router.query;
+  const params = useParams();
+  const visibility = params.visibility ? String(params.visibility) : null;
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
@@ -56,13 +56,13 @@ export const ViewPipelines = ({
     retry: false,
   });
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const pipelines = useInfiniteUserPipelines({
     pageSize: 10,
     accessToken,
-    userName: entityObject.entityName,
-    enabledQuery: enabledQuery && entityObject.isSuccess,
+    userName: entity.data.entityName,
+    enabledQuery: enabledQuery && entity.isSuccess,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
   });

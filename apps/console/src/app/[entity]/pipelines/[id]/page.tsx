@@ -1,8 +1,5 @@
 import { Nullable, Pipeline } from "@instill-ai/toolkit";
 import {
-  QueryClient,
-  HydrationBoundary,
-  dehydrate,
   fetchNamespaceType,
   fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
@@ -14,7 +11,9 @@ type Props = {
   params: { id: string; entity: string };
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata | undefined> {
   const cookieStore = cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
 
@@ -64,11 +63,5 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function Page() {
-  const queryClient = new QueryClient();
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <PipelineOverviewPageRender />
-    </HydrationBoundary>
-  );
+  return <PipelineOverviewPageRender />;
 }

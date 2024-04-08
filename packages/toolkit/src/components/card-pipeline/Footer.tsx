@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
 import {
   InstillStore,
   Pipeline,
@@ -13,6 +12,7 @@ import {
 } from "../../lib";
 import { sortPipelineReleases } from "../../view";
 import { ClonePipelineDialog } from "../ClonePipelineDialog";
+import { useRouter } from "next/navigation";
 
 export const FooterSkeleton = () => {
   return (

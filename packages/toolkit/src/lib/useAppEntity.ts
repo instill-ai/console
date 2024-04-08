@@ -50,8 +50,6 @@ export function useAppEntity():
     accessToken,
   });
 
-  console.log("entity", params, entity, id);
-
   const [pipelineName, setPipelineName] =
     React.useState<Nullable<string>>(null);
   const [connectorName, setConnectorName] =

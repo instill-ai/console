@@ -1,8 +1,3 @@
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@instill-ai/toolkit/server";
 import { Metadata } from "next";
 import { PipelineBuilderRender } from "./render";
 
@@ -24,10 +19,5 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function Page() {
-  const queryClient = new QueryClient();
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <PipelineBuilderRender />
-    </HydrationBoundary>
-  );
+  return <PipelineBuilderRender />;
 }
