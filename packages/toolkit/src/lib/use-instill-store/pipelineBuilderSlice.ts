@@ -19,6 +19,7 @@ import {
   PipelineBuilderCreateResourceDialogState,
   PipelineBuilderSlice,
   PipelineBuilderState,
+  WarnUnsavedChangesDialogState,
 } from "./types";
 import { InstillJSONSchema } from "../use-instill-form";
 
@@ -55,6 +56,10 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   isEditingIterator: false,
   tempSavedNodesForEditingIteratorFlow: [],
   editingIteratorID: null,
+  warnUnsavedChangesDialogState: {
+    open: false,
+    confirmNavigation: null,
+  },
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -275,6 +280,15 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         editingIteratorID: fn(state.editingIteratorID),
+      };
+    }),
+  updateWarnUnsavdChangesDialogState: (
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        warnUnsavedChangesDialogState: fn(state.warnUnsavedChangesDialogState),
       };
     }),
 });

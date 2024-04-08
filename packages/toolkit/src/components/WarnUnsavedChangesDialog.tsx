@@ -9,7 +9,7 @@ export type WarnUnsavedChangesDialogProps = {
   onSave: () => Promise<void>;
   onDiscard: () => void;
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
 };
 
 export const WarnUnsavedChangesDialog = ({

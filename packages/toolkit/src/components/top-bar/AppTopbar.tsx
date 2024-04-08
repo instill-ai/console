@@ -1,7 +1,6 @@
 "use client";
 
 import cn from "clsx";
-import Link from "next/link";
 import React, { ReactElement } from "react";
 import {
   InstillStore,
@@ -14,6 +13,7 @@ import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
 import { usePathname, useRouter } from "next/navigation";
 import { TopbarLinks } from "./TopbarLinks";
+import { useGuardUnsavedChangesNavigation } from "../../lib/hook";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -41,6 +41,8 @@ export const AppTopbar = ({
     accessToken,
   });
 
+  const navigate = useGuardUnsavedChangesNavigation();
+
   return (
     <div className="flex w-full border-b border-semantic-bg-line px-8">
       <div
@@ -49,9 +51,14 @@ export const AppTopbar = ({
           className
         )}
       >
-        <Link href="/" className="my-auto pr-8">
+        <button
+          className="my-auto pr-8"
+          onClick={() => {
+            navigate("/hub");
+          }}
+        >
           {logo}
-        </Link>
+        </button>
 
         {children ? (
           <div className="flex w-full flex-1 flex-row">{children}</div>

@@ -13,24 +13,19 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useAuthenticatedUserSubscription,
+  useGuardUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { NextRouter } from "next/router";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
 import Link from "next/link";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const CloudTopbarDropdown = ({
-  router,
-}: {
-  router: NextRouter | AppRouterInstance;
-}) => {
+export const CloudTopbarDropdown = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -42,6 +37,8 @@ export const CloudTopbarDropdown = ({
     enabled: me.isSuccess && enabledQuery,
     accessToken,
   });
+
+  const navigate = useGuardUnsavedChangesNavigation();
 
   const subIsActive = React.useMemo(() => {
     if (userSub.isSuccess && me.isSuccess) {
@@ -58,7 +55,7 @@ export const CloudTopbarDropdown = ({
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger className="px-3">
         <EntityAvatar
           src={me.data.profile?.avatar ?? null}
           className="my-auto h-10 w-10 cursor-pointer"
@@ -101,7 +98,7 @@ export const CloudTopbarDropdown = ({
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              router.push(`/${me.data.id}`);
+              navigate(`/${me.data.id}`);
             }}
           >
             <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -109,7 +106,7 @@ export const CloudTopbarDropdown = ({
           </TopbarDropdownItem>
           <TopbarDropdownItem
             onClick={() => {
-              router.push("/settings/profile");
+              navigate("/settings/profile");
             }}
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -120,7 +117,7 @@ export const CloudTopbarDropdown = ({
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              router.push("/settings/organizations/new");
+              navigate("/settings/organizations/new");
             }}
             asChild
           >
@@ -134,7 +131,7 @@ export const CloudTopbarDropdown = ({
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
-          <TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
             <a
               href="https://instill-ai.productlane.com/changelog"
               className="flex gap-x-2"
@@ -156,14 +153,14 @@ export const CloudTopbarDropdown = ({
               <div className="my-auto">Community</div>
             </a>
           </TopbarDropdownItem>
-          <TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
             <a
-              href="mailto:support@instill.tech"
+              href="https://discord.com/invite/sevxWsqpGh"
               className="flex gap-x-2"
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Icons.HelpCircle className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Support</div>
             </a>
           </TopbarDropdownItem>
@@ -206,12 +203,14 @@ export const CloudTopbarDropdown = ({
           <React.Fragment>
             <Separator orientation="horizontal" />
             <TopbarDropdownGroup>
-              <TopbarDropdownItem asChild>
+              <TopbarDropdownItem
+                onClick={() => {
+                  navigate("/settings/billing/plan");
+                }}
+                asChild
+              >
                 <Button
                   className="flex w-full items-center"
-                  onClick={() => {
-                    router.push("/settings/billing/plan");
-                  }}
                   variant="secondaryColour"
                 >
                   Upgrade to Pro

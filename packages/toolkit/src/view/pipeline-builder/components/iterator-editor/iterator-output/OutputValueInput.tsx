@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Input } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";

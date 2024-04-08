@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props) {
 
     return Promise.resolve(metadata);
   } catch (error) {
-    return Promise.reject(error);
+    console.log(error);
   }
 }
 

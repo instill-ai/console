@@ -2,7 +2,7 @@
 
 import {
   InstillStore,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useShallow,
   useUserConnectors,
@@ -22,11 +22,11 @@ export const ExistingConnectorSection = ({
 }: {
   onSelect: OnSelectComponent;
 }) => {
-  const entity = useEntity();
+  const entity = useAppEntity();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const allConnector = useUserConnectors({
-    userName: entity.entityName,
+    userName: entity.data.entityName,
     connectorType: "all",
     enabled: entity.isSuccess && enabledQuery,
     accessToken,
