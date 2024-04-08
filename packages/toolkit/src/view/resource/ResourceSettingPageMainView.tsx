@@ -6,7 +6,6 @@ import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { ApplicationResourceAutoForm } from "../application";
 import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
-import { useParams } from "next/navigation";
 
 export type ResourceSettingPageMainViewProps = GeneralPageProp;
 
@@ -14,7 +13,7 @@ export const ResourceSettingPageMainView = (
   props: ResourceSettingPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id } = useParams();
+  const { id } = router.query;
 
   const entirtyObject = useEntity();
 

@@ -29,7 +29,7 @@ export type GeneralRecord = Record<string, any>;
 export type InstillAppEnv = "APP_ENV_CORE" | "APP_ENV_CLOUD";
 
 export type GeneralPageProp = {
-  router: NextRouter | AppRouterInstance;
+  router: NextRouter & AppRouterInstance;
   enableQuery: boolean;
   accessToken: Nullable<string>;
 };
