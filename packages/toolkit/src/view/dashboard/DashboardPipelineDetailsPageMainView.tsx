@@ -20,11 +20,7 @@ import { PipelineTriggersTable } from "./PipelineTriggersTable";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { NextRouter } from "next/router";
 
-export type DashboardPipelineDetailsPageMainViewProps = {
-  router: NextRouter;
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-};
+export type DashboardPipelineDetailsPageMainViewProps = GeneralPageProp;
 
 export const DashboardPipelineDetailsPageMainView = (
   props: DashboardPipelineDetailsPageMainViewProps
