@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { AddConnectorDialog } from "./AddConnectorDialog";
-import { GeneralPageProp, useEntity, useUserConnectors } from "../../lib";
+import { GeneralAppPageProp, useAppEntity, useEntity, useUserConnectors } from "../../lib";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
@@ -11,13 +11,12 @@ const ResourcesTable = dynamic(
   { ssr: false }
 );
 
-export type ResourceListPageMainViewProps = GeneralPageProp;
+export type ResourceListPageMainViewProps = GeneralAppPageProp;
 
 export const ResourceListPageMainView = (
   props: ResourceListPageMainViewProps
 ) => {
-  const router = useRouter();
-  const { enableQuery, accessToken } = props;
+  const { enableQuery, accessToken, router } = props;
   const [addConnectorDialogIsOpen, setAddConnectorDialogIsOpen] =
     React.useState(false);
 
@@ -25,10 +24,10 @@ export const ResourceListPageMainView = (
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const entityObject = useEntity();
+  const entityObject = useAppEntity();
 
   const userConnector = useUserConnectors({
-    userName: entityObject.entityName,
+    userName: entityObject.data.entityName,
     enabled: enableQuery && entityObject.isSuccess,
     connectorType: "all",
     accessToken,
@@ -56,7 +55,7 @@ export const ResourceListPageMainView = (
             setAddConnectorDialogIsOpen(false);
           }}
           enableQuery={enableQuery}
-          entityName={entityObject.entityName}
+          entityName={entityObject.data.entityName}
         />
       </div>
       <ResourcesTable

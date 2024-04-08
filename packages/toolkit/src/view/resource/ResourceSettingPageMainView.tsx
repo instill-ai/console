@@ -2,29 +2,25 @@
 
 import * as React from "react";
 import { PageTitle } from "../../components";
-import { Nullable, useEntity, useUserConnector } from "../../lib";
+import { GeneralAppPageProp, useAppEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { ApplicationResourceAutoForm } from "../application";
 import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
-import { NextRouter } from "next/router";
+import { useParams } from "next/navigation";
 
-export type ResourceSettingPageMainViewProps = {
-  router: NextRouter;
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-};
+export type ResourceSettingPageMainViewProps = GeneralAppPageProp;
 
 export const ResourceSettingPageMainView = (
   props: ResourceSettingPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id } = router.query;
+  const { id } = useParams();
 
-  const entirtyObject = useEntity();
+  const entintyObject = useAppEntity();
 
   const userConnector = useUserConnector({
-    connectorName: entirtyObject.connectorName,
-    enabled: enableQuery && entirtyObject.isSuccess,
+    connectorName: entintyObject.data.connectorName,
+    enabled: enableQuery && entintyObject.isSuccess,
     accessToken: accessToken,
   });
 
@@ -53,7 +49,7 @@ export const ResourceSettingPageMainView = (
               definition={userConnector.data.connector_definition}
               resource={userConnector.data}
               accessToken={accessToken}
-              entityName={entirtyObject.entityName}
+              entityName={entintyObject.data.entityName}
             />
           ) : null}
           {userConnector.data.type === "CONNECTOR_TYPE_APPLICATION" ? (
@@ -61,7 +57,7 @@ export const ResourceSettingPageMainView = (
               definition={userConnector.data.connector_definition}
               resource={userConnector.data}
               accessToken={accessToken}
-              entityName={entirtyObject.entityName}
+              entityName={entintyObject.data.entityName}
             />
           ) : null}
           {userConnector.data.type === "CONNECTOR_TYPE_DATA" ? (
@@ -73,14 +69,14 @@ export const ResourceSettingPageMainView = (
                 accessToken={accessToken}
                 enableBackButton={false}
                 enableQuery={enableQuery}
-                entityName={entirtyObject.entityName}
+                entityName={entintyObject.data.entityName}
               />
             ) : (
               <DataResourceAutoForm
                 definition={userConnector.data.connector_definition}
                 resource={userConnector.data}
                 accessToken={accessToken}
-                entityName={entirtyObject.entityName}
+                entityName={entintyObject.data.entityName}
               />
             )
           ) : null}
