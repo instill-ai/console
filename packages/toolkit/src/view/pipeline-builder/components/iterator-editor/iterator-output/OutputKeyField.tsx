@@ -1,7 +1,13 @@
+"use client";
+
 import { Input } from "@instill-ai/design-system";
-import React from "react";
-import { Nullable } from "vitest";
-import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
+import * as React from "react";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../../../../lib";
 import { isIteratorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Nullable } from "vitest";
 import * as z from "zod";
 import { Form, Input, Textarea } from "@instill-ai/design-system";
 import { InstillErrors } from "../constant/errors";
 import { validateInstillID } from "../server";
+import { Nullable } from "./type";
 
 export const ResourceAdditionalFormSchema = z
   .object({

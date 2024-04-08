@@ -7,8 +7,8 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
+  useAppEntity,
   useCreateUserPipeline,
-  useEntity,
   useInstillStore,
   useRenameUserPipeline,
   useShallow,
@@ -16,9 +16,9 @@ import {
 } from "../../../../lib";
 import { constructPipelineRecipe } from "../constructPipelineRecipe";
 import { composePipelineMetadataFromNodes } from "../composePipelineMetadataFromNodes";
-import { useRouter } from "next/router";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -33,7 +33,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useRenamePipeline() {
-  const entity = useEntity();
+  const entity = useAppEntity();
   const router = useRouter();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -54,7 +54,13 @@ export function useRenamePipeline() {
   const renameUserPipeline = useRenameUserPipeline();
   return React.useCallback(
     async function handleRenamePipeline(newId: string) {
-      if (!pipelineId || !entity.isSuccess || !accessToken) {
+      if (
+        !pipelineId ||
+        !entity.isSuccess ||
+        !entity.data.entityName ||
+        !entity.data.pipelineName ||
+        !accessToken
+      ) {
         return;
       }
 
@@ -67,7 +73,7 @@ export function useRenamePipeline() {
 
         try {
           const res = await createUserPipeline.mutateAsync({
-            entityName: entity.entityName,
+            entityName: entity.data.entityName,
             payload,
             accessToken,
           });
@@ -83,13 +89,7 @@ export function useRenamePipeline() {
             sendAmplitudeData("create_pipeline");
           }
 
-          await router.push(
-            `/${entity.entity}/pipelines/${newId}/builder`,
-            undefined,
-            {
-              shallow: true,
-            }
-          );
+          router.push(`/${entity.data.entity}/pipelines/${newId}/builder`);
 
           toast({
             title: "Successfully saved the pipeline",
@@ -123,7 +123,7 @@ export function useRenamePipeline() {
 
       if (pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
-          name: entity.pipelineName,
+          name: entity.data.pipelineName,
           recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
           metadata: composePipelineMetadataFromNodes(nodes),
         };
@@ -159,7 +159,7 @@ export function useRenamePipeline() {
       }
 
       const payload: RenameUserPipelinePayload = {
-        name: entity.pipelineName,
+        name: entity.data.pipelineName,
         new_pipeline_id: newId,
       };
 
@@ -169,13 +169,7 @@ export function useRenamePipeline() {
           accessToken,
         });
 
-        await router.push(
-          `/${entity.entity}/pipelines/${newId}/builder`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
+        router.push(`/${entity.data.entity}/pipelines/${newId}/builder`);
 
         toast({
           title: "Sussessfully renamed the pipeline",
@@ -184,7 +178,9 @@ export function useRenamePipeline() {
         });
 
         updatePipelineId(() => newId);
-        updatePipelineName(() => `${entity.entityName}/pipelines/${newId}`);
+        updatePipelineName(
+          () => `${entity.data.entityName}/pipelines/${newId}`
+        );
       } catch (error) {
         if (isAxiosError(error)) {
           toast({

@@ -20,6 +20,11 @@ export type PipelineBuilderCreateResourceDialogState = {
   >;
 };
 
+export type WarnUnsavedChangesDialogState = {
+  open: boolean;
+  confirmNavigation: Nullable<() => void>;
+};
+
 export type PipelineBuilderState = {
   pipelineId: Nullable<string>;
   pipelineName: Nullable<string>;
@@ -47,6 +52,7 @@ export type PipelineBuilderState = {
   isEditingIterator: boolean;
   tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
   editingIteratorID: Nullable<string>;
+  warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
 };
 
 export type PipelineBuilderAction = {
@@ -101,6 +107,9 @@ export type PipelineBuilderAction = {
   ) => void;
   updateEditingIteratorID: (
     fn: (prev: Nullable<string>) => Nullable<string>
+  ) => void;
+  updateWarnUnsavdChangesDialogState: (
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
   ) => void;
 };
 
