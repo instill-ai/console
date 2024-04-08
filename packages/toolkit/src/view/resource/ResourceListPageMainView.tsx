@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import { AddConnectorDialog } from "./AddConnectorDialog";
-import { GeneralAppPageProp, useAppEntity, useEntity, useUserConnectors } from "../../lib";
+import {
+  GeneralAppPageProp,
+  useAppEntity,
+  useEntity,
+  useUserConnectors,
+} from "../../lib";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
