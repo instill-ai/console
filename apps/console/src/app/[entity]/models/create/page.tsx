@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   dehydrate,
 } from "@instill-ai/toolkit/server";
-import { ProfilePageRender } from "./render";
+import { CreateModelPageRender } from "./render";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,7 +28,7 @@ export default async function Page() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfilePageRender />
+      <CreateModelPageRender />
     </HydrationBoundary>
   );
 }

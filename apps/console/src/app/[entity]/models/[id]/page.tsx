@@ -5,7 +5,7 @@ import {
   fetchUserModel,
   fetchNamespaceType,
 } from "@instill-ai/toolkit/server";
-import { ProfilePageRender } from "./render";
+import { ModelViewPageRender } from "./render";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Nullable, Model } from "@instill-ai/toolkit";
@@ -63,7 +63,7 @@ export default async function Page() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfilePageRender />
+      <ModelViewPageRender />
     </HydrationBoundary>
   );
 }
