@@ -109,6 +109,7 @@ export const Footer = ({
             onClick={() => {
               router.push("/login");
             }}
+            className="!normal-case"
             variant="secondaryColour"
             size="lg"
           >

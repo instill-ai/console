@@ -48,18 +48,20 @@ export const RunButton = ({
     return <div className="h-[34px] shrink-0 grow-0" />;
   }
 
-  if (enabledQuery && !accessToken) {
-    <Button
-      onClick={() => {
-        router.push("/login");
-      }}
-      className="!h-8"
-      type="button"
-      variant="secondaryColour"
-      size="md"
-    >
-      Log in to run
-    </Button>;
+  if (!accessToken) {
+    return (
+      <Button
+        onClick={() => {
+          router.push("/login");
+        }}
+        className="!h-8 !normal-case"
+        type="button"
+        variant="secondaryColour"
+        size="md"
+      >
+        Log in to Run
+      </Button>
+    );
   }
 
   return (
