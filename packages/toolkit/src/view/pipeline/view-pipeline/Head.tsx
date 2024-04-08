@@ -342,6 +342,7 @@ export const Head = (props: HeadProps) => {
                     onClick={() => {
                       router.push("/login");
                     }}
+                    className="!normal-case"
                     variant="secondaryGrey"
                     size="sm"
                   >
