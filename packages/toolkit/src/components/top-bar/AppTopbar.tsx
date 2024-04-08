@@ -11,7 +11,7 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { TopbarLinks } from "./TopbarLinks";
 import { useGuardUnsavedChangesNavigation } from "../../lib/hook";
 
@@ -31,7 +31,6 @@ export const AppTopbar = ({
   className?: string;
   disabledUserDropdown?: boolean;
 }) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -70,9 +69,9 @@ export const AppTopbar = ({
       {disabledUserDropdown ? null : (
         <div className="ml-4 flex">
           {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-            <CloudTopbarDropdown router={router} />
+            <CloudTopbarDropdown />
           ) : (
-            <CETopbarDropdown router={router} />
+            <CETopbarDropdown />
           )}
         </div>
       )}
