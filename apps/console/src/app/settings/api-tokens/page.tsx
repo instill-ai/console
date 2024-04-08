@@ -6,11 +6,7 @@ import {
 import { ApiTokenSettingdPageRender } from "./render";
 import { Metadata } from "next";
 
-type Props = {
-  params: { id: string; entity: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   try {
     const metadata: Metadata = {
       title: `Instill Core | API Token Setting`,
