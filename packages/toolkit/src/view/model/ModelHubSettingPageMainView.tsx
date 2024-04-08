@@ -9,7 +9,7 @@ import {
   StateLabel,
 } from "../../components";
 import {
-  GeneralPageProp,
+  GeneralAppPageProp,
   useAppEntity,
   useDeployUserModel,
   useUndeployUserModel,
@@ -24,7 +24,7 @@ import Markdown from "markdown-to-jsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
 import { useParams } from "next/navigation";
 
-export type ModelHubSettingPageMainViewProps = GeneralPageProp & {
+export type ModelHubSettingPageMainViewProps = GeneralAppPageProp & {
   disabledConfigureModel: boolean;
 };
 

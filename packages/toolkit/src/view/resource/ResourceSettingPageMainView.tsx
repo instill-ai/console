@@ -2,12 +2,22 @@
 
 import * as React from "react";
 import { PageTitle } from "../../components";
-import { GeneralPageProp, useEntity, useUserConnector } from "../../lib";
+import {
+  GeneralPageProp,
+  Nullable,
+  useEntity,
+  useUserConnector,
+} from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { ApplicationResourceAutoForm } from "../application";
 import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";
+import { NextRouter } from "next/router";
 
-export type ResourceSettingPageMainViewProps = GeneralPageProp;
+export type ResourceSettingPageMainViewProps = {
+  router: NextRouter;
+  enableQuery: boolean;
+  accessToken: Nullable<string>;
+};
 
 export const ResourceSettingPageMainView = (
   props: ResourceSettingPageMainViewProps

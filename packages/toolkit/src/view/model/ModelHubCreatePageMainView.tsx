@@ -2,10 +2,10 @@
 
 import { useParams } from "next/navigation";
 import { PageTitle } from "../../components";
-import { GeneralPageProp } from "../../lib";
+import { GeneralAppPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
 
-export type ModelHubCreatePageMainViewProps = GeneralPageProp & {
+export type ModelHubCreatePageMainViewProps = GeneralAppPageProp & {
   disabledCreateModel: boolean;
 };
 

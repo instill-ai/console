@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Button, Icons } from "@instill-ai/design-system";
-import { GeneralPageProp, useModels, useWatchUserModels } from "../../lib";
+import { GeneralAppPageProp, useModels, useWatchUserModels } from "../../lib";
 import { useParams } from "next/navigation";
 
 const ModelsTable = dynamic(
@@ -10,7 +10,7 @@ const ModelsTable = dynamic(
   { ssr: false }
 );
 
-export type ModelHubListPageMainViewProps = GeneralPageProp;
+export type ModelHubListPageMainViewProps = GeneralAppPageProp;
 
 export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
