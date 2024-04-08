@@ -17,6 +17,7 @@ import { PageTitle } from "../../components";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
+import { useParams } from "next/navigation";
 
 export type DashboardPipelineDetailsPageMainViewProps = GeneralPageProp;
 
@@ -24,7 +25,7 @@ export const DashboardPipelineDetailsPageMainView = (
   props: DashboardPipelineDetailsPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id } = router.query;
+  const { id } = useParams();
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields

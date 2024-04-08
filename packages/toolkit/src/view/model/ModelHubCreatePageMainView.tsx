@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { PageTitle } from "../../components";
 import { GeneralPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
@@ -12,7 +13,7 @@ export const ModelHubCreatePageMainView = (
   props: ModelHubCreatePageMainViewProps
 ) => {
   const { accessToken, enableQuery, router, disabledCreateModel } = props;
-  const { entity } = router.query;
+  const { entity } = useParams();
 
   return (
     <div className="flex flex-col">

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { NextRouter } from "next/router";
 import { UseFormReturn } from "react-hook-form";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type Nullable<T> = T | null;
 
@@ -28,7 +29,7 @@ export type GeneralRecord = Record<string, any>;
 export type InstillAppEnv = "APP_ENV_CORE" | "APP_ENV_CLOUD";
 
 export type GeneralPageProp = {
-  router: NextRouter;
+  router: NextRouter | AppRouterInstance;
   enableQuery: boolean;
   accessToken: Nullable<string>;
 };

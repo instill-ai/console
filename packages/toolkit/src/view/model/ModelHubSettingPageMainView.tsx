@@ -10,8 +10,8 @@ import {
 } from "../../components";
 import {
   GeneralPageProp,
+  useAppEntity,
   useDeployUserModel,
-  useEntity,
   useUndeployUserModel,
   useUserModel,
   useUserModelReadme,
@@ -22,6 +22,7 @@ import { ConfigureModelForm } from "./ConfigureModelForm";
 import { ModelConfigurationFields } from "./ModelConfigurationFields";
 import Markdown from "markdown-to-jsx";
 import { NoBgSquareProgress } from "@instill-ai/design-system";
+import { useParams } from "next/navigation";
 
 export type ModelHubSettingPageMainViewProps = GeneralPageProp & {
   disabledConfigureModel: boolean;
@@ -31,28 +32,28 @@ export const ModelHubSettingPageMainView = (
   props: ModelHubSettingPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router, disabledConfigureModel } = props;
-  const { id, entity } = router.query;
+  const { id, entity } = useParams();
 
-  const entityObject = useEntity();
+  const entityObject = useAppEntity();
 
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
 
   const model = useUserModel({
-    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
 
   const modelReadme = useUserModelReadme({
-    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
 
   const modelWatchState = useWatchUserModel({
-    modelName: entityObject.isSuccess ? entityObject.modelName : null,
+    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });

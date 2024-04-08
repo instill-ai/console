@@ -2,8 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { Button, Icons } from "@instill-ai/design-system";
-
 import { GeneralPageProp, useModels, useWatchUserModels } from "../../lib";
+import { useParams } from "next/navigation";
 
 const ModelsTable = dynamic(
   () => import("./ModelsTable").then((mod) => mod.ModelsTable),
@@ -16,7 +16,7 @@ export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
 ) => {
   const { router, enableQuery, accessToken } = props;
-  const { entity } = router.query;
+  const { entity } = useParams();
 
   /* -------------------------------------------------------------------------
    * Query resource data
