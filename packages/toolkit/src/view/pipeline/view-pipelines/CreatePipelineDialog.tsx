@@ -90,29 +90,43 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     accessToken,
   });
 
-  const organizations = useUserMemberships({
+  const userMemberships = useUserMemberships({
     enabled: entity.isSuccess,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
   const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList = [];
-    if (organizations.isSuccess && organizations.data) {
-      organizations.data.forEach((org) => {
-        orgsAndUserList.push(org.organization);
-      });
+    if (!userMemberships.isSuccess || !entity.isSuccess) {
+      return [];
     }
-    if (entity.isSuccess && entity.data.entity) {
+
+    const orgsAndUserList: {
+      id: string;
+      name: string;
+      type: "user" | "organization";
+    }[] = [];
+
+    userMemberships.data.forEach((org) => {
+      orgsAndUserList.push({
+        id: org.organization.id,
+        name: org.organization.name,
+        type: "organization",
+      });
+    });
+
+    if (entity.data.entity && entity.data.entityName) {
       orgsAndUserList.push({
         id: entity.data.entity,
         name: entity.data.entityName,
+        type: "user",
       });
     }
+
     return orgsAndUserList;
   }, [
-    organizations.isSuccess,
-    organizations.data,
+    userMemberships.isSuccess,
+    userMemberships.data,
     entity.isSuccess,
     entity.data,
   ]);
@@ -198,7 +212,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     } else {
       setCreating(false);
       toastInstillError({
-        title: "Failed to create pipeline",
+        title: "Please choose a valid namespace to create your pipeline",
         error: null,
         toast,
       });
@@ -276,15 +290,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                               : field.value}
                                           </span>
                                           <span className="my-auto">
-                                            {organizationsAndUserList?.length &&
-                                            organizationsAndUserList
-                                              ?.find(
-                                                (namespace) =>
-                                                  namespace.id === field.value
-                                              )
-                                              ?.name?.includes(
-                                                "organizations"
-                                              ) ? (
+                                            {organizationsAndUserList.find(
+                                              (namespace) =>
+                                                namespace.id === field.value
+                                            )?.type === "organization" ? (
                                               <Tag
                                                 variant="lightBlue"
                                                 size="sm"
@@ -319,9 +328,8 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                                     {namespace.id}
                                                   </span>
                                                   <span className="my-auto">
-                                                    {namespace.name?.includes(
-                                                      "organizations"
-                                                    ) ? (
+                                                    {namespace.type ===
+                                                    "organization" ? (
                                                       <Tag
                                                         variant="lightBlue"
                                                         size="sm"
@@ -483,7 +491,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
             <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
-                disabled={creating}
+                disabled={creating || organizationsAndUserList.length === 0}
                 form={formID}
                 variant="primary"
                 size="lg"

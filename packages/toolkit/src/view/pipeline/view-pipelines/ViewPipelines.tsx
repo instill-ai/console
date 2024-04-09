@@ -23,7 +23,7 @@ import {
 } from "../../../components";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 import debounce from "lodash.debounce";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -35,8 +35,8 @@ export const ViewPipelines = ({
 }: {
   organizations?: UserProfileCardProps["organizations"];
 }) => {
-  const params = useParams();
-  const visibility = params.visibility ? String(params.visibility) : null;
+  const searchParams = useSearchParams();
+  const visibility = searchParams.get("visibility");
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
