@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.85.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.2...@instill-ai/toolkit-v0.85.0) (2024-04-09)
+
+
+### Features
+
+* merge sprint 33 feature branch ([#1066](https://github.com/instill-ai/console/issues/1066)) ([052f6f9](https://github.com/instill-ai/console/commit/052f6f9b44fc1624afd1fb44dc3e1f0c37b09440))
+
 ## [0.84.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.1...@instill-ai/toolkit-v0.84.2) (2024-04-02)
 
 
