@@ -10,8 +10,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useNavigationObserver,
-  useEntity,
+  useAppEntity,
   useSmartHint,
   useUserPipeline,
 } from "../../lib";
@@ -22,19 +21,23 @@ import {
   usePipelineBuilderGraph,
   useSavePipeline,
 } from ".";
-import { PageBase, Topbar, WarnUnsavedChangesDialog } from "../../components";
-import { useRouter } from "next/router";
+import {
+  AppTopbar,
+  PageBase,
+  WarnUnsavedChangesDialog,
+} from "../../components";
 import { TopControlMenu } from "./components/top-control-menu";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
-  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
-  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   initPipelineBuilder: store.initPipelineBuilder,
+  warnUnsavedChangesDialogState: store.warnUnsavedChangesDialogState,
+  updateWarnUnsavdChangesDialogState: store.updateWarnUnsavdChangesDialogState,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -44,34 +47,23 @@ export const PipelineBuilderMainView = () => {
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
 
   const {
-    pipelineRecipeIsDirty,
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
-    updatePipelineRecipeIsDirty,
     accessToken,
     enabledQuery,
     initPipelineBuilder,
+    warnUnsavedChangesDialogState,
+    updateWarnUnsavdChangesDialogState,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
 
-  const [warnUnsaveChangesModalIsOpen, setWarnUnsaveChangesModalIsOpen] =
-    React.useState(false);
-
-  const { confirmNavigation } = useNavigationObserver({
-    shouldStopNavigation: pipelineRecipeIsDirty ? true : false,
-    onStopNavigate: () => {
-      setWarnUnsaveChangesModalIsOpen(true);
-    },
-    router,
-  });
-
-  const { pipelineName } = useEntity();
+  const emtity = useAppEntity();
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && !!pipelineName && !pipelineIsNew,
-    pipelineName,
+    enabled: enabledQuery && emtity.isSuccess && !pipelineIsNew,
+    pipelineName: emtity.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -108,9 +100,9 @@ export const PipelineBuilderMainView = () => {
 
   return (
     <PageBase>
-      <Topbar logo={<Logo variant="colourLogomark" width={38} />}>
+      <AppTopbar logo={<Logo variant="colourLogomark" width={38} />}>
         <TopControlMenu reactFlowInstance={reactFlowInstance} />
-      </Topbar>
+      </AppTopbar>
       <PageBase.Container>
         <div className="flex w-full flex-col">
           {/* 
@@ -150,19 +142,30 @@ export const PipelineBuilderMainView = () => {
           */}
 
           <WarnUnsavedChangesDialog
-            open={warnUnsaveChangesModalIsOpen}
-            setOpen={setWarnUnsaveChangesModalIsOpen}
+            open={warnUnsavedChangesDialogState.open}
+            setOpen={(open) => {
+              updateWarnUnsavdChangesDialogState((prev) => ({
+                ...prev,
+                open,
+              }));
+            }}
             onCancel={() => {
-              setWarnUnsaveChangesModalIsOpen(false);
-              updatePipelineRecipeIsDirty(() => false);
+              updateWarnUnsavdChangesDialogState(() => ({
+                open: false,
+                confirmNavigation: null,
+              }));
             }}
             onDiscard={() => {
               initPipelineBuilder();
-              confirmNavigation();
+              if (warnUnsavedChangesDialogState.confirmNavigation) {
+                warnUnsavedChangesDialogState.confirmNavigation();
+              }
             }}
             onSave={async () => {
               await savePipeline();
-              confirmNavigation();
+              if (warnUnsavedChangesDialogState.confirmNavigation) {
+                warnUnsavedChangesDialogState.confirmNavigation();
+              }
             }}
           />
         </div>

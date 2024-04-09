@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import { isIteratorComponent } from "../../../lib/checkComponentType";

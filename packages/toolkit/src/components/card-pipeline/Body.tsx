@@ -2,8 +2,8 @@
 
 import { Icons } from "@instill-ai/design-system";
 import { ReadOnlyPipelineBuilder } from "../../view";
-import { useRouter } from "next/router";
 import { Pipeline } from "../../lib";
+import { useRouter } from "next/navigation";
 
 const BodySkeleton = () => {
   return (

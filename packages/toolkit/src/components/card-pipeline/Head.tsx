@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/router";
 import {
   InstillStore,
   OrganizationOwner,
@@ -15,6 +14,7 @@ import {
 import { Icons, useToast } from "@instill-ai/design-system";
 import { Menu } from "./Menu";
 import { EntityAvatar } from "../EntityAvatar";
+import { useRouter } from "next/navigation";
 
 export const HeadSkeleton = () => {
   return (

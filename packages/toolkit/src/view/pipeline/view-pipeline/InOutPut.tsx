@@ -38,7 +38,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const shareCode = searchParams.get("shareCode");
+  const shareCode = searchParams.get("view");
   const { toast } = useToast();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));

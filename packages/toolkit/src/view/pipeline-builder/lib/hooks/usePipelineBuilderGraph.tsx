@@ -8,14 +8,13 @@ import {
   createInitialGraphData,
 } from "../../..";
 import { useUserPipeline } from "../../../../lib/react-query-service";
-import { useRouter } from "next/router";
 import {
   InstillStore,
   useInstillStore,
 } from "../../../../lib/use-instill-store";
 import { useShallow } from "zustand/react/shallow";
 import { Node } from "reactflow";
-import { useEntity } from "../../../../lib/useEntity";
+import { useAppEntity } from "../../../../lib";
 
 const selector = (store: InstillStore) => ({
   updatePipelineId: store.updatePipelineId,
@@ -32,9 +31,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export function usePipelineBuilderGraph() {
-  const router = useRouter();
-  const { id } = router.query;
-
   const {
     updatePipelineId,
     updatePipelineName,
@@ -51,11 +47,11 @@ export function usePipelineBuilderGraph() {
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
-  const entity = useEntity();
+  const entity = useAppEntity();
 
   const pipeline = useUserPipeline({
     enabled: enabledQuery && !pipelineIsNew && entity.isSuccess,
-    pipelineName: entity.pipelineName,
+    pipelineName: entity.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -142,7 +138,12 @@ export function usePipelineBuilderGraph() {
 
   // Initialize the pipeline graph for existed pipeline
   React.useEffect(() => {
-    if (!pipeline.isSuccess || graphIsInitialized || pipelineIsNew) {
+    if (
+      !pipeline.isSuccess ||
+      !entity.isSuccess ||
+      graphIsInitialized ||
+      pipelineIsNew
+    ) {
       return;
     }
 
@@ -155,8 +156,10 @@ export function usePipelineBuilderGraph() {
 
     // Set the pipelineID before the graph is initialized
     if (!pipeline.isSuccess) {
-      if (id) {
-        updatePipelineId(() => id.toString());
+      if (entity.data.id) {
+        updatePipelineId(() =>
+          entity.data.id ? entity.data.id.toString() : null
+        );
       }
       return;
     }
@@ -203,7 +206,8 @@ export function usePipelineBuilderGraph() {
         console.error(err);
       });
   }, [
-    id,
+    entity.isSuccess,
+    entity.data,
     graphIsInitialized,
     pipelineIsNew,
     pipeline.data,

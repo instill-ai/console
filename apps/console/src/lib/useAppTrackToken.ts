@@ -2,9 +2,9 @@
 
 import { useQuery } from "@instill-ai/toolkit";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
-export function useTrackToken({ enabled }: { enabled: boolean }) {
+export function useAppTrackToken({ enabled }: { enabled: boolean }) {
   const router = useRouter();
   return useQuery({
     queryKey: ["trackToken"],
@@ -24,7 +24,7 @@ export function useTrackToken({ enabled }: { enabled: boolean }) {
       } catch (error) {
         console.error("Something went wrong when try to get trackToken", error);
 
-        await router.push("/onboarding");
+        router.push("/onboarding");
         return Promise.reject(error);
       }
     },

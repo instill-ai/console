@@ -11,11 +11,11 @@ import {
 } from "@instill-ai/design-system";
 import { UseFormReturn } from "react-hook-form";
 
-import { StartNodeInputType } from "./StartNodeInputType";
-import { Nullable, StartOperatorInputType } from "../../../../../lib";
+import { Nullable } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
 import { validateInstillID } from "../../../../../server";
+import { StartComponentTypeSelect } from "./StartComponentTypeSelect";
 
 export const StartOperatorFreeFormSchema = z
   .object({
@@ -54,10 +54,8 @@ export const StartOperatorNodeFreeForm = ({
     any,
     undefined
   >;
-  selectedType: Nullable<StartOperatorInputType>;
-  setSelectedType: React.Dispatch<
-    React.SetStateAction<Nullable<StartOperatorInputType>>
-  >;
+  selectedType: Nullable<string>;
+  setSelectedType: React.Dispatch<React.SetStateAction<Nullable<string>>>;
   onCreateFreeFormField: (
     formData: z.infer<typeof StartOperatorFreeFormSchema>
   ) => void;
@@ -65,7 +63,6 @@ export const StartOperatorNodeFreeForm = ({
   isEditing: boolean;
 }) => {
   const [isUserInputKey, setIsUserInputKey] = React.useState<boolean>(false);
-
   return (
     <Form.Root {...form}>
       <form onSubmit={form.handleSubmit(onCreateFreeFormField)}>
@@ -87,76 +84,18 @@ export const StartOperatorNodeFreeForm = ({
             </Button>
           </div>
         </div>
-        <div className="mb-3 grid grid-cols-2 gap-x-3 gap-y-3">
-          <StartNodeInputType
-            type="string"
+
+        <div className="mb-4 flex flex-col gap-y-2">
+          <label
+            htmlFor="input_type"
+            className="font-sans text-base font-semibold text-semantic-fg-primary"
+          >
+            Input Type
+          </label>
+          <StartComponentTypeSelect
             selectedType={selectedType}
-            onSelect={() => setSelectedType("string")}
-          />
-          <StartNodeInputType
-            type="array:string"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("array:string")}
-          />
-          <StartNodeInputType
-            type="long_string"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("long_string")}
-          />
-          <StartNodeInputType
-            type="number"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("number")}
-          />
-          <StartNodeInputType
-            type="image/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("image/*")}
-          />
-          <StartNodeInputType
-            type="array:image/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("array:image/*")}
-          />
-          <StartNodeInputType
-            type="audio/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("audio/*")}
-          />
-          <StartNodeInputType
-            type="array:audio/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("array:audio/*")}
-          />
-          <StartNodeInputType
-            type="*/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("*/*")}
-          />
-          <StartNodeInputType
-            type="array:*/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("array:*/*")}
-          />
-          <StartNodeInputType
-            type="video/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("video/*")}
-          />
-          <StartNodeInputType
-            type="array:video/*"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("array:video/*")}
-          />
-          <StartNodeInputType
-            type="boolean"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("boolean")}
-          />
-          <StartNodeInputType
-            type="semi-structured/json"
-            selectedType={selectedType}
-            onSelect={() => setSelectedType("semi-structured/json")}
+            setSelectedType={setSelectedType}
+            id="input_type"
           />
         </div>
         <div className="flex flex-col space-y-3">

@@ -1,13 +1,13 @@
 "use client";
 
 import cn from "clsx";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
-import { DropdownMenu, Icons } from "@instill-ai/design-system";
+import { DropdownMenu } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
+  useGuardUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -40,6 +40,7 @@ export const Topbar = ({
     enabled: enabledQuery,
     accessToken,
   });
+  const navigate = useGuardUnsavedChangesNavigation();
 
   return (
     <div className="flex w-full border-b border-semantic-bg-line px-8">
@@ -49,9 +50,14 @@ export const Topbar = ({
           className
         )}
       >
-        <Link href="/" className="my-auto pr-8">
+        <button
+          className="my-auto pr-8"
+          onClick={() => {
+            navigate("/hub");
+          }}
+        >
           {logo}
-        </Link>
+        </button>
 
         {children ? (
           <div className="flex w-full flex-1 flex-row">{children}</div>
@@ -67,9 +73,9 @@ export const Topbar = ({
       {disabledUserDropdown ? null : (
         <div className="ml-4 flex">
           {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-            <CloudTopbarDropdown router={router} />
+            <CloudTopbarDropdown />
           ) : (
-            <CETopbarDropdown router={router} />
+            <CETopbarDropdown />
           )}
         </div>
       )}

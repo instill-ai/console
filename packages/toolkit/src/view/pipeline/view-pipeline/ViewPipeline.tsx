@@ -13,7 +13,7 @@ import {
 import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
 import { Readme } from "./Readme";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 
 const selector = (store: InstillStore) => ({
@@ -22,6 +22,8 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ViewPipeline = () => {
+  const searchParams = useSearchParams();
+  const shareCode = searchParams.get("view");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [currentVersion, setCurrentVersion] =
     React.useState<Nullable<string>>(null);
@@ -39,6 +41,7 @@ export const ViewPipeline = () => {
   const pipeline = useUserPipeline({
     pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
     enabled: enabledQuery && entity.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
   });
 

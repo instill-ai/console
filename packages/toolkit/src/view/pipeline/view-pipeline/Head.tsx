@@ -37,18 +37,17 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-type HeadProps = {
+export const Head = ({
+  currentVersion,
+  handleVersion,
+}: {
   handleVersion: (version: string) => void;
   currentVersion: Nullable<string>;
-};
-
-export const Head = (props: HeadProps) => {
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const shareCode = searchParams.get("shareCode");
+  const shareCode = searchParams.get("view");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
-  const { currentVersion, handleVersion } = props;
 
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("overview");
@@ -342,6 +341,7 @@ export const Head = (props: HeadProps) => {
                     onClick={() => {
                       router.push("/login");
                     }}
+                    className="!normal-case"
                     variant="secondaryGrey"
                     size="sm"
                   >

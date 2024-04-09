@@ -7,7 +7,6 @@ import { useRenamePipeline } from "../../lib";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/router";
 import { LoadingSpin } from "../../../../components";
 
 const selector = (store: InstillStore) => ({
@@ -19,7 +18,6 @@ const pipelineNameSchema = z.object({
 });
 
 export const PipelineName = () => {
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const renamePipeline = useRenamePipeline();
@@ -28,12 +26,6 @@ export const PipelineName = () => {
   });
 
   const { pipelineId } = useInstillStore(useShallow(selector));
-
-  React.useEffect(() => {
-    form.reset({
-      id: router.asPath.split("/")[3],
-    });
-  }, [router.isReady, router.asPath, form]);
 
   React.useEffect(() => {
     if (!pipelineId) return;
