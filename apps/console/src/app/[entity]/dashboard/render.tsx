@@ -10,10 +10,7 @@ import { useAppAccessToken } from "lib/use-app-access-token";
 import { useRouter } from "next/navigation";
 
 export function DashboardPageRender() {
-  const accessToken = useAppAccessToken({
-    disabledRedirectingVisitor: true,
-    forceQueryWithoutAccessToken: true,
-  });
+  const accessToken = useAppAccessToken();
 
   const router = useRouter();
 
