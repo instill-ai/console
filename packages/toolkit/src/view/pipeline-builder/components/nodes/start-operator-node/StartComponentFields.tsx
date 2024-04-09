@@ -34,7 +34,7 @@ export const StartComponentFields: Record<string, StartOperatorInputField> = {
     instill_format: "array:string",
     order: 1,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "string",
+      instill_format: "array:string",
       title,
       description,
     }),

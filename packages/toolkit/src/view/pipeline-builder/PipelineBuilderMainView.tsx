@@ -30,8 +30,6 @@ import { TopControlMenu } from "./components/top-control-menu";
 import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
-  pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
-  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   pipelineIsNew: store.pipelineIsNew,
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
