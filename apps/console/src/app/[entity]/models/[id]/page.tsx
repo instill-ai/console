@@ -1,10 +1,4 @@
-import {
-  QueryClient,
-  HydrationBoundary,
-  dehydrate,
-  fetchUserModel,
-  fetchNamespaceType,
-} from "@instill-ai/toolkit/server";
+import { fetchUserModel, fetchNamespaceType } from "@instill-ai/toolkit/server";
 import { ModelViewPageRender } from "./render";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -59,11 +53,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const queryClient = new QueryClient();
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ModelViewPageRender />
-    </HydrationBoundary>
-  );
+  return <ModelViewPageRender />;
 }

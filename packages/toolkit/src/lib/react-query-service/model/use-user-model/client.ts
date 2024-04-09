@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../../type";
 import { getUserModelQuery } from "../../../vdp-sdk";
-import { getUseUserModelQueryKey } from "./server";
+import { fetchUserModel, getUseUserModelQueryKey } from "./server";
 
 export function useUserModel({
   modelName,
@@ -23,17 +23,10 @@ export function useUserModel({
   return useQuery({
     queryKey: getUseUserModelQueryKey(modelName),
     queryFn: async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
-      if (!modelName) {
-        return Promise.reject(new Error("Model name not provided"));
-      }
-
-      const model = await getUserModelQuery({ modelName, accessToken });
-
-      return Promise.resolve(model);
+      return await fetchUserModel({
+        modelName,
+        accessToken,
+      });
     },
     enabled: enableQuery,
     retry: retry === false ? false : retry ? retry : 3,

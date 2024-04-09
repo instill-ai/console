@@ -2,12 +2,7 @@
 
 import * as React from "react";
 import { PageTitle } from "../../components";
-import {
-  GeneralPageProp,
-  Nullable,
-  useEntity,
-  useUserConnector,
-} from "../../lib";
+import { Nullable, useEntity, useUserConnector } from "../../lib";
 import { AIResourceAutoForm } from "../ai";
 import { ApplicationResourceAutoForm } from "../application";
 import { AirbyteDataResourceForm, DataResourceAutoForm } from "../data";

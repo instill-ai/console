@@ -1,8 +1,3 @@
-import {
-  QueryClient,
-  HydrationBoundary,
-  dehydrate,
-} from "@instill-ai/toolkit/server";
 import { CreateModelPageRender } from "./render";
 import { Metadata } from "next";
 
@@ -24,11 +19,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const queryClient = new QueryClient();
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <CreateModelPageRender />
-    </HydrationBoundary>
-  );
+  return <CreateModelPageRender />;
 }
