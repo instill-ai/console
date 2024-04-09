@@ -108,7 +108,14 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     });
     setIsEditing(true);
 
-    const newSelectedType = data.start_component.fields[key].instill_format;
+    let newSelectedType = data.start_component.fields[key].instill_format;
+
+    if (
+      newSelectedType === "string" &&
+      data.start_component.fields[key].instill_ui_multiline
+    ) {
+      newSelectedType = "long_string";
+    }
 
     setSelectedType(newSelectedType);
 
