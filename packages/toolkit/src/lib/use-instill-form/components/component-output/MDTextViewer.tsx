@@ -12,10 +12,18 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
 
   return (
     <React.Fragment>
-      {/* The anchor in the MD viewer will overflow */}
+      {/* The anchor, code, paragraph in the MD viewer will overflow */}
       <style jsx={true}>{`
         .markdown-body a {
           word-break: break-all !important;
+        }
+
+        .markdown-body pre code {
+          white-space: pre-wrap !important;
+        }
+
+        .markdown-body p {
+          white-space: pre-wrap !important;
         }
       `}</style>
       <div className="nodrag nowheel flex flex-col rounded-sm border border-semantic-bg-line">
@@ -41,7 +49,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
         <div>
           <div
             className={cn(
-              "markdown-body rounded-b-sm px-1.5 py-1",
+              "markdown-body w-full overflow-x-scroll whitespace-pre rounded-b-sm px-1.5 py-1",
               enableFormattedText ? "" : "hidden"
             )}
           >

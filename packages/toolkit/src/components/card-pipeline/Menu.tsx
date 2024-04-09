@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { ClonePipelineDialog, GeneralDeleteResourceDialog } from "..";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export type MenuProps = {
   pipeline: Pipeline;

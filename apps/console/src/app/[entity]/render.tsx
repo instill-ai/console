@@ -3,12 +3,14 @@
 import { Logo } from "@instill-ai/design-system";
 import { AppTopbar, PageBase, UserProfileView } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "lib/use-app-access-token";
+import { useAppTrackToken } from "lib/useAppTrackToken";
 
 export function ProfilePageRender() {
   useAppAccessToken({
     disabledRedirectingVisitor: true,
     forceQueryWithoutAccessToken: true,
   });
+  useAppTrackToken({ enabled: true });
 
   return (
     <PageBase>

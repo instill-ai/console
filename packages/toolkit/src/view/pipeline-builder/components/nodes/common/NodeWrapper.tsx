@@ -65,7 +65,7 @@ export const NodeWrapper = ({
     }
 
     return edges.some((edge) => edge.source === nodeData.id);
-  }, [edges, nodeData.id]);
+  }, [edges, nodeData.id, reactflowEdges]);
 
   return (
     <div

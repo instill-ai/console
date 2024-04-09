@@ -12,28 +12,25 @@ import Link from "next/link";
 import {
   InstillStore,
   useAuthenticatedUser,
+  useGuardUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { NextRouter } from "next/router";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const CETopbarDropdown = ({
-  router,
-}: {
-  router: NextRouter | AppRouterInstance;
-}) => {
+export const CETopbarDropdown = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
+
+  const navigate = useGuardUnsavedChangesNavigation();
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
@@ -80,55 +77,80 @@ export const CETopbarDropdown = ({
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              router.push(`/${me.data.id}`);
+              navigate(`/${me.data.id}`);
             }}
           >
             <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
             <div className="my-auto">View profile</div>
           </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <Link href="/settings/profile" className="flex gap-x-2">
-              <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              <div className="my-auto">Settings</div>
-            </Link>
+          <TopbarDropdownItem
+            onClick={() => {
+              navigate("/settings/profile");
+            }}
+          >
+            <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+            <div className="my-auto">Settings</div>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
-          <TopbarDropdownItem>
-            <Icons.LayersTwo01 className="h-4 w-4 stroke-semantic-fg-disabled" />
-            Changelog
+          <TopbarDropdownItem asChild>
+            <a
+              href="https://instill-ai.productlane.com/changelog"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Icons.LayersTwo01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              Changelog
+            </a>
           </TopbarDropdownItem>
           <TopbarDropdownItem asChild>
-            <Link
+            <a
               href="https://github.com/instill-ai/community"
               className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <Icons.MessageSmileSquare className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Community</div>
-            </Link>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem>
-            <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
-            Support
+            </a>
           </TopbarDropdownItem>
           <TopbarDropdownItem asChild>
-            <Link href="https://www.instill.tech/docs" className="flex gap-x-2">
+            <a
+              href="https://discord.com/invite/sevxWsqpGh"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
+              <div className="my-auto">Support</div>
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="https://www.instill.tech/docs"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <Icons.File05 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Documentation</div>
-            </Link>
+            </a>
           </TopbarDropdownItem>
           <TopbarDropdownItem asChild>
-            <Link
+            <a
               href="https://github.com/instill-ai/vdp"
               className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <ComplicateIcons.GitHub
                 className="h-4 w-4"
                 fillAreaColor="fill-semantic-fg-disabled"
               />
               <div className="my-auto">GitHub</div>
-            </Link>
+            </a>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />

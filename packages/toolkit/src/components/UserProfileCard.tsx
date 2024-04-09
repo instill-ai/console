@@ -10,9 +10,9 @@ import {
   useShallow,
   useAuthenticatedUser,
 } from "../lib";
-import { useRouter } from "next/router";
 import { EntityAvatar } from "./EntityAvatar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

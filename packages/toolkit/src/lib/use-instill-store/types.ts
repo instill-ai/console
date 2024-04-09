@@ -20,6 +20,11 @@ export type PipelineBuilderCreateResourceDialogState = {
   >;
 };
 
+export type WarnUnsavedChangesDialogState = {
+  open: boolean;
+  confirmNavigation: Nullable<() => void>;
+};
+
 export type PipelineBuilderState = {
   pipelineId: Nullable<string>;
   pipelineName: Nullable<string>;
@@ -47,6 +52,7 @@ export type PipelineBuilderState = {
   isEditingIterator: boolean;
   tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
   editingIteratorID: Nullable<string>;
+  warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
 };
 
 export type PipelineBuilderAction = {
@@ -102,6 +108,9 @@ export type PipelineBuilderAction = {
   updateEditingIteratorID: (
     fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
+  updateWarnUnsavdChangesDialogState: (
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
+  ) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;
@@ -118,7 +127,17 @@ export type GeneralSlice = {
   updateEnabledQuery: (fn: (prev: boolean) => boolean) => void;
 };
 
-export type InstillStore = SmartHintSlice & PipelineBuilderSlice & GeneralSlice;
+export type RecentlyUsedSlice = {
+  recentlyUsedStartComponentFieldTypes: string[];
+  updateRecentlyUsedStartComponentFieldTypes: (
+    fn: (prev: string[]) => string[]
+  ) => void;
+};
+
+export type InstillStore = SmartHintSlice &
+  PipelineBuilderSlice &
+  GeneralSlice &
+  RecentlyUsedSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

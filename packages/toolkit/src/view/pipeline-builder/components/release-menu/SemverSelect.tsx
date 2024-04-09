@@ -6,7 +6,7 @@ import * as semver from "semver";
 import {
   InstillStore,
   Nullable,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -30,11 +30,11 @@ export const SemverSelect = ({
   const [selectedSemver, setSelectedSemver] = React.useState<Semver>("major");
   const [version, setVersion] = React.useState<Nullable<string>>(null);
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const releases = useSortedReleases({
-    pipelineName: entityObject.pipelineName,
-    enabledQuery: enabledQuery && entityObject.isSuccess,
+    pipelineName: entity.data.pipelineName,
+    enabledQuery: enabledQuery && entity.isSuccess,
     accessToken,
   });
 

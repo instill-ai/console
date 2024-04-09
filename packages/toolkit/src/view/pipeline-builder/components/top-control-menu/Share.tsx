@@ -3,14 +3,14 @@
 import * as React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
 import { SharePipelineDialog } from "../dialogs";
-import { useEntity, useInstillStore } from "../../../../lib";
+import { useAppEntity, useInstillStore } from "../../../../lib";
 
 export const Share = () => {
   const updateDialogSharePipelineIsOpen = useInstillStore(
     (store) => store.updateDialogSharePipelineIsOpen
   );
 
-  const entity = useEntity();
+  const entity = useAppEntity();
 
   return (
     <React.Fragment>
@@ -24,9 +24,9 @@ export const Share = () => {
         <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
       </Button>
       <SharePipelineDialog
-        pipelineName={entity.pipelineName}
-        entity={entity.entity}
-        id={entity.id}
+        pipelineName={entity.data.pipelineName}
+        entity={entity.data.entity}
+        id={entity.data.id}
       />
     </React.Fragment>
   );

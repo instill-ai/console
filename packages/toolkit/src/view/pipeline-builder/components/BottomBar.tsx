@@ -8,7 +8,7 @@ import { Button, Icons, Popover, ScrollArea } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useUserPipeline,
 } from "../../../lib";
@@ -55,11 +55,11 @@ export const BottomBar = () => {
     enabledQuery: pipelineIsNew ? false : enabledQuery,
   });
 
-  const entity = useEntity();
+  const entity = useAppEntity();
 
   const pipeline = useUserPipeline({
     enabled: enabledQuery && entity.isSuccess && !pipelineIsNew,
-    pipelineName: entity.pipelineName,
+    pipelineName: entity.data.pipelineName,
     accessToken,
     retry: false,
   });

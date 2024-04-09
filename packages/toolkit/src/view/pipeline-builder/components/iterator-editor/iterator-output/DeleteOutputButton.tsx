@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Icons } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import { isIteratorComponent } from "../../../lib/checkComponentType";

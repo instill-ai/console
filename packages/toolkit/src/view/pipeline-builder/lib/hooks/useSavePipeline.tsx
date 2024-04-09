@@ -6,8 +6,8 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
+  useAppEntity,
   useCreateUserPipeline,
-  useEntity,
   useInstillStore,
   useShallow,
   useUpdateUserPipeline,
@@ -46,7 +46,7 @@ export type UseSavePipelineProps =
 
 export function useSavePipeline(props: UseSavePipelineProps = {}) {
   const { setIsSaving } = props;
-  const entity = useEntity();
+  const entity = useAppEntity();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const updateUserPipeline = useUpdateUserPipeline();
@@ -69,7 +69,12 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
   return React.useCallback(
     async function () {
-      if (!pipelineId || !entity.isSuccess) {
+      if (
+        !pipelineId ||
+        !entity.isSuccess ||
+        !entity.data.pipelineName ||
+        !entity.data.entityName
+      ) {
         return;
       }
 
@@ -89,7 +94,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
-          name: entity.pipelineName,
+          name: entity.data.pipelineName,
           recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
           metadata: composePipelineMetadataFromNodes(targetNodes),
         };
@@ -161,7 +166,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       try {
         const { pipeline: newPipeline } = await createUserPipeline.mutateAsync({
-          entityName: entity.entityName,
+          entityName: entity.data.entityName,
           payload,
           accessToken,
         });

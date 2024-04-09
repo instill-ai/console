@@ -5,13 +5,13 @@ import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
 
 export function shouldUnmarshalJSONInput() {
   const pipelineID = "unmarshal_test";
-  const startFieldID = "json";
+  const startFieldKey = "json";
   const jsonValue = {
     foo: "bar",
     hello: 1,
   };
-  const endFieldID = "result";
-  const endFieldValue = "${start." + startFieldID + "}";
+  const endFieldKey = "result";
+  const endFieldValue = "${start." + startFieldKey + "}";
 
   test.describe.serial("Unmarshal pipeline builder input test", () => {
     test("should create pipeline", async ({ page }) => {
@@ -25,29 +25,22 @@ export function shouldUnmarshalJSONInput() {
       await pipelineBuilderPage.goto();
 
       // Add JSON field in start operator
-      await pipelineBuilderPage.startNodeAddFieldButton.click();
-      await pipelineBuilderPage.startNode
-        .getByRole("button", { name: "JSON" })
-        .click();
-      await pipelineBuilderPage.startNode
-        .getByPlaceholder("My prompt")
-        .fill(startFieldID);
-      await pipelineBuilderPage.startNodeSaveFieldButton.click();
+      await pipelineBuilderPage.createStartComponentField({
+        inputType: "JSON",
+        key: startFieldKey,
+      });
 
       // Create output result field in the end operator
-      await pipelineBuilderPage.endNodeAddFieldButton.click();
-      await pipelineBuilderPage.endNode
-        .getByPlaceholder("My prompt")
-        .fill(endFieldID);
-      await pipelineBuilderPage.endNode
-        .locator(`textarea[name='value']`)
-        .fill(endFieldValue);
-      await pipelineBuilderPage.endNodeSaveFieldButton.click();
+      await pipelineBuilderPage.createEndComponentField({
+        key: endFieldKey,
+        value: endFieldValue,
+      });
+
       await pipelineBuilderPage.expectToSave();
 
       // Fill in value in the start operator JSON field
       await pipelineBuilderPage.startNode
-        .locator(`textarea[name='${startFieldID}']`)
+        .locator(`textarea[name='${startFieldKey}']`)
         .fill(JSON.stringify(jsonValue));
 
       // Expect result correctly show up
@@ -63,7 +56,7 @@ export function shouldUnmarshalJSONInput() {
 
       // Fill in value in the start operator JSON field
       await pipelineOverviewPage.inputForm
-        .locator(`textarea[name='${startFieldID}']`)
+        .locator(`textarea[name='${startFieldKey}']`)
         .fill(JSON.stringify(jsonValue));
 
       // Expect result correctly show up

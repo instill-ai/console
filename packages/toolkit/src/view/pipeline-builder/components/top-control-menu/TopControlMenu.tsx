@@ -11,15 +11,16 @@ import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { useConstructNodeFromDefinition } from "../../lib";
-import { useRouter } from "next/router";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
+import { useRouter } from "next/navigation";
+import { useGuardUnsavedChangesNavigation } from "../../../../lib/hook/useGuardUnsavedChangesNavigation";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
@@ -39,7 +40,8 @@ export const TopControlMenu = ({
     useShallow(selector)
   );
 
-  const entity = useEntity();
+  const entity = useAppEntity();
+  const navigate = useGuardUnsavedChangesNavigation();
 
   return (
     <React.Fragment>
@@ -49,9 +51,9 @@ export const TopControlMenu = ({
             variant="tertiaryGrey"
             onClick={() => {
               if (pipelineIsNew) {
-                router.push(`/${entity.entity}/pipelines`);
+                navigate(`/${entity.data.entity}/pipelines`);
               } else {
-                router.push(`/${entity.entity}/pipelines/${entity.id}`);
+                navigate(`/${entity.data.entity}/pipelines/${entity.data.id}`);
               }
             }}
             className="flex cursor-pointer"
@@ -80,12 +82,12 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <SetupComponentDialog entityName={entity.entityName} />
+      <SetupComponentDialog entityName={entity.data.entityName} />
       <PublishPipelineDialog
         router={router}
-        pipelineName={entity.pipelineName}
-        entity={entity.entity}
-        id={entity.id}
+        pipelineName={entity.data.pipelineName}
+        entity={entity.data.entity}
+        id={entity.data.id}
       />
     </React.Fragment>
   );

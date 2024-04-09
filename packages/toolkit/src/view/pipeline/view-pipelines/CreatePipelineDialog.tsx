@@ -19,7 +19,6 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useRouter } from "next/router";
 import {
   CreateUserPipelinePayload,
   InstillStore,
@@ -30,7 +29,7 @@ import {
   useAmplitudeCtx,
   useAuthenticatedUser,
   useCreateUserPipeline,
-  useEntity,
+  useAppEntity,
   useInstillStore,
   useShallow,
   useUserMemberships,
@@ -38,6 +37,7 @@ import {
 import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
 import { env, validateInstillID } from "../../../server";
+import { useRouter } from "next/navigation";
 
 const CreatePipelineSchema = z
   .object({
@@ -83,44 +83,57 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const entityObject = useEntity();
+  const entity = useAppEntity();
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const organizations = useUserMemberships({
-    enabled: entityObject.isSuccess,
+  const userMemberships = useUserMemberships({
+    enabled: entity.isSuccess,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
   const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList = [];
-    if (organizations.isSuccess && organizations.data) {
-      organizations.data.forEach((org) => {
-        orgsAndUserList.push(org.organization);
-      });
+    if (!userMemberships.isSuccess || !entity.isSuccess) {
+      return [];
     }
-    if (entityObject.isSuccess && entityObject.entity) {
+
+    const orgsAndUserList: {
+      id: string;
+      name: string;
+      type: "user" | "organization";
+    }[] = [];
+
+    userMemberships.data.forEach((org) => {
       orgsAndUserList.push({
-        id: entityObject.entity,
-        name: entityObject.entityName,
+        id: org.organization.id,
+        name: org.organization.name,
+        type: "organization",
+      });
+    });
+
+    if (entity.data.entity && entity.data.entityName) {
+      orgsAndUserList.push({
+        id: entity.data.entity,
+        name: entity.data.entityName,
+        type: "user",
       });
     }
+
     return orgsAndUserList;
   }, [
-    organizations.isSuccess,
-    organizations.data,
-    entityObject.isSuccess,
-    entityObject.entity,
-    entityObject.entityName,
+    userMemberships.isSuccess,
+    userMemberships.data,
+    entity.isSuccess,
+    entity.data,
   ]);
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
-    if (!entityObject.isSuccess) {
+    if (!entity.isSuccess) {
       return;
     }
 
@@ -187,7 +200,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           sendAmplitudeData("create_pipeline");
         }
 
-        await router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
+        router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -199,7 +212,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     } else {
       setCreating(false);
       toastInstillError({
-        title: "Failed to create pipeline",
+        title: "Please choose a valid namespace to create your pipeline",
         error: null,
         toast,
       });
@@ -215,7 +228,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         form.reset({
           id: "",
           description: "",
-          namespaceId: entityObject.entity || "",
+          namespaceId: entity?.data.entity || "",
         });
         setOpen(open);
       }}
@@ -234,7 +247,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         data-testid={DataTestID.createPipelineDialog}
         className="!w-[600px] !p-0"
       >
-        {entityObject.isSuccess ? (
+        {entity.isSuccess ? (
           <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">
               <h3 className=" text-semantic-fg-primary product-body-text-1-semibold">
@@ -277,15 +290,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                               : field.value}
                                           </span>
                                           <span className="my-auto">
-                                            {organizationsAndUserList?.length &&
-                                            organizationsAndUserList
-                                              ?.find(
-                                                (namespace) =>
-                                                  namespace.id === field.value
-                                              )
-                                              ?.name.includes(
-                                                "organizations"
-                                              ) ? (
+                                            {organizationsAndUserList.find(
+                                              (namespace) =>
+                                                namespace.id === field.value
+                                            )?.type === "organization" ? (
                                               <Tag
                                                 variant="lightBlue"
                                                 size="sm"
@@ -320,9 +328,8 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                                     {namespace.id}
                                                   </span>
                                                   <span className="my-auto">
-                                                    {namespace.name.includes(
-                                                      "organizations"
-                                                    ) ? (
+                                                    {namespace.type ===
+                                                    "organization" ? (
                                                       <Tag
                                                         variant="lightBlue"
                                                         size="sm"
@@ -484,7 +491,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
             <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
-                disabled={creating}
+                disabled={creating || organizationsAndUserList.length === 0}
                 form={formID}
                 variant="primary"
                 size="lg"
