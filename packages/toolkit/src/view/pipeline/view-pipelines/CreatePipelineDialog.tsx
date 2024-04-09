@@ -212,7 +212,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     } else {
       setCreating(false);
       toastInstillError({
-        title: "Failed to create pipeline",
+        title: "Please choose a valid namespace to create your pipeline",
         error: null,
         toast,
       });

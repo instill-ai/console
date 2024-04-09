@@ -23,7 +23,7 @@ import {
 } from "../../../components";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 import debounce from "lodash.debounce";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
