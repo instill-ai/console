@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  ConnectorWithDefinition,
-  getConnectorDefinitionQuery,
-  getUserConnectorQuery,
-} from "../../../vdp-sdk";
 import type { Nullable } from "../../../type";
-import { getUseUserConnectorQueryKey } from "./server";
+import { fetchUserConnector, getUseUserConnectorQueryKey } from "./server";
 
 export function useUserConnector({
   connectorName,
@@ -27,30 +22,10 @@ export function useUserConnector({
   return useQuery({
     queryKey: getUseUserConnectorQueryKey(connectorName),
     queryFn: async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
-      if (!connectorName) {
-        return Promise.reject(new Error("connectorName not provided"));
-      }
-
-      const connector = await getUserConnectorQuery({
+      return await fetchUserConnector({
         connectorName,
         accessToken,
       });
-
-      const connectorDefinition = await getConnectorDefinitionQuery({
-        connectorDefinitionName: connector.connector_definition_name,
-        accessToken,
-      });
-
-      const connectorWithDefinition: ConnectorWithDefinition = {
-        ...connector,
-        connector_definition: connectorDefinition,
-      };
-
-      return Promise.resolve(connectorWithDefinition);
     },
     enabled: enableQuery,
     retry: retry === false ? false : retry ? retry : 3,

@@ -1,7 +1,4 @@
 import {
-  QueryClient,
-  HydrationBoundary,
-  dehydrate,
   fetchNamespaceType,
   fetchUserConnector,
 } from "@instill-ai/toolkit/server";
@@ -59,11 +56,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const queryClient = new QueryClient();
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ConnectorViewPageRender />
-    </HydrationBoundary>
-  );
+  return <ConnectorViewPageRender />;
 }
