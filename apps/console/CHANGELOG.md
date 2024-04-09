@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.43.0-beta](https://github.com/instill-ai/console/compare/v0.42.3-beta...v0.43.0-beta) (2024-04-09)
+
+
+### Features
+
+* merge sprint 33 feature branch ([#1066](https://github.com/instill-ai/console/issues/1066)) ([052f6f9](https://github.com/instill-ai/console/commit/052f6f9b44fc1624afd1fb44dc3e1f0c37b09440))
+
+
+### Miscellaneous
+
+* make the page title consistent using Pascal Case ([#1054](https://github.com/instill-ai/console/issues/1054)) ([7361aa5](https://github.com/instill-ai/console/commit/7361aa59806503990a25299f78692d8847c5eadd))
+
 ## [0.42.3-beta](https://github.com/instill-ai/console/compare/v0.42.2-beta...v0.42.3-beta) (2024-04-02)
 
 
