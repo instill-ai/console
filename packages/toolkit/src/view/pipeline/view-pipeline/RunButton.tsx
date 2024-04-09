@@ -27,7 +27,7 @@ export const RunButton = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const shareCode = searchParams.get("shareCode");
+  const shareCode = searchParams.get("view");
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 

@@ -30,7 +30,6 @@ export function useUserPipeline({
         pipelineName,
         accessToken,
         shareCode,
-        // shareCode: router.query.shareCode?.toString(),
       });
     },
     enabled: enableQuery,
