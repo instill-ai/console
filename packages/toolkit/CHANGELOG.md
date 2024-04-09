@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.85.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.85.0...@instill-ai/toolkit-v0.85.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* fix the wrong initialization of start operator type select ([#1070](https://github.com/instill-ai/console/issues/1070)) ([8c22d0d](https://github.com/instill-ai/console/commit/8c22d0df0f6667c4bd232edc5edd29c928b6da19))
+
 ## [0.85.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.84.2...@instill-ai/toolkit-v0.85.0) (2024-04-09)
 
 
