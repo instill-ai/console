@@ -1,17 +1,18 @@
 import { Organization, Pipeline, User } from "@instill-ai/toolkit";
 import { MetadataRoute } from "next";
+import { env } from "../../integration-test/helpers/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps: MetadataRoute.Sitemap = [];
 
-  const pipelinesUrl = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/vdp/v1beta/pipelines?view=VIEW_FULL&page_size=10&visibility=VISIBILITY_PUBLIC`;
+  const pipelinesUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/vdp/v1beta/pipelines?view=VIEW_FULL&page_size=10&visibility=VISIBILITY_PUBLIC`;
   let nextToken = "";
   const allPipelines: Pipeline[] = [];
 
   let continueFetching = true;
   while (continueFetching) {
     const pipelineResponse = await fetch(
-      nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl,
+      nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl
     );
     if (!pipelineResponse.ok) {
       throw new Error("Network response was not ok.");
@@ -28,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   allPipelines.map((pipeline: Pipeline) => {
     sitemaps.push({
-      url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${
+      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
         pipeline.owner_name.split("/")[1]
       }/pipelines/${pipeline.id}`,
       lastModified: new Date(),
@@ -37,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  const usersUrl = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/core/v1beta/users`;
+  const usersUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/core/v1beta/users`;
 
   const userResponse = await fetch(usersUrl);
   if (!userResponse.ok) {
@@ -47,14 +48,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   users.map((user: User) => {
     sitemaps.push({
-      url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${user?.id}`,
+      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${user?.id}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     });
   });
 
-  const organizationsUrl = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/core/v1beta/organizations`;
+  const organizationsUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/core/v1beta/organizations`;
 
   const organizationResponse = await fetch(organizationsUrl);
   if (!organizationResponse.ok) {
@@ -64,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   organizations.map((organization: Organization) => {
     sitemaps.push({
-      url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${organization?.id}`,
+      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${organization?.id}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
