@@ -16,12 +16,9 @@ import {
 } from "@instill-ai/design-system";
 import {
   AuthenticatedUser,
-  InstillStore,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useInstillStore,
-  useShallow,
   useAuthenticatedUser,
   GeneralAppPageProp,
 } from "../../../lib";
