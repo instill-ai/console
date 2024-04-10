@@ -2,12 +2,7 @@
 
 import cn from "clsx";
 import * as React from "react";
-import {
-  useParams,
-  useRouter,
-  usePathname,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
 import { dashboardOptions } from "../../lib";
