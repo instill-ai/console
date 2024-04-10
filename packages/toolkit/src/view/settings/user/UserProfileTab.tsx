@@ -16,18 +16,15 @@ import {
 } from "@instill-ai/design-system";
 import {
   AuthenticatedUser,
-  InstillStore,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useInstillStore,
-  useShallow,
   useAuthenticatedUser,
+  GeneralAppPageProp,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
 import { LoadingSpin, UploadAvatarFieldWithCrop } from "../../../components";
 import { useUpdateAuthenticatedUser } from "../../../lib";
-import { useRouter } from "next/router";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),
@@ -51,20 +48,17 @@ export const UserProfileTabSchema = z.object({
     .optional(),
 });
 
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
-});
+export type UserProfileTabProps = GeneralAppPageProp;
 
-export const UserProfileTab = () => {
-  const router = useRouter();
+export const UserProfileTab = (props: UserProfileTabProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enableQuery, router } = props;
+
   const { toast } = useToast();
 
   const me = useAuthenticatedUser({
     accessToken,
-    enabled: enabledQuery,
+    enabled: enableQuery,
   });
 
   const form = useForm<z.infer<typeof UserProfileTabSchema>>({
