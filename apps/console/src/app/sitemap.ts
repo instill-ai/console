@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let continueFetching = true;
   while (continueFetching) {
     const pipelineResponse = await fetch(
-      nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl
+      nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl,
     );
     if (!pipelineResponse.ok) {
       throw new Error("Network response was not ok.");
