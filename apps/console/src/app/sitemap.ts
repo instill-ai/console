@@ -1,6 +1,5 @@
 import { Organization, Pipeline, User } from "@instill-ai/toolkit";
 import { MetadataRoute } from "next";
-import { env } from "../../integration-test/helpers/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps: MetadataRoute.Sitemap = [];
