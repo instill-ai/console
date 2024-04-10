@@ -5,26 +5,27 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  GeneralPageProp,
+  GeneralAppPageProp,
   Nullable,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   getTriggersSummary,
-  useEntity,
+  useAppEntity,
   usePipelineTriggerRecords,
 } from "../../lib";
 import { PageTitle } from "../../components";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
+import { useParams } from "next/navigation";
 
-export type DashboardPipelineDetailsPageMainViewProps = GeneralPageProp;
+export type DashboardPipelineDetailsPageMainViewProps = GeneralAppPageProp;
 
 export const DashboardPipelineDetailsPageMainView = (
   props: DashboardPipelineDetailsPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
-  const { id } = router.query;
+  const { id } = useParams();
 
   /* -------------------------------------------------------------------------
    * Get the pipeline definition and static state for fields
@@ -40,15 +41,15 @@ export const DashboardPipelineDetailsPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entityObject = useEntity();
+  const entityObject = useAppEntity();
 
   React.useEffect(() => {
     if (!entityObject.isSuccess) {
       return;
     }
 
-    let queryParams = `pipeline_id='${entityObject.id}' AND owner_name='${entityObject.entityName}'`;
-    let queryParamsPrevious = `pipeline_id='${entityObject.id}' AND owner_name='${entityObject.entityName}'`;
+    let queryParams = `pipeline_id='${entityObject.data.id}' AND owner_name='${entityObject.data.entityName}'`;
+    let queryParamsPrevious = `pipeline_id='${entityObject.data.id}' AND owner_name='${entityObject.data.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -74,8 +75,8 @@ export const DashboardPipelineDetailsPageMainView = (
     id,
     selectedTimeOption,
     entityObject.isSuccess,
-    entityObject.entityName,
-    entityObject.id,
+    entityObject.data.entityName,
+    entityObject.data.id,
   ]);
 
   /* -------------------------------------------------------------------------
