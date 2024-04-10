@@ -21,6 +21,7 @@ export type UseAppEntitySuccessReturn = {
     pipelineName: Nullable<string>;
     connectorName: Nullable<string>;
     entityName: Nullable<string>;
+    modelName: Nullable<string>;
   };
 };
 
@@ -33,6 +34,7 @@ export type UseAppEntityFailedReturn = {
     pipelineName: null;
     connectorName: null;
     entityName: null;
+    modelName: null;
   };
 };
 
@@ -55,18 +57,21 @@ export function useAppEntity():
   const [connectorName, setConnectorName] =
     React.useState<Nullable<string>>(null);
   const [entityName, setEntityName] = React.useState<Nullable<string>>(null);
+  const [modelName, setModelName] = React.useState<Nullable<string>>(null);
 
   React.useEffect(() => {
     if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
       setPipelineName(`organizations/${entity}/pipelines/${id}`);
       setConnectorName(`organizations/${entity}/connectors/${id}`);
       setEntityName(`organizations/${entity}`);
+      setModelName(`organizations/${entity}/models/${id}`);
     }
 
     if (namespaceType.data === "NAMESPACE_USER") {
       setPipelineName(`users/${entity}/pipelines/${id}`);
       setConnectorName(`users/${entity}/connectors/${id}`);
       setEntityName(`users/${entity}`);
+      setModelName(`users/${entity}/models/${id}`);
     }
   }, [namespaceType.data, entity, id]);
 
@@ -79,6 +84,7 @@ export function useAppEntity():
         pipelineName,
         connectorName,
         entityName,
+        modelName,
       },
       isSuccess: true,
     };
@@ -92,6 +98,7 @@ export function useAppEntity():
         pipelineName: null,
         connectorName: null,
         entityName: null,
+        modelName: null,
       },
     };
   }
