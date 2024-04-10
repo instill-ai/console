@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../../type";
-import { getUserModelQuery } from "../../../vdp-sdk";
 import { fetchUserModel, getUseUserModelQueryKey } from "./server";
 
 export function useUserModel({

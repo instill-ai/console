@@ -17,8 +17,6 @@ import { PageTitle } from "../../components";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { NextRouter } from "next/router";
 
 export type DashboardPipelineDetailsPageMainViewProps = GeneralPageProp;
 
