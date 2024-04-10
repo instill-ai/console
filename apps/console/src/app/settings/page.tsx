@@ -11,20 +11,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const metadata: Metadata = {
-      title: `Instill Cloud | Setting`,
-
-      openGraph: {
-        images: ["/instill-open-graph.png"],
-      },
-    };
-
-    return Promise.resolve(metadata);
-  } catch (error) {
-    console.log(error);
-    return Promise.reject(error);
-  }
+  const metadata: Metadata = {
+    title: `Instill Cloud | Setting`,
+    openGraph: {
+      images: ["/instill-open-graph.png"],
+    },
+  };
+  return Promise.resolve(metadata);
 }
 
 export default async function Page() {
