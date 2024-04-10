@@ -78,11 +78,18 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
 
-  let resourceNotCreated = false;
+  const resourceNotCreated = React.useMemo(() => {
+    if (
+      data.connector_component.connector_name &&
+      data.connector_component.connector_name !== ""
+    ) {
+      return false;
+    }
 
-  if (!data.connector_component.connector_name) {
-    resourceNotCreated = true;
-  }
+    return true;
+  }, [data]);
+
+  console.log(data, resourceNotCreated);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
