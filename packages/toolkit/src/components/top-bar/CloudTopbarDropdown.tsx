@@ -13,12 +13,12 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useAuthenticatedUserSubscription,
-  useGuardUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -38,7 +38,7 @@ export const CloudTopbarDropdown = () => {
     accessToken,
   });
 
-  const navigate = useGuardUnsavedChangesNavigation();
+  const router = useRouter();
 
   const subIsActive = React.useMemo(() => {
     if (userSub.isSuccess && me.isSuccess) {
@@ -98,7 +98,7 @@ export const CloudTopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              navigate(`/${me.data.id}`);
+              router.push(`/${me.data.id}`);
             }}
           >
             <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -106,7 +106,7 @@ export const CloudTopbarDropdown = () => {
           </TopbarDropdownItem>
           <TopbarDropdownItem
             onClick={() => {
-              navigate("/settings/profile");
+              router.push("/settings/profile");
             }}
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -117,7 +117,7 @@ export const CloudTopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              navigate("/settings/organizations/new");
+              router.push("/settings/organizations/new");
             }}
             asChild
           >
@@ -205,7 +205,7 @@ export const CloudTopbarDropdown = () => {
             <TopbarDropdownGroup>
               <TopbarDropdownItem
                 onClick={() => {
-                  navigate("/settings/billing/plan");
+                  router.push("/settings/billing/plan");
                 }}
                 asChild
               >

@@ -12,10 +12,10 @@ import Link from "next/link";
 import {
   InstillStore,
   useAuthenticatedUser,
-  useGuardUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -30,7 +30,7 @@ export const CETopbarDropdown = () => {
     accessToken,
   });
 
-  const navigate = useGuardUnsavedChangesNavigation();
+  const router = useRouter();
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
@@ -77,7 +77,7 @@ export const CETopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              navigate(`/${me.data.id}`);
+              router.push(`/${me.data.id}`);
             }}
           >
             <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -85,7 +85,7 @@ export const CETopbarDropdown = () => {
           </TopbarDropdownItem>
           <TopbarDropdownItem
             onClick={() => {
-              navigate("/settings/profile");
+              router.push("/settings/profile");
             }}
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
