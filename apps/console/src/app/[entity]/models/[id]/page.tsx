@@ -1,8 +1,5 @@
-import { fetchUserModel, fetchNamespaceType } from "@instill-ai/toolkit/server";
 import { ModelViewPageRender } from "./render";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
-import { Nullable, Model } from "@instill-ai/toolkit";
 
 type Props = {
   params: { id: string; entity: string };
