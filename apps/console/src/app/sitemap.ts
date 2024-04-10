@@ -5,7 +5,7 @@ import { env } from "../../integration-test/helpers/env";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps: MetadataRoute.Sitemap = [];
 
-  const pipelinesUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/vdp/v1beta/pipelines?view=VIEW_FULL&page_size=10&visibility=VISIBILITY_PUBLIC`;
+  const pipelinesUrl = `https://api.instill.tech/vdp/v1beta/pipelines?view=VIEW_FULL&page_size=10&visibility=VISIBILITY_PUBLIC`;
   let nextToken = "";
   const allPipelines: Pipeline[] = [];
 
@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   allPipelines.map((pipeline: Pipeline) => {
     sitemaps.push({
-      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${
+      url: `https://instill.tech/${
         pipeline.owner_name.split("/")[1]
       }/pipelines/${pipeline.id}`,
       lastModified: new Date(),
@@ -38,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  const usersUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/core/v1beta/users`;
+  const usersUrl = `https://api.instill.tech/core/v1beta/users`;
 
   const userResponse = await fetch(usersUrl);
   if (!userResponse.ok) {
@@ -48,14 +48,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   users.map((user: User) => {
     sitemaps.push({
-      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${user?.id}`,
+      url: `https://instill.tech/${user?.id}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     });
   });
 
-  const organizationsUrl = `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/core/v1beta/organizations`;
+  const organizationsUrl = `https://api.instill.tech/core/v1beta/organizations`;
 
   const organizationResponse = await fetch(organizationsUrl);
   if (!organizationResponse.ok) {
@@ -65,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   organizations.map((organization: Organization) => {
     sitemaps.push({
-      url: `${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${organization?.id}`,
+      url: `https://instill.tech/${organization?.id}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
