@@ -2,14 +2,8 @@
 
 import * as React from "react";
 import { AddConnectorDialog } from "./AddConnectorDialog";
-import {
-  GeneralAppPageProp,
-  useAppEntity,
-  useEntity,
-  useUserConnectors,
-} from "../../lib";
+import { GeneralAppPageProp, useAppEntity, useUserConnectors } from "../../lib";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
 
 const ResourcesTable = dynamic(
   () => import("./ResourcesTable.js").then((mod) => mod.ResourcesTable),

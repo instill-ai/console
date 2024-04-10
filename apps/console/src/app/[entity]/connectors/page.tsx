@@ -2,19 +2,14 @@ import { ConnectorsPageRender } from "./render";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const metadata: Metadata = {
-      title: `Instill Core | Connectors`,
-      openGraph: {
-        images: ["/instill-open-graph.png"],
-      },
-    };
+  const metadata: Metadata = {
+    title: `Instill Core | Connectors`,
+    openGraph: {
+      images: ["/instill-open-graph.png"],
+    },
+  };
 
-    return Promise.resolve(metadata);
-  } catch (error) {
-    console.log(error);
-    return Promise.reject(error);
-  }
+  return Promise.resolve(metadata);
 }
 
 export default async function Page() {
