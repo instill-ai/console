@@ -6,13 +6,11 @@ import { SelectOption } from "@instill-ai/design-system";
 import {
   DashboardAvailableTimeframe,
   GeneralAppPageProp,
-  GeneralPageProp,
   Nullable,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   getTriggersSummary,
   useAppEntity,
-  useEntity,
   usePipelineTriggerRecords,
 } from "../../lib";
 import { PageTitle } from "../../components";

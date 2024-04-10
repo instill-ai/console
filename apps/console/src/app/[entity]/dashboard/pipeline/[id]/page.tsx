@@ -6,19 +6,13 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  try {
-    const metadata: Metadata = {
-      title: `Instill Core | ${params.id} Dashboard`,
-      openGraph: {
-        images: ["/instill-open-graph.png"],
-      },
-    };
-
-    return Promise.resolve(metadata);
-  } catch (error) {
-    console.log(error);
-    return Promise.reject(error);
-  }
+  const metadata: Metadata = {
+    title: `Instill Core | ${params.id} Dashboard`,
+    openGraph: {
+      images: ["/instill-open-graph.png"],
+    },
+  };
+  return Promise.resolve(metadata);
 }
 
 export default async function Page() {

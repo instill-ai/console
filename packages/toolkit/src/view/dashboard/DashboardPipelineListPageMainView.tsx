@@ -5,7 +5,6 @@ import { SelectOption } from "@instill-ai/design-system";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import {
   DashboardAvailableTimeframe,
-  GeneralPageProp,
   Nullable,
   PipelinesChart,
   TriggeredPipeline,
@@ -15,7 +14,6 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useEntity,
   useAppEntity,
   GeneralAppPageProp,
 } from "../../lib";

@@ -19,8 +19,7 @@ export const DashboardPipelinesTable = (
   props: DashboardPipelinesTableProps
 ) => {
   const router = useRouter();
-  const { entity } = useParams();
-  const { days } = useParams();
+  const { entity, days } = useParams();
   const { pipelineTriggerCounts, isError, isLoading } = props;
 
   const columns: ColumnDef<TriggeredPipeline>[] = [
