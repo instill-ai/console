@@ -35,12 +35,9 @@ export function StartEndOperatorControlPanel({
     <ControlPanel.Root>
       <ControlPanel.Toggle
         isCollapsed={nodeIsCollapsed}
-        onTrigger={() => {
-          if (pipelineIsReadOnly) return;
-
+        onClick={() => {
           setNodeIsCollapsed(!nodeIsCollapsed);
         }}
-        disabled={pipelineIsReadOnly}
       />
 
       {type === "start" ? (

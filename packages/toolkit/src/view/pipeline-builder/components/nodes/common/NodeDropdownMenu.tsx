@@ -21,7 +21,7 @@ const NodeDropdownMenuRoot = ({
 
   return (
     <Popover.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
-      <Popover.Trigger>
+      <Popover.Trigger disabled={pipelineIsReadOnly}>
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
@@ -36,7 +36,8 @@ const NodeDropdownMenuRoot = ({
                   type="button"
                   disabled={pipelineIsReadOnly}
                   onClick={() => {
-                    setIsOpen(!isOpen);
+                    if (pipelineIsReadOnly) return;
+                    setIsOpen(true);
                   }}
                 >
                   <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />

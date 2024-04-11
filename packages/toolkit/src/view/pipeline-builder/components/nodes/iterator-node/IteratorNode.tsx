@@ -23,6 +23,7 @@ const selector = (store: InstillStore) => ({
   updateTempSavedNodesForEditingIteratorFlow:
     store.updateTempSavedNodesForEditingIteratorFlow,
   updateEditingIteratorID: store.updateEditingIteratorID,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
@@ -36,7 +37,12 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
     updateEdges,
     updateTempSavedNodesForEditingIteratorFlow,
     updateEditingIteratorID,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   const editIterator = React.useCallback(
     function () {

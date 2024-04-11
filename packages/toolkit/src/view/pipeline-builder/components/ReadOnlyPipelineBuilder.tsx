@@ -9,6 +9,8 @@ import ReactFlow, {
   Edge,
   Node,
   ReactFlowInstance,
+  useEdgesState,
+  useNodesState,
 } from "reactflow";
 
 import {
@@ -39,6 +41,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
+  updateCollapseAllNodes: store.updateCollapseAllNodes,
 });
 
 const nodeTypes = {
@@ -67,29 +70,19 @@ export const ReadOnlyPipelineBuilder = ({
   recipe,
   metadata,
 }: ReadOnlyPipelineBuilderProps) => {
-  const [nodes, setNodes] = React.useState<Node<NodeData>[]>([]);
-  const [edges, setEdges] = React.useState<Edge[]>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
 
-  const { updateCurrentVersion, pipelineIsReadOnly, updatePipelineIsReadOnly } =
-    useInstillStore(useShallow(selector));
+  const {
+    updateCurrentVersion,
+    updatePipelineIsReadOnly,
+    updateCollapseAllNodes,
+  } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     if (!recipe || !metadata) return;
-
-    if (checkIsValidPosition(recipe.components, metadata)) {
-      const initialGraphData = createInitialGraphData(recipe.components, {
-        metadata,
-      });
-
-      setNodes(initialGraphData.nodes);
-      setEdges(initialGraphData.edges);
-      updateCurrentVersion(() => "latest");
-      updatePipelineIsReadOnly(() => true);
-      return;
-    }
-
     const initialGraphData = createInitialGraphData(recipe.components);
 
     createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
@@ -98,6 +91,7 @@ export const ReadOnlyPipelineBuilder = ({
         setEdges(graphData.edges);
         updateCurrentVersion(() => "latest");
         updatePipelineIsReadOnly(() => true);
+        updateCollapseAllNodes(() => true);
       })
       .catch((err) => {
         console.error(err);
@@ -130,22 +124,20 @@ export const ReadOnlyPipelineBuilder = ({
         id={pipelineName ?? undefined}
         className="rounded-sm"
         nodes={nodes}
+        onNodesChange={onNodesChange}
         edges={edges}
+        onEdgesChange={onEdgesChange}
         fitView={true}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        minZoom={0.2}
+        minZoom={0.35}
         fitViewOptions={{
           includeHiddenNodes: true,
-          padding: 20,
+          padding: 10,
         }}
         onInit={setReactFlowInstance}
         proOptions={{ hideAttribution: true }}
-        selectNodesOnDrag={pipelineIsReadOnly}
-        nodesDraggable={pipelineIsReadOnly}
-        nodesConnectable={pipelineIsReadOnly}
-        elementsSelectable={pipelineIsReadOnly}
-        connectOnClick={pipelineIsReadOnly}
+        elevateNodesOnSelect={true}
       >
         <Background
           id={pipelineName ?? undefined}

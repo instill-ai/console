@@ -9,11 +9,11 @@ const ControlPanelRoot = ({ children }: { children: React.ReactNode }) => {
 
 const ControlPanelToggle = ({
   isCollapsed,
-  onTrigger,
+  onClick,
   disabled,
 }: {
   isCollapsed: boolean;
-  onTrigger: () => void;
+  onClick: () => void;
   disabled?: boolean;
 }) => {
   return (
@@ -31,7 +31,7 @@ const ControlPanelToggle = ({
               disabled={disabled}
               onClick={(e) => {
                 e.stopPropagation();
-                onTrigger();
+                onClick();
               }}
             >
               {isCollapsed ? (
