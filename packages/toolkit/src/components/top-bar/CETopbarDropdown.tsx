@@ -34,7 +34,7 @@ export const CETopbarDropdown = () => {
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger className="!h-10 !w-10">
         <EntityAvatar
           src={me.data.profile?.avatar ?? null}
           className="my-auto h-10 w-10 cursor-pointer"
