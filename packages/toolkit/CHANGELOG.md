@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.85.1...@instill-ai/toolkit-v0.86.0) (2024-04-12)
+
+
+### Features
+
+* migrate all the page to app route and support SEO index ([#1078](https://github.com/instill-ai/console/issues/1078)) ([98f9df8](https://github.com/instill-ai/console/commit/98f9df89d3c71fcb510e6e7919c37110f928be9a))
+
 ## [0.85.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.85.0...@instill-ai/toolkit-v0.85.1) (2024-04-09)
 
 
