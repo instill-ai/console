@@ -58,6 +58,10 @@ export const Body = ({
     accessToken,
     filter: null,
     visibility: null,
+
+    // Use these parameters to speed up request
+    disabledViewFull: true,
+    pageSize: 100,
   });
 
   const userPublicPipelines = React.useMemo(() => {
