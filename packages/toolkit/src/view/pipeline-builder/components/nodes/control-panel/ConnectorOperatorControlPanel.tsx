@@ -190,10 +190,9 @@ export const ConnectorOperatorControlPanel = ({
     <ControlPanel.Root>
       <ControlPanel.Toggle
         isCollapsed={nodeIsCollapsed}
-        onTrigger={() => {
+        onClick={() => {
           setNodeIsCollapsed(!nodeIsCollapsed);
         }}
-        disabled={pipelineIsReadOnly}
       />
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}

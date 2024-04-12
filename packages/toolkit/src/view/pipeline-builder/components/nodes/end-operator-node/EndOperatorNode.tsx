@@ -252,13 +252,15 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
           </p>
         </div>
         <div className="flex flex-row gap-x-3">
-          <button
-            type="button"
-            className="my-auto flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-semibold hover:bg-semantic-accent-bg-alt"
-            onClick={() => setIsViewResultMode(!isViewResultMode)}
-          >
-            {isViewResultMode ? "Edit" : "See Result"}
-          </button>
+          {pipelineIsReadOnly ? null : (
+            <button
+              type="button"
+              className="my-auto flex cursor-pointer rounded-full bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-semibold hover:bg-semantic-accent-bg-alt"
+              onClick={() => setIsViewResultMode(!isViewResultMode)}
+            >
+              {isViewResultMode ? "Edit" : "See Result"}
+            </button>
+          )}
           <StartEndOperatorControlPanel
             type="end"
             nodeIsCollapsed={nodeIsCollapsed}
