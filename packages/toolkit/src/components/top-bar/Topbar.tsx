@@ -7,7 +7,7 @@ import { DropdownMenu } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
-  useGuardUnsavedChangesNavigation,
+  useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -40,7 +40,7 @@ export const Topbar = ({
     enabled: enabledQuery,
     accessToken,
   });
-  const navigate = useGuardUnsavedChangesNavigation();
+  const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
     <div className="flex w-full border-b border-semantic-bg-line px-8">

@@ -6,8 +6,10 @@ export * from "./useModelDefinitions";
 export * from "./useModels";
 export * from "./useUndeployUserModel";
 export * from "./useUpdateUserModel";
-export * from "./useUserModel";
 export * from "./useUserModelReadme";
 export * from "./useUserModels";
 export * from "./useWatchUserModel";
 export * from "./useWatchUserModels";
+export { useUserModel } from "./useUserModel";
+
+export * from "./use-user-model";

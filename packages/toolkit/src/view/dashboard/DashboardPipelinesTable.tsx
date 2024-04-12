@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { Button, DataTable } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -18,9 +18,7 @@ export type DashboardPipelinesTableProps = {
 export const DashboardPipelinesTable = (
   props: DashboardPipelinesTableProps
 ) => {
-  const router = useRouter();
-  const { entity } = router.query;
-  const { days } = router.query;
+  const { entity, days } = useParams();
   const { pipelineTriggerCounts, isError, isLoading } = props;
 
   const columns: ColumnDef<TriggeredPipeline>[] = [

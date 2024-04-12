@@ -16,7 +16,7 @@ export function ProfilePageRender() {
     <PageBase>
       <AppTopbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="!px-0 !py-8">
+        <PageBase.Content contentPadding="!px-0 py-8">
           <UserProfileView />
         </PageBase.Content>
       </PageBase.Container>

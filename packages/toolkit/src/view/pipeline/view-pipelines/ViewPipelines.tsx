@@ -13,6 +13,7 @@ import {
   useAuthenticatedUser,
   useAppEntity,
   Visibility,
+  useUserPipelines,
 } from "../../../lib";
 import {
   LoadingSpin,
@@ -65,6 +66,18 @@ export const ViewPipelines = ({
     enabledQuery: enabledQuery && entity.isSuccess,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
+  });
+
+  const userPipelines = useUserPipelines({
+    userName: me.isSuccess ? me.data.name : null,
+    enabled: enabledQuery && me.isSuccess,
+    accessToken,
+    filter: null,
+    visibility: null,
+
+    // Use these parameters to speed up request
+    disabledViewFull: true,
+    pageSize: 100,
   });
 
   const allPipelines = React.useMemo(() => {

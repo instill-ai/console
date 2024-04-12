@@ -1,7 +1,5 @@
 import cn from "clsx";
 import { env } from "@instill-ai/toolkit/server";
-import { ReactQueryProvider } from "./react-query-client-provider";
-import { AmplitudeProvider } from "./amplitude-client-provider";
 
 import "../styles/global.css";
 import "../styles/github-markdown.css";
@@ -12,7 +10,7 @@ import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
 import "../styles/tip-tap.css";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import { Toaster } from "@instill-ai/design-system";
+import { RootRender } from "./render";
 
 const ibmPlexSans = IBM_Plex_Sans({
   style: ["italic", "normal"],
@@ -39,25 +37,20 @@ export default function RootLayout({
         <meta
           property="og:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         <meta
           property="twitter:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="/__env.js" />
       </head>
       <body className="overflow-y-hidden">
-        <ReactQueryProvider>
-          <AmplitudeProvider>
-            {children}
-            <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
-          </AmplitudeProvider>
-        </ReactQueryProvider>
+        <RootRender>{children}</RootRender>
       </body>
     </html>
   );

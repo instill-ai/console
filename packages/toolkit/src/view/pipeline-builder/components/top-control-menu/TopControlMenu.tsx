@@ -12,6 +12,7 @@ import {
   InstillStore,
   Nullable,
   useAppEntity,
+  useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -20,7 +21,6 @@ import { useConstructNodeFromDefinition } from "../../lib";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
 import { useRouter } from "next/navigation";
-import { useGuardUnsavedChangesNavigation } from "../../../../lib/hook/useGuardUnsavedChangesNavigation";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
@@ -41,7 +41,7 @@ export const TopControlMenu = ({
   );
 
   const entity = useAppEntity();
-  const navigate = useGuardUnsavedChangesNavigation();
+  const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
     <React.Fragment>

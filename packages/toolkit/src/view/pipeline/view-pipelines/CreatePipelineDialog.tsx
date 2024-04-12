@@ -97,25 +97,23 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   });
 
   const organizationsAndUserList = React.useMemo(() => {
-    if (!userMemberships.isSuccess || !entity.isSuccess) {
-      return [];
-    }
-
     const orgsAndUserList: {
       id: string;
       name: string;
       type: "user" | "organization";
     }[] = [];
 
-    userMemberships.data.forEach((org) => {
-      orgsAndUserList.push({
-        id: org.organization.id,
-        name: org.organization.name,
-        type: "organization",
+    if (userMemberships.isSuccess) {
+      userMemberships.data.forEach((org) => {
+        orgsAndUserList.push({
+          id: org.organization.id,
+          name: org.organization.name,
+          type: "organization",
+        });
       });
-    });
+    }
 
-    if (entity.data.entity && entity.data.entityName) {
+    if (entity.isSuccess && entity.data.entity && entity.data.entityName) {
       orgsAndUserList.push({
         id: entity.data.entity,
         name: entity.data.entityName,
@@ -180,7 +178,20 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           },
         ],
       },
-      metadata: {},
+      metadata: {
+        components: [
+          {
+            id: "start",
+            x: 0,
+            y: 0,
+          },
+          {
+            id: "end",
+            x: 350,
+            y: 0,
+          },
+        ],
+      },
       sharing,
     };
 

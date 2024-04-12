@@ -28,6 +28,7 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
+  updateCollapseAllNodes: store.updateCollapseAllNodes,
 });
 
 export function usePipelineBuilderGraph() {
@@ -43,6 +44,7 @@ export function usePipelineBuilderGraph() {
     accessToken,
     enabledQuery,
     updatePipelineIsReadOnly,
+    updateCollapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
@@ -64,14 +66,13 @@ export function usePipelineBuilderGraph() {
 
     updateCurrentVersion(() => "latest");
     updateIsOwner(() => true);
+    updateCollapseAllNodes(() => false);
 
     // We already initialized the pipeline when user select the template
     if (initializedByTemplateOrClone) {
       setGraphIsInitialized(true);
       return;
     }
-
-    const initialEmptyNodeId = uuidv4();
 
     const newNodes: Node<NodeData>[] = [
       {
@@ -86,7 +87,6 @@ export function usePipelineBuilderGraph() {
         },
         position: { x: 0, y: 0 },
       },
-
       {
         id: "end",
         type: "endNode",
@@ -97,35 +97,24 @@ export function usePipelineBuilderGraph() {
           },
           note: null,
         },
-        position: { x: 0, y: 0 },
-      },
-    ];
-    const newEdges = [
-      {
-        id: "start-empty",
-        type: "customEdge",
-        source: "start",
-        target: initialEmptyNodeId,
-      },
-      {
-        id: "empty-end",
-        type: "customEdge",
-        source: initialEmptyNodeId,
-        target: "end",
+        position: { x: 320, y: 0 },
       },
     ];
 
     // Because the pipeline is new, we need to initialize it with our default
     // graph layout
-    createGraphLayout(newNodes, newEdges)
-      .then((graphData) => {
-        updateNodes(() => graphData.nodes);
-        updateEdges(() => graphData.edges);
-        setGraphIsInitialized(true);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // createGraphLayout(newNodes, [])
+    //   .then((graphData) => {
+    //     updateNodes(() => graphData.nodes);
+    //     updateEdges(() => graphData.edges);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+
+    updateNodes(() => newNodes);
+
+    setGraphIsInitialized(true);
   }, [
     graphIsInitialized,
     initializedByTemplateOrClone,
@@ -152,6 +141,7 @@ export function usePipelineBuilderGraph() {
       updateIsOwner(() => true);
     }
 
+    updateCollapseAllNodes(() => false);
     updateCurrentVersion(() => "latest");
 
     // Set the pipelineID before the graph is initialized
