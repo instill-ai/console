@@ -13,7 +13,7 @@ import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
 import { usePathname } from "next/navigation";
 import { TopbarLinks } from "./TopbarLinks";
-import { useGuardUnsavedChangesNavigation } from "../../lib/hook";
+import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -40,7 +40,7 @@ export const AppTopbar = ({
     accessToken,
   });
 
-  const navigate = useGuardUnsavedChangesNavigation();
+  const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
     <div className="flex w-full border-b border-semantic-bg-line px-8">

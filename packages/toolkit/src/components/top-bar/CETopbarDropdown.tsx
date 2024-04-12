@@ -12,7 +12,7 @@ import Link from "next/link";
 import {
   InstillStore,
   useAuthenticatedUser,
-  useGuardUnsavedChangesNavigation,
+  useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -30,7 +30,7 @@ export const CETopbarDropdown = () => {
     accessToken,
   });
 
-  const navigate = useGuardUnsavedChangesNavigation();
+  const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
