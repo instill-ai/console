@@ -13,7 +13,7 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useAuthenticatedUserSubscription,
-  useGuardUnsavedChangesNavigation,
+  useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -38,7 +38,7 @@ export const CloudTopbarDropdown = () => {
     accessToken,
   });
 
-  const navigate = useGuardUnsavedChangesNavigation();
+  const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   const subIsActive = React.useMemo(() => {
     if (userSub.isSuccess && me.isSuccess) {
@@ -55,7 +55,7 @@ export const CloudTopbarDropdown = () => {
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="px-3">
+      <DropdownMenu.Trigger>
         <EntityAvatar
           src={me.data.profile?.avatar ?? null}
           className="my-auto h-10 w-10 cursor-pointer"

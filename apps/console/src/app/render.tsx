@@ -8,28 +8,11 @@ import { ReactQueryProvider } from "./react-query-client-provider";
 import { usePathname } from "next/navigation";
 import {
   Nullable,
+  pathnameEvaluator,
   useCreateResourceFormStore,
   useInstillStore,
   useModalStore,
 } from "@instill-ai/toolkit";
-
-function isPipelineBuilderPage(path: Nullable<string>) {
-  if (
-    path &&
-    path.split("/")[2] === "pipelines" &&
-    path.split("/")[4] === "builder"
-  ) {
-    return true;
-  }
-  return false;
-}
-
-function isPipelineOverviewPage(path: Nullable<string>) {
-  if (path && path.split("/")[2] === "pipelines" && path.split("/")[3]) {
-    return true;
-  }
-  return false;
-}
 
 export const RootRender = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -51,9 +34,9 @@ export const RootRender = ({ children }: { children: React.ReactNode }) => {
     // Init when navigate out of builder page, except navigate into
     // overview page
     if (
-      isPipelineBuilderPage(previousPathname) &&
-      !isPipelineBuilderPage(pathname) &&
-      !isPipelineOverviewPage(pathname)
+      pathnameEvaluator.isPipelineBuilderPage(previousPathname) &&
+      !pathnameEvaluator.isPipelineBuilderPage(pathname) &&
+      !pathnameEvaluator.isPipelineOverviewPage(pathname)
     ) {
       initPipelineBuilder();
     }
@@ -61,9 +44,9 @@ export const RootRender = ({ children }: { children: React.ReactNode }) => {
     // Init when navigate out of overview page, except navigate into
     // builder page
     if (
-      isPipelineOverviewPage(previousPathname) &&
-      !isPipelineOverviewPage(pathname) &&
-      !isPipelineBuilderPage(pathname)
+      pathnameEvaluator.isPipelineOverviewPage(previousPathname) &&
+      !pathnameEvaluator.isPipelineOverviewPage(pathname) &&
+      !pathnameEvaluator.isPipelineBuilderPage(pathname)
     ) {
       initPipelineBuilder();
     }
