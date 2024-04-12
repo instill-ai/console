@@ -29,8 +29,6 @@ export const RootRender = ({ children }: { children: React.ReactNode }) => {
   const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
-    console.log(pathname);
-
     // Init when navigate out of builder page, except navigate into
     // overview page
     if (

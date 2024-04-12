@@ -70,6 +70,26 @@ export async function createGraphLayout(
   const elkNodes: ElkNode[] = [];
   const elkEdges: ElkExtendedEdge[] = [];
 
+  // If the nodes only contain start and end node, we will directly
+  // return fixed layout
+  if (
+    nodes.length === 2 &&
+    nodes.findIndex((node) => node.data.id === "start") !== -1 &&
+    nodes.findIndex((node) => node.data.id === "end") !== -1
+  ) {
+    return {
+      nodes: nodes.map((node) => {
+        if (node.data.id === "start") {
+          node.position = { x: 0, y: 0 };
+        } else {
+          node.position = { x: 350, y: 0 };
+        }
+        return node;
+      }),
+      edges,
+    };
+  }
+
   nodes.forEach((node) => {
     if (node.data.id === "start" || node.data.id === "end") {
       elkNodes.push({
