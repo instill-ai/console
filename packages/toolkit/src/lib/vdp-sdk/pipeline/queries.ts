@@ -103,6 +103,7 @@ export type listUserPipelinesQueryProps = {
   userName: string;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  disabledViewFull?: boolean;
 };
 
 export async function listUserPipelinesQuery(
@@ -133,13 +134,16 @@ export async function listUserPipelinesQuery(
     enablePagination,
     filter,
     visibility,
+    disabledViewFull,
   } = props;
   try {
     const client = createInstillAxiosClient(accessToken, "vdp");
     const pipelines: Pipeline[] = [];
 
     const queryString = getQueryString({
-      baseURL: `${userName}/pipelines?view=VIEW_FULL`,
+      baseURL: disabledViewFull
+        ? `${userName}/pipelines`
+        : `${userName}/pipelines?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,

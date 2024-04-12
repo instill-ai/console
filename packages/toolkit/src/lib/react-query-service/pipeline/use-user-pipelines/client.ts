@@ -13,12 +13,16 @@ export function useUserPipelines({
   retry,
   filter,
   visibility,
+  disabledViewFull,
+  pageSize,
 }: {
   userName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  disabledViewFull?: boolean;
+  pageSize?: number;
   /**
    * - Default is 3
    * - Set to false to disable retry
@@ -43,6 +47,8 @@ export function useUserPipelines({
         accessToken,
         filter,
         visibility,
+        disabledViewFull,
+        pageSize,
       });
       return Promise.resolve(pipelines);
     },

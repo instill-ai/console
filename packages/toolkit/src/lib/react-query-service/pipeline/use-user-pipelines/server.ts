@@ -7,11 +7,15 @@ export async function fetchUserPipelines({
   accessToken,
   filter,
   visibility,
+  disabledViewFull,
+  pageSize,
 }: {
   userName: Nullable<string>;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  disabledViewFull?: boolean;
+  pageSize?: number;
 }) {
   if (!userName) {
     return Promise.reject(new Error("userName not provided"));
@@ -19,12 +23,13 @@ export async function fetchUserPipelines({
 
   const pipelines = await listUserPipelinesQuery({
     userName,
-    pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+    pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     nextPageToken: null,
     accessToken,
     enablePagination: false,
     filter,
     visibility,
+    disabledViewFull,
   });
 
   return Promise.resolve(pipelines);
