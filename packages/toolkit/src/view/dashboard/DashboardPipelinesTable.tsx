@@ -38,7 +38,6 @@ export const DashboardPipelinesTable = (
               href={`/${entity}/dashboard/pipeline/${row.getValue(
                 "pipeline_id"
               )}${days ? "?days=" + days : ""}`}
-              className="hover:underline"
             >
               {row.getValue("pipeline_id")}
             </Link>
