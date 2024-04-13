@@ -33,9 +33,8 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
                   `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`
                 );
               }}
-              className="hover:underline"
             >
-              <h3 className="text-semantic-fg-primary product-body-text-3-semibold">
+              <h3 className="cursor-pointer text-semantic-fg-primary product-body-text-3-semibold">
                 {row.getValue("id")}
               </h3>
             </button>

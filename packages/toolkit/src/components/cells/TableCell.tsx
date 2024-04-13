@@ -28,7 +28,7 @@ function TableCell({
       )}
       <div className="flex flex-col">
         {primaryText && primaryLink ? (
-          <Link href={primaryLink} className="hover:underline">
+          <Link href={primaryLink}>
             <h3 className="text-semantic-fg-primary product-body-text-3-semibold">
               {primaryText}
             </h3>
@@ -40,7 +40,7 @@ function TableCell({
         )}
 
         {secondaryText && secondaryLink ? (
-          <Link href={secondaryLink} className="hover:underline">
+          <Link href={secondaryLink}>
             <p className="text-semantic-fg-disabled product-body-text-3-regular">
               {secondaryText}
             </p>
