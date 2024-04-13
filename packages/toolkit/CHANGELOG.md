@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.86.0...@instill-ai/toolkit-v0.86.1) (2024-04-13)
+
+
+### Bug Fixes
+
+* temp fix hover:underline in Link element issue ([#1080](https://github.com/instill-ai/console/issues/1080)) ([01d00dc](https://github.com/instill-ai/console/commit/01d00dc22259559fd809b6ab4e74f2f03c4d936e))
+
 ## [0.86.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.85.1...@instill-ai/toolkit-v0.86.0) (2024-04-12)
 
 
