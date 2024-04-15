@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useShallow } from "zustand/react/shallow";
 import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
-import { NextRouter } from "next/router";
 
 import {
   InstillStore,
@@ -23,6 +22,7 @@ import { Head } from "./Head";
 import { Metadata } from "./Metadata";
 import { ReadmeEditor } from "./ReadmeEditor";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -40,16 +40,15 @@ export const PublishPipelineFormSchema = z.object({
 });
 
 export const PublishPipelineDialog = ({
-  router,
   pipelineName,
   entity,
   id,
 }: {
-  router: NextRouter | AppRouterInstance;
   pipelineName: Nullable<string>;
   entity: Nullable<string>;
   id: Nullable<string>;
 }) => {
+  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isPublishing, setIsPublishing] = React.useState(false);
 

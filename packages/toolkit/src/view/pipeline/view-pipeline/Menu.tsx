@@ -17,7 +17,6 @@ import {
   PublishPipelineDialog,
   SharePipelineDialog,
 } from "../../pipeline-builder";
-import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
@@ -29,7 +28,6 @@ export type MenuProps = {
 };
 
 export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
-  const router = useRouter();
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
@@ -87,7 +85,6 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
             id={entity.data.id}
           />
           <PublishPipelineDialog
-            router={router}
             pipelineName={entity.data.pipelineName}
             entity={entity.data.entity}
             id={entity.data.id}
@@ -97,7 +94,6 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
             open={cloneDialogIsOpen}
             onOpenChange={(open) => setCloneDialogIsOpen(open)}
             trigger={null}
-            router={router}
           />
         </React.Fragment>
       ) : null}

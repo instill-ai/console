@@ -17,7 +17,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
+import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 import Link from "next/link";
 
 const selector = (store: InstillStore) => ({

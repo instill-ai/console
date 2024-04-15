@@ -21,4 +21,3 @@ export * from "./isPublicPipeline";
 export * from "./toastInstillError";
 export * from "./useResourceAdditionalForm";
 export * from "./useAppEntity";
-export * from "./useEntity";

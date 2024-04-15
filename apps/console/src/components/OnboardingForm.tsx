@@ -1,5 +1,6 @@
+"use client";
+
 import { ChangeEvent, useCallback, useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,8 +22,9 @@ import {
   sendAmplitudeData,
   instillUserRoles,
   useUpdateAuthenticatedUser,
+  useInstillStore,
 } from "@instill-ai/toolkit";
-import { useAccessToken } from "../lib/use-access-token/client";
+import { useRouter } from "next/navigation";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;
@@ -41,7 +43,8 @@ export const OnboardingForm = () => {
   const router = useRouter();
   const updateUser = useUpdateAuthenticatedUser();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const accessToken = useAccessToken();
+
+  const accessToken = useInstillStore((store) => store.accessToken);
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
@@ -143,7 +146,7 @@ export const OnboardingForm = () => {
   });
 
   const handleSubmit = useCallback(async () => {
-    if (!accessToken.isSuccess) {
+    if (!accessToken) {
       return;
     }
 
@@ -199,7 +202,7 @@ export const OnboardingForm = () => {
     try {
       const user = await updateUser.mutateAsync({
         payload,
-        accessToken: accessToken.data,
+        accessToken,
       });
 
       if (amplitudeIsInit) {
@@ -232,14 +235,7 @@ export const OnboardingForm = () => {
         message,
       }));
     }
-  }, [
-    fieldValues,
-    amplitudeIsInit,
-    router,
-    updateUser,
-    accessToken.data,
-    accessToken.isSuccess,
-  ]);
+  }, [fieldValues, amplitudeIsInit, router, updateUser, accessToken]);
 
   return (
     <FormRoot formLess={false}>

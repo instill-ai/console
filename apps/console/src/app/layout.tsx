@@ -10,7 +10,7 @@ import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
 import "../styles/tip-tap.css";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import { RootRender } from "./render";
+import { RootProvider } from "./(providers)/root-provider";
 
 const ibmPlexSans = IBM_Plex_Sans({
   style: ["italic", "normal"],
@@ -50,7 +50,7 @@ export default function RootLayout({
         <script src="/__env.js" />
       </head>
       <body className="overflow-y-hidden">
-        <RootRender>{children}</RootRender>
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );
