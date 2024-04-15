@@ -7,10 +7,12 @@ import {
   PageBase,
 } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "lib/use-app-access-token";
+import { useAppTrackToken } from "lib/useAppTrackToken";
 import { useRouter } from "next/navigation";
 
 export function ModelsPageRender() {
   const accessToken = useAppAccessToken();
+  useAppTrackToken({ enabled: true });
 
   const router = useRouter();
 

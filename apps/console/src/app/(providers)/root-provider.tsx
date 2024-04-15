@@ -14,7 +14,7 @@ import {
   useModalStore,
 } from "@instill-ai/toolkit";
 
-export const RootRender = ({ children }: { children: React.ReactNode }) => {
+export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);

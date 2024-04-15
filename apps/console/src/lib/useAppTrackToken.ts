@@ -17,7 +17,7 @@ export function useAppTrackToken({ enabled }: { enabled: boolean }) {
         const trackToken = JSON.parse(data).cookie_token;
 
         if (!trackToken) {
-          throw new Error("No trackToken in response");
+          router.push("/onboarding");
         }
 
         return Promise.resolve(trackToken);

@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Icons } from "@instill-ai/design-system";
-import { useRouter } from "next/router";
 import { LinkBlock } from "./LinkBlock";
+import { useRouter } from "next/navigation";
 
 export const NotFoundView = () => {
   const router = useRouter();

@@ -1,35 +1,36 @@
+"use client";
+
+import * as React from "react";
 import * as z from "zod";
-import { useEffect, useState } from "react";
-import { NextPageWithLayout } from "./_app";
 import {
   AuthPageBase,
   ChangePasswordForm,
   ChangePasswordFormSchema,
   LoginForm,
   LoginFormSchema,
-} from "../components";
+} from "components";
+import { useRouter } from "next/navigation";
 import {
   Nullable,
-  authLoginAction,
   changePasswordMutation,
   getInstillApiErrorMessage,
   useAuthenticatedUser,
 } from "@instill-ai/toolkit";
 import { useToast } from "@instill-ai/design-system";
-import axios, { isAxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useTrackToken } from "../lib/useTrackToken";
+import { useAppTrackToken } from "lib/useAppTrackToken";
+import axios from "axios";
+import { authLoginAction } from "@instill-ai/toolkit/server";
 
-const LoginPage: NextPageWithLayout = () => {
+export const LoginPageRender = () => {
   const router = useRouter();
-  const [isDefaultPWD, setIsDefaultPWD] = useState(false);
-  const [accessToken, setAccessToken] = useState<Nullable<string>>(null);
-  const [loginIsComplete, setLoginIsComplete] = useState(false);
+  const [isDefaultPWD, setIsDefaultPWD] = React.useState(false);
+  const [accessToken, setAccessToken] = React.useState<Nullable<string>>(null);
+  const [loginIsComplete, setLoginIsComplete] = React.useState(false);
   const [changePasswordIsComplete, setChangePasswordIsComplete] =
-    useState(false);
+    React.useState(false);
   const { toast } = useToast();
 
-  const trackToken = useTrackToken({
+  const trackToken = useAppTrackToken({
     enabled: !!accessToken && changePasswordIsComplete,
   });
 
@@ -59,7 +60,7 @@ const LoginPage: NextPageWithLayout = () => {
         setChangePasswordIsComplete(true);
       }
     } catch (error) {
-      if (isAxiosError(error)) {
+      if (axios.isAxiosError(error)) {
         toast({
           title: "Something went wrong when login",
           variant: "alert-error",
@@ -78,7 +79,7 @@ const LoginPage: NextPageWithLayout = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
     if (!accessToken) {
       return;
@@ -95,7 +96,7 @@ const LoginPage: NextPageWithLayout = () => {
 
       setChangePasswordIsComplete(true);
     } catch (error) {
-      if (isAxiosError(error)) {
+      if (axios.isAxiosError(error)) {
         toast({
           title: "Something went wrong when login",
           variant: "alert-error",
@@ -113,7 +114,7 @@ const LoginPage: NextPageWithLayout = () => {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!loginIsComplete) {
       return;
     }
@@ -141,27 +142,21 @@ const LoginPage: NextPageWithLayout = () => {
   ]);
 
   return (
-    <div className="m-auto flex w-[360px] flex-col">
-      <h1 className="mb-8 text-semantic-fg-primary product-headings-heading-1">
-        {isDefaultPWD ? "Change password" : "Login"}
-      </h1>
-      {isDefaultPWD ? (
-        <ChangePasswordForm onSubmit={changePassword} />
-      ) : (
-        <LoginForm onSubmit={login} />
-      )}
-    </div>
-  );
-};
-
-LoginPage.getLayout = (page) => {
-  return (
     <AuthPageBase>
       <AuthPageBase.Container>
-        <AuthPageBase.Content>{page}</AuthPageBase.Content>
+        <AuthPageBase.Content>
+          <div className="m-auto flex w-[360px] flex-col">
+            <h1 className="mb-8 text-semantic-fg-primary product-headings-heading-1">
+              {isDefaultPWD ? "Change password" : "Login"}
+            </h1>
+            {isDefaultPWD ? (
+              <ChangePasswordForm onSubmit={changePassword} />
+            ) : (
+              <LoginForm onSubmit={login} />
+            )}
+          </div>
+        </AuthPageBase.Content>
       </AuthPageBase.Container>
     </AuthPageBase>
   );
 };
-
-export default LoginPage;

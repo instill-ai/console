@@ -21,6 +21,12 @@ export * from "../lib/react-query-service/model/use-user-model/server";
 export * from "../lib/react-query-service/connector/use-user-connector/server";
 
 export {
+  authLoginAction,
+  authLogoutAction,
+  authValidateTokenAction,
+} from "../lib/vdp-sdk/mgmt/actions";
+
+export {
   QueryClient,
   hydrate,
   dehydrate,
