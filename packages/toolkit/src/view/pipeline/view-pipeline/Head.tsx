@@ -334,7 +334,6 @@ export const Head = ({
                       </Button>
                     }
                     pipeline={pipeline.data}
-                    router={router}
                   />
                 ) : (
                   <Button

@@ -20,7 +20,6 @@ import { ReactFlowInstance } from "reactflow";
 import { useConstructNodeFromDefinition } from "../../lib";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
-import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
@@ -32,7 +31,6 @@ export const TopControlMenu = ({
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
 }) => {
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
@@ -84,7 +82,6 @@ export const TopControlMenu = ({
       </div>
       <SetupComponentDialog entityName={entity.data.entityName} />
       <PublishPipelineDialog
-        router={router}
         pipelineName={entity.data.pipelineName}
         entity={entity.data.entity}
         id={entity.data.id}

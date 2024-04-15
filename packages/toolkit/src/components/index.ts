@@ -21,7 +21,6 @@ export * from "./LoadingSpin";
 export * from "./ModelDefinitionLabel";
 export * from "./ModelTaskLabel";
 export * from "./PageBase";
-export * from "./PageHead";
 export * from "./PageTitle";
 export * from "./ReferenceHintTag";
 export * from "./ReferenceHintDataTypeTag";

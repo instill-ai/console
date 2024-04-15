@@ -7,7 +7,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 import { EntityAvatar } from "../EntityAvatar";
-import { TopbarDropdownGroup, TopbarDropdownItem } from "./Topbar";
+import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 import Link from "next/link";
 import {
   InstillStore,

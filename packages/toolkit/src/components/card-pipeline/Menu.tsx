@@ -4,7 +4,6 @@ import * as React from "react";
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { ClonePipelineDialog, GeneralDeleteResourceDialog } from "..";
-import { useRouter } from "next/navigation";
 
 export type MenuProps = {
   pipeline: Pipeline;
@@ -12,7 +11,6 @@ export type MenuProps = {
 };
 
 export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
-  const router = useRouter();
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
@@ -55,7 +53,6 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
         open={cloneDialogIsOpen}
         onOpenChange={(open) => setCloneDialogIsOpen(open)}
         trigger={null}
-        router={router}
       />
       <GeneralDeleteResourceDialog
         open={deleteDialogIsOpen}
