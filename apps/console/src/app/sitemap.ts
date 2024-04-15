@@ -14,20 +14,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let continueFetching = true;
   while (continueFetching) {
-    const pipelineResponse = await fetch(
-      nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl,
-    );
+    try {
+      const pipelineResponse = await fetch(
+        nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl
+      );
 
-    if (pipelineResponse.ok) {
-      const { pipelines, next_page_token } = await pipelineResponse.json();
-      allPipelines.push(...pipelines);
+      if (pipelineResponse.ok) {
+        const { pipelines, next_page_token } = await pipelineResponse.json();
+        allPipelines.push(...pipelines);
 
-      if (!next_page_token) {
-        continueFetching = false;
+        if (!next_page_token) {
+          continueFetching = false;
+        } else {
+          nextToken = next_page_token;
+        }
       } else {
-        nextToken = next_page_token;
+        continueFetching = false;
       }
-    } else {
+    } catch (error) {
       continueFetching = false;
     }
   }
@@ -47,40 +51,48 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     process.env.NEXT_PUBLIC_API_GATEWAY_URL || defaultApiUrl
   }/core/v1beta/users`;
 
-  const usersResponse = await fetch(usersUrl);
+  try {
+    const usersResponse = await fetch(usersUrl);
 
-  if (usersResponse.ok) {
-    const { users } = await usersResponse.json();
+    if (usersResponse.ok) {
+      const { users } = await usersResponse.json();
 
-    users.map((user: User) => {
-      sitemaps.push({
-        url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${user?.id}`,
-        lastModified: new Date(),
-        changeFrequency: "daily",
-        priority: 1,
+      users.map((user: User) => {
+        sitemaps.push({
+          url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${user?.id}`,
+          lastModified: new Date(),
+          changeFrequency: "daily",
+          priority: 1,
+        });
       });
-    });
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   const organizationsUrl = `${
     process.env.NEXT_PUBLIC_API_GATEWAY_URL || defaultApiUrl
   }/core/v1beta/organizations`;
 
-  const organizationsResponse = await fetch(organizationsUrl);
+  try {
+    const organizationsResponse = await fetch(organizationsUrl);
 
-  if (organizationsResponse.ok) {
-    const { organizations } = await organizationsResponse.json();
+    if (organizationsResponse.ok) {
+      const { organizations } = await organizationsResponse.json();
 
-    organizations.map((organization: Organization) => {
-      sitemaps.push({
-        url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL || defaultBaseUrl}/${
-          organization?.id
-        }`,
-        lastModified: new Date(),
-        changeFrequency: "daily",
-        priority: 1,
+      organizations.map((organization: Organization) => {
+        sitemaps.push({
+          url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL || defaultBaseUrl}/${
+            organization?.id
+          }`,
+          lastModified: new Date(),
+          changeFrequency: "daily",
+          priority: 1,
+        });
       });
-    });
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   return sitemaps;
