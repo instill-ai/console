@@ -19,10 +19,10 @@ export const RootRender = ({ children }: { children: React.ReactNode }) => {
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
   const initPipelineBuilder = useInstillStore(
-    (store) => store.initPipelineBuilder
+    (store) => store.initPipelineBuilder,
   );
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (store) => store.init
+    (store) => store.init,
   );
   const closeModal = useModalStore((store) => store.closeModal);
 
