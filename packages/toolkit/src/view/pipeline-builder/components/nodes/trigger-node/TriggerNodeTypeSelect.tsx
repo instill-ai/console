@@ -4,9 +4,9 @@ import cn from "clsx";
 import * as React from "react";
 import { Nullable, useInstillStore } from "../../../../../lib";
 import { Select } from "@instill-ai/design-system";
-import { StartComponentFields } from "./StartComponentFields";
+import { triggerNodeFields } from "./triggerNodeFields";
 
-export const StartComponentTypeSelect = ({
+export const TriggerNodeTypeSelect = ({
   id,
   selectedType,
   setSelectedType,
@@ -22,7 +22,7 @@ export const StartComponentTypeSelect = ({
   );
 
   const recentlyUsedTypes = React.useMemo(() => {
-    return Object.entries(StartComponentFields)
+    return Object.entries(triggerNodeFields)
       .filter(([key]) => recentlyUsedStartComponentFieldTypes.includes(key))
       .sort((a, b) => a[1].order - b[1].order);
   }, [recentlyUsedStartComponentFieldTypes]);
@@ -70,7 +70,7 @@ export const StartComponentTypeSelect = ({
             All
           </Select.Label>
           <div className="flex flex-col gap-y-2">
-            {Object.entries(StartComponentFields)
+            {Object.entries(triggerNodeFields)
               .filter(
                 ([key]) => !recentlyUsedStartComponentFieldTypes.includes(key)
               )

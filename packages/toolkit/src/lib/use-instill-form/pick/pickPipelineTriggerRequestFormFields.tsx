@@ -1,10 +1,10 @@
 import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
-import { PipelineStartComponentFields } from "../../vdp-sdk";
-import { StartOperatorFreeFormFields } from "../components";
+import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
+import { PipelineTriggerRequestFields } from "../../vdp-sdk";
 
-export type PickStartOperatorFreeFormFieldItemsProps = {
+export type PickPipelineTriggerRequestFormFieldsProps = {
   mode: FieldMode;
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -15,10 +15,10 @@ export type PickStartOperatorFreeFormFieldItemsProps = {
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
   disabledReferenceHint?: boolean;
-  fields: Nullable<PipelineStartComponentFields>;
+  fields: Nullable<PipelineTriggerRequestFields>;
 };
 
-export function pickStartOperatorFreeFormFieldItems({
+export function pickPipelineTriggerRequestFormFields({
   mode,
   fields,
   form,
@@ -28,7 +28,7 @@ export function pickStartOperatorFreeFormFieldItems({
   disabledFieldControls,
   keyPrefix,
   disabledReferenceHint,
-}: PickStartOperatorFreeFormFieldItemsProps) {
+}: PickPipelineTriggerRequestFormFieldsProps) {
   const items: StartOperatorFreeFormFieldItem[] = [];
 
   if (!fields) return [];
@@ -44,7 +44,7 @@ export function pickStartOperatorFreeFormFieldItems({
             key,
             instillUIOrder: value.instill_ui_order,
             component: (
-              <StartOperatorFreeFormFields.TextareaField
+              <TriggerRequestFormFields.TextareaField
                 mode={mode}
                 key={key}
                 form={form}
@@ -66,7 +66,7 @@ export function pickStartOperatorFreeFormFieldItems({
             key,
             instillUIOrder: value.instill_ui_order,
             component: (
-              <StartOperatorFreeFormFields.TextField
+              <TriggerRequestFormFields.TextField
                 mode={mode}
                 key={key}
                 form={form}
@@ -90,7 +90,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.TextsField
+            <TriggerRequestFormFields.TextsField
               mode={mode}
               key={key}
               form={form}
@@ -114,7 +114,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.BooleanField
+            <TriggerRequestFormFields.BooleanField
               mode={mode}
               key={key}
               form={form}
@@ -137,7 +137,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.NumberField
+            <TriggerRequestFormFields.NumberField
               mode={mode}
               key={key}
               form={form}
@@ -160,7 +160,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.NumbersField
+            <TriggerRequestFormFields.NumbersField
               mode={mode}
               key={key}
               form={form}
@@ -183,7 +183,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.AudioField
+            <TriggerRequestFormFields.AudioField
               mode={mode}
               key={key}
               form={form}
@@ -206,7 +206,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.AudiosField
+            <TriggerRequestFormFields.AudiosField
               mode={mode}
               key={key}
               form={form}
@@ -229,7 +229,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.ImageField
+            <TriggerRequestFormFields.ImageField
               mode={mode}
               key={key}
               form={form}
@@ -252,7 +252,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.ImagesField
+            <TriggerRequestFormFields.ImagesField
               mode={mode}
               key={key}
               form={form}
@@ -276,7 +276,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.VideoField
+            <TriggerRequestFormFields.VideoField
               mode={mode}
               key={key}
               form={form}
@@ -299,7 +299,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.VideosField
+            <TriggerRequestFormFields.VideosField
               mode={mode}
               key={key}
               form={form}
@@ -322,7 +322,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.FileField
+            <TriggerRequestFormFields.FileField
               mode={mode}
               key={key}
               form={form}
@@ -345,7 +345,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.FilesField
+            <TriggerRequestFormFields.FilesField
               mode={mode}
               key={key}
               form={form}
@@ -368,7 +368,7 @@ export function pickStartOperatorFreeFormFieldItems({
           key,
           instillUIOrder: value.instill_ui_order,
           component: (
-            <StartOperatorFreeFormFields.ObjectField
+            <TriggerRequestFormFields.ObjectField
               mode={mode}
               key={key}
               form={form}

@@ -10,8 +10,10 @@ import {
 import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
 import {
-  composeEdgesFromComponents,
+  composeEdgesFromNodes,
   getConnectorOperatorComponentConfiguration,
+  isConnectorNode,
+  isOperatorNode,
 } from "..";
 import { ConnectorNodeData, OperatorNodeData } from "../../type";
 import {
@@ -88,7 +90,7 @@ export function useUpdaterOnNode({
     timer.current = setTimeout(() => {
       const newNodes = nodes.map((node) => {
         if (
-          isConnectorComponent(node.data) &&
+          isConnectorNode(node) &&
           isConnectorComponent(currentNodeData) &&
           node.id === currentNodeData.id
         ) {
@@ -109,7 +111,7 @@ export function useUpdaterOnNode({
         }
 
         if (
-          isOperatorComponent(node.data) &&
+          isOperatorNode(node) &&
           isOperatorComponent(currentNodeData) &&
           node.id === currentNodeData.id
         ) {
@@ -133,9 +135,7 @@ export function useUpdaterOnNode({
       });
 
       updateNodes(() => newNodes);
-      const newEdges = composeEdgesFromComponents(
-        newNodes.map((node) => node.data)
-      );
+      const newEdges = composeEdgesFromNodes(newNodes);
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
       updatedValue.current = parsed.data;

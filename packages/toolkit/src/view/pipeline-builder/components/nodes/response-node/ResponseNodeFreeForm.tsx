@@ -5,11 +5,11 @@ import * as z from "zod";
 import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 
 import { InstillErrors } from "../../../../../constant";
-import { constructFieldKey } from "../start-operator-node/constructFieldKey";
+import { constructFieldKey } from "../trigger-node/constructFieldKey";
 import { SmartHintFields } from "../../../../../lib/use-instill-form/components";
 import { validateInstillID } from "../../../../../server";
 
-export const EndOperatorFreeFormSchema = z
+export const ResponseNodeFreeFormSchema = z
   .object({
     title: z
       .string()
@@ -31,7 +31,7 @@ export const EndOperatorFreeFormSchema = z
     }
   });
 
-export const EndOperatorNodeFreeForm = ({
+export const ResponseNodeFreeForm = ({
   form,
   onCreateFreeFormField,
   onCancel,

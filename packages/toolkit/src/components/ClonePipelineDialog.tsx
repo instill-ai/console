@@ -144,6 +144,7 @@ export const ClonePipelineDialog = ({
       id: data.id,
       recipe: {
         version: pipeline.recipe.version,
+        trigger: pipeline.recipe.trigger,
         components: removeSensitiveDataInPipelineRecipe(
           pipeline.recipe.components,
           pipeline.owner_name === me.data.name ? false : true

@@ -9,13 +9,16 @@ import { useShallow } from "zustand/react/shallow";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { StartNodeData } from "../../../type";
-import { composeEdgesFromComponents, recursiveHelpers } from "../../../lib";
+import {
+  composeEdgesFromNodes,
+  isTriggerNode,
+  recursiveHelpers,
+} from "../../../lib";
 import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useStartOperatorTriggerPipelineForm,
+  usePipelineTriggerRequestForm,
   useTriggerUserPipeline,
   useTriggerUserPipelineRelease,
   toastInstillError,
@@ -23,17 +26,17 @@ import {
   sendAmplitudeData,
   useAmplitudeCtx,
 } from "../../../../../lib";
-import {
-  StartOperatorNodeFreeForm,
-  StartOperatorFreeFormSchema,
-} from "./StartOperatorNodeFreeForm";
 
 import { arrayMove } from "@dnd-kit/sortable";
-import { StartEndOperatorControlPanel } from "../control-panel";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
-import { isStartComponent } from "../../../lib/checkComponentType";
-import { StartComponentFields } from "./StartComponentFields";
+import { TriggerNodeData } from "../../../type";
+import {
+  TriggerNodeFreeForm,
+  TriggerNodeFreeFormSchema,
+} from "./TriggerNodeFreeForm";
+import { triggerNodeFields } from "./triggerNodeFields";
+import { TriggerResponseNodeControlPanel } from "../control-panel";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -58,7 +61,7 @@ const selector = (store: InstillStore) => ({
     store.updateRecentlyUsedStartComponentFieldTypes,
 });
 
-export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
+export const TriggerNode = ({ data }: NodeProps<TriggerNodeData>) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -88,8 +91,8 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
 
-  const form = useForm<z.infer<typeof StartOperatorFreeFormSchema>>({
-    resolver: zodResolver(StartOperatorFreeFormSchema),
+  const form = useForm<z.infer<typeof TriggerNodeFreeFormSchema>>({
+    resolver: zodResolver(TriggerNodeFreeFormSchema),
     mode: "onChange",
     reValidateMode: "onChange",
   });
@@ -102,18 +105,15 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   const onEditFreeFormField = (key: string) => {
     setCurrentEditingFieldKey(key);
     form.reset({
-      title: data.start_component.fields[key].title,
+      title: data.fields[key].title,
       key,
-      description: data.start_component.fields[key].description,
+      description: data.fields[key].description,
     });
     setIsEditing(true);
 
-    let newSelectedType = data.start_component.fields[key].instill_format;
+    let newSelectedType = data.fields[key].instill_format;
 
-    if (
-      newSelectedType === "string" &&
-      data.start_component.fields[key].instill_ui_multiline
-    ) {
+    if (newSelectedType === "string" && data.fields[key].instill_ui_multiline) {
       newSelectedType = "long_string";
     }
 
@@ -130,8 +130,8 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   // When delete field, the input key is already the auto generated key
   const onDeleteFreeFormField = (key: string) => {
     const newNodes = nodes.map((node) => {
-      if (isStartComponent(node.data)) {
-        delete node.data.start_component.fields[key];
+      if (isTriggerNode(node)) {
+        delete node.data.fields[key];
 
         node.data = {
           ...node.data,
@@ -139,22 +139,20 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
   };
 
   function onCreateFreeFormField(
-    formData: z.infer<typeof StartOperatorFreeFormSchema>
+    formData: z.infer<typeof TriggerNodeFreeFormSchema>
   ) {
     if (!selectedType) {
       return;
     }
 
-    if (Object.keys(data.start_component.fields).includes(formData.key)) {
+    if (Object.keys(data.fields).includes(formData.key)) {
       if (isEditing) {
         if (formData.key !== currentEditingFieldKey) {
           form.setError("key", {
@@ -172,11 +170,11 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
       }
     }
 
-    if (!StartComponentFields[selectedType]) {
+    if (!triggerNodeFields[selectedType]) {
       return;
     }
 
-    const field = StartComponentFields[selectedType].getFieldConfiguration(
+    const field = triggerNodeFields[selectedType].getFieldConfiguration(
       formData.title,
       formData.description
     );
@@ -189,26 +187,22 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     });
 
     const newNodes = nodes.map((node) => {
-      if (isStartComponent(node.data) && field) {
+      if (isTriggerNode(node) && field) {
         if (currentEditingFieldKey) {
-          delete node.data.start_component.fields[currentEditingFieldKey];
+          delete node.data.fields[currentEditingFieldKey];
         }
 
         node.data = {
           ...node.data,
-          start_component: {
-            fields: {
-              ...node.data.start_component.fields,
-              [formData.key]: field,
-            },
+          fields: {
+            ...node.data.fields,
+            [formData.key]: field,
           },
         };
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     setIsCreating(false);
@@ -237,12 +231,12 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
     React.useState(false);
 
   const {
-    Schema: StartOperatorTriggerPipelineFormSchema,
-    fieldItems: startOperatorTriggerPipelineFormfieldItems,
-    form: startOperatorTriggerPipelineForm,
-  } = useStartOperatorTriggerPipelineForm({
+    Schema: TriggerPipelineFormSchema,
+    fieldItems: triggerPipelineFormFields,
+    form: triggerPipelineForm,
+  } = usePipelineTriggerRequestForm({
     mode: "build",
-    fields: data.start_component.fields ?? null,
+    fields: data.fields ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
     disabledFields: pipelineIsReadOnly,
@@ -254,7 +248,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
   const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
 
   async function onTriggerPipeline(
-    formData: z.infer<typeof StartOperatorTriggerPipelineFormSchema>
+    formData: z.infer<typeof TriggerPipelineFormSchema>
   ) {
     if (!pipelineName || !formData) return;
 
@@ -267,7 +261,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
 
     const semiStructuredObjectKeys: string[] = [];
 
-    Object.entries(data.start_component.fields).forEach(([key, value]) => {
+    Object.entries(data.fields).forEach(([key, value]) => {
       if (value.instill_format === "semi-structured/json") {
         semiStructuredObjectKeys.push(key);
       }
@@ -285,7 +279,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
         parsedStructuredData[key] = parsed;
       } catch (err) {
         console.error(err);
-        startOperatorTriggerPipelineForm.setError(key, {
+        triggerPipelineForm.setError(key, {
           type: "manual",
           message: "Invalid JSON format",
         });
@@ -376,13 +370,12 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
             start
           </p>
         </div>
-        <StartEndOperatorControlPanel
-          type="start"
+        <TriggerResponseNodeControlPanel
+          type="trigger"
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
           noteIsOpen={noteIsOpen}
-          componentTypeName="Start"
           disabledReferenceHint={disabledReferenceHint}
           setDisabledReferenceHint={setDisabledReferenceHint}
         />
@@ -390,7 +383,7 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
       {nodeIsCollapsed ? null : (
         <div className="nodrag nowheel flex flex-col">
           {isCreating || isEditing ? (
-            <StartOperatorNodeFreeForm
+            <TriggerNodeFreeForm
               form={form}
               selectedType={selectedType}
               setSelectedType={setSelectedType}
@@ -400,71 +393,64 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
             />
           ) : (
             <div className="flex flex-col gap-y-3">
-              <Form.Root {...startOperatorTriggerPipelineForm}>
+              <Form.Root {...triggerPipelineForm}>
                 <form
-                  id="start-operator-trigger-pipeline-form"
+                  id="trigger-node-trigger-pipeline-form"
                   className="w-full"
-                  onSubmit={startOperatorTriggerPipelineForm.handleSubmit(
-                    onTriggerPipeline
-                  )}
+                  onSubmit={triggerPipelineForm.handleSubmit(onTriggerPipeline)}
                 >
                   <VerticalSortableWrapper
                     // we directly use the key as the id, because the key is guarded
                     // but our auto-form, it should be always present
-                    items={startOperatorTriggerPipelineFormfieldItems.map(
-                      (e) => ({
-                        key: e.key as string,
-                      })
-                    )}
+                    items={triggerPipelineFormFields.map((e) => ({
+                      key: e.key as string,
+                    }))}
                     onDragEnd={(event) => {
                       const { active, over } = event;
 
                       if (over && active.id !== over.id) {
-                        const oldIndex =
-                          startOperatorTriggerPipelineFormfieldItems.findIndex(
-                            (e) => e.key === active.id
-                          );
-                        const newIndex =
-                          startOperatorTriggerPipelineFormfieldItems.findIndex(
-                            (e) => e.key === over.id
-                          );
+                        const oldIndex = triggerPipelineFormFields.findIndex(
+                          (e) => e.key === active.id
+                        );
+                        const newIndex = triggerPipelineFormFields.findIndex(
+                          (e) => e.key === over.id
+                        );
 
                         const newFieldItems = arrayMove(
-                          startOperatorTriggerPipelineFormfieldItems,
+                          triggerPipelineFormFields,
                           oldIndex,
                           newIndex
                         );
 
                         if (newFieldItems.length > 0) {
                           const newNodes = nodes.map((node) => {
-                            if (isStartComponent(node.data)) {
+                            if (isTriggerNode(node)) {
                               const newFields = Object.fromEntries(
-                                Object.entries(
-                                  node.data.start_component.fields
-                                ).map(([key, value]) => {
-                                  const newFieldIndex = newFieldItems.findIndex(
-                                    (e) => e.key === key
-                                  );
+                                Object.entries(node.data.fields).map(
+                                  ([key, value]) => {
+                                    const newFieldIndex =
+                                      newFieldItems.findIndex(
+                                        (e) => e.key === key
+                                      );
 
-                                  if (newFieldIndex !== -1) {
-                                    return [
-                                      key,
-                                      {
-                                        ...value,
-                                        instill_ui_order: newFieldIndex,
-                                      },
-                                    ];
+                                    if (newFieldIndex !== -1) {
+                                      return [
+                                        key,
+                                        {
+                                          ...value,
+                                          instill_ui_order: newFieldIndex,
+                                        },
+                                      ];
+                                    }
+
+                                    return [key, value];
                                   }
-
-                                  return [key, value];
-                                })
+                                )
                               );
 
                               node.data = {
                                 ...node.data,
-                                start_component: {
-                                  fields: newFields,
-                                },
+                                fields: newFields,
                               };
                             }
                             return node;
@@ -477,16 +463,14 @@ export const StartOperatorNode = ({ data }: NodeProps<StartNodeData>) => {
                     }}
                   >
                     <div className="flex flex-col gap-y-4">
-                      {startOperatorTriggerPipelineFormfieldItems.map(
-                        (item) => (
-                          <NodeSortableFieldWrapper
-                            key={item.key}
-                            path={item.key as string}
-                          >
-                            {item}
-                          </NodeSortableFieldWrapper>
-                        )
-                      )}
+                      {triggerPipelineFormFields.map((item) => (
+                        <NodeSortableFieldWrapper
+                          key={item.key}
+                          path={item.key as string}
+                        >
+                          {item}
+                        </NodeSortableFieldWrapper>
+                      ))}
                     </div>
                   </VerticalSortableWrapper>
                 </form>

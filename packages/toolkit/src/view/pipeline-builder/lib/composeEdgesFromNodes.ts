@@ -1,12 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { Edge } from "reactflow";
+import { Edge, Node } from "reactflow";
 
-import type { InstillReference } from "../type";
-import type {
-  InstillJSONSchema,
-  Nullable,
-  PipelineComponent,
-} from "../../../lib";
+import type { InstillReference, NodeData } from "../type";
+import type { InstillJSONSchema, Nullable } from "../../../lib";
 import { getReferencesFromAny } from "./getReferencesFromAny";
 import { getOperatorInputOutputSchema } from "./getOperatorInputOutputSchema";
 import { getConnectorInputOutputSchema } from "./getConnectorInputOutputSchema";
@@ -15,24 +11,27 @@ import {
   getPropertiesFromOpenAPISchema,
 } from "./getPropertiesFromOpenAPISchema";
 import { getConnectorOperatorComponentConfiguration } from "./getConnectorOperatorComponentConfiguration";
+
 import {
-  isConnectorComponent,
-  isEndComponent,
-  isIteratorComponent,
-  isOperatorComponent,
-  isStartComponent,
-} from "./checkComponentType";
+  isConnectorNode,
+  isIteratorNode,
+  isOperatorNode,
+  isResponseNode,
+  isTriggerNode,
+} from "./checkNodeType";
+import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
 
 type ReferenceWithNodeInfo = {
   nodeID: string;
 } & InstillReference;
 
-export function composeEdgesFromComponents(components: PipelineComponent[]) {
+export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
   let edges: Edge[] = [];
-  const references = getConnectedReferences(components);
+
+  const references = getConnectedReferencesFromNodes(nodes);
 
   const { otherNodesAvailableReferences, startNodeAvailableRefernces } =
-    getAvailableReferences(components);
+    getAvailableReferencesFromNodes(nodes);
 
   for (const reference of references) {
     const newEdges = composeEdgeForReference({
@@ -48,57 +47,57 @@ export function composeEdgesFromComponents(components: PipelineComponent[]) {
   return edges;
 }
 
-function getConnectedReferences(
-  components: PipelineComponent[],
+function getConnectedReferencesFromNodes(
+  nodes: Node<NodeData>[],
   overwriteNodeID?: string
 ) {
   let references: ReferenceWithNodeInfo[] = [];
-  for (const component of components) {
-    if (isStartComponent(component)) {
-      const referencesOfThisNode = getReferencesFromAny(
-        component.start_component.fields
-      );
+  for (const node of nodes) {
+    if (isTriggerNode(node)) {
+      const referencesOfThisNode = getReferencesFromAny(node.data.fields);
 
       references = [
         ...references,
         ...referencesOfThisNode.map((reference) => ({
-          nodeID: overwriteNodeID ?? component.id,
+          nodeID: overwriteNodeID ?? node.id,
           ...reference,
         })),
       ];
       continue;
     }
 
-    if (isEndComponent(component)) {
-      const referencesOfThisNode = getReferencesFromAny(
-        component.end_component.fields
-      );
+    if (isResponseNode(node)) {
+      const referencesOfThisNode = getReferencesFromAny(node.data.fields);
 
       references = [
         ...references,
         ...referencesOfThisNode.map((reference) => ({
-          nodeID: component.id,
+          nodeID: node.id,
           ...reference,
         })),
       ];
       continue;
     }
 
-    if (isIteratorComponent(component)) {
+    if (isIteratorNode(node)) {
       const inputReference = getReferencesFromAny(
-        component.iterator_component.input
+        node.data.iterator_component.input
+      );
+
+      const nodesInInterator = createNodesFromPipelineComponents(
+        node.data.iterator_component.components
       );
 
       // All the components inside the iterator will belong to the iterator itself
-      const componentsReferences = getConnectedReferences(
-        component.iterator_component.components,
-        component.id
+      const componentsReferences = getConnectedReferencesFromNodes(
+        nodesInInterator,
+        node.id
       );
 
       references = [
         ...references,
         ...inputReference.map((reference) => ({
-          nodeID: overwriteNodeID ?? component.id,
+          nodeID: overwriteNodeID ?? node.id,
           ...reference,
         })),
         ...componentsReferences,
@@ -107,62 +106,61 @@ function getConnectedReferences(
       continue;
     }
 
-    const configuration = getConnectorOperatorComponentConfiguration(component);
+    if (isConnectorNode(node) || isOperatorNode(node)) {
+      const configuration = getConnectorOperatorComponentConfiguration(
+        node.data
+      );
 
-    const referencesOfThisNode = getReferencesFromAny(configuration);
+      const referencesOfThisNode = getReferencesFromAny(configuration);
 
-    references = [
-      ...references,
-      ...referencesOfThisNode.map((reference) => ({
-        nodeID: overwriteNodeID ?? component.id,
-        ...reference,
-      })),
-    ];
+      references = [
+        ...references,
+        ...referencesOfThisNode.map((reference) => ({
+          nodeID: overwriteNodeID ?? node.id,
+          ...reference,
+        })),
+      ];
+
+      continue;
+    }
   }
 
   return references;
 }
 
-// Hepler function to get all the available reference target, Take start
-// operator for example, something like start.foo or start.bar. And for
+// Hepler function to get all the available reference target, Take trigger
+// node for example, something like trigger.foo or trigger.bar. And for
 // other nodes, something like comp_1.output.foo or comp_1.output.bar
-function getAvailableReferences(components: PipelineComponent[]) {
+function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
   const otherNodesAvailableReferences: string[] = [];
   const startNodeAvailableRefernces: string[] = [];
 
-  for (const component of components) {
-    // 1. Start node is special, we need to get all the metadata keys as available
-    if (isStartComponent(component)) {
-      for (const [key] of Object.entries(component.start_component.fields)) {
-        startNodeAvailableRefernces.push(`${component.id}.${key}`);
+  for (const node of nodes) {
+    // 1. Extract available references for trigger node
+    if (isTriggerNode(node)) {
+      for (const [key] of Object.entries(node.data.fields)) {
+        startNodeAvailableRefernces.push(`trigger.${key}`);
       }
-
-      continue;
     }
 
-    // 2. We can ignore end node, they can not be referenced/connected
-    if (isEndComponent(component)) {
-      continue;
-    }
-
-    // 3. Extract output properties for operator, connector and iterator
+    // 2. Extract output properties for operator, connector and iterator
 
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
-    if (isIteratorComponent(component)) {
+    if (isIteratorNode(node)) {
       outputSchema =
-        component.iterator_component.data_specification?.output ?? null;
+        node.data.iterator_component.data_specification?.output ?? null;
     }
 
-    if (isOperatorComponent(component)) {
+    if (isOperatorNode(node)) {
       const { outputSchema: operatorOutputSchema } =
-        getOperatorInputOutputSchema(component);
+        getOperatorInputOutputSchema(node.data);
       outputSchema = operatorOutputSchema;
     }
 
-    if (isConnectorComponent(component)) {
+    if (isConnectorNode(node)) {
       const { outputSchema: connectorOutputSchema } =
-        getConnectorInputOutputSchema(component);
+        getConnectorInputOutputSchema(node.data);
       outputSchema = connectorOutputSchema;
     }
 
@@ -177,7 +175,7 @@ function getAvailableReferences(components: PipelineComponent[]) {
 
     for (const outputProperty of outputProperties) {
       otherNodesAvailableReferences.push(
-        `${component.id}.output.${
+        `${node.id}.output.${
           outputProperty.path?.includes(".")
             ? outputProperty.path?.split(".").pop()
             : outputProperty.path
@@ -186,7 +184,7 @@ function getAvailableReferences(components: PipelineComponent[]) {
     }
 
     // User can also reference the whole component's output object
-    otherNodesAvailableReferences.push(`${component.id}.output`);
+    otherNodesAvailableReferences.push(`${node.id}.output`);
   }
 
   return {
@@ -209,9 +207,11 @@ function composeEdgeForReference({
 }) {
   const newEdges: Edge[] = [];
 
-  // check whether the referenced target is available for start operator
+  // check whether the referenced target is available for trigger node
   if (
-    reference.referenceValue.withoutCurlyBraces.split(".")[0].includes("start")
+    reference.referenceValue.withoutCurlyBraces
+      .split(".")[0]
+      .includes("trigger")
   ) {
     const referenceIsAvailable = startNodeAvailableRefernces.some(
       (availableReference) =>
@@ -224,13 +224,13 @@ function composeEdgeForReference({
     // check whether we already have an edge for this reference
     const hasNoEdgeForThisReference =
       currentEdges.find(
-        (edge) => edge.source === "start" && edge.target === reference.nodeID
+        (edge) => edge.source === "trigger" && edge.target === reference.nodeID
       ) === undefined;
 
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
       newEdges.push({
         id: uuidv4(),
-        source: "start",
+        source: "trigger",
         target: reference.nodeID,
         type: "customEdge",
       });

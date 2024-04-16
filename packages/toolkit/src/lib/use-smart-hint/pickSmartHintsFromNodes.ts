@@ -3,17 +3,19 @@ import {
   IteratorNodeData,
   NodeData,
   getConnectorInputOutputSchema,
+  isConnectorNode,
+  isIteratorNode,
+  isOperatorNode,
+  isTriggerNode,
 } from "../../view";
 import {
   isConnectorComponent,
-  isIteratorComponent,
   isOperatorComponent,
-  isStartComponent,
 } from "../../view/pipeline-builder/lib/checkComponentType";
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
 import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
-import { transformStartOperatorFieldsToSmartHints } from "./transformStartOperatorFieldsToSmartHints";
+import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
 import { getOperatorInputOutputSchema } from "../../view/pipeline-builder/lib/getOperatorInputOutputSchema";
 import { PipelineIteratorComponent } from "../vdp-sdk";
 
@@ -38,9 +40,9 @@ export function pickSmartHintsFromNodes({
       : nodes;
 
   for (const node of targetNodes) {
-    if (isStartComponent(node.data)) {
-      const hints = transformStartOperatorFieldsToSmartHints(
-        node.data.start_component.fields
+    if (isTriggerNode(node)) {
+      const hints = transformPipelineTriggerRequestFieldsToSmartHints(
+        node.data.fields
       );
 
       smartHints = [...smartHints, ...hints];
@@ -48,7 +50,7 @@ export function pickSmartHintsFromNodes({
       continue;
     }
 
-    if (isConnectorComponent(node.data)) {
+    if (isConnectorNode(node)) {
       const { outputSchema } = getConnectorInputOutputSchema(node.data);
 
       if (outputSchema) {
@@ -76,7 +78,7 @@ export function pickSmartHintsFromNodes({
       continue;
     }
 
-    if (isOperatorComponent(node.data)) {
+    if (isOperatorNode(node)) {
       const { outputSchema } = getOperatorInputOutputSchema(node.data);
 
       if (outputSchema) {
@@ -104,7 +106,7 @@ export function pickSmartHintsFromNodes({
       continue;
     }
 
-    if (isIteratorComponent(node.data)) {
+    if (isIteratorNode(node)) {
       // Fragile Point:
       // Because the iterator output's generated depends on the user action
       // The data_specification.output may not be ready due to user haven't
@@ -215,8 +217,7 @@ export function pickSmartHintsFromNodes({
   // Add the iterator element into the hints
   if (isEditingIterator && includeEditorElement && editingIteratorID) {
     const targetIteratorNode = tempSavedNodesForEditingIteratorFlow?.find(
-      (node) =>
-        node.data.id === editingIteratorID && isIteratorComponent(node.data)
+      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetIteratorNode) {

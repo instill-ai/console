@@ -1,23 +1,21 @@
 import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
-import { composeEdgesFromComponents, recursiveHelpers } from ".";
+import { recursiveHelpers } from ".";
 import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
 import {
   isConnectorComponent,
-  isEndComponent,
   isIteratorComponent,
   isOperatorComponent,
-  isStartComponent,
 } from "./checkComponentType";
 
-export type CreateInitialGraphDataOptions = {
+export type CreateNodesFromPipelineComponentsOptions = {
   metadata?: GeneralRecord;
 };
 
-export function createInitialGraphData(
+export function createNodesFromPipelineComponents(
   components: PipelineComponent[],
-  options?: CreateInitialGraphDataOptions
+  options?: CreateNodesFromPipelineComponentsOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
@@ -38,48 +36,6 @@ export function createInitialGraphData(
     // The reason we need to transform all the value back to string is due to some
     // constraint of the auto-form, most of the auto-form field value is string
     // for example, number field. (But boolean field is using boolean)
-
-    if (isStartComponent(component)) {
-      nodes.push({
-        id: component.id,
-        type: "startNode",
-        data: {
-          id: "start",
-          start_component: {
-            fields: recursiveHelpers.parseNumberToString(
-              component.start_component.fields
-            ),
-          },
-          note: componentMetadata ? componentMetadata.note : null,
-          metadata: component.metadata,
-        },
-        position: componentMetadata
-          ? { x: componentMetadata.x, y: componentMetadata.y }
-          : { x: 0, y: 0 },
-      });
-      continue;
-    }
-
-    if (isEndComponent(component)) {
-      nodes.push({
-        id: component.id,
-        type: "endNode",
-        data: {
-          id: "end",
-          end_component: {
-            fields: recursiveHelpers.parseNumberToString(
-              component.end_component.fields
-            ),
-          },
-          metadata: component.metadata,
-          note: componentMetadata ? componentMetadata.note : null,
-        },
-        position: componentMetadata
-          ? { x: componentMetadata.x, y: componentMetadata.y }
-          : { x: 0, y: 0 },
-      });
-      continue;
-    }
 
     if (isIteratorComponent(component)) {
       nodes.push({
@@ -148,10 +104,5 @@ export function createInitialGraphData(
     }
   }
 
-  const edges = composeEdgesFromComponents(nodes.map((node) => node.data));
-
-  return {
-    nodes,
-    edges,
-  };
+  return nodes;
 }

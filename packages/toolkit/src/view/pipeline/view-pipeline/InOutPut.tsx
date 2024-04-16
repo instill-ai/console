@@ -7,8 +7,6 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineEndComponent,
-  PipelineStartComponent,
   TriggerUserPipelineResponse,
   sendAmplitudeData,
   toastInstillError,
@@ -16,7 +14,7 @@ import {
   useAppEntity,
   useInstillStore,
   useShallow,
-  useStartOperatorTriggerPipelineForm,
+  usePipelineTriggerRequestForm,
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
@@ -24,6 +22,7 @@ import { Button, Form, useToast } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { RunButton } from "./RunButton";
+import { isTriggerByRequest } from "../../pipeline-builder/lib/isTriggerByRequest";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -63,27 +62,70 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     accessToken,
   });
 
-  const startComponent = React.useMemo(() => {
-    if (!pipeline.isSuccess) return null;
+  const triggerFields = React.useMemo(() => {
+    if (
+      pipeline.isSuccess &&
+      isTriggerByRequest(pipeline.data.recipe.trigger)
+    ) {
+      if (!currentVersion || releases.length === 0) {
+        return (
+          pipeline.data.recipe.trigger.trigger_by_request.request_fields ?? null
+        );
+      }
 
-    if (!currentVersion || releases.length === 0) {
-      return (pipeline.data?.recipe.components.find((c) => c.id === "start") ??
-        null) as Nullable<PipelineStartComponent>;
+      const pipelineVersion = releases.find(
+        (release) =>
+          release.id === currentVersion || release.alias === currentVersion
+      );
+
+      if (
+        pipelineVersion &&
+        isTriggerByRequest(pipelineVersion.recipe.trigger)
+      ) {
+        return (
+          pipelineVersion?.recipe.trigger.trigger_by_request.request_fields ??
+          null
+        );
+      }
     }
 
-    const pipelineVersion = releases.find(
-      (release) =>
-        release.id === currentVersion || release.alias === currentVersion
-    );
-    return (pipelineVersion?.recipe.components.find((c) => c.id === "start") ??
-      null) as Nullable<PipelineStartComponent>;
+    return null;
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
-  const { fieldItems, form, Schema } = useStartOperatorTriggerPipelineForm({
+  const responseFields = React.useMemo(() => {
+    if (
+      pipeline.isSuccess &&
+      isTriggerByRequest(pipeline.data.recipe.trigger)
+    ) {
+      if (!currentVersion || releases.length === 0) {
+        return (
+          pipeline.data.recipe.trigger.trigger_by_request.response_fields ??
+          null
+        );
+      }
+
+      const pipelineVersion = releases.find(
+        (release) =>
+          release.id === currentVersion || release.alias === currentVersion
+      );
+
+      if (
+        pipelineVersion &&
+        isTriggerByRequest(pipelineVersion.recipe.trigger)
+      ) {
+        return (
+          pipelineVersion?.recipe.trigger.trigger_by_request.response_fields ??
+          null
+        );
+      }
+    }
+
+    return null;
+  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
+
+  const { fieldItems, form, Schema } = usePipelineTriggerRequestForm({
     mode: "demo",
-    fields: startComponent
-      ? startComponent.start_component?.fields ?? null
-      : null,
+    fields: triggerFields,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,
     disabledFieldControls: true,
@@ -99,23 +141,17 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
     );
 
-    const startOperator = pipeline.data.recipe.components.find(
-      (component) => component.id === "start"
-    ) as PipelineStartComponent | undefined;
-
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
 
     const semiStructuredObjectKeys: string[] = [];
 
-    if (startOperator) {
-      Object.entries(startOperator.start_component.fields).forEach(
-        ([key, value]) => {
-          if (value.instill_format === "semi-structured/json") {
-            semiStructuredObjectKeys.push(key);
-          }
+    if (triggerFields) {
+      Object.entries(triggerFields).forEach(([key, value]) => {
+        if (value.instill_format === "semi-structured/json") {
+          semiStructuredObjectKeys.push(key);
         }
-      );
+      });
     }
 
     const parsedStructuredData: GeneralRecord = input;
@@ -164,40 +200,24 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   }
 
   const inputIsNotDefined = React.useMemo(() => {
-    if (!pipeline.isSuccess) return false;
+    if (!triggerFields) return false;
 
-    const startComponent = pipeline.data.recipe.components.find(
-      (e) => e.id === "start"
-    ) as PipelineStartComponent | undefined;
-
-    if (
-      startComponent &&
-      startComponent.start_component?.fields &&
-      Object.keys(startComponent.start_component?.fields).length > 0
-    ) {
+    if (triggerFields && Object.keys(triggerFields).length > 0) {
       return false;
     }
 
     return true;
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [triggerFields]);
 
   const outputIsNotDefined = React.useMemo(() => {
-    if (!pipeline.isSuccess) return true;
+    if (!responseFields) return true;
 
-    const endComponent = pipeline.data.recipe.components.find(
-      (e) => e.id === "end"
-    ) as PipelineEndComponent | undefined;
-
-    if (
-      endComponent &&
-      endComponent.end_component?.fields &&
-      Object.keys(endComponent.end_component?.fields).length > 0
-    ) {
+    if (responseFields && Object.keys(responseFields).length > 0) {
       return false;
     }
 
     return true;
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [responseFields]);
 
   return (
     <div className="flex flex-col">

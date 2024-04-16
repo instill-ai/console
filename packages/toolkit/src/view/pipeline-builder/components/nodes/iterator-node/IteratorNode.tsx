@@ -9,8 +9,9 @@ import { ConnectorOperatorControlPanel } from "../control-panel";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import {
   checkIsValidPosition,
+  composeEdgesFromNodes,
   createGraphLayout,
-  createInitialGraphData,
+  createNodesFromPipelineComponents,
 } from "../../../lib";
 import { IteratorComponentLabel } from "./IteratorComponentLable";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
@@ -56,26 +57,28 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
           data.metadata ?? null
         )
       ) {
-        const initialGraphData = createInitialGraphData(
+        const nodes = createNodesFromPipelineComponents(
           data.iterator_component.components,
           {
             metadata: data.metadata,
           }
         );
+        const edges = composeEdgesFromNodes(nodes);
 
-        updateNodes(() => initialGraphData.nodes);
-        updateEdges(() => initialGraphData.edges);
+        updateNodes(() => nodes);
+        updateEdges(() => edges);
 
         return;
       } else {
-        const initialGraphData = createInitialGraphData(
+        const nodes = createNodesFromPipelineComponents(
           data.iterator_component.components
         );
+        const edges = composeEdgesFromNodes(nodes);
 
-        updateNodes(() => initialGraphData.nodes);
-        updateEdges(() => initialGraphData.edges);
+        updateNodes(() => nodes);
+        updateEdges(() => edges);
 
-        createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
+        createGraphLayout(nodes, edges)
           .then((graphData) => {
             updateNodes(() => graphData.nodes);
             updateEdges(() => graphData.edges);

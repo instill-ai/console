@@ -8,7 +8,8 @@ import { useShallow } from "zustand/react/shallow";
 import { ConnectorNodeData } from "../../../type";
 import {
   getConnectorInputOutputSchema,
-  composeEdgesFromComponents,
+  composeEdgesFromNodes,
+  isConnectorNode,
 } from "../../../lib";
 import {
   GeneralRecord,
@@ -178,7 +179,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               connectorDefinition: data.connector_component.definition ?? null,
               onCreated: (connector) => {
                 const newNodes = nodes.map((node) => {
-                  if (isConnectorComponent(node.data) && node.id === id) {
+                  if (isConnectorNode(node) && node.id === id) {
                     node.data = {
                       ...node.data,
                       connector_component: {
@@ -194,9 +195,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                   }
                   return node;
                 });
-                const newEdges = composeEdgesFromComponents(
-                  newNodes.map((node) => node.data)
-                );
+                const newEdges = composeEdgesFromNodes(newNodes);
                 updateNodes(() => newNodes);
                 updateEdges(() => newEdges);
                 updatePipelineRecipeIsDirty(() => true);
@@ -211,7 +210,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               onSelectedExistingResource: (connector) => {
                 updateNodes((prev) => {
                   return prev.map((node) => {
-                    if (isConnectorComponent(node.data) && node.id === id) {
+                    if (isConnectorNode(node) && node.id === id) {
                       node.data = {
                         ...node.data,
                         connector_component: {

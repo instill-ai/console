@@ -3,9 +3,10 @@
 import * as React from "react";
 import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";
-import { constructPipelineRecipe } from "../lib";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../lib/composeCompleteNodesUnderEditingIteratorMode";
+import { extractComponentFromNodes } from "../lib/extractComponentFromNodes";
+import { constructPipelineRecipeFromNodes } from "../lib";
 
 export type PipelineToolkitDialogProps = {
   snippet: string;
@@ -40,15 +41,16 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
     let targetNodes = nodes;
 
     if (isEditingIterator && editingIteratorID) {
+      const iteratorComponents = extractComponentFromNodes(nodes);
       targetNodes = composeCompleteNodesUnderEditingIteratorMode({
         editingIteratorID,
-        iteratorComponents: nodes.map((node) => node.data),
+        iteratorComponents,
         allNodes: tempSavedNodesForEditingIteratorFlow,
       });
     }
 
     return JSON.stringify(
-      constructPipelineRecipe(targetNodes.map((node) => node.data)),
+      constructPipelineRecipeFromNodes(targetNodes),
       null,
       2
     );

@@ -36,6 +36,11 @@ export function useGuardPipelineBuilderUnsavedChangesNavigation() {
         router.push(url);
       }
     },
-    [pipelineRecipeIsDirty, updateWarnUnsavdChangesDialogState, router]
+    [
+      pipelineRecipeIsDirty,
+      updateWarnUnsavdChangesDialogState,
+      router,
+      pathname,
+    ]
   );
 }
