@@ -4,6 +4,7 @@ import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {
   const recipe: PipelineRecipe = {
+    trigger: {},
     components: [
       {
         id: "ai_0",
@@ -37,6 +38,7 @@ test("should check position is not valid", () => {
 
 test("should check position is valid", () => {
   const recipe: PipelineRecipe = {
+    trigger: {},
     components: [
       {
         id: "ai_0",
@@ -70,6 +72,7 @@ test("should check position is valid", () => {
 
 test("should check position is not valid even there is one missing data", () => {
   const recipe: PipelineRecipe = {
+    trigger: {},
     components: [
       {
         id: "ai_0",

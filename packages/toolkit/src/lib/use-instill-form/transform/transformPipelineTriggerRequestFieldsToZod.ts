@@ -2,10 +2,10 @@
 
 import * as z from "zod";
 import { Nullable } from "../../type";
-import { PipelineStartComponentFields } from "../../vdp-sdk";
+import { PipelineTriggerRequestFields } from "../../vdp-sdk";
 
-export function transformStartOperatorFieldsToZod(
-  fields: Nullable<PipelineStartComponentFields>
+export function transformPipelineTriggerRequestFieldsToZod(
+  fields: Nullable<PipelineTriggerRequestFields>
 ) {
   let zodSchema: z.ZodObject<any, any, any> = z.object({});
 

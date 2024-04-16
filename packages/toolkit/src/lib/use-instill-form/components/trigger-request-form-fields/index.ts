@@ -15,7 +15,7 @@ import { TextsField } from "./TextsField";
 import { VideoField } from "./VideoField";
 import { VideosField } from "./VideosField";
 
-export const StartOperatorFreeFormFields = {
+export const TriggerRequestFormFields = {
   AudioField,
   AudiosField,
   BooleanField,

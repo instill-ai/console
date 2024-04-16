@@ -11,10 +11,10 @@ import {
   useShallow,
 } from "../../../../../lib";
 import { InOutputOption } from "../IteratorEditor";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
 import { IterateElmentHint } from "./IterateElementHint";
 import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
@@ -61,8 +61,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
   React.useEffect(() => {
     if (editingIteratorID && tempSavedNodesForEditingIteratorFlow) {
       const targetIteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-        (node) =>
-          node.data.id === editingIteratorID && isIteratorComponent(node.data)
+        (node) => node.data.id === editingIteratorID && isIteratorNode(node)
       ) as Node<IteratorNodeData> | undefined;
 
       const inputOption = availableInputOptions.find(
@@ -105,7 +104,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
                 nodes.map((node) => {
                   if (
                     node.data.id === editingIteratorID &&
-                    isIteratorComponent(node.data)
+                    isIteratorNode(node)
                   ) {
                     return {
                       ...node,

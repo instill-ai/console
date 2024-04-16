@@ -5,12 +5,12 @@ import { Button, Icons, Popover, Tooltip } from "@instill-ai/design-system";
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 
 const NodeDropdownMenuRoot = ({
-  componentTypeName,
+  nodeTypeName,
   children,
   isOpen,
   setIsOpen,
 }: {
-  componentTypeName: Nullable<string>;
+  nodeTypeName: Nullable<string>;
   children: React.ReactNode;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -66,9 +66,9 @@ const NodeDropdownMenuRoot = ({
         className="flex w-[200px] flex-col !rounded-sm !border !border-semantic-bg-line !p-0"
       >
         <div className="flex h-6 gap-x-3 rounded-t-sm border-b border-semantic-bg-line bg-semantic-bg-base-bg px-2">
-          {componentTypeName ? (
+          {nodeTypeName ? (
             <p className="my-auto text-[10px] font-semibold text-semantic-fg-disabled">
-              {componentTypeName}
+              {nodeTypeName}
             </p>
           ) : null}
         </div>

@@ -1,7 +1,7 @@
 import { Node } from "reactflow";
 import { PipelineComponent } from "../../../lib";
-import { isIteratorComponent } from "./checkComponentType";
 import { NodeData } from "../type";
+import { isIteratorNode } from "./checkNodeType";
 
 export function composeCompleteNodesUnderEditingIteratorMode({
   editingIteratorID,
@@ -13,7 +13,7 @@ export function composeCompleteNodesUnderEditingIteratorMode({
   allNodes: Node<NodeData>[];
 }) {
   return allNodes.map((node) => {
-    if (node.id === editingIteratorID && isIteratorComponent(node.data)) {
+    if (node.id === editingIteratorID && isIteratorNode(node)) {
       return {
         ...node,
         data: {

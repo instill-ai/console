@@ -26,7 +26,7 @@ export const Run = ({
     <Button
       size="md"
       variant="tertiaryColour"
-      form="start-operator-trigger-pipeline-form"
+      form="trigger-node-trigger-pipeline-form"
       disabled={pipelineRecipeIsDirty || isEditingIterator}
       className="!h-8 !items-center gap-x-2"
       onClick={async (e) => {

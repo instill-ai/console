@@ -6,16 +6,16 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  PickStartOperatorFreeFormFieldItemsProps,
-  pickStartOperatorFreeFormFieldItems,
+  PickPipelineTriggerRequestFormFieldsProps,
+  pickPipelineTriggerRequestFormFields,
 } from "./pick";
 import {
-  transformStartOperatorFieldsToSuperRefineRules,
-  transformStartOperatorFieldsToZod,
+  transformPipelineTriggerRequestFieldsToSuperRefineRules,
+  transformPipelineTriggerRequestFieldsToZod,
 } from "./transform";
 
 export type UseStartOperatorTriggerPipelineFormProps = Pick<
-  PickStartOperatorFreeFormFieldItemsProps,
+  PickPipelineTriggerRequestFormFieldsProps,
   | "mode"
   | "onDeleteField"
   | "onEditField"
@@ -26,7 +26,7 @@ export type UseStartOperatorTriggerPipelineFormProps = Pick<
   | "fields"
 >;
 
-export function useStartOperatorTriggerPipelineForm({
+export function usePipelineTriggerRequestForm({
   mode,
   fields,
   onDeleteField,
@@ -41,7 +41,7 @@ export function useStartOperatorTriggerPipelineForm({
       return [];
     }
 
-    return transformStartOperatorFieldsToSuperRefineRules(fields);
+    return transformPipelineTriggerRequestFieldsToSuperRefineRules(fields);
   }, [fields]);
 
   const Schema = React.useMemo(() => {
@@ -49,7 +49,7 @@ export function useStartOperatorTriggerPipelineForm({
       return z.object({}) as z.ZodObject<any, any, any>;
     }
 
-    return transformStartOperatorFieldsToZod(fields);
+    return transformPipelineTriggerRequestFieldsToZod(fields);
   }, [fields]).superRefine((state, ctx) => {
     for (const rule of superRefineRules) {
       const result = rule.validator(state[rule.key]);
@@ -73,7 +73,7 @@ export function useStartOperatorTriggerPipelineForm({
       return [];
     }
 
-    return pickStartOperatorFreeFormFieldItems({
+    return pickPipelineTriggerRequestFormFields({
       mode,
       fields,
       form,

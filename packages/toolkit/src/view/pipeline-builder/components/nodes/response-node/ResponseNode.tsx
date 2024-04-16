@@ -8,26 +8,26 @@ import { Button, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
 
-import { EndNodeData } from "../../../type";
-import { composeEdgesFromComponents } from "../../../lib";
 import {
   InstillStore,
   Nullable,
-  PipelineEndComponentField,
+  PipelineTriggerResponseField,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
-import { StartEndOperatorControlPanel } from "../control-panel";
 import { ComponentOutputs } from "../../ComponentOutputs";
 import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
-import {
-  EndOperatorFreeFormSchema,
-  EndOperatorNodeFreeForm,
-} from "./EndOperatorNodeFreeForm";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isEndComponent } from "../../../lib/checkComponentType";
+import { ResponseNodeData } from "../../../type";
+import { composeEdgesFromNodes, isResponseNode } from "../../../lib";
+import {
+  ResponseNodeFreeForm,
+  ResponseNodeFreeFormSchema,
+} from "./ResponseNodeFreeForm";
+import { TriggerResponseNodeControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -48,11 +48,12 @@ export type EndOperatorNodeFieldItem = {
   title: string;
 };
 
-export type PipelineEndComponentFieldSortedItem = PipelineEndComponentField & {
-  key: string;
-};
+export type PipelineResponseNodeFieldSortedItem =
+  PipelineTriggerResponseField & {
+    key: string;
+  };
 
-export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
+export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
   const [currentEditingFieldKey, setCurrentEditingFieldKey] =
@@ -78,16 +79,16 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
 
-  const form = useForm<z.infer<typeof EndOperatorFreeFormSchema>>({
-    resolver: zodResolver(EndOperatorFreeFormSchema),
+  const form = useForm<z.infer<typeof ResponseNodeFreeFormSchema>>({
+    resolver: zodResolver(ResponseNodeFreeFormSchema),
     mode: "onChange",
     reValidateMode: "onChange",
   });
 
   const onCreateFreeFormField = (
-    formData: z.infer<typeof EndOperatorFreeFormSchema>
+    formData: z.infer<typeof ResponseNodeFreeFormSchema>
   ) => {
-    if (Object.keys(data.end_component.fields).includes(formData.key)) {
+    if (Object.keys(data.fields).includes(formData.key)) {
       if (isEditing) {
         if (formData.key !== currentEditingFieldKey) {
           form.setError("key", {
@@ -106,30 +107,25 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
     }
 
     const newNodes = nodes.map((node) => {
-      if (isEndComponent(node.data)) {
+      if (isResponseNode(node)) {
         if (currentEditingFieldKey) {
-          delete node.data.end_component.fields[currentEditingFieldKey];
+          delete node.data.fields[currentEditingFieldKey];
         }
 
         node.data = {
           ...node.data,
-          end_component: {
-            ...node.data.end_component,
-            fields: {
-              ...node.data.end_component.fields,
-              [formData.key]: {
-                title: formData.title,
-                value: formData.value,
-              },
+          fields: {
+            ...node.data.fields,
+            [formData.key]: {
+              title: formData.title,
+              value: formData.value,
             },
           },
         };
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -156,8 +152,8 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
 
   function onDeleteField(key: string) {
     const newNodes = nodes.map((node) => {
-      if (isEndComponent(node.data)) {
-        delete node.data.end_component.fields[key];
+      if (isResponseNode(node)) {
+        delete node.data.fields[key];
 
         node.data = {
           ...node.data,
@@ -165,9 +161,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -175,8 +169,8 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
 
   function onEditField(key: string) {
     form.reset({
-      title: data.end_component.fields[key].title,
-      value: data.end_component.fields[key].value,
+      title: data.fields[key].title,
+      value: data.fields[key].value,
       key: key,
     });
     setIsEditing(true);
@@ -184,11 +178,11 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
   }
 
   const [sortedItems, setSortedItems] = React.useState<
-    PipelineEndComponentFieldSortedItem[]
+    PipelineResponseNodeFieldSortedItem[]
   >([]);
 
   React.useEffect(() => {
-    const endOperatorInputItems = Object.entries(data.end_component.fields)
+    const endOperatorInputItems = Object.entries(data.fields)
       .map(([key, value]) => {
         return {
           key,
@@ -261,19 +255,18 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
               {isViewResultMode ? "Edit" : "See Result"}
             </button>
           )}
-          <StartEndOperatorControlPanel
-            type="end"
+          <TriggerResponseNodeControlPanel
+            type="response"
             nodeIsCollapsed={nodeIsCollapsed}
             setNodeIsCollapsed={setNodeIsCollapsed}
             handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
             noteIsOpen={noteIsOpen}
-            componentTypeName="End"
           />
         </div>
       </NodeHead>
 
       {nodeIsCollapsed ? null : isEditing || isCreating ? (
-        <EndOperatorNodeFreeForm
+        <ResponseNodeFreeForm
           form={form}
           onCreateFreeFormField={onCreateFreeFormField}
           onCancel={onCancel}
@@ -307,7 +300,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
 
                 if (newSortedItems.length > 0) {
                   const newNodes = nodes.map((node) => {
-                    if (isEndComponent(node.data)) {
+                    if (isResponseNode(node)) {
                       const newFields = Object.fromEntries(
                         newSortedItems.map((item, index) => [
                           item.key,
@@ -321,9 +314,7 @@ export const EndOperatorNode = ({ data }: NodeProps<EndNodeData>) => {
 
                       node.data = {
                         ...node.data,
-                        end_component: {
-                          fields: newFields,
-                        },
+                        fields: newFields,
                       };
                     }
                     return node;

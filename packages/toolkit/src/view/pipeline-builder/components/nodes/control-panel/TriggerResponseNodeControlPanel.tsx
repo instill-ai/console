@@ -7,22 +7,20 @@ import { ControlPanel } from "./ControlPanel";
 import { useInstillStore } from "../../../../../lib";
 import { NodeDropdownMenu } from "../common";
 
-export function StartEndOperatorControlPanel({
+export function TriggerResponseNodeControlPanel({
   type,
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,
   noteIsOpen,
-  componentTypeName,
   disabledReferenceHint,
   setDisabledReferenceHint,
 }: {
-  type: "start" | "end";
+  type: "trigger" | "response";
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
   noteIsOpen: boolean;
-  componentTypeName: "End" | "Start";
   disabledReferenceHint?: boolean;
   setDisabledReferenceHint?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -40,7 +38,7 @@ export function StartEndOperatorControlPanel({
         }}
       />
 
-      {type === "start" ? (
+      {type === "trigger" ? (
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
@@ -83,7 +81,7 @@ export function StartEndOperatorControlPanel({
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}
-        componentTypeName={componentTypeName}
+        nodeTypeName={type}
       >
         <NodeDropdownMenu.Item
           onClick={(e) => {

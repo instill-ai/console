@@ -17,8 +17,8 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, useToast } from "@instill-ai/design-system";
 import { Description } from "./Description";
-import { constructPipelineRecipe } from "../../lib";
 import { LoadingSpin } from "../../../../components";
+import { constructPipelineRecipeFromNodes } from "../../lib";
 
 export const ReleasePipelineFormSchema = z.object({
   id: z.string(),
@@ -58,7 +58,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
       const payload: CreateUserPipelineReleasePayload = {
         id: data.id,
         description: data.description ?? undefined,
-        recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
+        recipe: constructPipelineRecipeFromNodes(nodes),
       };
 
       try {

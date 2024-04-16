@@ -1,21 +1,12 @@
 import { PipelineComponent } from "../../../lib";
-import {
-  isEndComponent,
-  isIteratorComponent,
-  isOperatorComponent,
-  isStartComponent,
-} from "./checkComponentType";
+import { isIteratorComponent, isOperatorComponent } from "./checkComponentType";
 
 export function removeSensitiveDataInPipelineRecipe(
   components: PipelineComponent[],
   removeConnectorName = false
 ): PipelineComponent[] {
   return components.map((component) => {
-    if (
-      isStartComponent(component) ||
-      isEndComponent(component) ||
-      isOperatorComponent(component)
-    ) {
+    if (isOperatorComponent(component)) {
       return component;
     }
 

@@ -1,9 +1,9 @@
 import { test, expect } from "vitest";
-import { PipelineStartComponentFields } from "../vdp-sdk";
-import { transformStartOperatorFieldsToSmartHints } from "./transformStartOperatorFieldsToSmartHints";
+import { PipelineTriggerRequestFields } from "../vdp-sdk";
+import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
 
-test("should transform start operator metadata to smart hints", () => {
-  const fields: PipelineStartComponentFields = {
+test("should transform pipeline trigger request fields to smart hints", () => {
+  const fields: PipelineTriggerRequestFields = {
     text: {
       instill_format: "string",
       title: "Foo",
@@ -14,7 +14,7 @@ test("should transform start operator metadata to smart hints", () => {
     },
   };
 
-  const hints = transformStartOperatorFieldsToSmartHints(fields);
+  const hints = transformPipelineTriggerRequestFieldsToSmartHints(fields);
 
   expect(hints).toStrictEqual([
     {
@@ -33,12 +33,12 @@ test("should transform start operator metadata to smart hints", () => {
 });
 
 test("should transform start operator metadata to smart hints with empty metadata", () => {
-  const hints = transformStartOperatorFieldsToSmartHints({});
+  const hints = transformPipelineTriggerRequestFieldsToSmartHints({});
   expect(hints).toStrictEqual([]);
 });
 
 test("should transform array metadata to smart hints", () => {
-  const fields: PipelineStartComponentFields = {
+  const fields: PipelineTriggerRequestFields = {
     text: {
       instill_format: "array:string",
       title: "Text",
@@ -49,7 +49,7 @@ test("should transform array metadata to smart hints", () => {
     },
   };
 
-  const hints = transformStartOperatorFieldsToSmartHints(fields);
+  const hints = transformPipelineTriggerRequestFieldsToSmartHints(fields);
 
   expect(hints).toStrictEqual([
     {

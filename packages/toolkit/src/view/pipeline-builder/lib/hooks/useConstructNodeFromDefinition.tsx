@@ -13,6 +13,7 @@ import {
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 import { generateUniqueIndex } from "../generateUniqueIndex";
 import { getAllComponentID } from "../getAllComponentID";
+import { extractComponentFromNodes } from "../extractComponentFromNodes";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -93,10 +94,11 @@ export function useConstructNodeFromDefinition({
       // iterator, so we need to group the two set of nodes together. Under the
       // editing iterator mode, nodes will be the nodes in the iterator, and
       // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
+      const components = extractComponentFromNodes(nodes);
       const nodeIndex = generateUniqueIndex(
         isEditingIterator
           ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-          : getAllComponentID(nodes.map((node) => node.data)),
+          : getAllComponentID(components),
         nodePrefix
       );
 

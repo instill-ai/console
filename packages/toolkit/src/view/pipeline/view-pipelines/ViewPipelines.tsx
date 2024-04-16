@@ -68,12 +68,12 @@ export const ViewPipelines = ({
     visibility: selectedVisibilityOption ?? null,
   });
 
-  const userPipelines = useUserPipelines({
+  const userPublicPipelines = useUserPipelines({
     userName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
     accessToken,
     filter: null,
-    visibility: null,
+    visibility: "VISIBILITY_PUBLIC",
 
     // Use these parameters to speed up request
     disabledViewFull: true,
@@ -109,7 +109,7 @@ export const ViewPipelines = ({
           totalPipelines={
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
-          totalPublicPipelines={null}
+          totalPublicPipelines={userPublicPipelines.data?.length ?? null}
           organizations={organizations}
         />
       </div>

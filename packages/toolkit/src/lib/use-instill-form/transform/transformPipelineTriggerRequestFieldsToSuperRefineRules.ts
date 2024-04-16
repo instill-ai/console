@@ -1,8 +1,8 @@
 import { Nullable, SuperRefineRule } from "../../type";
-import { PipelineStartComponentFields } from "../../vdp-sdk";
+import { PipelineTriggerRequestFields } from "../../vdp-sdk";
 
-export function transformStartOperatorFieldsToSuperRefineRules(
-  fields: Nullable<PipelineStartComponentFields>
+export function transformPipelineTriggerRequestFieldsToSuperRefineRules(
+  fields: Nullable<PipelineTriggerRequestFields>
 ) {
   const rules: SuperRefineRule[] = [];
 

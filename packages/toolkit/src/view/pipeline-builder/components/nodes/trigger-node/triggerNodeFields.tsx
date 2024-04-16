@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-import { PipelineStartComponentField } from "../../../../../lib";
+import { PipelineTriggerRequestField } from "../../../../../lib";
 
-export type StartOperatorInputField = {
+export type TriggerNodeInputField = {
   title: string;
   instill_format: string;
   icon: React.ReactNode;
@@ -12,10 +12,10 @@ export type StartOperatorInputField = {
   getFieldConfiguration: (
     title: string,
     description?: string
-  ) => PipelineStartComponentField;
+  ) => PipelineTriggerRequestField;
 };
 
-export const StartComponentFields: Record<string, StartOperatorInputField> = {
+export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   string: {
     title: "Short Text",
     instill_format: "string",

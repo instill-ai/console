@@ -3,9 +3,9 @@
 import * as React from "react";
 import { Input } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
 import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   tempSavedNodesForEditingIteratorFlow:
@@ -26,8 +26,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
 
   const outputValue = React.useMemo(() => {
     const iteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-      (node) =>
-        node.data.id === editingIteratorID && isIteratorComponent(node.data)
+      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (iteratorNode) {
@@ -43,10 +42,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
         onChange={(e) => {
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (
-                node.data.id === editingIteratorID &&
-                isIteratorComponent(node.data)
-              ) {
+              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {

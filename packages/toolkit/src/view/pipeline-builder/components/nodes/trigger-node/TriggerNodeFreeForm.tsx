@@ -15,9 +15,9 @@ import { Nullable } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
 import { validateInstillID } from "../../../../../server";
-import { StartComponentTypeSelect } from "./StartComponentTypeSelect";
+import { TriggerNodeTypeSelect } from "./TriggerNodeTypeSelect";
 
-export const StartOperatorFreeFormSchema = z
+export const TriggerNodeFreeFormSchema = z
   .object({
     title: z
       .string()
@@ -40,7 +40,7 @@ export const StartOperatorFreeFormSchema = z
     }
   });
 
-export const StartOperatorNodeFreeForm = ({
+export const TriggerNodeFreeForm = ({
   form,
   selectedType,
   setSelectedType,
@@ -49,7 +49,7 @@ export const StartOperatorNodeFreeForm = ({
   isEditing,
 }: {
   form: UseFormReturn<
-    z.infer<typeof StartOperatorFreeFormSchema>,
+    z.infer<typeof TriggerNodeFreeFormSchema>,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     any,
     undefined
@@ -57,7 +57,7 @@ export const StartOperatorNodeFreeForm = ({
   selectedType: Nullable<string>;
   setSelectedType: React.Dispatch<React.SetStateAction<Nullable<string>>>;
   onCreateFreeFormField: (
-    formData: z.infer<typeof StartOperatorFreeFormSchema>
+    formData: z.infer<typeof TriggerNodeFreeFormSchema>
   ) => void;
   onCancel: () => void;
   isEditing: boolean;
@@ -92,7 +92,7 @@ export const StartOperatorNodeFreeForm = ({
           >
             Input Type
           </label>
-          <StartComponentTypeSelect
+          <TriggerNodeTypeSelect
             selectedType={selectedType}
             setSelectedType={setSelectedType}
             id="input_type"
@@ -171,14 +171,14 @@ export const StartOperatorNodeFreeForm = ({
                     </p>
                     <p className="mb-3 text-semantic-accent-default product-body-text-3-regular">
                       {"A reference is a syntax help you connect to other value in given field. " +
-                        "You can use the key ${start." +
+                        "You can use the key ${trigger." +
                         `${form.watch("key") ? form.watch("key") : "my_prompt"}` +
                         "} to reference this value"}
                     </p>
                     <div className="flex">
                       <div className="mb-2 flex flex-row items-center gap-x-1 rounded-full border border-semantic-accent-default bg-semantic-accent-bg px-2 py-0.5">
                         <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-accent-default" />
-                        <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`start.${form.watch("key") ? form.watch("key") : "my_prompt"}`}</p>
+                        <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`trigger.${form.watch("key") ? form.watch("key") : "my_prompt"}`}</p>
                       </div>
                     </div>
                   </div>
