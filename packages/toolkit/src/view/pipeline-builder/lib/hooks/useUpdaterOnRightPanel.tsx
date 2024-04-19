@@ -46,6 +46,7 @@ export function useUpdaterOnRightPanel({
   const {
     getValues,
     formState: { isDirty },
+    trigger,
   } = form;
 
   const values = getValues();
@@ -58,10 +59,14 @@ export function useUpdaterOnRightPanel({
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
     const parsed = ValidatorSchema.safeParse(values);
+
     const configuration =
       getConnectorOperatorComponentConfiguration(currentNodeData);
 
     if (!parsed.success) {
+      for (const error of parsed.error.errors) {
+        trigger(error.path.join("."));
+      }
       return;
     }
 
@@ -98,6 +103,7 @@ export function useUpdaterOnRightPanel({
                   ...node.data.connector_component.input,
                   ...parsed.data.input,
                 },
+                connection: parsed.data.connection,
               },
             },
           };
@@ -150,5 +156,6 @@ export function useUpdaterOnRightPanel({
     updateEdges,
     currentNodeData,
     isDirty,
+    trigger,
   ]);
 }

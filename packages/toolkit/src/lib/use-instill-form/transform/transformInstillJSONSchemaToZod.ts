@@ -56,6 +56,9 @@ export function transformInstillJSONSchemaToZod({
   if (targetSchema.oneOf) {
     const oneOfConditions = targetSchema.oneOf as InstillJSONSchema[];
 
+    // Some time oneOf field will also have properties fields to support
+    // general fields among all the conditions
+
     const selectedSchema = selectedConditionMap
       ? oneOfConditions.find((condition) => {
           const { constKey, constValue } = pickConstInfoFromOneOfCondition(
@@ -78,10 +81,21 @@ export function transformInstillJSONSchemaToZod({
         })
       : oneOfConditions[0];
 
+    const schemaProperties = targetSchema.properties
+      ? {
+          ...targetSchema.properties,
+          ...selectedSchema?.properties,
+        }
+      : selectedSchema?.properties;
+
     if (selectedSchema) {
       instillZodSchema = transformInstillJSONSchemaToZod({
         parentSchema,
-        targetSchema: { type: targetSchema.type, ...selectedSchema },
+        targetSchema: {
+          type: targetSchema.type,
+          ...selectedSchema,
+          properties: schemaProperties,
+        },
         selectedConditionMap,
         propertyKey,
         propertyPath,
@@ -120,24 +134,67 @@ export function transformInstillJSONSchemaToZod({
 
   if (targetSchema.type === "array") {
     if (
+      targetSchema.items &&
       typeof targetSchema.items === "object" &&
       !Array.isArray(targetSchema.items)
     ) {
-      const arraySchema = z.array(
-        transformInstillJSONSchemaToZod({
-          parentSchema,
-          targetSchema: targetSchema.items as InstillJSONSchema,
-          selectedConditionMap,
-          checkIsHidden,
-        })
-      );
+      // We support input the array as string, and we will JSONify them
+      // to see whether they are valid array or not.
+      if (targetSchema.items.type === "string") {
+        instillZodSchema = z.string().superRefine((val, ctx) => {
+          if (isHidden) {
+            return;
+          }
 
-      instillZodSchema = arraySchema;
+          if (val === "") {
+            return;
+          }
 
-      if (!isRequired || forceOptional || isHidden) {
-        instillZodSchema = instillZodSchema.nullable().optional();
+          try {
+            JSON.parse(val);
+          } catch (e) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "This field only accepts array",
+            });
+          }
+        });
+      } else {
+        instillZodSchema = z.array(
+          transformInstillJSONSchemaToZod({
+            parentSchema,
+            targetSchema: targetSchema.items as InstillJSONSchema,
+            selectedConditionMap,
+            checkIsHidden,
+          })
+        );
       }
+    } else {
+      // We support input the array as string, and we will JSONify them
+      // to see whether they are valid array or not.
+      instillZodSchema = z.string().superRefine((val, ctx) => {
+        if (isHidden) {
+          return;
+        }
+
+        if (val === "") {
+          return;
+        }
+
+        try {
+          JSON.parse(val);
+        } catch (e) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "This field only accepts array",
+          });
+        }
+      });
     }
+    if (!isRequired || forceOptional || isHidden) {
+      instillZodSchema = instillZodSchema.nullable().optional();
+    }
+
     return instillZodSchema;
   }
 
@@ -220,8 +277,9 @@ export function transformInstillJSONSchemaToZod({
 
     if (instillUpstreamValue) {
       if (instillUpstreamValue.enum) {
-        const enumValues = instillUpstreamValue.enum as [string, ...string[]];
-        instillZodSchema = z.enum(enumValues);
+        // zod enum may cause some issue when we switch schema, so we will use
+        // superRefine to handle it.
+        instillZodSchema = z.string();
       } else {
         switch (instillUpstreamValue.type) {
           case "string": {
@@ -276,16 +334,24 @@ export function transformInstillJSONSchemaToZod({
       and template 
     * -----------------------------------------------------------------------*/
 
+    // console.log(instillZodSchema);
+
     instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
       if (isHidden) {
         return;
       }
 
-      if (val === "") {
-        return;
+      if (instillUpstreamValue?.enum) {
+        const enumValues = instillUpstreamValue.enum as string[];
+        if (!enumValues.includes(val)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "The value is not valid",
+          });
+        }
       }
 
-      if (typeof val === "string") {
+      if (typeof val === "string" && val !== "") {
         // Process regex pattern
 
         if (instillUpstreamValue && instillUpstreamValue.pattern) {
@@ -356,14 +422,26 @@ export function transformInstillJSONSchemaToZod({
    * -----------------------------------------------------------------------*/
 
   if (targetSchema.enum) {
-    // We need to do the castring here to make typescript happy.
-    // The reason is typescript need to know the amount of the element
-    // in the enum, but the enum is dynamic right here, so the ts will
-    // complaint about it.
-    // ref: https://github.com/colinhacks/zod/issues/2376
+    // zod enum may cause some issue when we switch schema, so we will use
+    // superRefine to handle it.
 
-    const enumValues = targetSchema.enum as [string, ...string[]];
-    instillZodSchema = z.enum(enumValues);
+    const enumValues = targetSchema.enum as string[];
+    instillZodSchema = z.string().superRefine((val, ctx) => {
+      if (isHidden) {
+        return;
+      }
+
+      if (val === "") {
+        return;
+      }
+
+      if (!enumValues.includes(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "The value is not valid",
+        });
+      }
+    });
 
     const isRequired = propertyKey
       ? Array.isArray(parentSchema.required) &&
@@ -427,6 +505,25 @@ export function transformInstillJSONSchemaToZod({
             ? targetSchema.instillPatternErrorMessage
             : `This field doesn't match the pattern ${targetSchema.pattern}`,
         });
+      }
+    }
+
+    // Deal with maximum and minimum value
+    if (targetSchema.type === "integer" || targetSchema.type === "number") {
+      if (!isNaN(+val)) {
+        if (targetSchema.minimum && +val < targetSchema.minimum) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `The minimum value is ${targetSchema.minimum}`,
+          });
+        }
+
+        if (targetSchema.maximum && +val > targetSchema.maximum) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `The maximum value is ${targetSchema.maximum}`,
+          });
+        }
       }
     }
   });

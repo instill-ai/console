@@ -1,5 +1,6 @@
 import { dot } from "../../dot";
 import { GeneralRecord, Nullable } from "../../type";
+import { pickDefaultCondition } from "../pick";
 import { InstillFormTree, SelectedConditionMap } from "../types";
 
 export type TransformInstillFormTreeToDefaultValueOptions = {
@@ -22,14 +23,13 @@ export function transformInstillFormTreeToDefaultValue(
   // conditions are formGroup, we will set the fieldKey there
 
   if (tree._type === "formCondition") {
-    const constField = tree.conditions[
-      Object.keys(tree.conditions)[0]
-    ].properties.find((e) => "const" in e);
+    const defaultCondition = pickDefaultCondition(tree);
+    const constPath = defaultCondition?.path;
 
-    if (constField && constField.path && "const" in constField) {
-      if (selectedConditionMap && selectedConditionMap[constField.path]) {
+    if (defaultCondition && constPath) {
+      if (selectedConditionMap && selectedConditionMap[constPath]) {
         transformInstillFormTreeToDefaultValue(
-          tree.conditions[selectedConditionMap[constField.path]],
+          tree.conditions[selectedConditionMap[constPath]],
           {
             initialData,
             selectedConditionMap,
@@ -39,8 +39,8 @@ export function transformInstillFormTreeToDefaultValue(
 
         dot.setter(
           initialData,
-          constField.path,
-          selectedConditionMap[constField.path] as string
+          constPath,
+          selectedConditionMap[constPath] as string
         );
       } else {
         transformInstillFormTreeToDefaultValue(
@@ -52,7 +52,7 @@ export function transformInstillFormTreeToDefaultValue(
           }
         );
 
-        dot.setter(initialData, constField.path, constField.const as string);
+        dot.setter(initialData, constPath, defaultCondition.const as string);
       }
     }
 

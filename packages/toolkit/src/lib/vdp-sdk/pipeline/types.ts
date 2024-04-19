@@ -176,6 +176,7 @@ export type PipelineConnectorComponent = {
     task: string;
     input: GeneralRecord;
     condition: Nullable<string>;
+    connection: GeneralRecord;
   };
 };
 

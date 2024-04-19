@@ -40,7 +40,8 @@ export const SingleSelectField = ({
               onValueChange={(e) => {
                 field.onChange(e);
               }}
-              value={field.value ?? undefined}
+              // Sometime airbyte will put "" in their enum, this will break Radix select
+              value={field.value === "" ? undefined : field.value ?? undefined}
               disabled={disabled}
             >
               <Form.Control>
@@ -54,22 +55,24 @@ export const SingleSelectField = ({
                 </Select.Trigger>
               </Form.Control>
               <Select.Content>
-                {options.map((option) => {
-                  return (
-                    <Select.Item
-                      key={option}
-                      value={option}
-                      className={cn(
-                        "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
-                        size === "sm"
-                          ? "!product-body-text-4-regular"
-                          : "product-body-text-3-regular"
-                      )}
-                    >
-                      <p className="my-auto">{option}</p>
-                    </Select.Item>
-                  );
-                })}
+                {options
+                  .filter((e) => e !== "")
+                  .map((option) => {
+                    return (
+                      <Select.Item
+                        key={option}
+                        value={option}
+                        className={cn(
+                          "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
+                          size === "sm"
+                            ? "!product-body-text-4-regular"
+                            : "product-body-text-3-regular"
+                        )}
+                      >
+                        <p className="my-auto">{option}</p>
+                      </Select.Item>
+                    );
+                  })}
               </Select.Content>
             </Select.Root>
             <Form.Description

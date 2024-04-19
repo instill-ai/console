@@ -177,7 +177,7 @@ export const ClonePipelineDialog = ({
           }
         }
 
-        await router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
+        router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
       } catch (error) {
         console.log("error", error);
 

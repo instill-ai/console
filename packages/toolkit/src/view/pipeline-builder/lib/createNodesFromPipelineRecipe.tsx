@@ -17,10 +17,12 @@ export function createNodesFromPipelineRecipe(
   recipe: PipelineRecipe,
   options?: CreateNodesFromPipelineRecipeOptions
 ) {
-  const metadata = options ? options.metadata : null;
+  const metadata = options?.metadata;
   const nodes: Node<NodeData>[] = [];
 
-  const componentNodes = createNodesFromPipelineComponents(recipe.components);
+  const componentNodes = createNodesFromPipelineComponents(recipe.components, {
+    metadata,
+  });
   nodes.push(...componentNodes);
 
   // create trigger node

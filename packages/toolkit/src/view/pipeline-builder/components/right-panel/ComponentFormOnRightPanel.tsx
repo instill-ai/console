@@ -34,7 +34,7 @@ export const ComponentFormOnRightPanel = ({
     configuration,
     {
       disabledAll,
-      chooseTitleFrom: "key",
+      chooseTitleFrom: "title",
       checkIsHidden,
       enableSmartHint: true,
       componentID: nodeData.id,

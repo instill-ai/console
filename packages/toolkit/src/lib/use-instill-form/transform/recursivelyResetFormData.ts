@@ -1,4 +1,5 @@
 import { GeneralRecord } from "../../type";
+import { pickDefaultCondition } from "../pick";
 import { InstillFormTree, SelectedConditionMap } from "../types";
 import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";
 
@@ -19,12 +20,10 @@ export function recursivelyResetFormData(
       break;
     }
     case "formCondition": {
-      const constField = tree.conditions[
-        Object.keys(tree.conditions)[0]
-      ].properties.find((e) => "const" in e);
+      const defaultCondition = pickDefaultCondition(tree);
 
-      if (constField && constField.path) {
-        const selectedCondition = selectedConditionMap[constField.path];
+      if (defaultCondition && defaultCondition.path) {
+        const selectedCondition = selectedConditionMap[defaultCondition.path];
 
         if (selectedCondition && tree.conditions[selectedCondition]) {
           recursivelyResetFormData(

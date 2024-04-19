@@ -159,6 +159,7 @@ export function useConstructNodeFromDefinition({
                 input: {},
                 task: "",
                 condition: null,
+                connection: {},
               },
               note: null,
             },

@@ -151,6 +151,7 @@ test("should transform basic JSON schema to formTree", () => {
         instillFormat: "text",
       },
     ],
+    isHidden: false,
   };
 
   expect(formTree).toStrictEqual(expectedFormTree);
@@ -222,6 +223,7 @@ test("should transform object in array JSON schema to formTree", () => {
           fieldKey: "ports",
           path: "ports",
           isRequired: false,
+          isHidden: false,
           jsonSchema: {
             properties: {
               port: {
@@ -278,6 +280,7 @@ test("should transform object in array JSON schema to formTree", () => {
         isRequired: true,
       },
     ],
+    isHidden: false,
   };
 
   expect(formTree).toStrictEqual(expectedFormTree);
@@ -391,6 +394,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         instillAcceptFormats: [],
       },
     ],
+    isHidden: false,
   };
 
   const formTree = transformInstillJSONSchemaToFormTree(schema);
@@ -480,6 +484,7 @@ test("should transform isHidden formTree", () => {
     fieldKey: null,
     path: null,
     isRequired: false,
+    isHidden: false,
     jsonSchema: {
       title: "Simple JSON",
       type: "object",

@@ -8,6 +8,7 @@ import {
 import { RegularFields } from "../components";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
+import { pickDefaultCondition } from "./pickDefaultCondition";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
@@ -54,6 +55,15 @@ export function pickRegularFieldsFromInstillFormTree(
     if (childAreAllHidden) {
       return null;
     }
+
+    // Airbyte schema will have a scenario that under their oneOf properties
+    // there is only one const field, we don't need to render it's corresponding
+    // formGroup title
+    if (tree.properties.length === 1 && "const" in tree.properties[0]) {
+      return null;
+    }
+
+    console.log(tree);
 
     return tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey}>
@@ -116,20 +126,17 @@ export function pickRegularFieldsFromInstillFormTree(
     );
 
     // We will use the const path as the OneOfConditionField's path
+    const defaultCondition = pickDefaultCondition(tree);
 
-    const defaultConstField = tree.conditions[
-      Object.keys(tree.conditions)[0]
-    ].properties.find((e) => "const" in e);
-
-    if (!defaultConstField?.path) {
+    if (!defaultCondition?.path) {
       return null;
     }
 
-    const selectedCondition = selectedConditionMap?.[defaultConstField?.path];
+    const selectedCondition = selectedConditionMap?.[defaultCondition.path];
 
     let selectedConstField: InstillFormTree | undefined;
 
-    if (selectedCondition) {
+    if (selectedCondition && tree.conditions[selectedCondition]) {
       selectedConstField = tree.conditions[selectedCondition].properties.find(
         (e) => "const" in e
       );
@@ -138,23 +145,23 @@ export function pickRegularFieldsFromInstillFormTree(
     return (
       <RegularFields.OneOfConditionField
         form={form}
-        path={defaultConstField.path}
+        path={defaultCondition.path}
         tree={tree}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
-        key={defaultConstField.path}
+        key={defaultCondition.path}
         conditionComponentsMap={conditionComponents}
         title={title}
         shortDescription={
           selectedConstField
             ? selectedConstField.instillShortDescription
-            : defaultConstField.instillShortDescription
+            : defaultCondition.instillShortDescription
         }
         disabled={disabledAll}
         description={
           selectedConstField
             ? selectedConstField.description ?? null
-            : defaultConstField.description ?? null
+            : defaultCondition.description ?? null
         }
         size={size}
         isHidden={tree.isHidden}
