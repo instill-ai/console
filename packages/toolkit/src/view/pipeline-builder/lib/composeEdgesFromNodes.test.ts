@@ -182,7 +182,7 @@ test("should loosely check the reference field exist when reference has square b
           result: {
             title: "result",
             description: "",
-            value: "${trigger['foo bar']['aaa']}",
+            value: "${foo['foo bar']['aaa']}",
           },
         },
         note: null,

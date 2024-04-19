@@ -20,9 +20,7 @@ export function constructPipelineRecipeFromNodes(
     if (isIteratorNode(node)) {
       recipeComponents.push({
         id: node.id,
-        iterator_component: {
-          ...node.data.iterator_component,
-        },
+        iterator_component: node.data.iterator_component,
       });
       continue;
     }
@@ -38,6 +36,11 @@ export function constructPipelineRecipeFromNodes(
           input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
             recursiveHelpers.parseToNum(
               structuredClone(node.data.connector_component.input)
+            )
+          ),
+          connection: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+            recursiveHelpers.parseToNum(
+              structuredClone(node.data.connector_component.connection)
             )
           ),
           definition: null,

@@ -16,6 +16,7 @@ test("should check position is not valid", () => {
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],
@@ -38,7 +39,12 @@ test("should check position is not valid", () => {
 
 test("should check position is valid", () => {
   const recipe: PipelineRecipe = {
-    trigger: {},
+    trigger: {
+      trigger_by_request: {
+        request_fields: {},
+        response_fields: {},
+      },
+    },
     components: [
       {
         id: "ai_0",
@@ -50,6 +56,7 @@ test("should check position is valid", () => {
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],
@@ -60,6 +67,18 @@ test("should check position is valid", () => {
     components: [
       {
         id: "ai_0",
+        x: 0,
+        y: 0,
+        note: null,
+      },
+      {
+        id: "trigger",
+        x: 0,
+        y: 0,
+        note: null,
+      },
+      {
+        id: "response",
         x: 0,
         y: 0,
         note: null,
@@ -84,6 +103,7 @@ test("should check position is not valid even there is one missing data", () => 
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
       {
@@ -96,6 +116,7 @@ test("should check position is not valid even there is one missing data", () => 
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
       {
@@ -108,6 +129,7 @@ test("should check position is not valid even there is one missing data", () => 
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],

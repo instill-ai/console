@@ -92,6 +92,7 @@ export function usePipelineBuilderGraph() {
     // If the node position data is valid, we can initialize the graph with
     // the node position data. Or we need to initialize the graph with our
     // default graph layout
+
     if (
       checkIsValidPosition(
         pipeline.data.recipe.components,

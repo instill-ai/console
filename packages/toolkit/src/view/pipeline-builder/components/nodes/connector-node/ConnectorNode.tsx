@@ -6,22 +6,16 @@ import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { ConnectorNodeData } from "../../../type";
-import {
-  getConnectorInputOutputSchema,
-  composeEdgesFromNodes,
-  isConnectorNode,
-} from "../../../lib";
+import { getConnectorInputOutputSchema } from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
-  useConnectorDefinitions,
   useInstillForm,
   useInstillStore,
 } from "../../../../../lib";
 import { ImageWithFallback } from "../../../../../components";
 import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
-import { ResourceNotCreatedWarning } from "./ResourceNotCreatedWarning";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
@@ -36,32 +30,18 @@ import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHin
 import { isConnectorComponent } from "../../../lib/checkComponentType";
 
 const selector = (store: InstillStore) => ({
-  nodes: store.nodes,
-  updateNodes: store.updateNodes,
-  updateEdges: store.updateEdges,
-  updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  updateCreateResourceDialogState: store.updateCreateResourceDialogState,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
   collapseAllNodes: store.collapseAllNodes,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const {
-    nodes,
-    updateNodes,
-    updateEdges,
-    updatePipelineRecipeIsDirty,
-    updateCreateResourceDialogState,
     updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
     pipelineIsReadOnly,
-    accessToken,
-    enabledQuery,
     collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
@@ -69,21 +49,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
 
-  const connectorDefinitions = useConnectorDefinitions({
-    connectorType: "all",
-    enabled: enabledQuery,
-    accessToken,
-  });
-
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
   }, [collapseAllNodes]);
-
-  let resourceNotCreated = false;
-
-  if (!data.connector_component.connector_name) {
-    resourceNotCreated = true;
-  }
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
@@ -119,16 +87,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     form,
     ValidatorSchema,
   });
-
-  const targetConnectorDefinition = React.useMemo(() => {
-    if (!connectorDefinitions.isSuccess) return null;
-
-    return (
-      connectorDefinitions.data.find(
-        (e) => e.name === data.connector_component.definition_name
-      ) ?? null
-    );
-  }, [connectorDefinitions.isSuccess, connectorDefinitions.data, data]);
 
   return (
     <NodeWrapper
@@ -170,83 +128,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         />
       </NodeHead>
 
-      {nodeIsCollapsed ? null : resourceNotCreated ? (
-        <ResourceNotCreatedWarning
-          onCreate={() => {
-            updateCreateResourceDialogState(() => ({
-              open: true,
-              connectorType: data.connector_component.definition?.type ?? null,
-              connectorDefinition: data.connector_component.definition ?? null,
-              onCreated: (connector) => {
-                const newNodes = nodes.map((node) => {
-                  if (isConnectorNode(node) && node.id === id) {
-                    node.data = {
-                      ...node.data,
-                      connector_component: {
-                        ...node.data.connector_component,
-                        connector_name: connector.name,
-                        connector: {
-                          ...connector,
-                          connector_definition: null,
-                        },
-                        definition: connector.connector_definition,
-                      },
-                    };
-                  }
-                  return node;
-                });
-                const newEdges = composeEdgesFromNodes(newNodes);
-                updateNodes(() => newNodes);
-                updateEdges(() => newEdges);
-                updatePipelineRecipeIsDirty(() => true);
-                updateCreateResourceDialogState(() => ({
-                  open: false,
-                  connectorType: null,
-                  connectorDefinition: null,
-                  onCreated: null,
-                  onSelectedExistingResource: null,
-                }));
-              },
-              onSelectedExistingResource: (connector) => {
-                updateNodes((prev) => {
-                  return prev.map((node) => {
-                    if (isConnectorNode(node) && node.id === id) {
-                      node.data = {
-                        ...node.data,
-                        connector_component: {
-                          ...node.data.connector_component,
-                          connector_name: connector.name,
-
-                          // Some dynamic generated connector definition like instill_model's modelName enum
-                          // will only be returned from connectors endpoint. Therefore, we need to update the
-                          // connector definition here
-                          definition: connector.connector_definition,
-                        },
-                      };
-                    }
-                    return node;
-                  });
-                });
-
-                updatePipelineRecipeIsDirty(() => true);
-
-                updateCreateResourceDialogState(() => ({
-                  open: false,
-                  connectorType: null,
-                  connectorDefinition: null,
-                  onCreated: null,
-                  onSelectedExistingResource: null,
-                }));
-              },
-            }));
-          }}
-          disabled={pipelineIsReadOnly}
-          connectorTitle={
-            targetConnectorDefinition ? targetConnectorDefinition.title : null
-          }
-        />
-      ) : (
-        <>
+      {nodeIsCollapsed ? null : (
+        <React.Fragment>
           <div className="mb-4">
             <Form.Root {...form}>
               <form>{fields}</form>
@@ -260,6 +143,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 const values = getValues();
 
                 const parsedResult = ValidatorSchema.safeParse(values);
+                updateCurrentAdvancedConfigurationNodeID(() => id);
 
                 if (parsedResult.success) {
                   updateCurrentAdvancedConfigurationNodeID(() => id);
@@ -303,7 +187,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           */}
 
           <div className="mb-4 w-full">
-            {!resourceNotCreated && !enableEdit ? (
+            {!enableEdit ? (
               <ComponentOutputReferenceHints
                 component={data}
                 task={
@@ -324,7 +208,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
               }
             />
           </div>
-        </>
+        </React.Fragment>
       )}
     </NodeWrapper>
   );

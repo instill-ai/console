@@ -88,6 +88,7 @@ export function useUpdaterOnNode({
     }
 
     timer.current = setTimeout(() => {
+      console.log("updated");
       const newNodes = nodes.map((node) => {
         if (
           isConnectorNode(node) &&
@@ -100,11 +101,10 @@ export function useUpdaterOnNode({
               ...node.data,
               connector_component: {
                 ...node.data.connector_component,
-                input: {
-                  ...node.data.connector_component.input,
-                  ...parsed.data.input,
-                },
                 task: parsed.data.task,
+                condition: parsed.data.condition,
+                input: parsed.data.input,
+                connection: parsed.data.connection,
               },
             },
           };
@@ -121,10 +121,7 @@ export function useUpdaterOnNode({
               ...node.data,
               operator_component: {
                 ...node.data.operator_component,
-                input: {
-                  ...node.data.operator_component.input,
-                  ...parsed.data.input,
-                },
+                input: parsed.data.input,
                 task: parsed.data.task,
               },
             },

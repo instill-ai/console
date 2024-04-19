@@ -21,6 +21,7 @@ test("should compose initial pipeline metadata", () => {
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
         note: null,
       },
