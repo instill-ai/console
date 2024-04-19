@@ -147,8 +147,8 @@ export const IteratorEditor = ({
       <SelectComponentDialog
         open={selectDefinitionDialogIsOpen}
         onOpenChange={setSelectDefinitionDialogIsOpen}
-        onSelect={(definition, connector) => {
-          constructNode(definition, connector);
+        onSelect={(definition) => {
+          constructNode(definition);
           setSelectDefinitionDialogIsOpen(false);
         }}
         disabledTrigger={true}

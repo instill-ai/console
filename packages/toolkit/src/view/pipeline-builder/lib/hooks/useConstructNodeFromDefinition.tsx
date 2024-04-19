@@ -2,7 +2,6 @@ import * as React from "react";
 import { Position, ReactFlowInstance } from "reactflow";
 import {
   ConnectorDefinition,
-  ConnectorWithDefinition,
   InstillStore,
   IteratorDefinition,
   Nullable,
@@ -39,8 +38,7 @@ export function useConstructNodeFromDefinition({
 
   return React.useCallback(
     (
-      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
-      connector?: ConnectorWithDefinition
+      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
     ) => {
       if (!reactFlowInstance) return;
 
@@ -147,13 +145,6 @@ export function useConstructNodeFromDefinition({
             data: {
               id: nodeID,
               connector_component: {
-                connector_name: connector ? connector.name : null,
-                connector: connector
-                  ? {
-                      ...connector,
-                      connector_definition: null,
-                    }
-                  : null,
                 definition_name: definition.name,
                 definition,
                 input: {},

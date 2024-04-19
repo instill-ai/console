@@ -36,7 +36,6 @@ export const StateIcon = ({
       break;
     case "STATE_ACTIVE":
     case "STATE_ONLINE":
-    case "STATE_CONNECTED":
       icon = (
         <StatusOnIcon
           color="fill-instillGreen"
@@ -48,7 +47,6 @@ export const StateIcon = ({
       break;
     case "STATE_OFFLINE":
     case "STATE_INACTIVE":
-    case "STATE_DISCONNECTED":
       icon = (
         <StatusOffIcon
           color="fill-instillGrey50"

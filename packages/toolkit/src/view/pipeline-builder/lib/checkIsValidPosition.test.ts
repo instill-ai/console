@@ -9,8 +9,6 @@ test("should check position is not valid", () => {
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
@@ -49,8 +47,6 @@ test("should check position is valid", () => {
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
@@ -96,8 +92,6 @@ test("should check position is not valid even there is one missing data", () => 
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
@@ -109,8 +103,6 @@ test("should check position is not valid even there is one missing data", () => 
       {
         id: "ai_1",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
@@ -122,8 +114,6 @@ test("should check position is not valid even there is one missing data", () => 
       {
         id: "ai_2",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",

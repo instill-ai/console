@@ -35,7 +35,6 @@ import {
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
-import { removeSensitiveDataInPipelineRecipe } from "../view";
 import { env, validateInstillID } from "../server";
 import { useRouter } from "next/navigation";
 
@@ -145,10 +144,7 @@ export const ClonePipelineDialog = ({
       recipe: {
         version: pipeline.recipe.version,
         trigger: pipeline.recipe.trigger,
-        components: removeSensitiveDataInPipelineRecipe(
-          pipeline.recipe.components,
-          pipeline.owner_name === me.data.name ? false : true
-        ),
+        components: pipeline.recipe.components,
       },
 
       metadata: pipeline.metadata,

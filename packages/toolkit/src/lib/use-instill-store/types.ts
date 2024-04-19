@@ -1,24 +1,10 @@
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
-import {
-  ConnectorDefinition,
-  ConnectorType,
-  ConnectorWithDefinition,
-} from "../vdp-sdk/connector";
+import { ConnectorDefinition, ConnectorType } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
-
-export type PipelineBuilderCreateResourceDialogState = {
-  open: boolean;
-  connectorType: Nullable<ConnectorType>;
-  connectorDefinition: Nullable<ConnectorDefinition>;
-  onCreated: Nullable<(connector: ConnectorWithDefinition) => void>;
-  onSelectedExistingResource: Nullable<
-    (connector: ConnectorWithDefinition) => void
-  >;
-};
 
 export type WarnUnsavedChangesDialogState = {
   open: boolean;
@@ -41,7 +27,6 @@ export type PipelineBuilderState = {
   collapseAllNodes: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
-  createResourceDialogState: PipelineBuilderCreateResourceDialogState;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
   isOwner: boolean;
@@ -87,11 +72,7 @@ export type PipelineBuilderAction = {
   updatePipelineOpenAPIOutputSchema: (
     fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) => void;
-  updateCreateResourceDialogState: (
-    fn: (
-      prev: PipelineBuilderCreateResourceDialogState
-    ) => PipelineBuilderCreateResourceDialogState
-  ) => void;
+
   updateCurrentVersion: (
     fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;

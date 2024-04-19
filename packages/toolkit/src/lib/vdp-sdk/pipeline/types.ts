@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { OpenAPIV3 } from "openapi-types";
-import { ConnectorDefinition, Connector } from "../connector";
+import { ConnectorDefinition } from "../connector";
 import {
   DataSpecification,
   Owner,
@@ -171,8 +171,6 @@ export type PipelineConnectorComponent = {
   connector_component: {
     definition_name: string;
     definition: Nullable<ConnectorDefinition>;
-    connector_name: Nullable<string>;
-    connector: Nullable<Connector>;
     task: string;
     input: GeneralRecord;
     condition: Nullable<string>;
