@@ -14,8 +14,6 @@ test("should compose initial pipeline metadata", () => {
       data: {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",

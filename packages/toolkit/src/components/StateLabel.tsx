@@ -42,11 +42,6 @@ export const StateLabel = ({
       bgColor = "bg-instillGreen10";
       stateLabelName = "Online";
       break;
-    case "STATE_CONNECTED":
-      textColor = "text-instillGreen50";
-      bgColor = "bg-instillGreen10";
-      stateLabelName = "Connected";
-      break;
     case "STATE_OFFLINE":
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
@@ -56,11 +51,6 @@ export const StateLabel = ({
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
       stateLabelName = "Inactive";
-      break;
-    case "STATE_DISCONNECTED":
-      textColor = "text-instillGrey70";
-      bgColor = "bg-instillGrey05";
-      stateLabelName = "Disconnected";
       break;
     default:
       textColor = "text-instillGrey70";

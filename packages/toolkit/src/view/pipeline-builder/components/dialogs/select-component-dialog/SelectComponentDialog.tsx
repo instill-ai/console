@@ -5,20 +5,17 @@ import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import {
   ConnectorDefinition,
-  ConnectorWithDefinition,
   IteratorDefinition,
   OperatorDefinition,
   useInstillStore,
 } from "../../../../../lib";
-import { ExistingConnectorSection } from "./ExistingConnectorSection";
 import { NewConnectorSection } from "./NewConnectorSection";
 import { OperatorSection } from "./OperatorSection";
 import { IteratorSection } from "./IteratorSection";
 import { DataTestID } from "../../../../../constant";
 
 export type OnSelectComponent = (
-  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
-  connector?: ConnectorWithDefinition
+  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
 ) => void;
 
 export const SelectComponentDialog = ({
@@ -74,7 +71,6 @@ export const SelectComponentDialog = ({
           </Dialog.Header>
           {isEditingIterator ? null : <IteratorSection onSelect={onSelect} />}
           <OperatorSection onSelect={onSelect} />
-          <ExistingConnectorSection onSelect={onSelect} />
           <NewConnectorSection onSelect={onSelect} />
         </ScrollArea.Root>
       </Dialog.Content>

@@ -34,7 +34,6 @@ export const GeneralStateCell = ({
     case "STATE_ACTIVE":
     case "STATUS_COMPLETED":
     case "STATE_ONLINE":
-    case "STATE_CONNECTED":
       element = (
         <Tag variant="lightGreen" size="sm">
           {label || "Active"}
@@ -44,7 +43,6 @@ export const GeneralStateCell = ({
 
     case "STATE_INACTIVE":
     case "STATE_OFFLINE":
-    case "STATE_DISCONNECTED":
       element = (
         <Tag variant="default" size="sm">
           {label || "Inactive"}

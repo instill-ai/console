@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ConnectorState } from "./connector";
 import { ModelState } from "./model";
 import { PipelineReleaseState } from "./pipeline";
 import { InstillJSONSchema } from "../use-instill-form";
@@ -19,7 +18,7 @@ export type Violation = {
   subject: string;
 };
 
-export type ResourceState = ModelState | PipelineReleaseState | ConnectorState;
+export type ResourceState = ModelState | PipelineReleaseState;
 
 export type DataSpecification = {
   input: Nullable<InstillJSONSchema>;

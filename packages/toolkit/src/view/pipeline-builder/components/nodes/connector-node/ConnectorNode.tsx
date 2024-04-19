@@ -14,7 +14,6 @@ import {
   useInstillStore,
 } from "../../../../../lib";
 import { ImageWithFallback } from "../../../../../components";
-import { ConnectorIDTag } from "./ConnectorIDTag";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
@@ -197,16 +196,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 }
               />
             ) : null}
-          </div>
-
-          <div className="mb-3 flex flex-row-reverse">
-            <ConnectorIDTag
-              connectorID={
-                data.connector_component.connector_name
-                  ? data.connector_component.connector_name.split("/")[3]
-                  : null
-              }
-            />
           </div>
         </React.Fragment>
       )}

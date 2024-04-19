@@ -30,9 +30,6 @@ export function constructPipelineRecipeFromNodes(
         id: node.id,
         connector_component: {
           ...node.data.connector_component,
-          connector_name: removeConnectorName
-            ? ""
-            : node.data.connector_component.connector_name,
           input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
             recursiveHelpers.parseToNum(
               structuredClone(node.data.connector_component.input)
@@ -44,7 +41,6 @@ export function constructPipelineRecipeFromNodes(
             )
           ),
           definition: null,
-          connector: null,
         },
       });
 
