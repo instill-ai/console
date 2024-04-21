@@ -11,19 +11,23 @@ export async function fetchUserPipelineReleases({
   accessToken: Nullable<string>;
   shareCode?: string;
 }) {
-  if (!pipelineName) {
-    return Promise.reject(new Error("pipelineName not provided"));
+  try {
+    if (!pipelineName) {
+      throw new Error("pipelineName not provided");
+    }
+
+    const pipelineReleases = await ListUserPipelineReleasesQuery({
+      pipelineName,
+      pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+      nextPageToken: null,
+      accessToken,
+      shareCode: shareCode,
+    });
+
+    return Promise.resolve(pipelineReleases);
+  } catch (error) {
+    return Promise.reject(error);
   }
-
-  const pipelineReleases = await ListUserPipelineReleasesQuery({
-    pipelineName,
-    pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-    nextPageToken: null,
-    accessToken,
-    shareCode: shareCode,
-  });
-
-  return Promise.resolve(pipelineReleases);
 }
 
 export function getUseUserPipelineReleasesQueryKey(
