@@ -4,30 +4,37 @@ import * as z from "zod";
 import * as React from "react";
 import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 import {
-  Nullable,
   sendAmplitudeData,
   useAmplitudeCtx,
   useCreateApiToken,
+  useInstillStore,
 } from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingSpin } from "../../../components";
+import { validateInstillID } from "../../../server";
+import { InstillErrors } from "../../../constant";
 
-export type CreateAPITokenDialogProps = {
-  accessToken: Nullable<string>;
-  onCreate?: () => void;
-};
+const CreateTokenSchema = z
+  .object({
+    id: z.string().min(1, "Token id is required"),
+  })
+  .superRefine((state, ctx) => {
+    if (!validateInstillID(state.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["id"],
+      });
+    }
+  });
 
-const CreateTokenSchema = z.object({
-  id: z.string().nonempty(),
-});
-
-export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
+export const CreateAPITokenDialog = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
-  const { accessToken, onCreate } = props;
   const [isLoading, setIsLoading] = React.useState(false);
+  const accessToken = useInstillStore((store) => store.accessToken);
 
   const form = useForm<z.infer<typeof CreateTokenSchema>>({
     resolver: zodResolver(CreateTokenSchema),
@@ -55,10 +62,6 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
 
       if (amplitudeIsInit) {
         sendAmplitudeData("create_api_token");
-      }
-
-      if (onCreate) {
-        onCreate();
       }
 
       setOpen(false);

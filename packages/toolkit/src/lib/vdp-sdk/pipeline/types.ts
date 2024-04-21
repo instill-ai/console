@@ -228,3 +228,15 @@ export type IteratorDefinition = {
   title: "Iterator";
   icon: "iterator.svg";
 };
+
+export type Secret = {
+  name: string;
+  uid: string;
+  id: string;
+  create_time: string;
+  update_time: string;
+  description: Nullable<string>;
+
+  // The value of the secret, which is input-only and will never be returned in API responses.
+  value: Nullable<string>;
+};
