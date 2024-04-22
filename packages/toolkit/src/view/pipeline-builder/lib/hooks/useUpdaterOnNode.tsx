@@ -88,7 +88,6 @@ export function useUpdaterOnNode({
     }
 
     timer.current = setTimeout(() => {
-      console.log("updated");
       const newNodes = nodes.map((node) => {
         if (
           isConnectorNode(node) &&

@@ -334,8 +334,6 @@ export function transformInstillJSONSchemaToZod({
       and template 
     * -----------------------------------------------------------------------*/
 
-    // console.log(instillZodSchema);
-
     instillZodSchema = instillZodSchema.superRefine((val, ctx) => {
       if (isHidden) {
         return;

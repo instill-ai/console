@@ -9,6 +9,7 @@ import { RegularFields } from "../components";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
 import { pickDefaultCondition } from "./pickDefaultCondition";
+import { pickConstInfoFromOneOfCondition } from "./pickConstInfoFromOneOfCondition";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
@@ -63,8 +64,6 @@ export function pickRegularFieldsFromInstillFormTree(
       return null;
     }
 
-    console.log(tree);
-
     return tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey}>
         <p
@@ -112,15 +111,20 @@ export function pickRegularFieldsFromInstillFormTree(
   if (tree._type === "formCondition") {
     const conditionComponents = Object.fromEntries(
       Object.entries(tree.conditions).map(([k, v]) => {
+        const constInfo = v.properties.find((e) => "const" in e);
+
         return [
           k,
-          pickRegularFieldsFromInstillFormTree(
-            v,
-            form,
-            selectedConditionMap,
-            setSelectedConditionMap,
-            options
-          ),
+          {
+            component: pickRegularFieldsFromInstillFormTree(
+              v,
+              form,
+              selectedConditionMap,
+              setSelectedConditionMap,
+              options
+            ),
+            title: constInfo?.title ?? null,
+          },
         ];
       })
     );
