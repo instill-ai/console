@@ -31,7 +31,10 @@ export const OneOfConditionField = ({
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<Nullable<SelectedConditionMap>>
   >;
-  conditionComponentsMap: Record<string, React.ReactNode>;
+  conditionComponentsMap: Record<
+    string,
+    { component: React.ReactNode; title: Nullable<string> }
+  >;
   shortDescription?: string;
   disabled?: boolean;
 } & AutoFormFieldBaseProps) => {
@@ -39,7 +42,10 @@ export const OneOfConditionField = ({
     React.useState<Nullable<SelectedConditionMap>>(null);
 
   const conditionOptions = React.useMemo(() => {
-    return Object.entries(conditionComponentsMap).map(([k]) => k);
+    return Object.entries(conditionComponentsMap).map(([k, v]) => ({
+      key: k,
+      title: v.title,
+    }));
   }, [conditionComponentsMap]);
 
   // Once the condition is changed, we need to reset the child form data
@@ -111,8 +117,8 @@ export const OneOfConditionField = ({
                     {conditionOptions.map((option) => {
                       return (
                         <Select.Item
-                          key={option}
-                          value={option}
+                          key={option.key}
+                          value={option.key}
                           className={cn(
                             "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
                             size === "sm"
@@ -120,7 +126,9 @@ export const OneOfConditionField = ({
                               : "product-body-text-4-regular"
                           )}
                         >
-                          <p className="my-auto">{option}</p>
+                          <p className="my-auto">
+                            {option.title ?? option.key}
+                          </p>
                         </Select.Item>
                       );
                     })}
@@ -140,7 +148,9 @@ export const OneOfConditionField = ({
           }}
         />
       )}
-      <div className="flex flex-col gap-y-4">{conditionComponents}</div>
+      <div className="flex flex-col gap-y-4">
+        {conditionComponents?.component}
+      </div>
     </div>
   );
 };
