@@ -7,14 +7,20 @@ import {
   Dialog,
   Form,
   Input,
+  Textarea,
   useToast,
 } from "@instill-ai/design-system";
 import {
+  CreateUserSecretPayload,
+  InstillStore,
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useCreateApiToken,
+  useAppEntity,
+  useAuthenticatedUser,
+  useCreateUserSecret,
   useInstillStore,
+  useShallow,
 } from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
@@ -23,9 +29,11 @@ import { LoadingSpin } from "../../../components";
 import { validateInstillID } from "../../../server";
 import { InstillErrors } from "../../../constant";
 
-const CreateTokenSchema = z
+const CreateSecretSchema = z
   .object({
-    id: z.string().min(1, "Token id is required"),
+    id: z.string().min(1, "Secret id is required"),
+    value: z.string(),
+    description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
     if (!validateInstillID(state.id)) {
@@ -37,47 +45,64 @@ const CreateTokenSchema = z
     }
   });
 
-export const CreateAPITokenDialog = () => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
+export const CreateSecretDialog = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const accessToken = useInstillStore((store) => store.accessToken);
-
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof CreateTokenSchema>>({
-    resolver: zodResolver(CreateTokenSchema),
+  const me = useAuthenticatedUser({
+    accessToken,
+    enabled: enabledQuery,
+  });
+
+  const form = useForm<z.infer<typeof CreateSecretSchema>>({
+    resolver: zodResolver(CreateSecretSchema),
     defaultValues: {
       id: "",
+      value: "",
+      description: "",
     },
   });
 
-  const createAPIToken = useCreateApiToken();
+  const createSecret = useCreateUserSecret();
   const handleCreateAPIToken = async (
-    data: z.infer<typeof CreateTokenSchema>
+    data: z.infer<typeof CreateSecretSchema>
   ) => {
-    if (!accessToken) return;
+    if (!accessToken || !me.isSuccess) return;
 
-    const payload = {
+    const payload: CreateUserSecretPayload = {
       id: data.id,
-      ttl: -1,
+      value: data.value,
+      description: data.description ?? undefined,
     };
 
     setIsLoading(true);
 
     try {
-      await createAPIToken.mutateAsync({ payload, accessToken });
+      await createSecret.mutateAsync({
+        payload,
+        accessToken,
+        entityName: me.data.name,
+      });
+
       setIsLoading(false);
 
       if (amplitudeIsInit) {
-        sendAmplitudeData("create_api_token");
+        sendAmplitudeData("create_secret");
       }
 
       setOpen(false);
 
       toast({
         variant: "alert-success",
-        description: "Token created successfully",
+        title: "Secret created successfully",
         size: "small",
       });
     } catch (error) {
@@ -87,13 +112,13 @@ export const CreateAPITokenDialog = () => {
       if (error.response?.status === 409) {
         form.setError("id", {
           type: "manual",
-          message: "Token name already exists",
+          message: "Secret name already exists",
         });
         return;
       }
 
       toast({
-        title: "Failed to create API Token",
+        title: "Failed to create secret",
         variant: "alert-error",
         size: "large",
         description: isAxiosError(error)
@@ -107,7 +132,7 @@ export const CreateAPITokenDialog = () => {
     <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
       <Dialog.Trigger asChild>
         <Button variant="primary" size="lg">
-          Create Token
+          Create Secret
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="!w-[350px]">
@@ -132,17 +157,17 @@ export const CreateAPITokenDialog = () => {
           </div>
           <div className="flex flex-col">
             <h2 className="mb-1 text-center font-sans text-2xl font-bold leading-9 -tracking-[1%] text-[#1D2433]">
-              Create API token
+              Create Secret
             </h2>
             <p className="mb-6 text-center font-sans text-base font-normal leading-6 text-[#1D2433] text-opacity-80">
-              Create a API token to trigger pipelines
+              Create secret to use in pipelines
             </p>
             <Form.Root {...form}>
               <form
                 className="w-full"
                 onSubmit={form.handleSubmit(handleCreateAPIToken)}
               >
-                <div className="mb-6 flex flex-col">
+                <div className="mb-6 flex flex-col gap-y-5">
                   <Form.Field
                     control={form.control}
                     name="id"
@@ -150,7 +175,7 @@ export const CreateAPITokenDialog = () => {
                       return (
                         <Form.Item>
                           <Form.Label htmlFor={field.name}>
-                            Token ID *
+                            Secret ID *
                           </Form.Label>
                           <Form.Control>
                             <Input.Root>
@@ -160,6 +185,41 @@ export const CreateAPITokenDialog = () => {
                                 {...field}
                               />
                             </Input.Root>
+                          </Form.Control>
+                          <Form.Message />
+                        </Form.Item>
+                      );
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="value"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label htmlFor={field.name}>
+                            Secret Value *
+                          </Form.Label>
+
+                          <Form.Control>
+                            <Textarea {...field} value={field.value ?? ""} />
+                          </Form.Control>
+                          <Form.Message />
+                        </Form.Item>
+                      );
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label htmlFor={field.name}>
+                            Description
+                          </Form.Label>
+                          <Form.Control>
+                            <Textarea {...field} value={field.value ?? ""} />
                           </Form.Control>
                           <Form.Message />
                         </Form.Item>
@@ -183,7 +243,7 @@ export const CreateAPITokenDialog = () => {
                     variant="primary"
                     size="lg"
                   >
-                    {isLoading ? <LoadingSpin /> : "Create Token"}
+                    {isLoading ? <LoadingSpin /> : "Create Secret"}
                   </Button>
                 </div>
               </form>

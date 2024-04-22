@@ -13,87 +13,60 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useCreateApiToken,
+  useDeleteUserSecret,
   useInstillStore,
 } from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingSpin } from "../../../components";
-import { validateInstillID } from "../../../server";
-import { InstillErrors } from "../../../constant";
 
-const CreateTokenSchema = z
-  .object({
-    id: z.string().min(1, "Token id is required"),
-  })
-  .superRefine((state, ctx) => {
-    if (!validateInstillID(state.id)) {
-      return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
-        path: ["id"],
-      });
-    }
-  });
+const DeleteSecretSchema = z.object({
+  code: z.string().min(1, "Code is required"),
+});
 
-export const CreateAPITokenDialog = () => {
+export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const accessToken = useInstillStore((store) => store.accessToken);
 
-  const { toast } = useToast();
-
-  const form = useForm<z.infer<typeof CreateTokenSchema>>({
-    resolver: zodResolver(CreateTokenSchema),
+  const form = useForm<z.infer<typeof DeleteSecretSchema>>({
+    resolver: zodResolver(DeleteSecretSchema),
     defaultValues: {
-      id: "",
+      code: "",
     },
   });
 
-  const createAPIToken = useCreateApiToken();
-  const handleCreateAPIToken = async (
-    data: z.infer<typeof CreateTokenSchema>
-  ) => {
+  const { toast } = useToast();
+
+  const deleteSecret = useDeleteUserSecret();
+
+  const handleDeleteApiToken = async () => {
     if (!accessToken) return;
-
-    const payload = {
-      id: data.id,
-      ttl: -1,
-    };
-
     setIsLoading(true);
 
     try {
-      await createAPIToken.mutateAsync({ payload, accessToken });
+      await deleteSecret.mutateAsync({
+        secretName,
+        accessToken,
+      });
       setIsLoading(false);
 
       if (amplitudeIsInit) {
-        sendAmplitudeData("create_api_token");
+        sendAmplitudeData("delete_secret");
       }
 
       setOpen(false);
 
       toast({
         variant: "alert-success",
-        description: "Token created successfully",
+        title: "Secret deleted successfully",
         size: "small",
       });
     } catch (error) {
-      setIsLoading(false);
-      if (!isAxiosError(error)) return;
-
-      if (error.response?.status === 409) {
-        form.setError("id", {
-          type: "manual",
-          message: "Token name already exists",
-        });
-        return;
-      }
-
       toast({
-        title: "Failed to create API Token",
+        title: "Something went wrong when deleting the secret",
         variant: "alert-error",
         size: "large",
         description: isAxiosError(error)
@@ -106,9 +79,9 @@ export const CreateAPITokenDialog = () => {
   return (
     <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
       <Dialog.Trigger asChild>
-        <Button variant="primary" size="lg">
-          Create Token
-        </Button>
+        <div className="text-sm-semibold cursor-pointer truncate text-center text-semantic-error-default">
+          Delete
+        </div>
       </Dialog.Trigger>
       <Dialog.Content className="!w-[350px]">
         <div className="flex flex-col">
@@ -132,31 +105,36 @@ export const CreateAPITokenDialog = () => {
           </div>
           <div className="flex flex-col">
             <h2 className="mb-1 text-center font-sans text-2xl font-bold leading-9 -tracking-[1%] text-[#1D2433]">
-              Create API token
+              Delete Secret
             </h2>
             <p className="mb-6 text-center font-sans text-base font-normal leading-6 text-[#1D2433] text-opacity-80">
-              Create a API token to trigger pipelines
+              Are you sure you want to delete this secret?
             </p>
             <Form.Root {...form}>
               <form
                 className="w-full"
-                onSubmit={form.handleSubmit(handleCreateAPIToken)}
+                onSubmit={form.handleSubmit(handleDeleteApiToken)}
               >
                 <div className="mb-6 flex flex-col">
                   <Form.Field
                     control={form.control}
-                    name="id"
+                    name="code"
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label htmlFor={field.name}>
-                            Token ID *
+                          <Form.Label className="!block" htmlFor={field.name}>
+                            Please type
+                            <span className="mx-1 select-all font-bold">
+                              {secretName}
+                            </span>
+                            to confirm.
                           </Form.Label>
                           <Form.Control>
                             <Input.Root>
                               <Input.Core
                                 id={field.name}
                                 type="text"
+                                placeholder="Hello world"
                                 {...field}
                               />
                             </Input.Root>
@@ -182,8 +160,9 @@ export const CreateAPITokenDialog = () => {
                     className="w-full flex-1"
                     variant="primary"
                     size="lg"
+                    disabled={form.watch("code") === secretName ? false : true}
                   >
-                    {isLoading ? <LoadingSpin /> : "Create Token"}
+                    {isLoading ? <LoadingSpin /> : "Delete Secret"}
                   </Button>
                 </div>
               </form>
