@@ -35,7 +35,6 @@ export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
           <APITokenTable
             isError={apiTokens.isError}
             isLoading={apiTokens.isLoading}
-            accessToken={accessToken}
             tokens={apiTokens.data ?? []}
           />
         </div>

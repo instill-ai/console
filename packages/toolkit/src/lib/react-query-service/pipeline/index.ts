@@ -25,3 +25,6 @@ export * from "./useWatchUserPipelineReleases";
 export * from "./use-user-pipeline";
 export * from "./use-user-pipelines";
 export * from "./use-user-pipeline-releases";
+
+export * from "./use-user-secret";
+export * from "./use-user-secrets";

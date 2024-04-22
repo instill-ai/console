@@ -1,9 +1,9 @@
+import { SecretSettingdPageRender } from "./render";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {
-    title: `Instill Cloud | Setting`,
+    title: `Instill Core | Secrets Setting`,
     openGraph: {
       images: ["/instill-open-graph.png"],
     },
@@ -12,5 +12,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  redirect("/settings/profile");
+  return <SecretSettingdPageRender />;
 }

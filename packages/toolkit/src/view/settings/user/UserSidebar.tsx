@@ -19,6 +19,11 @@ export const UserSidebar = () => {
         highlighted={pathname.split("/")[2] === "account"}
       />
       <Setting.SidebarItem
+        href="/settings/secrets"
+        name="Secrets"
+        highlighted={pathname.split("/")[2] === "secrets"}
+      />
+      <Setting.SidebarItem
         href="/settings/api-tokens"
         name="API Tokens"
         highlighted={pathname.split("/")[2] === "api-tokens"}

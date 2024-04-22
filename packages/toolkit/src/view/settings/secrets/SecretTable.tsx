@@ -1,52 +1,30 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ApiToken,
-  Nullable,
-  formatDate,
-  parseTriggerStatusLabel,
-} from "../../../lib";
-import { GeneralStateCell, SortIcon, TableError } from "../../../components";
-import { DeleteAPITokenDialog } from "./DeleteAPITokenDialog";
+import { Secret, formatDate } from "../../../lib";
+import { SortIcon, TableError } from "../../../components";
 import { Button, DataTable } from "@instill-ai/design-system";
-import { APITokenNameCell } from "./APITokenNameCell";
+import { DeleteSecretDialog } from "./DeleteSecretDialog";
 
 export type APITokenTableProps = {
   isError: boolean;
   isLoading: boolean;
-  tokens: ApiToken[];
+  secrets: Secret[];
 };
 
-export const APITokenTable = (props: APITokenTableProps) => {
-  const { isError, isLoading, tokens } = props;
-  const columns: ColumnDef<ApiToken>[] = [
-    {
-      accessorKey: "state",
-      header: () => <div className="min-w-[180px] text-left">Status</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="text-left">
-            <GeneralStateCell
-              width={null}
-              state={row.getValue("state")}
-              padding="py-2"
-              label={parseTriggerStatusLabel(row.getValue("state"))}
-            />
-          </div>
-        );
-      },
-    },
+export const SecretTable = (props: APITokenTableProps) => {
+  const { isError, isLoading, secrets } = props;
+  const columns: ColumnDef<Secret>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[300px] text-left">Tokens</div>,
+      header: () => <div className="min-w-[200px] text-left">id</div>,
       cell: ({ row }) => {
         return (
-          <div className="text-left">
-            <APITokenNameCell
-              id={row.getValue("id")}
-              accessToken={row.original.access_token}
-            />
+          <div className="flex flex-col">
+            <p className="product-body-text-3-semibold">{row.original.id}</p>
+            <p className="line-clamp-2 text-semantic-fg-disabled product-body-text-3-regular">
+              {row.original.description}
+            </p>
           </div>
         );
       },
@@ -85,7 +63,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="flex justify-center">
-            <DeleteAPITokenDialog tokenName={row.original.name} />
+            <DeleteSecretDialog secretName={row.original.name} />
           </div>
         );
       },
@@ -102,15 +80,15 @@ export const APITokenTable = (props: APITokenTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Tokens"
-        secondaryText="Check your tokens"
+        primaryText="Secrets"
+        secondaryText="Check your secrets"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
     );
   }
 
-  if (tokens.length === 0 && !isLoading) {
+  if (secrets.length === 0 && !isLoading) {
     return (
       <DataTable
         columns={columns}
@@ -120,12 +98,12 @@ export const APITokenTable = (props: APITokenTableProps) => {
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Tokens"
-        secondaryText="Check your tokens"
+        primaryText="Secrets"
+        secondaryText="Check your secrets"
       >
         <div className="flex min-h-[300px] items-center justify-center">
           <p className="text-semantic-fg-primary product-body-text-3-regular">
-            Create your API token
+            Create your secret
           </p>
         </div>
       </DataTable>
@@ -135,14 +113,14 @@ export const APITokenTable = (props: APITokenTableProps) => {
   return (
     <DataTable
       columns={columns}
-      data={tokens}
+      data={secrets}
       pageSize={6}
-      searchPlaceholder={"Search Tokens"}
+      searchPlaceholder={"Search Secrets"}
       searchKey={"id"}
       isLoading={isLoading}
       loadingRows={6}
-      primaryText="Tokens"
-      secondaryText="Check your tokens"
+      primaryText="Secrets"
+      secondaryText="Check your secrets"
     />
   );
 };
