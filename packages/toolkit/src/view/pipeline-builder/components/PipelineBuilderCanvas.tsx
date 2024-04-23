@@ -6,6 +6,7 @@ import ReactFlow, {
   Controls,
   MiniMap,
   ReactFlowInstance,
+  SelectionMode,
 } from "reactflow";
 import {
   InstillStore,
@@ -50,6 +51,8 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
+
+const panOnDrag = [1, 2];
 
 export const PipelineBuilderCanvas = ({
   setReactFlowInstance,
@@ -133,6 +136,10 @@ export const PipelineBuilderCanvas = ({
         includeHiddenNodes: true,
         padding: 20,
       }}
+      // To enable Figma-like zoom-in-out experience
+      panOnScroll={true}
+      panOnDrag={panOnDrag}
+      selectionMode={SelectionMode.Partial}
       // We want to position node based on their center
       nodeOrigin={[0.5, 0.5]}
       nodeTypes={nodeTypes}
