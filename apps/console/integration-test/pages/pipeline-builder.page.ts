@@ -17,7 +17,7 @@ export class PipelineBuilderPage {
   constructor(page: Page, pipelineID: string) {
     this.page = page;
     this.pipelineBuilderPagePath = `/admin/pipelines/${pipelineID}/builder`;
-    this.startNode = page.locator("[data-id='start']");
+    this.startNode = page.locator("[data-id='trigger']");
     this.startNodeAddFieldButton = this.startNode.getByRole("button", {
       name: "Add Field",
       exact: true,
@@ -25,7 +25,7 @@ export class PipelineBuilderPage {
     this.startNodeSaveFieldButton = this.startNode.getByRole("button", {
       name: "Save",
     });
-    this.endNode = page.locator("[data-id='end']");
+    this.endNode = page.locator("[data-id='response']");
     this.endNodeAddFieldButton = this.endNode.getByRole("button", {
       name: "Add Field",
       exact: true,
@@ -70,7 +70,7 @@ export class PipelineBuilderPage {
     await startComponentTypeSelectTrigger.click();
     const startComponentTypeSelectContent = await getSelectContent(
       this.page,
-      startComponentTypeSelectTrigger,
+      startComponentTypeSelectTrigger
     );
     await startComponentTypeSelectContent.getByText(inputType).click();
     await this.startNode.getByPlaceholder("My prompt").fill(key);
@@ -89,7 +89,7 @@ export class PipelineBuilderPage {
     newInputType?: string;
   }) {
     const editTextsFieldButton = this.startNode.locator(
-      `button[aria-label='Edit start operator ${key} field']`,
+      `button[aria-label='Edit start operator ${key} field']`
     );
     await editTextsFieldButton.click();
 
@@ -110,7 +110,7 @@ export class PipelineBuilderPage {
       await startComponentTypeSelectTrigger.click();
       const startComponentTypeSelectContent = await getSelectContent(
         this.page,
-        startComponentTypeSelectTrigger,
+        startComponentTypeSelectTrigger
       );
       await startComponentTypeSelectContent.getByText(newInputType).click();
     }
@@ -143,7 +143,7 @@ export class PipelineBuilderPage {
     newValue?: string;
   }) {
     const editFooFieldButton = this.endNode.locator(
-      `button[aria-label='Edit end operator ${key} field']`,
+      `button[aria-label='Edit end operator ${key} field']`
     );
 
     await editFooFieldButton.click();
