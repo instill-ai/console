@@ -7,6 +7,7 @@ import ReactFlow, {
   BackgroundVariant,
   Controls,
   ReactFlowInstance,
+  SelectionMode,
   useEdgesState,
   useNodesState,
 } from "reactflow";
@@ -50,6 +51,8 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
+
+const panOnDrag = [1, 2];
 
 export type ReadOnlyPipelineBuilderProps = {
   pipelineName: Nullable<string>;
@@ -136,6 +139,12 @@ export const ReadOnlyPipelineBuilder = ({
         onInit={setReactFlowInstance}
         proOptions={{ hideAttribution: true }}
         elevateNodesOnSelect={true}
+        // To enable Figma-like zoom-in-out experience
+        panOnScroll={true}
+        panOnDrag={panOnDrag}
+        selectionMode={SelectionMode.Partial}
+        selectionOnDrag={true}
+        nodeOrigin={[0.5, 0.5]}
       >
         <Background
           id={pipelineName ?? undefined}
