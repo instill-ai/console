@@ -1,8 +1,9 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   InstillStore,
   useAppEntity,
   useInstillStore,
+  useNavigateBackAfterLogin,
   useShallow,
   useUserPipeline,
 } from "../../../lib";
@@ -25,7 +26,7 @@ export const RunButton = ({
   inOutPutFormID: string;
   isTriggeringPipeline: boolean;
 }) => {
-  const router = useRouter();
+  const navigateBackAfterLogin = useNavigateBackAfterLogin();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
 
@@ -52,7 +53,7 @@ export const RunButton = ({
     return (
       <Button
         onClick={() => {
-          router.push("/login");
+          navigateBackAfterLogin();
         }}
         className="!h-8 !normal-case"
         type="button"
