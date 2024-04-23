@@ -140,7 +140,7 @@ export const ReadOnlyPipelineBuilder = ({
         proOptions={{ hideAttribution: true }}
         elevateNodesOnSelect={true}
         // To enable Figma-like zoom-in-out experience
-        panOnScroll={true}
+        panOnScroll={false}
         panOnDrag={panOnDrag}
         selectionMode={SelectionMode.Partial}
         selectionOnDrag={true}
