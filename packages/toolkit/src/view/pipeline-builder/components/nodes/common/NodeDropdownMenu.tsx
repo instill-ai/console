@@ -21,7 +21,7 @@ const NodeDropdownMenuRoot = ({
 
   return (
     <Popover.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
-      <Popover.Trigger disabled={pipelineIsReadOnly}>
+      <Popover.Trigger className="nodrag nowheel" disabled={pipelineIsReadOnly}>
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
