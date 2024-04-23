@@ -9,6 +9,7 @@ import {
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
+  useNavigateBackAfterLogin,
 } from "../../lib";
 import { sortPipelineReleases } from "../../view";
 import { ClonePipelineDialog } from "../ClonePipelineDialog";
@@ -41,6 +42,7 @@ export const Footer = ({
   disabledPermissionLabel?: boolean;
 }) => {
   const router = useRouter();
+  const navigateBackAfterLogin = useNavigateBackAfterLogin();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -106,7 +108,7 @@ export const Footer = ({
         ) : (
           <Button
             onClick={() => {
-              router.push("/login");
+              navigateBackAfterLogin();
             }}
             className="!normal-case"
             variant="secondaryColour"

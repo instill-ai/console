@@ -13,6 +13,8 @@ export const RootPageRender = () => {
   React.useEffect(() => {
     if (trackToken.isSuccess && trackToken.data) {
       router.push("/admin/pipelines");
+    } else {
+      router.push("/login");
     }
   }, [trackToken.isSuccess, trackToken.data]);
 
