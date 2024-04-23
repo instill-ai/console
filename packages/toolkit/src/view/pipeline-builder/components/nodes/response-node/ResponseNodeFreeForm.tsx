@@ -54,7 +54,7 @@ export const ResponseNodeFreeForm = ({
           <Button
             variant="tertiaryGrey"
             size="sm"
-            className="!px-2 !py-2"
+            className="nodrag nowheel !px-2 !py-2"
             type="button"
             onClick={() => {
               onCancel();
@@ -63,7 +63,12 @@ export const ResponseNodeFreeForm = ({
             <Icons.ArrowLeft className="m-auto h-4 w-4 stroke-semantic-fg-secondary" />
           </Button>
           <div>
-            <Button variant="primary" type="submit" size="sm">
+            <Button
+              className="nodrag nowheel"
+              variant="primary"
+              type="submit"
+              size="sm"
+            >
               Save
             </Button>
           </div>
