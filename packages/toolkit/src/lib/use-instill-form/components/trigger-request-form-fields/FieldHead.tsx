@@ -93,7 +93,7 @@ export const FieldHead = ({
                                 size="sm"
                                 className="!rounded !px-2 !py-0.5"
                               >
-                                ${`{start.${path}}`}
+                                ${`{trigger.${path}}`}
                               </Tag>{" "}
                               to reference this field&rsquo;s value.
                             </p>

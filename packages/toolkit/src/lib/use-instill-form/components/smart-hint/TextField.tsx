@@ -16,6 +16,7 @@ import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
+import { Secret } from "../../../vdp-sdk";
 
 export const TextField = ({
   form,
@@ -30,6 +31,8 @@ export const TextField = ({
   componentID,
   size,
   isHidden,
+  secrets,
+  instillCredentialField,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -37,6 +40,8 @@ export const TextField = ({
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
+  secrets?: Secret[];
+  instillCredentialField?: boolean;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -78,6 +83,8 @@ export const TextField = ({
     smartHintEnabledPos,
     fieldValue,
     componentID,
+    secrets,
+    instillCredentialField,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");

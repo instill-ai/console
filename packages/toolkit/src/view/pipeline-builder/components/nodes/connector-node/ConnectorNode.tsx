@@ -10,6 +10,7 @@ import { getConnectorInputOutputSchema } from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
+  useAppEntity,
   useInstillForm,
   useInstillStore,
 } from "../../../../../lib";
@@ -34,6 +35,7 @@ const selector = (store: InstillStore) => ({
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
   collapseAllNodes: store.collapseAllNodes,
+  entitySecrets: store.entitySecrets,
 });
 
 export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
@@ -42,6 +44,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     currentVersion,
     pipelineIsReadOnly,
     collapseAllNodes,
+    entitySecrets,
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -64,6 +67,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         checkIsHidden,
         componentID: data.id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
+        secrets: entitySecrets,
       }
     );
 

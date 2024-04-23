@@ -9,7 +9,7 @@ import { RegularFields } from "../components";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
 import { pickDefaultCondition } from "./pickDefaultCondition";
-import { pickConstInfoFromOneOfCondition } from "./pickConstInfoFromOneOfCondition";
+import { Secret } from "../../vdp-sdk";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
@@ -18,6 +18,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   enableSmartHint?: boolean;
   componentID?: string;
   size?: "sm";
+  secrets?: Secret[];
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -34,6 +35,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
   const size = options?.size;
+  const secrets = options?.secrets ?? [];
 
   let title: Nullable<string> = null;
 
@@ -274,22 +276,6 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
-  if (tree.instillCredentialField) {
-    return (
-      <RegularFields.CredentialTextField
-        key={tree.path}
-        path={tree.path}
-        form={form}
-        title={title}
-        description={tree.description ?? null}
-        shortDescription={tree.instillShortDescription}
-        disabled={disabledAll}
-        size={size}
-        isHidden={tree.isHidden}
-      />
-    );
-  }
-
   if (enableSmartHint) {
     return (
       <SmartHintFields.TextField
@@ -306,6 +292,8 @@ export function pickRegularFieldsFromInstillFormTree(
         componentID={componentID}
         size={size}
         isHidden={tree.isHidden}
+        secrets={secrets}
+        instillCredentialField={tree.instillCredentialField}
       />
     );
   }

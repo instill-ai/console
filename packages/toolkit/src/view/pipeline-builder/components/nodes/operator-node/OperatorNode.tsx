@@ -31,6 +31,7 @@ const selector = (store: InstillStore) => ({
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   collapseAllNodes: store.collapseAllNodes,
+  entitySecrets: store.entitySecrets,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -38,6 +39,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
     collapseAllNodes,
+    entitySecrets,
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -59,6 +61,7 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         checkIsHidden,
         componentID: data.id,
         disabledAll: pipelineIsReadOnly,
+        secrets: entitySecrets,
       }
     );
 

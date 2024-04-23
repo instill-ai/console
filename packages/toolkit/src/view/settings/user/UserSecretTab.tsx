@@ -3,16 +3,12 @@
 import * as React from "react";
 import { Setting } from "..";
 import {
-  GeneralAppPageProp,
   InstillStore,
-  useApiTokens,
-  useAppEntity,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
   useUserSecrets,
 } from "../../../lib";
-import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
 import { useRouter } from "next/navigation";
 import { CreateSecretDialog, SecretTable } from "../secrets";
 

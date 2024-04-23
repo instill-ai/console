@@ -64,9 +64,6 @@ export function useUpdaterOnRightPanel({
       getConnectorOperatorComponentConfiguration(currentNodeData);
 
     if (!parsed.success) {
-      for (const error of parsed.error.errors) {
-        trigger(error.path.join("."));
-      }
       return;
     }
 
