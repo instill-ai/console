@@ -177,6 +177,7 @@ export const PipelineBuilderMainView = () => {
             }}
             onSave={async () => {
               await savePipeline();
+              initPipelineBuilder();
               if (warnUnsavedChangesDialogState.confirmNavigation) {
                 warnUnsavedChangesDialogState.confirmNavigation();
               }
