@@ -367,7 +367,7 @@ export const TriggerNode = ({ data }: NodeProps<TriggerNodeData>) => {
             <Icons.Lightning01 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
           </div>
           <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
-            start
+            trigger
           </p>
         </div>
         <TriggerResponseNodeControlPanel

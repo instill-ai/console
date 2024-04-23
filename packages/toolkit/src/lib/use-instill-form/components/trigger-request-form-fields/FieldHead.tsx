@@ -205,7 +205,7 @@ export const FieldHead = ({
                 />
                 <ReferenceHintTag.Path
                   icon={<ReferenceHintTag.Icon type="check" />}
-                  path={`start.${path}`}
+                  path={`trigger.${path}`}
                 />
               </ReferenceHintTag.Root>
             </div>
