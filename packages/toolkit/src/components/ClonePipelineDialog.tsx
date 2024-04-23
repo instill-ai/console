@@ -87,12 +87,12 @@ export const ClonePipelineDialog = ({
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
-    enabled: enabledQuery,
+    enabled: enabledQuery && dialogIsOpen,
     accessToken,
   });
 
   const organizations = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess,
+    enabled: enabledQuery && me.isSuccess && dialogIsOpen,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
