@@ -45,7 +45,6 @@ const selector = (store: InstillStore) => ({
 
 export const ConnectorOperatorControlPanel = ({
   nodeID,
-
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,

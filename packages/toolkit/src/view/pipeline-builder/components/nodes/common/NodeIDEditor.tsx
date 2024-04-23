@@ -156,7 +156,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
   );
 
   return (
-    <div className="flex flex-row">
+    <div className="nodrag nowheel flex flex-row">
       <Form.Root {...form}>
         <form className="my-auto flex">
           <Form.Field
