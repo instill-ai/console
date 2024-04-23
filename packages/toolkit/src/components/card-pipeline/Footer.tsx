@@ -108,7 +108,10 @@ export const Footer = ({
         ) : (
           <Button
             onClick={() => {
-              navigateBackAfterLogin();
+              const pipelineNameFrag = pipeline.name.split("/");
+              const targetPipelinePathname = `/${pipelineNameFrag[1]}/pipelines/${pipelineNameFrag[3]}`;
+
+              navigateBackAfterLogin(targetPipelinePathname);
             }}
             className="!normal-case"
             variant="secondaryColour"

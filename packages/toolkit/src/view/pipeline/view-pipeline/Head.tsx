@@ -340,7 +340,7 @@ export const Head = ({
                 ) : (
                   <Button
                     onClick={() => {
-                      router.push("/login");
+                      navigateBackAfterLogin();
                     }}
                     className="!normal-case"
                     variant="secondaryGrey"
