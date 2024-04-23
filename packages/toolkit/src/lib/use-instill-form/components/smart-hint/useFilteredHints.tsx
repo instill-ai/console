@@ -5,6 +5,7 @@ import {
 } from "../../../use-smart-hint";
 
 import * as React from "react";
+import { Secret } from "../../../vdp-sdk";
 
 export function useFilteredHints({
   smartHints,
@@ -13,6 +14,8 @@ export function useFilteredHints({
   smartHintEnabledPos,
   fieldValue,
   componentID,
+  secrets,
+  instillCredentialField,
 }: {
   smartHints: SmartHint[];
   instillAcceptFormats: string[];
@@ -20,6 +23,8 @@ export function useFilteredHints({
   smartHintEnabledPos: Nullable<number>;
   fieldValue: string;
   componentID?: string;
+  instillCredentialField?: boolean;
+  secrets?: Secret[];
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
     if (!smartHints || smartHints.length === 0) {
@@ -28,10 +33,20 @@ export function useFilteredHints({
 
     let searchCode: Nullable<string> = null;
 
-    const allHints = pickSmartHintsFromAcceptFormats(
+    let allHints = pickSmartHintsFromAcceptFormats(
       smartHints,
       instillAcceptFormats
     );
+
+    if (instillCredentialField && secrets) {
+      allHints = secrets.map((secret) => ({
+        key: secret.id,
+        path: `secrets.${secret.id}`,
+        instillFormat: "string",
+        type: "string",
+        properties: [],
+      }));
+    }
 
     if (smartHintEnabledPos !== null && currentCursorPos !== null) {
       searchCode = fieldValue.substring(smartHintEnabledPos, currentCursorPos);
@@ -70,6 +85,7 @@ export function useFilteredHints({
     smartHintEnabledPos,
     fieldValue,
     componentID,
+    secrets,
   ]);
 
   return filteredHints;

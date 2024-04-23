@@ -1,8 +1,7 @@
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
-import { ConnectorDefinition, ConnectorType } from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
 
@@ -106,6 +105,12 @@ export type GeneralSlice = {
   updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   enabledQuery: boolean;
   updateEnabledQuery: (fn: (prev: boolean) => boolean) => void;
+
+  // This will store all the secrets current entity have access to
+  // But due to backend won't return any sensitive information,
+  // this is safe to do so
+  entitySecrets: Secret[];
+  updateEntitySecrets: (fn: (prev: Secret[]) => Secret[]) => void;
 };
 
 export type RecentlyUsedSlice = {
