@@ -170,10 +170,10 @@ export const PipelineBuilderMainView = () => {
               }));
             }}
             onDiscard={() => {
-              initPipelineBuilder();
               if (warnUnsavedChangesDialogState.confirmNavigation) {
                 warnUnsavedChangesDialogState.confirmNavigation();
               }
+              initPipelineBuilder();
             }}
             onSave={async () => {
               await savePipeline();
