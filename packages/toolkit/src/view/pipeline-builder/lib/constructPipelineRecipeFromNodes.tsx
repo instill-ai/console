@@ -1,5 +1,10 @@
 import { recursiveHelpers } from "./recursive-helpers";
-import { PipelineComponent, PipelineRecipe } from "../../../lib";
+import {
+  PipelineComponent,
+  PipelineConnectorComponent,
+  PipelineOperatorComponent,
+  PipelineRecipe,
+} from "../../../lib";
 import { Node } from "reactflow";
 import { NodeData, ResponseNodeData, TriggerNodeData } from "../type";
 import {
@@ -9,10 +14,13 @@ import {
   isResponseNode,
   isTriggerNode,
 } from "./checkNodeType";
+import {
+  isConnectorComponent,
+  isOperatorComponent,
+} from "./checkComponentType";
 
 export function constructPipelineRecipeFromNodes(
-  nodes: Node<NodeData>[],
-  removeConnectorName?: boolean
+  nodes: Node<NodeData>[]
 ): PipelineRecipe {
   const recipeComponents: PipelineComponent[] = [];
 
@@ -20,7 +28,54 @@ export function constructPipelineRecipeFromNodes(
     if (isIteratorNode(node)) {
       recipeComponents.push({
         id: node.id,
-        iterator_component: node.data.iterator_component,
+        iterator_component: {
+          ...node.data.iterator_component,
+          components: node.data.iterator_component.components.map(
+            (component) => {
+              if (isConnectorComponent(component)) {
+                return {
+                  ...component,
+                  connector_component: {
+                    ...component.connector_component,
+                    input:
+                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                        recursiveHelpers.parseToNum(
+                          structuredClone(component.connector_component.input)
+                        )
+                      ),
+                    connection:
+                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                        recursiveHelpers.parseToNum(
+                          structuredClone(
+                            component.connector_component.connection
+                          )
+                        )
+                      ),
+                    definition: null,
+                  },
+                };
+              }
+
+              if (isOperatorComponent(component)) {
+                return {
+                  ...component,
+                  operator_component: {
+                    ...component.operator_component,
+                    input:
+                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                        recursiveHelpers.parseToNum(
+                          structuredClone(component.operator_component.input)
+                        )
+                      ),
+                    definition: null,
+                  },
+                };
+              }
+
+              return component;
+            }
+          ),
+        },
       });
       continue;
     }
