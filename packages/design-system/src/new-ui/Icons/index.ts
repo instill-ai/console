@@ -95,6 +95,7 @@ import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
+import { Tool01 } from "./Tool01";
 import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
@@ -203,6 +204,7 @@ export const Icons = {
   Trash03,
   Type02,
   TypePlus,
+  Tool01,
   Upload01,
   User01,
   User02,
