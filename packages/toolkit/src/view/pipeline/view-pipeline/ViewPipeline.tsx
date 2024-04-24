@@ -95,7 +95,13 @@ export const ViewPipeline = () => {
             Pipeline Description
           </div>
           <Readme
-            isOwner={isOwner}
+            isEditable={
+              pipeline.isSuccess
+                ? pipeline.data.permission.can_edit
+                  ? true
+                  : false
+                : false
+            }
             readme={pipeline.isSuccess ? pipeline.data.readme : null}
           />
         </div>
