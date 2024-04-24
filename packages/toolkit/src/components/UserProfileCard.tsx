@@ -5,10 +5,10 @@ import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  UserMembership,
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
+  useUserMemberships,
 } from "../lib";
 import { EntityAvatar } from "./EntityAvatar";
 import Link from "next/link";
@@ -26,14 +26,12 @@ export type UserProfileCardProps = {
     title: string;
     onClick: () => void;
   };
-  organizations?: UserMembership[];
 };
 
 export const UserProfileCard = ({
   totalPipelines,
   totalPublicPipelines,
   visitorCta,
-  organizations,
 }: UserProfileCardProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -41,6 +39,12 @@ export const UserProfileCard = ({
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
+    accessToken,
+  });
+
+  const memberships = useUserMemberships({
+    enabled: enabledQuery && me.isSuccess,
+    userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
@@ -81,21 +85,21 @@ export const UserProfileCard = ({
             ) : null}
           </div>
           <Separator orientation="horizontal" className="my-4" />
-          {organizations && organizations.length !== 0 ? (
+          {memberships.isSuccess && memberships.data.length !== 0 ? (
             <React.Fragment>
               <div className="flex flex-col gap-y-2">
                 <p className="text-semantic-fg-primary product-body-text-2-semibold">
                   Organizations
                 </p>
-                {organizations.map((org) => (
+                {memberships.data.map((membership) => (
                   <button
-                    key={org.organization.id}
+                    key={membership.organization.id}
                     onClick={() => {
-                      router.push(`/${org.organization.id}`);
+                      router.push(`/${membership.organization.id}`);
                     }}
                     className="flex !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
                   >
-                    {org.organization.id}
+                    {membership.organization.id}
                   </button>
                 ))}
               </div>

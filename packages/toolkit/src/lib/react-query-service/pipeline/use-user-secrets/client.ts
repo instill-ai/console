@@ -34,6 +34,6 @@ export function useUserSecrets({
         return Promise.reject(error);
       }
     },
-    emabled: enabledQuery,
+    enabled: enabledQuery,
   });
 }
