@@ -26,10 +26,10 @@ const selector = (store: InstillStore) => ({
 });
 
 export const Readme = ({
-  isOwner,
+  isEditable,
   readme,
 }: {
-  isOwner: boolean;
+  isEditable: boolean;
   readme: Nullable<string>;
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -107,7 +107,7 @@ export const Readme = ({
 
   const editor = useEditor({
     extensions: extensions,
-    editable: isOwner,
+    editable: isEditable,
     editorProps: {
       attributes: {
         class:
@@ -123,8 +123,8 @@ export const Readme = ({
   React.useEffect(() => {
     if (!editor) return;
 
-    editor.setEditable(isOwner);
-  }, [isOwner, editor]);
+    editor.setEditable(isEditable);
+  }, [isEditable, editor]);
 
   React.useEffect(() => {
     if (!readme || !editor || isInitialized) return;
