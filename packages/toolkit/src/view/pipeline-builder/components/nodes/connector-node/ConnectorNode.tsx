@@ -6,11 +6,13 @@ import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
 import { ConnectorNodeData } from "../../../type";
-import { getConnectorInputOutputSchema } from "../../../lib";
+import {
+  getConnectorInputOutputSchema,
+  getConnectorOperatorComponentConfiguration,
+} from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
-  useAppEntity,
   useInstillForm,
   useInstillStore,
 } from "../../../../../lib";
@@ -57,10 +59,14 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
+  const componentConfiguration = React.useMemo(() => {
+    return getConnectorOperatorComponentConfiguration(data);
+  }, [data]);
+
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
       data.connector_component.definition?.spec.component_specification ?? null,
-      data.connector_component,
+      componentConfiguration,
       {
         size: "sm",
         enableSmartHint: true,

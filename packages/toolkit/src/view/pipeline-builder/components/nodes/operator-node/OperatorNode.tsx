@@ -16,7 +16,11 @@ import { useShallow } from "zustand/react/shallow";
 import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { getOperatorInputOutputSchema } from "../../../lib/getOperatorInputOutputSchema";
-import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
+import {
+  getConnectorOperatorComponentConfiguration,
+  useCheckIsHidden,
+  useUpdaterOnNode,
+} from "../../../lib";
 import {
   NodeBottomBarContent,
   NodeBottomBarMenu,
@@ -51,10 +55,14 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
+  const componentConfiguration = React.useMemo(() => {
+    return getConnectorOperatorComponentConfiguration(data);
+  }, [data]);
+
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
       data.operator_component.definition?.spec.component_specification ?? null,
-      data.operator_component,
+      componentConfiguration,
       {
         size: "sm",
         enableSmartHint: true,

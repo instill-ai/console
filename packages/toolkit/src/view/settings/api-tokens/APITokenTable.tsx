@@ -1,12 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ApiToken,
-  Nullable,
-  formatDate,
-  parseTriggerStatusLabel,
-} from "../../../lib";
+import { ApiToken, formatDate, parseTriggerStatusLabel } from "../../../lib";
 import { GeneralStateCell, SortIcon, TableError } from "../../../components";
 import { DeleteAPITokenDialog } from "./DeleteAPITokenDialog";
 import { Button, DataTable } from "@instill-ai/design-system";

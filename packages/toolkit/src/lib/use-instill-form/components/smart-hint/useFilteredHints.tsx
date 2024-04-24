@@ -86,6 +86,7 @@ export function useFilteredHints({
     fieldValue,
     componentID,
     secrets,
+    instillCredentialField,
   ]);
 
   return filteredHints;
