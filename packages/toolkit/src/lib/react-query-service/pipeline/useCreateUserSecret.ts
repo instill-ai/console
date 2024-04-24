@@ -34,12 +34,12 @@ export function useCreateUserSecret() {
           accessToken,
         });
 
-        return Promise.resolve({ secret, entityName, accessToken });
+        return Promise.resolve({ secret, entityName });
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    onSuccess: async ({ secret, entityName, accessToken }) => {
+    onSuccess: async ({ secret, entityName }) => {
       const useUserSecretQueryKey = getUseUserSecretQueryKey(secret.name);
       queryClient.setQueryData<Secret>(useUserSecretQueryKey, secret);
 

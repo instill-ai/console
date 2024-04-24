@@ -13,6 +13,7 @@ import {
   composeEdgesFromNodes,
   getConnectorOperatorComponentConfiguration,
   isConnectorNode,
+  isIteratorNode,
   isOperatorNode,
 } from "..";
 import { ConnectorNodeData, OperatorNodeData } from "../../type";
@@ -20,12 +21,14 @@ import {
   isConnectorComponent,
   isOperatorComponent,
 } from "../checkComponentType";
+import debounce from "lodash.debounce";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateEdges: store.updateEdges,
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
+  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
 });
@@ -44,6 +47,7 @@ export function useUpdaterOnNode({
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
+    currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
@@ -53,11 +57,71 @@ export function useUpdaterOnNode({
 
   const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
 
-  const timer = React.useRef<NodeJS.Timeout>();
+  const debounceTrigger = React.useCallback(
+    (updateData: GeneralRecord) => {
+      debounce(() => {
+        const newNodes = nodes.map((node) => {
+          if (isConnectorNode(node) && node.id === currentNodeData.id) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                connector_component: {
+                  ...node.data.connector_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                  connection: updateData.connection,
+                },
+              },
+            };
+          }
+
+          if (isIteratorNode(node) && node.id === currentNodeData.id) {
+            return node;
+          }
+
+          if (isOperatorNode(node) && node.id === currentNodeData.id) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                operator_component: {
+                  ...node.data.operator_component,
+                  input: updateData.input,
+                  task: updateData.task,
+                },
+              },
+            };
+          }
+
+          return node;
+        });
+
+        updateNodes(() => newNodes);
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateEdges(() => newEdges);
+        updatePipelineRecipeIsDirty(() => true);
+      }, 100);
+    },
+    [
+      currentNodeData,
+      nodes,
+      updateEdges,
+      updateNodes,
+      updatePipelineRecipeIsDirty,
+    ]
+  );
 
   // We don't rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
+    // We won't update the value on node when user is editing right
+    // panel
+    if (currentAdvancedConfigurationNodeID) {
+      return;
+    }
+
     const parsed = ValidatorSchema.safeParse(values);
     const configuration =
       getConnectorOperatorComponentConfiguration(currentNodeData);
@@ -83,64 +147,10 @@ export function useUpdaterOnNode({
       return;
     }
 
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
-
-    timer.current = setTimeout(() => {
-      const newNodes = nodes.map((node) => {
-        if (
-          isConnectorNode(node) &&
-          isConnectorComponent(currentNodeData) &&
-          node.id === currentNodeData.id
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              connector_component: {
-                ...node.data.connector_component,
-                task: parsed.data.task,
-                condition: parsed.data.condition,
-                input: parsed.data.input,
-                connection: parsed.data.connection,
-              },
-            },
-          };
-        }
-
-        if (
-          isOperatorNode(node) &&
-          isOperatorComponent(currentNodeData) &&
-          node.id === currentNodeData.id
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              operator_component: {
-                ...node.data.operator_component,
-                input: parsed.data.input,
-                task: parsed.data.task,
-              },
-            },
-          };
-        }
-
-        return node;
-      });
-
-      updateNodes(() => newNodes);
-      const newEdges = composeEdgesFromNodes(newNodes);
-      updateEdges(() => newEdges);
-      updatePipelineRecipeIsDirty(() => true);
-      updatedValue.current = parsed.data;
-    }, 300);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
+    debounceTrigger(parsed.data);
+    updatedValue.current = parsed.data;
   }, [
+    currentAdvancedConfigurationNodeID,
     values,
     ValidatorSchema,
     updateNodes,
@@ -149,5 +159,6 @@ export function useUpdaterOnNode({
     currentNodeData,
     nodes,
     updateEdges,
+    debounceTrigger,
   ]);
 }

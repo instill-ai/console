@@ -16,7 +16,6 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useAppEntity,
   useAuthenticatedUser,
   useCreateUserSecret,
   useInstillStore,

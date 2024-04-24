@@ -1,10 +1,5 @@
 import { recursiveHelpers } from "./recursive-helpers";
-import {
-  PipelineComponent,
-  PipelineConnectorComponent,
-  PipelineOperatorComponent,
-  PipelineRecipe,
-} from "../../../lib";
+import { PipelineComponent, PipelineRecipe } from "../../../lib";
 import { Node } from "reactflow";
 import { NodeData, ResponseNodeData, TriggerNodeData } from "../type";
 import {

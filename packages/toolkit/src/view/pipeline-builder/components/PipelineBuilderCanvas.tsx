@@ -94,13 +94,6 @@ export const PipelineBuilderCanvas = ({
       }}
       // Disabled delete nodes and edges by backespace
       deleteKeyCode={null}
-      onEdgesDelete={() => {
-        if (pipelineIsReadOnly) return;
-
-        updatePipelineRecipeIsDirty(() => {
-          return true;
-        });
-      }}
       onNodesChange={(changes) => {
         if (pipelineIsReadOnly) return;
 

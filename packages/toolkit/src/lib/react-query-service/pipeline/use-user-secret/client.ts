@@ -11,10 +11,10 @@ export function useUserSecret({
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
-  let enableQuery = false;
+  let enabledQuery = false;
 
   if (secretName && enabled) {
-    enableQuery = true;
+    enabledQuery = true;
   }
 
   const queryKey = getUseUserSecretQueryKey(secretName);
@@ -31,5 +31,6 @@ export function useUserSecret({
         return Promise.reject(error);
       }
     },
+    enabled: enabledQuery,
   });
 }

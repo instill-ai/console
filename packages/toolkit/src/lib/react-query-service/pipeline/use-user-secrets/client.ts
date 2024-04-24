@@ -13,10 +13,10 @@ export function useUserSecrets({
   enabled: boolean;
   pageSize?: number;
 }) {
-  let enableQuery = false;
+  let enabledQuery = false;
 
   if (entityName && enabled) {
-    enableQuery = true;
+    enabledQuery = true;
   }
 
   const queryKey = getUseUserSecretsQueryKey(entityName);
@@ -34,5 +34,6 @@ export function useUserSecrets({
         return Promise.reject(error);
       }
     },
+    enabled: enabledQuery,
   });
 }

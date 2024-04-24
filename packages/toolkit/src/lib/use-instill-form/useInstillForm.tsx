@@ -37,7 +37,7 @@ export function useInstillForm(
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
   const size = options?.size;
-  const secrets = options?.secrets ?? [];
+  const secrets = options?.secrets;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -83,7 +83,9 @@ export function useInstillForm(
 
     setValidatorSchema(_ValidatorSchema);
 
-    const _data = transformInstillFormTreeToDefaultValue(_formTree);
+    const _data = transformInstillFormTreeToDefaultValue(_formTree, {
+      selectedConditionMap: _selectedConditionMap,
+    });
 
     // Set initial values to the form. The data may be null or empty object
     const _defaultValues = data
