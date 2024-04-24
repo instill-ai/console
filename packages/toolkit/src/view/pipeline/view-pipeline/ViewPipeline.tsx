@@ -81,8 +81,8 @@ export const ViewPipeline = () => {
         }}
         currentVersion={currentVersion}
       />
-      <div className="mx-auto flex flex-1 flex-row px-8">
-        <div className="flex h-full w-[718px] flex-col gap-y-6 py-10 pr-10">
+      <div className="flex flex-1 flex-row px-8">
+        <div className="w-3/5 gap-y-6 py-10 pr-10">
           <ReadOnlyPipelineBuilder
             pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
             recipe={pipelineRelease?.recipe || pipeline.data?.recipe || null}
@@ -99,7 +99,7 @@ export const ViewPipeline = () => {
             readme={pipeline.isSuccess ? pipeline.data.readme : null}
           />
         </div>
-        <div className="flex w-[594px] flex-col py-10 pr-4">
+        <div className="w-2/5 py-10 pr-4">
           <InOutPut currentVersion={currentVersion} />
         </div>
       </div>

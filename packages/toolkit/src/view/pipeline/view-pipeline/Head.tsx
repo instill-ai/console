@@ -301,7 +301,7 @@ export const Head = ({
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 flex flex-row px-24">
+        <div className="absolute bottom-0 left-0 right-0 flex flex-row pl-24 pr-12">
           <div className="mr-auto">
             <TabMenu.Root
               value={selectedTab}
