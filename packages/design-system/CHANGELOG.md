@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.66.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.65.1...@instill-ai/design-system-v0.66.0) (2024-04-25)
+
+
+### Features
+
+* retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
+
 ## [0.65.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.65.0...@instill-ai/design-system-v0.65.1) (2024-03-29)
 
 
