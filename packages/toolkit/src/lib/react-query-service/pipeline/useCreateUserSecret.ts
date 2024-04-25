@@ -45,7 +45,7 @@ export function useCreateUserSecret() {
 
       const useUserSecretsQueryKey = getUseUserSecretsQueryKey(entityName);
       queryClient.setQueryData<Secret[]>(useUserSecretsQueryKey, (old) =>
-        old ? [...old.filter((e) => e.name === secret.name), secret] : [secret]
+        old ? [...old, secret] : [secret]
       );
     },
   });
