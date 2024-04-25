@@ -27,11 +27,11 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
     React.useState<Nullable<string>>(null);
 
   const { initPipelineBuilder, initIteratorRelatedState } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (store) => store.init
+    (store) => store.init,
   );
   const closeModal = useModalStore((store) => store.closeModal);
 
