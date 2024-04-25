@@ -61,6 +61,15 @@ export const createPipelineBuilderSlice: StateCreator<
   PipelineBuilderSlice
 > = (set, get) => ({
   ...pipelineBuilderInitialState,
+  initIteratorRelatedState: () =>
+    set((state) => {
+      return {
+        ...state,
+        isEditingIterator: false,
+        editingIteratorID: null,
+        tempSavedNodesForEditingIteratorFlow: [],
+      };
+    }),
   initPipelineBuilder: () => set(() => pipelineBuilderInitialState),
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
     set((state) => {
