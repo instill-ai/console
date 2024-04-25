@@ -31,7 +31,7 @@ export const Regular: Story = {
               version: "v1beta",
               components: [
                 {
-                  id: "start",
+                  id: "trigger",
                   resource_name: "",
                   configuration: {
                     metadata: {
@@ -44,7 +44,7 @@ export const Regular: Story = {
                   definition_name: "operator-definitions/start",
                 },
                 {
-                  id: "end",
+                  id: "response",
                   resource_name: "",
                   configuration: {
                     input: {
@@ -64,7 +64,7 @@ export const Regular: Story = {
                   configuration: {
                     input: {
                       task: "TASK_TEXT_GENERATION",
-                      prompt: "{ start.prompt }",
+                      prompt: "{ trigger.prompt }",
                       model: "gpt-3.5-turbo",
                       system_message:
                         "You are a cat, control a generator to produce more cat. ",

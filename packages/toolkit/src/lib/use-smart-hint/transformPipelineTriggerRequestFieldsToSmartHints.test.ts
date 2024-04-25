@@ -18,13 +18,13 @@ test("should transform pipeline trigger request fields to smart hints", () => {
 
   expect(hints).toStrictEqual([
     {
-      path: "start.text",
+      path: "trigger.text",
       key: "text",
       instillFormat: "string",
       type: "null",
     },
     {
-      path: "start.audio",
+      path: "trigger.audio",
       key: "audio",
       instillFormat: "audio/*",
       type: "null",
@@ -53,13 +53,13 @@ test("should transform array metadata to smart hints", () => {
 
   expect(hints).toStrictEqual([
     {
-      path: "start.text",
+      path: "trigger.text",
       key: "text",
       instillFormat: "array:string",
       type: "null",
     },
     {
-      path: "start.images",
+      path: "trigger.images",
       key: "images",
       instillFormat: "array:image/*",
       type: "null",
