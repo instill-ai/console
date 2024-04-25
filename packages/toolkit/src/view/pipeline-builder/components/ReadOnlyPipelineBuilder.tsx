@@ -6,9 +6,8 @@ import ReactFlow, {
   Background,
   BackgroundVariant,
   Controls,
-  Edge,
-  Node,
   ReactFlowInstance,
+  SelectionMode,
   useEdgesState,
   useNodesState,
 } from "reactflow";
@@ -21,21 +20,17 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { NodeData } from "../type";
-import {
-  checkIsValidPosition,
-  createGraphLayout,
-  createInitialGraphData,
-} from "../lib";
+import { composeEdgesFromNodes, createGraphLayout } from "../lib";
 import {
   ConnectorNode,
   EmptyNode,
-  EndOperatorNode,
   IteratorNode,
   OperatorNode,
-  StartOperatorNode,
+  ResponseNode,
+  TriggerNode,
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
+import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
@@ -45,10 +40,10 @@ const selector = (store: InstillStore) => ({
 });
 
 const nodeTypes = {
-  startNode: StartOperatorNode,
+  triggerNode: TriggerNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
-  endNode: EndOperatorNode,
+  responseNode: ResponseNode,
   operatorNode: OperatorNode,
   iteratorNode: IteratorNode,
 };
@@ -56,6 +51,8 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
+
+const panOnDrag = [1, 2];
 
 export type ReadOnlyPipelineBuilderProps = {
   pipelineName: Nullable<string>;
@@ -83,9 +80,10 @@ export const ReadOnlyPipelineBuilder = ({
 
   React.useEffect(() => {
     if (!recipe || !metadata) return;
-    const initialGraphData = createInitialGraphData(recipe.components);
+    const nodes = createNodesFromPipelineRecipe(recipe);
+    const edges = composeEdgesFromNodes(nodes);
 
-    createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
+    createGraphLayout(nodes, edges)
       .then((graphData) => {
         setNodes(graphData.nodes);
         setEdges(graphData.edges);
@@ -99,9 +97,12 @@ export const ReadOnlyPipelineBuilder = ({
   }, [
     recipe,
     metadata,
+    setEdges,
+    setNodes,
     reactFlowInstance,
     updateCurrentVersion,
     updatePipelineIsReadOnly,
+    updateCollapseAllNodes,
   ]);
 
   // Clean up the pipelineIsReadOnly state when user navigate away
@@ -138,6 +139,12 @@ export const ReadOnlyPipelineBuilder = ({
         onInit={setReactFlowInstance}
         proOptions={{ hideAttribution: true }}
         elevateNodesOnSelect={true}
+        // To enable Figma-like zoom-in-out experience
+        panOnScroll={false}
+        panOnDrag={panOnDrag}
+        selectionMode={SelectionMode.Partial}
+        selectionOnDrag={true}
+        nodeOrigin={[0.5, 0.5]}
       >
         <Background
           id={pipelineName ?? undefined}

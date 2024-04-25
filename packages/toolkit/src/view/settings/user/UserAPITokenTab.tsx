@@ -29,13 +29,12 @@ export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
       />
       <div className="flex flex-col px-8 pt-12">
         <div className="mb-6 flex flex-row-reverse">
-          <CreateAPITokenDialog accessToken={accessToken} />
+          <CreateAPITokenDialog />
         </div>
         <div className="w-full">
           <APITokenTable
             isError={apiTokens.isError}
             isLoading={apiTokens.isLoading}
-            accessToken={accessToken}
             tokens={apiTokens.data ?? []}
           />
         </div>

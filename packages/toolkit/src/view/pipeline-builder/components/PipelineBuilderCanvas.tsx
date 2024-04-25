@@ -6,6 +6,7 @@ import ReactFlow, {
   Controls,
   MiniMap,
   ReactFlowInstance,
+  SelectionMode,
 } from "reactflow";
 import {
   InstillStore,
@@ -13,16 +14,16 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { isEndComponent, isStartComponent } from "../lib/checkComponentType";
 import {
   ConnectorNode,
   EmptyNode,
-  EndOperatorNode,
   IteratorNode,
   OperatorNode,
-  StartOperatorNode,
+  ResponseNode,
+  TriggerNode,
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
+import { isResponseNode, isTriggerNode } from "../lib";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -39,10 +40,10 @@ const selector = (store: InstillStore) => ({
 });
 
 const nodeTypes = {
-  startNode: StartOperatorNode,
+  triggerNode: TriggerNode,
   connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
-  endNode: EndOperatorNode,
+  responseNode: ResponseNode,
   operatorNode: OperatorNode,
   iteratorNode: IteratorNode,
 };
@@ -50,6 +51,8 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
+
+const panOnDrag = [0, 1];
 
 export const PipelineBuilderCanvas = ({
   setReactFlowInstance,
@@ -105,10 +108,7 @@ export const PipelineBuilderCanvas = ({
         const nextChanges = changes.filter((change) => {
           if (change.type === "remove") {
             const node = nodes.find((node) => node.id === change.id);
-            if (
-              node?.data &&
-              (isStartComponent(node.data) || isEndComponent(node.data))
-            ) {
+            if (node?.data && (isTriggerNode(node) || isResponseNode(node))) {
               return false;
             } else {
               return true;
@@ -136,6 +136,10 @@ export const PipelineBuilderCanvas = ({
         includeHiddenNodes: true,
         padding: 20,
       }}
+      // To enable Figma-like zoom-in-out experience
+      panOnScroll={true}
+      panOnDrag={panOnDrag}
+      selectionMode={SelectionMode.Partial}
       // We want to position node based on their center
       nodeOrigin={[0.5, 0.5]}
       nodeTypes={nodeTypes}

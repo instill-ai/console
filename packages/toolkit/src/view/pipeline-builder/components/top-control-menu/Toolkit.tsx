@@ -10,11 +10,12 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { StartNodeData } from "../../type";
 import { Node } from "reactflow";
 import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { env } from "../../../../server";
+import { extractComponentFromNodes } from "../../lib/extractComponentFromNodes";
+import { TriggerNodeData } from "../../type";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
@@ -44,30 +45,29 @@ export const Toolkit = () => {
     let targetNodes = nodes;
 
     if (isEditingIterator && editingIteratorID) {
+      const iteratorComponents = extractComponentFromNodes(nodes);
       targetNodes = composeCompleteNodesUnderEditingIteratorMode({
         editingIteratorID,
-        iteratorComponents: nodes.map((node) => node.data),
+        iteratorComponents,
         allNodes: tempSavedNodesForEditingIteratorFlow,
       });
     }
 
     const input: GeneralRecord = {};
 
-    const startNode = targetNodes.find((e) => e.data.id === "start") as
-      | Node<StartNodeData>
+    const triggerNode = targetNodes.find((node) => node.id === "trigger") as
+      | Node<TriggerNodeData>
       | undefined;
 
-    if (!startNode) {
+    if (!triggerNode) {
       return "";
     }
 
-    if (!startNode.data.start_component.fields) {
+    if (!triggerNode.data.fields) {
       return "";
     }
 
-    for (const [key, value] of Object.entries(
-      startNode.data.start_component.fields
-    )) {
+    for (const [key, value] of Object.entries(triggerNode.data.fields)) {
       switch (value.instill_format) {
         case "string": {
           input[key] = "Please put your value here";
@@ -169,7 +169,7 @@ export const Toolkit = () => {
     <React.Fragment>
       <Button
         size="md"
-        variant="tertiaryColour"
+        variant="tertiaryGrey"
         className="flex !h-8 flex-row gap-x-2"
         onClick={() => setToolKitIsOpen((prev) => !prev)}
       >

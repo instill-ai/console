@@ -320,7 +320,7 @@ test("should generate oneOf form", async () => {
   const task = "TASK_IMAGE_TO_IMAGE";
 
   // We need to {{ to escape the special rule of testing library
-  const weights = "${start.value}";
+  const weights = "${trigger.value}";
 
   // Make sure the form is generated correctly
   const onSubmit = vi.fn();
@@ -1327,10 +1327,10 @@ test("should generate stability ai form", async () => {
   expect(stepScheduleEndField).toHaveValue("0.01");
 
   // Fill in the desire values
-  const prompts = "${start.prompts}";
-  const weights = "${start.weights}";
+  const prompts = "${trigger.prompts}";
+  const weights = "${trigger.weights}";
   const engine = "stable-diffusion-xl-1024-v1-0";
-  const initImage = "${start.image}";
+  const initImage = "${trigger.image}";
   const initImageMode = "IMAGE_STRENGTH";
   const seed = "0";
   const stylePreset = "enhance";

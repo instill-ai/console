@@ -38,19 +38,18 @@ export function useUserPipelines({
   return useQuery({
     queryKey: ["pipelines", userName],
     queryFn: async () => {
-      if (!userName) {
-        return Promise.reject(new Error("userName not provided"));
+      try {
+        return await fetchUserPipelines({
+          userName,
+          accessToken,
+          filter,
+          visibility,
+          disabledViewFull,
+          pageSize,
+        });
+      } catch (error) {
+        return Promise.reject(error);
       }
-
-      const pipelines = await fetchUserPipelines({
-        userName,
-        accessToken,
-        filter,
-        visibility,
-        disabledViewFull,
-        pageSize,
-      });
-      return Promise.resolve(pipelines);
     },
     enabled: enableQuery,
     retry: retry === false ? false : retry ? retry : 3,

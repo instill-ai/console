@@ -26,6 +26,7 @@ import {
   useAuthenticatedUser,
   useUserPipeline,
   useAppEntity,
+  useNavigateBackAfterLogin,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
@@ -45,6 +46,7 @@ export const Head = ({
   currentVersion: Nullable<string>;
 }) => {
   const router = useRouter();
+  const navigateBackAfterLogin = useNavigateBackAfterLogin();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -338,7 +340,7 @@ export const Head = ({
                 ) : (
                   <Button
                     onClick={() => {
-                      router.push("/login");
+                      navigateBackAfterLogin();
                     }}
                     className="!normal-case"
                     variant="secondaryGrey"

@@ -14,13 +14,14 @@ import {
 } from "../../../lib";
 import {
   checkIsValidPosition,
+  composeEdgesFromNodes,
   createGraphLayout,
-  createInitialGraphData,
   useSortedReleases,
 } from "../lib";
 import { Edge, Node } from "reactflow";
 import { NodeData } from "../type";
 import { getHumanReadableStringFromTime } from "../../../server";
+import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,
@@ -111,18 +112,20 @@ export const BottomBar = () => {
                             pipeline.data.metadata ?? null
                           )
                         ) {
-                          const { nodes, edges } = createInitialGraphData(
-                            pipeline.data.recipe.components,
+                          const nodes = createNodesFromPipelineRecipe(
+                            pipeline.data.recipe,
                             {
                               metadata: pipeline.data.metadata,
                             }
                           );
+                          const edges = composeEdgesFromNodes(nodes);
                           newNodes = nodes;
                           newEdges = edges;
                         } else {
-                          const { nodes, edges } = createInitialGraphData(
-                            pipeline.data.recipe.components
+                          const nodes = createNodesFromPipelineRecipe(
+                            pipeline.data.recipe
                           );
+                          const edges = composeEdgesFromNodes(nodes);
                           newNodes = nodes;
                           newEdges = edges;
                         }
@@ -157,18 +160,21 @@ export const BottomBar = () => {
                               release.metadata ?? null
                             )
                           ) {
-                            const { nodes, edges } = createInitialGraphData(
-                              release.recipe.components,
+                            const nodes = createNodesFromPipelineRecipe(
+                              release.recipe,
                               {
                                 metadata: release.metadata,
                               }
                             );
+                            const edges = composeEdgesFromNodes(nodes);
+
                             newNodes = nodes;
                             newEdges = edges;
                           } else {
-                            const { nodes, edges } = createInitialGraphData(
-                              release.recipe.components
+                            const nodes = createNodesFromPipelineRecipe(
+                              release.recipe
                             );
+                            const edges = composeEdgesFromNodes(nodes);
                             newNodes = nodes;
                             newEdges = edges;
                           }

@@ -1,7 +1,9 @@
 export * from "./useCreateUserPipeline";
 export * from "./useCreateUserPipelineRelease";
+export * from "./useCreateUserSecret";
 export * from "./useDeleteUserPipeline";
 export * from "./useDeleteUserPipelineRelease";
+export * from "./useDeleteUserSecret";
 export * from "./useInfinitePipelines";
 export * from "./useInfiniteUserPipelines";
 export * from "./useOperatorDefinition";
@@ -23,3 +25,6 @@ export * from "./useWatchUserPipelineReleases";
 export * from "./use-user-pipeline";
 export * from "./use-user-pipelines";
 export * from "./use-user-pipeline-releases";
+
+export * from "./use-user-secret";
+export * from "./use-user-secrets";

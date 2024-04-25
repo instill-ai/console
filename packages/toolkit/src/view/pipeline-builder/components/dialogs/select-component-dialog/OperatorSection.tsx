@@ -34,7 +34,10 @@ export const OperatorSection = ({
         {operatorDefinitions.isSuccess
           ? operatorDefinitions.data
               .filter((definition) => {
-                if (definition.id === "start" || definition.id === "end") {
+                if (
+                  definition.id === "trigger" ||
+                  definition.id === "response"
+                ) {
                   return false;
                 } else {
                   return true;

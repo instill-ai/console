@@ -14,7 +14,7 @@ export const PipelinesViewPageRender = () => {
       <AppTopbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="!p-0">
-          <ViewPipelines organizations={undefined} />
+          <ViewPipelines />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

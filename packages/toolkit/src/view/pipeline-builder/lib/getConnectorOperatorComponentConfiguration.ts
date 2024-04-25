@@ -11,6 +11,7 @@ export const getConnectorOperatorComponentConfiguration = (
       input: component.connector_component.input,
       task: component.connector_component.task,
       condition: component.connector_component.condition,
+      connection: component.connector_component.connection,
     };
   } else {
     return {

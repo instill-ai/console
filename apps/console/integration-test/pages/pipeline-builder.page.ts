@@ -17,7 +17,7 @@ export class PipelineBuilderPage {
   constructor(page: Page, pipelineID: string) {
     this.page = page;
     this.pipelineBuilderPagePath = `/admin/pipelines/${pipelineID}/builder`;
-    this.startNode = page.locator("[data-id='start']");
+    this.startNode = page.locator("[data-id='trigger']");
     this.startNodeAddFieldButton = this.startNode.getByRole("button", {
       name: "Add Field",
       exact: true,
@@ -25,7 +25,7 @@ export class PipelineBuilderPage {
     this.startNodeSaveFieldButton = this.startNode.getByRole("button", {
       name: "Save",
     });
-    this.endNode = page.locator("[data-id='end']");
+    this.endNode = page.locator("[data-id='response']");
     this.endNodeAddFieldButton = this.endNode.getByRole("button", {
       name: "Add Field",
       exact: true,

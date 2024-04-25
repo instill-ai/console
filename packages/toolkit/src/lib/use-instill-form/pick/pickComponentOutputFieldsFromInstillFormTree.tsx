@@ -191,6 +191,17 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree.instillFormat.includes("array:")) {
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
 
+    if (arrayType.includes("structured")) {
+      return (
+        <ComponentOutputFields.ObjectsField
+          mode={mode}
+          title={title}
+          objects={propertyValue}
+          hideField={hideField}
+        />
+      );
+    }
+
     switch (arrayType) {
       case "number":
       case "integer": {
@@ -255,17 +266,6 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         );
       }
 
-      case "semi-structured": {
-        return (
-          <ComponentOutputFields.ObjectsField
-            mode={mode}
-            title={title}
-            objects={propertyValue}
-            hideField={hideField}
-          />
-        );
-      }
-
       default: {
         return (
           <ComponentOutputFields.TextsField
@@ -281,6 +281,18 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
   // Process singular types
   const singularType = tree.instillFormat.split("/")[0];
+
+  // Process structured type like semi-structured, structured/detection_object...etc
+  if (singularType.includes("structured")) {
+    return (
+      <ComponentOutputFields.ObjectsField
+        mode={mode}
+        title={title}
+        objects={propertyValue}
+        hideField={hideField}
+      />
+    );
+  }
 
   switch (singularType) {
     case "number":

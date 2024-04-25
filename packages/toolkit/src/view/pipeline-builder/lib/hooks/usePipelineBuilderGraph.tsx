@@ -1,11 +1,9 @@
 import * as React from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import {
-  NodeData,
   checkIsValidPosition,
+  composeEdgesFromNodes,
   createGraphLayout,
-  createInitialGraphData,
 } from "../../..";
 import { useUserPipeline } from "../../../../lib/react-query-service";
 import {
@@ -13,8 +11,8 @@ import {
   useInstillStore,
 } from "../../../../lib/use-instill-store";
 import { useShallow } from "zustand/react/shallow";
-import { Node } from "reactflow";
 import { useAppEntity } from "../../../../lib";
+import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
   updatePipelineId: store.updatePipelineId,
@@ -24,7 +22,6 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updateIsOwner: store.updateIsOwner,
   updateCurrentVersion: store.updateCurrentVersion,
-  initializedByTemplateOrClone: store.initializedByTemplateOrClone,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
@@ -40,7 +37,6 @@ export function usePipelineBuilderGraph() {
     updateEdges,
     updateIsOwner,
     updateCurrentVersion,
-    initializedByTemplateOrClone,
     accessToken,
     enabledQuery,
     updatePipelineIsReadOnly,
@@ -57,73 +53,6 @@ export function usePipelineBuilderGraph() {
     accessToken,
     retry: false,
   });
-
-  // Initialize the pipeline graph of new pipeline
-  React.useEffect(() => {
-    if (!pipelineIsNew || graphIsInitialized) {
-      return;
-    }
-
-    updateCurrentVersion(() => "latest");
-    updateIsOwner(() => true);
-    updateCollapseAllNodes(() => false);
-
-    // We already initialized the pipeline when user select the template
-    if (initializedByTemplateOrClone) {
-      setGraphIsInitialized(true);
-      return;
-    }
-
-    const newNodes: Node<NodeData>[] = [
-      {
-        id: "start",
-        type: "startNode",
-        data: {
-          id: "start",
-          start_component: {
-            fields: {},
-          },
-          note: null,
-        },
-        position: { x: 0, y: 0 },
-      },
-      {
-        id: "end",
-        type: "endNode",
-        data: {
-          id: "end",
-          end_component: {
-            fields: {},
-          },
-          note: null,
-        },
-        position: { x: 320, y: 0 },
-      },
-    ];
-
-    // Because the pipeline is new, we need to initialize it with our default
-    // graph layout
-    // createGraphLayout(newNodes, [])
-    //   .then((graphData) => {
-    //     updateNodes(() => graphData.nodes);
-    //     updateEdges(() => graphData.edges);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-
-    updateNodes(() => newNodes);
-
-    setGraphIsInitialized(true);
-  }, [
-    graphIsInitialized,
-    initializedByTemplateOrClone,
-    pipelineIsNew,
-    updateIsOwner,
-    updateNodes,
-    updateEdges,
-    updateCurrentVersion,
-  ]);
 
   // Initialize the pipeline graph for existed pipeline
   React.useEffect(() => {
@@ -163,30 +92,28 @@ export function usePipelineBuilderGraph() {
     // If the node position data is valid, we can initialize the graph with
     // the node position data. Or we need to initialize the graph with our
     // default graph layout
+
     if (
       checkIsValidPosition(
         pipeline.data.recipe.components,
         pipeline.data.metadata
       )
     ) {
-      const initialGraphData = createInitialGraphData(
-        pipeline.data.recipe.components,
-        {
-          metadata: pipeline.data.metadata,
-        }
-      );
+      const nodes = createNodesFromPipelineRecipe(pipeline.data.recipe, {
+        metadata: pipeline.data.metadata,
+      });
+      const edges = composeEdgesFromNodes(nodes);
 
-      updateNodes(() => initialGraphData.nodes);
-      updateEdges(() => initialGraphData.edges);
+      updateNodes(() => nodes);
+      updateEdges(() => edges);
       setGraphIsInitialized(true);
       return;
     }
 
-    const initialGraphData = createInitialGraphData(
-      pipeline.data.recipe.components
-    );
+    const nodes = createNodesFromPipelineRecipe(pipeline.data.recipe);
+    const edges = composeEdgesFromNodes(nodes);
 
-    createGraphLayout(initialGraphData.nodes, initialGraphData.edges)
+    createGraphLayout(nodes, edges)
       .then((graphData) => {
         updateNodes(() => graphData.nodes);
         updateEdges(() => graphData.edges);
@@ -209,6 +136,7 @@ export function usePipelineBuilderGraph() {
     updateNodes,
     updateEdges,
     updatePipelineIsReadOnly,
+    updateCollapseAllNodes,
   ]);
 
   return { graphIsInitialized };

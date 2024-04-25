@@ -1,6 +1,5 @@
 export * from "./BackToLatestVersionTopBar";
 export * from "./BottomBar";
-export * from "./dialogs/set-up-component-dialog/SetupComponentDialog";
 export * from "./CustomEdge";
 export * from "./CustomHandle";
 export * from "./PipelineToolkitDialog";

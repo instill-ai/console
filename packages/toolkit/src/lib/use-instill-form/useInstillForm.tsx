@@ -15,6 +15,7 @@ import {
 } from "./pick";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
 import { GeneralRecord, Nullable } from "../type";
+import { Secret } from "../vdp-sdk";
 
 export type UseInstillFormOptions = {
   disabledAll?: boolean;
@@ -22,6 +23,7 @@ export type UseInstillFormOptions = {
   enableSmartHint?: boolean;
   componentID?: string;
   size?: "sm";
+  secrets?: Secret[];
 } & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
 
 export function useInstillForm(
@@ -35,6 +37,7 @@ export function useInstillForm(
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
   const size = options?.size;
+  const secrets = options?.secrets;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -127,6 +130,7 @@ export function useInstillForm(
         enableSmartHint,
         componentID,
         size,
+        secrets,
       }
     );
 
@@ -141,6 +145,7 @@ export function useInstillForm(
     enableSmartHint,
     componentID,
     size,
+    secrets,
   ]);
 
   return {

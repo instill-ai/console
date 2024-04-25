@@ -6,6 +6,7 @@ import {
   InstillJSONSchema,
   InstillJSONSchemaDefinition,
   CheckIsHidden,
+  InstillFormGroupItem,
 } from "../types";
 
 export type TransformInstillJSONSchemaToFormTreeOptions = {
@@ -113,34 +114,70 @@ export function transformInstillJSONSchemaToFormTree(
   // 2. Main process
 
   if (targetSchema.oneOf && targetSchema.oneOf.length > 0) {
-    const conditions = Object.fromEntries(
-      targetSchema.oneOf.map((condition) => {
-        if (typeof condition === "boolean") {
-          return [];
+    const conditionEntries: [string, InstillFormGroupItem][] = [];
+
+    for (const condition of targetSchema.oneOf) {
+      if (typeof condition === "boolean") {
+        continue;
+      }
+
+      const { constKey, constValue } = pickConstInfoFromOneOfCondition(
+        condition.properties ?? {}
+      );
+
+      // Some time oneOf field will also have properties fields to support
+      // general fields among all the conditions
+      const conditionProperties = targetSchema.properties
+        ? {
+            ...condition.properties,
+            ...targetSchema.properties,
+          }
+        : condition.properties;
+
+      // Some of the Airbyte schema don't have the const field, in this
+      // scenario, we will use the title as the constValue
+      if (!constKey || !constValue) {
+        if (condition.title) {
+          conditionEntries.push([
+            condition.title,
+            transformInstillJSONSchemaToFormTree(
+              {
+                type: targetSchema.type,
+                ...condition,
+                properties: conditionProperties,
+              },
+              {
+                parentSchema,
+                key,
+                path,
+                checkIsHidden,
+              }
+            ) as InstillFormGroupItem,
+          ]);
         }
 
-        const { constKey, constValue } = pickConstInfoFromOneOfCondition(
-          condition.properties ?? {}
-        );
+        continue;
+      }
 
-        if (!constKey || !constValue) {
-          return [];
-        }
+      conditionEntries.push([
+        constValue,
+        transformInstillJSONSchemaToFormTree(
+          {
+            type: targetSchema.type,
+            ...condition,
+            properties: conditionProperties,
+          },
+          {
+            parentSchema,
+            key,
+            path,
+            checkIsHidden,
+          }
+        ) as InstillFormGroupItem,
+      ]);
+    }
 
-        return [
-          constValue,
-          transformInstillJSONSchemaToFormTree(
-            { type: targetSchema.type, ...condition },
-            {
-              parentSchema,
-              key,
-              path,
-              checkIsHidden,
-            }
-          ),
-        ];
-      })
-    );
+    const conditions = Object.fromEntries(conditionEntries);
 
     const constField = targetSchema.oneOf[0].properties
       ? Object.entries(targetSchema.oneOf[0].properties).find(
@@ -288,6 +325,7 @@ export function transformInstillJSONSchemaToFormTree(
       isRequired,
       jsonSchema: targetSchema,
       properties: properties ?? [],
+      isHidden,
     };
   }
 

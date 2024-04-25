@@ -11,6 +11,7 @@ import {
 
 export * from "./user";
 export * from "./instillUserRoles";
+export * from "./secrets";
 
 export const Setting = {
   Root: SettingRoot,

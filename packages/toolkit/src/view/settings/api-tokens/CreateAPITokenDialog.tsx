@@ -2,32 +2,48 @@
 
 import * as z from "zod";
 import * as React from "react";
-import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 import {
-  Nullable,
+  Button,
+  Dialog,
+  Form,
+  Input,
+  useToast,
+} from "@instill-ai/design-system";
+import {
+  getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
   useCreateApiToken,
+  useInstillStore,
 } from "../../../lib";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingSpin } from "../../../components";
+import { validateInstillID } from "../../../server";
+import { InstillErrors } from "../../../constant";
 
-export type CreateAPITokenDialogProps = {
-  accessToken: Nullable<string>;
-  onCreate?: () => void;
-};
+const CreateTokenSchema = z
+  .object({
+    id: z.string().min(1, "Token id is required"),
+  })
+  .superRefine((state, ctx) => {
+    if (!validateInstillID(state.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["id"],
+      });
+    }
+  });
 
-const CreateTokenSchema = z.object({
-  id: z.string().nonempty(),
-});
-
-export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
+export const CreateAPITokenDialog = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
-  const { accessToken, onCreate } = props;
   const [isLoading, setIsLoading] = React.useState(false);
+  const accessToken = useInstillStore((store) => store.accessToken);
+
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof CreateTokenSchema>>({
     resolver: zodResolver(CreateTokenSchema),
@@ -57,11 +73,13 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
         sendAmplitudeData("create_api_token");
       }
 
-      if (onCreate) {
-        onCreate();
-      }
-
       setOpen(false);
+
+      toast({
+        variant: "alert-success",
+        description: "Token created successfully",
+        size: "small",
+      });
     } catch (error) {
       setIsLoading(false);
       if (!isAxiosError(error)) return;
@@ -74,9 +92,13 @@ export const CreateAPITokenDialog = (props: CreateAPITokenDialogProps) => {
         return;
       }
 
-      form.setError("id", {
-        type: "manual",
-        message: error.response?.data.message,
+      toast({
+        title: "Failed to create API Token",
+        variant: "alert-error",
+        size: "large",
+        description: isAxiosError(error)
+          ? getInstillApiErrorMessage(error)
+          : null,
       });
     }
   };

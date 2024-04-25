@@ -13,6 +13,7 @@ import {
   useAppEntity,
   useSmartHint,
   useUserPipeline,
+  useUserSecrets,
 } from "../../lib";
 import {
   BottomBar,
@@ -38,6 +39,7 @@ const selector = (store: InstillStore) => ({
   initPipelineBuilder: store.initPipelineBuilder,
   warnUnsavedChangesDialogState: store.warnUnsavedChangesDialogState,
   updateWarnUnsavdChangesDialogState: store.updateWarnUnsavdChangesDialogState,
+  updateEntitySecrets: store.updateEntitySecrets,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -55,15 +57,27 @@ export const PipelineBuilderMainView = () => {
     initPipelineBuilder,
     warnUnsavedChangesDialogState,
     updateWarnUnsavdChangesDialogState,
+    updateEntitySecrets,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
 
-  const emtity = useAppEntity();
+  const entity = useAppEntity();
+
+  const entitySecrets = useUserSecrets({
+    entityName: entity.data.entityName,
+    accessToken,
+    enabled: enabledQuery,
+  });
+
+  React.useEffect(() => {
+    if (!entitySecrets.isSuccess) return;
+    updateEntitySecrets(() => entitySecrets.data);
+  }, [entitySecrets.isSuccess, entitySecrets.data, updateEntitySecrets]);
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && emtity.isSuccess && !pipelineIsNew,
-    pipelineName: emtity.data.pipelineName,
+    enabled: enabledQuery && entity.isSuccess && !pipelineIsNew,
+    pipelineName: entity.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -156,13 +170,14 @@ export const PipelineBuilderMainView = () => {
               }));
             }}
             onDiscard={() => {
-              initPipelineBuilder();
               if (warnUnsavedChangesDialogState.confirmNavigation) {
                 warnUnsavedChangesDialogState.confirmNavigation();
               }
+              initPipelineBuilder();
             }}
             onSave={async () => {
               await savePipeline();
+              initPipelineBuilder();
               if (warnUnsavedChangesDialogState.confirmNavigation) {
                 warnUnsavedChangesDialogState.confirmNavigation();
               }

@@ -11,13 +11,13 @@ import { AutoresizeInputWrapper } from "../../../../../components";
 import { InstillStore, useInstillStore } from "../../../../../lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
-import { composeEdgesFromComponents } from "../../../lib";
-import { validateInstillID } from "../../../../../server";
 import {
-  isConnectorComponent,
-  isIteratorComponent,
-  isOperatorComponent,
-} from "../../../lib/checkComponentType";
+  composeEdgesFromNodes,
+  isConnectorNode,
+  isIteratorNode,
+  isOperatorNode,
+} from "../../../lib";
+import { validateInstillID } from "../../../../../server";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -107,29 +107,11 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
           const newNodes = nodes.map((node) => {
             if (node.id === currentNodeID) {
-              if (isConnectorComponent(node.data)) {
-                return {
-                  ...node,
-                  id: newID,
-                  data: {
-                    ...node.data,
-                    id: newID,
-                  },
-                };
-              }
-
-              if (isOperatorComponent(node.data)) {
-                return {
-                  ...node,
-                  id: newID,
-                  data: {
-                    ...node.data,
-                    id: newID,
-                  },
-                };
-              }
-
-              if (isIteratorComponent(node.data)) {
+              if (
+                isConnectorNode(node) ||
+                isOperatorNode(node) ||
+                isIteratorNode(node)
+              ) {
                 return {
                   ...node,
                   id: newID,
@@ -142,9 +124,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
             }
             return node;
           });
-          const newEdges = composeEdgesFromComponents(
-            newNodes.map((node) => node.data)
-          );
+          const newEdges = composeEdgesFromNodes(newNodes);
           updateNodes(() => newNodes);
           updateEdges(() => newEdges);
 
@@ -176,7 +156,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
   );
 
   return (
-    <div className="flex flex-row">
+    <div className="nodrag nowheel flex flex-row">
       <Form.Root {...form}>
         <form className="my-auto flex">
           <Form.Field

@@ -28,4 +28,13 @@ module.exports = {
   experimental: {
     forceSwcTransforms: true,
   },
+  redirects: async function () {
+    return [
+      {
+        source: "/logout",
+        destination: "/api/auth/logout",
+        permanent: false,
+      },
+    ];
+  },
 };

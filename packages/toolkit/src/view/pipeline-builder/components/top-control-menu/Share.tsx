@@ -16,7 +16,7 @@ export const Share = () => {
     <React.Fragment>
       <Button
         size="md"
-        variant="tertiaryColour"
+        variant="tertiaryGrey"
         className="flex !h-8 flex-row gap-x-2"
         onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
       >

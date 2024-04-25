@@ -9,7 +9,7 @@ import {
 } from "../../../../../lib";
 import { IteratorNodeData } from "../../../type";
 import { Button } from "@instill-ai/design-system";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
@@ -47,10 +47,7 @@ export const AddOutputButton = ({
           }
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (
-                node.data.id === editingIteratorID &&
-                isIteratorComponent(node.data)
-              ) {
+              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {

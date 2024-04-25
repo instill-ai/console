@@ -6,7 +6,6 @@ import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
 import { Share } from "./Share";
 import { Release } from "./Release";
-import { SetupComponentDialog } from "../dialogs/set-up-component-dialog";
 import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
@@ -62,8 +61,8 @@ export const TopControlMenu = ({
             <SelectComponentDialog
               open={open}
               onOpenChange={setOpen}
-              onSelect={(definition, connector) => {
-                constructNode(definition, connector);
+              onSelect={(definition) => {
+                constructNode(definition);
                 setOpen(false);
               }}
             />
@@ -80,7 +79,6 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <SetupComponentDialog entityName={entity.data.entityName} />
       <PublishPipelineDialog
         pipelineName={entity.data.pipelineName}
         entity={entity.data.entity}

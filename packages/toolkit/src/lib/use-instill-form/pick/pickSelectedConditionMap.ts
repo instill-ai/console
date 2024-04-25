@@ -1,10 +1,7 @@
 import { dot } from "../../dot";
 import { GeneralRecord } from "../../type";
-import {
-  InstillFormItem,
-  InstillFormTree,
-  SelectedConditionMap,
-} from "../types";
+import { InstillFormTree, SelectedConditionMap } from "../types";
+import { pickDefaultCondition } from "./pickDefaultCondition";
 
 export function pickSelectedConditionMap({
   tree,
@@ -53,16 +50,16 @@ export function pickSelectedConditionMap({
 
   if (tree._type === "formCondition") {
     let map: SelectedConditionMap = {};
+    const defaultCondition = pickDefaultCondition(tree);
 
-    const constField = tree.conditions[
-      Object.keys(tree.conditions)[0]
-    ].properties.find((e) => "const" in e) as InstillFormItem | undefined;
-
-    if (constField && constField.path) {
-      const initialConditionValue = dot.getter(initialValue, constField.path);
+    if (defaultCondition?.path) {
+      const initialConditionValue = dot.getter(
+        initialValue,
+        defaultCondition.path
+      );
 
       if (initialConditionValue) {
-        map[constField.path] = initialConditionValue;
+        map[defaultCondition.path] = initialConditionValue;
       }
     }
 

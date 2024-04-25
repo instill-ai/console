@@ -3,24 +3,31 @@
 import {
   Nullable,
   PipelineConnectorComponent,
-  PipelineEndComponent,
   PipelineRecipe,
-  PipelineStartComponent,
   PipelineOperatorComponent,
   PipelineIteratorComponent,
+  GeneralRecord,
+  PipelineTriggerRequestFields,
+  PipelineTriggerResponseFields,
 } from "../../lib";
 
 export type ConnectorNodeData = {
   note: Nullable<string>;
 } & PipelineConnectorComponent;
 
-export type StartNodeData = {
+export type TriggerNodeData = {
+  id: "trigger";
   note: Nullable<string>;
-} & PipelineStartComponent;
+  metadata?: GeneralRecord;
+  fields: PipelineTriggerRequestFields;
+};
 
-export type EndNodeData = {
+export type ResponseNodeData = {
+  id: "response";
   note: Nullable<string>;
-} & PipelineEndComponent;
+  metadata?: GeneralRecord;
+  fields: PipelineTriggerResponseFields;
+};
 
 export type OperatorNodeData = {
   note: Nullable<string>;
@@ -32,8 +39,8 @@ export type IteratorNodeData = {
 
 export type NodeData =
   | ConnectorNodeData
-  | StartNodeData
-  | EndNodeData
+  | TriggerNodeData
+  | ResponseNodeData
   | OperatorNodeData
   | IteratorNodeData;
 

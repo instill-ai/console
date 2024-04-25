@@ -7,20 +7,29 @@ import { AmplitudeProvider } from "./amplitude-client-provider";
 import { ReactQueryProvider } from "./react-query-client-provider";
 import { usePathname } from "next/navigation";
 import {
+  InstillStore,
   Nullable,
   pathnameEvaluator,
   useCreateResourceFormStore,
   useInstillStore,
   useModalStore,
+  useShallow,
 } from "@instill-ai/toolkit";
+
+const selector = (store: InstillStore) => ({
+  initPipelineBuilder: store.initPipelineBuilder,
+  initIteratorRelatedState: store.initIteratorRelatedState,
+});
 
 export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
-  const initPipelineBuilder = useInstillStore(
-    (store) => store.initPipelineBuilder,
+
+  const { initPipelineBuilder, initIteratorRelatedState } = useInstillStore(
+    useShallow(selector),
   );
+
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (store) => store.init,
   );
@@ -29,6 +38,12 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
+    // When ever user leave /builder page to what ever destination
+    // we need to re-init the iterator related state
+    if (pathnameEvaluator.isPipelineBuilderPage(previousPathname)) {
+      initIteratorRelatedState();
+    }
+
     // Init when navigate out of builder page, except navigate into
     // overview page
     if (

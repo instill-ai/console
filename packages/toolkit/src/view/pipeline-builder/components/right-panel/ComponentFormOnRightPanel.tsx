@@ -8,6 +8,7 @@ import { useCheckIsHidden, useUpdaterOnRightPanel } from "../../lib";
 import { ConnectorNodeData, OperatorNodeData } from "../../type";
 import { isConnectorComponent } from "../../lib/checkComponentType";
 import { getConnectorOperatorComponentConfiguration } from "../../lib";
+import { useInstillStore } from "../../../../lib";
 
 export const ComponentFormOnRightPanel = ({
   nodeData,
@@ -17,6 +18,7 @@ export const ComponentFormOnRightPanel = ({
   disabledAll?: boolean;
 }) => {
   const checkIsHidden = useCheckIsHidden("onRightPanel");
+  const entitySecrets = useInstillStore((store) => store.entitySecrets);
 
   const definition = React.useMemo(() => {
     if (isConnectorComponent(nodeData)) {
@@ -34,10 +36,11 @@ export const ComponentFormOnRightPanel = ({
     configuration,
     {
       disabledAll,
-      chooseTitleFrom: "key",
+      chooseTitleFrom: "title",
       checkIsHidden,
       enableSmartHint: true,
       componentID: nodeData.id,
+      secrets: entitySecrets,
     }
   );
 

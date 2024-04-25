@@ -5,6 +5,7 @@ import { Button, Icons } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useSavePipeline } from "../../lib";
 import { LoadingSpin } from "../../../../components";
+import { useRef } from "react";
 
 const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
@@ -17,6 +18,7 @@ export const Run = ({
 }: {
   setIsSaving: (value: boolean) => void;
 }) => {
+  const runButtonRef = useRef<HTMLButtonElement>(null);
   const { pipelineRecipeIsDirty, isTriggeringPipeline, isEditingIterator } =
     useInstillStore(useShallow(selector));
 
@@ -24,15 +26,17 @@ export const Run = ({
 
   return (
     <Button
+      ref={runButtonRef}
       size="md"
       variant="tertiaryColour"
-      form="start-operator-trigger-pipeline-form"
-      disabled={pipelineRecipeIsDirty || isEditingIterator}
+      form="trigger-node-trigger-pipeline-form"
+      disabled={isEditingIterator}
       className="!h-8 !items-center gap-x-2"
       onClick={async (e) => {
         if (pipelineRecipeIsDirty) {
-          await savePipeline();
           e.preventDefault();
+          await savePipeline();
+          runButtonRef.current?.click();
         }
       }}
     >
@@ -40,14 +44,7 @@ export const Run = ({
       {isTriggeringPipeline ? (
         <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
       ) : (
-        <Icons.PlayCircle
-          className={cn(
-            "h-4 w-4",
-            pipelineRecipeIsDirty
-              ? "stroke-[#bfbfbf]"
-              : "stroke-semantic-accent-default"
-          )}
-        />
+        <Icons.PlayCircle className="h-4 w-4 stroke-semantic-accent-default" />
       )}
     </Button>
   );

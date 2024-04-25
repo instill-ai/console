@@ -9,7 +9,7 @@ import { useShallow } from "zustand/react/shallow";
 import { ControlPanel } from "./ControlPanel";
 import { NodeDropdownMenu } from "../common";
 import {
-  composeEdgesFromComponents,
+  composeEdgesFromNodes,
   generateUniqueIndex,
   getAllComponentID,
   transformConnectorDefinitionIDToComponentIDPrefix,
@@ -25,6 +25,7 @@ import {
   isIteratorComponent,
   isOperatorComponent,
 } from "../../../lib/checkComponentType";
+import { extractComponentFromNodes } from "../../../lib/extractComponentFromNodes";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -44,7 +45,6 @@ const selector = (store: InstillStore) => ({
 
 export const ConnectorOperatorControlPanel = ({
   nodeID,
-
   nodeIsCollapsed,
   setNodeIsCollapsed,
   handleToggleNote,
@@ -74,7 +74,7 @@ export const ConnectorOperatorControlPanel = ({
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
-  const componentTypeName = React.useMemo(() => {
+  const nodeTypeName = React.useMemo(() => {
     if (isOperatorComponent(nodeData)) {
       return "Operator Component";
     }
@@ -92,9 +92,7 @@ export const ConnectorOperatorControlPanel = ({
 
   const handelDeleteNode = React.useCallback(() => {
     const newNodes = nodes.filter((node) => node.id !== nodeID);
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
     updateNodes(() => newNodes);
@@ -149,10 +147,12 @@ export const ConnectorOperatorControlPanel = ({
     }
 
     // Generate a new component index
+    const components = extractComponentFromNodes(nodes);
+
     const nodeIndex = generateUniqueIndex(
       isEditingIterator
         ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-        : getAllComponentID(nodes.map((node) => node.data)),
+        : getAllComponentID(components),
       nodePrefix
     );
 
@@ -170,9 +170,7 @@ export const ConnectorOperatorControlPanel = ({
         data: nodeData,
       },
     ];
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -197,7 +195,7 @@ export const ConnectorOperatorControlPanel = ({
       <NodeDropdownMenu.Root
         isOpen={moreOptionsIsOpen}
         setIsOpen={setMoreOptionsIsOpen}
-        componentTypeName={componentTypeName}
+        nodeTypeName={nodeTypeName}
       >
         <NodeDropdownMenu.Item
           onClick={(e) => {

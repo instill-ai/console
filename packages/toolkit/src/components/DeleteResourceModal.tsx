@@ -9,7 +9,6 @@ import {
 } from "@instill-ai/design-system";
 import {
   useModalStore,
-  type ConnectorWithDefinition,
   type Model,
   type Pipeline,
   type Nullable,
@@ -17,7 +16,7 @@ import {
 } from "../lib";
 
 export type DeleteResourceModalProps = {
-  resource: Nullable<ConnectorWithDefinition | Pipeline | Model>;
+  resource: Nullable<Pipeline | Model>;
   handleDeleteResource: () => void;
 };
 
@@ -46,29 +45,7 @@ export const DeleteResourceModal = ({
     let title: string;
     let description: string;
 
-    if ("connector_definition" in resource) {
-      if (resource.type === "CONNECTOR_TYPE_OPERATOR") {
-        title = "Delete This Operator";
-        description =
-          "This action cannot be undone. This will permanently delete the operator.";
-      } else if (resource.type === "CONNECTOR_TYPE_DATA") {
-        title = "Delete This Data";
-        description =
-          "This action cannot be undone. This will permanently delete the data.";
-      } else if (resource.type === "CONNECTOR_TYPE_AI") {
-        title = "Delete This AI";
-        description =
-          "This action cannot be undone. This will permanently delete the AI.";
-      } else if (resource.type === "CONNECTOR_TYPE_APPLICATION") {
-        title = "Delete This Application";
-        description =
-          "This action cannot be undone. This will permanently delete the application.";
-      } else {
-        title = "Delete This Connector";
-        description =
-          "This action cannot be undone. This will permanently delete the connector.";
-      }
-    } else if ("recipe" in resource) {
+    if ("recipe" in resource) {
       title = "Delete This Pipeline";
       description =
         "This action cannot be undone. This will permanently delete the pipeline.";

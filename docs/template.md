@@ -18,7 +18,7 @@ For example, this is a pipeline with basic configuration
   "version": "v1beta",
   "components": [
     {
-      "id": "start",
+      "id": "trigger",
       "resource_name": "",
       "configuration": {
         "metadata": {}
@@ -26,7 +26,7 @@ For example, this is a pipeline with basic configuration
       "definition_name": "operator-definitions/start"
     },
     {
-      "id": "end",
+      "id": "response",
       "resource_name": "",
       "configuration": {
         "input": {},
@@ -39,7 +39,7 @@ For example, this is a pipeline with basic configuration
       "resource_name": "users/admin/connectors/yoyo",
       "configuration": {
         "input": {
-          "image_base64": "{ start.image }",
+          "image_base64": "{ trigger.image }",
           "model_id": "hello",
           "model_namespace": "instill-ai"
         },
@@ -82,7 +82,7 @@ This is the correct template after cleaning it up
       "resource": null,
       "configuration": {
         "input": {
-          "image_base64": "{ start.image }",
+          "image_base64": "{ trigger.image }",
           "model_id": "hello",
           "model_namespace": "instill-ai"
         },

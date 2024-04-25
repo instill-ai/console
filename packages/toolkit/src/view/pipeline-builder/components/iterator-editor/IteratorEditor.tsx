@@ -6,18 +6,21 @@ import { Button, Icons, Separator } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
+  PipelineComponent,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
 import { SelectComponentDialog } from "..";
 import {
-  composeEdgesFromComponents,
+  composeEdgesFromNodes,
   composePipelineMetadataFromNodes,
+  isIteratorNode,
+  isResponseNode,
+  isTriggerNode,
   useConstructNodeFromDefinition,
 } from "../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { PipelineBuilderCanvas } from "../PipelineBuilderCanvas";
-import { isIteratorComponent } from "../../lib/checkComponentType";
 import { IteratorInput } from "./iterator-input/IteratorInput";
 import { IteratorOutput } from "./iterator-output/IteratorOutput";
 
@@ -73,9 +76,13 @@ export const IteratorEditor = ({
               (node) => {
                 if (
                   node.data.id === editingIteratorID &&
-                  isIteratorComponent(node.data)
+                  isIteratorNode(node)
                 ) {
-                  const components = nodes.map((node) => node.data);
+                  const components = nodes
+                    .filter(
+                      (node) => !isTriggerNode(node) || !isResponseNode(node)
+                    )
+                    .map((node) => node.data) as PipelineComponent[];
 
                   return {
                     ...node,
@@ -94,9 +101,7 @@ export const IteratorEditor = ({
               }
             );
 
-            const newEdges = composeEdgesFromComponents(
-              newNodes.map((node) => node.data)
-            );
+            const newEdges = composeEdgesFromNodes(newNodes);
 
             updateNodes(() => newNodes);
             updateEdges(() => newEdges);
@@ -142,8 +147,8 @@ export const IteratorEditor = ({
       <SelectComponentDialog
         open={selectDefinitionDialogIsOpen}
         onOpenChange={setSelectDefinitionDialogIsOpen}
-        onSelect={(definition, connector) => {
-          constructNode(definition, connector);
+        onSelect={(definition) => {
+          constructNode(definition);
           setSelectDefinitionDialogIsOpen(false);
         }}
         disabledTrigger={true}
