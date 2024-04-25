@@ -70,6 +70,16 @@ export const CreateSecretDialog = () => {
     },
   });
 
+  const { reset } = form;
+
+  React.useEffect(() => {
+    reset({
+      id: "",
+      value: "",
+      description: "",
+    });
+  }, [open]);
+
   const createSecret = useCreateUserSecret();
   const handleCreateAPIToken = async (
     data: z.infer<typeof CreateSecretSchema>
