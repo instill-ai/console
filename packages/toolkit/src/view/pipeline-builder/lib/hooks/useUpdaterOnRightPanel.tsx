@@ -25,6 +25,7 @@ const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
 });
 
@@ -37,8 +38,13 @@ export function useUpdaterOnRightPanel({
   ValidatorSchema: ZodAnyValidatorSchema;
   currentNodeData: ConnectorNodeData | OperatorNodeData;
 }) {
-  const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
-    useInstillStore(useShallow(selector));
+  const {
+    nodes,
+    updateNodes,
+    updateEdges,
+    pipelineIsReadOnly,
+    updatePipelineRecipeIsDirty,
+  } = useInstillStore(useShallow(selector));
 
   const {
     getValues,
@@ -109,6 +115,10 @@ export function useUpdaterOnRightPanel({
   // We don't fully rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
+    if (pipelineIsReadOnly) {
+      return;
+    }
+
     const parsed = ValidatorSchema.safeParse(values);
 
     const configuration =
@@ -140,5 +150,6 @@ export function useUpdaterOnRightPanel({
     isDirty,
     trigger,
     debounceUpdater,
+    pipelineIsReadOnly,
   ]);
 }

@@ -30,6 +30,7 @@ const selector = (store: InstillStore) => ({
   currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updateCurrentAdvancedConfigurationNodeID:
     store.updateCurrentAdvancedConfigurationNodeID,
+  pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
 export function useUpdaterOnNode({
@@ -48,6 +49,7 @@ export function useUpdaterOnNode({
     updatePipelineRecipeIsDirty,
     currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
+    pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
   const { getValues } = form;
@@ -110,6 +112,10 @@ export function useUpdaterOnNode({
   // We don't rely on the react-hook-form isValid and isDirty state
   // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
+    if (pipelineIsReadOnly) {
+      return;
+    }
+
     const parsed = ValidatorSchema.safeParse(values);
     const configuration =
       getConnectorOperatorComponentConfiguration(currentNodeData);
@@ -153,5 +159,6 @@ export function useUpdaterOnNode({
     nodes,
     updateEdges,
     debounceUpdater,
+    pipelineIsReadOnly,
   ]);
 }
