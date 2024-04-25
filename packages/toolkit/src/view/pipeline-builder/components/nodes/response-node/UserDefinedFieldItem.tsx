@@ -100,7 +100,7 @@ export const UserDefinedFieldItem = ({
           </div>
         ) : null}
       </div>
-      <p className="nodrag nowheel rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-1.5 py-[9px] product-body-text-4-regular">
+      <p className="nodrag nowheel rounded-sm border border-semantic-bg-line bg-semantic-bg-secondary px-1.5 py-[9px] product-body-text-4-regular">
         {fieldValue}
       </p>
     </div>

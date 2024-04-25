@@ -169,7 +169,7 @@ export const Toolkit = () => {
     <React.Fragment>
       <Button
         size="md"
-        variant="tertiaryColour"
+        variant="tertiaryGrey"
         className="flex !h-8 flex-row gap-x-2"
         onClick={() => setToolKitIsOpen((prev) => !prev)}
       >
