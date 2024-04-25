@@ -52,7 +52,7 @@ const edgeTypes = {
   customEdge: CustomEdge,
 };
 
-const panOnDrag = [1, 2];
+const panOnDrag = [0, 1];
 
 export const PipelineBuilderCanvas = ({
   setReactFlowInstance,
