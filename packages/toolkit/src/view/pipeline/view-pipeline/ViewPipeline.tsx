@@ -74,33 +74,39 @@ export const ViewPipeline = () => {
   }, [pipeline.isSuccess, pipeline.data, currentVersion]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <Head
         handleVersion={(version) => {
           setCurrentVersion(version);
         }}
         currentVersion={currentVersion}
       />
-      <div className="flex flex-1 flex-row px-8">
-        <div className="w-7/12 gap-y-6 py-10 pr-10">
-          <ReadOnlyPipelineBuilder
-            pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
-            recipe={pipelineRelease?.recipe || pipeline.data?.recipe || null}
-            metadata={
-              pipelineRelease?.metadata || pipeline.data?.metadata || null
-            }
-            className="h-[378px] w-full"
-          />
-          <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
-            Pipeline Description
+      <div className="flex justify-center">
+        <div className="w-[1440px]">
+          <div className="flex flex-1 flex-row px-8">
+            <div className="w-7/12 gap-y-6 py-10 pr-10">
+              <ReadOnlyPipelineBuilder
+                pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
+                recipe={
+                  pipelineRelease?.recipe || pipeline.data?.recipe || null
+                }
+                metadata={
+                  pipelineRelease?.metadata || pipeline.data?.metadata || null
+                }
+                className="h-[378px] w-full"
+              />
+              <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
+                Pipeline Description
+              </div>
+              <Readme
+                isOwner={isOwner}
+                readme={pipeline.isSuccess ? pipeline.data.readme : null}
+              />
+            </div>
+            <div className="w-5/12 py-10 pr-4">
+              <InOutPut currentVersion={currentVersion} />
+            </div>
           </div>
-          <Readme
-            isOwner={isOwner}
-            readme={pipeline.isSuccess ? pipeline.data.readme : null}
-          />
-        </div>
-        <div className="w-5/12 py-10 pr-4">
-          <InOutPut currentVersion={currentVersion} />
         </div>
       </div>
     </div>
