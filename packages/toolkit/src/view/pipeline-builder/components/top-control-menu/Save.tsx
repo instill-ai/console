@@ -44,7 +44,7 @@ export const Save = ({
       className="flex !h-8 cursor-pointer flex-row !items-center gap-x-2"
       onClick={savePipeline}
       disabled={canSave ? isSaving : true}
-      variant="tertiaryColour"
+      variant="tertiaryGrey"
     >
       Save
       {isSaving ? (

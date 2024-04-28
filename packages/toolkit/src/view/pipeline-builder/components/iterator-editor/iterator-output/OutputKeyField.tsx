@@ -8,7 +8,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
@@ -36,10 +36,7 @@ export const OutputKeyField = ({
     timer.current = window.setTimeout(() => {
       updateTempSavedNodesForEditingIteratorFlow((nodes) =>
         nodes.map((node) => {
-          if (
-            node.data.id === editingIteratorID &&
-            isIteratorComponent(node.data)
-          ) {
+          if (node.data.id === editingIteratorID && isIteratorNode(node)) {
             delete node.data.iterator_component.output_elements[outputKey];
 
             return {

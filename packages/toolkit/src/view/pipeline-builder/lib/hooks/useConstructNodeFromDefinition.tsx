@@ -2,7 +2,6 @@ import * as React from "react";
 import { Position, ReactFlowInstance } from "reactflow";
 import {
   ConnectorDefinition,
-  ConnectorWithDefinition,
   InstillStore,
   IteratorDefinition,
   Nullable,
@@ -13,6 +12,7 @@ import {
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 import { generateUniqueIndex } from "../generateUniqueIndex";
 import { getAllComponentID } from "../getAllComponentID";
+import { extractComponentFromNodes } from "../extractComponentFromNodes";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -38,8 +38,7 @@ export function useConstructNodeFromDefinition({
 
   return React.useCallback(
     (
-      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
-      connector?: ConnectorWithDefinition
+      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
     ) => {
       if (!reactFlowInstance) return;
 
@@ -93,10 +92,11 @@ export function useConstructNodeFromDefinition({
       // iterator, so we need to group the two set of nodes together. Under the
       // editing iterator mode, nodes will be the nodes in the iterator, and
       // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
+      const components = extractComponentFromNodes(nodes);
       const nodeIndex = generateUniqueIndex(
         isEditingIterator
           ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-          : getAllComponentID(nodes.map((node) => node.data)),
+          : getAllComponentID(components),
         nodePrefix
       );
 
@@ -145,18 +145,12 @@ export function useConstructNodeFromDefinition({
             data: {
               id: nodeID,
               connector_component: {
-                connector_name: connector ? connector.name : null,
-                connector: connector
-                  ? {
-                      ...connector,
-                      connector_definition: null,
-                    }
-                  : null,
                 definition_name: definition.name,
                 definition,
                 input: {},
                 task: "",
                 condition: null,
+                connection: {},
               },
               note: null,
             },

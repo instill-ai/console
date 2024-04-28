@@ -11,11 +11,11 @@ export async function fetchUserPipeline({
   accessToken: Nullable<string>;
   shareCode?: string;
 }) {
-  if (!pipelineName) {
-    return Promise.reject(new Error("invalid pipeline name"));
-  }
-
   try {
+    if (!pipelineName) {
+      throw new Error("invalid pipeline name");
+    }
+
     const pipeline = await getUserPipelineQuery({
       pipelineName,
       accessToken,

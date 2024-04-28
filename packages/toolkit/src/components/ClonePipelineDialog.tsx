@@ -35,7 +35,6 @@ import {
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
-import { removeSensitiveDataInPipelineRecipe } from "../view";
 import { env, validateInstillID } from "../server";
 import { useRouter } from "next/navigation";
 
@@ -88,12 +87,12 @@ export const ClonePipelineDialog = ({
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
-    enabled: enabledQuery,
+    enabled: enabledQuery && dialogIsOpen,
     accessToken,
   });
 
   const organizations = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess,
+    enabled: enabledQuery && me.isSuccess && dialogIsOpen,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
@@ -144,10 +143,8 @@ export const ClonePipelineDialog = ({
       id: data.id,
       recipe: {
         version: pipeline.recipe.version,
-        components: removeSensitiveDataInPipelineRecipe(
-          pipeline.recipe.components,
-          pipeline.owner_name === me.data.name ? false : true
-        ),
+        trigger: pipeline.recipe.trigger,
+        components: pipeline.recipe.components,
       },
 
       metadata: pipeline.metadata,
@@ -176,7 +173,7 @@ export const ClonePipelineDialog = ({
           }
         }
 
-        await router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
+        router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
       } catch (error) {
         console.log("error", error);
 

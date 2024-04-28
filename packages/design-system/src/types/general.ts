@@ -343,11 +343,7 @@ export type BasicInputProps = {
 
 export type Nullable<T> = T | null;
 
-export type State =
-  | PipelineState
-  | ConnectorState
-  | ModelState
-  | "STATE_LOADING";
+export type State = PipelineState | ModelState | "STATE_LOADING";
 
 export type PipelineState =
   | "STATE_UNSPECIFIED"
@@ -355,12 +351,6 @@ export type PipelineState =
   | "STATE_INACTIVE"
   | "STATE_ERROR"
   | "STATE_DELETED";
-
-export type ConnectorState =
-  | "STATE_UNSPECIFIED"
-  | "STATE_CONNECTED"
-  | "STATE_DISCONNECTED"
-  | "STATE_ERROR";
 
 export type ModelState =
   | "STATE_ONLINE"

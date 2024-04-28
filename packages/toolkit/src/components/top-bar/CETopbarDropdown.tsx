@@ -156,7 +156,7 @@ export const CETopbarDropdown = () => {
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
-            <Link href="/logout" className="flex gap-x-2">
+            <Link href="/api/auth/logout" className="flex gap-x-2">
               <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Log out</div>
             </Link>

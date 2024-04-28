@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Setting } from "..";
 
 export const UserSidebar = () => {
@@ -17,6 +17,11 @@ export const UserSidebar = () => {
         href="/settings/account"
         name="Account"
         highlighted={pathname.split("/")[2] === "account"}
+      />
+      <Setting.SidebarItem
+        href="/settings/secrets"
+        name="Secrets"
+        highlighted={pathname.split("/")[2] === "secrets"}
       />
       <Setting.SidebarItem
         href="/settings/api-tokens"

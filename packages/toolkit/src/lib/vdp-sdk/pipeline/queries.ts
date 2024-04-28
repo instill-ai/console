@@ -6,6 +6,7 @@ import {
   Pipeline,
   PipelineRelease,
   PipelineReleaseWatchState,
+  Secret,
 } from "./types";
 
 export type ListPipelinesResponse = {
@@ -399,6 +400,80 @@ export async function getOperatorDefinitionQuery({
     );
 
     return Promise.resolve(data.operator_definition);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Secret
+ * -----------------------------------------------------------------------*/
+
+export type GetSecretResponse = {
+  secret: Secret;
+};
+
+export async function getUserSecretQuery({
+  secretName,
+  accessToken,
+}: {
+  secretName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+
+    const { data } = await client.get<GetSecretResponse>(`/${secretName}`);
+
+    return Promise.resolve(data.secret);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type ListUserSecretResponse = {
+  secrets: Secret[];
+  next_page_token: string;
+  total_size: number;
+};
+
+export async function listUserSecretsQuery({
+  entityName,
+  pageSize,
+  nextPageToken,
+  accessToken,
+}: {
+  entityName: Nullable<string>;
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+    const secrets: Secret[] = [];
+
+    const queryString = getQueryString({
+      baseURL: `/${entityName}/secrets`,
+      pageSize,
+      nextPageToken,
+    });
+
+    const { data } = await client.get<ListUserSecretResponse>(queryString);
+
+    secrets.push(...data.secrets);
+
+    if (data.next_page_token) {
+      secrets.push(
+        ...(await listUserSecretsQuery({
+          entityName,
+          pageSize,
+          accessToken,
+          nextPageToken: data.next_page_token,
+        }))
+      );
+    }
+
+    return Promise.resolve(secrets);
   } catch (err) {
     return Promise.reject(err);
   }

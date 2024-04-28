@@ -1,24 +1,9 @@
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
-import {
-  ConnectorDefinition,
-  ConnectorType,
-  ConnectorWithDefinition,
-} from "../vdp-sdk/connector";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
-
-export type PipelineBuilderCreateResourceDialogState = {
-  open: boolean;
-  connectorType: Nullable<ConnectorType>;
-  connectorDefinition: Nullable<ConnectorDefinition>;
-  onCreated: Nullable<(connector: ConnectorWithDefinition) => void>;
-  onSelectedExistingResource: Nullable<
-    (connector: ConnectorWithDefinition) => void
-  >;
-};
 
 export type WarnUnsavedChangesDialogState = {
   open: boolean;
@@ -41,7 +26,6 @@ export type PipelineBuilderState = {
   collapseAllNodes: boolean;
   testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
-  createResourceDialogState: PipelineBuilderCreateResourceDialogState;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
   isOwner: boolean;
@@ -57,6 +41,7 @@ export type PipelineBuilderState = {
 
 export type PipelineBuilderAction = {
   initPipelineBuilder: () => void;
+  initIteratorRelatedState: () => void;
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updatePipelineName: (
     fn: (prev: Nullable<string>) => Nullable<string>
@@ -87,11 +72,7 @@ export type PipelineBuilderAction = {
   updatePipelineOpenAPIOutputSchema: (
     fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
   ) => void;
-  updateCreateResourceDialogState: (
-    fn: (
-      prev: PipelineBuilderCreateResourceDialogState
-    ) => PipelineBuilderCreateResourceDialogState
-  ) => void;
+
   updateCurrentVersion: (
     fn: (prev: Nullable<string>) => Nullable<string>
   ) => void;
@@ -125,6 +106,12 @@ export type GeneralSlice = {
   updateAccessToken: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   enabledQuery: boolean;
   updateEnabledQuery: (fn: (prev: boolean) => boolean) => void;
+
+  // This will store all the secrets current entity have access to
+  // But due to backend won't return any sensitive information,
+  // this is safe to do so
+  entitySecrets: Secret[];
+  updateEntitySecrets: (fn: (prev: Secret[]) => Secret[]) => void;
 };
 
 export type RecentlyUsedSlice = {

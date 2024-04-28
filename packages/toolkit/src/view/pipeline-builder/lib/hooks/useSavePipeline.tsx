@@ -13,17 +13,20 @@ import {
   useUpdateUserPipeline,
 } from "../../../../lib";
 import {
+  composeEdgesFromNodes,
   composePipelineMetadataFromNodes,
-  constructPipelineRecipe,
-  createInitialGraphData,
+  constructPipelineRecipeFromNodes,
 } from "..";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
+import { extractComponentFromNodes } from "../extractComponentFromNodes";
+import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
   updateNodes: store.updateNodes,
+  updateEdges: store.updateEdges,
   pipelineId: store.pipelineId,
   pipelineIsNew: store.pipelineIsNew,
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
@@ -55,6 +58,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
   const {
     nodes,
     updateNodes,
+    updateEdges,
     pipelineId,
     pipelineIsNew,
     pipelineRecipeIsDirty,
@@ -85,9 +89,10 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       let targetNodes = nodes;
 
       if (isEditingIterator && editingIteratorID) {
+        const iteratorComponents = extractComponentFromNodes(nodes);
         targetNodes = composeCompleteNodesUnderEditingIteratorMode({
           editingIteratorID,
-          iteratorComponents: nodes.map((node) => node.data),
+          iteratorComponents,
           allNodes: tempSavedNodesForEditingIteratorFlow,
         });
       }
@@ -95,7 +100,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.data.pipelineName,
-          recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+          recipe: constructPipelineRecipeFromNodes(targetNodes),
           metadata: composePipelineMetadataFromNodes(targetNodes),
         };
 
@@ -110,19 +115,16 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
             sendAmplitudeData("update_pipeline_recipe");
           }
 
-          const initialGraphData = createInitialGraphData(
-            newPipeline.recipe.components,
-            {
-              metadata: newPipeline.metadata,
-            }
-          );
+          const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
+            metadata: newPipeline.metadata,
+          });
+          const newEdges = composeEdgesFromNodes(newNodes);
 
           if (isEditingIterator) {
-            updateTempSavedNodesForEditingIteratorFlow(
-              () => initialGraphData.nodes
-            );
+            updateTempSavedNodesForEditingIteratorFlow(() => newNodes);
           } else {
-            updateNodes(() => initialGraphData.nodes);
+            updateNodes(() => newNodes);
+            updateEdges(() => newEdges);
           }
 
           toast({
@@ -160,7 +162,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       const payload: CreateUserPipelinePayload = {
         id: pipelineId,
-        recipe: constructPipelineRecipe(targetNodes.map((node) => node.data)),
+        recipe: constructPipelineRecipeFromNodes(targetNodes),
         metadata: composePipelineMetadataFromNodes(targetNodes),
       };
 
@@ -171,19 +173,16 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           accessToken,
         });
 
-        const initialGraphData = createInitialGraphData(
-          newPipeline.recipe.components,
-          {
-            metadata: newPipeline.metadata,
-          }
-        );
+        const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
+          metadata: newPipeline.metadata,
+        });
+        const newEdges = composeEdgesFromNodes(newNodes);
 
         if (isEditingIterator) {
-          updateTempSavedNodesForEditingIteratorFlow(
-            () => initialGraphData.nodes
-          );
+          updateTempSavedNodesForEditingIteratorFlow(() => newNodes);
         } else {
-          updateNodes(() => initialGraphData.nodes);
+          updateNodes(() => newNodes);
+          updateEdges(() => newEdges);
         }
 
         updatePipelineRecipeIsDirty(() => false);
@@ -238,6 +237,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       tempSavedNodesForEditingIteratorFlow,
       updateNodes,
       updateTempSavedNodesForEditingIteratorFlow,
+      updateEdges,
     ]
   );
 }

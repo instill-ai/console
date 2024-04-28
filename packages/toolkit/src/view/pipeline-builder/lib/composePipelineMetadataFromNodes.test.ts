@@ -14,42 +14,37 @@ test("should compose initial pipeline metadata", () => {
       data: {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
         note: null,
       },
     },
     {
-      id: "start",
+      id: "trigger",
       position: {
         x: 100,
         y: 100,
       },
       data: {
-        id: "start",
-        start_component: {
-          fields: {},
-        },
+        id: "trigger",
+        fields: {},
         note: "hello-world",
       },
     },
     {
-      id: "end",
+      id: "response",
       position: {
         x: 300,
         y: 300,
       },
       data: {
-        id: "end",
-        end_component: {
-          fields: {},
-        },
+        id: "response",
+        fields: {},
         note: null,
       },
     },
@@ -60,8 +55,8 @@ test("should compose initial pipeline metadata", () => {
   expect(metadata).toStrictEqual({
     components: [
       { id: "ai_0", note: null, x: 0, y: 0 },
-      { id: "start", note: "hello-world", x: 100, y: 100 },
-      { id: "end", note: null, x: 300, y: 300 },
+      { id: "trigger", note: "hello-world", x: 100, y: 100 },
+      { id: "response", note: null, x: 300, y: 300 },
     ],
   });
 });

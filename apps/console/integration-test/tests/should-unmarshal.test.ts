@@ -11,7 +11,7 @@ export function shouldUnmarshalJSONInput() {
     hello: 1,
   };
   const endFieldKey = "result";
-  const endFieldValue = "${start." + startFieldKey + "}";
+  const endFieldValue = "${trigger." + startFieldKey + "}";
 
   test.describe.serial("Unmarshal pipeline builder input test", () => {
     test("should create pipeline", async ({ page }) => {

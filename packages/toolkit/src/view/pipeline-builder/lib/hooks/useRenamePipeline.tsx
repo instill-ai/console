@@ -14,7 +14,7 @@ import {
   useShallow,
   useUpdateUserPipeline,
 } from "../../../../lib";
-import { constructPipelineRecipe } from "../constructPipelineRecipe";
+import { constructPipelineRecipeFromNodes } from "../constructPipelineRecipeFromNodes";
 import { composePipelineMetadataFromNodes } from "../composePipelineMetadataFromNodes";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
@@ -67,7 +67,7 @@ export function useRenamePipeline() {
       if (pipelineIsNew) {
         const payload: CreateUserPipelinePayload = {
           id: newId,
-          recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
+          recipe: constructPipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataFromNodes(nodes),
         };
 
@@ -124,7 +124,7 @@ export function useRenamePipeline() {
       if (pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.data.pipelineName,
-          recipe: constructPipelineRecipe(nodes.map((node) => node.data)),
+          recipe: constructPipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataFromNodes(nodes),
         };
 

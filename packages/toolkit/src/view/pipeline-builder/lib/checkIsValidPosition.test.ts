@@ -4,17 +4,17 @@ import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {
   const recipe: PipelineRecipe = {
+    trigger: {},
     components: [
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],
@@ -37,17 +37,22 @@ test("should check position is not valid", () => {
 
 test("should check position is valid", () => {
   const recipe: PipelineRecipe = {
+    trigger: {
+      trigger_by_request: {
+        request_fields: {},
+        response_fields: {},
+      },
+    },
     components: [
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],
@@ -62,6 +67,18 @@ test("should check position is valid", () => {
         y: 0,
         note: null,
       },
+      {
+        id: "trigger",
+        x: 0,
+        y: 0,
+        note: null,
+      },
+      {
+        id: "response",
+        x: 0,
+        y: 0,
+        note: null,
+      },
     ],
   });
 
@@ -70,41 +87,39 @@ test("should check position is valid", () => {
 
 test("should check position is not valid even there is one missing data", () => {
   const recipe: PipelineRecipe = {
+    trigger: {},
     components: [
       {
         id: "ai_0",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
       {
         id: "ai_1",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
       {
         id: "ai_2",
         connector_component: {
-          connector_name: "stability-dev",
-          connector: null,
           definition_name: "connector-definitions/stability-ai",
           definition: null,
           task: "",
           input: {},
           condition: null,
+          connection: {},
         },
       },
     ],

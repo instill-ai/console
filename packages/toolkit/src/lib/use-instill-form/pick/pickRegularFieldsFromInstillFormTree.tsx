@@ -8,6 +8,8 @@ import {
 import { RegularFields } from "../components";
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { SmartHintFields } from "../components/smart-hint";
+import { pickDefaultCondition } from "./pickDefaultCondition";
+import { Secret } from "../../vdp-sdk";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;
@@ -16,6 +18,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   enableSmartHint?: boolean;
   componentID?: string;
   size?: "sm";
+  secrets?: Secret[];
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -32,6 +35,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
   const size = options?.size;
+  const secrets = options?.secrets ?? [];
 
   let title: Nullable<string> = null;
 
@@ -52,6 +56,13 @@ export function pickRegularFieldsFromInstillFormTree(
     });
 
     if (childAreAllHidden) {
+      return null;
+    }
+
+    // Airbyte schema will have a scenario that under their oneOf properties
+    // there is only one const field, we don't need to render it's corresponding
+    // formGroup title
+    if (tree.properties.length === 1 && "const" in tree.properties[0]) {
       return null;
     }
 
@@ -102,34 +113,36 @@ export function pickRegularFieldsFromInstillFormTree(
   if (tree._type === "formCondition") {
     const conditionComponents = Object.fromEntries(
       Object.entries(tree.conditions).map(([k, v]) => {
+        const constInfo = v.properties.find((e) => "const" in e);
+
         return [
           k,
-          pickRegularFieldsFromInstillFormTree(
-            v,
-            form,
-            selectedConditionMap,
-            setSelectedConditionMap,
-            options
-          ),
+          {
+            component: pickRegularFieldsFromInstillFormTree(
+              v,
+              form,
+              selectedConditionMap,
+              setSelectedConditionMap,
+              options
+            ),
+            title: constInfo?.title ?? null,
+          },
         ];
       })
     );
 
     // We will use the const path as the OneOfConditionField's path
+    const defaultCondition = pickDefaultCondition(tree);
 
-    const defaultConstField = tree.conditions[
-      Object.keys(tree.conditions)[0]
-    ].properties.find((e) => "const" in e);
-
-    if (!defaultConstField?.path) {
+    if (!defaultCondition?.path) {
       return null;
     }
 
-    const selectedCondition = selectedConditionMap?.[defaultConstField?.path];
+    const selectedCondition = selectedConditionMap?.[defaultCondition.path];
 
     let selectedConstField: InstillFormTree | undefined;
 
-    if (selectedCondition) {
+    if (selectedCondition && tree.conditions[selectedCondition]) {
       selectedConstField = tree.conditions[selectedCondition].properties.find(
         (e) => "const" in e
       );
@@ -138,23 +151,23 @@ export function pickRegularFieldsFromInstillFormTree(
     return (
       <RegularFields.OneOfConditionField
         form={form}
-        path={defaultConstField.path}
+        path={defaultCondition.path}
         tree={tree}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
-        key={defaultConstField.path}
+        key={defaultCondition.path}
         conditionComponentsMap={conditionComponents}
         title={title}
         shortDescription={
           selectedConstField
             ? selectedConstField.instillShortDescription
-            : defaultConstField.instillShortDescription
+            : defaultCondition.instillShortDescription
         }
         disabled={disabledAll}
         description={
           selectedConstField
             ? selectedConstField.description ?? null
-            : defaultConstField.description ?? null
+            : defaultCondition.description ?? null
         }
         size={size}
         isHidden={tree.isHidden}
@@ -263,22 +276,6 @@ export function pickRegularFieldsFromInstillFormTree(
     );
   }
 
-  if (tree.instillCredentialField) {
-    return (
-      <RegularFields.CredentialTextField
-        key={tree.path}
-        path={tree.path}
-        form={form}
-        title={title}
-        description={tree.description ?? null}
-        shortDescription={tree.instillShortDescription}
-        disabled={disabledAll}
-        size={size}
-        isHidden={tree.isHidden}
-      />
-    );
-  }
-
   if (enableSmartHint) {
     return (
       <SmartHintFields.TextField
@@ -295,6 +292,8 @@ export function pickRegularFieldsFromInstillFormTree(
         componentID={componentID}
         size={size}
         isHidden={tree.isHidden}
+        secrets={secrets}
+        instillCredentialField={tree.instillCredentialField}
       />
     );
   }

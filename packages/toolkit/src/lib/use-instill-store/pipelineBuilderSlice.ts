@@ -16,7 +16,6 @@ import { StateCreator } from "zustand";
 import {
   InstillStore,
   InstillStoreMutators,
-  PipelineBuilderCreateResourceDialogState,
   PipelineBuilderSlice,
   PipelineBuilderState,
   WarnUnsavedChangesDialogState,
@@ -39,13 +38,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   collapseAllNodes: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
-  createResourceDialogState: {
-    open: false,
-    connectorType: null,
-    connectorDefinition: null,
-    onCreated: null,
-    onSelectedExistingResource: null,
-  },
   currentVersion: null,
   initializedByTemplateOrClone: false,
   isOwner: false,
@@ -69,6 +61,15 @@ export const createPipelineBuilderSlice: StateCreator<
   PipelineBuilderSlice
 > = (set, get) => ({
   ...pipelineBuilderInitialState,
+  initIteratorRelatedState: () =>
+    set((state) => {
+      return {
+        ...state,
+        isEditingIterator: false,
+        editingIteratorID: null,
+        tempSavedNodesForEditingIteratorFlow: [],
+      };
+    }),
   initPipelineBuilder: () => set(() => pipelineBuilderInitialState),
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
     set((state) => {
@@ -195,17 +196,6 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         pipelineOpenAPIOutputSchema: fn(state.pipelineOpenAPIOutputSchema),
-      };
-    }),
-  updateCreateResourceDialogState: (
-    fn: (
-      prev: PipelineBuilderCreateResourceDialogState
-    ) => PipelineBuilderCreateResourceDialogState
-  ) =>
-    set((state) => {
-      return {
-        ...state,
-        createResourceDialogState: fn(state.createResourceDialogState),
       };
     }),
   updateCurrentVersion: (fn: (prev: Nullable<string>) => Nullable<string>) =>

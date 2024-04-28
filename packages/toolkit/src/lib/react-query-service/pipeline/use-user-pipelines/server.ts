@@ -17,22 +17,26 @@ export async function fetchUserPipelines({
   disabledViewFull?: boolean;
   pageSize?: number;
 }) {
-  if (!userName) {
-    return Promise.reject(new Error("userName not provided"));
+  try {
+    if (!userName) {
+      throw new Error("userName not provided");
+    }
+
+    const pipelines = await listUserPipelinesQuery({
+      userName,
+      pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+      nextPageToken: null,
+      accessToken,
+      enablePagination: false,
+      filter,
+      visibility,
+      disabledViewFull,
+    });
+
+    return Promise.resolve(pipelines);
+  } catch (error) {
+    return Promise.reject(error);
   }
-
-  const pipelines = await listUserPipelinesQuery({
-    userName,
-    pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-    nextPageToken: null,
-    accessToken,
-    enablePagination: false,
-    filter,
-    visibility,
-    disabledViewFull,
-  });
-
-  return Promise.resolve(pipelines);
 }
 
 export function getUseUserPipelinesQueryKey(userName: Nullable<string>) {

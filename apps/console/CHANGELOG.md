@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.45.0-beta](https://github.com/instill-ai/console/compare/v0.44.0-beta...v0.45.0-beta) (2024-04-25)
+
+
+### Features
+
+* retire connector resource ([#1098](https://github.com/instill-ai/console/issues/1098)) ([a4befc7](https://github.com/instill-ai/console/commit/a4befc773f523964f7bc3a4a4f1456e348127e8d))
+
+
+### Bug Fixes
+
+* fix sitemap generation error block building process ([#1082](https://github.com/instill-ai/console/issues/1082)) ([9fedb1f](https://github.com/instill-ai/console/commit/9fedb1fda9387f4c4d15203ba541d8991b6b8b3b))
+
+
+### Miscellaneous
+
+* remove the page route components from console ([#1084](https://github.com/instill-ai/console/issues/1084)) ([f91338e](https://github.com/instill-ai/console/commit/f91338ec93f1dd88f94a858c5f866ff7bf9f5856))
+
 ## [0.44.0-beta](https://github.com/instill-ai/console/compare/v0.43.0-beta...v0.44.0-beta) (2024-04-12)
 
 

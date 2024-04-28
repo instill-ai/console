@@ -10,9 +10,9 @@ import {
 } from "../../../../../lib";
 import { InOutputOption } from "../IteratorEditor";
 import { Select } from "@instill-ai/design-system";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
 import { Node } from "reactflow";
 import { IteratorNodeData } from "../../../type";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -51,8 +51,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
   React.useEffect(() => {
     const targetNodes = tempSavedNodesForEditingIteratorFlow.find(
-      (node) =>
-        node.data.id === editingIteratorID && isIteratorComponent(node.data)
+      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetNodes) {
@@ -93,10 +92,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
           updatePipelineRecipeIsDirty(() => true);
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (
-                node.data.id === editingIteratorID &&
-                isIteratorComponent(node.data)
-              ) {
+              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {

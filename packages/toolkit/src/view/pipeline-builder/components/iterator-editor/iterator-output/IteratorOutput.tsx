@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
-import { isIteratorComponent } from "../../../lib/checkComponentType";
 import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
 import { DeleteOutputButton } from "./DeleteOutputButton";
 import { AddOutputButton } from "./AddOutputButton";
 import { OutputValueInput } from "./OutputValueInput";
+import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,
@@ -21,9 +21,8 @@ export const IteratorOutput = () => {
 
   const targetIteratorNode = React.useMemo(() => {
     return tempSavedNodesForEditingIteratorFlow.find(
-      (node) =>
-        node.data.id === editingIteratorID && isIteratorComponent(node.data)
-    ) as Node<IteratorNodeData> | null;
+      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+    ) as Node<IteratorNodeData> | undefined;
   }, [editingIteratorID, tempSavedNodesForEditingIteratorFlow]);
 
   return (
@@ -46,7 +45,7 @@ export const IteratorOutput = () => {
             ))
           : null}
       </div>
-      <AddOutputButton targetIteratorNode={targetIteratorNode} />
+      <AddOutputButton targetIteratorNode={targetIteratorNode ?? null} />
     </div>
   );
 };

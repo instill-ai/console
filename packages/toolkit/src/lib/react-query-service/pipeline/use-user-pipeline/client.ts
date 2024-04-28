@@ -26,11 +26,15 @@ export function useUserPipeline({
   return useQuery({
     queryKey: getUseUserPipelineQueryKey(pipelineName),
     queryFn: async () => {
-      return await fetchUserPipeline({
-        pipelineName,
-        accessToken,
-        shareCode,
-      });
+      try {
+        return await fetchUserPipeline({
+          pipelineName,
+          accessToken,
+          shareCode,
+        });
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
     enabled: enableQuery,
     retry: retry === false ? false : retry ? retry : 3,

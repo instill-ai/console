@@ -20,7 +20,6 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
   UserProfileCard,
-  UserProfileCardProps,
 } from "../../../components";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 import debounce from "lodash.debounce";
@@ -31,11 +30,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const ViewPipelines = ({
-  organizations,
-}: {
-  organizations?: UserProfileCardProps["organizations"];
-}) => {
+export const ViewPipelines = () => {
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -68,12 +63,12 @@ export const ViewPipelines = ({
     visibility: selectedVisibilityOption ?? null,
   });
 
-  const userPipelines = useUserPipelines({
+  const userPublicPipelines = useUserPipelines({
     userName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
     accessToken,
     filter: null,
-    visibility: null,
+    visibility: "VISIBILITY_PUBLIC",
 
     // Use these parameters to speed up request
     disabledViewFull: true,
@@ -109,8 +104,7 @@ export const ViewPipelines = ({
           totalPipelines={
             pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
           }
-          totalPublicPipelines={null}
-          organizations={organizations}
+          totalPublicPipelines={userPublicPipelines.data?.length ?? null}
         />
       </div>
       <div className="flex w-[630px] flex-col pt-6">

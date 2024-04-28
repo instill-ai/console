@@ -3,12 +3,12 @@ import { Edge, Node, Position } from "reactflow";
 import { NodeData } from "../type";
 
 // This is the default dimension of a connector node we have right now
-const START_END_COMPONENT = {
+const TRIGGER_RESPONSE_NODE = {
   width: 318,
   height: 54,
 };
 
-const OTHER_COMPONENT = {
+const OTHER_NODE = {
   width: 318,
   height: 77,
 };
@@ -70,16 +70,16 @@ export async function createGraphLayout(
   const elkNodes: ElkNode[] = [];
   const elkEdges: ElkExtendedEdge[] = [];
 
-  // If the nodes only contain start and end node, we will directly
+  // If the nodes only contain trigger and response node, we will directly
   // return fixed layout
   if (
     nodes.length === 2 &&
-    nodes.findIndex((node) => node.data.id === "start") !== -1 &&
-    nodes.findIndex((node) => node.data.id === "end") !== -1
+    nodes.findIndex((node) => node.data.id === "trigger") !== -1 &&
+    nodes.findIndex((node) => node.data.id === "response") !== -1
   ) {
     return {
       nodes: nodes.map((node) => {
-        if (node.data.id === "start") {
+        if (node.data.id === "trigger") {
           node.position = { x: 0, y: 0 };
         } else {
           node.position = { x: 350, y: 0 };
@@ -91,17 +91,17 @@ export async function createGraphLayout(
   }
 
   nodes.forEach((node) => {
-    if (node.data.id === "start" || node.data.id === "end") {
+    if (node.data.id === "trigger" || node.data.id === "response") {
       elkNodes.push({
         id: node.id,
-        width: START_END_COMPONENT.width,
-        height: START_END_COMPONENT.height,
+        width: TRIGGER_RESPONSE_NODE.width,
+        height: TRIGGER_RESPONSE_NODE.height,
       });
     } else {
       elkNodes.push({
         id: node.id,
-        width: OTHER_COMPONENT.width,
-        height: OTHER_COMPONENT.height,
+        width: OTHER_NODE.width,
+        height: OTHER_NODE.height,
       });
     }
   });
@@ -137,17 +137,17 @@ export async function createGraphLayout(
       // We are shifting the dagre node position (anchor=center center) to the top left
       // so it matches the React Flow node anchor point (top left).
 
-      if (node.data.id === "start" || node.data.id === "end") {
+      if (node.data.id === "trigger" || node.data.id === "response") {
         node.position = {
-          x: elkNode.x - START_END_COMPONENT.width / 2,
-          y: elkNode.y - START_END_COMPONENT.height / 2,
+          x: elkNode.x - TRIGGER_RESPONSE_NODE.width / 2,
+          y: elkNode.y - TRIGGER_RESPONSE_NODE.height / 2,
         };
         return node;
       }
 
       node.position = {
-        x: elkNode.x - OTHER_COMPONENT.width / 2,
-        y: elkNode.y - OTHER_COMPONENT.height / 2,
+        x: elkNode.x - OTHER_NODE.width / 2,
+        y: elkNode.y - OTHER_NODE.height / 2,
       };
       return node;
     }),

@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 import { GeneralSlice, InstillStore, InstillStoreMutators } from "./types";
 import { Nullable } from "../type";
+import { Secret } from "../vdp-sdk";
 
 export const createGeneralSlice: StateCreator<
   InstillStore,
@@ -22,6 +23,14 @@ export const createGeneralSlice: StateCreator<
       return {
         ...state,
         enabledQuery: fn(state.enabledQuery),
+      };
+    }),
+  entitySecrets: [],
+  updateEntitySecrets: (fn: (prev: Secret[]) => Secret[]) =>
+    set((state) => {
+      return {
+        ...state,
+        entitySecrets: fn(state.entitySecrets),
       };
     }),
 });

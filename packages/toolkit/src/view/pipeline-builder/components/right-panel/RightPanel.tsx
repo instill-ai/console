@@ -5,10 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore } from "../../../../lib";
 import { ComponentFormOnRightPanel } from "./ComponentFormOnRightPanel";
-import {
-  isConnectorComponent,
-  isOperatorComponent,
-} from "../../lib/checkComponentType";
+import { isConnectorNode, isOperatorNode } from "../../lib";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -62,12 +59,12 @@ export const RightPanel = () => {
 
       <div className="flex w-full pb-10">
         {selectedConnectorNode &&
-        isConnectorComponent(selectedConnectorNode.data) &&
+        isConnectorNode(selectedConnectorNode) &&
         selectedConnectorNode.data.connector_component.definition ? (
           <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
         ) : null}
         {selectedConnectorNode &&
-        isOperatorComponent(selectedConnectorNode.data) &&
+        isOperatorNode(selectedConnectorNode) &&
         selectedConnectorNode.data.operator_component.definition ? (
           <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
         ) : null}

@@ -5,6 +5,7 @@ import {
   PipelineRecipe,
   PipelineRelease,
   PipelineSharing,
+  Secret,
 } from "./types";
 
 export type CreateUserPipelinePayload = {
@@ -200,6 +201,55 @@ export async function deleteUserPipelineReleaseMutation({
     const client = createInstillAxiosClient(accessToken, "vdp");
 
     await client.delete(`/${pipelineReleaseName}`);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type CreateUserSecretPayload = {
+  id: string;
+  value: string;
+  description?: string;
+};
+
+export type CreateUserSecretResponse = {
+  secret: Secret;
+};
+
+export async function createUserSecretMutation({
+  entityName,
+  payload,
+  accessToken,
+}: {
+  entityName: string;
+  payload: CreateUserSecretPayload;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+
+    const { data } = await client.post<CreateUserSecretResponse>(
+      `/${entityName}/secrets`,
+      payload
+    );
+
+    return Promise.resolve(data.secret);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function deleteUserSecretMutation({
+  secretName,
+  accessToken,
+}: {
+  secretName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, "vdp");
+
+    await client.delete(`/${secretName}`);
   } catch (err) {
     return Promise.reject(err);
   }

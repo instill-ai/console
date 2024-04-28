@@ -20,8 +20,7 @@ import {
   PipelineConnectorComponent,
   useInstillStore,
 } from "../../../../../lib";
-import { composeEdgesFromComponents } from "../../../lib";
-import { isConnectorComponent } from "../../../lib/checkComponentType";
+import { composeEdgesFromNodes, isConnectorNode } from "../../../lib";
 
 export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
@@ -64,7 +63,7 @@ export const DataConnectorFreeForm = ({
 
   function onSubmitDataConnectorInput(formData: z.infer<typeof Schema>) {
     const newNodes = nodes.map((node) => {
-      if (isConnectorComponent(node.data) && node.id === nodeID) {
+      if (isConnectorNode(node) && node.id === nodeID) {
         if (prevFieldKey) {
           delete node.data.connector_component.input.data[prevFieldKey];
         }
@@ -89,9 +88,7 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);
@@ -113,7 +110,7 @@ export const DataConnectorFreeForm = ({
 
   function onDeleteDataConnectorInput(key: string) {
     const newNodes = nodes.map((node) => {
-      if (isConnectorComponent(node.data) && node.id === nodeID) {
+      if (isConnectorNode(node) && node.id === nodeID) {
         delete node.data.connector_component.input.data[key];
         // update the value deep clone
         node.data = {
@@ -129,9 +126,7 @@ export const DataConnectorFreeForm = ({
       }
       return node;
     });
-    const newEdges = composeEdgesFromComponents(
-      newNodes.map((node) => node.data)
-    );
+    const newEdges = composeEdgesFromNodes(newNodes);
     updateNodes(() => newNodes);
     updateEdges(() => newEdges);
     updatePipelineRecipeIsDirty(() => true);

@@ -1,14 +1,5 @@
-import { GetServerSideProps, Metadata } from "next";
-import React from "react";
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    redirect: {
-      destination: "/settings/profile",
-      permanent: false,
-    },
-  };
-};
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {
@@ -21,5 +12,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  return <React.Fragment />;
+  redirect("/settings/profile");
 }

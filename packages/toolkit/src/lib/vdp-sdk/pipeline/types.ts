@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { OpenAPIV3 } from "openapi-types";
-import { ConnectorDefinition, Connector } from "../connector";
+import { ConnectorDefinition } from "../connector";
 import {
   DataSpecification,
   Owner,
@@ -21,10 +21,49 @@ export type PipelineReleaseState =
   | "STATE_ERROR"
   | "STATE_DELETED";
 
+export type PipelineTrigger =
+  | TriggerByRequest
+  | GeneralRecord
+  | Record<string, never>;
+
 export type PipelineRecipe = {
   version: string;
   components: PipelineComponent[];
+  trigger: PipelineTrigger;
 };
+
+export type PipelineTriggerRequestField = {
+  title: string;
+  description?: string;
+  instill_format: string;
+  instill_ui_order?: number;
+  instill_ui_multiline?: boolean;
+};
+
+export type PipelineTriggerRequestFields = Record<
+  string,
+  PipelineTriggerRequestField
+>;
+
+export type PipelineTriggerResponseField = {
+  title: string;
+  description?: string;
+  value: string;
+  instill_ui_order?: number;
+};
+
+export type PipelineTriggerResponseFields = Record<
+  string,
+  PipelineTriggerResponseField
+>;
+
+export type TriggerByRequest = {
+  trigger_by_request: {
+    request_fields?: PipelineTriggerRequestFields;
+    response_fields?: PipelineTriggerResponseFields;
+  };
+};
+
 export type PipelineReleaseWatchState = {
   state: PipelineReleaseState;
   progress: number;
@@ -126,58 +165,16 @@ export type PipelineTriggerMetadata = {
   traces: Record<string, PipelineTrace>;
 };
 
-export type PipelineStartComponentField = {
-  title: string;
-  description?: string;
-  instill_format: string;
-  instill_ui_order?: number;
-  instill_ui_multiline?: boolean;
-};
-
-export type PipelineStartComponentFields = Record<
-  string,
-  PipelineStartComponentField
->;
-
-export type PipelineStartComponent = {
-  id: "start";
-  metadata?: GeneralRecord;
-  start_component: {
-    fields: PipelineStartComponentFields;
-  };
-};
-
-export type PipelineEndComponentField = {
-  title: string;
-  description?: string;
-  value: string;
-  instill_ui_order?: number;
-};
-
-export type PipelineEndComponentFields = Record<
-  string,
-  PipelineEndComponentField
->;
-
-export type PipelineEndComponent = {
-  id: "end";
-  metadata?: GeneralRecord;
-  end_component: {
-    fields: PipelineEndComponentFields;
-  };
-};
-
 export type PipelineConnectorComponent = {
   id: string;
   metadata?: GeneralRecord;
   connector_component: {
     definition_name: string;
     definition: Nullable<ConnectorDefinition>;
-    connector_name: Nullable<string>;
-    connector: Nullable<Connector>;
     task: string;
     input: GeneralRecord;
     condition: Nullable<string>;
+    connection: GeneralRecord;
   };
 };
 
@@ -206,8 +203,6 @@ export type PipelineIteratorComponent = {
 };
 
 export type PipelineComponent =
-  | PipelineStartComponent
-  | PipelineEndComponent
   | PipelineConnectorComponent
   | PipelineOperatorComponent
   | PipelineIteratorComponent;
@@ -232,4 +227,16 @@ export type IteratorDefinition = {
   id: "iterator";
   title: "Iterator";
   icon: "iterator.svg";
+};
+
+export type Secret = {
+  name: string;
+  uid: string;
+  id: string;
+  create_time: string;
+  update_time: string;
+  description: Nullable<string>;
+
+  // The value of the secret, which is input-only and will never be returned in API responses.
+  value: Nullable<string>;
 };

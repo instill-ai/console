@@ -11,13 +11,6 @@ export const topbarItems = [
     name: "Pipelines",
   },
   {
-    pathName: "connectors",
-    icon: (
-      <Icons.IntersectSquare className="h-6 w-6 stroke-semantic-fg-primary" />
-    ),
-    name: "Connectors",
-  },
-  {
     pathName: "models",
     icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Models",

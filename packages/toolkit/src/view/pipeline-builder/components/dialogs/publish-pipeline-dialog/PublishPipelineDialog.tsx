@@ -21,7 +21,6 @@ import {
 import { Head } from "./Head";
 import { Metadata } from "./Metadata";
 import { ReadmeEditor } from "./ReadmeEditor";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({

@@ -4,5 +4,5 @@ export * from "./transformInstillFormatToHumanReadableFormat";
 export * from "./transformInstillFormTreeToInitialSelectedCondition";
 export * from "./transformInstillJSONSchemaToFormTree";
 export * from "./transformInstillJSONSchemaToZod";
-export * from "./transformStartOperatorMetadataToSuperRefineRules";
-export * from "./transformStartOperatorFieldsToZod";
+export * from "./transformPipelineTriggerRequestFieldsToSuperRefineRules";
+export * from "./transformPipelineTriggerRequestFieldsToZod";

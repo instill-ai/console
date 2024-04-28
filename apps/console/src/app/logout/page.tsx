@@ -10,7 +10,6 @@ export default async function () {
   try {
     if (accessToken) {
       await authLogoutAction({ accessToken: accessToken.value });
-      cookieStore.delete(accessTokenKey);
     }
   } catch (error) {
     console.error(error);
