@@ -356,7 +356,7 @@ export const Head = ({
                       router.push("/login");
                     }}
                     className="!normal-case"
-                    variant="secondaryColour"
+                    variant="secondaryGrey"
                     size="sm"
                   >
                     Log in to Clone
