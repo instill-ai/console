@@ -95,7 +95,7 @@ export const ViewPipeline = () => {
                 }
                 className="h-[378px] w-full"
               />
-              <div className="w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
+              <div className="my-4 w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
                 Pipeline Description
               </div>
               <Readme
@@ -109,7 +109,7 @@ export const ViewPipeline = () => {
                 readme={pipeline.isSuccess ? pipeline.data.readme : null}
               />
             </div>
-            <div className="w-5/12 py-10 pr-4">
+            <div className="w-5/12 py-10">
               <InOutPut currentVersion={currentVersion} />
             </div>
           </div>

@@ -133,7 +133,7 @@ export const Head = ({
       <div className="user-gradient relative flex min-h-[180px] w-full flex-col bg-semantic-bg-primary">
         <div className="flex justify-center">
           <div className="flex w-[1440px] flex-row px-24 py-16">
-            <div className="mr-auto flex max-w-5xl flex-col gap-y-3 ">
+            <div className="mr-auto flex max-w-5xl flex-col gap-y-3">
               <div className="flex w-full flex-row">
                 <div className="mr-auto flex flex-row gap-x-3">
                   {entity.isSuccess ? (
@@ -305,7 +305,7 @@ export const Head = ({
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="absolute bottom-0 flex w-[1440px] flex-row pl-24 pr-12">
+          <div className="absolute bottom-0 flex w-[1440px] flex-row pl-24 pr-8">
             <div className="mr-auto">
               <TabMenu.Root
                 value={selectedTab}
