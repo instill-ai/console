@@ -43,7 +43,7 @@
     "@radix-ui/react-toast": "^1.1.4",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-table": "^8.9.3",
-    "axios": "^1.6.0",
+    "axios": "^1.6.8",
     "clsx": "^1.1.1",
     "cookie": "^0.5.0",
     "copy-to-clipboard": "^3.3.2",
