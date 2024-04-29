@@ -316,7 +316,9 @@ export const Head = ({
               </TabMenu.Root>
             </div>
             <div className="mt-auto flex flex-row gap-x-2 pb-1">
-              {pipeline.isSuccess ? (
+              {pipeline.isSuccess &&
+              me.isSuccess &&
+              pipeline.data.permission.can_edit ? (
                 <Menu
                   pipeline={pipeline.data}
                   handleDeletePipeline={handleDeletePipeline}
@@ -341,23 +343,25 @@ export const Head = ({
                     </Button>
                   ) : null}
                   {me.isSuccess ? (
-                    <ClonePipelineDialog
-                      trigger={
-                        <Button
-                          className="items-center gap-x-2"
-                          size="sm"
-                          variant="secondaryGrey"
-                        >
-                          <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
-                          Clone
-                        </Button>
-                      }
-                      pipeline={pipeline.data}
-                    />
+                    !pipeline.data.permission.can_edit ? (
+                      <ClonePipelineDialog
+                        trigger={
+                          <Button
+                            className="items-center gap-x-2"
+                            size="sm"
+                            variant="secondaryGrey"
+                          >
+                            <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                            Clone
+                          </Button>
+                        }
+                        pipeline={pipeline.data}
+                      />
+                    ) : null
                   ) : (
                     <Button
                       onClick={() => {
-                        router.push("/login");
+                        navigateBackAfterLogin();
                       }}
                       className="!normal-case"
                       variant="secondaryGrey"
