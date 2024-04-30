@@ -41,15 +41,15 @@ export const DashboardPipelineDetailsPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entityObject = useAppEntity();
+  const entity = useAppEntity();
 
   React.useEffect(() => {
-    if (!entityObject.isSuccess) {
+    if (!entity.isSuccess) {
       return;
     }
 
-    let queryParams = `pipeline_id='${entityObject.data.id}' AND owner_name='${entityObject.data.entityName}'`;
-    let queryParamsPrevious = `pipeline_id='${entityObject.data.id}' AND owner_name='${entityObject.data.entityName}'`;
+    let queryParams = `pipeline_id='${entity.data.id}' AND owner_name='${entity.data.entityName}'`;
+    let queryParamsPrevious = `pipeline_id='${entity.data.id}' AND owner_name='${entity.data.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -74,9 +74,9 @@ export const DashboardPipelineDetailsPageMainView = (
   }, [
     id,
     selectedTimeOption,
-    entityObject.isSuccess,
-    entityObject.data.entityName,
-    entityObject.data.id,
+    entity.isSuccess,
+    entity.data.entityName,
+    entity.data.id,
   ]);
 
   /* -------------------------------------------------------------------------
@@ -84,13 +84,13 @@ export const DashboardPipelineDetailsPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const pipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entityObject.isSuccess && !!queryString,
+    enabled: enableQuery && entity.isSuccess && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
   const previousPipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entityObject.isSuccess && !!queryStringPrevious,
+    enabled: enableQuery && entity.isSuccess && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });
