@@ -31,6 +31,7 @@ import {
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
+import { canvasPanOnDrag } from "./canvasPanOnDrag";
 
 const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
@@ -51,8 +52,6 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
-
-const panOnDrag = [1, 2];
 
 export type ReadOnlyPipelineBuilderProps = {
   pipelineName: Nullable<string>;
@@ -141,7 +140,7 @@ export const ReadOnlyPipelineBuilder = ({
         elevateNodesOnSelect={true}
         // To enable Figma-like zoom-in-out experience
         panOnScroll={false}
-        panOnDrag={panOnDrag}
+        panOnDrag={canvasPanOnDrag}
         selectionMode={SelectionMode.Partial}
         selectionOnDrag={true}
         nodeOrigin={[0.5, 0.5]}
