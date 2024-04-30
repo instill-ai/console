@@ -71,6 +71,7 @@ export function constructPipelineRecipeFromNodes(
             }
           ),
         },
+        metadata: node.data.metadata,
       });
       continue;
     }
@@ -92,6 +93,7 @@ export function constructPipelineRecipeFromNodes(
           ),
           definition: null,
         },
+        metadata: node.data.metadata,
       });
 
       continue;
@@ -109,6 +111,7 @@ export function constructPipelineRecipeFromNodes(
           ),
           definition: null,
         },
+        metadata: node.data.metadata,
       });
     }
   }

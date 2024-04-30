@@ -52,10 +52,11 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
       updateTempSavedNodesForEditingIteratorFlow(() => nodes);
 
       if (
-        checkIsValidPosition(
-          data.iterator_component.components,
-          data.metadata ?? null
-        )
+        checkIsValidPosition({
+          components: data.iterator_component.components,
+          metadata: data.metadata ?? null,
+          isIteratorNode: true,
+        })
       ) {
         const nodes = createNodesFromPipelineComponents(
           data.iterator_component.components,

@@ -20,7 +20,6 @@ import {
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
-import { extractComponentFromNodes } from "../extractComponentFromNodes";
 import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
@@ -89,11 +88,10 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       let targetNodes = nodes;
 
       if (isEditingIterator && editingIteratorID) {
-        const iteratorComponents = extractComponentFromNodes(nodes);
         targetNodes = composeCompleteNodesUnderEditingIteratorMode({
           editingIteratorID,
-          iteratorComponents,
-          allNodes: tempSavedNodesForEditingIteratorFlow,
+          nodesInIterator: nodes,
+          nodesOutsideIterator: tempSavedNodesForEditingIteratorFlow,
         });
       }
 

@@ -5,7 +5,6 @@ import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../lib/composeCompleteNodesUnderEditingIteratorMode";
-import { extractComponentFromNodes } from "../lib/extractComponentFromNodes";
 import { constructPipelineRecipeFromNodes } from "../lib";
 
 export type PipelineToolkitDialogProps = {
@@ -41,11 +40,10 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
     let targetNodes = nodes;
 
     if (isEditingIterator && editingIteratorID) {
-      const iteratorComponents = extractComponentFromNodes(nodes);
       targetNodes = composeCompleteNodesUnderEditingIteratorMode({
         editingIteratorID,
-        iteratorComponents,
-        allNodes: tempSavedNodesForEditingIteratorFlow,
+        nodesInIterator: nodes,
+        nodesOutsideIterator: tempSavedNodesForEditingIteratorFlow,
       });
     }
 
