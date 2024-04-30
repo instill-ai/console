@@ -18,6 +18,7 @@ import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
 
 import { Node } from "reactflow";
 import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -49,7 +50,7 @@ export function useUpdaterOnRightPanel({
     watch,
   } = form;
 
-  const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
+  const prevValue = React.useRef<Nullable<GeneralRecord>>(null);
 
   const debounceUpdater = React.useCallback(
     debounce((updateData) => {
@@ -96,7 +97,7 @@ export function useUpdaterOnRightPanel({
       const newEdges = composeEdgesFromNodes(newNodes);
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
-      updatedValue.current = updateData;
+      prevValue.current = updateData;
     }, 300),
     [
       currentNodeData,
@@ -115,7 +116,9 @@ export function useUpdaterOnRightPanel({
 
       const parsed = ValidatorSchema.safeParse(values);
 
-      if (!parsed.success || !isDirty) {
+      // RHF isDiry state is not working correctly, at the first input
+      // the state won't be updated, so we need to check by ourselves
+      if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
         return;
       }
 

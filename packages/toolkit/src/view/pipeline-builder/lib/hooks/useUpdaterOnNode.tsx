@@ -15,6 +15,7 @@ import {
   isOperatorComponent,
 } from "../checkComponentType";
 import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -46,10 +47,7 @@ export function useUpdaterOnNode({
     pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
-  const {
-    formState: { isDirty },
-    watch,
-  } = form;
+  const { watch } = form;
 
   const debounceUpdater = React.useCallback(
     debounce((updateData) => {
@@ -91,6 +89,7 @@ export function useUpdaterOnNode({
       const newEdges = composeEdgesFromNodes(newNodes);
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
+      prevValue.current = updateData;
     }, 300),
     [
       currentNodeData,
@@ -100,6 +99,8 @@ export function useUpdaterOnNode({
       updatePipelineRecipeIsDirty,
     ]
   );
+
+  const prevValue = React.useRef<Nullable<GeneralRecord>>(null);
 
   React.useEffect(() => {
     const sub = watch((values) => {
@@ -124,7 +125,9 @@ export function useUpdaterOnNode({
         return;
       }
 
-      if (!parsed.success || !isDirty) {
+      // RHF isDiry state is not working correctly, at the first input
+      // the state won't be updated, so we need to check by ourselves
+      if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
         return;
       }
 
@@ -138,7 +141,6 @@ export function useUpdaterOnNode({
     };
   }, [
     watch,
-    isDirty,
     currentNodeData,
     ValidatorSchema,
     currentAdvancedConfigurationNodeID,
