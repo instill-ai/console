@@ -107,10 +107,10 @@ export const BottomBar = () => {
                         let newEdges: Edge[] = [];
 
                         if (
-                          checkIsValidPosition(
-                            pipeline.data.recipe.components,
-                            pipeline.data.metadata ?? null
-                          )
+                          checkIsValidPosition({
+                            components: pipeline.data.recipe.components,
+                            metadata: pipeline.data.metadata ?? null,
+                          })
                         ) {
                           const nodes = createNodesFromPipelineRecipe(
                             pipeline.data.recipe,
@@ -155,10 +155,10 @@ export const BottomBar = () => {
                           let newEdges: Edge[] = [];
 
                           if (
-                            checkIsValidPosition(
-                              release.recipe.components,
-                              release.metadata ?? null
-                            )
+                            checkIsValidPosition({
+                              components: release.recipe.components,
+                              metadata: release.metadata ?? null,
+                            })
                           ) {
                             const nodes = createNodesFromPipelineRecipe(
                               release.recipe,

@@ -94,10 +94,10 @@ export function usePipelineBuilderGraph() {
     // default graph layout
 
     if (
-      checkIsValidPosition(
-        pipeline.data.recipe.components,
-        pipeline.data.metadata
-      )
+      checkIsValidPosition({
+        components: pipeline.data.recipe.components,
+        metadata: pipeline.data.metadata,
+      })
     ) {
       const nodes = createNodesFromPipelineRecipe(pipeline.data.recipe, {
         metadata: pipeline.data.metadata,

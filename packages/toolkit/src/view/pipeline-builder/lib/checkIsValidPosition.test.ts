@@ -21,15 +21,18 @@ test("should check position is not valid", () => {
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe.components, {
-    components: [
-      {
-        id: "ai_1",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-    ],
+  const isValid = checkIsValidPosition({
+    components: recipe.components,
+    metadata: {
+      components: [
+        {
+          id: "ai_1",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+      ],
+    },
   });
 
   expect(isValid).toBe(false);
@@ -59,27 +62,30 @@ test("should check position is valid", () => {
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe.components, {
-    components: [
-      {
-        id: "ai_0",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-      {
-        id: "trigger",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-      {
-        id: "response",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-    ],
+  const isValid = checkIsValidPosition({
+    components: recipe.components,
+    metadata: {
+      components: [
+        {
+          id: "ai_0",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+        {
+          id: "trigger",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+        {
+          id: "response",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+      ],
+    },
   });
 
   expect(isValid).toBe(true);
@@ -126,21 +132,24 @@ test("should check position is not valid even there is one missing data", () => 
     version: "v1beta",
   };
 
-  const isValid = checkIsValidPosition(recipe.components, {
-    components: [
-      {
-        id: "ai_1",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-      {
-        id: "ai_2",
-        x: 0,
-        y: 0,
-        note: null,
-      },
-    ],
+  const isValid = checkIsValidPosition({
+    components: recipe.components,
+    metadata: {
+      components: [
+        {
+          id: "ai_1",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+        {
+          id: "ai_2",
+          x: 0,
+          y: 0,
+          note: null,
+        },
+      ],
+    },
   });
 
   expect(isValid).toBe(false);
