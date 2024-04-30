@@ -1,3 +1,12 @@
 {
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "eslint.workingDirectories": [
+    "./apps/console",
+    "./apps/instill-form-playground",
+    "./packages/eslint-config-cortex",
+    "./packages/design-system",
+    "./packages/design-tokens",
+    "./packages/prettier-config-cortex",
+    "./packages/toolkit"
+  ]
 }
