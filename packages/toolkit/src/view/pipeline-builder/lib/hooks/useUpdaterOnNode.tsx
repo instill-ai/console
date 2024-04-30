@@ -7,14 +7,8 @@ import {
   ZodAnyValidatorSchema,
   useInstillStore,
 } from "../../../../lib";
-import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
-import {
-  composeEdgesFromNodes,
-  getConnectorOperatorComponentConfiguration,
-  isConnectorNode,
-  isOperatorNode,
-} from "..";
+import { composeEdgesFromNodes, isConnectorNode, isOperatorNode } from "..";
 import { ConnectorNodeData, OperatorNodeData } from "../../type";
 import {
   isConnectorComponent,
@@ -52,11 +46,10 @@ export function useUpdaterOnNode({
     pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
-  const { getValues } = form;
-
-  const values = getValues();
-
-  const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
+  const {
+    formState: { isDirty },
+    watch,
+  } = form;
 
   const debounceUpdater = React.useCallback(
     debounce((updateData) => {
@@ -98,7 +91,6 @@ export function useUpdaterOnNode({
       const newEdges = composeEdgesFromNodes(newNodes);
       updateEdges(() => newEdges);
       updatePipelineRecipeIsDirty(() => true);
-      updatedValue.current = updateData;
     }, 300),
     [
       currentNodeData,
@@ -109,56 +101,48 @@ export function useUpdaterOnNode({
     ]
   );
 
-  // We don't rely on the react-hook-form isValid and isDirty state
-  // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
-    if (pipelineIsReadOnly) {
-      return;
-    }
+    const sub = watch((values) => {
+      if (pipelineIsReadOnly) {
+        return;
+      }
 
-    const parsed = ValidatorSchema.safeParse(values);
-    const configuration =
-      getConnectorOperatorComponentConfiguration(currentNodeData);
+      const parsed = ValidatorSchema.safeParse(values);
 
-    if (
-      (isConnectorComponent(currentNodeData) &&
-        values.task !== currentNodeData.connector_component.task) ||
-      (isOperatorComponent(currentNodeData) &&
-        values.task !== currentNodeData.operator_component.task)
-    ) {
-      updateCurrentAdvancedConfigurationNodeID(() => null);
-    }
+      if (
+        (isConnectorComponent(currentNodeData) &&
+          values.task !== currentNodeData.connector_component.task) ||
+        (isOperatorComponent(currentNodeData) &&
+          values.task !== currentNodeData.operator_component.task)
+      ) {
+        updateCurrentAdvancedConfigurationNodeID(() => null);
+      }
 
-    // When the right panel is open we only update the configuration
-    // on right-panel updater
-    if (currentAdvancedConfigurationNodeID) {
-      return;
-    }
+      // When the right panel is open we only update the configuration
+      // on right-panel updater
+      if (currentAdvancedConfigurationNodeID) {
+        return;
+      }
 
-    if (!parsed.success) {
-      return;
-    }
+      if (!parsed.success || !isDirty) {
+        return;
+      }
 
-    if (isEqual(configuration, parsed.data)) {
-      return;
-    }
+      form.handleSubmit(() => {
+        debounceUpdater(parsed.data);
+      })();
+    });
 
-    if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
-      return;
-    }
-
-    debounceUpdater(parsed.data);
+    return () => {
+      sub.unsubscribe();
+    };
   }, [
-    values,
+    watch,
+    isDirty,
+    currentNodeData,
     ValidatorSchema,
-    updateNodes,
-    updatePipelineRecipeIsDirty,
     currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
-    currentNodeData,
-    nodes,
-    updateEdges,
-    debounceUpdater,
     pipelineIsReadOnly,
   ]);
 }

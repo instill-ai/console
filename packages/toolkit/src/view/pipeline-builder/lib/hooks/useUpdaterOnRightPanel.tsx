@@ -7,11 +7,9 @@ import {
   ZodAnyValidatorSchema,
   useInstillStore,
 } from "../../../../lib";
-import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
 import {
   composeEdgesFromNodes,
-  getConnectorOperatorComponentConfiguration,
   isConnectorNode,
   isIteratorNode,
   isOperatorNode,
@@ -47,12 +45,9 @@ export function useUpdaterOnRightPanel({
   } = useInstillStore(useShallow(selector));
 
   const {
-    getValues,
     formState: { isDirty },
-    trigger,
+    watch,
   } = form;
-
-  const values = getValues();
 
   const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
 
@@ -112,44 +107,25 @@ export function useUpdaterOnRightPanel({
     ]
   );
 
-  // We don't fully rely on the react-hook-form isValid and isDirty state
-  // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
-    if (pipelineIsReadOnly) {
-      return;
-    }
+    const sub = watch((values) => {
+      if (pipelineIsReadOnly) {
+        return;
+      }
 
-    const parsed = ValidatorSchema.safeParse(values);
+      const parsed = ValidatorSchema.safeParse(values);
 
-    const configuration =
-      getConnectorOperatorComponentConfiguration(currentNodeData);
+      if (!parsed.success || !isDirty) {
+        return;
+      }
 
-    if (!parsed.success) {
-      return;
-    }
+      form.handleSubmit(() => {
+        debounceUpdater(parsed.data);
+      })();
+    });
 
-    // We use the isDirty only for the initial render. After that we rely on the
-    // isEqual to check if the configuration has changed.
-    if (isEqual(configuration, parsed.data) || !isDirty) {
-      return;
-    }
-
-    if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
-      return;
-    }
-
-    debounceUpdater(parsed.data);
-  }, [
-    values,
-    ValidatorSchema,
-    updateNodes,
-    updatePipelineRecipeIsDirty,
-    nodes,
-    updateEdges,
-    currentNodeData,
-    isDirty,
-    trigger,
-    debounceUpdater,
-    pipelineIsReadOnly,
-  ]);
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [watch, isDirty, currentNodeData, ValidatorSchema, pipelineIsReadOnly]);
 }
