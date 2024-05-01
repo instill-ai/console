@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.87.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.0...@instill-ai/toolkit-v0.87.1) (2024-05-01)
+
+
+### Bug Fixes
+
+* fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
+* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+* fix wrongly return entity object on useAppEntity causing issue on Dashboard ([#1111](https://github.com/instill-ai/console/issues/1111)) ([e565a90](https://github.com/instill-ai/console/commit/e565a9029df2e7deb3619ae2852a83bfd40e74ca))
+* **pipeline-builder:** fix not correctly display nodes position in iterator ([#1110](https://github.com/instill-ai/console/issues/1110)) ([d9b8f09](https://github.com/instill-ai/console/commit/d9b8f09a313bd1fa79080e738d87a6e2d37ac2ad))
+* **pipeline-builder:** fix read-only canvas pan on drag issue ([#1109](https://github.com/instill-ai/console/issues/1109)) ([d94d502](https://github.com/instill-ai/console/commit/d94d502f491f2f6452068f6f1f815d3ecff90eb5))
+* **pipeline-builder:** fix when update the field on node the screen flicker  ([#1112](https://github.com/instill-ai/console/issues/1112)) ([7d10cde](https://github.com/instill-ai/console/commit/7d10cdee637ed78cee0af0eabb5cb9adc383b641))
+* **pipeline-overview:** fix alignment between input and output fields on the pipeline overview page ([301aee7](https://github.com/instill-ai/console/commit/301aee76d193815e6403e409f467ce8a112c9c77))
+
 ## [0.87.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.86.1...@instill-ai/toolkit-v0.87.0) (2024-04-25)
 
 

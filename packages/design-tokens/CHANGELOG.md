@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.1...@instill-ai/design-tokens-v0.5.2) (2024-05-01)
+
+
+### Bug Fixes
+
+* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+
 ## [0.5.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.0...@instill-ai/design-tokens-v0.5.1) (2024-03-29)
 
 
