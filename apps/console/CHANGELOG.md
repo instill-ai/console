@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.45.1-beta](https://github.com/instill-ai/console/compare/v0.45.0-beta...v0.45.1-beta) (2024-05-01)
+
+
+### Bug Fixes
+
+* fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
+* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+* fix wrongly initiate pipeline builder ([#1113](https://github.com/instill-ai/console/issues/1113)) ([1ddf754](https://github.com/instill-ai/console/commit/1ddf7547ebc2457fddb8d161e57b568e823c2639))
+
 ## [0.45.0-beta](https://github.com/instill-ai/console/compare/v0.44.0-beta...v0.45.0-beta) (2024-04-25)
 
 
