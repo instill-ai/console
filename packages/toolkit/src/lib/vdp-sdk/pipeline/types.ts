@@ -170,7 +170,7 @@ export type PipelineConnectorComponent = {
   metadata?: GeneralRecord;
   connector_component: {
     definition_name: string;
-    definition: Nullable<ConnectorDefinition>;
+    definition?: Nullable<ConnectorDefinition>;
     task: string;
     input: GeneralRecord;
     condition: Nullable<string>;
@@ -183,7 +183,7 @@ export type PipelineOperatorComponent = {
   metadata?: GeneralRecord;
   operator_component: {
     definition_name: string;
-    definition: Nullable<OperatorDefinition>;
+    definition?: Nullable<OperatorDefinition>;
     task: string;
     input: GeneralRecord;
     condition: Nullable<string>;

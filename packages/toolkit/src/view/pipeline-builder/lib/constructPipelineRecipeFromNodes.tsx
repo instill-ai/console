@@ -32,6 +32,7 @@ export function constructPipelineRecipeFromNodes(
                   ...component,
                   connector_component: {
                     ...component.connector_component,
+                    definition: undefined,
                     input:
                       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
                         recursiveHelpers.parseToNum(
@@ -46,7 +47,6 @@ export function constructPipelineRecipeFromNodes(
                           )
                         )
                       ),
-                    definition: null,
                   },
                 };
               }
@@ -56,13 +56,13 @@ export function constructPipelineRecipeFromNodes(
                   ...component,
                   operator_component: {
                     ...component.operator_component,
+                    definition: undefined,
                     input:
                       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
                         recursiveHelpers.parseToNum(
                           structuredClone(component.operator_component.input)
                         )
                       ),
-                    definition: null,
                   },
                 };
               }
@@ -71,7 +71,7 @@ export function constructPipelineRecipeFromNodes(
             }
           ),
         },
-        metadata: node.data.metadata,
+        metadata: node.data.metadata ?? undefined,
       });
       continue;
     }
@@ -91,9 +91,9 @@ export function constructPipelineRecipeFromNodes(
               structuredClone(node.data.connector_component.connection)
             )
           ),
-          definition: null,
+          definition: undefined,
         },
-        metadata: node.data.metadata,
+        metadata: node.data.metadata ?? undefined,
       });
 
       continue;
@@ -109,9 +109,9 @@ export function constructPipelineRecipeFromNodes(
               structuredClone(node.data.operator_component.input)
             )
           ),
-          definition: null,
+          definition: undefined,
         },
-        metadata: node.data.metadata,
+        metadata: node.data.metadata ?? undefined,
       });
     }
   }
