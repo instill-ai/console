@@ -96,8 +96,6 @@ export const Head = ({
     shareCode: shareCode ?? undefined,
   });
 
-  console.log(releases[0]);
-
   const deletePipeline = useDeleteUserPipeline();
   async function handleDeletePipeline() {
     try {
