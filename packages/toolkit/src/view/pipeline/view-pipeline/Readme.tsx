@@ -111,7 +111,7 @@ export const Readme = ({
     editorProps: {
       attributes: {
         class:
-          "markdown-body h-full p-5 rounded-sm !bg-transparent focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default",
+          "markdown-body h-full p-5 min-h-[424px] max-h-[800px] overflow-y-scroll rounded-sm !bg-transparent focus-within:outline focus-within:outline-2 focus-within:outline-semantic-accent-default",
       },
     },
     content: "",
@@ -140,7 +140,7 @@ export const Readme = ({
     <div className="flex w-full flex-1 flex-col">
       <EditorContent
         className={cn(
-          "mb-2 h-[424px] w-full rounded-sm border",
+          "mb-2 w-full rounded-sm border",
           hasUnsavedChanges ? "rounded-sm border-semantic-bg-line" : ""
         )}
         editor={editor}
