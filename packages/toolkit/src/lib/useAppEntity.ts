@@ -79,7 +79,6 @@ export function useAppEntity():
   }, [namespaceType.data, entity, id]);
 
   if (isSuccess && namespaceType.isSuccess) {
-    console.log("entity", entity, entityName);
     return {
       data: {
         namespaceType: namespaceType.data,
