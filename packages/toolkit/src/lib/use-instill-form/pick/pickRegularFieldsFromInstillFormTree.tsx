@@ -257,6 +257,8 @@ export function pickRegularFieldsFromInstillFormTree(
           componentID={componentID}
           size={size}
           isHidden={tree.isHidden}
+          secrets={secrets}
+          instillCredentialField={tree.instillCredentialField}
         />
       );
     }
