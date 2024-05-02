@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.88.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.0...@instill-ai/toolkit-v0.88.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix wrongly roll back position when update node config ([#1120](https://github.com/instill-ai/console/issues/1120)) ([9b68564](https://github.com/instill-ai/console/commit/9b68564a90be700a0a579109acac56f80d9e1c62))
+
 ## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.1...@instill-ai/toolkit-v0.88.0) (2024-05-02)
 
 
