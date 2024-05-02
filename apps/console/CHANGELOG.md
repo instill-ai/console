@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.45.2-beta](https://github.com/instill-ai/console/compare/v0.45.1-beta...v0.45.2-beta) (2024-05-02)
+
+
+### Bug Fixes
+
+* fix pipeline-view head button and style ([#1115](https://github.com/instill-ai/console/issues/1115)) ([2335cee](https://github.com/instill-ai/console/commit/2335ceee3a419b102397cdd63407d2bc95359cf2))
+
 ## [0.45.1-beta](https://github.com/instill-ai/console/compare/v0.45.0-beta...v0.45.1-beta) (2024-05-01)
 
 

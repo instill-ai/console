@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.1...@instill-ai/toolkit-v0.88.0) (2024-05-02)
+
+
+### Features
+
+* **pipeline-builder:** make description on node selectable ([#1119](https://github.com/instill-ai/console/issues/1119)) ([552a516](https://github.com/instill-ai/console/commit/552a516c806b325bf7b2cf176a34a3488340750a))
+
+
+### Bug Fixes
+
+* fix pipeline-view head button and style ([#1115](https://github.com/instill-ai/console/issues/1115)) ([2335cee](https://github.com/instill-ai/console/commit/2335ceee3a419b102397cdd63407d2bc95359cf2))
+* **pipeline-builder:** fix toolkit wrongly display null definition cause confusion ([#1118](https://github.com/instill-ai/console/issues/1118)) ([7ecfb08](https://github.com/instill-ai/console/commit/7ecfb086d2ca9f451d5f7e3cf601915b930bd78f))
+* **pipeline-builder:** fix we can not hint secrets on TextArea ([#1117](https://github.com/instill-ai/console/issues/1117)) ([922c50c](https://github.com/instill-ai/console/commit/922c50ce9b8b3b68c47ceb3f48768b545c5f2821))
+
 ## [0.87.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.0...@instill-ai/toolkit-v0.87.1) (2024-05-01)
 
 
