@@ -1,5 +1,6 @@
 "use client";
 
+import cn from "clsx";
 import { Form, Switch } from "@instill-ai/design-system";
 import type { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
@@ -49,7 +50,10 @@ export const BooleanField = ({
               text={shortDescription ?? null}
             />
             <Form.Message
-              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-medium" : ""
+              )}
             />
           </Form.Item>
         );
