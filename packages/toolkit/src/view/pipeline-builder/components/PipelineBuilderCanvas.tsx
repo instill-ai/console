@@ -118,6 +118,11 @@ export const PipelineBuilderCanvas = ({
         });
         onNodesChange(nextChanges);
       }}
+      onMove={() => {
+        if (pipelineIsReadOnly) return;
+        updateSelectedConnectorNodeId(() => null);
+        updateCurrentAdvancedConfigurationNodeID(() => null);
+      }}
       onEdgesChange={(changes) => {
         if (pipelineIsReadOnly) return;
         onEdgesChange(changes);

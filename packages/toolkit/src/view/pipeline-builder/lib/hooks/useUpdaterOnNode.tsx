@@ -9,13 +9,14 @@ import {
 } from "../../../../lib";
 import { useShallow } from "zustand/react/shallow";
 import { composeEdgesFromNodes, isConnectorNode, isOperatorNode } from "..";
-import { ConnectorNodeData, OperatorNodeData } from "../../type";
+import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
 import {
   isConnectorComponent,
   isOperatorComponent,
 } from "../checkComponentType";
 import debounce from "lodash.debounce";
 import isEqual from "lodash.isequal";
+import { Node } from "reactflow";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -50,54 +51,59 @@ export function useUpdaterOnNode({
   const { watch } = form;
 
   const debounceUpdater = React.useCallback(
-    debounce((updateData) => {
-      const newNodes = nodes.map((node) => {
-        if (isConnectorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              connector_component: {
-                ...node.data.connector_component,
-                task: updateData.task,
-                condition: updateData.condition,
-                input: updateData.input,
-                connection: updateData.connection,
+    debounce(
+      ({
+        nodeID,
+        updateData,
+        nodes,
+      }: {
+        nodeID: string;
+        updateData: GeneralRecord;
+        nodes: Node<NodeData>[];
+      }) => {
+        const newNodes = nodes.map((node) => {
+          if (isConnectorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                connector_component: {
+                  ...node.data.connector_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                  connection: updateData.connection,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        if (isOperatorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              operator_component: {
-                ...node.data.operator_component,
-                input: updateData.input,
-                task: updateData.task,
+          if (isOperatorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                operator_component: {
+                  ...node.data.operator_component,
+                  input: updateData.input,
+                  task: updateData.task,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        return node;
-      });
+          return node;
+        });
 
-      updateNodes(() => newNodes);
-      const newEdges = composeEdgesFromNodes(newNodes);
-      updateEdges(() => newEdges);
-      updatePipelineRecipeIsDirty(() => true);
-      prevValue.current = updateData;
-    }, 300),
-    [
-      currentNodeData,
-      nodes,
-      updateEdges,
-      updateNodes,
-      updatePipelineRecipeIsDirty,
-    ]
+        updateNodes(() => newNodes);
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateEdges(() => newEdges);
+        updatePipelineRecipeIsDirty(() => true);
+        prevValue.current = updateData;
+      },
+      300
+    ),
+    [currentNodeData, updateEdges, updateNodes, updatePipelineRecipeIsDirty]
   );
 
   const prevValue = React.useRef<Nullable<GeneralRecord>>(null);
@@ -132,7 +138,11 @@ export function useUpdaterOnNode({
       }
 
       form.handleSubmit(() => {
-        debounceUpdater(parsed.data);
+        debounceUpdater({
+          updateData: parsed.data,
+          nodes,
+          nodeID: currentNodeData.id,
+        });
       })();
     });
 
@@ -140,6 +150,7 @@ export function useUpdaterOnNode({
       sub.unsubscribe();
     };
   }, [
+    nodes,
     watch,
     currentNodeData,
     ValidatorSchema,
