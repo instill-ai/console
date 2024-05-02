@@ -53,59 +53,64 @@ export function useUpdaterOnRightPanel({
   const prevValue = React.useRef<Nullable<GeneralRecord>>(null);
 
   const debounceUpdater = React.useCallback(
-    debounce((updateData) => {
-      const newNodes: Node<NodeData>[] = nodes.map((node) => {
-        if (isConnectorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              connector_component: {
-                ...node.data.connector_component,
-                task: updateData.task,
-                condition: updateData.condition,
-                input: updateData.input,
-                connection: updateData.connection,
+    debounce(
+      ({
+        nodeID,
+        updateData,
+        nodes,
+      }: {
+        nodeID: string;
+        updateData: GeneralRecord;
+        nodes: Node<NodeData>[];
+      }) => {
+        const newNodes: Node<NodeData>[] = nodes.map((node) => {
+          if (isConnectorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                connector_component: {
+                  ...node.data.connector_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                  connection: updateData.connection,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        if (isOperatorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              operator_component: {
-                ...node.data.operator_component,
-                task: updateData.task,
-                condition: updateData.condition,
-                input: updateData.input,
+          if (isOperatorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                operator_component: {
+                  ...node.data.operator_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        if (isIteratorNode(node)) {
+          if (isIteratorNode(node)) {
+            return node;
+          }
+
           return node;
-        }
+        });
 
-        return node;
-      });
-
-      updateNodes(() => newNodes);
-      const newEdges = composeEdgesFromNodes(newNodes);
-      updateEdges(() => newEdges);
-      updatePipelineRecipeIsDirty(() => true);
-      prevValue.current = updateData;
-    }, 300),
-    [
-      currentNodeData,
-      nodes,
-      updateEdges,
-      updateNodes,
-      updatePipelineRecipeIsDirty,
-    ]
+        updateNodes(() => newNodes);
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateEdges(() => newEdges);
+        updatePipelineRecipeIsDirty(() => true);
+        prevValue.current = updateData;
+      },
+      300
+    ),
+    [updateEdges, updateNodes, updatePipelineRecipeIsDirty]
   );
 
   React.useEffect(() => {
@@ -123,7 +128,11 @@ export function useUpdaterOnRightPanel({
       }
 
       form.handleSubmit(() => {
-        debounceUpdater(parsed.data);
+        debounceUpdater({
+          updateData: parsed.data,
+          nodeID: currentNodeData.id,
+          nodes,
+        });
       })();
     });
 
