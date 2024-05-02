@@ -228,7 +228,10 @@ export const TextField = ({
               </Popover.Content>
             </Popover.Root>
             <Form.Description
-              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-regular" : ""
+              )}
               text={shortDescription ?? null}
             />
             <Form.Message

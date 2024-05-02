@@ -61,9 +61,11 @@ export const TextField = ({
                 />
               </Input.Root>
             </Form.Control>
-            <Form.Description
-              className={size === "sm" ? "!product-body-text-4-regular" : ""}
-              text={shortDescription ?? null}
+            <Form.Message
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-medium" : ""
+              )}
             />
             <Form.Message
               className={size === "sm" ? "!product-body-text-4-medium" : ""}
