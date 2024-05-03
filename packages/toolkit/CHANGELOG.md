@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.88.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.1...@instill-ai/toolkit-v0.88.2) (2024-05-03)
+
+
+### Bug Fixes
+
+* pipeline view head section clone button permission ([#1122](https://github.com/instill-ai/console/issues/1122)) ([527fd88](https://github.com/instill-ai/console/commit/527fd88f0875a9409331b5178cdbd58cd1c07a66))
+
 ## [0.88.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.0...@instill-ai/toolkit-v0.88.1) (2024-05-02)
 
 
