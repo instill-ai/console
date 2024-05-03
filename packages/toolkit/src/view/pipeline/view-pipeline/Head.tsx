@@ -326,7 +326,7 @@ export const Head = ({
               {pipeline.isSuccess ? (
                 <React.Fragment>
                   {me.isSuccess ? (
-                    pipeline.data.permission.can_edit ? (
+                    !pipeline.data.permission.can_edit ? (
                       <ClonePipelineDialog
                         trigger={
                           <Button
