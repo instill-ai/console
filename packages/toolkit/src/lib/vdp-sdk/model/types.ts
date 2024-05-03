@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+import { User } from "../mgmt/types";
 import { Pipeline } from "../pipeline";
 import { Visibility } from "../types";
 
@@ -38,14 +39,23 @@ export type Model = {
   description: string;
   model_definition: string;
   configuration: {
-    [key: string]: any;
-  };
-  task: string;
-  state: ModelState;
+    [key: string]: string;
+  },
+  task: ModelTask;
   visibility: Visibility;
-  owner: string;
   create_time: string;
-  update_time: string;
+  update_time: string | null;
+  delete_time: string | null;
+  owner_name: string;
+  owner: {
+    user: User;
+  };
+  region: string;
+  hardware: string;
+  readme: string;
+  source_url: string;
+  documentation_url: string;
+  license: string;
 };
 
 export type ModelState =
