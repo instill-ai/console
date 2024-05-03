@@ -82,6 +82,7 @@ import { Recording04 } from "./Recording04";
 import { Recording05 } from "./Recording05";
 import { ReferenceIconCheck } from "./ReferenceIconCheck";
 import { ReferenceIconX } from "./ReferenceIconX";
+import { Rocket01 } from "./Rocket01";
 import { Save01 } from "./Save01";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
@@ -94,6 +95,7 @@ import { Tag01 } from "./Tag01";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
+import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Tool01 } from "./Tool01";
@@ -192,6 +194,7 @@ export const Icons = {
   Recording05,
   ReferenceIconCheck,
   ReferenceIconX,
+  Rocket01,
   Save01,
   SpeechRecognition,
   Sliders01,
@@ -204,6 +207,7 @@ export const Icons = {
   TextGenerationChat,
   Trash01,
   Trash03,
+  Type01,
   Type02,
   TypePlus,
   Tool01,
