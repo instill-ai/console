@@ -87,8 +87,8 @@ export const Body = ({
 
     const all: Pipeline[] = [];
 
-    for (const page of pipelines?.data?.pages) {
-      all?.push(...page.pipelines);
+    for (const page of pipelines.data.pages) {
+      all.push(...page.pipelines);
     }
 
     return all;
