@@ -4,7 +4,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
+      allow: ["/", "/api/og/*"],
       disallow: "/private/",
     },
     sitemap: "https://instill.tech/sitemap.xml",
