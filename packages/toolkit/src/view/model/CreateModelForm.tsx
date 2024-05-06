@@ -503,9 +503,9 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           }}
           disabled={modelDefinitions ? (modelCreated ? true : false) : false}
           required={true}
-          description={`<a href="${getModelSetupGuide(
+          description={<a target="_blank" href={`${getModelSetupGuide(
             modelDefinition || ""
-          )}">Setup Guide</a>`}
+          )}`}>Setup Guide</a>}
         />
         {selectedModelDefinitionOption?.value === "model-definitions/github" ? (
           <React.Fragment>

@@ -56,7 +56,7 @@ export async function listModelDefinitionsQuery({
     const modelDefinitions: ModelDefinition[] = [];
 
     const queryString = getQueryString({
-      baseURL: "/model-definitions",
+      baseURL: "/model-definitions?view=VIEW_FULL",
       pageSize,
       nextPageToken,
       filter: null,
