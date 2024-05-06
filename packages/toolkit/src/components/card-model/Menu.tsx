@@ -2,15 +2,17 @@
 
 import * as React from "react";
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
-//import { ClonePipelineDialog, GeneralDeleteResourceDialog } from "..";
+import { GeneralDeleteResourceDialog } from "../GeneralDeleteResourceDialog";
+import { Model } from "../../lib";
 
-/* export type MenuProps = {
-  model: Pipeline;
+export type MenuProps = {
+  model: Model,
   handleDeleteModel: () => Promise<void>;
-}; */
+};
 
-export const Menu = (/* { model, handleDeleteModel }: MenuProps */) => {
-  //const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
+export const Menu = (props: MenuProps) => {
+  const { handleDeleteModel, model } = props;
+  const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
 
   return (
     <React.Fragment>
@@ -27,9 +29,7 @@ export const Menu = (/* { model, handleDeleteModel }: MenuProps */) => {
             className="w-[129px] !rounded !px-0 !py-2"
           >
             <DropdownMenu.Item
-              onClick={() => {
-                //setDeleteDialogIsOpen(true);
-              }}
+              onClick={() => setDeleteDialogIsOpen(true)}
               className="!px-4 !py-2.5 !text-semantic-error-default !product-button-button-2 gap-x-2"
             >
               <Icons.Trash01 className="h-4 w-4 stroke-semantic-error-default" />
@@ -38,24 +38,18 @@ export const Menu = (/* { model, handleDeleteModel }: MenuProps */) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      {/* <ClonePipelineDialog
-        pipeline={pipeline}
-        open={cloneDialogIsOpen}
-        onOpenChange={(open) => setCloneDialogIsOpen(open)}
-        trigger={null}
-      />
       <GeneralDeleteResourceDialog
         open={deleteDialogIsOpen}
         onOpenChange={(open) => setDeleteDialogIsOpen(open)}
-        resourceID={pipeline.id}
-        title={`Delete ${pipeline.id}`}
-        description="This action cannot be undone. This will permanently delete the pipeline."
+        resourceID={model.id}
+        title={`Delete ${model.id}`}
+        description="This action cannot be undone. This will permanently delete the model."
         handleDeleteResource={async () => {
-          await handleDeletePipeline();
+          await handleDeleteModel();
           setDeleteDialogIsOpen(false);
         }}
         trigger={null}
-      /> */}
+      />
     </React.Fragment>
   );
 };

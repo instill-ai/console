@@ -107,7 +107,11 @@ export const ModelHubListPageMainView = (
           Create a Model
         </Button>
       </div>
-      <ModelsList models={models.isSuccess ? models.data : []} />
+      <ModelsList
+        models={models.isSuccess ? models.data : []}
+        accessToken={accessToken}
+        onModelDelete={models.refetch}
+      />
       {/* <ModelsTable
         models={models.isSuccess ? models.data : []}
         modelsWatchState={

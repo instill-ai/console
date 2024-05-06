@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { User } from "../mgmt/types";
+import { Organization } from "../organization";
 import { Pipeline } from "../pipeline";
 import { Visibility } from "../types";
 
@@ -48,7 +49,8 @@ export type Model = {
   delete_time: string | null;
   owner_name: string;
   owner: {
-    user: User;
+    user?: User;
+    organization?: Organization;
   };
   region: string;
   hardware: string;
