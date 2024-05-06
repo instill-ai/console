@@ -96,7 +96,7 @@ export type BasicInputProps = {
   label: Nullable<string>;
 
   /** Field's description */
-  description: string;
+  description: string | React.ReactNode;
 
   /** TailwindCSS format - Background color of input
    * - e.g. bg-white
