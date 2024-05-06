@@ -19,7 +19,7 @@ export const FieldRoot = ({
     <div
       key={fieldKey}
       className={cn(
-        "flex w-full flex-col gap-y-2 rounded-[6px] bg-semantic-bg-primary p-2",
+        "flex w-full flex-col gap-y-2 rounded-[6px] bg-semantic-bg-alt-primary p-2",
         className
       )}
       data-testid={`output-${fieldKey}`}

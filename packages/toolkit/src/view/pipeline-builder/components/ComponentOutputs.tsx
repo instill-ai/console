@@ -74,7 +74,7 @@ export const ComponentOutputs = ({
         className="nodrag nowheel h-full"
         viewPortClassName="max-h-[400px]"
       >
-        <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary">
+        <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-alt-primary">
           {componentOutputFields}
         </div>
       </ScrollArea.Root>
