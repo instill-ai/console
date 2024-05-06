@@ -26,7 +26,7 @@ export async function createOrganizationMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.post<CreateOrganizationResponse>(
       "/organizations",
@@ -56,7 +56,7 @@ export async function updateOrganizationMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.patch<UpdateOrganizationResponse>(
       `/organizations/${payload.id}`,
@@ -90,7 +90,7 @@ export async function updateOrganizationMembershipMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.put<UpdateOrganizationMembershipResponse>(
       `/organizations/${payload.organizationID}/memberships/${payload.userID}`,
@@ -115,7 +115,7 @@ export async function deleteOrganizationMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     await client.delete(`/organizations/${organizationID}`);
   } catch (err) {
@@ -133,7 +133,7 @@ export async function deleteOrganizationMembershipMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     await client.delete(
       `/organizations/${organizationID}/memberships/${userID}`
@@ -153,7 +153,7 @@ export async function deleteUserMembershipMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     await client.delete(`/users/${userID}/memberships/${organizationID}`);
   } catch (err) {
@@ -179,7 +179,7 @@ export async function updateUserMembershipMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.put<UpdateUserMembershipResponse>(
       `/users/${payload.userID}/memberships/${payload.organizationID}`,

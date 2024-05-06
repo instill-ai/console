@@ -7,16 +7,12 @@ import { useRouter } from "next/navigation";
 
 export const RootPageRender = () => {
   useAppAccessToken();
-  const trackToken = useAppTrackToken({ enabled: true });
+  useAppTrackToken({ enabled: true });
   const router = useRouter();
 
   React.useEffect(() => {
-    if (trackToken.isSuccess && trackToken.data) {
-      router.push("/admin/pipelines");
-    } else {
-      router.push("/login");
-    }
-  }, [trackToken.isSuccess, trackToken.data]);
+    router.push("/admin/pipelines");
+  }, [router]);
 
   return <div />;
 };

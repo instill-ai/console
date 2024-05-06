@@ -53,7 +53,7 @@ export async function listPipelinesQuery(
   } = props;
 
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const pipelines: Pipeline[] = [];
 
     const queryString = getQueryString({
@@ -138,7 +138,7 @@ export async function listUserPipelinesQuery(
     disabledViewFull,
   } = props;
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const pipelines: Pipeline[] = [];
 
     const queryString = getQueryString({
@@ -193,7 +193,7 @@ export async function getUserPipelineQuery({
   shareCode?: string;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserPipelineResponse>(
       `/${pipelineName}?view=VIEW_FULL`,
@@ -238,7 +238,7 @@ export async function ListUserPipelineReleasesQuery({
   shareCode?: string;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const releases: PipelineRelease[] = [];
 
     const queryString = getQueryString({
@@ -293,7 +293,7 @@ export async function getUserPipelineReleaseQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserPipelineReleaseResponse>(
       `/${pipelineReleaseName}?view=VIEW_FULL`
@@ -317,7 +317,7 @@ export async function watchUserPipelineReleaseQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const { data } = await client.get<WatchUserPipelineReleaseResponse>(
       `/${pipelineReleaseName}/watch`
     );
@@ -349,7 +349,7 @@ export async function listOperatorDefinitionsQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const operatorDefinitions: OperatorDefinition[] = [];
 
     const queryString = getQueryString({
@@ -393,7 +393,7 @@ export async function getOperatorDefinitionQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOperatorDefinitionResponse>(
       `/${operatorDefinitionName}?view=VIEW_FULL`
@@ -421,7 +421,7 @@ export async function getUserSecretQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetSecretResponse>(`/${secretName}`);
 
@@ -449,7 +449,7 @@ export async function listUserSecretsQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const secrets: Secret[] = [];
 
     const queryString = getQueryString({
