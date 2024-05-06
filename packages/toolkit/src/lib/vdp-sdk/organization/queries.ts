@@ -25,7 +25,7 @@ export async function listOrganizationsQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
     const organizations: Organization[] = [];
 
     const queryString = getQueryString({
@@ -68,7 +68,7 @@ export async function getOrganizationQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationResponse>(
       `/organizations/${organizationID}`
@@ -92,7 +92,7 @@ export async function getOrganizationSubscriptionQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationSubscriptionResponse>(
       `/organizations/${organizationID}/subscription`
@@ -116,7 +116,7 @@ export async function getOrganizationMembershipsQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationMembershipsResponse>(
       `/organizations/${organizationID}/memberships`
@@ -142,7 +142,7 @@ export async function getOrganizationMembershipQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationMembershipResponse>(
       `/organizations/${organizationID}/memberships/${userID}`
@@ -166,7 +166,7 @@ export async function getUserMembershipsQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserMembershipsResponse>(
       `users/${userID}/memberships`
@@ -192,7 +192,7 @@ export async function getUserMembershipQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserMembershipsResponse>(
       `users/${userID}/memberships/${organizationID}`

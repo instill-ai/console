@@ -14,7 +14,7 @@ export async function getOperationQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "model");
+    const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.get<GetModelOperationResponse>(
       `/${operationName}`

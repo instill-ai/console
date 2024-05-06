@@ -4,7 +4,7 @@ import { Nullable } from "../../type";
 
 export function createInstillAxiosClient(
   accessToken: Nullable<string>,
-  product: "core" | "model" | "vdp"
+  isModelEndpoint?: boolean
 ) {
   const headers = accessToken
     ? {
@@ -29,14 +29,14 @@ export function createInstillAxiosClient(
 
   let APIVersion = env("NEXT_PUBLIC_GENERAL_API_VERSION");
 
-  if (product === "model") {
+  if (isModelEndpoint) {
     APIVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
   }
 
   const baseURL: Nullable<string> = `${
     process.env.NEXT_SERVER_API_GATEWAY_URL ??
     env("NEXT_PUBLIC_API_GATEWAY_URL")
-  }/${product}/${APIVersion}`;
+  }/${APIVersion}`;
 
   return axios.create({
     baseURL,
