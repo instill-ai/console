@@ -100,6 +100,7 @@ export const CardModel = (props: CardModelProps) => {
           <p className="text-semantic-fg-secondary">{model.description}</p>
           <Stats
             task={model.task}
+            updatedAt={model.update_time || model.create_time}
           />
         </div>
       </div>

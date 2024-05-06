@@ -10,7 +10,7 @@ export function getHumanReadableStringFromTime(
   let next: number;
 
   if (typeof nextTime === "number") {
-    next = nextTime;
+    next = nextTime / 1000;
   } else {
     next = Date.parse(nextTime) / 1000;
   }
