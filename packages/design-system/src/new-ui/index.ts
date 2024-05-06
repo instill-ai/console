@@ -1,6 +1,7 @@
 export * from "./Button";
 export * from "./Breadcrumb";
 export * from "./Checkbox";
+export * from "./Collapsible";
 export * from "./Combobox";
 export * from "./Color";
 export * from "./Command";
