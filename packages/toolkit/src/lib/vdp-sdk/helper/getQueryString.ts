@@ -17,7 +17,7 @@ export const getQueryString = ({
 }) => {
   let url = baseURL;
 
-  if (pageSize || nextPageToken || filter) {
+  if (pageSize || nextPageToken || filter || queryParams) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
       url += "&";
