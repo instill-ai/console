@@ -117,18 +117,38 @@ export type ListModelsResponse = {
   total_size: number;
 };
 
+export type listUserModelsQueryProps = {
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+  accessToken: Nullable<string>;
+  filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
+};
+
+export async function listModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListUserModelsResponse>;
+export async function listModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<Model[]>;
+export async function listModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<Model[]>;
 export async function listModelsQuery({
   pageSize,
   nextPageToken,
   accessToken,
   filter,
   visibility,
-}: {
-  pageSize: Nullable<number>;
-  nextPageToken: Nullable<string>;
-  accessToken: Nullable<string>;
-  filter: Nullable<string>;
-  visibility: Nullable<Visibility>;
+  enablePagination,
+}: listUserModelsQueryProps & {
+  enablePagination?: boolean;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
@@ -145,14 +165,19 @@ export async function listModelsQuery({
 
     const { data } = await client.get<ListModelsResponse>(queryString);
 
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
     models.push(...data.models);
 
     if (data.next_page_token) {
       models.push(
         ...(await listModelsQuery({
           pageSize,
-          accessToken,
           nextPageToken: data.next_page_token,
+          accessToken,
+          enablePagination: false,
           filter,
           visibility,
         }))
