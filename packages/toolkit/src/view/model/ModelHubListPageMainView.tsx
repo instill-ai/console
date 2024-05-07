@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Button, Input, Icons, Select } from "@instill-ai/design-system";
+import { Button, Input, Icons, Select, Nullable } from "@instill-ai/design-system";
 import { GeneralAppPageProp, Visibility, useModels, useWatchUserModels } from "../../lib";
 import { useParams, useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
 import React from "react";
+import debounce from "lodash.debounce";
 
 const ModelsTable = dynamic(
   () => import("./ModelsTable").then((mod) => mod.ModelsTable),
@@ -22,6 +23,17 @@ export const ModelHubListPageMainView = (
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
 
+  const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [searchInputValue, setSearchInputValue] =
+    React.useState<Nullable<string>>(null);
+    const debouncedSetSearchCode = React.useMemo(
+      () =>
+        debounce((value: string) => {
+          setSearchCode(value);
+        }, 300),
+      []
+    );
+
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
       visibility === "VISIBILITY_PUBLIC"
@@ -36,6 +48,8 @@ export const ModelHubListPageMainView = (
   const models = useModels({
     enabled: enableQuery,
     accessToken,
+    filter: searchCode ? `q="${searchCode}"` : null,
+    visibility: selectedVisibilityOption ?? null,
   });
   const modelsWatchState = useWatchUserModels({
     modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
@@ -46,7 +60,7 @@ export const ModelHubListPageMainView = (
     models.isLoading || (models.isSuccess && models.data.length > 0)
       ? modelsWatchState.isLoading
       : false;
-  console.log(models.data);
+  
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -64,11 +78,11 @@ export const ModelHubListPageMainView = (
                 <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
               </Input.LeftIcon>
               <Input.Core
-                value={/* searchInputValue ?? */ ""}
+                value={searchInputValue ?? ""}
                 placeholder="Search..."
                 onChange={(event) => {
-                  //setSearchInputValue(event.target.value);
-                  //debouncedSetSearchCode(event.target.value);
+                  setSearchInputValue(event.target.value);
+                  debouncedSetSearchCode(event.target.value);
                 }}
               />
             </Input.Root>
