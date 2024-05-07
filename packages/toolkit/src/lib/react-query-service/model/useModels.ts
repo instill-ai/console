@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { env } from "../../../server";
 import { Visibility, listModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
@@ -26,22 +26,31 @@ export function useModels({
     queryKey.push(visibility);
   }
 
-  return useQuery({
+  return useInfiniteQuery({
     queryKey,
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
       const models = await listModelsQuery({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
+        nextPageToken: pageParam ?? null,
         accessToken,
         filter,
         visibility,
+        enablePagination: true,
       });
 
       return Promise.resolve(models);
+    },
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => {
+      if (lastPage.next_page_token === "") {
+        return null;
+      }
+
+      return lastPage.next_page_token;
     },
     enabled,
     retry: retry === false ? false : retry ? retry : 3,
