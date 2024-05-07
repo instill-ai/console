@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.67.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.66.1...@instill-ai/design-system-v0.67.0) (2024-05-07)
+
+
+### Features
+
+* **design-system:** add Collapsible component into design-system ([#1125](https://github.com/instill-ai/console/issues/1125)) ([b802520](https://github.com/instill-ai/console/commit/b802520ec0d92b661498e486eb96bcb063ec58fb))
+
 ## [0.66.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.66.0...@instill-ai/design-system-v0.66.1) (2024-05-01)
 
 
