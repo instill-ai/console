@@ -34,3 +34,4 @@ export * from "./Textarea";
 export * from "./Toast";
 export * from "./Tooltip";
 export * from "./Field";
+export * from "./Pagination";
