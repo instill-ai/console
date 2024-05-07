@@ -15,6 +15,13 @@ import { ModelsListPagination } from "./ModelsListPagination";
 
 export type ModelHubListPageMainViewProps = GeneralAppPageProp;
 
+const defaultPaginationProps = {
+  isPrevDisabled: true,
+  isNextDisabled: true,
+  currentPage: 0,
+  totalPages: 0,
+}
+
 export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
 ) => {
