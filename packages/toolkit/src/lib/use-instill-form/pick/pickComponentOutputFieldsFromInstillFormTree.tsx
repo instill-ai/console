@@ -285,10 +285,10 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   // Process structured type like semi-structured, structured/detection_object...etc
   if (singularType.includes("structured")) {
     return (
-      <ComponentOutputFields.ObjectsField
+      <ComponentOutputFields.ObjectField
         mode={mode}
         title={title}
-        objects={propertyValue}
+        object={propertyValue}
         hideField={hideField}
       />
     );
