@@ -10,6 +10,7 @@ import { TextField } from "./TextField";
 import { TextsField } from "./TextsField";
 import { VideoField } from "./VideoField";
 import { VideosField } from "./VideosField";
+import { DownloadButton } from "./DownloadButton";
 
 export const ComponentOutputFields = {
   AudioField,
@@ -24,4 +25,5 @@ export const ComponentOutputFields = {
   TextsField,
   VideoField,
   VideosField,
+  DownloadButton,
 };

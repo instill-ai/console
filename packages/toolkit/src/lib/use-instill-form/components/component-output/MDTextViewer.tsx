@@ -6,6 +6,7 @@ import { Switch } from "@instill-ai/design-system";
 import { CopyButton } from "./CopyButton";
 import { Nullable } from "../../../type";
 import Markdown from "markdown-to-jsx";
+import { DownloadButton } from "./DownloadButton";
 
 export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   const [enableFormattedText, setEnableFormattedText] = React.useState(false);
@@ -27,7 +28,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
         }
       `}</style>
       <div className="nodrag nowheel flex flex-col rounded-sm border border-semantic-bg-line">
-        <div className="flex flex-row rounded-t-sm border-b border-semantic-bg-line bg-semantic-bg-secondary px-2 py-1">
+        <div className="flex flex-row rounded-t-sm border-b border-semantic-bg-line bg-[#F0F0F0] px-2 py-0">
           <div className="flex flex-row gap-x-1">
             <p className="my-auto text-semantic-fg-primary product-body-text-4-medium">
               Formatted
@@ -42,7 +43,8 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
               />
             </div>
           </div>
-          <div className="ml-auto flex flex-row">
+          <div className="ml-auto flex flex-row gap-x-1">
+            <DownloadButton className="my-auto" text={text ?? ""} />
             <CopyButton className="my-auto" text={text ?? ""} />
           </div>
         </div>

@@ -2,7 +2,7 @@ import * as React from "react";
 import cn from "clsx";
 import { Icons } from "@instill-ai/design-system";
 
-export const CopyButton = ({
+export const DownloadButton = ({
   className,
   text,
 }: {
@@ -27,13 +27,9 @@ export const CopyButton = ({
       }}
     >
       <p className="font-sans text-[10px] font-semibold text-semantic-fg-disabled">
-        Copy
+        Download
       </p>
-      {copied ? (
-        <Icons.Check className="h-3 w-3 stroke-semantic-fg-disabled" />
-      ) : (
-        <Icons.Copy06 className="h-3 w-3 stroke-semantic-fg-disabled" />
-      )}
+      <Icons.Download02 className="h-3 w-3 stroke-semantic-fg-disabled" />
     </button>
   );
 };
