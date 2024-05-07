@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.2...@instill-ai/toolkit-v0.89.0) (2024-05-07)
+
+
+### Features
+
+* adapt the retirement of api prefix ([#1124](https://github.com/instill-ai/console/issues/1124)) ([3654fb4](https://github.com/instill-ai/console/commit/3654fb427dda9401714f095249ec722ff988e599))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix wrongly handle singular object type ([#1128](https://github.com/instill-ai/console/issues/1128)) ([7e8533a](https://github.com/instill-ai/console/commit/7e8533a936bcce7e1581569261b9614e14a59c4d))
+
 ## [0.88.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.1...@instill-ai/toolkit-v0.88.2) (2024-05-03)
 
 

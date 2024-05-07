@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.46.0-beta](https://github.com/instill-ai/console/compare/v0.45.2-beta...v0.46.0-beta) (2024-05-07)
+
+
+### Features
+
+* adapt the retirement of api prefix ([#1124](https://github.com/instill-ai/console/issues/1124)) ([3654fb4](https://github.com/instill-ai/console/commit/3654fb427dda9401714f095249ec722ff988e599))
+
 ## [0.45.2-beta](https://github.com/instill-ai/console/compare/v0.45.1-beta...v0.45.2-beta) (2024-05-02)
 
 
