@@ -1,19 +1,22 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Button, Input, Icons, Select, Nullable } from "@instill-ai/design-system";
-import { GeneralAppPageProp, Visibility, useModels, useWatchUserModels } from "../../lib";
+import { GeneralAppPageProp, Visibility, useModels } from "../../lib";
 import { useParams, useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import debounce from "lodash.debounce";
-
-const ModelsTable = dynamic(
-  () => import("./ModelsTable").then((mod) => mod.ModelsTable),
-  { ssr: false }
-);
+import { Pagination } from "@instill-ai/design-system";
+import { env } from "../../server";
 
 export type ModelHubListPageMainViewProps = GeneralAppPageProp;
+
+const defaultPaginationProps = {
+  isPrevDisabled: true,
+  isNextDisabled: true,
+  currentPage: 0,
+  totalPages: 0,
+}
 
 export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
@@ -22,6 +25,7 @@ export const ModelHubListPageMainView = (
   const { entity } = useParams();
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
+  const [pageNumber, setPageNumber] = useState(0)
 
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
@@ -51,16 +55,31 @@ export const ModelHubListPageMainView = (
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
   });
-  const modelsWatchState = useWatchUserModels({
-    modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
-    enabled: enableQuery && models.isSuccess && models.data.length > 0,
-    accessToken,
-  });
-  const isLoadingResource =
-    models.isLoading || (models.isSuccess && models.data.length > 0)
-      ? modelsWatchState.isLoading
-      : false;
-  
+
+  const isLoadingResource = !models.isFetched || models.isLoading || models.isFetching || models.isFetchingNextPage;
+
+  const paginationProps = useMemo(() => {
+    if (!models.data || models.data.pages.length === 0) {
+      return defaultPaginationProps;
+    }
+
+    const pageSize = env("NEXT_PUBLIC_QUERY_PAGE_SIZE") || 10;
+    const totalPages = Math.ceil(models.data.pages[0].total_size / pageSize);
+
+    let isNextDisabled = true;
+
+    if (models.hasNextPage || pageNumber < totalPages - 1) {
+      isNextDisabled = false;
+    }
+
+    return {
+      isPrevDisabled: pageNumber === 0,
+      isNextDisabled,
+      currentPage: pageNumber + 1,
+      totalPages,
+    }
+  }, [models, pageNumber])
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
@@ -122,18 +141,35 @@ export const ModelHubListPageMainView = (
         </Button>
       </div>
       <ModelsList
-        models={models.isSuccess ? models.data : []}
+        models={models.isSuccess ? (models.data?.pages[pageNumber] ? models.data?.pages[pageNumber].models : []) : []}
         accessToken={accessToken}
         onModelDelete={models.refetch}
-      />
-      {/* <ModelsTable
-        models={models.isSuccess ? models.data : []}
-        modelsWatchState={
-          modelsWatchState.isSuccess ? modelsWatchState.data : {}
-        }
-        isError={models.isError || modelsWatchState.isError}
         isLoading={isLoadingResource}
-      /> */}
+      />
+      {
+        models.data && paginationProps.totalPages > 1
+          ? (
+            <Pagination
+              align="center"
+              onPrev={() => setPageNumber(currentNumber => currentNumber - 1)}
+              onNext={() => {
+                setPageNumber(currentNumber => {
+                  const newCurrentNumber = currentNumber + 1;
+                  
+                  if (
+                    paginationProps.currentPage < paginationProps.totalPages &&
+                    !models.data.pages[newCurrentNumber]
+                  ) {
+                    models.fetchNextPage();
+                  }
+
+                  return newCurrentNumber;
+                });
+              }}
+              {...paginationProps}
+            />
+          ) : null
+      }
     </div>
   );
 };
