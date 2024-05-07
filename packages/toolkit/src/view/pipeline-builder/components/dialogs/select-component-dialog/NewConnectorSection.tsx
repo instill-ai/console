@@ -42,7 +42,7 @@ export const NewConnectorSection = ({
   });
 
   return (
-    <DialogSection.Root title="New Connectors">
+    <DialogSection.Root title="Connectors">
       <DialogSection.SubTitle>AI</DialogSection.SubTitle>
       <DialogSection.Grid>
         {aiDefinitions.isSuccess
