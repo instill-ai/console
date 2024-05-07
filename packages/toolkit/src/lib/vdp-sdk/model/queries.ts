@@ -6,6 +6,7 @@ import type {
   ModelWatchState,
 } from "./types";
 import type { Nullable } from "../../type";
+import { Visibility } from "../types";
 
 /* -------------------------------------------------------------------------
  * Model Definition
@@ -120,10 +121,14 @@ export async function listModelsQuery({
   pageSize,
   nextPageToken,
   accessToken,
+  filter,
+  visibility,
 }: {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
+  filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
@@ -134,7 +139,8 @@ export async function listModelsQuery({
       baseURL: "/models?view=VIEW_FULL",
       pageSize,
       nextPageToken,
-      filter: null,
+      filter,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
     });
 
     const { data } = await client.get<ListModelsResponse>(queryString);
@@ -147,6 +153,8 @@ export async function listModelsQuery({
           pageSize,
           accessToken,
           nextPageToken: data.next_page_token,
+          filter,
+          visibility,
         }))
       );
     }
