@@ -23,7 +23,7 @@ export const topbarItems = [
     name: "Dashboard",
   },
   {
-    pathName: "dashboard",
+    pathName: "knowledge",
     icon: (
       <Icons.Lightning01 className="h-6 w-6 stroke-semantic-fg-primary" />
     ),
