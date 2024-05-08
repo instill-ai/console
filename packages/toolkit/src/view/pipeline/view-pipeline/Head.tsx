@@ -343,21 +343,19 @@ export const Head = ({
                     </Button>
                   ) : null}
                   {me.isSuccess ? (
-                    !pipeline.data.permission.can_edit ? (
-                      <ClonePipelineDialog
-                        trigger={
-                          <Button
-                            className="items-center gap-x-2"
-                            size="sm"
-                            variant="secondaryGrey"
-                          >
-                            <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
-                            Clone
-                          </Button>
-                        }
-                        pipeline={pipeline.data}
-                      />
-                    ) : null
+                    <ClonePipelineDialog
+                      trigger={
+                        <Button
+                          className="items-center gap-x-2"
+                          size="sm"
+                          variant="secondaryGrey"
+                        >
+                          <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                          Clone
+                        </Button>
+                      }
+                      pipeline={pipeline.data}
+                    />
                   ) : (
                     <Button
                       onClick={() => {

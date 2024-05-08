@@ -9,6 +9,7 @@ import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
 import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { Icons } from "@instill-ai/design-system";
 
 export const ImagesField = ({
   mode,
@@ -47,93 +48,132 @@ export const ImagesField = ({
               disabledReferenceHint={disabledReferenceHint}
             />
 
-            <div
-              className={cn(
-                "grid w-full grid-flow-row grid-cols-4",
-                mode === "build"
-                  ? ""
-                  : "rounded-sm border border-semantic-bg-line"
-              )}
-            >
-              {imageFiles.length > 0
-                ? fillArrayWithZeros(imageFiles, 8)
-                    .slice(0, 8)
-                    .map((file, i) => {
-                      return file ? (
-                        <img
-                          key={`${path}-${file.name}`}
-                          src={URL.createObjectURL(file)}
-                          alt={`${path}-${file.name}`}
-                          className={cn(
-                            mode === "build"
-                              ? "h-[55px] object-cover"
-                              : "h-[140px] object-contain"
-                          )}
-                        />
-                      ) : (
-                        <div
-                          key={`${path}-${i}`}
-                          className={cn(
-                            "w-full bg-semantic-bg-secondary",
-                            mode === "build"
-                              ? "h-[55px] object-cover"
-                              : "h-[140px] object-contain"
-                          )}
-                        />
-                      );
-                    })
-                : Array.from({ length: 8 }).map((_, i) => (
-                    <div
-                      key={`${path}-${i}`}
-                      className={cn(
-                        "w-full",
-                        mode === "build"
-                          ? "h-[55px] bg-semantic-bg-secondary object-cover"
-                          : "h-[140px] object-contain"
-                      )}
-                    />
-                  ))}
-            </div>
-            <div className="flex flex-row gap-x-1">
-              <Form.Control>
-                <UploadFileInput
-                  keyPrefix={keyPrefix}
-                  fieldKey={path}
-                  title="Upload images"
-                  accept="images/*"
-                  multiple={true}
-                  onChange={async (e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      const files: File[] = [];
-                      const binaries: string[] = [];
-                      for (const file of e.target.files) {
-                        const binary = await readFileToBinary(file);
-                        files.push(file);
-                        binaries.push(binary);
-                      }
-                      field.onChange(binaries);
-                      setImageFiles((prev) => [...prev, ...files]);
-                    }
-                  }}
-                  disabled={disabled}
-                />
-              </Form.Control>
-              {imageFiles.length > 0 ? (
-                <button
-                  type="button"
-                  className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
-                  onClick={() => {
-                    field.onChange([]);
-                    setImageFiles([]);
-                    if (inputRef.current) {
-                      inputRef.current.value = "";
-                    }
-                  }}
+            {imageFiles.length > 0 ? (
+              <div
+                className={cn(
+                  "grid w-full grid-flow-row grid-cols-4",
+                  mode === "build" ? "" : "rounded-sm bg-semantic-bg-base-bg"
+                )}
+              >
+                {fillArrayWithZeros(imageFiles, 8)
+                  .slice(0, 8)
+                  .map((file, i) => {
+                    return file ? (
+                      <img
+                        key={`${path}-${file.name}`}
+                        src={URL.createObjectURL(file)}
+                        alt={`${path}-${file.name}`}
+                        className={cn(
+                          mode === "build"
+                            ? "h-[55px] object-cover"
+                            : "h-[140px] object-contain"
+                        )}
+                      />
+                    ) : (
+                      <div
+                        key={`${path}-${i}`}
+                        className={cn(
+                          "w-full bg-semantic-bg-secondary",
+                          mode === "build"
+                            ? "h-[55px] object-cover"
+                            : "h-[140px] object-contain"
+                        )}
+                      />
+                    );
+                  })}
+              </div>
+            ) : (
+              <label
+                htmlFor={`upload-file-input-${path}-${keyPrefix}`}
+                className="cursor-pointer"
+              >
+                <div
+                  key={`${path}-image-placeholder`}
+                  className={cn(
+                    "flex w-full flex-col items-center justify-center",
+                    mode === "build"
+                      ? "h-[150px] bg-semantic-bg-secondary"
+                      : "h-[230px] rounded-sm bg-semantic-bg-base-bg"
+                  )}
                 >
-                  Delete all
-                </button>
-              ) : null}
-            </div>
+                  <div className="hidden">
+                    <Form.Control>
+                      <UploadFileInput
+                        keyPrefix={keyPrefix}
+                        fieldKey={path}
+                        title="Upload images"
+                        accept="images/*"
+                        multiple={true}
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            const files: File[] = [];
+                            const binaries: string[] = [];
+                            for (const file of e.target.files) {
+                              const binary = await readFileToBinary(file);
+                              files.push(file);
+                              binaries.push(binary);
+                            }
+                            field.onChange(binaries);
+                            setImageFiles((prev) => [...prev, ...files]);
+                          }
+                        }}
+                        disabled={disabled}
+                      />
+                    </Form.Control>
+                  </div>
+                  <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary" />
+                  <p className="mt-4 font-sans text-[12px] font-normal text-semantic-fg-primary">
+                    Drag-and-drop images, or{" "}
+                    <span className="text-semantic-accent-default">
+                      browse computer
+                    </span>
+                  </p>
+                </div>
+              </label>
+            )}
+
+            {imageFiles.length >= 1 && (
+              <div className="flex flex-row gap-x-1">
+                <Form.Control>
+                  <UploadFileInput
+                    keyPrefix={keyPrefix}
+                    fieldKey={path}
+                    title="Upload images"
+                    accept="images/*"
+                    multiple={true}
+                    onChange={async (e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const files: File[] = [];
+                        const binaries: string[] = [];
+                        for (const file of e.target.files) {
+                          const binary = await readFileToBinary(file);
+                          files.push(file);
+                          binaries.push(binary);
+                        }
+                        field.onChange(binaries);
+                        setImageFiles((prev) => [...prev, ...files]);
+                      }
+                    }}
+                    disabled={disabled}
+                  />
+                </Form.Control>
+                {imageFiles.length > 0 ? (
+                  <button
+                    type="button"
+                    className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
+                    onClick={() => {
+                      field.onChange([]);
+                      setImageFiles([]);
+                      if (inputRef.current) {
+                        inputRef.current.value = "";
+                      }
+                    }}
+                  >
+                    Delete all
+                  </button>
+                ) : null}
+              </div>
+            )}
             {imageFiles.length > 0 ? (
               <ScrollArea.Root
                 className={cn(

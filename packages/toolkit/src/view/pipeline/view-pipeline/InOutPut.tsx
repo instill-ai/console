@@ -221,7 +221,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-3 flex flex-col gap-y-6">
+      <div className="mb-3 flex flex-col gap-y-3">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Input
         </div>
@@ -273,7 +273,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
         )}
       </div>
-      <div className="mb-6 flex flex-col gap-y-6">
+      <div className="mb-6 flex flex-col gap-y-3">
         <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
           Output
         </div>
