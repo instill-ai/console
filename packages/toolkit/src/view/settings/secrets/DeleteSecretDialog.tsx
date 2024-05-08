@@ -33,7 +33,6 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
 
   const displaySecretName = secretName.split("/").pop() || "";
 
-  const displaySecretName = secretName.split("/").pop() || "";
 
   const form = useForm<z.infer<typeof DeleteSecretSchema>>({
     resolver: zodResolver(DeleteSecretSchema),
@@ -164,9 +163,7 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
                     className="w-full flex-1"
                     variant="primary"
                     size="lg"
-                    disabled={
-                      form.watch("code") === displaySecretName ? false : true
-                    }
+                    disabled={form.watch("code") === displaySecretName ? false : true}
                   >
                     {isLoading ? <LoadingSpin /> : "Delete Secret"}
                   </Button>
