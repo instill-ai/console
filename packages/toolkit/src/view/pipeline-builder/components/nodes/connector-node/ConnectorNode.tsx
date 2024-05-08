@@ -152,7 +152,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 const values = getValues();
 
                 const parsedResult = ValidatorSchema.safeParse(values);
-                updateCurrentAdvancedConfigurationNodeID(() => id);
 
                 if (parsedResult.success) {
                   updateCurrentAdvancedConfigurationNodeID(() => id);
