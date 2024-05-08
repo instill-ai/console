@@ -1,10 +1,10 @@
 "use client";
 
-import { Button, Input, Icons, Select, Nullable } from "@instill-ai/design-system";
+import { Button, Input, Icons, Select } from "@instill-ai/design-system";
 import { GeneralAppPageProp, Visibility, useModels } from "../../lib";
 import { useParams, useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 import { Pagination } from "@instill-ai/design-system";
 import { env } from "../../server";
@@ -27,9 +27,9 @@ export const ModelHubListPageMainView = (
   const visibility = searchParams.get("visibility");
   const [pageNumber, setPageNumber] = useState(0)
 
-  const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [searchCode, setSearchCode] = React.useState<string>('');
   const [searchInputValue, setSearchInputValue] =
-    React.useState<Nullable<string>>(null);
+    React.useState<string>('');
     const debouncedSetSearchCode = React.useMemo(
       () =>
         debounce((value: string) => {
@@ -44,6 +44,13 @@ export const ModelHubListPageMainView = (
         ? "VISIBILITY_PUBLIC"
         : "VISIBILITY_UNSPECIFIED"
     );
+
+  useEffect(() => {
+    setPageNumber(0);
+  }, [
+    selectedVisibilityOption,
+    searchCode
+  ])
 
   /* -------------------------------------------------------------------------
    * Query resource data
