@@ -20,6 +20,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
   const { tree, data, chooseTitleFrom, hideField, mode } = props;
 
+
+
   let title: Nullable<string> = null;
 
   if (chooseTitleFrom === "title") {
@@ -188,8 +190,12 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     );
   }
 
+
+
   if (tree.instillFormat.includes("array:")) {
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
+
+    console.log(arrayType);
 
     if (arrayType.includes("structured")) {
       return (
@@ -282,6 +288,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   // Process singular types
   const singularType = tree.instillFormat.split("/")[0];
 
+  console.log(singularType);
+
   // Process structured type like semi-structured, structured/detection_object...etc
   if (singularType.includes("structured")) {
     return (
@@ -293,6 +301,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       />
     );
   }
+
+  console.log(singularType);
 
   switch (singularType) {
     case "number":
