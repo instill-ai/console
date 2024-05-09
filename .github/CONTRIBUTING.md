@@ -34,7 +34,7 @@ When you are ready to send a PR, we recommend you to first open a `draft` one. T
 ### Local development environment setup
 
 - instill-ai/core
-  - Go to [instill-ai/core](https://github.com/instill-ai/core) and clone it.
+  - Go to [instill-ai/core](https://github.com/instill-ai/instill-core) and clone it.
   - Spin up the services by `make latest PROFILE=all`
 - instill-ai/vdp
   - Go to [instill-ai/vdp](https://github.com/instill-ai/vdp) and clone it.
