@@ -50,6 +50,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
+  const [forceCloseCollapsibleFormGroups, setForceCloseCollapsibleFormGroups] =
+    React.useState<string[]>([]);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
 
@@ -74,6 +76,11 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         componentID: data.id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
         secrets: entitySecrets,
+        collapsibleDefaultOpen: true,
+        enabledCollapsibleFormGroup: true,
+        forceCloseCollapsibleFormGroups,
+        updateForceCloseCollapsibleFormGroups:
+          setForceCloseCollapsibleFormGroups,
       }
     );
 
