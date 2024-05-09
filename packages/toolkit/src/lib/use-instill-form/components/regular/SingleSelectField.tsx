@@ -68,9 +68,8 @@ export const SingleSelectField = ({
                             ? "!product-body-text-4-regular"
                             : "product-body-text-3-regular"
                         )}
-                      >
-                        <p className="my-auto">{option}</p>
-                      </Select.Item>
+                        label={option}
+                      />
                     );
                   })}
               </Select.Content>

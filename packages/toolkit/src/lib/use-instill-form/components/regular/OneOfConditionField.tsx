@@ -125,11 +125,8 @@ export const OneOfConditionField = ({
                               ? "!product-body-text-4-regular"
                               : "product-body-text-4-regular"
                           )}
-                        >
-                          <p className="my-auto">
-                            {option.title ?? option.key}
-                          </p>
-                        </Select.Item>
+                          label={option.title ?? option.key}
+                        />
                       );
                     })}
                   </Select.Content>
