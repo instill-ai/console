@@ -27,7 +27,7 @@ export const ModelHubCreatePageMainView = (
         accessToken={accessToken}
         enabledQuery={enableQuery}
       />
-      <CreateModelForm
+      {/* <CreateModelForm
         width="w-full"
         onCreate={(initStore) => {
           initStore();
@@ -36,7 +36,7 @@ export const ModelHubCreatePageMainView = (
         accessToken={accessToken}
         enabledQuery={enableQuery}
         disabledCreateModel={disabledCreateModel}
-      />
+      /> */}
     </div>
   );
 };
