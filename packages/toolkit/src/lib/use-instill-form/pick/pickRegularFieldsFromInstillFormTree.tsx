@@ -19,6 +19,11 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   componentID?: string;
   size?: "sm";
   secrets?: Secret[];
+
+  enabledCollapsibleFormGroup?: boolean;
+  collapsibleDefaultOpen?: boolean;
+  forceCloseCollapsibleFormGroups?: string[];
+  updateForceCloseCollapsibleFormGroups?: (value: string[]) => void;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -36,6 +41,14 @@ export function pickRegularFieldsFromInstillFormTree(
   const componentID = options?.componentID ?? "";
   const size = options?.size;
   const secrets = options?.secrets ?? [];
+
+  const enabledCollapsibleFormGroup =
+    options?.enabledCollapsibleFormGroup ?? false;
+  const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? true;
+  const forceCloseCollapsibleFormGroups =
+    options?.forceCloseCollapsibleFormGroups ?? [];
+  const updateForceCloseCollapsibleFormGroups =
+    options?.updateForceCloseCollapsibleFormGroups;
 
   let title: Nullable<string> = null;
 
@@ -66,7 +79,51 @@ export function pickRegularFieldsFromInstillFormTree(
       return null;
     }
 
-    return tree.fieldKey ? (
+    if (!tree.fieldKey) {
+      return (
+        <React.Fragment key={tree.path || tree.fieldKey}>
+          {tree.properties.map((property) => {
+            return pickRegularFieldsFromInstillFormTree(
+              property,
+              form,
+              selectedConditionMap,
+              setSelectedConditionMap,
+              options
+            );
+          })}
+        </React.Fragment>
+      );
+    }
+
+    if (enabledCollapsibleFormGroup) {
+      return (
+        <RegularFields.CollapsibleFormGroup
+          path={tree.path || tree.fieldKey}
+          title={title}
+          defaultOpen={collapsibleDefaultOpen}
+          forceCloseCollapsibleFormGroups={forceCloseCollapsibleFormGroups}
+          updateForceCloseCollapsibleFormGroups={
+            updateForceCloseCollapsibleFormGroups
+          }
+        >
+          {tree.properties.map((property) => {
+            return pickRegularFieldsFromInstillFormTree(
+              property,
+              form,
+              selectedConditionMap,
+              setSelectedConditionMap,
+              {
+                // We only enable collapsible form group for the first level
+                ...options,
+                enabledCollapsibleFormGroup: false,
+              }
+            );
+          })}
+        </RegularFields.CollapsibleFormGroup>
+      );
+    }
+
+    return (
       <div key={tree.path || tree.fieldKey}>
         <p
           className={cn(
@@ -78,12 +135,7 @@ export function pickRegularFieldsFromInstillFormTree(
         >
           {title}
         </p>
-        <div
-          className={cn(
-            "flex flex-col gap-y-4 border border-semantic-bg-line",
-            size === "sm" ? "rounded p-2" : "rounded-sm p-4"
-          )}
-        >
+        <div className={cn("flex flex-col gap-y-4")}>
           {tree.properties.map((property) => {
             return pickRegularFieldsFromInstillFormTree(
               property,
@@ -95,18 +147,6 @@ export function pickRegularFieldsFromInstillFormTree(
           })}
         </div>
       </div>
-    ) : (
-      <React.Fragment key={tree.path || tree.fieldKey}>
-        {tree.properties.map((property) => {
-          return pickRegularFieldsFromInstillFormTree(
-            property,
-            form,
-            selectedConditionMap,
-            setSelectedConditionMap,
-            options
-          );
-        })}
-      </React.Fragment>
     );
   }
 
