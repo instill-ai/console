@@ -20,17 +20,11 @@ export const Regular: Story = {
       <Select.Content>
         <Select.Group>
           <Select.Label>Fruits</Select.Label>
-          <Select.Item value="apple">Apple</Select.Item>
-          <Select.Item value="banana">Banana</Select.Item>
-          <Select.Item value="blueberry">Blueberry</Select.Item>
-          <Select.Item value="grapes">Grapes</Select.Item>
-          <Select.Item value="pineapple">Pineapple</Select.Item>
-          <Select.Item value="1">1</Select.Item>
-          <Select.Item value="2">2</Select.Item>
-          <Select.Item value="3">3</Select.Item>
-          <Select.Item value="4">4</Select.Item>
-          <Select.Item value="5">5</Select.Item>
-          <Select.Item value="6">6</Select.Item>
+          <Select.Item value="apple" label="Apple" />
+          <Select.Item value="banana" label="Banana" />
+          <Select.Item value="blueberry" label="Blueberry" />
+          <Select.Item value="grapes" label="Grapes" />
+          <Select.Item value="pineapple" label="Pineapple" />
         </Select.Group>
       </Select.Content>
     </Select.Root>
@@ -39,7 +33,7 @@ export const Regular: Story = {
 
 export const WithIcon: Story = {
   render: () => (
-    <Select.Root open={true}>
+    <Select.Root>
       <Select.Trigger className="w-full">
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
@@ -47,20 +41,26 @@ export const WithIcon: Story = {
         <Select.Group>
           <Select.Label>Fruits</Select.Label>
           <Select.Item value="Hello">
-            <div className="flex flex-row space-x-2">
-              <Icons.Box className="h-5 w-5 stroke-semantic-fg-primary group-hover:stroke-semantic-bg-primary" />
-              <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
-                Hello
-              </p>
-            </div>
+            <Select.ItemText>
+              <div className="flex flex-row space-x-2">
+                <Icons.Box className="h-5 w-5 stroke-semantic-fg-primary group-hover:stroke-semantic-bg-primary" />
+
+                <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
+                  Hello
+                </p>
+              </div>
+            </Select.ItemText>
           </Select.Item>
           <Select.Item value="YO">
-            <div className="flex flex-row space-x-2">
-              <ModelLogo variant="square" width={20} />
-              <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
-                YO
-              </p>
-            </div>
+            <Select.ItemText>
+              <div className="flex flex-row space-x-2">
+                <ModelLogo variant="square" width={20} />
+
+                <p className=" text-semantic-fg-primary product-body-text-3-regular group-hover:text-semantic-bg-primary">
+                  YO
+                </p>
+              </div>
+            </Select.ItemText>
           </Select.Item>
         </Select.Group>
       </Select.Content>

@@ -140,9 +140,8 @@ export const IteratorInput = ({ className }: { className?: string }) => {
                 key={option.path}
                 value={option.path}
                 disabledCheck={true}
-              >
-                {option.path}
-              </Select.Item>
+                label={option.path}
+              />
             ))}
           </Select.Content>
         </Select.Root>

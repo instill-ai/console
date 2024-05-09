@@ -298,32 +298,34 @@ export const ClonePipelineDialog = ({
                                               value={namespace.id}
                                               key={namespace.id}
                                             >
-                                              <div className="flex flex-row gap-x-2">
-                                                <span className="my-auto">
-                                                  {namespace.id}
-                                                </span>
-                                                <span className="my-auto">
-                                                  {namespace.name.includes(
-                                                    "organizations"
-                                                  ) ? (
-                                                    <Tag
-                                                      variant="lightBlue"
-                                                      size="sm"
-                                                      className="!py-0"
-                                                    >
-                                                      organization
-                                                    </Tag>
-                                                  ) : (
-                                                    <Tag
-                                                      size="sm"
-                                                      className="!py-0"
-                                                      variant="lightNeutral"
-                                                    >
-                                                      user
-                                                    </Tag>
-                                                  )}
-                                                </span>
-                                              </div>
+                                              <Select.ItemText>
+                                                <div className="flex flex-row gap-x-2">
+                                                  <span className="my-auto">
+                                                    {namespace.id}
+                                                  </span>
+                                                  <span className="my-auto">
+                                                    {namespace.name.includes(
+                                                      "organizations"
+                                                    ) ? (
+                                                      <Tag
+                                                        variant="lightBlue"
+                                                        size="sm"
+                                                        className="!py-0"
+                                                      >
+                                                        organization
+                                                      </Tag>
+                                                    ) : (
+                                                      <Tag
+                                                        size="sm"
+                                                        className="!py-0"
+                                                        variant="lightNeutral"
+                                                      >
+                                                        user
+                                                      </Tag>
+                                                    )}
+                                                  </span>
+                                                </div>
+                                              </Select.ItemText>
                                             </Select.Item>
                                           )
                                         )}

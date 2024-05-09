@@ -11,6 +11,8 @@ const Group = SelectPrimitive.Group;
 
 const Value = SelectPrimitive.Value;
 
+const ItemText = SelectPrimitive.ItemText;
+
 const Trigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
@@ -84,8 +86,12 @@ const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
     disabledCheck?: boolean;
+
+    // You can use label to have the default ItemText, or you can use
+    // children to have a custom ItemText
+    label?: string;
   }
->(({ className, disabledCheck, children, ...props }, ref) => (
+>(({ className, label, disabledCheck, children, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -101,7 +107,10 @@ const Item = React.forwardRef<
         </SelectPrimitive.ItemIndicator>
       </span>
     )}
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    {children}
+    {label ? (
+      <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>
+    ) : null}
   </SelectPrimitive.Item>
 ));
 Item.displayName = SelectPrimitive.Item.displayName;
@@ -127,4 +136,5 @@ export const Select = {
   Label,
   Item,
   Separator,
+  ItemText,
 };
