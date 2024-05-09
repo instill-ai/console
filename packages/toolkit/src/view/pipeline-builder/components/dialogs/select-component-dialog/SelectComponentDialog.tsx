@@ -66,7 +66,7 @@ export const SelectComponentDialog = ({
               Select a component
             </Dialog.Title>
             <Dialog.Description className="mx-auto">
-              Select a connector to add to your pipeline
+              Select a component to add to your pipeline
             </Dialog.Description>
           </Dialog.Header>
           {isEditingIterator ? null : <IteratorSection onSelect={onSelect} />}
