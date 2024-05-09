@@ -17,7 +17,6 @@ import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap
 import { GeneralRecord, Nullable } from "../type";
 
 export type UseInstillFormOptions = {
-  disabledAll?: boolean;
   checkIsHidden?: CheckIsHidden;
 } & Pick<
   PickRegularFieldsFromInstillFormTreeOptions,
@@ -31,6 +30,8 @@ export type UseInstillFormOptions = {
   | "enabledCollapsibleFormGroup"
   | "forceCloseCollapsibleFormGroups"
   | "updateForceCloseCollapsibleFormGroups"
+  | "supportInstillCredit"
+  | "setSupportInstillCredit"
 >;
 
 export function useInstillForm(
@@ -48,6 +49,8 @@ export function useInstillForm(
   const enabledCollapsibleFormGroup =
     options?.enabledCollapsibleFormGroup ?? true;
   const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? false;
+  const supportInstillCredit = options?.supportInstillCredit ?? false;
+  const setSupportInstillCredit = options?.setSupportInstillCredit;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -143,6 +146,8 @@ export function useInstillForm(
         secrets,
         enabledCollapsibleFormGroup,
         collapsibleDefaultOpen,
+        supportInstillCredit,
+        setSupportInstillCredit,
       }
     );
 
@@ -160,6 +165,8 @@ export function useInstillForm(
     secrets,
     enabledCollapsibleFormGroup,
     collapsibleDefaultOpen,
+    supportInstillCredit,
+    setSupportInstillCredit,
   ]);
 
   return {

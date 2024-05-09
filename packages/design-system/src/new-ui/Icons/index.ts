@@ -17,6 +17,7 @@ import { Circle } from "./Circle";
 import { CodeBrowser } from "./CodeBrowser";
 import { CodeSnippet02 } from "./CodeSnippet02";
 import { CodeSquare02 } from "./CodeSquare02";
+import { CoinsStacked01 } from "./CoinsStacked01";
 import { Copy06 } from "./Copy06";
 import { Copy07 } from "./Copy07";
 import { CheckCircle } from "./CheckCircle";
@@ -138,6 +139,7 @@ export const Icons = {
   CodeBrowser,
   CodeSnippet02,
   CodeSquare02,
+  CoinsStacked01,
   Copy06,
   Copy07,
   Cube01,

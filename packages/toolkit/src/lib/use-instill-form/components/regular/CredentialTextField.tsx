@@ -80,9 +80,6 @@ export const CredentialTextField = ({
                 size === "sm" ? "!product-body-text-4-medium" : ""
               )}
             />
-            <Form.Message
-              className={size === "sm" ? "!product-body-text-4-medium" : ""}
-            />
           </Form.Item>
         );
       }}

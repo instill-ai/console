@@ -19,11 +19,12 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   componentID?: string;
   size?: "sm";
   secrets?: Secret[];
-
   enabledCollapsibleFormGroup?: boolean;
   collapsibleDefaultOpen?: boolean;
   forceCloseCollapsibleFormGroups?: string[];
   updateForceCloseCollapsibleFormGroups?: (value: string[]) => void;
+  supportInstillCredit?: boolean;
+  setSupportInstillCredit?: (value: boolean) => void;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -41,6 +42,8 @@ export function pickRegularFieldsFromInstillFormTree(
   const componentID = options?.componentID ?? "";
   const size = options?.size;
   const secrets = options?.secrets ?? [];
+  const supportInstillCredit = options?.supportInstillCredit ?? false;
+  const setSupportInstillCredit = options?.setSupportInstillCredit ?? undefined;
 
   const enabledCollapsibleFormGroup =
     options?.enabledCollapsibleFormGroup ?? false;
@@ -276,6 +279,8 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         size={size}
         isHidden={tree.isHidden}
+        instillCredentialMap={tree.instillCredentialMap}
+        setSupportInstillCredit={setSupportInstillCredit}
       />
     );
   }
@@ -298,7 +303,9 @@ export function pickRegularFieldsFromInstillFormTree(
           size={size}
           isHidden={tree.isHidden}
           secrets={secrets}
-          instillCredentialField={tree.instillCredentialField}
+          instillSecret={tree.instillSecret}
+          instillCredential={tree.instillCredential}
+          supportInstillCredit={supportInstillCredit}
         />
       );
     }
@@ -335,7 +342,9 @@ export function pickRegularFieldsFromInstillFormTree(
         size={size}
         isHidden={tree.isHidden}
         secrets={secrets}
-        instillCredentialField={tree.instillCredentialField}
+        instillSecret={tree.instillSecret}
+        instillCredential={tree.instillCredential}
+        supportInstillCredit={supportInstillCredit}
       />
     );
   }
