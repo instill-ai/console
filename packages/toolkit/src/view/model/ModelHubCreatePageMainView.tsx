@@ -18,11 +18,13 @@ export const ModelHubCreatePageMainView = (
 
   return (
     <div className="flex flex-col">
-      <PageTitle
-        title="Set Up New Model"
-        breadcrumbs={["Models", "Model Settings"]}
-        className="mb-10"
-      />
+      <div className="flex border-b border-semantic-bg-line mb-10">
+        <PageTitle
+          title="Create a model"
+          breadcrumbs={["Models", "Model Settings"]}
+          className="mb-5"
+        />
+      </div>
       <CreateModelForm1
         accessToken={accessToken}
         enabledQuery={enableQuery}
