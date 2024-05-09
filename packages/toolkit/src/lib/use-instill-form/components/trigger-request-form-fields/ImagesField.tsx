@@ -88,7 +88,7 @@ export const ImagesField = ({
                 className="cursor-pointer"
               >
                 <div
-                  key={`${path}-image-placeholder`}
+                  key={`${path}-images-placeholder`}
                   className={cn(
                     "flex w-full flex-col items-center justify-center",
                     mode === "build"
@@ -157,21 +157,20 @@ export const ImagesField = ({
                     disabled={disabled}
                   />
                 </Form.Control>
-                {imageFiles.length > 0 ? (
-                  <button
-                    type="button"
-                    className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
-                    onClick={() => {
-                      field.onChange([]);
-                      setImageFiles([]);
-                      if (inputRef.current) {
-                        inputRef.current.value = "";
-                      }
-                    }}
-                  >
-                    Delete all
-                  </button>
-                ) : null}
+
+                <button
+                  type="button"
+                  className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
+                  onClick={() => {
+                    field.onChange([]);
+                    setImageFiles([]);
+                    if (inputRef.current) {
+                      inputRef.current.value = "";
+                    }
+                  }}
+                >
+                  Delete all
+                </button>
               </div>
             )}
             {imageFiles.length > 0 ? (

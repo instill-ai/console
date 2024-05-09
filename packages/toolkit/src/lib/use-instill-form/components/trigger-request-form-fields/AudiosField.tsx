@@ -53,7 +53,7 @@ export const AudiosField = ({
               className="cursor-pointer"
             >
               <div
-                key={`${path}-image-placeholder`}
+                key={`${path}-audios-placeholder`}
                 className={cn(
                   "flex w-full flex-col items-center justify-center",
                   mode === "build"
