@@ -1,50 +1,121 @@
+import * as React from "react"
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import cn from "clsx";
 
-export type PaginationProps = {
-  align?: 'left' | 'right' | 'center';
-  isPrevDisabled: boolean;
-  isNextDisabled: boolean;
+type Align = 'left' | 'right' | 'center';
+
+const PaginationRoot = ({ className, ...props }: React.ComponentProps<"nav">) => (
+  <nav
+    role="navigation"
+    aria-label="pagination"
+    className={cn("", className)}
+    {...props}
+  />
+)
+PaginationRoot.displayName = "PaginationRoot"
+
+const PaginationContent = React.forwardRef<
+  HTMLUListElement,
+  React.ComponentProps<"ul"> & { align?: Align }
+>(({ className, align = 'center', ...props }, ref) => (
+  <ul
+    ref={ref}
+    className={cn(`
+      flex items-center justify-between py-4 w-full${' '}
+      
+      [&>li:first-child>*]:data-[align=center]:rounded-r-sm${' '}
+      
+      [&>li:last-child>*]:data-[align=center]:rounded-l-sm${' '}
+      [&>li:last-child>*]:data-[align=center]:border${' '}
+      
+      [&>li:nth-child(2)]:data-[align=left]:order-last${' '}
+      [&>li:nth-child(2)]:data-[align=left]:ml-auto${' '}
+      [&>li:nth-child(2)]:data-[align=right]:order-first${' '}
+      [&>li:nth-child(2)]:data-[align=right]:mr-auto
+    `, className)}
+    data-align={align}
+    {...props}
+  />
+))
+PaginationContent.displayName = "PaginationContent"
+
+const PaginationItem = React.forwardRef<
+  HTMLLIElement,
+  React.ComponentProps<"li">
+>(({ className, ...props }, ref) => (
+  <li ref={ref} className={cn("", className)} {...props} />
+))
+PaginationItem.displayName = "PaginationItem";
+
+const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof Button>) => (
+  <Button
+    className={cn("gap-x-2 rounded-l-sm rounded-r-none !border-semantic-bg-line !py-2.5 px-4", className)}
+    variant="secondaryGrey"
+    size="sm"
+    aria-label="Go to previous page"
+    {...props}
+  >
+    <Icons.ArrowNarrowLeft className="h-5 w-5 stroke-semantic-fg-secondary" />
+    <span className="product-body-text-3-semibold">Previous</span>
+  </Button>
+)
+PaginationPrevious.displayName = "PaginationPrevious"
+
+const PaginationNext = ({ className, ...props}: React.ComponentProps<typeof Button>) => (
+  <Button
+    className={cn("gap-x-2 rounded-r-sm rounded-l-none !border-semantic-bg-line !py-2.5 px-4 border-l-0", className)}
+    variant="secondaryGrey"
+    size="sm"
+    aria-label="Go to next page"
+    {...props}
+  >
+    <span className="product-body-text-3-semibold">Next</span>
+    <Icons.ArrowNarrowRight className="h-5 w-5 stroke-semantic-fg-secondary" />
+  </Button>
+)
+PaginationNext.displayName = "PaginationNext"
+
+const PaginationEllipsis = ({
+  className,
+  ...props
+}: React.ComponentProps<"span">) => (
+  <span
+    aria-hidden
+    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    {...props}
+  >
+    <Icons.DotsHorizontal className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+)
+PaginationEllipsis.displayName = "PaginationEllipsis"
+
+const PaginationPageIndicator = ({
+  className,
+  currentPage,
+  totalPages,
+  ...props
+}: React.ComponentProps<"div"> & {
   currentPage: number;
   totalPages: number;
-  onPrev: () => void;
-  onNext: () => void;
-}
+}) => (
+  <div className={cn("text-sm text-semantic-fg-disabled", className)} {...props}>
+    {currentPage} of {totalPages}
+  </div>
+)
+PaginationPageIndicator.displayName = "PaginationPageIndicator"
 
-export const Pagination = (props: PaginationProps) => {
-  const { align = 'center', isPrevDisabled, isNextDisabled, currentPage, totalPages, onPrev, onNext } = props;
+/* TODO: 
+ * Update the component to be able to render page links
+ */
 
-  return (
-    <div className="flex items-center justify-between py-4">
-      <Button
-        className={cn("gap-x-2 rounded-l-sm !border-semantic-bg-line !py-2.5 px-4", align !== 'center' ? "!rounded-r-none" : "rounded-r-sm", align === 'right' ? 'ml-auto' : null)}
-        variant="secondaryGrey"
-        size="sm"
-        onClick={onPrev}
-        disabled={isPrevDisabled}
-      >
-        <Icons.ArrowNarrowLeft className="h-5 w-5 stroke-semantic-fg-secondary" />
-        <span className="product-body-text-3-semibold">Previous</span>
-      </Button>
-      {
-        totalPages > 1
-          ? (
-            <div className={cn("text-sm text-semantic-fg-disabled", align === 'left' ? "order-last" : null, align === 'right' ? "order-first" : null)}>
-              {currentPage} of {totalPages}
-            </div>
-          ) : null
-      }
-      <Button
-        className={cn("gap-x-2 rounded-r-sm !border-semantic-bg-line !py-2.5 px-4", align !== 'center' ? "!rounded-l-none border-l-0" : "rounded-l-sm", align === 'left' ? 'mr-auto' : null)}
-        variant="secondaryGrey"
-        size="sm"
-        onClick={onNext}
-        disabled={isNextDisabled}
-      >
-        <span className="product-body-text-3-semibold">Next</span>
-        <Icons.ArrowNarrowRight className="h-5 w-5 stroke-semantic-fg-secondary" />
-      </Button>
-    </div>
-  );
-}
+export const Pagination = {
+  Root: PaginationRoot,
+  Content: PaginationContent,
+  Ellipsis: PaginationEllipsis,
+  Item: PaginationItem,
+  Next: PaginationNext,
+  Prev: PaginationPrevious,
+  PageIndicator: PaginationPageIndicator,
+};
